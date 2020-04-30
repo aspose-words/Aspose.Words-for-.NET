@@ -28,6 +28,7 @@ namespace ApiExamples
             //ExFor:ListFormat.ListIndent
             //ExFor:ListFormat.ListOutdent
             //ExFor:ListFormat.RemoveNumbers
+            //ExFor:ListFormat.ListLevelNumber
             //ExSummary:Shows how to apply default bulleted or numbered list formatting to paragraphs when using DocumentBuilder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -39,14 +40,22 @@ namespace ApiExamples
             builder.ListFormat.ApplyNumberDefault();
             builder.Writeln("Opening documents from different formats:");
 
+            Assert.AreEqual(0, builder.ListFormat.ListLevelNumber);
+
             // Go to second list level, add more text
             builder.ListFormat.ListIndent();
+
+            Assert.AreEqual(1, builder.ListFormat.ListLevelNumber);
+
             builder.Writeln("DOC");
             builder.Writeln("PDF");
             builder.Writeln("HTML");
 
             // Outdent to the first list level
             builder.ListFormat.ListOutdent();
+
+            Assert.AreEqual(0, builder.ListFormat.ListLevelNumber);
+
             builder.Writeln("Processing documents");
             builder.Writeln("Saving documents in different formats:");
 
@@ -203,6 +212,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:List
             //ExFor:List.ListLevels
+            //ExFor:ListFormat.ListLevel
             //ExFor:ListLevelCollection
             //ExFor:ListLevelCollection.Item
             //ExFor:ListLevel
@@ -272,10 +282,17 @@ namespace ApiExamples
             listLevel = doc.Lists[0].ListLevels[0];
 
             TestUtil.VerifyListLevel("\0", -36.0d, NumberStyle.OrdinalText, listLevel);
+            Assert.AreEqual(Color.Red.ToArgb(), listLevel.Font.Color.ToArgb());
+            Assert.AreEqual(24.0d, listLevel.Font.Size);
+            Assert.AreEqual(21, listLevel.StartAt);
 
             listLevel = doc.Lists[0].ListLevels[1];
 
             TestUtil.VerifyListLevel("\xf0af", 144.0d, NumberStyle.Bullet, listLevel);
+            Assert.AreEqual(Color.Blue.ToArgb(), listLevel.Font.Color.ToArgb());
+            Assert.AreEqual(24.0d, listLevel.Font.Size);
+            Assert.AreEqual(1, listLevel.StartAt);
+            Assert.AreEqual(ListTrailingCharacter.Space, listLevel.TrailingCharacter);
         }
 
         [Test]
@@ -319,8 +336,22 @@ namespace ApiExamples
             builder.Writeln("Item 2");
             builder.ListFormat.RemoveNumbers();
 
-            builder.Document.Save(ArtifactsDir + "Lists.RestartNumberingUsingListCopy.doc");
+            doc.Save(ArtifactsDir + "Lists.RestartNumberingUsingListCopy.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Lists.RestartNumberingUsingListCopy.docx");
+
+            list1 = doc.Lists[0];
+            TestUtil.VerifyListLevel("\0)", 18.0d, NumberStyle.Arabic, list1.ListLevels[0]);
+            Assert.AreEqual(Color.Red.ToArgb(), list1.ListLevels[0].Font.Color.ToArgb());
+            Assert.AreEqual(10.0d, list1.ListLevels[0].Font.Size);
+            Assert.AreEqual(1, list1.ListLevels[0].StartAt);
+
+            list2 = doc.Lists[1];
+            TestUtil.VerifyListLevel("\0)", 18.0d, NumberStyle.Arabic, list2.ListLevels[0]);
+            Assert.AreEqual(Color.Red.ToArgb(), list2.ListLevels[0].Font.Color.ToArgb());
+            Assert.AreEqual(10.0d, list2.ListLevels[0].Font.Size);
+            Assert.AreEqual(10, list2.ListLevels[0].StartAt);
         }
 
         [Test]
@@ -350,10 +381,10 @@ namespace ApiExamples
             List list1 = listStyle.List;
 
             // Check some basic rules about the list that defines a list style
-            Console.WriteLine("IsListStyleDefinition: " + list1.IsListStyleDefinition);
-            Console.WriteLine("IsListStyleReference: " + list1.IsListStyleReference);
-            Console.WriteLine("IsMultiLevel: " + list1.IsMultiLevel);
-            Console.WriteLine("List style has been set: " + (listStyle == list1.Style));
+            Assert.True(list1.IsListStyleDefinition);
+            Assert.False(list1.IsListStyleReference);
+            Assert.True(list1.IsMultiLevel);
+            Assert.AreEqual(listStyle, list1.Style);
 
             // Modify formatting of the list style to our liking
             for (int i = 0; i < list1.ListLevels.Count; i++)
@@ -373,9 +404,9 @@ namespace ApiExamples
             List list2 = doc.Lists.Add(listStyle);
 
             // Check some basic rules about the list that references a list style
-            Console.WriteLine("IsListStyleDefinition: " + list2.IsListStyleDefinition);
-            Console.WriteLine("IsListStyleReference: " + list2.IsListStyleReference);
-            Console.WriteLine("List Style has been set: " + (listStyle == list2.Style));
+            Assert.False(list2.IsListStyleDefinition);
+            Assert.True(list2.IsListStyleReference);
+            Assert.AreEqual(listStyle, list2.Style);
 
             // Apply the list that references the list style
             builder.ListFormat.List = list2;
@@ -392,102 +423,175 @@ namespace ApiExamples
             builder.Writeln("Item 2");
             builder.ListFormat.RemoveNumbers();
 
-            builder.Document.Save(ArtifactsDir + "Lists.CreateAndUseListStyle.doc");
+            builder.Document.Save(ArtifactsDir + "Lists.CreateAndUseListStyle.docx");
             //ExEnd
 
-            // Verify properties of list 1
-            Assert.IsTrue(list1.IsListStyleDefinition);
-            Assert.IsFalse(list1.IsListStyleReference);
-            Assert.IsTrue(list1.IsMultiLevel);
-            Assert.AreEqual(listStyle, list1.Style);
+            doc = new Document(ArtifactsDir + "Lists.CreateAndUseListStyle.docx");
 
-            // Verify properties of list 2
-            Assert.IsFalse(list2.IsListStyleDefinition);
-            Assert.IsTrue(list2.IsListStyleReference);
-            Assert.AreEqual(listStyle, list2.Style);
+            list1 = doc.Lists[0];
+
+            TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, list1.ListLevels[0]);
+            Assert.True(list1.IsListStyleDefinition);
+            Assert.False(list1.IsListStyleReference);
+            Assert.True(list1.IsMultiLevel);
+            Assert.AreEqual(Color.Blue.ToArgb(), list1.ListLevels[0].Font.Color.ToArgb());
+            Assert.AreEqual("Verdana", list1.ListLevels[0].Font.Name);
+            Assert.True(list1.ListLevels[0].Font.Bold);
+
+            list2 = doc.Lists[1];
+
+            TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, list2.ListLevels[0]);
+            Assert.False(list2.IsListStyleDefinition);
+            Assert.True(list2.IsListStyleReference);
+            Assert.True(list2.IsMultiLevel);
+
+            list3 = doc.Lists[2];
+
+            TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, list3.ListLevels[0]);
+            Assert.False(list3.IsListStyleDefinition);
+            Assert.True(list3.IsListStyleReference);
+            Assert.True(list3.IsMultiLevel);
         }
 
         [Test]
         public void DetectBulletedParagraphs()
         {
-            Document doc = new Document();
-
             //ExStart
             //ExFor:Paragraph.ListFormat
             //ExFor:ListFormat.IsListItem
             //ExFor:CompositeNode.GetText
             //ExFor:List.ListId
-            //ExSummary:Finds and outputs all paragraphs in a document that are bulleted or numbered.
+            //ExSummary:Shows how to output all paragraphs in a document that are bulleted or numbered.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.ListFormat.ApplyNumberDefault();
+            builder.Writeln("Numbered list item 1");
+            builder.Writeln("Numbered list item 2");
+            builder.Writeln("Numbered list item 3");
+            builder.ListFormat.RemoveNumbers();
+
+            builder.ListFormat.ApplyBulletDefault();
+            builder.Writeln("Bulleted list item 1");
+            builder.Writeln("Bulleted list item 2");
+            builder.Writeln("Bulleted list item 3");
+            builder.ListFormat.RemoveNumbers();
+
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
-            foreach (Paragraph para in paras.OfType<Paragraph>())
-            {
-                if (para.ListFormat.IsListItem)
-                {
-                    Console.WriteLine($"*** A paragraph belongs to list {para.ListFormat.List.ListId}");
-                    Console.WriteLine(para.GetText());
-                }
+
+            foreach (Paragraph para in paras.OfType<Paragraph>().Where(p => p.ListFormat.IsListItem))
+            { 
+                Console.WriteLine($"This paragraph belongs to list ID# {para.ListFormat.List.ListId}, number style \"{para.ListFormat.ListLevel.NumberStyle}\"");
+                Console.WriteLine($"\t\"{para.GetText().Trim()}\"");
             }
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            paras = doc.GetChildNodes(NodeType.Paragraph, true);
+
+            Assert.AreEqual(6, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
         }
 
         [Test]
         public void RemoveBulletsFromParagraphs()
         {
-            Document doc = new Document();
-
             //ExStart
             //ExFor:ListFormat.RemoveNumbers
-            //ExSummary:Removes bullets and numbering from all paragraphs in the main text of a section.
-            Body body = doc.FirstSection.Body;
+            //ExSummary:Shows how to remove bullets and numbering from all paragraphs in the main text of a section.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            foreach (Paragraph paragraph in body.Paragraphs.OfType<Paragraph>())
+            builder.ListFormat.ApplyNumberDefault();
+            builder.Writeln("Numbered list item 1");
+            builder.Writeln("Numbered list item 2");
+            builder.Writeln("Numbered list item 3");
+            builder.ListFormat.RemoveNumbers();
+
+            NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
+
+            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+
+            foreach (Paragraph paragraph in paras)
                 paragraph.ListFormat.RemoveNumbers();
+
+            Assert.AreEqual(0, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
             //ExEnd
         }
 
         [Test]
         public void ApplyExistingListToParagraphs()
         {
-            Document doc = new Document();
-            doc.Lists.Add(ListTemplate.NumberDefault);
-
             //ExStart
-            //ExFor:ListFormat.ListLevelNumber
             //ExFor:ListCollection.Item(Int32)
-            //ExSummary:Applies list formatting of an existing list to a collection of paragraphs.
-            Body body = doc.FirstSection.Body;
+            //ExSummary:Shows how to apply list formatting of an existing list to a collection of paragraphs.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Paragraph 1");
+            builder.Writeln("Paragraph 2");
+            builder.Write("Paragraph 3");
+
+            NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
+
+            Assert.AreEqual(0, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+
+            doc.Lists.Add(ListTemplate.NumberDefault);
             List list = doc.Lists[0];
-            foreach (Paragraph paragraph in body.Paragraphs.OfType<Paragraph>())
+
+            foreach (Paragraph paragraph in paras.OfType<Paragraph>())
             {
                 paragraph.ListFormat.List = list;
                 paragraph.ListFormat.ListLevelNumber = 2;
             }
+
+            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            paras = doc.GetChildNodes(NodeType.Paragraph, true);
+
+            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.ListLevelNumber == 2));
         }
 
         [Test]
         public void ApplyNewListToParagraphs()
         {
-            Document doc = new Document();
-
             //ExStart
-            //ExFor:ListFormat.ListLevelNumber
             //ExFor:ListCollection.Add(ListTemplate)
-            //ExSummary:Creates new list formatting and applies it to a collection of paragraphs.
+            //ExSummary:Shows how to create a list by applying a new list format to a collection of paragraphs.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Paragraph 1");
+            builder.Writeln("Paragraph 2");
+            builder.Write("Paragraph 3");
+
+            NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
+
+            Assert.AreEqual(0, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+
             List list = doc.Lists.Add(ListTemplate.NumberUppercaseLetterDot);
 
-            Body body = doc.FirstSection.Body;
-            foreach (Paragraph paragraph in body.Paragraphs.OfType<Paragraph>())
+            foreach (Paragraph paragraph in paras.OfType<Paragraph>())
             {
                 paragraph.ListFormat.List = list;
                 paragraph.ListFormat.ListLevelNumber = 1;
             }
+
+            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            paras = doc.GetChildNodes(NodeType.Paragraph, true);
+
+            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.ListLevelNumber == 1));
         }
 
         //ExStart
         //ExFor:ListTemplate
-        //ExSummary:Creates a sample document that exercises all outline headings list templates.
+        //ExSummary:Shows how to create a document that demonstrates all outline headings list templates.
         [Test] //ExSkip
         public void OutlineHeadingTemplates()
         {
@@ -495,20 +599,21 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             List list = doc.Lists.Add(ListTemplate.OutlineHeadingsArticleSection);
-            AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline 1");
+            AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline - \"Article Section\"");
 
             list = doc.Lists.Add(ListTemplate.OutlineHeadingsLegal);
-            AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline 2");
+            AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline - \"Legal\"");
 
             builder.InsertBreak(BreakType.PageBreak);
 
             list = doc.Lists.Add(ListTemplate.OutlineHeadingsNumbers);
-            AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline 3");
+            AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline - \"Numbers\"");
 
             list = doc.Lists.Add(ListTemplate.OutlineHeadingsChapter);
-            AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline 4");
+            AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline - \"Chapters\"");
 
-            builder.Document.Save(ArtifactsDir + "Lists.OutlineHeadingTemplates.doc");
+            doc.Save(ArtifactsDir + "Lists.OutlineHeadingTemplates.docx");
+            TestOutlineHeadingTemplates(new Document(ArtifactsDir + "Lists.OutlineHeadingTemplates.docx")); //ExSkip
         }
 
         private static void AddOutlineHeadingParagraphs(DocumentBuilder builder, List list, string title)
@@ -530,11 +635,62 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestOutlineHeadingTemplates(Document doc)
+        {
+            List list = doc.Lists[0]; // Article section list template
+
+            TestUtil.VerifyListLevel("Article \0.", 0.0d, NumberStyle.UppercaseRoman, list.ListLevels[0]);
+            TestUtil.VerifyListLevel("Section \0.\u0001", 0.0d, NumberStyle.LeadingZero, list.ListLevels[1]);
+            TestUtil.VerifyListLevel("(\u0002)", 14.4d, NumberStyle.LowercaseLetter, list.ListLevels[2]);
+            TestUtil.VerifyListLevel("(\u0003)", 36.0d, NumberStyle.LowercaseRoman, list.ListLevels[3]);
+            TestUtil.VerifyListLevel("\u0004)", 28.8d, NumberStyle.Arabic, list.ListLevels[4]);
+            TestUtil.VerifyListLevel("\u0005)", 36.0d, NumberStyle.LowercaseLetter, list.ListLevels[5]);
+            TestUtil.VerifyListLevel("\u0006)", 50.4d, NumberStyle.LowercaseRoman, list.ListLevels[6]);
+            TestUtil.VerifyListLevel("\a.", 50.4d, NumberStyle.LowercaseLetter, list.ListLevels[7]);
+            TestUtil.VerifyListLevel("\b.", 72.0d, NumberStyle.LowercaseRoman, list.ListLevels[8]);
+
+            list = doc.Lists[1]; // Legal list template
+
+            TestUtil.VerifyListLevel("\0", 0.0d, NumberStyle.Arabic, list.ListLevels[0]);
+            TestUtil.VerifyListLevel("\0.\u0001", 0.0d, NumberStyle.Arabic, list.ListLevels[1]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002", 0.0d, NumberStyle.Arabic, list.ListLevels[2]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003", 0.0d, NumberStyle.Arabic, list.ListLevels[3]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004", 0.0d, NumberStyle.Arabic, list.ListLevels[4]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005", 0.0d, NumberStyle.Arabic, list.ListLevels[5]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005.\u0006", 0.0d, NumberStyle.Arabic, list.ListLevels[6]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005.\u0006.\a", 0.0d, NumberStyle.Arabic, list.ListLevels[7]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005.\u0006.\a.\b", 0.0d, NumberStyle.Arabic, list.ListLevels[8]);
+
+            list = doc.Lists[2]; // Numbered list template
+
+            TestUtil.VerifyListLevel("\0.", 0.0d, NumberStyle.UppercaseRoman, list.ListLevels[0]);
+            TestUtil.VerifyListLevel("\u0001.", 36.0d, NumberStyle.UppercaseLetter, list.ListLevels[1]);
+            TestUtil.VerifyListLevel("\u0002.", 72.0d, NumberStyle.Arabic, list.ListLevels[2]);
+            TestUtil.VerifyListLevel("\u0003)", 108.0d, NumberStyle.LowercaseLetter, list.ListLevels[3]);
+            TestUtil.VerifyListLevel("(\u0004)", 144.0d, NumberStyle.Arabic, list.ListLevels[4]);
+            TestUtil.VerifyListLevel("(\u0005)", 180.0d, NumberStyle.LowercaseLetter, list.ListLevels[5]);
+            TestUtil.VerifyListLevel("(\u0006)", 216.0d, NumberStyle.LowercaseRoman, list.ListLevels[6]);
+            TestUtil.VerifyListLevel("(\a)", 252.0d, NumberStyle.LowercaseLetter, list.ListLevels[7]);
+            TestUtil.VerifyListLevel("(\b)", 288.0d, NumberStyle.LowercaseRoman, list.ListLevels[8]);
+
+            list = doc.Lists[3]; // Chapter list template
+
+            TestUtil.VerifyListLevel("Chapter \0", 0.0d, NumberStyle.Arabic, list.ListLevels[0]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[1]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[2]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[3]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[4]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[5]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[6]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[7]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[8]);
+        }
+
         //ExStart
         //ExFor:ListCollection
         //ExFor:ListCollection.AddCopy(List)
         //ExFor:ListCollection.GetEnumerator
-        //ExSummary:Enumerates through all lists defined in one document and creates a sample of those lists in another document.
+        //ExSummary:Shows how to enumerate through all lists defined in one document and creates a sample of those lists in another document.
         [Test] //ExSkip
         public void PrintOutAllLists()
         {
@@ -552,7 +708,8 @@ namespace ApiExamples
                 AddListSample(builder, dstList);
             }
 
-            dstDoc.Save(ArtifactsDir + "Lists.PrintOutAllLists.doc");
+            dstDoc.Save(ArtifactsDir + "Lists.PrintOutAllLists.docx");
+            TestPrintOutAllLists(srcDoc, new Document(ArtifactsDir + "Lists.PrintOutAllLists.docx")); //ExSkip
         }
 
         private static void AddListSample(DocumentBuilder builder, List list)
@@ -570,6 +727,18 @@ namespace ApiExamples
         }
         //ExEnd		
 
+        private void TestPrintOutAllLists(Document listSourceDoc, Document outDoc)
+        {
+            foreach (List list in outDoc.Lists)
+                for (int i = 0; i < list.ListLevels.Count; i++)
+                {
+                    ListLevel expectedListLevel = listSourceDoc.Lists.First(l => l.ListId == list.ListId).ListLevels[i];
+                    Assert.AreEqual(expectedListLevel.NumberFormat, list.ListLevels[i].NumberFormat);
+                    Assert.AreEqual(expectedListLevel.NumberPosition, list.ListLevels[i].NumberPosition);
+                    Assert.AreEqual(expectedListLevel.NumberStyle, list.ListLevels[i].NumberStyle);
+                }
+        }
+
         [Test]
         public void ListDocument()
         {
@@ -580,52 +749,32 @@ namespace ApiExamples
             //ExFor:ListCollection.GetListByListId
             //ExFor:List.Document
             //ExFor:List.ListId
-            //ExSummary:Illustrates the owner document properties of lists.
+            //ExSummary:Shows how to verify owner document properties of lists.
             Document doc = new Document();
 
             ListCollection lists = doc.Lists;
-            // All of these should be equal
-            Console.WriteLine("ListCollection document is doc: " + (doc == lists.Document));
-            Console.WriteLine("Starting list count: " + lists.Count);
+
+            Assert.AreEqual(doc, lists.Document);
 
             List list = lists.Add(ListTemplate.BulletDefault);
-            Console.WriteLine("List document is doc: " + (list.Document == doc));
-            Console.WriteLine("List count after adding list: " + lists.Count);
+
+            Assert.AreEqual(doc, list.Document);
+
+            Console.WriteLine("Current list count: " + lists.Count);
             Console.WriteLine("Is the first document list: " + (lists[0].Equals(list)));
             Console.WriteLine("ListId: " + list.ListId);
             Console.WriteLine("List is the same by ListId: " + (lists.GetListByListId(1).Equals(list)));
             //ExEnd
 
-            // Verify these properties
+            doc = DocumentHelper.SaveOpen(doc);
+            lists = doc.Lists;
+            
             Assert.AreEqual(doc, lists.Document);
-            Assert.AreEqual(doc, list.Document);
             Assert.AreEqual(1, lists.Count);
-            Assert.AreEqual(list, lists[0]);
-            Assert.AreEqual(1, list.ListId);
-            Assert.AreEqual(list, lists.GetListByListId(1));
+            Assert.AreEqual(1, lists[0].ListId);
+            Assert.AreEqual(lists[0], lists.GetListByListId(1));
         }
-
-        [Test]
-        public void ListFormatListLevel()
-        {
-            //ExStart
-            //ExFor:ListFormat.ListLevel
-            //ExSummary:Shows how to modify list formatting of the current list level.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Create and apply list formatting to the current paragraph
-            builder.ListFormat.List = doc.Lists.Add(ListTemplate.NumberDefault);
-
-            // Modify formatting of the current (first) list level
-            builder.ListFormat.ListLevel.Font.Bold = true;
-
-            builder.Writeln("Item 1");
-            builder.Writeln("Item 2");
-            builder.ListFormat.RemoveNumbers();
-            //ExEnd
-        }
-
+        
         [Test]
         public void CreateListRestartAfterHigher()
         {
@@ -679,46 +828,24 @@ namespace ApiExamples
 
             builder.ListFormat.RemoveNumbers();
 
-            builder.Document.Save(ArtifactsDir + "Lists.CreateListRestartAfterHigher.doc");
+            doc.Save(ArtifactsDir + "Lists.CreateListRestartAfterHigher.docx");
             //ExEnd
-        }
 
-        [Test]
-        public void ParagraphStyleBulleted()
-        {
-            //ExStart
-            //ExFor:StyleCollection
-            //ExFor:DocumentBase.Styles
-            //ExFor:Style
-            //ExFor:Font
-            //ExFor:Style.Font
-            //ExFor:Style.ParagraphFormat
-            //ExFor:Style.ListFormat
-            //ExFor:ParagraphFormat.Style
-            //ExSummary:Shows how to create and use a paragraph style with list formatting.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
+            doc = new Document(ArtifactsDir + "Lists.CreateListRestartAfterHigher.docx");
 
-            // Create a paragraph style and specify some formatting for it
-            Style style = doc.Styles.Add(StyleType.Paragraph, "MyStyle1");
-            style.Font.Size = 24;
-            style.Font.Name = "Verdana";
-            style.ParagraphFormat.SpaceAfter = 12;
+            ListLevel listLevel = doc.Lists[0].ListLevels[0];
 
-            // Create a list and make sure the paragraphs that use this style will use this list
-            style.ListFormat.List = doc.Lists.Add(ListTemplate.BulletDefault);
-            style.ListFormat.ListLevelNumber = 0;
+            TestUtil.VerifyListLevel("Appendix \0", 18.0d, NumberStyle.UppercaseLetter, listLevel);
+            Assert.False(listLevel.IsLegal);
+            Assert.AreEqual(-1, listLevel.RestartAfterLevel);
+            Assert.AreEqual("Heading 1", listLevel.LinkedStyle.Name);
 
-            // Apply the paragraph style to the current paragraph in the document and add some text
-            builder.ParagraphFormat.Style = style;
-            builder.Writeln("Hello World: MyStyle1, bulleted.");
+            listLevel = doc.Lists[0].ListLevels[1];
 
-            // Change to a paragraph style that has no list formatting
-            builder.ParagraphFormat.Style = doc.Styles["Normal"];
-            builder.Writeln("Hello World: Normal.");
-
-            builder.Document.Save(ArtifactsDir + "Lists.ParagraphStyleBulleted.doc");
-            //ExEnd
+            TestUtil.VerifyListLevel("Section (\0.\u0001)", 54.0d, NumberStyle.LeadingZero, listLevel);
+            Assert.True(listLevel.IsLegal);
+            Assert.AreEqual(0, listLevel.RestartAfterLevel);
+            Assert.Null(listLevel.LinkedStyle);
         }
 
         [Test]
@@ -734,33 +861,31 @@ namespace ApiExamples
             //ExSummary:Shows how to extract the label of each paragraph in a list as a value or a String.
             Document doc = new Document(MyDir + "Rendering.docx");
             doc.UpdateListLabels();
-            int listParaCount = 1;
 
-            foreach (Paragraph paragraph in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
+            NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
+
+            // Find if we have the paragraph list. In our document our list uses plain arabic numbers,
+            // which start at three and ends at six
+            foreach (Paragraph paragraph in paras.OfType<Paragraph>().Where(p => p.ListFormat.IsListItem))
             {
-                // Find if we have the paragraph list. In our document our list uses plain arabic numbers,
-                // which start at three and ends at six
-                if (paragraph.ListFormat.IsListItem)
-                {
-                    Console.WriteLine("Paragraph #{0}", listParaCount);
+                Console.WriteLine($"List item paragraph #{paras.IndexOf(paragraph)}");
 
-                    // This is the text we get when actually getting when we output this node to text format
-                    // The list labels are not included in this text output. Trim any paragraph formatting characters
-                    string paragraphText = paragraph.ToString(SaveFormat.Text).Trim();
-                    Console.WriteLine("Exported Text: " + paragraphText);
+                // This is the text we get when actually getting when we output this node to text format
+                // The list labels are not included in this text output. Trim any paragraph formatting characters
+                string paragraphText = paragraph.ToString(SaveFormat.Text).Trim();
+                Console.WriteLine($"\tExported Text: {paragraphText}");
 
-                    ListLabel label = paragraph.ListLabel;
-                    // This gets the position of the paragraph in current level of the list. If we have a list with multiple level then this
-                    // will tell us what position it is on that particular level
-                    Console.WriteLine("Numerical Id: " + label.LabelValue);
+                ListLabel label = paragraph.ListLabel;
+                // This gets the position of the paragraph in current level of the list. If we have a list with multiple level then this
+                // will tell us what position it is on that particular level
+                Console.WriteLine($"\tNumerical Id: {label.LabelValue}");
 
-                    // Combine them together to include the list label with the text in the output
-                    Console.WriteLine("List label combined with text: " + label.LabelString + " " + paragraphText);
-
-                    listParaCount++;
-                }
+                // Combine them together to include the list label with the text in the output
+                Console.WriteLine($"\tList label combined with text: {label.LabelString} {paragraphText}");
             }
             //ExEnd
+
+            Assert.AreEqual(10, paras.OfType<Paragraph>().Count(p => p.ListFormat.IsListItem));
         }
 
         [Test]
@@ -796,8 +921,11 @@ namespace ApiExamples
             list.ListLevels[0].DeletePictureBullet();
 
             Assert.IsNull(list.ListLevels[0].ImageData);
-
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Lists.CreatePictureBullet.docx");
+
+            Assert.IsTrue(doc.Lists[0].ListLevels[0].ImageData.HasImage);
         }
     }
 }
