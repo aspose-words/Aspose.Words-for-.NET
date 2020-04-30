@@ -20,7 +20,7 @@ using NUnit.Framework;
 using System.Windows.Forms;
 using System.Drawing.Printing;
 using System.Drawing.Text;
-#elif NETCOREAPP2_1
+#elif NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -756,7 +756,7 @@ namespace ApiExamples
             previewDlg.ShowDialog();
             //ExEnd
         }
-#elif NETCOREAPP2_1
+#elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         public void RenderToSizeNetStandard2()
         {

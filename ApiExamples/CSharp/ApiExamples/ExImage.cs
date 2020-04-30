@@ -14,7 +14,7 @@ using Aspose.Words.Drawing;
 using NUnit.Framework;
 #if NET462 || JAVA
 using System.Drawing;
-#elif NETCOREAPP2_1
+#elif NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -134,7 +134,8 @@ namespace ApiExamples
 
             builder.Document.Save(ArtifactsDir + "Image.CreateFromImage.docx");
         }
-        #elif NETCOREAPP2_1
+
+        #elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         [Category("SkipMono")]
         public void CreateFromImageNetStandard2()

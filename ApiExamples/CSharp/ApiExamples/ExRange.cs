@@ -182,48 +182,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        // Note: Need more info from dev.
-        [Test]
-        public void ReplaceWithoutPreserveMetaCharacters()
-        {
-            const string text = "some text";
-            const string replaceWithText = "&ldquo;";
-
-            Document doc = new Document();
-
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Write(text);
-
-            FindReplaceOptions options = new FindReplaceOptions();
-            options.PreserveMetaCharacters = false;
-
-            doc.Range.Replace(text, replaceWithText, options);
-
-            Assert.AreEqual("\vdquo;\f", doc.GetText());
-        }
-
-        [Test]
-        public void FindAndReplaceWithPreserveMetaCharacters()
-        {
-            //ExStart
-            //ExFor:FindReplaceOptions.PreserveMetaCharacters
-            //ExSummary:Shows how to preserved meta-characters that begin with "&".
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("one");
-            builder.Writeln("two");
-            builder.Writeln("three");
-
-            FindReplaceOptions options = new FindReplaceOptions();
-            options.FindWholeWordsOnly = true;
-            options.PreserveMetaCharacters = true;
-
-            doc.Range.Replace("two", "&ldquo; four &rdquo;", options);
-            //ExEnd
-
-            doc.Save(ArtifactsDir + "Range.FindAndReplaceWithMetacharacters.docx");
-        }
-
         //ExStart
         //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
         //ExFor:ReplacingArgs.Replacement

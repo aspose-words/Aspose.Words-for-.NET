@@ -156,7 +156,7 @@ namespace ApiExamples
             shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(true, shape.AspectRatioLocked);            
         }
-#elif NETCOREAPP2_1
+#elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         public void AspectRatioLockedDefaultValueNetStandard2()
         {

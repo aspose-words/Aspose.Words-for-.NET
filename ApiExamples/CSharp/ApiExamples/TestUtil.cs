@@ -15,7 +15,13 @@ using Aspose.Words.Fields;
 using Aspose.Words.Lists;
 using NUnit.Framework;
 using Table = Aspose.Words.Tables.Table;
-using Image = System.Drawing.Image;
+using Image =
+#if NET462 || JAVA
+System.Drawing.Image;
+#elif NETCOREAPP2_1 || __MOBILE__
+SkiaSharp.SKBitmap;
+using SkiaSharp;
+#endif
 using Shape = Aspose.Words.Drawing.Shape;
 
 namespace ApiExamples
@@ -68,6 +74,7 @@ namespace ApiExamples
         /// <param name="sqlQuery">Microsoft.Jet.OLEDB.4.0-compliant SQL query.</param>
         internal static void TableMatchesQueryResult(Table expectedResult, string dbFilename, string sqlQuery)
         {
+            #if !__MOBILE__
             using (OleDbConnection connection = new OleDbConnection())
             {
                 connection.ConnectionString = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={dbFilename};";
@@ -88,6 +95,7 @@ namespace ApiExamples
                         Assert.AreEqual(expectedResult.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, string.Empty),
                             myDataTable.Rows[i][j].ToString());
             }
+            #endif
         }
 
         /// <summary>
@@ -119,11 +127,17 @@ namespace ApiExamples
         {
             try
             {
+                #if NET462 || JAVA
                 using (Image image = Image.FromFile(filename))
+                #elif NETCOREAPP2_1 || __MOBILE__
+                using (Image image = Image.Decode(filename))
+                #endif
                 {
                     Assert.AreEqual(expectedWidth, image.Width);
                     Assert.AreEqual(expectedHeight, image.Height);
                 }
+
+                
             }
             catch (OutOfMemoryException e)
             {

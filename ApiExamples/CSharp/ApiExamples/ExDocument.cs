@@ -347,7 +347,7 @@ namespace ApiExamples
             {
                 // Download the bytes from the location referenced by the URL
                 byte[] dataBytes = webClient.DownloadData(url);
-                Assert.IsNotEmpty(dataBytes); //ExSkip
+                Assert.That(dataBytes, Is.Not.Empty); //ExSkip
 
                 // Wrap the bytes representing the document in memory into a MemoryStream object
                 using (MemoryStream byteStream = new MemoryStream(dataBytes))
@@ -2167,7 +2167,7 @@ namespace ApiExamples
             CustomDocumentProperties customDocumentProperties = plaintext.CustomDocumentProperties;
             //ExEnd
 
-            Assert.IsEmpty(customDocumentProperties);
+            Assert.That(customDocumentProperties, Is.Empty);
         }
 
         [Test]

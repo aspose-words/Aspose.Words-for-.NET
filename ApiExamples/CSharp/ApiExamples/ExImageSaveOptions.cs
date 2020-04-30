@@ -5,15 +5,13 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 #if NET462 || JAVA
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-#elif NETCOREAPP2_1
-using SkiaSharp;
 #endif
 
 namespace ApiExamples
@@ -35,7 +33,9 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageSaveOptions.Renderer.emf", saveOptions);
             //ExEnd
 
+            #if NET462 || JAVA // NetStandard doesn't work with emf 
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.Renderer.emf");
+            #endif
         }
 
         [Test]
@@ -163,8 +163,10 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
-
+            
+            #if NET462
             TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff");
+            #endif
         }
 
         [Test]

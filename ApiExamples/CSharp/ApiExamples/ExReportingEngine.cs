@@ -405,7 +405,7 @@ namespace ApiExamples
             
             #if NET462 || JAVA
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
-            #elif NETCOREAPP2_1
+            #elif NETCOREAPP2_1 || __MOBILE__
             ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
             #endif
             
@@ -487,7 +487,7 @@ namespace ApiExamples
             
 #if NET462 || JAVA
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
-#elif NETCOREAPP2_1
+#elif NETCOREAPP2_1 || __MOBILE__
             ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
 #endif
             BuildReport(template, image, "src", ReportBuildOptions.None);

@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -21,8 +20,8 @@ using Cell = Aspose.Words.Tables.Cell;
 using Color = System.Drawing.Color;
 using Document = Aspose.Words.Document;
 using Font = Aspose.Words.Font;
-using SaveFormat = Aspose.Words.SaveFormat;
 using Table = Aspose.Words.Tables.Table;
+using System.Drawing;
 #if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -299,7 +298,7 @@ namespace ApiExamples
             Assert.AreNotEqual(runs[0].Font.Underline, runs[2].Font.Underline);
         }
 
-        #if NET462 || JAVA
+#if NET462 || JAVA
         [Test]
         public void InsertWatermark()
         {
@@ -392,7 +391,8 @@ namespace ApiExamples
             Assert.AreEqual("PowerPoint.Show.12", shape.OleFormat.ProgId);
             Assert.AreEqual(".pptx", shape.OleFormat.SuggestedExtension);
         }
-#elif NETCOREAPP2_1
+
+#elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         public void InsertWatermarkNetStandard2()
         {
@@ -3013,7 +3013,7 @@ namespace ApiExamples
 
                         #if NETCOREAPP2_1 || __MOBILE__
                         
-                        SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(imgBytes);
+                        SKBitmap bitmap = SKBitmap.Decode(imgBytes);
                         builder.InsertParagraph();
                         builder.Writeln("Powerpoint Ole object:");
                         builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, bitmap);

@@ -265,7 +265,8 @@ namespace ApiExamples
 #if NET462 || NETCOREAPP2_1 || JAVA
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
                 "Third footer\n", logger.Text.Replace("\r", ""));
-#elif NETCOREAPP2_1
+                
+#elif NETCOREAPP2_1 || __MOBILE__
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
                 "Third footer\n", logger.Text);
 #endif
@@ -281,7 +282,8 @@ namespace ApiExamples
 #if NET462 || NETCOREAPP2_1 || JAVA
             Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\n" +
                 "Second footer\n", logger.Text.Replace("\r", ""));
-#elif NETCOREAPP2_1
+
+#elif NETCOREAPP2_1 || __MOBILE__
             Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\n" +
                 "Second footer\n", logger.Text);
 #endif

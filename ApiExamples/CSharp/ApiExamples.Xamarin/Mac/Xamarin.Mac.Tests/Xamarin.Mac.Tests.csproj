@@ -49,8 +49,8 @@
     </XamMacArch>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Words, Version=20.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Aspose.Words.20.4.0\lib\net40\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=20.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\Aspose.Words.20.5.0\lib\net40\Aspose.Words.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SkiaSharp, Version=1.68.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
@@ -80,6 +80,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\ApiExamples\ExNodeImporter.cs">
+      <Link>ExNodeImporter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\TestUtil.cs">
+      <Link>TestUtil.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\..\..\ApiExamples\DocumentHelper.cs">
       <Link>DocumentHelper.cs</Link>
@@ -170,9 +176,6 @@
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExInlineStory.cs">
       <Link>ExInlineStory.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\ApiExamples\ExInsertDocument.cs">
-      <Link>ExInsertDocument.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExLists.cs">
       <Link>ExLists.cs</Link>

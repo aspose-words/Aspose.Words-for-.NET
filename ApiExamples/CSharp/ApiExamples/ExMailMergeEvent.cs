@@ -337,6 +337,7 @@ namespace ApiExamples
             Assert.IsTrue(logoImage.HasImage);
         }
 
+#if  !__MOBILE__
         //ExStart
         //ExFor:MailMerge.FieldMergingCallback
         //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)

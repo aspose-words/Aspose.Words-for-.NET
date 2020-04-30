@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Xml.XPath;
@@ -18,6 +17,8 @@ using Aspose.Words.Tables;
 using NUnit.Framework;
 #if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
+#else
+using System.Drawing;
 #endif
 
 namespace ApiExamples
@@ -737,7 +738,7 @@ namespace ApiExamples
 
             #if NET462 || JAVA
             builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
-            #elif NETCOREAPP2_1
+            #elif NETCOREAPP2_1 || __MOBILE__
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
                 builder.InsertImage(image);
             #endif
@@ -846,7 +847,7 @@ namespace ApiExamples
 
             #if NET462 || JAVA
             builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
-            #elif NETCOREAPP2_1
+            #elif NETCOREAPP2_1 || __MOBILE__
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
                 builder.InsertImage(image);
             #endif
