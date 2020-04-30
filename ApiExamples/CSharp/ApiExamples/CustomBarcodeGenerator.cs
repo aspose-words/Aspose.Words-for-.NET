@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Globalization;
 using Aspose.BarCode;
 using Aspose.Words.Fields;
-#if NETCOREAPP2_1
+#if NETCOREAPP2_1 || __MOBILE__
 using Image = SkiaSharp.SKBitmap;
 #endif
 
@@ -175,7 +175,7 @@ namespace ApiExamples
             
 #if NET462 || JAVA
             return builder.BarCodeImage;            
-#elif NETCOREAPP2_1
+#elif NETCOREAPP2_1 || __MOBILE__
             builder.BarCodeImage.Save(ArtifactsDir + "GetBarcodeImage.png");
             return Image.Decode(ArtifactsDir + "OldBarcodeImage.png");
 #endif
@@ -200,7 +200,7 @@ namespace ApiExamples
             // Hardcode type for old-fashioned Barcode
 #if NET462 || JAVA
             return builder.BarCodeImage;
-#elif NETCOREAPP2_1
+#elif NETCOREAPP2_1 || __MOBILE__
             builder.BarCodeImage.Save(ApiExampleBase.ArtifactsDir + "OldBarcodeImage.png");            
             return Image.Decode(ApiExampleBase.ArtifactsDir + "OldBarcodeImage.png");            
 #endif

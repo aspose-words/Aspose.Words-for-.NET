@@ -6,12 +6,12 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Drawing;
-using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Settings;
 using NUnit.Framework;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using System.Drawing.Printing;
+using System.Linq;
 #endif
 
 namespace ApiExamples

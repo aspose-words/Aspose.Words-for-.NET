@@ -12,7 +12,7 @@ using NUnit.Framework;
 #if NET462 || JAVA
 using System.Drawing;
 using System.Drawing.Imaging;
-#elif NETCOREAPP2_1
+#elif NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -322,7 +322,7 @@ namespace ApiExamples
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
         }
-#elif NETCOREAPP2_1
+#elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         public void InsertImageFromImageClassNetStandard2()
         {

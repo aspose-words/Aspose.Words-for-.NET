@@ -796,7 +796,6 @@ namespace ApiExamples
             list.ListLevels[0].DeletePictureBullet();
 
             Assert.IsNull(list.ListLevels[0].ImageData);
-
             //ExEnd
         }
     }

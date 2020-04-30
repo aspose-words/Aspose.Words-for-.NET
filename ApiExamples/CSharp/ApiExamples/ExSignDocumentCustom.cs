@@ -129,7 +129,7 @@ namespace ApiExamples
                 #if NET462 || JAVA
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer",
                     ImageToByteArray(Image.FromFile(ImageDir + "Logo.jpg"))),
-                #elif NETCOREAPP2_1
+                #elif NETCOREAPP2_1 || __MOBILE__
                 new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", 
                     SkiaSharp.SKBitmap.Decode(ImageDir + "Logo.jpg").Bytes),
                 #endif
@@ -137,7 +137,7 @@ namespace ApiExamples
                 #if NET462 || JAVA
                 new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance",
                     ImageToByteArray(Image.FromFile(ImageDir + "Logo.jpg")))
-                #elif NETCOREAPP2_1
+                #elif NETCOREAPP2_1 || __MOBILE__
                 new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", 
                     SkiaSharp.SKBitmap.Decode(ImageDir + "Logo.jpg").Bytes)
                 #endif

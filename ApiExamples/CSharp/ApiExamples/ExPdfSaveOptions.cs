@@ -19,7 +19,7 @@ using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
 #if NET462 || JAVA
 using Image = System.Drawing.Image;
-#elif NETCOREAPP2_1
+#elif NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
 #if NET462 || NETCOREAPP2_1
@@ -604,7 +604,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagest.pdf", options);
             //ExEnd
         }
-#elif NETCOREAPP2_1
+#elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         public void PreblendImagesNetStandard2()
         {
