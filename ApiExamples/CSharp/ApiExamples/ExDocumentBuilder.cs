@@ -23,8 +23,7 @@ using Document = Aspose.Words.Document;
 using Font = Aspose.Words.Font;
 using SaveFormat = Aspose.Words.SaveFormat;
 using Table = Aspose.Words.Tables.Table;
-
-#if NETSTANDARD2_0 || __MOBILE__
+#if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -300,7 +299,7 @@ namespace ApiExamples
             Assert.AreNotEqual(runs[0].Font.Underline, runs[2].Font.Underline);
         }
 
-        #if NETFRAMEWORK || JAVA
+        #if NET462 || JAVA
         [Test]
         public void InsertWatermark()
         {
@@ -393,7 +392,7 @@ namespace ApiExamples
             Assert.AreEqual("PowerPoint.Show.12", shape.OleFormat.ProgId);
             Assert.AreEqual(".pptx", shape.OleFormat.SuggestedExtension);
         }
-#else
+#elif NETCOREAPP2_1
         [Test]
         public void InsertWatermarkNetStandard2()
         {
@@ -3009,14 +3008,14 @@ namespace ApiExamples
                     {
                         byte[] imgBytes = webClient.DownloadData(AsposeLogoUrl);
 
-                        #if NETSTANDARD2_0 || __MOBILE__
+                        #if NETCOREAPP2_1 || __MOBILE__
                         
                         SkiaSharp.SKBitmap bitmap = SkiaSharp.SKBitmap.Decode(imgBytes);
                         builder.InsertParagraph();
                         builder.Writeln("Powerpoint Ole object:");
                         builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, bitmap);
                         
-                        #else
+                        #elif NET462
                         
                         using (MemoryStream stream = new MemoryStream(imgBytes))
                         {
@@ -3160,7 +3159,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.Red.ToArgb(), dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Color.ToArgb());
         }
 
-        #if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
+        #if NET462 || NETCOREAPP2_1 || JAVA
         /// <summary>
         /// All markdown tests work with the same file
         /// That's why we need order for them 

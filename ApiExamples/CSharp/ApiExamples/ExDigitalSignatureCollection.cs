@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -43,7 +44,7 @@ namespace ApiExamples
 
             Assert.True(signature.IsValid);
             Assert.AreEqual(DigitalSignatureType.XmlDsig, signature.SignatureType);
-            Assert.AreEqual(DateTime.Parse("12/23/2010 2:14:40 AM"), signature.SignTime);
+            Assert.AreEqual("12/23/2010 02:14:40 AM", signature.SignTime.ToString("MM/dd/yyyy hh:mm:ss tt"));
             Assert.AreEqual("Test Sign", signature.Comments);
 
             Assert.AreEqual(signature.IssuerName, signature.CertificateHolder.Certificate.IssuerName.Name);

@@ -19,8 +19,8 @@ namespace ApiExamples
     /// </summary>
     public class ApiExampleBase
     {
-        [SetUp]
-        public void SetUp()
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
         {
             if (CheckForSkipMono() && IsRunningOnMono())
             {
@@ -37,8 +37,14 @@ namespace ApiExamples
                 Directory.CreateDirectory(ArtifactsDir);
         }
 
-        [TearDown]
-        public void TearDown()
+        [SetUp]
+        public void SetUp()
+        {
+            Console.WriteLine($"Clr: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}\n");
+        }
+
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
         {
             if (!CheckForSkipTearDown())
             {

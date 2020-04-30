@@ -15,7 +15,6 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             
             // Loads encrypted document.
             Document doc = new Document(dataDir + "LoadEncrypted.docx", new LoadOptions("aspose"));
-
             // ExEnd:OpenEncryptedDocument
 
             Console.WriteLine("\nEncrypted document loaded successfully.");

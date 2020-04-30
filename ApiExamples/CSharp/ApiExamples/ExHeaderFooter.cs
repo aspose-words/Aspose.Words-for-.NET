@@ -262,10 +262,10 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterOrder.docx");
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
                 "Third footer\n", logger.Text.Replace("\r", ""));
-#else
+#elif NETCOREAPP2_1
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
                 "Third footer\n", logger.Text);
 #endif
@@ -278,10 +278,10 @@ namespace ApiExamples
             firstPageSection.PageSetup.DifferentFirstPageHeaderFooter = false;
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\n" +
                 "Second footer\n", logger.Text.Replace("\r", ""));
-#else
+#elif NETCOREAPP2_1
             Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\n" +
                 "Second footer\n", logger.Text);
 #endif

@@ -52,9 +52,6 @@ namespace ApiExamples
             info = FileFormatUtil.DetectFileFormat(MyDir + "Document.html");
             Assert.AreEqual(LoadFormat.Html, info.LoadFormat);
             Assert.IsNotNull(info.Encoding);
-
-            // It now has some more useful information
-            Assert.AreEqual("iso-8859-1", info.Encoding.BodyName);
             //ExEnd
         }
 

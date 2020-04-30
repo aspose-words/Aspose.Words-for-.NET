@@ -23,9 +23,9 @@ using Color = System.Drawing.Color;
 using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 using TextBox = Aspose.Words.Drawing.TextBox;
-#if NETSTANDARD2_0 || __MOBILE__
+#if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
-#else
+#elif NET462
 using System.Windows.Forms;
 #endif
 
@@ -37,7 +37,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExShape : ApiExampleBase
     {
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
         [Test]
         public void Insert()
         {
@@ -156,7 +156,7 @@ namespace ApiExamples
             shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(true, shape.AspectRatioLocked);            
         }
-#else
+#elif NETCOREAPP2_1
         [Test]
         public void AspectRatioLockedDefaultValueNetStandard2()
         {

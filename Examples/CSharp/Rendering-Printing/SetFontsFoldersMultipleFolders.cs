@@ -12,8 +12,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
     {
         public static void Run()
         {
-            // ExStart:SetFontsFoldersMultipleFolders
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
+            //ExStart:SetFontsFoldersMultipleFolders
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
@@ -29,7 +28,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             doc.FontSettings = FontSettings;
             dataDir = dataDir + "Rendering.SetFontsFolders_out.pdf";
             doc.Save(dataDir);
-            // ExEnd:SetFontsFoldersMultipleFolders           
+            //ExEnd:SetFontsFoldersMultipleFolders           
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.IO;
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
 using System.Drawing;
-#else
+#elif NETCOREAPP2_1
 using SkiaSharp;
 #endif
 
@@ -9,16 +9,16 @@ namespace ApiExamples.TestData.TestClasses
 {
     public class ImageTestClass
     {
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
         public Image Image { get; set; }        
-#else
+#elif NETCOREAPP2_1
         public SKBitmap Image { get; set; }
 #endif
         public Stream ImageStream { get; set; }
         public byte[] ImageBytes { get; set; }
         public string ImageString { get; set; }
 
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
         public ImageTestClass(Image image, Stream imageStream, byte[] imageBytes, string imageString)
         {
             Image = image;
@@ -26,7 +26,7 @@ namespace ApiExamples.TestData.TestClasses
             ImageBytes = imageBytes;
             ImageString = imageString;
         }
-#else
+#elif NETCOREAPP2_1
         public ImageTestClass(SKBitmap image, Stream imageStream, byte[] imageBytes, string imageString)
         {
             this.Image = image;

@@ -10,7 +10,7 @@ using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
 using Aspose.Words.Loading;
 using System.Net;
 #endif
@@ -164,7 +164,7 @@ namespace ApiExamples
             Assert.AreEqual(System.Drawing.Color.LightBlue.ToArgb(), doc.BackgroundShape.FillColor.ToArgb());
         }
 
-        #if NETFRAMEWORK || JAVA
+        #if NET462 || JAVA
         //ExStart
         //ExFor:DocumentBase.ResourceLoadingCallback
         //ExFor:IResourceLoadingCallback
