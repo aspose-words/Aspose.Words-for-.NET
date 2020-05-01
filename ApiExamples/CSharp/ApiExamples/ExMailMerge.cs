@@ -49,7 +49,7 @@ namespace ApiExamples
                 new object[] { "James Bond", "MI5 Headquarters", "Milbank", "London" });
 
             // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser
-            Assert.That(() => doc.Save(response, "Artifacts/MailMerge.ExecuteArray.doc", ContentDisposition.Inline, null), 
+            Assert.That(() => doc.Save(response, "Artifacts/MailMerge.ExecuteArray.docx", ContentDisposition.Inline, null), 
                 Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
 
             // The response will need to be closed manually to make sure that no superfluous content is added to the document after saving
