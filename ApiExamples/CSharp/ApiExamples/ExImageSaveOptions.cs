@@ -32,7 +32,6 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.Renderer.emf", saveOptions);
             //ExEnd
-
             #if NET462 || JAVA // NetStandard doesn't work with emf 
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.Renderer.emf");
             #endif
