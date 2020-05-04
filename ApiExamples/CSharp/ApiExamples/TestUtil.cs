@@ -18,6 +18,7 @@ using Table = Aspose.Words.Tables.Table;
 using Image =
 #if NET462 || JAVA
 System.Drawing.Image;
+using System.Data.Odbc;
 #elif NETCOREAPP2_1 || __MOBILE__
 SkiaSharp.SKBitmap;
 using SkiaSharp;
@@ -98,6 +99,65 @@ namespace ApiExamples
             #endif
         }
 
+#if NET462 || JAVA
+        /// <summary>
+        /// Checks whether a mail merge operation produces a result that matches the result of an SQL query run on a database file.
+        /// Each row in the query result table corresponds to a page in the mail merge output document.
+        /// Multiple columns in each row correspond to different MERGEFIELDs from the same page. 
+        /// </summary>
+        /// <remarks>
+        /// Only suitable for mail merge operations producing a single page per data source row.
+        /// </remarks>
+        /// <param name="dbFilename">Local file system filename of a Microsoft Access database (.mdb) file.</param>
+        /// <param name="sqlQuery">A query run on the provided database.</param>
+        /// <param name="doc">Output document resulting from a mail merge operation.</param>
+        internal static void MailMergeMatchesQueryResult(string dbFilename, string sqlQuery, Document doc)
+        {
+            string[] docTextByPages = doc.GetText().Trim().Split(new [] { ControlChar.PageBreak }, StringSplitOptions.RemoveEmptyEntries);
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + dbFilename;
+
+            using (OdbcConnection connection = new OdbcConnection())
+            {
+                connection.ConnectionString = connectionString;
+                connection.Open();
+
+                OdbcCommand command = connection.CreateCommand();
+                command.CommandText = sqlQuery;
+
+                using (OdbcDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection))
+                {
+                    int pageIndex = 0;
+
+                    while (reader.Read())
+                    {
+                        for (int i = 0; i < reader.FieldCount; i++)
+                            Assert.True(docTextByPages[pageIndex].Contains(reader[i].ToString()));
+                        pageIndex++;
+                    }
+                }
+            }
+        }
+#endif
+
+        /// <summary>
+        /// Checks whether a mail merge operation produces a result that matches the contents of a 2D string array.
+        /// Each element of the outer array corresponds to a page in the mail merge output document.
+        /// Each element of each inner array corresponds to a different MERGEFIELD from the same page. 
+        /// </summary>
+        /// <remarks>
+        /// Only suitable for mail merge operations producing a single page per data source row.
+        /// </remarks>
+        /// <param name="expectedResult">Rows and columns of the mail merge data source which we expect to see in the document.</param>
+        /// <param name="doc">Output document resulting from a mail merge operation.</param>
+        internal static void MailMergeMatchesArray(string[,] expectedResult, Document doc)
+        {
+            string[] docTextByPages = doc.GetText().Trim().Split(new[] { ControlChar.PageBreak }, StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < expectedResult.GetLength(0); i++)
+                for (int j = 0; j < expectedResult.GetLength(1); j++)
+                    Assert.True(docTextByPages[i].Contains(expectedResult[i,j]));
+        }
+
         /// <summary>
         /// Checks whether an HTTP request sent to the specified address produces an expected web response. 
         /// </summary>
@@ -136,8 +196,6 @@ namespace ApiExamples
                     Assert.AreEqual(expectedWidth, image.Width);
                     Assert.AreEqual(expectedHeight, image.Height);
                 }
-
-                
             }
             catch (OutOfMemoryException e)
             {

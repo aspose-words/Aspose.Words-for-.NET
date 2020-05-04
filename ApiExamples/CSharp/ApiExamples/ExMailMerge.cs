@@ -33,9 +33,9 @@ namespace ApiExamples
             //ExFor:ContentDisposition
             //ExFor:Document.Save(HttpResponse,String,ContentDisposition,SaveOptions)
             //ExSummary:Performs a simple insertion of data into merge fields and sends the document to the browser inline.
-            // Open an existing document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.InsertField(" MERGEFIELD FullName ");
             builder.InsertParagraph();
             builder.InsertField(" MERGEFIELD Company ");
@@ -55,6 +55,10 @@ namespace ApiExamples
             // The response will need to be closed manually to make sure that no superfluous content is added to the document after saving
             Assert.That(() => response.End(), Throws.TypeOf<NullReferenceException>());
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+
+            TestUtil.MailMergeMatchesArray(new string[,] {{ "James Bond", "MI5 Headquarters", "Milbank", "London" }}, doc);
         }
 
         [Test]
@@ -76,8 +80,12 @@ namespace ApiExamples
             builder.Write(" for $");
             builder.InsertField(" MERGEFIELD UnitPrice");
 
-            // Create a connection string which points to the "Northwind" database file in our local file system and open a connection
+            // Create a connection string which points to the "Northwind" database file in our local file system and open a connection, and set up a query
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + DatabaseDir + "Northwind.mdb";
+            string query = @"SELECT Products.ProductName, Suppliers.CompanyName, Products.QuantityPerUnit, {fn ROUND(Products.UnitPrice,2)} as UnitPrice
+                                        FROM Products 
+                                        INNER JOIN Suppliers 
+                                        ON Products.SupplierID = Suppliers.SupplierID";
 
             using (OdbcConnection connection = new OdbcConnection())
             {
@@ -88,10 +96,7 @@ namespace ApiExamples
                 // The command has to comply to the driver we are using, which in this case is "ODBC"
                 // The names of the columns returned by this SELECT statement should correspond to the merge fields we placed above
                 OdbcCommand command = connection.CreateCommand();
-                command.CommandText = @"SELECT Products.ProductName, Suppliers.CompanyName, Products.QuantityPerUnit, {fn ROUND(Products.UnitPrice,2)} as UnitPrice
-                                        FROM Products 
-                                        INNER JOIN Suppliers 
-                                        ON Products.SupplierID = Suppliers.SupplierID";
+                command.CommandText = query;
 
                 // This will run the command and store the data in the reader
                 OdbcDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
@@ -102,6 +107,10 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteDataReader.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "MailMerge.ExecuteDataReader.docx");
+
+            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.mdb", query, doc);
         }
 
         //ExStart
