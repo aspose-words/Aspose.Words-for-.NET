@@ -99,7 +99,6 @@ namespace ApiExamples
             #endif
         }
 
-#if NET462 || JAVA
         /// <summary>
         /// Checks whether a mail merge operation produces a result that matches the result of an SQL query run on a database file.
         /// Each row in the query result table corresponds to a page in the mail merge output document.
@@ -113,6 +112,7 @@ namespace ApiExamples
         /// <param name="doc">Output document resulting from a mail merge operation.</param>
         internal static void MailMergeMatchesQueryResult(string dbFilename, string sqlQuery, Document doc)
         {
+            #if NET462 || JAVA
             string[] docTextByPages = doc.GetText().Trim().Split(new [] { ControlChar.PageBreak }, StringSplitOptions.RemoveEmptyEntries);
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + dbFilename;
 
@@ -136,8 +136,8 @@ namespace ApiExamples
                     }
                 }
             }
+            #endif
         }
-#endif
 
         /// <summary>
         /// Checks whether a mail merge operation produces a result that matches the contents of a 2D string array.
