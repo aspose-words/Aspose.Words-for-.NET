@@ -56,20 +56,20 @@
     <StartupObject>Aspose.Words.Examples.CSharp.RunExamples</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.BarCode, Version=20.3.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.BarCode.20.3.0\lib\net45\Aspose.BarCode.dll</HintPath>
+    <Reference Include="Aspose.BarCode, Version=20.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.BarCode.20.4.0\lib\net47\Aspose.BarCode.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Email, Version=20.3.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Email.20.3.0\lib\net40\Aspose.Email.dll</HintPath>
+    <Reference Include="Aspose.Email, Version=20.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Email.20.4.0\lib\net40\Aspose.Email.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words, Version=20.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.20.4.0\lib\net461\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=20.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.20.5.0\lib\net461\Aspose.Words.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words.Pdf2Word, Version=20.4.0.0, Culture=neutral, PublicKeyToken=b2012bcb6a4c6805, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.20.4.0\lib\net461\Aspose.Words.Pdf2Word.dll</HintPath>
+    <Reference Include="Aspose.Words.Pdf2Word, Version=20.5.0.0, Culture=neutral, PublicKeyToken=b2012bcb6a4c6805, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.20.5.0\lib\net461\Aspose.Words.Pdf2Word.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words.Shaping.HarfBuzz, Version=20.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.Shaping.HarfBuzz.20.4.0\lib\net40\Aspose.Words.Shaping.HarfBuzz.dll</HintPath>
+    <Reference Include="Aspose.Words.Shaping.HarfBuzz, Version=20.5.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.Shaping.HarfBuzz.20.5.0\lib\net40\Aspose.Words.Shaping.HarfBuzz.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -206,6 +206,8 @@
     <Compile Include="Programming-Documents\Document\CompareDocument.cs" />
     <Compile Include="Programming-Documents\Document\GetFontLineSpacing.cs" />
     <Compile Include="Programming-Documents\Document\ParagraphStyleSeparator.cs" />
+    <Compile Include="Programming-Documents\Document\ShowGrammaticalAndSpellingErrors.cs" />
+    <Compile Include="Programming-Documents\Document\WorkWithCleanupOptions.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithImportFormatOptions.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithMarkdownFeatures.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithRevisions.cs" />
@@ -232,6 +234,7 @@
     <Compile Include="Programming-Documents\Document\WorkingWithFootnote.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithRtfSaveOptions.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithSaveOptions.cs" />
+    <Compile Include="Programming-Documents\Document\WorkWithWatermark.cs" />
     <Compile Include="Programming-Documents\Document\WriteAndFont.cs" />
     <Compile Include="Programming-Documents\Document\DocProperties.cs" />
     <Compile Include="Programming-Documents\Document\RemoveFooters.cs" />
@@ -516,12 +519,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Aspose.Words.Shaping.HarfBuzz.20.4.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets" Condition="Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.20.4.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" />
+  <Import Project="..\packages\Aspose.Words.Shaping.HarfBuzz.20.5.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets" Condition="Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.20.5.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.20.4.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Aspose.Words.Shaping.HarfBuzz.20.4.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets'))" />
+    <Error Condition="!Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.20.5.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Aspose.Words.Shaping.HarfBuzz.20.5.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
