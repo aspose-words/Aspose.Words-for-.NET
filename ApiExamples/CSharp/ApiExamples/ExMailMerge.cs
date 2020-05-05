@@ -58,7 +58,7 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            TestUtil.MailMergeMatchesArray(new string[,] {{ "James Bond", "MI5 Headquarters", "Milbank", "London" }}, doc);
+            TestUtil.MailMergeMatchesArray(new [] { new [] { "James Bond", "MI5 Headquarters", "Milbank", "London" } }, doc);
         }
 
         [Test]
@@ -141,6 +141,7 @@ namespace ApiExamples
             // Execute the mail merge and save the document
             doc.MailMerge.ExecuteADO(recordset);
             doc.Save(ArtifactsDir + "MailMerge.ExecuteADO.docx");
+            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.mdb", command, doc); //ExSkip
         }
 
         /// <summary>
@@ -161,7 +162,7 @@ namespace ApiExamples
             return doc;
         }
         //ExEnd
-
+        
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegionsADO(Object,String)
         //ExSummary:Shows how to run a mail merge with regions, compiled with data from an ADO dataset.
@@ -184,7 +185,7 @@ namespace ApiExamples
 
             // Create an SQL query that fetches data with column names that are suitable for our first mail merge region,
             // then populate our record set with the data
-            string command = @"SELECT FirstName, LastName, City FROM Employees";
+            string command = "SELECT FirstName, LastName, City FROM Employees";
             recordset.Open(command, connection);
 
             // Run a mail merge on just the first region, filling its MERGEFIELDS with data from the ADO record set
@@ -192,13 +193,14 @@ namespace ApiExamples
 
             // Close the record set and reopen it with data from another SQL query
             recordset.Close();
-            command = @"SELECT * FROM Customers";
+            command = "SELECT * FROM Customers";
             recordset.Open(command, connection);
 
             // Run a mail merge on the second region and save the document
             doc.MailMerge.ExecuteWithRegionsADO(recordset, "MergeRegion2");
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx");
+            TestUtil.MailMergeMatchesMultipleQueryResult(DatabaseDir + "Northwind.mdb", new [] { "SELECT FirstName, LastName, City FROM Employees", "SELECT ContactName, Address, City FROM Customers" }, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx")); //ExSkip
         }
 
         /// <summary>
@@ -261,7 +263,7 @@ namespace ApiExamples
             // Field values from the table are inserted into the mail merge fields found in the document
             doc.MailMerge.Execute(table);
 
-            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.doc");
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.docx");
 
             // Create a copy of our document to perform another mail merge
             doc = new Document();
@@ -273,8 +275,14 @@ namespace ApiExamples
             // We can also source values for a mail merge from a single row in the table
             doc.MailMerge.Execute(table.Rows[1]);
 
-            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.doc");
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx");
             //ExEnd
+
+            TestUtil.MailMergeMatchesDataTable(table, new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.docx"));
+
+            DataTable rowAsTable = new DataTable();
+            rowAsTable.ImportRow(table.Rows[1]);
+            TestUtil.MailMergeMatchesDataTable(rowAsTable, new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx"));
         }
 
         [Test]
@@ -312,6 +320,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteDataView.docx");
             //ExEnd
+
+            TestUtil.MailMergeMatchesDataTable(view.ToTable(), new Document(ArtifactsDir + "MailMerge.ExecuteDataView.docx"));
         }
 
         //ExStart

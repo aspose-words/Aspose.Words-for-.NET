@@ -30,7 +30,7 @@ namespace ApiExamples
     class TestUtil
     {
         /// <summary>
-        /// Checks whether values of a field's attributes are equal to their expected values.
+        /// Checks whether values of a field's attributes are equal to expected values.
         /// </summary>
         /// <remarks>
         /// Best used when there are many fields closely being tested and should be avoided if a field has a long field code/result.
@@ -68,7 +68,7 @@ namespace ApiExamples
 
         /// <summary>
         /// Checks whether an SQL query performed on a database file stored in the local file system
-        /// produces a result that resembles an input Aspose.Words Table.
+        /// produces a result that resembles the contents of an Aspose.Words table.
         /// </summary>
         /// <param name="expectedResult">Expected result of the SQL query in the form of an Aspose.Words table.</param>
         /// <param name="dbFilename">Local system filename of a database file.</param>
@@ -100,6 +100,79 @@ namespace ApiExamples
         }
 
         /// <summary>
+        /// Checks whether an output document from a mail merge operation contains the results of all SQL queries performed on a database.
+        /// </summary>
+        /// <param name="dbFilename">Local system filename of a database file.</param>
+        /// <param name="sqlQueries">Collection of SQL queries.</param>
+        /// <param name="doc">Output document resulting from a mail merge operation.</param>
+        internal static void MailMergeMatchesMultipleQueryResult(string dbFilename, string[] sqlQueries, Document doc)
+        {
+            #if NET462 || JAVA
+            string docContents = doc.GetText();
+            string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + dbFilename;
+
+            using (OdbcConnection connection = new OdbcConnection())
+            {
+                connection.ConnectionString = connectionString;
+
+                foreach (string query in sqlQueries)
+                {
+                    connection.Open();
+
+                    OdbcCommand command = connection.CreateCommand();
+                    command.CommandText = query;
+
+                    using (OdbcDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection))
+                    {
+                        while (reader.Read())
+                            for (int i = 0; i < reader.FieldCount; i++)
+                            {
+                                string readerValue = reader[i] is decimal ? ((decimal)reader[i]).ToString("G29") : reader[i].ToString().Trim().Replace("\n", string.Empty);
+                                Assert.True(docContents.Contains(readerValue));
+                            }
+                    }
+                }
+            }
+            #endif
+        }
+
+        /// <summary>
+        /// Checks whether a mail merge operation produces a result that matches the contents of a DataTable.
+        /// </summary>
+        /// <remarks>
+        /// Only suitable for mail merge operations producing a single page per data source row.
+        /// </remarks>
+        /// <param name="dataTable">Table with values we expect to see in the document, one page per row.</param>
+        /// <param name="doc">Output document resulting from a mail merge operation.</param>
+        internal static void MailMergeMatchesDataTable(DataTable dataTable, Document doc)
+        {
+            string[] docTextByPages = doc.GetText().Trim().Split(new[] { ControlChar.PageBreak }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (DataRow r in dataTable.Rows)
+                foreach (string item in r.ItemArray)
+                    Assert.True(docTextByPages[dataTable.Rows.IndexOf(r)].Contains(item));
+        }
+
+        /// <summary>
+        /// Checks whether a mail merge operation produces a result that matches the contents of a 2D string array.
+        /// Each element of the outer array corresponds to a page in the mail merge output document.
+        /// Each element of each inner array corresponds to a different MERGEFIELD from the same page. 
+        /// </summary>
+        /// <remarks>
+        /// Only suitable for mail merge operations producing a single page per data source row.
+        /// </remarks>
+        /// <param name="expectedResult">Rows and columns of the mail merge data source which we expect to see in the document.</param>
+        /// <param name="doc">Output document resulting from a mail merge operation.</param>
+        internal static void MailMergeMatchesArray(string[][] expectedResult, Document doc)
+        {
+            string[] docTextByPages = doc.GetText().Trim().Split(new[] { ControlChar.PageBreak }, StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < expectedResult.Length; i++)
+                for (int j = 0; j < expectedResult[i].Length; j++)
+                    Assert.True(docTextByPages[i].Contains(expectedResult[i][j]));
+        }
+
+        /// <summary>
         /// Checks whether a mail merge operation produces a result that matches the result of an SQL query run on a database file.
         /// Each row in the query result table corresponds to a page in the mail merge output document.
         /// Multiple columns in each row correspond to different MERGEFIELDs from the same page. 
@@ -113,7 +186,7 @@ namespace ApiExamples
         internal static void MailMergeMatchesQueryResult(string dbFilename, string sqlQuery, Document doc)
         {
             #if NET462 || JAVA
-            string[] docTextByPages = doc.GetText().Trim().Split(new [] { ControlChar.PageBreak }, StringSplitOptions.RemoveEmptyEntries);
+            string[] docTextByPages = doc.GetText().Trim().Split(new[] { ControlChar.PageBreak }, StringSplitOptions.RemoveEmptyEntries);
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + dbFilename;
 
             using (OdbcConnection connection = new OdbcConnection())
@@ -131,31 +204,15 @@ namespace ApiExamples
                     while (reader.Read())
                     {
                         for (int i = 0; i < reader.FieldCount; i++)
-                            Assert.True(docTextByPages[pageIndex].Contains(reader[i].ToString()));
+                        {
+                            string readerValue = reader[i] is decimal ? ((decimal)reader[i]).ToString("G29") : reader[i].ToString();
+                            Assert.True(docTextByPages[pageIndex].Contains(readerValue));
+                        }
                         pageIndex++;
                     }
                 }
             }
             #endif
-        }
-
-        /// <summary>
-        /// Checks whether a mail merge operation produces a result that matches the contents of a 2D string array.
-        /// Each element of the outer array corresponds to a page in the mail merge output document.
-        /// Each element of each inner array corresponds to a different MERGEFIELD from the same page. 
-        /// </summary>
-        /// <remarks>
-        /// Only suitable for mail merge operations producing a single page per data source row.
-        /// </remarks>
-        /// <param name="expectedResult">Rows and columns of the mail merge data source which we expect to see in the document.</param>
-        /// <param name="doc">Output document resulting from a mail merge operation.</param>
-        internal static void MailMergeMatchesArray(string[,] expectedResult, Document doc)
-        {
-            string[] docTextByPages = doc.GetText().Trim().Split(new[] { ControlChar.PageBreak }, StringSplitOptions.RemoveEmptyEntries);
-
-            for (int i = 0; i < expectedResult.GetLength(0); i++)
-                for (int j = 0; j < expectedResult.GetLength(1); j++)
-                    Assert.True(docTextByPages[i].Contains(expectedResult[i,j]));
         }
 
         /// <summary>
