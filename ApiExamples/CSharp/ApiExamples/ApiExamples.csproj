@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net462;netcoreapp2.1</TargetFrameworks>
@@ -12,11 +12,19 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net462|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="18.8.0" />
     <PackageReference Include="Aspose.PDF" Version="20.4.0" />
     <PackageReference Include="Aspose.Words" Version="20.5.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.4.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.5.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
@@ -30,11 +38,15 @@
     <Reference Include="Interop.ADODB">
       <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web" />
   </ItemGroup>
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <PackageReference Include="BouncyCastle" Version="1.8.6.1" />
+    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 

@@ -840,8 +840,9 @@ namespace ApiExamples
                 GoldsDir + "ReportingEngine.RemoveEmptyParagraphs Gold.docx"));
         }
 
-        [TestCase("Hello", "Hello", "ReportingEngine.MergingTableCellsDynamically.Merged", Description = "Cells in the first two tables must be merged")]
-        [TestCase("Hello", "Name", "ReportingEngine.MergingTableCellsDynamically.NotMerged", Description = "Only last table cells must be merge")]
+        [Test]
+        [TestCase("Hello", "Hello", "ReportingEngine.MergingTableCellsDynamically.Merged", TestName = "Cells in the first two tables must be merged")]
+        [TestCase("Hello", "Name", "ReportingEngine.MergingTableCellsDynamically.NotMerged", TestName = "Only last table cells must be merge")]
         public void MergingTableCellsDynamically(string value1, string value2, string resultDocumentName)
         {
             string artifactPath = ArtifactsDir + resultDocumentName +

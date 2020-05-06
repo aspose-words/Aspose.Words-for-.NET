@@ -23,7 +23,7 @@ namespace ApiExamples
         public void Renderer()
         {
             //ExStart
-            //ExFor:ImageSaveOptions.Renderer
+            //ExFor:ImageSaveOptions.UseGdiEmfRenderer
             //ExSummary:Shows how to save metafiles directly without using GDI+ to EMF.
             Document doc = new Document(MyDir + "Images.docx");
 
