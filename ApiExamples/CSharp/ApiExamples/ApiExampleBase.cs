@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -40,7 +41,7 @@ namespace ApiExamples
         [SetUp]
         public void SetUp()
         {
-            Console.WriteLine($"Clr: {System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription}\n");
+            Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
         }
 
         [OneTimeTearDown]
