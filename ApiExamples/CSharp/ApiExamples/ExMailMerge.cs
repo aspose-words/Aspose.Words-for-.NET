@@ -49,7 +49,7 @@ namespace ApiExamples
                 new object[] { "James Bond", "MI5 Headquarters", "Milbank", "London" });
 
             // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser
-            Assert.That(() => doc.Save(response, "Artifacts/MailMerge.ExecuteArray.docx", ContentDisposition.Inline, null), 
+            Assert.That(() => doc.Save(response, "Artifacts/MailMerge.ExecuteArray.docx", ContentDisposition.Inline, null),
                 Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
 
             // The response will need to be closed manually to make sure that no superfluous content is added to the document after saving
@@ -58,7 +58,7 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            TestUtil.MailMergeMatchesArray(new [] { new [] { "James Bond", "MI5 Headquarters", "Milbank", "London" } }, doc);
+            TestUtil.MailMergeMatchesArray(new[] { new[] { "James Bond", "MI5 Headquarters", "Milbank", "London" } }, doc);
         }
 
         [Test]
@@ -162,7 +162,7 @@ namespace ApiExamples
             return doc;
         }
         //ExEnd
-        
+
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegionsADO(Object,String)
         //ExSummary:Shows how to run a mail merge with regions, compiled with data from an ADO dataset.
@@ -200,7 +200,7 @@ namespace ApiExamples
             doc.MailMerge.ExecuteWithRegionsADO(recordset, "MergeRegion2");
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx");
-            TestUtil.MailMergeMatchesMultipleQueryResult(DatabaseDir + "Northwind.mdb", new [] { "SELECT FirstName, LastName, City FROM Employees", "SELECT ContactName, Address, City FROM Customers" }, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx")); //ExSkip
+            TestUtil.MailMergeMatchesMultipleQueryResult(DatabaseDir + "Northwind.mdb", new[] { "SELECT FirstName, LastName, City FROM Employees", "SELECT ContactName, Address, City FROM Customers" }, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx")); //ExSkip
         }
 
         /// <summary>
@@ -282,6 +282,7 @@ namespace ApiExamples
 
             DataTable rowAsTable = new DataTable();
             rowAsTable.ImportRow(table.Rows[1]);
+
             TestUtil.MailMergeMatchesDataTable(rowAsTable, new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx"));
         }
 
@@ -376,6 +377,7 @@ namespace ApiExamples
             doc.MailMerge.ExecuteWithRegions(customersAndOrders);
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsNested.docx");
+            TestUtil.MailMergeMatchesDataSet(customersAndOrders, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsNested.docx")); //ExSkip
         }
 
         /// <summary>
@@ -447,7 +449,7 @@ namespace ApiExamples
 
             DataTable tableFruit = new DataTable("Fruit");
             tableFruit.Columns.Add("Name");
-            tableFruit.Rows.Add(new object[] { "Cherry"});
+            tableFruit.Rows.Add(new object[] { "Cherry" });
             tableFruit.Rows.Add(new object[] { "Apple" });
             tableFruit.Rows.Add(new object[] { "Watermelon" });
             tableFruit.Rows.Add(new object[] { "Banana" });
@@ -464,6 +466,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsConcurrent.docx");
             //ExEnd
+
+            DataSet dataSet = new DataSet();
+
+            dataSet.Tables.Add(tableCities);
+            dataSet.Tables.Add(tableFruit);
+
+            TestUtil.MailMergeMatchesDataSet(dataSet, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsConcurrent.docx"));
         }
 
         [Test]
@@ -534,6 +543,7 @@ namespace ApiExamples
 
             doc.MailMerge.ExecuteWithRegions(dataTable);
             doc.Save(ArtifactsDir + "MailMerge.MergeDuplicateRegions.docx");
+            TestMergeDuplicateRegions(dataTable, doc, isMergeDuplicateRegions); //ExSkip
         }
 
         /// <summary>
@@ -570,13 +580,24 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestMergeDuplicateRegions(DataTable dataTable, Document doc, bool isMergeDuplicateRegions)
+        {
+            if (isMergeDuplicateRegions) 
+                TestUtil.MailMergeMatchesDataTable(dataTable, doc);
+            else
+            {
+                dataTable.Columns.Remove("Column2");
+                TestUtil.MailMergeMatchesDataTable(dataTable, doc);
+            }
+        }
+        
         //ExStart
         //ExFor:MailMerge.PreserveUnusedTags
         //ExSummary:Shows how to preserve the appearance of alternative mail merge tags that go unused during a mail merge. 
         [Test] //ExSkip
         [TestCase(false)] //ExSkip
         [TestCase(true)] //ExSkip
-        public void PreserveUnusedTags(bool preserveUnusedTags)
+        public void PreserveUnusedTags(bool doPreserveUnusedTags)
         {
             // Create a document and table that we will merge
             Document doc = CreateSourceDocWithAlternativeMergeFields();
@@ -585,10 +606,13 @@ namespace ApiExamples
             // By default, alternative merge tags that can't receive data because the data source has no columns with their name
             // are converted to and left on display as MERGEFIELDs after the mail merge
             // We can preserve their original appearance setting this attribute to true
-            doc.MailMerge.PreserveUnusedTags = preserveUnusedTags;
+            doc.MailMerge.PreserveUnusedTags = doPreserveUnusedTags;
             doc.MailMerge.Execute(dataTable);
 
             doc.Save(ArtifactsDir + "MailMerge.PreserveUnusedTags.docx");
+
+            Assert.AreEqual(doc.GetText().Contains("{{ Column2 }}"), doPreserveUnusedTags);
+            TestUtil.MailMergeMatchesDataTable(dataTable, doc); //ExSkip
         }
 
         /// <summary>
@@ -620,14 +644,14 @@ namespace ApiExamples
             return dataTable;
         }
         //ExEnd
-
+        
         //ExStart
         //ExFor:MailMerge.MergeWholeDocument
         //ExSummary:Shows the relationship between mail merges with regions and field updating.
         [Test] //ExSkip
         [TestCase(false)] //ExSkip
         [TestCase(true)] //ExSkip
-        public void MergeWholeDocument(bool isMergeWholeDocument)
+        public void MergeWholeDocument(bool doMergeWholeDocument)
         {
             // Create a document and data table that will both be merged
             Document doc = CreateSourceDocMergeWholeDocument();
@@ -635,14 +659,18 @@ namespace ApiExamples
 
             // A regular mail merge will update all fields in the document as part of the procedure,
             // which will happen if this property is set to true
-            // Otherwise, a mail merge with regions will only update fields inside of the designated mail merge region
-            doc.MailMerge.MergeWholeDocument = isMergeWholeDocument;
+            // Otherwise, a mail merge with regions will only update fields
+            // within a mail merge region which matches the name of the DataTable
+            doc.MailMerge.MergeWholeDocument = doMergeWholeDocument;
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
             // If true, all fields in the document will be updated upon merging
             // In this case that property is false, so the first QUOTE field will not be updated and will not show a value,
             // but the second one inside the region designated by the data table name will show the correct value
             doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.docx");
+
+            Assert.AreEqual(doMergeWholeDocument, doc.GetText().Contains("This QUOTE field is outside of the \"MyTable\" merge region."));
+            TestUtil.MailMergeMatchesDataTable(dataTable, doc); //ExSkip
         }
 
         /// <summary>
@@ -699,13 +727,15 @@ namespace ApiExamples
             // By default, a paragraph can belong to no more than one mail merge region
             // Our document breaks this rule so executing a mail merge with regions now will cause an exception to be thrown
             Assert.True(doc.MailMerge.UseWholeParagraphAsRegion);
-            
+            Assert.Throws<InvalidOperationException>(() => doc.MailMerge.ExecuteWithRegions(dataTable));
+
             // If we set this variable to false, paragraphs and mail merge regions are independent so we can safely run our mail merge
             doc.MailMerge.UseWholeParagraphAsRegion = false;
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
             // Our first region is populated, while our second is safely displayed as unused all across one paragraph
             doc.Save(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx");
+            TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx")); //ExSkip
         }
 
         /// <summary>
@@ -745,7 +775,9 @@ namespace ApiExamples
         //ExEnd
 
         [Test]
-        public void TrimWhiteSpaces()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void TrimWhiteSpaces(bool doTrimWhitespaces)
         {
             //ExStart
             //ExFor:MailMerge.TrimWhitespaces
@@ -753,12 +785,15 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertField("MERGEFIELD field", null);
+            builder.InsertField("MERGEFIELD myMergeField", null);
 
-            doc.MailMerge.TrimWhitespaces = true;
-            doc.MailMerge.Execute(new[] { "field" }, new object[] { " first line\rsecond line\rthird line " });
+            doc.MailMerge.TrimWhitespaces = doTrimWhitespaces;
+            doc.MailMerge.Execute(new[] { "myMergeField" }, new object[] { "\t hello world! " });
 
-            Assert.AreEqual("first line\rsecond line\rthird line\f", doc.GetText());
+            if (doTrimWhitespaces)
+                Assert.AreEqual("hello world!\f", doc.GetText());
+            else
+                Assert.AreEqual("\t hello world! \f", doc.GetText());
             //ExEnd
         }
 
@@ -850,15 +885,7 @@ namespace ApiExamples
             FieldMergeField mergeFieldOption1 = (FieldMergeField) builder.InsertField("MERGEFIELD", "Option_1");
             mergeFieldOption1.FieldName = "Option_1";
 
-            // Here is the complete list of cleanable punctuation marks:
-            // !
-            // ,
-            // .
-            // :
-            // ;
-            // ?
-            // ¡
-            // ¿
+            // Here is the complete list of cleanable punctuation marks: ! , . : ; ? ¡ ¿
             builder.Write(punctuationMark);
 
             FieldMergeField mergeFieldOption2 = (FieldMergeField) builder.InsertField("MERGEFIELD", "Option_2");
@@ -934,6 +961,7 @@ namespace ApiExamples
 
             // Removing the mapped key/value pairs has no effect on the document because the merge was already done with them in place
             doc.Save(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx");
+            TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx")); //ExSkip
         }
 
         /// <summary>
@@ -1197,8 +1225,10 @@ namespace ApiExamples
             return dataTable;
         }
 
-        [Test] 
-        public void UnconditionalMergeFieldsAndRegions()
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void UnconditionalMergeFieldsAndRegions(bool doCountAllMergeFields)
         {
             //ExStart
             //ExFor:MailMerge.UnconditionalMergeFieldsAndRegions
@@ -1214,15 +1244,22 @@ namespace ApiExamples
             builder.InsertField(" MERGEFIELD  FullName ");
 
             // We can still count MERGEFIELDs inside false-statement IF fields if we set this flag to true
-            doc.MailMerge.UnconditionalMergeFieldsAndRegions = true;
+            doc.MailMerge.UnconditionalMergeFieldsAndRegions = doCountAllMergeFields;
+
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("FullName");
+            dataTable.Rows.Add("James Bond");
 
             // Execute the mail merge
-            doc.MailMerge.Execute(
-                new string[] { "FullName" },
-                new object[] { "James Bond" });
+            doc.MailMerge.Execute(dataTable);
 
             // The result will not be visible in the document because the IF field is false, but the inner MERGEFIELD did indeed receive data
             doc.Save(ArtifactsDir + "MailMerge.UnconditionalMergeFieldsAndRegions.docx");
+
+            if (doCountAllMergeFields)
+                Assert.AreEqual("\u0013 IF 1 = 2 \"James Bond\"\u0014\u0015", doc.GetText().Trim());
+            else
+                Assert.AreEqual("\u0013 IF 1 = 2 \u0013 MERGEFIELD  FullName \u0014«FullName»\u0015\u0014\u0015", doc.GetText().Trim());
             //ExEnd
         }
     }

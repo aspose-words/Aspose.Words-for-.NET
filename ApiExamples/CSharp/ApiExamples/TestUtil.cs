@@ -108,7 +108,7 @@ namespace ApiExamples
         internal static void MailMergeMatchesMultipleQueryResult(string dbFilename, string[] sqlQueries, Document doc)
         {
             #if NET462 || JAVA
-            string docContents = doc.GetText();
+            string docText = doc.GetText();
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + dbFilename;
 
             using (OdbcConnection connection = new OdbcConnection())
@@ -128,7 +128,7 @@ namespace ApiExamples
                             for (int i = 0; i < reader.FieldCount; i++)
                             {
                                 string readerValue = reader[i] is decimal ? ((decimal)reader[i]).ToString("G29") : reader[i].ToString().Trim().Replace("\n", string.Empty);
-                                Assert.True(docContents.Contains(readerValue));
+                                Assert.True(docText.Contains(readerValue));
                             }
                     }
                 }
@@ -151,6 +151,23 @@ namespace ApiExamples
             foreach (DataRow r in dataTable.Rows)
                 foreach (string item in r.ItemArray)
                     Assert.True(docTextByPages[dataTable.Rows.IndexOf(r)].Contains(item));
+        }
+
+        /// <summary>
+        /// Checks whether a mail merge operation produces a result that matches the contents of every DataTable in a DataSet.
+        /// </summary>
+        /// <param name="dataSet">Set of tables with values we expect to see in the document.</param>
+        /// <param name="doc">Output document resulting from a mail merge operation.</param>
+        internal static void MailMergeMatchesDataSet(DataSet dataSet, Document doc)
+        {
+            string docText = doc.GetText();
+
+            foreach (DataTable dataTable in dataSet.Tables)
+            {
+                foreach (DataRow r in dataTable.Rows)
+                    foreach (string item in r.ItemArray)
+                        Assert.True(docText.Contains(item));
+            }
         }
 
         /// <summary>
