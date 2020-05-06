@@ -9,14 +9,14 @@ namespace ApiExamples.TestData.TestBuilders
         private Document mDocument;
         private Stream mDocumentStream;
         private byte[] mDocumentBytes;
-        private string mDocumentUri;
+        private string mDocumentString;
 
         public DocumentTestBuilder()
         {
             mDocument = new Document();
             mDocumentStream = Stream.Null;
             mDocumentBytes = new byte[0];
-            mDocumentUri = string.Empty;
+            mDocumentString = string.Empty;
         }
 
         public DocumentTestBuilder WithDocument(Document doc)
@@ -37,15 +37,15 @@ namespace ApiExamples.TestData.TestBuilders
             return this;
         }
 
-        public DocumentTestBuilder WithDocumentUri(string docUri)
+        public DocumentTestBuilder WithDocumentString(string docString)
         {
-            mDocumentUri = docUri;
+            mDocumentString = docString;
             return this;
         }
 
         public DocumentTestClass Build()
         {
-            return new DocumentTestClass(mDocument, mDocumentStream, mDocumentBytes, mDocumentUri);
+            return new DocumentTestClass(mDocument, mDocumentStream, mDocumentBytes, mDocumentString);
         }
     }
 }

@@ -37,10 +37,12 @@ namespace ApiExamples
         public void ClearEx()
         {
             //ExStart
+            //ExFor:Document.Variables
+            //ExFor:VariableCollection
             //ExFor:VariableCollection.Clear
             //ExFor:VariableCollection.Count
             //ExSummary:Shows how to clear all document variables from a document.
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document();
 
             doc.Variables.Add("doc", "Word processing document");
             doc.Variables.Add("docx", "Word processing document");
@@ -48,8 +50,16 @@ namespace ApiExamples
             doc.Variables.Add("bmp", "Image");
             doc.Variables.Add("png", "Image");
 
+            // Documents don't contain variables by default, so only the ones we added are in the collection
+            Assert.AreEqual(5, doc.Variables.Count);
+
+            // Print each variable
+            foreach (KeyValuePair<string, string> entry in doc.Variables)
+                Console.WriteLine($"Name: {entry.Key}, Value: {entry.Value}");
+            
+            // We can empty the collection like this
             doc.Variables.Clear();
-            Console.WriteLine(doc.Variables.Count); // 0
+            Assert.AreEqual(0, doc.Variables.Count);
             //ExEnd
         }
 

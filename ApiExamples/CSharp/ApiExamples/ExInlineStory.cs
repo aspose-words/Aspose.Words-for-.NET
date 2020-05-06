@@ -32,9 +32,10 @@ namespace ApiExamples
             //ExFor:FootnoteType
             //ExFor:Footnote.#ctor
             //ExSummary:Shows how to add a footnote to a paragraph in the document and set its marker.
-            // Create a new document and append some text that we will reference with a footnote
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Add text that will be referenced by a footnote
             builder.Write("Main body text.");
 
             // Add a footnote and give it text, which will appear at the bottom of the page
@@ -67,8 +68,14 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "InlineStory.AddFootnote.docx");
             //ExEnd
 
-            Assert.AreEqual("Footnote text. More text added by a DocumentBuilder.",
-                doc.GetChildNodes(NodeType.Footnote, true)[0].ToString(SaveFormat.Text).Trim());
+            doc = new Document(ArtifactsDir + "InlineStory.AddFootnote.docx");
+
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty, 
+                "Footnote text. More text added by a DocumentBuilder.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, false, "RefMark", 
+                "Footnote text.", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty, 
+                "Footnote text.", (Footnote)doc.GetChild(NodeType.Footnote, 2, true));
         }
 
         [Test]
@@ -77,7 +84,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Footnote.FootnoteType
             //ExSummary:Demonstrates the difference between footnotes and endnotes.
-            // Create a document and a corresponding document builder
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -98,6 +104,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "InlineStory.FootnoteEndnote.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "InlineStory.FootnoteEndnote.docx");
+
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote text, will appear at the bottom of the page that contains the referenced text.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote text, will appear at the very end of the document.", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
         }
 
         [Test]
@@ -118,9 +131,17 @@ namespace ApiExamples
             builder.CurrentParagraph.AppendChild(comment);
             comment.Paragraphs.Add(new Paragraph(doc));
             comment.FirstParagraph.Runs.Add(new Run(doc, "Comment text."));
+
+            doc.Save(ArtifactsDir + "InlineStory.AddComment.docx");
             //ExEnd
 
-            Assert.AreEqual("Comment text.\r", (doc.GetChildNodes(NodeType.Comment, true)[0]).GetText());
+            doc = new Document(ArtifactsDir + "InlineStory.AddComment.docx");
+            comment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
+            
+            Assert.AreEqual("Comment text.\r", comment.GetText());
+            Assert.AreEqual("Amy Lee", comment.Author);
+            Assert.AreEqual("AL", comment.Initial);
+            Assert.AreEqual(DateTime.Today, comment.DateTime);
         }
 
         [Test]
@@ -131,7 +152,7 @@ namespace ApiExamples
             //ExFor:InlineStory.IsInsertRevision
             //ExFor:InlineStory.IsMoveFromRevision
             //ExFor:InlineStory.IsMoveToRevision
-            //ExSummary:Shows how to process revision-related properties of InlineStory nodes.
+            //ExSummary:Shows how to view revision-related properties of InlineStory nodes.
             // Open a document that has revisions from changes being tracked
             Document doc = new Document(MyDir + "Revision footnotes.docx");
             Assert.IsTrue(doc.HasRevisions);
@@ -169,7 +190,6 @@ namespace ApiExamples
             //ExFor:InlineStory.StoryType
             //ExFor:InlineStory.Tables
             //ExSummary:Shows how to insert InlineStory nodes.
-            // Create a new document and insert a blank footnote
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             Footnote footnote = builder.InsertFootnote(FootnoteType.Footnote, null);
@@ -210,12 +230,25 @@ namespace ApiExamples
 
             // Once we have a paragraph, we can move the builder do it and write our comment
             builder.MoveTo(comment.LastParagraph);
-            builder.Write("My comment");
+            builder.Write("My comment.");
 
             Assert.AreEqual(StoryType.Comments, comment.StoryType);
 
             doc.Save(ArtifactsDir + "InlineStory.InsertInlineStoryNodes.docx");
             //ExEnd
+            
+            doc = new Document(ArtifactsDir + "InlineStory.InsertInlineStoryNodes.docx");
+
+            footnote = (Footnote)doc.GetChild(NodeType.Footnote, 0, true);
+
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty, string.Empty, 
+                (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+            Assert.AreEqual("Arial", footnote.Font.Name);
+            Assert.AreEqual(Color.Green.ToArgb(), footnote.Font.Color.ToArgb());
+
+            comment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
+
+            Assert.AreEqual("My comment.", comment.ToString(SaveFormat.Text).Trim());
         }
 
         [Test]

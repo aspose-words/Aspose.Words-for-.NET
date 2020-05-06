@@ -18,15 +18,14 @@ using Aspose.Words.Math;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
-using Aspose.Words.Tables;
 using NUnit.Framework;
 using Color = System.Drawing.Color;
 using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 using TextBox = Aspose.Words.Drawing.TextBox;
-#if NETSTANDARD2_0 || __MOBILE__
+#if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
-#else
+#elif NET462
 using System.Windows.Forms;
 #endif
 
@@ -38,7 +37,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExShape : ApiExampleBase
     {
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
         [Test]
         public void Insert()
         {
@@ -152,13 +151,12 @@ namespace ApiExamples
             shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
             shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(true, shape.AspectRatioLocked);            
         }
-#else
+#elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         public void AspectRatioLockedDefaultValueNetStandard2()
         {
@@ -184,9 +182,8 @@ namespace ApiExamples
                     shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
                     shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
-                    MemoryStream dstStream = new MemoryStream();
-                    doc.Save(dstStream, SaveFormat.Docx);
-
+                    doc = DocumentHelper.SaveOpen(doc);
+        
                     shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
                     Assert.AreEqual(true, shape.AspectRatioLocked);
                 }
@@ -469,14 +466,9 @@ namespace ApiExamples
             shape.Title = "Alt Text Title";
 
             builder.InsertNode(shape);
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
-            shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-            Console.WriteLine("Shape text: " + shape.Title);
             //ExEnd
 
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual("Alt Text Title", shape.Title);
         }
 
@@ -542,7 +534,6 @@ namespace ApiExamples
             //ExFor:Shape.FirstParagraph
             //ExFor:ShapeBase.WrapType
             //ExSummary:Creates a textbox with some text and different formatting options in a new document.
-            // Create a blank document
             Document doc = new Document();
 
             // Create a new shape of type TextBox
@@ -937,9 +928,7 @@ namespace ApiExamples
             shape.AspectRatioLocked = isLocked;
             //ExEnd
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
+            doc = DocumentHelper.SaveOpen(doc);
             shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(isLocked, shape.AspectRatioLocked);
         }
@@ -1021,9 +1010,7 @@ namespace ApiExamples
             builder.InsertNode(rectangle);
             //ExEnd
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
+            doc = DocumentHelper.SaveOpen(doc);
             rectangle = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
             Stroke strokeAfter = rectangle.Stroke;

@@ -8,7 +8,6 @@
 using System;
 using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using Aspose.Words;
@@ -27,7 +26,6 @@ namespace ApiExamples
             //ExFor:ProtectionType
             //ExFor:Section.ProtectedForForms
             //ExSummary:Protects a section so only editing in form fields is possible.
-            // Create a blank document
             Document doc = new Document();
 
             // Insert two sections with some text
@@ -108,16 +106,15 @@ namespace ApiExamples
             //ExFor:Run.Text
             //ExFor:Inline.Font
             //ExSummary:Creates a simple document from scratch using the Aspose.Words object model.
-            // Create an "empty" document. Note that like in Microsoft Word, 
-            // the empty document has one section, body and one paragraph in it
             Document doc = new Document();
 
-            // This truly makes the document empty. No sections (not possible in Microsoft Word)
+            // A newly created blank document still comes one section, one body and one paragraph
+            // Calling this method will remove all those nodes to completely empty the document
             doc.RemoveAllChildren();
 
-            // Create a new section node
-            // Note that the section has not yet been added to the document, 
-            // but we have to specify the parent document
+            // This document now has no composite nodes that content can be added to
+            // If we wish to edit it, we will need to repopulate its node collection,
+            // which we will start to do with by creating a new Section node
             Section section = new Section(doc);
 
             // Append the section to the document
@@ -156,7 +153,7 @@ namespace ApiExamples
             Console.WriteLine("Hello World!\x000c");
 
             // Save the document
-            doc.Save(ArtifactsDir + "Section.CreateFromScratch.doc");
+            doc.Save(ArtifactsDir + "Section.CreateFromScratch.docx");
             //ExEnd
 
             Assert.AreEqual("Hello World!\x000c", doc.GetText());
@@ -168,7 +165,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Section.EnsureMinimum
             //ExSummary:Ensures that a section is valid.
-            // Create a blank document
             Document doc = new Document();
             Section section = doc.FirstSection;
 
@@ -470,8 +466,7 @@ namespace ApiExamples
             sectionDe.PageSetup.FooterDistance = 35.4; // 1.25 cm
             sectionDe.PageSetup.TextColumns.Spacing = 35.4; // 1.25 cm
 
-            MemoryStream dstStream = new MemoryStream();
-            docDe.Save(dstStream, SaveFormat.Docx);
+            docDe = DocumentHelper.SaveOpen(docDe);
 
             Section sectionDeAfter = docDe.Sections[0];
             Assert.AreEqual(90.0, sectionDeAfter.PageSetup.LeftMargin); // 3.17 cm         

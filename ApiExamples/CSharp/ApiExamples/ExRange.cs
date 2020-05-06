@@ -7,6 +7,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Replacing;
@@ -17,8 +18,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExRange : ApiExampleBase
     {
-        #region Replace 
-
         [Test]
         public void ReplaceSimple()
         {
@@ -49,6 +48,98 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual("Hello James Bond,\r\x000c", doc.GetText());
+        }
+
+        [Test]
+        public void IgnoreDeleted()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.IgnoreDeleted
+            //ExSummary:Shows how to ignore text inside delete revisions.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+ 
+            // Insert non-revised text
+            builder.Writeln("Deleted");
+            builder.Write("Text");
+ 
+            // Remove first paragraph with tracking revisions
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+            doc.FirstSection.Body.FirstParagraph.Remove();
+            doc.StopTrackRevisions();
+ 
+            Regex regex = new Regex("e");
+            FindReplaceOptions options = new FindReplaceOptions();
+ 
+            // Replace 'e' in document ignoring deleted text
+            options.IgnoreDeleted = true;
+            doc.Range.Replace(regex, "*", options);
+            Assert.AreEqual(doc.GetText(), "Deleted\rT*xt\f");
+            
+            // Replace 'e' in document NOT ignoring deleted text
+            options.IgnoreDeleted = false;
+            doc.Range.Replace(regex, "*", options);
+            Assert.AreEqual(doc.GetText(), "D*l*t*d\rT*xt\f");
+            //ExEnd
+        }
+
+        [Test]
+        public void IgnoreInserted()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.IgnoreInserted
+            //ExSummary:Shows how to ignore text inside insert revisions.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+ 
+            // Insert text with tracking revisions
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+            builder.Writeln("Inserted");
+            doc.StopTrackRevisions();
+ 
+            // Insert non-revised text
+            builder.Write("Text");
+ 
+            Regex regex = new Regex("e");
+            FindReplaceOptions options = new FindReplaceOptions();
+ 
+            // Replace 'e' in document ignoring inserted text
+            options.IgnoreInserted = true;
+            doc.Range.Replace(regex, "*", options);
+            Assert.AreEqual(doc.GetText(), "Inserted\rT*xt\f");
+            
+            // Replace 'e' in document NOT ignoring inserted text
+            options.IgnoreInserted = false;
+            doc.Range.Replace(regex, "*", options);
+            Assert.AreEqual(doc.GetText(), "Ins*rt*d\rT*xt\f");
+            //ExEnd
+        }
+
+        [Test]
+        public void IgnoreFields()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.IgnoreFields
+            //ExSummary:Shows how to ignore text inside fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+ 
+            // Insert field with text inside
+            builder.InsertField("INCLUDETEXT", "Text in field");
+ 
+            Regex regex = new Regex("e");
+            FindReplaceOptions options = new FindReplaceOptions();
+ 
+            // Replace 'e' in document ignoring text inside field
+            options.IgnoreFields = true;
+            doc.Range.Replace(regex, "*", options);
+            Assert.AreEqual(doc.GetText(), "\u0013INCLUDETEXT\u0014Text in field\u0015\f");
+            
+            // Replace 'e' in document NOT ignoring text inside field
+            options.IgnoreFields = false;
+            doc.Range.Replace(regex, "*", options);
+            Assert.AreEqual(doc.GetText(), "\u0013INCLUDETEXT\u0014T*xt in fi*ld\u0015\f");
+            //ExEnd
         }
 
         [Test]
@@ -89,48 +180,6 @@ namespace ApiExamples
 
             Assert.AreEqual("bad bad bad", doc.GetText().Trim());
             //ExEnd
-        }
-
-        // Note: Need more info from dev.
-        [Test]
-        public void ReplaceWithoutPreserveMetaCharacters()
-        {
-            const string text = "some text";
-            const string replaceWithText = "&ldquo;";
-
-            Document doc = new Document();
-
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Write(text);
-
-            FindReplaceOptions options = new FindReplaceOptions();
-            options.PreserveMetaCharacters = false;
-
-            doc.Range.Replace(text, replaceWithText, options);
-
-            Assert.AreEqual("\vdquo;\f", doc.GetText());
-        }
-
-        [Test]
-        public void FindAndReplaceWithPreserveMetaCharacters()
-        {
-            //ExStart
-            //ExFor:FindReplaceOptions.PreserveMetaCharacters
-            //ExSummary:Shows how to preserved meta-characters that begin with "&".
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("one");
-            builder.Writeln("two");
-            builder.Writeln("three");
-
-            FindReplaceOptions options = new FindReplaceOptions();
-            options.FindWholeWordsOnly = true;
-            options.PreserveMetaCharacters = true;
-
-            doc.Range.Replace("two", "&ldquo; four &rdquo;", options);
-            //ExEnd
-
-            doc.Save(ArtifactsDir + "Range.FindAndReplaceWithMetacharacters.docx");
         }
 
         //ExStart
@@ -255,8 +304,6 @@ namespace ApiExamples
         }
         //ExEnd
 
-        #endregion
-
         [Test]
         public void ApplyParagraphFormat()
         {
@@ -317,5 +364,95 @@ namespace ApiExamples
             string text = doc.Range.Text;
             //ExEnd
         }
+
+        //ExStart
+        //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
+        //ExFor:IReplacingCallback
+        //ExFor:ReplaceAction
+        //ExFor:IReplacingCallback.Replacing
+        //ExFor:ReplacingArgs
+        //ExFor:ReplacingArgs.MatchNode
+        //ExFor:FindReplaceDirection
+        //ExSummary:Shows how to insert content of one document into another during a customized find and replace operation.
+        [Test] //ExSkip
+        public void InsertDocumentAtReplace()
+        {
+            Document mainDoc = new Document(MyDir + "Document insertion destination.docx");
+
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.Direction = FindReplaceDirection.Backward;
+            options.ReplacingCallback = new InsertDocumentAtReplaceHandler();
+
+            mainDoc.Range.Replace(new Regex("\\[MY_DOCUMENT\\]"), "", options);
+            mainDoc.Save(ArtifactsDir + "InsertDocument.InsertDocumentAtReplace.docx");
+            TestInsertDocumentAtReplace(new Document(ArtifactsDir + "InsertDocument.InsertDocumentAtReplace.docx")); //ExSkip
+        }
+
+        private class InsertDocumentAtReplaceHandler : IReplacingCallback
+        {
+            ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
+            {
+                Document subDoc = new Document(MyDir + "Document.docx");
+
+                // Insert a document after the paragraph, containing the match text
+                Paragraph para = (Paragraph)args.MatchNode.ParentNode;
+                InsertDocument(para, subDoc);
+
+                // Remove the paragraph with the match text
+                para.Remove();
+
+                return ReplaceAction.Skip;
+            }
+        }
+
+        /// <summary>
+        /// Inserts content of the external document after the specified node.
+        /// </summary>
+        static void InsertDocument(Node insertionDestination, Document docToInsert)
+        {
+            // Make sure that the node is either a paragraph or table
+            if (insertionDestination.NodeType.Equals(NodeType.Paragraph) || insertionDestination.NodeType.Equals(NodeType.Table))
+            {
+                // We will be inserting into the parent of the destination paragraph
+                CompositeNode dstStory = insertionDestination.ParentNode;
+
+                // This object will be translating styles and lists during the import
+                NodeImporter importer =
+                    new NodeImporter(docToInsert, insertionDestination.Document, ImportFormatMode.KeepSourceFormatting);
+
+                // Loop through all block level nodes in the body of the section
+                foreach (Section srcSection in docToInsert.Sections.OfType<Section>())
+                    foreach (Node srcNode in srcSection.Body)
+                    {
+                        // Let's skip the node if it is a last empty paragraph in a section
+                        if (srcNode.NodeType.Equals(NodeType.Paragraph))
+                        {
+                            Paragraph para = (Paragraph)srcNode;
+                            if (para.IsEndOfSection && !para.HasChildNodes)
+                                continue;
+                        }
+
+                        // This creates a clone of the node, suitable for insertion into the destination document
+                        Node newNode = importer.ImportNode(srcNode, true);
+
+                        // Insert new node after the reference node
+                        dstStory.InsertAfter(newNode, insertionDestination);
+                        insertionDestination = newNode;
+                    }
+            }
+            else
+            {
+                throw new ArgumentException("The destination node should be either a paragraph or table.");
+            }
+        }
+        //ExEnd
+
+        private void TestInsertDocumentAtReplace(Document doc)
+        {
+            Assert.AreEqual("1) At text that can be identified by regex:\rHello World!\r" +
+                            "2) At a MERGEFIELD:\r\u0013 MERGEFIELD  Document_1  \\* MERGEFORMAT \u0014«Document_1»\u0015\r" +
+                            "3) At a bookmark:", doc.FirstSection.Body.GetText().Trim());
+        }
+
     }
 }

@@ -8,14 +8,14 @@ namespace ApiExamples.TestData.TestClasses
         public Document Document { get; set; }
         public Stream DocumentStream { get; set; }
         public byte[] DocumentBytes { get; set; }
-        public string DocumentUri { get; set; }
+        public string DocumentString { get; set; }
 
-        public DocumentTestClass(Document doc, Stream docStream, byte[] docBytes, string docUri)
+        public DocumentTestClass(Document doc, Stream docStream, byte[] docBytes, string docString)
         {
             Document = doc;
             DocumentStream = docStream;
             DocumentBytes = docBytes;
-            DocumentUri = docUri;
+            DocumentString = docString;
         }
     }
 }

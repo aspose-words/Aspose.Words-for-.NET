@@ -7,7 +7,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Aspose.Words;
@@ -40,9 +39,8 @@ namespace ApiExamples
             newComment.AddReply("John Doe", "JD", new DateTime(2017, 9, 25, 12, 15, 0), "New reply");
             //ExEnd
 
-            using (MemoryStream dstStream = new MemoryStream()) doc.Save(dstStream, SaveFormat.Docx);
-
-            Comment docComment = (Comment) doc.GetChild(NodeType.Comment, 0, true);
+            doc = DocumentHelper.SaveOpen(doc);
+            Comment docComment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
 
             Assert.AreEqual(1, docComment.Count);
             Assert.AreEqual(1, newComment.Replies.Count);
@@ -58,12 +56,12 @@ namespace ApiExamples
             //ExFor:Comment.Ancestor
             //ExFor:Comment.Author
             //ExFor:Comment.Replies
+            //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
             //ExSummary:Shows how to get all comments with all replies.
             Document doc = new Document(MyDir + "Comments.docx");
 
             // Get all comment from the document
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
-
             Assert.AreEqual(12, comments.Count); //ExSkip
 
             // For all comments and replies we identify comment level and info about it
@@ -71,17 +69,15 @@ namespace ApiExamples
             {
                 if (comment.Ancestor == null)
                 {
-                    Console.WriteLine("This is a top-level comment\n");
-
+                    Console.WriteLine("\nThis is a top-level comment");
                     Console.WriteLine("Comment author: " + comment.Author);
                     Console.WriteLine("Comment text: " + comment.GetText());
 
                     foreach (Comment commentReply in comment.Replies.OfType<Comment>())
                     {
-                        Console.WriteLine("This is a comment reply\n");
-
-                        Console.WriteLine("Comment author: " + commentReply.Author);
-                        Console.WriteLine("Comment text: " + commentReply.GetText());
+                        Console.WriteLine("\n\tThis is a comment reply");
+                        Console.WriteLine("\tReply author: " + commentReply.Author);
+                        Console.WriteLine("\tReply text: " + commentReply.GetText());
                     }
                 }
             }
@@ -97,9 +93,11 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Comments.docx");
 
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
-            Comment comment = (Comment) comments[0];
+            Comment comment = (Comment)comments[0];
+            Assert.AreEqual(2, comment.Replies.Count()); //ExSkip
 
             comment.RemoveAllReplies();
+            Assert.AreEqual(0, comment.Replies.Count()); //ExSkip
             //ExEnd
         }
 
@@ -114,11 +112,13 @@ namespace ApiExamples
 
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
 
-            Comment parentComment = (Comment) comments[0];
+            Comment parentComment = (Comment)comments[0];
             CommentCollection repliesCollection = parentComment.Replies;
+            Assert.AreEqual(2, parentComment.Replies.Count()); //ExSkip
 
             // Remove the first reply to comment
             parentComment.RemoveReply(repliesCollection[0]);
+            Assert.AreEqual(1, parentComment.Replies.Count()); //ExSkip
             //ExEnd
         }
 
@@ -132,8 +132,8 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Comments.docx");
 
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
-            
-            Comment comment = (Comment) comments[0];
+
+            Comment comment = (Comment)comments[0];
             CommentCollection repliesCollection = comment.Replies;
 
             foreach (Comment childComment in repliesCollection)
@@ -145,6 +145,15 @@ namespace ApiExamples
                 }
             }
             //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            comment = (Comment)doc.GetChildNodes(NodeType.Comment, true)[0];
+            repliesCollection = comment.Replies;
+
+            foreach (Comment childComment in repliesCollection)
+            {
+                Assert.True(childComment.Done);
+            }
         }
         
         //ExStart

@@ -57,16 +57,14 @@ namespace ApiExamples
             Console.WriteLine("1. Document name: {0}", doc.OriginalFileName);
 
             Console.WriteLine("2. Built-in Properties");
-            for (int i = 0; i < doc.BuiltInDocumentProperties.Count; i++)
+            foreach (DocumentProperty docProperty in doc.BuiltInDocumentProperties)
             {
-                DocumentProperty docProperty = doc.BuiltInDocumentProperties[i];
                 Console.WriteLine("{0}({1}) : {2}", docProperty.Name, docProperty.Type, docProperty.Value);
             }
 
             Console.WriteLine("3. Custom Properties");
-            for (int i = 0; i < doc.CustomDocumentProperties.Count; i++)
+            foreach (DocumentProperty docProperty in doc.CustomDocumentProperties)
             {
-                DocumentProperty docProperty = doc.CustomDocumentProperties[i];
                 Console.WriteLine("{0}({1}) : {2}", docProperty.Name, docProperty.Type, docProperty.Value);
             }
             //ExEnd
@@ -98,7 +96,6 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.Subject
             //ExFor:BuiltInDocumentProperties.Title
             //ExSummary:Shows how to work with document properties in the "Description" category.
-            // Create a blank document 
             Document doc = new Document();
 
             // The properties we will work with are members of the BuiltInDocumentProperties attribute

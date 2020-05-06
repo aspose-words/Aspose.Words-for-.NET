@@ -19,18 +19,19 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
         private static void AddJapaneseAsEditinglanguages(string dataDir)
         {
             // ExStart:AddJapaneseAsEditinglanguages
-            // The path to the documents directory.
+            // Create a new LoadOptions object.
             LoadOptions loadOptions = new LoadOptions();
+            // Set language preferences that will be used when document is loading.
             loadOptions.LanguagePreferences.AddEditingLanguage(EditingLanguage.Japanese);
 
             Document doc = new Document(dataDir + @"languagepreferences.docx", loadOptions);
+            // ExEnd:AddJapaneseAsEditinglanguages
 
             int localeIdFarEast = doc.Styles.DefaultFont.LocaleIdFarEast;
             if (localeIdFarEast == (int)EditingLanguage.Japanese)
                 Console.WriteLine("The document either has no any FarEast language set in defaults or it was set to Japanese originally.");
             else
                 Console.WriteLine("The document default FarEast language was set to another than Japanese language originally, so it is not overridden.");
-            // ExEnd:AddJapaneseAsEditinglanguages
         }
 
         private static void SetRussianAsDefaultEditingLanguage(string dataDir)

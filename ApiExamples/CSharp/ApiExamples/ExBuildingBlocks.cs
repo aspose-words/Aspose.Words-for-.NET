@@ -40,7 +40,7 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
-            // BuildingBlocks live inside the glossary document
+            // BuildingBlocks are stored inside the glossary document
             // If you're making a document from scratch, the glossary document must also be manually created
             GlossaryDocument glossaryDoc = new GlossaryDocument();
             doc.GlossaryDocument = glossaryDoc;
@@ -72,15 +72,13 @@ namespace ApiExamples
                 "My custom building blocks", "Custom Block");
 
             // Our block contains one section which now contains our text
-            Assert.AreEqual("Text inside " + customBlock.Name + '\f',
-                customBlock.FirstSection.Body.FirstParagraph.GetText());
+            Assert.AreEqual($"Text inside {customBlock.Name}\f", customBlock.FirstSection.Body.FirstParagraph.GetText());
             Assert.AreEqual(customBlock.FirstSection, customBlock.LastSection);
-
-            Assert.AreNotEqual("00000000-0000-0000-0000-000000000000", customBlock.Guid.ToString());
-            Assert.AreEqual("My custom building blocks", customBlock.Category);
-            Assert.AreEqual(BuildingBlockType.None, customBlock.Type);
-            Assert.AreEqual(BuildingBlockGallery.QuickParts, customBlock.Gallery);
-            Assert.AreEqual(BuildingBlockBehavior.Paragraph, customBlock.Behavior);
+            Assert.DoesNotThrow(() => Guid.Parse(customBlock.Guid.ToString())); //ExSkip
+            Assert.AreEqual("My custom building blocks", customBlock.Category); //ExSkip
+            Assert.AreEqual(BuildingBlockType.None, customBlock.Type); //ExSkip
+            Assert.AreEqual(BuildingBlockGallery.QuickParts, customBlock.Gallery); //ExSkip
+            Assert.AreEqual(BuildingBlockBehavior.Paragraph, customBlock.Behavior); //ExSkip
 
             // Then we can insert it into the document as a new section
             doc.AppendChild(doc.ImportNode(customBlock.FirstSection, true));
@@ -175,21 +173,13 @@ namespace ApiExamples
             Assert.AreEqual("Block 1", glossaryDoc.FirstBuildingBlock.Name);
             Assert.AreEqual("Block 2", glossaryDoc.BuildingBlocks[1].Name);
             Assert.AreEqual("Block 3", glossaryDoc.BuildingBlocks.ToArray()[2].Name);
+            Assert.AreEqual("Block 4", glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4").Name);
             Assert.AreEqual("Block 5", glossaryDoc.LastBuildingBlock.Name);
 
-            // Get a block by gallery, category and name
-            BuildingBlock block4 =
-                glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4");
-
-            // All GUIDs are the same by default
-            Assert.AreEqual("00000000-0000-0000-0000-000000000000", block4.Guid.ToString());
-
-            // To be able to uniquely identify blocks by GUID, each GUID must be unique
-            // We will do that using a custom visitor
+            // We will do that using a custom visitor, which also will give every BuildingBlock in the GlossaryDocument a unique GUID
             GlossaryDocVisitor visitor = new GlossaryDocVisitor();
             glossaryDoc.Accept(visitor);
-
-            Assert.AreEqual(5, visitor.GetDictionary().Count);
+            Assert.AreEqual(5, visitor.GetDictionary().Count); //ExSkip
 
             Console.WriteLine(visitor.GetText());
 
@@ -233,6 +223,7 @@ namespace ApiExamples
 
             public override VisitorAction VisitBuildingBlockStart(BuildingBlock block)
             {
+                Assert.AreEqual("00000000-0000-0000-0000-000000000000", block.Guid.ToString()); //ExSkip
                 block.Guid = Guid.NewGuid();
                 mBlocksByGuid.Add(block.Guid, block);
                 return VisitorAction.Continue;

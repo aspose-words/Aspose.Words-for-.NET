@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Data;
+using System.Data.OleDb;
 using System.Drawing;
 using System.IO;
 using Aspose.Words;
@@ -13,9 +14,6 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
-using System.Data.OleDb;
-#endif
 
 namespace ApiExamples
 {
@@ -31,7 +29,6 @@ namespace ApiExamples
         //ExFor:FieldMergingArgsBase.Field
         //ExFor:FieldMergingArgsBase.DocumentFieldName
         //ExFor:FieldMergingArgsBase.Document
-        //ExFor:FieldMergingArgsBase.FieldValue
         //ExFor:IFieldMergingCallback.FieldMerging
         //ExFor:FieldMergingArgs.Text
         //ExFor:FieldMergeField.TextBefore
@@ -39,7 +36,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void InsertHtml()
         {
-            Document doc = new Document(MyDir + "Field MERGEFIELD.docx");
+            Document doc = new Document(MyDir + "Field sample - MERGEFIELD.docx");
 
             // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertHtml();
@@ -86,6 +83,59 @@ namespace ApiExamples
         }
         //ExEnd
 
+        //ExStart
+        //ExFor:FieldMergingArgsBase.FieldValue
+        //ExSummary:Shows how to use data source value of the field.
+        [Test] //ExSkip
+        public void FieldFormats()
+        {
+            DocumentBuilder builder = new DocumentBuilder();
+            builder.InsertField("MERGEFIELD TextField \\* Caps", null);
+            builder.InsertField("MERGEFIELD TextField2 \\* Upper", null);
+            builder.InsertField("MERGEFIELD NumericField \\# 0.0", null);
+
+            builder.Document.MailMerge.FieldMergingCallback = new FieldValueMergingCallback();
+
+            builder.Document.MailMerge.Execute(
+                new string[] { "TextField", "TextField2", "NumericField" },
+                new object[] { "Original value", "Original value", 15.34 });
+
+            Assert.AreEqual(
+                "New ValueNew value from e.Text43.2",
+                builder.Document.GetText().Trim());
+        }
+
+        private class FieldValueMergingCallback : IFieldMergingCallback
+        {
+            /// <summary>
+            /// This is called when merge field is actually merged with data in the document.
+            /// </summary>
+            void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
+            {
+                switch (e.FieldName)
+                {
+                    case "TextField":
+                        Assert.AreEqual("Original value", e.FieldValue);
+                        e.FieldValue = "New value";
+                        break;
+                    case "TextField2":
+                        Assert.AreEqual("Original value", e.FieldValue);
+                        e.Text = "New value from e.Text";   // Should suppress e.FieldValue and ignore format
+                        e.FieldValue = "new value";
+                        break;
+                    case "NumericField":
+                        Assert.AreEqual(15.34, e.FieldValue);
+                        e.FieldValue = 43.236;
+                        break;
+                }
+            }
+
+            void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs e)
+            {
+                // Do nothing
+            }
+        }
+        //ExEnd
 
         //ExStart
         //ExFor:DocumentBuilder.MoveToMergeField(String)
@@ -287,7 +337,7 @@ namespace ApiExamples
             Assert.IsTrue(logoImage.HasImage);
         }
 
-        #if NETFRAMEWORK || JAVA
+#if  !__MOBILE__
         //ExStart
         //ExFor:MailMerge.FieldMergingCallback
         //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)
@@ -307,7 +357,7 @@ namespace ApiExamples
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
 
             // Open a database connection
-            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            string connString = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={DatabaseDir + "Northwind.mdb"};";
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();
 

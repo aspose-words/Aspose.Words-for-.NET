@@ -16,11 +16,11 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
 using System.Windows.Forms;
 using System.Drawing.Printing;
 using System.Drawing.Text;
-#else
+#elif NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -317,7 +317,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NETFRAMEWORK || JAVA
+        #if NET462 || JAVA
         [Test]
         public void SaveToImageStream()
         {
@@ -756,7 +756,7 @@ namespace ApiExamples
             previewDlg.ShowDialog();
             //ExEnd
         }
-#else
+#elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         public void RenderToSizeNetStandard2()
         {
@@ -918,21 +918,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void UpdateFields()
-        {
-            //ExStart
-            //ExFor:Document.UpdateFields
-            //ExSummary:Shows how to update all fields before rendering a document.
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            // This updates all fields in the document
-            doc.UpdateFields();
-
-            doc.Save(ArtifactsDir + "Rendering.UpdateFields.pdf");
-            //ExEnd
-        }
-
-        [Test]
         public void SetTrueTypeFontsFolder()
         {
             // Store the font sources currently used so we can restore them later
@@ -1059,9 +1044,6 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.docx");
             doc.FontSettings = fontSettings;
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
             // Check that font source are default
             FontSourceBase[] fontSource = doc.FontSettings.GetFontsSources();
             Assert.AreEqual("SystemFonts", fontSource[0].Type.ToString());
@@ -1101,9 +1083,6 @@ namespace ApiExamples
 
             Document doc = new Document(MyDir + "Rendering.docx");
             doc.FontSettings = fontSettings;
-
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
 
             string[] alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Slab").ToArray();
             Assert.AreEqual(new string[] { "Times New Roman", "Arial" }, alternativeFonts);

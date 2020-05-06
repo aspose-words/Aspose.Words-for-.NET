@@ -60,6 +60,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterCreate.docx");
             //ExEnd
+
             doc = new Document(ArtifactsDir + "HeaderFooter.HeaderFooterCreate.docx");
 
             Assert.True(doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].Range.Text
@@ -116,29 +117,30 @@ namespace ApiExamples
 
             // The first section's header/footers can't link themselves to anything because there is no previous section
             Assert.AreEqual(2, doc.Sections[0].HeadersFooters.Count);
-            Assert.False(doc.Sections[0].HeadersFooters[0].IsLinkedToPrevious);
-            Assert.False(doc.Sections[0].HeadersFooters[1].IsLinkedToPrevious);
-
+            Assert.AreEqual(2, doc.Sections[0].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious));
+            
             // All of the second section's header/footers are linked to those of the first
             Assert.AreEqual(6, doc.Sections[1].HeadersFooters.Count);
-            Assert.True(doc.Sections[1].HeadersFooters[0].IsLinkedToPrevious);
-            Assert.True(doc.Sections[1].HeadersFooters[1].IsLinkedToPrevious);
-            Assert.True(doc.Sections[1].HeadersFooters[2].IsLinkedToPrevious);
-            Assert.True(doc.Sections[1].HeadersFooters[3].IsLinkedToPrevious);
-            Assert.True(doc.Sections[1].HeadersFooters[4].IsLinkedToPrevious);
-            Assert.True(doc.Sections[1].HeadersFooters[5].IsLinkedToPrevious);
+            Assert.AreEqual(6, doc.Sections[1].HeadersFooters.Count(hf => ((HeaderFooter)hf).IsLinkedToPrevious));
 
             // In the third section, only the footer we explicitly linked is linked to that of the second, and consequently the first section
             Assert.AreEqual(6, doc.Sections[2].HeadersFooters.Count);
-            Assert.False(doc.Sections[2].HeadersFooters[0].IsLinkedToPrevious);
-            Assert.False(doc.Sections[2].HeadersFooters[1].IsLinkedToPrevious);
-            Assert.False(doc.Sections[2].HeadersFooters[2].IsLinkedToPrevious);
+            Assert.AreEqual(5, doc.Sections[2].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious));
             Assert.True(doc.Sections[2].HeadersFooters[3].IsLinkedToPrevious);
-            Assert.False(doc.Sections[2].HeadersFooters[4].IsLinkedToPrevious);
-            Assert.False(doc.Sections[2].HeadersFooters[5].IsLinkedToPrevious);
 
             doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterLink.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "HeaderFooter.HeaderFooterLink.docx");
+
+            Assert.AreEqual(2, doc.Sections[0].HeadersFooters.Count);
+            Assert.AreEqual(2, doc.Sections[0].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious));
+
+            Assert.AreEqual(0, doc.Sections[1].HeadersFooters.Count);
+            Assert.AreEqual(0, doc.Sections[1].HeadersFooters.Count(hf => ((HeaderFooter)hf).IsLinkedToPrevious));
+
+            Assert.AreEqual(5, doc.Sections[2].HeadersFooters.Count);
+            Assert.AreEqual(5, doc.Sections[2].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious));
         }
 
         [Test]
@@ -165,10 +167,20 @@ namespace ApiExamples
 
                 footer = section.HeadersFooters[HeaderFooterType.FooterEven];
                 footer?.Remove();
+
+                // All footers have been removed from the section's HeaderFooter collection,
+                // so every remaining node is a header and has the "IsHeader" flag set to true 
+                Assert.AreEqual(0, section.HeadersFooters.Count(hf => !((HeaderFooter)hf).IsHeader));
             }
 
             doc.Save(ArtifactsDir + "HeaderFooter.RemoveFooters.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "HeaderFooter.RemoveFooters.docx");
+
+            Assert.AreEqual(1, doc.Sections.Count);
+            Assert.AreEqual(0, doc.FirstSection.HeadersFooters.Count(hf => !((HeaderFooter)hf).IsHeader));
+            Assert.AreEqual(3, doc.FirstSection.HeadersFooters.Count(hf => ((HeaderFooter)hf).IsHeader));
         }
 
         [Test]
@@ -180,16 +192,22 @@ namespace ApiExamples
             //ExSummary:Demonstrates how to disable the export of headers and footers when saving to HTML based formats.
             Document doc = new Document(MyDir + "Header and footer types.docx");
 
-            // Disables exporting headers and footers
+            // This document contains headers and footers, whose text contents can be looked up like this
+            Assert.AreEqual("First header", doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderFirst].GetText().Trim());
+
+            // Formats such as html do not have a pre-defined equivalent for Microsoft Word headers/footers
+            // If we convert a document with headers and/or footers to html, they will be assimilated into body text
+            // We can use a SaveOptions object to omit headers/footers while converting to html
             HtmlSaveOptions saveOptions =
                 new HtmlSaveOptions(SaveFormat.Html) { ExportHeadersFootersMode = ExportHeadersFootersMode.None };
 
             doc.Save(ArtifactsDir + "HeaderFooter.DisableHeadersFooters.html", saveOptions);
-            //ExEnd
 
-            // Verify that the output document is correct
+            // Open our saved document and verify that it does not contain the header's text
             doc = new Document(ArtifactsDir + "HeaderFooter.DisableHeadersFooters.html");
-            Assert.IsFalse(doc.Range.Text.Contains("DYNAMIC TEMPLATE"));
+
+            Assert.IsFalse(doc.Range.Text.Contains("First header"));
+            //ExEnd
         }
 
         [Test]
@@ -217,11 +235,11 @@ namespace ApiExamples
             int currentYear = System.DateTime.Now.Year;
             footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", $"Copyright (C) {currentYear} by Aspose Pty Ltd.", options);
 
-            doc.Save(ArtifactsDir + "HeaderFooter.ReplaceText.doc");
+            doc.Save(ArtifactsDir + "HeaderFooter.ReplaceText.docx");
             //ExEnd
 
-            // Verify that the appropriate changes were made to the output document
-            doc = new Document(ArtifactsDir + "HeaderFooter.ReplaceText.doc");
+            doc = new Document(ArtifactsDir + "HeaderFooter.ReplaceText.docx");
+
             Assert.IsTrue(doc.Range.Text.Contains($"Copyright (C) {currentYear} by Aspose Pty Ltd."));
         }
 
@@ -244,10 +262,10 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "HeaderFooter.HeaderFooterOrder.docx");
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
                 "Third footer\n", logger.Text.Replace("\r", ""));
-#else
+#elif NETCOREAPP2_1 || __MOBILE__
             Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\n" +
                 "Third footer\n", logger.Text);
 #endif
@@ -260,10 +278,10 @@ namespace ApiExamples
             firstPageSection.PageSetup.DifferentFirstPageHeaderFooter = false;
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\n" +
                 "Second footer\n", logger.Text.Replace("\r", ""));
-#else
+#elif NETCOREAPP2_1 || __MOBILE__
             Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\n" +
                 "Second footer\n", logger.Text);
 #endif
@@ -282,10 +300,7 @@ namespace ApiExamples
                 mTextBuilder.Clear();
             }
 
-            internal string Text
-            {
-                get { return mTextBuilder.ToString(); }
-            }
+            internal string Text => mTextBuilder.ToString();
 
             private readonly StringBuilder mTextBuilder = new StringBuilder();
         }
@@ -406,7 +421,7 @@ namespace ApiExamples
             row.LastCell.CellFormat.PreferredWidth = PreferredWidth.FromPercent(100.0F * 2 / 3);
 
             // Save the resulting document
-            doc.Save(ArtifactsDir + "HeaderFooter.Primer.doc");
+            doc.Save(ArtifactsDir + "HeaderFooter.Primer.docx");
         }
 
         /// <summary>
