@@ -1,10 +1,8 @@
-﻿using Aspose.Words.Loading;
-using Aspose.Words.Markup;
+﻿using Aspose.Words.Markup;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,8 +21,6 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             VerifyODTdocument(dataDir);
             ConvertShapeToOfficeMath(dataDir);
             SetMSWordVersion(dataDir);
-            LoadOptionsWarningCallback(dataDir);
-            LoadOptionsResourceLoadingCallback(dataDir);
         }
 
         public static void LoadOptionsUpdateDirtyFields(string dataDir)
@@ -96,84 +92,5 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             Document doc = new Document(dataDir + "document.docx", lo);
             // ExEnd:SetTempFolder  
         }
-
-        public static void LoadOptionsWarningCallback(string dataDir)
-        {
-            // ExStart: LoadOptionsWarningCallback
-            // Create a new LoadOptions object and set its WarningCallback property. 
-            LoadOptions loadOptions = new LoadOptions { WarningCallback = new DocumentLoadingWarningCallback() };
-
-            Document doc = new Document(dataDir + "input.docx", loadOptions);
-            // ExEnd: LoadOptionsWarningCallback
-        }
-
-        // ExStart: DocumentLoadingWarningCallback
-        // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
-        private class DocumentLoadingWarningCallback : IWarningCallback
-        {
-            public void Warning(WarningInfo info)
-            {
-                // Prints warnings and their details as they arise during document loading.
-                Console.WriteLine($"WARNING: {info.WarningType}, source: {info.Source}");
-                Console.WriteLine($"\tDescription: {info.Description}");
-            }
-        }
-        // ExEnd: DocumentLoadingWarningCallback
-
-        public static void LoadOptionsResourceLoadingCallback(string dataDir)
-        {
-            // ExStart: LoadOptionsResourceLoadingCallback
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
-            // Create a new LoadOptions object and set its ResourceLoadingCallback attribute as an instance of our IResourceLoadingCallback implementation
-            LoadOptions loadOptions = new LoadOptions { ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback() };
-
-            // When we open an Html document, external resources such as references to CSS stylesheet files and external images
-            // will be handled in a custom manner by the loading callback as the document is loaded
-            Document doc = new Document(dataDir + "Images.html", loadOptions);
-            doc.Save(dataDir + "Document.LoadOptionsCallback_out.pdf");
-            // ExEnd: LoadOptionsResourceLoadingCallback
-        }
-
-        // ExStart: HtmlLinkedResourceLoadingCallback
-        // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
-        private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
-        {
-            public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
-            {
-                switch (args.ResourceType)
-                {
-                    case ResourceType.CssStyleSheet:
-                        {
-                            Console.WriteLine($"External CSS Stylesheet found upon loading: {args.OriginalUri}");
-
-                            // CSS file will don't used in the document
-                            return ResourceLoadingAction.Skip;
-                        }
-                    case ResourceType.Image:
-                        {
-                            // Replaces all images with a substitute
-                            const string newImageFilename = "Logo.jpg";
-                            Console.WriteLine($"\tImage will be substituted with: {newImageFilename}");
-                            Image newImage = Image.FromFile(RunExamples.GetDataDir_QuickStart() + newImageFilename);
-                            ImageConverter converter = new ImageConverter();
-                            byte[] imageBytes = (byte[])converter.ConvertTo(newImage, typeof(byte[]));
-                            args.SetData(imageBytes);
-
-                            // New images will be used instead of presented in the document
-                            return ResourceLoadingAction.UserProvided;
-                        }
-                    case ResourceType.Document:
-                        {
-                            Console.WriteLine($"External document found upon loading: {args.OriginalUri}");
-
-                            // Will be used as usual
-                            return ResourceLoadingAction.Default;
-                        }
-                    default:
-                        throw new InvalidOperationException("Unexpected ResourceType value.");
-                }
-            }
-        }
-        // ExEnd: HtmlLinkedResourceLoadingCallback
     }
 }
