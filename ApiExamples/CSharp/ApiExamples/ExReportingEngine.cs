@@ -18,7 +18,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Reporting;
 using NUnit.Framework;
-#if NETSTANDARD2_0 || __MOBILE__
+#if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -38,8 +38,7 @@ namespace ApiExamples
             MessageTestClass sender = new MessageTestClass("LINQ Reporting Engine", "Hello World");
             BuildReport(doc, sender, "s", ReportBuildOptions.InlineErrorMessages);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("LINQ Reporting Engine says: Hello World\f", doc.GetText());
         }
@@ -53,8 +52,7 @@ namespace ApiExamples
             MessageTestClass sender = new MessageTestClass("LINQ Reporting Engine", "hello world");
             BuildReport(doc, sender, "s");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("linq reporting engine says: HELLO WORLD, Hello World, Hello world\f", doc.GetText());
         }
@@ -70,8 +68,7 @@ namespace ApiExamples
                 .WithValuesAndDate(1, 2.2, 200, null, DateTime.Parse("10.09.2016 10:00:00")).Build();
             BuildReport(doc, sender, "s");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("A : ii, 200th, FIRST, Two, C8, - 200 -\f", doc.GetText());
         }
@@ -241,8 +238,7 @@ namespace ApiExamples
 
             BuildReport(doc, Common.GetManagers(), "Managers");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("The names are: John Smith, Tony Anderson, July James\f", doc.GetText());
         }
@@ -254,8 +250,7 @@ namespace ApiExamples
 
             BuildReport(doc, Common.GetManagers(), "m");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("You have chosen 3 item(s).\f", doc.GetText());
         }
@@ -267,8 +262,7 @@ namespace ApiExamples
 
             BuildReport(doc, Common.GetEmptyManagers(), "m");
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("You have chosen no items.\f", doc.GetText());
         }
@@ -378,10 +372,10 @@ namespace ApiExamples
         [Test]
         public void InsertDocumentDynamicallyByUri()
         {
-            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentUri]>>");
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentString]>>");
 
             DocumentTestClass docUri = new DocumentTestBuilder()
-                .WithDocumentUri("http://www.snee.com/xml/xslt/sample.doc").Build();
+                .WithDocumentString("http://www.snee.com/xml/xslt/sample.doc").Build();
 
             BuildReport(template, docUri, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
@@ -390,14 +384,28 @@ namespace ApiExamples
         }
 
         [Test]
+        public void InsertDocumentDynamicallyByBase64()
+        {
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentString]>>");
+            string base64Template = File.ReadAllText(MyDir + "Reporting engine template - Data table (base64).txt");
+
+            DocumentTestClass docBase64 = new DocumentTestBuilder().WithDocumentString(base64Template).Build();
+
+            BuildReport(template, docBase64, "src", ReportBuildOptions.None);
+            template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by uri");
+        }
+
+        [Test]
         public void InsertImageDynamically()
         {
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Image]>>", ShapeType.TextBox);
             
-            #if NETFRAMEWORK || JAVA
+            #if NET462 || JAVA
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
-            #else
+            #elif NETCOREAPP2_1 || __MOBILE__
             ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
             #endif
             
@@ -438,9 +446,9 @@ namespace ApiExamples
         public void InsertImageDynamicallyByUri()
         {
             Document template =
-                DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageUri]>>", ShapeType.TextBox);
+                DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageString]>>", ShapeType.TextBox);
             ImageTestClass imageUri = new ImageTestBuilder()
-                .WithImageUri(
+                .WithImageString(
                     "http://joomla-aspose.dynabic.com/templates/aspose/App_Themes/V3/images/customers/americanexpress.png")
                 .Build();
 
@@ -451,6 +459,43 @@ namespace ApiExamples
                 DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx",
                     GoldsDir + "ReportingEngine.InsertImageDynamically(uri) Gold.docx"),
                 "Fail inserting document by bytes");
+        }
+
+        [Test]
+        public void InsertImageDynamicallyByBase64()
+        {
+            Document template =
+                DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageString]>>", ShapeType.TextBox);
+            string base64Template = File.ReadAllText(MyDir + "Reporting engine template - base64 image.txt");
+
+            ImageTestClass imageBase64 = new ImageTestBuilder().WithImageString(base64Template).Build();
+
+            BuildReport(template, imageBase64, "src", ReportBuildOptions.None);
+            template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
+
+            Assert.IsTrue(
+                DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx",
+                    GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"),
+                "Fail inserting document by bytes");
+
+        }
+        
+        [Test]
+        public void DynamicStretchingImageWithinTextBox()
+        {
+            Document template = new Document(MyDir + "Reporting engine template - Dynamic stretching.docx");
+            
+#if NET462 || JAVA
+            ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
+#elif NETCOREAPP2_1 || __MOBILE__
+            ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
+#endif
+            BuildReport(template, image, "src", ReportBuildOptions.None);
+            template.Save(ArtifactsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox.docx");
+
+            Assert.IsTrue(
+                DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox.docx",
+                    GoldsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox Gold.docx"));
         }
 
         [Test]
@@ -516,6 +561,15 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ReportingEngine.KnownTypes.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.KnownTypes.docx", GoldsDir + "ReportingEngine.KnownTypes Gold.docx"));
+        }
+
+        [Test]
+        public void WorkWithContentControls()
+        {
+            Document doc = new Document(MyDir + "Reporting engine template - CheckBox Content Control.docx");
+            BuildReport(doc, Common.GetManagers(), "Managers");
+
+            doc.Save(ArtifactsDir + "ReportingEngine.WorkWithContentControls.docx");
         }
 
         [Test]
@@ -602,10 +656,8 @@ namespace ApiExamples
                 .WithImageStream(new FileStream(mImage, FileMode.Open, FileAccess.Read)).Build();
             BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
-            doc = new Document(dstStream);
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             foreach (Shape shape in shapes.OfType<Shape>())
@@ -617,8 +669,6 @@ namespace ApiExamples
                 Assert.AreNotEqual(346.35, shape.Height);
                 Assert.AreEqual(431.5, shape.Width);
             }
-
-            dstStream.Dispose();
         }
 
         [Test]
@@ -632,10 +682,8 @@ namespace ApiExamples
                 .WithImageStream(new FileStream(mImage, FileMode.Open, FileAccess.Read)).Build();
             BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
-            doc = new Document(dstStream);
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             foreach (Shape shape in shapes.OfType<Shape>())
@@ -647,8 +695,6 @@ namespace ApiExamples
                 Assert.AreNotEqual(431.5, shape.Width);
                 Assert.AreEqual(346.35, shape.Height);
             }
-
-            dstStream.Dispose();
         }
 
         [Test]
@@ -662,10 +708,8 @@ namespace ApiExamples
                 .WithImageStream(new FileStream(mImage, FileMode.Open, FileAccess.Read)).Build();
             BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
-            doc = new Document(dstStream);
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             foreach (Shape shape in shapes.OfType<Shape>())
@@ -677,8 +721,6 @@ namespace ApiExamples
                 Assert.AreNotEqual(346.35, shape.Height);
                 Assert.AreNotEqual(431.5, shape.Width);
             }
-
-            dstStream.Dispose();
         }
 
         [Test]
@@ -692,10 +734,8 @@ namespace ApiExamples
                 .WithImageStream(new FileStream(mImage, FileMode.Open, FileAccess.Read)).Build();
             BuildReport(doc, imageStream, "src", ReportBuildOptions.None);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+            doc = DocumentHelper.SaveOpen(doc);
 
-            doc = new Document(dstStream);
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             foreach (Shape shape in shapes.OfType<Shape>())
@@ -707,8 +747,6 @@ namespace ApiExamples
                 Assert.AreEqual(300.0d, shape.Height);
                 Assert.AreEqual(300.0d, shape.Width);
             }
-
-            dstStream.Dispose();
         }
 
         [Test]
@@ -802,8 +840,9 @@ namespace ApiExamples
                 GoldsDir + "ReportingEngine.RemoveEmptyParagraphs Gold.docx"));
         }
 
-        [TestCase("Hello", "Hello", "ReportingEngine.MergingTableCellsDynamically.Merged", Description = "Cells in the first two tables must be merged")]
-        [TestCase("Hello", "Name", "ReportingEngine.MergingTableCellsDynamically.NotMerged", Description = "Only last table cells must be merge")]
+        [Test]
+        [TestCase("Hello", "Hello", "ReportingEngine.MergingTableCellsDynamically.Merged", TestName = "Cells in the first two tables must be merged")]
+        [TestCase("Hello", "Name", "ReportingEngine.MergingTableCellsDynamically.NotMerged", TestName = "Only last table cells must be merge")]
         public void MergingTableCellsDynamically(string value1, string value2, string resultDocumentName)
         {
             string artifactPath = ArtifactsDir + resultDocumentName +

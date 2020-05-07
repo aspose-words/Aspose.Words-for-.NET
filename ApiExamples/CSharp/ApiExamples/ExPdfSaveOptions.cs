@@ -6,9 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Diagnostics;
 using Aspose.Words;
-using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -19,12 +17,12 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
 using Image = System.Drawing.Image;
-#else 
+#elif NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
-#if NETFRAMEWORK || NETSTANDARD2_0
+#if NET462 || NETCOREAPP2_1
 using Aspose.Pdf.Facades;
 using Aspose.Pdf.Annotations;
 #endif
@@ -73,7 +71,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf", pdfSaveOptions);
             //ExEnd
 
-            #if NETFRAMEWORK || NETSTANDARD2_0
+            #if NET462 || NETCOREAPP2_1
             // Bind PDF with Aspose.PDF
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf");
@@ -136,7 +134,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.WithoutUpdateFields.pdf", pdfSaveOptions);
             //ExEnd
 
-            #if NETFRAMEWORK || NETSTANDARD2_0
+            #if NET462 || NETCOREAPP2_1
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WithoutUpdateFields.pdf");
 
             // Get text fragment by search String
@@ -158,7 +156,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.WithUpdateFields.pdf", pdfSaveOptions);
 
-            #if NETFRAMEWORK || NETSTANDARD2_0
+            #if NET462 || NETCOREAPP2_1
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WithUpdateFields.pdf");
 
             // Get text fragment by search String from PDF document
@@ -246,7 +244,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.WindowsBarPdfTitle.pdf", pdfSaveOptions);
             //ExEnd
 
-            #if NETFRAMEWORK || NETSTANDARD2_0
+            #if NET462 || NETCOREAPP2_1
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WindowsBarPdfTitle.pdf");
 
             Assert.IsTrue(pdfDocument.DisplayDocTitle);
@@ -293,7 +291,7 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf", options);
             //ExEnd
 
-            #if NETFRAMEWORK || NETSTANDARD2_0
+            #if NET462 || NETCOREAPP2_1
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
@@ -585,7 +583,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
         [Test]
         public void PreblendImages()
         {
@@ -606,7 +604,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagest.pdf", options);
             //ExEnd
         }
-#else
+#elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         public void PreblendImagesNetStandard2()
         {

@@ -8,6 +8,8 @@
 using System.Text;
 using System;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -28,13 +30,20 @@ namespace ApiExamples
             
             builder.Writeln("Hello World!");
 
+            // The default encoding is UTF-8
+            // If we want to represent our document using a different encoding, we can set one explicitly using a SaveOptions object
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
-                Encoding = new ASCIIEncoding()
+                Encoding = Encoding.GetEncoding("ASCII")
             };
+
+            Assert.AreEqual("US-ASCII", htmlFixedSaveOptions.Encoding.EncodingName);
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.UseEncoding.html", htmlFixedSaveOptions);
             //ExEnd
+
+            Assert.True(Regex.Match(File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.UseEncoding.html"), 
+                "content=\"text/html; charset=us-ascii\"").Success);
         }
 
         // Note: Test doesn't contain validation result, because it's may take a lot of time for assert result
@@ -52,33 +61,146 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.GetEncoding.html", htmlFixedSaveOptions);
         }
 
-        // Note: Test doesn't contain validation result, because it's may take a lot of time for assert result
-        // For validation result, you can save the document to HTML file and check out with notepad++, that file encoding will be correctly displayed (Encoding tab in Notepad++)
         [Test]
-        public void ExportEmbeddedObjects()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ExportEmbeddedCSS(bool doExportEmbeddedCss)
         {
             //ExStart
             //ExFor:HtmlFixedSaveOptions.ExportEmbeddedCss
-            //ExFor:HtmlFixedSaveOptions.ExportEmbeddedFonts
-            //ExFor:HtmlFixedSaveOptions.ExportEmbeddedImages
-            //ExFor:HtmlFixedSaveOptions.ExportEmbeddedSvg
-            //ExSummary:Shows how to export embedded objects into HTML file.
-            Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
+            //ExSummary:Shows how to export embedded stylesheets into an HTML file.
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
-                ExportEmbeddedCss = true,
-                ExportEmbeddedFonts = true,
-                ExportEmbeddedImages = true,
-                ExportEmbeddedSvg = true
+                ExportEmbeddedCss = doExportEmbeddedCss
             };
 
-            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedObjects.html", htmlFixedSaveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCSS.html", htmlFixedSaveOptions);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCSS.html");
+
+            if (doExportEmbeddedCss)
+            {
+                Assert.True(Regex.Match(outDocContents, "<style type=\"text/css\">").Success);
+                Assert.False(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCSS/styles.css"));
+            }
+            else
+            {
+                Assert.True(Regex.Match(outDocContents,
+                    "<link rel=\"stylesheet\" type=\"text/css\" href=\"HtmlFixedSaveOptions[.]ExportEmbeddedCSS/styles[.]css\" media=\"all\" />").Success);
+                Assert.True(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCSS/styles.css"));
+            }
             //ExEnd
         }
 
         [Test]
-        public void ExportFormFields()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ExportEmbeddedFonts(bool doExportEmbeddedFonts)
+        {
+            //ExStart
+            //ExFor:HtmlFixedSaveOptions.ExportEmbeddedFonts
+            //ExSummary:Shows how to export embedded fonts into an HTML file.
+            Document doc = new Document(MyDir + "Embedded font.docx");
+
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
+            {
+                ExportEmbeddedFonts = doExportEmbeddedFonts
+            };
+
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts.html", htmlFixedSaveOptions);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts/styles.css");
+
+            if (doExportEmbeddedFonts)
+            {
+                Assert.True(Regex.Match(outDocContents,
+                    "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], url[(].+[)] format[(]'woff'[)]; }").Success);
+                Assert.AreEqual(0, Directory.GetFiles(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts").Count(f => f.EndsWith(".woff")));
+            }
+            else
+            {
+                Assert.True(Regex.Match(outDocContents,
+                    "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], url[(]'font001[.]woff'[)] format[(]'woff'[)]; }").Success);
+                Assert.AreEqual(2, Directory.GetFiles(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts").Count(f => f.EndsWith(".woff")));
+            }
+            //ExEnd
+        }
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ExportEmbeddedImages(bool doExportImages)
+        {
+            //ExStart
+            //ExFor:HtmlFixedSaveOptions.ExportEmbeddedImages
+            //ExSummary:Shows how to export embedded images into an HTML file.
+            Document doc = new Document(MyDir + "Images.docx");
+
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
+            {
+                ExportEmbeddedImages = doExportImages
+            };
+
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages.html", htmlFixedSaveOptions);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages.html");
+
+            if (doExportImages)
+            {
+                Assert.False(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages/image001.jpeg"));
+                Assert.True(Regex.Match(outDocContents,
+                    "<img class=\"awimg\" style=\"left:0pt; top:0pt; width:493.1pt; height:300.55pt;\" src=\".+\" />").Success);
+            }
+            else
+            {
+                Assert.True(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages/image001.jpeg"));
+                Assert.True(Regex.Match(outDocContents,
+                    "<img class=\"awimg\" style=\"left:0pt; top:0pt; width:493.1pt; height:300.55pt;\" " +
+                    "src=\"HtmlFixedSaveOptions[.]ExportEmbeddedImages/image001[.]jpeg\" />").Success);
+            }
+            //ExEnd
+        }
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ExportEmbeddedSvgs(bool doExportSvgs)
+        {
+            //ExStart
+            //ExFor:HtmlFixedSaveOptions.ExportEmbeddedSvg
+            //ExSummary:Shows how to export embedded SVG objects into an HTML file.
+            Document doc = new Document(MyDir + "Images.docx");
+
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
+            {
+                ExportEmbeddedSvg = doExportSvgs
+            };
+
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs.html", htmlFixedSaveOptions);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs.html");
+
+            if (doExportSvgs)
+            {
+                Assert.False(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001.svg"));
+                Assert.True(Regex.Match(outDocContents,
+                    "<image id=\"image004\" xlink:href=.+/>").Success);
+            }
+            else
+            {
+                Assert.True(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001.svg"));
+                Assert.True(Regex.Match(outDocContents,
+                    "<object type=\"image/svg[+]xml\" data=\"HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001[.]svg\"></object>").Success);
+            }
+            //ExEnd
+        }
+
+        [Test]
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ExportFormFields(bool doExportFormFields)
         {
             //ExStart
             //ExFor:HtmlFixedSaveOptions.ExportFormFields
@@ -90,10 +212,25 @@ namespace ApiExamples
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
-                ExportFormFields = true
+                ExportFormFields = doExportFormFields
             };
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportFormFields.html", htmlFixedSaveOptions);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.ExportFormFields.html");
+
+            if (doExportFormFields)
+            {
+                Assert.True(Regex.Match(outDocContents,
+                    "<a name=\"CheckBox\" style=\"left:0pt; top:0pt;\"></a>" +
+                    "<input style=\"position:absolute; left:0pt; top:0pt;\" type=\"checkbox\" name=\"CheckBox\" />").Success);
+            }
+            else
+            {
+                Assert.True(Regex.Match(outDocContents, 
+                    "<a name=\"CheckBox\" style=\"left:0pt; top:0pt;\"></a>" +
+                    "<div class=\"awdiv\" style=\"left:0.8pt; top:0.8pt; width:14.25pt; height:14.25pt; border:solid 0.75pt #000000;\"").Success);
+            }
             //ExEnd
         }
 
@@ -108,31 +245,57 @@ namespace ApiExamples
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
-                CssClassNamesPrefix = "test",
+                CssClassNamesPrefix = "myprefix",
                 SaveFontFaceCssSeparately = true
             };
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.AddCssClassNamesPrefix.html", htmlFixedSaveOptions);
-            //ExEnd
 
-            DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlFixedSaveOptions.AddCssClassNamesPrefix/styles.css", "test");
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.AddCssClassNamesPrefix.html");
+
+            Assert.True(Regex.Match(outDocContents,
+                "<div class=\"myprefixdiv myprefixpage\" style=\"width:595[.]3pt; height:841[.]9pt;\">" +
+                "<div class=\"myprefixdiv\" style=\"left:85[.]05pt; top:36pt; clip:rect[(]0pt,510[.]25pt,74[.]95pt,-85.05pt[)];\">" +
+                "<span class=\"myprefixspan myprefixtext001\" style=\"font-size:11pt; left:294[.]73pt; top:0[.]36pt;\">").Success);
+            //ExEnd
         }
 
         [Test]
-        public void HorizontalAlignment()
+        [TestCase(HtmlFixedPageHorizontalAlignment.Center)]
+        [TestCase(HtmlFixedPageHorizontalAlignment.Left)]
+        [TestCase(HtmlFixedPageHorizontalAlignment.Right)]
+        public void HorizontalAlignment(HtmlFixedPageHorizontalAlignment pageHorizontalAlignment)
         {
             //ExStart
             //ExFor:HtmlFixedSaveOptions.PageHorizontalAlignment
             //ExFor:HtmlFixedPageHorizontalAlignment
             //ExSummary:Shows how to set the horizontal alignment of pages in HTML file.
-            Document doc = new Document(MyDir + "Bookmarks.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
-                PageHorizontalAlignment = HtmlFixedPageHorizontalAlignment.Left
+                PageHorizontalAlignment = pageHorizontalAlignment
             };
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.HorizontalAlignment.html", htmlFixedSaveOptions);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.HorizontalAlignment/styles.css");
+
+            switch (pageHorizontalAlignment)
+            {
+                case HtmlFixedPageHorizontalAlignment.Center:
+                    Assert.True(Regex.Match(outDocContents,
+                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt auto; overflow:hidden; }").Success);
+                    break;
+                case HtmlFixedPageHorizontalAlignment.Left:
+                    Assert.True(Regex.Match(outDocContents, 
+                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt 10pt; overflow:hidden; }").Success);
+                    break;
+                case HtmlFixedPageHorizontalAlignment.Right:
+                    Assert.True(Regex.Match(outDocContents, 
+                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt 10pt 10pt auto; overflow:hidden; }").Success);
+                    break;
+            }
             //ExEnd
         }
 
@@ -142,14 +305,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlFixedSaveOptions.PageMargins
             //ExSummary:Shows how to set the margins around pages in HTML file.
-            Document doc = new Document(MyDir + "Bookmarks.docx");
+            Document doc = new Document(MyDir + "Document.docx");
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
             {
-                PageMargins = 10
+                PageMargins = 15
             };
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.PageMargins.html", saveOptions);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.PageMargins/styles.css");
+
+            Assert.True(Regex.Match(outDocContents,
+                "[.]awpage { position:relative; border:solid 1pt black; margin:15pt auto 15pt auto; overflow:hidden; }").Success);
             //ExEnd
         }
 
@@ -167,11 +335,18 @@ namespace ApiExamples
             //ExFor:FixedPageSaveOptions.OptimizeOutput
             //ExFor:HtmlFixedSaveOptions.OptimizeOutput
             //ExSummary:Shows how to optimize document objects while saving to html.
-            Document doc = new Document(MyDir + "Unoptimized content.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = true };
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = false };
 
-            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.Unoptimized.html", saveOptions);
+
+            saveOptions.OptimizeOutput = true;
+
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.Optimized.html", saveOptions);
+
+            Assert.True(new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.Unoptimized.html").Length > 
+                            new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.Optimized.html").Length);
             //ExEnd
         }
 
@@ -187,7 +362,7 @@ namespace ApiExamples
         //ExFor:ResourceSavingArgs.ResourceFileName
         //ExFor:ResourceSavingArgs.ResourceFileUri
         //ExFor:ResourceSavingArgs.ResourceStream
-        //ExSummary:Shows how used target machine fonts to display the document.
+        //ExSummary:Shows how use target machine fonts to display the document.
         [Test] //ExSkip
         public void UsingMachineFonts()
         {
@@ -195,6 +370,7 @@ namespace ApiExamples
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
             {
+                ExportEmbeddedCss = true,
                 UseTargetMachineFonts = true,
                 FontFormat = ExportFontFormat.Ttf,
                 ExportEmbeddedFonts = false,
@@ -202,6 +378,15 @@ namespace ApiExamples
             };
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.UsingMachineFonts.html", saveOptions);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.UsingMachineFonts.html");
+
+            if (saveOptions.UseTargetMachineFonts)
+                Assert.False(Regex.Match(outDocContents, "@font-face").Success);
+            else
+                Assert.True(Regex.Match(outDocContents,
+                    "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], " +
+                    "url[(]'HtmlFixedSaveOptions.UsingMachineFonts/font001.ttf'[)] format[(]'truetype'[)]; }").Success);
         }
 
         private class ResourceSavingCallback : IResourceSavingCallback
@@ -224,8 +409,7 @@ namespace ApiExamples
                     case ".ttf":
                     case ".woff":
                     {
-                        Assert.Fail(
-                            "'ResourceSavingCallback' is not fired for fonts when 'UseTargetMachineFonts' is true");
+                        Assert.Fail("'ResourceSavingCallback' is not fired for fonts when 'UseTargetMachineFonts' is true");
                         break;
                     }
                 }
@@ -262,6 +446,11 @@ namespace ApiExamples
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.HtmlFixedResourceFolder.html", options);
+
+            string[] resourceFiles = Directory.GetFiles(ArtifactsDir + "HtmlFixedResourceFolderAlias");
+
+            Assert.False(Directory.Exists(ArtifactsDir + "HtmlFixedResourceFolder"));
+            Assert.AreEqual(6, resourceFiles.Count(f => f.EndsWith(".jpeg") || f.EndsWith(".png") || f.EndsWith(".css")));
         }
 
         /// <summary>

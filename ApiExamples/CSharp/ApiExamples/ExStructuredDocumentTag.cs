@@ -12,7 +12,6 @@ using System.Globalization;
 using Aspose.Words;
 using Aspose.Words.Markup;
 using NUnit.Framework;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Aspose.Words.BuildingBlocks;
@@ -77,9 +76,6 @@ namespace ApiExamples
             builder.InsertNode(sdtPlainText);
             builder.InsertNode(sdtRichText);
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
-
             // We can get a collection of StructuredDocumentTags by looking for the document's child nodes of this NodeType
             Assert.AreEqual(NodeType.StructuredDocumentTag, sdtPlainText.NodeType);
 
@@ -111,8 +107,8 @@ namespace ApiExamples
             // Insert content control into the document
             builder.InsertNode(sdtCheckBox);
             //ExEnd
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+
+            doc = DocumentHelper.SaveOpen(doc);
 
             NodeCollection sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
@@ -121,7 +117,7 @@ namespace ApiExamples
             Assert.That(sdt.XmlMapping.StoreItemId, Is.Empty); //Assert that this sdt has no StoreItemId
         }
 
-#if NETFRAMEWORK || NETSTANDARD2_0 || JAVA // because of xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
+#if NET462 || NETCOREAPP2_1 || JAVA // because of xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
         [Test]
         public void Date()
         {
@@ -613,9 +609,8 @@ namespace ApiExamples
 
             // Insert content control into the document
             builder.InsertNode(sdtCheckBox);
-            
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
+
+            doc = DocumentHelper.SaveOpen(doc);
 
             StructuredDocumentTag sdt = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
             Console.WriteLine("The Id of your custom xml part is: " + sdt.XmlMapping.StoreItemId);
@@ -638,9 +633,8 @@ namespace ApiExamples
             }
 
             //ExEnd
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Docx);
 
+            doc = DocumentHelper.SaveOpen(doc);
             sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
             Assert.AreEqual(
@@ -715,6 +709,7 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:CompositeNode.RemoveSmartTags
         //ExFor:CustomXmlProperty
         //ExFor:CustomXmlProperty.#ctor(String,String,String)
         //ExFor:CustomXmlProperty.Name
@@ -759,7 +754,13 @@ namespace ApiExamples
             // Print all the smart tags in our document with a document visitor
             doc.Accept(new SmartTagVisitor());
 
-            doc.Save(ArtifactsDir + "StructuredDocumentTag.SmartTags.docx");
+            // SmartTags are supported by older versions of microsoft Word
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.SmartTags.doc");
+
+            // We can strip a document of all its smart tags with RemoveSmartTags()
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.SmartTag, true).Count);
+            doc.RemoveSmartTags();
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.SmartTag, true).Count);
         }
 
         /// <summary>
@@ -962,7 +963,6 @@ namespace ApiExamples
                                "</Employee>" +
                                "</Company>";
 
-            // Create a blank document
             Document doc = new Document();
 
             // Insert the full XML document as a custom document part

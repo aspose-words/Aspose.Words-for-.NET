@@ -29,7 +29,7 @@ namespace ApiExamples
             //ExFor:RunCollection
             //ExFor:RunCollection.Item(Int32)
             //ExFor:RunCollection.ToArray
-            //ExSummary:Shows how to process revision-related properties of Inline nodes.
+            //ExSummary:Shows how to view revision-related properties of Inline nodes.
             Document doc = new Document(MyDir + "Revision runs.docx");
 
             // This document has 6 revisions

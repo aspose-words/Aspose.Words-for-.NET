@@ -2,6 +2,7 @@ Temp/
 obj/
 classes/
 generated/
+.idea
 *.suo
 *.ide
 applicationhost.config

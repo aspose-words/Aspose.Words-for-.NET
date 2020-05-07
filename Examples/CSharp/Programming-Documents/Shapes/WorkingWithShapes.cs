@@ -73,7 +73,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
         public static void SetShapeLayoutInCell(string dataDir)
         {
             // ExStart:SetShapeLayoutInCell
-
             Document doc = new Document(dataDir + @"LayoutInCell.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 

@@ -47,7 +47,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
         public static void ReadVbaMacros(string dataDir)
         {
             //ExStart:ReadVbaMacros
-            Document doc = new Document(dataDir + "VbaProject_out.docm");
+            Document doc = new Document(dataDir + "Document.dot");
 
             if (doc.VbaProject != null)
             {
@@ -62,16 +62,16 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
         public static void ModifyVbaMacros(string dataDir)
         {
             //ExStart:ModifyVbaMacros
-            Document doc = new Document(dataDir + "VbaProject_out.docm");
+            Document doc = new Document(dataDir + "test.docm");
             VbaProject project = doc.VbaProject;
 
             const string newSourceCode = "Test change source code";
 
             // Choose a module, and set a new source code.
             project.Modules[0].SourceCode = newSourceCode;
+            //ExEnd:ModifyVbaMacros
 
             doc.Save(dataDir + "VbaProject_out.docm");
-            //ExEnd:ModifyVbaMacros
             Console.WriteLine("\nDocument saved successfully.\nFile saved at " + dataDir);
         }
 

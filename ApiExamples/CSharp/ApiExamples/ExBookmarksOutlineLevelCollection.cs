@@ -85,7 +85,7 @@ namespace ApiExamples
             outlineLevels.Clear();
             //ExEnd
 
-            #if NETFRAMEWORK || NETSTANDARD2_0         
+            #if NET462 || NETCOREAPP2_1         
             // Bind pdf with Aspose.Pdf
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "BookmarksOutlineLevelCollection.BookmarkLevels.pdf");

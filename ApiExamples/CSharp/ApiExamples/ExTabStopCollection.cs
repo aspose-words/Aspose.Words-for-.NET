@@ -73,8 +73,6 @@ namespace ApiExamples
             // Each paragraph gets its own TabStopCollection which gets values from the DocumentBuilder's collection
             Assert.AreEqual(paragraphs[0].ParagraphFormat.TabStops, paragraphs[1].ParagraphFormat.TabStops);
             Assert.AreNotSame(paragraphs[0].ParagraphFormat.TabStops, paragraphs[1].ParagraphFormat.TabStops);
-            Assert.AreNotEqual(paragraphs[0].ParagraphFormat.TabStops.GetHashCode(),
-                paragraphs[1].ParagraphFormat.TabStops.GetHashCode());
 
             // A TabStopCollection can point us to TabStops before and after certain positions
             Assert.AreEqual(72.0, tabStops.Before(100.0).Position);

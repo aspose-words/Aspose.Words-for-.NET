@@ -8,9 +8,9 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using Aspose.Words;
+using Aspose.Words.Lists;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -230,13 +230,59 @@ namespace ApiExamples
             doc.Styles.DefaultParagraphFormat.SpaceAfter = 20;
             doc.Styles.DefaultParagraphFormat.Alignment = ParagraphAlignment.Right;
 
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Rtf);
+            doc = DocumentHelper.SaveOpen(doc);
 
             Assert.IsTrue(doc.Styles.DefaultFont.Bold);
             Assert.AreEqual("PMingLiU", doc.Styles.DefaultFont.Name);
             Assert.AreEqual(20, doc.Styles.DefaultParagraphFormat.SpaceAfter);
             Assert.AreEqual(ParagraphAlignment.Right, doc.Styles.DefaultParagraphFormat.Alignment);
+        }
+
+        [Test]
+        public void ParagraphStyleBulleted()
+        {
+            //ExStart
+            //ExFor:StyleCollection
+            //ExFor:DocumentBase.Styles
+            //ExFor:Style
+            //ExFor:Font
+            //ExFor:Style.Font
+            //ExFor:Style.ParagraphFormat
+            //ExFor:Style.ListFormat
+            //ExFor:ParagraphFormat.Style
+            //ExSummary:Shows how to create and use a paragraph style with list formatting.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a paragraph style and specify some formatting for it
+            Style style = doc.Styles.Add(StyleType.Paragraph, "MyStyle1");
+            style.Font.Size = 24;
+            style.Font.Name = "Verdana";
+            style.ParagraphFormat.SpaceAfter = 12;
+
+            // Create a list and make sure the paragraphs that use this style will use this list
+            style.ListFormat.List = doc.Lists.Add(ListTemplate.BulletDefault);
+            style.ListFormat.ListLevelNumber = 0;
+
+            // Apply the paragraph style to the current paragraph in the document and add some text
+            builder.ParagraphFormat.Style = style;
+            builder.Writeln("Hello World: MyStyle1, bulleted.");
+
+            // Change to a paragraph style that has no list formatting
+            builder.ParagraphFormat.Style = doc.Styles["Normal"];
+            builder.Writeln("Hello World: Normal.");
+
+            builder.Document.Save(ArtifactsDir + "Styles.ParagraphStyleBulleted.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Styles.ParagraphStyleBulleted.docx");
+
+            style = doc.Styles["MyStyle1"];
+
+            Assert.AreEqual("MyStyle1", style.Name);
+            Assert.AreEqual(24, style.Font.Size);
+            Assert.AreEqual("Verdana", style.Font.Name);
+            Assert.AreEqual(12.0d, style.ParagraphFormat.SpaceAfter);
         }
 
         [Test]
