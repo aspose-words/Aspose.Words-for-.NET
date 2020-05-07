@@ -46,7 +46,7 @@ namespace ApiExamples
             // Now you can pass your data source into Aspose.Words
             doc.MailMerge.Execute(customersDataSource);
 
-            doc.Save(ArtifactsDir + "MailMergeCustom.CustomDataSource.doc");
+            doc.Save(ArtifactsDir + "MailMergeCustom.CustomDataSource.docx");
         }
 
         /// <summary>

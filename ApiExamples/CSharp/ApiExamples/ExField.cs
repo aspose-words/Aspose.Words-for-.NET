@@ -1063,7 +1063,7 @@ namespace ApiExamples
             Assert.AreEqual(
                 " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"Response from within the field.\" \\o",
                 fieldAsk.GetFieldCode());
-            TestFieldAsk(doc); //ExSkip
+            TestFieldAsk(table, doc); //ExSkip
         }
 
         /// <summary>
@@ -1078,7 +1078,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestFieldAsk(Document doc)
+        private void TestFieldAsk(DataTable dataTable, Document doc)
         {
             doc = DocumentHelper.SaveOpen(doc);
 
@@ -1095,6 +1095,8 @@ namespace ApiExamples
             Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText);
             Assert.AreEqual("Response from within the field.", fieldAsk.DefaultResponse);
             Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge);
+
+            TestUtil.MailMergeMatchesDataTable(dataTable, doc);
         }
 
         [Test]

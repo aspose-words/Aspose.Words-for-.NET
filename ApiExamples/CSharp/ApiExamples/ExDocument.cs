@@ -2737,7 +2737,6 @@ namespace ApiExamples
             Assert.AreEqual(OdsoDataSourceType.Text, odso.DataSourceType);
             Assert.AreEqual('|', odso.ColumnDelimiter);
             Assert.True(odso.FirstRowContainsColumnNames);
-
         }
 
         [Test]
