@@ -14,7 +14,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
             // Load the document from disk.
-            Document doc = new Document(dataDir + "Test File (doc).doc");
+            Document doc = new Document(dataDir + "Test File (doc).docx");
 
             HtmlSaveOptions options = new HtmlSaveOptions();
 
