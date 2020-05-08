@@ -5,8 +5,10 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
@@ -41,12 +43,13 @@ namespace ApiExamples
 
             // To be able to mail merge from your own data source, it must be wrapped
             // into an object that implements the IMailMergeDataSource interface
-            CustomerMailMergeDataSource customersDataSource = new CustomerMailMergeDataSource(customers);
+            CustomerMailMergeDataSource dataSource = new CustomerMailMergeDataSource(customers);
 
             // Now you can pass your data source into Aspose.Words
-            doc.MailMerge.Execute(customersDataSource);
+            doc.MailMerge.Execute(dataSource);
 
             doc.Save(ArtifactsDir + "MailMergeCustom.CustomDataSource.docx");
+            TestCustomDataSource(customers, new Document(ArtifactsDir + "MailMergeCustom.CustomDataSource.docx")); //ExSkip
         }
 
         /// <summary>
@@ -145,6 +148,16 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestCustomDataSource(CustomerList customerList, Document doc)
+        {
+            string[][] mergeData = new string[customerList.Count][];
+
+            for (int i = 0; i < customerList.Count; i++)
+                mergeData[i] = new [] { customerList[i].FullName, customerList[i].Address };
+
+            TestUtil.MailMergeMatchesArray(mergeData, doc);
+        }
+
         //ExStart
         //ExFor:IMailMergeDataSourceRoot
         //ExFor:IMailMergeDataSourceRoot.GetDataSource(String)
@@ -154,7 +167,8 @@ namespace ApiExamples
         public void CustomDataSourceRoot()
         {
             // Create a document with two mail merge regions named "Washington" and "Seattle"
-            Document doc = CreateSourceDocumentWithMailMergeRegions(new string[] { "Washington", "Seattle" });
+            string[] mailMergeRegions = { "Vancouver", "Seattle" };
+            Document doc = CreateSourceDocumentWithMailMergeRegions(mailMergeRegions);
 
             // Create two data sources
             EmployeeList employeesWashingtonBranch = new EmployeeList();
@@ -167,14 +181,15 @@ namespace ApiExamples
 
             // Register our data sources by name in a data source root
             DataSourceRoot sourceRoot = new DataSourceRoot();
-            sourceRoot.RegisterSource("Washington", new EmployeeListMailMergeSource(employeesWashingtonBranch));
-            sourceRoot.RegisterSource("Seattle", new EmployeeListMailMergeSource(employeesSeattleBranch));
+            sourceRoot.RegisterSource(mailMergeRegions[0], new EmployeeListMailMergeSource(employeesWashingtonBranch));
+            sourceRoot.RegisterSource(mailMergeRegions[1], new EmployeeListMailMergeSource(employeesSeattleBranch));
 
             // Since we have consecutive mail merge regions, we would normally have to perform two mail merges
             // However, one mail merge source data root call every relevant data source and merge automatically 
             doc.MailMerge.ExecuteWithRegions(sourceRoot);
 
             doc.Save(ArtifactsDir + "MailMergeCustom.CustomDataSourceRoot.docx");
+            TestCustomDataSourceRoot(mailMergeRegions, sourceRoot, new Document(ArtifactsDir + "MailMergeCustom.CustomDataSourceRoot.docx")); //ExSkip
         }
 
         /// <summary>
@@ -321,5 +336,23 @@ namespace ApiExamples
             private int mRecordIndex;
         }
         //ExEnd
+
+        private void TestCustomDataSourceRoot(string[] registeredSources, DataSourceRoot sourceRoot, Document doc)
+        {
+            string docText = doc.GetText();
+
+            for (int i = 0; i < registeredSources.Length; i++)
+            {
+                EmployeeListMailMergeSource source = (EmployeeListMailMergeSource)sourceRoot.GetDataSource(registeredSources[i]);
+                while (source.MoveNext())
+                {
+                    source.GetValue("FullName", out object fullName);
+                    source.GetValue("Department", out object department);
+
+                    Assert.True(docText.Contains(fullName.ToString()));
+                    Assert.True(docText.Contains(department.ToString()));
+                }
+            }
+        }
     }
 }
