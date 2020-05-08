@@ -1096,7 +1096,7 @@ namespace ApiExamples
             Assert.AreEqual("Response from within the field.", fieldAsk.DefaultResponse);
             Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge);
 
-            TestUtil.MailMergeMatchesDataTable(dataTable, doc);
+            TestUtil.MailMergeMatchesDataTable(dataTable, doc, true);
         }
 
         [Test]

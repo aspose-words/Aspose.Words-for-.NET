@@ -58,7 +58,7 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            TestUtil.MailMergeMatchesArray(new[] { new[] { "James Bond", "MI5 Headquarters", "Milbank", "London" } }, doc);
+            TestUtil.MailMergeMatchesArray(new[] { new[] { "James Bond", "MI5 Headquarters", "Milbank", "London" } }, doc, true);
         }
 
         [Test]
@@ -110,7 +110,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "MailMerge.ExecuteDataReader.docx");
 
-            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.mdb", query, doc);
+            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.mdb", query, doc, true);
         }
 
         //ExStart
@@ -141,7 +141,7 @@ namespace ApiExamples
             // Execute the mail merge and save the document
             doc.MailMerge.ExecuteADO(recordset);
             doc.Save(ArtifactsDir + "MailMerge.ExecuteADO.docx");
-            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.mdb", command, doc); //ExSkip
+            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.mdb", command, doc, true); //ExSkip
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace ApiExamples
             doc.MailMerge.ExecuteWithRegionsADO(recordset, "MergeRegion2");
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx");
-            TestUtil.MailMergeMatchesMultipleQueryResult(DatabaseDir + "Northwind.mdb", new[] { "SELECT FirstName, LastName, City FROM Employees", "SELECT ContactName, Address, City FROM Customers" }, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx")); //ExSkip
+            TestUtil.MailMergeMatchesQueryResultMultiple(DatabaseDir + "Northwind.mdb", new[] { "SELECT FirstName, LastName, City FROM Employees", "SELECT ContactName, Address, City FROM Customers" }, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx"), false); //ExSkip
         }
 
         /// <summary>
@@ -278,12 +278,12 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx");
             //ExEnd
 
-            TestUtil.MailMergeMatchesDataTable(table, new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.docx"));
+            TestUtil.MailMergeMatchesDataTable(table, new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.docx"), true);
 
             DataTable rowAsTable = new DataTable();
             rowAsTable.ImportRow(table.Rows[1]);
 
-            TestUtil.MailMergeMatchesDataTable(rowAsTable, new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx"));
+            TestUtil.MailMergeMatchesDataTable(rowAsTable, new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx"), true);
         }
 
         [Test]
@@ -322,7 +322,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.ExecuteDataView.docx");
             //ExEnd
 
-            TestUtil.MailMergeMatchesDataTable(view.ToTable(), new Document(ArtifactsDir + "MailMerge.ExecuteDataView.docx"));
+            TestUtil.MailMergeMatchesDataTable(view.ToTable(), new Document(ArtifactsDir + "MailMerge.ExecuteDataView.docx"), true);
         }
 
         //ExStart
@@ -377,7 +377,7 @@ namespace ApiExamples
             doc.MailMerge.ExecuteWithRegions(customersAndOrders);
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsNested.docx");
-            TestUtil.MailMergeMatchesDataSet(customersAndOrders, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsNested.docx")); //ExSkip
+            TestUtil.MailMergeMatchesDataSet(customersAndOrders, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsNested.docx"), false); //ExSkip
         }
 
         /// <summary>
@@ -472,7 +472,7 @@ namespace ApiExamples
             dataSet.Tables.Add(tableCities);
             dataSet.Tables.Add(tableFruit);
 
-            TestUtil.MailMergeMatchesDataSet(dataSet, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsConcurrent.docx"));
+            TestUtil.MailMergeMatchesDataSet(dataSet, new Document(ArtifactsDir + "MailMerge.ExecuteWithRegionsConcurrent.docx"), false);
         }
 
         [Test]
@@ -583,11 +583,11 @@ namespace ApiExamples
         private void TestMergeDuplicateRegions(DataTable dataTable, Document doc, bool isMergeDuplicateRegions)
         {
             if (isMergeDuplicateRegions) 
-                TestUtil.MailMergeMatchesDataTable(dataTable, doc);
+                TestUtil.MailMergeMatchesDataTable(dataTable, doc, true);
             else
             {
                 dataTable.Columns.Remove("Column2");
-                TestUtil.MailMergeMatchesDataTable(dataTable, doc);
+                TestUtil.MailMergeMatchesDataTable(dataTable, doc, true);
             }
         }
         
@@ -612,7 +612,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.PreserveUnusedTags.docx");
 
             Assert.AreEqual(doc.GetText().Contains("{{ Column2 }}"), doPreserveUnusedTags);
-            TestUtil.MailMergeMatchesDataTable(dataTable, doc); //ExSkip
+            TestUtil.MailMergeMatchesDataTable(dataTable, doc, true); //ExSkip
         }
 
         /// <summary>
@@ -670,7 +670,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.docx");
 
             Assert.AreEqual(doMergeWholeDocument, doc.GetText().Contains("This QUOTE field is outside of the \"MyTable\" merge region."));
-            TestUtil.MailMergeMatchesDataTable(dataTable, doc); //ExSkip
+            TestUtil.MailMergeMatchesDataTable(dataTable, doc, true); //ExSkip
         }
 
         /// <summary>
@@ -735,7 +735,7 @@ namespace ApiExamples
 
             // Our first region is populated, while our second is safely displayed as unused all across one paragraph
             doc.Save(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx");
-            TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx")); //ExSkip
+            TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx"), true); //ExSkip
         }
 
         /// <summary>
@@ -961,7 +961,7 @@ namespace ApiExamples
 
             // Removing the mapped key/value pairs has no effect on the document because the merge was already done with them in place
             doc.Save(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx");
-            TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx")); //ExSkip
+            TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx"), true); //ExSkip
         }
 
         /// <summary>

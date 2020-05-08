@@ -5,7 +5,6 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -155,7 +154,7 @@ namespace ApiExamples
             for (int i = 0; i < customerList.Count; i++)
                 mergeData[i] = new [] { customerList[i].FullName, customerList[i].Address };
 
-            TestUtil.MailMergeMatchesArray(mergeData, doc);
+            TestUtil.MailMergeMatchesArray(mergeData, doc, true);
         }
 
         //ExStart
@@ -339,7 +338,9 @@ namespace ApiExamples
 
         private void TestCustomDataSourceRoot(string[] registeredSources, DataSourceRoot sourceRoot, Document doc)
         {
-            string docText = doc.GetText();
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("FullName");
+            dataTable.Columns.Add("Department");
 
             for (int i = 0; i < registeredSources.Length; i++)
             {
@@ -349,10 +350,11 @@ namespace ApiExamples
                     source.GetValue("FullName", out object fullName);
                     source.GetValue("Department", out object department);
 
-                    Assert.True(docText.Contains(fullName.ToString()));
-                    Assert.True(docText.Contains(department.ToString()));
+                    dataTable.Rows.Add(new[] { fullName, department });
                 }
             }
+
+            TestUtil.MailMergeMatchesDataTable(dataTable, doc, false);
         }
     }
 }

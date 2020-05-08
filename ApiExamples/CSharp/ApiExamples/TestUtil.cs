@@ -8,6 +8,7 @@
 using System;
 using System.Data;
 using System.Data.OleDb;
+using System.Linq;
 using System.Net;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -18,6 +19,7 @@ using Table = Aspose.Words.Tables.Table;
 using Image =
 #if NET462 || JAVA
 System.Drawing.Image;
+using System.Collections.Generic;
 using System.Data.Odbc;
 #elif NETCOREAPP2_1 || __MOBILE__
 SkiaSharp.SKBitmap;
@@ -30,40 +32,48 @@ namespace ApiExamples
     class TestUtil
     {
         /// <summary>
-        /// Checks whether values of a field's attributes are equal to expected values.
+        /// Checks whether a filename points to a valid image with specified dimensions.
         /// </summary>
         /// <remarks>
-        /// Best used when there are many fields closely being tested and should be avoided if a field has a long field code/result.
+        /// Serves as a way to check that an image file is valid and nonempty without looking up its file size.
         /// </remarks>
-        /// <param name="expectedType">The FieldType that we expect the field to have.</param>
-        /// <param name="expectedFieldCode">The expected output value of GetFieldCode() being called on the field.</param>
-        /// <param name="expectedResult">The field's expected result, which will be the value displayed by it in the document.</param>
-        /// <param name="field">The field that's being tested.</param>
-        internal static void VerifyField(FieldType expectedType, string expectedFieldCode, string expectedResult, Field field)
+        /// <param name="expectedWidth">Expected width of the image, in pixels.</param>
+        /// <param name="expectedHeight">Expected height of the image, in pixels.</param>
+        /// <param name="filename">Local file system filename of the image file.</param>
+        internal static void VerifyImage(int expectedWidth, int expectedHeight, string filename)
         {
-            Assert.AreEqual(expectedType, field.Type);
-            Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
-            Assert.AreEqual(expectedResult, field.Result);
+            try
+            {
+                #if NET462 || JAVA
+                using (Image image = Image.FromFile(filename))
+                #elif NETCOREAPP2_1 || __MOBILE__
+                using (Image image = Image.Decode(filename))
+                #endif
+                {
+                    Assert.AreEqual(expectedWidth, image.Width);
+                    Assert.AreEqual(expectedHeight, image.Height);
+                }
+            }
+            catch (OutOfMemoryException e)
+            {
+                Assert.Fail($"No valid image in this location:\n{filename}");
+            }
         }
 
         /// <summary>
-        /// Checks whether a field contains another complete field as a sibling within its nodes.
+        /// Checks whether an HTTP request sent to the specified address produces an expected web response. 
         /// </summary>
         /// <remarks>
-        /// If two fields have the same immediate parent node and therefore their nodes are siblings,
-        /// the FieldStart of the outer field appears before the FieldStart of the inner node,
-        /// and the FieldEnd of the outer node appears after the FieldEnd of the inner node,
-        /// then the inner field is considered to be nested within the outer field. 
+        /// Serves as a notification of any URLs used in code examples becoming unusable in the future.
         /// </remarks>
-        /// <param name="innerField">The field that we expect to be fully within outerField.</param>
-        /// <param name="outerField">The field that we to contain innerField.</param>
-        internal static void FieldsAreNested(Field innerField, Field outerField)
+        /// <param name="expectedHttpStatusCode">Expected result status code of a request HTTP "HEAD" method performed on the web address.</param>
+        /// <param name="webAddress">URL where the request will be sent.</param>
+        internal static void VerifyWebResponseStatusCode(HttpStatusCode expectedHttpStatusCode, string webAddress)
         {
-            CompositeNode innerFieldParent = innerField.Start.ParentNode;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webAddress);
+            request.Method = "HEAD";
 
-            Assert.True(innerFieldParent == outerField.Start.ParentNode);
-            Assert.True(innerFieldParent.ChildNodes.IndexOf(innerField.Start) > innerFieldParent.ChildNodes.IndexOf(outerField.Start));
-            Assert.True(innerFieldParent.ChildNodes.IndexOf(innerField.End) < innerFieldParent.ChildNodes.IndexOf(outerField.End));
+            Assert.AreEqual(expectedHttpStatusCode, ((HttpWebResponse)request.GetResponse()).StatusCode);
         }
 
         /// <summary>
@@ -100,110 +110,29 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Checks whether an output document from a mail merge operation contains the results of all SQL queries performed on a database.
+        /// Checks whether a document produced during a mail merge contains every element of every table produced by a list of consecutive SQL queries on a database.
         /// </summary>
-        /// <param name="dbFilename">Local system filename of a database file.</param>
-        /// <param name="sqlQueries">Collection of SQL queries.</param>
-        /// <param name="doc">Output document resulting from a mail merge operation.</param>
-        internal static void MailMergeMatchesMultipleQueryResult(string dbFilename, string[] sqlQueries, Document doc)
+        /// <param name="dbFilename">Full local file system filename of a .mdb database file.</param>
+        /// <param name="sqlQueries">List of SQL queries performed on the database all of whose results we expect to find in the document.</param>
+        /// <param name="doc">Document created during a mail merge.</param>
+        /// <param name="onePagePerRow">True if the mail merge produced a document with one page per row in the data source.</param>
+        internal static void MailMergeMatchesQueryResultMultiple(string dbFilename, string[] sqlQueries, Document doc, bool onePagePerRow)
+        {
+            foreach (string query in sqlQueries)
+                MailMergeMatchesQueryResult(dbFilename, query, doc, onePagePerRow);
+        }
+
+        /// <summary>
+        /// Checks whether a document produced during a mail merge contains every element of a table produced by an SQL query on a database.
+        /// </summary>
+        /// <param name="dbFilename">Full local file system filename of a .mdb database file.</param>
+        /// <param name="sqlQuery">SQL query performed on the database all of whose results we expect to find in the document.</param>
+        /// <param name="doc">Document created during a mail merge.</param>
+        /// <param name="onePagePerRow">True if the mail merge produced a document with one page per row in the data source.</param>
+        internal static void MailMergeMatchesQueryResult(string dbFilename, string sqlQuery, Document doc, bool onePagePerRow)
         {
             #if NET462 || JAVA
-            string docText = doc.GetText();
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + dbFilename;
-
-            using (OdbcConnection connection = new OdbcConnection())
-            {
-                connection.ConnectionString = connectionString;
-
-                foreach (string query in sqlQueries)
-                {
-                    connection.Open();
-
-                    OdbcCommand command = connection.CreateCommand();
-                    command.CommandText = query;
-
-                    using (OdbcDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection))
-                    {
-                        while (reader.Read())
-                            for (int i = 0; i < reader.FieldCount; i++)
-                            {
-                                string readerValue = reader[i] is decimal ? ((decimal)reader[i]).ToString("G29") : reader[i].ToString().Trim().Replace("\n", string.Empty);
-                                Assert.True(docText.Contains(readerValue));
-                            }
-                    }
-                }
-            }
-            #endif
-        }
-
-        /// <summary>
-        /// Checks whether a mail merge operation produces a result that matches the contents of a DataTable.
-        /// </summary>
-        /// <remarks>
-        /// Only suitable for mail merge operations producing a single page per data source row.
-        /// </remarks>
-        /// <param name="dataTable">Table with values we expect to see in the document, one page per row.</param>
-        /// <param name="doc">Output document resulting from a mail merge operation.</param>
-        internal static void MailMergeMatchesDataTable(DataTable dataTable, Document doc)
-        {
-            string[] docTextByPages = doc.GetText().Trim().Split(new[] { ControlChar.PageBreak }, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (DataRow r in dataTable.Rows)
-                foreach (string item in r.ItemArray)
-                    Assert.True(docTextByPages[dataTable.Rows.IndexOf(r)].Contains(item));
-        }
-
-        /// <summary>
-        /// Checks whether a mail merge operation produces a result that matches the contents of every DataTable in a DataSet.
-        /// </summary>
-        /// <param name="dataSet">Set of tables with values we expect to see in the document.</param>
-        /// <param name="doc">Output document resulting from a mail merge operation.</param>
-        internal static void MailMergeMatchesDataSet(DataSet dataSet, Document doc)
-        {
-            string docText = doc.GetText();
-
-            foreach (DataTable dataTable in dataSet.Tables)
-            {
-                foreach (DataRow r in dataTable.Rows)
-                    foreach (string item in r.ItemArray)
-                        Assert.True(docText.Contains(item));
-            }
-        }
-
-        /// <summary>
-        /// Checks whether a mail merge operation produces a result that matches the contents of a 2D string array.
-        /// Each element of the outer array corresponds to a page in the mail merge output document.
-        /// Each element of each inner array corresponds to a different MERGEFIELD from the same page. 
-        /// </summary>
-        /// <remarks>
-        /// Only suitable for mail merge operations producing a single page per data source row.
-        /// </remarks>
-        /// <param name="expectedResult">Rows and columns of the mail merge data source which we expect to see in the document.</param>
-        /// <param name="doc">Output document resulting from a mail merge operation.</param>
-        internal static void MailMergeMatchesArray(string[][] expectedResult, Document doc)
-        {
-            string[] docTextByPages = doc.GetText().Trim().Split(new[] { ControlChar.PageBreak }, StringSplitOptions.RemoveEmptyEntries);
-
-            for (int i = 0; i < expectedResult.Length; i++)
-                for (int j = 0; j < expectedResult[i].Length; j++)
-                    Assert.True(docTextByPages[i].Contains(expectedResult[i][j]));
-        }
-
-        /// <summary>
-        /// Checks whether a mail merge operation produces a result that matches the result of an SQL query run on a database file.
-        /// Each row in the query result table corresponds to a page in the mail merge output document.
-        /// Multiple columns in each row correspond to different MERGEFIELDs from the same page. 
-        /// </summary>
-        /// <remarks>
-        /// Only suitable for mail merge operations producing a single page per data source row.
-        /// </remarks>
-        /// <param name="dbFilename">Local file system filename of a Microsoft Access database (.mdb) file.</param>
-        /// <param name="sqlQuery">A query run on the provided database.</param>
-        /// <param name="doc">Output document resulting from a mail merge operation.</param>
-        internal static void MailMergeMatchesQueryResult(string dbFilename, string sqlQuery, Document doc)
-        {
-            #if NET462 || JAVA
-            string[] docTextByPages = doc.GetText().Trim().Split(new[] { ControlChar.PageBreak }, StringSplitOptions.RemoveEmptyEntries);
+            List<string[]> expectedStrings = new List<string[]>(); 
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + dbFilename;
 
             using (OdbcConnection connection = new OdbcConnection())
@@ -216,65 +145,122 @@ namespace ApiExamples
 
                 using (OdbcDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection))
                 {
-                    int pageIndex = 0;
-
                     while (reader.Read())
                     {
+                        string[] row = new string[reader.FieldCount];
                         for (int i = 0; i < reader.FieldCount; i++)
                         {
-                            string readerValue = reader[i] is decimal ? ((decimal)reader[i]).ToString("G29") : reader[i].ToString();
-                            Assert.True(docTextByPages[pageIndex].Contains(readerValue));
+                            row[i] = reader[i] is decimal ? ((decimal)reader[i]).ToString("G29") : reader[i].ToString().Trim().Replace("\n", string.Empty);
                         }
-                        pageIndex++;
+                        expectedStrings.Add(row);
                     }
                 }
             }
+
+            MailMergeMatchesArray(expectedStrings.ToArray(), doc, onePagePerRow);
             #endif
         }
 
         /// <summary>
-        /// Checks whether an HTTP request sent to the specified address produces an expected web response. 
+        /// Checks whether a document produced during a mail merge contains every element of every DataTable in a DataSet.
         /// </summary>
-        /// <remarks>
-        /// Serves as a notification of any URLs used in code examples becoming unusable in the future.
-        /// </remarks>
-        /// <param name="expectedHttpStatusCode">Expected result status code of a request HTTP "HEAD" method performed on the web address.</param>
-        /// <param name="webAddress">URL where the request will be sent.</param>
-        internal static void VerifyWebResponseStatusCode(HttpStatusCode expectedHttpStatusCode, string webAddress)
+        /// <param name="expectedResult">DataSet containing DataTables which contain values that we expect the document to contain.</param>
+        /// <param name="doc">Document created during a mail merge.</param>
+        /// <param name="onePagePerRow">True if the mail merge produced a document with one page per row in the data source.</param>
+        internal static void MailMergeMatchesDataSet(DataSet dataSet, Document doc, bool onePagePerRow)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webAddress);
-            request.Method = "HEAD";
-
-            Assert.AreEqual(expectedHttpStatusCode, ((HttpWebResponse)request.GetResponse()).StatusCode);
+            foreach (DataTable table in dataSet.Tables)
+                MailMergeMatchesDataTable(table, doc, onePagePerRow);
         }
 
         /// <summary>
-        /// Checks whether a filename points to a valid image with specified dimensions.
+        /// Checks whether a document produced during a mail merge contains every element of a DataTable.
+        /// </summary>
+        /// <param name="expectedResult">Values from the mail merge data source that we expect the document to contain.</param>
+        /// <param name="doc">Document created during a mail merge.</param>
+        /// <param name="onePagePerRow">True if the mail merge produced a document with one page per row in the data source.</param>
+        internal static void MailMergeMatchesDataTable(DataTable expectedResult, Document doc, bool onePagePerRow)
+        {
+            string[][] expectedStrings = new string[expectedResult.Rows.Count][];
+
+            for (int i = 0; i < expectedResult.Rows.Count; i++)
+                expectedStrings[i] = Array.ConvertAll(expectedResult.Rows[i].ItemArray, x => x.ToString());
+            
+            MailMergeMatchesArray(expectedStrings, doc, onePagePerRow);
+        }
+
+        /// <summary>
+        /// Checks whether a document produced during a mail merge contains every element of an array of arrays of strings.
         /// </summary>
         /// <remarks>
-        /// Serves as a way to check that an image file is valid and nonempty without looking up its file size.
+        /// Only suitable for rectangular arrays.
         /// </remarks>
-        /// <param name="expectedWidth">Expected width of the image, in pixels.</param>
-        /// <param name="expectedHeight">Expected height of the image, in pixels.</param>
-        /// <param name="filename">Local file system filename of the image file.</param>
-        internal static void VerifyImage(int expectedWidth, int expectedHeight, string filename)
+        /// <param name="expectedResult">Values from the mail merge data source that we expect the document to contain.</param>
+        /// <param name="doc">Document created during a mail merge.</param>
+        /// <param name="onePagePerRow">True if the mail merge produced a document with one page per row in the data source.</param>
+        internal static void MailMergeMatchesArray(string[][] expectedResult, Document doc, bool onePagePerRow)
         {
             try
             {
-                #if NET462 || JAVA
-                using (Image image = Image.FromFile(filename))
-                #elif NETCOREAPP2_1 || __MOBILE__
-                using (Image image = Image.Decode(filename))
-                #endif
+                if (onePagePerRow)
                 {
-                    Assert.AreEqual(expectedWidth, image.Width);
-                    Assert.AreEqual(expectedHeight, image.Height);
+                    string[] docTextByPages = doc.GetText().Trim().Split(new[] { ControlChar.PageBreak }, StringSplitOptions.RemoveEmptyEntries);
+
+                    for (int i = 0; i < expectedResult.Length; i++)
+                        for (int j = 0; j < expectedResult[0].Length; j++)
+                            if (!docTextByPages[i].Contains(expectedResult[i][j])) throw new ArgumentException(expectedResult[i][j]);
+                }
+                else
+                {
+                    string docText = doc.GetText();
+
+                    for (int i = 0; i < expectedResult.Length; i++)
+                        for (int j = 0; j < expectedResult[0].Length; j++)
+                            if (!docText.Contains(expectedResult[i][j])) throw new ArgumentException(expectedResult[i][j]);
+
                 }
             }
-            catch (OutOfMemoryException e)
+            catch (ArgumentException e)
             {
-                Assert.Fail($"No valid image in this location:\n{filename}");
+                Assert.Fail($"String \"{e.Message}\" not found in {(doc.OriginalFileName == null ? "a virtual document" : doc.OriginalFileName.Split('\\').Last())}.");
             }
+        }
+        
+        /// <summary>
+        /// Checks whether values of a field's attributes are equal to expected values.
+        /// </summary>
+        /// <remarks>
+        /// Best used when there are many fields closely being tested and should be avoided if a field has a long field code/result.
+        /// </remarks>
+        /// <param name="expectedType">The FieldType that we expect the field to have.</param>
+        /// <param name="expectedFieldCode">The expected output value of GetFieldCode() being called on the field.</param>
+        /// <param name="expectedResult">The field's expected result, which will be the value displayed by it in the document.</param>
+        /// <param name="field">The field that's being tested.</param>
+        internal static void VerifyField(FieldType expectedType, string expectedFieldCode, string expectedResult, Field field)
+        {
+            Assert.AreEqual(expectedType, field.Type);
+            Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
+            Assert.AreEqual(expectedResult, field.Result);
+        }
+
+        /// <summary>
+        /// Checks whether a field contains another complete field as a sibling within its nodes.
+        /// </summary>
+        /// <remarks>
+        /// If two fields have the same immediate parent node and therefore their nodes are siblings,
+        /// the FieldStart of the outer field appears before the FieldStart of the inner node,
+        /// and the FieldEnd of the outer node appears after the FieldEnd of the inner node,
+        /// then the inner field is considered to be nested within the outer field. 
+        /// </remarks>
+        /// <param name="innerField">The field that we expect to be fully within outerField.</param>
+        /// <param name="outerField">The field that we to contain innerField.</param>
+        internal static void FieldsAreNested(Field innerField, Field outerField)
+        {
+            CompositeNode innerFieldParent = innerField.Start.ParentNode;
+
+            Assert.True(innerFieldParent == outerField.Start.ParentNode);
+            Assert.True(innerFieldParent.ChildNodes.IndexOf(innerField.Start) > innerFieldParent.ChildNodes.IndexOf(outerField.Start));
+            Assert.True(innerFieldParent.ChildNodes.IndexOf(innerField.End) < innerFieldParent.ChildNodes.IndexOf(outerField.End));
         }
 
         /// <summary>
