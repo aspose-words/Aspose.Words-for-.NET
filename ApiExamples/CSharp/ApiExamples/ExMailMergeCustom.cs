@@ -129,7 +129,7 @@ namespace ApiExamples
                 if (!IsEof)
                     mRecordIndex++;
 
-                return (!IsEof);
+                return !IsEof;
             }
 
             public IMailMergeDataSource GetChildDataSource(string tableName)
@@ -281,7 +281,7 @@ namespace ApiExamples
                 if (!IsEof)
                     mRecordIndex++;
 
-                return (!IsEof);
+                return !IsEof;
             }
 
             private bool IsEof
