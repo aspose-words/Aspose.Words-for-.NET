@@ -112,6 +112,9 @@ namespace ApiExamples
         /// <summary>
         /// Checks whether a document produced during a mail merge contains every element of every table produced by a list of consecutive SQL queries on a database.
         /// </summary>
+        /// <remarks>
+        /// Currently, database types that cannot be represented by a string or a decimal are not checked for in the document.
+        /// </remarks>
         /// <param name="dbFilename">Full local file system filename of a .mdb database file.</param>
         /// <param name="sqlQueries">List of SQL queries performed on the database all of whose results we expect to find in the document.</param>
         /// <param name="doc">Document created during a mail merge.</param>
@@ -125,6 +128,9 @@ namespace ApiExamples
         /// <summary>
         /// Checks whether a document produced during a mail merge contains every element of a table produced by an SQL query on a database.
         /// </summary>
+        /// <remarks>
+        /// Currently, database types that cannot be represented by a string or a decimal are not checked for in the document.
+        /// </remarks>
         /// <param name="dbFilename">Full local file system filename of a .mdb database file.</param>
         /// <param name="sqlQuery">SQL query performed on the database all of whose results we expect to find in the document.</param>
         /// <param name="doc">Document created during a mail merge.</param>
@@ -148,10 +154,21 @@ namespace ApiExamples
                     while (reader.Read())
                     {
                         string[] row = new string[reader.FieldCount];
+
                         for (int i = 0; i < reader.FieldCount; i++)
-                        {
-                            row[i] = reader[i] is decimal ? ((decimal)reader[i]).ToString("G29") : reader[i].ToString().Trim().Replace("\n", string.Empty);
-                        }
+                            switch (reader[i])
+                            {
+                                case decimal d:
+                                    row[i] = d.ToString("G29");
+                                    break;
+                                case string s:
+                                    row[i] = s.Trim().Replace("\n", string.Empty);
+                                    break;
+                                default:
+                                    row[i] = string.Empty;
+                                    break;
+                            }
+
                         expectedStrings.Add(row);
                     }
                 }
