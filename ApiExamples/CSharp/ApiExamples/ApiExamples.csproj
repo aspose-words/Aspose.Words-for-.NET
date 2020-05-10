@@ -68,7 +68,6 @@
     <Content Include="ExMetered.cs" />
     <Content Include="ExMossDoc2Pdf.cs" />
     <Content Include="ExMossRtf2Docx.cs" />
-    <Content Include="ExNestedMailMergeCustom.cs" />
     <Content Include="ExNode.cs" />
     <Content Include="ExOdtSaveOptions.cs" />
     <Content Include="ExOoxmlSaveOptions.cs" />

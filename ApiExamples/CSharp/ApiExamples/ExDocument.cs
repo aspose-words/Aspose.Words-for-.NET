@@ -1463,11 +1463,12 @@ namespace ApiExamples
         public void TableStyleToDirectFormatting()
         {
             //ExStart
+            //ExFor:CompositeNode.GetChild
             //ExFor:Document.ExpandTableStylesToDirectFormatting
             //ExSummary:Shows how to expand the formatting from styles onto the rows and cells of the table as direct formatting.
             Document doc = new Document(MyDir + "Tables.docx");
-            
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
             // First print the color of the cell shading. This should be empty as the current shading
             // is stored in the table style
             double cellShadingBefore = table.FirstRow.RowFormat.Height;

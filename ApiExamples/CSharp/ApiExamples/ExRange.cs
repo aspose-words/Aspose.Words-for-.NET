@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Aspose.Words;
+using Aspose.Words.Fields;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
 
@@ -139,6 +140,31 @@ namespace ApiExamples
             options.IgnoreFields = false;
             doc.Range.Replace(regex, "*", options);
             Assert.AreEqual(doc.GetText(), "\u0013INCLUDETEXT\u0014T*xt in fi*ld\u0015\f");
+            //ExEnd
+        }
+
+        [Test]
+        public void UpdateFieldsInRange()
+        {
+            //ExStart
+            //ExFor:Range.UpdateFields
+            //ExSummary:Shows how to update document fields in the body of the first section only.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a field that will display the value in the document's body text
+            FieldDocProperty field = (FieldDocProperty)builder.InsertField(" DOCPROPERTY Category");
+
+            // Set the value of the property that should be displayed by the field
+            doc.BuiltInDocumentProperties.Category = "MyCategory";
+
+            // Some field types need to be explicitly updated before they can display their expected values
+            Assert.AreEqual(string.Empty, field.Result);
+
+            // Update all the fields in the first section of the document, which includes the field we just inserted
+            doc.FirstSection.Range.UpdateFields();
+
+            Assert.AreEqual("MyCategory", field.Result);
             //ExEnd
         }
 
