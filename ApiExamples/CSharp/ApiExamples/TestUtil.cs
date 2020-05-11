@@ -8,6 +8,8 @@
 using System;
 using System.Data;
 using System.Data.OleDb;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using Aspose.Words;
@@ -242,7 +244,43 @@ namespace ApiExamples
                 Assert.Fail($"String \"{e.Message}\" not found in {(doc.OriginalFileName == null ? "a virtual document" : doc.OriginalFileName.Split('\\').Last())}.");
             }
         }
-        
+
+        /// <summary>
+        /// Checks whether a file inside a document's OOXML package contains a string.
+        /// </summary>
+        /// <param name="expected">The string we are looking for.</param>
+        /// <param name="docFilename">Local file system filename of the document.</param>
+        /// <param name="docPartFilename">Name of the file within the document opened as a .zip that is expected to contain the string.</param>
+        internal static void DocZipContainsString(string expected, string docFilename, string docPartFilename)
+        {
+            char[] expectedSequence = expected.ToCharArray();
+
+            using (ZipArchive archive = ZipFile.Open(docFilename, ZipArchiveMode.Update))
+            {
+                ZipArchiveEntry entry = archive.Entries.First(e => e.Name == docPartFilename);
+
+                using (Stream stream = entry.Open())
+                {
+                    long sequenceMatchLength = 0;
+                    while (stream.Position < stream.Length)
+                    {
+                        char c = (char)stream.ReadByte();
+
+                        if (c == expectedSequence[sequenceMatchLength])
+                            sequenceMatchLength++;
+                        else
+                            sequenceMatchLength = 0;
+
+                        if (sequenceMatchLength >= expectedSequence.Length)
+                            return;
+                    }
+                }
+
+                Assert.Fail($"String \"{(expected.Length <= 100 ? expected : expected.Substring(0, 100) + "...")}\"" +
+                            $" not found in {docPartFilename} in {docFilename.Split('\\').Last()}");
+            }
+        }
+
         /// <summary>
         /// Checks whether values of a field's attributes are equal to expected values.
         /// </summary>
