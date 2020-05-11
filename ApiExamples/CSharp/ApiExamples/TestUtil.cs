@@ -251,7 +251,7 @@ namespace ApiExamples
         /// <param name="expected">The string we are looking for.</param>
         /// <param name="docFilename">Local file system filename of the document.</param>
         /// <param name="docPartFilename">Name of the file within the document opened as a .zip that is expected to contain the string.</param>
-        internal static void DocZipContainsString(string expected, string docFilename, string docPartFilename)
+        internal static void DocPackageFileContainsString(string expected, string docFilename, string docPartFilename)
         {
             char[] expectedSequence = expected.ToCharArray();
 

@@ -39,10 +39,10 @@ namespace ApiExamples
             //ExEnd
 
             if (doExportToOdt11Specs)
-                TestUtil.DocZipContainsString("<text:span text:style-name=\"T118_1\" >Combobox<text:s/></text:span>", 
+                TestUtil.DocPackageFileContainsString("<text:span text:style-name=\"T118_1\" >Combobox<text:s/></text:span>", 
                     ArtifactsDir + "OdtSaveOptions.MeasureUnit.odt", "content.xml");
             else
-                TestUtil.DocZipContainsString("<text:span text:style-name=\"T118_1\" >Combobox<text:s/></text:span>" +
+                TestUtil.DocPackageFileContainsString("<text:span text:style-name=\"T118_1\" >Combobox<text:s/></text:span>" +
                                               "<text:span text:style-name=\"T118_2\" >" +
                                               "<text:drop-down><text:label text:value=\"Line 1\" ></text:label>" +
                                               "<text:label text:value=\"Line 2\" ></text:label>" +
