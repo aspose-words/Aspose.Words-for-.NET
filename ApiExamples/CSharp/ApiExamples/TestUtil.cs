@@ -264,9 +264,7 @@ namespace ApiExamples
                     long sequenceMatchLength = 0;
                     while (stream.Position < stream.Length)
                     {
-                        char c = (char)stream.ReadByte();
-
-                        if (c == expectedSequence[sequenceMatchLength])
+                        if ((char)stream.ReadByte() == expectedSequence[sequenceMatchLength])
                             sequenceMatchLength++;
                         else
                             sequenceMatchLength = 0;
@@ -275,10 +273,10 @@ namespace ApiExamples
                             return;
                     }
                 }
-
-                Assert.Fail($"String \"{(expected.Length <= 100 ? expected : expected.Substring(0, 100) + "...")}\"" +
-                            $" not found in {docPartFilename} in {docFilename.Split('\\').Last()}");
             }
+
+            Assert.Fail($"String \"{(expected.Length <= 100 ? expected : expected.Substring(0, 100) + "...")}\"" +
+                        $" not found in {docPartFilename} in {docFilename.Split('\\').Last()}");
         }
 
         /// <summary>
