@@ -1,0 +1,172 @@
+﻿
+@model  LandingPageModel
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container-fluid header1 header2 minify-header appfamily-header">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<h1>@Model.Resources["WordsPageMainTitle"] </h1>
+				<h2>@Model.Resources["WordsPageSubHeading"]  </h2>
+			</div>
+			<div class="col-md-4 tc">
+				<img class=" col-xs-12" src="../img/aspose_words-brand.png" alt="Aspose.Words" width="320" />
+			</div>
+			<!--/col6 -->
+		</div>
+		<!--/row -->
+	</div>
+	<!--/container -->
+</div>
+<div class="container-fluid productfamilypage bg-white pdb-5">
+	<div class="row">
+		<div class="container tc">
+			<div class="clearfix">&nbsp;</div>
+			<div class="clearfix">&nbsp;</div>
+			<h3>@string.Format(@Model.Resources["AsposeProductFamilyInclude"], @Model.Resources["AsposeWords"]) </h3>
+			<div class="clearfix">&nbsp;</div>
+			<div class="clearfix">&nbsp;</div>
+
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_editor-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/editor"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>@Model.Resources["EditorAPPName"]</em></span><em>@Model.Resources["wordsEditorDesc"]</em></a>
+				</div>
+			</div>
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_conversion-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/conversion"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>@Model.Resources["Conversionh4"]</em></span><em>@Model.Resources["wordsConversionDesc"]</em></a>
+				</div>
+
+			</div>
+
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_viewer-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="words/viewer"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>@Model.Resources["Viewerh4"]</em></span><em>@Model.Resources["wordsViewerDesc"]</em></a>
+				</div>
+			</div>
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_comparison-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/comparison"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>@Model.Resources["ComparisonAPPName"]</em></span><em>@Model.Resources["wordsComparisonDesc"]</em></a>
+				</div>
+			</div>
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_words-splitter-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/splitter"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>@Model.Resources["SplitterAPPName"]</em></span><em>@Model.Resources["wordsSplitterDesc"] </em></a>
+				</div>
+			</div>
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_metadata-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/metadata"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"] <em>Metadata</em></span><em>@Model.Resources["wordsMetadataDesc"]</em></a>
+				</div>
+
+			</div>
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_assembly-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/assembly"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"] <em>Assembly</em></span><em>Assemble content inside Microsoft Word or OpenOffice documents.</em></a>
+				</div>
+
+			</div>
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_merger-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/merger"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>@Model.Resources["MergerAPPName"]</em></span><em>@Model.Resources["wordsMergerDesc"]</em></a>
+				</div>
+			</div>
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_unlock-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/unlock"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>@Model.Resources["UnlockAPPName"]</em></span><em>@Model.Resources["wordsUnlockDesc"]</em></a>
+				</div>
+			</div>
+
+
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_watermark-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/watermark"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>Watermark</em></span><em>Easily & quickly add watermarks to Word documents without leaving your browser.</em></a>
+				</div>
+			</div>
+
+
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_protect-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/protect"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>@Model.Resources["ProtectAPPName"]</em></span><em>@Model.Resources["wordsProtectDesc"]</em></a>
+				</div>
+			</div>
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_annotation-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/annotation"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>@Model.Resources["AnnotationAPPName"]</em></span><em>@Model.Resources["wordsAnnotationDesc"]</em></a>
+				</div>
+			</div>
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_signature-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/signature"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>Signature</em></span><em>Add text, image or drawing based signatures to Word documents.</em></a>
+				</div>
+			</div>
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_redaction-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/redaction"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>@Model.Resources["RedactionAPPName"]</em></span><em>@Model.Resources["wordsRedactionDesc"]</em></a>
+				</div>
+			</div>
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_parser-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/parser"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>@Model.Resources["ParserAPPName"]</em></span><em>@Model.Resources["wordsParserDesc"]</em></a>
+				</div>
+			</div>
+			<div class="col-lg-4 productfamily_box">
+				<div class="productfamilytitle">
+					<div class="imgblock">
+						<img src="../img/aspose_search-app.png" alt="Aspose.Words for .NET" />
+					</div>
+					<a href="/words/search"><span class="spanclass">@Model.Resources["AsposeWords"] @Model.Resources["AsposeProductFor"]<em>@Model.Resources["SearchAPPName"] </em></span><em>@Model.Resources["wordsSearchDesc"] </em></a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+<div class="spacer">&nbsp;</div>

@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Aspose.Words;
@@ -20,25 +21,103 @@ namespace ApiExamples
     internal class ExHtmlLoadOptions : ApiExampleBase
     {
         [Test]
-        public void SupportVml()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void SupportVml(bool doSupportVml)
         {
             //ExStart
             //ExFor:HtmlLoadOptions.#ctor
             //ExFor:HtmlLoadOptions.SupportVml
-            //ExFor:HtmlLoadOptions.WebRequestTimeout
-            //ExSummary:Shows how to parse HTML document with conditional comments like "<!--[if gte vml 1]>" and "<![if !vml]>".
+            //ExSummary:Shows how to support VML while parsing a document.
             HtmlLoadOptions loadOptions = new HtmlLoadOptions();
 
-            // If value is true, then we parse "<!--[if gte vml 1]>", else parse "<![if !vml]>"
-            loadOptions.SupportVml = true;
+            // If value is true, then we take VML code into account while parsing the loaded document
+            loadOptions.SupportVml = doSupportVml;
 
-            // Wait for a response, when loading external resources
-            loadOptions.WebRequestTimeout = 1000;
+            // This document contains an image within "<!--[if gte vml 1]>" tags, and another different image within "<![if !vml]>" tags
+            // Upon loading the document, only the contents of the first tag will be shown if VML is enabled,
+            // and only the contents of the second tag will be shown otherwise
+            Document doc = new Document(MyDir + "VML conditional.htm", loadOptions);
 
-            Document doc = new Document(MyDir + "Conditional comments.htm", loadOptions);
-            doc.Save(ArtifactsDir + "HtmlLoadOptions.SupportVml.docx");
+            // Only one of the two unique images will be loaded, depending on the value of loadOptions.SupportVml
+            Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            if (doSupportVml)
+                TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
+            else
+                TestUtil.VerifyImage(400, 400, ImageType.Png, imageShape);
             //ExEnd
         }
+
+        //ExStart
+        //ExFor:HtmlLoadOptions.WebRequestTimeout
+        //ExSummary:Shows how to set a time limit for web requests that will occur when loading an html document which links external resources.
+        [Test] //ExSkip
+        public void WebRequestTimeout()
+        {
+            // Create a new HtmlLoadOptions object and verify its timeout threshold for a web request
+            HtmlLoadOptions options = new HtmlLoadOptions();
+
+            // When loading an Html document with resources externally linked by a web address URL,
+            // web requests that fetch these resources that fail to complete within this time limit will be aborted
+            Assert.AreEqual(100000, options.WebRequestTimeout);
+
+            // Set a WarningCallback that will record all warnings that occur during loading
+            ListDocumentWarnings warningCallback = new ListDocumentWarnings();
+            options.WarningCallback = warningCallback;
+
+            // Load such a document and verify that a shape with image data has been created,
+            // provided the request to get that image took place within the timeout limit
+            string html = $@"
+                <html>
+                    <img src=""{AsposeLogoUrl}"" alt=""Aspose logo"" style=""width:400px;height:400px;"">
+                </html>
+            ";
+
+            Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), options);
+            Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(7498, imageShape.ImageData.ImageBytes.Length);
+            Assert.AreEqual(0, warningCallback.Warnings().Count);
+
+            // Set an unreasonable timeout limit and load the document again
+            options.WebRequestTimeout = 0;
+            doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), options);
+
+            // If a request fails to complete within the timeout limit, a shape with image data will still be produced
+            // However, the image will be the red 'x' that commonly signifies missing images
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Assert.AreEqual(924, imageShape.ImageData.ImageBytes.Length);
+
+            // A timeout like this will also accumulate warnings that can be picked up by a WarningCallback implementation
+            Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[0].Source);
+            Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[0].WarningType);
+            Assert.AreEqual($"The resource \'{AsposeLogoUrl}\' couldn't be loaded.", warningCallback.Warnings()[0].Description);
+
+            Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[1].Source);
+            Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[1].WarningType);
+            Assert.AreEqual("Image has been replaced with a placeholder.", warningCallback.Warnings()[1].Description);
+
+            doc.Save(ArtifactsDir + "HtmlLoadOptions.WebRequestTimeout.docx");
+        }
+
+        /// <summary>
+        /// Stores all warnings occuring during a document loading operation in a list.
+        /// </summary>
+        private class ListDocumentWarnings : IWarningCallback
+        {
+            public void Warning(WarningInfo info)
+            {
+                mWarnings.Add(info);
+            }
+
+            public List<WarningInfo> Warnings() { 
+                return mWarnings;
+            }
+
+            private readonly List<WarningInfo> mWarnings = new List<WarningInfo>();
+        }
+        //ExEnd
 
         [Test]
         public void EncryptedHtml()

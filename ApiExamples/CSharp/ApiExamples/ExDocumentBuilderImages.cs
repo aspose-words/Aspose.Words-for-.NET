@@ -9,10 +9,10 @@ using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
+#if NET462 || JAVA
 using System.Drawing;
 using System.Drawing.Imaging;
-#else
+#elif NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -47,6 +47,53 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromStream.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilderImages.InsertImageFromStream.docx");
+
+            Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(300.0d, imageShape.Height);
+            Assert.AreEqual(300.0d, imageShape.Width);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Inline, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.AreEqual(108.0d, imageShape.Height);
+            Assert.AreEqual(187.5d, imageShape.Width);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Inline, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            Assert.AreEqual(100.0d, imageShape.Height);
+            Assert.AreEqual(200.0d, imageShape.Width);
+            Assert.AreEqual(100.0d, imageShape.Left);
+            Assert.AreEqual(100.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Square, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Margin, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
         }
 
         [Test]
@@ -64,18 +111,65 @@ namespace ApiExamples
             builder.InsertImage(ImageDir + "Logo.jpg");
 
             builder.Writeln("\nInserted image from string with a custom size: ");
-            builder.InsertImage(ImageDir + "Logo.jpg", ConvertUtil.PixelToPoint(250),
+            builder.InsertImage(ImageDir + "Transparent background logo.png", ConvertUtil.PixelToPoint(250),
                 ConvertUtil.PixelToPoint(144));
 
             builder.Writeln("\nInserted image from string using relative positions: ");
-            builder.InsertImage(ImageDir + "Logo.jpg", RelativeHorizontalPosition.Margin, 100, 
+            builder.InsertImage(ImageDir + "Windows Metafile.wmf", RelativeHorizontalPosition.Margin, 100, 
                 RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
 
             doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromString.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilderImages.InsertImageFromString.docx");
+
+            Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(300.0d, imageShape.Height);
+            Assert.AreEqual(300.0d, imageShape.Width);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Inline, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.AreEqual(108.0d, imageShape.Height);
+            Assert.AreEqual(187.5d, imageShape.Width);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Inline, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImage(400, 400, ImageType.Png, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            Assert.AreEqual(100.0d, imageShape.Height);
+            Assert.AreEqual(200.0d, imageShape.Width);
+            Assert.AreEqual(100.0d, imageShape.Left);
+            Assert.AreEqual(100.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Square, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Margin, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImage(1600, 1600, ImageType.Wmf, imageShape);
+            Assert.AreEqual(400.0d, imageShape.ImageData.ImageSize.HeightPoints);
+            Assert.AreEqual(400.0d, imageShape.ImageData.ImageSize.WidthPoints);
         }
 
-        #if NETFRAMEWORK || JAVA
+        #if NET462 || JAVA
         [Test]
         public void InsertImageFromImageClass()
         {
@@ -100,6 +194,53 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageClass.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageClass.docx");
+
+            Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(300.0d, imageShape.Height);
+            Assert.AreEqual(300.0d, imageShape.Width);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Inline, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.AreEqual(108.0d, imageShape.Height);
+            Assert.AreEqual(187.5d, imageShape.Width);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Inline, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            Assert.AreEqual(100.0d, imageShape.Height);
+            Assert.AreEqual(200.0d, imageShape.Width);
+            Assert.AreEqual(100.0d, imageShape.Left);
+            Assert.AreEqual(100.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Square, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Margin, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
         }
 
         [Test]
@@ -133,8 +274,55 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromByteArray.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilderImages.InsertImageFromByteArray.docx");
+
+            Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(300.0d, imageShape.Height, 0.1d);
+            Assert.AreEqual(300.0d, imageShape.Width, 0.1d);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Inline, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImage(400, 400, ImageType.Png, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.AreEqual(108.0d, imageShape.Height);
+            Assert.AreEqual(187.5d, imageShape.Width);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Inline, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImage(400, 400, ImageType.Png, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            Assert.AreEqual(100.0d, imageShape.Height);
+            Assert.AreEqual(200.0d, imageShape.Width);
+            Assert.AreEqual(100.0d, imageShape.Left);
+            Assert.AreEqual(100.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Square, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Margin, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImage(400, 400, ImageType.Png, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
         }
-#else
+#elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         public void InsertImageFromImageClassNetStandard2()
         {

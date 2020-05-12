@@ -263,6 +263,7 @@ namespace Aspose.Words.Examples.CSharp
 
             //// Charts
             //// =====================================================
+             ChartNumberFormat.Run();
             // CreateColumnChart.Run();
             // InsertScatterChart.Run();
             // InsertAreaChart.Run();

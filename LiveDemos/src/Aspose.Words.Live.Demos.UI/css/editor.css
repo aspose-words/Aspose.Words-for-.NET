@@ -1,0 +1,89 @@
+﻿.navbar-inverse .navbar-text {
+    color: white;
+}
+
+#wrapper {
+    max-width: 900px;
+    display: block;
+    position: relative;
+    margin: auto;
+    height: 100%;
+    word-wrap: break-word;
+}
+
+.editoraspose-editor span {
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+#trumbowyg-icons, #trumbowyg-icons svg {
+    height: 0;
+    width: 0
+}
+
+#trumbowyg-icons {
+    overflow: hidden;
+    visibility: hidden
+}
+
+@media (min-width: 768px) {
+    .navbar-text.navbar-center {
+        position: absolute;
+        left: 50%;
+        transform: translatex(-50%);
+    }
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+ }
+
+#page-loading {
+    position: fixed;
+    top: 50px;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+#htmlloader {
+    display: block;
+    margin: 80px auto;
+}
+
+#loader {
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #449d44;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    left: 50%;
+    top: 50%;
+    margin: 150px auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#alert {
+    margin: auto;
+    max-width: 600px;
+}
+#alert > p {
+    text-align: center;
+}
+
+.closebutton {
+    margin: 7px -5px 0 10px;
+    background-color: #333;
+    height: 35px;
+}

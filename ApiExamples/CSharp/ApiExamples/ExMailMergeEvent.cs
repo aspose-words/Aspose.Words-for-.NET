@@ -7,6 +7,7 @@
 
 using System.Collections.Generic;
 using System.Data;
+using System.Data.OleDb;
 using System.Drawing;
 using System.IO;
 using Aspose.Words;
@@ -14,9 +15,6 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
-#if NETFRAMEWORK || JAVA
-using System.Data.OleDb;
-#endif
 
 namespace ApiExamples
 {
@@ -39,7 +37,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void InsertHtml()
         {
-            Document doc = new Document(MyDir + "Field MERGEFIELD.docx");
+            Document doc = new Document(MyDir + "Field sample - MERGEFIELD.docx");
 
             // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertHtml();
@@ -340,7 +338,7 @@ namespace ApiExamples
             Assert.IsTrue(logoImage.HasImage);
         }
 
-        #if NETFRAMEWORK || JAVA
+#if  !__MOBILE__
         //ExStart
         //ExFor:MailMerge.FieldMergingCallback
         //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)
@@ -360,7 +358,7 @@ namespace ApiExamples
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
 
             // Open a database connection
-            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            string connString = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={DatabaseDir + "Northwind.mdb"};";
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();
 

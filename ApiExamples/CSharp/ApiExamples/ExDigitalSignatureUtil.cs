@@ -45,9 +45,8 @@ namespace ApiExamples
             using (Stream stream = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Open))
             {
                 digitalSignatures = DigitalSignatureUtil.LoadSignatures(stream);
+                Assert.AreEqual(0, digitalSignatures.Count);
             }
-
-            Assert.AreEqual(0, digitalSignatures.Count);
             //ExEnd
         }
         
@@ -74,6 +73,19 @@ namespace ApiExamples
                 }
             }
             //ExEnd
+
+            using (Stream stream = new FileStream(ArtifactsDir + "DigitalSignatureUtil.SignDocument.docx", FileMode.Open))
+            {
+                DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(stream);
+                Assert.AreEqual(1, digitalSignatures.Count);
+
+                DigitalSignature signature = digitalSignatures[0];
+
+                Assert.True(signature.IsValid);
+                Assert.AreEqual(DigitalSignatureType.XmlDsig, signature.SignatureType);
+                Assert.AreEqual(signOptions.SignTime.ToString(), signature.SignTime.ToString());
+                Assert.AreEqual("My comment", signature.Comments);
+            }
         }
 
         [Test]
@@ -142,15 +154,12 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions("docPassword");
             Assert.AreEqual(signOptions.DecryptionPassword,loadOptions.Password);
 
-            Document signedDoc = new Document(outputFileName, loadOptions);
-
             // Check that encrypted document was successfully signed
+            Document signedDoc = new Document(outputFileName, loadOptions);
             DigitalSignatureCollection signatures = signedDoc.DigitalSignatures;
-            if (signatures.IsValid && (signatures.Count > 0))
-            {
-                //The document was signed successfully
-                Assert.Pass();
-            }
+
+            Assert.AreEqual(1, signatures.Count);
+            Assert.True(signatures.IsValid);
         }
 
         [Test]

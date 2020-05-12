@@ -1,0 +1,75 @@
+﻿@model ViewModel
+
+<div class="saveas">
+    <div class="saveformat dropdown">
+        <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" id="signatureType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @Model.Resources["SignatureTypeDrawing"]
+        </button>
+        <div class="dropdown-menu dropdown-menu__signature" aria-labelledby="signatureType">
+            <a class="dropdown-item" href="#" onclick="setSignatureType(this)" data-val="drawing">@Model.Resources["SignatureTypeDrawing"]</a>
+            <a class="dropdown-item" href="#" onclick="setSignatureType(this)" data-val="text">@Model.Resources["SignatureTypeText"]</a>
+            <a class="dropdown-item" href="#" onclick="setSignatureType(this)" data-val="image">@Model.Resources["SignatureTypeImage"]</a>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+
+<div id="drawingSettings">
+    <div class="colorpicker" id="drawingColor" runat="server">
+        <div class="color-wrapper">
+            <input type="text" name="custom_color" placeholder="@ViewBag.MainColor" value="@ViewBag.MainColor" id="pickcolorDrawing" class="call-picker" />
+            <ul class="color-picker" id="color-pickerDraw" style="display: none"></ul>
+        </div>
+    </div>
+
+    <div style="height: 200px;">
+        <br />
+        <div style="width: 350px; height: 150px; display: inline-block">
+            <div style="position: relative; left: 354px; width: 12px; height: 12px; text-align: right; top: -22px; font-weight: bolder; cursor: pointer; font-size: 35px; border-radius: 15px;"
+                 onclick="drawCanvas.clearSignature();">
+                &times;
+            </div>
+            <canvas id="signCanvas" width="350" height="150" style="background-color: white; border-radius: 15px; touch-action: none;"></canvas>
+            <br />
+        </div>
+        <br />
+    </div>
+</div>
+
+<div id="textSettings" style="display: none">
+    <div class="watermark" style="margin-bottom: 0">
+        <textarea id="signText" class="form-control" placeholder="@Model.Resources["AddSignatureTextPlaceholder"]"></textarea>
+    </div>
+    <br />
+    <br />
+    <div class="colorpicker">
+        <div class="color-wrapper">
+            <input type="text" name="custom_color" placeholder="@ViewBag.MainColor" value="@ViewBag.MainColor" id="pickcolorText" class="call-picker" />
+            <div class="color-picker" id="color-pickerText" style="display: none"></div>
+        </div>
+    </div>
+</div>
+
+<div id="imageSettings" style="display: none">
+    <div class="filedropdown">
+        <div class="filedrop" style="background-image: none; background-color: #F2F2F2;">
+            <label class="dz-message needsclick">@Model.Resources["DropOrUploadImageFile"]</label>
+            <input type="file" id="fileUploadImageInput"
+                   accept="@Model.Resources["AddSignatureImageFileExtenstions"].Replace("|.", ",.")"/>
+            <br />
+            <div id="fileUploadImage" style="position: relative; z-index: 5;">
+                <span class="filename">
+                    <a>
+                        <label for="fileUploadImageInput" class="custom-file-upload"></label>
+                        <i class="fa fa-times" onclick='removefileimage()'></i>
+                    </a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+<br />

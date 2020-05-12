@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -19,8 +20,8 @@ namespace ApiExamples
     /// </summary>
     public class ApiExampleBase
     {
-        [SetUp]
-        public void SetUp()
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
         {
             if (CheckForSkipMono() && IsRunningOnMono())
             {
@@ -37,8 +38,14 @@ namespace ApiExamples
                 Directory.CreateDirectory(ArtifactsDir);
         }
 
-        [TearDown]
-        public void TearDown()
+        [SetUp]
+        public void SetUp()
+        {
+            Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
+        }
+
+        [OneTimeTearDown]
+        public void OneTimeTearDown()
         {
             if (!CheckForSkipTearDown())
             {

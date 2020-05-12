@@ -51,6 +51,7 @@ namespace ApiExamples
             // Once the visiting is complete, we can retrieve the result of the operation,
             // that in this example, has accumulated in the visitor
             Console.WriteLine(visitor.GetText());
+            TestDocStructureToText(visitor); //ExSkip
         }
 
         /// <summary>
@@ -185,7 +186,7 @@ namespace ApiExamples
             public override VisitorAction VisitSubDocument(SubDocument subDocument)
             {
                 IndentAndAppendLine("[SubDocument]");
-
+                
                 return VisitorAction.Continue;
             }
 
@@ -204,6 +205,22 @@ namespace ApiExamples
             private readonly StringBuilder mBuilder;
         }
         //ExEnd
+
+        private void TestDocStructureToText(DocStructurePrinter visitor)
+        {
+            string visitorText = visitor.GetText();
+
+            Assert.True(visitorText.Contains("[Document start]"));
+            Assert.True(visitorText.Contains("[Document end]"));
+            Assert.True(visitorText.Contains("[Section start]"));
+            Assert.True(visitorText.Contains("[Section end]"));
+            Assert.True(visitorText.Contains("[Body start]"));
+            Assert.True(visitorText.Contains("[Body end]"));
+            Assert.True(visitorText.Contains("[Paragraph start]"));
+            Assert.True(visitorText.Contains("[Paragraph end]"));
+            Assert.True(visitorText.Contains("[Run]"));
+            Assert.True(visitorText.Contains("[SubDocument]"));
+        }
 
         //ExStart
         //ExFor:Cell.Accept(DocumentVisitor)
@@ -238,6 +255,7 @@ namespace ApiExamples
             // Once the visiting is complete, we can retrieve the result of the operation,
             // that in this example, has accumulated in the visitor
             Console.WriteLine(visitor.GetText());
+            TestTableToText(visitor); //ExSkip
         }
 
         /// <summary>
@@ -384,6 +402,19 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestTableToText(TableInfoPrinter visitor)
+        {
+            string visitorText = visitor.GetText();
+
+            Assert.True(visitorText.Contains("[Table start]"));
+            Assert.True(visitorText.Contains("[Table end]"));
+            Assert.True(visitorText.Contains("[Row start]"));
+            Assert.True(visitorText.Contains("[Row end]"));
+            Assert.True(visitorText.Contains("[Cell start]"));
+            Assert.True(visitorText.Contains("[Cell end]"));
+            Assert.True(visitorText.Contains("[Run]"));
+        }
+
         //ExStart
         //ExFor:DocumentVisitor.VisitCommentStart(Comment)
         //ExFor:DocumentVisitor.VisitCommentEnd(Comment)
@@ -406,6 +437,7 @@ namespace ApiExamples
             // Once the visiting is complete, we can retrieve the result of the operation,
             // that in this example, has accumulated in the visitor
             Console.WriteLine(visitor.GetText());
+            TestCommentsToText(visitor); //ExSkip
         }
 
         /// <summary>
@@ -506,6 +538,17 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestCommentsToText(CommentInfoPrinter visitor)
+        {
+            string visitorText = visitor.GetText();
+
+            Assert.True(visitorText.Contains("[Comment range start]"));
+            Assert.True(visitorText.Contains("[Comment range end]"));
+            Assert.True(visitorText.Contains("[Comment start]"));
+            Assert.True(visitorText.Contains("[Comment end]"));
+            Assert.True(visitorText.Contains("[Run]"));
+        }
+
         //ExStart
         //ExFor:DocumentVisitor.VisitFieldStart
         //ExFor:DocumentVisitor.VisitFieldEnd
@@ -527,6 +570,7 @@ namespace ApiExamples
             // Once the visiting is complete, we can retrieve the result of the operation,
             // that in this example, has accumulated in the visitor
             Console.WriteLine(visitor.GetText());
+            TestFieldToText(visitor); //ExSkip
         }
 
         /// <summary>
@@ -612,6 +656,16 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestFieldToText(FieldInfoPrinter visitor)
+        {
+            string visitorText = visitor.GetText();
+
+            Assert.True(visitorText.Contains("[Field start]"));
+            Assert.True(visitorText.Contains("[Field end]"));
+            Assert.True(visitorText.Contains("[FieldSeparator]"));
+            Assert.True(visitorText.Contains("[Run]"));
+        }
+
         //ExStart
         //ExFor:DocumentVisitor.VisitHeaderFooterStart(HeaderFooter)
         //ExFor:DocumentVisitor.VisitHeaderFooterEnd(HeaderFooter)
@@ -640,7 +694,8 @@ namespace ApiExamples
             // An alternative way of visiting a document's header/footers section-by-section is by accessing the collection
             // We can also turn it into an array
             HeaderFooter[] headerFooters = doc.FirstSection.HeadersFooters.ToArray();
-            Assert.AreEqual(6, headerFooters.Length);
+            Assert.AreEqual(3, headerFooters.Length);
+            TestHeaderFooterToText(visitor); //ExSkip
         }
 
         /// <summary>
@@ -713,6 +768,20 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestHeaderFooterToText(HeaderFooterInfoPrinter visitor)
+        {
+            string visitorText = visitor.GetText();
+
+            Assert.True(visitorText.Contains("[HeaderFooter start] HeaderFooterType: HeaderPrimary"));
+            Assert.True(visitorText.Contains("[HeaderFooter end]"));
+            Assert.True(visitorText.Contains("[HeaderFooter start] HeaderFooterType: HeaderFirst"));
+            Assert.True(visitorText.Contains("[HeaderFooter start] HeaderFooterType: HeaderEven"));
+            Assert.True(visitorText.Contains("[HeaderFooter start] HeaderFooterType: FooterPrimary"));
+            Assert.True(visitorText.Contains("[HeaderFooter start] HeaderFooterType: FooterFirst"));
+            Assert.True(visitorText.Contains("[HeaderFooter start] HeaderFooterType: FooterEven"));
+            Assert.True(visitorText.Contains("[Run]"));
+        }
+
         //ExStart
         //ExFor:DocumentVisitor.VisitEditableRangeEnd(EditableRangeEnd)
         //ExFor:DocumentVisitor.VisitEditableRangeStart(EditableRangeStart)
@@ -736,6 +805,7 @@ namespace ApiExamples
             // Once the visiting is complete, we can retrieve the result of the operation,
             // that in this example, has accumulated in the visitor
             Console.WriteLine(visitor.GetText());
+            TestEditableRangeToText(visitor); //ExSkip
         }
 
         /// <summary>
@@ -809,6 +879,15 @@ namespace ApiExamples
             private readonly StringBuilder mBuilder;
         }
         //ExEnd
+        
+        private void TestEditableRangeToText(EditableRangeInfoPrinter visitor)
+        {
+            string visitorText = visitor.GetText();
+
+            Assert.True(visitorText.Contains("[EditableRange start]"));
+            Assert.True(visitorText.Contains("[EditableRange end]"));
+            Assert.True(visitorText.Contains("[Run]"));
+        }
 
         //ExStart
         //ExFor:DocumentVisitor.VisitFootnoteEnd(Footnote)
@@ -831,6 +910,7 @@ namespace ApiExamples
             // Once the visiting is complete, we can retrieve the result of the operation,
             // that in this example, has accumulated in the visitor
             Console.WriteLine(visitor.GetText());
+            TestFootnoteToText(visitor); //ExSkip
         }
 
         /// <summary>
@@ -903,6 +983,15 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestFootnoteToText(FootnoteInfoPrinter visitor)
+        {
+            string visitorText = visitor.GetText();
+
+            Assert.True(visitorText.Contains("[Footnote start] Type: Footnote"));
+            Assert.True(visitorText.Contains("[Footnote end]"));
+            Assert.True(visitorText.Contains("[Run]"));
+        }
+
         //ExStart
         //ExFor:DocumentVisitor.VisitOfficeMathEnd(Math.OfficeMath)
         //ExFor:DocumentVisitor.VisitOfficeMathStart(Math.OfficeMath)
@@ -926,6 +1015,7 @@ namespace ApiExamples
             // Once the visiting is complete, we can retrieve the result of the operation,
             // that in this example, has accumulated in the visitor
             Console.WriteLine(visitor.GetText());
+            TestOfficeMathToText(visitor); //ExSkip
         }
 
         /// <summary>
@@ -998,6 +1088,22 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestOfficeMathToText(OfficeMathInfoPrinter visitor)
+        {
+            string visitorText = visitor.GetText();
+
+            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: OMathPara"));
+            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: OMath"));
+            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: Argument"));
+            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: Supercript"));
+            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: SuperscriptPart"));
+            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: Fraction"));
+            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: Numerator"));
+            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: Denominator"));
+            Assert.True(visitorText.Contains("[OfficeMath end]"));
+            Assert.True(visitorText.Contains("[Run]"));
+        }
+
         //ExStart
         //ExFor:DocumentVisitor.VisitSmartTagEnd(Markup.SmartTag)
         //ExFor:DocumentVisitor.VisitSmartTagStart(Markup.SmartTag)
@@ -1018,6 +1124,7 @@ namespace ApiExamples
             // Once the visiting is complete, we can retrieve the result of the operation,
             // that in this example, has accumulated in the visitor
             Console.WriteLine(visitor.GetText());
+            TestSmartTagToText(visitor); //ExEnd
         }
 
         /// <summary>
@@ -1090,6 +1197,22 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestSmartTagToText(SmartTagInfoPrinter visitor)
+        {
+            string visitorText = visitor.GetText();
+
+            Assert.True(visitorText.Contains("[SmartTag start] Name: address"));
+            Assert.True(visitorText.Contains("[SmartTag start] Name: Street"));
+            Assert.True(visitorText.Contains("[SmartTag start] Name: PersonName"));
+            Assert.True(visitorText.Contains("[SmartTag start] Name: title"));
+            Assert.True(visitorText.Contains("[SmartTag start] Name: GivenName"));
+            Assert.True(visitorText.Contains("[SmartTag start] Name: Sn"));
+            Assert.True(visitorText.Contains("[SmartTag start] Name: stockticker"));
+            Assert.True(visitorText.Contains("[SmartTag start] Name: date"));
+            Assert.True(visitorText.Contains("[SmartTag end]"));
+            Assert.True(visitorText.Contains("[Run]"));
+        }
+
         //ExStart
         //ExFor:StructuredDocumentTag.Accept(DocumentVisitor)
         //ExFor:DocumentVisitor.VisitStructuredDocumentTagEnd(Markup.StructuredDocumentTag)
@@ -1111,6 +1234,7 @@ namespace ApiExamples
             // Once the visiting is complete, we can retrieve the result of the operation,
             // that in this example, has accumulated in the visitor
             Console.WriteLine(visitor.GetText());
+            TestStructuredDocumentTagToText(visitor); //ExSkip
         }
 
         /// <summary>
@@ -1180,5 +1304,13 @@ namespace ApiExamples
             private readonly StringBuilder mBuilder;
         }
         //ExEnd
+
+        private void TestStructuredDocumentTagToText(StructuredDocumentTagInfoPrinter visitor)
+        {
+            string visitorText = visitor.GetText();
+
+            Assert.True(visitorText.Contains("[StructuredDocumentTag start]"));
+            Assert.True(visitorText.Contains("[StructuredDocumentTag end]"));
+        }
     }
 }

@@ -1097,6 +1097,7 @@ namespace ApiExamples
             //ExFor:Table.Rows
             //ExFor:Table.FirstRow
             //ExFor:CellFormat.ClearFormatting
+            //ExFor:CompositeNode.HasChildNodes
             //ExSummary:Shows how to combine the rows from two tables into one.
             // Load the document
             Document doc = new Document(MyDir + "Tables.docx");

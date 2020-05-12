@@ -25,12 +25,12 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             //ExportDocumentStructure(dataDir);
             //PdfImageComppression(dataDir);
             UpdateIfLastPrinted(dataDir);
+            EffectsRendering(dataDir);
         }
 
         public static void EscapeUriInPdf(String dataDir)
         {
             // ExStart:EscapeUriInPdf
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // The path to the documents directory.
             Document doc = new Document(dataDir + "EscapeUri.docx");
 
@@ -46,7 +46,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void ExportHeaderFooterBookmarks(String dataDir)
         {
             // ExStart:ExportHeaderFooterBookmarks
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // The path to the documents directory.
             Document doc = new Document(dataDir + "TestFile.docx");
 
@@ -63,7 +62,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void ScaleWmfFontsToMetafileSize(String dataDir)
         {
             // ExStart:ScaleWmfFontsToMetafileSize
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // The path to the documents directory.
             Document doc = new Document(dataDir + "MetafileRendering.docx");
 
@@ -85,7 +83,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void AdditionalTextPositioning(string dataDir)
         {
             // ExStart:AdditionalTextPositioning
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // The path to the documents directory.
             Document doc = new Document(dataDir + "TestFile.docx");
 
@@ -101,7 +98,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void ConversionToPDF17(string dataDir)
         {
             // ExStart:ConversionToPDF17
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // The path to the documents directory.
             Document originalDoc = new Document(dataDir + "Rendering.doc");
 
@@ -118,7 +114,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void DownsamplingImages(string dataDir)
         {
             // ExStart:DownsamplingImages
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Open a document that contains images 
             Document doc = new Document(dataDir + "Rendering.doc");
 
@@ -140,7 +135,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void SaveToPdfWithOutline(string dataDir)
         {
             // ExStart:SaveToPdfWithOutline
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Open a document
             Document doc = new Document(dataDir + "Rendering.doc");
 
@@ -155,7 +149,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void CustomPropertiesExport(string dataDir)
         {
             // ExStart:CustomPropertiesExport
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Open a document
             Document doc = new Document();
 
@@ -174,7 +167,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void ExportDocumentStructure(string dataDir)
         {
             // ExStart:ExportDocumentStructure
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Open a document
             Document doc = new Document(dataDir + "Paragraphs.docx");
 
@@ -191,7 +183,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void PdfImageComppression(string dataDir)
         {
             // ExStart:PdfImageComppression
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Open a document
             Document doc = new Document(dataDir + "SaveOptions.PdfImageCompression.rtf");
 
@@ -221,7 +212,6 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         public static void UpdateIfLastPrinted(string dataDir)
         {
             // ExStart:UpdateIfLastPrinted
-            // For complete examples and data files, please go to https://github.com/aspose-words/Aspose.Words-for-.NET
             // Open a document
             Document doc = new Document(dataDir + "Rendering.doc");
 
@@ -230,6 +220,31 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 
             doc.Save(dataDir + "PdfSaveOptions.UpdateIfLastPrinted.pdf", saveOptions);
             // ExEnd:UpdateIfLastPrinted
+        }
+
+        public static void EffectsRendering(string dataDir)
+        {
+            // ExStart:EffectsRendering
+            // Open a document
+            Document doc = new Document(dataDir + "Rendering.doc");
+
+            SaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced;
+            
+            doc.Save(dataDir, saveOptions);
+            // ExEnd:EffectsRendering
+        }
+
+        public static void SetImageInterpolation(string dataDir)
+        {
+            // ExStart:SetImageInterpolation
+            Document doc = new Document(dataDir);
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.InterpolateImages = true;
+            
+            doc.Save(dataDir, saveOptions);
+            // ExEnd:SetImageInterpolation
         }
     }
 }

@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<title>@ViewBag.PageTitle</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="description" content="@ViewBag.MetaDescription" />
+	<meta name="theme-color" content="#3C7DE7" />
+
+	@if (!string.IsNullOrEmpty(ViewBag.CanonicalTag))
+	{
+		@Html.Raw(ViewBag.CanonicalTag)
+	}
+	<link href="@Url.Content("~/img/favicon.ico")" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+
+	<!-- Bootstrap & Font CSS -->
+	<link rel="stylesheet" href="https://cms.dynabic.com/templates/aspose/css/bootstrap.css?v=331" type="text/css" />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700" type="text/css" />
+
+	<!-- Common CSS -->
+	<link rel="stylesheet" href="https://cms.dynabic.com/templates/aspose/css/common.css" type="text/css" />
+	<link rel="stylesheet" href="/css/error404.css" type="text/css" />
+
+	<!-- Dynabic.Menu CSS -->
+	<script src="https://menu.containerize.com/Scripts/Containerize.Menu.min.js"></script>
+	<link href="https://cms.admin.containerize.com/templates/aspose/css/AsposePtyLtdMenu.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://cms.admin.containerize.com/templates/aspose/css/font-awesome.css" type="text/css" />
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+
+	<link rel="stylesheet" href="/css/asposeapp.css" type="text/css" />
+	@if (IsSectionDefined("styles"))
+	{
+		@RenderSection("styles", false)
+	}
+
+	@if (ViewBag.SaveAsComponent)
+	{
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/css/select2.min.css" rel="stylesheet" type="text/css" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.10/js/select2.full.min.js"></script>
+	}
+
+	@if (ViewBag.JsonLd != null)
+	{
+		<script type="application/ld+json">
+			@Html.Raw(ViewBag.JsonLd)
+		</script>
+	}
+
+
+
+</head>
+<body>
+	<div id='DynabicMenuInnerDiv'></div>
+
+	@RenderBody()
+
+	<div id='DynabicMenuFooter'></div>
+
+	<script>
+
+		LoadMenu("AsposeApp");
+	</script>
+
+	@Scripts.Render("~/bundles/jquery")
+
+	@Scripts.Render("~/scripts/common/base.js")
+	@Scripts.Render("~/scripts/common/filedrop.js")
+
+	@if (IsSectionDefined("scripts"))
+	{
+		@RenderSection("scripts", false)
+	}
+	@if (ViewBag.SaveAsComponent)
+	{
+		<script type="text/javascript">
+			$(document).ready(function () {
+				$('#saveAs').select2();
+				var val = $('#saveAs option:eq(0)').val();
+				$('#saveAs').val(val);
+				$('#saveAs').change();
+			});
+		</script>
+	}
+</body>
+
+</html>

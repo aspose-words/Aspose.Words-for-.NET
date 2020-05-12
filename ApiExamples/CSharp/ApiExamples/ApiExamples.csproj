@@ -1,240 +1,156 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.Net.Compilers.3.5.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.3.5.0\build\Microsoft.Net.Compilers.props')" />
-  <Import Project="..\packages\NUnit3TestAdapter.3.16.1\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.16.1\build\net35\NUnit3TestAdapter.props')" />
-  <Import Project="..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E36A8762-870C-4319-8473-43DC762F996F}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ApiExamples</RootNamespace>
-    <AssemblyName>ApiExamples</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
+    <TargetFrameworks>net462;netcoreapp2.1</TargetFrameworks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFRAMEWORK</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NETFRAMEWORK</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
     <PlatformTarget>x86</PlatformTarget>
-    <RegisterForComInterop>false</RegisterForComInterop>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net462|AnyCPU'">
     <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
     <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+    <Content Include="ApiExampleBase.cs" />
+    <Content Include="ExBookmarksOutlineLevelCollection.cs" />
+    <Content Include="ExComHelper.cs" />
+    <Content Include="CustomBarcodeGenerator.cs" />
+    <Content Include="DocumentHelper.cs" />
+    <Content Include="ExAbsolutePositionTab.cs" />
+    <Content Include="ExBookmarks.cs" />
+    <Content Include="ExBorder.cs" />
+    <Content Include="ExBorderCollection.cs" />
+    <Content Include="ExBuildingBlocks.cs" />
+    <Content Include="ExBuildVersion.cs" />
+    <Content Include="ExCellFormat.cs" />
+    <Content Include="ExCharts.cs" />
+    <Content Include="ExComment.cs" />
+    <Content Include="ExCompatibilityOptions.cs" />
+    <Content Include="ExControlChar.cs" />
+    <Content Include="ExDocSaveOptions.cs" />
+    <Content Include="ExFieldOptions.cs" />
+    <Content Include="ExHtmlLoadOptions.cs" />
+    <Content Include="ExDigitalSignatureCollection.cs" />
+    <Content Include="ExDigitalSignatureUtil.cs" />
+    <Content Include="ExDocument.cs" />
+    <Content Include="ExDocumentBase.cs" />
+    <Content Include="ExDocumentBuilder.cs" />
+    <Content Include="ExDocumentBuilderImages.cs" />
+    <Content Include="ExDrawing.cs" />
+    <Content Include="ExEditableRange.cs" />
+    <Content Include="ExField.cs" />
+    <Content Include="ExFile.cs" />
+    <Content Include="ExFont.cs" />
+    <Content Include="ExFormFields.cs" />
+    <Content Include="ExHeaderFooter.cs" />
+    <Content Include="ExHtmlFixedSaveOptions.cs" />
+    <Content Include="ExHtmlSaveOptions.cs" />
+    <Content Include="ExHyphenation.cs" />
+    <Content Include="ExImage.cs" />
+    <Content Include="ExImageSaveOptions.cs" />
+    <Content Include="ExInline.cs" />
+    <Content Include="ExInlineStory.cs" />
+    <Content Include="ExNodeImporter.cs" />
+    <Content Include="ExLists.cs" />
+    <Content Include="ExMailMerge.cs" />
+    <Content Include="ExMailMergeCustom.cs" />
+    <Content Include="ExMailMergeEvent.cs" />
+    <Content Include="ExMetered.cs" />
+    <Content Include="ExMossDoc2Pdf.cs" />
+    <Content Include="ExMossRtf2Docx.cs" />
+    <Content Include="ExNestedMailMergeCustom.cs" />
+    <Content Include="ExNode.cs" />
+    <Content Include="ExOdtSaveOptions.cs" />
+    <Content Include="ExOoxmlSaveOptions.cs" />
+    <Content Include="ExPageSetup.cs" />
+    <Content Include="ExParagraph.cs" />
+    <Content Include="ExPclSaveOptions.cs" />
+    <Content Include="ExPdfSaveOptions.cs" />
+    <Content Include="ExProperties.cs" />
+    <Content Include="ExRange.cs" />
+    <Content Include="ExRenameMergeFields.cs" />
+    <Content Include="ExRendering.cs" />
+    <Content Include="ExReplaceHyperlinks.cs" />
+    <Content Include="ExReportingEngine.cs" />
+    <Content Include="ExRtfSaveOptions.cs" />
+    <Content Include="ExSavingCallback.cs" />
+    <Content Include="ExSection.cs" />
+    <Content Include="ExShape.cs" />
+    <Content Include="ExSignDocumentCustom.cs" />
+    <Content Include="ExStructuredDocumentTag.cs" />
+    <Content Include="ExStyles.cs" />
+    <Content Include="ExTable.cs" />
+    <Content Include="ExTableColumn.cs" />
+    <Content Include="ExTabStopCollection.cs" />
+    <Content Include="ExRtfLoadOptions.cs" />
+    <Content Include="ExThemes.cs" />
+    <Content Include="ExTxtLoadOptions.cs" />
+    <Content Include="ExTxtSaveOptions.cs" />
+    <Content Include="ExUtilityClasses.cs" />
+    <Content Include="ExVariableCollection.cs" />
+    <Content Include="ExDocumentVisitor.cs" />
+    <Content Include="ExViewOptions.cs" />
+    <Content Include="ExWarningInfoCollection.cs" />
+    <Content Include="ExXamlFixedSaveOptions.cs" />
+    <Content Include="ExXamlFlowSaveOptions.cs" />
+    <Content Include="ExXpsSaveOptions.cs" />
+    <Content Include="ExSvgSaveOptions.cs" />
+    <Content Include="ExPsSaveOptions.cs" />
+    <Content Include="TestData\TestBuilders\ColorItemTestBuilder.cs" />
+    <Content Include="TestData\TestBuilders\DocumentTestBuilder.cs" />
+    <Content Include="TestData\TestBuilders\ImageTestBuilder.cs" />
+    <Content Include="TestData\TestBuilders\NumericTestBuilder.cs" />
+    <Content Include="TestData\Common.cs" />
+    <Content Include="TestData\TestClasses\ClientTestClass.cs" />
+    <Content Include="TestData\TestClasses\ColorItemTestClass.cs" />
+    <Content Include="TestData\TestClasses\ContractTestClass.cs" />
+    <Content Include="TestData\TestClasses\DocumentTestClass.cs" />
+    <Content Include="TestData\TestClasses\ImageTestClass.cs" />
+    <Content Include="TestData\TestClasses\ManagerTestClass.cs" />
+    <Content Include="TestData\TestClasses\MessageTestClass.cs" />
+    <Content Include="TestData\TestClasses\NumericTestClass.cs" />
+    <Content Include="TestData\TestClasses\SignPersonTestClass.cs" />
+    <Content Include="TestUtil.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspose.BarCode" Version="18.8.0" />
+    <PackageReference Include="Aspose.PDF" Version="20.4.0" />
+    <PackageReference Include="Aspose.Words" Version="20.5.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.5.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
+    <PackageReference Include="NUnit" Version="3.12.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.Data.OleDb" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Interop.ADODB">
+      <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.BarCode, Version=18.8.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.BarCode.18.8.0\lib\net45\Aspose.BarCode.dll</HintPath>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.PDF, Version=19.9.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.PDF.19.9.0\lib\net4.0\Aspose.PDF.dll</HintPath>
-    </Reference>
-    <Reference Include="Aspose.Words, Version=20.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.20.4.0\lib\net461\Aspose.Words.dll</HintPath>
-    </Reference>
-    <Reference Include="Aspose.Words.Pdf2Word, Version=20.4.0.0, Culture=neutral, PublicKeyToken=b2012bcb6a4c6805, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.20.4.0\lib\net461\Aspose.Words.Pdf2Word.dll</HintPath>
-    </Reference>
-    <Reference Include="Aspose.Words.Shaping.HarfBuzz, Version=20.4.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <HintPath>..\packages\Aspose.Words.Shaping.HarfBuzz.20.4.0\lib\net40\Aspose.Words.Shaping.HarfBuzz.dll</HintPath>
-    </Reference>
-    <Reference Include="itextsharp, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\iTextSharp.5.5.13\lib\itextsharp.dll</HintPath>
-    </Reference>
-    <Reference Include="itextsharp.pdfa, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
-      <HintPath>..\packages\itextsharp.pdfa.5.5.13\lib\itextsharp.pdfa.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
+    <PackageReference Include="BouncyCastle" Version="1.8.6.1" />
+    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ApiExampleBase.cs" />
-    <Compile Include="ExBookmarksOutlineLevelCollection.cs" />
-    <Compile Include="ExComHelper.cs" />
-    <Compile Include="CustomBarcodeGenerator.cs" />
-    <Compile Include="DocumentHelper.cs" />
-    <Compile Include="ExAbsolutePositionTab.cs" />
-    <Compile Include="ExBookmarks.cs" />
-    <Compile Include="ExBorder.cs" />
-    <Compile Include="ExBorderCollection.cs" />
-    <Compile Include="ExBuildingBlocks.cs" />
-    <Compile Include="ExBuildVersion.cs" />
-    <Compile Include="ExCellFormat.cs" />
-    <Compile Include="ExCharts.cs" />
-    <Compile Include="ExComment.cs" />
-    <Compile Include="ExCompatibilityOptions.cs" />
-    <Compile Include="ExControlChar.cs" />
-    <Compile Include="ExDocSaveOptions.cs" />
-    <Compile Include="ExHtmlLoadOptions.cs" />
-    <Compile Include="ExDigitalSignatureCollection.cs" />
-    <Compile Include="ExDigitalSignatureUtil.cs" />
-    <Compile Include="ExDocument.cs" />
-    <Compile Include="ExDocumentBase.cs" />
-    <Compile Include="ExDocumentBuilder.cs" />
-    <Compile Include="ExDocumentBuilderImages.cs" />
-    <Compile Include="ExDrawing.cs" />
-    <Compile Include="ExEditableRange.cs" />
-    <Compile Include="ExField.cs" />
-    <Compile Include="ExFile.cs" />
-    <Compile Include="ExFont.cs" />
-    <Compile Include="ExFormFields.cs" />
-    <Compile Include="ExHeaderFooter.cs" />
-    <Compile Include="ExHtmlFixedSaveOptions.cs" />
-    <Compile Include="ExHtmlSaveOptions.cs" />
-    <Compile Include="ExHyphenation.cs" />
-    <Compile Include="ExImage.cs" />
-    <Compile Include="ExImageSaveOptions.cs" />
-    <Compile Include="ExInline.cs" />
-    <Compile Include="ExInlineStory.cs" />
-    <Compile Include="ExInsertDocument.cs" />
-    <Compile Include="ExLists.cs" />
-    <Compile Include="ExMailMerge.cs" />
-    <Compile Include="ExMailMergeCustom.cs" />
-    <Compile Include="ExMailMergeEvent.cs" />
-    <Compile Include="ExMetered.cs" />
-    <Compile Include="ExMossDoc2Pdf.cs" />
-    <Compile Include="ExMossRtf2Docx.cs" />
-    <Compile Include="ExNestedMailMergeCustom.cs" />
-    <Compile Include="ExNode.cs" />
-    <Compile Include="ExOdtSaveOptions.cs" />
-    <Compile Include="ExOoxmlSaveOptions.cs" />
-    <Compile Include="ExPageSetup.cs" />
-    <Compile Include="ExParagraph.cs" />
-    <Compile Include="ExPclSaveOptions.cs" />
-    <Compile Include="ExPdfSaveOptions.cs" />
-    <Compile Include="ExProperties.cs" />
-    <Compile Include="ExRange.cs" />
-    <Compile Include="ExRenameMergeFields.cs" />
-    <Compile Include="ExRendering.cs" />
-    <Compile Include="ExReplaceHyperlinks.cs" />
-    <Compile Include="ExReportingEngine.cs" />
-    <Compile Include="ExRtfSaveOptions.cs" />
-    <Compile Include="ExSavingCallback.cs" />
-    <Compile Include="ExSection.cs" />
-    <Compile Include="ExShape.cs" />
-    <Compile Include="ExSignDocumentCustom.cs" />
-    <Compile Include="ExStructuredDocumentTag.cs" />
-    <Compile Include="ExStyles.cs" />
-    <Compile Include="ExTable.cs" />
-    <Compile Include="ExTableColumn.cs" />
-    <Compile Include="ExTabStopCollection.cs" />
-    <Compile Include="ExRtfLoadOptions.cs" />
-    <Compile Include="ExThemes.cs" />
-    <Compile Include="ExTxtLoadOptions.cs" />
-    <Compile Include="ExTxtSaveOptions.cs" />
-    <Compile Include="ExUtilityClasses.cs" />
-    <Compile Include="ExVariableCollection.cs" />
-    <Compile Include="ExDocumentVisitor.cs" />
-    <Compile Include="ExViewOptions.cs" />
-    <Compile Include="ExWarningInfoCollection.cs" />
-    <Compile Include="ExXamlFixedSaveOptions.cs" />
-    <Compile Include="ExXamlFlowSaveOptions.cs" />
-    <Compile Include="ExXpsSaveOptions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ExSvgSaveOptions.cs" />
-    <Compile Include="ExPsSaveOptions.cs" />
-    <Compile Include="TestData\TestBuilders\ColorItemTestBuilder.cs" />
-    <Compile Include="TestData\TestBuilders\DocumentTestBuilder.cs" />
-    <Compile Include="TestData\TestBuilders\ImageTestBuilder.cs" />
-    <Compile Include="TestData\TestBuilders\NumericTestBuilder.cs" />
-    <Compile Include="TestData\Common.cs" />
-    <Compile Include="TestData\TestClasses\ClientTestClass.cs" />
-    <Compile Include="TestData\TestClasses\ColorItemTestClass.cs" />
-    <Compile Include="TestData\TestClasses\ContractTestClass.cs" />
-    <Compile Include="TestData\TestClasses\DocumentTestClass.cs" />
-    <Compile Include="TestData\TestClasses\ImageTestClass.cs" />
-    <Compile Include="TestData\TestClasses\ManagerTestClass.cs" />
-    <Compile Include="TestData\TestClasses\MessageTestClass.cs" />
-    <Compile Include="TestData\TestClasses\NumericTestClass.cs" />
-    <Compile Include="TestData\TestClasses\SignPersonTestClass.cs" />
-  </ItemGroup>
-  <ItemGroup />
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\NUnit.3.12.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.12.0\build\NUnit.props'))" />
-    <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.15.1\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.15.1\build\net35\NUnit3TestAdapter.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.3.5.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.3.5.0\build\Microsoft.Net.Compilers.props'))" />
-    <Error Condition="!Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.20.4.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Aspose.Words.Shaping.HarfBuzz.20.4.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets'))" />
-  </Target>
-  <Import Project="..\packages\Aspose.Words.Shaping.HarfBuzz.20.4.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets" Condition="Exists('..\packages\Aspose.Words.Shaping.HarfBuzz.20.4.0\build\net20\Aspose.Words.Shaping.HarfBuzz.targets')" />
+
 </Project>

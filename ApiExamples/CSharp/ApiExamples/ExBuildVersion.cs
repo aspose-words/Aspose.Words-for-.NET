@@ -15,15 +15,14 @@ namespace ApiExamples
     public class ExBuildVersion : ApiExampleBase
     {
         [Test]
-        public void ShowBuildVersionInfo()
+        public void PrintBuildVersionInfo()
         {
             //ExStart
             //ExFor:BuildVersionInfo
             //ExFor:BuildVersionInfo.Product
             //ExFor:BuildVersionInfo.Version
-            //ExSummary:Shows how to use BuildVersionInfo to obtain information about this product.
-            Console.WriteLine("I am currently using {0}, version number {1}.", BuildVersionInfo.Product,
-                BuildVersionInfo.Version);
+            //ExSummary:Shows how to use BuildVersionInfo to display version information about this product.
+            Console.WriteLine($"I am currently using {BuildVersionInfo.Product}, version number {BuildVersionInfo.Version}!");
             //ExEnd
         }
     }

@@ -1,0 +1,61 @@
+﻿@model ViewModel
+
+<div id="metadata-edit" class="form-horizontal hidden">
+    <div>
+        <br />
+        <span style="color:#fff">
+            <input id="metadata-mode-builtin" type="radio" name="metadata-mode" value="1" checked />
+            <label for="metadata-mode-builtin">&nbsp;View Built-In Properties</label>
+        </span>
+        &nbsp;
+        <span style="color:#fff">
+            <input id="metadata-mode-custom" type="radio" name="metadata-mode" value="2" />
+            <label for="metadata-mode-custom">&nbsp;View Custom Properties</label>
+        </span>
+        <br />
+    </div>
+    <div>
+        <table id="metadata-props" class="admin_mGrid" cellspacing="0" border="0" style="border-collapse:collapse; margin-bottom:50px;">
+            <thead>
+                <tr>
+                    <th scope="col">Property</th>
+                    <th scope="col">Value</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div class="meta-add hidden" id="new-property" style="margin-bottom:30px">
+        <table align="center">
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="text" id="new-property-name" placeholder="Property" />
+                    </td>
+                    <td>
+                        <input type="text" id="new-property-value" placeholder="Value" />
+                    </td>
+                    <td>
+                        <select id="new-property-type">
+                            <option value="4">String</option>
+                            <option value="1">DateTime</option>
+                            <option value="0">Boolean</option>
+                            <option value="3">Number</option>
+                            <option value="2">Double</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" id="new-property-save" class="btn btn-success btn-record">Add Property</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="asposeButton">
+        <button type="button" id="btn-save" class="btn btn-success btn-lg">@Model.Resources["Save"]</button>
+        <button type="button" id="btn-clear-all" class="btn btn-success btn-lg">@Model.Resources["MetadataClearButton"]</button>
+        <button type="button" id="btn-cancel" class="btn btn-success btn-lg">@Model.Resources["Cancel"]</button>
+    </div>
+</div>

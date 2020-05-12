@@ -40,8 +40,15 @@ namespace ApiExamples
             // If the document contains a routing slip, we can preserve it while saving by setting this flag to true
             options.SaveRoutingSlip = true;
 
-            doc.Save(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc", options);          
+            doc.Save(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc", options);
             //ExEnd
+
+            Assert.Throws<IncorrectPasswordException>(() => doc = new Document(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc"));
+
+            LoadOptions loadOptions = new LoadOptions("MyPassword");
+            doc = new Document(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc", loadOptions);
+
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
         }
 
         [Test]
@@ -72,6 +79,7 @@ namespace ApiExamples
             //ExFor:DocSaveOptions.SavePictureBullet
             //ExSummary:Shows how to remove PictureBullet data from the document.
             Document doc = new Document(MyDir + "Image bullet points.docx");
+            Assert.NotNull(doc.Lists[0].ListLevels[0].ImageData); //ExSkip
 
             // Word 97 cannot work correctly with PictureBullet data
             // To remove PictureBullet data, set the option to "false"
@@ -80,6 +88,31 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocSaveOptions.PictureBullets.doc", saveOptions);
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocSaveOptions.PictureBullets.doc");
+
+            Assert.Null(doc.Lists[0].ListLevels[0].ImageData);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void UpdateLastPrintedProperty(bool isUpdateLastPrintedProperty)
+        {
+            //ExStart
+            //ExFor:SaveOptions.UpdateLastPrintedProperty
+            //ExSummary:Shows how to update BuiltInDocumentProperties.LastPrinted property before saving.
+            Document doc = new Document();
+
+            // Aspose.Words update BuiltInDocumentProperties.LastPrinted property by default
+            DocSaveOptions saveOptions = new DocSaveOptions();
+            saveOptions.UpdateLastPrintedProperty = isUpdateLastPrintedProperty;
+
+            doc.Save(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.docx", saveOptions);
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.docx");
+
+            Assert.AreNotEqual(isUpdateLastPrintedProperty, DateTime.Parse("1/1/0001 00:00:00") == doc.BuiltInDocumentProperties.LastPrinted.Date);
         }
 
         [TestCase(true)]

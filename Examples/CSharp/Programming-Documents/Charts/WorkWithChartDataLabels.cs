@@ -29,27 +29,24 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
 
             // Get first series.
             ChartSeries series0 = shape.Chart.Series[0];
-            ChartDataLabelCollection dataLabelCollection = series0.DataLabels;
 
-            // Add data label to the first and second point of the first series.
-            ChartDataLabel chartDataLabel00 = dataLabelCollection.Add(0);
-            ChartDataLabel chartDataLabel01 = dataLabelCollection.Add(1);
+            ChartDataLabelCollection labels = series0.DataLabels;
 
             // Set properties.
-            chartDataLabel00.ShowLegendKey = true;
+            labels.ShowLegendKey = true;
 
             // By default, when you add data labels to the data points in a pie chart, leader lines are displayed for data labels that are
             // Positioned far outside the end of data points. Leader lines create a visual connection between a data label and its 
             // Corresponding data point.
-            chartDataLabel00.ShowLeaderLines = true;
+            labels.ShowLeaderLines = true;
 
-            chartDataLabel00.ShowCategoryName = false;
-            chartDataLabel00.ShowPercentage = false;
-            chartDataLabel00.ShowSeriesName = true;
-            chartDataLabel00.ShowValue = true;
-            chartDataLabel00.Separator = "/";
-            chartDataLabel01.ShowValue = true;
-            dataDir = dataDir + @"SimpleBarChart_out.docx";
+            labels.ShowCategoryName = false;
+            labels.ShowPercentage = false;
+            labels.ShowSeriesName = true;
+            labels.ShowValue = true;
+            labels.Separator = "/";
+            labels.ShowValue = true;
+            dataDir = dataDir + "SimpleBarChart_out.docx";
             doc.Save(dataDir);
             // ExEnd:WorkWithChartDataLabel
             Console.WriteLine("\nSimple bar chart created successfully.\nFile saved at " + dataDir);
@@ -79,5 +76,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Charts
             // ExEnd:DefaultOptionsForDataLabels
             Console.WriteLine("\nDefault options for data labels of chart series created successfully.\nFile saved at " + dataDir);
         }
+
     }
 }

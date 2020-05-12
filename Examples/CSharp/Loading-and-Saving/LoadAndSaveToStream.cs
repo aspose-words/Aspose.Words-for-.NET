@@ -14,7 +14,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             // ExStart:OpeningFromStream 
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_QuickStart();
-            string fileName = "Document.doc";
+            string fileName = "Document.docx";
 
             // Open the stream. Read only access is enough for Aspose.Words to load a document.
             Stream stream = File.OpenRead(dataDir + fileName);

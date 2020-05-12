@@ -16,6 +16,37 @@ namespace ApiExamples
     [TestFixture]
     public class ExHyphenation : ApiExampleBase
     {
+        [Test]
+        public void Dictionary()
+        {
+            //ExStart
+            //ExFor:Hyphenation.IsDictionaryRegistered(String)
+            //ExFor:Hyphenation.RegisterDictionary(String, String)
+            //ExFor:Hyphenation.UnregisterDictionary(String)
+            //ExSummary:Shows how to perform and verify hyphenation dictionary registration.
+            // Register a dictionary file from the local file system to the "de-CH" locale
+            Hyphenation.RegisterDictionary("de-CH", MyDir + "hyph_de_CH.dic");
+
+            // This method can be used to verify that a language has a matching registered hyphenation dictionary
+            Assert.True(Hyphenation.IsDictionaryRegistered("de-CH"));
+
+            // The dictionary file contains a long list of words in a specified language, and in this case it is German
+            // These words define a set of rules for hyphenating text (splitting words across lines)
+            // If we open a document with text of a language matching that of a registered dictionary,
+            // that dictionary's hyphenation rules will be applied and visible upon saving
+            Document doc = new Document(MyDir + "German text.docx");
+            doc.Save(ArtifactsDir + "Hyphenation.Dictionary.Registered.pdf");
+
+            // We can also un-register a dictionary to disable these effects on any documents opened after the operation
+            Hyphenation.UnregisterDictionary("de-CH");
+
+            Assert.False(Hyphenation.IsDictionaryRegistered("de-CH"));
+
+            doc = new Document(MyDir + "German text.docx");
+            doc.Save(ArtifactsDir + "Hyphenation.Dictionary.Unregistered.pdf");
+            //ExEnd
+        }
+
         //ExStart
         //ExFor:Hyphenation
         //ExFor:Hyphenation.Callback
@@ -40,7 +71,7 @@ namespace ApiExamples
             Assert.AreEqual(0, warningInfoCollection.Count);
 
             // Open a document with a German locale that might not get automatically hyphenated by Microsoft Word an english machine
-            Document doc = new Document(MyDir + "Unhyphenated German text.docx");
+            Document doc = new Document(MyDir + "German text.docx");
 
             // To hyphenate that document upon saving, we need a hyphenation dictionary for the "de-CH" language code
             // This callback will handle the automatic request for that dictionary 
@@ -94,33 +125,5 @@ namespace ApiExamples
             private readonly Dictionary<string, string> mHyphenationDictionaryFiles;
         }
         //ExEnd
-
-        [Test]
-        public void IsDictionaryRegistered()
-        {
-            //ExStart
-            //ExFor:Hyphenation.IsDictionaryRegistered(String)
-            //ExSummary:Shows how to open check if some dictionary is registered.
-            Document doc = new Document(MyDir + "Document.docx");
-            Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
-
-            Assert.AreEqual(true, Hyphenation.IsDictionaryRegistered("en-US"));
-            //ExEnd
-        }
-
-        [Test]
-        public void UnregisteredDictionary()
-        {
-            //ExStart
-            //ExFor:Hyphenation.UnregisterDictionary(String)
-            //ExSummary:Shows how to un-register a dictionary.
-            Document doc = new Document(MyDir + "Document.docx");
-            Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
-
-            Hyphenation.UnregisterDictionary("en-US");
-
-            Assert.AreEqual(false, Hyphenation.IsDictionaryRegistered("en-US"));
-            //ExEnd
-        }
     }
 }
