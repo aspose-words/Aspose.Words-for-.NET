@@ -280,7 +280,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Checks whether values of a field's attributes are equal to expected values.
+        /// Checks whether values of attributes of a field with a type not related to date/time are equal to expected values.
         /// </summary>
         /// <remarks>
         /// Best used when there are many fields closely being tested and should be avoided if a field has a long field code/result.
@@ -294,6 +294,30 @@ namespace ApiExamples
             Assert.AreEqual(expectedType, field.Type);
             Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
             Assert.AreEqual(expectedResult, field.Result);
+        }
+
+        /// <summary>
+        /// Checks whether values of attributes of a field with a type related to date/time are equal to expected values.
+        /// </summary>
+        /// <remarks>
+        /// Used when comparing DateTime instances to Field.Result values parsed to DateTime, which may differ slightly. 
+        /// Give a delta value that's generous enough for any lower end system to pass, and a delta of zero is allowed.
+        /// </remarks>
+        /// <param name="expectedType">The FieldType that we expect the field to have.</param>
+        /// <param name="expectedFieldCode">The expected output value of GetFieldCode() being called on the field.</param>
+        /// <param name="expectedResult">The date/time that the field's result is expected to represent.</param>
+        /// <param name="delta">Margin of error for expectedResult.</param>
+        /// <param name="field">The field that's being tested.</param>
+        internal static void VerifyField(FieldType expectedType, string expectedFieldCode, DateTime expectedResult, TimeSpan delta, Field field)
+        {
+            Assert.AreEqual(expectedType, field.Type);
+            Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
+            Assert.True(DateTime.TryParse(field.Result, out DateTime actual));
+
+            if (field.Type == FieldType.FieldTime)
+                Assert.True(expectedResult - actual <= delta);
+            else
+                Assert.True(expectedResult.Date - actual <= delta);
         }
 
         /// <summary>
@@ -365,6 +389,22 @@ namespace ApiExamples
             Assert.AreEqual(expectedListFormat, listLevel.NumberFormat);
             Assert.AreEqual(expectedNumberPosition, listLevel.NumberPosition);
             Assert.AreEqual(expectedNumberStyle, listLevel.NumberStyle);
+        }
+
+        /// <summary>
+        /// Checks whether values of a tab stop's attributes are equal to their expected values.
+        /// </summary>
+        /// <param name="expectedPosition">Expected position on the tab stop ruler, in points.</param>
+        /// <param name="expectedTabAlignment">Expected position where the position is measured from </param>
+        /// <param name="expectedTabLeader">Expected characters that pad the space between the start and end of the tab whitespace.</param>
+        /// <param name="isClear">Whether or no this tab stop clears any tab stops.</param>
+        /// <param name="tabStop">Tab stop that's being tested.</param>
+        internal static void VerifyTabStop(double expectedPosition, TabAlignment expectedTabAlignment, TabLeader expectedTabLeader, bool isClear, TabStop tabStop)
+        {
+            Assert.AreEqual(expectedPosition, tabStop.Position);
+            Assert.AreEqual(expectedTabAlignment, tabStop.Alignment);
+            Assert.AreEqual(expectedTabLeader, tabStop.Leader);
+            Assert.AreEqual(isClear, tabStop.IsClear);
         }
     }
 }

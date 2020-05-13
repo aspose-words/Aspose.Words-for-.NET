@@ -32,13 +32,13 @@ namespace ApiExamples
             Document doc = new Document();
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
 
-            // Choose a field by FieldType, append it to the end of the paragraph and update it
+            // Choose a DATE field by FieldType, append it to the end of the paragraph and update it
             para.AppendField(FieldType.FieldDate, true);
 
-            // Append a field with a field code created by hand 
+            // Append a TIME field using a field code 
             para.AppendField(" TIME  \\@ \"HH:mm:ss\" ");
 
-            // Append a field that will display a placeholder value until it is updated manually in Microsoft Word
+            // Append a QUOTE field that will display a placeholder value until it is updated manually in Microsoft Word
             // or programmatically with Document.UpdateFields() or Field.Update()
             para.AppendField(" QUOTE \"Real value\"", "Placeholder value");
 
@@ -48,7 +48,7 @@ namespace ApiExamples
             Run run = new Run(doc) { Text = " My Run. " };
             para.AppendChild(run);
 
-            // Insert a field into the paragraph and place it before the run we created
+            // Insert an AUTHOR field into the paragraph and place it before the run we created
             doc.BuiltInDocumentProperties["Author"].Value = "John Doe";
             para.InsertField(FieldType.FieldAuthor, true, run, false);
 
@@ -60,6 +60,15 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Paragraph.InsertField.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Paragraph.InsertField.docx");
+
+            TestUtil.VerifyField(FieldType.FieldDate, " DATE ", DateTime.Now, new TimeSpan(0, 0, 0, 0), doc.Range.Fields[0]);
+            TestUtil.VerifyField(FieldType.FieldTime, " TIME  \\@ \"HH:mm:ss\" ", DateTime.Now, new TimeSpan(0, 0, 0, 5), doc.Range.Fields[1]);
+            TestUtil.VerifyField(FieldType.FieldQuote, " QUOTE \"Real value\"", "Placeholder value", doc.Range.Fields[2]);
+            TestUtil.VerifyField(FieldType.FieldAuthor, " AUTHOR ", "John Doe", doc.Range.Fields[3]);
+            TestUtil.VerifyField(FieldType.FieldQuote, " QUOTE \"Real value\" ", "Real value", doc.Range.Fields[4]);
+            TestUtil.VerifyField(FieldType.FieldQuote, " QUOTE \"Real value\"", " Placeholder value. ", doc.Range.Fields[5]);
         }
 
         [Test]
@@ -195,12 +204,9 @@ namespace ApiExamples
             //ExSummary:Shows how to get information about whether this object was formatted in Microsoft Word while change tracking was enabled
             Document doc = new Document(MyDir + "Format revision.docx");
 
-            Paragraph firstParagraph = DocumentHelper.GetParagraph(doc, 0);
-            Assert.IsTrue(firstParagraph.IsFormatRevision);
+            // This paragraph's formatting was changed while revisions were being tracked
+            Assert.True(doc.FirstSection.Body.FirstParagraph.IsFormatRevision);
             //ExEnd
-
-            Paragraph secondParagraph = DocumentHelper.GetParagraph(doc, 1);
-            Assert.IsFalse(secondParagraph.IsFormatRevision);
         }
 
         [Test]
@@ -221,46 +227,39 @@ namespace ApiExamples
             //ExFor:FrameFormat.VerticalPosition
             //ExFor:FrameFormat.RelativeVerticalPosition
             //ExFor:FrameFormat.VerticalDistanceFromText
-            //ExSummary:Shows how to get information about formatting properties of paragraph as frame.
+            //ExSummary:Shows how to get information about formatting properties of paragraphs that are frames.
             Document doc = new Document(MyDir + "Paragraph frame.docx");
 
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            foreach (Paragraph paragraph in paragraphs.OfType<Paragraph>())
+            foreach (Paragraph paragraph in paragraphs.OfType<Paragraph>().Where(p => p.FrameFormat.IsFrame))
             {
-                if (paragraph.FrameFormat.IsFrame)
-                {
-                    Console.WriteLine("Width: " + paragraph.FrameFormat.Width);
-                    Console.WriteLine("Height: " + paragraph.FrameFormat.Height);
-                    Console.WriteLine("HeightRule: " + paragraph.FrameFormat.HeightRule);
-                    Console.WriteLine("HorizontalAlignment: " + paragraph.FrameFormat.HorizontalAlignment);
-                    Console.WriteLine("VerticalAlignment: " + paragraph.FrameFormat.VerticalAlignment);
-                    Console.WriteLine("HorizontalPosition: " + paragraph.FrameFormat.HorizontalPosition);
-                    Console.WriteLine("RelativeHorizontalPosition: " +
-                                      paragraph.FrameFormat.RelativeHorizontalPosition);
-                    Console.WriteLine("HorizontalDistanceFromText: " +
-                                      paragraph.FrameFormat.HorizontalDistanceFromText);
-                    Console.WriteLine("VerticalPosition: " + paragraph.FrameFormat.VerticalPosition);
-                    Console.WriteLine("RelativeVerticalPosition: " + paragraph.FrameFormat.RelativeVerticalPosition);
-                    Console.WriteLine("VerticalDistanceFromText: " + paragraph.FrameFormat.VerticalDistanceFromText);
-                }
+                Console.WriteLine("Width: " + paragraph.FrameFormat.Width);
+                Console.WriteLine("Height: " + paragraph.FrameFormat.Height);
+                Console.WriteLine("HeightRule: " + paragraph.FrameFormat.HeightRule);
+                Console.WriteLine("HorizontalAlignment: " + paragraph.FrameFormat.HorizontalAlignment);
+                Console.WriteLine("VerticalAlignment: " + paragraph.FrameFormat.VerticalAlignment);
+                Console.WriteLine("HorizontalPosition: " + paragraph.FrameFormat.HorizontalPosition);
+                Console.WriteLine("RelativeHorizontalPosition: " +
+                                  paragraph.FrameFormat.RelativeHorizontalPosition);
+                Console.WriteLine("HorizontalDistanceFromText: " +
+                                  paragraph.FrameFormat.HorizontalDistanceFromText);
+                Console.WriteLine("VerticalPosition: " + paragraph.FrameFormat.VerticalPosition);
+                Console.WriteLine("RelativeVerticalPosition: " + paragraph.FrameFormat.RelativeVerticalPosition);
+                Console.WriteLine("VerticalDistanceFromText: " + paragraph.FrameFormat.VerticalDistanceFromText);
             }
             //ExEnd
 
-            if (paragraphs[0].FrameFormat.IsFrame)
+            foreach (Paragraph paragraph in paragraphs.OfType<Paragraph>().Where(p => p.FrameFormat.IsFrame))
             {
-                Assert.AreEqual(233.3, paragraphs[0].FrameFormat.Width);
-                Assert.AreEqual(138.8, paragraphs[0].FrameFormat.Height);
-                Assert.AreEqual(34.05, paragraphs[0].FrameFormat.HorizontalPosition);
-                Assert.AreEqual(RelativeHorizontalPosition.Page, paragraphs[0].FrameFormat.RelativeHorizontalPosition);
-                Assert.AreEqual(9, paragraphs[0].FrameFormat.HorizontalDistanceFromText);
-                Assert.AreEqual(20.5, paragraphs[0].FrameFormat.VerticalPosition);
-                Assert.AreEqual(RelativeVerticalPosition.Paragraph, paragraphs[0].FrameFormat.RelativeVerticalPosition);
-                Assert.AreEqual(0, paragraphs[0].FrameFormat.VerticalDistanceFromText);
-            }
-            else
-            {
-                Assert.Fail("There are no frames in the document.");
+                Assert.AreEqual(233.3, paragraph.FrameFormat.Width);
+                Assert.AreEqual(138.8, paragraph.FrameFormat.Height);
+                Assert.AreEqual(34.05, paragraph.FrameFormat.HorizontalPosition);
+                Assert.AreEqual(RelativeHorizontalPosition.Page, paragraph.FrameFormat.RelativeHorizontalPosition);
+                Assert.AreEqual(9, paragraph.FrameFormat.HorizontalDistanceFromText);
+                Assert.AreEqual(20.5, paragraph.FrameFormat.VerticalPosition);
+                Assert.AreEqual(RelativeVerticalPosition.Paragraph, paragraph.FrameFormat.RelativeVerticalPosition);
+                Assert.AreEqual(0, paragraph.FrameFormat.VerticalDistanceFromText);
             }
         }
 
@@ -274,13 +273,20 @@ namespace ApiExamples
             //ExSummary:Shows how to set special properties for Asian typography. 
             Document doc = new Document(MyDir + "Document.docx");
 
-            ParagraphFormat format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
+            ParagraphFormat format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
             format.FarEastLineBreakControl = true;
             format.WordWrap = false;
             format.HangingPunctuation = true;
 
             doc.Save(ArtifactsDir + "Paragraph.AsianTypographyProperties.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Paragraph.AsianTypographyProperties.docx");
+            format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
+
+            Assert.True(format.FarEastLineBreakControl);
+            Assert.False(format.WordWrap);
+            Assert.True(format.HangingPunctuation);
         }
 
         /// <summary>
@@ -314,28 +320,35 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DropCapPosition()
+        public void DropCap()
         {
             //ExStart
             //ExFor:DropCapPosition
             //ExSummary:Shows how to set the position of a drop cap.
             Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Every paragraph has its own drop cap setting
-            Paragraph para = doc.FirstSection.Body.FirstParagraph;
+            ParagraphFormat format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
 
             // By default, it is "none", for no drop caps
-            Assert.AreEqual(Aspose.Words.DropCapPosition.None, para.ParagraphFormat.DropCapPosition);
+            Assert.AreEqual(DropCapPosition.None, format.DropCapPosition);
 
             // Move the first capital to outside the text margin
-            para.ParagraphFormat.DropCapPosition = Aspose.Words.DropCapPosition.Margin;
-            para.ParagraphFormat.LinesToDrop = 2;
+            format.DropCapPosition = DropCapPosition.Margin;
+            format.LinesToDrop = 2;
 
             // This text will be affected
-            para.Runs.Add(new Run(doc, "Hello World!"));
+            builder.Write("Hello world!");
 
-            doc.Save(ArtifactsDir + "Paragraph.DropCapPosition.docx");
+            doc.Save(ArtifactsDir + "Paragraph.DropCap.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Paragraph.DropCap.docx");
+            format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
+
+            Assert.AreEqual(DropCapPosition.Margin, format.DropCapPosition);
+            Assert.AreEqual(2, format.LinesToDrop);
         }
 
         [Test]
@@ -345,10 +358,11 @@ namespace ApiExamples
             //ExFor:Paragraph.IsDeleteRevision
             //ExFor:Paragraph.IsInsertRevision
             //ExSummary:Shows how to work with revision paragraphs.
-            // Create a blank document, populate the first paragraph with text and add two more
             Document doc = new Document();
             Body body = doc.FirstSection.Body;
             Paragraph para = body.FirstParagraph;
+
+            // Add text to the first paragraph, then add two more paragraphs
             para.AppendChild(new Run(doc, "Paragraph 1. "));
             body.AppendParagraph("Paragraph 2. ");
             body.AppendParagraph("Paragraph 3. ");
@@ -408,12 +422,18 @@ namespace ApiExamples
             builder.Write("Won't appear in the TOC. ");
 
             // This flag is set to true for such paragraphs
-            Assert.True(doc.FirstSection.Body.Paragraphs[0].BreakIsStyleSeparator);
+            Assert.True(doc.FirstSection.Body.FirstParagraph.BreakIsStyleSeparator);
 
             // Update the TOC and save the document
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Paragraph.BreakIsStyleSeparator.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Paragraph.BreakIsStyleSeparator.docx");
+
+            TestUtil.VerifyField(FieldType.FieldTOC, "TOC \\o \\h \\z \\u", 
+                "\u0013 HYPERLINK \\l \"_Toc256000000\" \u0014Heading 1. Will appear in the TOC.\t\u0013 PAGEREF _Toc256000000 \\h \u00142\u0015\u0015\r", doc.Range.Fields[0]);
+            Assert.False(doc.FirstSection.Body.FirstParagraph.BreakIsStyleSeparator);
         }
 
         [Test]
@@ -422,20 +442,20 @@ namespace ApiExamples
             //ExStart
             //ExFor:Paragraph.GetEffectiveTabStops
             //ExSummary:Shows how to set custom tab stops.
-            // Create a blank document and get the first paragraph
             Document doc = new Document();
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
 
             // If there are no tab stops in this collection, while we are in this paragraph
             // the cursor will jump 36 points each time we press the Tab key in Microsoft Word
-            Assert.AreEqual(0, para.GetEffectiveTabStops().Length);
+            Assert.AreEqual(0, doc.FirstSection.Body.FirstParagraph.GetEffectiveTabStops().Length);
 
             // We can add custom tab stops in Microsoft Word if we enable the ruler via the view tab
             // Each unit on that ruler is two default tab stops, which is 72 points
             // Those tab stops can be programmatically added to the paragraph like this
-            para.ParagraphFormat.TabStops.Add(72, TabAlignment.Left, TabLeader.Dots);
-            para.ParagraphFormat.TabStops.Add(216, TabAlignment.Center, TabLeader.Dashes);
-            para.ParagraphFormat.TabStops.Add(360, TabAlignment.Right, TabLeader.Line);
+            ParagraphFormat format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
+            format.TabStops.Add(72, TabAlignment.Left, TabLeader.Dots);
+            format.TabStops.Add(216, TabAlignment.Center, TabLeader.Dashes);
+            format.TabStops.Add(360, TabAlignment.Right, TabLeader.Line);
 
             // These tab stops are added to this collection, and can also be seen by enabling the ruler mentioned above
             Assert.AreEqual(3, para.GetEffectiveTabStops().Length);
@@ -444,6 +464,13 @@ namespace ApiExamples
             para.AppendChild(new Run(doc, "\tTab 1\tTab 2\tTab 3"));
             doc.Save(ArtifactsDir + "Paragraph.TabStops.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Paragraph.TabStops.docx");
+            format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
+
+            TestUtil.VerifyTabStop(72.0d, TabAlignment.Left, TabLeader.Dots, false, format.TabStops[0]);
+            TestUtil.VerifyTabStop(216.0d, TabAlignment.Center, TabLeader.Dashes, false, format.TabStops[1]);
+            TestUtil.VerifyTabStop(360.0d, TabAlignment.Right, TabLeader.Line, false, format.TabStops[2]);
         }
 
         [Test]
@@ -452,18 +479,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:Paragraph.JoinRunsWithSameFormatting
             //ExSummary:Shows how to simplify paragraphs by merging superfluous runs.
-            // Create a blank Document and insert a few short Runs into the first Paragraph
-            // Having many small runs with the same formatting can happen if, for instance,
-            // we edit a document extensively in Microsoft Word
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a few small runs into the document
             builder.Write("Run 1. ");
             builder.Write("Run 2. ");
             builder.Write("Run 3. ");
             builder.Write("Run 4. ");
 
             // The Paragraph may look like it's in once piece in Microsoft Word,
-            // but under the surface it is fragmented into several Runs, which leaves room for optimization
+            // but it is fragmented into several Runs, which leaves room for optimization
+            // A big run may be split into many smaller runs with the same formatting
+            // if we keep splitting up a piece of text while manually editing it in Microsoft Word
             Paragraph para = builder.CurrentParagraph;
             Assert.AreEqual(4, para.Runs.Count);
 
@@ -502,7 +530,6 @@ namespace ApiExamples
 
             // Set the line spacing to always be exactly 5 points
             // If the font size is larger than the spacing, the top of the text will be truncated
-            builder.InsertParagraph();
             builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.Exactly;
             builder.ParagraphFormat.LineSpacing = 5.0;
 
@@ -511,7 +538,6 @@ namespace ApiExamples
 
             // Set the line spacing to a multiple of the default line spacing, which is 12 points by default
             // 18 points will set the spacing to always be 1.5 lines, which will scale with different font sizes
-            builder.InsertParagraph();
             builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.Multiple;
             builder.ParagraphFormat.LineSpacing = 18.0;
 
@@ -520,6 +546,24 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Paragraph.LineSpacing.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Paragraph.LineSpacing.docx");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            Assert.AreEqual(LineSpacingRule.AtLeast, paragraphs[0].ParagraphFormat.LineSpacingRule);
+            Assert.AreEqual(20.0d, paragraphs[0].ParagraphFormat.LineSpacing);
+            Assert.AreEqual(LineSpacingRule.AtLeast, paragraphs[1].ParagraphFormat.LineSpacingRule);
+            Assert.AreEqual(20.0d, paragraphs[1].ParagraphFormat.LineSpacing);
+
+            Assert.AreEqual(LineSpacingRule.Exactly, paragraphs[2].ParagraphFormat.LineSpacingRule);
+            Assert.AreEqual(5.0d, paragraphs[2].ParagraphFormat.LineSpacing);
+            Assert.AreEqual(LineSpacingRule.Exactly, paragraphs[3].ParagraphFormat.LineSpacingRule);
+            Assert.AreEqual(5.0d, paragraphs[3].ParagraphFormat.LineSpacing);
+
+            Assert.AreEqual(LineSpacingRule.Multiple, paragraphs[4].ParagraphFormat.LineSpacingRule);
+            Assert.AreEqual(18.0d, paragraphs[4].ParagraphFormat.LineSpacing);
+            Assert.AreEqual(LineSpacingRule.Multiple, paragraphs[5].ParagraphFormat.LineSpacingRule);
+            Assert.AreEqual(18.0d, paragraphs[5].ParagraphFormat.LineSpacing);
         }
 
         [Test]
@@ -550,10 +594,27 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Paragraph.ParagraphSpacing.docx");
             //ExEnd
+            
+            doc = new Document(ArtifactsDir + "Paragraph.ParagraphSpacing.docx");
+            ParagraphFormat format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
+
+            Assert.AreEqual(12.0d, format.SpaceBefore);
+            Assert.AreEqual(12.0d, format.SpaceAfter);
+            Assert.False(format.SpaceAfterAuto);
+            Assert.False(format.SpaceBeforeAuto);
+            Assert.False(format.NoSpaceBetweenParagraphsOfSameStyle);
+
+            format = doc.FirstSection.Body.Paragraphs[1].ParagraphFormat;
+
+            Assert.AreEqual(12.0d, format.SpaceBefore);
+            Assert.AreEqual(12.0d, format.SpaceAfter);
+            Assert.False(format.SpaceAfterAuto);
+            Assert.False(format.SpaceBeforeAuto);
+            Assert.False(format.NoSpaceBetweenParagraphsOfSameStyle);
         }
 
         [Test]
-        public void OutlineLevel()
+        public void ParagraphOutlineLevel()
         {
             //ExStart
             //ExFor:ParagraphFormat.OutlineLevel
@@ -564,25 +625,35 @@ namespace ApiExamples
             // Each paragraph has an OutlineLevel, which could be any number from 1 to 9, or at the default "BodyText" value
             // Setting the attribute to one of the numbered values will enable an arrow in Microsoft Word
             // next to the beginning of the paragraph that, when clicked, will collapse the paragraph
-            builder.ParagraphFormat.OutlineLevel = Aspose.Words.OutlineLevel.Level1;
+            builder.ParagraphFormat.OutlineLevel = OutlineLevel.Level1;
             builder.Writeln("Paragraph outline level 1.");
 
             // Level 1 is the topmost level, which practically means that clicking its arrow will also collapse
             // any following paragraph with a lower level, like the paragraphs below
-            builder.ParagraphFormat.OutlineLevel = Aspose.Words.OutlineLevel.Level2;
+            builder.ParagraphFormat.OutlineLevel = OutlineLevel.Level2;
             builder.Writeln("Paragraph outline level 2.");
 
             // Two paragraphs of the same level will not collapse each other
-            builder.ParagraphFormat.OutlineLevel = Aspose.Words.OutlineLevel.Level3;
+            builder.ParagraphFormat.OutlineLevel = OutlineLevel.Level3;
             builder.Writeln("Paragraph outline level 3.");
             builder.Writeln("Paragraph outline level 3.");
 
             // The default "BodyText" value is the lowest
-            builder.ParagraphFormat.OutlineLevel = Aspose.Words.OutlineLevel.BodyText;
+            builder.ParagraphFormat.OutlineLevel = OutlineLevel.BodyText;
             builder.Writeln("Paragraph at main text level.");
 
-            doc.Save(ArtifactsDir + "Paragraph.OutlineLevel.docx");
+            doc.Save(ArtifactsDir + "Paragraph.ParagraphOutlineLevel.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Paragraph.ParagraphOutlineLevel.docx");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            Assert.AreEqual(OutlineLevel.Level1, paragraphs[0].ParagraphFormat.OutlineLevel);
+            Assert.AreEqual(OutlineLevel.Level2, paragraphs[1].ParagraphFormat.OutlineLevel);
+            Assert.AreEqual(OutlineLevel.Level3, paragraphs[2].ParagraphFormat.OutlineLevel);
+            Assert.AreEqual(OutlineLevel.Level3, paragraphs[3].ParagraphFormat.OutlineLevel);
+            Assert.AreEqual(OutlineLevel.BodyText, paragraphs[4].ParagraphFormat.OutlineLevel);
+
         }
 
         [Test]
@@ -603,6 +674,11 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Paragraph.PageBreakBefore.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Paragraph.PageBreakBefore.docx");
+
+            Assert.True(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.PageBreakBefore);
+            Assert.True(doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.PageBreakBefore);
         }
 
         [Test]
@@ -629,6 +705,10 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Paragraph.WidowControl.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Paragraph.WidowControl.docx");
+
+            Assert.True(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.WidowControl);
         }
 
         [Test]
@@ -647,10 +727,16 @@ namespace ApiExamples
 
             // Any subsequent paragraphs will wrap around the drop cap
             builder.InsertParagraph();
-            builder.Write("ello world.");
+            builder.Write("ello world!");
 
             doc.Save(ArtifactsDir + "Paragraph.LinesToDrop.odt");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Paragraph.LinesToDrop.odt");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            Assert.AreEqual(4, paragraphs[0].ParagraphFormat.LinesToDrop);
+            Assert.AreEqual(0, paragraphs[1].ParagraphFormat.LinesToDrop);
         }
     }
 }
