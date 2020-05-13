@@ -500,7 +500,6 @@ namespace ApiExamples
             //ExFor:PageSetup.PageNumberStyle
             //ExFor:DocumentBuilder.InsertField(String, String)
             //ExSummary:Shows how to control page numbering per section.
-            // This document has two sections, but no page numbers yet
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -516,10 +515,10 @@ namespace ApiExamples
             builder.InsertField("PAGE", "");
 
             // Set first section page numbering
-            Section section = doc.Sections[0];
-            section.PageSetup.RestartPageNumbering = true;
-            section.PageSetup.PageStartingNumber = 5;
-            section.PageSetup.PageNumberStyle = NumberStyle.UppercaseRoman;
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            pageSetup.RestartPageNumbering = true;
+            pageSetup.PageStartingNumber = 5;
+            pageSetup.PageNumberStyle = NumberStyle.UppercaseRoman;
 
             // Create a header for the section
             // The page number will look like " - 10 - ".
@@ -531,48 +530,72 @@ namespace ApiExamples
             builder.Write(" - ");
 
             // Set second section page numbering
-            section = doc.Sections[1];
-            section.PageSetup.PageStartingNumber = 10;
-            section.PageSetup.RestartPageNumbering = true;
-            section.PageSetup.PageNumberStyle = NumberStyle.Arabic;
+            pageSetup = doc.Sections[1].PageSetup;
+            pageSetup.PageStartingNumber = 10;
+            pageSetup.RestartPageNumbering = true;
+            pageSetup.PageNumberStyle = NumberStyle.Arabic;
 
             doc.Save(ArtifactsDir + "PageSetup.PageNumbering.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.PageNumbering.docx");
+            pageSetup = doc.Sections[0].PageSetup;
+
+            Assert.True(pageSetup.RestartPageNumbering);
+            Assert.AreEqual(5, pageSetup.PageStartingNumber);
+            Assert.AreEqual(NumberStyle.UppercaseRoman, pageSetup.PageNumberStyle);
+
+            pageSetup = doc.Sections[1].PageSetup;
+
+            Assert.True(pageSetup.RestartPageNumbering);
+            Assert.AreEqual(10, pageSetup.PageStartingNumber);
+            Assert.AreEqual(NumberStyle.Arabic, pageSetup.PageNumberStyle);
         }
 
         [Test]
         public void FootnoteOptions()
         {
             //ExStart
-            //ExFor:PageSetup.FootnoteOptions
-            //ExSummary:Shows how to set options for footnotes in current section.
-            Document doc = new Document();
-
-            PageSetup pageSetup = doc.Sections[0].PageSetup;
-
-            pageSetup.FootnoteOptions.Position = FootnotePosition.BottomOfPage;
-            pageSetup.FootnoteOptions.NumberStyle = NumberStyle.Bullet;
-            pageSetup.FootnoteOptions.StartNumber = 1;
-            pageSetup.FootnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
-            pageSetup.FootnoteOptions.Columns = 0;
-            //ExEnd
-        }
-
-        [Test]
-        public void EndnoteOptions()
-        {
-            //ExStart
             //ExFor:PageSetup.EndnoteOptions
-            //ExSummary:Shows how to set options for endnotes in current section.
+            //ExFor:PageSetup.FootnoteOptions
+            //ExSummary:Shows how to set options for footnotes and endnotes in current section.
             Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            // Insert text and a reference for it in the form of a footnote
+            builder.Write("Hello world!.");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote reference text.");
 
-            pageSetup.EndnoteOptions.Position = EndnotePosition.EndOfSection;
-            pageSetup.EndnoteOptions.NumberStyle = NumberStyle.Bullet;
-            pageSetup.EndnoteOptions.StartNumber = 1;
-            pageSetup.EndnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
+            // Set options for footnote position and numbering
+            FootnoteOptions footnoteOptions = doc.Sections[0].PageSetup.FootnoteOptions;
+            footnoteOptions.Position = FootnotePosition.BeneathText;
+            footnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
+            footnoteOptions.StartNumber = 1;
+
+            // Endnotes also have a similar options object
+            builder.Write(" Hello again.");
+            builder.InsertFootnote(FootnoteType.Footnote, "Endnote reference text.");
+
+            EndnoteOptions endnoteOptions = doc.Sections[0].PageSetup.EndnoteOptions;
+            endnoteOptions.Position = EndnotePosition.EndOfDocument;
+            endnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
+            endnoteOptions.StartNumber = 1;
+
+            doc.Save(ArtifactsDir + "PageSetup.FootnoteOptions.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.FootnoteOptions.docx");
+            footnoteOptions = doc.FirstSection.PageSetup.FootnoteOptions;
+
+            Assert.AreEqual(FootnotePosition.BeneathText, footnoteOptions.Position);
+            Assert.AreEqual(FootnoteNumberingRule.RestartPage, footnoteOptions.RestartRule);
+            Assert.AreEqual(1, footnoteOptions.StartNumber);
+
+            endnoteOptions = doc.FirstSection.PageSetup.EndnoteOptions;
+
+            Assert.AreEqual(EndnotePosition.EndOfDocument, endnoteOptions.Position);
+            Assert.AreEqual(FootnoteNumberingRule.Continuous, endnoteOptions.RestartRule);
+            Assert.AreEqual(1, endnoteOptions.StartNumber);
         }
 
         [Test]
@@ -599,10 +622,16 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PageSetup.Bidi.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.Bidi.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.AreEqual(3, pageSetup.TextColumns.Count);
+            Assert.True(pageSetup.Bidi);
         }
 
         [Test]
-        public void BorderSurrounds()
+        public void PageBorder()
         {
             //ExStart
             //ExFor:PageSetup.BorderSurroundsFooter
@@ -628,8 +657,14 @@ namespace ApiExamples
             pageSetup.BorderSurroundsFooter = true;
             pageSetup.BorderSurroundsHeader = true;
 
-            doc.Save(ArtifactsDir + "PageSetup.BorderSurrounds.docx");
+            doc.Save(ArtifactsDir + "PageSetup.PageBorder.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.PageBorder.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.True(pageSetup.BorderSurroundsFooter);
+            Assert.True(pageSetup.BorderSurroundsHeader);
         }
 
         [Test]
@@ -653,7 +688,7 @@ namespace ApiExamples
             // We can access the gutter margin in the section's page options,
             // which is a margin which is added to the page margin at one side of the page
             PageSetup pageSetup = doc.Sections[0].PageSetup;
-            pageSetup.Gutter = 100.0;
+            pageSetup.Gutter = 100.0d;
 
             // If our text is LTR, the gutter will appear on the left side of the page
             // Setting this flag will move it to the right side
@@ -664,8 +699,14 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PageSetup.Gutter.docx");
             //ExEnd
-        }
 
+            doc = new Document(ArtifactsDir + "PageSetup.Gutter.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.AreEqual(100.0d, pageSetup.Gutter);
+            Assert.True(pageSetup.RtlGutter);
+            Assert.AreEqual(MultiplePagesType.MirrorMargins, pageSetup.MultiplePages);
+        }
 
         [Test]
         public void Booklet()
@@ -695,10 +736,16 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PageSetup.Booklet.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.Booklet.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.AreEqual(MultiplePagesType.BookFoldPrinting, pageSetup.MultiplePages);
+            Assert.AreEqual(4, pageSetup.SheetsPerBooklet);
         }
 
         [Test]
-        public void TextOrientation()
+        public void SectionTextOrientation()
         {
             //ExStart
             //ExFor:PageSetup.TextOrientation
@@ -710,10 +757,15 @@ namespace ApiExamples
 
             // Setting this value will rotate the section's text 90 degrees to the right
             PageSetup pageSetup = doc.Sections[0].PageSetup;
-            pageSetup.TextOrientation = Aspose.Words.TextOrientation.Upward;
+            pageSetup.TextOrientation = TextOrientation.Upward;
 
-            doc.Save(ArtifactsDir + "PageSetup.TextOrientation.docx");
+            doc.Save(ArtifactsDir + "PageSetup.SectionTextOrientation.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.SectionTextOrientation.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.AreEqual(TextOrientation.Upward, pageSetup.TextOrientation);
         }
 
         //ExStart
@@ -741,6 +793,7 @@ namespace ApiExamples
             pageSetup.SuppressEndnotes = true;
 
             doc.Save(ArtifactsDir + "PageSetup.SuppressEndnotes.docx");
+            TestSuppressEndnotes(new Document(ArtifactsDir + "PageSetup.SuppressEndnotes.docx")); //ExSkip
         }
 
         /// <summary>
@@ -768,5 +821,12 @@ namespace ApiExamples
             builder.InsertFootnote(FootnoteType.Endnote, endnoteText);
         }
         //ExEnd
+
+        private static void TestSuppressEndnotes(Document doc)
+        {
+            PageSetup pageSetup = doc.Sections[1].PageSetup;
+
+            Assert.True(pageSetup.SuppressEndnotes);
+        }
     }
 }
