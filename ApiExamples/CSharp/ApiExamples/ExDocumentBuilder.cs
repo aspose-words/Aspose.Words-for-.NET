@@ -19,7 +19,6 @@ using NUnit.Framework;
 using Cell = Aspose.Words.Tables.Cell;
 using Color = System.Drawing.Color;
 using Document = Aspose.Words.Document;
-using Font = Aspose.Words.Font;
 using Table = Aspose.Words.Tables.Table;
 using System.Drawing;
 #if NETCOREAPP2_1 || __MOBILE__
@@ -1713,63 +1712,6 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
 
             Assert.False(doc.Range.Bookmarks["MyBookmark1"].Text.Contains(" Text appended via DocumentBuilder."));
-        }
-
-        [Test]
-        public void DocumentBuilderInsertParagraph()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertParagraph
-            //ExFor:ParagraphFormat.FirstLineIndent
-            //ExFor:ParagraphFormat.Alignment
-            //ExFor:ParagraphFormat.KeepTogether
-            //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndAlpha
-            //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndDigit
-            //ExFor:Paragraph.IsEndOfDocument
-            //ExSummary:Shows how to insert a paragraph into the document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Specify font formatting
-            Aspose.Words.Font font = builder.Font;
-            font.Size = 16;
-            font.Bold = true;
-            font.Color = Color.Blue;
-            font.Name = "Arial";
-            font.Underline = Underline.Dash;
-
-            // Specify paragraph formatting
-            ParagraphFormat paragraphFormat = builder.ParagraphFormat;
-            paragraphFormat.FirstLineIndent = 8;
-            paragraphFormat.Alignment = ParagraphAlignment.Justify;
-            paragraphFormat.AddSpaceBetweenFarEastAndAlpha = true;
-            paragraphFormat.AddSpaceBetweenFarEastAndDigit = true;
-            paragraphFormat.KeepTogether = true;
-
-            // Using Writeln() ends the paragraph after writing and makes a new one, while Write() stays on the same paragraph
-            builder.Writeln("A whole paragraph.");
-
-            // We can use this flag to ensure that we're at the end of the document
-            Assert.True(builder.CurrentParagraph.IsEndOfDocument);
-            //ExEnd
-
-            doc = DocumentHelper.SaveOpen(doc);
-            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
-
-            Assert.AreEqual(8, paragraph.ParagraphFormat.FirstLineIndent);
-            Assert.AreEqual(ParagraphAlignment.Justify, paragraph.ParagraphFormat.Alignment);
-            Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndAlpha);
-            Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndDigit);
-            Assert.True(paragraph.ParagraphFormat.KeepTogether);
-            Assert.AreEqual("A whole paragraph.", paragraph.GetText().Trim());
-
-            Font runFont = paragraph.Runs[0].Font;
-
-            Assert.AreEqual(16.0d, runFont.Size);
-            Assert.True(runFont.Bold);
-            Assert.AreEqual(Color.Blue.ToArgb(), runFont.Color.ToArgb());
-            Assert.AreEqual("Arial", runFont.Name);
-            Assert.AreEqual(Underline.Dash, runFont.Underline);
         }
 
         [Test]

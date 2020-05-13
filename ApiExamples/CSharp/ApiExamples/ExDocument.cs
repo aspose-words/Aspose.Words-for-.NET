@@ -1956,37 +1956,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void RevisionHistory()
-        {
-            //ExStart
-            //ExFor:Paragraph.IsMoveFromRevision
-            //ExFor:Paragraph.IsMoveToRevision
-            //ExFor:ParagraphCollection
-            //ExFor:ParagraphCollection.Item(Int32)
-            //ExFor:Story.Paragraphs
-            //ExSummary:Shows how to get paragraph that was moved (deleted/inserted) in Microsoft Word while change tracking was enabled.
-            Document doc = new Document(MyDir + "Revisions.docx");
-
-            // There are two sets of move revisions in this document
-            // One moves a small part of a paragraph, while the other moves a whole paragraph
-            // Paragraph.IsMoveFromRevision/IsMoveToRevision will only be true if a whole paragraph is moved, as in the latter case
-            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-            for (int i = 0; i < paragraphs.Count; i++)
-            {
-                if (paragraphs[i].IsMoveFromRevision)
-                    Console.WriteLine("The paragraph {0} has been moved (deleted).", i);
-                if (paragraphs[i].IsMoveToRevision)
-                    Console.WriteLine("The paragraph {0} has been moved (inserted).", i);
-            }
-            //ExEnd
-
-            Assert.AreEqual(11, doc.Revisions.Count());
-            Assert.AreEqual(6, doc.Revisions.Count(r => r.RevisionType == RevisionType.Moving));
-            Assert.AreEqual(1, paragraphs.Count(p => ((Paragraph)p).IsMoveFromRevision));
-            Assert.AreEqual(1, paragraphs.Count(p => ((Paragraph)p).IsMoveToRevision));
-        }
-
-        [Test]
         public void GetRevisedPropertiesOfList()
         {
             //ExStart

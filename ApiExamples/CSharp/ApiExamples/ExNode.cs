@@ -12,7 +12,6 @@ using System.Text;
 using System.Xml.XPath;
 using Aspose.Words;
 using Aspose.Words.Drawing;
-using Aspose.Words.Fields;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
@@ -518,57 +517,6 @@ namespace ApiExamples
                     para.Remove();
             
             Assert.False(doc.GetText().Contains("The third paragraph"));
-            //ExEnd
-        }
-
-        [Test]
-        public void CompositeNodeChildren()
-        {
-            //ExStart
-            //ExFor:CompositeNode.Count
-            //ExFor:CompositeNode.GetChildNodes(NodeType[], Boolean)
-            //ExFor:CompositeNode.InsertAfter(Node, Node)
-            //ExFor:CompositeNode.InsertBefore(Node, Node)
-            //ExFor:CompositeNode.PrependChild(Node) 
-            //ExFor:Paragraph.GetText
-            //ExFor:Run
-            //ExSummary:Shows how to add, update and delete child nodes from a CompositeNode's child collection.
-            Document doc = new Document();
-
-            // An empty document has one paragraph by default
-            Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
-
-            // A paragraph is a composite node because it can contain runs, which are another type of node
-            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
-            Run paragraphText = new Run(doc, "Initial text. ");
-            paragraph.AppendChild(paragraphText);
-
-            // We will place these 3 children into the main text of our paragraph
-            Run run1 = new Run(doc, "Run 1. ");
-            Run run2 = new Run(doc, "Run 2. ");
-            Run run3 = new Run(doc, "Run 3. ");
-
-            // We initialized them but not in our paragraph yet
-            Assert.AreEqual("Initial text.", paragraph.GetText().Trim());
-
-            // Insert run2 before initial paragraph text. This will be at the start of the paragraph
-            paragraph.InsertBefore(run2, paragraphText);
-
-            // Insert run3 after initial paragraph text. This will be at the end of the paragraph
-            paragraph.InsertAfter(run3, paragraphText);
-
-            // Insert run1 before every other child node. run2 was the start of the paragraph, now it will be run1
-            paragraph.PrependChild(run1);
-
-            Assert.AreEqual("Run 1. Run 2. Initial text. Run 3.", paragraph.GetText().Trim());
-            Assert.AreEqual(4, paragraph.GetChildNodes(NodeType.Any, true).Count);
-
-            // Access the child node collection and update/delete children
-            ((Run)paragraph.GetChildNodes(NodeType.Run, true)[1]).Text = "Updated run 2. ";
-            paragraph.GetChildNodes(NodeType.Run, true).Remove(paragraphText);
-
-            Assert.AreEqual("Run 1. Updated run 2. Run 3.", paragraph.GetText().Trim());
-            Assert.AreEqual(3, paragraph.GetChildNodes(NodeType.Any, true).Count);
             //ExEnd
         }
 

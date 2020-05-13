@@ -6,17 +6,76 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Drawing;
 using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Fields;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
+using Font = Aspose.Words.Font;
 
 namespace ApiExamples
 {
     [TestFixture]
     internal class ExParagraph : ApiExampleBase
     {
+        [Test]
+        public void DocumentBuilderInsertParagraph()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertParagraph
+            //ExFor:ParagraphFormat.FirstLineIndent
+            //ExFor:ParagraphFormat.Alignment
+            //ExFor:ParagraphFormat.KeepTogether
+            //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndAlpha
+            //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndDigit
+            //ExFor:Paragraph.IsEndOfDocument
+            //ExSummary:Shows how to insert a paragraph into the document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Specify font formatting
+            Font font = builder.Font;
+            font.Size = 16;
+            font.Bold = true;
+            font.Color = Color.Blue;
+            font.Name = "Arial";
+            font.Underline = Underline.Dash;
+
+            // Specify paragraph formatting
+            ParagraphFormat paragraphFormat = builder.ParagraphFormat;
+            paragraphFormat.FirstLineIndent = 8;
+            paragraphFormat.Alignment = ParagraphAlignment.Justify;
+            paragraphFormat.AddSpaceBetweenFarEastAndAlpha = true;
+            paragraphFormat.AddSpaceBetweenFarEastAndDigit = true;
+            paragraphFormat.KeepTogether = true;
+
+            // Using Writeln() ends the paragraph after writing and makes a new one, while Write() stays on the same paragraph
+            builder.Writeln("A whole paragraph.");
+
+            // We can use this flag to ensure that we're at the end of the document
+            Assert.True(builder.CurrentParagraph.IsEndOfDocument);
+            //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
+
+            Assert.AreEqual(8, paragraph.ParagraphFormat.FirstLineIndent);
+            Assert.AreEqual(ParagraphAlignment.Justify, paragraph.ParagraphFormat.Alignment);
+            Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndAlpha);
+            Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndDigit);
+            Assert.True(paragraph.ParagraphFormat.KeepTogether);
+            Assert.AreEqual("A whole paragraph.", paragraph.GetText().Trim());
+
+            Font runFont = paragraph.Runs[0].Font;
+
+            Assert.AreEqual(16.0d, runFont.Size);
+            Assert.True(runFont.Bold);
+            Assert.AreEqual(Color.Blue.ToArgb(), runFont.Color.ToArgb());
+            Assert.AreEqual("Arial", runFont.Name);
+            Assert.AreEqual(Underline.Dash, runFont.Underline);
+        }
+
         [Test]
         public void InsertField()
         {
@@ -197,6 +256,88 @@ namespace ApiExamples
         }
 
         [Test]
+        public void CompositeNodeChildren()
+        {
+            //ExStart
+            //ExFor:CompositeNode.Count
+            //ExFor:CompositeNode.GetChildNodes(NodeType[], Boolean)
+            //ExFor:CompositeNode.InsertAfter(Node, Node)
+            //ExFor:CompositeNode.InsertBefore(Node, Node)
+            //ExFor:CompositeNode.PrependChild(Node) 
+            //ExFor:Paragraph.GetText
+            //ExFor:Run
+            //ExSummary:Shows how to add, update and delete child nodes from a CompositeNode's child collection.
+            Document doc = new Document();
+
+            // An empty document has one paragraph by default
+            Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
+
+            // A paragraph is a composite node because it can contain runs, which are another type of node
+            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
+            Run paragraphText = new Run(doc, "Initial text. ");
+            paragraph.AppendChild(paragraphText);
+
+            // We will place these 3 children into the main text of our paragraph
+            Run run1 = new Run(doc, "Run 1. ");
+            Run run2 = new Run(doc, "Run 2. ");
+            Run run3 = new Run(doc, "Run 3. ");
+
+            // We initialized them but not in our paragraph yet
+            Assert.AreEqual("Initial text.", paragraph.GetText().Trim());
+
+            // Insert run2 before initial paragraph text. This will be at the start of the paragraph
+            paragraph.InsertBefore(run2, paragraphText);
+
+            // Insert run3 after initial paragraph text. This will be at the end of the paragraph
+            paragraph.InsertAfter(run3, paragraphText);
+
+            // Insert run1 before every other child node. run2 was the start of the paragraph, now it will be run1
+            paragraph.PrependChild(run1);
+
+            Assert.AreEqual("Run 1. Run 2. Initial text. Run 3.", paragraph.GetText().Trim());
+            Assert.AreEqual(4, paragraph.GetChildNodes(NodeType.Any, true).Count);
+
+            // Access the child node collection and update/delete children
+            ((Run)paragraph.GetChildNodes(NodeType.Run, true)[1]).Text = "Updated run 2. ";
+            paragraph.GetChildNodes(NodeType.Run, true).Remove(paragraphText);
+
+            Assert.AreEqual("Run 1. Updated run 2. Run 3.", paragraph.GetText().Trim());
+            Assert.AreEqual(3, paragraph.GetChildNodes(NodeType.Any, true).Count);
+            //ExEnd
+        }
+
+        [Test]
+        public void RevisionHistory()
+        {
+            //ExStart
+            //ExFor:Paragraph.IsMoveFromRevision
+            //ExFor:Paragraph.IsMoveToRevision
+            //ExFor:ParagraphCollection
+            //ExFor:ParagraphCollection.Item(Int32)
+            //ExFor:Story.Paragraphs
+            //ExSummary:Shows how to get paragraph that was moved (deleted/inserted) in Microsoft Word while change tracking was enabled.
+            Document doc = new Document(MyDir + "Revisions.docx");
+
+            // There are two sets of move revisions in this document
+            // One moves a small part of a paragraph, while the other moves a whole paragraph
+            // Paragraph.IsMoveFromRevision/IsMoveToRevision will only be true if a whole paragraph is moved, as in the latter case
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+            for (int i = 0; i < paragraphs.Count; i++)
+            {
+                if (paragraphs[i].IsMoveFromRevision)
+                    Console.WriteLine("The paragraph {0} has been moved (deleted).", i);
+                if (paragraphs[i].IsMoveToRevision)
+                    Console.WriteLine("The paragraph {0} has been moved (inserted).", i);
+            }
+            //ExEnd
+
+            Assert.AreEqual(11, doc.Revisions.Count());
+            Assert.AreEqual(6, doc.Revisions.Count(r => r.RevisionType == RevisionType.Moving));
+            Assert.AreEqual(1, paragraphs.Count(p => ((Paragraph)p).IsMoveFromRevision));
+            Assert.AreEqual(1, paragraphs.Count(p => ((Paragraph)p).IsMoveToRevision));
+        }
+
+        [Test]
         public void GetFormatRevision()
         {
             //ExStart
@@ -263,32 +404,6 @@ namespace ApiExamples
             }
         }
 
-        [Test]
-        public void AsianTypographyProperties()
-        {
-            //ExStart
-            //ExFor:ParagraphFormat.FarEastLineBreakControl
-            //ExFor:ParagraphFormat.WordWrap
-            //ExFor:ParagraphFormat.HangingPunctuation
-            //ExSummary:Shows how to set special properties for Asian typography. 
-            Document doc = new Document(MyDir + "Document.docx");
-
-            ParagraphFormat format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
-            format.FarEastLineBreakControl = true;
-            format.WordWrap = false;
-            format.HangingPunctuation = true;
-
-            doc.Save(ArtifactsDir + "Paragraph.AsianTypographyProperties.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "Paragraph.AsianTypographyProperties.docx");
-            format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
-
-            Assert.True(format.FarEastLineBreakControl);
-            Assert.False(format.WordWrap);
-            Assert.True(format.HangingPunctuation);
-        }
-
         /// <summary>
         /// Insert field into the first paragraph of the current document using field type.
         /// </summary>
@@ -317,38 +432,6 @@ namespace ApiExamples
         {
             Paragraph para = DocumentHelper.GetParagraph(doc, paraIndex);
             para.InsertField(fieldCode, fieldValue, refNode, isAfter);
-        }
-
-        [Test]
-        public void DropCap()
-        {
-            //ExStart
-            //ExFor:DropCapPosition
-            //ExSummary:Shows how to set the position of a drop cap.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Every paragraph has its own drop cap setting
-            ParagraphFormat format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
-
-            // By default, it is "none", for no drop caps
-            Assert.AreEqual(DropCapPosition.None, format.DropCapPosition);
-
-            // Move the first capital to outside the text margin
-            format.DropCapPosition = DropCapPosition.Margin;
-            format.LinesToDrop = 2;
-
-            // This text will be affected
-            builder.Write("Hello world!");
-
-            doc.Save(ArtifactsDir + "Paragraph.DropCap.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "Paragraph.DropCap.docx");
-            format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
-
-            Assert.AreEqual(DropCapPosition.Margin, format.DropCapPosition);
-            Assert.AreEqual(2, format.LinesToDrop);
         }
 
         [Test]
@@ -508,235 +591,6 @@ namespace ApiExamples
             Assert.AreEqual("Run 1. Run 2. Run 3. ", para.Runs[0].Text);
             Assert.AreEqual("Run 4. ", para.Runs[1].Text);
             //ExEnd
-        }
-
-        [Test]
-        public void LineSpacing()
-        {
-            //ExStart
-            //ExFor:ParagraphFormat.LineSpacing
-            //ExFor:ParagraphFormat.LineSpacingRule
-            //ExSummary:Shows how to work with line spacing.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Set the paragraph's line spacing to have a minimum value
-            // This will give vertical padding to lines of text of any size that's too small to maintain the line height
-            builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.AtLeast;
-            builder.ParagraphFormat.LineSpacing = 20.0;
-
-            builder.Writeln("Minimum line spacing of 20.");
-            builder.Writeln("Minimum line spacing of 20.");
-
-            // Set the line spacing to always be exactly 5 points
-            // If the font size is larger than the spacing, the top of the text will be truncated
-            builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.Exactly;
-            builder.ParagraphFormat.LineSpacing = 5.0;
-
-            builder.Writeln("Line spacing of exactly 5.");
-            builder.Writeln("Line spacing of exactly 5.");
-
-            // Set the line spacing to a multiple of the default line spacing, which is 12 points by default
-            // 18 points will set the spacing to always be 1.5 lines, which will scale with different font sizes
-            builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.Multiple;
-            builder.ParagraphFormat.LineSpacing = 18.0;
-
-            builder.Writeln("Line spacing of 1.5 default lines.");
-            builder.Writeln("Line spacing of 1.5 default lines.");
-
-            doc.Save(ArtifactsDir + "Paragraph.LineSpacing.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "Paragraph.LineSpacing.docx");
-            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-
-            Assert.AreEqual(LineSpacingRule.AtLeast, paragraphs[0].ParagraphFormat.LineSpacingRule);
-            Assert.AreEqual(20.0d, paragraphs[0].ParagraphFormat.LineSpacing);
-            Assert.AreEqual(LineSpacingRule.AtLeast, paragraphs[1].ParagraphFormat.LineSpacingRule);
-            Assert.AreEqual(20.0d, paragraphs[1].ParagraphFormat.LineSpacing);
-
-            Assert.AreEqual(LineSpacingRule.Exactly, paragraphs[2].ParagraphFormat.LineSpacingRule);
-            Assert.AreEqual(5.0d, paragraphs[2].ParagraphFormat.LineSpacing);
-            Assert.AreEqual(LineSpacingRule.Exactly, paragraphs[3].ParagraphFormat.LineSpacingRule);
-            Assert.AreEqual(5.0d, paragraphs[3].ParagraphFormat.LineSpacing);
-
-            Assert.AreEqual(LineSpacingRule.Multiple, paragraphs[4].ParagraphFormat.LineSpacingRule);
-            Assert.AreEqual(18.0d, paragraphs[4].ParagraphFormat.LineSpacing);
-            Assert.AreEqual(LineSpacingRule.Multiple, paragraphs[5].ParagraphFormat.LineSpacingRule);
-            Assert.AreEqual(18.0d, paragraphs[5].ParagraphFormat.LineSpacing);
-        }
-
-        [Test]
-        public void ParagraphSpacing()
-        {
-            //ExStart
-            //ExFor:ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle
-            //ExFor:ParagraphFormat.SpaceAfter
-            //ExFor:ParagraphFormat.SpaceAfterAuto
-            //ExFor:ParagraphFormat.SpaceBefore
-            //ExFor:ParagraphFormat.SpaceBeforeAuto
-            //ExSummary:Shows how to work with paragraph spacing.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Set the amount of white space before and after each paragraph to 12 points
-            builder.ParagraphFormat.SpaceBefore = 12.0f;
-            builder.ParagraphFormat.SpaceAfter = 12.0f;
-
-            // We can set these flags to apply default spacing, effectively ignoring the spacing in the attributes we set above
-            Assert.False(builder.ParagraphFormat.SpaceAfterAuto);
-            Assert.False(builder.ParagraphFormat.SpaceBeforeAuto);
-            Assert.False(builder.ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle);
-
-            // Insert two paragraphs which will have padding above and below them and save the document
-            builder.Writeln("Paragraph 1.");
-            builder.Writeln("Paragraph 2.");
-
-            doc.Save(ArtifactsDir + "Paragraph.ParagraphSpacing.docx");
-            //ExEnd
-            
-            doc = new Document(ArtifactsDir + "Paragraph.ParagraphSpacing.docx");
-            ParagraphFormat format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
-
-            Assert.AreEqual(12.0d, format.SpaceBefore);
-            Assert.AreEqual(12.0d, format.SpaceAfter);
-            Assert.False(format.SpaceAfterAuto);
-            Assert.False(format.SpaceBeforeAuto);
-            Assert.False(format.NoSpaceBetweenParagraphsOfSameStyle);
-
-            format = doc.FirstSection.Body.Paragraphs[1].ParagraphFormat;
-
-            Assert.AreEqual(12.0d, format.SpaceBefore);
-            Assert.AreEqual(12.0d, format.SpaceAfter);
-            Assert.False(format.SpaceAfterAuto);
-            Assert.False(format.SpaceBeforeAuto);
-            Assert.False(format.NoSpaceBetweenParagraphsOfSameStyle);
-        }
-
-        [Test]
-        public void ParagraphOutlineLevel()
-        {
-            //ExStart
-            //ExFor:ParagraphFormat.OutlineLevel
-            //ExSummary:Shows how to set paragraph outline levels to create collapsible text.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Each paragraph has an OutlineLevel, which could be any number from 1 to 9, or at the default "BodyText" value
-            // Setting the attribute to one of the numbered values will enable an arrow in Microsoft Word
-            // next to the beginning of the paragraph that, when clicked, will collapse the paragraph
-            builder.ParagraphFormat.OutlineLevel = OutlineLevel.Level1;
-            builder.Writeln("Paragraph outline level 1.");
-
-            // Level 1 is the topmost level, which practically means that clicking its arrow will also collapse
-            // any following paragraph with a lower level, like the paragraphs below
-            builder.ParagraphFormat.OutlineLevel = OutlineLevel.Level2;
-            builder.Writeln("Paragraph outline level 2.");
-
-            // Two paragraphs of the same level will not collapse each other
-            builder.ParagraphFormat.OutlineLevel = OutlineLevel.Level3;
-            builder.Writeln("Paragraph outline level 3.");
-            builder.Writeln("Paragraph outline level 3.");
-
-            // The default "BodyText" value is the lowest
-            builder.ParagraphFormat.OutlineLevel = OutlineLevel.BodyText;
-            builder.Writeln("Paragraph at main text level.");
-
-            doc.Save(ArtifactsDir + "Paragraph.ParagraphOutlineLevel.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "Paragraph.ParagraphOutlineLevel.docx");
-            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-
-            Assert.AreEqual(OutlineLevel.Level1, paragraphs[0].ParagraphFormat.OutlineLevel);
-            Assert.AreEqual(OutlineLevel.Level2, paragraphs[1].ParagraphFormat.OutlineLevel);
-            Assert.AreEqual(OutlineLevel.Level3, paragraphs[2].ParagraphFormat.OutlineLevel);
-            Assert.AreEqual(OutlineLevel.Level3, paragraphs[3].ParagraphFormat.OutlineLevel);
-            Assert.AreEqual(OutlineLevel.BodyText, paragraphs[4].ParagraphFormat.OutlineLevel);
-
-        }
-
-        [Test]
-        public void PageBreakBefore()
-        {
-            //ExStart
-            //ExFor:ParagraphFormat.PageBreakBefore
-            //ExSummary:Shows how to force a page break before each paragraph.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Set this to insert a page break before this paragraph
-            builder.ParagraphFormat.PageBreakBefore = true;
-
-            // The value we set is propagated to all paragraphs that are created afterwards
-            builder.Writeln("Paragraph 1, page 1.");
-            builder.Writeln("Paragraph 2, page 2.");
-
-            doc.Save(ArtifactsDir + "Paragraph.PageBreakBefore.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "Paragraph.PageBreakBefore.docx");
-
-            Assert.True(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.PageBreakBefore);
-            Assert.True(doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.PageBreakBefore);
-        }
-
-        [Test]
-        public void WidowControl()
-        {
-            //ExStart
-            //ExFor:ParagraphFormat.WidowControl
-            //ExSummary:Shows how to enable widow/orphan control for a paragraph.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert text that will not fit on one page, with one line spilling into page 2
-            builder.Font.Size = 68;
-            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-
-            // This line is referred to as an "Orphan",
-            // and a line left behind on the end of the previous page is likewise called a "Widow"
-            // These are not ideal for readability, and the alternative to changing size/line spacing/page margins
-            // in order to accomodate ill fitting text is this flag, for which the corresponding Microsoft Word option is 
-            // found in Home > Paragraph > Paragraph Settings (button on the bottom right of the tab) 
-            // In our document this will add more text to the orphan by putting two lines of text into the second page
-            builder.ParagraphFormat.WidowControl = true;
-
-            doc.Save(ArtifactsDir + "Paragraph.WidowControl.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "Paragraph.WidowControl.docx");
-
-            Assert.True(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.WidowControl);
-        }
-
-        [Test]
-        public void LinesToDrop()
-        {
-            //ExStart
-            //ExFor:ParagraphFormat.LinesToDrop
-            //ExSummary:Shows how to set the size of the drop cap text.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Setting this attribute will designate the current paragraph as a drop cap,
-            // in this case with a height of 4 lines of text
-            builder.ParagraphFormat.LinesToDrop = 4;
-            builder.Write("H");
-
-            // Any subsequent paragraphs will wrap around the drop cap
-            builder.InsertParagraph();
-            builder.Write("ello world!");
-
-            doc.Save(ArtifactsDir + "Paragraph.LinesToDrop.odt");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "Paragraph.LinesToDrop.odt");
-            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-
-            Assert.AreEqual(4, paragraphs[0].ParagraphFormat.LinesToDrop);
-            Assert.AreEqual(0, paragraphs[1].ParagraphFormat.LinesToDrop);
         }
     }
 }
