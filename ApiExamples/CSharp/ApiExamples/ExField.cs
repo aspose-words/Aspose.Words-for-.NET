@@ -2960,19 +2960,19 @@ namespace ApiExamples
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual(200.0d, shape.Width);
             Assert.AreEqual(200.0d, shape.Height);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, shape);
             Assert.AreEqual(200.0d, shape.Width);
             Assert.AreEqual(200.0d, shape.Height);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
 
-            TestUtil.VerifyImage(534, 534, ImageType.Emf, shape);
+            TestUtil.VerifyImageInShape(534, 534, ImageType.Emf, shape);
             Assert.AreEqual(200.0d, shape.Width);
             Assert.AreEqual(200.0d, shape.Height);
         }
@@ -3051,13 +3051,13 @@ namespace ApiExamples
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual(300.0d, shape.Width);
             Assert.AreEqual(300.0d, shape.Height);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, shape);
             Assert.AreEqual(300.0d, shape.Width);
             Assert.AreEqual(300.0d, shape.Height);
         }

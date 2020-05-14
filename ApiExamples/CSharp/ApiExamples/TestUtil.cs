@@ -34,7 +34,7 @@ namespace ApiExamples
     class TestUtil
     {
         /// <summary>
-        /// Checks whether a filename points to a valid image with specified dimensions.
+        /// Checks whether a file at a specified filename contains a valid image with specified dimensions.
         /// </summary>
         /// <remarks>
         /// Serves as a way to check that an image file is valid and nonempty without looking up its file size.
@@ -44,21 +44,31 @@ namespace ApiExamples
         /// <param name="filename">Local file system filename of the image file.</param>
         internal static void VerifyImage(int expectedWidth, int expectedHeight, string filename)
         {
-            try
+            using (FileStream fileStream = new FileStream(filename, FileMode.Open))
             {
-                #if NET462 || JAVA
-                using (Image image = Image.FromFile(filename))
-                #elif NETCOREAPP2_1 || __MOBILE__
-                using (Image image = Image.Decode(filename))
-                #endif
-                {
-                    Assert.AreEqual(expectedWidth, image.Width);
-                    Assert.AreEqual(expectedHeight, image.Height);
-                }
+                VerifyImage(expectedWidth, expectedHeight, fileStream);
             }
-            catch (OutOfMemoryException e)
+        }
+
+        /// <summary>
+        /// Checks whether a stream contains a valid image with specified dimensions.
+        /// </summary>
+        /// <remarks>
+        /// Serves as a way to check that an image file is valid and nonempty without looking up its file size.
+        /// </remarks>
+        /// <param name="expectedWidth">Expected width of the image, in pixels.</param>
+        /// <param name="expectedHeight">Expected height of the image, in pixels.</param>
+        /// <param name="imageStream">Stream that contains the image.</param>
+        internal static void VerifyImage(int expectedWidth, int expectedHeight, Stream imageStream)
+        {
+            #if NET462 || JAVA
+            using (Image image = Image.FromStream(imageStream))
+            #elif NETCOREAPP2_1 || __MOBILE__
+            using (Image image = Image.Decode(imageStream))
+            #endif
             {
-                Assert.Fail($"No valid image in this location:\n{filename}");
+                Assert.AreEqual(expectedWidth, image.Width);
+                Assert.AreEqual(expectedHeight, image.Height);
             }
         }
 
@@ -350,7 +360,7 @@ namespace ApiExamples
         /// <param name="expectedHeight">Expected height of the image, in pixels.</param>
         /// <param name="expectedImageType">Expected format of the image.</param>
         /// <param name="imageShape">Shape that contains the image.</param>
-        internal static void VerifyImage(int expectedWidth, int expectedHeight, ImageType expectedImageType, Shape imageShape)
+        internal static void VerifyImageInShape(int expectedWidth, int expectedHeight, ImageType expectedImageType, Shape imageShape)
         {
             Assert.True(imageShape.HasImage);
             Assert.AreEqual(expectedImageType, imageShape.ImageData.ImageType);

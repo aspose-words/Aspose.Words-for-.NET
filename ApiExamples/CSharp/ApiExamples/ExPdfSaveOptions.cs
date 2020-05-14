@@ -10,6 +10,7 @@ using Aspose.Words;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+using ColorMode = Aspose.Words.Saving.ColorMode;
 using Document = Aspose.Words.Document;
 using IWarningCallback = Aspose.Words.IWarningCallback;
 using PdfSaveOptions = Aspose.Words.Saving.PdfSaveOptions;
@@ -17,14 +18,18 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
+using Image =
 #if NET462 || JAVA
-using Image = System.Drawing.Image;
+System.Drawing.Image;
 #elif NETCOREAPP2_1 || __MOBILE__
+SkiaSharp.SKBitmap;
 using SkiaSharp;
 #endif
 #if NET462 || NETCOREAPP2_1
-using Aspose.Pdf.Facades;
+using Aspose.Pdf;
 using Aspose.Pdf.Annotations;
+using Aspose.Pdf.Facades;
+using Aspose.Pdf.Text;
 #endif
 
 namespace ApiExamples
@@ -111,6 +116,19 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.TableHeadingOutlines.pdf", pdfSaveOptions);
             //ExEnd
+
+            #if NET462 || NETCOREAPP2_1
+            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.TableHeadingOutlines.pdf");
+
+            Assert.AreEqual(1, pdfDoc.Outlines.Count);
+            Assert.AreEqual("Heading 1", pdfDoc.Outlines[1].Title);
+
+            TableAbsorber tableAbsorber = new TableAbsorber();
+            tableAbsorber.Visit(pdfDoc.Pages[1]);
+
+            Assert.AreEqual("Heading 1", tableAbsorber.TableList[0].RowList[0].CellList[0].TextFragments[1].Text);
+            Assert.AreEqual("Cell 1", tableAbsorber.TableList[0].RowList[1].CellList[0].TextFragments[1].Text);
+            #endif
         }
 
         [Test]
@@ -168,8 +186,6 @@ namespace ApiExamples
             #endif
         }
 
-        // For assert this test you need to open "SaveOptions.PdfImageCompression PDF_A_1_B Out.pdf" and "SaveOptions.PdfImageCompression PDF_A_1_A Out.pdf" 
-        // and check that header image in this documents are equal header image in the "SaveOptions.PdfImageComppression Out.pdf" 
         [Test]
         public void ImageCompression()
         {
@@ -182,14 +198,14 @@ namespace ApiExamples
             //ExFor:PdfCompliance
             //ExFor:PdfImageColorSpaceExportMode
             //ExSummary:Shows how to save images to PDF using JPEG encoding to decrease file size.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            Document doc = new Document(MyDir + "Images.docx");
             
             PdfSaveOptions options = new PdfSaveOptions
             {
                 ImageCompression = PdfImageCompression.Jpeg,
                 PreserveFormFields = true
             };
-            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfImageCompression.pdf", options);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf", options);
 
             PdfSaveOptions optionsA1B = new PdfSaveOptions
             {
@@ -199,8 +215,7 @@ namespace ApiExamples
                 ImageColorSpaceExportMode = PdfImageColorSpaceExportMode.SimpleCmyk
             };
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_B.pdf", optionsA1B);        
-            //ExEnd
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_B.pdf", optionsA1B);
 
             PdfSaveOptions optionsA1A = new PdfSaveOptions
             {
@@ -210,6 +225,24 @@ namespace ApiExamples
             };
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_A.pdf", optionsA1A);
+            //ExEnd
+
+            #if NET462 || NETCOREAPP2_1
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf");
+            XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
+
+            TestUtil.VerifyImage(2467, 1500, pdfDocImage.ToStream());
+            
+            pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_B.pdf");
+            pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
+
+            Assert.Throws<ArgumentException>(() => TestUtil.VerifyImage(2467, 1500, pdfDocImage.ToStream())); // to do with PdfImageColorSpaceExportMode.SimpleCmyk
+
+            pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_A.pdf");
+            pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
+
+            TestUtil.VerifyImage(2467, 1500, pdfDocImage.ToStream());
+            #endif
         }
 
         [Test]
@@ -220,14 +253,22 @@ namespace ApiExamples
             //ExFor:ColorMode
             //ExFor:FixedPageSaveOptions.ColorMode
             //ExSummary:Shows how change image color with save options property
-            // Open document with color image
-            Document doc = new Document(MyDir + "Rendering.docx");
-            // Set grayscale mode for document
+            Document doc = new Document(MyDir + "Images.docx");
+
+            // Configure PdfSaveOptions to save every image in the input document in greyscale during conversion
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = ColorMode.Grayscale };
             
-            // Assert that color image in document was grey
             doc.Save(ArtifactsDir + "PdfSaveOptions.ColorRendering.pdf", pdfSaveOptions);
             //ExEnd
+
+            #if NET462 || NETCOREAPP2_1
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ColorRendering.pdf");
+            XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
+
+            Assert.AreEqual(1506, pdfDocImage.Width);
+            Assert.AreEqual(918, pdfDocImage.Height);
+            Assert.AreEqual(ColorType.Grayscale, pdfDocImage.GetColorType());
+            #endif
         }
 
         [Test]

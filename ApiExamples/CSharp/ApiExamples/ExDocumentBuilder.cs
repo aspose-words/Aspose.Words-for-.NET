@@ -336,7 +336,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermark.docx");
             shape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, shape);
             Assert.AreEqual(WrapType.None, shape.WrapType);
             Assert.True(shape.BehindText);
             Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
@@ -431,7 +431,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.docx");
             shape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, shape);
             Assert.AreEqual(WrapType.None, shape.WrapType);
             Assert.True(shape.BehindText);
             Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
@@ -1852,7 +1852,7 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Png, image);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, image);
             Assert.AreEqual(100.0d, image.Left);
             Assert.AreEqual(100.0d, image.Top);
             Assert.AreEqual(200.0d, image.Width);
@@ -1895,7 +1895,7 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, image);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, image);
             Assert.AreEqual(200.0d, image.Left);
             Assert.AreEqual(100.0d, image.Top);
             Assert.AreEqual(268.0d, image.Width);
@@ -2850,7 +2850,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertVideoWithUrl.docx");
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(480, 360, ImageType.Jpeg, shape);
+            TestUtil.VerifyImageInShape(480, 360, ImageType.Jpeg, shape);
             TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
 
             Assert.AreEqual(360.0d, shape.Width);
@@ -3533,7 +3533,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOnlineVideo.docx");
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(640, 360, ImageType.Jpeg, shape);
+            TestUtil.VerifyImageInShape(640, 360, ImageType.Jpeg, shape);
 
             Assert.AreEqual(320.0d, shape.Width);
             Assert.AreEqual(180.0d, shape.Height);
@@ -3547,7 +3547,7 @@ namespace ApiExamples
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImage(320, 320, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, shape);
             Assert.AreEqual(320.0d, shape.Width);
             Assert.AreEqual(320.0d, shape.Height);
             Assert.AreEqual(0.0d, shape.Left);
