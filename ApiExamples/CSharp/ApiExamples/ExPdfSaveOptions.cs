@@ -156,7 +156,7 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WithoutUpdateFields.pdf");
 
             // Get text fragment by search String
-            Aspose.Pdf.Text.TextFragmentAbsorber textFragmentAbsorber = new Aspose.Pdf.Text.TextFragmentAbsorber("Page  of");
+            TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber("Page  of");
             pdfDocument.Pages.Accept(textFragmentAbsorber);
 
             // Assert that fields are not updated
@@ -178,7 +178,7 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WithUpdateFields.pdf");
 
             // Get text fragment by search String from PDF document
-            Aspose.Pdf.Text.TextFragmentAbsorber textFragmentAbsorber = new Aspose.Pdf.Text.TextFragmentAbsorber("Page 1 of 2");
+            Aspose.Pdf.Text.TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber("Page 1 of 2");
             pdfDocument.Pages.Accept(textFragmentAbsorber);
 
             // Assert that fields are updated
@@ -236,7 +236,7 @@ namespace ApiExamples
             pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_B.pdf");
             pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
-            Assert.Throws<ArgumentException>(() => TestUtil.VerifyImage(2467, 1500, pdfDocImage.ToStream())); // to do with PdfImageColorSpaceExportMode.SimpleCmyk
+            Assert.Throws<ArgumentException>(() => TestUtil.VerifyImage(2467, 1500, pdfDocImage.ToStream()));
 
             pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_A.pdf");
             pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
@@ -337,11 +337,11 @@ namespace ApiExamples
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
             // Get first page
-            Aspose.Pdf.Page page = pdfDocument.Pages[1];
+            Page page = pdfDocument.Pages[1];
             // Get the first link annotation
-            LinkAnnotation linkAnnot = (LinkAnnotation) page.Annotations[1];
+            LinkAnnotation linkAnnot = (LinkAnnotation)page.Annotations[1];
 
-            JavascriptAction action = (JavascriptAction) linkAnnot.Action;
+            JavascriptAction action = (JavascriptAction)linkAnnot.Action;
             string uriText = action.Script;
 
             Assert.AreEqual(result, uriText);
@@ -379,7 +379,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.HandleBinaryRasterWarnings.pdf", saveOptions);
 
             Assert.AreEqual(1, callback.Warnings.Count);
-            Assert.True(callback.Warnings[0].Description.Contains("R2_XORPEN"));
+            Assert.AreEqual("'R2_XORPEN' binary raster operation is partly supported.", callback.Warnings[0].Description);
         }
 
         public class HandleDocumentWarnings : IWarningCallback
@@ -429,6 +429,36 @@ namespace ApiExamples
             };
             doc.Save(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf", saveOptions);
             //ExEnd
+
+            #if NET462 || NETCOREAPP2_1
+            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf");
+            TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
+            pdfDoc.Pages.Accept(textFragmentAbsorber);
+
+            switch (headerFooterBookmarksExportMode)
+            {
+                case Aspose.Words.Saving.HeaderFooterBookmarksExportMode.None:
+                    Assert.AreEqual(0, pdfDoc.Outlines.Count);
+                    break;
+                case Aspose.Words.Saving.HeaderFooterBookmarksExportMode.First:
+                case Aspose.Words.Saving.HeaderFooterBookmarksExportMode.All:
+                    OutlineCollection outlineItemCollection = pdfDoc.Outlines;
+
+                    Assert.AreEqual(4, outlineItemCollection.Count);
+                    Assert.AreEqual("Bookmark_1", outlineItemCollection[1].Title);
+                    Assert.AreEqual("1 XYZ 233 806 0", outlineItemCollection[1].Destination.ToString());
+
+                    Assert.AreEqual("Bookmark_2", outlineItemCollection[2].Title);
+                    Assert.AreEqual("1 XYZ 84 47 0", outlineItemCollection[2].Destination.ToString());
+
+                    Assert.AreEqual("Bookmark_3", outlineItemCollection[3].Title);
+                    Assert.AreEqual("2 XYZ 85 806 0", outlineItemCollection[3].Destination.ToString());
+
+                    Assert.AreEqual("Bookmark_4", outlineItemCollection[4].Title);
+                    Assert.AreEqual("2 XYZ 85 48 0", outlineItemCollection[4].Destination.ToString());
+                    break;
+            }
+            #endif
         }
 
         [Test]
@@ -460,7 +490,9 @@ namespace ApiExamples
 		}
 		
 		[Test]
-        public void FontsScaledToMetafileSize()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void FontsScaledToMetafileSize(bool doScaleWmfFonts)
         {
             //ExStart
             //ExFor:MetafileRenderingOptions.ScaleWmfFontsToMetafileSize
@@ -472,10 +504,22 @@ namespace ApiExamples
             // 'False' - Aspose.Words displays the fonts as metafile is rendered to its default size
             // Use 'False' option is used only when metafile is rendered as vector graphics
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.MetafileRenderingOptions.ScaleWmfFontsToMetafileSize = true;
+            saveOptions.MetafileRenderingOptions.ScaleWmfFontsToMetafileSize = doScaleWmfFonts;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf", saveOptions);
             //ExEnd
+
+            #if NET462 || NETCOREAPP2_1
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf");
+            TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
+
+            pdfDocument.Pages[1].Accept(textAbsorber);
+
+            if (doScaleWmfFonts)
+                Assert.AreEqual(1.589d, textAbsorber.TextFragments[3].Rectangle.Width, 0.001d);
+            else
+                Assert.AreEqual(5.045d, textAbsorber.TextFragments[3].Rectangle.Width, 0.001d);
+            #endif
         }
 
         [Test]
