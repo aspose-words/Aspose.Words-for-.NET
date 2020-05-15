@@ -6,7 +6,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Lists;

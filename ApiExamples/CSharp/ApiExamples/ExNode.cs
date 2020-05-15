@@ -640,7 +640,7 @@ namespace ApiExamples
                 Assert.AreEqual(NodeChangingAction.Insert, args.Action);
                 Assert.NotNull(args.NewParent);
 
-                Console.WriteLine($"Inserted node:");
+                Console.WriteLine("Inserted node:");
                 Console.WriteLine($"\tType:\t{args.Node.NodeType}");
 
                 if (args.Node.GetText().Trim() != "")
