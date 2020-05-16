@@ -663,13 +663,6 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions." + options.PageMode + ".pdf", options);
             //ExEnd
-
-            #if NET462 || NETCOREAPP2_1
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions." + options.PageMode + ".pdf");
-
-            Console.WriteLine(pdfDocument.Outlines.Count);
-            //Assert.AreEqual("", pdfDocument.OpenAction.ToString());
-            #endif
         }
 
         [Test]
