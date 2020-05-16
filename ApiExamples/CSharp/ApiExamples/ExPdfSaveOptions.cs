@@ -50,7 +50,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Creating TOC entries
+            // Create TOC entries
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
             Assert.True(builder.ParagraphFormat.IsHeading);
 
@@ -634,7 +634,7 @@ namespace ApiExamples
                 ZoomFactor = 25,
             };
 
-            // When opening the .pdf with a viewer such as Adobe Acrobat Pro, the zoom level will be at 25% by default,
+            // Upon opening the .pdf with a viewer such as Adobe Acrobat Pro, the zoom level will be at 25% by default,
             // with thumbnails for each page to the left
             doc.Save(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf", options);
             //ExEnd
@@ -648,9 +648,7 @@ namespace ApiExamples
         }
 
         [Test]
-        [TestCase(PdfPageMode.FullScreen)]
-        [TestCase(PdfPageMode.UseThumbs)]
-        public void FullScreen(PdfPageMode pageMode)
+        public void FullScreen()
         {
             //ExStart
             //ExFor:PdfSaveOptions.PageMode
@@ -661,7 +659,7 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
             options.PageMode = PdfPageMode.FullScreen;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions." + options.PageMode + ".pdf", options);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.FullScreen.pdf", options);
             //ExEnd
         }
 
