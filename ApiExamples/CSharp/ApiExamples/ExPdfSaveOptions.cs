@@ -29,6 +29,7 @@ using SkiaSharp;
 using Aspose.Pdf;
 using Aspose.Pdf.Annotations;
 using Aspose.Pdf.Facades;
+using Aspose.Pdf.Operators;
 using Aspose.Pdf.Text;
 #endif
 
@@ -514,34 +515,55 @@ namespace ApiExamples
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
 
             pdfDocument.Pages[1].Accept(textAbsorber);
+            Rectangle textFragmentRectangle = textAbsorber.TextFragments[3].Rectangle;
 
             if (doScaleWmfFonts)
-                Assert.AreEqual(1.589d, textAbsorber.TextFragments[3].Rectangle.Width, 0.001d);
+                Assert.AreEqual(1.589d, textFragmentRectangle.Width, 0.001d);
             else
-                Assert.AreEqual(5.045d, textAbsorber.TextFragments[3].Rectangle.Width, 0.001d);
+                Assert.AreEqual(5.045d, textFragmentRectangle.Width, 0.001d);
             #endif
         }
 
         [Test]
-        public void AdditionalTextPositioning()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AdditionalTextPositioning(bool applyAdditionalTextPositioning)
         {
             //ExStart
             //ExFor:PdfSaveOptions.AdditionalTextPositioning
             //ExSummary:Show how to write additional text positioning operators.
-            Document doc = new Document(MyDir + "Paragraphs.docx");
+            Document doc = new Document(MyDir + "Rendering.docx");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions();
             // This may help to overcome issues with inaccurate text positioning with some printers, even if the PDF looks fine,
             // but the file size will increase due to higher text positioning precision used
-            saveOptions.AdditionalTextPositioning = true;
-            saveOptions.TextCompression = PdfTextCompression.None;
+            PdfSaveOptions saveOptions = new PdfSaveOptions
+            {
+                AdditionalTextPositioning = applyAdditionalTextPositioning,
+                TextCompression = PdfTextCompression.None
+            };
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf", saveOptions);
             //ExEnd
+
+            #if NET462 || NETCOREAPP2_1
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf");
+            TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
+
+            pdfDocument.Pages[1].Accept(textAbsorber);
+
+            SetGlyphsPositionShowText tjOperator = (SetGlyphsPositionShowText)textAbsorber.TextFragments[1].Page.Contents[96];
+
+            if (applyAdditionalTextPositioning)
+                Assert.AreEqual("[0 (s) 0 (e) 1 (g) 0 (m) 0 (e) 0 (n) 0 (t) 0 (s) 0 ( ) 1 (o) 0 (f) 0 ( ) 1 (t) 0 (e) 0 (x) 0 (t)] TJ", tjOperator.ToString());
+            else
+                Assert.AreEqual("[(se) 1 (gments ) 1 (of ) 1 (text)] TJ", tjOperator.ToString());
+            #endif
         }
 
         [Test]
-        public void SaveAsPdfBookFold()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void SaveAsPdfBookFold(bool doRenderTextAsBookfold)
         {
             //ExStart
             //ExFor:PdfSaveOptions.UseBookFoldPrintingSettings
@@ -556,36 +578,98 @@ namespace ApiExamples
             }
 
             PdfSaveOptions options = new PdfSaveOptions();
-            options.UseBookFoldPrintingSettings = true;
+            options.UseBookFoldPrintingSettings = doRenderTextAsBookfold;
 
             // In order to make a booklet, we will need to print this document, stack the pages
             // in the order they come out of the printer and then fold down the middle
             doc.Save(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf", options);
             //ExEnd
+
+            #if NET462 || NETCOREAPP2_1
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf");
+            TextAbsorber textAbsorber = new TextAbsorber();
+
+            pdfDocument.Pages.Accept(textAbsorber);
+
+            if (doRenderTextAsBookfold)
+            {
+                Assert.True(textAbsorber.Text.IndexOf("Heading #1", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #2", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #2", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #3", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #3", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #4", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #4", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #5", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #5", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #6", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #6", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #7", StringComparison.Ordinal));
+                Assert.False(textAbsorber.Text.IndexOf("Heading #7", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #8", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #8", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #9", StringComparison.Ordinal));
+                Assert.False(textAbsorber.Text.IndexOf("Heading #9", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #10", StringComparison.Ordinal));
+            }
+            else
+            {
+                Assert.True(textAbsorber.Text.IndexOf("Heading #1", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #2", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #2", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #3", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #3", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #4", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #4", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #5", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #5", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #6", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #6", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #7", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #7", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #8", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #8", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #9", StringComparison.Ordinal));
+                Assert.True(textAbsorber.Text.IndexOf("Heading #9", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #10", StringComparison.Ordinal));
+            }
+            #endif
         }
 
         [Test]
         public void ZoomBehaviour()
         {
             //ExStart
-            //ExFor:PdfSaveOptions.PageMode
             //ExFor:PdfSaveOptions.ZoomBehavior
             //ExFor:PdfSaveOptions.ZoomFactor
-            //ExFor:PdfPageMode
             //ExFor:PdfZoomBehavior
             //ExSummary:Shows how to set the default zooming of an output PDF to 1/4 of default size.
-            // Open a document with multiple paragraphs
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PdfSaveOptions options = new PdfSaveOptions();
-            options.ZoomBehavior = PdfZoomBehavior.ZoomFactor;
-            options.ZoomFactor = 25;
-            options.PageMode = PdfPageMode.UseThumbs;
+            PdfSaveOptions options = new PdfSaveOptions
+            {
+                ZoomBehavior = PdfZoomBehavior.ZoomFactor,
+                ZoomFactor = 25,
+            };
 
             // When opening the .pdf with a viewer such as Adobe Acrobat Pro, the zoom level will be at 25% by default,
             // with thumbnails for each page to the left
             doc.Save(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf", options);
             //ExEnd
+
+            #if NET462 || NETCOREAPP2_1
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf");
+            GoToAction action = (GoToAction)pdfDocument.OpenAction;
+
+            Assert.AreEqual(0.25d, (action.Destination as XYZExplicitDestination).Zoom);
+            #endif
+        }
+
+        [Test]
+        [TestCase(PdfPageMode.FullScreen)]
+        [TestCase(PdfPageMode.UseThumbs)]
+        public void FullScreen(PdfPageMode pageMode)
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.PageMode
+            //ExFor:PdfPageMode
+            //ExSummary:Shows how get a converted .PDF document to open in full screen on some readers.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.PageMode = PdfPageMode.FullScreen;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions." + options.PageMode + ".pdf", options);
+            //ExEnd
+
+            #if NET462 || NETCOREAPP2_1
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions." + options.PageMode + ".pdf");
+
+            Console.WriteLine(pdfDocument.Outlines.Count);
+            //Assert.AreEqual("", pdfDocument.OpenAction.ToString());
+            #endif
         }
 
         [Test]
