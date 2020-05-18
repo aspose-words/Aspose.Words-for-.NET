@@ -3970,5 +3970,68 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Document.EpubCover.epub");
         }
+
+        [TestCase(Granularity.CharLevel)]
+        [TestCase(Granularity.WordLevel)]
+        public void GranularityCompareOption(Granularity granularity)
+        {
+            //ExStart
+            //ExFor:CompareOptions.Granularity
+            //ExFor:Granularity
+            //ExSummary:Shows to specify comparison granularity.
+            Document docA = new Document();
+            DocumentBuilder builderA = new DocumentBuilder(docA);
+            builderA.Writeln("Alpha Lorem ipsum dolor sit amet, consectetur adipiscing elit");
+
+            Document docB = new Document();
+            DocumentBuilder builderB = new DocumentBuilder(docB);
+            builderB.Writeln("Lorems ipsum dolor sit amet consectetur - \"adipiscing\" elit");
+ 
+            // Specify whether changes are tracked by character ('Granularity.CharLevel') or by word ('Granularity.WordLevel')
+            CompareOptions compareOptions = new CompareOptions();
+            compareOptions.Granularity = granularity;
+ 
+            docA.Compare(docB, "author", DateTime.Now, compareOptions);
+
+            // Revision groups contain all of our text changes
+            RevisionGroupCollection groups = docA.Revisions.Groups;
+            Assert.AreEqual(5, groups.Count);
+            //ExEnd
+
+            if (granularity == Granularity.CharLevel)
+            {
+                Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
+                Assert.AreEqual("Alpha ", groups[0].Text);
+
+                Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
+                Assert.AreEqual(",", groups[1].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
+                Assert.AreEqual("s", groups[2].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
+                Assert.AreEqual("- \"", groups[3].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
+                Assert.AreEqual("\"", groups[4].Text);
+            }
+            else
+            {
+                Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
+                Assert.AreEqual("Alpha Lorem ", groups[0].Text);
+
+                Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
+                Assert.AreEqual(",", groups[1].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
+                Assert.AreEqual("Lorems ", groups[2].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
+                Assert.AreEqual("- \"", groups[3].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
+                Assert.AreEqual("\"", groups[4].Text);   
+            }
+        }
     }
 }

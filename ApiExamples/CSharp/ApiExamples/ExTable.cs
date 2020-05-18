@@ -1197,7 +1197,7 @@ namespace ApiExamples
             //ExFor:Table.VerticalAnchor
             //ExFor:Table.AllowOverlap
             //ExFor:ShapeBase.AllowOverlap
-            //ExSummary:Shows how get properties for floating tables
+            //ExSummary:Shows how to work with floating tables properties.
             Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -1207,6 +1207,13 @@ namespace ApiExamples
                 Assert.AreEqual(RelativeHorizontalPosition.Margin, table.HorizontalAnchor);
                 Assert.AreEqual(RelativeVerticalPosition.Paragraph, table.VerticalAnchor);
                 Assert.AreEqual(false, table.AllowOverlap);
+
+                // Only Margin, Page, Column available in RelativeHorizontalPosition for HorizontalAnchor setter
+                // The ArgumentException will be thrown for any other values
+                table.HorizontalAnchor = RelativeHorizontalPosition.Column;
+                // Only Margin, Page, Paragraph available in RelativeVerticalPosition for VerticalAnchor setter
+                // The ArgumentException will be thrown for any other values
+                table.VerticalAnchor = RelativeVerticalPosition.Paragraph;
             }
             //ExEnd
         }

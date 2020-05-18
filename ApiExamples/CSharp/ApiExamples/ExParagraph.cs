@@ -652,5 +652,79 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Paragraph.LinesToDrop.odt");
             //ExEnd
         }
+
+        [Test]
+        public void ParagraphSpacingAndIndents()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.CharacterUnitLeftIndent
+            //ExFor:ParagraphFormat.CharacterUnitRightIndent
+            //ExFor:ParagraphFormat.CharacterUnitFirstLineIndent
+            //ExFor:ParagraphFormat.LineUnitBefore
+            //ExFor:ParagraphFormat.LineUnitAfter
+            //ExSummary:Shows how to change paragraph spacing and indents.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            ParagraphFormat format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
+            
+            Assert.AreEqual(format.LeftIndent, 0.0d); //ExSkip
+            Assert.AreEqual(format.RightIndent, 0.0d); //ExSkip
+            Assert.AreEqual(format.FirstLineIndent, 0.0d); //ExSkip
+            Assert.AreEqual(format.SpaceBefore, 0.0d); //ExSkip
+            Assert.AreEqual(format.SpaceAfter, 0.0d); //ExSkip
+
+            // Also ParagraphFormat.LeftIndent will be updated
+            format.CharacterUnitLeftIndent = 10;
+            // Also ParagraphFormat.RightIndent will be updated
+            format.CharacterUnitRightIndent = -5;
+            // Also ParagraphFormat.FirstLineIndent will be updated
+            format.CharacterUnitFirstLineIndent = 20;
+            // Also ParagraphFormat.SpaceBefore will be updated
+            format.LineUnitBefore = 5;
+            // Also ParagraphFormat.SpaceAfter will be updated
+            format.LineUnitAfter= 10;
+
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+            builder.Write("测试文档测试文档测试文档测试文档测试文档测试文档测试文档测试文档测试" +
+                          "文档测试文档测试文档测试文档测试文档测试文档测试文档测试文档测试文档测试文档");
+            //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
+            
+            Assert.AreEqual(format.CharacterUnitLeftIndent, 10);
+            Assert.AreEqual(format.LeftIndent, 120.0d);
+            
+            Assert.AreEqual(format.CharacterUnitRightIndent, -5);
+            Assert.AreEqual(format.RightIndent, -60.0d);
+            
+            Assert.AreEqual(format.CharacterUnitFirstLineIndent, 20);
+            Assert.AreEqual(format.FirstLineIndent, 240.0d);
+            
+            Assert.AreEqual(format.LineUnitBefore, 5);
+            Assert.AreEqual(format.SpaceBefore, 60.0d);
+            
+            Assert.AreEqual(format.LineUnitAfter, 10);
+            Assert.AreEqual(format.SpaceAfter, 120.0d);
+        }
+
+        [Test] // ToDo: Check details
+        public void SnapToGrid()
+        {
+            //ExStart
+            //ExFor:
+            //ExSummary:
+            Document doc = new Document();
+            Paragraph par = doc.FirstSection.Body.FirstParagraph;
+            par.ParagraphFormat.SnapToGrid = true;
+            
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("L  o  r  e  m i  p  s  u  m d  o  l  o  r s  i  t a  m  e  t");
+            
+            par.Runs[0].Font.SnapToGrid = true;
+
+            doc.Save(ArtifactsDir + "SnapToGrid.docx");
+        }
     }
 }
