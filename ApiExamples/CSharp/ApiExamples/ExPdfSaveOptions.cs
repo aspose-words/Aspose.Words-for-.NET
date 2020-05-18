@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Globalization;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
@@ -412,9 +413,11 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HeaderFooterBookmarksExportMode
-            //ExFor:PdfSaveOptions.HeaderFooterBookmarksExportMode
             //ExFor:OutlineOptions
             //ExFor:OutlineOptions.DefaultBookmarksOutlineLevel
+            //ExFor:PdfSaveOptions.HeaderFooterBookmarksExportMode
+            //ExFor:PdfSaveOptions.PageMode
+            //ExFor:PdfPageMode
             //ExSummary:Shows how bookmarks in headers/footers are exported to pdf.
             Document doc = new Document(MyDir + "Bookmarks in headers and footers.docx");
 
@@ -426,23 +429,31 @@ namespace ApiExamples
             PdfSaveOptions saveOptions = new PdfSaveOptions
             {
                 HeaderFooterBookmarksExportMode = headerFooterBookmarksExportMode,
-                OutlineOptions = { DefaultBookmarksOutlineLevel = 1 }
+                OutlineOptions = { DefaultBookmarksOutlineLevel = 1 },
+                PageMode = PdfPageMode.UseOutlines
             };
             doc.Save(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf", saveOptions);
             //ExEnd
 
             #if NET462 || NETCOREAPP2_1
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf");
+            string inputDocLocaleName = new CultureInfo(doc.Styles.DefaultFont.LocaleId).Name;
+
             TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
             pdfDoc.Pages.Accept(textFragmentAbsorber);
-
             switch (headerFooterBookmarksExportMode)
             {
                 case Aspose.Words.Saving.HeaderFooterBookmarksExportMode.None:
+                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/Lang({inputDocLocaleName})>>\r\n", 
+                        ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf");
+
                     Assert.AreEqual(0, pdfDoc.Outlines.Count);
                     break;
                 case Aspose.Words.Saving.HeaderFooterBookmarksExportMode.First:
                 case Aspose.Words.Saving.HeaderFooterBookmarksExportMode.All:
+                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/Outlines 13 0 R/PageMode /UseOutlines/Lang({inputDocLocaleName})>>", 
+                        ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf");
+
                     OutlineCollection outlineItemCollection = pdfDoc.Outlines;
 
                     Assert.AreEqual(4, outlineItemCollection.Count);
@@ -648,23 +659,49 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FullScreen()
+        [TestCase(PdfPageMode.FullScreen)]
+        [TestCase(PdfPageMode.UseThumbs)]
+        [TestCase(PdfPageMode.UseOC)]
+        [TestCase(PdfPageMode.UseOutlines)]
+        [TestCase(PdfPageMode.UseNone)]
+        public void PageMode(PdfPageMode pageMode)
         {
             //ExStart
             //ExFor:PdfSaveOptions.PageMode
             //ExFor:PdfPageMode
-            //ExSummary:Shows how get a converted .PDF document to open in full screen on some readers.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to set instructions for some PDF readers to follow when opening an output document.
+            Document doc = new Document(MyDir + "Document.docx");
 
             PdfSaveOptions options = new PdfSaveOptions();
-            options.PageMode = PdfPageMode.FullScreen;
+            options.PageMode = pageMode;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.FullScreen.pdf", options);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PageMode.pdf", options);
             //ExEnd
+            
+            string docLocaleName = new CultureInfo(doc.Styles.DefaultFont.LocaleId).Name;
+
+            switch (pageMode)
+            {
+                case PdfPageMode.FullScreen:
+                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/PageMode /FullScreen/Lang({docLocaleName})>>\r\n", ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
+                    break;
+                case PdfPageMode.UseThumbs:
+                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/PageMode /UseThumbs/Lang({docLocaleName})>>", ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
+                    break;
+                case PdfPageMode.UseOC:
+                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/PageMode /UseOC/Lang({docLocaleName})>>\r\n", ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
+                    break;
+                case PdfPageMode.UseOutlines:
+                case PdfPageMode.UseNone:
+                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/Lang({docLocaleName})>>\r\n", ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
+                    break;
+            }
         }
 
         [Test]
-        public void NoteHyperlinks()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void NoteHyperlinks(bool doCreateHyperlinks)
         {
             //ExStart
             //ExFor:PdfSaveOptions.CreateNoteHyperlinks
@@ -676,14 +713,41 @@ namespace ApiExamples
             // into hyperlinks pointing to the footnotes, and the actual footnotes/endnotes at the end of pages into links to their
             // referenced body text
             PdfSaveOptions options = new PdfSaveOptions();
-            options.CreateNoteHyperlinks = true;
+            options.CreateNoteHyperlinks = doCreateHyperlinks;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf", options);
             //ExEnd
+
+            if (doCreateHyperlinks)
+            {
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [157.80099487 720.90106201 159.35600281 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 677 0]>>", 
+                    ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [202.16900635 720.90106201 206.06201172 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 79 0]>>", 
+                    ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [212.23199463 699.2510376 215.34199524 711.90002441]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 654 0]>>", 
+                    ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [258.15499878 699.2510376 262.04800415 711.90002441]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 68 0]>>", 
+                    ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 68.19905853 88.66500092 79.69805908]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 202 733 0]>>", 
+                    ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 56.70005798 88.66500092 68.19905853]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 258 711 0]>>", 
+                    ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 666.10205078 86.4940033 677.60107422]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 157 733 0]>>", 
+                    ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 643.10406494 87.93800354 654.60308838]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 212 711 0]>>", 
+                    ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
+            }
+            else
+            {
+                Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect", ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf"));
+            }
         }
 
         [Test]
-        public void CustomPropertiesExport()
+        [TestCase(PdfCustomPropertiesExport.None)]
+        [TestCase(PdfCustomPropertiesExport.Standard)]
+        [TestCase(PdfCustomPropertiesExport.Metadata)]
+        public void CustomPropertiesExport(PdfCustomPropertiesExport pdfCustomPropertiesExportMode)
         {
             //ExStart
             //ExFor:PdfCustomPropertiesExport
@@ -697,10 +761,26 @@ namespace ApiExamples
             // Configure the PdfSaveOptions like this will display the properties
             // in the "Document Properties" menu of Adobe Acrobat Pro
             PdfSaveOptions options = new PdfSaveOptions();
-            options.CustomPropertiesExport = PdfCustomPropertiesExport.Standard;
+            options.CustomPropertiesExport = pdfCustomPropertiesExportMode;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf", options);
             //ExEnd
+
+            switch (pdfCustomPropertiesExportMode)
+            {
+                case PdfCustomPropertiesExport.None:
+                    Assert.Throws<AssertionException>(() => TestUtil.FileContainsString(doc.CustomDocumentProperties[0].Name, 
+                        ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf"));
+                    Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("<</Type /Metadata/Subtype /XML/Length 8 0 R/Filter /FlateDecode>>", 
+                        ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf"));
+                    break;
+                case PdfCustomPropertiesExport.Standard:
+                    TestUtil.FileContainsString(doc.CustomDocumentProperties[0].Name, ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
+                    break;
+                case PdfCustomPropertiesExport.Metadata:
+                    TestUtil.FileContainsString("<</Type /Metadata/Subtype /XML/Length 8 0 R/Filter /FlateDecode>>", ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
+                    break;
+            }
         }
 
         [Test]

@@ -258,35 +258,64 @@ namespace ApiExamples
         /// <summary>
         /// Checks whether a file inside a document's OOXML package contains a string.
         /// </summary>
+        /// <remarks>
+        /// If an output document does not have a testable value that can be found as a property in its object when loaded,
+        /// the value can sometimes be found in the document's OOXML package. 
+        /// </remarks>
         /// <param name="expected">The string we are looking for.</param>
         /// <param name="docFilename">Local file system filename of the document.</param>
         /// <param name="docPartFilename">Name of the file within the document opened as a .zip that is expected to contain the string.</param>
         internal static void DocPackageFileContainsString(string expected, string docFilename, string docPartFilename)
         {
-            char[] expectedSequence = expected.ToCharArray();
-
             using (ZipArchive archive = ZipFile.Open(docFilename, ZipArchiveMode.Update))
             {
                 ZipArchiveEntry entry = archive.Entries.First(e => e.Name == docPartFilename);
 
                 using (Stream stream = entry.Open())
                 {
-                    long sequenceMatchLength = 0;
-                    while (stream.Position < stream.Length)
-                    {
-                        if ((char)stream.ReadByte() == expectedSequence[sequenceMatchLength])
-                            sequenceMatchLength++;
-                        else
-                            sequenceMatchLength = 0;
+                   StreamContainsString(expected, stream);
+                }
+            }
+        }
 
-                        if (sequenceMatchLength >= expectedSequence.Length)
-                            return;
-                    }
+        /// <summary>
+        /// Checks whether a file in the local file system contains a string in its raw data.
+        /// </summary>
+        /// <param name="expected">The string we are looking for.</param>
+        /// <param name="filename">Local system filename of a file which, when read from the beginning, should contain the string.</param>
+        internal static void FileContainsString(string expected, string filename)
+        {
+            using (Stream stream = new FileStream(filename, FileMode.Open))
+            {
+                StreamContainsString(expected, stream);
+            }
+        }
+
+        /// <summary>
+        /// Checks whether a stream contains a string.
+        /// </summary>
+        /// <param name="expected">The string we are looking for.</param>
+        /// <param name="stream">The stream which, when read from the beginning, should contain the string.</param>
+        private static void StreamContainsString(string expected, Stream stream)
+        {
+            char[] expectedSequence = expected.ToCharArray();
+
+            long sequenceMatchLength = 0;
+            while (stream.Position < stream.Length)
+            {
+                if ((char)stream.ReadByte() == expectedSequence[sequenceMatchLength])
+                    sequenceMatchLength++;
+                else
+                    sequenceMatchLength = 0;
+
+                if (sequenceMatchLength >= expectedSequence.Length)
+                {
+                    return;
                 }
             }
 
-            Assert.Fail($"String \"{(expected.Length <= 100 ? expected : expected.Substring(0, 100) + "...")}\"" +
-                        $" not found in {docPartFilename} in {docFilename.Split('\\').Last()}");
+            stream.Close();
+            Assert.Fail($"String \"{(expected.Length <= 100 ? expected : expected.Substring(0, 100) + "...")}\" not found in the provided source.");
         }
 
         /// <summary>
