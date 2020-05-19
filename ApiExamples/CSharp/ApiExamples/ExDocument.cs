@@ -35,6 +35,9 @@ using CompareOptions = Aspose.Words.CompareOptions;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Words.Shaping.HarfBuzz;
 #endif
+#if NETCOREAPP2_1 || __MOBILE__
+using SkiaSharp;
+#endif
 #if NET462 || MAC || JAVA
 using Aspose.Words.Loading;
 using Org.BouncyCastle.Pkcs;
@@ -1877,6 +1880,22 @@ namespace ApiExamples
             doc.Cleanup(cleanupOptions);
 
             Assert.AreEqual(4, doc.Styles.Count);
+        }
+
+        [Test]
+        public void RemoveDuplicateStyles()
+        {
+            //ExStart
+            //ExFor:CleanupOptions.DuplicateStyle
+            //ExSummary:Shows how to remove duplicated styles from the document.
+            Document doc = new Document(MyDir + "Document.docx");
+            
+            CleanupOptions options = new CleanupOptions();
+            options.DuplicateStyle = true;
+ 
+            doc.Cleanup(options);
+            doc.Save(ArtifactsDir + "Document.RemoveDuplicateStyles.docx");
+            //ExEnd
         }
 
         [Test]
@@ -3969,6 +3988,70 @@ namespace ApiExamples
             doc.BuiltInDocumentProperties.Thumbnail = image;
 
             doc.Save(ArtifactsDir + "Document.EpubCover.epub");
+        }
+
+        [Test]
+        public void WorkWithWatermark()
+        {
+            //ExStart
+            //ExFor:Watermark.SetText(String)
+            //ExFor:Watermark.SetText(String, TextWatermarkOptions)
+            //ExFor:Watermark.SetImage(Image, ImageWatermarkOptions)
+            //ExFor:Watermark.Remove
+            //ExFor:TextWatermarkOptions.FontFamily
+            //ExFor:TextWatermarkOptions.FontSize
+            //ExFor:TextWatermarkOptions.Color
+            //ExFor:TextWatermarkOptions.Layout
+            //ExFor:TextWatermarkOptions.IsSemitrasparent
+            //ExFor:ImageWatermarkOptions.Scale
+            //ExFor:ImageWatermarkOptions.IsWashout
+            //ExFor:WatermarkLayout
+            //ExFor:WatermarkType
+            //ExSummary:Shows how to create and remove watermarks in the document.
+            Document doc = new Document();
+
+            doc.Watermark.SetText("Aspose Watermark");
+            
+            TextWatermarkOptions textWatermarkOptions = new TextWatermarkOptions();
+            textWatermarkOptions.FontFamily = "Arial";
+            textWatermarkOptions.FontSize = 36;
+            textWatermarkOptions.Color = Color.Black;
+            textWatermarkOptions.Layout = WatermarkLayout.Horizontal;
+            textWatermarkOptions.IsSemitrasparent = false;
+
+            doc.Watermark.SetText("Aspose Watermark", textWatermarkOptions);
+
+            ImageWatermarkOptions imageWatermarkOptions = new ImageWatermarkOptions();
+            imageWatermarkOptions.Scale = 5;
+            imageWatermarkOptions.IsWashout = false;
+            
+#if NET462 || JAVA
+            doc.Watermark.SetImage(Image.FromFile(ImageDir + "Logo.jpg"), imageWatermarkOptions);
+#elif NETCOREAPP2_1 || __MOBILE__
+            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
+            {
+                doc.Watermark.SetImage(image, imageWatermarkOptions);
+            }
+#endif
+            if (doc.Watermark.Type == WatermarkType.Text)
+                doc.Watermark.Remove();
+            //ExEnd
+        }
+
+        [Test]
+        public void HideGrammarErrors()
+        {
+            //ExStart
+            //ExFor:Document.ShowGrammaticalErrors
+            //ExFor:Document.ShowSpellingErrors
+            //ExSummary:Shows how to hide grammar errors in the document.
+            Document doc = new Document(MyDir + "Document.docx");
+            
+            doc.ShowGrammaticalErrors = true;
+            doc.ShowSpellingErrors = false;
+            
+            doc.Save(ArtifactsDir + "Document.HideGrammarErrors.docx");
+            //ExEnd
         }
     }
 }

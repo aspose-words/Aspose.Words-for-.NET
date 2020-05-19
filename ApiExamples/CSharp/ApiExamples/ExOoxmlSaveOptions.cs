@@ -155,11 +155,22 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Legacy control character.doc");
  
             // Note that only one legacy character (ShortDateTime) is supported which declared in the "DOC" format
-            OoxmlSaveOptions so = new OoxmlSaveOptions(SaveFormat.Docx);
-            so.KeepLegacyControlChars = true;
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
+            saveOptions.KeepLegacyControlChars = true;
  
-            doc.Save(ArtifactsDir + "OoxmlSaveOptions.KeepLegacyControlChars.docx", so);
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.KeepLegacyControlChars.docx", saveOptions);
             //ExEnd
+        }
+
+        [Test] //ToDo: Check asserts on dev side
+        public void DocumentCompression()
+        {
+            Document doc = new Document(MyDir + "Document.docx");
+            
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
+            saveOptions.CompressionLevel = CompressionLevel.SuperFast;
+            
+            doc.Save(ArtifactsDir + "out.docx", saveOptions);
         }
     }
 }
