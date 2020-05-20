@@ -51,10 +51,10 @@ namespace ApiExamples
         public void LicenseFromFileNoPath()
         {
             // This is where the test license is on my development machine.
-            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.lic");
+            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.NET.lic");
 
             // Copy a license to the bin folder so the example can execute.
-            string dstFileName = Path.Combine(AssemblyDir, "Aspose.Words.lic");
+            string dstFileName = Path.Combine(AssemblyDir, "Aspose.Words.NET.lic");
             File.Copy(testLicenseFileName, dstFileName);
 
             //ExStart
@@ -63,7 +63,7 @@ namespace ApiExamples
             //ExFor:License.SetLicense(String)
             //ExSummary:Aspose.Words will attempt to find the license file in the embedded resources or in the assembly folders.
             License license = new License();
-            license.SetLicense("Aspose.Words.lic");
+            license.SetLicense("Aspose.Words.NET.lic");
             //ExEnd
 
             // Cleanup by removing the license
@@ -75,7 +75,7 @@ namespace ApiExamples
         public void LicenseFromStream()
         {
             // This is where the test license is on my development machine
-            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.lic");
+            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.NET.lic");
 
             Stream myStream = File.OpenRead(testLicenseFileName);
             try

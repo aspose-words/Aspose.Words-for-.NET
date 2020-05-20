@@ -749,17 +749,20 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test] //ToDo: Need to check all objects describes in wiki
+        [Test, Category("SkipMono")]
         public void Dml3DEffectsRenderingModeTest()
         {
-            Document doc = new Document(MyDir + "ADMLRENDER.docx");
+            Document doc = new Document(MyDir + "DrawingML shape 3D effects.docx");
+            
             RenderCallback warningCallback = new RenderCallback();
             doc.WarningCallback = warningCallback;
             
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced;
             
-            doc.Save(ArtifactsDir + "Dml3DEffectsRenderingModeTest.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
+
+            Assert.AreEqual(warningCallback.Count, 43);
         }
 
         public class RenderCallback : IWarningCallback

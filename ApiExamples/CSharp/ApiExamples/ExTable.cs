@@ -1213,7 +1213,10 @@ namespace ApiExamples
                 table.HorizontalAnchor = RelativeHorizontalPosition.Column;
                 // Only Margin, Page, Paragraph available in RelativeVerticalPosition for VerticalAnchor setter
                 // The ArgumentException will be thrown for any other values
-                table.VerticalAnchor = RelativeVerticalPosition.Paragraph;
+                table.VerticalAnchor = RelativeVerticalPosition.Page;
+                
+                Assert.AreEqual(RelativeHorizontalPosition.Column, table.HorizontalAnchor); //ExSkip
+                Assert.AreEqual(RelativeVerticalPosition.Page, table.VerticalAnchor); //ExSkip
             }
             //ExEnd
         }
