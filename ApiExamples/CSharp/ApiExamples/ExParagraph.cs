@@ -709,22 +709,25 @@ namespace ApiExamples
             Assert.AreEqual(format.SpaceAfter, 120.0d);
         }
 
-        [Test] // ToDo: Check details
+        [Test]
         public void SnapToGrid()
         {
             //ExStart
-            //ExFor:
-            //ExSummary:
+            //ExFor:ParagraphFormat.SnapToGrid
+            //ExSummary:Shows how to work with extremely wide spacing in the document.
             Document doc = new Document();
             Paragraph par = doc.FirstSection.Body.FirstParagraph;
+            // Set 'SnapToGrid' to true if need optimize the layout when typing in Asian characters
+            // Use 'SnapToGrid' for the whole paragraph
             par.ParagraphFormat.SnapToGrid = true;
             
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("L  o  r  e  m i  p  s  u  m d  o  l  o  r s  i  t a  m  e  t");
-            
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                            "tempor incididunt ut labore et dolore magna aliqua.");
+            // Use 'SnapToGrid' for the specific run
             par.Runs[0].Font.SnapToGrid = true;
 
-            doc.Save(ArtifactsDir + "SnapToGrid.docx");
+            doc.Save(ArtifactsDir + "Paragraph.SnapToGrid.docx");
         }
     }
 }
