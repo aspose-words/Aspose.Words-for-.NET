@@ -7,6 +7,7 @@
 
 using System;
 using System.Globalization;
+using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
@@ -322,7 +323,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.EscapeUri
             //ExFor:PdfSaveOptions.OpenHyperlinksInNewWindow
-            //ExSummary: Shows how to escape hyperlinks or not in the document.
+            //ExSummary:Shows how to escape hyperlinks in the document.
             DocumentBuilder builder = new DocumentBuilder();
             builder.InsertHyperlink("Testlink", uri, false);
 
@@ -784,7 +785,10 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DrawingML()
+        [TestCase(DmlEffectsRenderingMode.None)]
+        [TestCase(DmlEffectsRenderingMode.Simplified)]
+        [TestCase(DmlEffectsRenderingMode.Fine)]
+        public void DrawingMLEffects(DmlEffectsRenderingMode effectsRenderingMode)
         {
             //ExStart
             //ExFor:DmlRenderingMode
@@ -795,18 +799,78 @@ namespace ApiExamples
             //ExSummary:Shows how to configure DrawingML rendering quality with PdfSaveOptions.
             Document doc = new Document(MyDir + "DrawingML shape effects.docx");
 
-            // Creating a new PdfSaveOptions object and setting its DmlEffectsRenderingMode to "None" will
-            // strip the shapes of all their shading effects in the output pdf
             PdfSaveOptions options = new PdfSaveOptions();
-            options.DmlEffectsRenderingMode = DmlEffectsRenderingMode.None;
-            options.DmlRenderingMode = DmlRenderingMode.Fallback; 
+            options.DmlEffectsRenderingMode = effectsRenderingMode;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingML.pdf", options);
+            Assert.AreEqual(DmlRenderingMode.DrawingML, options.DmlRenderingMode);
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf", options);
             //ExEnd
+
+            #if NET462 || NETCOREAPP2_1
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
+
+            ImagePlacementAbsorber imb = new ImagePlacementAbsorber();
+            imb.Visit(pdfDocument.Pages[1]);
+
+            TableAbsorber ttb = new TableAbsorber();
+            ttb.Visit(pdfDocument.Pages[1]);
+
+            switch (effectsRenderingMode)
+            {
+                case DmlEffectsRenderingMode.None:
+                case DmlEffectsRenderingMode.Simplified:
+                    TestUtil.FileContainsString("4 0 obj\r\n" +
+                                                "<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                        ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
+                    Assert.AreEqual(0, imb.ImagePlacements.Count);
+                    Assert.AreEqual(28, ttb.TableList.Count);
+                    break;
+                case DmlEffectsRenderingMode.Fine:
+                    TestUtil.FileContainsString("4 0 obj\r\n<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R>>/XObject<</X1 9 0 R/X2 10 0 R/X3 11 0 R/X4 12 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                        ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
+                    Assert.AreEqual(21, imb.ImagePlacements.Count);
+                    Assert.AreEqual(4, ttb.TableList.Count);
+                    break;
+            }
+            #endif
         }
 
         [Test]
-        public void ExportDocumentStructure()
+        [TestCase(DmlRenderingMode.Fallback)]
+        [TestCase(DmlRenderingMode.DrawingML)]
+
+        public void DrawingMLFallback(DmlRenderingMode dmlRenderingMode)
+        {
+            //ExStart
+            //ExFor:DmlRenderingMode
+            //ExFor:SaveOptions.DmlRenderingMode
+            //ExSummary:Shows how to render fallback shapes when saving to Pdf.
+            Document doc = new Document(MyDir + "DrawingML shape fallbacks.docx");
+
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.DmlRenderingMode = dmlRenderingMode;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf", options);
+            //ExSkip
+
+            switch (dmlRenderingMode)
+            {
+                case DmlRenderingMode.DrawingML:
+                    TestUtil.FileContainsString("<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R/FAAABA 10 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                        ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
+                    break;
+                case DmlRenderingMode.Fallback:
+                    TestUtil.FileContainsString("4 0 obj\r\n<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R/FAAABC 12 0 R>>/ExtGState<</GS1 9 0 R/GS2 10 0 R>>>>/Group ",
+                        ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
+                    break;
+            }
+        }
+
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ExportDocumentStructure(bool doExportStructure)
         {
             //ExStart
             //ExFor:PdfSaveOptions.ExportDocumentStructure
@@ -815,17 +879,32 @@ namespace ApiExamples
 
             // Create a PdfSaveOptions object and configure it to preserve the logical structure that's in the input document
             // The file size will be increased and the structure will be visible in the "Content" navigation pane
-            // of Adobe Acrobat Pro, while editing the .pdf
+            // of Adobe Acrobat Pro
             PdfSaveOptions options = new PdfSaveOptions();
-            options.ExportDocumentStructure = true;
+            options.ExportDocumentStructure = doExportStructure;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExportDocumentStructure.pdf", options);
             //ExEnd
+
+            if (doExportStructure)
+            {
+                TestUtil.FileContainsString("4 0 obj\r\n" +
+                                            "<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R/FAAABC 12 0 R>>/ExtGState<</GS1 9 0 R/GS2 10 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>/StructParents 0/Tabs /S>>",
+                    ArtifactsDir + "PdfSaveOptions.ExportDocumentStructure.pdf");
+            }
+            else
+            {
+                TestUtil.FileContainsString("4 0 obj\r\n" +
+                                            "<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R/FAAABA 10 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                    ArtifactsDir + "PdfSaveOptions.ExportDocumentStructure.pdf");
+            }
         }
 
 #if NET462 || JAVA
         [Test]
-        public void PreblendImages()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void PreblendImages(bool doPreblendImages)
         {
             //ExStart
             //ExFor:PdfSaveOptions.PreblendImages
@@ -836,17 +915,21 @@ namespace ApiExamples
             Image img = Image.FromFile(ImageDir + "Transparent background logo.png");
             builder.InsertImage(img);
 
-            // Create a PdfSaveOptions object and setting this flag may change the quality and size of the output .pdf
+            // Setting this flag in a SaveOptions object may change the quality and size of the output .pdf
             // because of the way some images are rendered
             PdfSaveOptions options = new PdfSaveOptions();
-            options.PreblendImages = true;
+            options.PreblendImages = doPreblendImages;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagest.pdf", options);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
+
+            TestPreblendImages(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", doPreblendImages);
         }
 #elif NETCOREAPP2_1 || __MOBILE__
         [Test]
-        public void PreblendImagesNetStandard2()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void PreblendImagesNetStandard2(bool doPreblendImages)
         {
             //ExStart
             //ExFor:PdfSaveOptions.PreblendImages
@@ -862,12 +945,38 @@ namespace ApiExamples
             // Create a PdfSaveOptions object and setting this flag may change the quality and size of the output .pdf
             // because of the way some images are rendered
             PdfSaveOptions options = new PdfSaveOptions();
-            options.PreblendImages = true;
+            options.PreblendImages = doPreblendImages;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", options);
             //ExEnd
+
+            TestPreblendImages(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", doPreblendImages);
         }
 #endif
+
+        private void TestPreblendImages(string outFileName, bool doPreblendImages)
+        {
+#if NET462 || NETCOREAPP2_1
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(outFileName);
+            XImage image = pdfDocument.Pages[1].Resources.Images[1];
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                image.Save(stream);
+
+                if (doPreblendImages)
+                {
+                    TestUtil.FileContainsString("9 0 obj\r\n20849 ", outFileName);
+                    Assert.AreEqual(17898, stream.Length);
+                }
+                else
+                {
+                    TestUtil.FileContainsString("9 0 obj\r\n19289 ", outFileName);
+                    Assert.AreEqual(19216, stream.Length);
+                }
+            }
+#endif
+        }
 
         [Test]
         public void PdfDigitalSignature()
@@ -903,8 +1012,14 @@ namespace ApiExamples
             Assert.AreEqual("Aspose Office", options.DigitalSignatureDetails.Location);
             Assert.AreEqual(signingTime.ToUniversalTime(), options.DigitalSignatureDetails.SignatureDate);
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf");
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf", options);
             //ExEnd
+            
+            TestUtil.FileContainsString("6 0 obj\r\n" +
+                                        "<</Type /Annot/Subtype /Widget/FT /Sig/DR <<>>/F 132/Rect [0 0 0 0]/V 7 0 R/P 4 0 R/T(þÿ\0A\0s\0p\0o\0s\0e\0D\0i\0g\0i\0t\0a\0l\0S\0i\0g\0n\0a\0t\0u\0r\0e)/AP <</N 8 0 R>>>>", 
+                ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf");
+
+            Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf").HasDigitalSignature);
         }
 
         [Test]
@@ -945,13 +1060,20 @@ namespace ApiExamples
             Assert.AreEqual("https://freetsa.org/tsr", options.DigitalSignatureDetails.TimestampSettings.ServerUrl);
             Assert.AreEqual("JohnDoe", options.DigitalSignatureDetails.TimestampSettings.UserName);
             Assert.AreEqual("MyPassword", options.DigitalSignatureDetails.TimestampSettings.Password);
-
-            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
             //ExEnd
+
+            Assert.Throws<NullReferenceException>(() => doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf", options));
+            Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf").HasDigitalSignature);
+            TestUtil.FileContainsString("6 0 obj\r\n" +
+                                        "<</Type /Annot/Subtype /Widget/FT /Sig/DR <<>>/F 132/Rect [0 0 0 0]/V 7 0 R/P 4 0 R/T(þÿ\0A\0s\0p\0o\0s\0e\0D\0i\0g\0i\0t\0a\0l\0S\0i\0g\0n\0a\0t\0u\0r\0e)/AP <</N 8 0 R>>>>", 
+            ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
         }
 
         [Test]
-        public void RenderMetafile()
+        [TestCase(EmfPlusDualRenderingMode.Emf)]
+        [TestCase(EmfPlusDualRenderingMode.EmfPlus)]
+        [TestCase(EmfPlusDualRenderingMode.EmfPlusWithFallback)]
+        public void RenderMetafile(EmfPlusDualRenderingMode renderingMode)
         {
             //ExStart
             //ExFor:EmfPlusDualRenderingMode
@@ -961,11 +1083,32 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "EMF.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.MetafileRenderingOptions.EmfPlusDualRenderingMode = EmfPlusDualRenderingMode.EmfPlus;
-            saveOptions.MetafileRenderingOptions.UseEmfEmbeddedToWmf = false;
+            saveOptions.MetafileRenderingOptions.EmfPlusDualRenderingMode = renderingMode;
+            saveOptions.MetafileRenderingOptions.UseEmfEmbeddedToWmf = true;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf", saveOptions);
             //ExEnd
+
+#if NET462 || NETCOREAPP2_1
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
+
+            switch (renderingMode)
+            {
+                case EmfPlusDualRenderingMode.Emf:
+                case EmfPlusDualRenderingMode.EmfPlusWithFallback:
+                    Assert.AreEqual(0, pdfDocument.Pages[1].Resources.Images.Count);
+                    TestUtil.FileContainsString("4 0 obj\r\n" +
+                                                "<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAH 7 0 R/FAAABA 10 0 R/FAAABD 13 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                        ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
+                    break;
+                case EmfPlusDualRenderingMode.EmfPlus:
+                    Assert.AreEqual(1, pdfDocument.Pages[1].Resources.Images.Count);
+                    TestUtil.FileContainsString("4 0 obj\r\n" +
+                                                "<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAH 7 0 R/FAAABB 11 0 R/FAAABE 14 0 R>>/XObject<</X1 9 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                        ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
+                    break;
+            }
+#endif
         }
     }
 }
