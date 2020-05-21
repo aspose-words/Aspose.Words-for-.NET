@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.IO;
 using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -165,12 +166,73 @@ namespace ApiExamples
         [Test] //ToDo: Check asserts on dev side
         public void DocumentCompression()
         {
+            //ExStart
+            //ExFor:OoxmlSaveOptions.CompressionLevel
+            //ExFor:CompressionLevel
+            //ExSummary:Shows how to specify the compression level used to save the document.
             Document doc = new Document(MyDir + "Document.docx");
             
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
+            // DOCX and DOTX files are internally a ZIP-archive, this property controls
+            // the compression level of the archive
+            // Note, that FlatOpc file is not a ZIP-archive, therefore, this property does
+            // not affect the FlatOpc files
+            // Aspose.Words uses CompressionLevel.Normal by default, but MS Word uses
+            // CompressionLevel.SuperFast by default
             saveOptions.CompressionLevel = CompressionLevel.SuperFast;
             
-            doc.Save(ArtifactsDir + "out.docx", saveOptions);
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.out.docx", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void DocumentCompression_CheckFileSignatures()
+        {
+            CompressionLevel[] compressionLevels = {
+                CompressionLevel.Maximum,
+                CompressionLevel.Normal,
+                CompressionLevel.Fast,
+                CompressionLevel.SuperFast
+            };
+
+#if JAVA
+            string[] fileSignatures = new string[]
+            {
+                "50 4B 03 04 14 00 08 08 08 00 ",
+                "50 4B 03 04 14 00 08 08 08 00 ",
+                "50 4B 03 04 14 00 08 08 08 00 ",
+                "50 4B 03 04 14 00 08 08 08 00 "
+            };
+#else
+            string[] fileSignatures = {
+                "50 4B 03 04 14 00 02 00 08 00 ",
+                "50 4B 03 04 14 00 00 00 08 00 ",
+                "50 4B 03 04 14 00 04 00 08 00 ",
+                "50 4B 03 04 14 00 06 00 08 00 "
+            };
+#endif
+
+            Document doc = new Document();
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
+
+            long prevFileSize = 0;
+            for (int i = 0; i < fileSignatures.Length; i++)
+            {
+                saveOptions.CompressionLevel = compressionLevels[i];
+                doc.Save(ArtifactsDir + "OoxmlSaveOptions.DocumentCompression_CheckFileSignatures.docx", saveOptions);
+
+                using (MemoryStream stream = new MemoryStream())
+                using (FileStream outputFileStream = File.Open(ArtifactsDir + "OoxmlSaveOptions.DocumentCompression_CheckFileSignatures.docx", FileMode.Open))
+                {
+                    long fileSize = outputFileStream.Length;
+                    Assert.Less(prevFileSize, fileSize);
+
+                    TestUtil.CopyStream(outputFileStream, stream);
+                    Assert.AreEqual(fileSignatures[i], TestUtil.DumpArray(stream.ToArray(), 0, 10));
+
+                    prevFileSize = fileSize;
+                }
+            }
         }
     }
 }

@@ -118,6 +118,12 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.OpenType.pdf");
             //ExEnd
         }
+
+        [Test]
+        public void GetEmbeddedFontAsOpenType()
+        {
+            
+        }
 #endif
 
 #if NET462 || MAC || JAVA
