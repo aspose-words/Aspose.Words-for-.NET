@@ -340,23 +340,34 @@ namespace ApiExamples
         /// </summary>
         /// <remarks>
         /// Used when comparing DateTime instances to Field.Result values parsed to DateTime, which may differ slightly. 
-        /// Give a delta value that's generous enough for any lower end system to pass, and a delta of zero is allowed.
+        /// Give a delta value that's generous enough for any lower end system to pass, also a delta of zero is allowed.
         /// </remarks>
         /// <param name="expectedType">The FieldType that we expect the field to have.</param>
         /// <param name="expectedFieldCode">The expected output value of GetFieldCode() being called on the field.</param>
         /// <param name="expectedResult">The date/time that the field's result is expected to represent.</param>
-        /// <param name="delta">Margin of error for expectedResult.</param>
         /// <param name="field">The field that's being tested.</param>
-        internal static void VerifyField(FieldType expectedType, string expectedFieldCode, DateTime expectedResult, TimeSpan delta, Field field)
+        /// <param name="delta">Margin of error for expectedResult.</param>
+        internal static void VerifyField(FieldType expectedType, string expectedFieldCode, DateTime expectedResult, Field field, TimeSpan delta)
         {
             Assert.AreEqual(expectedType, field.Type);
             Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
             Assert.True(DateTime.TryParse(field.Result, out DateTime actual));
 
             if (field.Type == FieldType.FieldTime)
-                Assert.True(expectedResult - actual <= delta);
+                VerifyDate(expectedResult, actual, delta);
             else
-                Assert.True(expectedResult.Date - actual <= delta);
+                VerifyDate(expectedResult.Date, actual, delta);
+        }
+
+        /// <summary>
+        /// Checks whether a DateTime matches an expected value, with a margin of error.
+        /// </summary>
+        /// <param name="expected">The date/time that we expect the result to be.</param>
+        /// <param name="actual">The DateTime object being tested.</param>
+        /// <param name="delta">Margin of error for expectedResult.</param>
+        internal static void VerifyDate(DateTime expected, DateTime actual, TimeSpan delta)
+        {
+            Assert.True(expected - actual <= delta);
         }
 
         /// <summary>

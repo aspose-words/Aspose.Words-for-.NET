@@ -122,8 +122,8 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Paragraph.InsertField.docx");
 
-            TestUtil.VerifyField(FieldType.FieldDate, " DATE ", DateTime.Now, new TimeSpan(0, 0, 0, 0), doc.Range.Fields[0]);
-            TestUtil.VerifyField(FieldType.FieldTime, " TIME  \\@ \"HH:mm:ss\" ", DateTime.Now, new TimeSpan(0, 0, 0, 5), doc.Range.Fields[1]);
+            TestUtil.VerifyField(FieldType.FieldDate, " DATE ", DateTime.Now, doc.Range.Fields[0], new TimeSpan(0, 0, 0, 0));
+            TestUtil.VerifyField(FieldType.FieldTime, " TIME  \\@ \"HH:mm:ss\" ", DateTime.Now, doc.Range.Fields[1], new TimeSpan(0, 0, 0, 5));
             TestUtil.VerifyField(FieldType.FieldQuote, " QUOTE \"Real value\"", "Placeholder value", doc.Range.Fields[2]);
             TestUtil.VerifyField(FieldType.FieldAuthor, " AUTHOR ", "John Doe", doc.Range.Fields[3]);
             TestUtil.VerifyField(FieldType.FieldQuote, " QUOTE \"Real value\" ", "Real value", doc.Range.Fields[4]);
