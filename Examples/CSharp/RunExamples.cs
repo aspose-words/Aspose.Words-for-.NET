@@ -220,6 +220,7 @@ namespace Aspose.Words.Examples.CSharp
             // WorkWithCleanupOptions.Run();
             // WorkWithWatermark.Run();
             // ShowGrammaticalAndSpellingErrors.Run();
+            // SplitDocument.Run();
 
             //// Fields
             //// =====================================================
@@ -266,7 +267,7 @@ namespace Aspose.Words.Examples.CSharp
 
             //// Charts
             //// =====================================================
-            ChartNumberFormat.Run();
+            // ChartNumberFormat.Run();
             // CreateColumnChart.Run();
             // InsertScatterChart.Run();
             // InsertAreaChart.Run();

@@ -40,7 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -128,7 +128,7 @@
     <Compile Include="Loading-and-Saving\AccessAndVerifySignature.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToByte.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToEPUB.cs" />
-    <Compile Include="Loading-and-Saving\ConvertDocumentToHtmlWithRoundtrip.cs" />
+    <Compile Include="Loading-and-Saving\ConvertDocumentToHtml.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToMhtmlAndEmail.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToPCL.cs" />
     <Compile Include="Loading-and-Saving\DigitallySignedPdfUsingCertificateHolder.cs" />
@@ -207,6 +207,7 @@
     <Compile Include="Programming-Documents\Document\GetFontLineSpacing.cs" />
     <Compile Include="Programming-Documents\Document\ParagraphStyleSeparator.cs" />
     <Compile Include="Programming-Documents\Document\ShowGrammaticalAndSpellingErrors.cs" />
+    <Compile Include="Programming-Documents\Document\SplitDocument.cs" />
     <Compile Include="Programming-Documents\Document\WorkWithCleanupOptions.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithImportFormatOptions.cs" />
     <Compile Include="Programming-Documents\Document\WorkingWithMarkdownFeatures.cs" />

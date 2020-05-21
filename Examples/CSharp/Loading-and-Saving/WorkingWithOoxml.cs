@@ -58,7 +58,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
         public static void UpdateLastSavedTimeProperty(String dataDir)
         {
             // ExStart:UpdateLastSavedTimeProperty
-            Document doc = new Document(dataDir + "Document.doc");
+            Document doc = new Document(dataDir + "Document.docx");
 
             OoxmlSaveOptions ooxmlSaveOptions = new OoxmlSaveOptions();
             ooxmlSaveOptions.UpdateLastSavedTimeProperty = true;
