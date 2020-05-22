@@ -48,7 +48,9 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Range.ReplaceSimple.docx");
             //ExEnd
 
-            Assert.AreEqual("Hello James Bond,\r\x000c", doc.GetText());
+            doc = new Document(ArtifactsDir + "Range.ReplaceSimple.docx");
+
+            Assert.AreEqual("Hello James Bond,", doc.GetText().Trim());
         }
 
         [Test]
@@ -479,6 +481,5 @@ namespace ApiExamples
                             "2) At a MERGEFIELD:\r\u0013 MERGEFIELD  Document_1  \\* MERGEFORMAT \u0014«Document_1»\u0015\r" +
                             "3) At a bookmark:", doc.FirstSection.Body.GetText().Trim());
         }
-
     }
 }
