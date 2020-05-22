@@ -1060,9 +1060,10 @@ namespace ApiExamples
             Assert.AreEqual("https://freetsa.org/tsr", options.DigitalSignatureDetails.TimestampSettings.ServerUrl);
             Assert.AreEqual("JohnDoe", options.DigitalSignatureDetails.TimestampSettings.UserName);
             Assert.AreEqual("MyPassword", options.DigitalSignatureDetails.TimestampSettings.Password);
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf", options);
             //ExEnd
 
-            Assert.Throws<NullReferenceException>(() => doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf", options));
             Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf").HasDigitalSignature);
             TestUtil.FileContainsString("6 0 obj\r\n" +
                                         "<</Type /Annot/Subtype /Widget/FT /Sig/DR <<>>/F 132/Rect [0 0 0 0]/V 7 0 R/P 4 0 R/T(þÿ\0A\0s\0p\0o\0s\0e\0D\0i\0g\0i\0t\0a\0l\0S\0i\0g\0n\0a\0t\0u\0r\0e)/AP <</N 8 0 R>>>>", 
