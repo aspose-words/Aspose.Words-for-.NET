@@ -5181,16 +5181,12 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.FILESIZE.docx");
 
-            Assert.AreEqual(8723, doc.BuiltInDocumentProperties.Bytes);
-
             field = (FieldFileSize)doc.Range.Fields[0];
 
             TestUtil.VerifyField(FieldType.FieldFileSize, " FILESIZE ", "10590", field);
 
             // These fields will need to be updated to produce an accurate result
             doc.UpdateFields();
-
-            Assert.AreEqual("8723", field.Result);
 
             field = (FieldFileSize)doc.Range.Fields[1];
 
