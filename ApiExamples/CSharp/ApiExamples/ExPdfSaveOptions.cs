@@ -135,57 +135,45 @@ namespace ApiExamples
         }
 
         [Test]
+        [TestCase(false)]
+        [TestCase(true)]
         [Category("SkipMono")]
-        public void WithoutUpdateFields() // INSP: I think we can combine WithoutUpdateFields and WithUpdateFields examples (using TestCase attribute)
+        public void UpdateFields(bool doUpdateFields)
         {
             //ExStart
             //ExFor:PdfSaveOptions.Clone
             //ExFor:SaveOptions.UpdateFields
             //ExSummary:Shows how to update fields before saving into a PDF document.
-            Document doc = DocumentHelper.CreateDocumentFillWithDummyText(); // INSP: Maybe it's need to remove such helper methods and use full docs creation in examples?
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions
-            {
-                UpdateFields = false
-            };
+            // Insert two pages of text, including two fields that will need to be updated to display an accurate value
+            builder.Write("Page ");
+            builder.InsertField("PAGE", "");
+            builder.Write(" of ");
+            builder.InsertField("NUMPAGES", "");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Hello World!");
 
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.UpdateFields = doUpdateFields;
+            
             // PdfSaveOptions objects can be cloned
-            Assert.AreNotSame(pdfSaveOptions, pdfSaveOptions.Clone());
+            Assert.AreNotSame(options, options.Clone());
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.WithoutUpdateFields.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.UpdateFields.pdf", options);
             //ExEnd
 
             #if NET462 || NETCOREAPP2_1
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WithoutUpdateFields.pdf");
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.UpdateFields.pdf");
 
-            // Get text fragment by search String
-            TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber("Page  of");
+            TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
             pdfDocument.Pages.Accept(textFragmentAbsorber);
 
-            // Assert that fields are not updated
-            Assert.AreEqual("Page  of", textFragmentAbsorber.TextFragments[1].Text);
-            #endif
-        }
-
-        [Test]
-        [Category("SkipMono")]
-        public void WithUpdateFields()
-        {
-            Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
-
-            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { UpdateFields = true };
-
-            doc.Save(ArtifactsDir + "PdfSaveOptions.WithUpdateFields.pdf", pdfSaveOptions);
-
-            #if NET462 || NETCOREAPP2_1
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WithUpdateFields.pdf");
-
-            // Get text fragment by search String from PDF document
-            Aspose.Pdf.Text.TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber("Page 1 of 2");
-            pdfDocument.Pages.Accept(textFragmentAbsorber);
-
-            // Assert that fields are updated
-            Assert.AreEqual("Page 1 of 2", textFragmentAbsorber.TextFragments[1].Text);
+            if (doUpdateFields)
+                Assert.AreEqual("Page 1 of 2", textFragmentAbsorber.TextFragments[1].Text);
+            else
+                Assert.AreEqual("Page  of ", textFragmentAbsorber.TextFragments[1].Text);
             #endif
         }
 
