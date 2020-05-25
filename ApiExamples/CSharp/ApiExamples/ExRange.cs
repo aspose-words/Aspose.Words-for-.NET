@@ -74,15 +74,17 @@ namespace ApiExamples
             Regex regex = new Regex("e");
             FindReplaceOptions options = new FindReplaceOptions();
  
-            // Replace 'e' in document ignoring deleted text
+            // Replace 'e' in document while ignoring deleted text
             options.IgnoreDeleted = true;
             doc.Range.Replace(regex, "*", options);
-            Assert.AreEqual(doc.GetText(), "Deleted\rT*xt\f");
+
+            Assert.AreEqual(doc.GetText().Trim(), "Deleted\rT*xt");
             
-            // Replace 'e' in document NOT ignoring deleted text
+            // Replace 'e' in document while not ignoring deleted text
             options.IgnoreDeleted = false;
             doc.Range.Replace(regex, "*", options);
-            Assert.AreEqual(doc.GetText(), "D*l*t*d\rT*xt\f");
+
+            Assert.AreEqual(doc.GetText().Trim(), "D*l*t*d\rT*xt");
             //ExEnd
         }
 
@@ -106,15 +108,17 @@ namespace ApiExamples
             Regex regex = new Regex("e");
             FindReplaceOptions options = new FindReplaceOptions();
  
-            // Replace 'e' in document ignoring inserted text
+            // Replace 'e' in document while ignoring inserted text
             options.IgnoreInserted = true;
             doc.Range.Replace(regex, "*", options);
-            Assert.AreEqual(doc.GetText(), "Inserted\rT*xt\f");
+
+            Assert.AreEqual(doc.GetText().Trim(), "Inserted\rT*xt");
             
-            // Replace 'e' in document NOT ignoring inserted text
+            // Replace 'e' in document while not ignoring inserted text
             options.IgnoreInserted = false;
             doc.Range.Replace(regex, "*", options);
-            Assert.AreEqual(doc.GetText(), "Ins*rt*d\rT*xt\f");
+
+            Assert.AreEqual(doc.GetText().Trim(), "Ins*rt*d\rT*xt");
             //ExEnd
         }
 
@@ -200,9 +204,11 @@ namespace ApiExamples
 
             Assert.AreEqual("sad mad bad", doc.GetText().Trim());
 
-            FindReplaceOptions options = new FindReplaceOptions();
-            options.MatchCase = false;
-            options.FindWholeWordsOnly = false;
+            FindReplaceOptions options = new FindReplaceOptions
+            {
+                MatchCase = false,
+                FindWholeWordsOnly = false
+            };
 
             doc.Range.Replace(new Regex("[s|m]ad"), "bad", options);
 
@@ -227,30 +233,20 @@ namespace ApiExamples
             builder.Writeln("Hello <CustomerName>,");
 
             FindReplaceOptions options = new FindReplaceOptions();
-            options.ReplacingCallback = new ReplaceWithHtmlEvaluator(options);
+            options.ReplacingCallback = new ReplaceWithHtmlEvaluator();
 
             doc.Range.Replace(new Regex(@" <CustomerName>,"), string.Empty, options);
 
             // Save the modified document
-            doc.Save(ArtifactsDir + "Range.ReplaceWithInsertHtml.doc");
-
-            Assert.AreEqual("James Bond, Hello\r\x000c", doc.GetText()); //ExSkip
+            doc.Save(ArtifactsDir + "Range.ReplaceWithInsertHtml.docx");
+            Assert.AreEqual("James Bond, Hello\r\x000c", new Document(ArtifactsDir + "Range.ReplaceWithInsertHtml.docx").GetText()); //ExSkip
         }
 
         private class ReplaceWithHtmlEvaluator : IReplacingCallback
         {
-            internal ReplaceWithHtmlEvaluator(FindReplaceOptions options)
-            {
-                mOptions = options;
-            }
-
-            /// <summary>
-            /// NOTE: This is a simplistic method that will only work well when the match
-            /// starts at the beginning of a run.
-            /// </summary>
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
-                DocumentBuilder builder = new DocumentBuilder((Document) args.MatchNode.Document);
+                DocumentBuilder builder = new DocumentBuilder((Document)args.MatchNode.Document);
                 builder.MoveTo(args.MatchNode);
 
                 // Replace '<CustomerName>' text with a red bold name
@@ -259,8 +255,6 @@ namespace ApiExamples
 
                 return ReplaceAction.Replace;
             }
-
-            private readonly FindReplaceOptions mOptions;
         }
         //ExEnd
 
@@ -280,8 +274,8 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Font.Name = "Arial";
-            builder.Write(
-                "There are few numbers that should be converted to HEX and highlighted: 123, 456, 789 and 17379.");
+            builder.Writeln("Numbers that will be converted to hexadecimal and highlighted:\n" +
+                            "123, 456, 789 and 17379.");
 
             FindReplaceOptions options = new FindReplaceOptions();
 
@@ -296,9 +290,11 @@ namespace ApiExamples
             options.Direction = FindReplaceDirection.Backward;
 
             int count = doc.Range.Replace(new Regex("[0-9]+"), "", options);
-            Assert.AreEqual(4, count);
 
-            doc.Save(ArtifactsDir + "Range.ReplaceNumbersAsHex.docx");
+            Assert.AreEqual(4, count);
+            Assert.AreEqual("Numbers that will be converted to hexadecimal and highlighted:\r" +
+                            "0x7B, 0x1C8, 0x315 and 0x43E3.", doc.GetText().Trim());
+            Assert.AreEqual(4, doc.GetChildNodes(NodeType.Run, true).OfType<Run>().Count(r => r.Font.HighlightColor.ToArgb() == Color.LightGray.ToArgb()));
         }
 
         /// <summary>
@@ -314,7 +310,7 @@ namespace ApiExamples
                 int number = Convert.ToInt32(args.Match.Value);
 
                 // And write it as HEX
-                args.Replacement = $"0x{number:X} (replacement #{mCurrentReplacementNumber})";
+                args.Replacement = $"0x{number:X}";
 
                 Console.WriteLine($"Match #{mCurrentReplacementNumber}");
                 Console.WriteLine($"\tOriginal value:\t{args.Match.Value}");
@@ -353,6 +349,12 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Range.ApplyParagraphFormat.docx");
             //ExEnd
+
+            ParagraphCollection paragraphs = new Document(ArtifactsDir + "Range.ApplyParagraphFormat.docx").FirstSection.Body.Paragraphs;
+
+            Assert.AreEqual(ParagraphAlignment.Right, paragraphs[0].ParagraphFormat.Alignment);
+            Assert.AreEqual(ParagraphAlignment.Left, paragraphs[1].ParagraphFormat.Alignment);
+            Assert.AreEqual(ParagraphAlignment.Right, paragraphs[2].ParagraphFormat.Alignment);
         }
 
         [Test]
@@ -388,8 +390,12 @@ namespace ApiExamples
             //ExFor:Range
             //ExFor:Range.Text
             //ExSummary:Shows how to get plain, unformatted text of a range.
-            Document doc = new Document(MyDir + "Document.docx");
-            string text = doc.Range.Text;
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Hello world!");
+
+            Assert.AreEqual("Hello world!", doc.Range.Text.Trim());
             //ExEnd
         }
 
