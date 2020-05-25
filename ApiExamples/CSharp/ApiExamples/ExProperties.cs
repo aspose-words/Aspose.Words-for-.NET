@@ -82,10 +82,8 @@ namespace ApiExamples
 
             // Iterate over all the custom document properties
             Console.WriteLine("Custom Properties:");
-            for (int i = 0; i < doc.CustomDocumentProperties.Count; i++)
+            foreach (var customDocumentProperty in doc.CustomDocumentProperties)
             {
-                DocumentProperty customDocumentProperty = doc.CustomDocumentProperties[i];
-
                 Console.WriteLine(customDocumentProperty.Name);
                 Console.WriteLine($"\tType:\t{customDocumentProperty.Type}");
                 Console.WriteLine($"\tValue:\t\"{customDocumentProperty.Value}\"");

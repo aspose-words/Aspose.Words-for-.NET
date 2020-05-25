@@ -30,10 +30,11 @@ namespace ApiExamples
 
             Document doc = new Document(MyDir + "UTF-8 characters.rtf", loadOptions);
 
-            if (doRecognizeUtb8Text)
-                Assert.AreEqual("“John Doe´s list of currency symbols”™\r€, ¢, £, ¥, ¤", doc.FirstSection.Body.GetText().Trim());
-            else 
-                Assert.AreEqual("â€œJohn DoeÂ´s list of currency symbolsâ€\u009dâ„¢\râ‚¬, Â¢, Â£, Â¥, Â¤", doc.FirstSection.Body.GetText().Trim());
+            Assert.AreEqual(
+                doRecognizeUtb8Text
+                    ? "“John Doe´s list of currency symbols”™\r€, ¢, £, ¥, ¤"
+                    : "â€œJohn DoeÂ´s list of currency symbolsâ€\u009dâ„¢\râ‚¬, Â¢, Â£, Â¥, Â¤",
+                doc.FirstSection.Body.GetText().Trim());
             //ExEnd
         }
     }

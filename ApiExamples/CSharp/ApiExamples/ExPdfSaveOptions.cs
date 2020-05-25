@@ -136,13 +136,13 @@ namespace ApiExamples
 
         [Test]
         [Category("SkipMono")]
-        public void WithoutUpdateFields()
+        public void WithoutUpdateFields() // INSP: I think we can combine WithoutUpdateFields and WithUpdateFields examples (using TestCase attribute)
         {
             //ExStart
             //ExFor:PdfSaveOptions.Clone
             //ExFor:SaveOptions.UpdateFields
             //ExSummary:Shows how to update fields before saving into a PDF document.
-            Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
+            Document doc = DocumentHelper.CreateDocumentFillWithDummyText(); // INSP: Maybe it's need to remove such helper methods and use full docs creation in examples?
 
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions
             {
@@ -208,6 +208,7 @@ namespace ApiExamples
                 ImageCompression = PdfImageCompression.Jpeg,
                 PreserveFormFields = true
             };
+            
             doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf", options);
 
             PdfSaveOptions optionsA1B = new PdfSaveOptions
@@ -255,7 +256,7 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions
             //ExFor:ColorMode
             //ExFor:FixedPageSaveOptions.ColorMode
-            //ExSummary:Shows how change image color with save options property
+            //ExSummary:Shows how change image color with save options property.
             Document doc = new Document(MyDir + "Images.docx");
 
             // Configure PdfSaveOptions to save every image in the input document in greyscale during conversion
@@ -351,18 +352,17 @@ namespace ApiExamples
             #endif
         }
 
-        [Test]
-        [Category("SkipMono")]
+        //ExStart
+        //ExFor:MetafileRenderingMode
+        //ExFor:MetafileRenderingOptions
+        //ExFor:MetafileRenderingOptions.EmulateRasterOperations
+        //ExFor:MetafileRenderingOptions.RenderingMode
+        //ExFor:IWarningCallback
+        //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
+        //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records.
+        [Test, Category("SkipMono")] //ExSkip
         public void HandleBinaryRasterWarnings()
         {
-            //ExStart
-            //ExFor:MetafileRenderingMode
-            //ExFor:MetafileRenderingOptions
-            //ExFor:MetafileRenderingOptions.EmulateRasterOperations
-            //ExFor:MetafileRenderingOptions.RenderingMode
-            //ExFor:IWarningCallback
-            //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
-            //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records.
             Document doc = new Document(MyDir + "WMF with image.docx");
 
             MetafileRenderingOptions metafileRenderingOptions =
@@ -372,7 +372,8 @@ namespace ApiExamples
                     RenderingMode = MetafileRenderingMode.VectorWithFallback
                 };
 
-            // If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words renders this metafile to a bitmap
+            // If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words
+            // renders this metafile to a bitmap
             HandleDocumentWarnings callback = new HandleDocumentWarnings();
             doc.WarningCallback = callback;
 
@@ -382,7 +383,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.HandleBinaryRasterWarnings.pdf", saveOptions);
 
             Assert.AreEqual(1, callback.Warnings.Count);
-            Assert.AreEqual("'R2_XORPEN' binary raster operation is partly supported.", callback.Warnings[0].Description);
+            Assert.AreEqual("'R2_XORPEN' binary raster operation is partly supported.",
+                callback.Warnings[0].Description);
         }
 
         public class HandleDocumentWarnings : IWarningCallback
@@ -529,11 +531,8 @@ namespace ApiExamples
             pdfDocument.Pages[1].Accept(textAbsorber);
             Rectangle textFragmentRectangle = textAbsorber.TextFragments[3].Rectangle;
 
-            if (doScaleWmfFonts)
-                Assert.AreEqual(1.589d, textFragmentRectangle.Width, 0.001d);
-            else
-                Assert.AreEqual(5.045d, textFragmentRectangle.Width, 0.001d);
-            #endif
+            Assert.AreEqual(doScaleWmfFonts ? 1.589d : 5.045d, textFragmentRectangle.Width, 0.001d);
+#endif
         }
 
         [Test]
@@ -565,11 +564,11 @@ namespace ApiExamples
 
             SetGlyphsPositionShowText tjOperator = (SetGlyphsPositionShowText)textAbsorber.TextFragments[1].Page.Contents[96];
 
-            if (applyAdditionalTextPositioning)
-                Assert.AreEqual("[0 (s) 0 (e) 1 (g) 0 (m) 0 (e) 0 (n) 0 (t) 0 (s) 0 ( ) 1 (o) 0 (f) 0 ( ) 1 (t) 0 (e) 0 (x) 0 (t)] TJ", tjOperator.ToString());
-            else
-                Assert.AreEqual("[(se) 1 (gments ) 1 (of ) 1 (text)] TJ", tjOperator.ToString());
-            #endif
+            Assert.AreEqual(
+                applyAdditionalTextPositioning
+                    ? "[0 (s) 0 (e) 1 (g) 0 (m) 0 (e) 0 (n) 0 (t) 0 (s) 0 ( ) 1 (o) 0 (f) 0 ( ) 1 (t) 0 (e) 0 (x) 0 (t)] TJ"
+                    : "[(se) 1 (gments ) 1 (of ) 1 (text)] TJ", tjOperator.ToString());
+#endif
         }
 
         [Test]
@@ -839,7 +838,6 @@ namespace ApiExamples
         [Test]
         [TestCase(DmlRenderingMode.Fallback)]
         [TestCase(DmlRenderingMode.DrawingML)]
-
         public void DrawingMLFallback(DmlRenderingMode dmlRenderingMode)
         {
             //ExStart
