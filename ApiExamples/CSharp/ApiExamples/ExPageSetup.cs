@@ -9,6 +9,7 @@ using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+using PaperSize = Aspose.Words.PaperSize;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using System.Drawing.Printing;
 using System.Linq;
@@ -34,7 +35,8 @@ namespace ApiExamples
             //ExFor:PageVerticalAlignment
             //ExFor:BreakType
             //ExSummary:Shows how to insert sections using DocumentBuilder, specify page setup for a section and reset page setup to defaults.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Modify the first section in the document
             builder.PageSetup.Orientation = Orientation.Landscape;
@@ -46,8 +48,16 @@ namespace ApiExamples
             builder.PageSetup.ClearFormatting();
             builder.Writeln("Section 2, back to default Letter paper size, portrait orientation and top alignment.");
 
-            builder.Document.Save(ArtifactsDir + "PageSetup.ClearFormatting.doc");
+            doc.Save(ArtifactsDir + "PageSetup.ClearFormatting.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.ClearFormatting.docx");
+
+            Assert.AreEqual(Orientation.Landscape, doc.Sections[0].PageSetup.Orientation);
+            Assert.AreEqual(PageVerticalAlignment.Center, doc.Sections[0].PageSetup.VerticalAlignment);
+
+            Assert.AreEqual(Orientation.Portrait, doc.Sections[1].PageSetup.Orientation);
+            Assert.AreEqual(PageVerticalAlignment.Top, doc.Sections[1].PageSetup.VerticalAlignment);
         }
 
         [Test]
@@ -60,15 +70,16 @@ namespace ApiExamples
             //ExFor:PageSetup.CharactersPerLine
             //ExFor:PageSetup.LinesPerPage
             //ExFor:SectionLayoutMode
-            //ExSummary:Creates headers and footers different for first, even and odd pages using DocumentBuilder.
-            DocumentBuilder builder = new DocumentBuilder();
+            //ExSummary:Shows how to create headers and footers different for first, even and odd pages using DocumentBuilder.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            PageSetup ps = builder.PageSetup;
-            ps.DifferentFirstPageHeaderFooter = true;
-            ps.OddAndEvenPagesHeaderFooter = true;
-            ps.LayoutMode = SectionLayoutMode.LineGrid;
-            ps.CharactersPerLine = 1;
-            ps.LinesPerPage = 1;
+            PageSetup pageSetup = builder.PageSetup;
+            pageSetup.DifferentFirstPageHeaderFooter = true;
+            pageSetup.OddAndEvenPagesHeaderFooter = true;
+            pageSetup.LayoutMode = SectionLayoutMode.LineGrid;
+            pageSetup.CharactersPerLine = 1;
+            pageSetup.LinesPerPage = 1;
 
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderFirst);
             builder.Writeln("First page header.");
@@ -87,21 +98,59 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Text page 3.");
 
-            builder.Document.Save(ArtifactsDir + "PageSetup.DifferentHeaders.doc");
+            doc.Save(ArtifactsDir + "PageSetup.DifferentHeaders.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.DifferentHeaders.docx");
+
+            Assert.True(pageSetup.DifferentFirstPageHeaderFooter);
+            Assert.True(pageSetup.OddAndEvenPagesHeaderFooter);
+            Assert.AreEqual(SectionLayoutMode.LineGrid, doc.FirstSection.PageSetup.LayoutMode);
+            Assert.AreEqual(1, doc.FirstSection.PageSetup.CharactersPerLine);
+            Assert.AreEqual(1, doc.FirstSection.PageSetup.LinesPerPage);
         }
 
         [Test]
-        public void SectionStart()
+        public void SetSectionStart()
         {
             //ExStart
             //ExFor:SectionStart
             //ExFor:PageSetup.SectionStart
             //ExFor:Document.Sections
-            //ExSummary:Specifies how the section starts, from a new page, on the same page or other.
+            //ExSummary:Shows how to specify how the section starts, from a new page, on the same page or other.
             Document doc = new Document();
-            doc.Sections[0].PageSetup.SectionStart = Aspose.Words.SectionStart.Continuous;
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Add text to the first section and that comes with a blank document,
+            // then add a new section that starts a new page and give it text as well
+            builder.Writeln("This text is in section 1.");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Writeln("This text is in section 2.");
+
+            // Section break types determine how a new section gets split from the previous section
+            // By inserting a "SectionBreakNewPage" type section break, we've set this section's SectionStart value to "NewPage" 
+            Assert.AreEqual(SectionStart.NewPage, doc.Sections[1].PageSetup.SectionStart);
+
+            // Insert a new column section the same way
+            builder.InsertBreak(BreakType.SectionBreakNewColumn);
+            builder.Writeln("This text is in section 3.");
+
+            Assert.AreEqual(SectionStart.NewColumn, doc.Sections[2].PageSetup.SectionStart);
+
+            // We can change the types of section breaks by assigning different values to each section's SectionStart
+            // Setting their values to "Continuous" will put no visible breaks between sections
+            // and will leave all the content of this document on one page
+            doc.Sections[1].PageSetup.SectionStart = SectionStart.Continuous;
+            doc.Sections[2].PageSetup.SectionStart = SectionStart.Continuous;
+
+            doc.Save(ArtifactsDir + "PageSetup.SetSectionStart.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.SetSectionStart.docx");
+
+            Assert.AreEqual(SectionStart.NewPage, doc.Sections[0].PageSetup.SectionStart);
+            Assert.AreEqual(SectionStart.Continuous, doc.Sections[1].PageSetup.SectionStart);
+            Assert.AreEqual(SectionStart.Continuous, doc.Sections[2].PageSetup.SectionStart);
         }
 
 #if NET462 || NETCOREAPP2_1 || JAVA
@@ -112,7 +161,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:PageSetup.FirstPageTray
             //ExFor:PageSetup.OtherPagesTray
-            //ExSummary:Changes all sections in a document to use the default paper tray of the selected printer.
+            //ExSummary:Shows how to change all sections in a document to use the default paper tray of the selected printer.
             Document doc = new Document();
 
             // Find the printer that will be used for printing this document
@@ -128,8 +177,13 @@ namespace ApiExamples
                 section.PageSetup.FirstPageTray = settings.DefaultPageSettings.PaperSource.RawKind;
                 section.PageSetup.OtherPagesTray = settings.DefaultPageSettings.PaperSource.RawKind;
             }
-
             //ExEnd
+            
+            foreach (Section section in DocumentHelper.SaveOpen(doc).Sections.OfType<Section>())
+            {
+                Assert.AreEqual(settings.DefaultPageSettings.PaperSource.RawKind, section.PageSetup.FirstPageTray);
+                Assert.AreEqual(settings.DefaultPageSettings.PaperSource.RawKind, section.PageSetup.OtherPagesTray);
+            }
         }
 
         [Test]
@@ -166,8 +220,21 @@ namespace ApiExamples
                     section.PageSetup.OtherPagesTray = printerTrayForA4;
                 }
             }
-
             //ExEnd
+
+            foreach (Section section in DocumentHelper.SaveOpen(doc).Sections.OfType<Section>())
+            {
+                if (section.PageSetup.PaperSize == Aspose.Words.PaperSize.Letter)
+                {
+                    Assert.AreEqual(printerTrayForLetter, section.PageSetup.FirstPageTray);
+                    Assert.AreEqual(printerTrayForLetter, section.PageSetup.OtherPagesTray);
+                }
+                else if (section.PageSetup.PaperSize == Aspose.Words.PaperSize.A4)
+                {
+                    Assert.AreEqual(printerTrayForA4, section.PageSetup.FirstPageTray);
+                    Assert.AreEqual(printerTrayForA4, section.PageSetup.OtherPagesTray);
+                }
+            }
         }
 #endif
 
@@ -186,23 +253,34 @@ namespace ApiExamples
             //ExFor:PageSetup.RightMargin
             //ExFor:PageSetup.HeaderDistance
             //ExFor:PageSetup.FooterDistance
-            //ExSummary:Specifies paper size, orientation, margins and other settings for a section.
-            DocumentBuilder builder = new DocumentBuilder();
+            //ExSummary:Shows how to adjust paper size, orientation, margins and other settings for a section.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            PageSetup ps = builder.PageSetup;
-            ps.PaperSize = Aspose.Words.PaperSize.Legal;
-            ps.Orientation = Orientation.Landscape;
-            ps.TopMargin = ConvertUtil.InchToPoint(1.0);
-            ps.BottomMargin = ConvertUtil.InchToPoint(1.0);
-            ps.LeftMargin = ConvertUtil.InchToPoint(1.5);
-            ps.RightMargin = ConvertUtil.InchToPoint(1.5);
-            ps.HeaderDistance = ConvertUtil.InchToPoint(0.2);
-            ps.FooterDistance = ConvertUtil.InchToPoint(0.2);
+            builder.PageSetup.PaperSize = PaperSize.Legal;
+            builder.PageSetup.Orientation = Orientation.Landscape;
+            builder.PageSetup.TopMargin = ConvertUtil.InchToPoint(1.0);
+            builder.PageSetup.BottomMargin = ConvertUtil.InchToPoint(1.0);
+            builder.PageSetup.LeftMargin = ConvertUtil.InchToPoint(1.5);
+            builder.PageSetup.RightMargin = ConvertUtil.InchToPoint(1.5);
+            builder.PageSetup.HeaderDistance = ConvertUtil.InchToPoint(0.2);
+            builder.PageSetup.FooterDistance = ConvertUtil.InchToPoint(0.2);
 
             builder.Writeln("Hello world.");
 
-            builder.Document.Save(ArtifactsDir + "PageSetup.PageMargins.doc");
+            doc.Save(ArtifactsDir + "PageSetup.PageMargins.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.PageMargins.docx");
+
+            Assert.AreEqual(PaperSize.Legal, doc.FirstSection.PageSetup.PaperSize);
+            Assert.AreEqual(Orientation.Landscape, doc.FirstSection.PageSetup.Orientation);
+            Assert.AreEqual(72.0d, doc.FirstSection.PageSetup.TopMargin);
+            Assert.AreEqual(72.0d, doc.FirstSection.PageSetup.BottomMargin);
+            Assert.AreEqual(108.0d, doc.FirstSection.PageSetup.LeftMargin);
+            Assert.AreEqual(108.0d, doc.FirstSection.PageSetup.RightMargin);
+            Assert.AreEqual(14.4d, doc.FirstSection.PageSetup.HeaderDistance);
+            Assert.AreEqual(14.4d, doc.FirstSection.PageSetup.FooterDistance);
         }
 
         [Test]
@@ -213,8 +291,9 @@ namespace ApiExamples
             //ExFor:TextColumnCollection
             //ExFor:TextColumnCollection.Spacing
             //ExFor:TextColumnCollection.SetCount
-            //ExSummary:Creates multiple evenly spaced columns in a section using DocumentBuilder.
-            DocumentBuilder builder = new DocumentBuilder();
+            //ExSummary:Shows how to create multiple evenly spaced columns in a section using DocumentBuilder.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             TextColumnCollection columns = builder.PageSetup.TextColumns;
             // Make spacing between columns wider
@@ -226,8 +305,13 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.ColumnBreak);
             builder.Writeln("Text in column 2.");
 
-            builder.Document.Save(ArtifactsDir + "PageSetup.ColumnsSameWidth.doc");
+            doc.Save(ArtifactsDir + "PageSetup.ColumnsSameWidth.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.ColumnsSameWidth.docx");
+
+            Assert.AreEqual(100.0d, doc.FirstSection.PageSetup.TextColumns.Spacing);
+            Assert.AreEqual(2, doc.FirstSection.PageSetup.TextColumns.Count);
         }
 
         [Test]
@@ -240,8 +324,9 @@ namespace ApiExamples
             //ExFor:TextColumn
             //ExFor:TextColumn.Width
             //ExFor:TextColumn.SpaceAfter
-            //ExSummary:Creates multiple columns of different widths in a section using DocumentBuilder.
-            DocumentBuilder builder = new DocumentBuilder();
+            //ExSummary:Shows how to set widths of columns.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             TextColumnCollection columns = builder.PageSetup.TextColumns;
             // Show vertical line between columns
@@ -252,22 +337,33 @@ namespace ApiExamples
             columns.SetCount(2);
 
             // Set the first column to be narrow
-            TextColumn c1 = columns[0];
-            c1.Width = 100;
-            c1.SpaceAfter = 20;
+            TextColumn column = columns[0];
+            column.Width = 100;
+            column.SpaceAfter = 20;
 
             // Set the second column to take the rest of the space available on the page
-            TextColumn c2 = columns[1];
-            PageSetup ps = builder.PageSetup;
-            double contentWidth = ps.PageWidth - ps.LeftMargin - ps.RightMargin;
-            c2.Width = contentWidth - c1.Width - c1.SpaceAfter;
+            column = columns[1];
+            PageSetup pageSetup = builder.PageSetup;
+            double contentWidth = pageSetup.PageWidth - pageSetup.LeftMargin - pageSetup.RightMargin;
+            column.Width = contentWidth - column.Width - column.SpaceAfter;
 
             builder.Writeln("Narrow column 1.");
             builder.InsertBreak(BreakType.ColumnBreak);
             builder.Writeln("Wide column 2.");
 
-            builder.Document.Save(ArtifactsDir + "PageSetup.CustomColumnWidth.doc");
+            doc.Save(ArtifactsDir + "PageSetup.CustomColumnWidth.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.CustomColumnWidth.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.True(pageSetup.TextColumns.LineBetween);
+            Assert.False(pageSetup.TextColumns.EvenlySpaced);
+            Assert.AreEqual(2, pageSetup.TextColumns.Count);
+            Assert.AreEqual(100.0d, pageSetup.TextColumns[0].Width);
+            Assert.AreEqual(20.0d, pageSetup.TextColumns[0].SpaceAfter);
+            Assert.AreEqual(468.0d, pageSetup.TextColumns[1].Width);
+            Assert.AreEqual(0.0d, pageSetup.TextColumns[1].SpaceAfter);
         }
 
         [Test]
@@ -280,23 +376,39 @@ namespace ApiExamples
             //ExFor:PageSetup.LineNumberRestartMode
             //ExFor:ParagraphFormat.SuppressLineNumbers
             //ExFor:LineNumberRestartMode
-            //ExSummary:Turns on Microsoft Word line numbering for a section.
-            DocumentBuilder builder = new DocumentBuilder();
+            //ExSummary:Shows how to enable Microsoft Word line numbering for a section.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            PageSetup ps = builder.PageSetup;
-            ps.LineStartingNumber = 1;
-            ps.LineNumberCountBy = 5;
-            ps.LineNumberRestartMode = LineNumberRestartMode.RestartPage;
-            ps.LineNumberDistanceFromText = 50.0d;
+            // Line numbering for each section can be configured via PageSetup
+            PageSetup pageSetup = builder.PageSetup;
+            pageSetup.LineStartingNumber = 1;
+            pageSetup.LineNumberCountBy = 3;
+            pageSetup.LineNumberRestartMode = LineNumberRestartMode.RestartPage;
+            pageSetup.LineNumberDistanceFromText = 50.0d;
 
-            // The line counter will skip any paragraph with this flag set to true
-            Assert.False(builder.ParagraphFormat.SuppressLineNumbers);
-
-            for (int i = 1; i <= 20; i++)
+            // LineNumberCountBy is set to 3, so every line that's a multiple of 3
+            // will display that line number to the left of the text
+            for (int i = 1; i <= 25; i++)
                 builder.Writeln($"Line {i}.");
 
-            builder.Document.Save(ArtifactsDir + "PageSetup.LineNumbers.docx");
+            // The line counter will skip any paragraph with this flag set to true
+            // Normally, the number "15" would normally appear next to this paragraph, which says "Line 15"
+            // Since we set this flag to true and this paragraph is not counted by numbering,
+            // number 15 will appear next to the next paragraph, "Line 16", and from then on counting will carry on as normal
+            // until it will restart according to LineNumberRestartMode
+            doc.FirstSection.Body.Paragraphs[14].ParagraphFormat.SuppressLineNumbers = true;
+
+            doc.Save(ArtifactsDir + "PageSetup.LineNumbers.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.LineNumbers.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.AreEqual(1, pageSetup.LineStartingNumber);
+            Assert.AreEqual(3, pageSetup.LineNumberCountBy);
+            Assert.AreEqual(LineNumberRestartMode.RestartPage, pageSetup.LineNumberRestartMode);
+            Assert.AreEqual(50.0d, pageSetup.LineNumberDistanceFromText);
         }
 
         [Test]
@@ -310,22 +422,36 @@ namespace ApiExamples
             //ExFor:PageBorderDistanceFrom
             //ExFor:PageBorderAppliesTo
             //ExFor:Border.DistanceFromText
-            //ExSummary:Creates a page border that looks like a wide blue band at the top of the first page only.
+            //ExSummary:Shows how to create a page border that looks like a wide blue band at the top of the first page only.
             Document doc = new Document();
 
-            PageSetup ps = doc.Sections[0].PageSetup;
-            ps.BorderAlwaysInFront = false;
-            ps.BorderDistanceFrom = PageBorderDistanceFrom.PageEdge;
-            ps.BorderAppliesTo = PageBorderAppliesTo.FirstPage;
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            pageSetup.BorderAlwaysInFront = false;
+            pageSetup.BorderDistanceFrom = PageBorderDistanceFrom.PageEdge;
+            pageSetup.BorderAppliesTo = PageBorderAppliesTo.FirstPage;
 
-            Border border = ps.Borders[BorderType.Top];
+            Border border = pageSetup.Borders[BorderType.Top];
             border.LineStyle = LineStyle.Single;
             border.LineWidth = 30;
             border.Color = Color.Blue;
             border.DistanceFromText = 0;
 
-            doc.Save(ArtifactsDir + "PageSetup.PageBorderProperties.doc");
+            doc.Save(ArtifactsDir + "PageSetup.PageBorderProperties.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.PageBorderProperties.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.False(pageSetup.BorderAlwaysInFront);
+            Assert.AreEqual(PageBorderDistanceFrom.PageEdge, pageSetup.BorderDistanceFrom);
+            Assert.AreEqual(PageBorderAppliesTo.FirstPage, pageSetup.BorderAppliesTo);
+
+            border = pageSetup.Borders[BorderType.Top];
+
+            Assert.AreEqual(LineStyle.Single, border.LineStyle);
+            Assert.AreEqual(30.0d, border.LineWidth);
+            Assert.AreEqual(Color.Blue.ToArgb(), border.Color.ToArgb());
+            Assert.AreEqual(0.0d, border.DistanceFromText);
         }
 
         [Test]
@@ -339,18 +465,30 @@ namespace ApiExamples
             //ExFor:BorderCollection.Color
             //ExFor:BorderCollection.DistanceFromText
             //ExFor:BorderCollection.Shadow
-            //ExSummary:Creates a fancy looking green wavy page border with a shadow.
+            //ExSummary:Shows how to create green wavy page border with a shadow.
             Document doc = new Document();
-            PageSetup ps = doc.Sections[0].PageSetup;
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
 
-            ps.Borders.LineStyle = LineStyle.DoubleWave;
-            ps.Borders.LineWidth = 2;
-            ps.Borders.Color = Color.Green;
-            ps.Borders.DistanceFromText = 24;
-            ps.Borders.Shadow = true;
+            pageSetup.Borders.LineStyle = LineStyle.DoubleWave;
+            pageSetup.Borders.LineWidth = 2;
+            pageSetup.Borders.Color = Color.Green;
+            pageSetup.Borders.DistanceFromText = 24;
+            pageSetup.Borders.Shadow = true;
 
-            doc.Save(ArtifactsDir + "PageSetup.PageBorders.doc");
+            doc.Save(ArtifactsDir + "PageSetup.PageBorders.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.PageBorders.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            foreach (Border border in pageSetup.Borders)
+            {
+                Assert.AreEqual(LineStyle.DoubleWave, border.LineStyle);
+                Assert.AreEqual(2.0d, border.LineWidth);
+                Assert.AreEqual(Color.Green.ToArgb(), border.Color.ToArgb());
+                Assert.AreEqual(24.0d, border.DistanceFromText);
+                Assert.True(border.Shadow);
+            }
         }
 
         [Test]
@@ -362,7 +500,6 @@ namespace ApiExamples
             //ExFor:PageSetup.PageNumberStyle
             //ExFor:DocumentBuilder.InsertField(String, String)
             //ExSummary:Shows how to control page numbering per section.
-            // This document has two sections, but no page numbers yet
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -378,10 +515,10 @@ namespace ApiExamples
             builder.InsertField("PAGE", "");
 
             // Set first section page numbering
-            Section section = doc.Sections[0];
-            section.PageSetup.RestartPageNumbering = true;
-            section.PageSetup.PageStartingNumber = 5;
-            section.PageSetup.PageNumberStyle = NumberStyle.UppercaseRoman;
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            pageSetup.RestartPageNumbering = true;
+            pageSetup.PageStartingNumber = 5;
+            pageSetup.PageNumberStyle = NumberStyle.UppercaseRoman;
 
             // Create a header for the section
             // The page number will look like " - 10 - ".
@@ -393,48 +530,72 @@ namespace ApiExamples
             builder.Write(" - ");
 
             // Set second section page numbering
-            section = doc.Sections[1];
-            section.PageSetup.PageStartingNumber = 10;
-            section.PageSetup.RestartPageNumbering = true;
-            section.PageSetup.PageNumberStyle = NumberStyle.Arabic;
+            pageSetup = doc.Sections[1].PageSetup;
+            pageSetup.PageStartingNumber = 10;
+            pageSetup.RestartPageNumbering = true;
+            pageSetup.PageNumberStyle = NumberStyle.Arabic;
 
             doc.Save(ArtifactsDir + "PageSetup.PageNumbering.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.PageNumbering.docx");
+            pageSetup = doc.Sections[0].PageSetup;
+
+            Assert.True(pageSetup.RestartPageNumbering);
+            Assert.AreEqual(5, pageSetup.PageStartingNumber);
+            Assert.AreEqual(NumberStyle.UppercaseRoman, pageSetup.PageNumberStyle);
+
+            pageSetup = doc.Sections[1].PageSetup;
+
+            Assert.True(pageSetup.RestartPageNumbering);
+            Assert.AreEqual(10, pageSetup.PageStartingNumber);
+            Assert.AreEqual(NumberStyle.Arabic, pageSetup.PageNumberStyle);
         }
 
         [Test]
         public void FootnoteOptions()
         {
             //ExStart
-            //ExFor:PageSetup.FootnoteOptions
-            //ExSummary:Shows how to set options for footnotes in current section.
-            Document doc = new Document();
-
-            PageSetup pageSetup = doc.Sections[0].PageSetup;
-
-            pageSetup.FootnoteOptions.Position = FootnotePosition.BottomOfPage;
-            pageSetup.FootnoteOptions.NumberStyle = NumberStyle.Bullet;
-            pageSetup.FootnoteOptions.StartNumber = 1;
-            pageSetup.FootnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
-            pageSetup.FootnoteOptions.Columns = 0;
-            //ExEnd
-        }
-
-        [Test]
-        public void EndnoteOptions()
-        {
-            //ExStart
             //ExFor:PageSetup.EndnoteOptions
-            //ExSummary:Shows how to set options for endnotes in current section.
+            //ExFor:PageSetup.FootnoteOptions
+            //ExSummary:Shows how to set options for footnotes and endnotes in current section.
             Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            // Insert text and a reference for it in the form of a footnote
+            builder.Write("Hello world!.");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote reference text.");
 
-            pageSetup.EndnoteOptions.Position = EndnotePosition.EndOfSection;
-            pageSetup.EndnoteOptions.NumberStyle = NumberStyle.Bullet;
-            pageSetup.EndnoteOptions.StartNumber = 1;
-            pageSetup.EndnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
+            // Set options for footnote position and numbering
+            FootnoteOptions footnoteOptions = doc.Sections[0].PageSetup.FootnoteOptions;
+            footnoteOptions.Position = FootnotePosition.BeneathText;
+            footnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
+            footnoteOptions.StartNumber = 1;
+
+            // Endnotes also have a similar options object
+            builder.Write(" Hello again.");
+            builder.InsertFootnote(FootnoteType.Footnote, "Endnote reference text.");
+
+            EndnoteOptions endnoteOptions = doc.Sections[0].PageSetup.EndnoteOptions;
+            endnoteOptions.Position = EndnotePosition.EndOfDocument;
+            endnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
+            endnoteOptions.StartNumber = 1;
+
+            doc.Save(ArtifactsDir + "PageSetup.FootnoteOptions.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.FootnoteOptions.docx");
+            footnoteOptions = doc.FirstSection.PageSetup.FootnoteOptions;
+
+            Assert.AreEqual(FootnotePosition.BeneathText, footnoteOptions.Position);
+            Assert.AreEqual(FootnoteNumberingRule.RestartPage, footnoteOptions.RestartRule);
+            Assert.AreEqual(1, footnoteOptions.StartNumber);
+
+            endnoteOptions = doc.FirstSection.PageSetup.EndnoteOptions;
+
+            Assert.AreEqual(EndnotePosition.EndOfDocument, endnoteOptions.Position);
+            Assert.AreEqual(FootnoteNumberingRule.Continuous, endnoteOptions.RestartRule);
+            Assert.AreEqual(1, endnoteOptions.StartNumber);
         }
 
         [Test]
@@ -461,10 +622,16 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PageSetup.Bidi.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.Bidi.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.AreEqual(3, pageSetup.TextColumns.Count);
+            Assert.True(pageSetup.Bidi);
         }
 
         [Test]
-        public void BorderSurrounds()
+        public void PageBorder()
         {
             //ExStart
             //ExFor:PageSetup.BorderSurroundsFooter
@@ -490,8 +657,14 @@ namespace ApiExamples
             pageSetup.BorderSurroundsFooter = true;
             pageSetup.BorderSurroundsHeader = true;
 
-            doc.Save(ArtifactsDir + "PageSetup.BorderSurrounds.docx");
+            doc.Save(ArtifactsDir + "PageSetup.PageBorder.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.PageBorder.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.True(pageSetup.BorderSurroundsFooter);
+            Assert.True(pageSetup.BorderSurroundsHeader);
         }
 
         [Test]
@@ -515,7 +688,7 @@ namespace ApiExamples
             // We can access the gutter margin in the section's page options,
             // which is a margin which is added to the page margin at one side of the page
             PageSetup pageSetup = doc.Sections[0].PageSetup;
-            pageSetup.Gutter = 100.0;
+            pageSetup.Gutter = 100.0d;
 
             // If our text is LTR, the gutter will appear on the left side of the page
             // Setting this flag will move it to the right side
@@ -526,8 +699,14 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PageSetup.Gutter.docx");
             //ExEnd
-        }
 
+            doc = new Document(ArtifactsDir + "PageSetup.Gutter.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.AreEqual(100.0d, pageSetup.Gutter);
+            Assert.True(pageSetup.RtlGutter);
+            Assert.AreEqual(MultiplePagesType.MirrorMargins, pageSetup.MultiplePages);
+        }
 
         [Test]
         public void Booklet()
@@ -557,10 +736,16 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PageSetup.Booklet.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.Booklet.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.AreEqual(MultiplePagesType.BookFoldPrinting, pageSetup.MultiplePages);
+            Assert.AreEqual(4, pageSetup.SheetsPerBooklet);
         }
 
         [Test]
-        public void TextOrientation()
+        public void SectionTextOrientation()
         {
             //ExStart
             //ExFor:PageSetup.TextOrientation
@@ -572,10 +757,15 @@ namespace ApiExamples
 
             // Setting this value will rotate the section's text 90 degrees to the right
             PageSetup pageSetup = doc.Sections[0].PageSetup;
-            pageSetup.TextOrientation = Aspose.Words.TextOrientation.Upward;
+            pageSetup.TextOrientation = TextOrientation.Upward;
 
-            doc.Save(ArtifactsDir + "PageSetup.TextOrientation.docx");
+            doc.Save(ArtifactsDir + "PageSetup.SectionTextOrientation.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.SectionTextOrientation.docx");
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.AreEqual(TextOrientation.Upward, pageSetup.TextOrientation);
         }
 
         //ExStart
@@ -603,6 +793,7 @@ namespace ApiExamples
             pageSetup.SuppressEndnotes = true;
 
             doc.Save(ArtifactsDir + "PageSetup.SuppressEndnotes.docx");
+            TestSuppressEndnotes(new Document(ArtifactsDir + "PageSetup.SuppressEndnotes.docx")); //ExSkip
         }
 
         /// <summary>
@@ -630,5 +821,12 @@ namespace ApiExamples
             builder.InsertFootnote(FootnoteType.Endnote, endnoteText);
         }
         //ExEnd
+
+        private static void TestSuppressEndnotes(Document doc)
+        {
+            PageSetup pageSetup = doc.Sections[1].PageSetup;
+
+            Assert.True(pageSetup.SuppressEndnotes);
+        }
     }
 }

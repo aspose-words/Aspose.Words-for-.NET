@@ -22,7 +22,7 @@ namespace ApiExamples
             //ExFor:PclSaveOptions
             //ExFor:PclSaveOptions.SaveFormat
             //ExFor:PclSaveOptions.RasterizeTransformedElements
-            //ExSummary:Shows how rasterized or not transformed elements before saving.
+            //ExSummary:Shows how to set whether or not to rasterize complex elements before saving.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             PclSaveOptions saveOptions = new PclSaveOptions

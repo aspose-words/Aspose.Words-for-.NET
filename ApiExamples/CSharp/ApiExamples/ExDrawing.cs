@@ -282,16 +282,16 @@ namespace ApiExamples
 
             imgShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imgShape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, imgShape);
             Assert.AreEqual(0.0d, imgShape.Left);
             Assert.AreEqual(0.0d, imgShape.Top);
             Assert.AreEqual(300.0d, imgShape.Height);
             Assert.AreEqual(300.0d, imgShape.Width);
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imgShape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, imgShape);
 
             imgShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imgShape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, imgShape);
             Assert.AreEqual(150.0d, imgShape.Left);
             Assert.AreEqual(0.0d, imgShape.Top);
             Assert.AreEqual(300.0d, imgShape.Height);
@@ -588,7 +588,7 @@ namespace ApiExamples
             imgSourceDoc = new Document(ArtifactsDir + "Drawing.ImageData.docx");
             sourceShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(2467, 1500, ImageType.Jpeg, sourceShape);
+            TestUtil.VerifyImageInShape(2467, 1500, ImageType.Jpeg, sourceShape);
             Assert.AreEqual("Imported Image", sourceShape.ImageData.Title);
             Assert.AreEqual(0.8d, sourceShape.ImageData.Brightness, 0.1d);
             Assert.AreEqual(1.0d, sourceShape.ImageData.Contrast, 0.1d);
@@ -596,12 +596,12 @@ namespace ApiExamples
 
             sourceShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImage(2467, 1500, ImageType.Jpeg, sourceShape);
+            TestUtil.VerifyImageInShape(2467, 1500, ImageType.Jpeg, sourceShape);
             Assert.True(sourceShape.ImageData.GrayScale);
 
             sourceShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 2, true);
 
-            TestUtil.VerifyImage(2467, 1500, ImageType.Jpeg, sourceShape);
+            TestUtil.VerifyImageInShape(2467, 1500, ImageType.Jpeg, sourceShape);
             Assert.True(sourceShape.ImageData.BiLevel);
             Assert.AreEqual(0.3d, sourceShape.ImageData.CropBottom, 0.1d);
             Assert.AreEqual(0.3d, sourceShape.ImageData.CropLeft, 0.1d);
@@ -648,7 +648,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Drawing.ImageSize.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual(600.0d, shape.Width);
             Assert.AreEqual(600.0d, shape.Height);
 

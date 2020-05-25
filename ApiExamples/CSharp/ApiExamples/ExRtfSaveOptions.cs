@@ -16,7 +16,9 @@ namespace ApiExamples
     public class ExRtfSaveOptions : ApiExampleBase
     {
         [Test]
-        public void ExportImages()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ExportImages(bool doExportImagesForOldReaders)
         {
             //ExStart
             //ExFor:RtfSaveOptions
@@ -24,7 +26,6 @@ namespace ApiExamples
             //ExFor:RtfSaveOptions.ExportImagesForOldReaders
             //ExFor:RtfSaveOptions.SaveFormat
             //ExSummary:Shows how to save a document to .rtf with custom options.
-            // Open a document with images
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // Configure a RtfSaveOptions instance to make our output document more suitable for older devices
@@ -32,13 +33,24 @@ namespace ApiExamples
             {
                 SaveFormat = SaveFormat.Rtf,
                 ExportCompactSize = true,
-                ExportImagesForOldReaders = true
+                ExportImagesForOldReaders = doExportImagesForOldReaders
             };
 
             doc.Save(ArtifactsDir + "RtfSaveOptions.ExportImages.rtf", options);
             //ExEnd
-        }
 
+            if (doExportImagesForOldReaders)
+            {
+                TestUtil.FileContainsString("nonshppict", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf");
+                TestUtil.FileContainsString("shprslt", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf");
+            }
+            else
+            {
+                Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("nonshppict", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
+                Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("shprslt", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
+            }
+        }
+    
         [Test]
         public void SaveImagesAsWmf()
         {
@@ -55,13 +67,13 @@ namespace ApiExamples
             RtfSaveOptions rtfSaveOptions = new RtfSaveOptions();
             rtfSaveOptions.SaveImagesAsWmf = true;
             doc.Save(ArtifactsDir + "RtfSaveOptions.SaveImagesAsWmf.rtf", rtfSaveOptions);
-            
+            //ExEnd
+
             doc = new Document(ArtifactsDir + "RtfSaveOptions.SaveImagesAsWmf.rtf");
 
             shapes = doc.GetChildNodes(NodeType.Shape, true);
             Shape shapeWithWmf = (Shape)shapes[0];
             Assert.AreEqual(ImageType.Wmf, shapeWithWmf.ImageData.ImageType);
-            //ExEnd
         }
     }
 }
