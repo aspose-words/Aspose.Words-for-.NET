@@ -483,7 +483,7 @@ namespace ApiExamples
         {
             // Set license for Aspose.BarCode
             Aspose.BarCode.License licenceBarCode = new Aspose.BarCode.License();
-            licenceBarCode.SetLicense(LicenseDir + "Aspose.Total.lic");
+            licenceBarCode.SetLicense(LicenseDir + "Aspose.Total.NET.lic");
 
             // Bind the pdf document
             Aspose.Pdf.Facades.PdfExtractor pdfExtractor = new Aspose.Pdf.Facades.PdfExtractor();

@@ -54,10 +54,10 @@ namespace ApiExamples
         public void LicenseFromFileNoPath()
         {
             // This is where the test license is on my development machine.
-            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.lic");
+            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.NET.lic");
 
             // Copy a license to the bin folder so the example can execute.
-            string dstFileName = Path.Combine(AssemblyDir, "Aspose.Words.lic");
+            string dstFileName = Path.Combine(AssemblyDir, "Aspose.Words.NET.lic");
             File.Copy(testLicenseFileName, dstFileName);
 
             //ExStart
@@ -66,7 +66,7 @@ namespace ApiExamples
             //ExFor:License.SetLicense(String)
             //ExSummary:Aspose.Words will attempt to find the license file in the embedded resources or in the assembly folders.
             License license = new License();
-            license.SetLicense("Aspose.Words.lic");
+            license.SetLicense("Aspose.Words.NET.lic");
             //ExEnd
 
             // Cleanup by removing the license
@@ -78,7 +78,7 @@ namespace ApiExamples
         public void LicenseFromStream()
         {
             // This is where the test license is on my development machine
-            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.lic");
+            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.NET.lic");
 
             Stream myStream = File.OpenRead(testLicenseFileName);
             try
@@ -117,12 +117,6 @@ namespace ApiExamples
             // Render the document to PDF format
             doc.Save(ArtifactsDir + "Document.OpenType.pdf");
             //ExEnd
-        }
-
-        [Test]
-        public void GetEmbeddedFontAsOpenType()
-        {
-            
         }
 #endif
 
@@ -4028,5 +4022,56 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.HideGrammarErrors.docx");
             //ExEnd
         }
+
+        //ExStart
+        //ExFor:IPageLayoutCallback
+        //ExFor:IPageLayoutCallback.Notify(PageLayoutCallbackArgs)
+        //ExFor:PageLayoutCallbackArgs.Event
+        //ExFor:PageLayoutCallbackArgs.Document
+        //ExFor:PageLayoutCallbackArgs.PageIndex
+        //ExFor:PageLayoutEvent
+        //ExSummary:Shows how to track layout/rendering progress with layout callback.
+        [Test]
+        public void PageLayoutCallback()
+        {
+            Document doc = new Document(MyDir + "Document.docx");
+            
+            doc.LayoutOptions.Callback = new RenderPageLayoutCallback();
+            doc.UpdatePageLayout();
+        }
+
+        private class RenderPageLayoutCallback : IPageLayoutCallback
+        {
+            public void Notify(PageLayoutCallbackArgs a)
+            {
+                switch (a.Event)
+                {
+                    case PageLayoutEvent.PartReflowFinished:
+                        NotifyPartFinished(a);
+                        break;
+                }
+            }
+
+            private void NotifyPartFinished(PageLayoutCallbackArgs a)
+            {
+                Console.WriteLine($"Part at page {a.PageIndex + 1} reflow");
+                RenderPage(a, a.PageIndex);
+            }
+
+            private void RenderPage(PageLayoutCallbackArgs a, int pageIndex)
+            {
+                ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png);
+                saveOptions.PageIndex = pageIndex;
+                saveOptions.PageCount = 1;
+
+                using (FileStream stream =
+                    new FileStream(ArtifactsDir + $@"PageLayoutCallback.page-{pageIndex + 1} {++mNum}.png",
+                        FileMode.Create))
+                    a.Document.Save(stream, saveOptions);
+            }
+
+            private int mNum;
+        }
+        //ExEnd
     }
 }
