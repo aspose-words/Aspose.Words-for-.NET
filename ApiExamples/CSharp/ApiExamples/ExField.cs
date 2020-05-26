@@ -1063,7 +1063,7 @@ namespace ApiExamples
             Assert.AreEqual(
                 " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"Response from within the field.\" \\o",
                 fieldAsk.GetFieldCode());
-            TestFieldAsk(doc); //ExSkip
+            TestFieldAsk(table, doc); //ExSkip
         }
 
         /// <summary>
@@ -1078,7 +1078,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestFieldAsk(Document doc)
+        private void TestFieldAsk(DataTable dataTable, Document doc)
         {
             doc = DocumentHelper.SaveOpen(doc);
 
@@ -1095,6 +1095,8 @@ namespace ApiExamples
             Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText);
             Assert.AreEqual("Response from within the field.", fieldAsk.DefaultResponse);
             Assert.AreEqual(true, fieldAsk.PromptOnceOnMailMerge);
+
+            TestUtil.MailMergeMatchesDataTable(dataTable, doc, true);
         }
 
         [Test]
@@ -2958,19 +2960,19 @@ namespace ApiExamples
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual(200.0d, shape.Width);
             Assert.AreEqual(200.0d, shape.Height);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, shape);
             Assert.AreEqual(200.0d, shape.Width);
             Assert.AreEqual(200.0d, shape.Height);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
 
-            TestUtil.VerifyImage(534, 534, ImageType.Emf, shape);
+            TestUtil.VerifyImageInShape(534, 534, ImageType.Emf, shape);
             Assert.AreEqual(200.0d, shape.Width);
             Assert.AreEqual(200.0d, shape.Height);
         }
@@ -3049,13 +3051,13 @@ namespace ApiExamples
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual(300.0d, shape.Width);
             Assert.AreEqual(300.0d, shape.Height);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, shape);
             Assert.AreEqual(300.0d, shape.Width);
             Assert.AreEqual(300.0d, shape.Height);
         }
@@ -5181,16 +5183,12 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.FILESIZE.docx");
 
-            Assert.AreEqual(8723, doc.BuiltInDocumentProperties.Bytes);
-
             field = (FieldFileSize)doc.Range.Fields[0];
 
             TestUtil.VerifyField(FieldType.FieldFileSize, " FILESIZE ", "10590", field);
 
             // These fields will need to be updated to produce an accurate result
             doc.UpdateFields();
-
-            Assert.AreEqual("8723", field.Result);
 
             field = (FieldFileSize)doc.Range.Fields[1];
 

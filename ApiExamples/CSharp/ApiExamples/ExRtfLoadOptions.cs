@@ -14,7 +14,9 @@ namespace ApiExamples
     public class ExRtfLoadOptions : ApiExampleBase
     {
         [Test]
-        public void RecognizeUtf8Text()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void RecognizeUtf8Text(bool doRecognizeUtb8Text)
         {
             //ExStart
             //ExFor:RtfLoadOptions
@@ -23,11 +25,16 @@ namespace ApiExamples
             //ExSummary:Shows how to detect UTF8 characters during import.
             RtfLoadOptions loadOptions = new RtfLoadOptions
             {
-                RecognizeUtf8Text = true
+                RecognizeUtf8Text = doRecognizeUtb8Text
             };
 
             Document doc = new Document(MyDir + "UTF-8 characters.rtf", loadOptions);
-            doc.Save(ArtifactsDir + "RtfLoadOptions.RecognizeUtf8Text.rtf");
+
+            Assert.AreEqual(
+                doRecognizeUtb8Text
+                    ? "“John Doe´s list of currency symbols”™\r€, ¢, £, ¥, ¤"
+                    : "â€œJohn DoeÂ´s list of currency symbolsâ€\u009dâ„¢\râ‚¬, Â¢, Â£, Â¥, Â¤",
+                doc.FirstSection.Body.GetText().Trim());
             //ExEnd
         }
     }
