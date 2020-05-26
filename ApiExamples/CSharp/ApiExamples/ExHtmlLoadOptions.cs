@@ -43,9 +43,9 @@ namespace ApiExamples
             Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             if (doSupportVml)
-                TestUtil.VerifyImage(400, 400, ImageType.Jpeg, imageShape);
+                TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, imageShape);
             else
-                TestUtil.VerifyImage(400, 400, ImageType.Png, imageShape);
+                TestUtil.VerifyImageInShape(400, 400, ImageType.Png, imageShape);
             //ExEnd
         }
 
