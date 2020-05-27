@@ -838,7 +838,7 @@ namespace ApiExamples
             options.DmlRenderingMode = dmlRenderingMode;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf", options);
-            //ExSkip
+            //ExEnd
 
             switch (dmlRenderingMode)
             {
