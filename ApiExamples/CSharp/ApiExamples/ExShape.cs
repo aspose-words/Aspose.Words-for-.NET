@@ -77,10 +77,24 @@ namespace ApiExamples
             Assert.True(shape.HasImage);
 
             // Rotate the image
-            shape.Rotation = 45.0;
+            shape.Rotation = 45.0d;
 
             doc.Save(ArtifactsDir + "Shape.Insert.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.Insert.docx");
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
+            
+            TestUtil.VerifyShape(ShapeType.Cube, "MyCube", "Alt text for MyCube.", shapes[0]);
+            Assert.AreEqual("Times New Roman", shapes[0].Font.Name);
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100004", string.Empty, shapes[1]);
+            Assert.AreEqual("Hello world!", shapes[1].LastParagraph.GetText().Trim());
+
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, string.Empty, shapes[2]);
+            Assert.True(shapes[2].CanHaveImage);
+            Assert.True(shapes[2].HasImage);
+            Assert.AreEqual(45.0d, shapes[2].Rotation);
         }
 
         //ExStart

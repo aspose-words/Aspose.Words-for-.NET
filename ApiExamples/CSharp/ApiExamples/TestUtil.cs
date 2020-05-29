@@ -456,5 +456,19 @@ namespace ApiExamples
             Assert.AreEqual(expectedTabLeader, tabStop.Leader);
             Assert.AreEqual(isClear, tabStop.IsClear);
         }
+
+        /// <summary>
+        /// Checks whether values of a shape's attributes are equal to their expected values.
+        /// </summary>
+        /// <param name="expectedShapeType">Expected type of the shape.</param>
+        /// <param name="expectedName">Expected name of the shape.</param>
+        /// <param name="expectedAltText">Expected alternative text of the shape.</param>
+        /// <param name="shape">Shape that's being tested.</param>
+        internal static void VerifyShape(ShapeType expectedShapeType, string expectedName, string expectedAltText, Shape shape)
+        {
+            Assert.AreEqual(expectedShapeType, shape.ShapeType);
+            Assert.AreEqual(expectedName, shape.Name);
+            Assert.AreEqual(expectedAltText, shape.AlternativeText);
+        }
     }
 }
