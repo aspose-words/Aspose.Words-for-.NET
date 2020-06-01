@@ -136,7 +136,7 @@ namespace ApiExamples
         public void Appearance()
         {
             //ExStart
-            //ExFor:TxtSaveOptionsBase.PreserveTableLayout
+            //ExFor:TxtSaveOptions.PreserveTableLayout
             //ExFor:TxtSaveOptions.SimplifyListLabels
             //ExSummary:Shows how to change the appearance of tables and lists during conversion to a txt document output.
             // Open a document with a table

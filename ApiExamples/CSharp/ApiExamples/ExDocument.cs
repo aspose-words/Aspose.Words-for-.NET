@@ -488,7 +488,7 @@ namespace ApiExamples
             // If we open the document normally, the wrong encoding will be applied,
             // and the content of the document will not be represented correctly
             Document doc = new Document(MyDir + "Encoded in UTF-7.txt");
-            Assert.AreEqual("Hello world+ACE-\r\n\r\n", doc.ToString(SaveFormat.Text));
+            Assert.AreEqual("Hello world+ACE-", doc.ToString(SaveFormat.Text).Trim());
 
             // In these cases we can set the Encoding attribute in a LoadOptions object
             // to override the automatically chosen encoding with the one we know to be correct
@@ -496,7 +496,7 @@ namespace ApiExamples
             doc = new Document(MyDir + "Encoded in UTF-7.txt", loadOptions);
 
             // This will give us the correct text
-            Assert.AreEqual("Hello world!\r\n\r\n", doc.ToString(SaveFormat.Text));
+            Assert.AreEqual("Hello world!", doc.ToString(SaveFormat.Text).Trim());
             //ExEnd
         }
 
