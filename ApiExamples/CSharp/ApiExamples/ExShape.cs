@@ -228,20 +228,31 @@ namespace ApiExamples
             shape.DistanceRight = 40.0;
 
             // Move the shape closer to the centre of the page
-            shape.Left = 100.0;
-            shape.Top = 100.0;
+            shape.Top = 75.0;
+            shape.Left = 150.0;
 
             // Rotate the shape
             shape.Rotation = 60.0;
 
-            // Add text that the shape will push out of the way
-            for (int i = 0; i < 500; i++)
-            {
-                builder.Write("text ");
-            }
+            // Add text that will wrap around the shape
+            builder.Font.Size = 24.0d;
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+                          "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
 
             doc.Save(ArtifactsDir + "Shape.Coordinates.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.Coordinates.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100002", string.Empty, shape);
+            Assert.AreEqual(40.0d, shape.DistanceBottom);
+            Assert.AreEqual(40.0d, shape.DistanceLeft);
+            Assert.AreEqual(40.0d, shape.DistanceRight);
+            Assert.AreEqual(40.0d, shape.DistanceTop);
+            Assert.AreEqual(150.0d, shape.Left);
+            Assert.AreEqual(75.0d, shape.Top);
+            Assert.AreEqual(60.0d, shape.Rotation);
         }
 
         [Test]
@@ -257,16 +268,12 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Every GroupShape is top level
             GroupShape group = new GroupShape(doc);
+
+            // Every GroupShape by default is a top level floating shape
             Assert.True(group.IsGroup);
             Assert.True(group.IsTopLevel);
-
-            // And it is a floating shape too, so we can set its coordinates independently of the text
             Assert.AreEqual(WrapType.None, group.WrapType);
-
-            // Make it a floating shape
-            group.WrapType = WrapType.None;
 
             // Top level shapes can have this property changed
             group.AnchorLocked = true;
