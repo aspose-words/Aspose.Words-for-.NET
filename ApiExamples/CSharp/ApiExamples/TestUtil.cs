@@ -314,7 +314,6 @@ namespace ApiExamples
                 }
             }
 
-            stream.Close();
             Assert.Fail($"String \"{(expected.Length <= 100 ? expected : expected.Substring(0, 100) + "...")}\" not found in the provided source.");
         }
 

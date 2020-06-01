@@ -317,7 +317,7 @@ namespace ApiExamples
             Assert.AreEqual(7041, properties.CharactersWithSpaces);
             Assert.AreEqual(142, properties.Lines);
             Assert.AreEqual(29, properties.Paragraphs);
-            Assert.AreEqual(15521, properties.Bytes);
+            Assert.AreEqual(15517, properties.Bytes);
             Assert.AreEqual(MyDir.Replace("\\\\", "\\") + "Business brochure.dotx", properties.Template);
             Assert.AreEqual("Draft", properties.ContentStatus);
             Assert.AreEqual(string.Empty, properties.ContentType);
