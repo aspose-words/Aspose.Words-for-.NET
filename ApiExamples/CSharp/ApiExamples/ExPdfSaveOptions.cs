@@ -216,7 +216,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_A.pdf", pdfSaveOptionsA1A);
             //ExEnd
 
-            #if NET462 || NETCOREAPP2_1
+#if NET462 || NETCOREAPP2_1
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf");
             Stream pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[1].ToStream();
 
@@ -230,9 +230,13 @@ namespace ApiExamples
 
             using (pdfDocImageStream)
             {
+#if NET462
                 Assert.Throws<ArgumentException>(() => TestUtil.VerifyImage(2467, 1500, pdfDocImageStream));
+#elif NETCOREAPP2_1
+                Assert.Throws<NullReferenceException>(() => TestUtil.VerifyImage(2467, 1500, pdfDocImageStream));
+#endif
             }
-            
+
             pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_A.pdf");
             pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[1].ToStream();
             
@@ -240,7 +244,7 @@ namespace ApiExamples
             {
                 TestUtil.VerifyImage(2467, 1500, pdfDocImageStream);
             }
-            #endif
+#endif
         }
 
         [Test]
@@ -929,7 +933,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Transparent background logo.png"))
+            using (Image image = Image.Decode(ImageDir + "Transparent background logo.png"))
             {
                 builder.InsertImage(image);
             }
