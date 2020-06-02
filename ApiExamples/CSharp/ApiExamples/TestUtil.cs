@@ -270,7 +270,7 @@ namespace ApiExamples
             using (ZipArchive archive = ZipFile.Open(docFilename, ZipArchiveMode.Update))
             {
                 ZipArchiveEntry entry = archive.Entries.First(e => e.Name == docPartFilename);
-
+                
                 using (Stream stream = entry.Open())
                 {
                    StreamContainsString(expected, stream);

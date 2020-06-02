@@ -5,10 +5,12 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using Aspose.Pdf.Facades;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
+#if NET462 || NETCOREAPP2_1
+using Aspose.Pdf.Facades;
+#endif
 
 namespace ApiExamples
 {

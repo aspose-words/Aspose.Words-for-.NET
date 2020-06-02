@@ -812,7 +812,7 @@ namespace ApiExamples
             Assert.AreEqual("dddd, MMMM dd, yyyy", doc.Range.Fields[1].Format.DateTimeFormat);
             Assert.AreEqual(DateTime.Today, DateTime.Parse(doc.Range.Fields[1].Result));
 
-            Assert.IsEmpty(doc.Range.Fields[2].Format.GeneralFormats);
+            Assert.That(doc.Range.Fields[2].Format.GeneralFormats, Is.Empty);
             Assert.AreEqual("58", doc.Range.Fields[2].Result);
 
         }
@@ -1673,7 +1673,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.AUTOTEXT.dotx");
             
-            Assert.IsEmpty(doc.FieldOptions.BuiltInTemplatesPaths);
+            Assert.That(doc.FieldOptions.BuiltInTemplatesPaths, Is.Empty);
 
             fieldAutoText = (FieldAutoText)doc.Range.Fields[0];
 
@@ -1817,7 +1817,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.GREETINGLINE.docx");
 
-            Assert.IsEmpty(doc.Range.Fields);
+            Assert.That(doc.Range.Fields, Is.Empty);
             Assert.AreEqual("Dear Mr. Doe,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!\r" +
                             "\fDear Mrs. Cardholder,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!\r" +
                             "\fDear Sir or Madam,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!", 
@@ -1967,7 +1967,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.MERGEFIELD.docx");
 
-            Assert.IsEmpty(doc.Range.Fields);
+            Assert.That(doc.Range.Fields, Is.Empty);
             Assert.AreEqual("Dear Mr. Doe:\u000cDear Mrs. Cardholder:", doc.GetText().Trim());
         }
 
@@ -5023,7 +5023,7 @@ namespace ApiExamples
             builder.Writeln();
 
             // While the set of a document's properties is fixed, we can add, name and define our own values in the variables collection
-            Assert.IsEmpty(doc.Variables);
+            Assert.That(doc.Variables, Is.Empty);
             doc.Variables.Add("My variable", "My variable's value");
 
             // We can access a variable using its name and display it with a DOCVARIABLE field

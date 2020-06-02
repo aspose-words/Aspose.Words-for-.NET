@@ -943,7 +943,8 @@ namespace ApiExamples
                 }
             }
         }
-#elif NETCOREAPP2_1 || __MOBILE__
+
+#elif NETCOREAPP2_1
         [Test]
         [TestCase(false)]
         [TestCase(true)]
