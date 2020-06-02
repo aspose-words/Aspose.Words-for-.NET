@@ -43,6 +43,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
     <Reference Include="Xamarin.Android.NUnitLite" />
@@ -60,6 +62,9 @@
     <Compile Include="..\..\..\ApiExamples\ExBookmarks.cs">
       <Link>ExBookmarks.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExBookmarksOutlineLevelCollection.cs">
+      <Link>ExBookmarksOutlineLevelCollection.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\ApiExamples\ExBorder.cs">
       <Link>ExBorder.cs</Link>
     </Compile>
@@ -75,8 +80,17 @@
     <Compile Include="..\..\..\ApiExamples\ExCellFormat.cs">
       <Link>ExCellFormat.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExCharts.cs">
+      <Link>ExCharts.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExComHelper.cs">
+      <Link>ExComHelper.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\ApiExamples\ExComment.cs">
       <Link>ExComment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExCompatibilityOptions.cs">
+      <Link>ExCompatibilityOptions.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExControlChar.cs">
       <Link>ExControlChar.cs</Link>
@@ -86,6 +100,9 @@
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExDigitalSignatureUtil.cs">
       <Link>ExDigitalSignatureUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExDocSaveOptions.cs">
+      <Link>ExDocSaveOptions.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExDocument.cs">
       <Link>ExDocument.cs</Link>
@@ -107,6 +124,12 @@
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExEditableRange.cs">
       <Link>ExEditableRange.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExField.cs">
+      <Link>ExField.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExFieldOptions.cs">
+      <Link>ExFieldOptions.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExFile.cs">
       <Link>ExFile.cs</Link>
@@ -138,6 +161,9 @@
     <Compile Include="..\..\..\ApiExamples\ExImageSaveOptions.cs">
       <Link>ExImageSaveOptions.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExInline.cs">
+      <Link>ExInline.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\ApiExamples\ExInlineStory.cs">
       <Link>ExInlineStory.cs</Link>
     </Compile>
@@ -150,17 +176,20 @@
     <Compile Include="..\..\..\ApiExamples\ExMailMergeCustom.cs">
       <Link>ExMailMergeCustom.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExMailMergeCustomNested.cs">
+      <Link>ExMailMergeCustomNested.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\ApiExamples\ExMailMergeEvent.cs">
       <Link>ExMailMergeEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExMetered.cs">
+      <Link>ExMetered.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExMossDoc2Pdf.cs">
       <Link>ExMossDoc2Pdf.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExMossRtf2Docx.cs">
       <Link>ExMossRtf2Docx.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\ApiExamples\ExNestedMailMergeCustom.cs">
-      <Link>ExNestedMailMergeCustom.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExNode.cs">
       <Link>ExNode.cs</Link>
@@ -180,6 +209,9 @@
     <Compile Include="..\..\..\ApiExamples\ExParagraph.cs">
       <Link>ExParagraph.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExParagraphFormat.cs">
+      <Link>ExParagraphFormat.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\ApiExamples\ExPclSaveOptions.cs">
       <Link>ExPclSaveOptions.cs</Link>
     </Compile>
@@ -188,6 +220,9 @@
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExProperties.cs">
       <Link>ExProperties.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExPsSaveOptions.cs">
+      <Link>ExPsSaveOptions.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExRange.cs">
       <Link>ExRange.cs</Link>
@@ -207,6 +242,9 @@
     <Compile Include="..\..\..\ApiExamples\ExRtfLoadOptions.cs">
       <Link>ExRtfLoadOptions.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExRtfSaveOptions.cs">
+      <Link>ExRtfSaveOptions.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\ApiExamples\ExSavingCallback.cs">
       <Link>ExSavingCallback.cs</Link>
     </Compile>
@@ -225,6 +263,9 @@
     <Compile Include="..\..\..\ApiExamples\ExStyles.cs">
       <Link>ExStyles.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExSvgSaveOptions.cs">
+      <Link>ExSvgSaveOptions.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\ApiExamples\ExTable.cs">
       <Link>ExTable.cs</Link>
     </Compile>
@@ -233,6 +274,9 @@
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExTabStopCollection.cs">
       <Link>ExTabStopCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExThemes.cs">
+      <Link>ExThemes.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExTxtLoadOptions.cs">
       <Link>ExTxtLoadOptions.cs</Link>
@@ -246,8 +290,17 @@
     <Compile Include="..\..\..\ApiExamples\ExVariableCollection.cs">
       <Link>ExVariableCollection.cs</Link>
     </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExViewOptions.cs">
+      <Link>ExViewOptions.cs</Link>
+    </Compile>
     <Compile Include="..\..\..\ApiExamples\ExWarningInfoCollection.cs">
       <Link>ExWarningInfoCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExXamlFixedSaveOptions.cs">
+      <Link>ExXamlFixedSaveOptions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\..\ApiExamples\ExXamlFlowSaveOptions.cs">
+      <Link>ExXamlFlowSaveOptions.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExXpsSaveOptions.cs">
       <Link>ExXpsSaveOptions.cs</Link>
@@ -309,7 +362,7 @@
       <Version>19.5.0</Version>
     </PackageReference>
     <PackageReference Include="Aspose.Words">
-      <Version>20.5.0</Version>
+      <Version>20.6.0</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="27.0.2.1" />
   </ItemGroup>
