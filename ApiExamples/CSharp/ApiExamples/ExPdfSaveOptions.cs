@@ -921,6 +921,28 @@ namespace ApiExamples
 
             TestPreblendImages(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", doPreblendImages);
         }
+
+        private void TestPreblendImages(string outFileName, bool doPreblendImages)
+        {
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(outFileName);
+            XImage image = pdfDocument.Pages[1].Resources.Images[1];
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                image.Save(stream);
+
+                if (doPreblendImages)
+                {
+                    TestUtil.FileContainsString("9 0 obj\r\n20849 ", outFileName);
+                    Assert.AreEqual(17898, stream.Length);
+                }
+                else
+                {
+                    TestUtil.FileContainsString("9 0 obj\r\n19289 ", outFileName);
+                    Assert.AreEqual(19216, stream.Length);
+                }
+            }
+        }
 #elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         [TestCase(false)]
@@ -946,13 +968,11 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", options);
             //ExEnd
 
-            TestPreblendImages(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", doPreblendImages);
+            TestPreblendImagesNetStandard2(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", doPreblendImages);
         }
-#endif
 
-        private void TestPreblendImages(string outFileName, bool doPreblendImages)
+        private void TestPreblendImagesNetStandard2(string outFileName, bool doPreblendImages)
         {
-#if NET462 || NETCOREAPP2_1
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(outFileName);
             XImage image = pdfDocument.Pages[1].Resources.Images[1];
 
@@ -967,12 +987,12 @@ namespace ApiExamples
                 }
                 else
                 {
-                    TestUtil.FileContainsString("9 0 obj\r\n19289 ", outFileName);
-                    Assert.AreEqual(19216, stream.Length);
+                    TestUtil.FileContainsString("9 0 obj\r\n20266 ", outFileName);
+                    Assert.AreEqual(19135, stream.Length);
                 }
             }
-#endif
         }
+#endif
 
         [Test]
         public void PdfDigitalSignature()
