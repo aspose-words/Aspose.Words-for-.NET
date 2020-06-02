@@ -1386,9 +1386,10 @@ namespace ApiExamples
             // We can call UpdateTableLayout() to fix some of these issues
             doc.UpdateTableLayout();
 
-            Assert.AreEqual(155.65d, table.FirstRow.Cells[0].CellFormat.Width); //ExSkip
             Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
             //ExEnd
+
+            Assert.AreEqual(156.45d, table.FirstRow.Cells[0].CellFormat.Width);
         }
 
         [Test]

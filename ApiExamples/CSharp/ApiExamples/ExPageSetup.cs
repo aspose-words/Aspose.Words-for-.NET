@@ -362,7 +362,7 @@ namespace ApiExamples
             Assert.AreEqual(2, pageSetup.TextColumns.Count);
             Assert.AreEqual(100.0d, pageSetup.TextColumns[0].Width);
             Assert.AreEqual(20.0d, pageSetup.TextColumns[0].SpaceAfter);
-            Assert.AreEqual(468.0d, pageSetup.TextColumns[1].Width);
+            Assert.AreEqual(470.3d, pageSetup.TextColumns[1].Width);
             Assert.AreEqual(0.0d, pageSetup.TextColumns[1].SpaceAfter);
         }
 

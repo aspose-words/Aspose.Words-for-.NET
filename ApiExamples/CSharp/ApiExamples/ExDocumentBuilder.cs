@@ -1898,8 +1898,8 @@ namespace ApiExamples
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, image);
             Assert.AreEqual(200.0d, image.Left);
             Assert.AreEqual(100.0d, image.Top);
-            Assert.AreEqual(268.0d, image.Width);
-            Assert.AreEqual(268.0d, image.Height);
+            Assert.AreEqual(270.3d, image.Width);
+            Assert.AreEqual(270.3d, image.Height);
             Assert.AreEqual(WrapType.Square, image.WrapType);
             Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
