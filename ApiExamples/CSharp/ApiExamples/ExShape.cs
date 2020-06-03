@@ -328,12 +328,36 @@ namespace ApiExamples
             builder.InsertNode(group);
             doc.Save(ArtifactsDir + "Shape.InsertGroupShape.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.InsertGroupShape.docx");
+            group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
+
+            Assert.True(group.AnchorLocked);
+            Assert.AreEqual(new RectangleF(100, 50, 200, 100), group.Bounds);
+            Assert.AreEqual(new Size(2000, 1000), group.CoordSize);
+            Assert.AreEqual(new Point(-1000, -500), group.CoordOrigin);
+
+            subShape = (Shape)group.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, string.Empty, subShape);
+            Assert.AreEqual(500.0d, subShape.Width);
+            Assert.AreEqual(700.0d, subShape.Height);
+            Assert.AreEqual(0.0d, subShape.Left);
+            Assert.AreEqual(0.0d, subShape.Top);
+
+            subShape = (Shape)group.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyShape(ShapeType.Triangle, string.Empty, string.Empty, subShape);
+            Assert.AreEqual(400.0d, subShape.Width);
+            Assert.AreEqual(400.0d, subShape.Height);
+            Assert.AreEqual(1000.0d, subShape.Left);
+            Assert.AreEqual(500.0d, subShape.Top);
+            Assert.AreEqual(new PointF(1000, 500), subShape.LocalToParent(new PointF(0, 0)));
         }
 
         [Test]
         public void DeleteAllShapes()
         {
-
             //ExStart
             //ExFor:Shape
             //ExSummary:Shows how to delete all shapes from a document.
@@ -393,8 +417,9 @@ namespace ApiExamples
             }
             //ExEnd
 
-            // Verify that the first shape in the document is not inline
-            Assert.False(((Shape) doc.GetChild(NodeType.Shape, 0, true)).IsInline);
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.False(((Shape)doc.GetChild(NodeType.Shape, 0, true)).IsInline);
         }
 
         [Test]
@@ -437,8 +462,23 @@ namespace ApiExamples
             doc.FirstSection.Body.FirstParagraph.AppendChild(lineA);
             doc.FirstSection.Body.FirstParagraph.AppendChild(lineB);
 
-            doc.Save(ArtifactsDir + "Shape.LineFlipOrientation.doc");
+            doc.Save(ArtifactsDir + "Shape.LineFlipOrientation.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.LineFlipOrientation.docx");
+            lineA = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineA.BoundsInPoints);
+            Assert.AreEqual(FlipOrientation.None, lineA.FlipOrientation);
+            Assert.AreEqual(RelativeHorizontalPosition.Page, lineA.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Page, lineA.RelativeVerticalPosition);
+
+            lineB = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineB.BoundsInPoints);
+            Assert.AreEqual(FlipOrientation.None, lineB.FlipOrientation);
+            Assert.AreEqual(RelativeHorizontalPosition.Page, lineB.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Page, lineB.RelativeVerticalPosition);
         }
 
         [Test]
@@ -450,7 +490,8 @@ namespace ApiExamples
             //ExFor:Fill
             //ExFor:Fill.Opacity
             //ExSummary:Demonstrates how to create shapes with fill.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln();
             builder.Writeln();
@@ -467,12 +508,23 @@ namespace ApiExamples
             shape.Top = -100;
             builder.InsertNode(shape);
 
-            builder.Document.Save(ArtifactsDir + "Shape.Fill.doc");
+            doc.Save(ArtifactsDir + "Shape.Fill.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.Fill.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Balloon, string.Empty, string.Empty, shape);
+            Assert.AreEqual(100.0d, shape.Width);
+            Assert.AreEqual(100.0d, shape.Height);
+            Assert.AreEqual(0.0d, shape.Left);
+            Assert.AreEqual(-100.0d, shape.Top);
+            Assert.AreEqual(Color.Red.ToArgb(), shape.FillColor.ToArgb());
+            Assert.AreEqual(0.3d, shape.Fill.Opacity, 0.01d);
         }
 
         [Test]
-        public void GetShapeAltTextTitle()
+        public void Title()
         {
             //ExStart
             //ExFor:ShapeBase.Title
@@ -482,15 +534,19 @@ namespace ApiExamples
 
             // Create test shape
             Shape shape = new Shape(doc, ShapeType.Cube);
-            shape.Width = 431.5;
-            shape.Height = 346.35;
-            shape.Title = "Alt Text Title";
-
+            shape.Width = 200;
+            shape.Height = 200;
+            shape.Title = "My cube";
+            
             builder.InsertNode(shape);
             //ExEnd
 
+            doc = DocumentHelper.SaveOpen(doc);
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            Assert.AreEqual("Alt Text Title", shape.Title);
+            
+            Assert.AreEqual(string.Empty, shape.Title);
+            Assert.AreEqual(200.0d, shape.Width);
+            Assert.AreEqual(200.0d, shape.Height);
         }
 
         [Test]
@@ -541,8 +597,13 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "Shape.ReplaceTextboxesWithImages.doc");
+            doc.Save(ArtifactsDir + "Shape.ReplaceTextboxesWithImages.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.ReplaceTextboxesWithImages.docx");
+            Shape outShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(WrapSide.Both, outShape.WrapSide);
         }
 
         [Test]
@@ -554,7 +615,7 @@ namespace ApiExamples
             //ExFor:Story.FirstParagraph
             //ExFor:Shape.FirstParagraph
             //ExFor:ShapeBase.WrapType
-            //ExSummary:Creates a textbox with some text and different formatting options in a new document.
+            //ExSummary:Shows how to create a textbox with some text and different formatting options in a new document.
             Document doc = new Document();
 
             // Create a new shape of type TextBox
@@ -582,15 +643,25 @@ namespace ApiExamples
 
             // Add some text to the paragraph
             Run run = new Run(doc);
-            run.Text = "Content in textbox";
+            run.Text = "Hello world!";
             para.AppendChild(run);
 
             // Append the textbox to the first paragraph in the body
             doc.FirstSection.Body.FirstParagraph.AppendChild(textBox);
 
-            // Save the output
-            doc.Save(ArtifactsDir + "Shape.CreateTextBox.doc");
+            doc.Save(ArtifactsDir + "Shape.CreateTextBox.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.CreateTextBox.docx");
+            textBox = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(WrapType.None, textBox.WrapType);
+            Assert.AreEqual(HorizontalAlignment.Center, textBox.HorizontalAlignment);
+            Assert.AreEqual(VerticalAlignment.Top, textBox.VerticalAlignment);
+            Assert.AreEqual(50.0d, textBox.Height);
+            Assert.AreEqual(200.0d, textBox.Width);
+            Assert.AreEqual(0, textBox.ZOrder);
+            Assert.AreEqual("Hello world!", textBox.GetText().Trim());
         }
 
         [Test]
@@ -635,7 +706,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:OleFormat.GetRawData
             //ExSummary:Shows how to get access to OLE object raw data.
-            // The document contains linked and embedded objects
+            // Open a document that contains OLE objects
             Document doc = new Document(MyDir + "OLE objects.docx");
 
             foreach (Node shape in doc.GetChildNodes(NodeType.Shape, true))
@@ -644,8 +715,9 @@ namespace ApiExamples
                 OleFormat oleFormat = ((Shape)shape).OleFormat;
                 if (oleFormat != null)
                 {
-                    Console.WriteLine($"This is {(oleFormat.IsLink ? "linked" : "embedded")} object");
+                    Console.WriteLine($"This is {(oleFormat.IsLink ? "a linked" : "an embedded")} object");
                     byte[] oleRawData = oleFormat.GetRawData();
+                    Assert.AreEqual(24576, oleRawData.Length); //ExSkip
                 }
             }
             //ExEnd
@@ -688,6 +760,9 @@ namespace ApiExamples
             // We can also save it directly to a file
             oleFormat.Save(ArtifactsDir + "OLE spreadsheet saved directly" + oleFormat.SuggestedExtension);
             //ExEnd
+
+            Assert.AreEqual(8300, new FileInfo(ArtifactsDir + "OLE spreadsheet extracted via stream.xlsx").Length, 200);
+            Assert.AreEqual(8300, new FileInfo(ArtifactsDir + "OLE spreadsheet saved directly.xlsx").Length, 200);
         }
 
         [Test]
@@ -823,8 +898,10 @@ namespace ApiExamples
 
             // Get OfficeMath node from the document and render this as image (you can also do the same with the Shape node)
             OfficeMath math = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
-            math.GetMathRenderer().Save(ArtifactsDir + "Shape.SaveShapeObjectAsImage.svg", new ImageSaveOptions(SaveFormat.Svg));
+            math.GetMathRenderer().Save(ArtifactsDir + "Shape.SaveShapeObjectAsImage.png", new ImageSaveOptions(SaveFormat.Png));
             //ExEnd
+            
+            TestUtil.VerifyImage(156, 18, ArtifactsDir + "Shape.SaveShapeObjectAsImage.png");
         }
 
         [Test]
@@ -882,6 +959,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.OfficeMath.docx");
             //ExEnd
+
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "Shape.OfficeMath.docx", GoldsDir + "Shape.OfficeMath Gold.docx"));
         }
 
