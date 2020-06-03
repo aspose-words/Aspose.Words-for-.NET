@@ -190,51 +190,61 @@ namespace ApiExamples
             //ExFor:PdfImageColorSpaceExportMode
             //ExSummary:Shows how to save images to PDF using JPEG encoding to decrease file size.
             Document doc = new Document(MyDir + "Images.docx");
+
+            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
+            pdfSaveOptions.ImageCompression = PdfImageCompression.Jpeg;
+            pdfSaveOptions.DownsampleOptions.DownsampleImages = false;
+        
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf", pdfSaveOptions);
+
+            PdfSaveOptions pdfSaveOptionsA1B = new PdfSaveOptions();
+            pdfSaveOptionsA1B.Compliance = PdfCompliance.PdfA1b;
+            pdfSaveOptionsA1B.ImageCompression = PdfImageCompression.Jpeg;
+            pdfSaveOptionsA1B.DownsampleOptions.DownsampleImages = false;
+            // Use JPEG compression at 50% quality to reduce file size
+            pdfSaveOptionsA1B.JpegQuality = 100;
+            pdfSaveOptionsA1B.ImageColorSpaceExportMode = PdfImageColorSpaceExportMode.SimpleCmyk;
             
-            PdfSaveOptions options = new PdfSaveOptions
-            {
-                ImageCompression = PdfImageCompression.Jpeg,
-                PreserveFormFields = true
-            };
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_B.pdf", pdfSaveOptionsA1B);
+
+            PdfSaveOptions pdfSaveOptionsA1A = new PdfSaveOptions();
+            pdfSaveOptionsA1A.Compliance = PdfCompliance.PdfA1a;
+            pdfSaveOptionsA1A.ExportDocumentStructure = true;
+            pdfSaveOptionsA1A.ImageCompression = PdfImageCompression.Jpeg;
+            pdfSaveOptionsA1A.DownsampleOptions.DownsampleImages = false;
             
-            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf", options);
-
-            PdfSaveOptions optionsA1B = new PdfSaveOptions
-            {
-                Compliance = PdfCompliance.PdfA1b,
-                ImageCompression = PdfImageCompression.Jpeg,
-                JpegQuality = 100, // Use JPEG compression at 50% quality to reduce file size
-                ImageColorSpaceExportMode = PdfImageColorSpaceExportMode.SimpleCmyk
-            };
-
-            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_B.pdf", optionsA1B);
-
-            PdfSaveOptions optionsA1A = new PdfSaveOptions
-            {
-                Compliance = PdfCompliance.PdfA1a,
-                ExportDocumentStructure = true,
-                ImageCompression = PdfImageCompression.Jpeg
-            };
-
-            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_A.pdf", optionsA1A);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_A.pdf", pdfSaveOptionsA1A);
             //ExEnd
 
-            #if NET462 || NETCOREAPP2_1
+#if NET462 || NETCOREAPP2_1
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf");
-            XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
+            Stream pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[1].ToStream();
 
-            TestUtil.VerifyImage(2467, 1500, pdfDocImage.ToStream());
+            using (pdfDocImageStream)
+            {
+                TestUtil.VerifyImage(2467, 1500, pdfDocImageStream);
+            }
             
             pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_B.pdf");
-            pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
+            pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[1].ToStream();
 
-            Assert.Throws<ArgumentException>(() => TestUtil.VerifyImage(2467, 1500, pdfDocImage.ToStream()));
+            using (pdfDocImageStream)
+            {
+#if NET462
+                Assert.Throws<ArgumentException>(() => TestUtil.VerifyImage(2467, 1500, pdfDocImageStream));
+#elif NETCOREAPP2_1
+                Assert.Throws<NullReferenceException>(() => TestUtil.VerifyImage(2467, 1500, pdfDocImageStream));
+#endif
+            }
 
             pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_A.pdf");
-            pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
-
-            TestUtil.VerifyImage(2467, 1500, pdfDocImage.ToStream());
-            #endif
+            pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[1].ToStream();
+            
+            using (pdfDocImageStream)
+            {
+                TestUtil.VerifyImage(2467, 1500, pdfDocImageStream);
+            }
+#endif
         }
 
         [Test]
@@ -911,38 +921,9 @@ namespace ApiExamples
 
             TestPreblendImages(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", doPreblendImages);
         }
-#elif NETCOREAPP2_1 || __MOBILE__
-        [Test]
-        [TestCase(false)]
-        [TestCase(true)]
-        public void PreblendImagesNetStandard2(bool doPreblendImages)
-        {
-            //ExStart
-            //ExFor:PdfSaveOptions.PreblendImages
-            //ExSummary:Shows how to preblend images with transparent backgrounds (.NetStandard 2.0).
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Transparent background logo.png"))
-            {
-                builder.InsertImage(image);
-            }
-
-            // Create a PdfSaveOptions object and setting this flag may change the quality and size of the output .pdf
-            // because of the way some images are rendered
-            PdfSaveOptions options = new PdfSaveOptions();
-            options.PreblendImages = doPreblendImages;
-
-            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", options);
-            //ExEnd
-
-            TestPreblendImages(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", doPreblendImages);
-        }
-#endif
 
         private void TestPreblendImages(string outFileName, bool doPreblendImages)
         {
-#if NET462 || NETCOREAPP2_1
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(outFileName);
             XImage image = pdfDocument.Pages[1].Resources.Images[1];
 
@@ -961,8 +942,58 @@ namespace ApiExamples
                     Assert.AreEqual(19216, stream.Length);
                 }
             }
-#endif
         }
+
+#elif NETCOREAPP2_1
+        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
+        public void PreblendImagesNetStandard2(bool doPreblendImages)
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.PreblendImages
+            //ExSummary:Shows how to preblend images with transparent backgrounds (.NetStandard 2.0).
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            using (Image image = Image.Decode(ImageDir + "Transparent background logo.png"))
+            {
+                builder.InsertImage(image);
+            }
+
+            // Create a PdfSaveOptions object and setting this flag may change the quality and size of the output .pdf
+            // because of the way some images are rendered
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.PreblendImages = doPreblendImages;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", options);
+            //ExEnd
+
+            TestPreblendImagesNetStandard2(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", doPreblendImages);
+        }
+
+        private void TestPreblendImagesNetStandard2(string outFileName, bool doPreblendImages)
+        {
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(outFileName);
+            XImage image = pdfDocument.Pages[1].Resources.Images[1];
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                image.Save(stream);
+
+                if (doPreblendImages)
+                {
+                    TestUtil.FileContainsString("9 0 obj\r\n20849 ", outFileName);
+                    Assert.AreEqual(17898, stream.Length);
+                }
+                else
+                {
+                    TestUtil.FileContainsString("9 0 obj\r\n20266 ", outFileName);
+                    Assert.AreEqual(19135, stream.Length);
+                }
+            }
+        }
+#endif
 
         [Test]
         public void PdfDigitalSignature()
