@@ -19,7 +19,6 @@ using NUnit.Framework;
 using Cell = Aspose.Words.Tables.Cell;
 using Color = System.Drawing.Color;
 using Document = Aspose.Words.Document;
-using Font = Aspose.Words.Font;
 using Table = Aspose.Words.Tables.Table;
 using System.Drawing;
 #if NETCOREAPP2_1 || __MOBILE__
@@ -337,7 +336,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermark.docx");
             shape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, shape);
             Assert.AreEqual(WrapType.None, shape.WrapType);
             Assert.True(shape.BehindText);
             Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
@@ -432,7 +431,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.docx");
             shape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, shape);
             Assert.AreEqual(WrapType.None, shape.WrapType);
             Assert.True(shape.BehindText);
             Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
@@ -1716,63 +1715,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderInsertParagraph()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertParagraph
-            //ExFor:ParagraphFormat.FirstLineIndent
-            //ExFor:ParagraphFormat.Alignment
-            //ExFor:ParagraphFormat.KeepTogether
-            //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndAlpha
-            //ExFor:ParagraphFormat.AddSpaceBetweenFarEastAndDigit
-            //ExFor:Paragraph.IsEndOfDocument
-            //ExSummary:Shows how to insert a paragraph into the document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Specify font formatting
-            Aspose.Words.Font font = builder.Font;
-            font.Size = 16;
-            font.Bold = true;
-            font.Color = Color.Blue;
-            font.Name = "Arial";
-            font.Underline = Underline.Dash;
-
-            // Specify paragraph formatting
-            ParagraphFormat paragraphFormat = builder.ParagraphFormat;
-            paragraphFormat.FirstLineIndent = 8;
-            paragraphFormat.Alignment = ParagraphAlignment.Justify;
-            paragraphFormat.AddSpaceBetweenFarEastAndAlpha = true;
-            paragraphFormat.AddSpaceBetweenFarEastAndDigit = true;
-            paragraphFormat.KeepTogether = true;
-
-            // Using Writeln() ends the paragraph after writing and makes a new one, while Write() stays on the same paragraph
-            builder.Writeln("A whole paragraph.");
-
-            // We can use this flag to ensure that we're at the end of the document
-            Assert.True(builder.CurrentParagraph.IsEndOfDocument);
-            //ExEnd
-
-            doc = DocumentHelper.SaveOpen(doc);
-            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
-
-            Assert.AreEqual(8, paragraph.ParagraphFormat.FirstLineIndent);
-            Assert.AreEqual(ParagraphAlignment.Justify, paragraph.ParagraphFormat.Alignment);
-            Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndAlpha);
-            Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndDigit);
-            Assert.True(paragraph.ParagraphFormat.KeepTogether);
-            Assert.AreEqual("A whole paragraph.", paragraph.GetText().Trim());
-
-            Font runFont = paragraph.Runs[0].Font;
-
-            Assert.AreEqual(16.0d, runFont.Size);
-            Assert.True(runFont.Bold);
-            Assert.AreEqual(Color.Blue.ToArgb(), runFont.Color.ToArgb());
-            Assert.AreEqual("Arial", runFont.Name);
-            Assert.AreEqual(Underline.Dash, runFont.Underline);
-        }
-
-        [Test]
         public void DocumentBuilderBuildTable()
         {
             //ExStart
@@ -1910,7 +1852,7 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Png, image);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, image);
             Assert.AreEqual(100.0d, image.Left);
             Assert.AreEqual(100.0d, image.Top);
             Assert.AreEqual(200.0d, image.Width);
@@ -1953,11 +1895,11 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, image);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, image);
             Assert.AreEqual(200.0d, image.Left);
             Assert.AreEqual(100.0d, image.Top);
-            Assert.AreEqual(268.0d, image.Width);
-            Assert.AreEqual(268.0d, image.Height);
+            Assert.AreEqual(270.3d, image.Width);
+            Assert.AreEqual(270.3d, image.Height);
             Assert.AreEqual(WrapType.Square, image.WrapType);
             Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
@@ -2908,7 +2850,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertVideoWithUrl.docx");
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(480, 360, ImageType.Jpeg, shape);
+            TestUtil.VerifyImageInShape(480, 360, ImageType.Jpeg, shape);
             TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
 
             Assert.AreEqual(360.0d, shape.Width);
@@ -3591,7 +3533,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOnlineVideo.docx");
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(640, 360, ImageType.Jpeg, shape);
+            TestUtil.VerifyImageInShape(640, 360, ImageType.Jpeg, shape);
 
             Assert.AreEqual(320.0d, shape.Width);
             Assert.AreEqual(180.0d, shape.Height);
@@ -3605,7 +3547,7 @@ namespace ApiExamples
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImage(320, 320, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, shape);
             Assert.AreEqual(320.0d, shape.Width);
             Assert.AreEqual(320.0d, shape.Height);
             Assert.AreEqual(0.0d, shape.Left);

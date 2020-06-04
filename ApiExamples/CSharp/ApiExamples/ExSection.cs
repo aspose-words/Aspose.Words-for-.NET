@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -25,7 +26,7 @@ namespace ApiExamples
             //ExFor:Document.Protect(ProtectionType)
             //ExFor:ProtectionType
             //ExFor:Section.ProtectedForForms
-            //ExSummary:Protects a section so only editing in form fields is possible.
+            //ExSummary:Shows how to protect a section so only editing in form fields is possible.
             Document doc = new Document();
 
             // Insert two sections with some text
@@ -40,8 +41,13 @@ namespace ApiExamples
             // By default, all sections are protected, but we can selectively turn protection off
             doc.Sections[0].ProtectedForForms = false;
 
-            builder.Document.Save(ArtifactsDir + "Section.Protect.doc");
+            doc.Save(ArtifactsDir + "Section.Protect.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Section.Protect.docx");
+
+            Assert.False(doc.Sections[0].ProtectedForForms);
+            Assert.True(doc.Sections[1].ProtectedForForms);
         }
 
         [Test]
@@ -61,7 +67,7 @@ namespace ApiExamples
             builder.Write("Section 2");
 
             // This shows what is in the document originally. The document has two sections
-            Console.WriteLine(doc.GetText());
+            Assert.AreEqual("Section 1\x000cSection 2", doc.GetText().Trim());
 
             // Delete the first section from the document
             doc.Sections.RemoveAt(0);
@@ -72,10 +78,8 @@ namespace ApiExamples
             doc.Sections.Add(newSection);
 
             // Check what the document contains after we changed it
-            Console.WriteLine(doc.GetText());
+            Assert.AreEqual("Section 2\x000cSection 2", doc.GetText().Trim());
             //ExEnd
-
-            Assert.AreEqual("Section 2\x000cSection 2\x000c", doc.GetText());
         }
 
         [Test]
@@ -105,7 +109,7 @@ namespace ApiExamples
             //ExFor:Run.#ctor(DocumentBase)
             //ExFor:Run.Text
             //ExFor:Inline.Font
-            //ExSummary:Creates a simple document from scratch using the Aspose.Words object model.
+            //ExSummary:Shows how to construct an Aspose Words document node by node.
             Document doc = new Document();
 
             // A newly created blank document still comes one section, one body and one paragraph
@@ -148,28 +152,36 @@ namespace ApiExamples
             run.Font.Color = Color.Red;
             para.AppendChild(run);
 
-            // As a matter of interest, you can retrieve text of the whole document and
-            // see that \x000c is automatically appended. \x000c is the end of section character
-            Console.WriteLine("Hello World!\x000c");
+            Assert.AreEqual("Hello World!" + ControlChar.SectionBreakChar, doc.GetText());
 
-            // Save the document
             doc.Save(ArtifactsDir + "Section.CreateFromScratch.docx");
             //ExEnd
-
-            Assert.AreEqual("Hello World!\x000c", doc.GetText());
         }
 
         [Test]
         public void EnsureSectionMinimum()
         {
             //ExStart
+            //ExFor:NodeCollection.Add
             //ExFor:Section.EnsureMinimum
-            //ExSummary:Ensures that a section is valid.
+            //ExFor:SectionCollection.Item(Int32)
+            //ExSummary:Shows how to prepare a new section node for editing.
             Document doc = new Document();
-            Section section = doc.FirstSection;
+            
+            // A blank document comes with a section, which has a body, which in turn has a paragraph,
+            // so we can edit the document by adding children to the paragraph like shapes or runs of text
+            Assert.AreEqual(2, doc.Sections[0].GetChildNodes(NodeType.Any, true).Count);
+
+            // If we add a new section like this, it will not have a body or a paragraph that we can edit
+            doc.Sections.Add(new Section(doc));
+
+            Assert.AreEqual(0, doc.Sections[1].GetChildNodes(NodeType.Any, true).Count);
 
             // Makes sure that the section contains a body with at least one paragraph
-            section.EnsureMinimum();
+            doc.LastSection.EnsureMinimum();
+
+            // Now we can add content to this section
+            Assert.AreEqual(2, doc.Sections[1].GetChildNodes(NodeType.Any, true).Count);
             //ExEnd
         }
 
@@ -190,7 +202,7 @@ namespace ApiExamples
 
             // This shows what is in the document originally
             // The document has two sections
-            Console.WriteLine(doc.GetText());
+            Assert.AreEqual($"Section 1{ControlChar.SectionBreak}Section 2{ControlChar.SectionBreak}", doc.GetText());
 
             // Loop through all sections in the document
             foreach (Section section in doc.Sections.OfType<Section>())
@@ -207,10 +219,8 @@ namespace ApiExamples
             }
 
             // Check how the content of the document looks now
-            Console.WriteLine(doc.GetText());
+            Assert.AreEqual($"{ControlChar.SectionBreak}{ControlChar.SectionBreak}", doc.GetText());
             //ExEnd
-
-            Assert.AreEqual("\x000c\x000c", doc.GetText());
         }
 
         [Test]
@@ -269,38 +279,7 @@ namespace ApiExamples
                     }
                 }
             }
-
             //ExEnd
-        }
-
-        [Test]
-        public void SectionsAccessByIndex()
-        {
-            //ExStart
-            //ExFor:SectionCollection.Item(Int32)
-            //ExSummary:Shows how to access a section at the specified index.
-            Document doc = new Document(MyDir + "Document.docx");
-            Section section = doc.Sections[0];
-            //ExEnd
-        }
-
-        [Test]
-        public void SectionsAddSection()
-        {
-            //ExStart
-            //ExFor:NodeCollection.Add
-            //ExSummary:Shows how to add a section to the end of the document.
-            Document doc = new Document(MyDir + "Document.docx");
-            Section sectionToAdd = new Section(doc);
-            doc.Sections.Add(sectionToAdd);
-            //ExEnd
-        }
-
-        [Test]
-        public void SectionsDeleteSection()
-        {
-            Document doc = new Document(MyDir + "Document.docx");
-            doc.Sections.RemoveAt(0);
         }
 
         [Test]
@@ -310,7 +289,16 @@ namespace ApiExamples
             //ExFor:NodeCollection.Clear
             //ExSummary:Shows how to remove all sections from a document.
             Document doc = new Document(MyDir + "Document.docx");
+
+            // All of the document's content is stored in the child nodes of sections like this one
+            Assert.AreEqual("Hello World!", doc.GetText().Trim());
+            Assert.AreEqual(5, doc.Sections[0].GetChildNodes(NodeType.Any, true).Count);
+
             doc.Sections.Clear();
+            
+            // Clearing the section collection effectively empties the document
+            Assert.AreEqual(string.Empty, doc.GetText());
+            Assert.AreEqual(0, doc.Sections.Count);
             //ExEnd
         }
 
@@ -340,6 +328,12 @@ namespace ApiExamples
             // This copies content of the 2nd section and inserts it at the end of the specified section
             Section sectionToAppend = doc.Sections[1];
             section.AppendContent(sectionToAppend);
+
+            Assert.AreEqual("Section 1" + ControlChar.SectionBreak +
+                            "Section 2" + ControlChar.SectionBreak +
+                            "Section 1" + ControlChar.ParagraphBreak +
+                            "Section 3" + ControlChar.ParagraphBreak +
+                            "Section 2" + ControlChar.SectionBreak, doc.GetText());
             //ExEnd
         }
 
@@ -348,10 +342,14 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Section.ClearContent
-            //ExSummary:Shows how to delete main content of a section.
+            //ExSummary:Shows how to clear the content of a section.
             Document doc = new Document(MyDir + "Document.docx");
-            Section section = doc.Sections[0];
-            section.ClearContent();
+
+            Assert.AreEqual("Hello World!", doc.GetText().Trim());
+
+            doc.FirstSection.ClearContent();
+
+            Assert.AreEqual(string.Empty, doc.GetText().Trim());
             //ExEnd
         }
 
@@ -361,9 +359,17 @@ namespace ApiExamples
             //ExStart
             //ExFor:Section.ClearHeadersFooters
             //ExSummary:Clears content of all headers and footers in a section.
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document(MyDir + "Header and footer types.docx");
+
             Section section = doc.Sections[0];
+
+            Assert.AreEqual(6, section.HeadersFooters.Count);
+            Assert.AreEqual("First header", section.HeadersFooters[HeaderFooterType.HeaderFirst].GetText().Trim());
+
             section.ClearHeadersFooters();
+
+            Assert.AreEqual(6, section.HeadersFooters.Count);
+            Assert.AreEqual(string.Empty, section.HeadersFooters[HeaderFooterType.HeaderFirst].GetText());
             //ExEnd
         }
 
@@ -373,9 +379,22 @@ namespace ApiExamples
             //ExStart
             //ExFor:Section.DeleteHeaderFooterShapes
             //ExSummary:Removes all images and shapes from all headers footers in a section.
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document();
             Section section = doc.Sections[0];
+            HeaderFooter firstHeader = new HeaderFooter(doc, HeaderFooterType.HeaderFirst);
+
+            section.HeadersFooters.Add(firstHeader);
+
+            firstHeader.AppendParagraph("This paragraph contains a shape: ");
+
+            Shape shape = new Shape(doc, ShapeType.Arrow);
+            firstHeader.FirstParagraph.AppendChild(shape);
+
+            Assert.AreEqual(1, firstHeader.GetChildNodes(NodeType.Shape, true).Count);
+
             section.DeleteHeaderFooterShapes();
+
+            Assert.AreEqual(0, firstHeader.GetChildNodes(NodeType.Shape, true).Count);
             //ExEnd
         }
 

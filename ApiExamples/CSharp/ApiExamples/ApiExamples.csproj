@@ -21,10 +21,112 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="ApiExampleBase.cs" />
+    <Content Include="ExBookmarksOutlineLevelCollection.cs" />
+    <Content Include="ExComHelper.cs" />
+    <Content Include="CustomBarcodeGenerator.cs" />
+    <Content Include="DocumentHelper.cs" />
+    <Content Include="ExAbsolutePositionTab.cs" />
+    <Content Include="ExBookmarks.cs" />
+    <Content Include="ExBorder.cs" />
+    <Content Include="ExBorderCollection.cs" />
+    <Content Include="ExBuildingBlocks.cs" />
+    <Content Include="ExBuildVersion.cs" />
+    <Content Include="ExCellFormat.cs" />
+    <Content Include="ExCharts.cs" />
+    <Content Include="ExComment.cs" />
+    <Content Include="ExCompatibilityOptions.cs" />
+    <Content Include="ExControlChar.cs" />
+    <Content Include="ExDocSaveOptions.cs" />
+    <Content Include="ExFieldOptions.cs" />
+    <Content Include="ExHtmlLoadOptions.cs" />
+    <Content Include="ExDigitalSignatureCollection.cs" />
+    <Content Include="ExDigitalSignatureUtil.cs" />
+    <Content Include="ExDocument.cs" />
+    <Content Include="ExDocumentBase.cs" />
+    <Content Include="ExDocumentBuilder.cs" />
+    <Content Include="ExDocumentBuilderImages.cs" />
+    <Content Include="ExDrawing.cs" />
+    <Content Include="ExEditableRange.cs" />
+    <Content Include="ExField.cs" />
+    <Content Include="ExFile.cs" />
+    <Content Include="ExFont.cs" />
+    <Content Include="ExFormFields.cs" />
+    <Content Include="ExHeaderFooter.cs" />
+    <Content Include="ExHtmlFixedSaveOptions.cs" />
+    <Content Include="ExHtmlSaveOptions.cs" />
+    <Content Include="ExHyphenation.cs" />
+    <Content Include="ExImage.cs" />
+    <Content Include="ExImageSaveOptions.cs" />
+    <Content Include="ExInline.cs" />
+    <Content Include="ExInlineStory.cs" />
+    <Content Include="ExNodeImporter.cs" />
+    <Content Include="ExLists.cs" />
+    <Content Include="ExMailMerge.cs" />
+    <Content Include="ExMailMergeCustom.cs" />
+    <Content Include="ExMailMergeEvent.cs" />
+    <Content Include="ExMetered.cs" />
+    <Content Include="ExMossDoc2Pdf.cs" />
+    <Content Include="ExMossRtf2Docx.cs" />
+    <Content Include="ExNode.cs" />
+    <Content Include="ExOdtSaveOptions.cs" />
+    <Content Include="ExOoxmlSaveOptions.cs" />
+    <Content Include="ExPageSetup.cs" />
+    <Content Include="ExParagraph.cs" />
+    <Content Include="ExPclSaveOptions.cs" />
+    <Content Include="ExPdfSaveOptions.cs" />
+    <Content Include="ExProperties.cs" />
+    <Content Include="ExRange.cs" />
+    <Content Include="ExRenameMergeFields.cs" />
+    <Content Include="ExRendering.cs" />
+    <Content Include="ExReplaceHyperlinks.cs" />
+    <Content Include="ExReportingEngine.cs" />
+    <Content Include="ExRtfSaveOptions.cs" />
+    <Content Include="ExSavingCallback.cs" />
+    <Content Include="ExSection.cs" />
+    <Content Include="ExShape.cs" />
+    <Content Include="ExSignDocumentCustom.cs" />
+    <Content Include="ExStructuredDocumentTag.cs" />
+    <Content Include="ExStyles.cs" />
+    <Content Include="ExTable.cs" />
+    <Content Include="ExTableColumn.cs" />
+    <Content Include="ExTabStopCollection.cs" />
+    <Content Include="ExRtfLoadOptions.cs" />
+    <Content Include="ExThemes.cs" />
+    <Content Include="ExTxtLoadOptions.cs" />
+    <Content Include="ExTxtSaveOptions.cs" />
+    <Content Include="ExUtilityClasses.cs" />
+    <Content Include="ExVariableCollection.cs" />
+    <Content Include="ExDocumentVisitor.cs" />
+    <Content Include="ExViewOptions.cs" />
+    <Content Include="ExWarningInfoCollection.cs" />
+    <Content Include="ExXamlFixedSaveOptions.cs" />
+    <Content Include="ExXamlFlowSaveOptions.cs" />
+    <Content Include="ExXpsSaveOptions.cs" />
+    <Content Include="ExSvgSaveOptions.cs" />
+    <Content Include="ExPsSaveOptions.cs" />
+    <Content Include="TestData\TestBuilders\ColorItemTestBuilder.cs" />
+    <Content Include="TestData\TestBuilders\DocumentTestBuilder.cs" />
+    <Content Include="TestData\TestBuilders\ImageTestBuilder.cs" />
+    <Content Include="TestData\TestBuilders\NumericTestBuilder.cs" />
+    <Content Include="TestData\Common.cs" />
+    <Content Include="TestData\TestClasses\ClientTestClass.cs" />
+    <Content Include="TestData\TestClasses\ColorItemTestClass.cs" />
+    <Content Include="TestData\TestClasses\ContractTestClass.cs" />
+    <Content Include="TestData\TestClasses\DocumentTestClass.cs" />
+    <Content Include="TestData\TestClasses\ImageTestClass.cs" />
+    <Content Include="TestData\TestClasses\ManagerTestClass.cs" />
+    <Content Include="TestData\TestClasses\MessageTestClass.cs" />
+    <Content Include="TestData\TestClasses\NumericTestClass.cs" />
+    <Content Include="TestData\TestClasses\SignPersonTestClass.cs" />
+    <Content Include="TestUtil.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="18.8.0" />
-    <PackageReference Include="Aspose.PDF" Version="20.4.0" />
-    <PackageReference Include="Aspose.Words" Version="20.5.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.5.0" />
+    <PackageReference Include="Aspose.PDF" Version="20.6.0" />
+    <PackageReference Include="Aspose.Words" Version="20.6.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.6.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
@@ -32,12 +134,14 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Data.OleDb" Version="4.7.0" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Interop.ADODB">
       <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression" Condition="'$(TargetFramework)' == 'net462'" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
@@ -46,7 +150,6 @@
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <PackageReference Include="BouncyCastle" Version="1.8.6.1" />
-    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 

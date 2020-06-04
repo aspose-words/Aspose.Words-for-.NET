@@ -52,7 +52,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Image.CreateImageDirectly.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(1600, 1600, ImageType.Wmf, shape);
+            TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
             Assert.AreEqual(100.0d, shape.Height);
             Assert.AreEqual(100.0d, shape.Width);
         }
@@ -81,8 +81,8 @@ namespace ApiExamples
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             Assert.AreEqual(2, shapes.Count);
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, (Shape)shapes[0]);
-            TestUtil.VerifyImage(320, 320, ImageType.Png, (Shape)shapes[1]);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, (Shape)shapes[0]);
+            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, (Shape)shapes[1]);
         }
 
         [Test]
@@ -105,7 +105,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Image.CreateFromStream.docx");
 
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, (Shape)doc.GetChildNodes(NodeType.Shape, true)[0]);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, (Shape)doc.GetChildNodes(NodeType.Shape, true)[0]);
         }
 
         #if NET462 || JAVA
@@ -194,7 +194,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Image.CreateFloatingPageCenter.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual(WrapType.None, shape.WrapType);
             Assert.True(shape.BehindText);
             Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
@@ -249,7 +249,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Image.CreateFloatingPositionSize.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(400, 400, ImageType.Jpeg, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual(WrapType.None, shape.WrapType);
             Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Page, shape.RelativeVerticalPosition);
@@ -284,7 +284,7 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
-            TestUtil.VerifyImage(1600, 1600, ImageType.Wmf, shape);
+            TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
             Assert.AreEqual("New Window", shape.Target);
             Assert.AreEqual("Aspose.Words Support Forums", shape.ScreenTip);
         }
@@ -339,19 +339,19 @@ namespace ApiExamples
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImage(0, 0, ImageType.Wmf, shape);
+            TestUtil.VerifyImageInShape(0, 0, ImageType.Wmf, shape);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
             Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImage(1600, 1600, ImageType.Wmf, shape);
+            TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
             Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
 
-            TestUtil.VerifyImage(1600, 1600, ImageType.Wmf, shape);
+            TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
             Assert.AreEqual(string.Empty, shape.ImageData.SourceFullName);
         }

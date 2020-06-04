@@ -65,7 +65,6 @@ namespace ApiExamples
                 options.PageCount = 1;
                 doc.Save(stream, options);
             }
-
             //ExEnd
         }
 
