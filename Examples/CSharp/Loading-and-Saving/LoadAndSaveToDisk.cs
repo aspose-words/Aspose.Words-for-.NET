@@ -15,7 +15,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             Document doc = new Document(dataDir + fileName);
             // ExEnd:OpenDocument
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
-            // Save the document as DOCX document.");
+            // Save the document as DOCX document.
             doc.Save(dataDir);
             // ExEnd:LoadAndSave
             Console.WriteLine("\nExisting document loaded and saved successfully.\nFile saved at " + dataDir);

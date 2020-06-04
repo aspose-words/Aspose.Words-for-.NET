@@ -45,17 +45,17 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
         {
             // Save the document to a MemoryStream object.
             MemoryStream stream = new MemoryStream();
-            doc.Save(stream, SaveFormat.Doc);
+            doc.Save(stream, SaveFormat.Docx);
 
             // Get the filename from the document.
             string fileName = Path.GetFileName(doc.OriginalFileName);
 
             // Create the SQL command.
-            string commandString = "INSERT INTO Documents (FileName, FileContent) VALUES('" + fileName + "', @Doc)";
+            string commandString = "INSERT INTO Documents (FileName, FileContent) VALUES('" + fileName + "', @Docx)";
             OleDbCommand command = new OleDbCommand(commandString, mConnection);
 
-            // Add the @Doc parameter.
-            command.Parameters.AddWithValue("Doc", stream.ToArray());
+            // Add the @Docx parameter.
+            command.Parameters.AddWithValue("Docx", stream.ToArray());
 
             // Write the document to the database.
             command.ExecuteNonQuery(); 

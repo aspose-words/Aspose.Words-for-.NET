@@ -14,9 +14,9 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
-            Document doc = new Document(dataDir + "Document.doc");
+            Document doc = new Document(dataDir + "Document.docx");
 
-            dataDir = dataDir + "Report_out.doc";
+            dataDir = dataDir + "Report_out.docx";
             // If this method overload is causing a compiler error then you are using the Client Profile DLL whereas 
             // The Aspose.Words .NET 2.0 DLL must be used instead.
             doc.Save(dataDir);
