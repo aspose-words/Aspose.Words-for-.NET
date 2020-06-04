@@ -85,13 +85,14 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.Insert.docx");
             List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
             
-            TestUtil.VerifyShape(ShapeType.Cube, "MyCube", "Alt text for MyCube.", shapes[0]);
+            TestUtil.VerifyShape(ShapeType.Cube, "MyCube", 150.0d, 150.0d, 0, 0, shapes[0]);
+            Assert.AreEqual("Alt text for MyCube.", shapes[0].AlternativeText);
             Assert.AreEqual("Times New Roman", shapes[0].Font.Name);
 
-            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100004", string.Empty, shapes[1]);
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100004", 300.0d, 50.0d, 0, 0, shapes[1]);
             Assert.AreEqual("Hello world!", shapes[1].LastParagraph.GetText().Trim());
 
-            TestUtil.VerifyShape(ShapeType.Image, string.Empty, string.Empty, shapes[2]);
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 300.0d, 300.0d, 0, 0, shapes[2]);
             Assert.True(shapes[2].CanHaveImage);
             Assert.True(shapes[2].HasImage);
             Assert.AreEqual(45.0d, shapes[2].Rotation);
@@ -245,13 +246,11 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.Coordinates.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100002", string.Empty, shape);
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100002", 150.0d, 150.0d, 75.0d, 150.0d, shape);
             Assert.AreEqual(40.0d, shape.DistanceBottom);
             Assert.AreEqual(40.0d, shape.DistanceLeft);
             Assert.AreEqual(40.0d, shape.DistanceRight);
             Assert.AreEqual(40.0d, shape.DistanceTop);
-            Assert.AreEqual(150.0d, shape.Left);
-            Assert.AreEqual(75.0d, shape.Top);
             Assert.AreEqual(60.0d, shape.Rotation);
         }
 
@@ -339,19 +338,11 @@ namespace ApiExamples
 
             subShape = (Shape)group.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, string.Empty, subShape);
-            Assert.AreEqual(500.0d, subShape.Width);
-            Assert.AreEqual(700.0d, subShape.Height);
-            Assert.AreEqual(0.0d, subShape.Left);
-            Assert.AreEqual(0.0d, subShape.Top);
+            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 500.0d, 700.0d, 0.0d, 0.0d, subShape);
 
             subShape = (Shape)group.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyShape(ShapeType.Triangle, string.Empty, string.Empty, subShape);
-            Assert.AreEqual(400.0d, subShape.Width);
-            Assert.AreEqual(400.0d, subShape.Height);
-            Assert.AreEqual(1000.0d, subShape.Left);
-            Assert.AreEqual(500.0d, subShape.Top);
+            TestUtil.VerifyShape(ShapeType.Triangle, string.Empty, 400.0d, 400.0d, 500.0d, 1000.0d, subShape);
             Assert.AreEqual(new PointF(1000, 500), subShape.LocalToParent(new PointF(0, 0)));
         }
 
@@ -514,11 +505,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.Fill.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyShape(ShapeType.Balloon, string.Empty, string.Empty, shape);
-            Assert.AreEqual(100.0d, shape.Width);
-            Assert.AreEqual(100.0d, shape.Height);
-            Assert.AreEqual(0.0d, shape.Left);
-            Assert.AreEqual(-100.0d, shape.Top);
+            TestUtil.VerifyShape(ShapeType.Balloon, string.Empty, 100.0d, 100.0d, -100.0d, 0.0d, shape);
             Assert.AreEqual(Color.Red.ToArgb(), shape.FillColor.ToArgb());
             Assert.AreEqual(0.3d, shape.Fill.Opacity, 0.01d);
         }
@@ -543,10 +530,8 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            
-            Assert.AreEqual(string.Empty, shape.Title);
-            Assert.AreEqual(200.0d, shape.Width);
-            Assert.AreEqual(200.0d, shape.Height);
+
+            TestUtil.VerifyShape(ShapeType.Cube, string.Empty, 200.0d, 200.0d, 0.0d, 0.0d, shape);
         }
 
         [Test]
@@ -655,11 +640,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.CreateTextBox.docx");
             textBox = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
+            TestUtil.VerifyShape(ShapeType.TextBox, string.Empty, 200.0d, 50.0d, 0.0d, 0.0d, textBox);
             Assert.AreEqual(WrapType.None, textBox.WrapType);
             Assert.AreEqual(HorizontalAlignment.Center, textBox.HorizontalAlignment);
             Assert.AreEqual(VerticalAlignment.Top, textBox.VerticalAlignment);
-            Assert.AreEqual(50.0d, textBox.Height);
-            Assert.AreEqual(200.0d, textBox.Width);
             Assert.AreEqual(0, textBox.ZOrder);
             Assert.AreEqual("Hello world!", textBox.GetText().Trim());
         }
@@ -761,8 +745,8 @@ namespace ApiExamples
             oleFormat.Save(ArtifactsDir + "OLE spreadsheet saved directly" + oleFormat.SuggestedExtension);
             //ExEnd
 
-            Assert.AreEqual(8300, new FileInfo(ArtifactsDir + "OLE spreadsheet extracted via stream.xlsx").Length, 200);
-            Assert.AreEqual(8300, new FileInfo(ArtifactsDir + "OLE spreadsheet saved directly.xlsx").Length, 200);
+            Assert.AreEqual(8300, new FileInfo(ArtifactsDir + "OLE spreadsheet extracted via stream.xlsx").Length, TestUtil.FileInfoLengthDelta);
+            Assert.AreEqual(8300, new FileInfo(ArtifactsDir + "OLE spreadsheet saved directly.xlsx").Length, TestUtil.FileInfoLengthDelta);
         }
 
         [Test]
@@ -1029,6 +1013,7 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
             shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+
             Assert.AreEqual(isLocked, shape.AspectRatioLocked);
         }
 
@@ -1111,7 +1096,6 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
             rectangle = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-
             Stroke strokeAfter = rectangle.Stroke;
 
             Assert.AreEqual(true, strokeAfter.On);
@@ -1164,7 +1148,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Shape.InsertOlePackage.docx");
 
-            Shape getShape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+            Shape getShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             OlePackage getOlePackage = getShape.OleFormat.OlePackage;
 
             Assert.AreEqual("Cat FileName.zip", getOlePackage.FileName);
@@ -1208,7 +1192,6 @@ namespace ApiExamples
             //ExFor:ShapeBase.IsLayoutInCell
             //ExFor:MsWordVersion
             //ExSummary:Shows how to display the shape, inside a table or outside of it.
-            //Document doc = new Document(MyDir + "Shape.LayoutInCell.docx");
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1248,15 +1231,13 @@ namespace ApiExamples
                 watermark.TextPath.Text = string.Format("{0}", num);
                 watermark.TextPath.FontFamily = "Arial";
 
-                watermark.Name = $"WaterMark_{Guid.NewGuid()}";
+                watermark.Name = $"Watermark_{num++}";
                 // Property will take effect only if the WrapType property is set to something other than WrapType.Inline
                 watermark.WrapType = WrapType.None; 
                 watermark.BehindText = true;
 
                 builder.MoveTo(run);
                 builder.InsertNode(watermark);
-
-                num = num + 1;
             }
 
             // Behaviour of MS Word on working with shapes in table cells is changed in the last versions
@@ -1265,6 +1246,14 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.LayoutInTableCell.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.LayoutInTableCell.docx");
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+
+            Assert.AreEqual(31, shapes.Count);
+
+            foreach (Shape shape in shapes)
+                TestUtil.VerifyShape(ShapeType.TextPlainText, $"Watermark_{shapes.IndexOf(shape) + 1}", 30.0d, 30.0d, 0.0d, 0.0d, shape);
         }
 
         [Test]
@@ -1297,6 +1286,12 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "Shape.ShapeInsertion.docx", saveOptions);
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.ShapeInsertion.docx");
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+
+            TestUtil.VerifyShape(ShapeType.TopCornersRounded, "TopCornersRounded 100002", 50.0d, 50.0d, 100.0d, 100.0d, shapes[0]);
+            TestUtil.VerifyShape(ShapeType.DiagonalCornersRounded, "DiagonalCornersRounded 100004", 50.0d, 50.0d, 0.0d, 0.0d, shapes[1]);
         }
 
         //ExStart
@@ -1318,7 +1313,8 @@ namespace ApiExamples
         {
             // Open a document that contains shapes
             Document doc = new Document(MyDir + "Revision shape.docx");
-            
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count); //ExSKip
+
             // Create a ShapeVisitor and get the document to accept it
             ShapeVisitor shapeVisitor = new ShapeVisitor();
             doc.Accept(shapeVisitor);
@@ -1480,7 +1476,6 @@ namespace ApiExamples
             Assert.AreEqual("Senior Manager", signatureLine.SignerTitle);
             Assert.AreEqual("Please sign here", signatureLine.Instructions);
             Assert.True(signatureLine.ShowDate);
-
             Assert.True(signatureLine.AllowComments);
             Assert.True(signatureLine.DefaultInstructions);
 
@@ -1492,6 +1487,24 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.SignatureLine.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.SignatureLine.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 192.75d, 96.75d, -60.0d, -170.0d, shape);
+            Assert.True(shape.IsSignatureLine);
+
+            signatureLine = shape.SignatureLine;
+
+            Assert.AreEqual("john.doe@management.com", signatureLine.Email);
+            Assert.AreEqual("John Doe", signatureLine.Signer);
+            Assert.AreEqual("Senior Manager", signatureLine.SignerTitle);
+            Assert.AreEqual("Please sign here", signatureLine.Instructions);
+            Assert.True(signatureLine.ShowDate);
+            Assert.True(signatureLine.AllowComments);
+            Assert.True(signatureLine.DefaultInstructions);
+            Assert.False(signatureLine.IsSigned);
+            Assert.False(signatureLine.IsValid);
         }
 
         [Test]
@@ -1554,6 +1567,21 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.TextBox.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.TextBox.docx");
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 150.0d, 100.0d, 0.0d, 0.0d, shapes[0]);
+            TestUtil.VerifyTextBox(LayoutFlow.TopToBottomIdeographic, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[0].TextBox);
+            Assert.AreEqual("Vertical text", shapes[0].GetText().Trim());
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100004", 150.0d, 100.0d, 0.0d, 0.0d, shapes[1]);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, true, TextBoxWrapMode.None, 3.6d, 3.6d, 7.2d, 7.2d, shapes[1].TextBox);
+            Assert.AreEqual("Text fit tightly inside textbox", shapes[1].GetText().Trim());
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100006", 100.0d, 100.0d, 0.0d, 0.0d, shapes[2]);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 15.0d, 15.0d, 15.0d, 15.0d, shapes[2].TextBox);
+            Assert.AreEqual("Text placed according to textbox margins", shapes[2].GetText().Trim());
         }
 
         [Test]
@@ -1621,11 +1649,11 @@ namespace ApiExamples
                 Console.WriteLine("This TextBox is the head of the sequence");
  
             if (textBox2.Next != null && textBox2.Previous != null)
-                Console.WriteLine("This TextBox is the Middle of the sequence");
+                Console.WriteLine("This TextBox is the middle of the sequence");
  
             if (textBox3.Next == null && textBox3.Previous != null)
             {
-                Console.WriteLine("This TextBox is the Tail of the sequence");
+                Console.WriteLine("This TextBox is the tail of the sequence");
                 
                 // Break the forward link between textBox2 and textBox3
                 textBox3.Previous.BreakForwardLink();
@@ -1636,6 +1664,25 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.CreateLinkBetweenTextBoxes.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.CreateLinkBetweenTextBoxes.docx");
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 100.0d, 100.0d, 0.0d, 0.0d, shapes[0]);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[0].TextBox);
+            Assert.AreEqual(string.Empty, shapes[0].GetText().Trim());
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100004", 100.0d, 100.0d, 0.0d, 0.0d, shapes[1]);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[1].TextBox);
+            Assert.AreEqual(string.Empty, shapes[1].GetText().Trim());
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "TextBox 100006", 100.0d, 100.0d, 0.0d, 0.0d, shapes[2]);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[2].TextBox);
+            Assert.AreEqual(string.Empty, shapes[2].GetText().Trim());
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100008", 100.0d, 100.0d, 0.0d, 0.0d, shapes[3]);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[3].TextBox);
+            Assert.AreEqual("Vertical text", shapes[3].GetText().Trim());
         }
 
         [Test]
@@ -1656,6 +1703,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.GetTextBoxAndChangeAnchor.docx");
             //ExEnd
+            
+            doc = new Document(ArtifactsDir + "Shape.GetTextBoxAndChangeAnchor.docx");
+            textBox = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 200.0d, 200.0d, 0.0d, 0.0d, textBox);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, textBox.TextBox);
+            Assert.AreEqual("Textbox contents", textBox.GetText().Trim());
         }
 
         //ExStart
@@ -1708,10 +1762,10 @@ namespace ApiExamples
             Assert.AreEqual(ShapeType.TextPlainText, shape.ShapeType);
 
             // Toggle whether or not to display text
-            shape = AppendWordArt(doc, "On set to true", "Calibri", 150, 24, Color.Yellow, Color.Red, ShapeType.TextPlainText);
+            shape = AppendWordArt(doc, "On set to true", "Calibri", 150, 24, Color.Yellow, Color.Purple, ShapeType.TextPlainText);
             shape.TextPath.On = true;
 
-            shape = AppendWordArt(doc, "On set to false", "Calibri", 150, 24, Color.Yellow, Color.Red, ShapeType.TextPlainText);
+            shape = AppendWordArt(doc, "On set to false", "Calibri", 150, 24, Color.Yellow, Color.Purple, ShapeType.TextPlainText);
             shape.TextPath.On = false;
 
             // Apply kerning
@@ -1746,6 +1800,7 @@ namespace ApiExamples
             shape.TextPath.TextPathAlignment = TextPathAlignment.Right;
 
             doc.Save(ArtifactsDir + "Shape.InsertTextPaths.docx");
+            TestInsertTextPaths(ArtifactsDir + "Shape.InsertTextPaths.docx"); //ExSkip
         }
 
         /// <summary>
@@ -1778,6 +1833,46 @@ namespace ApiExamples
             return shape;
         }
         //ExEnd
+
+        private void TestInsertTextPaths(string filename)
+        {
+            Document doc = new Document(filename);
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 240, 24, 0.0d, 0.0d, shapes[0]);
+            Assert.True(shapes[0].TextPath.Bold);
+            Assert.True(shapes[0].TextPath.Italic);
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 150, 24, 0.0d, 0.0d, shapes[1]);
+            Assert.True(shapes[1].TextPath.On);
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 150, 24, 0.0d, 0.0d, shapes[2]);
+            Assert.False(shapes[2].TextPath.On);
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 90, 24, 0.0d, 0.0d, shapes[3]);
+            Assert.True(shapes[3].TextPath.Kerning);
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 100, 24, 0.0d, 0.0d, shapes[4]);
+            Assert.False(shapes[4].TextPath.Kerning);
+
+            TestUtil.VerifyShape(ShapeType.TextCascadeDown, string.Empty, 120, 24, 0.0d, 0.0d, shapes[5]);
+            Assert.AreEqual(0.1d, shapes[5].TextPath.Spacing, 0.01d);
+
+            TestUtil.VerifyShape(ShapeType.TextWave, string.Empty, 200, 36, 0.0d, 0.0d, shapes[6]);
+            Assert.True(shapes[6].TextPath.RotateLetters);
+
+            TestUtil.VerifyShape(ShapeType.TextSlantUp, string.Empty, 300, 24, 0.0d, 0.0d, shapes[7]);
+            Assert.True(shapes[7].TextPath.SameLetterHeights);
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 160, 24, 0.0d, 0.0d, shapes[8]);
+            Assert.True(shapes[8].TextPath.FitShape);
+            Assert.AreEqual(24.0d, shapes[8].TextPath.Size);
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 160, 24, 0.0d, 0.0d, shapes[9]);
+            Assert.False(shapes[9].TextPath.FitShape);
+            Assert.AreEqual(24.0d, shapes[9].TextPath.Size);
+            Assert.AreEqual(TextPathAlignment.Right, shapes[9].TextPath.TextPathAlignment);
+        }
 
         [Test]
         public void ShapeRevision()
@@ -1961,6 +2056,8 @@ namespace ApiExamples
  
             Console.WriteLine("The document has {0} shapes with SmartArt.", count);
             //ExEnd
+
+            Assert.AreEqual(2, count);
         }
 
         [Test]
