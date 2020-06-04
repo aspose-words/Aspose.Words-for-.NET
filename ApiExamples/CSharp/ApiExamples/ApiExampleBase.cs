@@ -98,7 +98,7 @@ namespace ApiExamples
         internal static void SetUnlimitedLicense()
         {
             // This is where the test license is on my development machine.
-            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Total.lic");
+            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Total.NET.lic");
 
             if (File.Exists(testLicenseFileName))
             {
