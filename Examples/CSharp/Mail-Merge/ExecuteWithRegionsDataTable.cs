@@ -19,20 +19,20 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting();
             string fileName = "MailMerge.ExecuteWithRegions.doc";
             Document doc = new Document(dataDir + fileName);
-
-            int orderId = 10444;
-
-            // Perform several mail merge operations populating only part of the document each time.
-
+ 
             // Use DataTable as a data source.
+            int orderId = 10444;
             DataTable orderTable = GetTestOrder(orderId);
             doc.MailMerge.ExecuteWithRegions(orderTable);
-
-            // Instead of using DataTable you can create a DataView for custom sort or filter and then mail merge.
+ 
+            // Instead of using DataTable, you can create a DataView for custom sort or filter and then mail merge.
             DataView orderDetailsView = new DataView(GetTestOrderDetails(orderId));
             orderDetailsView.Sort = "ExtendedPrice DESC";
+ 
+            // Execute the mail merge operation.
             doc.MailMerge.ExecuteWithRegions(orderDetailsView);
-
+ 
+            // Save the merged document.
             dataDir = dataDir + RunExamples.GetOutputFilePath(fileName);
             doc.Save(dataDir);
             // ExEnd:ExecuteWithRegionsDataTable

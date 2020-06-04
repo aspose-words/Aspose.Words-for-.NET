@@ -100,7 +100,7 @@ namespace ApiExamples
         /// <param name="sqlQuery">Microsoft.Jet.OLEDB.4.0-compliant SQL query.</param>
         internal static void TableMatchesQueryResult(Table expectedResult, string dbFilename, string sqlQuery)
         {
-            #if !__MOBILE__
+            #if NET462 || NETCOREAPP2_1 || JAVA
             using (OleDbConnection connection = new OleDbConnection())
             {
                 connection.ConnectionString = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={dbFilename};";

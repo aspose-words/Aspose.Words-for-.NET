@@ -483,7 +483,7 @@ namespace ApiExamples
         {
             // Set license for Aspose.BarCode
             Aspose.BarCode.License licenceBarCode = new Aspose.BarCode.License();
-            licenceBarCode.SetLicense(LicenseDir + "Aspose.Total.lic");
+            licenceBarCode.SetLicense(LicenseDir + "Aspose.Total.NET.lic");
 
             // Bind the pdf document
             Aspose.Pdf.Facades.PdfExtractor pdfExtractor = new Aspose.Pdf.Facades.PdfExtractor();
@@ -2654,7 +2654,7 @@ namespace ApiExamples
 
             // We can do the same thing with an IMPORT field
             FieldImport fieldImport = (FieldImport)builder.InsertField(FieldType.FieldImport, true);
-            fieldImport.SourceFullName = MyDir + @"Images\Transparent background logo.png";
+            fieldImport.SourceFullName = ImageDir + "Transparent background logo.png";
             fieldImport.GraphicFilter = "PNG32";
             fieldImport.IsLinked = true;
 
@@ -2670,7 +2670,7 @@ namespace ApiExamples
             Assert.True(fieldIncludePicture.ResizeHorizontally);
             Assert.True(fieldIncludePicture.ResizeVertically);
 
-            Assert.AreEqual(MyDir + @"Images\Transparent background logo.png", fieldImport.SourceFullName);
+            Assert.AreEqual(ImageDir + "Transparent background logo.png", fieldImport.SourceFullName);
             Assert.AreEqual("PNG32", fieldImport.GraphicFilter);
             Assert.True(fieldImport.IsLinked);
             

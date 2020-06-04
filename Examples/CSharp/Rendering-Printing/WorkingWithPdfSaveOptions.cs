@@ -99,7 +99,7 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         {
             // ExStart:ConversionToPDF17
             // The path to the documents directory.
-            Document originalDoc = new Document(dataDir + "Rendering.doc");
+            Document originalDoc = new Document(dataDir + "Rendering.docx");
 
             // Provide PDFSaveOption compliance to PDF17
             // or just convert without SaveOptions
