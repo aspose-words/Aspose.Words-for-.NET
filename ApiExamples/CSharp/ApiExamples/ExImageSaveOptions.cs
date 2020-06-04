@@ -163,7 +163,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
             
-            #if NET462
+            #if NET462 || JAVA
             TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff");
             #endif
         }

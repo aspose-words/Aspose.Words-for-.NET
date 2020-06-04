@@ -213,7 +213,6 @@ namespace ApiExamples
         }
 #endif
 
-#if NETCOREAPP2_1
         [Test]
         public void Pdf2Word()
         {
@@ -239,7 +238,6 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.PdfDocumentEncrypted.pdf", loadOptions);
         }
-#endif
 
         [Test]
         public void DocumentCtor()
