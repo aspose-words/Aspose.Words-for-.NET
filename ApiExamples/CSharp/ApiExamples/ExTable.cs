@@ -89,8 +89,6 @@ namespace ApiExamples
                 Console.WriteLine($"End of Table {i}\n");
             }
             //ExEnd
-
-            Assert.That(tables.Count, Is.GreaterThan(0));
         }
 
         //ExStart
@@ -105,24 +103,23 @@ namespace ApiExamples
         public void CalculateDepthOfNestedTables()
         {
             Document doc = new Document(MyDir + "Nested tables.docx");
-            int tableIndex = 0;
+            NodeCollection tables = doc.GetChildNodes(NodeType.Table, true);
+            Assert.AreEqual(5, tables.Count); //ExSkip
 
-            foreach (Table table in doc.GetChildNodes(NodeType.Table, true).OfType<Table>())
+            for (int i = 0; i < tables.Count; i++)
             {
                 // First lets find if any cells in the table have tables themselves as children
-                int count = GetChildTableCount(table);
-                Console.WriteLine("Table #{0} has {1} tables directly within its cells", tableIndex, count);
+                int count = GetChildTableCount((Table)tables[i]);
+                Console.WriteLine("Table #{0} has {1} tables directly within its cells", i, count);
 
                 // Now let's try the other way around, lets try find if the table is nested inside another table and at what depth
-                int tableDepth = GetNestedDepthOfTable(table);
+                int tableDepth = GetNestedDepthOfTable((Table)tables[i]);
 
                 if (tableDepth > 0)
-                    Console.WriteLine("Table #{0} is nested inside another table at depth of {1}", tableIndex,
+                    Console.WriteLine("Table #{0} is nested inside another table at depth of {1}", i,
                         tableDepth);
                 else
-                    Console.WriteLine("Table #{0} is a non nested table (is not a child of another table)", tableIndex);
-
-                tableIndex++;
+                    Console.WriteLine("Table #{0} is a non nested table (is not a child of another table)", i);
             }
         }
 
@@ -296,9 +293,15 @@ namespace ApiExamples
             Table table = new Table(doc);
             doc.FirstSection.Body.AppendChild(table);
 
-            // Ensure the table is valid (has at least one row with one cell)
+            // Currently, the table does not contain any rows, cells or nodes that can have content added to them
+            Assert.AreEqual(0, table.GetChildNodes(NodeType.Any, true).Count);
+
+            // This method ensures that the table has one row, one cell and one paragraph; the minimal nodes required to begin editing
             table.EnsureMinimum();
+            table.FirstRow.FirstCell.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
             //ExEnd
+
+            Assert.AreEqual(4, table.GetChildNodes(NodeType.Any, true).Count);
         }
 
         [Test]
@@ -317,9 +320,15 @@ namespace ApiExamples
             Row row = new Row(doc);
             table.AppendChild(row);
 
-            // Ensure the row is valid (has at least one cell)
+            // Currently, the row does not contain any cells or nodes that can have content added to them
+            Assert.AreEqual(0, row.GetChildNodes(NodeType.Any, true).Count);
+
+            // Ensure the row has at least one cell with one paragraph that we can edit
             row.EnsureMinimum();
+            row.FirstCell.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
             //ExEnd
+
+            Assert.AreEqual(3, row.GetChildNodes(NodeType.Any, true).Count);
         }
 
         [Test]
@@ -328,14 +337,28 @@ namespace ApiExamples
             //ExStart
             //ExFor:Cell.EnsureMinimum
             //ExSummary:Shows how to ensure a cell node is valid.
-            Document doc = new Document(MyDir + "Tables.docx");
+            Document doc = new Document();
 
-            // Gets the first cell in the document
-            Cell cell = (Cell) doc.GetChild(NodeType.Cell, 0, true);
+            // Create a new table and add it to the document
+            Table table = new Table(doc);
+            doc.FirstSection.Body.AppendChild(table);
 
-            // Ensure the cell is valid (the last child is a paragraph)
+            // Create a new row with a new cell and append it to the table
+            Row row = new Row(doc);
+            table.AppendChild(row);
+
+            Cell cell = new Cell(doc);
+            row.AppendChild(cell);
+
+            // Currently, the cell does not contain any cells or nodes that can have content added to them
+            Assert.AreEqual(0, cell.GetChildNodes(NodeType.Any, true).Count);
+
+            // Ensure the cell has at least one paragraph that we can edit
             cell.EnsureMinimum();
+            cell.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
             //ExEnd
+
+            Assert.AreEqual(2, cell.GetChildNodes(NodeType.Any, true).Count);
         }
 
         [Test]
@@ -351,7 +374,7 @@ namespace ApiExamples
             //ExFor:Table.SetShading
             //ExSummary:Shows how to apply a outline border to a table.
             Document doc = new Document(MyDir + "Tables.docx");
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             // Align the table to the center of the page
             table.Alignment = TableAlignment.Center;
@@ -372,7 +395,9 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Table.SetOutlineBorders.docx");
             //ExEnd
 
-            // Verify the borders were set correctly
+            doc = new Document(ArtifactsDir + "Table.SetOutlineBorders.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
             Assert.AreEqual(TableAlignment.Center, table.Alignment);
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Top.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Left.Color.ToArgb());
@@ -380,8 +405,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Bottom.Color.ToArgb());
             Assert.AreNotEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Horizontal.Color.ToArgb());
             Assert.AreNotEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Vertical.Color.ToArgb());
-            Assert.AreEqual(Color.LightGreen.ToArgb(),
-                table.FirstRow.FirstCell.CellFormat.Shading.ForegroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.LightGreen.ToArgb(), table.FirstRow.FirstCell.CellFormat.Shading.ForegroundPatternColor.ToArgb());
         }
 
         [Test]
@@ -399,10 +423,12 @@ namespace ApiExamples
             // Set a green border around and inside the table
             table.SetBorders(LineStyle.Single, 1.5, Color.Green);
 
-            doc.Save(ArtifactsDir + "Table.SetAllBorders.doc");
+            doc.Save(ArtifactsDir + "Table.SetAllBorders.docx");
             //ExEnd
 
-            // Verify the borders were set correctly
+            doc = new Document(ArtifactsDir + "Table.SetAllBorders.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Top.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Left.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Right.Color.ToArgb());
@@ -428,12 +454,13 @@ namespace ApiExamples
             firstRow.RowFormat.Borders.LineStyle = LineStyle.None;
             firstRow.RowFormat.HeightRule = HeightRule.Auto;
             firstRow.RowFormat.AllowBreakAcrossPages = true;
+
+            doc.Save(ArtifactsDir + "Table.RowFormat.docx");
             //ExEnd
 
-            doc.Save(ArtifactsDir + "Table.RowFormat.doc");
-
-            doc = new Document(ArtifactsDir + "Table.RowFormat.doc");
+            doc = new Document(ArtifactsDir + "Table.RowFormat.docx");
             table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
             Assert.AreEqual(LineStyle.None, table.FirstRow.RowFormat.Borders.LineStyle);
             Assert.AreEqual(HeightRule.Auto, table.FirstRow.RowFormat.HeightRule);
             Assert.True(table.FirstRow.RowFormat.AllowBreakAcrossPages);
@@ -456,16 +483,16 @@ namespace ApiExamples
             firstCell.CellFormat.Width = 30; // in points
             firstCell.CellFormat.Orientation = TextOrientation.Downward;
             firstCell.CellFormat.Shading.ForegroundPatternColor = Color.LightGreen;
+
+            doc.Save(ArtifactsDir + "Table.CellFormat.docx");
             //ExEnd
 
-            doc.Save(ArtifactsDir + "Table.CellFormat.doc");
+            doc = new Document(ArtifactsDir + "Table.CellFormat.docx");
 
-            doc = new Document(ArtifactsDir + "Table.CellFormat.doc");
             table = (Table)doc.GetChild(NodeType.Table, 0, true);
             Assert.AreEqual(30, table.FirstRow.FirstCell.CellFormat.Width);
             Assert.AreEqual(TextOrientation.Downward, table.FirstRow.FirstCell.CellFormat.Orientation);
-            Assert.AreEqual(Color.LightGreen.ToArgb(),
-                table.FirstRow.FirstCell.CellFormat.Shading.ForegroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.LightGreen.ToArgb(), table.FirstRow.FirstCell.CellFormat.Shading.ForegroundPatternColor.ToArgb());
         }
 
         [Test]
@@ -479,7 +506,7 @@ namespace ApiExamples
             //ExSummary:Shows the minimum distance operations between table boundaries and text.
             Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             Assert.AreEqual(25.9d, table.DistanceTop);
             Assert.AreEqual(25.9d, table.DistanceBottom);
@@ -489,20 +516,40 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ClearBorders()
+        public void Borders()
         {
             //ExStart
             //ExFor:Table.ClearBorders
             //ExSummary:Shows how to remove all borders from a table.
-            Document doc = new Document(MyDir + "Tables.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Remove all borders from the first table in the document
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            // Create a table
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Hello world!");
+            builder.EndTable();
+
+            // Set a color/thickness for the top border of the first row and verify the values
+            Border topBorder = table.FirstRow.RowFormat.Borders[BorderType.Top];
+            table.SetBorder(BorderType.Top, LineStyle.Double, 1.5, Color.Red, true);
+
+            Assert.AreEqual(1.5d, topBorder.LineWidth);
+            Assert.AreEqual(Color.Red.ToArgb(), topBorder.Color.ToArgb());
+            Assert.AreEqual(LineStyle.Double, topBorder.LineStyle);
 
             // Clear the borders all cells in the table
             table.ClearBorders();
+            doc.Save(ArtifactsDir + "Table.ClearBorders.docx");
 
-            doc.Save(ArtifactsDir + "Table.ClearBorders.doc");
+            // Upon re-opening the saved document, the new border attributes can be verified
+            doc = new Document(ArtifactsDir + "Table.ClearBorders.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            topBorder = table.FirstRow.RowFormat.Borders[BorderType.Top];
+
+            Assert.AreEqual(0.0d, topBorder.LineWidth);
+            Assert.AreEqual(Color.Empty.ToArgb(), topBorder.Color.ToArgb());
+            Assert.AreEqual(LineStyle.None, topBorder.LineStyle);
             //ExEnd
         }
 
@@ -537,10 +584,13 @@ namespace ApiExamples
             // Replace any instances of our String in the last cell of the table only
             table.LastRow.LastCell.Range.Replace("50", "20", options);
 
-            doc.Save(ArtifactsDir + "Table.ReplaceCellText.doc");
+            doc.Save(ArtifactsDir + "Table.ReplaceCellText.docx");
             //ExEnd
 
-            Assert.AreEqual("20", table.LastRow.LastCell.ToString(SaveFormat.Text).Trim());
+            doc = new Document(ArtifactsDir + "Table.ReplaceCellText.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual("Eggs\a30\a\aPotatoes\a20\a\a", table.GetText().Trim());
         }
 
         [Test]
@@ -618,33 +668,55 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Table.DisableBreakAcrossPages.docx");
             //ExEnd
 
+            doc = new Document(ArtifactsDir + "Table.DisableBreakAcrossPages.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
             Assert.False(table.FirstRow.RowFormat.AllowBreakAcrossPages);
             Assert.False(table.LastRow.RowFormat.AllowBreakAcrossPages);
         }
 
         [Test]
-        public void AllowAutoFitOnTable()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AllowAutoFitOnTable(bool allowAutoFit)
         {
-            Document doc = new Document();
-
-            Table table = new Table(doc);
-            table.EnsureMinimum();
-
             //ExStart
             //ExFor:Table.AllowAutoFit
             //ExSummary:Shows how to set a table to shrink or grow each cell to accommodate its contents.
-            table.AllowAutoFit = true;
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.CellFormat.PreferredWidth = PreferredWidth.FromPoints(100);
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            builder.InsertCell();
+            builder.CellFormat.PreferredWidth = PreferredWidth.Auto;
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+            builder.EndRow();
+            builder.EndTable();
+
+            table.AllowAutoFit = allowAutoFit;
+
+            doc.Save(ArtifactsDir + "Table.AllowAutoFitOnTable.html");
             //ExEnd
+
+            if (allowAutoFit)
+            {
+                TestUtil.FileContainsString("<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">", ArtifactsDir + "Table.AllowAutoFitOnTable.html");
+                TestUtil.FileContainsString("<td style=\"border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">", ArtifactsDir + "Table.AllowAutoFitOnTable.html");
+            }
+            else
+            {
+                TestUtil.FileContainsString("<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">", ArtifactsDir + "Table.AllowAutoFitOnTable.html");
+                TestUtil.FileContainsString("<td style=\"width:7.2pt; border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">", ArtifactsDir + "Table.AllowAutoFitOnTable.html");
+            }
         }
 
         [Test]
         public void KeepTableTogether()
         {
-            Document doc = new Document(MyDir + "Table spanning two pages.docx");
-
-            // Retrieve the first table in the document
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
-
             //ExStart
             //ExFor:ParagraphFormat.KeepWithNext
             //ExFor:Row.IsLastRow
@@ -653,25 +725,28 @@ namespace ApiExamples
             //ExFor:Cell.ParentRow
             //ExFor:Cell.Paragraphs
             //ExSummary:Shows how to set a table to stay together on the same page.
-            // To keep a table from breaking across a page we need to enable KeepWithNext 
-            // for every paragraph in the table except for the last paragraphs in the last 
-            // row of the table
-            foreach (Cell cell in table.GetChildNodes(NodeType.Cell, true).OfType<Cell>())
-            foreach (Paragraph para in cell.Paragraphs.OfType<Paragraph>())
-            {
-                // Every paragraph that's inside a cell will have this flag set
-                Assert.True(para.IsInCell);
+            Document doc = new Document(MyDir + "Table spanning two pages.docx");
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
-                if (!(cell.ParentRow.IsLastRow && para.IsEndOfCell))
-                    para.ParagraphFormat.KeepWithNext = true;
-            }
+            // Enabling KeepWithNext for every paragraph in the table except for the last ones in the last row
+            // will prevent the table from being split across pages 
+            foreach (Cell cell in table.GetChildNodes(NodeType.Cell, true).OfType<Cell>())
+                foreach (Paragraph para in cell.Paragraphs.OfType<Paragraph>())
+                {
+                    Assert.True(para.IsInCell);
+
+                    if (!(cell.ParentRow.IsLastRow && para.IsEndOfCell))
+                        para.ParagraphFormat.KeepWithNext = true;
+                }
+
+            doc.Save(ArtifactsDir + "Table.KeepTableTogether.docx");
             //ExEnd
 
-            doc.Save(ArtifactsDir + "Table.KeepTableTogether.doc");
+            doc = new Document(ArtifactsDir + "Table.KeepTableTogether.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
-            // Verify the correct paragraphs were set properly
             foreach (Paragraph para in table.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
-                if (para.IsEndOfCell && ((Cell) para.ParentNode).ParentRow.IsLastRow)
+                if (para.IsEndOfCell && ((Cell)para.ParentNode).ParentRow.IsLastRow)
                     Assert.False(para.ParagraphFormat.KeepWithNext);
                 else
                     Assert.True(para.ParagraphFormat.KeepWithNext);
