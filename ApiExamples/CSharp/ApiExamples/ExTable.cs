@@ -24,6 +24,100 @@ namespace ApiExamples
     public class ExTable : ApiExampleBase
     {
         [Test]
+        public void CreateTable()
+        {
+            //ExStart
+            //ExFor:Table
+            //ExFor:Row
+            //ExFor:Cell
+            //ExFor:Table.#ctor(DocumentBase)
+            //ExSummary:Shows how to create a simple table.
+            Document doc = new Document();
+
+            // Tables are placed in the body of a document
+            Table table = new Table(doc);
+            doc.FirstSection.Body.AppendChild(table);
+
+            // Tables contain rows, which contain cells,
+            // which contain contents such as paragraphs, runs and even other tables
+            // Calling table.EnsureMinimum will also make sure that a table has at least one row, cell and paragraph
+            Row firstRow = new Row(doc);
+            table.AppendChild(firstRow);
+
+            Cell firstCell = new Cell(doc);
+            firstRow.AppendChild(firstCell);
+
+            Paragraph paragraph = new Paragraph(doc);
+            firstCell.AppendChild(paragraph);
+
+            Run run = new Run(doc, "Hello world!");
+            paragraph.AppendChild(run);
+
+            doc.Save(ArtifactsDir + "Table.CreateTable.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Table.CreateTable.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(1, table.Rows.Count);
+            Assert.AreEqual(1, table.FirstRow.Cells.Count);
+            Assert.AreEqual("Hello world!\a\a", table.GetText().Trim());
+        }
+
+        [Test]
+        public void RowCellFormat()
+        {
+            //ExStart
+            //ExFor:Row.RowFormat
+            //ExFor:RowFormat
+            //ExFor:Cell.CellFormat
+            //ExFor:CellFormat
+            //ExFor:CellFormat.Shading
+            //ExSummary:Shows how to modify the format of rows and cells.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("City");
+            builder.InsertCell();
+            builder.Write("Country");
+            builder.EndRow();
+            builder.InsertCell();
+            builder.Write("London");
+            builder.InsertCell();
+            builder.Write("U.K.");
+            builder.EndTable();
+
+            // The appearance of rows and individual cells can be edited using the respective formatting objects
+            RowFormat rowFormat = table.FirstRow.RowFormat;
+            rowFormat.Height = 25;
+            rowFormat.Borders[BorderType.Bottom].Color = Color.Red;
+
+            CellFormat cellFormat = table.LastRow.FirstCell.CellFormat;
+            cellFormat.Width = 100;
+            cellFormat.Shading.BackgroundPatternColor = Color.Orange;
+
+            doc.Save(ArtifactsDir + "Table.RowCellFormat.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Table.RowCellFormat.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual("City\aCountry\a\aLondon\aU.K.\a\a", table.GetText().Trim());
+
+            rowFormat = table.FirstRow.RowFormat;
+
+            Assert.AreEqual(25.0d, rowFormat.Height);
+            Assert.AreEqual(Color.Red.ToArgb(), rowFormat.Borders[BorderType.Bottom].Color.ToArgb());
+
+            cellFormat = table.LastRow.FirstCell.CellFormat;
+
+            Assert.AreEqual(110.8d, cellFormat.Width);
+            Assert.AreEqual(Color.Orange.ToArgb(), cellFormat.Shading.BackgroundPatternColor.ToArgb());
+        }
+
+        [Test]
         public void DisplayContentOfTables()
         {
             //ExStart
@@ -753,37 +847,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void AddClonedRowToTable()
-        {
-            //ExStart
-            //ExFor:Row
-            //ExSummary:Shows how to make a clone of the last row of a table and append it to the table.
-            Document doc = new Document(MyDir + "Tables.docx");
-
-            // Retrieve the first table in the document
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
-
-            // Clone the last row in the table
-            Row clonedRow = (Row) table.LastRow.Clone(true);
-
-            // Remove all content from the cloned row's cells. This makes the row ready for
-            // new content to be inserted into
-            foreach (Cell cell in clonedRow.Cells.OfType<Cell>())
-                cell.RemoveAllChildren();
-
-            // Add the row to the end of the table
-            table.AppendChild(clonedRow);
-
-            doc.Save(ArtifactsDir + "Table.AddCloneRowToTable.doc");
-            //ExEnd
-
-            // Verify that the row was cloned and appended properly
-            Assert.AreEqual(6, table.Rows.Count);
-            Assert.AreEqual(string.Empty, table.LastRow.ToString(SaveFormat.Text).Trim());
-            Assert.AreEqual(5, table.LastRow.Cells.Count);
-        }
-
-        [Test]
         public void FixDefaultTableWidthsInAw105()
         {
             Document doc = new Document();
@@ -871,112 +934,81 @@ namespace ApiExamples
         [Test]
         public void GetIndexOfTableElements()
         {
-            Document doc = new Document(MyDir + "Tables.docx");
-
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             //ExStart
             //ExFor:NodeCollection.IndexOf(Node)
-            //ExSummary:Retrieves the index of a table in the document.
+            //ExSummary:Shows how to get the indexes of nodes in the collections that contain them.
+            Document doc = new Document(MyDir + "Tables.docx");
+
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
             NodeCollection allTables = doc.GetChildNodes(NodeType.Table, true);
-            int tableIndex = allTables.IndexOf(table);
+
+            Assert.AreEqual(0, allTables.IndexOf(table));
 
             Row row = table.Rows[2];
-            int rowIndex = table.IndexOf(row);
+
+            Assert.AreEqual(2, table.IndexOf(row));
 
             Cell cell = row.LastCell;
-            int cellIndex = row.IndexOf(cell);
-            //ExEnd
 
-            Assert.AreEqual(0, tableIndex);
-            Assert.AreEqual(2, rowIndex);
-            Assert.AreEqual(4, cellIndex);
+            Assert.AreEqual(4, row.IndexOf(cell));
+            //ExEnd
         }
 
         [Test]
         public void GetPreferredWidthTypeAndValue()
         {
-            Document doc = new Document(MyDir + "Tables.docx");
-
-            // Find the first table in the document
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             //ExStart
             //ExFor:PreferredWidthType
             //ExFor:PreferredWidth.Type
             //ExFor:PreferredWidth.Value
-            //ExSummary:Retrieves the preferred width type of a table cell.
-            Cell firstCell = table.FirstRow.FirstCell;
-            PreferredWidthType type = firstCell.CellFormat.PreferredWidth.Type;
-            double value = firstCell.CellFormat.PreferredWidth.Value;
-            //ExEnd
+            //ExSummary:Shows how to verify the preferred width type of a table cell.
+            Document doc = new Document(MyDir + "Tables.docx");
 
-            Assert.AreEqual(PreferredWidthType.Percent, type);
-            Assert.AreEqual(11.16, value);
+            // Find the first table in the document
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Cell firstCell = table.FirstRow.FirstCell;
+
+            Assert.AreEqual(PreferredWidthType.Percent, firstCell.CellFormat.PreferredWidth.Type);
+            Assert.AreEqual(11.16, firstCell.CellFormat.PreferredWidth.Value);
+            //ExEnd
         }
 
         [Test]
-        public void InsertTableUsingNodes()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AllowCellSpacing(bool allowCellSpacing)
         {
             //ExStart
             //ExFor:Table.AllowCellSpacing
-            //ExFor:Row
-            //ExFor:Row.RowFormat
-            //ExFor:RowFormat
-            //ExFor:Cell.CellFormat
-            //ExFor:CellFormat
-            //ExFor:CellFormat.Shading
-            //ExFor:Cell.FirstParagraph
-            //ExSummary:Shows how to insert a table using the constructors of nodes.
+            //ExFor:Table.CellSpacing
             Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // We start by creating the table object. Note how we must pass the document object
-            // to the constructor of each node. This is because every node we create must belong
-            // to some document
-            Table table = new Table(doc);
-            // Add the table to the document
-            doc.FirstSection.Body.AppendChild(table);
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Animal");
+            builder.InsertCell();
+            builder.Write("Class");
+            builder.EndRow();
+            builder.InsertCell();
+            builder.Write("Dog");
+            builder.InsertCell();
+            builder.Write("Mammal");
+            builder.EndTable();
 
-            // Here we could call EnsureMinimum to create the rows and cells for us. This method is used
-            // to ensure that the specified node is valid, in this case a valid table should have at least one
-            // row and one cell, therefore this method creates them for us
+            // Set the size of padding space between cells, and the switch that enables/negates this setting
+            table.CellSpacing = 3;
+            table.AllowCellSpacing = allowCellSpacing;
 
-            // Instead we will handle creating the row and table ourselves. This would be the best way to do this
-            // if we were creating a table inside an algorithm for example
-            Row row = new Row(doc);
-            row.RowFormat.AllowBreakAcrossPages = true;
-            table.AppendChild(row);
-
-            // We can now apply any auto fit settings
-            table.AutoFit(AutoFitBehavior.FixedColumnWidths);
-
-            // Create a cell and add it to the row
-            Cell cell = new Cell(doc);
-            cell.CellFormat.Shading.BackgroundPatternColor = Color.LightBlue;
-            cell.CellFormat.Width = 80;
-
-            // Add a paragraph to the cell as well as a new run with some text
-            cell.AppendChild(new Paragraph(doc));
-            cell.FirstParagraph.AppendChild(new Run(doc, "Row 1, Cell 1 Text"));
-
-            // Add the cell to the row
-            row.AppendChild(cell);
-
-            // We would then repeat the process for the other cells and rows in the table
-            // We can also speed things up by cloning existing cells and rows
-            row.AppendChild(cell.Clone(false));
-            row.LastCell.AppendChild(new Paragraph(doc));
-            row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Row 1, Cell 2 Text"));
-
-            // Remove spacing between cells
-            table.AllowCellSpacing = false;
-
-            doc.Save(ArtifactsDir + "Table.InsertTableUsingNodes.doc");
+            doc.Save(ArtifactsDir + "Table.AllowCellSpacing.html");
             //ExEnd
 
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Row, true).Count);
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Cell, true).Count);
-            Assert.AreEqual("Row 1, Cell 1 Text\r\nRow 1, Cell 2 Text",
-                doc.FirstSection.Body.Tables[0].ToString(SaveFormat.Text).Trim());
+            if (allowCellSpacing)
+                TestUtil.FileContainsString("<td style=\"border-style:solid; border-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">", 
+                    ArtifactsDir + "Table.AllowCellSpacing.html");
+            else
+                TestUtil.FileContainsString("<td style=\"border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">", 
+                    ArtifactsDir + "Table.AllowCellSpacing.html");
         }
 
         //ExStart
@@ -988,6 +1020,7 @@ namespace ApiExamples
         //ExFor:Table.Description
         //ExFor:Row.#ctor(DocumentBase)
         //ExFor:Cell.#ctor(DocumentBase)
+        //ExFor:Cell.FirstParagraph
         //ExSummary:Shows how to build a nested table without using DocumentBuilder.
         [Test] //ExSkip
         public void CreateNestedTable()
@@ -1004,14 +1037,8 @@ namespace ApiExamples
             // Add this table to the first cell of the outer table
             outerTable.FirstRow.FirstCell.AppendChild(innerTable);
 
-            doc.Save(ArtifactsDir + "Table.CreateNestedTable.doc");
-
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count); // ExSkip
-            Assert.AreEqual(1, outerTable.FirstRow.FirstCell.Tables.Count); //ExSkip
-            Assert.AreEqual(16, outerTable.GetChildNodes(NodeType.Cell, true).Count); //ExSkip
-            Assert.AreEqual(4, innerTable.GetChildNodes(NodeType.Cell, true).Count); //ExSkip
-            Assert.AreEqual("Aspose table title", innerTable.Title); //ExSkip
-            Assert.AreEqual("Aspose table description", innerTable.Description); //ExSkip
+            doc.Save(ArtifactsDir + "Table.CreateNestedTable.docx");
+            TestCreateNestedTable(new Document(ArtifactsDir + "Table.CreateNestedTable.docx")); //ExSkip
         }
 
         /// <summary>
@@ -1050,6 +1077,19 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestCreateNestedTable(Document doc)
+        {
+            Table outerTable = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table innerTable = (Table)doc.GetChild(NodeType.Table, 1, true);
+
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
+            Assert.AreEqual(1, outerTable.FirstRow.FirstCell.Tables.Count);
+            Assert.AreEqual(16, outerTable.GetChildNodes(NodeType.Cell, true).Count);
+            Assert.AreEqual(4, innerTable.GetChildNodes(NodeType.Cell, true).Count);
+            Assert.AreEqual("Aspose table title", innerTable.Title);
+            Assert.AreEqual("Aspose table description", innerTable.Description);
+        }
+
         //ExStart
         //ExFor:CellFormat.HorizontalMerge
         //ExFor:CellFormat.VerticalMerge
@@ -1064,15 +1104,10 @@ namespace ApiExamples
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
             foreach (Row row in table.Rows.OfType<Row>())
-            {
                 foreach (Cell cell in row.Cells.OfType<Cell>())
-                {
                     Console.WriteLine(PrintCellMergeType(cell));
-                }
-            }
-
-            Assert.AreEqual("The cell at R1, C1 is vertically merged",
-                PrintCellMergeType(table.FirstRow.FirstCell)); //ExSkip
+            
+            Assert.AreEqual("The cell at R1, C1 is vertically merged", PrintCellMergeType(table.FirstRow.FirstCell)); //ExSkip
         }
 
         public string PrintCellMergeType(Cell cell)
@@ -1190,8 +1225,10 @@ namespace ApiExamples
             // Remove the empty table container
             secondTable.Remove();
 
-            doc.Save(ArtifactsDir + "Table.CombineTables.doc");
+            doc.Save(ArtifactsDir + "Table.CombineTables.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Table.CombineTables.docx");
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
             Assert.AreEqual(9, doc.FirstSection.Body.Tables[0].Rows.Count);
@@ -1227,9 +1264,9 @@ namespace ApiExamples
                 table.PrependChild(currentRow);
             } while (currentRow != row);
 
-            doc.Save(ArtifactsDir + "Table.SplitTable.doc");
+            doc.Save(ArtifactsDir + "Table.SplitTable.docx");
 
-            doc = new Document(ArtifactsDir + "Table.SplitTable.doc");
+            doc = new Document(ArtifactsDir + "Table.SplitTable.docx");
             // Test we are adding the rows in the correct order and the 
             // selected row was also moved
             Assert.AreEqual(row, table.FirstRow);
@@ -1240,7 +1277,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CheckDefaultValuesForFloatingTableProperties()
+        public void WrapText()
         {
             //ExStart
             //ExFor:Table.TextWrapping
@@ -1249,19 +1286,32 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Table table = DocumentHelper.InsertTable(builder);
+            // Insert a table and a paragraph of text after it
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Cell 1");
+            builder.InsertCell();
+            builder.Write("Cell 2");
+            builder.EndTable();
+            table.PreferredWidth = PreferredWidth.FromPoints(300);
 
-            if (table.TextWrapping == TextWrapping.Around)
-            {
-                Assert.AreEqual(HorizontalAlignment.Default, table.RelativeHorizontalAlignment);
-                Assert.AreEqual(VerticalAlignment.Default, table.RelativeVerticalAlignment);
-                Assert.AreEqual(RelativeHorizontalPosition.Column, table.HorizontalAnchor);
-                Assert.AreEqual(RelativeVerticalPosition.Margin, table.VerticalAnchor);
-                Assert.AreEqual(0, table.AbsoluteHorizontalDistance);
-                Assert.AreEqual(0, table.AbsoluteVerticalDistance);
-                Assert.AreEqual(true, table.AllowOverlap);
-            }
+            builder.Font.Size = 16;
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            // Set the table to wrap text around it and push it down into the paragraph below be setting the position
+            table.TextWrapping = TextWrapping.Around;
+            table.AbsoluteHorizontalDistance = 100;
+            table.AbsoluteVerticalDistance = 20;
+
+            doc.Save(ArtifactsDir + "Table.WrapText.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Table.WrapText.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(TextWrapping.Around, table.TextWrapping);
+            Assert.AreEqual(100.0d, table.AbsoluteHorizontalDistance);
+            Assert.AreEqual(20.0d, table.AbsoluteVerticalDistance);
         }
 
         [Test]
@@ -1274,15 +1324,12 @@ namespace ApiExamples
             //ExFor:ShapeBase.AllowOverlap
             //ExSummary:Shows how get properties for floating tables
             Document doc = new Document(MyDir + "Table wrapped by text.docx");
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
-
-            if (table.TextWrapping == TextWrapping.Around)
-            {
-                Assert.AreEqual(RelativeHorizontalPosition.Margin, table.HorizontalAnchor);
-                Assert.AreEqual(RelativeVerticalPosition.Paragraph, table.VerticalAnchor);
-                Assert.AreEqual(false, table.AllowOverlap);
-            }
+            Assert.AreEqual(TextWrapping.Around, table.TextWrapping);
+            Assert.AreEqual(RelativeHorizontalPosition.Margin, table.HorizontalAnchor);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, table.VerticalAnchor);
+            Assert.AreEqual(false, table.AllowOverlap);
             //ExEnd
         }
 
@@ -1294,30 +1341,44 @@ namespace ApiExamples
             //ExFor:Table.RelativeVerticalAlignment
             //ExFor:Table.AbsoluteHorizontalDistance
             //ExFor:Table.AbsoluteVerticalDistance
-            //ExSummary:Shows how get/set properties for floating tables.
-            Document doc = new Document(MyDir + "Table wrapped by text.docx");
+            //ExSummary:Shows how set the location of floating tables.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
-            table.AbsoluteHorizontalDistance = 10;
-            table.AbsoluteVerticalDistance = 15;
+            // Insert a table
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Table 1, cell 1");
+            builder.EndTable();
+            table.PreferredWidth = PreferredWidth.FromPoints(300);
 
-            // Check that absolute distance was set correct
-            Assert.AreEqual(10, table.AbsoluteHorizontalDistance);
-            Assert.AreEqual(15, table.AbsoluteVerticalDistance);
+            // We can set the table's location to a place on the page, such as the bottom right corner
+            table.RelativeVerticalAlignment = VerticalAlignment.Bottom;
+            table.RelativeHorizontalAlignment = HorizontalAlignment.Right;
 
-            // Setting RelativeHorizontalAlignment will reset AbsoluteHorizontalDistance to default value and vice versa,
-            // the same is for vertical positioning
-            table.RelativeVerticalAlignment = VerticalAlignment.Top;
-            table.RelativeHorizontalAlignment = HorizontalAlignment.Center;
-            
-            // Check that AbsoluteHorizontalDistance and AbsoluteVerticalDistance are reset 
-            Assert.AreEqual(0, table.AbsoluteHorizontalDistance);
-            Assert.AreEqual(0, table.AbsoluteVerticalDistance);
-            Assert.AreEqual(VerticalAlignment.Top, table.RelativeVerticalAlignment);
-            Assert.AreEqual(HorizontalAlignment.Center, table.RelativeHorizontalAlignment);
+            table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Table 2, cell 1");
+            builder.EndTable();
+            table.PreferredWidth = PreferredWidth.FromPoints(300);
+
+            // We can also set a horizontal and vertical offset from the location in the paragraph where the table was inserted 
+            table.AbsoluteVerticalDistance = 50;
+            table.AbsoluteHorizontalDistance = 100;
 
             doc.Save(ArtifactsDir + "Table.ChangeFloatingTableProperties.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Table.ChangeFloatingTableProperties.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(VerticalAlignment.Bottom, table.RelativeVerticalAlignment);
+            Assert.AreEqual(HorizontalAlignment.Right, table.RelativeHorizontalAlignment);
+
+            table = (Table)doc.GetChild(NodeType.Table, 1, true);
+
+            Assert.AreEqual(50.0d, table.AbsoluteVerticalDistance);
+            Assert.AreEqual(100.0d, table.AbsoluteHorizontalDistance);
         }
 
         [Test]
