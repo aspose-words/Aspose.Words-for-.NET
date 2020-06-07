@@ -493,12 +493,15 @@ namespace ApiExamples
             table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             Assert.AreEqual(TableAlignment.Center, table.Alignment);
-            Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Top.Color.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Left.Color.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Right.Color.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Bottom.Color.ToArgb());
-            Assert.AreNotEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Horizontal.Color.ToArgb());
-            Assert.AreNotEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Vertical.Color.ToArgb());
+
+            BorderCollection borders = table.FirstRow.RowFormat.Borders;
+
+            Assert.AreEqual(Color.Green.ToArgb(), borders.Top.Color.ToArgb());
+            Assert.AreEqual(Color.Green.ToArgb(), borders.Left.Color.ToArgb());
+            Assert.AreEqual(Color.Green.ToArgb(), borders.Right.Color.ToArgb());
+            Assert.AreEqual(Color.Green.ToArgb(), borders.Bottom.Color.ToArgb());
+            Assert.AreNotEqual(Color.Green.ToArgb(), borders.Horizontal.Color.ToArgb());
+            Assert.AreNotEqual(Color.Green.ToArgb(), borders.Vertical.Color.ToArgb());
             Assert.AreEqual(Color.LightGreen.ToArgb(), table.FirstRow.FirstCell.CellFormat.Shading.ForegroundPatternColor.ToArgb());
         }
 
@@ -1399,7 +1402,7 @@ namespace ApiExamples
             //ExFor:TableStyle.TopPadding
             //ExFor:TableStyle.Shading
             //ExFor:TableStyle.Borders
-            //ExSummary:Shows how to create your own style settings for the table.
+            //ExSummary:Shows how to create custom style settings for the table.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
  
@@ -1416,46 +1419,109 @@ namespace ApiExamples
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
             tableStyle.AllowBreakAcrossPages = true;
             tableStyle.Bidi = true;
-            tableStyle.CellSpacing = 5.0;
-            tableStyle.BottomPadding = 20.0;
+            tableStyle.CellSpacing = 5;
+            tableStyle.BottomPadding = 20;
             tableStyle.LeftPadding = 5;
             tableStyle.RightPadding = 10;
-            tableStyle.TopPadding = 20.0;
+            tableStyle.TopPadding = 20;
             tableStyle.Shading.BackgroundPatternColor = Color.AntiqueWhite;
-            tableStyle.Borders.Color = Color.Black;
+            tableStyle.Borders.Color = Color.Blue;
             tableStyle.Borders.LineStyle = LineStyle.DotDash;
 
             table.Style = tableStyle;
 
             // Some Table attributes are linked to style variables
-            Assert.AreEqual(true, table.Bidi);
-            Assert.AreEqual(5.0, table.CellSpacing);
+            Assert.True(table.Bidi);
+            Assert.AreEqual(5.0d, table.CellSpacing);
             Assert.AreEqual("MyTableStyle1", table.StyleName);
 
             doc.Save(ArtifactsDir + "Table.TableStyleCreation.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Table.TableStyleCreation.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.True(table.Bidi);
+            Assert.AreEqual(5.0d, table.CellSpacing);
+            Assert.AreEqual("MyTableStyle1", table.StyleName);
+            Assert.AreEqual(0.0d, table.BottomPadding);
+            Assert.AreEqual(0.0d, table.LeftPadding);
+            Assert.AreEqual(0.0d, table.RightPadding);
+            Assert.AreEqual(0.0d, table.TopPadding);
+            Assert.AreEqual(6, table.FirstRow.RowFormat.Borders.Count(b => b.Color.ToArgb() == Color.Blue.ToArgb()));
+
+            tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];
+
+            Assert.True(tableStyle.AllowBreakAcrossPages);
+            Assert.True(tableStyle.Bidi);
+            Assert.AreEqual(5.0d, tableStyle.CellSpacing);
+            Assert.AreEqual(20.0d, tableStyle.BottomPadding);
+            Assert.AreEqual(5.0d, tableStyle.LeftPadding);
+            Assert.AreEqual(10.0d, tableStyle.RightPadding);
+            Assert.AreEqual(20.0d, tableStyle.TopPadding);
+            Assert.AreEqual(Color.AntiqueWhite.ToArgb(), tableStyle.Shading.BackgroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.Blue.ToArgb(), tableStyle.Borders.Color.ToArgb());
+            Assert.AreEqual(LineStyle.DotDash, tableStyle.Borders.LineStyle);
         }
 
         [Test]
-        public void SetTableAligment()
+        public void SetTableAlignment()
         {
             //ExStart
             //ExFor:TableStyle.Alignment
             //ExFor:TableStyle.LeftIndent
             //ExSummary:Shows how to set table position.
             Document doc = new Document();
- 
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // There are two ways of horizontally aligning a table using a custom table style
+            // One way is to align it to a location on the page, such as the center
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
-            // By default AW uses Alignment instead of LeftIndent
-            // To set table position use
             tableStyle.Alignment = TableAlignment.Center;
-            // or
-            tableStyle.LeftIndent = 55.0;
+            tableStyle.Borders.Color = Color.Blue;
+            tableStyle.Borders.LineStyle = LineStyle.Single;
+
+            // Insert a table and apply the style we created to it
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Aligned to the center of the page");
+            builder.EndTable();
+            table.PreferredWidth = PreferredWidth.FromPoints(300);
+            
+            table.Style = tableStyle;
+
+            // We can also set a specific left indent to the style, and apply it to the table
+            tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle2");
+            tableStyle.LeftIndent = 55;
+            tableStyle.Borders.Color = Color.Green;
+            tableStyle.Borders.LineStyle = LineStyle.Single;
+
+            table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Aligned according to left indent");
+            builder.EndTable();
+            table.PreferredWidth = PreferredWidth.FromPoints(300);
+
+            table.Style = tableStyle;
+
+            doc.Save(ArtifactsDir + "Table.TableStyleCreation.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Table.TableStyleCreation.docx");
+
+            tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];
+
+            Assert.AreEqual(TableAlignment.Center, tableStyle.Alignment);
+            Assert.AreEqual(tableStyle, ((Table)doc.GetChild(NodeType.Table, 0, true)).Style);
+
+            tableStyle = (TableStyle)doc.Styles["MyTableStyle2"];
+
+            Assert.AreEqual(55.0d, tableStyle.LeftIndent);
+            Assert.AreEqual(tableStyle, ((Table)doc.GetChild(NodeType.Table, 1, true)).Style);
         }
 
         [Test]
-        public void WorkWithTableConditionalStyles()
+        public void ConditionalStyles()
         {
             //ExStart
             //ExFor:ConditionalStyle
@@ -1492,35 +1558,40 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a table, which we will partially style
+            // Create a table
             Table table = builder.StartTable();
             builder.InsertCell();
-            builder.Write("Cell 1, to be formatted");
+            builder.Write("Cell 1");
             builder.InsertCell();
-            builder.Write("Cell 2, to be formatted");
+            builder.Write("Cell 2");
             builder.EndRow();
             builder.InsertCell();
-            builder.Write("Cell 3, to be left unformatted");
+            builder.Write("Cell 3");
             builder.InsertCell();
-            builder.Write("Cell 4, to be left unformatted");
+            builder.Write("Cell 4");
             builder.EndTable();
 
+            // Create a custom table style
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
-            // There is a different ways how to get conditional styles:
-            // by conditional style type
+
+            // Conditional styles are formatting changes that affect only some of the cells of the table based on a predicate,
+            // such as the cells being in the last row
+            // We can access these conditional styles by style type like this
             tableStyle.ConditionalStyles[ConditionalStyleType.FirstRow].Shading.BackgroundPatternColor = Color.AliceBlue;
-            // by index
+
+            // The same conditional style can be accessed by index
             tableStyle.ConditionalStyles[0].Borders.Color = Color.Black;
             tableStyle.ConditionalStyles[0].Borders.LineStyle = LineStyle.DotDash;
             Assert.AreEqual(ConditionalStyleType.FirstRow, tableStyle.ConditionalStyles[0].Type);
-            // directly from ConditionalStyleCollection
+
+            // It can also be found in the ConditionalStyles collection as an attribute
             tableStyle.ConditionalStyles.FirstRow.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-            // To see this in Word document select Total Row checkbox in Design Tab
+
+            // Apply padding and text formatting to conditional styles 
             tableStyle.ConditionalStyles.LastRow.BottomPadding = 10;
             tableStyle.ConditionalStyles.LastRow.LeftPadding = 10;
             tableStyle.ConditionalStyles.LastRow.RightPadding = 10;
             tableStyle.ConditionalStyles.LastRow.TopPadding = 10;
-            // To see this in Word document select Last Column checkbox in Design Tab
             tableStyle.ConditionalStyles.LastColumn.Font.Bold = true;
 
             // List all possible style conditions
@@ -1533,11 +1604,36 @@ namespace ApiExamples
                 }
             }
 
-            // Apply conditional style to the table and save
+            // Apply conditional style to the table
             table.Style = tableStyle;
-            
-            doc.Save(ArtifactsDir + "Table.WorkWithTableConditionalStyles.docx");
+
+            // Changes to the first row are enabled by the table's style options be default,
+            // but need to be manually enabled for some other parts, such as the last column/row
+            table.StyleOptions = table.StyleOptions | TableStyleOptions.LastRow | TableStyleOptions.LastColumn;
+
+            doc.Save(ArtifactsDir + "Table.ConditionalStyles.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Table.ConditionalStyles.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(TableStyleOptions.Default | TableStyleOptions.LastRow | TableStyleOptions.LastColumn, table.StyleOptions);
+            ConditionalStyleCollection conditionalStyles = ((TableStyle)doc.Styles["MyTableStyle1"]).ConditionalStyles;
+
+            Assert.AreEqual(ConditionalStyleType.FirstRow, conditionalStyles[0].Type);
+            Assert.AreEqual(Color.AliceBlue.ToArgb(), conditionalStyles[0].Shading.BackgroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.Black.ToArgb(), conditionalStyles[0].Borders.Color.ToArgb());
+            Assert.AreEqual(LineStyle.DotDash, conditionalStyles[0].Borders.LineStyle);
+            Assert.AreEqual(ParagraphAlignment.Center, conditionalStyles[0].ParagraphFormat.Alignment);
+
+            Assert.AreEqual(ConditionalStyleType.LastRow, conditionalStyles[2].Type);
+            Assert.AreEqual(10.0d, conditionalStyles[2].BottomPadding);
+            Assert.AreEqual(10.0d, conditionalStyles[2].LeftPadding);
+            Assert.AreEqual(10.0d, conditionalStyles[2].RightPadding);
+            Assert.AreEqual(10.0d, conditionalStyles[2].TopPadding);
+
+            Assert.AreEqual(ConditionalStyleType.LastColumn, conditionalStyles[3].Type);
+            Assert.True(conditionalStyles[3].Font.Bold);
         }
 
         [Test]
@@ -1546,7 +1642,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ConditionalStyle.ClearFormatting
             //ExFor:ConditionalStyleCollection.ClearFormatting
-            //ExSummary:Shows how to reset all table styles.
+            //ExSummary:Shows how to reset conditional table styles.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1563,53 +1659,81 @@ namespace ApiExamples
             tableStyle.ConditionalStyles.FirstRow.Borders.Color = Color.Red;
             tableStyle.ConditionalStyles.LastRow.Borders.Color = Color.Blue;
 
-            // You can reset styles from the specific table area
+            // Conditional styles can be cleared for specific parts of the table 
             tableStyle.ConditionalStyles[0].ClearFormatting();
             Assert.AreEqual(Color.Empty, tableStyle.ConditionalStyles.FirstRow.Borders.Color);
 
-            // Or clear all table styles
+            // Also, they can be cleared for the entire table
             tableStyle.ConditionalStyles.ClearFormatting();
             Assert.AreEqual(Color.Empty, tableStyle.ConditionalStyles.LastRow.Borders.Color);
             //ExEnd
         }
 
         [Test]
-        public void WorkWithOddEvenRowColumnStyles()
+        public void AlternatingRowStyles()
         {
             //ExStart
             //ExFor:TableStyle.ColumnStripe
             //ExFor:TableStyle.RowStripe
-            //ExSummary:Shows how to work with odd/even row/column styles.
+            //ExSummary:Shows how to create conditional table styles that alternate between rows.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a table and give it conditional styling on border colors based on row number parity
-            builder.StartTable();
-            builder.InsertCell();
-            builder.Write("Odd row");
-            builder.EndRow();
-            builder.InsertCell();
-            builder.Write("Even row");
-            builder.EndRow();
-            builder.InsertCell();
-            builder.Write("Odd row");
+            // The conditional style of a table can be configured to apply a different color to the row/column,
+            // based on whether the row/column is even or odd, creating an alternating color pattern
+            // We can also apply a number n to the row/column banding, meaning that the color alternates after every n rows/columns instead of one 
+            // Create a table where the columns will be banded by single columns and rows will banded in threes
+            Table table = builder.StartTable();
+            for (int i = 0; i < 15; i++)
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    builder.InsertCell();
+                    builder.Writeln($"{(j % 2 == 0 ? "Even" : "Odd")} column.");
+                    builder.Write($"Row banding {(i % 3 == 0 ? "start" : "continuation")}.");
+                }
+                builder.EndRow();
+            }
             builder.EndTable();
 
+            // Set a line style for all the borders of the table
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
             tableStyle.Borders.Color = Color.Black;
-            tableStyle.Borders.LineStyle = LineStyle.DotDash;
-            // Define our stripe through one column and row
+            tableStyle.Borders.LineStyle = LineStyle.Double;
+
+            // Set the two colors which will alternate over every 3 rows
+            tableStyle.RowStripe = 3;
+            tableStyle.ConditionalStyles[ConditionalStyleType.OddRowBanding].Shading.BackgroundPatternColor = Color.LightBlue;
+            tableStyle.ConditionalStyles[ConditionalStyleType.EvenRowBanding].Shading.BackgroundPatternColor = Color.LightCyan;
+
+            // Set a color to apply to every even column, which will override any custom row coloring
             tableStyle.ColumnStripe = 1;
-            tableStyle.RowStripe = 1;
-            // Let's start from the first row and second column
-            tableStyle.ConditionalStyles[ConditionalStyleType.OddRowBanding].Shading.BackgroundPatternColor = Color.AliceBlue;
-            tableStyle.ConditionalStyles[ConditionalStyleType.EvenColumnBanding].Shading.BackgroundPatternColor = Color.AliceBlue;
-            
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            tableStyle.ConditionalStyles[ConditionalStyleType.EvenColumnBanding].Shading.BackgroundPatternColor = Color.LightSalmon;
+
+            // Apply the style to the table
             table.Style = tableStyle;
 
-            doc.Save(ArtifactsDir + "Table.WorkWithOddEvenRowColumnStyles.docx");
+            // Row bands are automatically enabled, but column banding needs to be enabled manually like this
+            // Row coloring will only be overridden if the column banding has been explicitly set a color
+            table.StyleOptions = table.StyleOptions | TableStyleOptions.ColumnBands;
+
+            doc.Save(ArtifactsDir + "Table.AlternatingRowStyles.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Table.AlternatingRowStyles.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];
+
+            Assert.AreEqual(tableStyle, table.Style);
+            Assert.AreEqual(table.StyleOptions | TableStyleOptions.ColumnBands, table.StyleOptions);
+
+            Assert.AreEqual(Color.Black.ToArgb(), tableStyle.Borders.Color.ToArgb());
+            Assert.AreEqual(LineStyle.Double, tableStyle.Borders.LineStyle);
+            Assert.AreEqual(3, tableStyle.RowStripe);
+            Assert.AreEqual(Color.LightBlue.ToArgb(), tableStyle.ConditionalStyles[ConditionalStyleType.OddRowBanding].Shading.BackgroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.LightCyan.ToArgb(), tableStyle.ConditionalStyles[ConditionalStyleType.EvenRowBanding].Shading.BackgroundPatternColor.ToArgb());
+            Assert.AreEqual(1, tableStyle.ColumnStripe);
+            Assert.AreEqual(Color.LightSalmon.ToArgb(), tableStyle.ConditionalStyles[ConditionalStyleType.EvenColumnBanding].Shading.BackgroundPatternColor.ToArgb());
         }
 
         [Test]
