@@ -14,6 +14,7 @@ using Aspose.Words.Markup;
 using NUnit.Framework;
 using System.Linq;
 using System.Text;
+using Aspose.Pdf.Text;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
@@ -674,187 +675,45 @@ namespace ApiExamples
             //ExStart
             //ExFor:StructuredDocumentTag.Clear
             //ExSummary:Shows how to delete content of StructuredDocumentTag elements.
-            Document doc = new Document(MyDir + "Structured document tags.docx");
-
-            NodeCollection tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
-            Assert.AreEqual(3, tags.Count);
-
-            foreach (StructuredDocumentTag sdt in tags.OfType<StructuredDocumentTag>())
-            {
-                sdt.Clear();
-            }
-            //ExEnd
-
-            doc = DocumentHelper.SaveOpen(doc);
-            tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
-
-            Assert.AreEqual(
-                "Enter any content that you want to repeat, including other content controls. You can also insert this control around table rows in order to repeat parts of a table.\r",
-                tags[0].GetText());
-            Assert.AreEqual("Click here to enter text.\f", tags[2].GetText());
-        }
-
-        [Test]
-        public void SmartTagProperties()
-        {
-            //ExStart
-            //ExFor:CustomXmlProperty.Uri
-            //ExFor:CustomXmlPropertyCollection
-            //ExFor:CustomXmlPropertyCollection.Add(CustomXmlProperty)
-            //ExFor:CustomXmlPropertyCollection.Clear
-            //ExFor:CustomXmlPropertyCollection.Contains(String)
-            //ExFor:CustomXmlPropertyCollection.Count
-            //ExFor:CustomXmlPropertyCollection.GetEnumerator
-            //ExFor:CustomXmlPropertyCollection.IndexOfKey(String)
-            //ExFor:CustomXmlPropertyCollection.Item(Int32)
-            //ExFor:CustomXmlPropertyCollection.Item(String)
-            //ExFor:CustomXmlPropertyCollection.Remove(String)
-            //ExFor:CustomXmlPropertyCollection.RemoveAt(Int32)
-            //ExSummary:Shows how to work with smart tag properties to get in depth information about smart tags.
-            // Open a document that contains smart tags and their collection
-            Document doc = new Document(MyDir + "Smart tags.doc");
-
-            // Smart tags are an older Microsoft Word feature that can automatically detect and tag
-            // any parts of the text that it registers as commonly used information objects such as names, addresses, stock tickers, dates etc
-            // In Word 2003, smart tags can be turned on in Tools > AutoCorrect options... > SmartTags tab
-            // In our input document there are three objects that were registered as smart tags, but since they can be nested, we have 8 in this collection
-            NodeCollection smartTags = doc.GetChildNodes(NodeType.SmartTag, true);
-            Assert.AreEqual(8, smartTags.Count);
-
-            // The last smart tag is of the "Date" type, which we will retrieve here
-            SmartTag smartTag = (SmartTag)smartTags[7];
-
-            // The Properties attribute, for some smart tags, elaborates on the text object that Word picked up as a smart tag
-            // In the case of our "Date" smart tag, its properties will let us know the year, month and day within the smart tag
-            CustomXmlPropertyCollection properties = smartTag.Properties;
-
-            // We can enumerate over the collection and print the aforementioned properties to the console
-            Assert.AreEqual(4, properties.Count);
-
-            using (IEnumerator<CustomXmlProperty> enumerator = properties.GetEnumerator())
-            {
-                while (enumerator.MoveNext())
-                {
-                    Console.WriteLine($"Property name: {enumerator.Current.Name}, value: {enumerator.Current.Value}");
-                    Assert.AreEqual("", enumerator.Current.Uri);
-                }
-            }
-            
-            // We can also access the elements in various ways, including as a key-value pair
-            Assert.True(properties.Contains("Day"));
-            Assert.AreEqual("22", properties["Day"].Value);
-            Assert.AreEqual("2003", properties[2].Value);
-            Assert.AreEqual(1, properties.IndexOfKey("Month"));
-
-            // We can also remove elements by name, index or clear the collection entirely
-            properties.RemoveAt(3);
-            properties.Remove("Year");
-            Assert.AreEqual(2, (properties.Count));
-
-            properties.Clear();
-            Assert.AreEqual(0, (properties.Count));
-
-            // We can remove the entire smart tag like this
-            smartTag.Remove();
-            //ExEnd
-        }
-
-        //ExStart
-        //ExFor:CompositeNode.RemoveSmartTags
-        //ExFor:CustomXmlProperty
-        //ExFor:CustomXmlProperty.#ctor(String,String,String)
-        //ExFor:CustomXmlProperty.Name
-        //ExFor:CustomXmlProperty.Value
-        //ExFor:Markup.SmartTag
-        //ExFor:Markup.SmartTag.#ctor(Aspose.Words.DocumentBase)
-        //ExFor:Markup.SmartTag.Accept(Aspose.Words.DocumentVisitor)
-        //ExFor:Markup.SmartTag.Element
-        //ExFor:Markup.SmartTag.Properties
-        //ExFor:Markup.SmartTag.Uri
-        //ExSummary:Shows how to create smart tags.
-        [Test] //ExSkip
-        public void SmartTags()
-        {
             Document doc = new Document();
-            SmartTag smartTag = new SmartTag(doc);
-            smartTag.Element = "date";
 
-            // Specify a date and set smart tag properties accordingly
-            smartTag.AppendChild(new Run(doc, "May 29, 2019"));
+            // Create a plain text structured document tag and append it to the document
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
+            doc.FirstSection.Body.AppendChild(tag);
 
-            smartTag.Properties.Add(new CustomXmlProperty("Day", "", "29"));
-            smartTag.Properties.Add(new CustomXmlProperty("Month", "", "5"));
-            smartTag.Properties.Add(new CustomXmlProperty("Year", "", "2019"));
+            // This structured document tag, which is in the form of a text box, already displays placeholder text
+            Assert.AreEqual("Click here to enter text.", tag.GetText().Trim());
+            Assert.True(tag.IsShowingPlaceholderText);
 
-            // Set the smart tag's uri to the default
-            smartTag.Uri = "urn:schemas-microsoft-com:office:smarttags";
+            // Create a building block that 
+            GlossaryDocument glossaryDoc = doc.GlossaryDocument;
+            BuildingBlock substituteBlock = new BuildingBlock(glossaryDoc);
+            substituteBlock.Name = "My placeholder";
+            substituteBlock.AppendChild(new Section(glossaryDoc));
+            substituteBlock.FirstSection.EnsureMinimum();
+            substituteBlock.FirstSection.Body.FirstParagraph.AppendChild(new Run(glossaryDoc, "Custom placeholder text."));
+            glossaryDoc.AppendChild(substituteBlock);
 
-            doc.FirstSection.Body.FirstParagraph.AppendChild(smartTag);
-            doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, " is a date. "));
+            // Set the tag's placeholder to the building block
+            tag.PlaceholderName = "My placeholder";
 
-            // Create and add one more smart tag, this time for a financial symbol
-            smartTag = new SmartTag(doc);
-            smartTag.Element = "stockticker";
-            smartTag.Uri = "urn:schemas-microsoft-com:office:smarttags";
+            Assert.AreEqual("Custom placeholder text.", tag.GetText().Trim());
+            Assert.True(tag.IsShowingPlaceholderText);
 
-            smartTag.AppendChild(new Run(doc, "MSFT"));
+            // Edit the text of the structured document tag and disable showing of placeholder text
+            Run run = (Run)tag.GetChild(NodeType.Run, 0, true);
+            run.Text = "New text.";
+            tag.IsShowingPlaceholderText = false;
 
-            doc.FirstSection.Body.FirstParagraph.AppendChild(smartTag);
-            doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, " is a stock ticker."));
+            Assert.AreEqual("New text.", tag.GetText().Trim());
 
-            // Print all the smart tags in our document with a document visitor
-            doc.Accept(new SmartTagVisitor());
+            tag.Clear();
 
-            // SmartTags are supported by older versions of microsoft Word
-            doc.Save(ArtifactsDir + "StructuredDocumentTag.SmartTags.doc");
-
-            // We can strip a document of all its smart tags with RemoveSmartTags()
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.SmartTag, true).Count);
-            doc.RemoveSmartTags();
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.SmartTag, true).Count);
+            // Clearing a PlainText tag reverts these changes
+            Assert.True(tag.IsShowingPlaceholderText);
+            Assert.AreEqual("Custom placeholder text.", tag.GetText().Trim());
+            //ExEnd
         }
-
-        /// <summary>
-        /// DocumentVisitor implementation that prints smart tags and their contents
-        /// </summary>
-        private class SmartTagVisitor : DocumentVisitor
-        {
-            /// <summary>
-            /// Called when a SmartTag node is encountered in the document.
-            /// </summary>
-            public override VisitorAction VisitSmartTagStart(SmartTag smartTag)
-            {
-                Console.WriteLine($"Smart tag type: {smartTag.Element}");
-                return VisitorAction.Continue;
-            }
-
-            /// <summary>
-            /// Called when the visiting of a SmartTag node is ended.
-            /// </summary>
-            public override VisitorAction VisitSmartTagEnd(SmartTag smartTag)
-            {
-                Console.WriteLine($"\tContents: \"{smartTag.ToString(SaveFormat.Text)}\"");
-
-                if (smartTag.Properties.Count == 0)
-                {
-                    Console.WriteLine("\tContains no properties");
-                }
-                else
-                {
-                    Console.Write("\tProperties: ");
-                    string[] properties = new string[smartTag.Properties.Count];
-                    int index = 0;         
-                    
-                    foreach (CustomXmlProperty cxp in smartTag.Properties)
-                        properties[index++] = $"\"{cxp.Name}\" = \"{cxp.Value}\"";
-
-                    Console.WriteLine(string.Join(", ", properties));
-                }
-
-                return VisitorAction.Continue;
-            }
-        }
-        //ExEnd
 
         [Test]
         public void AccessToBuildingBlockPropertiesFromDocPartObjSdt()
@@ -910,7 +769,9 @@ namespace ApiExamples
         }
 
         [Test]
-        public void UpdateSdtContent()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void UpdateSdtContent(bool updateSdtContent)
         {
             //ExStart
             //ExFor:SaveOptions.UpdateSdtContent
@@ -935,10 +796,19 @@ namespace ApiExamples
             // We can save those values in the document without immediately updating the tags, leaving them in their default state
             // by using a SaveOptions object with this flag set
             PdfSaveOptions options = new PdfSaveOptions();
-            options.UpdateSdtContent = false;
+            options.UpdateSdtContent = updateSdtContent;
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf", options);
             //ExEnd
+
+            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf");
+            TextAbsorber textAbsorber = new TextAbsorber();
+            textAbsorber.Visit(pdfDoc);
+
+            if (updateSdtContent) 
+                Assert.AreEqual("Value 2", textAbsorber.Text);
+            else
+                Assert.AreEqual("Click here to enter a date.\r\nChoose an item.", textAbsorber.Text);
         }
 
         [Test]
@@ -955,7 +825,7 @@ namespace ApiExamples
                 "<book><title>Everyday Italian</title>" +
                 "<author>Giada De Laurentiis</author></book>" +
                 "<book><title>Harry Potter</title>" +
-                "<author>J K. Rowling</author></book>" +
+                "<author>J. K. Rowling</author></book>" +
                 "<book><title>Learning XML</title>" +
                 "<author>Erik T. Ray</author></book>" +
                 "</books>");
@@ -972,7 +842,7 @@ namespace ApiExamples
             // Create table with RepeatingSection inside
             StructuredDocumentTag repeatingSectionSdt =
                 new StructuredDocumentTag(doc, SdtType.RepeatingSection, MarkupLevel.Row);
-            repeatingSectionSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book", "");
+            repeatingSectionSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book", string.Empty);
             table.AppendChild(repeatingSectionSdt);
  
             // Add RepeatingSectionItem inside RepeatingSection and mark it as a row
@@ -986,16 +856,36 @@ namespace ApiExamples
             // Map xml data with created table cells for book title and author
             StructuredDocumentTag titleSdt =
                 new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Cell);
-            titleSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/title[1]", "");
+            titleSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/title[1]", string.Empty);
             row.AppendChild(titleSdt);
  
             StructuredDocumentTag authorSdt =
                 new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Cell);
-            authorSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/author[1]", "");
+            authorSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/author[1]", string.Empty);
             row.AppendChild(authorSdt);
  
             doc.Save(ArtifactsDir + "StructuredDocumentTag.RepeatingSectionItem.docx");
 			//ExEnd
+
+            doc = new Document(ArtifactsDir + "StructuredDocumentTag.RepeatingSectionItem.docx");
+            List<StructuredDocumentTag> tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true).OfType<StructuredDocumentTag>().ToList();
+
+            Assert.AreEqual("/books[1]/book", tags[0].XmlMapping.XPath);
+            Assert.AreEqual(string.Empty, tags[0].XmlMapping.PrefixMappings);
+
+            Assert.AreEqual(string.Empty, tags[1].XmlMapping.XPath);
+            Assert.AreEqual(string.Empty, tags[1].XmlMapping.PrefixMappings);
+
+            Assert.AreEqual("/books[1]/book[1]/title[1]", tags[2].XmlMapping.XPath);
+            Assert.AreEqual(string.Empty, tags[2].XmlMapping.PrefixMappings);
+
+            Assert.AreEqual("/books[1]/book[1]/author[1]", tags[3].XmlMapping.XPath);
+            Assert.AreEqual(string.Empty, tags[3].XmlMapping.PrefixMappings);
+
+            Assert.AreEqual("Title\u0007Author\u0007\u0007" +
+                            "Everyday Italian\u0007Giada De Laurentiis\u0007\u0007" +
+                            "Harry Potter\u0007J. K. Rowling\u0007\u0007" +
+                            "Learning XML\u0007Erik T. Ray\u0007\u0007", doc.GetChild(NodeType.Table, 0, true).GetText().Trim());
         }
 
         [Test]
