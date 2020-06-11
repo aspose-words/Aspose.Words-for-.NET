@@ -178,7 +178,7 @@ namespace ApiExamples
             //ExFor:ImageSaveOptions.SaveFormat
             //ExFor:ImageSaveOptions.Scale
             //ExFor:ImageSaveOptions.VerticalResolution
-            //ExSummary:
+            //ExSummary:Shows how to edit image.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // When saving the document as an image, we can use an ImageSaveOptions object to edit various aspects of it
