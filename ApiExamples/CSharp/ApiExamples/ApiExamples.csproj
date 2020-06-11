@@ -90,7 +90,7 @@
     <Content Include="ExStyles.cs" />
     <Content Include="ExTable.cs" />
     <Content Include="ExTableColumn.cs" />
-    <Content Include="ExTabStopCollection.cs" />
+    <Content Include="ExTabStop.cs" />
     <Content Include="ExRtfLoadOptions.cs" />
     <Content Include="ExThemes.cs" />
     <Content Include="ExTxtLoadOptions.cs" />
