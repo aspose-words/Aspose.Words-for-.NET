@@ -15,7 +15,9 @@ namespace ApiExamples
     public class ExTxtSaveOptions : ApiExampleBase
     {
         [Test]
-        public void PageBreaks()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void PageBreaks(bool forcePageBreaks)
         {
             //ExStart
             //ExFor:TxtSaveOptionsBase.ForcePageBreaks
@@ -29,10 +31,25 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Page 3");
 
-            TxtSaveOptions saveOptions = new TxtSaveOptions { ForcePageBreaks = false };
+            // If ForcePageBreaks is set to true then the output document will have form feed characters in place of page breaks
+            // Otherwise, they will be line breaks
+            TxtSaveOptions saveOptions = new TxtSaveOptions { ForcePageBreaks = forcePageBreaks };
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.PageBreaks.txt", saveOptions);
+            
+            // If we load the document using Aspose.Words again, the page breaks will be preserved/lost depending on ForcePageBreaks
+            doc = new Document(ArtifactsDir + "TxtSaveOptions.PageBreaks.txt");
+            
+            if (forcePageBreaks)
+                Assert.AreEqual(3, doc.PageCount);
+            else
+                Assert.AreEqual(1, doc.PageCount);
             //ExEnd
+
+            if (forcePageBreaks)
+                TestUtil.FileContainsString("Page 1\r\n\fPage 2\r\n\fPage 3\r\n\r\n", ArtifactsDir + "TxtSaveOptions.PageBreaks.txt");
+            else
+                TestUtil.FileContainsString("Page 1\r\nPage 2\r\nPage 3\r\n\r\n", ArtifactsDir + "TxtSaveOptions.PageBreaks.txt");
         }
 
         [Test]
@@ -41,8 +58,12 @@ namespace ApiExamples
             //ExStart
             //ExFor:TxtSaveOptions.AddBidiMarks
             //ExSummary:Shows how to insert Unicode Character 'RIGHT-TO-LEFT MARK' (U+200F) before each bi-directional Run in text.
-            Document doc = new Document(MyDir + "Document.docx");
-            
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.ParagraphFormat.Bidi = true;
+            builder.Writeln("שלום");
+
             TxtSaveOptions saveOptions = new TxtSaveOptions { AddBidiMarks = true };
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.AddBidiMarks.txt", saveOptions);
