@@ -15,7 +15,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExTxtSaveOptions : ApiExampleBase
     {
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void PageBreaks(bool forcePageBreaks)
@@ -40,20 +39,15 @@ namespace ApiExamples
             
             // If we load the document using Aspose.Words again, the page breaks will be preserved/lost depending on ForcePageBreaks
             doc = new Document(ArtifactsDir + "TxtSaveOptions.PageBreaks.txt");
-            
-            if (forcePageBreaks)
-                Assert.AreEqual(3, doc.PageCount);
-            else
-                Assert.AreEqual(1, doc.PageCount);
+
+            Assert.AreEqual(forcePageBreaks ? 3 : 1, doc.PageCount);
             //ExEnd
 
-            if (forcePageBreaks)
-                TestUtil.FileContainsString("Page 1\r\n\fPage 2\r\n\fPage 3\r\n\r\n", ArtifactsDir + "TxtSaveOptions.PageBreaks.txt");
-            else
-                TestUtil.FileContainsString("Page 1\r\nPage 2\r\nPage 3\r\n\r\n", ArtifactsDir + "TxtSaveOptions.PageBreaks.txt");
+            TestUtil.FileContainsString(
+                forcePageBreaks ? "Page 1\r\n\fPage 2\r\n\fPage 3\r\n\r\n" : "Page 1\r\nPage 2\r\nPage 3\r\n\r\n",
+                ArtifactsDir + "TxtSaveOptions.PageBreaks.txt");
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void AddBidiMarks(bool addBidiMarks)
@@ -88,7 +82,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(TxtExportHeadersFootersMode.AllAtEnd)]
         [TestCase(TxtExportHeadersFootersMode.PrimaryOnly)]
         [TestCase(TxtExportHeadersFootersMode.None)]

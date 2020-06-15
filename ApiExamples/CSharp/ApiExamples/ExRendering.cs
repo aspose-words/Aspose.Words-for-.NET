@@ -209,7 +209,6 @@ namespace ApiExamples
         public void SaveToTiffDefault()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
-
             doc.Save(ArtifactsDir + "Rendering.SaveToTiffDefault.tiff");
         }
 

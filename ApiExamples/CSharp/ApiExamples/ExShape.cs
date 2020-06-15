@@ -870,7 +870,6 @@ namespace ApiExamples
             Assert.AreEqual(96, imageOptions.VerticalResolution);
         }
 
-        //For assert result of the test you need to open "Shape.OfficeMath.svg" and check that OfficeMath node is there
         [Test]
         public void SaveShapeObjectAsImage()
         {
@@ -981,7 +980,6 @@ namespace ApiExamples
             Assert.AreEqual(OfficeMathJustification.Center, officeMath.Justification);
         }
 
-        [Test]
         [TestCase(0, MathObjectType.OMathPara)]
         [TestCase(1, MathObjectType.OMath)]
         [TestCase(2, MathObjectType.Supercript)]
@@ -995,7 +993,6 @@ namespace ApiExamples
             Assert.AreEqual(objectType, officeMath.MathObjectType);
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void AspectRatioLocked(bool isLocked)
@@ -1039,7 +1036,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(MsWordVersion.Word2000, ShapeMarkupLanguage.Vml)]
         [TestCase(MsWordVersion.Word2002, ShapeMarkupLanguage.Vml)]
         [TestCase(MsWordVersion.Word2003, ShapeMarkupLanguage.Vml)]
@@ -1107,8 +1103,7 @@ namespace ApiExamples
             Assert.AreEqual(ShapeLineStyle.Triple, strokeAfter.LineStyle);
         }
 
-        [Test]
-        [Description("WORDSNET-16067")]
+        [Test, Description("WORDSNET-16067")]
         public void InsertOleObjectAsHtmlFile()
         {
             Document doc = new Document();
@@ -1119,8 +1114,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Shape.InsertOleObjectAsHtmlFile.docx");
         }
 
-        [Test]
-        [Description("WORDSNET-16085")]
+        [Test, Description("WORDSNET-16085")]
         public void InsertOlePackage()
         {
             //ExStart
@@ -1176,7 +1170,6 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Shape shape = builder.InsertShape(ShapeType.Rectangle, 200, 300);
-
             // Change shape size and rotation
             shape.Height = 300;
             shape.Width = 500;
@@ -1595,7 +1588,7 @@ namespace ApiExamples
 
             Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 100, 100);
             // Not all formats are compatible with this one
-            // For most of incompatible formats AW generated a warnings on save, so use doc.WarningCallback to check it.
+            // For most of incompatible formats AW generated a warnings on save, so use doc.WarningCallback to check it
             textBoxShape.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
             
             builder.MoveTo(textBoxShape.LastParagraph);

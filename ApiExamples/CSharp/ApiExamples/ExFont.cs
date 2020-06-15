@@ -164,7 +164,6 @@ namespace ApiExamples
             Assert.False(fontInfos.SaveSubsetFonts);
         }
 
-        [Test]
         [TestCase(true, false, false, Description =
             "Save a document with embedded TrueType fonts. System fonts are not included. Saves full versions of embedding fonts.")]
         [TestCase(true, true, false, Description =

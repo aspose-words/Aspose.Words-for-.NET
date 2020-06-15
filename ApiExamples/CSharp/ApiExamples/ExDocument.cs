@@ -442,7 +442,6 @@ namespace ApiExamples
             Assert.Throws<IncorrectPasswordException>(() => doc = new Document(MyDir + "Encrypted.docx"));
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void ConvertShapeToOfficeMath(bool isConvertShapeToOfficeMath)
@@ -729,7 +728,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void SaveHtmlPrettyFormat(bool isPrettyFormat)

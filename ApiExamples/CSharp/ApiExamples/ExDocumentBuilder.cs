@@ -2489,7 +2489,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void IgnoreTextBoxes(bool isIgnoreTextBoxes)

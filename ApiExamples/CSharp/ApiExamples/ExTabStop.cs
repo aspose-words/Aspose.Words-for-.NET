@@ -152,7 +152,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void GetPositionByIndexEx()
+        public void GetPositionByIndex()
         {
             //ExStart
             //ExFor:TabStopCollection.GetPositionByIndex
@@ -169,7 +169,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void GetIndexByPositionEx()
+        public void GetIndexByPosition()
         {
             //ExStart
             //ExFor:TabStopCollection.GetIndexByPosition

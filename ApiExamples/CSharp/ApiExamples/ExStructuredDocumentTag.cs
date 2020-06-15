@@ -760,6 +760,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.BuildingBlockCategories.docx");
             //ExEnd
+
             buildingBlockSdt =
                 (StructuredDocumentTag) doc.FirstSection.Body.GetChild(NodeType.StructuredDocumentTag, 0, true);
 
@@ -768,7 +769,6 @@ namespace ApiExamples
             Assert.AreEqual("Built-in", buildingBlockSdt.BuildingBlockCategory);
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void UpdateSdtContent(bool updateSdtContent)
@@ -805,10 +805,8 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            if (updateSdtContent) 
-                Assert.AreEqual("Value 2", textAbsorber.Text);
-            else
-                Assert.AreEqual("Click here to enter a date.\r\nChoose an item.", textAbsorber.Text);
+            Assert.AreEqual(updateSdtContent ? "Value 2" : "Click here to enter a date.\r\nChoose an item.",
+                textAbsorber.Text);
         }
 
         [Test]
