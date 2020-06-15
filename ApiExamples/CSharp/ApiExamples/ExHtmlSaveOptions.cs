@@ -26,7 +26,6 @@ namespace ApiExamples
     [TestFixture]
     internal class ExHtmlSaveOptions : ApiExampleBase
     {
-        [Test]
         [TestCase(SaveFormat.Html)]
         [TestCase(SaveFormat.Mhtml)]
         [TestCase(SaveFormat.Epub)]
@@ -43,7 +42,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir +"HtmlSaveOptions.ExportPageMargins" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
         }
 
-        [Test]
         [TestCase(SaveFormat.Html, HtmlOfficeMathOutputMode.Image, Category = "SkipMono")]
         [TestCase(SaveFormat.Mhtml, HtmlOfficeMathOutputMode.MathML, Category = "SkipMono")]
         [TestCase(SaveFormat.Epub, HtmlOfficeMathOutputMode.Text, Category = "SkipMono")]
@@ -57,7 +55,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportOfficeMath" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
         }
 
-        [Test]
         [TestCase(SaveFormat.Html, true, Description = "TextBox as svg (html)")]
         [TestCase(SaveFormat.Epub, true, Description = "TextBox as svg (epub)")]
         [TestCase(SaveFormat.Mhtml, false, Description = "TextBox as img (mhtml)")]
@@ -99,7 +96,6 @@ namespace ApiExamples
             }
         }
 
-        [Test]
         [TestCase(ExportListLabels.Auto)]
         [TestCase(ExportListLabels.AsInlineText)]
         [TestCase(ExportListLabels.ByHtmlTags)]
@@ -127,7 +123,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + $"HtmlSaveOptions.ControlListLabelsExport.html", saveOptions);
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void ExportUrlForLinkedImage(bool export)
@@ -140,10 +135,10 @@ namespace ApiExamples
 
             string[] dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportUrlForLinkedImage.001.png", SearchOption.AllDirectories);
 
-            if (dirFiles.Length == 0)
-                DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ExportUrlForLinkedImage.html", "<img src=\"http://www.aspose.com/images/aspose-logo.gif\"");
-            else
-                DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ExportUrlForLinkedImage.html", "<img src=\"HtmlSaveOptions.ExportUrlForLinkedImage.001.png\"");
+            DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ExportUrlForLinkedImage.html",
+                dirFiles.Length == 0
+                    ? "<img src=\"http://www.aspose.com/images/aspose-logo.gif\""
+                    : "<img src=\"HtmlSaveOptions.ExportUrlForLinkedImage.001.png\"");
         }
 
         [Test]
@@ -225,7 +220,6 @@ namespace ApiExamples
         }
 
 #if NET462 || NETCOREAPP2_1 || JAVA
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void ExportFonts(bool exportAsBase64)

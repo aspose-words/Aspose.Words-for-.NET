@@ -16,8 +16,8 @@ namespace ApiExamples
         //ExFor:CustomXmlProperty.Name
         //ExFor:CustomXmlProperty.Value
         //ExFor:Markup.SmartTag
-        //ExFor:Markup.SmartTag.#ctor(Aspose.Words.DocumentBase)
-        //ExFor:Markup.SmartTag.Accept(Aspose.Words.DocumentVisitor)
+        //ExFor:Markup.SmartTag.#ctor(DocumentBase)
+        //ExFor:Markup.SmartTag.Accept(DocumentVisitor)
         //ExFor:Markup.SmartTag.Element
         //ExFor:Markup.SmartTag.Properties
         //ExFor:Markup.SmartTag.Uri
@@ -62,6 +62,7 @@ namespace ApiExamples
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.SmartTag, true).Count);
             doc.RemoveSmartTags();
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.SmartTag, true).Count);
+
             TestCreate(new Document(ArtifactsDir + "SmartTag.Create.doc")); //ExSkip
         }
 

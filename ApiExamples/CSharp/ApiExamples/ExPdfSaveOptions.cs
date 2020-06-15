@@ -134,7 +134,6 @@ namespace ApiExamples
             #endif
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         [Category("SkipMono")]
@@ -312,7 +311,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(@"https://www.google.com/search?q= aspose", "app.launchURL(\"https://www.google.com/search?q=%20aspose\", true);", true)]
         [TestCase(@"https://www.google.com/search?q=%20aspose", "app.launchURL(\"https://www.google.com/search?q=%20aspose\", true);", true)]
         [TestCase(@"https://www.google.com/search?q= aspose", "app.launchURL(\"https://www.google.com/search?q= aspose\", true);", false)]
@@ -502,8 +500,7 @@ namespace ApiExamples
             internal WarningInfoCollection SaveWarnings = new WarningInfoCollection();
 		}
 		
-		[Test]
-        [TestCase(false)]
+		[TestCase(false)]
         [TestCase(true)]
         public void FontsScaledToMetafileSize(bool doScaleWmfFonts)
         {
@@ -533,7 +530,6 @@ namespace ApiExamples
 #endif
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void AdditionalTextPositioning(bool applyAdditionalTextPositioning)
@@ -569,7 +565,6 @@ namespace ApiExamples
 #endif
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void SaveAsPdfBookFold(bool doRenderTextAsBookfold)
@@ -656,7 +651,6 @@ namespace ApiExamples
             #endif
         }
 
-        [Test]
         [TestCase(PdfPageMode.FullScreen)]
         [TestCase(PdfPageMode.UseThumbs)]
         [TestCase(PdfPageMode.UseOC)]
@@ -696,7 +690,6 @@ namespace ApiExamples
             }
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void NoteHyperlinks(bool doCreateHyperlinks)
@@ -741,7 +734,6 @@ namespace ApiExamples
             }
         }
 
-        [Test]
         [TestCase(PdfCustomPropertiesExport.None)]
         [TestCase(PdfCustomPropertiesExport.Standard)]
         [TestCase(PdfCustomPropertiesExport.Metadata)]
@@ -781,7 +773,6 @@ namespace ApiExamples
             }
         }
 
-        [Test]
         [TestCase(DmlEffectsRenderingMode.None)]
         [TestCase(DmlEffectsRenderingMode.Simplified)]
         [TestCase(DmlEffectsRenderingMode.Fine)]
@@ -833,7 +824,6 @@ namespace ApiExamples
             #endif
         }
 
-        [Test]
         [TestCase(DmlRenderingMode.Fallback)]
         [TestCase(DmlRenderingMode.DrawingML)]
         public void DrawingMLFallback(DmlRenderingMode dmlRenderingMode)
@@ -863,7 +853,6 @@ namespace ApiExamples
             }
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void ExportDocumentStructure(bool doExportStructure)
@@ -897,7 +886,6 @@ namespace ApiExamples
         }
 
 #if NET462 || JAVA
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void PreblendImages(bool doPreblendImages)
@@ -945,7 +933,6 @@ namespace ApiExamples
         }
 
 #elif NETCOREAPP2_1
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void PreblendImagesNetStandard2(bool doPreblendImages)
@@ -1087,7 +1074,6 @@ namespace ApiExamples
             ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
         }
 
-        [Test]
         [TestCase(EmfPlusDualRenderingMode.Emf)]
         [TestCase(EmfPlusDualRenderingMode.EmfPlus)]
         [TestCase(EmfPlusDualRenderingMode.EmfPlusWithFallback)]

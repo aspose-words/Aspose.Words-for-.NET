@@ -772,7 +772,6 @@ namespace ApiExamples
             Assert.False(table.LastRow.RowFormat.AllowBreakAcrossPages);
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void AllowAutoFitOnTable(bool allowAutoFit)
@@ -786,11 +785,13 @@ namespace ApiExamples
             Table table = builder.StartTable();
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPoints(100);
-            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+            builder.Write(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.Auto;
-            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+            builder.Write(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
             builder.EndRow();
             builder.EndTable();
 
@@ -801,13 +802,21 @@ namespace ApiExamples
 
             if (allowAutoFit)
             {
-                TestUtil.FileContainsString("<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">", ArtifactsDir + "Table.AllowAutoFitOnTable.html");
-                TestUtil.FileContainsString("<td style=\"border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">", ArtifactsDir + "Table.AllowAutoFitOnTable.html");
+                TestUtil.FileContainsString(
+                    "<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">",
+                    ArtifactsDir + "Table.AllowAutoFitOnTable.html");
+                TestUtil.FileContainsString(
+                    "<td style=\"border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">",
+                    ArtifactsDir + "Table.AllowAutoFitOnTable.html");
             }
             else
             {
-                TestUtil.FileContainsString("<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">", ArtifactsDir + "Table.AllowAutoFitOnTable.html");
-                TestUtil.FileContainsString("<td style=\"width:7.2pt; border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">", ArtifactsDir + "Table.AllowAutoFitOnTable.html");
+                TestUtil.FileContainsString(
+                    "<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">",
+                    ArtifactsDir + "Table.AllowAutoFitOnTable.html");
+                TestUtil.FileContainsString(
+                    "<td style=\"width:7.2pt; border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">",
+                    ArtifactsDir + "Table.AllowAutoFitOnTable.html");
             }
         }
 
@@ -976,7 +985,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void AllowCellSpacing(bool allowCellSpacing)
@@ -1006,12 +1014,12 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Table.AllowCellSpacing.html");
             //ExEnd
 
-            if (allowCellSpacing)
-                TestUtil.FileContainsString("<td style=\"border-style:solid; border-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">", 
-                    ArtifactsDir + "Table.AllowCellSpacing.html");
-            else
-                TestUtil.FileContainsString("<td style=\"border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">", 
-                    ArtifactsDir + "Table.AllowCellSpacing.html");
+            TestUtil.FileContainsString(
+                allowCellSpacing
+                    ? "<td style=\"border-style:solid; border-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">"
+                    : "<td style=\"border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; " +
+                      "padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">",
+                ArtifactsDir + "Table.AllowCellSpacing.html");
         }
 
         //ExStart

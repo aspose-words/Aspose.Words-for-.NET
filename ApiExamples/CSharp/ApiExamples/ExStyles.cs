@@ -107,7 +107,6 @@ namespace ApiExamples
 
             // New documents come with a collection of default styles that can be applied to paragraphs
             StyleCollection styles = doc.Styles;
-
             // We can set default parameters for new styles that will be added to the collection from now on
             styles.DefaultFont.Name = "Courier New";
             styles.DefaultParagraphFormat.FirstLineIndent = 15.0;
@@ -177,7 +176,6 @@ namespace ApiExamples
         [Test]
         public void CopyStyleSameDocument()
         {
-
             //ExStart
             //ExFor:StyleCollection.AddCopy
             //ExFor:Style.Name
@@ -186,7 +184,6 @@ namespace ApiExamples
 
             // The AddCopy method creates a copy of the specified style and automatically generates a new name for the style, such as "Heading 1_0"
             Style newStyle = doc.Styles.AddCopy(doc.Styles["Heading 1"]);
-
             // You can change the new style name if required as the Style.Name property is read-write
             newStyle.Name = "My Heading 1";
             //ExEnd
@@ -207,7 +204,6 @@ namespace ApiExamples
             Document srcDoc = new Document();
 
             Style srcStyle = srcDoc.Styles.Add(StyleType.Paragraph, "MyStyle");
-
             // Change the font of the heading style to red
             srcStyle.Font.Color = Color.Red;
 
@@ -241,7 +237,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ParagraphStyleBulleted()
+        public void ParagraphStyleBulletedList()
         {
             //ExStart
             //ExFor:StyleCollection
@@ -268,16 +264,16 @@ namespace ApiExamples
 
             // Apply the paragraph style to the current paragraph in the document and add some text
             builder.ParagraphFormat.Style = style;
-            builder.Writeln("Hello World: MyStyle1, bulleted.");
+            builder.Writeln("Hello World: MyStyle1, bulleted list.");
 
             // Change to a paragraph style that has no list formatting
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
             builder.Writeln("Hello World: Normal.");
 
-            builder.Document.Save(ArtifactsDir + "Styles.ParagraphStyleBulleted.docx");
+            builder.Document.Save(ArtifactsDir + "Styles.ParagraphStyleBulletedList.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Styles.ParagraphStyleBulleted.docx");
+            doc = new Document(ArtifactsDir + "Styles.ParagraphStyleBulletedList.docx");
 
             style = doc.Styles["MyStyle1"];
 

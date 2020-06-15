@@ -16,7 +16,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExTxtLoadOptions : ApiExampleBase
     {
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void DetectNumberingWithWhitespaces(bool detectNumberingWithWhitespaces)
@@ -65,7 +64,6 @@ namespace ApiExamples
             //ExEnd
         }
         
-        [Test]
         [TestCase(TxtLeadingSpacesOptions.Preserve, TxtTrailingSpacesOptions.Preserve)]
         [TestCase(TxtLeadingSpacesOptions.ConvertToIndent, TxtTrailingSpacesOptions.Preserve)]
         [TestCase(TxtLeadingSpacesOptions.Trim, TxtTrailingSpacesOptions.Trim)]
