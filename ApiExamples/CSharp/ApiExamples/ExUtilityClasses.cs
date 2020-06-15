@@ -15,20 +15,6 @@ namespace ApiExamples
     public class ExUtilityClasses : ApiExampleBase
     {
         [Test]
-        public void UtilityClassesUseControlCharacters()
-        {
-            string text = "test\r";
-            //ExStart
-            //ExFor:ControlChar
-            //ExFor:ControlChar.Cr
-            //ExFor:ControlChar.CrLf
-            //ExSummary:Shows how to use control characters.
-            // Replace "\r" control character with "\r\n"
-            text = text.Replace(ControlChar.Cr, ControlChar.CrLf);
-            //ExEnd
-        }
-
-        [Test]
         public void UtilityClassesConvertBetweenMeasurementUnits()
         {
             //ExStart
