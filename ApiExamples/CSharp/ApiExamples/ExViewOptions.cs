@@ -37,8 +37,14 @@ namespace ApiExamples
             // Or we can set the ZoomType to a different value to avoid using percentages 
             Assert.AreEqual(ZoomType.None, doc.ViewOptions.ZoomType);
 
-            doc.Save(ArtifactsDir + "ViewOptions.SetZoom.doc");
+            doc.Save(ArtifactsDir + "ViewOptions.SetZoom.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "ViewOptions.SetZoom.docx");
+
+            Assert.AreEqual(ViewType.PageLayout, doc.ViewOptions.ViewType);
+            Assert.AreEqual(50.0d, doc.ViewOptions.ZoomPercent);
+            Assert.AreEqual(ZoomType.None, doc.ViewOptions.ZoomType);
         }
 
         [Test]
@@ -47,9 +53,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:ViewOptions.DisplayBackgroundShape
             //ExSummary:Shows how to hide/display document background images in view options.
-            // Create a new document from an html string
-            const string html = @"
-            <html>
+            // Create a new document from an html string with a flat background color
+            const string html = @"<html>
                 <body style='background-color: blue'>
                     <p>Hello world!</p>
                 </body>
@@ -63,9 +68,12 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ViewOptions.DisplayBackgroundShape.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "ViewOptions.DisplayBackgroundShape.docx");
+
+            Assert.False(doc.ViewOptions.DisplayBackgroundShape);
         }
-
-
+        
         [Test]
         public void DisplayPageBoundaries()
         {
@@ -93,12 +101,17 @@ namespace ApiExamples
             // to give the document's main body content some flow by setting this flag
             doc.ViewOptions.DoNotDisplayPageBoundaries = true;
 
-            doc.Save(ArtifactsDir + "ViewOptions.DisplayPageBoundaries.doc");
+            doc.Save(ArtifactsDir + "ViewOptions.DisplayPageBoundaries.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "ViewOptions.DisplayPageBoundaries.docx");
+
+            Assert.True(doc.ViewOptions.DoNotDisplayPageBoundaries);
         }
 
-        [Test]
-        public void FormsDesign()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void FormsDesign(bool useFormsDesign)
         {
             //ExStart
             //ExFor:ViewOptions.FormsDesign
@@ -115,9 +128,11 @@ namespace ApiExamples
             };
 
             // Enables forms design mode in WordML documents
-            doc.ViewOptions.FormsDesign = true;
+            doc.ViewOptions.FormsDesign = useFormsDesign;
 
             doc.Save(ArtifactsDir + "ViewOptions.FormsDesign.xml", options);
+
+            Assert.AreEqual(useFormsDesign, File.ReadAllText(ArtifactsDir + "ViewOptions.FormsDesign.xml").Contains("<w:formsDesign />"));
             //ExEnd
         }
     }
