@@ -243,6 +243,7 @@ namespace ApiExamples
             // Create a new document and add some paragraphs
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.Writeln("Paragraph 1.");
             builder.Writeln("Paragraph 2.");
             builder.Write("Paragraph 3.");
@@ -269,6 +270,7 @@ namespace ApiExamples
             // Create a new document and add some text from outside the ASCII character set
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.Write("À È Ì Ò Ù.");
 
             // We can use a SaveOptions object to make sure the encoding we save the .txt document in supports our content
