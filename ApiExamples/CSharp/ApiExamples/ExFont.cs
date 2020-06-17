@@ -8,6 +8,7 @@
 #if NET462 || NETCOREAPP2_1 || JAVA
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -850,7 +851,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
-            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            HandleDocumentSubstitutionWarnings callback = new HandleDocumentSubstitutionWarnings();
             doc.WarningCallback = callback;
 
             // We can choose the default font to use in the case of any missing fonts
@@ -902,6 +903,8 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:Fonts.FontInfoSubstitutionRule
+        //ExFor:Fonts.FontSubstitutionSettings.FontInfoSubstitution
         //ExFor:IWarningCallback
         //ExFor:IWarningCallback.Warning(WarningInfo)
         //ExFor:WarningInfo
@@ -909,10 +912,46 @@ namespace ApiExamples
         //ExFor:WarningInfo.WarningType
         //ExFor:WarningInfoCollection
         //ExFor:WarningInfoCollection.Warning(WarningInfo)
+        //ExFor:WarningInfoCollection.GetEnumerator
+        //ExFor:WarningInfoCollection.Clear
         //ExFor:WarningType
         //ExFor:DocumentBase.WarningCallback
-        //ExSummary:Shows how to implement the IWarningCallback to be notified of any font substitution during document save.
-        public class HandleDocumentWarnings : IWarningCallback
+        //ExSummary:Shows how to set the property for finding the closest match font among the available font sources instead missing font.
+        [Test]
+        public void EnableFontSubstitution()
+        {
+            Document doc = new Document(MyDir + "Missing font.docx");
+
+            // Assign a custom warning callback
+            HandleDocumentSubstitutionWarnings substitutionWarningHandler = new HandleDocumentSubstitutionWarnings();
+            doc.WarningCallback = substitutionWarningHandler;
+
+            // Set a default font name and enable font substitution
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial"; ;
+            fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
+
+            // When saving the document with the missing font, we should get a warning
+            doc.FontSettings = fontSettings;
+            doc.Save(ArtifactsDir + "Font.EnableFontSubstitution.pdf");
+
+            // List all warnings using an enumerator
+            using (IEnumerator<WarningInfo> warnings = substitutionWarningHandler.FontWarnings.GetEnumerator()) 
+                while (warnings.MoveNext()) 
+                    Console.WriteLine(warnings.Current.Description);
+
+            // Warnings are stored in this format
+            Assert.AreEqual(WarningSource.Layout, substitutionWarningHandler.FontWarnings[0].Source);
+            Assert.AreEqual("Font '28 Days Later' has not been found. Using 'Calibri' font instead. Reason: alternative name from document.", 
+                substitutionWarningHandler.FontWarnings[0].Description);
+
+            // The warning info collection can also be cleared like this
+            substitutionWarningHandler.FontWarnings.Clear();
+
+            Assert.That(substitutionWarningHandler.FontWarnings, Is.Empty);
+        }
+
+        public class HandleDocumentSubstitutionWarnings : IWarningCallback
         {
             /// <summary>
             /// Our callback only needs to implement the "Warning" method. This method is called whenever there is a
@@ -923,49 +962,12 @@ namespace ApiExamples
             {
                 // We are only interested in fonts being substituted
                 if (info.WarningType == WarningType.FontSubstitution)
-                {
-                    Console.WriteLine("Font substitution: " + info.Description);
-                    FontWarnings.Warning(info); //ExSkip
-                }
+                    FontWarnings.Warning(info);
             }
 
-            public WarningInfoCollection FontWarnings = new WarningInfoCollection(); //ExSkip
+            public WarningInfoCollection FontWarnings = new WarningInfoCollection();
         }
         //ExEnd
-
-        [Test]
-        public void EnableFontSubstitution()
-        {
-            //ExStart
-            //ExFor:Fonts.FontInfoSubstitutionRule
-            //ExFor:Fonts.FontSubstitutionSettings.FontInfoSubstitution
-            //ExSummary:Shows how to set the property for finding the closest match font among the available font sources instead missing font.
-            Document doc = new Document(MyDir + "Missing font.docx");
-
-            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
-            HandleDocumentWarnings callback = new HandleDocumentWarnings();
-            doc.WarningCallback = callback;
-
-            FontSettings fontSettings = new FontSettings();
-            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial"; ;
-            fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
-            //ExEnd
-
-            doc.FontSettings = fontSettings;
-            doc.Save(ArtifactsDir + "Font.EnableFontSubstitution.pdf");
-
-            Regex reg = new Regex("Font \'28 Days Later\' has not been found. Using (.*) font instead. Reason: closest match according to font info from the document.");
-            
-            foreach (WarningInfo fontWarning in callback.FontWarnings)
-            {        
-                Match match = reg.Match(fontWarning.Description);
-                if (match.Success)
-                {
-                    Assert.Pass();
-                    break;
-                }
-            }
-        }
 
         [Test]
         public void DisableFontSubstitution()
@@ -973,7 +975,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Missing font.docx");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
-            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            HandleDocumentSubstitutionWarnings callback = new HandleDocumentSubstitutionWarnings();
             doc.WarningCallback = callback;
 
             FontSettings fontSettings = new FontSettings();
@@ -1003,7 +1005,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
-            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            HandleDocumentSubstitutionWarnings callback = new HandleDocumentSubstitutionWarnings();
             doc.WarningCallback = callback;
 
             FontSettings fontSettings = new FontSettings();
@@ -1026,7 +1028,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Bullet points with alternative font.docx");
 
             // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
-            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            HandleDocumentSubstitutionWarnings callback = new HandleDocumentSubstitutionWarnings();
             doc.WarningCallback = callback;
 
             doc.Save(ArtifactsDir + "Font.SubstitutionWarningsClosestMatch.pdf");
