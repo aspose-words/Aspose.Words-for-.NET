@@ -70,11 +70,12 @@ namespace ApiExamples
                 #if NET462 || NETCOREAPP2_1 || JAVA
                 Assert.Multiple(() =>
                 {
-                #endif
                     Assert.AreEqual(expectedWidth, image.Width);
                     Assert.AreEqual(expectedHeight, image.Height);
-                #if NET462 || NETCOREAPP2_1 || JAVA
                 });
+                #elif __MOBILE__
+                Assert.AreEqual(expectedWidth, image.Width);
+                Assert.AreEqual(expectedHeight, image.Height);
                 #endif
             }
         }
@@ -339,33 +340,34 @@ namespace ApiExamples
             #if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
-            #endif
                 Assert.AreEqual(expectedType, field.Type);
                 Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
                 Assert.AreEqual(expectedResult, field.Result);
-            #if NET462 || NETCOREAPP2_1 || JAVA
             });
+            #elif __MOBILE__
+            Assert.AreEqual(expectedType, field.Type);
+            Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
+            Assert.AreEqual(expectedResult, field.Result);
             #endif
         }
 
-            /// <summary>
-            /// Checks whether values of attributes of a field with a type related to date/time are equal to expected values.
-            /// </summary>
-            /// <remarks>
-            /// Used when comparing DateTime instances to Field.Result values parsed to DateTime, which may differ slightly. 
-            /// Give a delta value that's generous enough for any lower end system to pass, also a delta of zero is allowed.
-            /// </remarks>
-            /// <param name="expectedType">The FieldType that we expect the field to have.</param>
-            /// <param name="expectedFieldCode">The expected output value of GetFieldCode() being called on the field.</param>
-            /// <param name="expectedResult">The date/time that the field's result is expected to represent.</param>
-            /// <param name="field">The field that's being tested.</param>
-            /// <param name="delta">Margin of error for expectedResult.</param>
-            internal static void VerifyField(FieldType expectedType, string expectedFieldCode, DateTime expectedResult, Field field, TimeSpan delta)
+        /// <summary>
+        /// Checks whether values of attributes of a field with a type related to date/time are equal to expected values.
+        /// </summary>
+        /// <remarks>
+        /// Used when comparing DateTime instances to Field.Result values parsed to DateTime, which may differ slightly. 
+        /// Give a delta value that's generous enough for any lower end system to pass, also a delta of zero is allowed.
+        /// </remarks>
+        /// <param name="expectedType">The FieldType that we expect the field to have.</param>
+        /// <param name="expectedFieldCode">The expected output value of GetFieldCode() being called on the field.</param>
+        /// <param name="expectedResult">The date/time that the field's result is expected to represent.</param>
+        /// <param name="field">The field that's being tested.</param>
+        /// <param name="delta">Margin of error for expectedResult.</param>
+        internal static void VerifyField(FieldType expectedType, string expectedFieldCode, DateTime expectedResult, Field field, TimeSpan delta)
         {
             #if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
-            #endif
                 Assert.AreEqual(expectedType, field.Type);
                 Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
                 Assert.True(DateTime.TryParse(field.Result, out DateTime actual));
@@ -374,18 +376,26 @@ namespace ApiExamples
                     VerifyDate(expectedResult, actual, delta);
                 else
                     VerifyDate(expectedResult.Date, actual, delta);
-            #if NET462 || NETCOREAPP2_1 || JAVA
             });
+            #elif __MOBILE__
+            Assert.AreEqual(expectedType, field.Type);
+            Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
+            Assert.True(DateTime.TryParse(field.Result, out DateTime actual));
+
+            if (field.Type == FieldType.FieldTime)
+                VerifyDate(expectedResult, actual, delta);
+            else
+                VerifyDate(expectedResult.Date, actual, delta);
             #endif
         }
 
-            /// <summary>
-            /// Checks whether a DateTime matches an expected value, with a margin of error.
-            /// </summary>
-            /// <param name="expected">The date/time that we expect the result to be.</param>
-            /// <param name="actual">The DateTime object being tested.</param>
-            /// <param name="delta">Margin of error for expectedResult.</param>
-            internal static void VerifyDate(DateTime expected, DateTime actual, TimeSpan delta)
+        /// <summary>
+        /// Checks whether a DateTime matches an expected value, with a margin of error.
+        /// </summary>
+        /// <param name="expected">The date/time that we expect the result to be.</param>
+        /// <param name="actual">The DateTime object being tested.</param>
+        /// <param name="delta">Margin of error for expectedResult.</param>
+        internal static void VerifyDate(DateTime expected, DateTime actual, TimeSpan delta)
         {
             Assert.True(expected - actual <= delta);
         }
@@ -425,121 +435,136 @@ namespace ApiExamples
             #if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
-            #endif
                 Assert.True(imageShape.HasImage);
                 Assert.AreEqual(expectedImageType, imageShape.ImageData.ImageType);
                 Assert.AreEqual(expectedWidth, imageShape.ImageData.ImageSize.WidthPixels);
                 Assert.AreEqual(expectedHeight, imageShape.ImageData.ImageSize.HeightPixels);
-            #if NET462 || NETCOREAPP2_1 || JAVA
             });
+            #elif __MOBILE__
+            Assert.True(imageShape.HasImage);
+            Assert.AreEqual(expectedImageType, imageShape.ImageData.ImageType);
+            Assert.AreEqual(expectedWidth, imageShape.ImageData.ImageSize.WidthPixels);
+            Assert.AreEqual(expectedHeight, imageShape.ImageData.ImageSize.HeightPixels);
             #endif
         }
 
-            /// <summary>
-            /// Checks whether values of a footnote's attributes are equal to their expected values.
-            /// </summary>
-            /// <param name="expectedFootnoteType">Expected type of the footnote/endnote.</param>
-            /// <param name="expectedIsAuto">Expected auto-numbered status of this footnote.</param>
-            /// <param name="expectedReferenceMark">If "IsAuto" is false, then the footnote is expected to display this string instead of a number after referenced text.</param>
-            /// <param name="expectedContents">Expected side comment provided by the footnote.</param>
-            /// <param name="footnote">Footnote node in question.</param>
-            internal static void VerifyFootnote(FootnoteType expectedFootnoteType, bool expectedIsAuto, string expectedReferenceMark, string expectedContents, Footnote footnote)
+        /// <summary>
+        /// Checks whether values of a footnote's attributes are equal to their expected values.
+        /// </summary>
+        /// <param name="expectedFootnoteType">Expected type of the footnote/endnote.</param>
+        /// <param name="expectedIsAuto">Expected auto-numbered status of this footnote.</param>
+        /// <param name="expectedReferenceMark">If "IsAuto" is false, then the footnote is expected to display this string instead of a number after referenced text.</param>
+        /// <param name="expectedContents">Expected side comment provided by the footnote.</param>
+        /// <param name="footnote">Footnote node in question.</param>
+        internal static void VerifyFootnote(FootnoteType expectedFootnoteType, bool expectedIsAuto, string expectedReferenceMark, string expectedContents, Footnote footnote)
         {
             #if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
-            #endif
                 Assert.AreEqual(expectedFootnoteType, footnote.FootnoteType);
                 Assert.AreEqual(expectedIsAuto, footnote.IsAuto);
                 Assert.AreEqual(expectedReferenceMark, footnote.ReferenceMark);
                 Assert.AreEqual(expectedContents, footnote.ToString(SaveFormat.Text).Trim());
-            #if NET462 || NETCOREAPP2_1 || JAVA
             });
+            #elif __MOBILE__
+            Assert.AreEqual(expectedFootnoteType, footnote.FootnoteType);
+            Assert.AreEqual(expectedIsAuto, footnote.IsAuto);
+            Assert.AreEqual(expectedReferenceMark, footnote.ReferenceMark);
+            Assert.AreEqual(expectedContents, footnote.ToString(SaveFormat.Text).Trim());
             #endif
         }
 
-            /// <summary>
-            /// Checks whether values of a list level's attributes are equal to their expected values.
-            /// </summary>
-            /// <remarks>
-            /// Only necessary for list levels that have been explicitly created by the user.
-            /// </remarks>
-            /// <param name="expectedListFormat">Expected format for the list symbol.</param>
-            /// <param name="expectedNumberPosition">Expected indent for this level, usually growing larger with each level.</param>
-            /// <param name="expectedNumberStyle"></param>
-            /// <param name="listLevel">List level in question.</param>
-            internal static void VerifyListLevel(string expectedListFormat, double expectedNumberPosition, NumberStyle expectedNumberStyle, ListLevel listLevel)
+        /// <summary>
+        /// Checks whether values of a list level's attributes are equal to their expected values.
+        /// </summary>
+        /// <remarks>
+        /// Only necessary for list levels that have been explicitly created by the user.
+        /// </remarks>
+        /// <param name="expectedListFormat">Expected format for the list symbol.</param>
+        /// <param name="expectedNumberPosition">Expected indent for this level, usually growing larger with each level.</param>
+        /// <param name="expectedNumberStyle"></param>
+        /// <param name="listLevel">List level in question.</param>
+        internal static void VerifyListLevel(string expectedListFormat, double expectedNumberPosition, NumberStyle expectedNumberStyle, ListLevel listLevel)
         {
             #if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
-            #endif
                 Assert.AreEqual(expectedListFormat, listLevel.NumberFormat);
                 Assert.AreEqual(expectedNumberPosition, listLevel.NumberPosition);
                 Assert.AreEqual(expectedNumberStyle, listLevel.NumberStyle);
-            #if NET462 || NETCOREAPP2_1 || JAVA
             });
+            #elif __MOBILE__
+            Assert.AreEqual(expectedListFormat, listLevel.NumberFormat);
+            Assert.AreEqual(expectedNumberPosition, listLevel.NumberPosition);
+            Assert.AreEqual(expectedNumberStyle, listLevel.NumberStyle);
             #endif
         }
 
-            /// <summary>
-            /// Checks whether values of a tab stop's attributes are equal to their expected values.
-            /// </summary>
-            /// <param name="expectedPosition">Expected position on the tab stop ruler, in points.</param>
-            /// <param name="expectedTabAlignment">Expected position where the position is measured from </param>
-            /// <param name="expectedTabLeader">Expected characters that pad the space between the start and end of the tab whitespace.</param>
-            /// <param name="isClear">Whether or no this tab stop clears any tab stops.</param>
-            /// <param name="tabStop">Tab stop that's being tested.</param>
-            internal static void VerifyTabStop(double expectedPosition, TabAlignment expectedTabAlignment, TabLeader expectedTabLeader, bool isClear, TabStop tabStop)
+        /// <summary>
+        /// Checks whether values of a tab stop's attributes are equal to their expected values.
+        /// </summary>
+        /// <param name="expectedPosition">Expected position on the tab stop ruler, in points.</param>
+        /// <param name="expectedTabAlignment">Expected position where the position is measured from </param>
+        /// <param name="expectedTabLeader">Expected characters that pad the space between the start and end of the tab whitespace.</param>
+        /// <param name="isClear">Whether or no this tab stop clears any tab stops.</param>
+        /// <param name="tabStop">Tab stop that's being tested.</param>
+        internal static void VerifyTabStop(double expectedPosition, TabAlignment expectedTabAlignment, TabLeader expectedTabLeader, bool isClear, TabStop tabStop)
         {
             #if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
-            #endif
                 Assert.AreEqual(expectedPosition, tabStop.Position);
                 Assert.AreEqual(expectedTabAlignment, tabStop.Alignment);
                 Assert.AreEqual(expectedTabLeader, tabStop.Leader);
                 Assert.AreEqual(isClear, tabStop.IsClear);
-            #if NET462 || NETCOREAPP2_1 || JAVA
             });
+            #elif __MOBILE__
+            Assert.AreEqual(expectedPosition, tabStop.Position);
+            Assert.AreEqual(expectedTabAlignment, tabStop.Alignment);
+            Assert.AreEqual(expectedTabLeader, tabStop.Leader);
+            Assert.AreEqual(isClear, tabStop.IsClear);
             #endif
         }
 
-            /// <summary>
-            /// Checks whether values of a shape's attributes are equal to their expected values.
-            /// </summary>
-            /// <remarks>
-            /// All dimension measurements are in points.
-            /// </remarks>
-            internal static void VerifyShape(ShapeType expectedShapeType, string expectedName, double expectedWidth, double expectedHeight, double expectedTop, double expectedLeft, Shape shape)
+        /// <summary>
+        /// Checks whether values of a shape's attributes are equal to their expected values.
+        /// </summary>
+        /// <remarks>
+        /// All dimension measurements are in points.
+        /// </remarks>
+        internal static void VerifyShape(ShapeType expectedShapeType, string expectedName, double expectedWidth, double expectedHeight, double expectedTop, double expectedLeft, Shape shape)
         {
             #if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
-            #endif
                 Assert.AreEqual(expectedShapeType, shape.ShapeType);
                 Assert.AreEqual(expectedName, shape.Name);
                 Assert.AreEqual(expectedWidth, shape.Width);
                 Assert.AreEqual(expectedHeight, shape.Height);
                 Assert.AreEqual(expectedTop, shape.Top);
                 Assert.AreEqual(expectedLeft, shape.Left);
-            #if NET462 || NETCOREAPP2_1 || JAVA
             });
+            #elif __MOBILE__
+            Assert.AreEqual(expectedShapeType, shape.ShapeType);
+            Assert.AreEqual(expectedName, shape.Name);
+            Assert.AreEqual(expectedWidth, shape.Width);
+            Assert.AreEqual(expectedHeight, shape.Height);
+            Assert.AreEqual(expectedTop, shape.Top);
+            Assert.AreEqual(expectedLeft, shape.Left);
             #endif
         }
 
-            /// <summary>
-            /// Checks whether values of attributes of a textbox are equal to their expected values.
-            /// </summary>
-            /// <remarks>
-            /// All dimension measurements are in points.
-            /// </remarks>
-            internal static void VerifyTextBox(LayoutFlow expectedLayoutFlow, bool expectedFitShapeToText, TextBoxWrapMode expectedTextBoxWrapMode, double marginTop, double marginBottom, double marginLeft, double marginRight, TextBox textBox)
+        /// <summary>
+        /// Checks whether values of attributes of a textbox are equal to their expected values.
+        /// </summary>
+        /// <remarks>
+        /// All dimension measurements are in points.
+        /// </remarks>
+        internal static void VerifyTextBox(LayoutFlow expectedLayoutFlow, bool expectedFitShapeToText, TextBoxWrapMode expectedTextBoxWrapMode, double marginTop, double marginBottom, double marginLeft, double marginRight, TextBox textBox)
         {
             #if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
-            #endif
                 Assert.AreEqual(expectedLayoutFlow, textBox.LayoutFlow);
                 Assert.AreEqual(expectedFitShapeToText, textBox.FitShapeToText);
                 Assert.AreEqual(expectedTextBoxWrapMode, textBox.TextBoxWrapMode);
@@ -547,8 +572,15 @@ namespace ApiExamples
                 Assert.AreEqual(marginBottom, textBox.InternalMarginBottom);
                 Assert.AreEqual(marginLeft, textBox.InternalMarginLeft);
                 Assert.AreEqual(marginRight, textBox.InternalMarginRight);
-            #if NET462 || NETCOREAPP2_1 || JAVA
             });
+            #elif __MOBILE__
+            Assert.AreEqual(expectedLayoutFlow, textBox.LayoutFlow);
+            Assert.AreEqual(expectedFitShapeToText, textBox.FitShapeToText);
+            Assert.AreEqual(expectedTextBoxWrapMode, textBox.TextBoxWrapMode);
+            Assert.AreEqual(marginTop, textBox.InternalMarginTop);
+            Assert.AreEqual(marginBottom, textBox.InternalMarginBottom);
+            Assert.AreEqual(marginLeft, textBox.InternalMarginLeft);
+            Assert.AreEqual(marginRight, textBox.InternalMarginRight);
             #endif
         }
 
