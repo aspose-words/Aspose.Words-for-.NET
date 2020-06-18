@@ -14,10 +14,12 @@ using Aspose.Words.Markup;
 using NUnit.Framework;
 using System.Linq;
 using System.Text;
-using Aspose.Pdf.Text; //INSP: Not supported by Xamarin
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
+#if NET462 || NETCOREAPP2_1 || JAVA
+using Aspose.Pdf.Text;
+#endif
 
 namespace ApiExamples
 {
@@ -574,15 +576,14 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.XmlMapping.docx");
             xmlPart = doc.CustomXmlParts[0];
-            Assert.Multiple( () => { //INSP: Not supported by Xamarin NUnitLite
-                Assert.True(Guid.TryParse(xmlPart.Id, out Guid temp));
-                Assert.AreEqual("<root><text>Text element #1</text><text>Text element #2</text></root>", Encoding.UTF8.GetString(xmlPart.Data));
 
-                tag = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
-                Assert.AreEqual("Text element #2", tag.GetText().Trim());
-                Assert.AreEqual("/root[1]/text[2]", tag.XmlMapping.XPath);
-                Assert.AreEqual("xmlns:ns='http://www.w3.org/2001/XMLSchema'", tag.XmlMapping.PrefixMappings);
-            });
+            Assert.True(Guid.TryParse(xmlPart.Id, out Guid temp));
+            Assert.AreEqual("<root><text>Text element #1</text><text>Text element #2</text></root>", Encoding.UTF8.GetString(xmlPart.Data));
+
+            tag = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
+            Assert.AreEqual("Text element #2", tag.GetText().Trim());
+            Assert.AreEqual("/root[1]/text[2]", tag.XmlMapping.XPath);
+            Assert.AreEqual("xmlns:ns='http://www.w3.org/2001/XMLSchema'", tag.XmlMapping.PrefixMappings);
         }
 
         [Test]
@@ -801,12 +802,14 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf", options);
             //ExEnd
 
+#if NET462 || NETCOREAPP2_1 || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
             Assert.AreEqual(updateSdtContent ? "Value 2" : "Click here to enter a date.\r\nChoose an item.",
                 textAbsorber.Text);
+#endif
         }
 
         [Test]

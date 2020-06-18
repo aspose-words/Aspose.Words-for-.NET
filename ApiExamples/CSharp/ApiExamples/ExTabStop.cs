@@ -15,7 +15,47 @@ namespace ApiExamples
     public class ExTabStop : ApiExampleBase
     {
         [Test]
-        public void TabStops()
+        public void AddTabStops()
+        {
+            //ExStart
+            //ExFor:TabStopCollection.Add(TabStop)
+            //ExFor:TabStopCollection.Add(Double, TabAlignment, TabLeader)
+            //ExSummary:Shows how to add tab stops to a document and set their positions.
+            Document doc = new Document();
+            Paragraph paragraph = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+
+            // Create a TabStop object and add it to the document
+            TabStop tabStop = new TabStop(ConvertUtil.InchToPoint(3), TabAlignment.Left, TabLeader.Dashes);
+            paragraph.ParagraphFormat.TabStops.Add(tabStop);
+
+            // Add a tab stop without explicitly creating new TabStop objects
+            paragraph.ParagraphFormat.TabStops.Add(ConvertUtil.MillimeterToPoint(100), TabAlignment.Left,
+                TabLeader.Dashes);
+
+            // Add tab stops at 5 cm to all paragraphs
+            foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
+            {
+                para.ParagraphFormat.TabStops.Add(ConvertUtil.MillimeterToPoint(50), TabAlignment.Left,
+                    TabLeader.Dashes);
+            }
+
+            // Insert text with tabs that demonstrate the tab stops
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Start\tTab 1\tTab 2\tTab 3\tTab 4");
+
+            doc.Save(ArtifactsDir + "TabStopCollection.AddTabStops.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "TabStopCollection.AddTabStops.docx");
+            TabStopCollection tabStops = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.TabStops;
+
+            TestUtil.VerifyTabStop(141.75d, TabAlignment.Left, TabLeader.Dashes, false, tabStops[0]);
+            TestUtil.VerifyTabStop(216.0d, TabAlignment.Left, TabLeader.Dashes, false, tabStops[1]);
+            TestUtil.VerifyTabStop(283.45d, TabAlignment.Left, TabLeader.Dashes, false, tabStops[2]);
+        }
+
+        [Test]
+        public void TabStopCollection()
         {
             //ExStart
             //ExFor:TabStop.#ctor
@@ -33,7 +73,7 @@ namespace ApiExamples
             //ExFor:TabStopCollection.GetHashCode
             //ExFor:TabStopCollection.Item(Double)
             //ExFor:TabStopCollection.Item(Int32)
-            //ExSummary:Shows how to add tab stops to a document. //INSP: The same with AddTabStops
+            //ExSummary:Shows how to work with a document's collection of tab stops.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -68,10 +108,10 @@ namespace ApiExamples
 
             Assert.AreEqual(0, paragraphs[1].ParagraphFormat.TabStops.Count);
 
-            doc.Save(ArtifactsDir + "TabStopCollection.TabStops.docx");
+            doc.Save(ArtifactsDir + "TabStopCollection.TabStopCollection.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "TabStopCollection.TabStops.docx");
+            doc = new Document(ArtifactsDir + "TabStopCollection.TabStopCollection.docx");
             tabStops = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.TabStops;
 
             Assert.AreEqual(2, tabStops.Count);
@@ -81,46 +121,6 @@ namespace ApiExamples
             tabStops = doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.TabStops;
 
             Assert.AreEqual(0, tabStops.Count);
-        }
-
-        [Test]
-        public void AddTabStops()
-        {
-            //ExStart
-            //ExFor:TabStopCollection.Add(TabStop)
-            //ExFor:TabStopCollection.Add(Double, TabAlignment, TabLeader)
-            //ExSummary:Shows how to add tab stops to a document.
-            Document doc = new Document();
-            Paragraph paragraph = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
-
-            // Create a TabStop object and add it to the document
-            TabStop tabStop = new TabStop(ConvertUtil.InchToPoint(3), TabAlignment.Left, TabLeader.Dashes);
-            paragraph.ParagraphFormat.TabStops.Add(tabStop);
-
-            // Add a tab stop without explicitly creating new TabStop objects
-            paragraph.ParagraphFormat.TabStops.Add(ConvertUtil.MillimeterToPoint(100), TabAlignment.Left,
-                TabLeader.Dashes);
-
-            // Add tab stops at 5 cm to all paragraphs
-            foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
-            {
-                para.ParagraphFormat.TabStops.Add(ConvertUtil.MillimeterToPoint(50), TabAlignment.Left,
-                    TabLeader.Dashes);
-            }
-
-            // Insert text with tabs that demonstrate the tab stops
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("Start\tTab 1\tTab 2\tTab 3\tTab 4");
-
-            doc.Save(ArtifactsDir + "TabStopCollection.AddTabStops.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "TabStopCollection.AddTabStops.docx");
-            TabStopCollection tabStops = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.TabStops;
-
-            TestUtil.VerifyTabStop(141.75d, TabAlignment.Left, TabLeader.Dashes, false, tabStops[0]);
-            TestUtil.VerifyTabStop(216.0d, TabAlignment.Left, TabLeader.Dashes, false, tabStops[1]);
-            TestUtil.VerifyTabStop(283.45d, TabAlignment.Left, TabLeader.Dashes, false, tabStops[2]);
         }
 
         [Test]

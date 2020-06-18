@@ -992,7 +992,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Table.AllowCellSpacing
             //ExFor:Table.CellSpacing
-            //ExSummary: //INSP: Please add summary
+            //ExSummary:Shows how to enable spacing between individual cells in a table.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
