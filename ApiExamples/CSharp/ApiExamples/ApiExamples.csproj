@@ -90,7 +90,7 @@
     <Content Include="ExStyles.cs" />
     <Content Include="ExTable.cs" />
     <Content Include="ExTableColumn.cs" />
-    <Content Include="ExTabStopCollection.cs" />
+    <Content Include="ExTabStop.cs" />
     <Content Include="ExRtfLoadOptions.cs" />
     <Content Include="ExThemes.cs" />
     <Content Include="ExTxtLoadOptions.cs" />
@@ -99,7 +99,6 @@
     <Content Include="ExVariableCollection.cs" />
     <Content Include="ExDocumentVisitor.cs" />
     <Content Include="ExViewOptions.cs" />
-    <Content Include="ExWarningInfoCollection.cs" />
     <Content Include="ExXamlFixedSaveOptions.cs" />
     <Content Include="ExXamlFlowSaveOptions.cs" />
     <Content Include="ExXpsSaveOptions.cs" />

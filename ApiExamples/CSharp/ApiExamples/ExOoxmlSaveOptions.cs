@@ -81,7 +81,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void RestartingDocumentList(bool doRestartListAtEachSection)
@@ -146,7 +145,6 @@ namespace ApiExamples
             Assert.True(documentTimeBeforeSave < documentTimeAfterSave);
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void KeepLegacyControlChars(bool doKeepLegacyControlChars)
