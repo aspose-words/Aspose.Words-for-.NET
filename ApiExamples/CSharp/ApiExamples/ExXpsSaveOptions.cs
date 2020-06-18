@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -14,18 +15,35 @@ namespace ApiExamples
     [TestFixture]
     public class ExXpsSaveOptions : ApiExampleBase
     {
-        [Test]
-        public void OptimizeOutput()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void OptimizeOutput(bool optimizeOutput)
         {
             //ExStart
             //ExFor:FixedPageSaveOptions.OptimizeOutput
             //ExSummary:Shows how to optimize document objects while saving to xps.
             Document doc = new Document(MyDir + "Unoptimized document.docx");
 
-            XpsSaveOptions saveOptions = new XpsSaveOptions { OptimizeOutput = false };
+            // When saving to .xps, we can use SaveOptions to optimize the output in some cases
+            XpsSaveOptions saveOptions = new XpsSaveOptions { OptimizeOutput = optimizeOutput };
 
-            doc.Save(ArtifactsDir + "XpsSaveOptions.OptimizeOutputF.xps", saveOptions);
+            doc.Save(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", saveOptions);
+
+            // The input document had adjacent runs with the same formatting, which, if output optimization was enabled, have been combined to save space
+            FileInfo outFileInfo = new FileInfo(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps");
+
+            if (optimizeOutput)
+                Assert.True(outFileInfo.Length < 45000);
+            else
+                Assert.True(outFileInfo.Length > 60000);
             //ExEnd
+
+            if (optimizeOutput)
+                TestUtil.DocPackageFileContainsString("Glyphs OriginX=\"34.294998169\" OriginY=\"10.31799984\" UnicodeString=\"This document contains complex content which can be optimized to save space when \"", 
+                    ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", "1.fpage");
+            else
+                TestUtil.DocPackageFileContainsString("<Glyphs OriginX=\"34.294998169\" OriginY=\"10.31799984\" UnicodeString=\"This\"",
+                    ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", "1.fpage");
         }
     }
 }
