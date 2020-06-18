@@ -14,7 +14,7 @@ using Aspose.Words.Markup;
 using NUnit.Framework;
 using System.Linq;
 using System.Text;
-using Aspose.Pdf.Text;
+using Aspose.Pdf.Text; //INSP: Not supported by Xamarin
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
@@ -574,7 +574,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.XmlMapping.docx");
             xmlPart = doc.CustomXmlParts[0];
-            Assert.Multiple( () => {
+            Assert.Multiple( () => { //INSP: Not supported by Xamarin NUnitLite
                 Assert.True(Guid.TryParse(xmlPart.Id, out Guid temp));
                 Assert.AreEqual("<root><text>Text element #1</text><text>Text element #2</text></root>", Encoding.UTF8.GetString(xmlPart.Data));
 

@@ -272,8 +272,8 @@
     <Compile Include="..\..\..\ApiExamples\ExTableColumn.cs">
       <Link>ExTableColumn.cs</Link>
     </Compile>
-    <Compile Include="..\..\..\ApiExamples\ExTabStopCollection.cs">
-      <Link>ExTabStopCollection.cs</Link>
+    <Compile Include="..\..\..\ApiExamples\ExTabStop.cs">
+      <Link>ExTabStop.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExThemes.cs">
       <Link>ExThemes.cs</Link>
@@ -292,9 +292,6 @@
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExViewOptions.cs">
       <Link>ExViewOptions.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\ApiExamples\ExWarningInfoCollection.cs">
-      <Link>ExWarningInfoCollection.cs</Link>
     </Compile>
     <Compile Include="..\..\..\ApiExamples\ExXamlFixedSaveOptions.cs">
       <Link>ExXamlFixedSaveOptions.cs</Link>

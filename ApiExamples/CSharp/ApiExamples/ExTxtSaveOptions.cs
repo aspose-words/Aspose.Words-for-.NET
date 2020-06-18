@@ -196,7 +196,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a bulleted list with three levels of indentation
+            // Create a bulleted list with five levels of indentation
             builder.ListFormat.ApplyBulletDefault();
             builder.Writeln("Item 1");
             builder.ListFormat.ListIndent();

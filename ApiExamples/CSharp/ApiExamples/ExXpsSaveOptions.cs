@@ -29,7 +29,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", saveOptions);
 
-            // The input document had adjacent runs with the same formatting, which, if output optimization was enabled, have been combined to save space
+            // The input document had adjacent runs with the same formatting, which, if output optimization was enabled,
+            // have been combined to save space
             FileInfo outFileInfo = new FileInfo(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps");
 
             if (optimizeOutput)
@@ -38,12 +39,12 @@ namespace ApiExamples
                 Assert.True(outFileInfo.Length > 60000);
             //ExEnd
 
-            if (optimizeOutput)
-                TestUtil.DocPackageFileContainsString("Glyphs OriginX=\"34.294998169\" OriginY=\"10.31799984\" UnicodeString=\"This document contains complex content which can be optimized to save space when \"", 
-                    ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", "1.fpage");
-            else
-                TestUtil.DocPackageFileContainsString("<Glyphs OriginX=\"34.294998169\" OriginY=\"10.31799984\" UnicodeString=\"This\"",
-                    ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", "1.fpage");
+            TestUtil.DocPackageFileContainsString(
+                optimizeOutput
+                    ? "Glyphs OriginX=\"34.294998169\" OriginY=\"10.31799984\" " +
+                      "UnicodeString=\"This document contains complex content which can be optimized to save space when \""
+                    : "<Glyphs OriginX=\"34.294998169\" OriginY=\"10.31799984\" UnicodeString=\"This\"",
+                ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", "1.fpage");
         }
     }
 }

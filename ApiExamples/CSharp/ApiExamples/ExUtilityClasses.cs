@@ -141,7 +141,6 @@ namespace ApiExamples
             Assert.AreEqual(225.0d, ConvertUtil.PointToPixel(pageSetup.LeftMargin), 0.01d);
             Assert.AreEqual(93.75d, pageSetup.RightMargin, 0.01d);
             Assert.AreEqual(125.0d, ConvertUtil.PointToPixel(pageSetup.RightMargin), 0.01d);
-            //ExEnd
         }
 
         [Test]

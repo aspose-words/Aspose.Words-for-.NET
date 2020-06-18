@@ -73,7 +73,7 @@ namespace ApiExamples
 
             Assert.False(doc.ViewOptions.DisplayBackgroundShape);
         }
-        
+
         [Test]
         public void DisplayPageBoundaries()
         {
@@ -132,7 +132,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ViewOptions.FormsDesign.xml", options);
 
-            Assert.AreEqual(useFormsDesign, File.ReadAllText(ArtifactsDir + "ViewOptions.FormsDesign.xml").Contains("<w:formsDesign />"));
+            Assert.AreEqual(useFormsDesign,
+                File.ReadAllText(ArtifactsDir + "ViewOptions.FormsDesign.xml").Contains("<w:formsDesign />"));
             //ExEnd
         }
     }

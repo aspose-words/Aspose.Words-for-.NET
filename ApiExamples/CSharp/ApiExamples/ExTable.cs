@@ -992,6 +992,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Table.AllowCellSpacing
             //ExFor:Table.CellSpacing
+            //ExSummary: //INSP: Please add summary
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

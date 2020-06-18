@@ -5,7 +5,6 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System;
 using System.Linq;
 using Aspose.Words;
 using NUnit.Framework;
@@ -34,7 +33,7 @@ namespace ApiExamples
             //ExFor:TabStopCollection.GetHashCode
             //ExFor:TabStopCollection.Item(Double)
             //ExFor:TabStopCollection.Item(Int32)
-            //ExSummary:Shows how to add tab stops to a document.
+            //ExSummary:Shows how to add tab stops to a document. //INSP: The same with AddTabStops
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
