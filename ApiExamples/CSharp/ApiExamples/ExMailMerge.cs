@@ -922,8 +922,8 @@ namespace ApiExamples
             // Create a document and table that we will merge
             Document doc = CreateSourceDocMappedDataFields();
             DataTable dataTable = CreateSourceTableMappedDataFields();
-            
-            // We have a column "Column2" in the data table that doesn't have a respective MERGEFIELD in the document
+
+            // We have a column "Column2" in the data table that does not have a respective MERGEFIELD in the document
             // Also, we have a MERGEFIELD named "Column3" that does not exist as a column in the data source
             // If data from "Column2" is suitable for the "Column3" MERGEFIELD,
             // we can map that column name to the MERGEFIELD in the "MappedDataFields" key/value pair

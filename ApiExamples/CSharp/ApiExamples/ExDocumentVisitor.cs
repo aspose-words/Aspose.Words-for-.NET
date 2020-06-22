@@ -259,7 +259,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// This Visitor implementation prints information about and contents of all tables encountered in the document.
+        /// This Visitor implementation prints prints information and contents of all tables encountered in the document.
         /// </summary>
         public class TableInfoPrinter : DocumentVisitor
         {
@@ -282,8 +282,8 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
-                // We want to print the contents of runs, but only if they consist of text from cells
-                // So we are only interested in runs that are children of table nodes
+                // Since we want to print the contents of runs, but only if they consist of text from cells,
+                // we are only interested in runs that are children of table nodes
                 if (mVisitorIsInsideTable) IndentAndAppendLine("[Run] \"" + run.GetText() + "\"");
 
                 return VisitorAction.Continue;
@@ -441,7 +441,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// This Visitor implementation prints information about and contents of comments and comment ranges encountered in the document.
+        /// This Visitor implementation prints prints information and contents of all comments and comment ranges encountered in the document.
         /// </summary>
         public class CommentInfoPrinter : DocumentVisitor
         {

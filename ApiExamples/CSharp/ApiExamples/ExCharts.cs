@@ -1051,7 +1051,7 @@ namespace ApiExamples
             Chart chart = shape.Chart;
 
             // Get the Y-axis to cross at a value of 3.0, making 3.0 the new Y-zero of our column chart
-            // This effectively means that all the columns with Y-values about 3.0 will be above the Y-centre and point up,
+            // This effectively means that all the columns with Y-values about 3.0 will be above the Y-center and point up,
             // while ones below 3.0 will point down
             ChartAxis axis = chart.AxisX;
             axis.AxisBetweenCategories = true;

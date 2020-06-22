@@ -274,7 +274,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// This Visitor implementation prints information about and contents of comments and comment ranges encountered in the document.
+        /// This Visitor implementation prints information and contents of all comments and comment ranges encountered in the document.
         /// </summary>
         public class CommentInfoPrinter : DocumentVisitor
         {

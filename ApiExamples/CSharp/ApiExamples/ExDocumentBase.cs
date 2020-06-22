@@ -186,7 +186,7 @@ namespace ApiExamples
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // We usually insert images as a uri or byte array, but there are many other possibilities with ResourceLoadingCallback
+            // We usually insert images as a URI or byte array, but there are many other possibilities with ResourceLoadingCallback
             // In this case we are referencing images with simple names and keep the image fetching logic somewhere else
             builder.InsertImage("Google Logo");
             builder.InsertImage("Aspose Logo");
@@ -205,7 +205,7 @@ namespace ApiExamples
             {
                 if (args.ResourceType == ResourceType.Image)
                 {
-                    // builder.InsertImage expects a uri so inputs like "Google Logo" would normally trigger a FileNotFoundException
+                    // builder.InsertImage expects a URI so inputs like "Google Logo" would normally trigger a FileNotFoundException
                     // We can still process those inputs and find an image any way we like, as long as an image byte array is passed to args.SetData()
                     if (args.OriginalUri == "Google Logo")
                     {
@@ -242,7 +242,7 @@ namespace ApiExamples
                     }
                 }
 
-                // All other resources such as documents, CSS stylesheets and images passed as uris are handled as they were normally
+                // All other resources such as documents, CSS stylesheets and images passed as URIs are handled as they were normally
                 return ResourceLoadingAction.Default;
             }
         }

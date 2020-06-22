@@ -1830,7 +1830,7 @@ namespace ApiExamples
             // and the "M+ 2m" font in every place that none of the other fonts cover
             fontFallbackSettings.Load(MyDir + "Custom font fallback settings.xml");
 
-            // Create a document builder and set its font to one that doesn't exist in any of our sources
+            // Create a document builder and set its font to one that does not exist in any of our sources
             // In doing that we will rely completely on our font fallback scheme to render text
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Font.Name = "Missing Font";

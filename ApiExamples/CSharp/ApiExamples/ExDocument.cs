@@ -371,7 +371,7 @@ namespace ApiExamples
             //ExFor:LoadOptions.#ctor(LoadFormat, String, String)
             //ExFor:LoadFormat
             //ExSummary:Shows how to insert the HTML contents from a web page into a new document.
-            // The url of the page to load 
+            // The URL of the page to load 
             const string url = "http://www.aspose.com/";
             
             // Create a WebClient object to easily extract the HTML from the page
@@ -386,7 +386,7 @@ namespace ApiExamples
             // Load the HTML into a stream
             using (MemoryStream stream = new MemoryStream(pageBytes))
             {
-                // The baseUri property should be set to ensure any relative img paths are retrieved correctly
+                // The baseUri property should be set to ensure any relative image paths are retrieved correctly
                 LoadOptions options = new LoadOptions(Aspose.Words.LoadFormat.Html, "", url);
 
                 // Load the HTML document from stream and pass the LoadOptions object
@@ -681,7 +681,7 @@ namespace ApiExamples
 
             // Specify at what elements to split the internal HTML at. This creates a new HTML within the EPUB 
             // which allows you to limit the size of each HTML part. This is useful for readers which cannot read 
-            // HTML files greater than a certain size e.g 300kb
+            // HTML files greater than a certain size, such as 300kb
             saveOptions.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph;
 
             // Specify that we want to export document properties
@@ -3098,7 +3098,7 @@ namespace ApiExamples
             Assert.IsFalse(doc.WriteProtection.IsWriteProtected); //ExSkip
             Assert.IsFalse(doc.WriteProtection.ReadOnlyRecommended); //ExSkip
 
-            // Enter a password that's up to 15 characters long
+            // Enter a password that is up to 15 characters long
             doc.WriteProtection.SetPassword("MyPassword");
 
             Assert.IsTrue(doc.WriteProtection.IsWriteProtected);
@@ -3673,8 +3673,8 @@ namespace ApiExamples
             VbaProject copyVbaProject = doc.VbaProject.Clone();
             destDoc.VbaProject = copyVbaProject;
 
-            // In destination document we already have "Module1", because he was cloned with VbaProject
-            // Therefore need to remove it before cloning
+            // In destination document we already have "Module1", because it was cloned with VbaProject
+            // We will need to remove it before cloning
             VbaModule oldVbaModule = destDoc.VbaProject.Modules["Module1"];
             VbaModule copyVbaModule = doc.VbaProject.Modules["Module1"].Clone();
             destDoc.VbaProject.Modules.Remove(oldVbaModule);

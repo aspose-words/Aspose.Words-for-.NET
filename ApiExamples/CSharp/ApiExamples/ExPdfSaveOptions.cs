@@ -753,7 +753,7 @@ namespace ApiExamples
             //ExSummary:Shows how to export custom properties while saving to .pdf.
             Document doc = new Document();
 
-            // Add a custom document property that doesn't use the name of some built in properties
+            // Add a custom document property that does not use the name of some built in properties
             doc.CustomDocumentProperties.Add("Company", "My value");
             
             // Configure the PdfSaveOptions like this will display the properties

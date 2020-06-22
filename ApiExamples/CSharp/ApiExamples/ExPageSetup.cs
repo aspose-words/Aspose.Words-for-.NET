@@ -727,7 +727,7 @@ namespace ApiExamples
             }
 
             // Set the number of sheets that will be used by the printer to create the booklet
-            // After being printed on both sides, the sheets can be stacked and folded down the centre
+            // After being printed on both sides, the sheets can be stacked and folded down the middle
             // The contents that we placed in such a way that they will be in order once the booklet is folded
             // We can only specify the number of sheets in multiples of 4
             PageSetup pageSetup = doc.Sections[0].PageSetup;

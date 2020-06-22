@@ -2667,13 +2667,13 @@ namespace ApiExamples
             // When field codes are not showing
             Assert.AreEqual(DateTime.Today, DateTime.Parse(dateField.Result));
 
-            // Display the field code which defines the behavior of the field. This can been seen in Microsoft Word by pressing ALT+F9
+            // Display the field code which defines the behavior of the field. This can be seen in Microsoft Word by pressing ALT+F9
             Assert.AreEqual(@"DATE \* MERGEFORMAT", dateField.GetFieldCode());
 
             // The field type defines what type of field in the Document this is. In this case the type is "FieldDate" 
             Assert.AreEqual(FieldType.FieldDate, dateField.Type);
 
-            // Finally let's completely remove the field from the document. This can easily be done by invoking the Remove method on the object
+            // We can also invoke the Remove method on the field to remove it from the document
             dateField.Remove();
             //ExEnd			
 
@@ -2934,16 +2934,15 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Let's take a spreadsheet from our system and insert it into the document
+            // Insert a Microsoft Excel spreadsheet from the local file system into the document
             using (Stream spreadsheetStream = File.Open(MyDir + "Spreadsheet.xlsx", FileMode.Open))
             {
-                // The spreadsheet can be activated by double clicking the panel that you'll see in the document immediately under the text we will add
-                // We did not set the area to double click as an icon nor did we change its appearance so it looks like a simple panel
+                // The spreadsheet can be activated by double clicking the panel in the document immediately under the text we will add
+                // We did not set the area to double click as an icon nor did we change its appearance, so it looks like a simple panel
                 builder.Writeln("Spreadsheet Ole object:");
                 builder.InsertOleObject(spreadsheetStream, "OleObject.xlsx", false, null);
 
-                // A powerpoint presentation is another type of object we can embed in our document
-                // This time we'll also exercise some control over how it looks 
+                // A Microsoft Powerpoint presentation is another type of object we can embed in our document
                 using (Stream powerpointStream = File.Open(MyDir + "Presentation.pptx", FileMode.Open))
                 {
                     // If we insert the Ole object as an icon, we are still provided with a default icon
@@ -2955,6 +2954,8 @@ namespace ApiExamples
                         #if NETCOREAPP2_1 || __MOBILE__
                         
                         SKBitmap bitmap = SKBitmap.Decode(imgBytes);
+                        
+                        // If we double click the image, the presentation will open
                         builder.InsertParagraph();
                         builder.Writeln("Powerpoint Ole object:");
                         builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, bitmap);
@@ -2965,7 +2966,7 @@ namespace ApiExamples
                         {
                             using (Image image = Image.FromStream(stream))
                             {
-                                // If we double click the image, the powerpoint presentation will open
+                                // If we double click the image, the presentation will open
                                 builder.InsertParagraph();
                                 builder.Writeln("Powerpoint Ole object:");
                                 builder.InsertOleObject(powerpointStream, "OleObject.pptx", true, image);
@@ -3009,9 +3010,9 @@ namespace ApiExamples
             // Insert a style separator
             builder.InsertStyleSeparator();
 
-            // The style separator appears in the form of a paragraph break that doesn't start a new line
+            // The style separator appears in the form of a paragraph break that does not start a new line
             // So, while this looks like one continuous paragraph with two styles in the output document, 
-            // it is actually two paragraphs with different styles, but no line break between the first and second paragraph
+            // in reality it is two paragraphs with different styles, but no line break between the first and second paragraph
             Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
 
             // Append text with another style
@@ -3082,7 +3083,7 @@ namespace ApiExamples
             srcDoc.Styles["MyStyle"].Font.Color = Color.Red;
 
             // When SmartStyleBehavior is enabled,
-            // a source style will be expanded into a direct attributes inside a destination document,
+            // a source style will be expanded into a direct attribute inside a destination document,
             // if KeepSourceFormatting importing mode is used
             ImportFormatOptions options = new ImportFormatOptions();
             options.SmartStyleBehavior = true;
@@ -3117,7 +3118,7 @@ namespace ApiExamples
             builder.Font.Italic = true;
             builder.Writeln("This text will be italic");
             
-            // Use clear formatting if don't want to combine styles between paragraphs
+            // Use clear formatting if we don't want to combine styles between paragraphs
             builder.Font.ClearFormatting();
             
             builder.Font.Bold = true;
@@ -3125,7 +3126,7 @@ namespace ApiExamples
             
             builder.Font.ClearFormatting();
             
-            // You can also write create BoldItalic text
+            // You can also create bold and italic text
             builder.Font.Italic = true;
             builder.Write("You ");
             builder.Font.Bold = true;
@@ -3190,7 +3191,7 @@ namespace ApiExamples
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln("\n");
             
-            // By default Heading styles in Word may have bold and italic formatting
+            // By default, Heading styles in Word may have bold and italic formatting
             // If we do not want text to be emphasized, set these properties explicitly to false
             // Thus we can't use 'builder.Font.ClearFormatting()' because Bold/Italic will be set to true
             builder.Font.Bold = false;
@@ -3265,7 +3266,7 @@ namespace ApiExamples
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln("\n");
 
-            // By default document stores blockquote style for the first level
+            // By default, the document stores blockquote style for the first level
             builder.ParagraphFormat.StyleName = "Quote";
             builder.Writeln("Blockquote");
             
@@ -3402,7 +3403,7 @@ namespace ApiExamples
             // Bulleted lists are represented using paragraph numbering
             builder.ListFormat.ApplyBulletDefault();
             // There can be 3 types of bulleted lists
-            // The only diff in a numbering format of the very first level are: ‘-’, ‘+’ or ‘*’ respectively
+            // The only diff in a numbering format of the very first level are ‘-’, ‘+’ or ‘*’ respectively
             builder.ListFormat.List.ListLevels[0].NumberFormat = "-";
             
             builder.Writeln("Item 1");
@@ -3517,7 +3518,7 @@ namespace ApiExamples
                         double left = builder.PageSetup.RightMargin - image.Width;
                         double top = builder.PageSetup.BottomMargin - image.Height;
 
-                        // Here we use a custom thumbnail and relative positioning to put it and the bottom right of tha page
+                        // Here we use a custom thumbnail and relative positioning to put it and the bottom right of the page
                         builder.Writeln("Bottom right of page with custom thumbnail:");
 
                         builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes,

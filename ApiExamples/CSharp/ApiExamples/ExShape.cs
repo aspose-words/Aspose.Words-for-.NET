@@ -147,7 +147,7 @@ namespace ApiExamples
             shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
             shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
 
-            // Calculate image left and top position so it appears in the centre of the page
+            // Calculate image left and top position so it appears in the center of the page
             shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
             shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
@@ -178,7 +178,7 @@ namespace ApiExamples
                     shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
                     shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
 
-                    // Calculate image left and top position so it appears in the centre of the page
+                    // Calculate image left and top position so it appears in the center of the page
                     shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
                     shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
@@ -213,7 +213,7 @@ namespace ApiExamples
             shape.DistanceLeft = 40.0;
             shape.DistanceRight = 40.0;
 
-            // Move the shape closer to the centre of the page
+            // Move the shape closer to the center of the page
             shape.Left = 100.0;
             shape.Top = 100.0;
 
@@ -269,7 +269,7 @@ namespace ApiExamples
             // If we insert a child shape and set its distance from the left to 2000 and the distance from the top to 1000,
             // its origin will be at the bottom right corner of the shape group
             // We can offset the coordinate origin by setting the CoordOrigin attribute
-            // In this instance, we move the origin to the centre of the shape group
+            // In this instance, we move the origin to the center of the shape group
             group.CoordOrigin = new Point(-1000, -500);
             
             // Populate the shape group with child shapes
@@ -278,7 +278,7 @@ namespace ApiExamples
             subShape.Width = 500;
             subShape.Height = 700;
 
-            // Place its top left corner at the parent group's coordinate origin, which is currently at its centre
+            // Place its top left corner at the parent group's coordinate origin, which is currently at its center
             subShape.Left = 0;
             subShape.Top = 0;
 
