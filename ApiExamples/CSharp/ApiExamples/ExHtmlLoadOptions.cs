@@ -102,7 +102,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Stores all warnings occuring during a document loading operation in a list.
+        /// Stores all warnings that occur during a document loading operation in a List.
         /// </summary>
         private class ListDocumentWarnings : IWarningCallback
         {
@@ -209,7 +209,7 @@ namespace ApiExamples
                 </html>
             ";
 
-            // By default "HtmlLoadOptions.PreferredControlType" value is "HtmlControlType.FormField"
+            // By default, "HtmlLoadOptions.PreferredControlType" value is "HtmlControlType.FormField"
             // So, we do not set this value
             HtmlLoadOptions htmlLoadOptions = new HtmlLoadOptions();
 

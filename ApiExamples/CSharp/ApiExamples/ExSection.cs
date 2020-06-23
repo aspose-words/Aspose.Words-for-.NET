@@ -124,17 +124,16 @@ namespace ApiExamples
             // Append the section to the document
             doc.AppendChild(section);
 
-            // Lets set some properties for the section
+            // Set some properties for the section
             section.PageSetup.SectionStart = SectionStart.NewPage;
             section.PageSetup.PaperSize = PaperSize.Letter;
 
-            // The section that we created is empty, lets populate it. The section needs at least the Body node
+            // A section needs a body, which will contain all other nodes that can be edited
             Body body = new Body(doc);
             section.AppendChild(body);
 
             // The body needs to have at least one paragraph
-            // Note that the paragraph has not yet been added to the document, 
-            // but we have to specify the parent document
+            // Note that the paragraph has not yet been added to the document, but we have to specify the parent document
             // The parent document is needed so the paragraph can correctly work
             // with styles and other document-wide information
             Paragraph para = new Paragraph(doc);
@@ -144,9 +143,7 @@ namespace ApiExamples
             para.ParagraphFormat.StyleName = "Heading 1";
             para.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
-            // So far we have one empty paragraph in the document
-            // The document is valid and can be saved, but lets add some text before saving
-            // Create a new run of text and add it to our paragraph
+            // Now we can begin adding content to the document
             Run run = new Run(doc);
             run.Text = "Hello World!";
             run.Font.Color = Color.Red;
@@ -290,7 +287,7 @@ namespace ApiExamples
             //ExSummary:Shows how to remove all sections from a document.
             Document doc = new Document(MyDir + "Document.docx");
 
-            // All of the document's content is stored in the child nodes of sections like this one
+            // All the document's content is stored in the child nodes of sections like this one
             Assert.AreEqual("Hello World!", doc.GetText().Trim());
             Assert.AreEqual(5, doc.Sections[0].GetChildNodes(NodeType.Any, true).Count);
 

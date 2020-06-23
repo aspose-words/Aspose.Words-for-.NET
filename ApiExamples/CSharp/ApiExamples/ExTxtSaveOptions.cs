@@ -146,7 +146,7 @@ namespace ApiExamples
             // from a file type that supports tables
             // We can preserve some of the table layout in the appearance of our content with the PreserveTableLayout flag
             // The SimplifyListLabels flag will convert some list symbols
-            // into ASCII characters such as *, o, +, > etc, depending on list level
+            // into ASCII characters, such as '*', 'o', '+', '>', depending on list level
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions { SimplifyListLabels = true, PreserveTableLayout = true};
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.Appearance.txt", txtSaveOptions);

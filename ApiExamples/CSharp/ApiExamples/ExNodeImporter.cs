@@ -54,7 +54,7 @@ namespace ApiExamples
                 foreach (Section srcSection in docToInsert.Sections.OfType<Section>())
                     foreach (Node srcNode in srcSection.Body)
                     {
-                        // Let's skip the node if it is a last empty paragraph in a section
+                        // Skip the node if it is a last empty paragraph in a section
                         if (srcNode.NodeType.Equals(NodeType.Paragraph))
                         {
                             Paragraph para = (Paragraph)srcNode;

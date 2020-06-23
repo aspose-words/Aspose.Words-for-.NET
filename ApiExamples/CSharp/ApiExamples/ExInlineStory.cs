@@ -204,8 +204,8 @@ namespace ApiExamples
             Assert.AreEqual(1, footnote.Tables.Count);
             Assert.AreEqual(NodeType.Table, footnote.LastChild.NodeType);
 
-            // An InlineStory has an "EnsureMinimum()" method as well, but in this case it makes sure the last child of the node is a paragraph,
-            // so we can click and write text easily in Microsoft Word
+            // An InlineStory has an "EnsureMinimum()" method as well, but in this case,
+            // it makes sure the last child of the node is a paragraph, in order for us to be able to click and write text easily in Microsoft Word
             footnote.EnsureMinimum();
             Assert.AreEqual(NodeType.Paragraph, footnote.LastChild.NodeType);
 

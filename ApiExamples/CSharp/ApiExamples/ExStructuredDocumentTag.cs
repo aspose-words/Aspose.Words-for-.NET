@@ -117,7 +117,7 @@ namespace ApiExamples
             Assert.That(sdt.XmlMapping.StoreItemId, Is.Empty); //Assert that this sdt has no StoreItemId
         }
 
-#if NET462 || NETCOREAPP2_1 || JAVA // because of xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
+#if NET462 || NETCOREAPP2_1 || JAVA // because of a Xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
         [Test]
         public void Date()
         {
@@ -202,7 +202,7 @@ namespace ApiExamples
             tag.ContentsFont.Name = "Arial";
 
             // Set the font for the text at the end of the StructuredDocumentTag
-            // Any text that's typed in the document body after moving out of the tag with arrow keys will keep this font
+            // Any text that is typed in the document body after moving out of the tag with arrow keys will keep this font
             tag.EndCharacterFont.Name = "Arial Black";
 
             // By default, this is false and pressing enter while inside a StructuredDocumentTag does nothing
@@ -239,7 +239,7 @@ namespace ApiExamples
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
             // If we set its Temporary attribute to true, as soon as we start typing,
-            // the tag will disappear and its contents will be assimilated into the parent Paragraph
+            // the tag will disappear, and its contents will be assimilated into the parent Paragraph
             tag.IsTemporary = true;
 
             // Insert the StructuredDocumentTag with a DocumentBuilder
@@ -274,7 +274,7 @@ namespace ApiExamples
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
             // We can substitute that default placeholder with a custom phrase, which will be drawn from a BuildingBlock
-            // First we will need to create the BuildingBlock, give it content and add it to the GlossaryDocument
+            // First, we will need to create the BuildingBlock, give it content and add it to the GlossaryDocument
             GlossaryDocument glossaryDoc = doc.GlossaryDocument;
 
             BuildingBlock substituteBlock = new BuildingBlock(glossaryDoc);
@@ -358,16 +358,16 @@ namespace ApiExamples
             //ExFor:SdtListItemCollection.SelectedValue
             //ExFor:StructuredDocumentTag.ListItems
             //ExSummary:Shows how to work with StructuredDocumentTag nodes of the DropDownList type.
-            // Create a blank document and insert a StructuredDocumentTag that will contain a drop down list
+            // Create a blank document and insert a StructuredDocumentTag that will contain a drop-down list
             Document doc = new Document();
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.DropDownList, MarkupLevel.Block);
             doc.FirstSection.Body.AppendChild(tag);
 
-            // A drop down list needs elements, each of which will be a SdtListItem
+            // A drop-down list needs elements, each of which will be a SdtListItem
             SdtListItemCollection listItems = tag.ListItems;
             listItems.Add(new SdtListItem("Value 1"));
 
-            // Each SdtListItem has text that will be displayed when the drop down list is opened, and also a value
+            // Each SdtListItem has text that will be displayed when the drop-down list is opened, and also a value
             // When we initialize with one string, we are providing just the value
             // Accordingly, value is passed as DisplayText and will consequently be displayed on the screen
             Assert.AreEqual(listItems[0].DisplayText, listItems[0].Value);
@@ -377,7 +377,7 @@ namespace ApiExamples
             listItems.Add(new SdtListItem("Item 3", "Value 3"));
             listItems.Add(new SdtListItem("Item 4", "Value 4"));
 
-            // We can obtain a count of the SdtListItems and also set the drop down list's SelectedValue attribute to
+            // We can obtain a count of the SdtListItems and also set the drop-down list's SelectedValue attribute to
             // automatically have one of them pre-selected when we open the document in Microsoft Word
             Assert.AreEqual(4, listItems.Count);
             listItems.SelectedValue = listItems[3];
@@ -435,7 +435,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Construct an XML part that contains data and add it to the document's collection
-            // Once the "Developer" tab in Mircosoft Word is enabled,
+            // Once the "Developer" tab in Microsoft Word is enabled,
             // we can find elements from this collection as well as a couple defaults in the "XML Mapping Pane" 
             string xmlPartId = Guid.NewGuid().ToString("B");
             string xmlPartContent = "<root><text>Hello, World!</text></root>";
@@ -559,7 +559,7 @@ namespace ApiExamples
             // and perform other collection-related operations on the list of schemas for this part
             xmlPart.Schemas.Add("http://www.w3.org/2001/XMLSchema");
 
-            // Collections can be cloned and elements can be added
+            // Collections can be cloned, and elements can be added
             CustomXmlSchemaCollection schemas = xmlPart.Schemas.Clone();
             schemas.Add("http://www.w3.org/2001/XMLSchema-instance");
             schemas.Add("http://schemas.microsoft.com/office/2006/metadata/contentType");
@@ -664,7 +664,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Smart tags.doc");
 
             // Smart tags are an older Microsoft Word feature that can automatically detect and tag
-            // any parts of the text that it registers as commonly used information objects such as names, addresses, stock tickers, dates etc
+            // any parts of the text that it registers as commonly used information objects such as names, addresses, stock tickers, dates etc.
             // In Word 2003, smart tags can be turned on in Tools > AutoCorrect options... > SmartTags tab
             // In our input document there are three objects that were registered as smart tags, but since they can be nested, we have 8 in this collection
             NodeCollection smartTags = doc.GetChildNodes(NodeType.SmartTag, true);
@@ -674,12 +674,12 @@ namespace ApiExamples
             SmartTag smartTag = (SmartTag)smartTags[7];
 
             // The Properties attribute, for some smart tags, elaborates on the text object that Word picked up as a smart tag
-            // In the case of our "Date" smart tag, its properties will let us know the year, month and day within the smart tag
+            // In the case of our "Date" smart tag, its properties will let us know the year, month, and day within the smart tag
             CustomXmlPropertyCollection properties = smartTag.Properties;
 
-            // We can enumerate over the collection and print the aforementioned properties to the console
             Assert.AreEqual(4, properties.Count);
 
+            // We can enumerate over the collection and print properties to the console
             using (IEnumerator<CustomXmlProperty> enumerator = properties.GetEnumerator())
             {
                 while (enumerator.MoveNext())
@@ -735,7 +735,7 @@ namespace ApiExamples
             smartTag.Properties.Add(new CustomXmlProperty("Month", "", "5"));
             smartTag.Properties.Add(new CustomXmlProperty("Year", "", "2019"));
 
-            // Set the smart tag's uri to the default
+            // Set the smart tag's URI to the default
             smartTag.Uri = "urn:schemas-microsoft-com:office:smarttags";
 
             doc.FirstSection.Body.FirstParagraph.AppendChild(smartTag);
@@ -754,7 +754,7 @@ namespace ApiExamples
             // Print all the smart tags in our document with a document visitor
             doc.Accept(new SmartTagVisitor());
 
-            // SmartTags are supported by older versions of microsoft Word
+            // SmartTags are supported by older versions of Microsoft Word
             doc.Save(ArtifactsDir + "StructuredDocumentTag.SmartTags.doc");
 
             // We can strip a document of all its smart tags with RemoveSmartTags()
@@ -866,7 +866,7 @@ namespace ApiExamples
             //ExSummary:Shows how structured document tags can be updated while saving to .pdf.
             Document doc = new Document();
 
-            // Insert two StructuredDocumentTags; a date and a drop down list 
+            // Insert two StructuredDocumentTags; a date and a drop-down list 
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.Date, MarkupLevel.Block);
             tag.FullDate = DateTime.Now;
 

@@ -117,7 +117,7 @@ namespace ApiExamples
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
             {
-                // 'ExportListLabels.Auto' - this option uses <ul> and <ol> tags are used for list label representation if it doesn't cause formatting loss, 
+                // 'ExportListLabels.Auto' - this option uses <ul> and <ol> tags are used for list label representation if it does not cause formatting loss, 
                 // otherwise HTML <p> tag is used. This is also the default value
                 // 'ExportListLabels.AsInlineText' - using this option the <p> tag is used for any list label representation
                 // 'ExportListLabels.ByHtmlTags' - The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible
@@ -435,7 +435,7 @@ namespace ApiExamples
             
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
             {
-                // By default this option is set to 'False' and Aspose.Words writes font names as specified in the source document
+                // By default, this option is set to 'False' and Aspose.Words writes font names as specified in the source document
                 ResolveFontNames = true 
             };
 
@@ -595,7 +595,7 @@ namespace ApiExamples
             builder.Writeln("Heading #6");
 
             // Epub readers normally treat paragraphs with "Heading" styles as anchors for a table of contents-style navigation pane
-            // We set a maximum heading level above which headings won't be registered by the reader as navigation points with
+            // We set a maximum heading level above which headings will not be registered by the reader as navigation points with
             // a HtmlSaveOptions object and its EpubNavigationLevel attribute
             // Our document has headings of levels 1 to 3,
             // but our output epub will only place level 1 and 2 headings in the table of contents
@@ -659,7 +659,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // By default, when converting a document with images to .html, resources such as images will be linked to in external files
-            // We can set these flags to embed resources inside the output .html instead, cutting down on the amount of files created during the conversion
+            // We can set these flags to embed resources inside the output .html instead, reducing the number of files created during the conversion
             HtmlSaveOptions options = new HtmlSaveOptions
             {
                 ExportFontsAsBase64 = true,
@@ -924,7 +924,7 @@ namespace ApiExamples
             // When saving to .html, font subsetting fully applies by default, meaning that when we export fonts with our file,
             // the symbols not used by our document are not represented by the exported fonts, which cuts down file size dramatically
             // Font files of a file size larger than FontResourcesSubsettingSizeThreshold get subsetted, so a value of 0 will apply default full subsetting
-            // Setting the value to something large will fully suppress subsetting, saving some very large font files that cover every glyph
+            // Setting the value to something large will fully suppress subsetting, which could result in large font files that cover every glyph
             HtmlSaveOptions options = new HtmlSaveOptions
             {
                 ExportFontResources = true,

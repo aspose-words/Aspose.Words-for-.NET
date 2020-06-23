@@ -132,7 +132,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Renames saved document parts that are produced when an HTML document is saved while being split according to a criteria.
+        /// Renames saved document parts that are produced when an HTML document is saved while being split according to a DocumentSplitCriteria.
         /// </summary>
         private class SavedDocumentPartRename : IDocumentPartSavingCallback
         {

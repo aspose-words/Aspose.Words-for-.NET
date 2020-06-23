@@ -267,7 +267,7 @@ namespace ApiExamples
             builder.PushFont();
 
             // Set new font formatting for the hyperlink and insert the hyperlink
-            // The "Hyperlink" style is a Microsoft Word built-in style so we don't have to worry to 
+            // The "Hyperlink" style is a Microsoft Word built-in style so we do not have to worry to 
             // create it, it will be created automatically if it does not yet exist in the document
             builder.Font.StyleIdentifier = StyleIdentifier.Hyperlink;
             builder.InsertHyperlink("here", "http://www.google.com", false);
@@ -1346,7 +1346,7 @@ namespace ApiExamples
             builder.CellFormat.Width = 100.0;
             builder.Write("Header Row,\n Cell 1");
 
-            // We don't need to specify the width of this cell because it's inherited from the previous cell
+            // We do not need to specify the width of this cell because it's inherited from the previous cell
             builder.InsertCell();
             builder.Write("Header Row,\n Cell 2");
 
@@ -2836,7 +2836,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, Double, Double)
-            //ExSummary:Shows how to insert online video into a document using video url
+            //ExSummary:Shows how to insert online video into a document using video URL
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -3487,7 +3487,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Visible url
+            // Visible URL
             string vimeoVideoUrl = @"https://vimeo.com/52477838";
 
             // Embed Html code

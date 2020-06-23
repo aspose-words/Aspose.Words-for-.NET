@@ -282,8 +282,8 @@ namespace ApiExamples
             // Highlight newly inserted content with a color
             options.ApplyFont.HighlightColor = Color.LightGray;
 
-            // Apply an IReplacingCallback to make the replacement to convert integers into hex equivalents
-            // and also to count replacements in the order they take place
+            // Apply an IReplacingCallback to make the replacement to convert integers into hex equivalents,
+            // and then to count replacements in the order they take place
             options.ReplacingCallback = new NumberHexer();
 
             // By default, text is searched for replacements front to back, but we can change it to go the other way
@@ -298,7 +298,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Replaces arabic numbers with hexadecimal equivalents and appends the number of each replacement.
+        /// Replaces Arabic numbers with hexadecimal equivalents and appends the number of each replacement.
         /// </summary>
         private class NumberHexer : IReplacingCallback
         {
@@ -458,7 +458,7 @@ namespace ApiExamples
                 foreach (Section srcSection in docToInsert.Sections.OfType<Section>())
                     foreach (Node srcNode in srcSection.Body)
                     {
-                        // Let's skip the node if it is a last empty paragraph in a section
+                        // Skip the node if it is a last empty paragraph in a section
                         if (srcNode.NodeType.Equals(NodeType.Paragraph))
                         {
                             Paragraph para = (Paragraph)srcNode;

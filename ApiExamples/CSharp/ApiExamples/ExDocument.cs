@@ -185,7 +185,7 @@ namespace ApiExamples
             CertificateHolder.Create(certBytes, password);
 
             // If the certificate has private keys corresponding to aliases, we can use the aliases to fetch their respective keys
-            // First, we'll check for valid aliases like this
+            // First, we will check for valid aliases like this
             using (FileStream certStream = new FileStream(MyDir + "morzal.pfx", FileMode.Open))
             {
                 Pkcs12Store pkcs12Store = new Pkcs12Store(certStream, "aw".ToCharArray());
@@ -204,7 +204,7 @@ namespace ApiExamples
                 }
             }
 
-            // For this file, we'll use an alias found above
+            // For this file, we will use an alias found above
             CertificateHolder.Create(MyDir + "morzal.pfx", "aw", "c20be521-11ea-4976-81ed-865fbbfc9f24");
 
             // If we leave the alias null, then the first possible alias that retrieves a private key will be used
@@ -319,10 +319,10 @@ namespace ApiExamples
             // Save in the DOC format
             doc.Save(ArtifactsDir + "Document.OpenFromStreamWithBaseUri.doc");
             
-            // Lets make sure the image was imported successfully into a Shape node
             // Get the first shape node in the document
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-            // Verify some properties of the image
+
+            // Verify some properties of the image to make sure the image was imported successfully into a Shape node
             Assert.IsTrue(shape.IsImage);
             Assert.IsNotNull(shape.ImageData.ImageBytes);
             Assert.AreEqual(32.0, ConvertUtil.PointToPixel(shape.Width), 0.01);
@@ -1085,7 +1085,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.AppendDocument(Document, ImportFormatMode)
             //ExSummary:Shows how to use the AppendDocument method to combine all the documents in a folder to the end of a template document.
-            // Lets start with a simple template and append all the documents in a folder to this document
+            // All the documents in a folder will be appended to this document
             Document baseDoc = new Document();
 
             // Add some content to the template
@@ -1101,7 +1101,8 @@ namespace ApiExamples
                 .Where(file => file.EndsWith(".doc", StringComparison.CurrentCultureIgnoreCase)).ToArray());
             Assert.AreEqual(7, files.Count); //ExSkip
 
-            // The list of files may come in any order, let's sort the files by name so the documents are enumerated alphabetically
+            // The list of files may come in any order
+            // We can sort the files by name so the documents are enumerated alphabetically
             files.Sort();
             Assert.AreEqual(5, baseDoc.Styles.Count); //ExSkip
             Assert.AreEqual(1, baseDoc.Sections.Count); //ExSkip
@@ -1109,8 +1110,7 @@ namespace ApiExamples
             // Iterate through every file in the directory and append each one to the end of the template document
             foreach (string fileName in files)
             {
-                // We have some encrypted test documents in our directory, Aspose.Words can open encrypted documents 
-                // but only with the correct password. Let's just skip them here for simplicity
+                // If the document is encrypted, skip it
                 FileFormatInfo info = FileFormatUtil.DetectFileFormat(fileName);
                 if (info.IsEncrypted)
                     continue;
@@ -1516,7 +1516,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
             Assert.AreEqual(0, doc.FootnoteOptions.Columns); //ExSkip
 
-            // Let's change number of columns for footnotes on page. If columns value is 0 than footnotes area
+            // We can change number of columns for footnotes on page. If columns value is 0 than footnotes area
             // is formatted with a number of columns based on the number of columns on the displayed page
             doc.FootnoteOptions.Columns = 2;
             doc.Save(ArtifactsDir + "Document.FootnoteColumns.docx");
@@ -1759,7 +1759,7 @@ namespace ApiExamples
                 "Edited header contents.";
 
             // When we compare documents, the differences of the latter document from the former show up as revisions to the former
-            // Each edit that we've made above will have its own revision, after we run the Compare method
+            // Each edit that we have made above will have its own revision, after we run the Compare method
             // We can compare with a CompareOptions object, which can suppress changes done to certain types of objects within the original document
             // from registering as revisions after the comparison by setting some of these members to "true"
             CompareOptions compareOptions = new CompareOptions();
@@ -2654,7 +2654,7 @@ namespace ApiExamples
             builder.Writeln(": ");
             builder.InsertField("MERGEFIELD Message", "<Message>");
 
-            // Also we'll need a data source, in this case it will be an ASCII text file
+            // We will use an ASCII file as a data source
             // We can use any character we want as a delimiter, in this case we'll choose '|'
             // The delimiter character is selected in the ODSO settings of mail merge settings
             string[] lines = { "FirstName|LastName|Message",

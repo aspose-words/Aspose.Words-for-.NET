@@ -169,7 +169,7 @@ namespace ApiExamples
 
             doc.GlossaryDocument = glossaryDoc;
 
-            // There is a different ways how to get created building blocks
+            // There are different ways of accessing building blocks
             Assert.AreEqual("Block 1", glossaryDoc.FirstBuildingBlock.Name);
             Assert.AreEqual("Block 2", glossaryDoc.BuildingBlocks[1].Name);
             Assert.AreEqual("Block 3", glossaryDoc.BuildingBlocks.ToArray()[2].Name);

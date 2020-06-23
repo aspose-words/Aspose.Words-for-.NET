@@ -185,7 +185,7 @@ namespace ApiExamples
         internal static string FontsDir { get; }
 
         /// <summary>
-        /// Gets the url of the Aspose logo.
+        /// Gets the URL of the Aspose logo.
         /// </summary>
         internal static string AsposeLogoUrl { get; }
 

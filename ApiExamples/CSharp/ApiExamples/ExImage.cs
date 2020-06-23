@@ -113,7 +113,6 @@ namespace ApiExamples
         [Category("SkipMono")]
         public void CreateFromImage()
         {
-            // This creates a builder and also an empty document inside the builder
             DocumentBuilder builder = new DocumentBuilder();
 
             // Insert a raster image
@@ -139,11 +138,9 @@ namespace ApiExamples
         [Category("SkipMono")]
         public void CreateFromImageNetStandard2()
         {
-            // This creates a builder and also an empty document inside the builder
             DocumentBuilder builder = new DocumentBuilder();
 
             // Insert a raster image
-            // SKBitmap doesn't allow to insert a metafiles
             using (SKBitmap rasterImage = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {
                 builder.Write("Raster image: ");

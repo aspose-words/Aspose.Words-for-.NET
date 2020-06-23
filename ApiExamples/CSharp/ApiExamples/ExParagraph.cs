@@ -53,7 +53,7 @@ namespace ApiExamples
             // Using Writeln() ends the paragraph after writing and makes a new one, while Write() stays on the same paragraph
             builder.Writeln("A whole paragraph.");
 
-            // We can use this flag to ensure that we're at the end of the document
+            // We can use this flag to ensure that we are at the end of the document
             Assert.True(builder.CurrentParagraph.IsEndOfDocument);
             //ExEnd
 
@@ -582,8 +582,8 @@ namespace ApiExamples
             para.Runs[3].Font.StyleIdentifier = StyleIdentifier.Emphasis;
 
             // We can run the JoinRunsWithSameFormatting() method to merge similar Runs
-            // This method also returns the number of joins that occured during the merge
-            // Two merges occured to combine Runs 1-3, while Run 4 was left out because it has an incompatible style
+            // This method also returns the number of joins that occurred during the merge
+            // Two merges occurred to combine Runs 1-3, while Run 4 was left out because it has an incompatible style
             Assert.AreEqual(2, para.JoinRunsWithSameFormatting());
 
             // The paragraph has been simplified to two runs

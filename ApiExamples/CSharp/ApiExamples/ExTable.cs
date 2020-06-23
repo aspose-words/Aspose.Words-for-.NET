@@ -44,11 +44,11 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Tables.docx");
 
             // Here we get all tables from the Document node. You can do this for any other composite node
-            // which can contain block level nodes. For example you can retrieve tables from header or from a cell
+            // which can contain block level nodes. For example, you can retrieve tables from header or from a cell
             // containing another table (nested tables)
             TableCollection tables = doc.FirstSection.Body.Tables;
 
-            // We can make a new array to clone all of the tables in the collection
+            // We can make a new array to clone all the tables in the collection
             Assert.AreEqual(2, tables.ToArray().Length);
 
             // Iterate through all tables in the document
@@ -109,11 +109,11 @@ namespace ApiExamples
 
             foreach (Table table in doc.GetChildNodes(NodeType.Table, true).OfType<Table>())
             {
-                // First lets find if any cells in the table have tables themselves as children
+                // Find out if any cells in the table have tables themselves as children
                 int count = GetChildTableCount(table);
                 Console.WriteLine("Table #{0} has {1} tables directly within its cells", tableIndex, count);
 
-                // Now let's try the other way around, lets try find if the table is nested inside another table and at what depth
+                // We can also do the opposite; finding out if the table is nested inside another table and at what depth
                 int tableDepth = GetNestedDepthOfTable(table);
 
                 if (tableDepth > 0)
@@ -143,7 +143,7 @@ namespace ApiExamples
 
             while (parent != null)
             {
-                // Every time we find a table a level up we increase the depth counter and then try to find an
+                // Every time we find a table a level up, we increase the depth counter and then try to find an
                 // ancestor of type table from the parent
                 depth++;
                 parent = parent.GetAncestor(typeof(Table));
@@ -210,8 +210,7 @@ namespace ApiExamples
 
         /// <summary>
         /// Converts a textbox to a table by copying the same content and formatting.
-        /// Currently export to HTML will render the textbox as an image which looses any text functionality.
-        /// This is useful to convert textboxes in order to retain proper text.
+        /// Currently export to HTML will render the textbox as an image which loses any text functionality.
         /// </summary>
         /// <param name="textBox">The textbox shape to convert to a table</param>
         private static void ConvertTextboxToTable(Shape textBox)
@@ -659,7 +658,7 @@ namespace ApiExamples
             foreach (Cell cell in table.GetChildNodes(NodeType.Cell, true).OfType<Cell>())
             foreach (Paragraph para in cell.Paragraphs.OfType<Paragraph>())
             {
-                // Every paragraph that's inside a cell will have this flag set
+                // Every paragraph that is inside a cell will have this flag set
                 Assert.True(para.IsInCell);
 
                 if (!(cell.ParentRow.IsLastRow && para.IsEndOfCell))
@@ -756,7 +755,7 @@ namespace ApiExamples
 
             // We must first insert a new cell which in turn inserts a row into the table
             builder.InsertCell();
-            // Once a row exists in our table we can apply table wide formatting
+            // Once a row exists in our table, we can apply table wide formatting
             table.AllowAutoFit = true;
 
             // Continue with building your table as usual...
@@ -781,10 +780,8 @@ namespace ApiExamples
             // End the first row
             builder.EndRow();
 
-            // Here we would normally define some other row formatting, such as disabling the 
-            // heading format. However at the moment this will be ignored and the value from the 
-            // first row reapplied to the row
-
+            // Here we could define some other row formatting, such as disabling the heading format.
+            // However, this will be ignored and the value from the first row reapplied to the row
             builder.InsertCell();
 
             // Instead make sure to specify the row formatting for the second row here
@@ -966,7 +963,7 @@ namespace ApiExamples
             }
 
             // You can add title and description to your table only when added at least one row to the table first
-            // This properties are meaningful for ISO / IEC 29500 compliant DOCX documents(see the OoxmlCompliance class)
+            // This properties are meaningful for ISO / IEC 29500 compliant .docx documents(see the OoxmlCompliance class)
             // When saved to pre-ISO/IEC 29500 formats, the properties are ignored
             table.Title = "Aspose table title";
             table.Description = "Aspose table description";
@@ -1310,7 +1307,7 @@ namespace ApiExamples
             Document doc = new Document();
  
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
-            // By default AW uses Alignment instead of LeftIndent
+            // By default, Aspose.Words uses Alignment instead of LeftIndent
             // To set table position use
             tableStyle.Alignment = TableAlignment.Center;
             // or
@@ -1370,7 +1367,7 @@ namespace ApiExamples
             builder.EndTable();
 
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
-            // There is a different ways how to get conditional styles:
+            // There are several ways how to get conditional styles:
             // by conditional style type
             tableStyle.ConditionalStyles[ConditionalStyleType.FirstRow].Shading.BackgroundPatternColor = Color.AliceBlue;
             // by index
@@ -1462,10 +1459,12 @@ namespace ApiExamples
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
             tableStyle.Borders.Color = Color.Black;
             tableStyle.Borders.LineStyle = LineStyle.DotDash;
+
             // Define our stripe through one column and row
             tableStyle.ColumnStripe = 1;
             tableStyle.RowStripe = 1;
-            // Let's start from the first row and second column
+
+            // Start from the first row and second column
             tableStyle.ConditionalStyles[ConditionalStyleType.OddRowBanding].Shading.BackgroundPatternColor = Color.AliceBlue;
             tableStyle.ConditionalStyles[ConditionalStyleType.EvenColumnBanding].Shading.BackgroundPatternColor = Color.AliceBlue;
             
@@ -1484,15 +1483,15 @@ namespace ApiExamples
             //ExSummary:Shows how to convert cells horizontally merged by width to cells merged by CellFormat.HorizontalMerge.
             Document doc = new Document(MyDir + "Table with merged cells.docx");
 
-            // MS Word does not write merge flags anymore, they define merged cells by its width
-            // So AW by default define only 5 cells in a row and all of it didn't have horizontal merge flag
+            // Microsoft Word does not write merge flags anymore; merged cells are defined by width instead.
+            // So Aspose.Words by default defines only 5 cells in a row, and none of them have the horizontal merge flag.
             Table table = doc.FirstSection.Body.Tables[0];
             Row row = table.Rows[0];
             Assert.AreEqual(5, row.Cells.Count);
 
-            // To resolve this inconvenience, we have added new public method to convert cells which are horizontally merged
-            // by its width to the cell horizontally merged by flags. Thus now we have 7 cells and some of them have
-            // horizontal merge value
+            // There is a public method to convert cells which are horizontally merged
+            // by its width to the cell horizontally merged by flags.
+            // Thus, we have 7 cells and some of them have horizontal merge value
             table.ConvertToHorizontallyMergedCells();
             row = table.Rows[0];
             Assert.AreEqual(7, row.Cells.Count);

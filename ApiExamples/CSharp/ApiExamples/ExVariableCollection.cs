@@ -50,7 +50,7 @@ namespace ApiExamples
             doc.Variables.Add("bmp", "Image");
             doc.Variables.Add("png", "Image");
 
-            // Documents don't contain variables by default, so only the ones we added are in the collection
+            // Documents do not contain any custom variables by default, so only the ones we added are in the collection
             Assert.AreEqual(5, doc.Variables.Count);
 
             // Print each variable

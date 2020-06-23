@@ -93,7 +93,6 @@ namespace ApiExamples
                 connection.Open();
 
                 // Create an SQL command that will source data for our mail merge
-                // The command has to comply to the driver we are using, which in this case is "ODBC"
                 // The names of the columns returned by this SELECT statement should correspond to the merge fields we placed above
                 OdbcCommand command = connection.CreateCommand();
                 command.CommandText = query;
@@ -133,8 +132,8 @@ namespace ApiExamples
             // Create a record set
             ADODB.Recordset recordset = new ADODB.Recordset();
 
-            // Run an SQL command on the database we are connected to to populate our dataset
-            // The names of the columns returned here correspond to the values of the MERGEFIELDS that will accomodate our data
+            // Populate our DataSrt by running an SQL command on the database we are connected to
+            // The names of the columns returned here correspond to the values of the MERGEFIELDS that will accommodate our data
             string command = @"SELECT ProductName, QuantityPerUnit, UnitPrice FROM Products";
             recordset.Open(command, connection);
 
@@ -381,8 +380,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Generates a data set which has two data tables named "Customers" and "Orders",
-        /// with a one-to-many relationship between the former and latter on the "CustomerID" column.
+        /// Generates a data set which has two data tables named "Customers" and "Orders", with a one-to-many relationship on the "CustomerID" column.
         /// </summary>
         private static DataSet CreateDataSet()
         {
@@ -440,7 +438,7 @@ namespace ApiExamples
             builder.InsertField(" MERGEFIELD Name");
             builder.InsertField(" MERGEFIELD TableEnd:Fruit");
 
-            // Create two data tables that aren't linked or related in any way which we still want in the same document
+            // Create two data tables that are not linked or related in any way which we still want in the same document
             DataTable tableCities = new DataTable("Cities");
             tableCities.Columns.Add("Name");
             tableCities.Rows.Add(new object[] { "Washington" });
@@ -603,7 +601,7 @@ namespace ApiExamples
             Document doc = CreateSourceDocWithAlternativeMergeFields();
             DataTable dataTable = CreateSourceTablePreserveUnusedTags();
 
-            // By default, alternative merge tags that can't receive data because the data source has no columns with their name
+            // By default, alternative merge tags that cannot receive data because the data source has no columns with their name
             // are converted to and left on display as MERGEFIELDs after the mail merge
             // We can preserve their original appearance setting this attribute to true
             doc.MailMerge.PreserveUnusedTags = doPreserveUnusedTags;
@@ -892,8 +890,8 @@ namespace ApiExamples
             mergeFieldOption2.FieldName = "Option_2";
 
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyParagraphs;
-            // The default value of the option is true which means that the behaviour was changed to mimic MS Word
-            // If you rely on the old behavior are able to revert it by setting the option to false
+            // The default value of the option is true which means that the behavior was changed to mimic MS Word
+            // We can revert to the old behavior by setting the option to false
             doc.MailMerge.CleanupParagraphsWithPunctuationMarks = isCleanupParagraphsWithPunctuationMarks;
 
             doc.MailMerge.Execute(new[] { "Option_1", "Option_2" }, new object[] { null, null });
@@ -1243,7 +1241,7 @@ namespace ApiExamples
             builder.MoveTo(fieldIf.Separator);
             builder.InsertField(" MERGEFIELD  FullName ");
 
-            // We can still count MERGEFIELDs inside false-statement IF fields if we set this flag to true
+            // We can still count MERGEFIELDs inside IF fields with false statements if we set this flag to true
             doc.MailMerge.UnconditionalMergeFieldsAndRegions = doCountAllMergeFields;
 
             DataTable dataTable = new DataTable();

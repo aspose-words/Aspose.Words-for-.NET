@@ -128,7 +128,7 @@ namespace ApiExamples
             builder.Writeln("This text is in section 2.");
 
             // Section break types determine how a new section gets split from the previous section
-            // By inserting a "SectionBreakNewPage" type section break, we've set this section's SectionStart value to "NewPage" 
+            // By inserting a "SectionBreakNewPage" type section break, we have set this section's SectionStart value to "NewPage" 
             Assert.AreEqual(SectionStart.NewPage, doc.Sections[1].PageSetup.SectionStart);
 
             // Insert a new column section the same way
@@ -165,7 +165,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Find the printer that will be used for printing this document
-            // In this case it is the default printer
+            // In this case, it is the default printer
             // You can define a specific printer using PrinterName
             PrinterSettings settings = new PrinterSettings();
 
@@ -387,7 +387,7 @@ namespace ApiExamples
             pageSetup.LineNumberRestartMode = LineNumberRestartMode.RestartPage;
             pageSetup.LineNumberDistanceFromText = 50.0d;
 
-            // LineNumberCountBy is set to 3, so every line that's a multiple of 3
+            // LineNumberCountBy is set to 3, so every line whose number is a multiple of 3
             // will display that line number to the left of the text
             for (int i = 1; i <= 25; i++)
                 builder.Writeln($"Line {i}.");
@@ -652,7 +652,7 @@ namespace ApiExamples
             pageSetup.Borders.LineStyle = LineStyle.Double;
             pageSetup.Borders.Color = Color.Blue;
 
-            // By default, page borders don't surround headers and footers
+            // By default, page borders do not surround headers and footers
             // We can change that by setting these flags
             pageSetup.BorderSurroundsFooter = true;
             pageSetup.BorderSurroundsHeader = true;

@@ -233,7 +233,7 @@ namespace ApiExamples
             builder.InsertField("TOA \\c 2 \\h", null);
             builder.InsertBreak(BreakType.PageBreak);
 
-            // Insert table of authorities entries across 2 categories
+            // Insert TOA entries across 2 categories
             builder.InsertField("TA \\c 2 \\l \"entry 1\"");
             builder.InsertBreak(BreakType.PageBreak);
             builder.InsertField("TA \\c 1 \\l \"entry 2\"");
@@ -298,7 +298,8 @@ namespace ApiExamples
             builder.InsertField(FieldType.FieldTime, true);
 
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
-            // Set a provider that return a culture object specific for each particular field
+
+            // Set a provider that returns a culture object specific for each field
             doc.FieldOptions.FieldUpdateCultureProvider = new FieldUpdateCultureProvider();
 
             FieldTime fieldDate = (FieldTime)doc.Range.Fields[0];

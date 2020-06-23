@@ -70,7 +70,7 @@ namespace ApiExamples
 
             // Create "PdfSaveOptions" with some mandatory parameters
             // "HeadingsOutlineLevels" specifies how many levels of headings to include in the document outline
-            // "CreateMissingOutlineLevels" determining whether or not to create missing heading levels
+            // "CreateMissingOutlineLevels" determining whether to create missing heading levels
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 9;
             pdfSaveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
@@ -111,7 +111,7 @@ namespace ApiExamples
             builder.Write("Cell 1");
             builder.EndTable();
 
-            // Create a PdfSaveOptions object that, when saving to .pdf with it, creates entries in the document outline for all headings levels 1-9,
+            // Create a PdfSaveOptions object that, when saving to .pdf with it, creates entries in the document outline for heading levels 1-9,
             // and make sure headings inside tables are registered by the outline also
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 9;
@@ -394,7 +394,7 @@ namespace ApiExamples
             /// </summary>
             public void Warning(WarningInfo info)
             {
-                // For now type of warnings about unsupported metafile records changed from
+                // For now, type of warnings about unsupported metafile records changed from
                 // DataLoss/UnexpectedContent to MinorFormattingLoss
                 if (info.WarningType == WarningType.MinorFormattingLoss)
                 {
@@ -589,8 +589,8 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
             options.UseBookFoldPrintingSettings = doRenderTextAsBookfold;
 
-            // In order to make a booklet, we will need to print this document, stack the pages
-            // in the order they come out of the printer and then fold down the middle
+            // Once we print this document, we can turn it into a booklet by stacking the pages
+            // in the order they come out of the printer and then folding down the middle
             doc.Save(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf", options);
             //ExEnd
 
@@ -874,8 +874,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
             // Create a PdfSaveOptions object and configure it to preserve the logical structure that's in the input document
-            // The file size will be increased and the structure will be visible in the "Content" navigation pane
-            // of Adobe Acrobat Pro
+            // The file size will be increased, and the structure will be visible in the "Content" navigation pane of Adobe Acrobat Pro
             PdfSaveOptions options = new PdfSaveOptions();
             options.ExportDocumentStructure = doExportStructure;
 
