@@ -18,40 +18,34 @@ namespace ApiExamples
         //ExFor:AbsolutePositionTab
         //ExFor:AbsolutePositionTab.Accept(DocumentVisitor)
         //ExFor:DocumentVisitor.VisitAbsolutePositionTab
-        //ExSummary:Shows how to work with an absolute position tab.
+        //ExSummary:Shows how to process absolute position tab characters with a document visitor.
         [Test] //ExSkip
         public void DocumentToTxt()
         {
-            // This document contains two sentences separated by an absolute position tab
             Document doc = new Document(MyDir + "Absolute position tab.docx");
 
-            // An AbsolutePositionTab is a child node of a paragraph
-            // AbsolutePositionTabs get picked up when looking for nodes of the SpecialChar type
-            Paragraph para = doc.FirstSection.Body.FirstParagraph;
-            AbsolutePositionTab absPositionTab = (AbsolutePositionTab)para.GetChild(NodeType.SpecialChar, 0, true);
+            // Extract the text contents of our document by accepting this custom document visitor.
+            DocTextExtractor myDocTextExtractor = new DocTextExtractor();
+            doc.Accept(myDocTextExtractor);
 
-            // This implementation of the DocumentVisitor pattern converts the document to plain text
-            DocToTxtWriter myDocToTxtWriter = new DocToTxtWriter();
+            // The absolute position tab, which has no equivalent in string form, has been explicitly converted to a tab character.
+            Assert.AreEqual("Before AbsolutePositionTab\tAfter AbsolutePositionTab", myDocTextExtractor.GetText());
 
-            // We can run the DocumentVisitor over the whole first paragraph
-            para.Accept(myDocToTxtWriter);
+            // An AbsolutePositionTab can accept a DocumentVisitor by itself too.
+            AbsolutePositionTab absPositionTab = (AbsolutePositionTab)doc.FirstSection.Body.FirstParagraph.GetChild(NodeType.SpecialChar, 0, true);
 
-            // A tab character is placed where the AbsolutePositionTab was found
-            Assert.AreEqual("Before AbsolutePositionTab\tAfter AbsolutePositionTab", myDocToTxtWriter.GetText());
+            myDocTextExtractor = new DocTextExtractor();
+            absPositionTab.Accept(myDocTextExtractor);
 
-            // An AbsolutePositionTab can accept a DocumentVisitor by itself too
-            myDocToTxtWriter = new DocToTxtWriter();
-            absPositionTab.Accept(myDocToTxtWriter);
-
-            Assert.AreEqual("\t", myDocToTxtWriter.GetText());
+            Assert.AreEqual("\t", myDocTextExtractor.GetText());
         }
 
         /// <summary>
-        /// Visitor implementation that simply collects the Runs and AbsolutePositionTabs of a document as plain text. 
+        /// Collects the text contents of all runs in the visited document, and represents all absolute tab characters as ordinary tabs.
         /// </summary>
-        public class DocToTxtWriter : DocumentVisitor
+        public class DocTextExtractor : DocumentVisitor
         {
-            public DocToTxtWriter()
+            public DocTextExtractor()
             {
                 mBuilder = new StringBuilder();
             }
@@ -62,7 +56,6 @@ namespace ApiExamples
             public override VisitorAction VisitRun(Run run)
             {
                 AppendText(run.Text);
-                // Let the visitor continue visiting other nodes.
                 return VisitorAction.Continue;
             }
 
@@ -71,7 +64,6 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitAbsolutePositionTab(AbsolutePositionTab tab)
             {
-                // We'll treat the AbsolutePositionTab as a regular tab in this case
                 mBuilder.Append("\t");
                 return VisitorAction.Continue;
             }
@@ -85,7 +77,7 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Gets the plain text of the document that was accumulated by the visitor.
+            /// Plain text of the document that was accumulated by the visitor.
             /// </summary>
             public string GetText()
             {
