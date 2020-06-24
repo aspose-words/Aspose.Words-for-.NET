@@ -26,7 +26,7 @@ namespace ApiExamples
 
             // Extract the text contents of our document by accepting this custom document visitor.
             DocTextExtractor myDocTextExtractor = new DocTextExtractor();
-            doc.Accept(myDocTextExtractor);
+            doc.FirstSection.Body.Accept(myDocTextExtractor);
 
             // The absolute position tab, which has no equivalent in string form, has been explicitly converted to a tab character.
             Assert.AreEqual("Before AbsolutePositionTab\tAfter AbsolutePositionTab", myDocTextExtractor.GetText());
