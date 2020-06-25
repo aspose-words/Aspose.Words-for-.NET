@@ -36,8 +36,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Note that whitespaces in bookmark names will be converted into underscores when saved to Microsoft Word formats
-            // such as .doc and .docx, but will be preserved in other formats like .pdf or .xps
+            // Note that whitespaces in bookmark names converted into underscores and preserved in other formats like .pdf or .xps
+            // when saved to Microsoft Word formats, such as .doc and .docx.
             builder.StartBookmark("Bookmark 1");
             builder.Writeln("Text inside Bookmark 1.");
 
@@ -52,10 +52,10 @@ namespace ApiExamples
             builder.Writeln("Text inside Bookmark 3.");
             builder.EndBookmark("Bookmark 3");
 
-            // We can specify outline levels for our bookmarks so that they show up in the table of contents and are indented by an amount
-            // of space proportional to the indent level in a SaveOptions object
-            // Some pdf/xps readers such as Google Chrome also allow the collapsing of all higher level bookmarks by adjacent lower level bookmarks
-            // This feature applies to .pdf or .xps file formats, so only their respective SaveOptions subclasses will support it
+            // We can specify outline levels for our bookmarks indented by an amount of space proportional to the indent level
+            // in a SaveOptions object when they show up in the table of contents.
+            // Some PDF/XPS readers such as Google Chrome also allow the collapsing of all higher-level bookmarks by adjacent lower level bookmarks.
+            // This feature applies to .pdf or .xps file formats, so only their respective SaveOptions subclasses will support it.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             BookmarksOutlineLevelCollection outlineLevels = pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels;
 
@@ -69,34 +69,30 @@ namespace ApiExamples
             Assert.AreEqual(2, outlineLevels["Bookmark 2"]);
             Assert.AreEqual(2, outlineLevels.IndexOfKey("Bookmark 3"));
 
-            // We can remove two elements so that only the outline level designation for "Bookmark 1" is left
+            // We can remove two elements so that only the outline level designation for "Bookmark 1" is left.
             outlineLevels.RemoveAt(2);
             outlineLevels.Remove("Bookmark 2");
 
-            // We have 9 bookmark levels to work with, and bookmark levels are also sorted in ascending order,
-            // and get numbered in succession along that order
-            // Practically this means that our three levels "1, 5, 9", will be seen as "1, 2, 3" in the output
+            // We have nine bookmark levels to work with, and ascending order sorted bookmark levels
+            // and got numbered in succession along with that order.
+            // Practically this means that our three levels "1, 5, 9", will be seen as "1, 2, 3" in the output.
             outlineLevels.Add("Bookmark 2", 5);
             outlineLevels.Add("Bookmark 3", 9);
 
-            // Save the document as a .pdf and find links to the bookmarks and their outline levels
+            // Save the document as a .pdf and find links to the bookmarks and their outline levels.
             doc.Save(ArtifactsDir + "BookmarksOutlineLevelCollection.BookmarkLevels.pdf", pdfSaveOptions);
 
-            // We can empty this dictionary to remove the contents table
+            // We can empty this dictionary to remove the contents table.
             outlineLevels.Clear();
             //ExEnd
 
             #if NET462 || NETCOREAPP2_1 || JAVA
-            // Bind pdf with Aspose.Pdf
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "BookmarksOutlineLevelCollection.BookmarkLevels.pdf");
 
-            // Get all bookmarks from the document
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
             Assert.AreEqual(3, bookmarks.Count);
-
-            // Assert that all the bookmarks title are with whitespaces
             Assert.AreEqual("Bookmark 1", bookmarks[0].Title);
             Assert.AreEqual("Bookmark 2", bookmarks[1].Title);
             Assert.AreEqual("Bookmark 3", bookmarks[2].Title);            
