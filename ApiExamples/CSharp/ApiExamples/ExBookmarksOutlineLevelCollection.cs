@@ -52,10 +52,9 @@ namespace ApiExamples
             builder.Writeln("Text inside Bookmark 3.");
             builder.EndBookmark("Bookmark 3");
 
-            // We can specify outline levels for our bookmarks indented by an amount of space proportional to the indent level
-            // in a SaveOptions object when they show up in the table of contents.
-            // Some PDF/XPS readers such as Google Chrome also allow the collapsing of all higher-level bookmarks by adjacent lower level bookmarks.
-            // This feature applies to .pdf or .xps file formats, so only their respective SaveOptions subclasses will support it.
+            // When saving to .pdf, bookmarks can be accessed via a drop down menu and used as anchors by most readers.
+            // Bookmarks can also have numeric values for outline levels,
+            // which enables lower level outline entries to hide higher level child entries when collapsed in the reader. 
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             BookmarksOutlineLevelCollection outlineLevels = pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels;
 
@@ -73,16 +72,14 @@ namespace ApiExamples
             outlineLevels.RemoveAt(2);
             outlineLevels.Remove("Bookmark 2");
 
-            // We have nine bookmark levels to work with, and ascending order sorted bookmark levels
-            // and got numbered in succession along with that order.
-            // Practically this means that our three levels "1, 5, 9", will be seen as "1, 2, 3" in the output.
+            // There are nine outline levels, and level numbering gets optimized when the document is saved. 
+            // In this case, levels "5" and "9" will become "2" and "3".
             outlineLevels.Add("Bookmark 2", 5);
             outlineLevels.Add("Bookmark 3", 9);
 
-            // Save the document as a .pdf and find links to the bookmarks and their outline levels.
             doc.Save(ArtifactsDir + "BookmarksOutlineLevelCollection.BookmarkLevels.pdf", pdfSaveOptions);
 
-            // We can empty this dictionary to remove the contents table.
+            // Emptying this collection will preserve the bookmarks and put them all on the same outline level.
             outlineLevels.Clear();
             //ExEnd
 
