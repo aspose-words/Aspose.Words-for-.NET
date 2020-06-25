@@ -33,7 +33,6 @@ namespace ApiExamples
             //ExFor:BookmarksOutlineLevelCollection.RemoveAt(System.Int32)
             //ExFor:OutlineOptions.BookmarksOutlineLevels
             //ExSummary:Shows how to set outline levels for bookmarks.
-            // Open a blank document, create a DocumentBuilder, and use the builder to add some text wrapped inside bookmarks
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

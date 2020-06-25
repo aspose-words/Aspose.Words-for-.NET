@@ -27,16 +27,23 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A valid bookmark has a name with no whitespace, a BookmarkStart, and a BookmarkEnd node.
+            // A valid bookmark has a name, a BookmarkStart, and a BookmarkEnd node.
+            // Any whitespace in the names of bookmarks will be converted to underscores if we open the saved document with Microsoft Word. 
             // If we highlight the bookmark's name in Microsoft Word via Insert -> Links -> Bookmark, and press "Go To",
             // the cursor will jump to the text enclosed between the BookmarkStart and BookmarkEnd nodes.
-            builder.StartBookmark("MyBookmark");
+            builder.StartBookmark("My Bookmark");
             builder.Write("Contents of MyBookmark.");
-            builder.EndBookmark("MyBookmark");
+            builder.EndBookmark("My Bookmark");
 
             // Bookmarks are stored in this collection.
-            Assert.AreEqual("MyBookmark", doc.Range.Bookmarks[0].Name);
+            Assert.AreEqual("My Bookmark", doc.Range.Bookmarks[0].Name);
+
+            doc.Save(ArtifactsDir + "Bookmarks.Insert.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Bookmarks.Insert.docx");
+
+            Assert.AreEqual("My Bookmark", doc.Range.Bookmarks[0].Name);
         }
 
         //ExStart
