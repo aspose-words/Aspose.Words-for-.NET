@@ -52,9 +52,10 @@ namespace ApiExamples
             builder.Writeln("Text inside Bookmark 3.");
             builder.EndBookmark("Bookmark 3");
 
-            // When saving to .pdf, bookmarks can be accessed via a drop down menu and used as anchors by most readers.
-            // Bookmarks can also have numeric values for outline levels,
-            // to enable the collapsing of higher level items by their parent lower level items. 
+            // We can specify outline levels for our bookmarks indented by an amount of space proportional to the indent level
+            // in a SaveOptions object when they show up in the table of contents.
+            // Some PDF/XPS readers such as Google Chrome also allow the collapsing of all higher-level bookmarks by adjacent lower level bookmarks.
+            // This feature applies to .pdf or .xps file formats, so only their respective SaveOptions subclasses will support it.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             BookmarksOutlineLevelCollection outlineLevels = pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels;
 
@@ -68,20 +69,20 @@ namespace ApiExamples
             Assert.AreEqual(2, outlineLevels["Bookmark 2"]);
             Assert.AreEqual(2, outlineLevels.IndexOfKey("Bookmark 3"));
 
-            // We can remove two elements so that only the outline level designation for "Bookmark 1" is left
+            // We can remove two elements so that only the outline level designation for "Bookmark 1" is left.
             outlineLevels.RemoveAt(2);
             outlineLevels.Remove("Bookmark 2");
 
-            // We have 9 bookmark levels to work with, and bookmark levels are also sorted in ascending order,
-            // and get numbered in succession along that order
-            // Practically this means that our three levels "1, 5, 9", will be seen as "1, 2, 3" in the output
+            // We have nine bookmark levels to work with, and ascending order sorted bookmark levels
+            // and got numbered in succession along with that order.
+            // Practically this means that our three levels "1, 5, 9", will be seen as "1, 2, 3" in the output.
             outlineLevels.Add("Bookmark 2", 5);
             outlineLevels.Add("Bookmark 3", 9);
 
-            // Save the document as a .pdf and find links to the bookmarks and their outline levels
+            // Save the document as a .pdf and find links to the bookmarks and their outline levels.
             doc.Save(ArtifactsDir + "BookmarksOutlineLevelCollection.BookmarkLevels.pdf", pdfSaveOptions);
 
-            // We can empty this dictionary to remove the contents table
+            // We can empty this dictionary to remove the contents table.
             outlineLevels.Clear();
             //ExEnd
 
