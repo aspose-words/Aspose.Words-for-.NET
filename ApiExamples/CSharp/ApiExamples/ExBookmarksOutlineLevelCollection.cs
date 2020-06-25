@@ -36,8 +36,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Note that whitespaces in bookmark names will be converted into underscores when saved to Microsoft Word formats
-            // such as .doc and .docx, but will be preserved in other formats like .pdf or .xps
+            // Insert a bookmark with another bookmark nested inside it.
             builder.StartBookmark("Bookmark 1");
             builder.Writeln("Text inside Bookmark 1.");
 
@@ -48,14 +47,14 @@ namespace ApiExamples
             builder.Writeln("Text inside Bookmark 1.");
             builder.EndBookmark("Bookmark 1");
 
+            // Insert another bookmark.
             builder.StartBookmark("Bookmark 3");
             builder.Writeln("Text inside Bookmark 3.");
             builder.EndBookmark("Bookmark 3");
 
-            // We can specify outline levels for our bookmarks so that they show up in the table of contents and are indented by an amount
-            // of space proportional to the indent level in a SaveOptions object
-            // Some pdf/xps readers such as Google Chrome also allow the collapsing of all higher level bookmarks by adjacent lower level bookmarks
-            // This feature applies to .pdf or .xps file formats, so only their respective SaveOptions subclasses will support it
+            // When saving to .pdf, bookmarks can be accessed via a drop down menu and used as anchors by most readers.
+            // Bookmarks can also have numeric values for outline levels,
+            // to enable the collapsing of higher level items by their parent lower level items. 
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             BookmarksOutlineLevelCollection outlineLevels = pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels;
 
@@ -87,16 +86,12 @@ namespace ApiExamples
             //ExEnd
 
             #if NET462 || NETCOREAPP2_1 || JAVA
-            // Bind pdf with Aspose.Pdf
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "BookmarksOutlineLevelCollection.BookmarkLevels.pdf");
 
-            // Get all bookmarks from the document
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
             Assert.AreEqual(3, bookmarks.Count);
-
-            // Assert that all the bookmarks title are with whitespaces
             Assert.AreEqual("Bookmark 1", bookmarks[0].Title);
             Assert.AreEqual("Bookmark 2", bookmarks[1].Title);
             Assert.AreEqual("Bookmark 3", bookmarks[2].Title);            
