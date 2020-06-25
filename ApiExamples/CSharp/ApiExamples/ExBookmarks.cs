@@ -73,7 +73,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void CreateUpdateAndPrintBookmarks()
         {
-            // Create a document with 3 bookmarks, then use a custom document visitor implementation to print their contents.
+            // Create a document with three bookmarks, then use a custom document visitor implementation to print their contents.
             Document doc = CreateDocumentWithBookmarks(3);
             BookmarkCollection bookmarks = doc.Range.Bookmarks;
             Assert.AreEqual(3, bookmarks.Count); //ExSkip
@@ -166,7 +166,7 @@ namespace ApiExamples
 
             foreach (Bookmark bookmark in doc.Range.Bookmarks)
             {
-                // If a bookmark encloses columns of a table, it is a table column bookmark, and its IsColumn flag is set to true.
+                // If a bookmark encloses columns of a table, it is a table column bookmark, and its IsColumn flag set to true.
                 Console.WriteLine($"Bookmark: {bookmark.Name}{(bookmark.IsColumn ? " (Column)" : "")}");
                 if (bookmark.IsColumn)
                 {
@@ -220,7 +220,7 @@ namespace ApiExamples
                 builder.InsertBreak(BreakType.ParagraphBreak);
             }
 
-            // Bookmarks are stored in this collection.
+            // This collection stored bookmarks.
             BookmarkCollection bookmarks = doc.Range.Bookmarks;
 
             Assert.AreEqual(5, bookmarks.Count);
@@ -247,7 +247,7 @@ namespace ApiExamples
 
             Assert.False(bookmarks.Any(b => b.Name == "MyBookmark_4"));
 
-            // The entire bookmark collection can also be cleared.
+            // We can clear the entire bookmark collection.
             bookmarks.Clear();
 
             // The text that was inside the bookmarks is still present in the document.
