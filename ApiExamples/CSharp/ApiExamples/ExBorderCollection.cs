@@ -20,22 +20,26 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:BorderCollection.GetEnumerator
-            //ExSummary:Shows how to enumerate all borders in a collection.
-            Document doc = new Document(MyDir + "Borders.docx");
+            //ExSummary:Shows how to iterate over and edit all of the borders in a paragraph format object.
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Configure the builder's paragraph format settings to create a green wave border on all sides.
             BorderCollection borders = builder.ParagraphFormat.Borders;
 
             using (IEnumerator<Border> enumerator = borders.GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
-                    // Do something useful.
-                    Border b = enumerator.Current;
-                    b.Color = Color.RoyalBlue;
-                    b.LineStyle = LineStyle.Double;
+                    Border border = enumerator.Current;
+                    border.Color = Color.Green;
+                    border.LineStyle = LineStyle.Wave;
+                    border.LineWidth = 3;
                 }
             }
+
+            // These settings will be applied to all paragraphs created by the builder, such as this one.
+            builder.Writeln("Hello world!");
 
             doc.Save(ArtifactsDir + "BorderCollection.GetBordersEnumerator.docx");
             //ExEnd
@@ -44,8 +48,9 @@ namespace ApiExamples
 
             foreach (Border border in doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders)
             {
-                Assert.AreEqual(Color.RoyalBlue.ToArgb(), border.Color.ToArgb());
-                Assert.AreEqual(LineStyle.Double, border.LineStyle);
+                Assert.AreEqual(Color.Green.ToArgb(), border.Color.ToArgb());
+                Assert.AreEqual(LineStyle.Wave, border.LineStyle);
+                Assert.AreEqual(3.0d, border.LineWidth);
             }
         }
 
@@ -54,13 +59,29 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:BorderCollection.ClearFormatting
-            //ExSummary:Shows how to remove all borders from a paragraph at once.
+            //ExSummary:Shows how to remove all borders from all paragraphs in a document.
             Document doc = new Document(MyDir + "Borders.docx");
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            BorderCollection borders = builder.ParagraphFormat.Borders;
 
-            borders.ClearFormatting();
+            // The first paragraph of this document has visible borders with these settings.
+            BorderCollection firstParagraphBorders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
 
+            Assert.AreEqual(Color.Red.ToArgb(), firstParagraphBorders.Color.ToArgb());
+            Assert.AreEqual(LineStyle.Single, firstParagraphBorders.LineStyle);
+            Assert.AreEqual(3.0d, firstParagraphBorders.LineWidth);
+
+            // Apply the ClearFormatting method to each paragraph to remove all of its borders.
+            foreach (Paragraph paragraph in doc.FirstSection.Body.Paragraphs)
+            {
+                paragraph.ParagraphFormat.Borders.ClearFormatting();
+
+                foreach (Border border in paragraph.ParagraphFormat.Borders)
+                {
+                    Assert.AreEqual(Color.Empty.ToArgb(), border.Color.ToArgb());
+                    Assert.AreEqual(LineStyle.None, border.LineStyle);
+                    Assert.AreEqual(0.0d, border.LineWidth);
+                }
+            }
+            
             doc.Save(ArtifactsDir + "BorderCollection.RemoveAllBorders.docx");
             //ExEnd
 
@@ -70,6 +91,7 @@ namespace ApiExamples
             {
                 Assert.AreEqual(Color.Empty.ToArgb(), border.Color.ToArgb());
                 Assert.AreEqual(LineStyle.None, border.LineStyle);
+                Assert.AreEqual(0.0d, border.LineWidth);
             }
         }
     }
