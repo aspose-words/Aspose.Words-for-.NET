@@ -145,13 +145,13 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitBuildingBlockStart(BuildingBlock)
         //ExFor:DocumentVisitor.VisitGlossaryDocumentEnd(GlossaryDocument)
         //ExFor:DocumentVisitor.VisitGlossaryDocumentStart(GlossaryDocument)
-        //ExSummary:Shows how to use GlossaryDocument and BuildingBlockCollection.
+        //ExSummary:Shows ways of accessing building blocks in a glossary document.
         [Test] //ExSkip
         public void GlossaryDocument()
         {
             Document doc = new Document();
-
             GlossaryDocument glossaryDoc = new GlossaryDocument();
+
             glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 1" });
             glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 2" });
             glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 3" });
@@ -162,26 +162,34 @@ namespace ApiExamples
 
             doc.GlossaryDocument = glossaryDoc;
 
-            // There are different ways of accessing building blocks
+            // There are various ways of accessing building blocks.
+            // 1 -  Get the first/last building blocks in the collection.
             Assert.AreEqual("Block 1", glossaryDoc.FirstBuildingBlock.Name);
-            Assert.AreEqual("Block 2", glossaryDoc.BuildingBlocks[1].Name);
-            Assert.AreEqual("Block 3", glossaryDoc.BuildingBlocks.ToArray()[2].Name);
-            Assert.AreEqual("Block 4", glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4").Name);
             Assert.AreEqual("Block 5", glossaryDoc.LastBuildingBlock.Name);
 
-            // We will do that using a custom visitor, which also will give every BuildingBlock in the GlossaryDocument a unique GUID
+            // 2 -  Get a building block by index.
+            Assert.AreEqual("Block 2", glossaryDoc.BuildingBlocks[1].Name);
+            Assert.AreEqual("Block 3", glossaryDoc.BuildingBlocks.ToArray()[2].Name);
+
+            // 3 -  Get the first building block that matches a gallery, name and category.
+            Assert.AreEqual("Block 4", 
+                glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4").Name);
+
+            // We will do that using a custom visitor,
+            // which also will give every BuildingBlock in the GlossaryDocument a unique GUID
             GlossaryDocVisitor visitor = new GlossaryDocVisitor();
             glossaryDoc.Accept(visitor);
             Assert.AreEqual(5, visitor.GetDictionary().Count); //ExSkip
 
             Console.WriteLine(visitor.GetText());
 
-            // We can find our new blocks in Microsoft Word via Insert > Quick Parts > Building Blocks Organizer...
+            // When we open this document using Microsoft Word,
+            // the building blocks can be found via Insert -> Quick Parts -> Building Blocks Organizer.
             doc.Save(ArtifactsDir + "BuildingBlocks.GlossaryDocument.dotx"); 
         }
 
         /// <summary>
-        /// Simple implementation of giving each building block in a glossary document a unique GUID. Implemented as a Visitor.
+        /// Gives each building block in a visited glossary document a unique GUID, and stores the GUID-building block pairs in a dictionary.
         /// </summary>
         public class GlossaryDocVisitor : DocumentVisitor
         {
