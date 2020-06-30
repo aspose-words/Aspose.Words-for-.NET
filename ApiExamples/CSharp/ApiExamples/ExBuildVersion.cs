@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Text.RegularExpressions;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -21,9 +22,12 @@ namespace ApiExamples
             //ExFor:BuildVersionInfo
             //ExFor:BuildVersionInfo.Product
             //ExFor:BuildVersionInfo.Version
-            //ExSummary:Shows how to use BuildVersionInfo to display version information about this product.
+            //ExSummary:Shows how to display information about your installed version of Aspose.Words.
             Console.WriteLine($"I am currently using {BuildVersionInfo.Product}, version number {BuildVersionInfo.Version}!");
             //ExEnd
+
+            Assert.AreEqual("Aspose.Words for .NET", BuildVersionInfo.Product);
+            Assert.True(Regex.IsMatch(BuildVersionInfo.Version, "[0-9]{2}.[0-9]{1,2}"));
         }
     }
 }
