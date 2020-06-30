@@ -21,26 +21,31 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.EndRow
             //ExFor:CellMerge
             //ExFor:CellFormat.VerticalMerge
-            //ExSummary:Creates a table with two columns with cells merged vertically in the first column.
+            //ExSummary:Shows how to merge table cells vertically.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert a cell into the first column of the first row.
+            // This cell will be the first in a range of vertically merged cells.
             builder.InsertCell();
             builder.CellFormat.VerticalMerge = CellMerge.First;
             builder.Write("Text in merged cells.");
 
+            // Insert a cell into the second column of the first row, which will not be merged with any other cells, then end the row.
             builder.InsertCell();
             builder.CellFormat.VerticalMerge = CellMerge.None;
-            builder.Write("Text in one cell");
+            builder.Write("Text in unmerged cell.");
             builder.EndRow();
 
+            // Insert a cell into the first column of the second row. 
+            // Instead of adding text contents, we will merge this cell with the first cell that we added directly above.
             builder.InsertCell();
-            // This cell is vertically merged to the cell above and should be empty.
             builder.CellFormat.VerticalMerge = CellMerge.Previous;
 
+            // Insert another independent cell in the second column of the second row, and end the table.
             builder.InsertCell();
             builder.CellFormat.VerticalMerge = CellMerge.None;
-            builder.Write("Text in another cell");
+            builder.Write("Text in unmerged cell.");
             builder.EndRow();
             builder.EndTable();
 
@@ -49,11 +54,9 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "CellFormat.VerticalMerge.docx");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
             Assert.AreEqual(CellMerge.First, table.Rows[0].Cells[0].CellFormat.VerticalMerge);
             Assert.AreEqual(CellMerge.Previous, table.Rows[1].Cells[0].CellFormat.VerticalMerge);
-
-            // After the merge both cells still exist, and the one with the VerticalMerge set to "First" overlaps both of them 
-            // and only that cell contains the shared text
             Assert.AreEqual("Text in merged cells.", table.Rows[0].Cells[0].GetText().Trim('\a'));
             Assert.AreNotEqual(table.Rows[0].Cells[0].GetText(), table.Rows[1].Cells[0].GetText());
         }
@@ -64,25 +67,28 @@ namespace ApiExamples
             //ExStart
             //ExFor:CellMerge
             //ExFor:CellFormat.HorizontalMerge
-            //ExSummary:Creates a table with two rows with cells in the first row horizontally merged.
+            //ExSummary:Shows how to merge table cells horizontally.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert a cell into the first column of the first row.
+            // This cell will be the first in a range of horizontally merged cells.
             builder.InsertCell();
             builder.CellFormat.HorizontalMerge = CellMerge.First;
             builder.Write("Text in merged cells.");
 
+            // Insert a cell into the second column of the first row. Instead of adding text contents,
+            // we will merge this cell with the first cell that we added directly to the left, and end the row afterwards.
             builder.InsertCell();
-            // This cell is merged to the previous and should be empty.
             builder.CellFormat.HorizontalMerge = CellMerge.Previous;
             builder.EndRow();
 
-            builder.InsertCell();
+            // Insert two more unmerged cells to the second row.
             builder.CellFormat.HorizontalMerge = CellMerge.None;
-            builder.Write("Text in one cell.");
-
             builder.InsertCell();
-            builder.Write("Text in another cell.");
+            builder.Write("Text in unmerged cell.");
+            builder.InsertCell();
+            builder.Write("Text in unmerged cell.");
             builder.EndRow();
             builder.EndTable();
 
@@ -92,35 +98,34 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "CellFormat.HorizontalMerge.docx");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
-            // Compared to the vertical merge, where both cells are still present, 
-            // the horizontal merge actually removes cells with a HorizontalMerge set to "Previous" if overlapped by ones with "First"
-            // Thus the first row that we inserted two cells into now has one, which is a normal cell with a HorizontalMerge of "None"
             Assert.AreEqual(1, table.Rows[0].Cells.Count);
             Assert.AreEqual(CellMerge.None, table.Rows[0].Cells[0].CellFormat.HorizontalMerge);
-
             Assert.AreEqual("Text in merged cells.", table.Rows[0].Cells[0].GetText().Trim('\a'));
         }
 
         [Test]
-        public void SetCellPaddings()
+        public void Padding()
         {
             //ExStart
             //ExFor:CellFormat.SetPaddings
-            //ExSummary:Shows how to set paddings to a table cell.
-            DocumentBuilder builder = new DocumentBuilder();
+            //ExSummary:Shows how to pad the contents of a cell with whitespace.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.StartTable();
-            builder.CellFormat.Width = 300;
+            // Set a padding distance (in points) between the border and the text contents
+            // of each table cell we create with the document builder. 
             builder.CellFormat.SetPaddings(5, 10, 40, 50);
 
-            builder.RowFormat.HeightRule = HeightRule.Exactly;
-            builder.RowFormat.Height = 50;
-
+            // Create a table with a cell, and add contents which will be padded by whitespace.
+            builder.StartTable();
             builder.InsertCell();
-            builder.Write("Row 1, Col 1");
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+                          "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
+
+            doc.Save(ArtifactsDir + "CellFormat.Padding.docx");
             //ExEnd
 
-            Document doc = DocumentHelper.SaveOpen(builder.Document);
+            doc = new Document(ArtifactsDir + "CellFormat.Padding.docx");
 
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
             Cell cell = table.Rows[0].Cells[0];
