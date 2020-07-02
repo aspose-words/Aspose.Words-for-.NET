@@ -1385,7 +1385,7 @@ namespace ApiExamples
             Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
             //ExEnd
 
-            Assert.AreEqual(156.45d, table.FirstRow.Cells[0].CellFormat.Width);
+            Assert.AreEqual(155.0d, table.FirstRow.Cells[0].CellFormat.Width, 2f);
         }
 
         [Test]
