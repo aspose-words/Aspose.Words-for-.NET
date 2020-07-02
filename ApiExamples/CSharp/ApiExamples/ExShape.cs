@@ -884,7 +884,7 @@ namespace ApiExamples
             math.GetMathRenderer().Save(ArtifactsDir + "Shape.SaveShapeObjectAsImage.png", new ImageSaveOptions(SaveFormat.Png));
             //ExEnd
             
-            TestUtil.VerifyImage(156, 18, ArtifactsDir + "Shape.SaveShapeObjectAsImage.png");
+            TestUtil.VerifyImage(159, 18, ArtifactsDir + "Shape.SaveShapeObjectAsImage.png");
         }
 
         [Test]
@@ -2040,13 +2040,8 @@ namespace ApiExamples
             //ExSummary:Shows how to detect that Shape has a SmartArt object.
             Document doc = new Document(MyDir + "SmartArt.docx");
  
-            int count = 0;
-            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
-            {
-                if (shape.HasSmartArt)
-                    count++;
-            }
- 
+            int count = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Count(shape => shape.HasSmartArt);
+
             Console.WriteLine("The document has {0} shapes with SmartArt.", count);
             //ExEnd
 
@@ -2078,34 +2073,34 @@ namespace ApiExamples
             OfficeMathRenderer renderer = new OfficeMathRenderer(officeMath);
 
             // We can measure the size of the image that the OfficeMath object will create when we render it
-            Assert.AreEqual(117.0f, renderer.SizeInPoints.Width, 0.1f);
-            Assert.AreEqual(12.9f, renderer.SizeInPoints.Height, 0.1f);
+            Assert.AreEqual(119.0f, renderer.SizeInPoints.Width, 0.2f);
+            Assert.AreEqual(13.0f, renderer.SizeInPoints.Height, 0.1f);
 
-            Assert.AreEqual(117.0f, renderer.BoundsInPoints.Width, 0.1f);
-            Assert.AreEqual(12.9f, renderer.BoundsInPoints.Height, 0.1f);
+            Assert.AreEqual(119.0f, renderer.BoundsInPoints.Width, 0.2f);
+            Assert.AreEqual(13.0f, renderer.BoundsInPoints.Height, 0.1f);
 
             // Shapes with transparent parts may return different values here
-            Assert.AreEqual(117.0f, renderer.OpaqueBoundsInPoints.Width, 0.1f);
-            Assert.AreEqual(14.7f, renderer.OpaqueBoundsInPoints.Height, 0.1f);
+            Assert.AreEqual(119.0f, renderer.OpaqueBoundsInPoints.Width, 0.2f);
+            Assert.AreEqual(14.2f, renderer.OpaqueBoundsInPoints.Height, 0.1f);
 
             // Get the shape size in pixels, with linear scaling to a specific DPI
             Rectangle bounds = renderer.GetBoundsInPixels(1.0f, 96.0f);
-            Assert.AreEqual(156, bounds.Width);
+            Assert.AreEqual(159, bounds.Width);
             Assert.AreEqual(18, bounds.Height);
 
             // Get the shape size in pixels, but with a different DPI for the horizontal and vertical dimensions
             bounds = renderer.GetBoundsInPixels(1.0f, 96.0f, 150.0f);
-            Assert.AreEqual(156, bounds.Width);
-            Assert.AreEqual(27, bounds.Height);
+            Assert.AreEqual(159, bounds.Width);
+            Assert.AreEqual(28, bounds.Height);
 
             // The opaque bounds may vary here also
             bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f);
-            Assert.AreEqual(156, bounds.Width);
-            Assert.AreEqual(20, bounds.Height);
+            Assert.AreEqual(159, bounds.Width);
+            Assert.AreEqual(18, bounds.Height);
 
             bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f, 150.0f);
-            Assert.AreEqual(156, bounds.Width);
-            Assert.AreEqual(31, bounds.Height);
+            Assert.AreEqual(159, bounds.Width);
+            Assert.AreEqual(30, bounds.Height);
             //ExEnd
         }
     }
