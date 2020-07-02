@@ -1178,7 +1178,7 @@ namespace ApiExamples
             options.EmbedFullFonts = true;
 
             // The output PDF will be embedded with all fonts found in the document
-            doc.Save(ArtifactsDir + "Rendering.EmbedFullFonts.pdf");
+            doc.Save(ArtifactsDir + "Rendering.EmbedFullFonts.pdf", options);
             //ExEnd
         }
 
@@ -1197,7 +1197,7 @@ namespace ApiExamples
 
             // The output PDF will contain subsets of the fonts in the document
             // Only the glyphs used in the document are included in the PDF fonts
-            doc.Save(ArtifactsDir + "Rendering.SubsetFonts.pdf");
+            doc.Save(ArtifactsDir + "Rendering.SubsetFonts.pdf", options);
             //ExEnd
         }
 
@@ -1216,7 +1216,7 @@ namespace ApiExamples
             options.FontEmbeddingMode = PdfFontEmbeddingMode.EmbedNone;
 
             // The output PDF will be saved without embedding standard windows fonts
-            doc.Save(ArtifactsDir + "Rendering.DisableEmbedWindowsFonts.pdf");
+            doc.Save(ArtifactsDir + "Rendering.DisableEmbedWindowsFonts.pdf", options);
             //ExEnd
         }
 
@@ -1234,7 +1234,7 @@ namespace ApiExamples
             options.UseCoreFonts = true;
 
             // The output PDF will not be embedded with core fonts such as Arial, Times New Roman etc.
-            doc.Save(ArtifactsDir + "Rendering.DisableEmbedCoreFonts.pdf");
+            doc.Save(ArtifactsDir + "Rendering.DisableEmbedCoreFonts.pdf", options);
             //ExEnd
         }
 
