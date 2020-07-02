@@ -27,21 +27,20 @@ namespace ApiExamples
             //ExFor:ChartTitle.Overlay
             //ExFor:ChartTitle.Show
             //ExFor:ChartTitle.Text
-            //ExSummary:Shows how to insert a chart and change its title.
+            //ExSummary:Shows how to insert a chart and set a title.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert a bar chart
+            // Insert a chart shape with a document builder and get its chart.
             Shape chartShape = builder.InsertChart(ChartType.Bar, 400, 300);
-
-            // Get the chart object from the containing shape
             Chart chart = chartShape.Chart;
             
-            // Set the title text, which appears at the top center of the chart and modify its appearance
+            // Set the title text, which appears at the top center of the chart,
+            // then set it to be shown and allow it to be overlapped by other graph elements.
             ChartTitle title = chart.Title;
-            title.Text = "MyChart";
-            title.Overlay = true;
+            title.Text = "My Chart";
             title.Show = true;
+            title.Overlay = true;
 
             doc.Save(ArtifactsDir + "Charts.ChartTitle.docx");
             //ExEnd
@@ -54,7 +53,7 @@ namespace ApiExamples
 
             title = chartShape.Chart.Title;
 
-            Assert.AreEqual("MyChart", title.Text);
+            Assert.AreEqual("My Chart", title.Text);
             Assert.True(title.Overlay);
             Assert.True(title.Show);
         }
@@ -69,18 +68,18 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add chart with default data
+            // Add a chart and clear its demo data.
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
-            // Delete default generated series
-            shape.Chart.Series.Clear();
+            Chart chart = shape.Chart;
+            chart.Series.Clear();
             
-            ChartSeries series =
-                shape.Chart.Series.Add("Aspose Test Series", new[] { "Word", "PDF", "Excel" }, new[] { 2.5, 1.5, 3.5 });
+            // Insert a custom chart series.
+            ChartSeries series = chart.Series.Add("Monthly production (tonnes)", 
+                new[] { "January", "February", "March" }, new[] { 25.6d, 21.4d, 33.0d });
 
+            // Display chart values in the data labels, and set a number format.
             ChartDataLabelCollection dataLabels = series.DataLabels;
-            // Display chart values in the data labels, by default it is false
             dataLabels.ShowValue = true;
-            // Set currency format for the data labels of the entire series
             dataLabels.NumberFormat.FormatCode = "\"$\"#,##0.00";
 
             doc.Save(ArtifactsDir + "Charts.DefineNumberFormatForDataLabels.docx");
