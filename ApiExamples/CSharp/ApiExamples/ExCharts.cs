@@ -59,36 +59,40 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DefineNumberFormatForDataLabels()
+        public void DataLabelNumberFormat()
         {
             //ExStart
             //ExFor:ChartDataLabelCollection.NumberFormat
             //ExFor:ChartNumberFormat.FormatCode
-            //ExSummary:Shows how to set number format for the data labels of the entire series.
+            //ExSummary:Shows how to enable and configure data labels for a chart series.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a chart and clear its demo data.
+            // Add a chart, clear its demo data, and set a name.
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
             Chart chart = shape.Chart;
             chart.Series.Clear();
+            chart.Title.Text = "Monthly sales report";
             
             // Insert a custom chart series.
-            ChartSeries series = chart.Series.Add("Monthly production (tonnes)", 
-                new[] { "January", "February", "March" }, new[] { 25.6d, 21.4d, 33.0d });
+            ChartSeries series = chart.Series.Add("Revenue", 
+                new[] { "January", "February", "March" }, new[] { 25.611d, 21.439d, 33.750d });
 
-            // Display chart values in the data labels, and set a number format.
+            // Enable data labels and set a custom number format with which to display decimal series values.
+            series.HasDataLabels = true;
             ChartDataLabelCollection dataLabels = series.DataLabels;
             dataLabels.ShowValue = true;
-            dataLabels.NumberFormat.FormatCode = "\"$\"#,##0.00";
+            dataLabels.NumberFormat.FormatCode = "\"US$\" #,##0.000\"M\"";
 
-            doc.Save(ArtifactsDir + "Charts.DefineNumberFormatForDataLabels.docx");
+            doc.Save(ArtifactsDir + "Charts.DataLabelNumberFormat.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Charts.DefineNumberFormatForDataLabels.docx");
+            doc = new Document(ArtifactsDir + "Charts.DataLabelNumberFormat.docx");
             series = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0];
 
-            Assert.AreEqual(string.Empty, series.DataLabels.NumberFormat.FormatCode);
+            Assert.True(series.HasDataLabels);
+            Assert.True(series.DataLabels.ShowValue);
+            Assert.AreEqual("\"US$\" #,##0.000\"M\"", series.DataLabels.NumberFormat.FormatCode);
         }
 
         [Test]
