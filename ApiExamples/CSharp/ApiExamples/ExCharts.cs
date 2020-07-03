@@ -36,7 +36,7 @@ namespace ApiExamples
             Chart chart = chartShape.Chart;
 
             // Set the title text, which appears at the top center of the chart.
-            // Then, set it to be shown, and allow other graph elements to overlap it.
+            // Then, set it to be shown, and also allow other graph elements to overlap it.
             ChartTitle title = chart.Title;
             title.Text = "My Chart";
             title.Show = true;
@@ -171,28 +171,21 @@ namespace ApiExamples
             //ExFor:Charts.Chart.AxisX
             //ExFor:Charts.Chart.AxisY
             //ExFor:Charts.Chart.AxisZ
-            //ExSummary:Shows how to insert chart using the axis options for detailed configuration.
+            //ExSummary:Shows how to insert a chart and modify the appearance of its axes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert chart.
+            // Insert a column chart, clear the demo data, and then add a custom data series.
             Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
             Chart chart = shape.Chart;
-
-            // Clear demo data.
             chart.Series.Clear();
             chart.Series.Add("Aspose Test Series",
                 new[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 640, 320, 280, 120, 150 });
-
-            // Get chart axes
+            
+            // Chart axes have various options that can change their appearance,
+            // such as their direction, major/minor unit ticks, and tick marks.
             ChartAxis xAxis = chart.AxisX;
-            ChartAxis yAxis = chart.AxisY;
-
-            // For 2D charts like the one we made, the Z axis is null
-            Assert.Null(chart.AxisZ);
-
-            // Set X-axis options
             xAxis.CategoryType = AxisCategoryType.Category;
             xAxis.Crosses = AxisCrosses.Minimum;
             xAxis.ReverseOrder = false;
@@ -205,7 +198,7 @@ namespace ApiExamples
             xAxis.TickLabelSpacingIsAuto = false;
             xAxis.TickMarkSpacing = 1;
 
-            // Set Y-axis options
+            ChartAxis yAxis = chart.AxisY;
             yAxis.CategoryType = AxisCategoryType.Automatic;
             yAxis.Crosses = AxisCrosses.Maximum;
             yAxis.ReverseOrder = true;
@@ -214,6 +207,9 @@ namespace ApiExamples
             yAxis.MajorUnit = 100.0d;
             yAxis.MinorUnit = 20.0d;
             yAxis.TickLabelPosition = AxisTickLabelPosition.NextToAxis;
+
+            // 2D charts such as the one we created do not have a Z-axis, so it is null.
+            Assert.Null(chart.AxisZ);
 
             doc.Save(ArtifactsDir + "Charts.AxisProperties.docx");
             //ExEnd
@@ -261,14 +257,11 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert chart
+            // Insert a line chart, clear its demo data,
+            // and then add a custom series containing date/time values for the X-axis, and decimal values for the Y-axis.
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
             Chart chart = shape.Chart;
-            
-            // Clear demo data
             chart.Series.Clear();
-
-            // Fill data
             chart.Series.Add("Aspose Test Series",
                 new[]
                 {
@@ -277,21 +270,21 @@ namespace ApiExamples
                 },
                 new[] { 1.2, 0.3, 2.1, 2.9, 4.2, 5.3 });
 
-            ChartAxis xAxis = chart.AxisX;
-            ChartAxis yAxis = chart.AxisY;
 
-            // Set X axis bounds
+            // Set lower and upper bounds for the X-axis.
+            ChartAxis xAxis = chart.AxisX;
             xAxis.Scaling.Minimum = new AxisBound(new DateTime(2017, 11, 05).ToOADate());
             xAxis.Scaling.Maximum = new AxisBound(new DateTime(2017, 12, 03));
 
-            // Set major units to a week and minor units to a day
+            // Set the major units of the X-axis to a week, and the minor units to a day.
             xAxis.BaseTimeUnit = AxisTimeUnit.Days;
             xAxis.MajorUnit = 7.0d;
-            xAxis.MinorUnit = 1.0d;
             xAxis.MajorTickMark = AxisTickMark.Cross;
+            xAxis.MinorUnit = 1.0d;
             xAxis.MinorTickMark = AxisTickMark.Outside;
 
-            // Define Y axis properties
+            // Define Y-axis properties for decimal values.
+            ChartAxis yAxis = chart.AxisY;
             yAxis.TickLabelPosition = AxisTickLabelPosition.High;
             yAxis.MajorUnit = 100.0d;
             yAxis.MinorUnit = 50.0d;
@@ -330,19 +323,17 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert chart
+            // Insert a line chart, clear its demo data, and insert a custom series with decimal values. 
             Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
             Chart chart = shape.Chart;
-
-            // Hide both the X and Y axes
-            chart.AxisX.Hidden = true;
-            chart.AxisY.Hidden = true;
-
-            // Clear demo data
             chart.Series.Clear();
             chart.Series.Add("AW Series 1",
                 new string[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" },
                 new double[] { 1.2, 0.3, 2.1, 2.9, 4.2 });
+
+            // Chart axes can be hidden like this. 
+            chart.AxisX.Hidden = true;
+            chart.AxisY.Hidden = true;
 
             doc.Save(ArtifactsDir + "Charts.HideChartAxis.docx");
             //ExEnd
