@@ -52,9 +52,9 @@ namespace ApiExamples
             builder.Writeln("Text inside Bookmark 3.");
             builder.EndBookmark("Bookmark 3");
 
-            // When saving to .pdf, bookmarks can be accessed via a drop down menu and used as anchors by most readers.
+            // When saving to .pdf, bookmarks can be accessed via a drop-down menu and used as anchors by most readers.
             // Bookmarks can also have numeric values for outline levels,
-            // which enables lower level outline entries to hide higher level child entries when collapsed in the reader. 
+            // enabling lower level outline entries to hide higher-level child entries when collapsed in the reader.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             BookmarksOutlineLevelCollection outlineLevels = pdfSaveOptions.OutlineOptions.BookmarksOutlineLevels;
 
@@ -72,7 +72,7 @@ namespace ApiExamples
             outlineLevels.RemoveAt(2);
             outlineLevels.Remove("Bookmark 2");
 
-            // There are nine outline levels, and level numbering gets optimized when the document is saved. 
+            // There are nine outline levels, and level numbering gets optimized when the document is saved. // INSP: use active voice instead of passive
             // In this case, levels "5" and "9" will become "2" and "3".
             outlineLevels.Add("Bookmark 2", 5);
             outlineLevels.Add("Bookmark 3", 9);

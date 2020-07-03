@@ -88,7 +88,7 @@ namespace ApiExamples
             //ExSummary:Shows how to remove borders from a paragraph.
             Document doc = new Document(MyDir + "Borders.docx");
 
-            // Each paragraph has an individual set of borders, whose appearance settings can be accessed via the paragraph format object.
+            // Each paragraph has an individual set of borders, whose appearance settings can be accessed via the paragraph format object. // INSP: use active voice instead of passive
             BorderCollection borders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
 
             Assert.AreEqual(Color.Red.ToArgb(), borders[0].Color.ToArgb());
@@ -136,7 +136,7 @@ namespace ApiExamples
             builder.Writeln("Paragraph 1.");
             builder.Write("Paragraph 2.");
 
-            // Both paragraphs were created with the same paragraph format border configuration,
+            // Both paragraphs were created with the same paragraph format border configuration, // INSP: use active voice instead of passive
             // so the border collections of the two paragraphs share the same elements.
             BorderCollection firstParagraphBorders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
             BorderCollection secondParagraphBorders = builder.CurrentParagraph.ParagraphFormat.Borders;
@@ -185,17 +185,17 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a red horizontal border for the paragraph. These settings will be carried over to any new paragraphs added afterwards.
+            // Create a red horizontal border for the paragraph. These settings will be carried over to any new paragraphs added afterward. // INSP: use active voice instead of passive
             BorderCollection borders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
             borders.Horizontal.Color = Color.Red;
             borders.Horizontal.LineStyle = LineStyle.DashSmallGap;
             borders.Horizontal.LineWidth = 3;
 
-            // Write text to the document without creating a new paragraph afterwards.
+            // Write text to the document without creating a new paragraph afterward.
             // Since there is no paragraph underneath, the horizontal border will not be visible.
             builder.Write("Paragraph above horizontal border.");
 
-            // Add a new paragraph to enable the border to see the border of the first paragraph.
+            // Add a new paragraph to enable the border to see the border of the first paragraph. // INSP: Grammarly offers to use synonims instead of two "border" (edge, perimeter). Can we use it?
             builder.InsertParagraph();
             builder.Write("Paragraph below horizontal border.");
 
@@ -233,18 +233,18 @@ namespace ApiExamples
                 Row row = builder.EndRow();
                 BorderCollection borders = row.RowFormat.Borders;
 
-                // Adjust appearance of borders that will appear between rows.
+                // Adjust the appearance of borders that will appear between rows.
                 borders.Horizontal.Color = Color.Red;
                 borders.Horizontal.LineStyle = LineStyle.Dot;
                 borders.Horizontal.LineWidth = 2.0d;
 
-                // Adjust appearance of borders that will appear between cells.
+                // Adjust the appearance of borders that will appear between cells.
                 borders.Vertical.Color = Color.Blue;
                 borders.Vertical.LineStyle = LineStyle.Dot;
                 borders.Vertical.LineWidth = 2.0d;
             }
 
-            // A row format's border settings is separate from those of the cell paragraph.
+            // A row format's border settings are separate from those of the cell paragraph.
             Border border = table.FirstRow.FirstCell.LastParagraph.ParagraphFormat.Borders.Vertical;
 
             Assert.AreEqual(Color.Empty.ToArgb(), border.Color.ToArgb());

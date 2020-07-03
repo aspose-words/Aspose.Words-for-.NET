@@ -31,7 +31,7 @@ namespace ApiExamples
             builder.CellFormat.VerticalMerge = CellMerge.First;
             builder.Write("Text in merged cells.");
 
-            // Insert a cell into the second column of the first row, which will not be merged with any other cells, then end the row.
+            // Insert a cell into the second column of the first row, which will not be merged with any other cells, then end the row. // INSP: use active voice instead of passive
             builder.InsertCell();
             builder.CellFormat.VerticalMerge = CellMerge.None;
             builder.Write("Text in unmerged cell.");
@@ -78,7 +78,7 @@ namespace ApiExamples
             builder.Write("Text in merged cells.");
 
             // Insert a cell into the second column of the first row. Instead of adding text contents,
-            // we will merge this cell with the first cell that we added directly to the left, and end the row afterwards.
+            // we will merge this cell with the first cell that we added directly to the left, and end the row afterward.
             builder.InsertCell();
             builder.CellFormat.HorizontalMerge = CellMerge.Previous;
             builder.EndRow();

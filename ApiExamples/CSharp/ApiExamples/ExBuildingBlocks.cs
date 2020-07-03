@@ -38,7 +38,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void CreateAndInsert()
         {
-            // Building blocks are stored in the document's glossary document, which is null by default.
+            // Building blocks are stored in the document's glossary document, which is null by default. // INSP: use active voice instead of passive
             Document doc = new Document();
             GlossaryDocument glossaryDoc = new GlossaryDocument();
             doc.GlossaryDocument = glossaryDoc;
@@ -63,8 +63,8 @@ namespace ApiExamples
             Assert.AreEqual(BuildingBlockGallery.All, block.Gallery);
             Assert.AreEqual(BuildingBlockBehavior.Content, block.Behavior);
 
-            // This block will need text content before it can be used in the document. 
-            // We will do that, as well as setting a category, gallery and behavior with a document visitor.
+            // This block will need text content before it can be used in the document. // INSP: use active voice instead of passive
+            // We will do that and set a category, gallery, and behavior with a document visitor.
             BuildingBlockVisitor visitor = new BuildingBlockVisitor(glossaryDoc);
             block.Accept(visitor);
 
@@ -72,7 +72,7 @@ namespace ApiExamples
             BuildingBlock customBlock = glossaryDoc.GetBuildingBlock(BuildingBlockGallery.QuickParts,
                 "My custom building blocks", "Custom Block");
 
-            // The block itself is a section that contains text.
+            // The block itself is a section that contains the text.
             Assert.AreEqual($"Text inside {customBlock.Name}\f", customBlock.FirstSection.Body.FirstParagraph.GetText());
             Assert.AreEqual(customBlock.FirstSection, customBlock.LastSection);
             Assert.DoesNotThrow(() => Guid.Parse(customBlock.Guid.ToString())); //ExSkip
@@ -108,7 +108,7 @@ namespace ApiExamples
                     "Using this block in the Quick Parts section of word will place its contents at the cursor.";
                 block.Gallery = BuildingBlockGallery.QuickParts;
 
-                // Add a section with text, which will be appended to the document when this building block is inserted.
+                // Add a section with text that will be appended to the document when this building block is inserted. // INSP: use active voice instead of passive
                 Section section = new Section(mGlossaryDoc);
                 block.AppendChild(section);
                 block.FirstSection.EnsureMinimum();
@@ -176,7 +176,7 @@ namespace ApiExamples
                 glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4").Name);
 
             // We will do that using a custom visitor,
-            // which also will give every BuildingBlock in the GlossaryDocument a unique GUID
+            // which will give every BuildingBlock in the GlossaryDocument a unique GUID
             GlossaryDocVisitor visitor = new GlossaryDocVisitor();
             glossaryDoc.Accept(visitor);
             Assert.AreEqual(5, visitor.GetDictionary().Count); //ExSkip
@@ -184,7 +184,7 @@ namespace ApiExamples
             Console.WriteLine(visitor.GetText());
 
             // When we open this document using Microsoft Word,
-            // the building blocks can be found via Insert -> Quick Parts -> Building Blocks Organizer.
+            // the building blocks can be found via Insert -> Quick Parts -> Building Blocks Organizer. // INSP: use active voice instead of passive
             doc.Save(ArtifactsDir + "BuildingBlocks.GlossaryDocument.dotx"); 
         }
 
