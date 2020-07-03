@@ -38,12 +38,12 @@ namespace ApiExamples
         [Test] //ExSkip
         public void CreateAndInsert()
         {
-            // Building blocks are stored in the document's glossary document, which is null by default. // INSP: use active voice instead of passive
+            // A document's glossary document stores building blocks.
             Document doc = new Document();
             GlossaryDocument glossaryDoc = new GlossaryDocument();
             doc.GlossaryDocument = glossaryDoc;
 
-            // Create a building block, name it, and add it to the glossary document.
+            // Create a building block, name it, and then add it to the glossary document.
             BuildingBlock block = new BuildingBlock(glossaryDoc)
             {
                 Name = "Custom Block"
@@ -63,7 +63,7 @@ namespace ApiExamples
             Assert.AreEqual(BuildingBlockGallery.All, block.Gallery);
             Assert.AreEqual(BuildingBlockBehavior.Content, block.Behavior);
 
-            // This block will need text content before it can be used in the document. // INSP: use active voice instead of passive
+            // Before we can add this building block to our document, we will need to give it some contents.
             // We will do that and set a category, gallery, and behavior with a document visitor.
             BuildingBlockVisitor visitor = new BuildingBlockVisitor(glossaryDoc);
             block.Accept(visitor);
@@ -108,7 +108,8 @@ namespace ApiExamples
                     "Using this block in the Quick Parts section of word will place its contents at the cursor.";
                 block.Gallery = BuildingBlockGallery.QuickParts;
 
-                // Add a section with text that will be appended to the document when this building block is inserted. // INSP: use active voice instead of passive
+                // Add a section with text.
+                // Inserting the block into the document will append this section with its child nodes at the location.
                 Section section = new Section(mGlossaryDoc);
                 block.AppendChild(section);
                 block.FirstSection.EnsureMinimum();
@@ -184,7 +185,7 @@ namespace ApiExamples
             Console.WriteLine(visitor.GetText());
 
             // When we open this document using Microsoft Word,
-            // the building blocks can be found via Insert -> Quick Parts -> Building Blocks Organizer. // INSP: use active voice instead of passive
+            // we can find the building blocks via Insert -> Quick Parts -> Building Blocks Organizer.
             doc.Save(ArtifactsDir + "BuildingBlocks.GlossaryDocument.dotx"); 
         }
 

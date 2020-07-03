@@ -38,7 +38,7 @@ namespace ApiExamples
                 }
             }
 
-            // These settings will be applied to all paragraphs created by the builder, such as this one. // INSP: use active voice instead of passive
+            // Insert a paragraph. Our border settings will determine the appearance of its border.
             builder.Writeln("Hello world!");
 
             doc.Save(ArtifactsDir + "BorderCollection.GetBordersEnumerator.docx");

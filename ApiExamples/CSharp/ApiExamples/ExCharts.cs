@@ -35,8 +35,8 @@ namespace ApiExamples
             Shape chartShape = builder.InsertChart(ChartType.Bar, 400, 300);
             Chart chart = chartShape.Chart;
 
-            // Set the title text, which appears at the top center of the chart,
-            // then set it to be shown and allow it to be overlapped by other graph elements. // INSP: use active voice instead of passive
+            // Set the title text, which appears at the top center of the chart.
+            // Then, set it to be shown, and allow other graph elements to overlap it.
             ChartTitle title = chart.Title;
             title.Text = "My Chart";
             title.Show = true;

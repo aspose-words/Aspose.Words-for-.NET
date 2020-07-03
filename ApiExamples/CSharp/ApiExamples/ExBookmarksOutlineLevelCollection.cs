@@ -72,7 +72,7 @@ namespace ApiExamples
             outlineLevels.RemoveAt(2);
             outlineLevels.Remove("Bookmark 2");
 
-            // There are nine outline levels, and level numbering gets optimized when the document is saved. // INSP: use active voice instead of passive
+            // There are nine outline levels. Their numbering will be optimized during the save operation.
             // In this case, levels "5" and "9" will become "2" and "3".
             outlineLevels.Add("Bookmark 2", 5);
             outlineLevels.Add("Bookmark 3", 9);
