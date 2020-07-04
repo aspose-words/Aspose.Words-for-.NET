@@ -24,7 +24,6 @@
     <Content Include="ApiExampleBase.cs" />
     <Content Include="ExBookmarksOutlineLevelCollection.cs" />
     <Content Include="ExComHelper.cs" />
-    <Content Include="CustomBarcodeGenerator.cs" />
     <Content Include="DocumentHelper.cs" />
     <Content Include="ExAbsolutePositionTab.cs" />
     <Content Include="ExBookmarks.cs" />
@@ -124,8 +123,8 @@
   <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="18.8.0" />
     <PackageReference Include="Aspose.PDF" Version="20.6.0" />
-    <PackageReference Include="Aspose.Words" Version="20.6.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.6.0" />
+    <PackageReference Include="Aspose.Words" Version="20.7.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
