@@ -24,6 +24,7 @@
     <Content Include="ApiExampleBase.cs" />
     <Content Include="ExBookmarksOutlineLevelCollection.cs" />
     <Content Include="ExComHelper.cs" />
+    <Content Include="CustomBarcodeGenerator.cs" />
     <Content Include="DocumentHelper.cs" />
     <Content Include="ExAbsolutePositionTab.cs" />
     <Content Include="ExBookmarks.cs" />
