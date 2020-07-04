@@ -78,6 +78,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Themes.CustomColorsAndFonts.docx");
             //ExEnd
+
             doc = new Document(ArtifactsDir + "Themes.CustomColorsAndFonts.docx");
 
             Assert.AreEqual(Color.OrangeRed.ToArgb(), doc.Theme.Colors.Accent1.ToArgb());

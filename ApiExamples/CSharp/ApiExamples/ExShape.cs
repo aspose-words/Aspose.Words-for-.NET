@@ -77,10 +77,25 @@ namespace ApiExamples
             Assert.True(shape.HasImage);
 
             // Rotate the image
-            shape.Rotation = 45.0;
+            shape.Rotation = 45.0d;
 
             doc.Save(ArtifactsDir + "Shape.Insert.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.Insert.docx");
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
+            
+            TestUtil.VerifyShape(ShapeType.Cube, "MyCube", 150.0d, 150.0d, 0, 0, shapes[0]);
+            Assert.AreEqual("Alt text for MyCube.", shapes[0].AlternativeText);
+            Assert.AreEqual("Times New Roman", shapes[0].Font.Name);
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100004", 300.0d, 50.0d, 0, 0, shapes[1]);
+            Assert.AreEqual("Hello world!", shapes[1].LastParagraph.GetText().Trim());
+
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 300.0d, 300.0d, 0, 0, shapes[2]);
+            Assert.True(shapes[2].CanHaveImage);
+            Assert.True(shapes[2].HasImage);
+            Assert.AreEqual(45.0d, shapes[2].Rotation);
         }
 
         //ExStart
@@ -214,20 +229,29 @@ namespace ApiExamples
             shape.DistanceRight = 40.0;
 
             // Move the shape closer to the centre of the page
-            shape.Left = 100.0;
-            shape.Top = 100.0;
+            shape.Top = 75.0;
+            shape.Left = 150.0;
 
             // Rotate the shape
             shape.Rotation = 60.0;
 
-            // Add text that the shape will push out of the way
-            for (int i = 0; i < 500; i++)
-            {
-                builder.Write("text ");
-            }
+            // Add text that will wrap around the shape
+            builder.Font.Size = 24.0d;
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+                          "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
 
             doc.Save(ArtifactsDir + "Shape.Coordinates.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.Coordinates.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100002", 150.0d, 150.0d, 75.0d, 150.0d, shape);
+            Assert.AreEqual(40.0d, shape.DistanceBottom);
+            Assert.AreEqual(40.0d, shape.DistanceLeft);
+            Assert.AreEqual(40.0d, shape.DistanceRight);
+            Assert.AreEqual(40.0d, shape.DistanceTop);
+            Assert.AreEqual(60.0d, shape.Rotation);
         }
 
         [Test]
@@ -243,16 +267,12 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Every GroupShape is top level
             GroupShape group = new GroupShape(doc);
+
+            // Every GroupShape by default is a top level floating shape
             Assert.True(group.IsGroup);
             Assert.True(group.IsTopLevel);
-
-            // And it is a floating shape too, so we can set its coordinates independently of the text
             Assert.AreEqual(WrapType.None, group.WrapType);
-
-            // Make it a floating shape
-            group.WrapType = WrapType.None;
 
             // Top level shapes can have this property changed
             group.AnchorLocked = true;
@@ -307,12 +327,28 @@ namespace ApiExamples
             builder.InsertNode(group);
             doc.Save(ArtifactsDir + "Shape.InsertGroupShape.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.InsertGroupShape.docx");
+            group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
+
+            Assert.True(group.AnchorLocked);
+            Assert.AreEqual(new RectangleF(100, 50, 200, 100), group.Bounds);
+            Assert.AreEqual(new Size(2000, 1000), group.CoordSize);
+            Assert.AreEqual(new Point(-1000, -500), group.CoordOrigin);
+
+            subShape = (Shape)group.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 500.0d, 700.0d, 0.0d, 0.0d, subShape);
+
+            subShape = (Shape)group.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyShape(ShapeType.Triangle, string.Empty, 400.0d, 400.0d, 500.0d, 1000.0d, subShape);
+            Assert.AreEqual(new PointF(1000, 500), subShape.LocalToParent(new PointF(0, 0)));
         }
 
         [Test]
         public void DeleteAllShapes()
         {
-
             //ExStart
             //ExFor:Shape
             //ExSummary:Shows how to delete all shapes from a document.
@@ -372,8 +408,9 @@ namespace ApiExamples
             }
             //ExEnd
 
-            // Verify that the first shape in the document is not inline
-            Assert.False(((Shape) doc.GetChild(NodeType.Shape, 0, true)).IsInline);
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.False(((Shape)doc.GetChild(NodeType.Shape, 0, true)).IsInline);
         }
 
         [Test]
@@ -416,8 +453,23 @@ namespace ApiExamples
             doc.FirstSection.Body.FirstParagraph.AppendChild(lineA);
             doc.FirstSection.Body.FirstParagraph.AppendChild(lineB);
 
-            doc.Save(ArtifactsDir + "Shape.LineFlipOrientation.doc");
+            doc.Save(ArtifactsDir + "Shape.LineFlipOrientation.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.LineFlipOrientation.docx");
+            lineA = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineA.BoundsInPoints);
+            Assert.AreEqual(FlipOrientation.None, lineA.FlipOrientation);
+            Assert.AreEqual(RelativeHorizontalPosition.Page, lineA.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Page, lineA.RelativeVerticalPosition);
+
+            lineB = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineB.BoundsInPoints);
+            Assert.AreEqual(FlipOrientation.None, lineB.FlipOrientation);
+            Assert.AreEqual(RelativeHorizontalPosition.Page, lineB.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Page, lineB.RelativeVerticalPosition);
         }
 
         [Test]
@@ -429,7 +481,8 @@ namespace ApiExamples
             //ExFor:Fill
             //ExFor:Fill.Opacity
             //ExSummary:Demonstrates how to create shapes with fill.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln();
             builder.Writeln();
@@ -446,12 +499,19 @@ namespace ApiExamples
             shape.Top = -100;
             builder.InsertNode(shape);
 
-            builder.Document.Save(ArtifactsDir + "Shape.Fill.doc");
+            doc.Save(ArtifactsDir + "Shape.Fill.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.Fill.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Balloon, string.Empty, 100.0d, 100.0d, -100.0d, 0.0d, shape);
+            Assert.AreEqual(Color.Red.ToArgb(), shape.FillColor.ToArgb());
+            Assert.AreEqual(0.3d, shape.Fill.Opacity, 0.01d);
         }
 
         [Test]
-        public void GetShapeAltTextTitle()
+        public void Title()
         {
             //ExStart
             //ExFor:ShapeBase.Title
@@ -461,15 +521,17 @@ namespace ApiExamples
 
             // Create test shape
             Shape shape = new Shape(doc, ShapeType.Cube);
-            shape.Width = 431.5;
-            shape.Height = 346.35;
-            shape.Title = "Alt Text Title";
-
+            shape.Width = 200;
+            shape.Height = 200;
+            shape.Title = "My cube";
+            
             builder.InsertNode(shape);
             //ExEnd
 
+            doc = DocumentHelper.SaveOpen(doc);
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            Assert.AreEqual("Alt Text Title", shape.Title);
+
+            TestUtil.VerifyShape(ShapeType.Cube, string.Empty, 200.0d, 200.0d, 0.0d, 0.0d, shape);
         }
 
         [Test]
@@ -520,8 +582,13 @@ namespace ApiExamples
                 }
             }
 
-            doc.Save(ArtifactsDir + "Shape.ReplaceTextboxesWithImages.doc");
+            doc.Save(ArtifactsDir + "Shape.ReplaceTextboxesWithImages.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.ReplaceTextboxesWithImages.docx");
+            Shape outShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(WrapSide.Both, outShape.WrapSide);
         }
 
         [Test]
@@ -533,7 +600,7 @@ namespace ApiExamples
             //ExFor:Story.FirstParagraph
             //ExFor:Shape.FirstParagraph
             //ExFor:ShapeBase.WrapType
-            //ExSummary:Creates a textbox with some text and different formatting options in a new document.
+            //ExSummary:Shows how to create a textbox with some text and different formatting options in a new document.
             Document doc = new Document();
 
             // Create a new shape of type TextBox
@@ -561,15 +628,24 @@ namespace ApiExamples
 
             // Add some text to the paragraph
             Run run = new Run(doc);
-            run.Text = "Content in textbox";
+            run.Text = "Hello world!";
             para.AppendChild(run);
 
             // Append the textbox to the first paragraph in the body
             doc.FirstSection.Body.FirstParagraph.AppendChild(textBox);
 
-            // Save the output
-            doc.Save(ArtifactsDir + "Shape.CreateTextBox.doc");
+            doc.Save(ArtifactsDir + "Shape.CreateTextBox.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.CreateTextBox.docx");
+            textBox = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.TextBox, string.Empty, 200.0d, 50.0d, 0.0d, 0.0d, textBox);
+            Assert.AreEqual(WrapType.None, textBox.WrapType);
+            Assert.AreEqual(HorizontalAlignment.Center, textBox.HorizontalAlignment);
+            Assert.AreEqual(VerticalAlignment.Top, textBox.VerticalAlignment);
+            Assert.AreEqual(0, textBox.ZOrder);
+            Assert.AreEqual("Hello world!", textBox.GetText().Trim());
         }
 
         [Test]
@@ -614,7 +690,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:OleFormat.GetRawData
             //ExSummary:Shows how to get access to OLE object raw data.
-            // The document contains linked and embedded objects
+            // Open a document that contains OLE objects
             Document doc = new Document(MyDir + "OLE objects.docx");
 
             foreach (Node shape in doc.GetChildNodes(NodeType.Shape, true))
@@ -623,8 +699,9 @@ namespace ApiExamples
                 OleFormat oleFormat = ((Shape)shape).OleFormat;
                 if (oleFormat != null)
                 {
-                    Console.WriteLine($"This is {(oleFormat.IsLink ? "linked" : "embedded")} object");
+                    Console.WriteLine($"This is {(oleFormat.IsLink ? "a linked" : "an embedded")} object");
                     byte[] oleRawData = oleFormat.GetRawData();
+                    Assert.AreEqual(24576, oleRawData.Length); //ExSkip
                 }
             }
             //ExEnd
@@ -667,6 +744,9 @@ namespace ApiExamples
             // We can also save it directly to a file
             oleFormat.Save(ArtifactsDir + "OLE spreadsheet saved directly" + oleFormat.SuggestedExtension);
             //ExEnd
+
+            Assert.AreEqual(8300, new FileInfo(ArtifactsDir + "OLE spreadsheet extracted via stream.xlsx").Length, TestUtil.FileInfoLengthDelta);
+            Assert.AreEqual(8300, new FileInfo(ArtifactsDir + "OLE spreadsheet saved directly.xlsx").Length, TestUtil.FileInfoLengthDelta);
         }
 
         [Test]
@@ -790,7 +870,6 @@ namespace ApiExamples
             Assert.AreEqual(96, imageOptions.VerticalResolution);
         }
 
-        //For assert result of the test you need to open "Shape.OfficeMath.svg" and check that OfficeMath node is there
         [Test]
         public void SaveShapeObjectAsImage()
         {
@@ -802,8 +881,10 @@ namespace ApiExamples
 
             // Get OfficeMath node from the document and render this as image (you can also do the same with the Shape node)
             OfficeMath math = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
-            math.GetMathRenderer().Save(ArtifactsDir + "Shape.SaveShapeObjectAsImage.svg", new ImageSaveOptions(SaveFormat.Svg));
+            math.GetMathRenderer().Save(ArtifactsDir + "Shape.SaveShapeObjectAsImage.png", new ImageSaveOptions(SaveFormat.Png));
             //ExEnd
+            
+            TestUtil.VerifyImage(159, 18, ArtifactsDir + "Shape.SaveShapeObjectAsImage.png");
         }
 
         [Test]
@@ -861,6 +942,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.OfficeMath.docx");
             //ExEnd
+
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "Shape.OfficeMath.docx", GoldsDir + "Shape.OfficeMath Gold.docx"));
         }
 
@@ -898,7 +980,6 @@ namespace ApiExamples
             Assert.AreEqual(OfficeMathJustification.Center, officeMath.Justification);
         }
 
-        [Test]
         [TestCase(0, MathObjectType.OMathPara)]
         [TestCase(1, MathObjectType.OMath)]
         [TestCase(2, MathObjectType.Supercript)]
@@ -912,7 +993,6 @@ namespace ApiExamples
             Assert.AreEqual(objectType, officeMath.MathObjectType);
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void AspectRatioLocked(bool isLocked)
@@ -930,6 +1010,7 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
             shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+
             Assert.AreEqual(isLocked, shape.AspectRatioLocked);
         }
 
@@ -955,7 +1036,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(MsWordVersion.Word2000, ShapeMarkupLanguage.Vml)]
         [TestCase(MsWordVersion.Word2002, ShapeMarkupLanguage.Vml)]
         [TestCase(MsWordVersion.Word2003, ShapeMarkupLanguage.Vml)]
@@ -1012,7 +1092,6 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
             rectangle = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-
             Stroke strokeAfter = rectangle.Stroke;
 
             Assert.AreEqual(true, strokeAfter.On);
@@ -1024,8 +1103,7 @@ namespace ApiExamples
             Assert.AreEqual(ShapeLineStyle.Triple, strokeAfter.LineStyle);
         }
 
-        [Test]
-        [Description("WORDSNET-16067")]
+        [Test, Description("WORDSNET-16067")]
         public void InsertOleObjectAsHtmlFile()
         {
             Document doc = new Document();
@@ -1036,8 +1114,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Shape.InsertOleObjectAsHtmlFile.docx");
         }
 
-        [Test]
-        [Description("WORDSNET-16085")]
+        [Test, Description("WORDSNET-16085")]
         public void InsertOlePackage()
         {
             //ExStart
@@ -1065,7 +1142,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Shape.InsertOlePackage.docx");
 
-            Shape getShape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+            Shape getShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             OlePackage getOlePackage = getShape.OleFormat.OlePackage;
 
             Assert.AreEqual("Cat FileName.zip", getOlePackage.FileName);
@@ -1093,7 +1170,6 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Shape shape = builder.InsertShape(ShapeType.Rectangle, 200, 300);
-
             // Change shape size and rotation
             shape.Height = 300;
             shape.Width = 500;
@@ -1109,7 +1185,6 @@ namespace ApiExamples
             //ExFor:ShapeBase.IsLayoutInCell
             //ExFor:MsWordVersion
             //ExSummary:Shows how to display the shape, inside a table or outside of it.
-            //Document doc = new Document(MyDir + "Shape.LayoutInCell.docx");
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1149,15 +1224,13 @@ namespace ApiExamples
                 watermark.TextPath.Text = string.Format("{0}", num);
                 watermark.TextPath.FontFamily = "Arial";
 
-                watermark.Name = $"WaterMark_{Guid.NewGuid()}";
+                watermark.Name = $"Watermark_{num++}";
                 // Property will take effect only if the WrapType property is set to something other than WrapType.Inline
                 watermark.WrapType = WrapType.None; 
                 watermark.BehindText = true;
 
                 builder.MoveTo(run);
                 builder.InsertNode(watermark);
-
-                num = num + 1;
             }
 
             // Behaviour of MS Word on working with shapes in table cells is changed in the last versions
@@ -1166,6 +1239,14 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.LayoutInTableCell.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.LayoutInTableCell.docx");
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+
+            Assert.AreEqual(31, shapes.Count);
+
+            foreach (Shape shape in shapes)
+                TestUtil.VerifyShape(ShapeType.TextPlainText, $"Watermark_{shapes.IndexOf(shape) + 1}", 30.0d, 30.0d, 0.0d, 0.0d, shape);
         }
 
         [Test]
@@ -1198,6 +1279,12 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "Shape.ShapeInsertion.docx", saveOptions);
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.ShapeInsertion.docx");
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+
+            TestUtil.VerifyShape(ShapeType.TopCornersRounded, "TopCornersRounded 100002", 50.0d, 50.0d, 100.0d, 100.0d, shapes[0]);
+            TestUtil.VerifyShape(ShapeType.DiagonalCornersRounded, "DiagonalCornersRounded 100004", 50.0d, 50.0d, 0.0d, 0.0d, shapes[1]);
         }
 
         //ExStart
@@ -1219,7 +1306,8 @@ namespace ApiExamples
         {
             // Open a document that contains shapes
             Document doc = new Document(MyDir + "Revision shape.docx");
-            
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count); //ExSKip
+
             // Create a ShapeVisitor and get the document to accept it
             ShapeVisitor shapeVisitor = new ShapeVisitor();
             doc.Accept(shapeVisitor);
@@ -1381,7 +1469,6 @@ namespace ApiExamples
             Assert.AreEqual("Senior Manager", signatureLine.SignerTitle);
             Assert.AreEqual("Please sign here", signatureLine.Instructions);
             Assert.True(signatureLine.ShowDate);
-
             Assert.True(signatureLine.AllowComments);
             Assert.True(signatureLine.DefaultInstructions);
 
@@ -1393,6 +1480,24 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.SignatureLine.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.SignatureLine.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 192.75d, 96.75d, -60.0d, -170.0d, shape);
+            Assert.True(shape.IsSignatureLine);
+
+            signatureLine = shape.SignatureLine;
+
+            Assert.AreEqual("john.doe@management.com", signatureLine.Email);
+            Assert.AreEqual("John Doe", signatureLine.Signer);
+            Assert.AreEqual("Senior Manager", signatureLine.SignerTitle);
+            Assert.AreEqual("Please sign here", signatureLine.Instructions);
+            Assert.True(signatureLine.ShowDate);
+            Assert.True(signatureLine.AllowComments);
+            Assert.True(signatureLine.DefaultInstructions);
+            Assert.False(signatureLine.IsSigned);
+            Assert.False(signatureLine.IsValid);
         }
 
         [Test]
@@ -1455,6 +1560,21 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.TextBox.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.TextBox.docx");
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 150.0d, 100.0d, 0.0d, 0.0d, shapes[0]);
+            TestUtil.VerifyTextBox(LayoutFlow.TopToBottomIdeographic, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[0].TextBox);
+            Assert.AreEqual("Vertical text", shapes[0].GetText().Trim());
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100004", 150.0d, 100.0d, 0.0d, 0.0d, shapes[1]);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, true, TextBoxWrapMode.None, 3.6d, 3.6d, 7.2d, 7.2d, shapes[1].TextBox);
+            Assert.AreEqual("Text fit tightly inside textbox", shapes[1].GetText().Trim());
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100006", 100.0d, 100.0d, 0.0d, 0.0d, shapes[2]);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 15.0d, 15.0d, 15.0d, 15.0d, shapes[2].TextBox);
+            Assert.AreEqual("Text placed according to textbox margins", shapes[2].GetText().Trim());
         }
 
         [Test]
@@ -1468,7 +1588,7 @@ namespace ApiExamples
 
             Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 100, 100);
             // Not all formats are compatible with this one
-            // For most of incompatible formats AW generated a warnings on save, so use doc.WarningCallback to check it.
+            // For most of incompatible formats AW generated a warnings on save, so use doc.WarningCallback to check it
             textBoxShape.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
             
             builder.MoveTo(textBoxShape.LastParagraph);
@@ -1522,11 +1642,11 @@ namespace ApiExamples
                 Console.WriteLine("This TextBox is the head of the sequence");
  
             if (textBox2.Next != null && textBox2.Previous != null)
-                Console.WriteLine("This TextBox is the Middle of the sequence");
+                Console.WriteLine("This TextBox is the middle of the sequence");
  
             if (textBox3.Next == null && textBox3.Previous != null)
             {
-                Console.WriteLine("This TextBox is the Tail of the sequence");
+                Console.WriteLine("This TextBox is the tail of the sequence");
                 
                 // Break the forward link between textBox2 and textBox3
                 textBox3.Previous.BreakForwardLink();
@@ -1537,6 +1657,25 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.CreateLinkBetweenTextBoxes.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.CreateLinkBetweenTextBoxes.docx");
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 100.0d, 100.0d, 0.0d, 0.0d, shapes[0]);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[0].TextBox);
+            Assert.AreEqual(string.Empty, shapes[0].GetText().Trim());
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100004", 100.0d, 100.0d, 0.0d, 0.0d, shapes[1]);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[1].TextBox);
+            Assert.AreEqual(string.Empty, shapes[1].GetText().Trim());
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "TextBox 100006", 100.0d, 100.0d, 0.0d, 0.0d, shapes[2]);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[2].TextBox);
+            Assert.AreEqual(string.Empty, shapes[2].GetText().Trim());
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100008", 100.0d, 100.0d, 0.0d, 0.0d, shapes[3]);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[3].TextBox);
+            Assert.AreEqual("Vertical text", shapes[3].GetText().Trim());
         }
 
         [Test]
@@ -1557,6 +1696,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.GetTextBoxAndChangeAnchor.docx");
             //ExEnd
+            
+            doc = new Document(ArtifactsDir + "Shape.GetTextBoxAndChangeAnchor.docx");
+            textBox = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 200.0d, 200.0d, 0.0d, 0.0d, textBox);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, textBox.TextBox);
+            Assert.AreEqual("Textbox contents", textBox.GetText().Trim());
         }
 
         //ExStart
@@ -1609,10 +1755,10 @@ namespace ApiExamples
             Assert.AreEqual(ShapeType.TextPlainText, shape.ShapeType);
 
             // Toggle whether or not to display text
-            shape = AppendWordArt(doc, "On set to true", "Calibri", 150, 24, Color.Yellow, Color.Red, ShapeType.TextPlainText);
+            shape = AppendWordArt(doc, "On set to true", "Calibri", 150, 24, Color.Yellow, Color.Purple, ShapeType.TextPlainText);
             shape.TextPath.On = true;
 
-            shape = AppendWordArt(doc, "On set to false", "Calibri", 150, 24, Color.Yellow, Color.Red, ShapeType.TextPlainText);
+            shape = AppendWordArt(doc, "On set to false", "Calibri", 150, 24, Color.Yellow, Color.Purple, ShapeType.TextPlainText);
             shape.TextPath.On = false;
 
             // Apply kerning
@@ -1647,6 +1793,7 @@ namespace ApiExamples
             shape.TextPath.TextPathAlignment = TextPathAlignment.Right;
 
             doc.Save(ArtifactsDir + "Shape.InsertTextPaths.docx");
+            TestInsertTextPaths(ArtifactsDir + "Shape.InsertTextPaths.docx"); //ExSkip
         }
 
         /// <summary>
@@ -1679,6 +1826,46 @@ namespace ApiExamples
             return shape;
         }
         //ExEnd
+
+        private void TestInsertTextPaths(string filename)
+        {
+            Document doc = new Document(filename);
+            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 240, 24, 0.0d, 0.0d, shapes[0]);
+            Assert.True(shapes[0].TextPath.Bold);
+            Assert.True(shapes[0].TextPath.Italic);
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 150, 24, 0.0d, 0.0d, shapes[1]);
+            Assert.True(shapes[1].TextPath.On);
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 150, 24, 0.0d, 0.0d, shapes[2]);
+            Assert.False(shapes[2].TextPath.On);
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 90, 24, 0.0d, 0.0d, shapes[3]);
+            Assert.True(shapes[3].TextPath.Kerning);
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 100, 24, 0.0d, 0.0d, shapes[4]);
+            Assert.False(shapes[4].TextPath.Kerning);
+
+            TestUtil.VerifyShape(ShapeType.TextCascadeDown, string.Empty, 120, 24, 0.0d, 0.0d, shapes[5]);
+            Assert.AreEqual(0.1d, shapes[5].TextPath.Spacing, 0.01d);
+
+            TestUtil.VerifyShape(ShapeType.TextWave, string.Empty, 200, 36, 0.0d, 0.0d, shapes[6]);
+            Assert.True(shapes[6].TextPath.RotateLetters);
+
+            TestUtil.VerifyShape(ShapeType.TextSlantUp, string.Empty, 300, 24, 0.0d, 0.0d, shapes[7]);
+            Assert.True(shapes[7].TextPath.SameLetterHeights);
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 160, 24, 0.0d, 0.0d, shapes[8]);
+            Assert.True(shapes[8].TextPath.FitShape);
+            Assert.AreEqual(24.0d, shapes[8].TextPath.Size);
+
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 160, 24, 0.0d, 0.0d, shapes[9]);
+            Assert.False(shapes[9].TextPath.FitShape);
+            Assert.AreEqual(24.0d, shapes[9].TextPath.Size);
+            Assert.AreEqual(TextPathAlignment.Right, shapes[9].TextPath.TextPathAlignment);
+        }
 
         [Test]
         public void ShapeRevision()
@@ -1853,15 +2040,12 @@ namespace ApiExamples
             //ExSummary:Shows how to detect that Shape has a SmartArt object.
             Document doc = new Document(MyDir + "SmartArt.docx");
  
-            int count = 0;
-            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
-            {
-                if (shape.HasSmartArt)
-                    count++;
-            }
- 
+            int count = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Count(shape => shape.HasSmartArt);
+
             Console.WriteLine("The document has {0} shapes with SmartArt.", count);
             //ExEnd
+
+            Assert.AreEqual(2, count);
         }
 
         [Test]
@@ -1889,34 +2073,34 @@ namespace ApiExamples
             OfficeMathRenderer renderer = new OfficeMathRenderer(officeMath);
 
             // We can measure the size of the image that the OfficeMath object will create when we render it
-            Assert.AreEqual(117.0f, renderer.SizeInPoints.Width, 0.1f);
-            Assert.AreEqual(12.9f, renderer.SizeInPoints.Height, 0.1f);
+            Assert.AreEqual(119.0f, renderer.SizeInPoints.Width, 0.2f);
+            Assert.AreEqual(13.0f, renderer.SizeInPoints.Height, 0.1f);
 
-            Assert.AreEqual(117.0f, renderer.BoundsInPoints.Width, 0.1f);
-            Assert.AreEqual(12.9f, renderer.BoundsInPoints.Height, 0.1f);
+            Assert.AreEqual(119.0f, renderer.BoundsInPoints.Width, 0.2f);
+            Assert.AreEqual(13.0f, renderer.BoundsInPoints.Height, 0.1f);
 
             // Shapes with transparent parts may return different values here
-            Assert.AreEqual(117.0f, renderer.OpaqueBoundsInPoints.Width, 0.1f);
-            Assert.AreEqual(14.7f, renderer.OpaqueBoundsInPoints.Height, 0.1f);
+            Assert.AreEqual(119.0f, renderer.OpaqueBoundsInPoints.Width, 0.2f);
+            Assert.AreEqual(14.2f, renderer.OpaqueBoundsInPoints.Height, 0.1f);
 
             // Get the shape size in pixels, with linear scaling to a specific DPI
             Rectangle bounds = renderer.GetBoundsInPixels(1.0f, 96.0f);
-            Assert.AreEqual(156, bounds.Width);
+            Assert.AreEqual(159, bounds.Width);
             Assert.AreEqual(18, bounds.Height);
 
             // Get the shape size in pixels, but with a different DPI for the horizontal and vertical dimensions
             bounds = renderer.GetBoundsInPixels(1.0f, 96.0f, 150.0f);
-            Assert.AreEqual(156, bounds.Width);
-            Assert.AreEqual(27, bounds.Height);
+            Assert.AreEqual(159, bounds.Width);
+            Assert.AreEqual(28, bounds.Height);
 
             // The opaque bounds may vary here also
             bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f);
-            Assert.AreEqual(156, bounds.Width);
-            Assert.AreEqual(20, bounds.Height);
+            Assert.AreEqual(159, bounds.Width);
+            Assert.AreEqual(18, bounds.Height);
 
             bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f, 150.0f);
-            Assert.AreEqual(156, bounds.Width);
-            Assert.AreEqual(31, bounds.Height);
+            Assert.AreEqual(159, bounds.Width);
+            Assert.AreEqual(30, bounds.Height);
             //ExEnd
         }
     }

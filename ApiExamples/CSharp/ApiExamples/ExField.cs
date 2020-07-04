@@ -3534,7 +3534,6 @@ namespace ApiExamples
             Assert.AreEqual("Tropical fruit", indexEntry.PageNumberReplacement);
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         [Ignore("WORDSNET-17524")]
@@ -3612,7 +3611,6 @@ namespace ApiExamples
             Assert.AreEqual("Heading 1:Subheading 2", indexEntry.Text);
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         [Ignore("WORDSNET-17524")]
@@ -4194,7 +4192,6 @@ namespace ApiExamples
         //ExFor:FieldDdeAuto.SourceFullName
         //ExFor:FieldDdeAuto.SourceItem
         //ExSummary:Shows how to insert linked objects as LINK, DDE and DDEAUTO fields and present them within the document in different ways.
-        [Test] //ExSkip
         [TestCase(InsertLinkedObjectAs.Text)] //ExSkip
         [TestCase(InsertLinkedObjectAs.Unicode)] //ExSkip
         [TestCase(InsertLinkedObjectAs.Html)] //ExSkip
@@ -4221,7 +4218,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.LINK.DDE.DDEAUTO.docx");
         }
 
-        [Test] //ExSkip
         [TestCase(InsertLinkedObjectAs.Picture)] //ExSkip
         [TestCase(InsertLinkedObjectAs.Bitmap)] //ExSkip
         [Ignore("WORDSNET-16226")] //ExSkip

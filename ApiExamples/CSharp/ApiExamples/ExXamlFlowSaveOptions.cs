@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
@@ -31,12 +32,14 @@ namespace ApiExamples
             // Open a document which contains images
             Document doc = new Document(MyDir + "Rendering.docx");
 
+            ImageUriPrinter callback = new ImageUriPrinter(ArtifactsDir + "XamlFlowImageFolderAlias");
+
             XamlFlowSaveOptions options = new XamlFlowSaveOptions
             {
                 SaveFormat = SaveFormat.XamlFlow,
                 ImagesFolder = ArtifactsDir + "XamlFlowImageFolder",
                 ImagesFolderAlias = ArtifactsDir + "XamlFlowImageFolderAlias",
-                ImageSavingCallback = new ImageUriPrinter(ArtifactsDir + "XamlFlowImageFolderAlias")
+                ImageSavingCallback = callback
             };
 
             // A folder specified by ImagesFolderAlias will contain the images instead of ImagesFolder
@@ -44,6 +47,10 @@ namespace ApiExamples
             Directory.CreateDirectory(options.ImagesFolderAlias);
 
             doc.Save(ArtifactsDir + "XamlFlowSaveOptions.ImageFolder.xaml", options);
+
+            foreach (string resource in callback.Resources)
+                Console.WriteLine($"{callback.ImagesFolderAlias}/{resource}");
+            TestImageFolder(callback); //ExSkip
         }
 
         /// <summary>
@@ -53,21 +60,29 @@ namespace ApiExamples
         {
             public ImageUriPrinter(string imagesFolderAlias)
             {
-                mImagesFolderAlias = imagesFolderAlias;
+                ImagesFolderAlias = imagesFolderAlias;
+                Resources = new List<string>();
             }
 
             void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
             {
-                Console.WriteLine($"Image #{++mSavedImageCount} \"{args.ImageFileName}\"");
+                Resources.Add(args.ImageFileName);
 
                 // If we specified a ImagesFolderAlias we will also need to redirect each stream to put its image in that folder
-                args.ImageStream = new FileStream($"{mImagesFolderAlias}/{args.ImageFileName}", FileMode.Create);
+                args.ImageStream = new FileStream($"{ImagesFolderAlias}/{args.ImageFileName}", FileMode.Create);
                 args.KeepImageStreamOpen = false;
             }
 
-            private int mSavedImageCount;
-            private readonly string mImagesFolderAlias;
+            public string ImagesFolderAlias { get; }
+            public List<string> Resources { get; }
         }
         //ExEnd
+
+        private void TestImageFolder(ImageUriPrinter callback)
+        {
+            Assert.AreEqual(9, callback.Resources.Count);
+            foreach (string resource in callback.Resources)
+                Assert.True(File.Exists($"{callback.ImagesFolderAlias}/{resource}"));
+        }
     }
 }

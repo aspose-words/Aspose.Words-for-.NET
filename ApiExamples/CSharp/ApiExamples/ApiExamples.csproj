@@ -90,7 +90,7 @@
     <Content Include="ExStyles.cs" />
     <Content Include="ExTable.cs" />
     <Content Include="ExTableColumn.cs" />
-    <Content Include="ExTabStopCollection.cs" />
+    <Content Include="ExTabStop.cs" />
     <Content Include="ExRtfLoadOptions.cs" />
     <Content Include="ExThemes.cs" />
     <Content Include="ExTxtLoadOptions.cs" />
@@ -99,7 +99,6 @@
     <Content Include="ExVariableCollection.cs" />
     <Content Include="ExDocumentVisitor.cs" />
     <Content Include="ExViewOptions.cs" />
-    <Content Include="ExWarningInfoCollection.cs" />
     <Content Include="ExXamlFixedSaveOptions.cs" />
     <Content Include="ExXamlFlowSaveOptions.cs" />
     <Content Include="ExXpsSaveOptions.cs" />
@@ -125,8 +124,8 @@
   <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="18.8.0" />
     <PackageReference Include="Aspose.PDF" Version="20.6.0" />
-    <PackageReference Include="Aspose.Words" Version="20.6.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.6.0" />
+    <PackageReference Include="Aspose.Words" Version="20.7.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
