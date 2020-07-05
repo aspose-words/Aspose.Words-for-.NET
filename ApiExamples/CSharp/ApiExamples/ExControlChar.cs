@@ -15,11 +15,34 @@ namespace ApiExamples
     public class ExControlChar : ApiExampleBase
     {
         [Test]
+        public void CarriageReturn()
+        {
+            //ExStart
+            //ExFor:ControlChar
+            //ExFor:ControlChar.Cr
+            //ExSummary:Shows how to use control characters.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert paragraphs with text with DocumentBuilder
+            builder.Writeln("Hello world!");
+            builder.Writeln("Hello again!");
+
+            // The entire document, when in string form, will display some structural features such as breaks with control characters
+            Assert.AreEqual($"Hello world!{ControlChar.Cr}Hello again!{ControlChar.Cr}{ControlChar.PageBreak}", doc.GetText());
+
+            // Some of them can be trimmed out
+            Assert.AreEqual($"Hello world!{ControlChar.Cr}Hello again!", doc.GetText().Trim());
+            //ExEnd
+        }
+
+        [Test]
         public void InsertControlChars()
         {
             //ExStart
             //ExFor:ControlChar.Cell
             //ExFor:ControlChar.ColumnBreak
+            //ExFor:ControlChar.CrLf
             //ExFor:ControlChar.Lf
             //ExFor:ControlChar.LineBreak
             //ExFor:ControlChar.LineFeed
@@ -64,6 +87,9 @@ namespace ApiExamples
             Assert.AreEqual(1, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
             builder.Write("Before line feed." + ControlChar.LineFeed + "After line feed.");
             Assert.AreEqual(2, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
+
+            // Carriage returns and line feeds can be represented together by one character
+            Assert.AreEqual(ControlChar.CrLf, ControlChar.Cr + ControlChar.Lf);
 
             // The line feed character has two versions
             Assert.AreEqual(ControlChar.LineFeed, ControlChar.Lf);

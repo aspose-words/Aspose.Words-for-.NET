@@ -15,7 +15,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExRtfSaveOptions : ApiExampleBase
     {
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void ExportImages(bool doExportImagesForOldReaders)

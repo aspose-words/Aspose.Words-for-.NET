@@ -32,9 +32,12 @@ namespace ApiExamples
             //ExFor:Style.Type
             //ExFor:StyleCollection.Document
             //ExFor:StyleCollection.GetEnumerator
-            //ExSummary:Shows how to get access to the collection of styles defined in the document.
+            //ExSummary:Shows how to access a document's style collection.
             Document doc = new Document();
            
+            // A blank document comes with 4 styles by default
+            Assert.AreEqual(4, doc.Styles.Count);
+
             using (IEnumerator<Style> stylesEnum = doc.Styles.GetEnumerator())
             {
                 while (stylesEnum.MoveNext())
@@ -48,6 +51,44 @@ namespace ApiExamples
                     Assert.AreEqual(doc, curStyle.Document);
                 }
             }
+            //ExEnd
+        }
+
+        [Test]
+        public void CreateStyle()
+        {
+            //ExStart
+            //ExFor:Style.Font
+            //ExFor:Style
+            //ExFor:Style.Remove
+            //ExSummary:Shows how to create and apply a style.
+            Document doc = new Document();
+
+            // Add a custom style and change its appearance
+            Style style = doc.Styles.Add(StyleType.Paragraph, "MyStyle");
+            style.Font.Name = "Times New Roman";
+            style.Font.Size = 16;
+            style.Font.Color = Color.Navy;
+
+            // Write a paragraph in that style
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.ParagraphFormat.Style = doc.Styles["MyStyle"];
+            builder.Writeln("Hello world!");
+
+            Style firstParagraphStyle = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Style;
+
+            Assert.AreEqual(style, firstParagraphStyle);
+
+            // Styles can also be removed from the collection like this
+            doc.Styles["MyStyle"].Remove();
+
+            firstParagraphStyle = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Style;
+
+            // Removing the style reverts the styling of the text that was in that style
+            Assert.False(doc.Styles.Any(s => s.Name == "MyStyle"));
+            Assert.AreEqual("Times New Roman", firstParagraphStyle.Font.Name);
+            Assert.AreEqual(12.0d, firstParagraphStyle.Font.Size);
+            Assert.AreEqual(Color.Empty.ToArgb(), firstParagraphStyle.Font.Color.ToArgb());
             //ExEnd
         }
 
@@ -66,8 +107,6 @@ namespace ApiExamples
 
             // New documents come with a collection of default styles that can be applied to paragraphs
             StyleCollection styles = doc.Styles;
-            Assert.AreEqual(4, styles.Count);
-
             // We can set default parameters for new styles that will be added to the collection from now on
             styles.DefaultFont.Name = "Courier New";
             styles.DefaultParagraphFormat.FirstLineIndent = 15.0;
@@ -75,29 +114,9 @@ namespace ApiExamples
             styles.Add(StyleType.Paragraph, "MyStyle");
 
             // Styles within the collection can be referenced either by index or name
+            // The default font "Courier New" gets automatically applied to any new style added to the collection
             Assert.AreEqual("Courier New", styles[4].Font.Name);
             Assert.AreEqual(15.0, styles["MyStyle"].ParagraphFormat.FirstLineIndent);
-            //ExEnd
-        }
-
-
-        [Test]
-        public void SetAllStyles()
-        {
-            //ExStart
-            //ExFor:Style.Font
-            //ExFor:Style
-            //ExSummary:Shows how to change the font formatting of all styles in a document.
-            Document doc = new Document();
-            foreach (Style style in doc.Styles)
-            {
-                if (style.Font != null)
-                {
-                    style.Font.ClearFormatting();
-                    style.Font.Size = 20;
-                    style.Font.Name = "Arial";
-                }
-            }
             //ExEnd
         }
 
@@ -124,10 +143,8 @@ namespace ApiExamples
             //ExSummary:Shows how to modify the position of the right tab stop in TOC related paragraphs.
             Document doc = new Document(MyDir + "Table of contents.docx");
 
-            // Iterate through all paragraphs in the document
+            // Iterate through all paragraphs formatted using the TOC result based styles; this is any style between TOC and TOC9
             foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
-            {
-                // Check if this paragraph is formatted using the TOC result based styles. This is any style between TOC and TOC9
                 if (para.ParagraphFormat.Style.StyleIdentifier >= StyleIdentifier.Toc1 &&
                     para.ParagraphFormat.Style.StyleIdentifier <= StyleIdentifier.Toc9)
                 {
@@ -139,24 +156,34 @@ namespace ApiExamples
                     // We could also change the separators used (dots) by passing a different Leader type
                     para.ParagraphFormat.TabStops.Add(tab.Position - 50, tab.Alignment, tab.Leader);
                 }
-            }
 
             doc.Save(ArtifactsDir + "Styles.ChangeTocsTabStops.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Styles.ChangeTocsTabStops.docx");
+
+            foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
+                if (para.ParagraphFormat.Style.StyleIdentifier >= StyleIdentifier.Toc1 &&
+                    para.ParagraphFormat.Style.StyleIdentifier <= StyleIdentifier.Toc9)
+                {
+                    TabStop tabStop = para.GetEffectiveTabStops()[0];
+                    Assert.AreEqual(400.8d, tabStop.Position);
+                    Assert.AreEqual(TabAlignment.Right, tabStop.Alignment);
+                    Assert.AreEqual(TabLeader.Dots, tabStop.Leader);
+                }
         }
 
         [Test]
         public void CopyStyleSameDocument()
         {
-            Document doc = new Document(MyDir + "Document.docx");
-
             //ExStart
             //ExFor:StyleCollection.AddCopy
             //ExFor:Style.Name
-            //ExSummary:Demonstrates how to copy a style within the same document.
+            //ExSummary:Shows how to copy a style within the same document.
+            Document doc = new Document(MyDir + "Document.docx");
+
             // The AddCopy method creates a copy of the specified style and automatically generates a new name for the style, such as "Heading 1_0"
             Style newStyle = doc.Styles.AddCopy(doc.Styles["Heading 1"]);
-
             // You can change the new style name if required as the Style.Name property is read-write
             newStyle.Name = "My Heading 1";
             //ExEnd
@@ -169,53 +196,24 @@ namespace ApiExamples
         [Test]
         public void CopyStyleDifferentDocument()
         {
-            Document dstDoc = new Document();
-            Document srcDoc = new Document();
 
             //ExStart
             //ExFor:StyleCollection.AddCopy
-            //ExSummary:Demonstrates how to copy style from one document into a different document.
-            // This is the style in the source document to copy to the destination document
-            Style srcStyle = srcDoc.Styles[StyleIdentifier.Heading1];
+            //ExSummary:Shows how to import a style from one document into a different document.
+            Document dstDoc = new Document();
+            Document srcDoc = new Document();
 
+            Style srcStyle = srcDoc.Styles.Add(StyleType.Paragraph, "MyStyle");
             // Change the font of the heading style to red
             srcStyle.Font.Color = Color.Red;
 
             // The AddCopy method can be used to copy a style from a different document
             Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
-            //ExEnd
 
-            Assert.NotNull(newStyle);
-            Assert.AreEqual("Heading 1", newStyle.Name);
+            // The imported style is identical to its source
+            Assert.AreEqual("MyStyle", newStyle.Name);
             Assert.AreEqual(Color.Red.ToArgb(), newStyle.Font.Color.ToArgb());
-        }
-
-        [Test]
-        public void OverwriteStyleDifferentDocument()
-        {
-            Document dstDoc = new Document();
-            Document srcDoc = new Document();
-
-            //ExStart
-            //ExFor:StyleCollection.AddCopy
-            //ExSummary:Demonstrates how to copy a style from one document to another and override an existing style in the destination document.
-            // This is the style in the source document to copy to the destination document
-            Style srcStyle = srcDoc.Styles[StyleIdentifier.Heading1];
-
-            // Change the font of the heading style to red
-            srcStyle.Font.Color = Color.Red;
-
-            // The AddCopy method can be used to copy a style to a different document
-            Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
-
-            // The name of the new style can be changed to the name of any existing style. Doing this will override the existing style
-            newStyle.Name = "Heading 1";
             //ExEnd
-
-            Assert.NotNull(newStyle);
-            Assert.AreEqual("Heading 1", newStyle.Name);
-            Assert.IsNull(dstDoc.Styles["Heading 1_0"]);
-            Assert.AreEqual(Color.Red.ToArgb(), newStyle.Font.Color.ToArgb());
         }
 
         [Test]
@@ -239,7 +237,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ParagraphStyleBulleted()
+        public void ParagraphStyleBulletedList()
         {
             //ExStart
             //ExFor:StyleCollection
@@ -266,16 +264,16 @@ namespace ApiExamples
 
             // Apply the paragraph style to the current paragraph in the document and add some text
             builder.ParagraphFormat.Style = style;
-            builder.Writeln("Hello World: MyStyle1, bulleted.");
+            builder.Writeln("Hello World: MyStyle1, bulleted list.");
 
             // Change to a paragraph style that has no list formatting
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
             builder.Writeln("Hello World: Normal.");
 
-            builder.Document.Save(ArtifactsDir + "Styles.ParagraphStyleBulleted.docx");
+            builder.Document.Save(ArtifactsDir + "Styles.ParagraphStyleBulletedList.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Styles.ParagraphStyleBulleted.docx");
+            doc = new Document(ArtifactsDir + "Styles.ParagraphStyleBulletedList.docx");
 
             style = doc.Styles["MyStyle1"];
 
@@ -283,17 +281,6 @@ namespace ApiExamples
             Assert.AreEqual(24, style.Font.Size);
             Assert.AreEqual("Verdana", style.Font.Name);
             Assert.AreEqual(12.0d, style.ParagraphFormat.SpaceAfter);
-        }
-
-        [Test]
-        public void RemoveEx()
-        {
-            //ExStart
-            //ExFor:Style.Remove
-            //ExSummary:Shows how to pick a style that is defined in the document and remove it.
-            Document doc = new Document();
-            doc.Styles["Normal"].Remove();
-            //ExEnd
         }
 
         [Test]
@@ -305,17 +292,16 @@ namespace ApiExamples
             //ExFor:Style.Equals(Aspose.Words.Style)
             //ExFor:Style.LinkedStyleName
             //ExSummary:Shows how to use style aliases.
-            // Open a document that had a style inserted with commas in its name which separate the style name and aliases
             Document doc = new Document(MyDir + "Style with alias.docx");
 
-            // The aliases, separate from the name can be found here
+            // If a style's name has multiple values separated by commas, each one is considered to be a separate alias
             Style style = doc.Styles["MyStyle"];
             Assert.AreEqual(new [] { "MyStyle Alias 1", "MyStyle Alias 2" }, style.Aliases);
             Assert.AreEqual("Title", style.BaseStyleName);
             Assert.AreEqual("MyStyle Char", style.LinkedStyleName);
 
             // A style can be referenced by alias as well as name
-            Assert.IsTrue(style.Equals(doc.Styles["MyStyle Alias 1"]));
+            Assert.AreEqual(style, doc.Styles["MyStyle Alias 1"]);
             //ExEnd
         }
     }

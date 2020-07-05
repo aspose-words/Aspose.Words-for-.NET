@@ -20,7 +20,6 @@ namespace ApiExamples
     [TestFixture]
     internal class ExHtmlLoadOptions : ApiExampleBase
     {
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void SupportVml(bool doSupportVml)
