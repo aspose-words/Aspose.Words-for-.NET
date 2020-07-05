@@ -331,7 +331,7 @@ namespace ApiExamples
                 new string[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" },
                 new double[] { 1.2, 0.3, 2.1, 2.9, 4.2 });
 
-            // Chart axes can be hidden like this. 
+            // We can hide chart axes to simplify the appearance of our charts. 
             chart.AxisX.Hidden = true;
             chart.AxisY.Hidden = true;
 
@@ -357,20 +357,18 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert chart
+            // Insert a column chart, clear its demo data, and insert a custom series with large decimal values. 
             Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
             Chart chart = shape.Chart;
-
-            // Clear demo data and replace it with a new custom chart series
             chart.Series.Clear();
             chart.Series.Add("Aspose Test Series",
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 1900000.0d, 850000.0d, 2100000.0d, 600000.0d, 1500000.0d });
 
-            // Set number format
+            // Set number format to not group digits with commas. 
             chart.AxisY.NumberFormat.FormatCode = "#,##0";
 
-            // Set this to override the above value and draw the number format from the source cell
+            // This flag can override the above value and draw the number format from the source cell.
             Assert.False(chart.AxisY.NumberFormat.IsLinkedToSource);
 
             doc.Save(ArtifactsDir + "Charts.SetNumberFormatToChartAxis.docx");
@@ -440,73 +438,88 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ChartDataLabelCollection()
+        public void DataLabelsBubbleChart()
         {
             //ExStart
+            //ExFor:ChartDataLabelCollection.Separator
             //ExFor:ChartDataLabelCollection.ShowBubbleSize
             //ExFor:ChartDataLabelCollection.ShowCategoryName
             //ExFor:ChartDataLabelCollection.ShowSeriesName
+            //ExSummary:Shows how to work with data labels of a bubble chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a bubble chart, clear its demo data,
+            // and insert a custom series for the X/Y coordinates and thickness of each of the bubbles. 
+            Chart chart = builder.InsertChart(ChartType.Bubble, 432, 252).Chart;
+            chart.Series.Clear();
+            ChartSeries series = chart.Series.Add("Aspose Test Series",
+                new[] { 2.9, 3.5, 1.1, 4, 4 },
+                new[] { 1.9, 8.5, 2.1, 6, 1.5 },
+                new[] { 9, 4.5, 2.5, 8, 5 });
+
+            // Enable data labels and modify their appearance.
+            series.HasDataLabels = true;
+            ChartDataLabelCollection dataLabels = series.DataLabels;
+            dataLabels.ShowBubbleSize = true;
+            dataLabels.ShowCategoryName = true;
+            dataLabels.ShowSeriesName = true;
+            dataLabels.Separator = " & ";
+
+            builder.InsertBreak(BreakType.PageBreak);
+
+            doc.Save(ArtifactsDir + "Charts.DataLabelsBubbleChart.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Charts.DataLabelsBubbleChart.docx");
+            dataLabels = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0].DataLabels;
+
+            Assert.True(dataLabels.ShowBubbleSize);
+            Assert.True(dataLabels.ShowCategoryName);
+            Assert.True(dataLabels.ShowSeriesName);
+            Assert.AreEqual(" & ", dataLabels.Separator);
+        }
+
+        [Test]
+        public void DataLabelsPieChart()
+        {
+            //ExStart
             //ExFor:ChartDataLabelCollection.Separator
             //ExFor:ChartDataLabelCollection.ShowLeaderLines
             //ExFor:ChartDataLabelCollection.ShowLegendKey
             //ExFor:ChartDataLabelCollection.ShowPercentage
             //ExFor:ChartDataLabelCollection.ShowValue
-            //ExSummary:Shows how to set default values for the data labels.
+            //ExSummary:Shows how to work with data labels of a pie chart.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert bubble chart
-            Chart chart = builder.InsertChart(ChartType.Bubble, 432, 252).Chart;
-            // Clear demo data
+            // Insert a bubble chart, clear its demo data, and insert a custom series for fractions of a pie chart.
+            Chart chart = builder.InsertChart(ChartType.Pie, 432, 252).Chart;
             chart.Series.Clear();
-            
-            ChartSeries bubbleChartSeries = chart.Series.Add("Aspose Test Series",
-                new[] { 2.9, 3.5, 1.1, 4, 4 },
-                new[] { 1.9, 8.5, 2.1, 6, 1.5 },
-                new[] { 9, 4.5, 2.5, 8, 5 });
-
-            // Set default values for the bubble chart data labels
-            ChartDataLabelCollection bubbleChartDataLabels = bubbleChartSeries.DataLabels;
-            bubbleChartDataLabels.ShowBubbleSize = true;
-            bubbleChartDataLabels.ShowCategoryName = true;
-            bubbleChartDataLabels.ShowSeriesName = true;
-            bubbleChartDataLabels.Separator = " - ";
-
-            builder.InsertBreak(BreakType.PageBreak);
-
-            // Insert pie chart
-            Shape shapeWithPieChart = builder.InsertChart(ChartType.Pie, 432, 252);
-            // Clear demo data
-            shapeWithPieChart.Chart.Series.Clear();
-
-            ChartSeries pieChartSeries = shapeWithPieChart.Chart.Series.Add("Aspose Test Series",
+            ChartSeries series = chart.Series.Add("Aspose Test Series",
                 new string[] { "Word", "PDF", "Excel" },
                 new double[] { 2.7, 3.2, 0.8 });
 
-            // Set default values for the pie chart data labels
-            ChartDataLabelCollection pieChartDataLabels = pieChartSeries.DataLabels;
-            pieChartDataLabels.ShowLeaderLines = true;
-            pieChartDataLabels.ShowLegendKey = true;
-            pieChartDataLabels.ShowPercentage = true;
-            pieChartDataLabels.ShowValue = true;
+            // Enable data labels and modify their appearance.
+            series.HasDataLabels = true;
+            ChartDataLabelCollection dataLabels = series.DataLabels;
+            dataLabels.ShowLeaderLines = true;
+            dataLabels.ShowLegendKey = true;
+            dataLabels.ShowPercentage = true;
+            dataLabels.ShowValue = true;
+            dataLabels.Separator = "; ";
 
-            doc.Save(ArtifactsDir + "Charts.ChartDataLabelCollection.docx");
+            doc.Save(ArtifactsDir + "Charts.DataLabelsPieChart.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Charts.ChartDataLabelCollection.docx");
-            bubbleChartDataLabels = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0].DataLabels;
+            doc = new Document(ArtifactsDir + "Charts.DataLabelsPieChart.docx");
+            dataLabels = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart.Series[0].DataLabels;
 
-            Assert.False(bubbleChartDataLabels.ShowBubbleSize);
-            Assert.False(bubbleChartDataLabels.ShowCategoryName);
-            Assert.False(bubbleChartDataLabels.ShowSeriesName);
-            Assert.AreEqual(",", bubbleChartDataLabels.Separator);
-
-            pieChartDataLabels = ((Shape)doc.GetChild(NodeType.Shape, 1, true)).Chart.Series[0].DataLabels;
-
-            Assert.False(pieChartDataLabels.ShowLeaderLines);
-            Assert.False(pieChartDataLabels.ShowLegendKey);
-            Assert.False(pieChartDataLabels.ShowPercentage);
-            Assert.False(pieChartDataLabels.ShowValue);
+            Assert.True(dataLabels.ShowLeaderLines);
+            Assert.True(dataLabels.ShowLegendKey);
+            Assert.True(dataLabels.ShowPercentage);
+            Assert.True(dataLabels.ShowValue);
+            Assert.AreEqual("; ", dataLabels.Separator);
         }
 
         //ExStart
