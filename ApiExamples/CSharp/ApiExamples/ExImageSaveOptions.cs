@@ -163,7 +163,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
             
-            #if NET462
+            #if NET462 || JAVA
             TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff");
             #endif
         }
@@ -178,7 +178,7 @@ namespace ApiExamples
             //ExFor:ImageSaveOptions.SaveFormat
             //ExFor:ImageSaveOptions.Scale
             //ExFor:ImageSaveOptions.VerticalResolution
-            //ExSummary:
+            //ExSummary:Shows how to edit image.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // When saving the document as an image, we can use an ImageSaveOptions object to edit various aspects of it

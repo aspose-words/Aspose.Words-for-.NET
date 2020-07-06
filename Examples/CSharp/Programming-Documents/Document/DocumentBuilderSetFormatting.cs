@@ -4,6 +4,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 using Aspose.Words.Fields;
+using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
@@ -15,6 +16,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
+
             SetFontFormatting(dataDir);
             SetParagraphFormatting(dataDir);
             SetTableCellFormatting(dataDir);
@@ -25,6 +27,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             SetAsianTypographyLinebreakGroupProp(dataDir);
             ChangeAsianParagraphSpacingandIndents(dataDir);
             SetSnapToGrid(dataDir);
+            SetFontEmphasisMark(dataDir);
         }
 
         public static void SetSpacebetweenAsianandLatintext(string dataDir)
@@ -46,7 +49,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // ExEnd:DocumentBuilderSetSpacebetweenAsianandLatintext
             Console.WriteLine("\nParagraphFormat properties AddSpaceBetweenFarEastAndAlpha and AddSpaceBetweenFarEastAndDigit set successfully.\nFile saved at " + dataDir);
         }
-
         public static void SetAsianTypographyLinebreakGroupProp(string dataDir)
         {
             // ExStart:SetAsianTypographyLinebreakGroupProp
@@ -62,7 +64,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // ExEnd:SetAsianTypographyLinebreakGroupProp
             Console.WriteLine("\nParagraphFormat properties for Asian Typography line break group are set successfully.\nFile saved at " + dataDir);
         }
-
         public static void SetFontFormatting(string dataDir)
         {
             // ExStart:DocumentBuilderSetFontFormatting
@@ -256,7 +257,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // ExEnd:DocumentBuilderApplyBordersAndShadingToParagraph
             Console.WriteLine("\nBorders and shading using DocumentBuilder applied successfully to paragraph.\nFile saved at " + dataDir);
         }
-        
         public static void ChangeAsianParagraphSpacingandIndents(string dataDir)
         {
             // ExStart:ChangeAsianParagraphSpacingandIndents
@@ -274,7 +274,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // ExEnd:ChangeAsianParagraphSpacingandIndents
             Console.WriteLine("\nSpacing and Indents applied successfully to paragraph.\nFile saved at " + dataDir);
         }
-
         public static void SetSnapToGrid(string dataDir)
         {
             // ExStart:SetSnapToGrid
@@ -288,6 +287,22 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             doc.Save(dataDir);
             // ExEnd:SetSnapToGrid
             Console.WriteLine("\nSetSnapToGrid successfully to paragraph.\nFile saved at " + dataDir);
+        }
+        private static void SetFontEmphasisMark(string dataDir)
+        {
+            // ExStart:SetFontEmphasisMark
+            Document document = new Document();
+            DocumentBuilder builder = new DocumentBuilder(document);
+
+            builder.Font.EmphasisMark = EmphasisMark.UnderSolidCircle;
+
+            builder.Write("Emphasis text");
+            builder.Writeln();
+            builder.Font.ClearFormatting();
+            builder.Write("Simple text");
+
+            document.Save(dataDir + "FontEmphasisMark_out.doc");
+            // ExEnd:SetFontEmphasisMark
         }
     }
 }

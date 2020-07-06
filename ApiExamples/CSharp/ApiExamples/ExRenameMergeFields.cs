@@ -82,7 +82,7 @@ namespace ApiExamples
         /// </summary>
         internal string Name
         {
-            get { return GetTextSameParent(mFieldSeparator.NextSibling, mFieldEnd).Trim('«', '»'); }
+            get => GetTextSameParent(mFieldSeparator.NextSibling, mFieldEnd).Trim('«', '»');
             set
             {
                 // Merge field name is stored in the field result which is a Run 

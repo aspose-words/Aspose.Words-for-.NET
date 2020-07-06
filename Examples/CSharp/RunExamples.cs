@@ -28,6 +28,7 @@ using Aspose.Words.Examples.CSharp.Rendering_Printing;
 using QuickStart = Aspose.Words.Examples.CSharp.Quick_Start;
 using Aspose.Words.Examples.CSharp.Programming_Documents.Linked_Textboxes;
 using Aspose.Words.Examples.CSharp.Programming_Documents.Web_Extensions;
+using Aspose.Words.Examples.CSharp.Programming_Documents.Joining_Appending;
 
 namespace Aspose.Words.Examples.CSharp
 {
@@ -96,6 +97,7 @@ namespace Aspose.Words.Examples.CSharp
             // SaveOptionsHtmlFixed.Run();
             // SaveDocWithHtmlSaveOptions.Run();
             // WorkingWithVbaMacros.Run();
+            // SpecifyMarkdownSaveOptions.Run();
 
 
             //// =====================================================
@@ -125,6 +127,7 @@ namespace Aspose.Words.Examples.CSharp
             // AppendDocumentManually.Run();
             // PrependDocument.Run();
             // AppendWithImportFormatOptions.Run();
+            // WorkingWithImportFormatOptions.Run();
 
             //// Find and Replace
             //// =====================================================
@@ -217,6 +220,10 @@ namespace Aspose.Words.Examples.CSharp
             // CheckDMLTextEffect.Run();
             // ParagraphStyleSeparator.Run();
             // WorkingWithMarkdownFeatures.Run();
+            // WorkWithCleanupOptions.Run();
+            // WorkWithWatermark.Run();
+            // ShowGrammaticalAndSpellingErrors.Run();
+            // SplitDocument.Run();
 
             //// Fields
             //// =====================================================
@@ -263,7 +270,7 @@ namespace Aspose.Words.Examples.CSharp
 
             //// Charts
             //// =====================================================
-             ChartNumberFormat.Run();
+            // ChartNumberFormat.Run();
             // CreateColumnChart.Run();
             // InsertScatterChart.Run();
             // InsertAreaChart.Run();

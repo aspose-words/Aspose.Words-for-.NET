@@ -13,7 +13,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExRtfLoadOptions : ApiExampleBase
     {
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void RecognizeUtf8Text(bool doRecognizeUtb8Text)

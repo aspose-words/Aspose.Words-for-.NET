@@ -17,7 +17,7 @@ namespace ApiExamples
     /// </summary>
     public class ApiExampleBase
     {
-        private const string ExternalAppPath = "/Users/vyacheslav/falleretic.Aspose.Words-for-.NET/ApiExamples/";
+        private const string ExternalAppPath = "/Users/vderyusev/Aspose/Aspose.Words-for-.NET/ApiExamples/";
 
         [SetUp]
         public void OneTimeSetUp()
@@ -125,6 +125,6 @@ namespace ApiExamples
             AsposeLogoUrl = new Uri("https://www.aspose.cloud/templates/aspose/App_Themes/V3/images/words/header/aspose_words-for-net.png").AbsoluteUri;
         }
 
-        internal static readonly string TestLicenseFileName = Path.Combine(ExternalAppPath, "Data/License/Aspose.Words.lic");
+        internal static readonly string TestLicenseFileName = Path.Combine(ExternalAppPath, "Data/License/Aspose.Words.NET.lic");
     }
 }

@@ -51,10 +51,10 @@ namespace ApiExamples
         public void LicenseFromFileNoPath()
         {
             // This is where the test license is on my development machine.
-            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.lic");
+            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.NET.lic");
 
             // Copy a license to the bin folder so the example can execute.
-            string dstFileName = Path.Combine(AssemblyDir, "Aspose.Words.lic");
+            string dstFileName = Path.Combine(AssemblyDir, "Aspose.Words.NET.lic");
             File.Copy(testLicenseFileName, dstFileName);
 
             //ExStart
@@ -63,7 +63,7 @@ namespace ApiExamples
             //ExFor:License.SetLicense(String)
             //ExSummary:Aspose.Words will attempt to find the license file in the embedded resources or in the assembly folders.
             License license = new License();
-            license.SetLicense("Aspose.Words.lic");
+            license.SetLicense("Aspose.Words.NET.lic");
             //ExEnd
 
             // Cleanup by removing the license
@@ -75,7 +75,7 @@ namespace ApiExamples
         public void LicenseFromStream()
         {
             // This is where the test license is on my development machine
-            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.lic");
+            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.NET.lic");
 
             Stream myStream = File.OpenRead(testLicenseFileName);
             try
@@ -213,7 +213,6 @@ namespace ApiExamples
         }
 #endif
 
-#if NETCOREAPP2_1
         [Test]
         public void Pdf2Word()
         {
@@ -239,7 +238,6 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.PdfDocumentEncrypted.pdf", loadOptions);
         }
-#endif
 
         [Test]
         public void DocumentCtor()
@@ -444,7 +442,6 @@ namespace ApiExamples
             Assert.Throws<IncorrectPasswordException>(() => doc = new Document(MyDir + "Encrypted.docx"));
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void ConvertShapeToOfficeMath(bool isConvertShapeToOfficeMath)
@@ -488,7 +485,7 @@ namespace ApiExamples
             // If we open the document normally, the wrong encoding will be applied,
             // and the content of the document will not be represented correctly
             Document doc = new Document(MyDir + "Encoded in UTF-7.txt");
-            Assert.AreEqual("Hello world+ACE-\r\n\r\n", doc.ToString(SaveFormat.Text));
+            Assert.AreEqual("Hello world+ACE-", doc.ToString(SaveFormat.Text).Trim());
 
             // In these cases we can set the Encoding attribute in a LoadOptions object
             // to override the automatically chosen encoding with the one we know to be correct
@@ -496,7 +493,7 @@ namespace ApiExamples
             doc = new Document(MyDir + "Encoded in UTF-7.txt", loadOptions);
 
             // This will give us the correct text
-            Assert.AreEqual("Hello world!\r\n\r\n", doc.ToString(SaveFormat.Text));
+            Assert.AreEqual("Hello world!", doc.ToString(SaveFormat.Text).Trim());
             //ExEnd
         }
 
@@ -731,7 +728,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void SaveHtmlPrettyFormat(bool isPrettyFormat)
@@ -1386,9 +1382,10 @@ namespace ApiExamples
             // We can call UpdateTableLayout() to fix some of these issues
             doc.UpdateTableLayout();
 
-            Assert.AreEqual(155.65d, table.FirstRow.Cells[0].CellFormat.Width); //ExSkip
             Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
             //ExEnd
+
+            Assert.AreEqual(155.0d, table.FirstRow.Cells[0].CellFormat.Width, 2f);
         }
 
         [Test]
