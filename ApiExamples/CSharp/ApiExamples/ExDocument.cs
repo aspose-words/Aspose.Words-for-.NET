@@ -600,6 +600,23 @@ namespace ApiExamples
         }
 
         [Test]
+        public void TempFolder()
+        {
+            //ExStart
+            //ExFor:LoadOptions.TempFolder
+            //ExSummary:Shows how to load a document using temporary files.
+            // Note that such an approach can reduce memory usage but degrades speed
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.TempFolder = @"C:\TempFolder\";
+            
+            // Ensure that the directory exists and load
+            Directory.CreateDirectory(loadOptions.TempFolder);
+             
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+            //ExEnd
+        }
+
+        [Test]
         public void ConvertToHtml()
         {
             //ExStart
@@ -2528,6 +2545,29 @@ namespace ApiExamples
         }
 
         [Test]
+        public void UseSubstitutions()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.UseSubstitutions
+            //ExSummary:Shows how to recognize and use substitutions within replacement patterns.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+             
+            // Write some text
+            builder.Write("Jason give money to Paul.");
+             
+            Regex regex = new Regex(@"([A-z]+) give money to ([A-z]+)");
+             
+            // Replace text using substitutions
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.UseSubstitutions = true;
+            doc.Range.Replace(regex, @"$2 take money from $1", options);
+            
+            Assert.AreEqual(doc.GetText(), "Paul take money from Jason.\f");
+            //ExEnd
+        }
+
+        [Test]
         public void SetInvalidateFieldTypes()
         {
             //ExStart
@@ -3935,6 +3975,69 @@ namespace ApiExamples
             doc.BuiltInDocumentProperties.Thumbnail = image;
 
             doc.Save(ArtifactsDir + "Document.EpubCover.epub");
+        }
+
+        [TestCase(Granularity.CharLevel)]
+        [TestCase(Granularity.WordLevel)]
+        public void GranularityCompareOption(Granularity granularity)
+        {
+            //ExStart
+            //ExFor:CompareOptions.Granularity
+            //ExFor:Granularity
+            //ExSummary:Shows to specify comparison granularity.
+            Document docA = new Document();
+            DocumentBuilder builderA = new DocumentBuilder(docA);
+            builderA.Writeln("Alpha Lorem ipsum dolor sit amet, consectetur adipiscing elit");
+
+            Document docB = new Document();
+            DocumentBuilder builderB = new DocumentBuilder(docB);
+            builderB.Writeln("Lorems ipsum dolor sit amet consectetur - \"adipiscing\" elit");
+ 
+            // Specify whether changes are tracked by character ('Granularity.CharLevel') or by word ('Granularity.WordLevel')
+            CompareOptions compareOptions = new CompareOptions();
+            compareOptions.Granularity = granularity;
+ 
+            docA.Compare(docB, "author", DateTime.Now, compareOptions);
+
+            // Revision groups contain all of our text changes
+            RevisionGroupCollection groups = docA.Revisions.Groups;
+            Assert.AreEqual(5, groups.Count);
+            //ExEnd
+
+            if (granularity == Granularity.CharLevel)
+            {
+                Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
+                Assert.AreEqual("Alpha ", groups[0].Text);
+
+                Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
+                Assert.AreEqual(",", groups[1].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
+                Assert.AreEqual("s", groups[2].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
+                Assert.AreEqual("- \"", groups[3].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
+                Assert.AreEqual("\"", groups[4].Text);
+            }
+            else
+            {
+                Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
+                Assert.AreEqual("Alpha Lorem ", groups[0].Text);
+
+                Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
+                Assert.AreEqual(",", groups[1].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
+                Assert.AreEqual("Lorems ", groups[2].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
+                Assert.AreEqual("- \"", groups[3].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
+                Assert.AreEqual("\"", groups[4].Text);   
+            }
         }
     }
 }
