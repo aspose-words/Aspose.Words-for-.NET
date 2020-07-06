@@ -1365,6 +1365,7 @@ namespace ApiExamples
             //ExFor:Fonts.EmbeddedFontFormat
             //ExFor:Fonts.EmbeddedFontStyle
             //ExFor:Fonts.FontInfo.GetEmbeddedFont(EmbeddedFontFormat,EmbeddedFontStyle)
+            //ExFor:Fonts.FontInfo.GetEmbeddedFontAsOpenType(EmbeddedFontStyle)
             //ExFor:Fonts.FontInfoCollection.Item(Int32)
             //ExFor:Fonts.FontInfoCollection.Item(String)
             //ExSummary:Shows how to extract embedded font from a document.
@@ -1385,6 +1386,8 @@ namespace ApiExamples
 
             Assert.IsNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular));
             Assert.IsNotNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.EmbeddedOpenType, EmbeddedFontStyle.Regular));
+            // Also, we can convert embedded OpenType format, which comes from .doc documents, to OpenType
+            Assert.IsNotNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFontAsOpenType(EmbeddedFontStyle.Regular));
             //ExEnd
         }
 

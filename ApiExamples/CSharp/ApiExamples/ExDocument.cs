@@ -35,6 +35,9 @@ using CompareOptions = Aspose.Words.CompareOptions;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Words.Shaping.HarfBuzz;
 #endif
+#if NETCOREAPP2_1 || __MOBILE__
+using SkiaSharp;
+#endif
 #if NET462 || MAC || JAVA
 using Aspose.Words.Loading;
 using Org.BouncyCastle.Pkcs;
@@ -597,6 +600,23 @@ namespace ApiExamples
             Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[2].WarningType); 
             Assert.AreEqual(WarningSource.Docx, warnings[2].Source);
             Assert.AreEqual("Import of element 'extraClrSchemeLst' is not supported in Docx format by Aspose.Words.", warnings[2].Description); 
+        }
+
+        [Test]
+        public void TempFolder()
+        {
+            //ExStart
+            //ExFor:LoadOptions.TempFolder
+            //ExSummary:Shows how to load a document using temporary files.
+            // Note that such an approach can reduce memory usage but degrades speed
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.TempFolder = @"C:\TempFolder\";
+            
+            // Ensure that the directory exists and load
+            Directory.CreateDirectory(loadOptions.TempFolder);
+             
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+            //ExEnd
         }
 
         [Test]
@@ -1878,6 +1898,22 @@ namespace ApiExamples
         }
 
         [Test]
+        public void RemoveDuplicateStyles()
+        {
+            //ExStart
+            //ExFor:CleanupOptions.DuplicateStyle
+            //ExSummary:Shows how to remove duplicated styles from the document.
+            Document doc = new Document(MyDir + "Document.docx");
+            
+            CleanupOptions options = new CleanupOptions();
+            options.DuplicateStyle = true;
+ 
+            doc.Cleanup(options);
+            doc.Save(ArtifactsDir + "Document.RemoveDuplicateStyles.docx");
+            //ExEnd
+        }
+
+        [Test]
         public void StartTrackRevisions()
         {
             //ExStart
@@ -2525,6 +2561,29 @@ namespace ApiExamples
                 isUseLegacyOrder
                     ? new List<string> { "[tag 1]", "[tag 2]", "[tag 3]" }
                     : new List<string> { "[tag 1]", "[tag 3]", "[tag 2]" }, callback.Matches);
+        }
+
+        [Test]
+        public void UseSubstitutions()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.UseSubstitutions
+            //ExSummary:Shows how to recognize and use substitutions within replacement patterns.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+             
+            // Write some text
+            builder.Write("Jason give money to Paul.");
+             
+            Regex regex = new Regex(@"([A-z]+) give money to ([A-z]+)");
+             
+            // Replace text using substitutions
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.UseSubstitutions = true;
+            doc.Range.Replace(regex, @"$2 take money from $1", options);
+            
+            Assert.AreEqual(doc.GetText(), "Paul take money from Jason.\f");
+            //ExEnd
         }
 
         [Test]
@@ -3935,6 +3994,184 @@ namespace ApiExamples
             doc.BuiltInDocumentProperties.Thumbnail = image;
 
             doc.Save(ArtifactsDir + "Document.EpubCover.epub");
+        }
+        
+        [Test]
+        public void WorkWithWatermark()
+        {
+            //ExStart
+            //ExFor:Watermark.SetText(String)
+            //ExFor:Watermark.SetText(String, TextWatermarkOptions)
+            //ExFor:Watermark.SetImage(Image, ImageWatermarkOptions)
+            //ExFor:Watermark.Remove
+            //ExFor:TextWatermarkOptions.FontFamily
+            //ExFor:TextWatermarkOptions.FontSize
+            //ExFor:TextWatermarkOptions.Color
+            //ExFor:TextWatermarkOptions.Layout
+            //ExFor:TextWatermarkOptions.IsSemitrasparent
+            //ExFor:ImageWatermarkOptions.Scale
+            //ExFor:ImageWatermarkOptions.IsWashout
+            //ExFor:WatermarkLayout
+            //ExFor:WatermarkType
+            //ExSummary:Shows how to create and remove watermarks in the document.
+            Document doc = new Document();
+
+            doc.Watermark.SetText("Aspose Watermark");
+            
+            TextWatermarkOptions textWatermarkOptions = new TextWatermarkOptions();
+            textWatermarkOptions.FontFamily = "Arial";
+            textWatermarkOptions.FontSize = 36;
+            textWatermarkOptions.Color = Color.Black;
+            textWatermarkOptions.Layout = WatermarkLayout.Horizontal;
+            textWatermarkOptions.IsSemitrasparent = false;
+
+            doc.Watermark.SetText("Aspose Watermark", textWatermarkOptions);
+
+            ImageWatermarkOptions imageWatermarkOptions = new ImageWatermarkOptions();
+            imageWatermarkOptions.Scale = 5;
+            imageWatermarkOptions.IsWashout = false;
+            
+#if NET462 || JAVA
+            doc.Watermark.SetImage(Image.FromFile(ImageDir + "Logo.jpg"), imageWatermarkOptions);
+#elif NETCOREAPP2_1 || __MOBILE__
+            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
+            {
+                doc.Watermark.SetImage(image, imageWatermarkOptions);
+            }
+#endif
+            if (doc.Watermark.Type == WatermarkType.Text)
+                doc.Watermark.Remove();
+            //ExEnd
+        }
+
+        [Test]
+        public void HideGrammarErrors()
+        {
+            //ExStart
+            //ExFor:Document.ShowGrammaticalErrors
+            //ExFor:Document.ShowSpellingErrors
+            //ExSummary:Shows how to hide grammar errors in the document.
+            Document doc = new Document(MyDir + "Document.docx");
+            
+            doc.ShowGrammaticalErrors = true;
+            doc.ShowSpellingErrors = false;
+            
+            doc.Save(ArtifactsDir + "Document.HideGrammarErrors.docx");
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:IPageLayoutCallback
+        //ExFor:IPageLayoutCallback.Notify(PageLayoutCallbackArgs)
+        //ExFor:PageLayoutCallbackArgs.Event
+        //ExFor:PageLayoutCallbackArgs.Document
+        //ExFor:PageLayoutCallbackArgs.PageIndex
+        //ExFor:PageLayoutEvent
+        //ExSummary:Shows how to track layout/rendering progress with layout callback.
+        [Test]
+        public void PageLayoutCallback()
+        {
+            Document doc = new Document(MyDir + "Document.docx");
+            
+            doc.LayoutOptions.Callback = new RenderPageLayoutCallback();
+            doc.UpdatePageLayout();
+        }
+
+        private class RenderPageLayoutCallback : IPageLayoutCallback
+        {
+            public void Notify(PageLayoutCallbackArgs a)
+            {
+                switch (a.Event)
+                {
+                    case PageLayoutEvent.PartReflowFinished:
+                        NotifyPartFinished(a);
+                        break;
+                }
+            }
+
+            private void NotifyPartFinished(PageLayoutCallbackArgs a)
+            {
+                Console.WriteLine($"Part at page {a.PageIndex + 1} reflow");
+                RenderPage(a, a.PageIndex);
+            }
+
+            private void RenderPage(PageLayoutCallbackArgs a, int pageIndex)
+            {
+                ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png);
+                saveOptions.PageIndex = pageIndex;
+                saveOptions.PageCount = 1;
+
+                using (FileStream stream =
+                    new FileStream(ArtifactsDir + $@"PageLayoutCallback.page-{pageIndex + 1} {++mNum}.png",
+                        FileMode.Create))
+                    a.Document.Save(stream, saveOptions);
+            }
+
+            private int mNum;
+        }
+        //ExEnd
+
+        [TestCase(Granularity.CharLevel)]
+        [TestCase(Granularity.WordLevel)]
+        public void GranularityCompareOption(Granularity granularity)
+        {
+            //ExStart
+            //ExFor:CompareOptions.Granularity
+            //ExFor:Granularity
+            //ExSummary:Shows to specify comparison granularity.
+            Document docA = new Document();
+            DocumentBuilder builderA = new DocumentBuilder(docA);
+            builderA.Writeln("Alpha Lorem ipsum dolor sit amet, consectetur adipiscing elit");
+
+            Document docB = new Document();
+            DocumentBuilder builderB = new DocumentBuilder(docB);
+            builderB.Writeln("Lorems ipsum dolor sit amet consectetur - \"adipiscing\" elit");
+ 
+            // Specify whether changes are tracked by character ('Granularity.CharLevel') or by word ('Granularity.WordLevel')
+            CompareOptions compareOptions = new CompareOptions();
+            compareOptions.Granularity = granularity;
+ 
+            docA.Compare(docB, "author", DateTime.Now, compareOptions);
+
+            // Revision groups contain all of our text changes
+            RevisionGroupCollection groups = docA.Revisions.Groups;
+            Assert.AreEqual(5, groups.Count);
+            //ExEnd
+
+            if (granularity == Granularity.CharLevel)
+            {
+                Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
+                Assert.AreEqual("Alpha ", groups[0].Text);
+
+                Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
+                Assert.AreEqual(",", groups[1].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
+                Assert.AreEqual("s", groups[2].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
+                Assert.AreEqual("- \"", groups[3].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
+                Assert.AreEqual("\"", groups[4].Text);
+            }
+            else
+            {
+                Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
+                Assert.AreEqual("Alpha Lorem ", groups[0].Text);
+
+                Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
+                Assert.AreEqual(",", groups[1].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
+                Assert.AreEqual("Lorems ", groups[2].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
+                Assert.AreEqual("- \"", groups[3].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
+                Assert.AreEqual("\"", groups[4].Text);   
+            }
         }
     }
 }

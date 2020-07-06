@@ -529,6 +529,7 @@ namespace ApiExamples
         //ExFor:ChartDataLabel.ShowPercentage
         //ExFor:ChartDataLabel.ShowSeriesName
         //ExFor:ChartDataLabel.ShowValue
+        //ExFor:ChartDataLabel.IsHidden
         //ExFor:ChartDataLabelCollection
         //ExFor:ChartDataLabelCollection.Add(System.Int32)
         //ExFor:ChartDataLabelCollection.Clear
@@ -597,6 +598,7 @@ namespace ApiExamples
                 series.DataLabels[i].ShowLeaderLines = true;
                 series.DataLabels[i].ShowLegendKey = true;
                 series.DataLabels[i].ShowPercentage = false;
+                series.DataLabels[i].IsHidden = false;
                 Assert.False(series.DataLabels[i].ShowDataLabelsRange);
 
                 // Apply number format and separator
@@ -605,6 +607,7 @@ namespace ApiExamples
 
                 // The label automatically becomes visible
                 Assert.True(series.DataLabels[i].IsVisible);
+                Assert.False(series.DataLabels[i].IsHidden);
             }
         }
         //ExEnd
