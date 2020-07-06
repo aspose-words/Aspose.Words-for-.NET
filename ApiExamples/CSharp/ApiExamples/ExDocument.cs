@@ -608,7 +608,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.TempFolder
             //ExSummary:Shows how to load a document using temporary files.
-            // Note that such an approach degrades speed but reduces memory usage
+            // Note that such an approach can reduce memory usage but degrades speed
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.TempFolder = @"C:\TempFolder\";
             
