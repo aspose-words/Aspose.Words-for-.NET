@@ -175,13 +175,13 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test] //ToDo: Check asserts on dev side
+        [Test]
         public void DocumentCompression()
         {
             //ExStart
             //ExFor:OoxmlSaveOptions.CompressionLevel
             //ExFor:CompressionLevel
-            //ExSummary:Shows how to specify the compression level used to save the document.
+            //ExSummary:Shows how to specify the compression level used to save the OOXML document.
             Document doc = new Document(MyDir + "Document.docx");
             
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
