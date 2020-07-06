@@ -813,7 +813,7 @@ namespace ApiExamples
             Assert.AreEqual(format.CharacterUnitFirstLineIndent, 20.3d);
             Assert.AreEqual(format.FirstLineIndent, 243.59d, 0.1d);
             
-            Assert.AreEqual(format.LineUnitBefore, 5.1d);
+            Assert.AreEqual(format.LineUnitBefore, 5.1d, 0.1d);
             Assert.AreEqual(format.SpaceBefore, 61.1d, 0.1d);
             
             Assert.AreEqual(format.LineUnitAfter, 10.9d);
