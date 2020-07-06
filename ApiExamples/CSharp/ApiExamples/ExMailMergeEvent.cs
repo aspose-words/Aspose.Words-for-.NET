@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
@@ -340,7 +341,7 @@ namespace ApiExamples
             Assert.IsTrue(logoImage.HasImage);
         }
 
-#if  NET462 || NETCOREAPP2_1 || JAVA
+#if  NET462 || JAVA
         //ExStart
         //ExFor:MailMerge.FieldMergingCallback
         //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)

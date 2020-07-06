@@ -12,6 +12,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Text;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
@@ -498,6 +499,47 @@ namespace ApiExamples
             Assert.AreEqual(expectedNumberPosition, listLevel.NumberPosition);
             Assert.AreEqual(expectedNumberStyle, listLevel.NumberStyle);
             #endif
+        }
+        
+        /// <summary>
+        /// Copies from the current position in src stream till the end.
+        /// Copies into the current position in dst stream.
+        /// </summary>
+        internal static void CopyStream(Stream srcStream, Stream dstStream)
+        {
+            if (srcStream == null)
+                throw new ArgumentNullException("srcStream");
+            if (dstStream == null)
+                throw new ArgumentNullException("dstStream");
+
+            byte[] buf = new byte[65536];
+            while (true)
+            {
+                int bytesRead = srcStream.Read(buf, 0, buf.Length);
+                // Read returns 0 when reached end of stream
+                // Checking for negative too to make it conceptually close to Java
+                if (bytesRead <= 0)
+                    break;
+                dstStream.Write(buf, 0, bytesRead);
+            }
+        }
+        
+        /// <summary>
+        /// Dumps byte array into a string.
+        /// </summary>
+        public static string DumpArray(byte[] data, int start, int count)
+        {
+            if (data == null)
+                return "Null";
+
+            StringBuilder builder = new StringBuilder();
+            while (count > 0)
+            {
+                builder.AppendFormat("{0:X2} ", data[start]);
+                start++;
+                count--;
+            }
+            return builder.ToString();
         }
 
         /// <summary>
