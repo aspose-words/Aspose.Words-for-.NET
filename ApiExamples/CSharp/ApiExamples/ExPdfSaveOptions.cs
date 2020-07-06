@@ -912,6 +912,28 @@ namespace ApiExamples
             TestPreblendImages(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", doPreblendImages);
         }
 
+        private void TestPreblendImages(string outFileName, bool doPreblendImages)
+        {
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(outFileName);
+            XImage image = pdfDocument.Pages[1].Resources.Images[1];
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                image.Save(stream);
+
+                if (doPreblendImages)
+                {
+                    TestUtil.FileContainsString("9 0 obj\r\n20849 ", outFileName);
+                    Assert.AreEqual(17898, stream.Length);
+                }
+                else
+                {
+                    TestUtil.FileContainsString("9 0 obj\r\n19289 ", outFileName);
+                    Assert.AreEqual(19216, stream.Length);
+                }
+            }
+        }
+
         [Test]
         public void InterpolateImages()
         {
@@ -930,10 +952,11 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.InterpolateImages.pdf", saveOptions);
             //ExEnd
         }
-        
-#elif NETCOREAPP2_1 || __MOBILE__
-        [Test]
-        public void PreblendImagesNetStandard2()
+
+#elif NETCOREAPP2_1
+        [TestCase(false)]
+        [TestCase(true)]
+        public void PreblendImagesNetStandard2(bool doPreblendImages)
         {
             //ExStart
             //ExFor:PdfSaveOptions.PreblendImages
@@ -977,6 +1000,27 @@ namespace ApiExamples
                     Assert.AreEqual(19135, stream.Length);
                 }
             }
+        }
+
+        [Test]
+        public void InterpolateImages()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.InterpolateImages
+            //ExSummary:Shows how to improve the quality of an image in the rendered documents.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            using (Image image = Image.Decode(ImageDir + "Transparent background logo.png"))
+            {
+                builder.InsertImage(image);
+            }
+            
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.InterpolateImages = true;
+            
+            doc.Save(ArtifactsDir + "PdfSaveOptions.InterpolateImages.pdf", saveOptions);
+            //ExEnd
         }
 #endif
 

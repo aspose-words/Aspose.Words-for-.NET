@@ -785,15 +785,15 @@ namespace ApiExamples
             Assert.AreEqual(format.SpaceAfter, 0.0d); //ExSkip
 
             // Also ParagraphFormat.LeftIndent will be updated
-            format.CharacterUnitLeftIndent = 10;
+            format.CharacterUnitLeftIndent = 10.0;
             // Also ParagraphFormat.RightIndent will be updated
-            format.CharacterUnitRightIndent = -5;
+            format.CharacterUnitRightIndent = -5.5;
             // Also ParagraphFormat.FirstLineIndent will be updated
-            format.CharacterUnitFirstLineIndent = 20;
+            format.CharacterUnitFirstLineIndent = 20.3;
             // Also ParagraphFormat.SpaceBefore will be updated
-            format.LineUnitBefore = 5;
+            format.LineUnitBefore = 5.1;
             // Also ParagraphFormat.SpaceAfter will be updated
-            format.LineUnitAfter= 10;
+            format.LineUnitAfter= 10.9;
 
             builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
                             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
@@ -804,20 +804,20 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
             
-            Assert.AreEqual(format.CharacterUnitLeftIndent, 10);
+            Assert.AreEqual(format.CharacterUnitLeftIndent, 10.0d);
             Assert.AreEqual(format.LeftIndent, 120.0d);
             
-            Assert.AreEqual(format.CharacterUnitRightIndent, -5);
-            Assert.AreEqual(format.RightIndent, -60.0d);
+            Assert.AreEqual(format.CharacterUnitRightIndent, -5.5d);
+            Assert.AreEqual(format.RightIndent, -66.0d);
             
-            Assert.AreEqual(format.CharacterUnitFirstLineIndent, 20);
-            Assert.AreEqual(format.FirstLineIndent, 240.0d);
+            Assert.AreEqual(format.CharacterUnitFirstLineIndent, 20.3d);
+            Assert.AreEqual(format.FirstLineIndent, 243.59d, 0.1d);
             
-            Assert.AreEqual(format.LineUnitBefore, 5);
-            Assert.AreEqual(format.SpaceBefore, 60.0d);
+            Assert.AreEqual(format.LineUnitBefore, 5.1d);
+            Assert.AreEqual(format.SpaceBefore, 61.1d, 0.1d);
             
-            Assert.AreEqual(format.LineUnitAfter, 10);
-            Assert.AreEqual(format.SpaceAfter, 120.0d);
+            Assert.AreEqual(format.LineUnitAfter, 10.9d);
+            Assert.AreEqual(format.SpaceAfter, 130.8d, 0.1d);
         }
 
         [Test]
