@@ -18,7 +18,7 @@ namespace ApiExamples
         //ExFor:AbsolutePositionTab
         //ExFor:AbsolutePositionTab.Accept(DocumentVisitor)
         //ExFor:DocumentVisitor.VisitAbsolutePositionTab
-        //ExSummary:Shows how to work with AbsolutePositionTab.
+        //ExSummary:Shows how to work with absolute position tabs.
         [Test] //ExSkip
         public void DocumentToTxt()
         {

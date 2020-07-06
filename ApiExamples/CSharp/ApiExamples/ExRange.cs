@@ -10,6 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Aspose.Words;
+using Aspose.Words.Fields;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
 
@@ -27,7 +28,6 @@ namespace ApiExamples
             //ExFor:FindReplaceOptions.MatchCase
             //ExFor:FindReplaceOptions.FindWholeWordsOnly
             //ExSummary:Simple find and replace operation.
-            // Open the document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -40,18 +40,19 @@ namespace ApiExamples
             options.MatchCase = false;
             options.FindWholeWordsOnly = false;
 
-            // Replace the text in the document
             doc.Range.Replace("_CustomerName_", "James Bond", options);
 
-            // Save the modified document
             doc.Save(ArtifactsDir + "Range.ReplaceSimple.docx");
             //ExEnd
 
-            Assert.AreEqual("Hello James Bond,\r\x000c", doc.GetText());
+            doc = new Document(ArtifactsDir + "Range.ReplaceSimple.docx");
+
+            Assert.AreEqual("Hello James Bond,", doc.GetText().Trim());
         }
 
-        [Test]
-        public void IgnoreDeleted()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IgnoreDeleted(bool isIgnoreDeleted)
         {
             //ExStart
             //ExFor:FindReplaceOptions.IgnoreDeleted
@@ -71,20 +72,17 @@ namespace ApiExamples
             Regex regex = new Regex("e");
             FindReplaceOptions options = new FindReplaceOptions();
  
-            // Replace 'e' in document ignoring deleted text
-            options.IgnoreDeleted = true;
+            // Replace 'e' in document while ignoring/not ignoring deleted text
+            options.IgnoreDeleted = isIgnoreDeleted;
             doc.Range.Replace(regex, "*", options);
-            Assert.AreEqual(doc.GetText(), "Deleted\rT*xt\f");
-            
-            // Replace 'e' in document NOT ignoring deleted text
-            options.IgnoreDeleted = false;
-            doc.Range.Replace(regex, "*", options);
-            Assert.AreEqual(doc.GetText(), "D*l*t*d\rT*xt\f");
+
+            Assert.AreEqual(doc.GetText().Trim(), isIgnoreDeleted ? "Deleted\rT*xt" : "D*l*t*d\rT*xt");
             //ExEnd
         }
 
-        [Test]
-        public void IgnoreInserted()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IgnoreInserted(bool isIgnoreInserted)
         {
             //ExStart
             //ExFor:FindReplaceOptions.IgnoreInserted
@@ -103,20 +101,17 @@ namespace ApiExamples
             Regex regex = new Regex("e");
             FindReplaceOptions options = new FindReplaceOptions();
  
-            // Replace 'e' in document ignoring inserted text
-            options.IgnoreInserted = true;
+            // Replace 'e' in document while ignoring/not ignoring inserted text
+            options.IgnoreInserted = isIgnoreInserted;
             doc.Range.Replace(regex, "*", options);
-            Assert.AreEqual(doc.GetText(), "Inserted\rT*xt\f");
-            
-            // Replace 'e' in document NOT ignoring inserted text
-            options.IgnoreInserted = false;
-            doc.Range.Replace(regex, "*", options);
-            Assert.AreEqual(doc.GetText(), "Ins*rt*d\rT*xt\f");
+
+            Assert.AreEqual(doc.GetText().Trim(), isIgnoreInserted ? "Inserted\rT*xt" : "Ins*rt*d\rT*xt");
             //ExEnd
         }
 
-        [Test]
-        public void IgnoreFields()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IgnoreFields(bool isIgnoreFields)
         {
             //ExStart
             //ExFor:FindReplaceOptions.IgnoreFields
@@ -129,16 +124,40 @@ namespace ApiExamples
  
             Regex regex = new Regex("e");
             FindReplaceOptions options = new FindReplaceOptions();
- 
-            // Replace 'e' in document ignoring text inside field
-            options.IgnoreFields = true;
-            doc.Range.Replace(regex, "*", options);
-            Assert.AreEqual(doc.GetText(), "\u0013INCLUDETEXT\u0014Text in field\u0015\f");
+            // Replace 'e' in document ignoring/not ignoring text inside field
+            options.IgnoreFields = isIgnoreFields;
             
-            // Replace 'e' in document NOT ignoring text inside field
-            options.IgnoreFields = false;
             doc.Range.Replace(regex, "*", options);
-            Assert.AreEqual(doc.GetText(), "\u0013INCLUDETEXT\u0014T*xt in fi*ld\u0015\f");
+
+            Assert.AreEqual(doc.GetText(),
+                isIgnoreFields
+                    ? "\u0013INCLUDETEXT\u0014Text in field\u0015\f"
+                    : "\u0013INCLUDETEXT\u0014T*xt in fi*ld\u0015\f");
+            //ExEnd
+        }
+
+        [Test]
+        public void UpdateFieldsInRange()
+        {
+            //ExStart
+            //ExFor:Range.UpdateFields
+            //ExSummary:Shows how to update document fields in the body of the first section only.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a field that will display the value in the document's body text
+            FieldDocProperty field = (FieldDocProperty)builder.InsertField(" DOCPROPERTY Category");
+
+            // Set the value of the property that should be displayed by the field
+            doc.BuiltInDocumentProperties.Category = "MyCategory";
+
+            // Some field types need to be explicitly updated before they can display their expected values
+            Assert.AreEqual(string.Empty, field.Result);
+
+            // Update all the fields in the first section of the document, which includes the field we just inserted
+            doc.FirstSection.Range.UpdateFields();
+
+            Assert.AreEqual("MyCategory", field.Result);
             //ExEnd
         }
 
@@ -172,9 +191,11 @@ namespace ApiExamples
 
             Assert.AreEqual("sad mad bad", doc.GetText().Trim());
 
-            FindReplaceOptions options = new FindReplaceOptions();
-            options.MatchCase = false;
-            options.FindWholeWordsOnly = false;
+            FindReplaceOptions options = new FindReplaceOptions
+            {
+                MatchCase = false,
+                FindWholeWordsOnly = false
+            };
 
             doc.Range.Replace(new Regex("[s|m]ad"), "bad", options);
 
@@ -199,30 +220,21 @@ namespace ApiExamples
             builder.Writeln("Hello <CustomerName>,");
 
             FindReplaceOptions options = new FindReplaceOptions();
-            options.ReplacingCallback = new ReplaceWithHtmlEvaluator(options);
+            options.ReplacingCallback = new ReplaceWithHtmlEvaluator();
 
             doc.Range.Replace(new Regex(@" <CustomerName>,"), string.Empty, options);
 
             // Save the modified document
-            doc.Save(ArtifactsDir + "Range.ReplaceWithInsertHtml.doc");
-
-            Assert.AreEqual("James Bond, Hello\r\x000c", doc.GetText()); //ExSkip
+            doc.Save(ArtifactsDir + "Range.ReplaceWithInsertHtml.docx");
+            Assert.AreEqual("James Bond, Hello\r\x000c",
+                new Document(ArtifactsDir + "Range.ReplaceWithInsertHtml.docx").GetText()); //ExSkip
         }
 
         private class ReplaceWithHtmlEvaluator : IReplacingCallback
         {
-            internal ReplaceWithHtmlEvaluator(FindReplaceOptions options)
-            {
-                mOptions = options;
-            }
-
-            /// <summary>
-            /// NOTE: This is a simplistic method that will only work well when the match
-            /// starts at the beginning of a run.
-            /// </summary>
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
-                DocumentBuilder builder = new DocumentBuilder((Document) args.MatchNode.Document);
+                DocumentBuilder builder = new DocumentBuilder((Document)args.MatchNode.Document);
                 builder.MoveTo(args.MatchNode);
 
                 // Replace '<CustomerName>' text with a red bold name
@@ -231,8 +243,6 @@ namespace ApiExamples
 
                 return ReplaceAction.Replace;
             }
-
-            private readonly FindReplaceOptions mOptions;
         }
         //ExEnd
 
@@ -252,25 +262,26 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Font.Name = "Arial";
-            builder.Write(
-                "There are few numbers that should be converted to HEX and highlighted: 123, 456, 789 and 17379.");
+            builder.Writeln("Numbers that will be converted to hexadecimal and highlighted:\n" +
+                            "123, 456, 789 and 17379.");
 
             FindReplaceOptions options = new FindReplaceOptions();
-
             // Highlight newly inserted content with a color
             options.ApplyFont.HighlightColor = Color.LightGray;
-
             // Apply an IReplacingCallback to make the replacement to convert integers into hex equivalents
             // and also to count replacements in the order they take place
             options.ReplacingCallback = new NumberHexer();
-
             // By default, text is searched for replacements front to back, but we can change it to go the other way
             options.Direction = FindReplaceDirection.Backward;
 
             int count = doc.Range.Replace(new Regex("[0-9]+"), "", options);
-            Assert.AreEqual(4, count);
 
-            doc.Save(ArtifactsDir + "Range.ReplaceNumbersAsHex.docx");
+            Assert.AreEqual(4, count);
+            Assert.AreEqual("Numbers that will be converted to hexadecimal and highlighted:\r" +
+                            "0x7B, 0x1C8, 0x315 and 0x43E3.", doc.GetText().Trim());
+            Assert.AreEqual(4,
+                doc.GetChildNodes(NodeType.Run, true).OfType<Run>()
+                    .Count(r => r.Font.HighlightColor.ToArgb() == Color.LightGray.ToArgb()));
         }
 
         /// <summary>
@@ -286,7 +297,7 @@ namespace ApiExamples
                 int number = Convert.ToInt32(args.Match.Value);
 
                 // And write it as HEX
-                args.Replacement = $"0x{number:X} (replacement #{mCurrentReplacementNumber})";
+                args.Replacement = $"0x{number:X}";
 
                 Console.WriteLine($"Match #{mCurrentReplacementNumber}");
                 Console.WriteLine($"\tOriginal value:\t{args.Match.Value}");
@@ -325,6 +336,12 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Range.ApplyParagraphFormat.docx");
             //ExEnd
+
+            ParagraphCollection paragraphs = new Document(ArtifactsDir + "Range.ApplyParagraphFormat.docx").FirstSection.Body.Paragraphs;
+
+            Assert.AreEqual(ParagraphAlignment.Right, paragraphs[0].ParagraphFormat.Alignment);
+            Assert.AreEqual(ParagraphAlignment.Left, paragraphs[1].ParagraphFormat.Alignment);
+            Assert.AreEqual(ParagraphAlignment.Right, paragraphs[2].ParagraphFormat.Alignment);
         }
 
         [Test]
@@ -360,8 +377,12 @@ namespace ApiExamples
             //ExFor:Range
             //ExFor:Range.Text
             //ExSummary:Shows how to get plain, unformatted text of a range.
-            Document doc = new Document(MyDir + "Document.docx");
-            string text = doc.Range.Text;
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Hello world!");
+
+            Assert.AreEqual("Hello world!", doc.Range.Text.Trim());
             //ExEnd
         }
 
@@ -385,6 +406,7 @@ namespace ApiExamples
 
             mainDoc.Range.Replace(new Regex("\\[MY_DOCUMENT\\]"), "", options);
             mainDoc.Save(ArtifactsDir + "InsertDocument.InsertDocumentAtReplace.docx");
+
             TestInsertDocumentAtReplace(new Document(ArtifactsDir + "InsertDocument.InsertDocumentAtReplace.docx")); //ExSkip
         }
 
@@ -453,6 +475,5 @@ namespace ApiExamples
                             "2) At a MERGEFIELD:\r\u0013 MERGEFIELD  Document_1  \\* MERGEFORMAT \u0014«Document_1»\u0015\r" +
                             "3) At a bookmark:", doc.FirstSection.Body.GetText().Trim());
         }
-
     }
 }

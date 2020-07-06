@@ -5,10 +5,12 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using Aspose.Pdf.Facades;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
+#if NET462 || NETCOREAPP2_1 || JAVA
+using Aspose.Pdf.Facades;
+#endif
 
 namespace ApiExamples
 {
@@ -85,7 +87,7 @@ namespace ApiExamples
             outlineLevels.Clear();
             //ExEnd
 
-            #if NET462 || NETCOREAPP2_1         
+            #if NET462 || NETCOREAPP2_1 || JAVA
             // Bind pdf with Aspose.Pdf
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "BookmarksOutlineLevelCollection.BookmarkLevels.pdf");

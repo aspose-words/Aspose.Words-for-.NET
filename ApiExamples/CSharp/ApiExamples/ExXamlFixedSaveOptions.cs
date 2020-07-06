@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
@@ -29,12 +30,14 @@ namespace ApiExamples
             // Open a document which contains resources
             Document doc = new Document(MyDir + "Rendering.docx");
 
+            ResourceUriPrinter callback = new ResourceUriPrinter();
+
             XamlFixedSaveOptions options = new XamlFixedSaveOptions
             {
                 SaveFormat = SaveFormat.XamlFixed,
                 ResourcesFolder = ArtifactsDir + "XamlFixedResourceFolder",
                 ResourcesFolderAlias = ArtifactsDir + "XamlFixedFolderAlias",
-                ResourceSavingCallback = new ResourceUriPrinter()
+                ResourceSavingCallback = callback
             };
 
             // A folder specified by ResourcesFolderAlias will contain the resources instead of ResourcesFolder
@@ -42,6 +45,10 @@ namespace ApiExamples
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
             doc.Save(ArtifactsDir + "XamlFixedSaveOptions.ResourceFolder.xaml", options);
+
+            foreach (string resource in callback.Resources)
+                Console.WriteLine(resource);
+            TestResourceFolder(callback); //ExSkip
         }
 
         /// <summary>
@@ -49,19 +56,30 @@ namespace ApiExamples
         /// </summary>
         private class ResourceUriPrinter : IResourceSavingCallback
         {
+            public ResourceUriPrinter()
+            {
+                Resources = new List<string>();
+            }
+
             void IResourceSavingCallback.ResourceSaving(ResourceSavingArgs args)
             {
-                // If we set a folder alias in the SaveOptions object, it will be printed here
-                Console.WriteLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
-                Console.WriteLine("\t" + args.ResourceFileUri);
+                // If we set a folder alias in the SaveOptions object, it will be stored here
+                Resources.Add($"Resource \"{args.ResourceFileName}\"\n\t{args.ResourceFileUri}");
 
                 // If we specified a ResourcesFolderAlias we will also need to redirect each stream to put its resource in that folder
                 args.ResourceStream = new FileStream(args.ResourceFileUri, FileMode.Create);
                 args.KeepResourceStreamOpen = false;
             }
 
-            private int mSavedResourceCount;
+            public List<string> Resources { get; }
         }
         //ExEnd
+
+        private void TestResourceFolder(ResourceUriPrinter callback)
+        {
+            Assert.AreEqual(15, callback.Resources.Count);
+            foreach (string resource in callback.Resources)
+                Assert.True(File.Exists(resource.Split('\t')[1]));
+        }
     }
 }

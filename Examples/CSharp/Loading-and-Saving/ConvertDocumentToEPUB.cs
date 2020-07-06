@@ -14,7 +14,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
 
             // Load the document from disk.
-            Document doc = new Document(dataDir + "Document.EpubConversion.doc");
+            Document doc = new Document(dataDir + "Document.EpubConversion.docx");
 
             // Create a new instance of HtmlSaveOptions. This object allows us to set options that control
             // How the output document is saved.

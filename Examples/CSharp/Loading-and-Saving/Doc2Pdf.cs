@@ -20,7 +20,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
         {
             // ExStart:Doc2Pdf
             // Load the document from disk.
-            Document doc = new Document(dataDir + "Rendering.doc");
+            Document doc = new Document(dataDir + "Rendering.docx");
 
             // Save the document in PDF format.
             doc.Save(dataDir + "SaveDoc2Pdf.pdf");

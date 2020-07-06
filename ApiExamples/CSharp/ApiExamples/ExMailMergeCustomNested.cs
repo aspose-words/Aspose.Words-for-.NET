@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.Collections;
+using System.Collections.Generic;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
@@ -13,7 +14,7 @@ using NUnit.Framework;
 namespace ApiExamples
 {
     [TestFixture]
-    public class ExNestedMailMergeCustom : ApiExampleBase
+    public class ExMailMergeCustomNested : ApiExampleBase
     {
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSource)
@@ -24,9 +25,25 @@ namespace ApiExamples
             // Create a destination document for the mail merge
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertField(" MERGEFIELD TableStart:Customer");
+
+            builder.Write("Full name:\t");
             builder.InsertField(" MERGEFIELD FullName ");
-            builder.InsertParagraph();
+            builder.Write("\nAddress:\t");
             builder.InsertField(" MERGEFIELD Address ");
+            builder.Write("\nOrders:\n");
+
+            builder.InsertField(" MERGEFIELD TableStart:Order");
+
+            builder.Write("\tItem name:\t");
+            builder.InsertField(" MERGEFIELD Name ");
+            builder.Write("\n\tQuantity:\t");
+            builder.InsertField(" MERGEFIELD Quantity ");
+            builder.InsertParagraph();
+
+            builder.InsertField(" MERGEFIELD TableEnd:Order");
+
+            builder.InsertField(" MERGEFIELD TableEnd:Customer");
 
             // Create some data that we will use in the mail merge
             CustomerList customers = new CustomerList();
@@ -45,7 +62,8 @@ namespace ApiExamples
             // Now you can pass your data source into Aspose.Words
             doc.MailMerge.ExecuteWithRegions(customersDataSource);
 
-            doc.Save(ArtifactsDir + "NestedMailMergeCustom.CustomDataSource.doc");
+            doc.Save(ArtifactsDir + "NestedMailMergeCustom.CustomDataSource.docx");
+            TestCustomDataSource(customers, new Document(ArtifactsDir + "NestedMailMergeCustom.CustomDataSource.docx")); //ExSkip
         }
 
         /// <summary>
@@ -158,7 +176,7 @@ namespace ApiExamples
                 if (!IsEof)
                     mRecordIndex++;
 
-                return (!IsEof);
+                return !IsEof;
             }
 
             public IMailMergeDataSource GetChildDataSource(string tableName)
@@ -229,7 +247,7 @@ namespace ApiExamples
                 if (!IsEof)
                     mRecordIndex++;
 
-                return (!IsEof);
+                return !IsEof;
             }
 
             /// <summary>
@@ -249,5 +267,19 @@ namespace ApiExamples
             private int mRecordIndex;
         }
         //ExEnd
+
+        private void TestCustomDataSource(CustomerList customers, Document doc)
+        {
+            List<string[]> mailMergeData = new List<string[]>();
+
+            foreach (Customer customer in customers)
+            {
+                foreach (Order order in customer.Orders)
+                    mailMergeData.Add(new []{ order.Name, order.Quantity.ToString() });
+                mailMergeData.Add(new [] {customer.FullName, customer.Address});
+            }
+
+            TestUtil.MailMergeMatchesArray(mailMergeData.ToArray(), doc, false);
+        }
     }
 }

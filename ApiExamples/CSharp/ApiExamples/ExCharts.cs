@@ -388,9 +388,6 @@ namespace ApiExamples
             Assert.AreEqual("#,##0", chart.AxisY.NumberFormat.FormatCode);
         }
 
-        // Note: Tests below used for verification conversion docx to pdf and the correct display.
-        // For now, the results check manually.
-        [Test]
         [TestCase(ChartType.Column)]
         [TestCase(ChartType.Line)]
         [TestCase(ChartType.Pie)]

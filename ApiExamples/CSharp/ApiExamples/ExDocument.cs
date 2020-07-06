@@ -213,7 +213,6 @@ namespace ApiExamples
         }
 #endif
 
-#if NETCOREAPP2_1
         [Test]
         public void Pdf2Word()
         {
@@ -239,7 +238,6 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.PdfDocumentEncrypted.pdf", loadOptions);
         }
-#endif
 
         [Test]
         public void DocumentCtor()
@@ -444,7 +442,6 @@ namespace ApiExamples
             Assert.Throws<IncorrectPasswordException>(() => doc = new Document(MyDir + "Encrypted.docx"));
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void ConvertShapeToOfficeMath(bool isConvertShapeToOfficeMath)
@@ -488,7 +485,7 @@ namespace ApiExamples
             // If we open the document normally, the wrong encoding will be applied,
             // and the content of the document will not be represented correctly
             Document doc = new Document(MyDir + "Encoded in UTF-7.txt");
-            Assert.AreEqual("Hello world+ACE-\r\n\r\n", doc.ToString(SaveFormat.Text));
+            Assert.AreEqual("Hello world+ACE-", doc.ToString(SaveFormat.Text).Trim());
 
             // In these cases we can set the Encoding attribute in a LoadOptions object
             // to override the automatically chosen encoding with the one we know to be correct
@@ -496,7 +493,7 @@ namespace ApiExamples
             doc = new Document(MyDir + "Encoded in UTF-7.txt", loadOptions);
 
             // This will give us the correct text
-            Assert.AreEqual("Hello world!\r\n\r\n", doc.ToString(SaveFormat.Text));
+            Assert.AreEqual("Hello world!", doc.ToString(SaveFormat.Text).Trim());
             //ExEnd
         }
 
@@ -748,7 +745,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void SaveHtmlPrettyFormat(bool isPrettyFormat)
@@ -1403,9 +1399,10 @@ namespace ApiExamples
             // We can call UpdateTableLayout() to fix some of these issues
             doc.UpdateTableLayout();
 
-            Assert.AreEqual(155.65d, table.FirstRow.Cells[0].CellFormat.Width); //ExSkip
             Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
             //ExEnd
+
+            Assert.AreEqual(155.0d, table.FirstRow.Cells[0].CellFormat.Width, 2f);
         }
 
         [Test]
@@ -1480,11 +1477,12 @@ namespace ApiExamples
         public void TableStyleToDirectFormatting()
         {
             //ExStart
+            //ExFor:CompositeNode.GetChild
             //ExFor:Document.ExpandTableStylesToDirectFormatting
             //ExSummary:Shows how to expand the formatting from styles onto the rows and cells of the table as direct formatting.
             Document doc = new Document(MyDir + "Tables.docx");
-            
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
             // First print the color of the cell shading. This should be empty as the current shading
             // is stored in the table style
             double cellShadingBefore = table.FirstRow.RowFormat.Height;
@@ -1969,37 +1967,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.AcceptAllRevisions.docx");
             Assert.AreEqual(0, doc.Revisions.Count); //ExSKip
             //ExEnd
-        }
-
-        [Test]
-        public void RevisionHistory()
-        {
-            //ExStart
-            //ExFor:Paragraph.IsMoveFromRevision
-            //ExFor:Paragraph.IsMoveToRevision
-            //ExFor:ParagraphCollection
-            //ExFor:ParagraphCollection.Item(Int32)
-            //ExFor:Story.Paragraphs
-            //ExSummary:Shows how to get paragraph that was moved (deleted/inserted) in Microsoft Word while change tracking was enabled.
-            Document doc = new Document(MyDir + "Revisions.docx");
-
-            // There are two sets of move revisions in this document
-            // One moves a small part of a paragraph, while the other moves a whole paragraph
-            // Paragraph.IsMoveFromRevision/IsMoveToRevision will only be true if a whole paragraph is moved, as in the latter case
-            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-            for (int i = 0; i < paragraphs.Count; i++)
-            {
-                if (paragraphs[i].IsMoveFromRevision)
-                    Console.WriteLine("The paragraph {0} has been moved (deleted).", i);
-                if (paragraphs[i].IsMoveToRevision)
-                    Console.WriteLine("The paragraph {0} has been moved (inserted).", i);
-            }
-            //ExEnd
-
-            Assert.AreEqual(11, doc.Revisions.Count());
-            Assert.AreEqual(6, doc.Revisions.Count(r => r.RevisionType == RevisionType.Moving));
-            Assert.AreEqual(1, paragraphs.Count(p => ((Paragraph)p).IsMoveFromRevision));
-            Assert.AreEqual(1, paragraphs.Count(p => ((Paragraph)p).IsMoveToRevision));
         }
 
         [Test]
@@ -2777,7 +2744,6 @@ namespace ApiExamples
             Assert.AreEqual(OdsoDataSourceType.Text, odso.DataSourceType);
             Assert.AreEqual('|', odso.ColumnDelimiter);
             Assert.True(odso.FirstRowContainsColumnNames);
-
         }
 
         [Test]

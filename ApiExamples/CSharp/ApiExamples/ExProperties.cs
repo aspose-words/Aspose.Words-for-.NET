@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Aspose.Words;
+using Aspose.Words.Fields;
 using Aspose.Words.Layout;
 using Aspose.Words.Properties;
 using NUnit.Framework;
@@ -19,71 +20,78 @@ namespace ApiExamples
     public class ExProperties : ApiExampleBase
     {
         [Test]
-        public void EnumerateProperties()
+        public void BuiltIn()
         {
             //ExStart
+            //ExFor:BuiltInDocumentProperties
             //ExFor:Document.BuiltInDocumentProperties
             //ExFor:Document.CustomDocumentProperties
-            //ExFor:BuiltInDocumentProperties
-            //ExFor:CustomDocumentProperties
-            //ExSummary:Enumerates through all built-in and custom properties in a document.
-            Document doc = new Document(MyDir + "Properties.docx");
-
-            Console.WriteLine("1. Document name: {0}", doc.OriginalFileName);
-
-            Console.WriteLine("2. Built-in Properties");
-            foreach (DocumentProperty docProperty in doc.BuiltInDocumentProperties)
-                Console.WriteLine("{0} : {1}", docProperty.Name, docProperty.Value);
-
-            Console.WriteLine("3. Custom Properties");
-            foreach (DocumentProperty docProperty in doc.CustomDocumentProperties)
-                Console.WriteLine("{0} : {1}", docProperty.Name, docProperty.Value);
-            //ExEnd
-        }
-
-        [Test]
-        public void EnumeratePropertiesWithIndexer()
-        {
-            //ExStart
-            //ExFor:DocumentPropertyCollection.Count
-            //ExFor:DocumentPropertyCollection.Item(int)
             //ExFor:DocumentProperty
             //ExFor:DocumentProperty.Name
             //ExFor:DocumentProperty.Value
             //ExFor:DocumentProperty.Type
-            //ExSummary:Enumerates through all built-in and custom properties in a document using indexed access.
+            //ExSummary:Shows how to work with built in document properties.
             Document doc = new Document(MyDir + "Properties.docx");
 
-            Console.WriteLine("1. Document name: {0}", doc.OriginalFileName);
+            // Some information about the document is stored in member attributes, and can be accessed like this
+            Console.WriteLine($"Document filename:\n\t \"{doc.OriginalFileName}\"");
 
-            Console.WriteLine("2. Built-in Properties");
+            // The majority of metadata, such as author name, file size,
+            // word/page counts can be found in the built in properties collection like this
+            Console.WriteLine("Built-in Properties:");
             foreach (DocumentProperty docProperty in doc.BuiltInDocumentProperties)
             {
-                Console.WriteLine("{0}({1}) : {2}", docProperty.Name, docProperty.Type, docProperty.Value);
-            }
+                Console.WriteLine(docProperty.Name);
+                Console.WriteLine($"\tType:\t{docProperty.Type}");
 
-            Console.WriteLine("3. Custom Properties");
-            foreach (DocumentProperty docProperty in doc.CustomDocumentProperties)
-            {
-                Console.WriteLine("{0}({1}) : {2}", docProperty.Name, docProperty.Type, docProperty.Value);
+                // Some properties may store multiple values
+                if (docProperty.Value is Array)
+                {
+                    foreach (object value in docProperty.Value as Array)
+                        Console.WriteLine($"\tValue:\t\"{value}\"");
+                }
+                else
+                {
+                    Console.WriteLine($"\tValue:\t\"{docProperty.Value}\"");
+                }
             }
             //ExEnd
+
+            Assert.AreEqual(28, doc.BuiltInDocumentProperties.Count);
         }
 
         [Test]
-        public void BuiltInNamedAccess()
+        public void Custom()
         {
             //ExStart
             //ExFor:BuiltInDocumentProperties.Item(String)
+            //ExFor:CustomDocumentProperties
             //ExFor:DocumentProperty.ToString
-            //ExSummary:Retrieves a built-in document property by name.
+            //ExFor:DocumentPropertyCollection.Count
+            //ExFor:DocumentPropertyCollection.Item(int)
+            //ExSummary:Shows how to work with custom document properties.
             Document doc = new Document(MyDir + "Properties.docx");
 
-            DocumentProperty docProperty = doc.BuiltInDocumentProperties["Keywords"];
-            Console.WriteLine(docProperty.ToString());
-            //ExEnd
-        }
+            // A document's built in properties contains a set of predetermined keys
+            // with values such as the author's name or document's word count
+            // We can add our own keys and values to a custom properties collection also
+            // Before we add a custom property, we need to make sure that one with the same name doesn't already exist
+            Assert.AreEqual("Value of custom document property", doc.CustomDocumentProperties["CustomProperty"].ToString());
 
+            doc.CustomDocumentProperties.Add("CustomProperty2", "Value of custom document property #2");
+
+            // Iterate over all the custom document properties
+            Console.WriteLine("Custom Properties:");
+            foreach (var customDocumentProperty in doc.CustomDocumentProperties)
+            {
+                Console.WriteLine(customDocumentProperty.Name);
+                Console.WriteLine($"\tType:\t{customDocumentProperty.Type}");
+                Console.WriteLine($"\tValue:\t\"{customDocumentProperty.Value}\"");
+            }
+            //ExEnd
+
+            Assert.AreEqual(2, doc.CustomDocumentProperties.Count);
+        }
 
         [Test]
         public void Description()
@@ -117,6 +125,15 @@ namespace ApiExamples
             // When right clicking the document file in Windows Explorer, these properties are found in Properties > Details > Description
             doc.Save(ArtifactsDir + "Properties.Description.docx");
             //ExEnd
+
+            properties = new Document(ArtifactsDir + "Properties.Description.docx").BuiltInDocumentProperties;
+
+            Assert.AreEqual("John Doe", properties.Author);
+            Assert.AreEqual("My category", properties.Category);
+            Assert.AreEqual($"This is {properties.Author}'s document about {properties.Subject}", properties.Comments);
+            Assert.AreEqual("Tag 1; Tag 2; Tag 3", properties.Keywords);
+            Assert.AreEqual("My subject", properties.Subject);
+            Assert.AreEqual("John's Document", properties.Title);
         }
 
         [Test]
@@ -135,7 +152,6 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.TotalEditingTime
             //ExFor:BuiltInDocumentProperties.Version
             //ExSummary:Shows how to work with document properties in the "Origin" category.
-            // Open a document 
             Document doc = new Document(MyDir + "Properties.docx");
 
             // The properties we will work with are members of the BuiltInDocumentProperties attribute
@@ -162,6 +178,20 @@ namespace ApiExamples
             // When right clicking the document file in Windows Explorer, these properties are found in Properties > Details > Origin
             doc.Save(ArtifactsDir + "Properties.Origin.docx");
             //ExEnd
+
+            properties = new Document(ArtifactsDir + "Properties.Origin.docx").BuiltInDocumentProperties;
+
+            Assert.AreEqual("Doe Ltd.", properties.Company);
+            Assert.AreEqual(new DateTime(2006, 4, 25, 10, 10, 0), properties.CreatedTime);
+            Assert.AreEqual(new DateTime(2019, 4, 21, 10, 0, 0), properties.LastPrinted);
+            Assert.AreEqual("John Doe", properties.LastSavedBy);
+            TestUtil.VerifyDate(DateTime.Now, properties.LastSavedTime, TimeSpan.FromSeconds(5));
+            Assert.AreEqual("Jane Doe", properties.Manager);
+            Assert.AreEqual("Microsoft Office Word", properties.NameOfApplication);
+            Assert.AreEqual(12, properties.RevisionNumber);
+            Assert.AreEqual("Normal", properties.Template);
+            Assert.AreEqual(8, properties.TotalEditingTime);
+            Assert.AreEqual(786432, properties.Version);
         }
 
         //ExStart
@@ -213,7 +243,7 @@ namespace ApiExamples
             Assert.AreEqual(20310, properties.Bytes);
 
             // Template: The Template attribute can reflect the filename of the attached template document
-            doc.AttachedTemplate = MyDir + "Busniess brochure.dotx";
+            doc.AttachedTemplate = MyDir + "Business brochure.dotx";
             Assert.AreEqual("Normal", properties.Template);          
             properties.Template = doc.AttachedTemplate;
 
@@ -221,12 +251,13 @@ namespace ApiExamples
             properties.ContentStatus = "Draft";
 
             // Content type: Upon saving, any value we assign to this field will be overwritten by the MIME type of the output save format
-            Assert.AreEqual("", properties.ContentType);
+            Assert.AreEqual(string.Empty, properties.ContentType);
 
             // If the document contains links and they are all up to date, we can set this to true
             Assert.False(properties.LinksUpToDate);
 
             doc.Save(ArtifactsDir + "Properties.Content.docx");
+            TestContent(new Document(ArtifactsDir + "Properties.Content.docx")); //ExSkip
         }
 
         /// <summary>
@@ -276,6 +307,23 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestContent(Document doc)
+        {
+            BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
+
+            Assert.AreEqual(6, properties.Pages);
+            Assert.AreEqual(1035, properties.Words);
+            Assert.AreEqual(6026, properties.Characters);
+            Assert.AreEqual(7041, properties.CharactersWithSpaces);
+            Assert.AreEqual(142, properties.Lines);
+            Assert.AreEqual(29, properties.Paragraphs);
+            Assert.AreEqual(15500, properties.Bytes, 200);
+            Assert.AreEqual(MyDir.Replace("\\\\", "\\") + "Business brochure.dotx", properties.Template);
+            Assert.AreEqual("Draft", properties.ContentStatus);
+            Assert.AreEqual(string.Empty, properties.ContentType);
+            Assert.False(properties.LinksUpToDate);
+        }
+
         [Test]
         public void Thumbnail()
         {
@@ -304,6 +352,11 @@ namespace ApiExamples
             DocumentProperty thumbnail = doc.BuiltInDocumentProperties["Thumbnail"];
             File.WriteAllBytes(ArtifactsDir + "Properties.Thumbnail.gif", thumbnail.ToByteArray());
             //ExEnd
+
+            using (FileStream imgStream = new FileStream(ArtifactsDir + "Properties.Thumbnail.gif", FileMode.Open))
+            {
+                TestUtil.VerifyImage(400, 400, imgStream);
+            }
         }
 
         [Test]
@@ -327,12 +380,23 @@ namespace ApiExamples
             // Alternatively, if we know that all our linked files will come from the same folder,
             // we could set a base hyperlink in the document properties, keeping our hyperlinks short
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
-
-            Assert.True(File.Exists(MyDir + "Document.docx"));
             properties.HyperlinkBase = MyDir;
+
+            Assert.True(File.Exists(properties.HyperlinkBase + ((FieldHyperlink)doc.Range.Fields[0]).Address));
 
             doc.Save(ArtifactsDir + "Properties.HyperlinkBase.WorkingLink.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Properties.HyperlinkBase.BrokenLink.docx");
+            properties = doc.BuiltInDocumentProperties;
+
+            Assert.AreEqual(string.Empty, properties.HyperlinkBase);
+
+            doc = new Document(ArtifactsDir + "Properties.HyperlinkBase.WorkingLink.docx");
+            properties = doc.BuiltInDocumentProperties;
+
+            Assert.AreEqual(MyDir, properties.HyperlinkBase);
+            Assert.True(File.Exists(properties.HyperlinkBase + ((FieldHyperlink)doc.Range.Fields[0]).Address));
         }
 
         [Test]
@@ -346,13 +410,23 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Heading pairs and titles of parts.docx");
             
             // We can find the combined values of these collections in File > Properties > Advanced Properties > Contents tab
-
             // The HeadingPairs property is a collection of <string, int> pairs that determines
             // how many document parts a heading spans over
             object[] headingPairs = doc.BuiltInDocumentProperties.HeadingPairs;
 
             // The TitlesOfParts property contains the names of parts that belong to the above headings
             string[] titlesOfParts = doc.BuiltInDocumentProperties.TitlesOfParts;
+
+            int headingPairsIndex = 0;
+            int titlesOfPartsIndex = 0;
+            while (headingPairsIndex < headingPairs.Length)
+            {
+                Console.WriteLine($"Parts for {headingPairs[headingPairsIndex++]}:");
+                int partsCount = Convert.ToInt32(headingPairs[headingPairsIndex++]);
+
+                for (int i = 0; i < partsCount; i++)
+                    Console.WriteLine($"\t\"{titlesOfParts[titlesOfPartsIndex++]}\"");
+            }
             //ExEnd
 
             // There are 6 array elements designating 3 heading/part count pairs
@@ -385,7 +459,6 @@ namespace ApiExamples
             //ExFor:Properties.BuiltInDocumentProperties.Security
             //ExFor:Properties.DocumentSecurity
             //ExSummary:Shows how to use document properties to display the security level of a document.
-            // Create a blank document, which has no security of any kind by default
             Document doc = new Document();
 
             // The "Security" property serves as a description of the security level of a document
@@ -395,7 +468,7 @@ namespace ApiExamples
             doc.WriteProtection.ReadOnlyRecommended = true;
             doc.Save(ArtifactsDir + "Properties.Security.ReadOnlyRecommended.docx");
 
-            // We can open a document and glance at its security level like this
+            // Open a document and verify its security level
             Assert.AreEqual(DocumentSecurity.ReadOnlyRecommended, 
                 new Document(ArtifactsDir + "Properties.Security.ReadOnlyRecommended.docx").BuiltInDocumentProperties.Security);
 
@@ -431,21 +504,17 @@ namespace ApiExamples
             //ExFor:DocumentPropertyCollection.Item(String)
             //ExFor:CustomDocumentProperties.Add(String,DateTime)
             //ExFor:DocumentProperty.ToDateTime
-            //ExSummary:Retrieves a custom document property by name.
-            Document doc = new Document(MyDir + "Properties.docx");
+            //ExSummary:Shows how to create a custom document property with the value of a date and time.
+            Document doc = new Document();
 
-            DocumentProperty docProperty = doc.CustomDocumentProperties["Authorized Date"];
+            doc.CustomDocumentProperties.Add("AuthorizedDate", DateTime.Now);
 
-            if (docProperty != null)
-            {
-                Console.WriteLine(docProperty.ToDateTime());
-            }
-            else
-            {
-                Console.WriteLine("The document is not authorized. Authorizing...");
-                doc.CustomDocumentProperties.Add("AuthorizedDate", DateTime.Now);
-            }
+            Console.WriteLine($"Document authorized on {doc.CustomDocumentProperties["AuthorizedDate"].ToDateTime()}");
             //ExEnd
+
+            TestUtil.VerifyDate(DateTime.Now, 
+                DocumentHelper.SaveOpen(doc).CustomDocumentProperties["AuthorizedDate"].ToDateTime(), 
+                TimeSpan.FromSeconds(1));
         }
 
         [Test]
@@ -455,11 +524,11 @@ namespace ApiExamples
             //ExFor:CustomDocumentProperties.AddLinkToContent(String, String)
             //ExFor:DocumentProperty.IsLinkToContent
             //ExFor:DocumentProperty.LinkSource
-            //ExSummary:Shows how to add linked custom document property.
+            //ExSummary:Shows how to link a custom document property to a bookmark.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.StartBookmark("MyBookmark");
-            builder.Writeln("Text inside a bookmark.");
+            builder.Write("MyBookmark contents.");
             builder.EndBookmark("MyBookmark");
 
             // Add linked to content property
@@ -468,13 +537,18 @@ namespace ApiExamples
 
             // Check whether the property is linked to content
             Assert.AreEqual(true, customProperty.IsLinkToContent);
-            // Get the source of the property
             Assert.AreEqual("MyBookmark", customProperty.LinkSource);
-            // Get the value of the property
-            Assert.AreEqual("Text inside a bookmark.\r", customProperty.Value);
+            Assert.AreEqual("MyBookmark contents.", customProperty.Value);
 
             doc.Save(ArtifactsDir + "Properties.LinkCustomDocumentPropertiesToBookmark.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Properties.LinkCustomDocumentPropertiesToBookmark.docx");
+            customProperty = doc.CustomDocumentProperties["Bookmark"];
+
+            Assert.AreEqual(true, customProperty.IsLinkToContent);
+            Assert.AreEqual("MyBookmark", customProperty.LinkSource);
+            Assert.AreEqual("MyBookmark contents.", customProperty.Value);
         }
 
         [Test]
@@ -486,6 +560,7 @@ namespace ApiExamples
             //ExFor:CustomDocumentProperties.Add(String,int)
             //ExFor:CustomDocumentProperties.Add(String,DateTime)
             //ExFor:CustomDocumentProperties.Add(String,Double)
+            //ExFor:DocumentProperty.Type
             //ExFor:Properties.DocumentPropertyCollection
             //ExFor:Properties.DocumentPropertyCollection.Clear
             //ExFor:Properties.DocumentPropertyCollection.Contains(System.String)
@@ -493,12 +568,12 @@ namespace ApiExamples
             //ExFor:Properties.DocumentPropertyCollection.IndexOf(System.String)
             //ExFor:Properties.DocumentPropertyCollection.RemoveAt(System.Int32)
             //ExFor:Properties.DocumentPropertyCollection.Remove
+            //ExFor:PropertyType
             //ExSummary:Shows how to add custom properties to a document.
-            // Create a blank document and get its custom property collection
             Document doc = new Document();
             CustomDocumentProperties properties = doc.CustomDocumentProperties;
 
-            // The collection will be empty by default
+            // The custom property collection will be empty by default
             Assert.AreEqual(0, properties.Count);
 
             // We can populate it with key/value pairs with a variety of value types
@@ -516,9 +591,7 @@ namespace ApiExamples
             using (IEnumerator<DocumentProperty> enumerator = properties.GetEnumerator())
             {
                 while (enumerator.MoveNext())
-                {
-                    Console.WriteLine($"Name: \"{enumerator.Current.Name}\", Type: \"{enumerator.Current.Type}\", Value: \"{enumerator.Current.Value}\"");
-                }
+                    Console.WriteLine($"Name: \"{enumerator.Current.Name}\"\n\tType: \"{enumerator.Current.Type}\"\n\tValue: \"{enumerator.Current.Value}\"");
             }
 
             // We can view/edit custom properties by opening the document and looking in File > Properties > Advanced Properties > Custom
@@ -543,49 +616,27 @@ namespace ApiExamples
         public void PropertyTypes()
         {
             //ExStart
-            //ExFor:DocumentProperty.Type
             //ExFor:DocumentProperty.ToBool
             //ExFor:DocumentProperty.ToInt
             //ExFor:DocumentProperty.ToDouble
             //ExFor:DocumentProperty.ToString
             //ExFor:DocumentProperty.ToDateTime
-            //ExFor:PropertyType
-            //ExSummary:Retrieves the types and values of the custom document properties.
-            Document doc = new Document(MyDir + "Properties.docx");
+            //ExSummary:Shows various type conversion methods of custom document properties.
+            Document doc = new Document();
+            CustomDocumentProperties properties = doc.CustomDocumentProperties;
 
-            foreach (DocumentProperty docProperty in doc.CustomDocumentProperties)
-            {
-                Console.WriteLine(docProperty.Name);
-                switch (docProperty.Type)
-                {
-                    case PropertyType.String:
-                        Console.WriteLine("It's a String value.");
-                        Console.WriteLine(docProperty.ToString());
-                        break;
-                    case PropertyType.Boolean:
-                        Console.WriteLine("It's a boolean value.");
-                        Console.WriteLine(docProperty.ToBool());
-                        break;
-                    case PropertyType.Number:
-                        Console.WriteLine("It's an integer value.");
-                        Console.WriteLine(docProperty.ToInt());
-                        break;
-                    case PropertyType.DateTime:
-                        Console.WriteLine("It's a date time value.");
-                        Console.WriteLine(docProperty.ToDateTime());
-                        break;
-                    case PropertyType.Double:
-                        Console.WriteLine("It's a double value.");
-                        Console.WriteLine(docProperty.ToDouble());
-                        break;
-                    case PropertyType.Other:
-                        Console.WriteLine("Other value.");
-                        break;
-                    default:
-                        throw new Exception("Unknown property type.");
-                }
-            }
+            DateTime authDate = DateTime.Today;
+            properties.Add("Authorized", true);
+            properties.Add("Authorized By", "John Doe");
+            properties.Add("Authorized Date", authDate);
+            properties.Add("Authorized Revision", doc.BuiltInDocumentProperties.RevisionNumber);
+            properties.Add("Authorized Amount", 123.45);
 
+            Assert.AreEqual(true, properties["Authorized"].ToBool());
+            Assert.AreEqual("John Doe", properties["Authorized By"].ToString());
+            Assert.AreEqual(authDate, properties["Authorized Date"].ToDateTime());
+            Assert.AreEqual(1, properties["Authorized Revision"].ToInt());
+            Assert.AreEqual(123.45d, properties["Authorized Amount"].ToDouble());
             //ExEnd
         }
     }

@@ -5,19 +5,19 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net462|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -68,7 +68,6 @@
     <Content Include="ExMetered.cs" />
     <Content Include="ExMossDoc2Pdf.cs" />
     <Content Include="ExMossRtf2Docx.cs" />
-    <Content Include="ExNestedMailMergeCustom.cs" />
     <Content Include="ExNode.cs" />
     <Content Include="ExOdtSaveOptions.cs" />
     <Content Include="ExOoxmlSaveOptions.cs" />
@@ -91,7 +90,7 @@
     <Content Include="ExStyles.cs" />
     <Content Include="ExTable.cs" />
     <Content Include="ExTableColumn.cs" />
-    <Content Include="ExTabStopCollection.cs" />
+    <Content Include="ExTabStop.cs" />
     <Content Include="ExRtfLoadOptions.cs" />
     <Content Include="ExThemes.cs" />
     <Content Include="ExTxtLoadOptions.cs" />
@@ -100,7 +99,6 @@
     <Content Include="ExVariableCollection.cs" />
     <Content Include="ExDocumentVisitor.cs" />
     <Content Include="ExViewOptions.cs" />
-    <Content Include="ExWarningInfoCollection.cs" />
     <Content Include="ExXamlFixedSaveOptions.cs" />
     <Content Include="ExXamlFlowSaveOptions.cs" />
     <Content Include="ExXpsSaveOptions.cs" />
@@ -125,9 +123,9 @@
 
   <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="18.8.0" />
-    <PackageReference Include="Aspose.PDF" Version="20.4.0" />
-    <PackageReference Include="Aspose.Words" Version="20.5.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.5.0" />
+    <PackageReference Include="Aspose.PDF" Version="20.6.0" />
+    <PackageReference Include="Aspose.Words" Version="20.7.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
@@ -135,12 +133,14 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Data.OleDb" Version="4.7.0" />
+    <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Interop.ADODB">
       <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression" Condition="'$(TargetFramework)' == 'net462'" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>
@@ -149,7 +149,6 @@
 
   <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
     <PackageReference Include="BouncyCastle" Version="1.8.6.1" />
-    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
 

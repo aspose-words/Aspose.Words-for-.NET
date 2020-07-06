@@ -20,6 +20,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             SetOOXMLCompliance(dataDir);
             UpdateLastSavedTimeProperty(dataDir);
             KeepLegacyControlChars(dataDir);
+            SetCompressionLevel(dataDir);
         }
 
         public static void EncryptDocxWithPassword(string dataDir)
@@ -57,7 +58,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
         public static void UpdateLastSavedTimeProperty(String dataDir)
         {
             // ExStart:UpdateLastSavedTimeProperty
-            Document doc = new Document(dataDir + "Document.doc");
+            Document doc = new Document(dataDir + "Document.docx");
 
             OoxmlSaveOptions ooxmlSaveOptions = new OoxmlSaveOptions();
             ooxmlSaveOptions.UpdateLastSavedTimeProperty = true;
@@ -84,6 +85,22 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
 
             // ExEnd:KeepLegacyControlChars
             Console.WriteLine("\nUpdated Last Saved With Keeping Legacy Control Chars Successfully.\nFile saved at " + dataDir);
+        }
+
+        public static void SetCompressionLevel(string dataDir)
+        {
+            // ExStart:SetCompressionLevel
+            Document doc = new Document(dataDir + "Document.doc");
+
+            OoxmlSaveOptions so = new OoxmlSaveOptions(SaveFormat.Docx);
+            so.CompressionLevel = CompressionLevel.SuperFast;
+
+            // Save the document to disk.
+            doc.Save(dataDir + "SetCompressionLevel_out.docx", so);
+
+            // ExEnd:SetCompressionLevel
+            Console.WriteLine("\nDocument save with a Compression Level Successfully.\nFile saved at " + dataDir);
+            doc.Save("out.docx", so);
         }
     }
 }

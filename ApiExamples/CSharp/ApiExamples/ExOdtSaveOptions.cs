@@ -14,8 +14,9 @@ namespace ApiExamples
     [TestFixture]
     internal class ExOdtSaveOptions : ApiExampleBase
     {
-        [Test]
-        public void MeasureUnit()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void MeasureUnit(bool doExportToOdt11Specs)
         {
             //ExStart
             //ExFor:OdtSaveOptions
@@ -29,15 +30,25 @@ namespace ApiExamples
             // Open Office uses centimeters, MS Office uses inches
             OdtSaveOptions saveOptions = new OdtSaveOptions
             {
-                MeasureUnit = OdtSaveMeasureUnit.Inches,
-                IsStrictSchema11 = true
+                MeasureUnit = OdtSaveMeasureUnit.Centimeters,
+                IsStrictSchema11 = doExportToOdt11Specs
             };
 
             doc.Save(ArtifactsDir + "OdtSaveOptions.MeasureUnit.odt", saveOptions);
             //ExEnd
+
+            if (doExportToOdt11Specs)
+                TestUtil.DocPackageFileContainsString("<text:span text:style-name=\"T118_1\" >Combobox<text:s/></text:span>", 
+                    ArtifactsDir + "OdtSaveOptions.MeasureUnit.odt", "content.xml");
+            else
+                TestUtil.DocPackageFileContainsString("<text:span text:style-name=\"T118_1\" >Combobox<text:s/></text:span>" +
+                                              "<text:span text:style-name=\"T118_2\" >" +
+                                              "<text:drop-down><text:label text:value=\"Line 1\" ></text:label>" +
+                                              "<text:label text:value=\"Line 2\" ></text:label>" +
+                                              "<text:label text:value=\"Line 3\" ></text:label>Line 2</text:drop-down></text:span>", 
+                                              ArtifactsDir + "OdtSaveOptions.MeasureUnit.odt", "content.xml");
         }
 
-        [Test]
         [TestCase(SaveFormat.Odt)]
         [TestCase(SaveFormat.Ott)]
         public void Encrypt(SaveFormat saveFormat)
@@ -58,13 +69,11 @@ namespace ApiExamples
             //ExEnd
 
             // Check that all documents are encrypted with a password
-            FileFormatInfo docInfo = FileFormatUtil.DetectFileFormat(
-                ArtifactsDir + "OdtSaveOptions.Encrypt" +
-                FileFormatUtil.SaveFormatToExtension(saveFormat));
+            FileFormatInfo docInfo = 
+                FileFormatUtil.DetectFileFormat(ArtifactsDir + "OdtSaveOptions.Encrypt" + FileFormatUtil.SaveFormatToExtension(saveFormat));
             Assert.IsTrue(docInfo.IsEncrypted);
         }
 
-        [Test]
         [TestCase(SaveFormat.Odt)]
         [TestCase(SaveFormat.Ott)]
         public void WorkWithEncryptedDocument(SaveFormat saveFormat)
@@ -86,9 +95,8 @@ namespace ApiExamples
             //ExEnd
 
             // Check that document is still encrypted with a password
-            FileFormatInfo docInfo = FileFormatUtil.DetectFileFormat(
-                ArtifactsDir + "OdtSaveOptions.WorkWithEncryptedDocument" +
-                FileFormatUtil.SaveFormatToExtension(saveFormat));
+            FileFormatInfo docInfo = 
+                FileFormatUtil.DetectFileFormat(ArtifactsDir + "OdtSaveOptions.WorkWithEncryptedDocument" + FileFormatUtil.SaveFormatToExtension(saveFormat));
             Assert.IsTrue(docInfo.IsEncrypted);
         }
     }
