@@ -83,7 +83,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void RestartingDocumentList(bool doRestartListAtEachSection)
@@ -148,7 +147,6 @@ namespace ApiExamples
             Assert.True(documentTimeBeforeSave < documentTimeAfterSave);
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void KeepLegacyControlChars(bool doKeepLegacyControlChars)
@@ -169,7 +167,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.KeepLegacyControlChars.docx");
 
             if (doKeepLegacyControlChars)
-                Assert.AreEqual("\u0013date \\@ \"M/d/yyyy\"\u0014\u0015\f", doc.FirstSection.Body.GetText());
+                Assert.AreEqual("\u0013date \\@ \"MM/dd/yyyy\"\u0014\u0015\f", doc.FirstSection.Body.GetText());
             else
                 Assert.AreEqual("\u001e\f", doc.FirstSection.Body.GetText());
             //ExEnd

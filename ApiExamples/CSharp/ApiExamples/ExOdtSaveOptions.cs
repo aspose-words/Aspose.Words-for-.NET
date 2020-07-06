@@ -14,7 +14,6 @@ namespace ApiExamples
     [TestFixture]
     internal class ExOdtSaveOptions : ApiExampleBase
     {
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void MeasureUnit(bool doExportToOdt11Specs)
@@ -50,7 +49,6 @@ namespace ApiExamples
                                               ArtifactsDir + "OdtSaveOptions.MeasureUnit.odt", "content.xml");
         }
 
-        [Test]
         [TestCase(SaveFormat.Odt)]
         [TestCase(SaveFormat.Ott)]
         public void Encrypt(SaveFormat saveFormat)
@@ -76,7 +74,6 @@ namespace ApiExamples
             Assert.IsTrue(docInfo.IsEncrypted);
         }
 
-        [Test]
         [TestCase(SaveFormat.Odt)]
         [TestCase(SaveFormat.Ott)]
         public void WorkWithEncryptedDocument(SaveFormat saveFormat)

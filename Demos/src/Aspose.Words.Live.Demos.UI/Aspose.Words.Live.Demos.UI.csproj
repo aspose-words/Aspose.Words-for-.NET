@@ -635,7 +635,7 @@
     <Content Include="Views\Comparison\Comparison.cshtml" />
     <Content Include="Views\Editor\Editor.cshtml" />
     <Content Include="Views\Unlock\Unlock.cshtml" />
-    <Content Include="Views\Unlock\UnlockControls.cshtml" />
+    <Content Include="Views\Shared\UnlockControls.cshtml" />
     <Content Include="Views\Protect\Protect.cshtml" />
     <Content Include="Views\Annotation\Annotation.cshtml" />
     <Content Include="Views\Redaction\Redaction.cshtml" />
@@ -846,5 +846,12 @@
   </Target>
   <Target Name="AfterBuild">
   </Target>
+<Target Name="CopyRoslynFiles" AfterTargets="AfterBuild" Condition="!$(Disable_CopyWebApplication) And '$(OutDir)' != '$(OutputPath)'">
+    <ItemGroup>
+      <RoslynFiles Include="$(CscToolPath)\*" />
+    </ItemGroup>
+    <MakeDir Directories="$(WebProjectOutputDir)\bin\roslyn" />
+    <Copy SourceFiles="@(RoslynFiles)" DestinationFolder="$(WebProjectOutputDir)\bin\roslyn" SkipUnchangedFiles="true" Retries="$(CopyRetryCount)" RetryDelayMilliseconds="$(CopyRetryDelayMilliseconds)" />
+</Target>
   -->
 </Project>

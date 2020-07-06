@@ -13,7 +13,8 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net462|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
+    <Optimize>false</Optimize>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
@@ -90,7 +91,7 @@
     <Content Include="ExStyles.cs" />
     <Content Include="ExTable.cs" />
     <Content Include="ExTableColumn.cs" />
-    <Content Include="ExTabStopCollection.cs" />
+    <Content Include="ExTabStop.cs" />
     <Content Include="ExRtfLoadOptions.cs" />
     <Content Include="ExThemes.cs" />
     <Content Include="ExTxtLoadOptions.cs" />
@@ -99,7 +100,6 @@
     <Content Include="ExVariableCollection.cs" />
     <Content Include="ExDocumentVisitor.cs" />
     <Content Include="ExViewOptions.cs" />
-    <Content Include="ExWarningInfoCollection.cs" />
     <Content Include="ExXamlFixedSaveOptions.cs" />
     <Content Include="ExXamlFlowSaveOptions.cs" />
     <Content Include="ExXpsSaveOptions.cs" />
@@ -124,16 +124,16 @@
 
   <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="18.8.0" />
-    <PackageReference Include="Aspose.PDF" Version="20.4.0" />
-    <PackageReference Include="Aspose.Words" Version="20.5.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.5.0" />
+    <PackageReference Include="Aspose.PDF" Version="20.6.0" />
+    <PackageReference Include="Aspose.Words" Version="20.7.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="20.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
     <PackageReference Include="NUnit" Version="3.12.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.16.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Data.OleDb" Version="4.7.0" />
+    <PackageReference Include="System.Data.OleDb" Version="4.7.1" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
 

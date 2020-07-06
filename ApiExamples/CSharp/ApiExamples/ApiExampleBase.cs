@@ -6,10 +6,12 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -23,6 +25,8 @@ namespace ApiExamples
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+
             if (CheckForSkipMono() && IsRunningOnMono())
             {
                 Assert.Ignore("Test skipped on mono");

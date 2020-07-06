@@ -28,7 +28,6 @@ namespace ApiExamples
             //ExFor:FindReplaceOptions.MatchCase
             //ExFor:FindReplaceOptions.FindWholeWordsOnly
             //ExSummary:Simple find and replace operation.
-            // Open the document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -41,10 +40,8 @@ namespace ApiExamples
             options.MatchCase = false;
             options.FindWholeWordsOnly = false;
 
-            // Replace the text in the document
             doc.Range.Replace("_CustomerName_", "James Bond", options);
 
-            // Save the modified document
             doc.Save(ArtifactsDir + "Range.ReplaceSimple.docx");
             //ExEnd
 
@@ -53,8 +50,9 @@ namespace ApiExamples
             Assert.AreEqual("Hello James Bond,", doc.GetText().Trim());
         }
 
-        [Test]
-        public void IgnoreDeleted()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IgnoreDeleted(bool isIgnoreDeleted)
         {
             //ExStart
             //ExFor:FindReplaceOptions.IgnoreDeleted
@@ -74,22 +72,17 @@ namespace ApiExamples
             Regex regex = new Regex("e");
             FindReplaceOptions options = new FindReplaceOptions();
  
-            // Replace 'e' in document while ignoring deleted text
-            options.IgnoreDeleted = true;
+            // Replace 'e' in document while ignoring/not ignoring deleted text
+            options.IgnoreDeleted = isIgnoreDeleted;
             doc.Range.Replace(regex, "*", options);
 
-            Assert.AreEqual(doc.GetText().Trim(), "Deleted\rT*xt");
-            
-            // Replace 'e' in document while not ignoring deleted text
-            options.IgnoreDeleted = false;
-            doc.Range.Replace(regex, "*", options);
-
-            Assert.AreEqual(doc.GetText().Trim(), "D*l*t*d\rT*xt");
+            Assert.AreEqual(doc.GetText().Trim(), isIgnoreDeleted ? "Deleted\rT*xt" : "D*l*t*d\rT*xt");
             //ExEnd
         }
 
-        [Test]
-        public void IgnoreInserted()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IgnoreInserted(bool isIgnoreInserted)
         {
             //ExStart
             //ExFor:FindReplaceOptions.IgnoreInserted
@@ -108,22 +101,17 @@ namespace ApiExamples
             Regex regex = new Regex("e");
             FindReplaceOptions options = new FindReplaceOptions();
  
-            // Replace 'e' in document while ignoring inserted text
-            options.IgnoreInserted = true;
+            // Replace 'e' in document while ignoring/not ignoring inserted text
+            options.IgnoreInserted = isIgnoreInserted;
             doc.Range.Replace(regex, "*", options);
 
-            Assert.AreEqual(doc.GetText().Trim(), "Inserted\rT*xt");
-            
-            // Replace 'e' in document while not ignoring inserted text
-            options.IgnoreInserted = false;
-            doc.Range.Replace(regex, "*", options);
-
-            Assert.AreEqual(doc.GetText().Trim(), "Ins*rt*d\rT*xt");
+            Assert.AreEqual(doc.GetText().Trim(), isIgnoreInserted ? "Inserted\rT*xt" : "Ins*rt*d\rT*xt");
             //ExEnd
         }
 
-        [Test]
-        public void IgnoreFields()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IgnoreFields(bool isIgnoreFields)
         {
             //ExStart
             //ExFor:FindReplaceOptions.IgnoreFields
@@ -136,16 +124,15 @@ namespace ApiExamples
  
             Regex regex = new Regex("e");
             FindReplaceOptions options = new FindReplaceOptions();
- 
-            // Replace 'e' in document ignoring text inside field
-            options.IgnoreFields = true;
-            doc.Range.Replace(regex, "*", options);
-            Assert.AreEqual(doc.GetText(), "\u0013INCLUDETEXT\u0014Text in field\u0015\f");
+            // Replace 'e' in document ignoring/not ignoring text inside field
+            options.IgnoreFields = isIgnoreFields;
             
-            // Replace 'e' in document NOT ignoring text inside field
-            options.IgnoreFields = false;
             doc.Range.Replace(regex, "*", options);
-            Assert.AreEqual(doc.GetText(), "\u0013INCLUDETEXT\u0014T*xt in fi*ld\u0015\f");
+
+            Assert.AreEqual(doc.GetText(),
+                isIgnoreFields
+                    ? "\u0013INCLUDETEXT\u0014Text in field\u0015\f"
+                    : "\u0013INCLUDETEXT\u0014T*xt in fi*ld\u0015\f");
             //ExEnd
         }
 
@@ -239,7 +226,8 @@ namespace ApiExamples
 
             // Save the modified document
             doc.Save(ArtifactsDir + "Range.ReplaceWithInsertHtml.docx");
-            Assert.AreEqual("James Bond, Hello\r\x000c", new Document(ArtifactsDir + "Range.ReplaceWithInsertHtml.docx").GetText()); //ExSkip
+            Assert.AreEqual("James Bond, Hello\r\x000c",
+                new Document(ArtifactsDir + "Range.ReplaceWithInsertHtml.docx").GetText()); //ExSkip
         }
 
         private class ReplaceWithHtmlEvaluator : IReplacingCallback
@@ -278,14 +266,11 @@ namespace ApiExamples
                             "123, 456, 789 and 17379.");
 
             FindReplaceOptions options = new FindReplaceOptions();
-
             // Highlight newly inserted content with a color
             options.ApplyFont.HighlightColor = Color.LightGray;
-
             // Apply an IReplacingCallback to make the replacement to convert integers into hex equivalents
             // and also to count replacements in the order they take place
             options.ReplacingCallback = new NumberHexer();
-
             // By default, text is searched for replacements front to back, but we can change it to go the other way
             options.Direction = FindReplaceDirection.Backward;
 
@@ -294,7 +279,9 @@ namespace ApiExamples
             Assert.AreEqual(4, count);
             Assert.AreEqual("Numbers that will be converted to hexadecimal and highlighted:\r" +
                             "0x7B, 0x1C8, 0x315 and 0x43E3.", doc.GetText().Trim());
-            Assert.AreEqual(4, doc.GetChildNodes(NodeType.Run, true).OfType<Run>().Count(r => r.Font.HighlightColor.ToArgb() == Color.LightGray.ToArgb()));
+            Assert.AreEqual(4,
+                doc.GetChildNodes(NodeType.Run, true).OfType<Run>()
+                    .Count(r => r.Font.HighlightColor.ToArgb() == Color.LightGray.ToArgb()));
         }
 
         /// <summary>
@@ -419,6 +406,7 @@ namespace ApiExamples
 
             mainDoc.Range.Replace(new Regex("\\[MY_DOCUMENT\\]"), "", options);
             mainDoc.Save(ArtifactsDir + "InsertDocument.InsertDocumentAtReplace.docx");
+
             TestInsertDocumentAtReplace(new Document(ArtifactsDir + "InsertDocument.InsertDocumentAtReplace.docx")); //ExSkip
         }
 

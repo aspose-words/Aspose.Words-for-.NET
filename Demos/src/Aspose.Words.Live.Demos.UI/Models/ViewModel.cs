@@ -339,22 +339,7 @@ namespace Aspose.Words.Live.Demos.UI.Models
 				var key1 = $"{Product}{AppName}ValidationExpression";
 				var key2 = $"{Product}ValidationExpression";
 				ExtensionsString = Resources.ContainsKey(key1) ? Resources[key1] : Resources[key2];
-				if ("pdf".Equals(Product))
-				{
-					switch (Extension)
-					{
-						case "mhtml":
-						case "mht":
-							ExtensionsString = ".mht|.mhtml";
-							break;
-						default:
-							if (!IsCanonical)
-								ExtensionsString = $".{Extension}";
-							else
-								ExtensionsString = $".pdf";
-							break;
-					}
-				}
+				
 			}
 			else
 			{

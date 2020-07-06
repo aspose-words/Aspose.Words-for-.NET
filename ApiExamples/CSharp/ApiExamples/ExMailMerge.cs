@@ -526,7 +526,6 @@ namespace ApiExamples
         //ExStart
         //ExFor:MailMerge.MergeDuplicateRegions
         //ExSummary:Shows how to work with duplicate mail merge regions.
-        [Test] //ExSkip
         [TestCase(true)] //ExSkip
         [TestCase(false)] //ExSkip
         public void MergeDuplicateRegions(bool isMergeDuplicateRegions)
@@ -594,7 +593,6 @@ namespace ApiExamples
         //ExStart
         //ExFor:MailMerge.PreserveUnusedTags
         //ExSummary:Shows how to preserve the appearance of alternative mail merge tags that go unused during a mail merge. 
-        [Test] //ExSkip
         [TestCase(false)] //ExSkip
         [TestCase(true)] //ExSkip
         public void PreserveUnusedTags(bool doPreserveUnusedTags)
@@ -648,7 +646,6 @@ namespace ApiExamples
         //ExStart
         //ExFor:MailMerge.MergeWholeDocument
         //ExSummary:Shows the relationship between mail merges with regions and field updating.
-        [Test] //ExSkip
         [TestCase(false)] //ExSkip
         [TestCase(true)] //ExSkip
         public void MergeWholeDocument(bool doMergeWholeDocument)
@@ -774,7 +771,6 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void TrimWhiteSpaces(bool doTrimWhitespaces)
@@ -856,7 +852,6 @@ namespace ApiExamples
         }
 
         [Ignore("WORDSNET-17733")]
-        [Test]
         [TestCase("!", false, "")]
         [TestCase(", ", false, "")]
         [TestCase(" . ", false, "")]
@@ -1225,7 +1220,6 @@ namespace ApiExamples
             return dataTable;
         }
 
-        [Test]
         [TestCase(false)]
         [TestCase(true)]
         public void UnconditionalMergeFieldsAndRegions(bool doCountAllMergeFields)

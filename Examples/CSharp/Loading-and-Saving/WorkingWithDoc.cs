@@ -22,10 +22,10 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
         public static void EncryptDocumentWithPassword(string dataDir)
         {
             //ExStart:EncryptDocumentWithPassword
-            Document doc = new Document(dataDir + "Document.doc");
+            Document doc = new Document(dataDir + "Document.docx");
             DocSaveOptions docSaveOptions = new DocSaveOptions();
             docSaveOptions.Password = "password";
-            dataDir = dataDir + "Document.Password_out.doc";
+            dataDir = dataDir + "Document.Password_out.docx";
             doc.Save(dataDir, docSaveOptions);
             //ExEnd:EncryptDocumentWithPassword
             Console.WriteLine("\nThe password of document is set using RC4 encryption method. \nFile saved at " + dataDir);

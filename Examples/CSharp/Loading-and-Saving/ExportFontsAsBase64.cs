@@ -9,7 +9,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_Saving
             // ExStart:ExportFontsAsBase64            
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_LoadingAndSaving();
-            string fileName = "Document.doc";
+            string fileName = "Document.docx";
             Document doc = new Document(dataDir + fileName);
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.ExportFontResources = true;

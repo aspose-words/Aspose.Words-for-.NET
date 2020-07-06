@@ -342,7 +342,7 @@ namespace ApiExamples
             Assert.IsTrue(logoImage.HasImage);
         }
 
-#if  !__MOBILE__
+#if  NET462 || JAVA
         //ExStart
         //ExFor:MailMerge.FieldMergingCallback
         //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)

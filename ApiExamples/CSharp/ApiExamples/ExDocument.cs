@@ -216,7 +216,6 @@ namespace ApiExamples
         }
 #endif
 
-#if NETCOREAPP2_1
         [Test]
         public void Pdf2Word()
         {
@@ -242,7 +241,6 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.PdfDocumentEncrypted.pdf", loadOptions);
         }
-#endif
 
         [Test]
         public void DocumentCtor()
@@ -447,7 +445,6 @@ namespace ApiExamples
             Assert.Throws<IncorrectPasswordException>(() => doc = new Document(MyDir + "Encrypted.docx"));
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void ConvertShapeToOfficeMath(bool isConvertShapeToOfficeMath)
@@ -491,7 +488,7 @@ namespace ApiExamples
             // If we open the document normally, the wrong encoding will be applied,
             // and the content of the document will not be represented correctly
             Document doc = new Document(MyDir + "Encoded in UTF-7.txt");
-            Assert.AreEqual("Hello world+ACE-\r\n\r\n", doc.ToString(SaveFormat.Text));
+            Assert.AreEqual("Hello world+ACE-", doc.ToString(SaveFormat.Text).Trim());
 
             // In these cases we can set the Encoding attribute in a LoadOptions object
             // to override the automatically chosen encoding with the one we know to be correct
@@ -499,7 +496,7 @@ namespace ApiExamples
             doc = new Document(MyDir + "Encoded in UTF-7.txt", loadOptions);
 
             // This will give us the correct text
-            Assert.AreEqual("Hello world!\r\n\r\n", doc.ToString(SaveFormat.Text));
+            Assert.AreEqual("Hello world!", doc.ToString(SaveFormat.Text).Trim());
             //ExEnd
         }
 
@@ -603,6 +600,23 @@ namespace ApiExamples
             Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[2].WarningType); 
             Assert.AreEqual(WarningSource.Docx, warnings[2].Source);
             Assert.AreEqual("Import of element 'extraClrSchemeLst' is not supported in Docx format by Aspose.Words.", warnings[2].Description); 
+        }
+
+        [Test]
+        public void TempFolder()
+        {
+            //ExStart
+            //ExFor:LoadOptions.TempFolder
+            //ExSummary:Shows how to load a document using temporary files.
+            // Note that such an approach can reduce memory usage but degrades speed
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.TempFolder = @"C:\TempFolder\";
+            
+            // Ensure that the directory exists and load
+            Directory.CreateDirectory(loadOptions.TempFolder);
+             
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+            //ExEnd
         }
 
         [Test]
@@ -734,7 +748,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void SaveHtmlPrettyFormat(bool isPrettyFormat)
@@ -1389,9 +1402,10 @@ namespace ApiExamples
             // We can call UpdateTableLayout() to fix some of these issues
             doc.UpdateTableLayout();
 
-            Assert.AreEqual(155.65d, table.FirstRow.Cells[0].CellFormat.Width); //ExSkip
             Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
             //ExEnd
+
+            Assert.AreEqual(155.0d, table.FirstRow.Cells[0].CellFormat.Width, 2f);
         }
 
         [Test]
@@ -2547,6 +2561,29 @@ namespace ApiExamples
                 isUseLegacyOrder
                     ? new List<string> { "[tag 1]", "[tag 2]", "[tag 3]" }
                     : new List<string> { "[tag 1]", "[tag 3]", "[tag 2]" }, callback.Matches);
+        }
+
+        [Test]
+        public void UseSubstitutions()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.UseSubstitutions
+            //ExSummary:Shows how to recognize and use substitutions within replacement patterns.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+             
+            // Write some text
+            builder.Write("Jason give money to Paul.");
+             
+            Regex regex = new Regex(@"([A-z]+) give money to ([A-z]+)");
+             
+            // Replace text using substitutions
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.UseSubstitutions = true;
+            doc.Range.Replace(regex, @"$2 take money from $1", options);
+            
+            Assert.AreEqual(doc.GetText(), "Paul take money from Jason.\f");
+            //ExEnd
         }
 
         [Test]
@@ -3958,7 +3995,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Document.EpubCover.epub");
         }
-
+        
         [Test]
         public void WorkWithWatermark()
         {
@@ -4073,5 +4110,68 @@ namespace ApiExamples
             private int mNum;
         }
         //ExEnd
+
+        [TestCase(Granularity.CharLevel)]
+        [TestCase(Granularity.WordLevel)]
+        public void GranularityCompareOption(Granularity granularity)
+        {
+            //ExStart
+            //ExFor:CompareOptions.Granularity
+            //ExFor:Granularity
+            //ExSummary:Shows to specify comparison granularity.
+            Document docA = new Document();
+            DocumentBuilder builderA = new DocumentBuilder(docA);
+            builderA.Writeln("Alpha Lorem ipsum dolor sit amet, consectetur adipiscing elit");
+
+            Document docB = new Document();
+            DocumentBuilder builderB = new DocumentBuilder(docB);
+            builderB.Writeln("Lorems ipsum dolor sit amet consectetur - \"adipiscing\" elit");
+ 
+            // Specify whether changes are tracked by character ('Granularity.CharLevel') or by word ('Granularity.WordLevel')
+            CompareOptions compareOptions = new CompareOptions();
+            compareOptions.Granularity = granularity;
+ 
+            docA.Compare(docB, "author", DateTime.Now, compareOptions);
+
+            // Revision groups contain all of our text changes
+            RevisionGroupCollection groups = docA.Revisions.Groups;
+            Assert.AreEqual(5, groups.Count);
+            //ExEnd
+
+            if (granularity == Granularity.CharLevel)
+            {
+                Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
+                Assert.AreEqual("Alpha ", groups[0].Text);
+
+                Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
+                Assert.AreEqual(",", groups[1].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
+                Assert.AreEqual("s", groups[2].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
+                Assert.AreEqual("- \"", groups[3].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
+                Assert.AreEqual("\"", groups[4].Text);
+            }
+            else
+            {
+                Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
+                Assert.AreEqual("Alpha Lorem ", groups[0].Text);
+
+                Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
+                Assert.AreEqual(",", groups[1].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
+                Assert.AreEqual("Lorems ", groups[2].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
+                Assert.AreEqual("- \"", groups[3].Text);
+
+                Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
+                Assert.AreEqual("\"", groups[4].Text);   
+            }
+        }
     }
 }

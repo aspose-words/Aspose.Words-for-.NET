@@ -28,7 +28,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
             var findReplaceOptions = new FindReplaceOptions
             {
                 ReplacingCallback = new FindAndInsertHtml(),
-                PreserveMetaCharacters = true
             };
 
             doc.Range.Replace("{PLACEHOLDER}", html, findReplaceOptions);

@@ -13,9 +13,10 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
             // Invokes the InsertDocument method shown above to insert a document at a bookmark.
-            SmartStyleBehavior(dataDir);
-            KeepSourceNumbering(dataDir);
-            IgnoreTextBoxes(dataDir);
+            //SmartStyleBehavior(dataDir);
+            //KeepSourceNumbering(dataDir);
+            //IgnoreTextBoxes(dataDir);
+            IgnoreHeaderFooter(dataDir);
         }
 
         static void SmartStyleBehavior(string dataDir)
@@ -33,7 +34,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             builder.InsertDocument(srcDoc, ImportFormatMode.UseDestinationStyles, options);
             // ExEnd:SmartStyleBehavior
         }
-
         static void KeepSourceNumbering(string dataDir)
         {
             // ExStart:KeepSourceNumbering
@@ -55,7 +55,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             dstDoc.Save(dataDir + "output.docx");
             // ExEnd:KeepSourceNumbering
         }
-
         public static void IgnoreTextBoxes(string dataDir)
         {
             // ExStart:IgnoreTextBoxes
@@ -76,6 +75,19 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
 
             dstDoc.Save(dataDir + "output.docx");
             // ExEnd:IgnoreTextBoxes
+        }
+        private static void IgnoreHeaderFooter(string dataDir)
+        {
+            // ExStart:IgnoreHeaderFooter
+            Document srcDocument = new Document(dataDir + "source.docx");
+            Document dstDocument = new Document(dataDir + "destination.docx");
+
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
+            importFormatOptions.IgnoreHeaderFooter = false;
+
+            dstDocument.AppendDocument(srcDocument, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
+            dstDocument.Save(dataDir + "IgnoreHeaderFooter_out.docx");
+            // ExEnd:IgnoreHeaderFooter
         }
     }
 }

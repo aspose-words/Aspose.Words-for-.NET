@@ -812,7 +812,7 @@ namespace ApiExamples
             Assert.AreEqual("dddd, MMMM dd, yyyy", doc.Range.Fields[1].Format.DateTimeFormat);
             Assert.AreEqual(DateTime.Today, DateTime.Parse(doc.Range.Fields[1].Result));
 
-            Assert.IsEmpty(doc.Range.Fields[2].Format.GeneralFormats);
+            Assert.That(doc.Range.Fields[2].Format.GeneralFormats, Is.Empty);
             Assert.AreEqual("58", doc.Range.Fields[2].Result);
 
         }
@@ -1673,7 +1673,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.AUTOTEXT.dotx");
             
-            Assert.IsEmpty(doc.FieldOptions.BuiltInTemplatesPaths);
+            Assert.That(doc.FieldOptions.BuiltInTemplatesPaths, Is.Empty);
 
             fieldAutoText = (FieldAutoText)doc.Range.Fields[0];
 
@@ -1817,7 +1817,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.GREETINGLINE.docx");
 
-            Assert.IsEmpty(doc.Range.Fields);
+            Assert.That(doc.Range.Fields, Is.Empty);
             Assert.AreEqual("Dear Mr. Doe,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!\r" +
                             "\fDear Mrs. Cardholder,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!\r" +
                             "\fDear Sir or Madam,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!", 
@@ -1967,7 +1967,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.MERGEFIELD.docx");
 
-            Assert.IsEmpty(doc.Range.Fields);
+            Assert.That(doc.Range.Fields, Is.Empty);
             Assert.AreEqual("Dear Mr. Doe:\u000cDear Mrs. Cardholder:", doc.GetText().Trim());
         }
 
@@ -2654,7 +2654,7 @@ namespace ApiExamples
 
             // We can do the same thing with an IMPORT field
             FieldImport fieldImport = (FieldImport)builder.InsertField(FieldType.FieldImport, true);
-            fieldImport.SourceFullName = MyDir + @"Images\Transparent background logo.png";
+            fieldImport.SourceFullName = ImageDir + "Transparent background logo.png";
             fieldImport.GraphicFilter = "PNG32";
             fieldImport.IsLinked = true;
 
@@ -2670,7 +2670,7 @@ namespace ApiExamples
             Assert.True(fieldIncludePicture.ResizeHorizontally);
             Assert.True(fieldIncludePicture.ResizeVertically);
 
-            Assert.AreEqual(MyDir + @"Images\Transparent background logo.png", fieldImport.SourceFullName);
+            Assert.AreEqual(ImageDir + "Transparent background logo.png", fieldImport.SourceFullName);
             Assert.AreEqual("PNG32", fieldImport.GraphicFilter);
             Assert.True(fieldImport.IsLinked);
             
@@ -3534,7 +3534,6 @@ namespace ApiExamples
             Assert.AreEqual("Tropical fruit", indexEntry.PageNumberReplacement);
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         [Ignore("WORDSNET-17524")]
@@ -3612,7 +3611,6 @@ namespace ApiExamples
             Assert.AreEqual("Heading 1:Subheading 2", indexEntry.Text);
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         [Ignore("WORDSNET-17524")]
@@ -4194,7 +4192,6 @@ namespace ApiExamples
         //ExFor:FieldDdeAuto.SourceFullName
         //ExFor:FieldDdeAuto.SourceItem
         //ExSummary:Shows how to insert linked objects as LINK, DDE and DDEAUTO fields and present them within the document in different ways.
-        [Test] //ExSkip
         [TestCase(InsertLinkedObjectAs.Text)] //ExSkip
         [TestCase(InsertLinkedObjectAs.Unicode)] //ExSkip
         [TestCase(InsertLinkedObjectAs.Html)] //ExSkip
@@ -4221,7 +4218,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.LINK.DDE.DDEAUTO.docx");
         }
 
-        [Test] //ExSkip
         [TestCase(InsertLinkedObjectAs.Picture)] //ExSkip
         [TestCase(InsertLinkedObjectAs.Bitmap)] //ExSkip
         [Ignore("WORDSNET-16226")] //ExSkip
@@ -5023,7 +5019,7 @@ namespace ApiExamples
             builder.Writeln();
 
             // While the set of a document's properties is fixed, we can add, name and define our own values in the variables collection
-            Assert.IsEmpty(doc.Variables);
+            Assert.That(doc.Variables, Is.Empty);
             doc.Variables.Add("My variable", "My variable's value");
 
             // We can access a variable using its name and display it with a DOCVARIABLE field

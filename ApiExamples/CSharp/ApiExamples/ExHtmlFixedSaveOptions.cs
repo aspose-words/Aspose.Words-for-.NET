@@ -61,7 +61,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.GetEncoding.html", htmlFixedSaveOptions);
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void ExportEmbeddedCSS(bool doExportEmbeddedCss)
@@ -94,7 +93,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void ExportEmbeddedFonts(bool doExportEmbeddedFonts)
@@ -128,7 +126,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void ExportEmbeddedImages(bool doExportImages)
@@ -163,7 +160,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void ExportEmbeddedSvgs(bool doExportSvgs)
@@ -197,7 +193,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(true)]
         [TestCase(false)]
         public void ExportFormFields(bool doExportFormFields)
@@ -260,7 +255,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
         [TestCase(HtmlFixedPageHorizontalAlignment.Center)]
         [TestCase(HtmlFixedPageHorizontalAlignment.Left)]
         [TestCase(HtmlFixedPageHorizontalAlignment.Right)]

@@ -498,7 +498,6 @@ namespace ApiExamples
                     GoldsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox Gold.docx"));
         }
 
-        [Test]
         [TestCase("https://auckland.dynabic.com/wiki/display/org/Supported+dynamic+insertion+of+hyperlinks+for+LINQ+Reporting+Engine")]
         [TestCase("Bookmark")]
         public void InsertHyperlinksDynamically(string link)
@@ -840,7 +839,6 @@ namespace ApiExamples
                 GoldsDir + "ReportingEngine.RemoveEmptyParagraphs Gold.docx"));
         }
 
-        [Test]
         [TestCase("Hello", "Hello", "ReportingEngine.MergingTableCellsDynamically.Merged", TestName = "Cells in the first two tables must be merged")]
         [TestCase("Hello", "Name", "ReportingEngine.MergingTableCellsDynamically.NotMerged", TestName = "Only last table cells must be merge")]
         public void MergingTableCellsDynamically(string value1, string value2, string resultDocumentName)
