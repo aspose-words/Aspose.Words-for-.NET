@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
@@ -762,35 +763,31 @@ namespace ApiExamples
         //ExFor:ChartSeriesCollection.Add(String,Double[],Double[])
         //ExFor:ChartSeriesCollection.Add(String,Double[],Double[],Double[])
         //ExFor:ChartSeriesCollection.Add(String,String[],Double[])
-        //ExSummary:Shows how to pick an appropriate graph type for a chart series.
+        //ExSummary:Shows how to create an appropriate type of chart series for a graph type.
         [Test] //ExSkip
         public void ChartSeriesCollection()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            // There are 4 ways of populating a chart's series collection
-            // 1: Each series has a string array of categories, each with a corresponding data value
-            // Some of the other possible applications are bar, column, line and surface charts
+            // There are several ways of populating a chart's series collection, with each being suitable to a specific type of chart.
+            // 1 -  Column chart with columns grouped and banded along the X-axis by category.
             Chart chart = AppendChart(builder, ChartType.Column, 300, 300);
 
-            // Create and name 3 categories with a string array
             string[] categories = { "Category 1", "Category 2", "Category 3" };
 
-            // Create 2 series of data, each with one point for every category
-            // This will generate a column graph with 3 clusters of 2 bars
+            // Insert two series of decimal values containing a value for each respective category.
+            // This column chart will have three groups, each with two columns.
             chart.Series.Add("Series 1", categories, new [] { 76.6, 82.1, 91.6 });
             chart.Series.Add("Series 2", categories, new [] { 64.2, 79.5, 94.0 });
 
-            // Categories are distributed along the X-axis while values are distributed along the Y-axis
+            // Categories are distributed along the X-axis, and values are distributed along the Y-axis.
             Assert.AreEqual(ChartAxisType.Category, chart.AxisX.Type);
             Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
 
-            // 2: Each series will have a collection of dates with a corresponding value for each date
-            // Area, radar and stock charts are some of the appropriate chart types for this
+            // 2 -  Area chart with dates distributed along the X-axis.
             chart = AppendChart(builder, ChartType.Area, 300, 300);
 
-            // Create a collection of dates to serve as categories
             DateTime[] dates = { new DateTime(2014, 3, 31),
                 new DateTime(2017, 1, 23),
                 new DateTime(2017, 6, 18),
@@ -798,41 +795,53 @@ namespace ApiExamples
                 new DateTime(2020, 9, 7)
             };
 
-            // Add one series with one point for each date
-            // Our sporadic dates will be distributed along the X-axis in a linear fashion 
+            // Insert a series with a decimal value for each respective date.
+            // The dates will be distributed along a linear X-axis,
+            // and the values added to this series will create data points.
             chart.Series.Add("Series 1", dates, new [] { 15.8, 21.5, 22.9, 28.7, 33.1 });
 
-            // 3: Each series will take two data arrays
-            // Appropriate for scatter plots
+            Assert.AreEqual(ChartAxisType.Category, chart.AxisX.Type);
+            Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
+
+            // 3 -  2D scatter plot.
             chart = AppendChart(builder, ChartType.Scatter, 300, 300);
 
-            // In each series, the first array contains the X-coordinates and the second contains respective Y-coordinates of points
-            chart.Series.Add("Series 1", new[] { 3.1, 3.5, 6.3, 4.1, 2.2, 8.3, 1.2, 3.6 }, new[] { 3.1, 6.3, 4.6, 0.9, 8.5, 4.2, 2.3, 9.9 });
-            chart.Series.Add("Series 2", new[] { 2.6, 7.3, 4.5, 6.6, 2.1, 9.3, 0.7, 3.3 }, new[] { 7.1, 6.6, 3.5, 7.8, 7.7, 9.5, 1.3, 4.6 });
+            // Each series will need two decimal arrays of equal length.
+            // The first array contains X-values, and the second contains corresponding Y-values
+            // of points to be be plotted on the graph.
+            chart.Series.Add("Series 1", 
+                new[] { 3.1, 3.5, 6.3, 4.1, 2.2, 8.3, 1.2, 3.6 }, 
+                new[] { 3.1, 6.3, 4.6, 0.9, 8.5, 4.2, 2.3, 9.9 });
+            chart.Series.Add("Series 2", 
+                new[] { 2.6, 7.3, 4.5, 6.6, 2.1, 9.3, 0.7, 3.3 }, 
+                new[] { 7.1, 6.6, 3.5, 7.8, 7.7, 9.5, 1.3, 4.6 });
 
-            // Both axes are value axes in this case
             Assert.AreEqual(ChartAxisType.Value, chart.AxisX.Type);
             Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
 
-            // 4: Each series will be built from three data arrays, used for bubble charts
+            // 4 -  Bubble chart.
             chart = AppendChart(builder, ChartType.Bubble, 300, 300);
 
-            // The first two arrays contain X/Y coordinates like above and the third determines the thickness of each point
-            chart.Series.Add("Series 1", new [] { 1.1, 5.0, 9.8 }, new [] { 1.2, 4.9, 9.9 }, new [] { 2.0, 4.0, 8.0 });
+            // Each series will need three decimal arrays of equal length.
+            // The first array contains X-values, the second contains corresponding Y-values,
+            // and the third contains diameters of points to be plotted on the graph.
+            chart.Series.Add("Series 1", 
+                new [] { 1.1, 5.0, 9.8 }, 
+                new [] { 1.2, 4.9, 9.9 }, 
+                new [] { 2.0, 4.0, 8.0 });
 
             doc.Save(ArtifactsDir + "Charts.ChartSeriesCollection.docx");
         }
         
         /// <summary>
-        /// Get the DocumentBuilder to insert a chart of a specified ChartType, width and height and clean out its default data
+        /// Insert a chart using a document builder of a specified ChartType, width and height, and remove its demo data.
         /// </summary>
         private static Chart AppendChart(DocumentBuilder builder, ChartType chartType, double width, double height)
         {
             Shape chartShape = builder.InsertChart(chartType, width, height);
             Chart chart = chartShape.Chart;
             chart.Series.Clear();
-
-            Assert.AreEqual(0, chart.Series.Count);
+            Assert.AreEqual(0, chart.Series.Count); //ExSkip
 
             return chart;
         }
@@ -848,43 +857,48 @@ namespace ApiExamples
             //ExFor:ChartSeriesCollection.GetEnumerator
             //ExFor:ChartSeriesCollection.Item(Int32)
             //ExFor:ChartSeriesCollection.RemoveAt(Int32)
-            //ExSummary:Shows how to work with a chart's data collection.
+            //ExSummary:Shows how to add and remove series data in a chart.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert a bar chart
             Shape chartShape = builder.InsertChart(ChartType.Column, 400, 300);
             Chart chart = chartShape.Chart;
 
-            // All charts come with demo data
-            // This column chart currently has 3 series with 4 categories, which means 4 clusters, 3 columns in each
+            // This column chart currently contains three series of demo data.
+            // Each series has four decimal values; one for each of the four categories.
+            // This data will be represented by four clusters of three columns.
             ChartSeriesCollection chartData = chart.Series;
             Assert.AreEqual(3, chartData.Count); //ExSkip
 
-            // Iterate through the series with an enumerator and print their names
+            // Print the name of every series in the chart.
             using (IEnumerator<ChartSeries> enumerator = chart.Series.GetEnumerator())
             {
-                // And use it to go over all the data labels in one series and change their separator
                 while (enumerator.MoveNext())
                 {
                     Console.WriteLine(enumerator.Current.Name);
                 }
             }
 
-            // We can add new data by adding a new series to the collection, with categories and data
-            // We will match the existing category/series names in the demo data and add a 4th column to each column cluster
+            // These are the names of the categories in the chart.
             string[] categories = { "Category 1", "Category 2", "Category 3", "Category 4" };
+
+            // We can add a series with new values for existing categories. 
+            // This chart will now contain four clusters of four columns.
             chart.Series.Add("Series 4", categories, new[] { 4.4, 7.0, 3.5, 2.1 });
             Assert.AreEqual(4, chartData.Count); //ExSkip
             Assert.AreEqual("Series 4", chartData[3].Name); //ExSkip
-
-            // We can remove series by index
+            
+            // A chart series can also be removed by index, like this.
+            // This will remove one of the three demo series that came with the chart.
             chartData.RemoveAt(2);
+
+            Assert.False(chartData.Any(s => s.Name == "Series 3"));
             Assert.AreEqual(3, chartData.Count); //ExSkip
             Assert.AreEqual("Series 4", chartData[2].Name); //ExSkip
 
-            // We can also remove out all the series
-            // This leaves us with an empty graph and is a convenient way of wiping out demo data
+            // We can also clear all of the chart's data at once with this method.
+            // When creating a new chart, this is the way to wipe all the demo data
+            // before we can begin working on a clean chart.
             chartData.Clear();
             Assert.AreEqual(0, chartData.Count); //ExSkip
             //ExEnd
@@ -898,24 +912,28 @@ namespace ApiExamples
             //ExFor:AxisScaling
             //ExFor:AxisScaling.LogBase
             //ExFor:AxisScaling.Type
-            //ExSummary:Shows how to set up logarithmic axis scaling.
+            //ExSummary:Shows how to apply logarithmic scaling to a chart axis.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a scatter chart and clear its default data series
+            // Insert a scatter chart and clear its demo data.
             Shape chartShape = builder.InsertChart(ChartType.Scatter, 450, 300);
             Chart chart = chartShape.Chart;
             chart.Series.Clear();
 
-            // Insert a series with X/Y coordinates for 5 points
-            chart.Series.Add("Series 1", new[] { 1.0, 2.0, 3.0, 4.0, 5.0 }, new[] { 1.0, 20.0, 400.0, 8000.0, 160000.0 });
+            // Insert a series with X/Y coordinates for five points.
+            chart.Series.Add("Series 1", 
+                new[] { 1.0, 2.0, 3.0, 4.0, 5.0 }, 
+                new[] { 1.0, 20.0, 400.0, 8000.0, 160000.0 });
 
-            // The scaling of the X axis is linear by default, which means it will display "0, 1, 2, 3..."
-            // Linear axis scaling is suitable for our X-values, but our Y-values call for a logarithmic scale to be represented accurately on a graph 
-            // We can set the scaling of the Y-axis to Logarithmic with a base of 20
-            // The Y-axis will now display "1, 20, 400, 8000...", which is ideal for accurate representation of this set of Y-values
+            // The scaling of the X-axis is linear by default,
+            // displaying evenly incrementing values that cover our X-value range (0, 1, 2, 3...).
+            // A linear axis is not ideal for our Y-values,
+            // since the points with the smaller Y-values will be harder to read.
+            // A logarithmic scaling with a base of 20 (1, 20, 400, 8000...)
+            // will spread the plotted points, allowing us to read their values on the chart more easily.
             chart.AxisY.Scaling.Type = AxisScaleType.Logarithmic;
-            chart.AxisY.Scaling.LogBase = 20.0d;
+            chart.AxisY.Scaling.LogBase = 20;
 
             doc.Save(ArtifactsDir + "Charts.AxisScaling.docx");
             //ExEnd
@@ -940,32 +958,33 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a scatter chart, remove default data and populate it with data from a ChartSeries
+            // Insert a scatter chart, remove default data and populate it with data from a series.
             Shape chartShape = builder.InsertChart(ChartType.Scatter, 450, 300);
             Chart chart = chartShape.Chart;
             chart.Series.Clear();
-            chart.Series.Add("Series 1", new[] { 1.1, 5.4, 7.9, 3.5, 2.1, 9.7 }, new[] { 2.1, 0.3, 0.6, 3.3, 1.4, 1.9 });
+            chart.Series.Add("Series 1", 
+                new[] { 1.1, 5.4, 7.9, 3.5, 2.1, 9.7 }, 
+                new[] { 2.1, 0.3, 0.6, 3.3, 1.4, 1.9 });
 
-            // By default, the axis bounds are automatically defined so all the series data within the table is included
+            // By default, the axis bounds are automatically defined,
+            // so that both X and Y-axis ranges are just big enough to encompass every value of every series.
             Assert.True(chart.AxisX.Scaling.Minimum.IsAuto);
 
-            // If we wish to set our own scale bounds, we need to replace them with new ones
-            // Both the axis rulers will go from 0 to 10
+            // We can define our own axis bounds.
+            // In this case, we will make both the X and Y-axis rulers show a range of 0 to 10.
             chart.AxisX.Scaling.Minimum = new AxisBound(0);
             chart.AxisX.Scaling.Maximum = new AxisBound(10);
             chart.AxisY.Scaling.Minimum = new AxisBound(0);
             chart.AxisY.Scaling.Maximum = new AxisBound(10);
 
-            // These are custom and not defined automatically
             Assert.False(chart.AxisX.Scaling.Minimum.IsAuto);
             Assert.False(chart.AxisY.Scaling.Minimum.IsAuto);
 
-            // Create a line graph
+            // Create a line chart with a series requiring a range of dates on the X-axis, and decimal values for the Y-axis.
             chartShape = builder.InsertChart(ChartType.Line, 450, 300);
             chart = chartShape.Chart;
             chart.Series.Clear();
 
-            // Create a collection of dates, which will make up the X axis
             DateTime[] dates = { new DateTime(1973, 5, 11),
                 new DateTime(1981, 2, 4),
                 new DateTime(1985, 9, 23),
@@ -973,12 +992,11 @@ namespace ApiExamples
                 new DateTime(1994, 12, 15)
             };
 
-            // Assign a Y-value for each date 
             chart.Series.Add("Series 1", dates, new[] { 3.0, 4.7, 5.9, 7.1, 8.9 });
 
-            // These particular bounds will cut off categories from before 1980 and from 1990 and onwards
-            // This narrows the amount of categories and values in the viewport from 5 to 3
-            // Note that the graph still contains the out-of-range data because we can see the line tend towards it
+            // We can set axis bounds in the form of dates as well, limiting the chart to a time period. 
+            // Setting the range to 1980-1990 will cause the two of the series values
+            // that are outside of the range to be omitted from the graph.
             chart.AxisX.Scaling.Minimum = new AxisBound(new DateTime(1980, 1, 1));
             chart.AxisX.Scaling.Maximum = new AxisBound(new DateTime(1990, 1, 1));
 
