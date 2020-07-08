@@ -12,12 +12,14 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
         {
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_WorkingWithDocument();
+            
             MarkdownDocumentWithEmphases(dataDir);
             MarkdownDocumentWithHeadings(dataDir);
             MarkdownDocumentWithBlockQuotes(dataDir);
             MarkdownDocumentWithHorizontalRule(dataDir);
             ReadMarkdownDocument(dataDir);
             UseWarningSourceMarkdown(dataDir);
+            CreateMarkdownDocument(dataDir);
         }
 
         private static void MarkdownDocumentWithEmphases(string dataDir)
@@ -156,6 +158,76 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
                     Console.WriteLine(warningInfo.Description);
             }
             // ExEnd: UseWarningSourceMarkdown
+        }
+        
+        private static void CreateMarkdownDocument(string dataDir)
+        {
+            //ExStart:CreateMarkdownDocument
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Specify the "Heading 1" style for the paragraph.
+            builder.ParagraphFormat.StyleName = "Heading 1";
+            builder.Writeln("Heading 1");
+
+            // Reset styles from the previous paragraph to not combine styles between paragraphs.
+            builder.ParagraphFormat.StyleName = "Normal";
+
+            // Insert horizontal rule.
+            builder.InsertHorizontalRule();
+
+            // Specify the ordered list.
+            builder.InsertParagraph();
+            builder.ListFormat.ApplyNumberDefault();
+
+            // Specify the Italic emphasis for the text.
+            builder.Font.Italic = true;
+            builder.Writeln("Italic Text");
+            builder.Font.Italic = false;
+
+            // Specify the Bold emphasis for the text.
+            builder.Font.Bold = true;
+            builder.Writeln("Bold Text");
+            builder.Font.Bold = false;
+
+            // Specify the StrikeThrough emphasis for the text.
+            builder.Font.StrikeThrough = true;
+            builder.Writeln("StrikeThrough Text");
+            builder.Font.StrikeThrough = false;
+
+            // Stop paragraphs numbering.
+            builder.ListFormat.RemoveNumbers();
+
+            // Specify the "Quote" style for the paragraph.
+            builder.ParagraphFormat.StyleName = "Quote";
+            builder.Writeln("A Quote block");
+
+            // Specify nesting Quote.
+            Style nestedQuote = doc.Styles.Add(StyleType.Paragraph, "Quote1");
+            nestedQuote.BaseStyleName = "Quote";
+            builder.ParagraphFormat.StyleName = "Quote1";
+            builder.Writeln("A nested Quote block");
+
+            // Reset paragraph style to Normal to stop Quote blocks. 
+            builder.ParagraphFormat.StyleName = "Normal";
+
+            // Specify a Hyperlink for the desired text.
+            builder.Font.Bold = true;
+            // Note, the text of hyperlink can be emphasized.
+            builder.InsertHyperlink("Aspose", "https://www.aspose.com", false);
+            builder.Font.Bold = false;
+
+            // Insert a simple table.
+            builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Cell1");
+            builder.InsertCell();
+            builder.Write("Cell2");
+            builder.EndTable();
+
+            // Save your document as a Markdown file.
+            doc.Save(dataDir + "CreateMarkdownDocument.md");
+            //ExEnd:CreateMarkdownDocument
         }
     }
 }
