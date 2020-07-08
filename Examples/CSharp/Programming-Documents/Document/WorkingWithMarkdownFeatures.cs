@@ -17,6 +17,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             MarkdownDocumentWithBlockQuotes(dataDir);
             MarkdownDocumentWithHorizontalRule(dataDir);
             ReadMarkdownDocument(dataDir);
+            UseWarningSourceMarkdown(dataDir);
         }
 
         private static void MarkdownDocumentWithEmphases(string dataDir)
@@ -138,6 +139,23 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             doc.Save(dataDir + "QuotesModifiedExample.md");
             // ExEnd: ReadMarkdownDocument
             Console.WriteLine("\nRead Markdown Document!\nFile saved at " + dataDir);
+        }
+
+        private static void UseWarningSourceMarkdown(string dataDir)
+        {
+            // ExStart: UseWarningSourceMarkdown
+            Document doc = new Document(dataDir + "input.docx");
+
+            WarningInfoCollection warnings = new WarningInfoCollection();
+            doc.WarningCallback = warnings;
+            doc.Save(dataDir + "output.md");
+
+            foreach (WarningInfo warningInfo in warnings)
+            {
+                if (warningInfo.Source == WarningSource.Markdown)
+                    Console.WriteLine(warningInfo.Description);
+            }
+            // ExEnd: UseWarningSourceMarkdown
         }
     }
 }
