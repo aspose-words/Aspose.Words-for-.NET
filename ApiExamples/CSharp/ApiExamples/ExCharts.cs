@@ -770,8 +770,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            // There are several ways of populating a chart's series collection, with each being suitable to a specific type of chart.
-            // 1 -  Column chart with columns grouped and banded along the X-axis by category.
+            // There are several ways of populating a chart's series collection.
+            // Different series schemas are intended for different chart types.
+            // 1 -  Column chart with columns grouped and banded along the X-axis by category:
             Chart chart = AppendChart(builder, ChartType.Column, 300, 300);
 
             string[] categories = { "Category 1", "Category 2", "Category 3" };
@@ -785,7 +786,7 @@ namespace ApiExamples
             Assert.AreEqual(ChartAxisType.Category, chart.AxisX.Type);
             Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
 
-            // 2 -  Area chart with dates distributed along the X-axis.
+            // 2 -  Area chart with dates distributed along the X-axis:
             chart = AppendChart(builder, ChartType.Area, 300, 300);
 
             DateTime[] dates = { new DateTime(2014, 3, 31),
@@ -803,7 +804,7 @@ namespace ApiExamples
             Assert.AreEqual(ChartAxisType.Category, chart.AxisX.Type);
             Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
 
-            // 3 -  2D scatter plot.
+            // 3 -  2D scatter plot:
             chart = AppendChart(builder, ChartType.Scatter, 300, 300);
 
             // Each series will need two decimal arrays of equal length.
@@ -819,7 +820,7 @@ namespace ApiExamples
             Assert.AreEqual(ChartAxisType.Value, chart.AxisX.Type);
             Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
 
-            // 4 -  Bubble chart.
+            // 4 -  Bubble chart:
             chart = AppendChart(builder, ChartType.Bubble, 300, 300);
 
             // Each series will need three decimal arrays of equal length.

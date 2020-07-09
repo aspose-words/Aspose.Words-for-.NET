@@ -164,15 +164,15 @@ namespace ApiExamples
             doc.GlossaryDocument = glossaryDoc;
 
             // There are various ways of accessing building blocks.
-            // 1 -  Get the first/last building blocks in the collection.
+            // 1 -  Get the first/last building blocks in the collection:
             Assert.AreEqual("Block 1", glossaryDoc.FirstBuildingBlock.Name);
             Assert.AreEqual("Block 5", glossaryDoc.LastBuildingBlock.Name);
 
-            // 2 -  Get a building block by index.
+            // 2 -  Get a building block by index:
             Assert.AreEqual("Block 2", glossaryDoc.BuildingBlocks[1].Name);
             Assert.AreEqual("Block 3", glossaryDoc.BuildingBlocks.ToArray()[2].Name);
 
-            // 3 -  Get the first building block that matches a gallery, name and category.
+            // 3 -  Get the first building block that matches a gallery, name and category:
             Assert.AreEqual("Block 4", 
                 glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4").Name);
 

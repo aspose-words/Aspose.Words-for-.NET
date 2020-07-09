@@ -220,29 +220,29 @@ namespace ApiExamples
                 builder.InsertBreak(BreakType.ParagraphBreak);
             }
 
-            // This collection stored bookmarks.
+            // This collection stores bookmarks.
             BookmarkCollection bookmarks = doc.Range.Bookmarks;
 
             Assert.AreEqual(5, bookmarks.Count);
 
-            // There are several ways of removing bookmarks:
-            // 1 -  Calling the bookmark's Remove method.
+            // There are several ways of removing bookmarks.
+            // 1 -  Calling the bookmark's Remove method:
             bookmarks["MyBookmark_1"].Remove();
 
             Assert.False(bookmarks.Any(b => b.Name == "MyBookmark_1"));
 
-            // 2 -  Passing the bookmark to the collection's Remove method.
+            // 2 -  Passing the bookmark to the collection's Remove method:
             Bookmark bookmark = doc.Range.Bookmarks[0];
             doc.Range.Bookmarks.Remove(bookmark);
 
             Assert.False(bookmarks.Any(b => b.Name == "MyBookmark_2"));
             
-            // 3 -  Removing a bookmark from the collection by name.
+            // 3 -  Removing a bookmark from the collection by name:
             doc.Range.Bookmarks.Remove("MyBookmark_3");
 
             Assert.False(bookmarks.Any(b => b.Name == "MyBookmark_3"));
 
-            // 4 -  Removing a bookmark at an index in the bookmark collection.
+            // 4 -  Removing a bookmark at an index in the bookmark collection:
             doc.Range.Bookmarks.RemoveAt(0);
 
             Assert.False(bookmarks.Any(b => b.Name == "MyBookmark_4"));
