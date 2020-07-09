@@ -36,10 +36,11 @@ namespace ApiExamples
             Shape chartShape = builder.InsertChart(ChartType.Bar, 400, 300);
             Chart chart = chartShape.Chart;
 
-            // Set the title text, which appears at the top center of the chart.
-            // Then, set it to be shown, and also allow other graph elements to overlap it.
+            // Set the title text, which appears at the top center of the chart area.
             ChartTitle title = chart.Title;
             title.Text = "My Chart";
+
+            // Set the title to be visible, and give other chart elements room by allowing them to overlap the title.
             title.Show = true;
             title.Overlay = true;
 
@@ -69,17 +70,20 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a chart, clear its demo data, and set a name.
-            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+            // Add a line chart, clear its demo data, and then set a title.
+            Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
             chart.Series.Clear();
             chart.Title.Text = "Monthly sales report";
             
-            // Insert a custom chart series.
+            // Insert a custom chart series with months as categories for the X-axis,
+            // and respective decimal amounts for the Y-axis.
             ChartSeries series = chart.Series.Add("Revenue", 
-                new[] { "January", "February", "March" }, new[] { 25.611d, 21.439d, 33.750d });
+                new[] { "January", "February", "March" }, 
+                new[] { 25.611d, 21.439d, 33.750d });
 
-            // Enable data labels and set a custom number format with which to display decimal series values.
+            // Enable data labels, and then apply a custom number format for values displayed in the data labels.
+            // This format will treat displayed decimal values as millions of US Dollars.
             series.HasDataLabels = true;
             ChartDataLabelCollection dataLabels = series.DataLabels;
             dataLabels.ShowValue = true;
@@ -103,7 +107,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Add chart with default data
-            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+            Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
 
             ChartSeriesCollection seriesColl = chart.Series;
@@ -132,7 +136,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Add chart with default data
-            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+            Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
 
             ChartSeriesCollection seriesColl = chart.Series;
@@ -176,10 +180,12 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a column chart, clear the demo data, and then add a custom data series.
-            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            // Insert a column chart, and clear its demo data.
+            Shape shape = builder.InsertChart(ChartType.Column, 500, 300);
             Chart chart = shape.Chart;
             chart.Series.Clear();
+
+            // Insert a chart series with categories for the X-axis and respective numeric values for the Y-axis.
             chart.Series.Add("Aspose Test Series",
                 new[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 640, 320, 280, 120, 150 });
@@ -258,11 +264,12 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a line chart, clear its demo data,
-            // and then add a custom series containing date/time values for the X-axis, and decimal values for the Y-axis.
-            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+            // Insert a line chart, and clear its demo data.
+            Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
             chart.Series.Clear();
+
+            // Add a custom series containing date/time values for the X-axis, and respective decimal values for the Y-axis.
             chart.Series.Add("Aspose Test Series",
                 new[]
                 {
@@ -324,15 +331,17 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a line chart, clear its demo data, and insert a custom series with decimal values. 
-            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+            // Insert a line chart, and clear its demo data. 
+            Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
             chart.Series.Clear();
-            chart.Series.Add("AW Series 1",
-                new string[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" },
-                new double[] { 1.2, 0.3, 2.1, 2.9, 4.2 });
 
-            // We can hide chart axes to simplify the appearance of our charts. 
+            // Add a custom series with categories for the X-axis, and respective decimal values for the Y-axis.
+            chart.Series.Add("AW Series 1",
+                new[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" },
+                new[] { 1.2, 0.3, 2.1, 2.9, 4.2 });
+
+            // Hide the chart axes to simplify the appearance of the chart. 
             chart.AxisX.Hidden = true;
             chart.AxisY.Hidden = true;
 
@@ -358,15 +367,18 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a column chart, clear its demo data, and insert a custom series with large decimal values. 
-            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            // Insert a column chart, and clear its demo data. 
+            Shape shape = builder.InsertChart(ChartType.Column, 500, 300);
             Chart chart = shape.Chart;
             chart.Series.Clear();
-            chart.Series.Add("Aspose Test Series",
-                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
-                new double[] { 1900000.0d, 850000.0d, 2100000.0d, 600000.0d, 1500000.0d });
 
-            // Set number format to not group digits with commas. 
+            // Add a custom series to the chart with categories for the X-axis,
+            // and large respective numeric values for the Y-axis. 
+            chart.Series.Add("Aspose Test Series",
+                new [] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
+
+            // Set the number format of the Y-axis tick labels to not group digits with commas. 
             chart.AxisY.NumberFormat.FormatCode = "#,##0";
 
             // This flag can override the above value and draw the number format from the source cell.
@@ -392,7 +404,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert chart
-            Shape shape = builder.InsertChart(chartType, 432, 252);
+            Shape shape = builder.InsertChart(chartType, 500, 300);
             Chart chart = shape.Chart;
 
             // Clear demo data
@@ -413,7 +425,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert chart
-            Shape shape = builder.InsertChart(ChartType.Surface3D, 432, 252);
+            Shape shape = builder.InsertChart(ChartType.Surface3D, 500, 300);
             Chart chart = shape.Chart;
 
             // Clear demo data
@@ -447,24 +459,23 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a bubble chart, clear its demo data,
-            // and insert a custom series for the X/Y coordinates and thickness of each of the bubbles. 
-            Chart chart = builder.InsertChart(ChartType.Bubble, 432, 252).Chart;
+            // Insert a bubble chart, and clear its demo data.
+            Chart chart = builder.InsertChart(ChartType.Bubble, 500, 300).Chart;
             chart.Series.Clear();
-            ChartSeries series = chart.Series.Add("Aspose Test Series",
-                new[] { 2.9, 3.5, 1.1, 4, 4 },
-                new[] { 1.9, 8.5, 2.1, 6, 1.5 },
-                new[] { 9, 4.5, 2.5, 8, 5 });
 
-            // Enable data labels and modify their appearance.
+            // Add a custom series with X/Y coordinates and diameter of each of the bubbles. 
+            ChartSeries series = chart.Series.Add("Aspose Test Series",
+                new[] { 2.9, 3.5, 1.1, 4.0, 4.0 },
+                new[] { 1.9, 8.5, 2.1, 6.0, 1.5 },
+                new[] { 9.0, 4.5, 2.5, 8.0, 5.0 });
+
+            // Enable data labels, and then modify their appearance.
             series.HasDataLabels = true;
             ChartDataLabelCollection dataLabels = series.DataLabels;
             dataLabels.ShowBubbleSize = true;
             dataLabels.ShowCategoryName = true;
             dataLabels.ShowSeriesName = true;
             dataLabels.Separator = " & ";
-
-            builder.InsertBreak(BreakType.PageBreak);
 
             doc.Save(ArtifactsDir + "Charts.DataLabelsBubbleChart.docx");
             //ExEnd
@@ -491,14 +502,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a bubble chart, clear its demo data, and insert a custom series for fractions of a pie chart.
-            Chart chart = builder.InsertChart(ChartType.Pie, 432, 252).Chart;
+            // Insert a bubble chart, and clear its demo data.
+            Chart chart = builder.InsertChart(ChartType.Pie, 500, 300).Chart;
             chart.Series.Clear();
-            ChartSeries series = chart.Series.Add("Aspose Test Series",
-                new string[] { "Word", "PDF", "Excel" },
-                new double[] { 2.7, 3.2, 0.8 });
 
-            // Enable data labels and modify their appearance.
+            // Insert a custom chart series with a category name for each of the sectors, and their frequency table.
+            ChartSeries series = chart.Series.Add("Aspose Test Series",
+                new[] { "Word", "PDF", "Excel" },
+                new[] { 2.7, 3.2, 0.8 });
+
+            // Enable data labels that will display both percentage and frequency of each sector, and modify their appearance.
             series.HasDataLabels = true;
             ChartDataLabelCollection dataLabels = series.DataLabels;
             dataLabels.ShowLeaderLines = true;
@@ -558,9 +571,11 @@ namespace ApiExamples
 
             Assert.AreEqual(3, chart.Series.Count);
             Assert.AreEqual("Series 1", chart.Series[0].Name);
+            Assert.AreEqual("Series 2", chart.Series[1].Name);
+            Assert.AreEqual("Series 3", chart.Series[2].Name);
 
             // Apply data labels to every series in the chart.
-            // These labels will display the value of each point of a series in the graph.
+            // These labels will appear next to each data point in the graph and display its value.
             foreach (ChartSeries series in chart.Series)
             {
                 ApplyDataLabels(series, 4, "000.0", ", ");
@@ -642,11 +657,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a line chart, which will already contain demo data.
+            // Insert a line chart, and verify its demo data.
             Shape shape = builder.InsertChart(ChartType.Line, 500, 350);
             Chart chart = shape.Chart;
 
-            // Set data points along lines to appear in the form of diamond shapes.
+            Assert.AreEqual(3, chart.Series.Count);
+            Assert.AreEqual("Series 1", chart.Series[0].Name);
+            Assert.AreEqual("Series 2", chart.Series[1].Name);
+            Assert.AreEqual("Series 3", chart.Series[2].Name);
+
+            // Emphasize the chart's data points by making them appear as diamond shapes.
             foreach (ChartSeries series in chart.Series) 
                 ApplyDataPoints(series, 4, MarkerSymbol.Diamond, 15);
 
@@ -696,9 +716,12 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a pie chart which will contain demo data.
+            // Insert a pie chart, and verify its demo data.
             Shape shape = builder.InsertChart(ChartType.Pie, 500, 350);
             Chart chart = shape.Chart;
+
+            Assert.AreEqual(1, chart.Series.Count);
+            Assert.AreEqual("Sales", chart.Series[0].Name);
 
             // "Slices" of a pie chart may be moved away from the center by a distance via the respective data point's Explosion attribute.
             // Add a data point to the first portion of the pie chart and move it away from the center by 10 points. 
@@ -729,13 +752,15 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a 3D bubble chart, which will come with demo data by default.
+            // Insert a 3D bubble chart, and verify its demo data.
             Shape shape = builder.InsertChart(ChartType.Bubble3D, 500, 350);
             Chart chart = shape.Chart;
 
+            Assert.AreEqual(1, chart.Series.Count);
+            Assert.AreEqual("Y-Values", chart.Series[0].Name);
             Assert.True(chart.Series[0].Bubble3D);
 
-            // Apply a data label to each bubble that displays its size.
+            // Apply a data label to each bubble that displays its diameter.
             for (int i = 0; i < 3; i++)
             {
                 chart.Series[0].HasDataLabels = true;
@@ -773,7 +798,7 @@ namespace ApiExamples
             // There are several ways of populating a chart's series collection.
             // Different series schemas are intended for different chart types.
             // 1 -  Column chart with columns grouped and banded along the X-axis by category:
-            Chart chart = AppendChart(builder, ChartType.Column, 300, 300);
+            Chart chart = AppendChart(builder, ChartType.Column, 500, 300);
 
             string[] categories = { "Category 1", "Category 2", "Category 3" };
 
@@ -787,7 +812,7 @@ namespace ApiExamples
             Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
 
             // 2 -  Area chart with dates distributed along the X-axis:
-            chart = AppendChart(builder, ChartType.Area, 300, 300);
+            chart = AppendChart(builder, ChartType.Area, 500, 300);
 
             DateTime[] dates = { new DateTime(2014, 3, 31),
                 new DateTime(2017, 1, 23),
@@ -805,7 +830,7 @@ namespace ApiExamples
             Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
 
             // 3 -  2D scatter plot:
-            chart = AppendChart(builder, ChartType.Scatter, 300, 300);
+            chart = AppendChart(builder, ChartType.Scatter, 500, 300);
 
             // Each series will need two decimal arrays of equal length.
             // The first array contains X-values, and the second contains corresponding Y-values
@@ -821,7 +846,7 @@ namespace ApiExamples
             Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
 
             // 4 -  Bubble chart:
-            chart = AppendChart(builder, ChartType.Bubble, 300, 300);
+            chart = AppendChart(builder, ChartType.Bubble, 500, 300);
 
             // Each series will need three decimal arrays of equal length.
             // The first array contains X-values, the second contains corresponding Y-values,
@@ -862,10 +887,10 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert a column chart that will contain three series of demo data by default.
             Shape chartShape = builder.InsertChart(ChartType.Column, 400, 300);
             Chart chart = chartShape.Chart;
 
-            // This column chart currently contains three series of demo data.
             // Each series has four decimal values; one for each of the four categories.
             // This data will be represented by four clusters of three columns.
             ChartSeriesCollection chartData = chart.Series;
@@ -917,7 +942,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a scatter chart and clear its demo data.
+            // Insert a scatter chart, and clear its demo data.
             Shape chartShape = builder.InsertChart(ChartType.Scatter, 450, 300);
             Chart chart = chartShape.Chart;
             chart.Series.Clear();
@@ -959,10 +984,13 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a scatter chart, remove default data and populate it with data from a series.
+            // Insert a scatter chart, and remove demo data.
             Shape chartShape = builder.InsertChart(ChartType.Scatter, 450, 300);
             Chart chart = chartShape.Chart;
             chart.Series.Clear();
+
+            // Add a series with an array of X-values,
+            // and an array of corresponding Y-values for points in the scatter chart.
             chart.Series.Add("Series 1", 
                 new[] { 1.1, 5.4, 7.9, 3.5, 2.1, 9.7 }, 
                 new[] { 2.1, 0.3, 0.6, 3.3, 1.4, 1.9 });
@@ -1037,12 +1065,21 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a line chart, and move its legend to the top right corner. 
+            // Insert a line chart, and verify its demo data. 
             Shape shape = builder.InsertChart(ChartType.Line, 450, 300);
-            ChartLegend legend = shape.Chart.Legend;
+            Chart chart = shape.Chart;
+
+            Assert.AreEqual(3, chart.Series.Count);
+            Assert.AreEqual("Series 1", chart.Series[0].Name);
+            Assert.AreEqual("Series 2", chart.Series[1].Name);
+            Assert.AreEqual("Series 3", chart.Series[2].Name);
+
+            // Move the chart's legend to the top right corner.
+            ChartLegend legend = chart.Legend;
             legend.Position = LegendPosition.TopRight;
 
-            // Give other chart elements such as the graph more room by allowing them to overlap the legend.
+            // Give other chart elements, such as the graph,
+            // more room by allowing them to overlap the legend.
             legend.Overlay = true;
 
             doc.Save(ArtifactsDir + "Charts.ChartLegend.docx");
@@ -1066,9 +1103,14 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a column chart, which contains demo data.
+            // Insert a column chart, and verify its demo data.
             Shape shape = builder.InsertChart(ChartType.Column, 450, 250);
             Chart chart = shape.Chart;
+
+            Assert.AreEqual(3, chart.Series.Count);
+            Assert.AreEqual("Series 1", chart.Series[0].Name);
+            Assert.AreEqual("Series 2", chart.Series[1].Name);
+            Assert.AreEqual("Series 3", chart.Series[2].Name);
 
             // For column charts, the Y-axis crosses at zero by default,
             // which means that columns for all values below zero point down to represent negative values.
@@ -1108,9 +1150,12 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a scatter chart, which contains demo data.
+            // Insert a scatter chart, and verify its demo data.
             Shape shape = builder.InsertChart(ChartType.Scatter, 450, 250);
             Chart chart = shape.Chart;
+
+            Assert.AreEqual(1, chart.Series.Count);
+            Assert.AreEqual("Y-Values", chart.Series[0].Name);
 
             // Set the minor tick marks of the Y-axis to point away from the plot area,
             // and the major tick marks to cross the axis.
