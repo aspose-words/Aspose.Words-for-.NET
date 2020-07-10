@@ -20,19 +20,25 @@ namespace ApiExamples
             //ExStart
             //ExFor:ControlChar
             //ExFor:ControlChar.Cr
+            //ExFor:Node.GetText
             //ExSummary:Shows how to use control characters.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert paragraphs with text with DocumentBuilder
+            // Insert paragraphs with text with DocumentBuilder.
             builder.Writeln("Hello world!");
             builder.Writeln("Hello again!");
 
-            // The entire document, when in string form, will display some structural features such as breaks with control characters
-            Assert.AreEqual($"Hello world!{ControlChar.Cr}Hello again!{ControlChar.Cr}{ControlChar.PageBreak}", doc.GetText());
+            // Converting the document to text form reveals that control characters
+            // represent some of the document's structural elements, such as page breaks.
+            Assert.AreEqual($"Hello world!{ControlChar.Cr}" +
+                            $"Hello again!{ControlChar.Cr}" +
+                            ControlChar.PageBreak, doc.GetText());
 
-            // Some of them can be trimmed out
-            Assert.AreEqual($"Hello world!{ControlChar.Cr}Hello again!", doc.GetText().Trim());
+            // When converting a document to string form,
+            // we can omit some of the control characters with the Trim method.
+            Assert.AreEqual($"Hello world!{ControlChar.Cr}" +
+                            "Hello again!", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -65,56 +71,57 @@ namespace ApiExamples
             //ExFor:ControlChar.ParagraphBreakChar
             //ExFor:ControlChar.SectionBreakChar
             //ExFor:ControlChar.SpaceChar
-            //ExSummary:Shows how to use various control characters.
+            //ExSummary:Shows how to add various control characters to a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a regular space
+            // Add a regular space.
             builder.Write("Before space." + ControlChar.SpaceChar + "After space.");
 
-            // Add a NBSP, or non-breaking space
+            // Add an NBSP, which is a non-breaking space.
             // Unlike the regular space, this space can't have an automatic line break at its position 
             builder.Write("Before space." + ControlChar.NonBreakingSpace + "After space.");
 
-            // Add a tab character
+            // Add a tab character.
             builder.Write("Before tab." + ControlChar.Tab + "After tab.");
 
-            // Add a line break
+            // Add a line break.
             builder.Write("Before line break." + ControlChar.LineBreak + "After line break.");
 
-            // This adds a new line and starts a new paragraph
-            // Same value as ControlChar.Lf
+            // This adds a new line and starts a new paragraph.
             Assert.AreEqual(1, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
             builder.Write("Before line feed." + ControlChar.LineFeed + "After line feed.");
             Assert.AreEqual(2, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
 
-            // Carriage returns and line feeds can be represented together by one character
-            Assert.AreEqual(ControlChar.CrLf, ControlChar.Cr + ControlChar.Lf);
-
-            // The line feed character has two versions
+            // The line feed character has two versions.
             Assert.AreEqual(ControlChar.LineFeed, ControlChar.Lf);
 
-            // Add a paragraph break, also adding a new paragraph
+            // Carriage returns and line feeds can be represented together by one character.
+            Assert.AreEqual(ControlChar.CrLf, ControlChar.Cr + ControlChar.Lf);
+
+            // Add a paragraph break, which will start a new paragraph.
             builder.Write("Before paragraph break." + ControlChar.ParagraphBreak + "After paragraph break.");
             Assert.AreEqual(3, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
 
-            // Add a section break. Note that this does not make a new section or paragraph
+            // Add a section break. This does not make a new section or paragraph.
             Assert.AreEqual(1, doc.Sections.Count);
             builder.Write("Before section break." + ControlChar.SectionBreak + "After section break.");
             Assert.AreEqual(1, doc.Sections.Count);
 
-            // A page break is the same value as a section break
+            // Add a page break.
             builder.Write("Before page break." + ControlChar.PageBreak + "After page break.");
 
-            // We can add a new section like this
+            // A page break is the same value as a section break.
+            Assert.AreEqual(ControlChar.PageBreak, ControlChar.SectionBreak);
+
+            // Insert a new section, and then set its column count to two.
             doc.AppendChild(new Section(doc));
             builder.MoveToSection(1);
-
-            // If you have a section with more than one column, you can use a column break to make following text start on a new column
             builder.CurrentSection.PageSetup.TextColumns.SetCount(2);
+
+            // We can use a control character to mark the point where text moves to the next column.
             builder.Write("Text at end of column 1." + ControlChar.ColumnBreak + "Text at beginning of column 2.");
 
-            // Save document to see the characters we added
             doc.Save(ArtifactsDir + "ControlChar.InsertControlChars.docx");
 
             // There are char and string counterparts for most characters
