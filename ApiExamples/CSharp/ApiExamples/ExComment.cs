@@ -23,7 +23,7 @@ namespace ApiExamples
             //ExFor:Comment
             //ExFor:Comment.SetText(String)
             //ExFor:Comment.AddReply(String, String, DateTime, String)
-            //ExSummary:Shows how to add a comment to a document, and reply to it.
+            //ExSummary:Shows how to add a comment to a document, and then reply to it.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -179,7 +179,7 @@ namespace ApiExamples
         //ExFor:CommentRangeStart.#ctor(DocumentBase,Int32)
         //ExFor:CommentRangeStart.Accept(DocumentVisitor)
         //ExFor:CommentRangeStart.Id
-        //ExSummary:Shows how to create comments with replies and get all interested info.
+        //ExSummary:Shows how print the contents of all comments and their comment ranges using a document visitor.
         [Test] //ExSkip
         public void CreateCommentsAndPrintAllInfo()
         {
