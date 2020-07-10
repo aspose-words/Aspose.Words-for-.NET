@@ -6,7 +6,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Aspose.Words;
@@ -185,105 +184,61 @@ namespace ApiExamples
         public void CreateCommentsAndPrintAllInfo()
         {
             Document doc = new Document();
-            doc.RemoveAllChildren();
-
-            Section sect = (Section)doc.AppendChild(new Section(doc));
-            Body body = (Body)sect.AppendChild(new Body(doc));
-
-            // Create a commented text with several comment replies
-            for (int i = 0; i <= 10; i++)
-            {
-                Comment newComment = CreateComment(doc, "VDeryushev", "VD", DateTime.Now, "My test comment " + i);
-
-                Paragraph para = (Paragraph)body.AppendChild(new Paragraph(doc));
-                para.AppendChild(new CommentRangeStart(doc, newComment.Id));
-                para.AppendChild(new Run(doc, "Commented text " + i));
-                para.AppendChild(new CommentRangeEnd(doc, newComment.Id));
-                para.AppendChild(newComment);
-                
-                for (int y = 0; y <= 2; y++)
-                {
-                    newComment.AddReply("John Doe", "JD", DateTime.Now, "New reply " + y);
-                }
-            }
-
-            // Look at information of our comments
-            PrintAllCommentInfo(ExtractComments(doc));
-        }
-
-        /// <summary>
-        /// Create a new comment
-        /// </summary>
-        public static Comment CreateComment(Document doc, string author, string initials, DateTime dateTime, string text)
-        {
+            
+            // Create a new comment.
             Comment newComment = new Comment(doc)
             {
-                Author = author, Initial = initials, DateTime = dateTime
+                Author = "VDeryushev",
+                Initial = "VD",
+                DateTime = DateTime.Now
             };
-            newComment.SetText(text);
 
-            return newComment;
-        }
+            newComment.SetText("Comment regarding text.");
 
-        /// <summary>
-        /// Extract comments from the document without replies.
-        /// </summary>
-        public static List<Comment> ExtractComments(Document doc)
-        {
-            List<Comment> collectedComments = new List<Comment>();
+            // Add text to the document, warp it in a comment range, and then add our comment.
+            Paragraph para = doc.FirstSection.Body.FirstParagraph;
+            para.AppendChild(new CommentRangeStart(doc, newComment.Id));
+            para.AppendChild(new Run(doc, "Commented text."));
+            para.AppendChild(new CommentRangeEnd(doc, newComment.Id));
+            para.AppendChild(newComment); 
             
-            NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
+            // Add two replies to the comment.
+            newComment.AddReply("John Doe", "JD", DateTime.Now, "New reply.");
+            newComment.AddReply("John Doe", "JD", DateTime.Now, "Another reply.");
 
-            foreach (Comment comment in comments)
-            {
-                // All replies have ancestor, so we will add this check
-                if (comment.Ancestor == null)
-                {
-                    collectedComments.Add(comment);
-                }
-            }
-
-            return collectedComments;
+            PrintAllCommentInfo(doc.GetChildNodes(NodeType.Comment, true));
         }
-
+        
         /// <summary>
-        /// Use an iterator and a visitor to print info of every comment from within a document.
+        /// Iterates over every top-level comment and prints its comment range, contents, and replies.
         /// </summary>
-        private static void PrintAllCommentInfo(List<Comment> comments)
+        private static void PrintAllCommentInfo(NodeCollection comments)
         {
-            // Create an object that inherits from the DocumentVisitor class
             CommentInfoPrinter commentVisitor = new CommentInfoPrinter();
 
-            // Get the enumerator from the document's comment collection and iterate over the comments
-            using (IEnumerator<Comment> enumerator = comments.GetEnumerator())
+            // Iterate over all top level comments. Unlike reply-type comments, top-level comments have no ancestor.
+            foreach (Comment comment in comments.Where(c => ((Comment)c).Ancestor == null))
             {
-                while (enumerator.MoveNext())
-                {
-                    Comment currentComment = enumerator.Current;
+                // First, visit the start of the comment range.
+                CommentRangeStart commentRangeStart = (CommentRangeStart)comment.PreviousSibling.PreviousSibling.PreviousSibling;
+                commentRangeStart.Accept(commentVisitor);
 
-                    // Accept our DocumentVisitor it to print information about our comments
-                    if (currentComment != null)
-                    {
-                        // Get CommentRangeStart from our current comment and construct its information
-                        CommentRangeStart commentRangeStart = (CommentRangeStart)currentComment.PreviousSibling.PreviousSibling.PreviousSibling;
-                        commentRangeStart.Accept(commentVisitor);
+                // Then, visit the comment, and any replies that it may have.
+                comment.Accept(commentVisitor);
 
-                        // Construct current comment information
-                        currentComment.Accept(commentVisitor);
-                        
-                        // Get CommentRangeEnd from our current comment and construct its information
-                        CommentRangeEnd commentRangeEnd = (CommentRangeEnd)currentComment.PreviousSibling;
-                        commentRangeEnd.Accept(commentVisitor);
-                    }
-                }
+                foreach (Comment reply in comment.Replies)
+                    reply.Accept(commentVisitor);
 
-                // Output of all information received
+                // Finally, visit the end of the comment range, and then print the visitor's text contents.
+                CommentRangeEnd commentRangeEnd = (CommentRangeEnd)comment.PreviousSibling;
+                commentRangeEnd.Accept(commentVisitor);
+
                 Console.WriteLine(commentVisitor.GetText());
             }
         }
 
         /// <summary>
-        /// This Visitor implementation prints information and contents of all comments and comment ranges encountered in the document.
+        /// Prints information and contents of all comments and comment ranges encountered in the document.
         /// </summary>
         public class CommentInfoPrinter : DocumentVisitor
         {
@@ -344,6 +299,7 @@ namespace ApiExamples
                     $"[Comment start] For comment range ID {comment.Id}, By {comment.Author} on {comment.DateTime}");
                 mDocTraversalDepth++;
                 mVisitorIsInsideComment = true;
+
 
                 return VisitorAction.Continue;
             }
