@@ -16,40 +16,60 @@ namespace ApiExamples
     public class ExDigitalSignatureUtil : ApiExampleBase
     {
         [Test]
-        public void LoadAndRemove()
+        public void Load()
         {
             //ExStart
             //ExFor:DigitalSignatureUtil
             //ExFor:DigitalSignatureUtil.LoadSignatures(String)
             //ExFor:DigitalSignatureUtil.LoadSignatures(Stream)
-            //ExFor:DigitalSignatureUtil.RemoveAllSignatures(Stream, Stream)
-            //ExFor:DigitalSignatureUtil.RemoveAllSignatures(String, String)
-            //ExSummary:Shows how to load and remove digital signatures from a digitally signed document.
-            // Load digital signatures via filename string to verify that the document is signed
-            DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(MyDir + "Digitally signed.docx");
+            //ExSummary:Shows how to load signatures from a digitally signed document.
+            // There are two ways of loading a signed document's collection of digital signatures using the DigitalSignatureUtil class.
+            // 1 -  Load from a document from a local file system filename:
+            DigitalSignatureCollection digitalSignatures = 
+                DigitalSignatureUtil.LoadSignatures(MyDir + "Digitally signed.docx");
+
+            // If this collection is nonempty, then we can verify that the document is digitally signed.
             Assert.AreEqual(1, digitalSignatures.Count);
 
-            // Re-save the document to an output filename with all digital signatures removed
-            DigitalSignatureUtil.RemoveAllSignatures(MyDir + "Digitally signed.docx", ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx");
+            // 2 -  Load from a document from a FileStream.
+            using (Stream stream = new FileStream(MyDir + "Digitally signed.docx", FileMode.Open))
+            {
+                digitalSignatures = DigitalSignatureUtil.LoadSignatures(stream);
+                Assert.AreEqual(1, digitalSignatures.Count);
+            }
+            //ExEnd
+        }
 
-            // Remove all signatures from the document using stream parameters
+        [Test]
+        public void Remove()
+        {
+            //ExStart
+            //ExFor:DigitalSignatureUtil
+            //ExFor:DigitalSignatureUtil.LoadSignatures(String)
+            //ExFor:DigitalSignatureUtil.RemoveAllSignatures(Stream, Stream)
+            //ExFor:DigitalSignatureUtil.RemoveAllSignatures(String, String)
+            //ExSummary:Shows how to remove digital signatures from a digitally signed document.
+            // There are two ways of using the DigitalSignatureUtil class to remove digital signatures
+            // from a signed document by saving an unsigned copy of it somewhere else in the local file system.
+            // 1 -  Determine the locations of both the signed document, and the unsigned copy by filename strings:
+            DigitalSignatureUtil.RemoveAllSignatures(MyDir + "Digitally signed.docx",
+                ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx");
+
+            // 2 -  Determine the locations of both the signed document, and the unsigned copy by file streams:
             using (Stream streamIn = new FileStream(MyDir + "Digitally signed.docx", FileMode.Open))
             {
                 using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Create))
                 {
                     DigitalSignatureUtil.RemoveAllSignatures(streamIn, streamOut);
-                } 
+                }
             }
 
-            // We can also load a document's digital signatures via stream, which we will do to verify that all signatures have been removed
-            using (Stream stream = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Open))
-            {
-                digitalSignatures = DigitalSignatureUtil.LoadSignatures(stream);
-                Assert.AreEqual(0, digitalSignatures.Count);
-            }
+            // Verify that both our output documents have no digital signatures.
+            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx"), Is.Empty);
+            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx"), Is.Empty);
             //ExEnd
         }
-        
+
         [Test]
         [Description("WORDSNET-16868")]
         public void SignDocument()
@@ -60,12 +80,20 @@ namespace ApiExamples
             //ExFor:DigitalSignatureUtil.Sign(Stream, Stream, CertificateHolder, SignOptions)
             //ExFor:SignOptions.Comments
             //ExFor:SignOptions.SignTime
-            //ExSummary:Shows how to sign documents using certificate holder and sign options.
+            //ExSummary:Shows how to digitally sign documents.
+            // Create an X.509 certificate from an PKCS#12 store, which should contain a private key.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
-            SignOptions signOptions = new SignOptions { Comments = "My comment", SignTime = DateTime.Now };
+            // Create a comment and date which will be applied with our new digital signature.
+            SignOptions signOptions = new SignOptions
+            {
+                Comments = "My comment", 
+                SignTime = DateTime.Now
+            };
 
-            using (Stream streamIn = new FileStream(MyDir + "Digitally signed.docx", FileMode.Open))
+            // Take an unsigned document from the local file system via a file stream,
+            // then create a signed copy of it determined by the filename of the output file stream.
+            using (Stream streamIn = new FileStream(MyDir + "Document.docx", FileMode.Open))
             {
                 using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.SignDocument.docx", FileMode.OpenOrCreate))
                 {
@@ -86,6 +114,45 @@ namespace ApiExamples
                 Assert.AreEqual(signOptions.SignTime.ToString(), signature.SignTime.ToString());
                 Assert.AreEqual("My comment", signature.Comments);
             }
+        }
+
+        [Test]
+        [Description("WORDSNET-16868")]
+        public void DecryptionPassword()
+        {
+            //ExStart
+            //ExFor:CertificateHolder
+            //ExFor:SignOptions.DecryptionPassword
+            //ExFor:LoadOptions.Password
+            //ExSummary:Shows how to sign encrypted document file.
+            // Create an X.509 certificate from an PKCS#12 store, which should contain a private key.
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+
+            // Create a comment, date, and decryption password which will be applied with our new digital signature.
+            SignOptions signOptions = new SignOptions
+            {
+                Comments = "Comment",
+                SignTime = DateTime.Now,
+                DecryptionPassword = "docPassword"
+            };
+
+            // Set a local system filename for the unsigned input document, and an output filename for its new digitally signed copy.
+            string inputFileName = MyDir + "Encrypted.docx";
+            string outputFileName = ArtifactsDir + "DigitalSignatureUtil.DecryptionPassword.docx";
+
+            DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);
+            //ExEnd
+
+            // Open encrypted document from a file
+            LoadOptions loadOptions = new LoadOptions("docPassword");
+            Assert.AreEqual(signOptions.DecryptionPassword, loadOptions.Password);
+
+            // Check that encrypted document was successfully signed
+            Document signedDoc = new Document(outputFileName, loadOptions);
+            DigitalSignatureCollection signatures = signedDoc.DigitalSignatures;
+
+            Assert.AreEqual(1, signatures.Count);
+            Assert.True(signatures.IsValid);
         }
 
         [Test]
@@ -122,44 +189,6 @@ namespace ApiExamples
             Assert.That(
                 new TestDelegate(() => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions)),
                 Throws.TypeOf<IncorrectPasswordException>(), "The document password is incorrect.");
-        }
-
-        [Test]
-        [Description("WORDSNET-16868")]
-        public void DecryptionPassword()
-        {
-            //ExStart
-            //ExFor:CertificateHolder
-            //ExFor:SignOptions.DecryptionPassword
-            //ExFor:LoadOptions.Password
-            //ExSummary:Shows how to sign encrypted document file.
-            // Create certificate holder from a file
-            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
-
-            SignOptions signOptions = new SignOptions
-            {
-                Comments = "Comment",
-                SignTime = DateTime.Now,
-                DecryptionPassword = "docPassword"
-            };
-
-            // Digitally sign encrypted with "docPassword" document in the specified path
-            string inputFileName = MyDir + "Encrypted.docx";
-            string outputFileName = ArtifactsDir + "DigitalSignatureUtil.DecryptionPassword.docx";
-
-            DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);
-            //ExEnd
-
-            // Open encrypted document from a file
-            LoadOptions loadOptions = new LoadOptions("docPassword");
-            Assert.AreEqual(signOptions.DecryptionPassword,loadOptions.Password);
-
-            // Check that encrypted document was successfully signed
-            Document signedDoc = new Document(outputFileName, loadOptions);
-            DigitalSignatureCollection signatures = signedDoc.DigitalSignatures;
-
-            Assert.AreEqual(1, signatures.Count);
-            Assert.True(signatures.IsValid);
         }
 
         [Test]
