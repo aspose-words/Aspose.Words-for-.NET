@@ -26,29 +26,31 @@ namespace ApiExamples
             //ExFor:DocSaveOptions.Password
             //ExFor:DocSaveOptions.SaveFormat
             //ExFor:DocSaveOptions.SaveRoutingSlip
-            //ExSummary:Shows how to set save options for classic Microsoft Word document versions.
+            //ExSummary:Shows how to set save options for older Microsoft Word formats.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write("Hello world!");
 
-            // DocSaveOptions only applies to Doc and Dot save formats
             DocSaveOptions options = new DocSaveOptions(SaveFormat.Doc);
 
-            // Set a password with which the document will be encrypted, and which will be required to open it
+            // Set a password with which the document will be protected during loading by Microsoft Word or Aspose.Words.
+            // Note that the document is not in any way encrypted.
             options.Password = "MyPassword";
 
-            // If the document contains a routing slip, we can preserve it while saving by setting this flag to true
+            // If the document contains a routing slip, we can preserve it while saving by setting this flag to true.
             options.SaveRoutingSlip = true;
 
             doc.Save(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc", options);
-            //ExEnd
 
+            // In order to be able to load the document,
+            // we will need to apply the password we specified in the DocSaveOptions object in a LoadOptions object.
             Assert.Throws<IncorrectPasswordException>(() => doc = new Document(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc"));
 
             LoadOptions loadOptions = new LoadOptions("MyPassword");
             doc = new Document(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc", loadOptions);
 
             Assert.AreEqual("Hello world!", doc.GetText().Trim());
+            //ExEnd
         }
 
         [Test]
@@ -56,16 +58,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:SaveOptions.TempFolder
-            //ExSummary:Shows how to save a document using temporary files.
+            //ExSummary:Shows how to use the hard drive instead of memory when saving a document.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // We can use a SaveOptions object to set the saving method of a document from a MemoryStream to temporary files
-            // While saving, the files will briefly pop up in the folder we set as the TempFolder attribute below
-            // Doing this will free up space in the memory that the stream would usually occupy
+            // When we save a document, various elements are temporarily stored in memory as the save operation is taking place.
+            // We can use this option to use a temporary folder in the local file system instead,
+            // which will reduce our application's memory overhead.
             DocSaveOptions options = new DocSaveOptions();
             options.TempFolder = ArtifactsDir + "TempFiles";
 
-            // Ensure that the directory exists and save
+            // The specified temporary folder must exist in the local file system before the save operation.
             Directory.CreateDirectory(options.TempFolder);
 
             doc.Save(ArtifactsDir + "DocSaveOptions.TempFolder.doc", options);
@@ -77,12 +79,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocSaveOptions.SavePictureBullet
-            //ExSummary:Shows how to remove PictureBullet data from the document.
+            //ExSummary:Shows how to omit PictureBullet data from the document when saving.
             Document doc = new Document(MyDir + "Image bullet points.docx");
             Assert.NotNull(doc.Lists[0].ListLevels[0].ImageData); //ExSkip
 
-            // Word 97 cannot work correctly with PictureBullet data
-            // To remove PictureBullet data, set the option to "false"
+            // Some word processors, such as Microsoft Word 97, are incompatible with PictureBullet data.
+            // By setting a flag in the SaveOptions object,
+            // we can convert all image bullet points to ordinary bullet points while saving.
             DocSaveOptions saveOptions = new DocSaveOptions(SaveFormat.Doc);
             saveOptions.SavePictureBullet = false;
 
@@ -100,20 +103,26 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:SaveOptions.UpdateLastPrintedProperty
-            //ExSummary:Shows how to update BuiltInDocumentProperties.LastPrinted property before saving.
+            //ExSummary:Shows how to update a document's "Last printed" property when saving.
             Document doc = new Document();
 
-            // Aspose.Words update BuiltInDocumentProperties.LastPrinted property by default
+            // This flag determines whether the last printed date, which is stored in the document's built-in properties, is updated.
+            // If it is, then the date when the document was saved with this SaveOptions object is used as the print date.
             DocSaveOptions saveOptions = new DocSaveOptions();
             saveOptions.UpdateLastPrintedProperty = isUpdateLastPrintedProperty;
 
-            doc.Save(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.docx", saveOptions);
+            // In Microsoft Word 2003, this property can be found via File -> Properties -> Statistics -> Printed.
+            // It can also be displayed in the document's body by using a PRINTDATE field.
+            doc.Save(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.doc", saveOptions);
+
+            // Open the saved document, then verify the value of the property.
+            doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.doc");
+
+            if (isUpdateLastPrintedProperty)
+                Assert.AreEqual(DateTime.Today, doc.BuiltInDocumentProperties.LastPrinted.Date);
+            else
+                Assert.AreEqual(new DateTime(1, 1, 1), doc.BuiltInDocumentProperties.LastPrinted.Date);
             //ExEnd
-
-            doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.docx");
-
-            Assert.AreNotEqual(isUpdateLastPrintedProperty,
-                DateTime.Parse("1/1/0001 00:00:00") == doc.BuiltInDocumentProperties.LastPrinted.Date);
         }
     }
 }
