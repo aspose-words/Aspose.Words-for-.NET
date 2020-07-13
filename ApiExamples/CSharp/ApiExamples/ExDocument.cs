@@ -53,47 +53,46 @@ namespace ApiExamples
         [Test]
         public void LicenseFromFileNoPath()
         {
-            // This is where the test license is on my development machine.
-            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.NET.lic");
-
-            // Copy a license to the bin folder so the example can execute.
-            string dstFileName = Path.Combine(AssemblyDir, "Aspose.Words.NET.lic");
-            File.Copy(testLicenseFileName, dstFileName);
-
             //ExStart
             //ExFor:License
             //ExFor:License.#ctor
             //ExFor:License.SetLicense(String)
-            //ExSummary:Aspose.Words will attempt to find the license file in the embedded resources or in the assembly folders.
+            //ExSummary:Shows how initialize a license for Aspose.Words using a license file in the local file system.
+            // We can set the license for Aspose.Words
+            // by passing the full local file system filename of an existing and valid license file.
+            string licenseFileName = Path.Combine(LicenseDir, "Aspose.Words.NET.lic");
+
             License license = new License();
+            license.SetLicense(licenseFileName);
+
+            // Create a copy of our license file in the binaries folder of our application.
+            string licenseCopyFileName = Path.Combine(AssemblyDir, "Aspose.Words.NET.lic");
+            File.Copy(licenseFileName, licenseCopyFileName);
+
+            // If we pass the name of a file without a path,
+            // the SetLicense will search a number of local file system locations for this file.
+            // One of those locations will be the "bin" folder, where we copied the license file to.
             license.SetLicense("Aspose.Words.NET.lic");
             //ExEnd
 
-            // Cleanup by removing the license
             license.SetLicense("");
-            File.Delete(dstFileName);
+            File.Delete(licenseCopyFileName);
         }
 
         [Test]
         public void LicenseFromStream()
         {
-            // This is where the test license is on my development machine
-            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Words.NET.lic");
-
-            Stream myStream = File.OpenRead(testLicenseFileName);
-            try
+            //ExStart
+            //ExFor:License.SetLicense(Stream)
+            //ExSummary:Shows how to initialize a license for Aspose.Words from a stream.
+            // Create a stream for an Aspose.Words license file that exists on the local file system,
+            // then set the license using that stream.
+            using (Stream myStream = File.OpenRead(Path.Combine(LicenseDir, "Aspose.Words.NET.lic")))
             {
-                //ExStart
-                //ExFor:License.SetLicense(Stream)
-                //ExSummary:Shows how to initialize a license from a stream.
                 License license = new License();
                 license.SetLicense(myStream);
-                //ExEnd
             }
-            finally
-            {
-                myStream.Close();
-            }
+            //ExEnd
         }
 
         [Test, Category("IgnoreOnJenkins")]
@@ -101,20 +100,17 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:LayoutOptions.TextShaperFactory
-            //ExSummary:Shows how to support OpenType features using HarfBuzz text shaping engine.
-            // Open a document
+            //ExSummary:Shows how to support OpenType features using the HarfBuzz text shaping engine.
             Document doc = new Document(MyDir + "OpenType text shaping.docx");
 
-            // Please note that text shaping is only performed when exporting to PDF or XPS formats now
-
-            // Aspose.Words is capable of using text shaper objects provided externally
-            // A text shaper represents a font and computes shaping information for a text
-            // A document typically refers to multiple fonts thus a text shaper factory is necessary
-            // When text shaper factory is set, layout starts to use OpenType features
-            // An Instance property returns static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory
+            // Aspose.Words is capable of using externally provided text shaper objects,
+            // which represent fonts and compute shaping information for text.
+            // A text shaper factory is necessary for documents that use multiple fonts.
+            // When text shaper factory is set, the layout uses OpenType features.
+            // An Instance property returns a static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory.
             doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
 
-            // Render the document to PDF format
+            // Currently, text shaping is only performed when exporting to PDF or XPS formats.
             doc.Save(ArtifactsDir + "Document.OpenType.pdf");
             //ExEnd
         }
