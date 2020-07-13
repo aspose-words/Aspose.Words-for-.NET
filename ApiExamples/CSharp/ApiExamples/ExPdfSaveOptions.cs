@@ -1169,7 +1169,7 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
 
-            Assert.AreEqual(warningCallback.Count, 43);
+            Assert.AreEqual(48, warningCallback.Count);
         }
 
         public class RenderCallback : IWarningCallback

@@ -40,8 +40,6 @@ using SkiaSharp;
 #endif
 #if NET462 || MAC || JAVA
 using Aspose.Words.Loading;
-using Org.BouncyCastle.Pkcs;
-using System.Security;
 #endif
 
 namespace ApiExamples
@@ -49,27 +47,96 @@ namespace ApiExamples
     [TestFixture]
     public class ExDocument : ApiExampleBase
     {
-#if NET462 || NETCOREAPP2_1 || JAVA
-        [Test, Category("IgnoreOnJenkins")]
-        public void OpenType()
+        [Test]
+        public void Constructor()
         {
             //ExStart
-            //ExFor:LayoutOptions.TextShaperFactory
-            //ExSummary:Shows how to support OpenType features using the HarfBuzz text shaping engine.
-            Document doc = new Document(MyDir + "OpenType text shaping.docx");
+            //ExFor:Document.#ctor(Boolean)
+            //ExSummary:Shows how to create and load documents.
+            // There are two ways of creating a Document object using Aspose.Words.
+            // 1 -  Create a blank document.
+            Document doc = new Document();
 
-            // Aspose.Words is capable of using externally provided text shaper objects,
-            // which represent fonts and compute shaping information for text.
-            // A text shaper factory is necessary for documents that use multiple fonts.
-            // When text shaper factory is set, the layout uses OpenType features.
-            // An Instance property returns a static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory.
-            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
+            // New Document objects by default come with a section, body, and paragraph;
+            // the minimal set of nodes required to begin editing.
+            doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
 
-            // Currently, text shaping is only performed when exporting to PDF or XPS formats.
-            doc.Save(ArtifactsDir + "Document.OpenType.pdf");
+            // 2 -  Load a document that exists in the local file system.
+            doc = new Document(MyDir + "Document.docx");
+
+            // Loaded documents will have contents that we can access and edit.
+            Assert.AreEqual("Hello World!", doc.FirstSection.Body.FirstParagraph.GetText().Trim());
+
+            // Some operations that need to take place during loading, such as using a password to decrypt a document,
+            // can be done by passing a LoadOptions object when loading the document.
+            doc = new Document(MyDir + "Encrypted.docx", new LoadOptions("docPassword"));
+
+            Assert.AreEqual("Test encrypted document.", doc.FirstSection.Body.FirstParagraph.GetText().Trim());
             //ExEnd
         }
-#endif
+
+        [Test]
+        public void LoadFromStream()
+        {
+            //ExStart
+            //ExFor:Document.#ctor(Stream)
+            //ExSummary:Shows how to load a document using a stream.
+            using (Stream stream = File.OpenRead(MyDir + "Document.docx"))
+            {
+                // Load the document and read its contents.
+                Document doc = new Document(stream);
+
+                Assert.AreEqual("Hello World!", doc.GetText().Trim());
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void LoadFromWeb()
+        {
+            //ExStart
+            //ExFor:Document.#ctor(Stream)
+            //ExSummary:Shows how to .
+            // Create a URL that points to a Microsoft Word document.
+            const string url = "https://omextemplates.content.office.net/support/templates/en-us/tf16402488.dotx";
+
+            // Download the document into a byte array, then load that array into a document using a memory stream. 
+            using (WebClient webClient = new WebClient())
+            {
+                byte[] dataBytes = webClient.DownloadData(url);
+
+                using (MemoryStream byteStream = new MemoryStream(dataBytes))
+                {
+                    Document doc = new Document(byteStream);
+
+                    // At this stage, we can read and edit the document's contents, and then save it to the local file system.
+                    Assert.AreEqual("Use this section to highlight your relevant passions, activities, and how you like to give back. " +
+                                    "It’s good to include Leadership and volunteer experiences here. " +
+                                    "Or show off important extras like publications, certifications, languages and more.",
+                        doc.FirstSection.Body.Paragraphs[4].GetText().Trim());
+
+                    doc.Save(ArtifactsDir + "Document.LoadFromWeb.docx");
+                }
+            }
+            //ExEnd
+
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
+        }
+
+        [Test]
+        public void ConvertToPdf()
+        {
+            //ExStart
+            //ExFor:Document.#ctor(String)
+            //ExFor:Document.Save(String)
+            //ExSummary:Shows how to open a document and convert it to .PDF.
+            // Open a document that exists in the local file system.
+            Document doc = new Document(MyDir + "Document.docx");
+
+            // Save that document as a PDF to another location.
+            doc.Save(ArtifactsDir + "Document.ConvertToPdf.pdf");
+            //ExEnd
+        }
 
 #if NET462 || MAC || JAVA
         //ExStart
@@ -119,6 +186,28 @@ namespace ApiExamples
         //ExEnd
 #endif
 
+#if NET462 || NETCOREAPP2_1 || JAVA
+        [Test, Category("IgnoreOnJenkins")]
+        public void OpenType()
+        {
+            //ExStart
+            //ExFor:LayoutOptions.TextShaperFactory
+            //ExSummary:Shows how to support OpenType features using the HarfBuzz text shaping engine.
+            Document doc = new Document(MyDir + "OpenType text shaping.docx");
+
+            // Aspose.Words is capable of using externally provided text shaper objects,
+            // which represent fonts and compute shaping information for text.
+            // A text shaper factory is necessary for documents that use multiple fonts.
+            // When text shaper factory is set, the layout uses OpenType features.
+            // An Instance property returns a static BasicTextShaperCache object wrapping HarfBuzzTextShaperFactory.
+            doc.LayoutOptions.TextShaperFactory = HarfBuzzTextShaperFactory.Instance;
+
+            // Currently, text shaping is only performed when exporting to PDF or XPS formats.
+            doc.Save(ArtifactsDir + "Document.OpenType.pdf");
+            //ExEnd
+        }
+#endif
+
         [Test]
         public void Pdf2Word()
         {
@@ -146,125 +235,36 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentCtor()
-        {
-            //ExStart
-            //ExFor:Document.#ctor(Boolean)
-            //ExSummary:Shows how to create a blank document.
-            // Create a blank document, which will contain a section, body and paragraph by default
-            Document doc = new Document();
-
-            // Create a document object from an existing document in the local file system
-            doc = new Document(MyDir + "Document.docx");
-
-            Assert.AreEqual("Hello World!", doc.FirstSection.Body.FirstParagraph.GetText().Trim());
-            //ExEnd
-        }
-
-        [Test]
-        public void ConvertToPdf()
-        {
-            //ExStart
-            //ExFor:Document.#ctor(String)
-            //ExFor:Document.Save(String)
-            //ExSummary:Shows how to open a document and convert it to .PDF.
-            // Open a document that exists in the local file system
-            Document doc = new Document(MyDir + "Document.docx");
-
-            // Save that document as a PDF to another location
-            doc.Save(ArtifactsDir + "Document.ConvertToPdf.pdf");
-            //ExEnd
-        }
-
-        [Test]
         public void OpenAndSaveToFile()
         {
             Document doc = new Document(MyDir + "Document.docx");
             doc.Save(ArtifactsDir + "Document.OpenAndSaveToFile.html");
         }
-
-        [Test]
-        public void OpenFromStream()
-        {
-            //ExStart
-            //ExFor:Document.#ctor(Stream)
-            //ExSummary:Shows how to open a document from a stream.
-            // Open the stream. Read only access is enough for Aspose.Words to load a document.
-            using (Stream stream = File.OpenRead(MyDir + "Document.docx"))
-            {
-                // Load the entire document into memory and read its contents
-                Document doc = new Document(stream);
-
-                Assert.AreEqual("Hello World!", doc.GetText().Trim());
-            }
-            //ExEnd
-        }
-
+        
         [Test]
         public void OpenFromStreamWithBaseUri()
         {
-            Document doc;
-
             //ExStart
             //ExFor:Document.#ctor(Stream,LoadOptions)
             //ExFor:LoadOptions.#ctor
             //ExFor:LoadOptions.BaseUri
             //ExSummary:Shows how to open an HTML document with images from a stream using a base URI.
-            // Open the stream
             using (Stream stream = File.OpenRead(MyDir + "Document.html"))
             {
-                // Pass the URI of the base folder so any images with relative URIs in the HTML document can be found
-                // Note the Document constructor detects HTML format automatically
+                // Pass the URI of the base folder while loading the document
+                // so that any images with relative URIs in the HTML document can be found.
                 LoadOptions loadOptions = new LoadOptions();
                 loadOptions.BaseUri = ImageDir;
 
-                doc = new Document(stream, loadOptions);
-            }
-            //ExEnd
+                Document doc = new Document(stream, loadOptions);
 
-            // Save in the DOC format
-            doc.Save(ArtifactsDir + "Document.OpenFromStreamWithBaseUri.doc");
-            
-            // Get the first shape node in the document
-            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+                // Verify that the first shape of the document contains a valid image.
+                Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            // Verify some properties of the image to make sure the image was imported successfully into a Shape node
-            Assert.IsTrue(shape.IsImage);
-            Assert.IsNotNull(shape.ImageData.ImageBytes);
-            Assert.AreEqual(32.0, ConvertUtil.PointToPixel(shape.Width), 0.01);
-            Assert.AreEqual(32.0, ConvertUtil.PointToPixel(shape.Height), 0.01);
-        }
-
-        [Test]
-        public void OpenDocumentFromWeb()
-        {
-            //ExStart
-            //ExFor:Document.#ctor(Stream)
-            //ExSummary:Shows how to retrieve a document from a URL and saves it to disk in a different format.
-            // This is the URL address pointing to where to find the document
-            const string url = "https://omextemplates.content.office.net/support/templates/en-us/tf16402488.dotx";
-
-            // The easiest way to load our document from the internet is make use of the 
-            // System.Net.WebClient class. Create an instance of it and pass the URL
-            // to download from.
-            using (WebClient webClient = new WebClient())
-            {
-                // Download the bytes from the location referenced by the URL
-                byte[] dataBytes = webClient.DownloadData(url);
-                Assert.That(dataBytes, Is.Not.Empty); //ExSkip
-
-                // Wrap the bytes representing the document in memory into a MemoryStream object
-                using (MemoryStream byteStream = new MemoryStream(dataBytes))
-                {
-                    // Load this memory stream into a new Aspose.Words Document
-                    // The file format of the passed data is inferred from the content of the bytes itself
-                    // You can load any document format supported by Aspose.Words in the same way
-                    Document doc = new Document(byteStream);
-                    Assert.True(doc.GetText().Contains("First Name last name")); //ExSkip
-
-                    // Convert the document to any format supported by Aspose.Words and save
-                    doc.Save(ArtifactsDir + "Document.OpenDocumentFromWeb.docx");
-                }
+                Assert.IsTrue(shape.IsImage);
+                Assert.IsNotNull(shape.ImageData.ImageBytes);
+                Assert.AreEqual(32.0, ConvertUtil.PointToPixel(shape.Width), 0.01);
+                Assert.AreEqual(32.0, ConvertUtil.PointToPixel(shape.Height), 0.01);
             }
             //ExEnd
         }
@@ -276,32 +276,28 @@ namespace ApiExamples
             //ExFor:Document.#ctor(Stream, LoadOptions)
             //ExFor:LoadOptions.#ctor(LoadFormat, String, String)
             //ExFor:LoadFormat
-            //ExSummary:Shows how to insert the HTML contents from a web page into a new document.
-            // The URL of the page to load 
+            //ExSummary:Shows how save a web page as a .docx file.
             const string url = "http://www.aspose.com/";
-            
-            // Create a WebClient object to easily extract the HTML from the page
-            WebClient client = new WebClient();
-            string pageSource = client.DownloadString(url);
-            client.Dispose();
 
-            // Get the HTML as bytes for loading into a stream
-            Encoding encoding = client.Encoding;
-            byte[] pageBytes = encoding.GetBytes(pageSource);
+            using (WebClient client = new WebClient()) 
+            { 
+                using (MemoryStream stream = new MemoryStream(client.DownloadData(url)))
+                {
+                    // The URL is used again as a baseUti to ensure that any relative image paths are retrieved correctly.
+                    LoadOptions options = new LoadOptions(Aspose.Words.LoadFormat.Html, "", url);
 
-            // Load the HTML into a stream
-            using (MemoryStream stream = new MemoryStream(pageBytes))
-            {
-                // The baseUri property should be set to ensure any relative image paths are retrieved correctly
-                LoadOptions options = new LoadOptions(Aspose.Words.LoadFormat.Html, "", url);
+                    // Load the HTML document from stream and pass the LoadOptions object.
+                    Document doc = new Document(stream, options);
 
-                // Load the HTML document from stream and pass the LoadOptions object
-                Document doc = new Document(stream, options);
+                    // At this stage, we can read and edit the document's contents, and then save it to the local file system.
+                    Assert.AreEqual("File Format APIs", doc.FirstSection.Body.Paragraphs[1].Runs[0].GetText().Trim());
 
-                // Save the document to the local file system while converting it to .docx
-                doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
+                    doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
+                }
             }
             //ExEnd
+
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
         }
 
         [Test]

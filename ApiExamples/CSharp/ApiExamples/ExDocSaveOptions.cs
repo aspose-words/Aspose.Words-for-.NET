@@ -119,9 +119,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.doc");
 
             if (isUpdateLastPrintedProperty)
-                Assert.AreEqual(DateTime.Today, doc.BuiltInDocumentProperties.LastPrinted.Date);
+                Assert.AreEqual(DateTime.Today.ToUniversalTime().Date, doc.BuiltInDocumentProperties.LastPrinted.Date);
             else
-                Assert.AreEqual(new DateTime(1, 1, 1), doc.BuiltInDocumentProperties.LastPrinted.Date);
+                Assert.AreEqual(DateTime.MinValue.Date, doc.BuiltInDocumentProperties.LastPrinted);
             //ExEnd
         }
     }

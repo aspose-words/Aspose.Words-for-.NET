@@ -5,8 +5,9 @@ using System.Net;
 using System.Security;
 using Aspose.Words;
 using NUnit.Framework;
+#if NET462 || MAC || JAVA
 using Org.BouncyCastle.Pkcs;
-
+#endif
 namespace ApiExamples
 {
     [TestFixture]
