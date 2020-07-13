@@ -74,24 +74,20 @@ namespace ApiExamples
 #if NET462 || MAC || JAVA
         //ExStart
         //ExFor:LoadOptions.ResourceLoadingCallback
-        //ExSummary:Shows how to handle external resources in Html documents during loading.
+        //ExSummary:Shows how to handle external resources when loading Html documents.
         [Test] //ExSkip
         public void LoadOptionsCallback()
         {
-            // Create a new LoadOptions object and set its ResourceLoadingCallback attribute
-            // as an instance of our IResourceLoadingCallback implementation 
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback();
             
-            // When we open an Html document, external resources such as references to CSS stylesheet files and external images
-            // will be handled in a custom manner by the loading callback as the document is loaded
+            // When we load the document, linked resources such as CSS stylesheets and images will be handled by the callback.
             Document doc = new Document(MyDir + "Images.html", loadOptions);
             doc.Save(ArtifactsDir + "Document.LoadOptionsCallback.pdf");
         }
 
         /// <summary>
-        /// Resource loading callback that, upon encountering external resources,
-        /// acknowledges CSS style sheets and replaces all images with a substitute.
+        /// Prints the filenames of all external stylesheets, and substitutes all images of a loaded html document.
         /// </summary>
         private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
         {
