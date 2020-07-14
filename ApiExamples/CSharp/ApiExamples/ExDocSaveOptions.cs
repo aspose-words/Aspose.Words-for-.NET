@@ -71,6 +71,9 @@ namespace ApiExamples
             Directory.CreateDirectory(options.TempFolder);
 
             doc.Save(ArtifactsDir + "DocSaveOptions.TempFolder.doc", options);
+
+            // The folder will persist with no residual contents from the load operation.
+            Assert.That(Directory.GetFiles(options.TempFolder), Is.Empty);
             //ExEnd
         }
 

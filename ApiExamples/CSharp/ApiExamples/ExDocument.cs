@@ -52,6 +52,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.#ctor(Boolean)
+            //ExFor:Document.#ctor(String,LoadOptions)
             //ExSummary:Shows how to create and load documents.
             // There are two ways of creating a Document object using Aspose.Words.
             // 1 -  Create a blank document.
@@ -301,23 +302,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void LoadFormat()
-        {
-            //ExStart
-            //ExFor:Document.#ctor(String,LoadOptions)
-            //ExFor:LoadOptions.LoadFormat
-            //ExFor:LoadFormat
-            //ExSummary:Shows how to load a document as HTML without automatic file format detection.
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.LoadFormat = Aspose.Words.LoadFormat.Html;
-
-            Document doc = new Document(MyDir + "Document.html", loadOptions);
-            //ExEnd
-
-            Assert.AreEqual("Hello world!", doc.GetText().Trim());
-        }
-
-        [Test]
         public void LoadEncrypted()
         {
             //ExStart
@@ -325,23 +309,27 @@ namespace ApiExamples
             //ExFor:Document.#ctor(String,LoadOptions)
             //ExFor:LoadOptions
             //ExFor:LoadOptions.#ctor(String)
-            //ExSummary:Shows how to load a Microsoft Word document encrypted with a password.
-            // If we try open an encrypted document without the password, an IncorrectPasswordException will be thrown
-            // We can construct a LoadOptions object with the correct encryption password
+            //ExSummary:Shows how to load an encrypted Microsoft Word document.
+            Document doc;
+
+            // If we try to open an encrypted document without its password, an exception will be thrown.
+            Assert.Throws<IncorrectPasswordException>(() => doc = new Document(MyDir + "Encrypted.docx"));
+
+            // When loading such a document, the password is passed to the document's constructor using a LoadOptions object.
             LoadOptions options = new LoadOptions("docPassword");
 
-            // Then, we can use that object as a parameter when opening an encrypted document
-            Document doc = new Document(MyDir + "Encrypted.docx", options);
+            // There are two ways of loading an encrypted document with a LoadOptions object.
+            // 1 -  Load the document from the local file system by filename.
+            doc = new Document(MyDir + "Encrypted.docx", options);
             Assert.AreEqual("Test encrypted document.", doc.GetText().Trim()); //ExSkip
 
+            // 2 -  Load the document from a stream.
             using (Stream stream = File.OpenRead(MyDir + "Encrypted.docx"))
             {
                 doc = new Document(stream, options);
                 Assert.AreEqual("Test encrypted document.", doc.GetText().Trim()); //ExSkip
             }
             //ExEnd
-
-            Assert.Throws<IncorrectPasswordException>(() => doc = new Document(MyDir + "Encrypted.docx"));
         }
 
         [TestCase(true)]
@@ -350,15 +338,15 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:LoadOptions.ConvertShapeToOfficeMath
-            //ExSummary:Shows how to convert shapes with EquationXML to Office Math objects.
+            //ExSummary:Shows how to convert EquationXML shapes to Office Math objects.
             LoadOptions loadOptions = new LoadOptions();
-            // Use 'true/false' values to convert shapes with EquationXML to Office Math objects or not
+
+            // Use this flag to specify whether to convert the shapes that have EquationXML attributes
+            // to Office Math objects, then load the document.
             loadOptions.ConvertShapeToOfficeMath = isConvertShapeToOfficeMath;
             
-            // Specify load option to convert math shapes to office math objects on loading stage
             Document doc = new Document(MyDir + "Math shapes.docx", loadOptions);
-            //ExEnd
-
+            
             if (isConvertShapeToOfficeMath)
             {
                 Assert.AreEqual(16, doc.GetChildNodes(NodeType.Shape, true).Count);
@@ -369,6 +357,7 @@ namespace ApiExamples
                 Assert.AreEqual(24, doc.GetChildNodes(NodeType.Shape, true).Count);
                 Assert.AreEqual(0, doc.GetChildNodes(NodeType.OfficeMath, true).Count);
             }
+            //ExEnd
         }
 
         [Test]
@@ -377,24 +366,29 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.Encoding
             //ExSummary:Shows how to set the encoding with which to open a document.
-            // Get the file format info of a file in our local file system
+            // A FileFormatInfo object will detect this file as being encoded in UTF-8.
             FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "Encoded in UTF-7.txt");
 
-            // A FileFormatInfo object can detect the encoding of the text content in a file, but in some cases it may be ambiguous
-            // We know that the above file is encoded in UTF-7, but the text could be valid in others
-            Assert.AreNotEqual(Encoding.UTF7, fileFormatInfo.Encoding);
+            Assert.AreEqual(Encoding.UTF8, fileFormatInfo.Encoding);
 
-            // If we open the document normally, the wrong encoding will be applied,
-            // and the content of the document will not be represented correctly
+            // Hence, if we load the document with no loading configurations,
+            // it will be treated as a UTF-8-encoded document.
             Document doc = new Document(MyDir + "Encoded in UTF-7.txt");
+
+            // The contents, parsed in UTF-8, create a valid string.
+            // However, knowing that the file is in UTF-7, we can see that the result is incorrect.
             Assert.AreEqual("Hello world+ACE-", doc.ToString(SaveFormat.Text).Trim());
 
-            // In these cases we can set the Encoding attribute in a LoadOptions object
-            // to override the automatically chosen encoding with the one we know to be correct
-            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.UTF7 };
+            // In cases of ambiguous encoding such as this one, we can set a specific encoding variant
+            // to parse the file with in a LoadOptions object.
+            LoadOptions loadOptions = new LoadOptions
+            {
+                Encoding = Encoding.UTF7
+            };
+
+            // Load the document while passing the LoadOptions object, then verify the document's contents.
             doc = new Document(MyDir + "Encoded in UTF-7.txt", loadOptions);
 
-            // This will give us the correct text
             Assert.AreEqual("Hello world!", doc.ToString(SaveFormat.Text).Trim());
             //ExEnd
         }
@@ -404,20 +398,19 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:LoadOptions.FontSettings
-            //ExSummary:Shows how to set font settings and apply them during the loading of a document. 
-            // Create a FontSettings object that will substitute the "Times New Roman" font with the font "Arvo" from our "MyFonts" folder 
+            //ExSummary:Shows how to apply font substitution settings while loading a document. 
+            // Create a FontSettings object that will substitute the "Times New Roman" font with the font "Arvo" from our "MyFonts" folder .
             FontSettings fontSettings = new FontSettings();
             fontSettings.SetFontsFolder(FontsDir, false);
             fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Times New Roman", "Arvo");
 
-            // Set that FontSettings object as a member of a newly created LoadOptions object
+            // Set that FontSettings object as a member of a newly created LoadOptions object.
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.FontSettings = fontSettings;
 
-            // We can now open a document while also passing the LoadOptions object into the constructor so the font substitution occurs upon loading
+            // Load the document, then render it as a PDF with the font substitution.
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
-            // The effects of our font settings can be observed after rendering
             doc.Save(ArtifactsDir + "Document.LoadOptionsFontSettings.pdf");
             //ExEnd
         }
@@ -428,21 +421,23 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.MswVersion
             //ExSummary:Shows how to emulate the loading procedure of a specific Microsoft Word version during document loading.
-            // Create a new LoadOptions object, which will load documents according to MS Word 2019 specification by default
+            // By default, documents are loaded according to Microsoft Word 2019 specification.
             LoadOptions loadOptions = new LoadOptions();
+
             Assert.AreEqual(MsWordVersion.Word2019, loadOptions.MswVersion);
 
+            // This document is missing the default paragraph formatting style.
+            // This default style will be regenerated when we load the document either with Microsoft Word or Aspose.Words.
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
-            Assert.AreEqual(12.95, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.005f);
 
-            // We can change the loading version like this, to Microsoft Word 2007
+            // The style's line spacing will have this value when loaded by Microsoft Word 2019 specification.
+            Assert.AreEqual(12.95d, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.01d);
+
+            // When loaded according to Microsoft Word 2007 specification, the value will be slightly different.
             loadOptions.MswVersion = MsWordVersion.Word2007;
-
-            // This document is missing the default paragraph format style,
-            // so when it is opened with either Microsoft Word or Aspose Words, that default style will be regenerated,
-            // and will show up in the Styles collection, with values according to Microsoft Word 2007 specifications
             doc = new Document(MyDir + "Document.docx", loadOptions);
-            Assert.AreEqual(13.8, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.005f);
+
+            Assert.AreEqual(13.80d, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.01d);
             //ExEnd
         }
 
@@ -506,15 +501,20 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:LoadOptions.TempFolder
-            //ExSummary:Shows how to load a document using temporary files.
-            // Note that such an approach can reduce memory usage but degrades speed
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.TempFolder = @"C:\TempFolder\";
-            
-            // Ensure that the directory exists and load
-            Directory.CreateDirectory(loadOptions.TempFolder);
+            //ExSummary:Shows how to use the hard drive instead of memory when loading a document.
+            // When we load a document, various elements are temporarily stored in memory as the save operation is taking place.
+            // We can use this option to use a temporary folder in the local file system instead,
+            // which will reduce our application's memory overhead.
+            LoadOptions options = new LoadOptions();
+            options.TempFolder = ArtifactsDir + "TempFiles";
+
+            // The specified temporary folder must exist in the local file system before the load operation.
+            Directory.CreateDirectory(options.TempFolder);
              
-            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+            Document doc = new Document(MyDir + "Document.docx", options);
+
+            // The folder will persist with no residual contents from the load operation.
+            Assert.That(Directory.GetFiles(options.TempFolder), Is.Empty);
             //ExEnd
         }
 
@@ -526,6 +526,7 @@ namespace ApiExamples
             //ExFor:SaveFormat
             //ExSummary:Shows how to convert from DOCX to HTML format.
             Document doc = new Document(MyDir + "Document.docx");
+
             doc.Save(ArtifactsDir + "Document.ConvertToHtml.html", SaveFormat.Html);
             //ExEnd
         }
@@ -557,7 +558,7 @@ namespace ApiExamples
             {
                 doc.Save(dstStream, SaveFormat.Docx);
 
-                // Rewind the stream position back to zero so it is ready for next reader
+                // Rewind the stream position back to zero so it is ready for next reader.
                 dstStream.Position = 0;
                 Assert.AreEqual("Hello World!", new Document(dstStream).GetText().Trim()); //ExSkip
             }
