@@ -249,6 +249,37 @@ namespace ApiExamples
         }
 
         [Test]
+        public void DownsampleOptions()
+        {
+            //ExStart
+            //ExFor:DownsampleOptions
+            //ExFor:DownsampleOptions.DownsampleImages
+            //ExFor:DownsampleOptions.Resolution
+            //ExFor:DownsampleOptions.ResolutionThreshold
+            //ExFor:PdfSaveOptions.DownsampleOptions
+            //ExSummary:Shows how to change the resolution of images in output pdf documents.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            // Create a SaveOptions object, verify its default image downsampling settings,
+            // and then convert the document to .pdf with it.
+            PdfSaveOptions options = new PdfSaveOptions();
+
+            Assert.True(options.DownsampleOptions.DownsampleImages);
+            Assert.AreEqual(220, options.DownsampleOptions.Resolution);
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.Default.pdf", options);
+
+            // Set the output resolution to a lower value, then set a downsampling resolution threshold
+            // which will prevent any images with a resolution of less than 128 from being downsampled.
+            options.DownsampleOptions.Resolution = 36;
+            options.DownsampleOptions.ResolutionThreshold = 128;
+
+            // Only the first two images from the document will be downsampled at this stage.
+            doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.LowerResolution.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
         public void ColorRendering()
         {
             //ExStart

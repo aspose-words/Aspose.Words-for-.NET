@@ -558,9 +558,8 @@ namespace ApiExamples
             {
                 doc.Save(dstStream, SaveFormat.Docx);
 
-                // Rewind the stream position back to zero so it is ready for next reader.
-                dstStream.Position = 0;
-                Assert.AreEqual("Hello World!", new Document(dstStream).GetText().Trim()); //ExSkip
+                // Verify that the stream contains the document.
+                Assert.AreEqual("Hello World!", new Document(dstStream).GetText().Trim());
             }
             //ExEnd
         }
@@ -574,80 +573,7 @@ namespace ApiExamples
             // Save the document in EPUB format
             doc.Save(ArtifactsDir + "Document.Doc2EpubSave.epub");
         }
-
-        [Test]
-        public void Doc2EpubSaveOptions()
-        {
-            //ExStart
-            //ExFor:DocumentSplitCriteria
-            //ExFor:HtmlSaveOptions
-            //ExFor:HtmlSaveOptions.#ctor
-            //ExFor:HtmlSaveOptions.Encoding
-            //ExFor:HtmlSaveOptions.DocumentSplitCriteria
-            //ExFor:HtmlSaveOptions.ExportDocumentProperties
-            //ExFor:HtmlSaveOptions.SaveFormat
-            //ExFor:SaveOptions
-            //ExFor:SaveOptions.SaveFormat
-            //ExSummary:Shows how to convert a document to EPUB with save options specified.
-            // Open an existing document from disk
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            // Create a new instance of HtmlSaveOptions. This object allows us to set options that control
-            // how the output document is saved
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
-            // Specify the desired encoding
-            saveOptions.Encoding = Encoding.UTF8;
-
-            // Specify at what elements to split the internal HTML at. This creates a new HTML within the EPUB 
-            // which allows you to limit the size of each HTML part. This is useful for readers which cannot read 
-            // HTML files greater than a certain size, such as 300kb
-            saveOptions.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph;
-
-            // Specify that we want to export document properties
-            saveOptions.ExportDocumentProperties = true;
-
-            // Specify that we want to save in EPUB format
-            saveOptions.SaveFormat = SaveFormat.Epub;
-
-            // Export the document as an EPUB file
-            doc.Save(ArtifactsDir + "Document.Doc2EpubSaveOptions.epub", saveOptions);
-            //ExEnd
-        }
-
-        [Test]
-        public void DownsampleOptions()
-        {
-            //ExStart
-            //ExFor:DownsampleOptions
-            //ExFor:DownsampleOptions.DownsampleImages
-            //ExFor:DownsampleOptions.Resolution
-            //ExFor:DownsampleOptions.ResolutionThreshold
-            //ExFor:PdfSaveOptions.DownsampleOptions
-            //ExSummary:Shows how to change the resolution of images in output pdf documents.
-            // Open a document that contains images 
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            doc.Save(ArtifactsDir + "Document.DownsampleOptions.Default.pdf");
-
-            // If we want to convert the document to .pdf, we can use a SaveOptions implementation to customize the saving process
-            PdfSaveOptions options = new PdfSaveOptions();
-
-            // This conversion will downsample images by default
-            Assert.True(options.DownsampleOptions.DownsampleImages);
-            Assert.AreEqual(220, options.DownsampleOptions.Resolution);
-
-            // We can set the output resolution to a different value
-            // The first two images in the input document will be affected by this
-            options.DownsampleOptions.Resolution = 36;
-
-            // We can set a minimum threshold for downsampling 
-            // This value will prevent some images in the input document from being downsampled
-            options.DownsampleOptions.ResolutionThreshold = 128;
-
-            doc.Save(ArtifactsDir + "Document.DownsampleOptions.LowerThreshold.pdf", options);
-            //ExEnd
-        }
-
+        
         [TestCase(true)]
         [TestCase(false)]
         public void SaveHtmlPrettyFormat(bool isPrettyFormat)
@@ -675,41 +601,6 @@ namespace ApiExamples
                     "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"));
         }
 
-        [Test]
-        public void SaveHtmlWithOptions()
-        {
-            //ExStart
-            //ExFor:HtmlSaveOptions
-            //ExFor:HtmlSaveOptions.ExportTextInputFormFieldAsText
-            //ExFor:HtmlSaveOptions.ImagesFolder
-            //ExSummary:Shows how to set save options before saving a document to HTML.
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            // This is the directory we want the exported images to be saved to
-            string imagesDir = Path.Combine(ArtifactsDir, "SaveHtmlWithOptions");
-
-            // The folder specified needs to exist and should be empty
-            if (Directory.Exists(imagesDir))
-                Directory.Delete(imagesDir, true);
-
-            Directory.CreateDirectory(imagesDir);
-
-            // Set an option to export form fields as plain text, not as HTML input elements
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
-            options.ExportTextInputFormFieldAsText = true;
-            options.ImagesFolder = imagesDir;
-
-            doc.Save(ArtifactsDir + "Document.SaveHtmlWithOptions.html", options);
-            //ExEnd
-
-            // Verify the images were saved to the correct location
-            Assert.IsTrue(File.Exists(ArtifactsDir + "Document.SaveHtmlWithOptions.html"));
-
-            Assert.AreEqual(9, Directory.GetFiles(imagesDir).Length);
-
-            Directory.Delete(imagesDir, true);
-        }
-
         //ExStart
         //ExFor:HtmlSaveOptions.ExportFontResources
         //ExFor:HtmlSaveOptions.FontSavingCallback
@@ -727,7 +618,7 @@ namespace ApiExamples
         //ExFor:FontSavingArgs.KeepFontStreamOpen
         //ExFor:FontSavingArgs.OriginalFileName
         //ExFor:FontSavingArgs.OriginalFileSize
-        //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML based formats.
+        //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML.
         [Test] //ExSkip
         public void SaveHtmlExportFonts()
         {

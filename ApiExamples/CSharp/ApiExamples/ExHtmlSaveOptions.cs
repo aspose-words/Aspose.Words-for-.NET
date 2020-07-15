@@ -601,6 +601,40 @@ namespace ApiExamples
         }
 
         [Test]
+        public void Doc2EpubSaveOptions()
+        {
+            //ExStart
+            //ExFor:DocumentSplitCriteria
+            //ExFor:HtmlSaveOptions
+            //ExFor:HtmlSaveOptions.#ctor
+            //ExFor:HtmlSaveOptions.Encoding
+            //ExFor:HtmlSaveOptions.DocumentSplitCriteria
+            //ExFor:HtmlSaveOptions.ExportDocumentProperties
+            //ExFor:HtmlSaveOptions.SaveFormat
+            //ExFor:SaveOptions
+            //ExFor:SaveOptions.SaveFormat
+            //ExSummary:Shows how to specify saving options while converting a document to .epub.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            // Specify encoding for a document that we will save with a SaveOptions object.
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.SaveFormat = SaveFormat.Epub;
+            saveOptions.Encoding = Encoding.UTF8;
+
+            // By default, an output .epub document will have all the contents in one HTML part.
+            // A split criteria allows us to segment the document into several HTML parts.
+            // We will set the criteria to split the document at heading paragraphs.
+            // This is useful for readers which cannot read HTML files greater than a certain size.
+            saveOptions.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph;
+
+            // Specify that we want to export document properties.
+            saveOptions.ExportDocumentProperties = true;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.Doc2EpubSaveOptions.epub", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
         public void ContentIdUrls()
         {
             //ExStart
@@ -992,6 +1026,38 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.html", options);
             //ExEnd
+        }
+
+        [Test]
+        public void ImageFolder()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions
+            //ExFor:HtmlSaveOptions.ExportTextInputFormFieldAsText
+            //ExFor:HtmlSaveOptions.ImagesFolder
+            //ExSummary:Shows how to specify the folder for storing linked images after saving to .html.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            // Set a directory where images will be saved to, then ensure that it exists, and is empty.
+            string imagesDir = Path.Combine(ArtifactsDir, "SaveHtmlWithOptions");
+
+            if (Directory.Exists(imagesDir))
+                Directory.Delete(imagesDir, true);
+
+            Directory.CreateDirectory(imagesDir);
+
+            // Set an option to export form fields as plain text instead of HTML input elements.
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
+            options.ExportTextInputFormFieldAsText = true;
+            options.ImagesFolder = imagesDir;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.SaveHtmlWithOptions.html", options);
+            //ExEnd
+
+            Assert.IsTrue(File.Exists(ArtifactsDir + "HtmlSaveOptions.SaveHtmlWithOptions.html"));
+            Assert.AreEqual(9, Directory.GetFiles(imagesDir).Length);
+
+            Directory.Delete(imagesDir, true);
         }
 
         //ExStart
