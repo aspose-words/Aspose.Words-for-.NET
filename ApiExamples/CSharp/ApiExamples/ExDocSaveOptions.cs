@@ -121,10 +121,7 @@ namespace ApiExamples
             // Open the saved document, then verify the value of the property.
             doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.doc");
 
-            if (isUpdateLastPrintedProperty)
-                Assert.AreEqual(DateTime.Today.ToUniversalTime().Date, doc.BuiltInDocumentProperties.LastPrinted.Date);
-            else
-                Assert.AreEqual(DateTime.MinValue.Date, doc.BuiltInDocumentProperties.LastPrinted);
+            Assert.AreNotEqual(isUpdateLastPrintedProperty, (DateTime.MinValue.Date == doc.BuiltInDocumentProperties.LastPrinted));
             //ExEnd
         }
     }

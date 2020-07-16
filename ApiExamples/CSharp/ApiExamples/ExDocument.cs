@@ -366,10 +366,10 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.Encoding
             //ExSummary:Shows how to set the encoding with which to open a document.
-            // A FileFormatInfo object will detect this file as being encoded in UTF-8.
+            // A FileFormatInfo object will detect this file as not being encoded in UTF-7.
             FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "Encoded in UTF-7.txt");
 
-            Assert.AreEqual(Encoding.UTF8, fileFormatInfo.Encoding);
+            Assert.AreNotEqual(Encoding.UTF7, fileFormatInfo.Encoding);
 
             // Hence, if we load the document with no loading configurations,
             // it will be treated as a UTF-8-encoded document.
@@ -574,95 +574,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.Doc2EpubSave.epub");
         }
         
-        [TestCase(true)]
-        [TestCase(false)]
-        public void SaveHtmlPrettyFormat(bool isPrettyFormat)
-        {
-            //ExStart
-            //ExFor:SaveOptions.PrettyFormat
-            //ExSummary:Shows how to pass an option to export HTML tags in a well spaced, human readable format.
-            Document doc = new Document(MyDir + "Document.docx");
-
-            // Enabling the PrettyFormat setting will export HTML in an indented format that is easy to read
-            // If this is setting is false (by default) then the HTML tags will be exported in condensed form with no indentation
-            HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html);
-            htmlOptions.PrettyFormat = isPrettyFormat;
-
-            doc.Save(ArtifactsDir + "Document.SaveHtmlPrettyFormat.html", htmlOptions);
-            //ExEnd
-
-            string html = File.ReadAllText(ArtifactsDir + "Document.SaveHtmlPrettyFormat.html");
-
-            // Enabling HtmlSaveOptions.PrettyFormat places tabs and newlines in places where it would improve the readability of html source
-            Assert.True(isPrettyFormat
-                ? html.StartsWith(
-                    "<html>\r\n\t<head>\r\n\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n\t\t")
-                : html.StartsWith(
-                    "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />"));
-        }
-
-        //ExStart
-        //ExFor:HtmlSaveOptions.ExportFontResources
-        //ExFor:HtmlSaveOptions.FontSavingCallback
-        //ExFor:IFontSavingCallback
-        //ExFor:IFontSavingCallback.FontSaving
-        //ExFor:FontSavingArgs
-        //ExFor:FontSavingArgs.Bold
-        //ExFor:FontSavingArgs.Document
-        //ExFor:FontSavingArgs.FontFamilyName
-        //ExFor:FontSavingArgs.FontFileName
-        //ExFor:FontSavingArgs.FontStream
-        //ExFor:FontSavingArgs.IsExportNeeded
-        //ExFor:FontSavingArgs.IsSubsettingNeeded
-        //ExFor:FontSavingArgs.Italic
-        //ExFor:FontSavingArgs.KeepFontStreamOpen
-        //ExFor:FontSavingArgs.OriginalFileName
-        //ExFor:FontSavingArgs.OriginalFileSize
-        //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML.
-        [Test] //ExSkip
-        public void SaveHtmlExportFonts()
-        {
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            // Set the option to export font resources and create and pass the object which implements the handler methods
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
-            options.ExportFontResources = true;
-            options.FontSavingCallback = new HandleFontSaving();
-            
-            // The fonts from the input document will now be exported as .ttf files and saved alongside the output document
-            doc.Save(ArtifactsDir + "Document.SaveHtmlExportFonts.html", options);
-            Assert.AreEqual(10, Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length); //ExSkip
-        }
-
-        /// <summary>
-        /// Prints information about fonts and saves them alongside their output .html.
-        /// </summary>
-        public class HandleFontSaving : IFontSavingCallback
-        {
-            void IFontSavingCallback.FontSaving(FontSavingArgs args)
-            {
-                // Print information about fonts
-                Console.Write($"Font:\t{args.FontFamilyName}");
-                if (args.Bold) Console.Write(", bold");
-                if (args.Italic) Console.Write(", italic");
-                Console.WriteLine($"\nSource:\t{args.OriginalFileName}, {args.OriginalFileSize} bytes\n");
-
-                Assert.True(args.IsExportNeeded);
-                Assert.True(args.IsSubsettingNeeded);
-
-                // We can designate where each font will be saved by either specifying a file name, or creating a new stream
-                args.FontFileName = args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last();
-
-                args.FontStream = 
-                    new FileStream(ArtifactsDir + args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last(), FileMode.Create);
-                Assert.False(args.KeepFontStreamOpen);
-
-                // We can access the source document from here also
-                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
-            }
-        }
-        //ExEnd
-
         //ExStart
         //ExFor:INodeChangingCallback
         //ExFor:INodeChangingCallback.NodeInserting
@@ -672,56 +583,83 @@ namespace ApiExamples
         //ExFor:NodeChangingArgs
         //ExFor:NodeChangingArgs.Node
         //ExFor:DocumentBase.NodeChangingCallback
-        //ExSummary:Shows how to implement custom logic over node insertion in the document by changing the font of inserted HTML content.
+        //ExSummary:Shows how customize node changing with a callback.
         [Test] //ExSkip
         public void FontChangeViaCallback()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set up and pass the object which implements the handler methods
-            doc.NodeChangingCallback = new HandleNodeChangingFontChanger();
+            // Set the node changing callback to a custom implementation,
+            // then add/remove nodes to get it to generate a log.
+            HandleNodeChangingFontChanger callback = new HandleNodeChangingFontChanger();
+            doc.NodeChangingCallback = callback;
 
-            // Insert sample HTML content
-            builder.InsertHtml("<p>Hello World</p>");
+            builder.Writeln("Hello world!");
+            builder.Writeln("Hello again!");
+            builder.InsertField(" HYPERLINK \"https://www.google.com/\" ");
+            builder.InsertShape(ShapeType.Rectangle, 300, 300);
 
-            doc.Save(ArtifactsDir + "Document.FontChangeViaCallback.docx");
-            doc = new Document(ArtifactsDir + "Document.FontChangeViaCallback.docx"); //ExSkip
-            Run run = (Run)doc.GetChild(NodeType.Run, 0, true); //ExSkip
-            Assert.AreEqual(24.0, run.Font.Size); //ExSkip
-            Assert.AreEqual("Arial", run.Font.Name); //ExSkip
+            doc.Range.Fields[0].Remove();
+
+            Console.WriteLine(callback.GetLog());
+            TestFontChangeViaCallback(callback.GetLog()); //ExSkip
         }
 
+        /// <summary>
+        /// Logs the date and time of each node insertion and removal,
+        /// and also sets a custom font name/size for the text contents of Run nodes.
+        /// </summary>
         public class HandleNodeChangingFontChanger : INodeChangingCallback
         {
-            // Implement the NodeInserted handler to set default font settings for every Run node inserted into the Document
             void INodeChangingCallback.NodeInserted(NodeChangingArgs args)
             {
-                // Change the font of inserted text contained in the Run nodes
+                mLog.AppendLine($"\tType:\t{args.Node.NodeType}");
+                mLog.AppendLine($"\tHash:\t{args.Node.GetHashCode()}");
+
                 if (args.Node.NodeType == NodeType.Run)
                 {
                     Aspose.Words.Font font = ((Run) args.Node).Font;
+                    mLog.Append($"\tFont:\tChanged from \"{font.Name}\" {font.Size}pt");
+
                     font.Size = 24;
                     font.Name = "Arial";
+
+                    mLog.AppendLine($" to \"{font.Name}\" {font.Size}pt");
+                    mLog.AppendLine($"\tContents:\n\t\t\"{args.Node.GetText()}\"");
                 }
             }
 
             void INodeChangingCallback.NodeInserting(NodeChangingArgs args)
             {
-                // Do Nothing
+                mLog.AppendLine($"\n{DateTime.Now:dd/MM/yyyy HH:mm:ss:fff}\tNode insertion:");
             }
 
             void INodeChangingCallback.NodeRemoved(NodeChangingArgs args)
             {
-                // Do Nothing
+                mLog.AppendLine($"\tType:\t{args.Node.NodeType}");
+                mLog.AppendLine($"\tHash code:\t{args.Node.GetHashCode()}");
             }
 
             void INodeChangingCallback.NodeRemoving(NodeChangingArgs args)
             {
-                // Do Nothing
+                mLog.AppendLine($"\n{DateTime.Now:dd/MM/yyyy HH:mm:ss:fff}\tNode removal:");
             }
+
+            public string GetLog()
+            {
+                return mLog.ToString();
+            }
+
+            private readonly StringBuilder mLog = new StringBuilder();
         }
         //ExEnd
+
+        private void TestFontChangeViaCallback(string log)
+        {
+            Assert.AreEqual(10, Regex.Matches(log, "insertion").Count);
+            Assert.AreEqual(5, Regex.Matches(log, "removal").Count);
+        }
 
         [Test]
         public void AppendDocument()
@@ -729,20 +667,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.AppendDocument(Document, ImportFormatMode)
             //ExSummary:Shows how to append a document to the end of another document.
-            // The document that the content will be appended to
-            Document dstDoc = new Document();
-            dstDoc.FirstSection.Body.AppendParagraph("Destination document text. ");
-
-            // The document to append
+            // Create a document that will be appended.
             Document srcDoc = new Document();
             srcDoc.FirstSection.Body.AppendParagraph("Source document text. ");
 
-            // Append the source document to the destination document
-            // Pass format mode to retain the original formatting of the source document when importing it
+            // Create the document that the document above will be appended to.
+            Document dstDoc = new Document();
+            dstDoc.FirstSection.Body.AppendParagraph("Destination document text. ");
+
+            // Append the source document to the destination document while preserving its formatting,
+            // then save the source document to the local file system.
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
             Assert.AreEqual(2, dstDoc.Sections.Count); //ExSkip
 
-            // Save the document
             dstDoc.Save(ArtifactsDir + "Document.AppendDocument.docx");
             //ExEnd
 
@@ -799,20 +736,17 @@ namespace ApiExamples
             //ExFor:DigitalSignature.Comments
             //ExFor:DigitalSignature.SignTime
             //ExFor:DigitalSignature.SignatureType
-            //ExSummary:Shows how to validate each signature in a document and display basic information about the signature.
-            // Load the document which contains signature
+            //ExSummary:Shows how to validate, and display information about each signature in a document.
             Document doc = new Document(MyDir + "Digitally signed.docx");
 
             foreach (DigitalSignature signature in doc.DigitalSignatures)
             {
-                Console.WriteLine("*** Signature Found ***");
-                Console.WriteLine("Is valid: " + signature.IsValid);
-                // This property is available in MS Word documents only
-                Console.WriteLine("Reason for signing: " + signature.Comments); 
-                Console.WriteLine("Signature type: " + signature.SignatureType);
-                Console.WriteLine("Time of signing: " + signature.SignTime);
-                Console.WriteLine("Subject name: " + signature.CertificateHolder.Certificate.SubjectName);
-                Console.WriteLine("Issuer name: " + signature.CertificateHolder.Certificate.IssuerName.Name);
+                Console.WriteLine($"{(signature.IsValid ? "Valid" : "Invalid")} signature: ");
+                Console.WriteLine($"\tReason:\t{signature.Comments}"); 
+                Console.WriteLine($"\tType:\t{signature.SignatureType}");
+                Console.WriteLine($"\tSign time:\t{signature.SignTime}");
+                Console.WriteLine($"\tSubject name:\t{signature.CertificateHolder.Certificate.SubjectName}");
+                Console.WriteLine($"\tIssuer name:\t{signature.CertificateHolder.Certificate.IssuerName.Name}");
                 Console.WriteLine();
             }
             //ExEnd
@@ -845,20 +779,20 @@ namespace ApiExamples
             //ExFor:DigitalSignatureType
             //ExFor:Document.DigitalSignatures
             //ExSummary:Shows how to sign documents with X.509 certificates.
-            // Verify that a document isn't signed
+            // Verify that a document is not signed.
             Assert.False(FileFormatUtil.DetectFileFormat(MyDir + "Document.docx").HasDigitalSignature);
 
-            // Create a CertificateHolder object from a PKCS #12 file, which we will use to sign the document
+            // Create a CertificateHolder object from a PKCS12 file, which we will use to sign the document.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
 
-            // There are 2 ways of saving a signed copy of a document to the local file system
-            // 1: Designate unsigned input and signed output files by filename and sign with the passed CertificateHolder 
+            // There are 2 ways of saving a signed copy of a document to the local file system:
+            // 1 -  Designate a document by a local system filename, and save a signed copy at a location specified by another filename.
             DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "Document.DigitalSignature.docx", 
                 certificateHolder, new SignOptions() { SignTime = DateTime.Now } );
 
             Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
 
-            // 2: Create a stream for the input file and one for the output and create a file, signed with the CertificateHolder, at the file system location determine
+            // 2 -  Take a document from a stream, and save a signed copy to another stream.
             using (FileStream inDoc = new FileStream(MyDir + "Document.docx", FileMode.Open))
             {
                 using (FileStream outDoc = new FileStream(ArtifactsDir + "Document.DigitalSignature.docx", FileMode.Create))
@@ -869,11 +803,10 @@ namespace ApiExamples
 
             Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
 
-            // Open the signed document and get its digital signature collection
+            // Verify that all of the document's digital signatures are valid, and check their details.
             Document signedDoc = new Document(ArtifactsDir + "Document.DigitalSignature.docx");
             DigitalSignatureCollection digitalSignatureCollection = signedDoc.DigitalSignatures;
 
-            // Verify that all of the document's digital signatures are valid and check their details
             Assert.True(digitalSignatureCollection.IsValid);
             Assert.AreEqual(1, digitalSignatureCollection.Count);
             Assert.AreEqual(DigitalSignatureType.XmlDsig, digitalSignatureCollection[0].SignatureType);

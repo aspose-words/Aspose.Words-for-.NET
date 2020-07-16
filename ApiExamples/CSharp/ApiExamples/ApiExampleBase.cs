@@ -46,8 +46,8 @@ namespace ApiExamples
         {
             Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
         }
-
-        //[OneTimeTearDown]
+        
+        [OneTimeTearDown]
         public void OneTimeTearDown()
         {
             if (!CheckForSkipTearDown())

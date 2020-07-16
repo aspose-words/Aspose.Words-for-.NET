@@ -541,6 +541,72 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //ExStart
+        //ExFor:HtmlSaveOptions.ExportFontResources
+        //ExFor:HtmlSaveOptions.FontSavingCallback
+        //ExFor:IFontSavingCallback
+        //ExFor:IFontSavingCallback.FontSaving
+        //ExFor:FontSavingArgs
+        //ExFor:FontSavingArgs.Bold
+        //ExFor:FontSavingArgs.Document
+        //ExFor:FontSavingArgs.FontFamilyName
+        //ExFor:FontSavingArgs.FontFileName
+        //ExFor:FontSavingArgs.FontStream
+        //ExFor:FontSavingArgs.IsExportNeeded
+        //ExFor:FontSavingArgs.IsSubsettingNeeded
+        //ExFor:FontSavingArgs.Italic
+        //ExFor:FontSavingArgs.KeepFontStreamOpen
+        //ExFor:FontSavingArgs.OriginalFileName
+        //ExFor:FontSavingArgs.OriginalFileSize
+        //ExSummary:Shows how to define custom logic for exporting fonts when saving to HTML.
+        [Test] //ExSkip
+        public void SaveExportedFonts()
+        {
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            // Configure a SaveOptions object to export fonts to separate files, in a manner specified by a custom callback.
+            HtmlSaveOptions options = new HtmlSaveOptions
+            {
+                ExportFontResources = true,
+                FontSavingCallback = new HandleFontSaving()
+            };
+
+            // The callback will export .ttf files and saved alongside the output document.
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.SaveExportedFonts.html", options);
+            Assert.AreEqual(10, Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length); //ExSkip
+        }
+
+        /// <summary>
+        /// Prints information about exported fonts, and saves them alongside their output .html.
+        /// </summary>
+        public class HandleFontSaving : IFontSavingCallback
+        {
+            void IFontSavingCallback.FontSaving(FontSavingArgs args)
+            {
+                // Print information for every font resource that is about to be saved.
+                Console.Write($"Font:\t{args.FontFamilyName}");
+                if (args.Bold) Console.Write(", bold");
+                if (args.Italic) Console.Write(", italic");
+                Console.WriteLine($"\nSource:\t{args.OriginalFileName}, {args.OriginalFileSize} bytes\n");
+
+                // The source document can also be accessed from here.
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
+
+                Assert.True(args.IsExportNeeded);
+                Assert.True(args.IsSubsettingNeeded);
+
+                // There are two ways of saving an exported font.
+                // 1 -  Save it to a local file system location determined by a filename:
+                args.FontFileName = args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last();
+
+                // 2 -  Save it to a stream.
+                args.FontStream =
+                    new FileStream(ArtifactsDir + args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last(), FileMode.Create);
+                Assert.False(args.KeepFontStreamOpen);
+            }
+        }
+        //ExEnd
+
         [Test]
         public void HtmlVersion()
         {
@@ -1104,5 +1170,55 @@ namespace ApiExamples
             private int mImageCount;
         }
         //ExEnd
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void PrettyFormat(bool usePrettyFormat)
+        {
+            //ExStart
+            //ExFor:SaveOptions.PrettyFormat
+            //ExSummary:Shows how to enhance the readability of the raw code of a saved .html document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+
+            // Enable pretty format via a SaveOptions object, then save the document in .html to the local file system.
+            HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html);
+            htmlOptions.PrettyFormat = usePrettyFormat;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.PrettyFormat.html", htmlOptions);
+
+            // Enabling pretty format makes the raw html code more readable by adding tab stop and new line characters.  
+            string html = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.PrettyFormat.html");
+
+            Assert.True(usePrettyFormat ? html ==
+                  "<html>\r\n" +
+                      "\t<head>\r\n" +
+                          "\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n" +
+                          "\t\t<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\r\n" +
+                          "\t\t<meta name=\"generator\" content=\"" + $"{BuildVersionInfo.Product} {BuildVersionInfo.Version}" + "\" />\r\n" +
+                          "\t\t<title>\r\n" +
+                          "\t\t</title>\r\n" +
+                      "\t</head>\r\n" +
+                      "\t<body>\r\n" +
+                          "\t\t<div>\r\n" +
+                              "\t\t\t<p style=\"margin-top:0pt; margin-bottom:0pt; font-size:12pt\">\r\n" +
+                                "\t\t\t\t<span style=\"font-family:'Times New Roman'\">Hello world!</span>\r\n" +
+                              "\t\t\t</p>\r\n" +
+                              "\t\t\t<p style=\"margin-top:0pt; margin-bottom:0pt; font-size:12pt\">\r\n" +
+                                "\t\t\t\t<span style=\"font-family:'Times New Roman'; -aw-import:ignore\">&#xa0;</span>\r\n" +
+                              "\t\t\t</p>\r\n" +
+                          "\t\t</div>\r\n" +
+                      "\t</body>\r\n" +
+                  "</html>"
+                : html == "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />" +
+                    "<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" /><meta name=\"generator\" content=\"" +
+                    $"{BuildVersionInfo.Product} {BuildVersionInfo.Version}" + "\" /><title></title></head>" +
+                    "<body><div><p style=\"margin-top:0pt; margin-bottom:0pt; font-size:12pt\">" +
+                    "<span style=\"font-family:'Times New Roman'\">Hello world!</span>" +
+                    "</p><p style=\"margin-top:0pt; margin-bottom:0pt; font-size:12pt\">" +
+                    "<span style=\"font-family:'Times New Roman'; -aw-import:ignore\">&#xa0;</span></p></div></body></html>");
+            //ExEnd
+        }
     }
 }
