@@ -399,7 +399,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.FontSettings
             //ExSummary:Shows how to apply font substitution settings while loading a document. 
-            // Create a FontSettings object that will substitute the "Times New Roman" font with the font "Arvo" from our "MyFonts" folder .
+            // Create a FontSettings object that will substitute the "Times New Roman" font with the font "Arvo" from our "MyFonts" folder.
             FontSettings fontSettings = new FontSettings();
             fontSettings.SetFontsFolder(FontsDir, false);
             fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Times New Roman", "Arvo");

@@ -1200,7 +1200,11 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
 
+#if NETCOREAPP2_1
             Assert.AreEqual(48, warningCallback.Count);
+#else
+            Assert.AreEqual(43, warningCallback.Count);
+#endif
         }
 
         public class RenderCallback : IWarningCallback

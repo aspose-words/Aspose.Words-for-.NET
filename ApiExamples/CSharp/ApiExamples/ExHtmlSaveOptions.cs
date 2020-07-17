@@ -226,9 +226,11 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Document.docx");
 
+            string fontsFolder = ArtifactsDir + "HtmlSaveOptions.ExportFonts.Resources";
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
                 ExportFontResources = true,
+                FontsFolder = fontsFolder,
                 ExportFontsAsBase64 = exportAsBase64
             };
 
@@ -237,14 +239,14 @@ namespace ApiExamples
                 case false:
 
                     doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFonts.False.html", saveOptions);
-                    Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportFonts.False.times.ttf",
+                    Assert.IsNotEmpty(Directory.GetFiles(fontsFolder, "HtmlSaveOptions.ExportFonts.False.times.ttf",
                         SearchOption.AllDirectories));
                     break;
 
                 case true:
 
                     doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFonts.True.html", saveOptions);
-                    Assert.IsEmpty(Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportFonts.True.times.ttf",
+                    Assert.IsEmpty(Directory.GetFiles(fontsFolder, "HtmlSaveOptions.ExportFonts.True.times.ttf",
                         SearchOption.AllDirectories));
                     break;
             }
@@ -573,6 +575,11 @@ namespace ApiExamples
 
             // The callback will export .ttf files and saved alongside the output document.
             doc.Save(ArtifactsDir + "HtmlSaveOptions.SaveExportedFonts.html", options);
+
+            foreach (string t in Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")))
+            {
+                Console.WriteLine(t);
+            }
             Assert.AreEqual(10, Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length); //ExSkip
         }
 
@@ -1019,9 +1026,11 @@ namespace ApiExamples
             // the symbols not used by our document are not represented by the exported fonts, which cuts down file size dramatically
             // Font files of a file size larger than FontResourcesSubsettingSizeThreshold get subsetted, so a value of 0 will apply default full subsetting
             // Setting the value to something large will fully suppress subsetting, which could result in large font files that cover every glyph
+            string fontsFolder = ArtifactsDir + "HtmlSaveOptions.FontSubsetting.Fonts";
             HtmlSaveOptions options = new HtmlSaveOptions
             {
                 ExportFontResources = true,
+                FontsFolder = fontsFolder,
                 FontResourcesSubsettingSizeThreshold = int.MaxValue
             };
 
