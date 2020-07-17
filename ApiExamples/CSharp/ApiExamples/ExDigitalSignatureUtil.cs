@@ -51,11 +51,11 @@ namespace ApiExamples
             //ExSummary:Shows how to remove digital signatures from a digitally signed document.
             // There are two ways of using the DigitalSignatureUtil class to remove digital signatures
             // from a signed document by saving an unsigned copy of it somewhere else in the local file system.
-            // 1 -  Determine the locations of both the signed document, and the unsigned copy by filename strings:
+            // 1 - Determine the locations of both the signed document and the unsigned copy by filename strings:
             DigitalSignatureUtil.RemoveAllSignatures(MyDir + "Digitally signed.docx",
                 ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx");
 
-            // 2 -  Determine the locations of both the signed document, and the unsigned copy by file streams:
+            // 2 - Determine the locations of both the signed document and the unsigned copy by file streams:
             using (Stream streamIn = new FileStream(MyDir + "Digitally signed.docx", FileMode.Open))
             {
                 using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Create))
@@ -81,7 +81,7 @@ namespace ApiExamples
             //ExFor:SignOptions.Comments
             //ExFor:SignOptions.SignTime
             //ExSummary:Shows how to digitally sign documents.
-            // Create an X.509 certificate from an PKCS#12 store, which should contain a private key.
+            // Create an X.509 certificate from a PKCS#12 store, which should contain a private key.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
             // Create a comment and date which will be applied with our new digital signature.
@@ -125,7 +125,7 @@ namespace ApiExamples
             //ExFor:SignOptions.DecryptionPassword
             //ExFor:LoadOptions.Password
             //ExSummary:Shows how to sign encrypted document file.
-            // Create an X.509 certificate from an PKCS#12 store, which should contain a private key.
+            // Create an X.509 certificate from a PKCS#12 store, which should contain a private key.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
             // Create a comment, date, and decryption password which will be applied with our new digital signature.
@@ -143,11 +143,11 @@ namespace ApiExamples
             DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);
             //ExEnd
 
-            // Open encrypted document from a file
+            // Open encrypted document from a file.
             LoadOptions loadOptions = new LoadOptions("docPassword");
             Assert.AreEqual(signOptions.DecryptionPassword, loadOptions.Password);
 
-            // Check that encrypted document was successfully signed
+            // Check that encrypted document was successfully signed.
             Document signedDoc = new Document(outputFileName, loadOptions);
             DigitalSignatureCollection signatures = signedDoc.DigitalSignatures;
 
@@ -185,9 +185,8 @@ namespace ApiExamples
                 DecryptionPassword = "docPassword1"
             };
 
-            // Digitally sign encrypted with "docPassword" document in the specified path
             Assert.That(
-                new TestDelegate(() => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions)),
+                () => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions),
                 Throws.TypeOf<IncorrectPasswordException>(), "The document password is incorrect.");
         }
 

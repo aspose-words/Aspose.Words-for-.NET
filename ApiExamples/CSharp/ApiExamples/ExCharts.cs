@@ -70,7 +70,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a line chart, clear its demo data, and then set a title.
+            // Add a line chart, clear its demo data, and then set a title. // INSP: I think you need to describe why users need to clear series before.
             Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
             chart.Series.Clear();
@@ -106,17 +106,13 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add chart with default data
             Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
 
             ChartSeriesCollection seriesColl = chart.Series;
             seriesColl.Clear();
 
-            // Create category names array, second category will be null
             string[] categories = { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
-
-            // Adding new series with empty (double.NaN) values
             seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
             seriesColl.Add("AW Series 2", categories, new double[] { 2, 3, double.NaN, 5, 6, 7 });
 
@@ -135,17 +131,13 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add chart with default data
             Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
 
             ChartSeriesCollection seriesColl = chart.Series;
             seriesColl.Clear();
 
-            // Create category names array, second category will be null
             string[] categories = { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
-
-            // Adding new series with empty (double.NaN) values
             seriesColl.Add("AW Series 1", categories, new[] { 1, 2, double.NaN, 4, 5, 6 });
             seriesColl.Add("AW Series 2", categories, new[] { 2, 3, double.NaN, 5, 6, 7 });
             seriesColl.Add("AW Series 3", categories, new[] { double.NaN, 4, 5, double.NaN, 7, 8 });
@@ -403,13 +395,10 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert chart
             Shape shape = builder.InsertChart(chartType, 500, 300);
             Chart chart = shape.Chart;
-
-            // Clear demo data
             chart.Series.Clear();
-
+            
             chart.Series.Add("Aspose Test Series",
                 new[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
@@ -424,21 +413,18 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert chart
             Shape shape = builder.InsertChart(ChartType.Surface3D, 500, 300);
             Chart chart = shape.Chart;
-
-            // Clear demo data
             chart.Series.Clear();
-
+            
             chart.Series.Add("Aspose Test Series 1",
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
-
+            
             chart.Series.Add("Aspose Test Series 2",
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 900000, 50000, 1100000, 400000, 2500000 });
-
+            
             chart.Series.Add("Aspose Test Series 3",
                 new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 500000, 820000, 1500000, 400000, 100000 });
@@ -565,7 +551,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            // Create a line chart and verify its demo data series.
+            // Create a line chart and verify its demo data series. // INSP: A lot of simple comments which repeat the code, I think we can remove them and leave only needed describes.
             Shape chartShape = builder.InsertChart(ChartType.Line, 400, 300);
             Chart chart = chartShape.Chart;
 
@@ -621,7 +607,6 @@ namespace ApiExamples
                 series.DataLabels[i].IsHidden = false;
                 Assert.False(series.DataLabels[i].ShowDataLabelsRange);
 
-                // Apply number format and separator
                 series.DataLabels[i].NumberFormat.FormatCode = numberFormat;
                 series.DataLabels[i].Separator = separator;
 
@@ -670,7 +655,7 @@ namespace ApiExamples
             foreach (ChartSeries series in chart.Series) 
                 ApplyDataPoints(series, 4, MarkerSymbol.Diamond, 15);
 
-            // Smooth out the line that represents the first data series. 
+            // Smooth out the line that represents the first data series.
             chart.Series[0].Smooth = true;
 
             // Verify that data points for the first series will not invert their colors if the value is negative.
@@ -685,7 +670,7 @@ namespace ApiExamples
             // For a cleaner looking graph, we can remove data points individually.
             chart.Series[1].DataPoints.RemoveAt(2);
 
-            // We can also strip an entire series of its data points at once.
+            // We can also strip an entire series of data points at once.
             chart.Series[2].DataPoints.Clear();
 
             doc.Save(ArtifactsDir + "Charts.ChartDataPoint.docx");
@@ -834,7 +819,7 @@ namespace ApiExamples
 
             // Each series will need two decimal arrays of equal length.
             // The first array contains X-values, and the second contains corresponding Y-values
-            // of points to be be plotted on the graph.
+            // of points to be plotted on the graph. // INSP: "be plotted" passive voice
             chart.Series.Add("Series 1", 
                 new[] { 3.1, 3.5, 6.3, 4.1, 2.2, 8.3, 1.2, 3.6 }, 
                 new[] { 3.1, 6.3, 4.6, 0.9, 8.5, 4.2, 2.3, 9.9 });
@@ -850,7 +835,7 @@ namespace ApiExamples
 
             // Each series will need three decimal arrays of equal length.
             // The first array contains X-values, the second contains corresponding Y-values,
-            // and the third contains diameters of points to be plotted on the graph.
+            // and the third contains diameters of points to be plotted on the graph. // INSP: "be plotted" passive voice
             chart.Series.Add("Series 1", 
                 new [] { 1.1, 5.0, 9.8 }, 
                 new [] { 1.2, 4.9, 9.9 }, 
@@ -892,7 +877,7 @@ namespace ApiExamples
             Chart chart = chartShape.Chart;
 
             // Each series has four decimal values; one for each of the four categories.
-            // This data will be represented by four clusters of three columns.
+            // Four clusters of three columns will represent this data.
             ChartSeriesCollection chartData = chart.Series;
             Assert.AreEqual(3, chartData.Count); //ExSkip
 
@@ -908,7 +893,7 @@ namespace ApiExamples
             // These are the names of the categories in the chart.
             string[] categories = { "Category 1", "Category 2", "Category 3", "Category 4" };
 
-            // We can add a series with new values for existing categories. 
+            // We can add a series with new values for existing categories.
             // This chart will now contain four clusters of four columns.
             chart.Series.Add("Series 4", categories, new[] { 4.4, 7.0, 3.5, 2.1 });
             Assert.AreEqual(4, chartData.Count); //ExSkip
@@ -924,7 +909,7 @@ namespace ApiExamples
 
             // We can also clear all of the chart's data at once with this method.
             // When creating a new chart, this is the way to wipe all the demo data
-            // before we can begin working on a clean chart.
+            // before we can begin working on a blank chart.
             chartData.Clear();
             Assert.AreEqual(0, chartData.Count); //ExSkip
             //ExEnd
@@ -954,7 +939,7 @@ namespace ApiExamples
 
             // The scaling of the X-axis is linear by default,
             // displaying evenly incrementing values that cover our X-value range (0, 1, 2, 3...).
-            // A linear axis is not ideal for our Y-values,
+            // A linear axis is not ideal for our Y-values
             // since the points with the smaller Y-values will be harder to read.
             // A logarithmic scaling with a base of 20 (1, 20, 400, 8000...)
             // will spread the plotted points, allowing us to read their values on the chart more easily.
@@ -990,12 +975,12 @@ namespace ApiExamples
             chart.Series.Clear();
 
             // Add a series with an array of X-values,
-            // and an array of corresponding Y-values for points in the scatter chart.
+            // and a variety of corresponding Y-values for points in the scatter chart. // INSP: Grammarly suggests not to use "an array" (or other words) two times in one sentence. What do you think about that?
             chart.Series.Add("Series 1", 
                 new[] { 1.1, 5.4, 7.9, 3.5, 2.1, 9.7 }, 
                 new[] { 2.1, 0.3, 0.6, 3.3, 1.4, 1.9 });
 
-            // By default, the axis bounds are automatically defined,
+            // By default, the axis bounds are automatically defined, // INSP: "are automatically defined" passive voice
             // so that both X and Y-axis ranges are just big enough to encompass every value of every series.
             Assert.True(chart.AxisX.Scaling.Minimum.IsAuto);
 
@@ -1023,9 +1008,9 @@ namespace ApiExamples
 
             chart.Series.Add("Series 1", dates, new[] { 3.0, 4.7, 5.9, 7.1, 8.9 });
 
-            // We can set axis bounds in the form of dates as well, limiting the chart to a time period. 
+            // We can set axis bounds in the form of dates as well, limiting the chart to a period.
             // Setting the range to 1980-1990 will cause the two of the series values
-            // that are outside of the range to be omitted from the graph.
+            // that are outside of the range to be omitted from the graph. // INSP: "be omitted" passive voice
             chart.AxisX.Scaling.Minimum = new AxisBound(new DateTime(1980, 1, 1));
             chart.AxisX.Scaling.Maximum = new AxisBound(new DateTime(1990, 1, 1));
 
@@ -1078,8 +1063,7 @@ namespace ApiExamples
             ChartLegend legend = chart.Legend;
             legend.Position = LegendPosition.TopRight;
 
-            // Give other chart elements, such as the graph,
-            // more room by allowing them to overlap the legend.
+            // Give other chart elements, such as the graph, more room by allowing them to overlap the legend.
             legend.Overlay = true;
 
             doc.Save(ArtifactsDir + "Charts.ChartLegend.docx");
@@ -1114,7 +1098,7 @@ namespace ApiExamples
 
             // For column charts, the Y-axis crosses at zero by default,
             // which means that columns for all values below zero point down to represent negative values.
-            // We can set a different value for the Y-axis crossing. In this case we will set it to 3.
+            // We can set a different value for the Y-axis crossing. In this case, we will set it to 3.
             ChartAxis axis = chart.AxisX;
             axis.Crosses = AxisCrosses.Custom;
             axis.CrossesAt = 3;

@@ -27,7 +27,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a comment with an author, a date, and the comment text.
+            // Create a comment with an author, a date, and the comment text. // INSP: A lot of comments repeat the code.
             Comment comment = new Comment(doc, "John Doe", "J.D.", DateTime.Now);
             comment.SetText("My comment.");
             
@@ -42,7 +42,7 @@ namespace ApiExamples
             // Comments and replies are both Comment nodes.
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Comment, true).Count);
 
-            // Comments that are not replies to other comments are "top-level", and have no ancestor.
+            // Comments that do not reply to other comments are "top-level", and have no ancestor.
             Assert.Null(comment.Ancestor);
 
             // Replies have an ancestor top-level comment.
@@ -105,7 +105,9 @@ namespace ApiExamples
             // Add a comment, and then add a reply to it.
             Comment comment = new Comment(doc, "John Doe", "J.D.", DateTime.Now);
             comment.SetText("My comment.");
+
             doc.FirstSection.Body.FirstParagraph.AppendChild(comment);
+            
             comment.AddReply("Joe Bloggs", "J.B.", DateTime.Now, "New reply");
             comment.AddReply("Joe Bloggs", "J.B.", DateTime.Now, "Another reply");
 
@@ -139,16 +141,16 @@ namespace ApiExamples
             comment.SetText("Fix the spelling error!");
             doc.FirstSection.Body.FirstParagraph.AppendChild(comment);
 
-            // Comments have a "Done" flag, which by default is false. 
-            // If a comment suggests that a change could be made within the document,
+            // Comments have a "Done" flag, which by default, is false. 
+            // If a comment suggests that a change could be made within the document, // INSP: "be made" passive voice
             // we can make the change, and then use that flag to indicate the correction.
             Assert.False(comment.Done);
 
             doc.FirstSection.Body.FirstParagraph.Runs[0].Text = "Hello world!";
             comment.Done = true;
 
-            // Comments that are done will differentiate themselves
-            // from ones that are not done with a faded text color.
+            // Comments that are done will differentiate themselves // INSP: "are done" passive voice
+            // from ones that are not done with a faded text color. // INSP: "are not done" passive voice
             comment = new Comment(doc, "John Doe", "J.D.", DateTime.Now);
             comment.SetText("Add text to this paragraph.");
             builder.CurrentParagraph.AppendChild(comment);
@@ -185,7 +187,6 @@ namespace ApiExamples
         {
             Document doc = new Document();
             
-            // Create a new comment.
             Comment newComment = new Comment(doc)
             {
                 Author = "VDeryushev",
@@ -195,7 +196,7 @@ namespace ApiExamples
 
             newComment.SetText("Comment regarding text.");
 
-            // Add text to the document, warp it in a comment range, and then add our comment.
+            // Add text to the document, warp it in a comment range, and then add your comment.
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
             para.AppendChild(new CommentRangeStart(doc, newComment.Id));
             para.AppendChild(new Run(doc, "Commented text."));

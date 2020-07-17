@@ -24,7 +24,7 @@ namespace ApiExamples
             //ExFor:License.SetLicense(String)
             //ExSummary:Shows how initialize a license for Aspose.Words using a license file in the local file system.
             // We can set the license for Aspose.Words
-            // by passing the full local file system filename of an existing and valid license file.
+            // bypassing the full local file system filename of an existing and valid license file.
             string licenseFileName = Path.Combine(LicenseDir, "Aspose.Words.NET.lic");
 
             License license = new License();
@@ -35,8 +35,8 @@ namespace ApiExamples
             File.Copy(licenseFileName, licenseCopyFileName);
 
             // If we pass the name of a file without a path,
-            // the SetLicense will search a number of local file system locations for this file.
-            // One of those locations will be the "bin" folder, where we copied the license file to.
+            // the SetLicense will search several local file system locations for this file.
+            // One of those locations will be the "bin" folder, where we copied the license file.
             license.SetLicense("Aspose.Words.NET.lic");
             //ExEnd
 

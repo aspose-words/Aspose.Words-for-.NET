@@ -79,7 +79,7 @@ namespace ApiExamples
             builder.Write("Before space." + ControlChar.SpaceChar + "After space.");
 
             // Add an NBSP, which is a non-breaking space.
-            // Unlike the regular space, this space can't have an automatic line break at its position 
+            // Unlike the regular space, this space can't have an automatic line break at its position.
             builder.Write("Before space." + ControlChar.NonBreakingSpace + "After space.");
 
             // Add a tab character.
@@ -88,7 +88,7 @@ namespace ApiExamples
             // Add a line break.
             builder.Write("Before line break." + ControlChar.LineBreak + "After line break.");
 
-            // This adds a new line and starts a new paragraph.
+            // This adds a new line and starts a new paragraph. // INSP: Do not use "This", just leave "Adds"
             Assert.AreEqual(1, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
             builder.Write("Before line feed." + ControlChar.LineFeed + "After line feed.");
             Assert.AreEqual(2, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
@@ -124,7 +124,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ControlChar.InsertControlChars.docx");
 
-            // There are char and string counterparts for most characters
+            // There are char and string counterparts for most characters.
             Assert.AreEqual(Convert.ToChar(ControlChar.Cell), ControlChar.CellChar);
             Assert.AreEqual(Convert.ToChar(ControlChar.NonBreakingSpace), ControlChar.NonBreakingSpaceChar);
             Assert.AreEqual(Convert.ToChar(ControlChar.Tab), ControlChar.TabChar);

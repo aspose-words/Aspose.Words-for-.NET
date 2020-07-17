@@ -27,8 +27,8 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
-            // This object contains a large list of flags unique to each document
-            // that allow us to facilitate backwards compatibility with older versions of Microsoft Word. 
+            // This object contains an extensive list of flags unique to each document
+            // that allow us to facilitate backward compatibility with older versions of Microsoft Word.
             CompatibilityOptions options = doc.CompatibilityOptions;
 
             // Print the default settings for a blank document.
