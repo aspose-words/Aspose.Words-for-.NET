@@ -366,13 +366,12 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.Encoding
             //ExSummary:Shows how to set the encoding with which to open a document.
-            // A FileFormatInfo object will detect this file as not being encoded in UTF-7.
+            // A FileFormatInfo object will detect this file as being encoded in something other than UTF-7.
             FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "Encoded in UTF-7.txt");
 
             Assert.AreNotEqual(Encoding.UTF7, fileFormatInfo.Encoding);
 
-            // Hence, if we load the document with no loading configurations,
-            // it will be treated as a UTF-8-encoded document.
+            // If we load the document with no loading configurations, it will be treated as a UTF-8-encoded document.
             Document doc = new Document(MyDir + "Encoded in UTF-7.txt");
 
             // The contents, parsed in UTF-8, create a valid string.
@@ -818,41 +817,24 @@ namespace ApiExamples
         [Test]
         public void AppendAllDocumentsInFolder()
         {
-            string path = ArtifactsDir + "Document.AppendAllDocumentsInFolder.doc";
-
-            // Delete the file that was created by the previous run as I don't want to append it again
-            if (File.Exists(path))
-                File.Delete(path);
-
             //ExStart
             //ExFor:Document.AppendDocument(Document, ImportFormatMode)
-            //ExSummary:Shows how to use the AppendDocument method to combine all the documents in a folder to the end of a template document.
-            // All the documents in a folder will be appended to this document
+            //ExSummary:Shows how to append all the documents in a folder to the end of a template document.
+            // Create the document that we will append other documents to.
             Document baseDoc = new Document();
 
-            // Add some content to the template
             DocumentBuilder builder = new DocumentBuilder(baseDoc);
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
             builder.Writeln("Template Document");
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Normal;
             builder.Writeln("Some content here");
-
-            // Gather the files which will be appended to our template document
-            // In this case we add the optional parameter to include the search only for files with the ".doc" extension
-            ArrayList files = new ArrayList(Directory.GetFiles(MyDir, "*.doc")
-                .Where(file => file.EndsWith(".doc", StringComparison.CurrentCultureIgnoreCase)).ToArray());
-            Assert.AreEqual(7, files.Count); //ExSkip
-
-            // The list of files may come in any order
-            // We can sort the files by name so the documents are enumerated alphabetically
-            files.Sort();
             Assert.AreEqual(5, baseDoc.Styles.Count); //ExSkip
             Assert.AreEqual(1, baseDoc.Sections.Count); //ExSkip
 
-            // Iterate through every file in the directory and append each one to the end of the template document
-            foreach (string fileName in files)
+            // Append all unencrypted documents with the .doc extension
+            // from our local file system directory to the base document.
+            foreach (string fileName in Directory.GetFiles(MyDir, "*.doc"))
             {
-                // If the document is encrypted, skip it
                 FileFormatInfo info = FileFormatUtil.DetectFileFormat(fileName);
                 if (info.IsEncrypted)
                     continue;
@@ -861,8 +843,8 @@ namespace ApiExamples
                 baseDoc.AppendDocument(subDoc, ImportFormatMode.UseDestinationStyles);
             }
 
-            // Save the combined document to disk
-            baseDoc.Save(path);
+            // Save the combined document to the local file system.
+            baseDoc.Save(ArtifactsDir + "Document.AppendAllDocumentsInFolder.doc");
             //ExEnd
 
             Assert.AreEqual(7, baseDoc.Styles.Count);
@@ -875,18 +857,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.JoinRunsWithSameFormatting
             //ExSummary:Shows how to join runs in a document to reduce unneeded runs.
-            // Open a document which contains adjacent runs of text with identical formatting
-            // This can, for example, occur if we edit one paragraph many times
+            // Open a document which contains adjacent runs of text with identical formatting,
+            // which commonly occurs if we edit the same paragraph multiple times in Microsoft Word.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Get the number of runs our document contains
+            // This document has a lot of runs.
+            // If any number of them are adjacent with identical formatting, the document may be simplified.
             Assert.AreEqual(317, doc.GetChildNodes(NodeType.Run, true).Count);
 
-            // We can merge all nearby runs with the same formatting to reduce that number by calling JoinRunsWithSameFormatting()
-            // This method will also notify us of the number of run joins that took place
+            // Combine such runs with this method.
             Assert.AreEqual(121, doc.JoinRunsWithSameFormatting());
 
-            // Get the number of runs after joining, which, together with the number of joins should add up to the original number of runs
+            // The number of joins and the number of runs we have after the join
+            // should add up the the number of runs we had originally.
             Assert.AreEqual(196, doc.GetChildNodes(NodeType.Run, true).Count);
             //ExEnd
         }
