@@ -70,7 +70,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a line chart, clear its demo data, and then set a title. // INSP: I think you need to describe why users need to clear series before.
+            // Add a line chart, then clear its demo data series to start with a clean chart,
+            // and then set a title.
             Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
             chart.Series.Clear();
@@ -172,7 +173,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a column chart, and clear its demo data.
+            // Add a column chart, and then clear its demo data series to start with a clean chart.
             Shape shape = builder.InsertChart(ChartType.Column, 500, 300);
             Chart chart = shape.Chart;
             chart.Series.Clear();
@@ -256,7 +257,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a line chart, and clear its demo data.
+            // Add a line chart, and clear its demo data series to start with a clean chart.
             Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
             chart.Series.Clear();
@@ -323,7 +324,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a line chart, and clear its demo data. 
+            // Add a line chart, and then clear its demo data series to start with a clean chart.
             Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
             chart.Series.Clear();
@@ -359,7 +360,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a column chart, and clear its demo data. 
+            // Add a column chart, and then clear its demo data series to start with a clean chart.
             Shape shape = builder.InsertChart(ChartType.Column, 500, 300);
             Chart chart = shape.Chart;
             chart.Series.Clear();
@@ -445,7 +446,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a bubble chart, and clear its demo data.
+            // Add a bubble chart, and then clear its demo data series to start with a clean chart.
             Chart chart = builder.InsertChart(ChartType.Bubble, 500, 300).Chart;
             chart.Series.Clear();
 
@@ -488,7 +489,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a bubble chart, and clear its demo data.
+            // Add a bubble chart, and then clear its demo data series to start with a clean chart.
             Chart chart = builder.InsertChart(ChartType.Pie, 500, 300).Chart;
             chart.Series.Clear();
 
@@ -551,7 +552,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            // Create a line chart and verify its demo data series. // INSP: A lot of simple comments which repeat the code, I think we can remove them and leave only needed describes.
             Shape chartShape = builder.InsertChart(ChartType.Line, 400, 300);
             Chart chart = chartShape.Chart;
 
@@ -642,7 +642,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a line chart, and verify its demo data.
             Shape shape = builder.InsertChart(ChartType.Line, 500, 350);
             Chart chart = shape.Chart;
 
@@ -701,7 +700,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a pie chart, and verify its demo data.
             Shape shape = builder.InsertChart(ChartType.Pie, 500, 350);
             Chart chart = shape.Chart;
 
@@ -737,7 +735,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a 3D bubble chart, and verify its demo data.
             Shape shape = builder.InsertChart(ChartType.Bubble3D, 500, 350);
             Chart chart = shape.Chart;
 
@@ -819,7 +816,7 @@ namespace ApiExamples
 
             // Each series will need two decimal arrays of equal length.
             // The first array contains X-values, and the second contains corresponding Y-values
-            // of points to be plotted on the graph. // INSP: "be plotted" passive voice
+            // of data points on the chart's graph.
             chart.Series.Add("Series 1", 
                 new[] { 3.1, 3.5, 6.3, 4.1, 2.2, 8.3, 1.2, 3.6 }, 
                 new[] { 3.1, 6.3, 4.6, 0.9, 8.5, 4.2, 2.3, 9.9 });
@@ -879,7 +876,8 @@ namespace ApiExamples
             // Each series has four decimal values; one for each of the four categories.
             // Four clusters of three columns will represent this data.
             ChartSeriesCollection chartData = chart.Series;
-            Assert.AreEqual(3, chartData.Count); //ExSkip
+
+            Assert.AreEqual(3, chartData.Count);
 
             // Print the name of every series in the chart.
             using (IEnumerator<ChartSeries> enumerator = chart.Series.GetEnumerator())
@@ -927,7 +925,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a scatter chart, and clear its demo data.
+            // Add a scatter chart, and then clear its demo data series to start with a clean chart.
             Shape chartShape = builder.InsertChart(ChartType.Scatter, 450, 300);
             Chart chart = chartShape.Chart;
             chart.Series.Clear();
@@ -969,19 +967,19 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a scatter chart, and remove demo data.
+            // Add a scatter chart, and then clear its demo data series to start with a clean chart.
             Shape chartShape = builder.InsertChart(ChartType.Scatter, 450, 300);
             Chart chart = chartShape.Chart;
             chart.Series.Clear();
 
-            // Add a series with an array of X-values,
-            // and a variety of corresponding Y-values for points in the scatter chart. // INSP: Grammarly suggests not to use "an array" (or other words) two times in one sentence. What do you think about that?
+            // Add a series with two decimal arrays. The first array contains the X-values,
+            // and the second contains corresponding Y-values for points in the scatter chart.
             chart.Series.Add("Series 1", 
                 new[] { 1.1, 5.4, 7.9, 3.5, 2.1, 9.7 }, 
                 new[] { 2.1, 0.3, 0.6, 3.3, 1.4, 1.9 });
 
-            // By default, the axis bounds are automatically defined, // INSP: "are automatically defined" passive voice
-            // so that both X and Y-axis ranges are just big enough to encompass every value of every series.
+            // By default, default scaling is applied to the graph's X and Y-axes,
+            // so that both their ranges are big enough to encompass every X and Y-value of every series.
             Assert.True(chart.AxisX.Scaling.Minimum.IsAuto);
 
             // We can define our own axis bounds.
@@ -1009,8 +1007,8 @@ namespace ApiExamples
             chart.Series.Add("Series 1", dates, new[] { 3.0, 4.7, 5.9, 7.1, 8.9 });
 
             // We can set axis bounds in the form of dates as well, limiting the chart to a period.
-            // Setting the range to 1980-1990 will cause the two of the series values
-            // that are outside of the range to be omitted from the graph. // INSP: "be omitted" passive voice
+            // Setting the range to 1980-1990 will omit the two of the series values
+            // that are outside of the range from the graph.
             chart.AxisX.Scaling.Minimum = new AxisBound(new DateTime(1980, 1, 1));
             chart.AxisX.Scaling.Maximum = new AxisBound(new DateTime(1990, 1, 1));
 
@@ -1050,7 +1048,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a line chart, and verify its demo data. 
             Shape shape = builder.InsertChart(ChartType.Line, 450, 300);
             Chart chart = shape.Chart;
 
@@ -1087,7 +1084,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a column chart, and verify its demo data.
             Shape shape = builder.InsertChart(ChartType.Column, 450, 250);
             Chart chart = shape.Chart;
 
@@ -1134,7 +1130,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a scatter chart, and verify its demo data.
             Shape shape = builder.InsertChart(ChartType.Scatter, 450, 250);
             Chart chart = shape.Chart;
 

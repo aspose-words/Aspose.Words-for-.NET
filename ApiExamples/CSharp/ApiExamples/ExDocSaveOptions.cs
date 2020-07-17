@@ -33,8 +33,8 @@ namespace ApiExamples
 
             DocSaveOptions options = new DocSaveOptions(SaveFormat.Doc);
 
-            // Set a password with which the document will be protected during loading by Microsoft Word or Aspose.Words. //INSP: "be protected" passive voice
-            // Note that the document is not in any way encrypted.
+            // Set a password which will protect the loading of the document by Microsoft Word or Aspose.Words.
+            // Note that this does not encrypt the contents of the document in any way.
             options.Password = "MyPassword";
 
             // If the document contains a routing slip, we can preserve it while saving by setting this flag to true.
@@ -109,8 +109,9 @@ namespace ApiExamples
             //ExSummary:Shows how to update a document's "Last printed" property when saving.
             Document doc = new Document();
 
-            // This flag determines whether the last printed date, which is stored in the document's built-in properties, is updated. //INSP: "is stored" passive voice
-            // If it is, then the date when the document was saved with this SaveOptions object is used as the print date. //INSP: "was saved" passive voice
+            // This flag determines whether the last printed date, which is a built-in property, is updated.
+            // If so, then the date of the document's most recent save operation
+            // with this SaveOptions object passed as a parameter is used as the print date.
             DocSaveOptions saveOptions = new DocSaveOptions();
             saveOptions.UpdateLastPrintedProperty = isUpdateLastPrintedProperty;
 

@@ -88,7 +88,7 @@ namespace ApiExamples
             // Add a line break.
             builder.Write("Before line break." + ControlChar.LineBreak + "After line break.");
 
-            // This adds a new line and starts a new paragraph. // INSP: Do not use "This", just leave "Adds"
+            // Add a new line and starts a new paragraph.
             Assert.AreEqual(1, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
             builder.Write("Before line feed." + ControlChar.LineFeed + "After line feed.");
             Assert.AreEqual(2, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);

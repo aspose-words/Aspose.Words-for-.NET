@@ -27,7 +27,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a comment with an author, a date, and the comment text. // INSP: A lot of comments repeat the code.
             Comment comment = new Comment(doc, "John Doe", "J.D.", DateTime.Now);
             comment.SetText("My comment.");
             
@@ -72,7 +71,6 @@ namespace ApiExamples
             //ExSummary:Shows how to print all of a document's comments and their replies.
             Document doc = new Document(MyDir + "Comments.docx");
 
-            // Get all comment nodes from the document into a collection.
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
             Assert.AreEqual(12, comments.Count); //ExSkip
 
@@ -102,7 +100,6 @@ namespace ApiExamples
             //ExSummary:Shows how to remove comment replies.
             Document doc = new Document();
 
-            // Add a comment, and then add a reply to it.
             Comment comment = new Comment(doc, "John Doe", "J.D.", DateTime.Now);
             comment.SetText("My comment.");
 
@@ -142,15 +139,15 @@ namespace ApiExamples
             doc.FirstSection.Body.FirstParagraph.AppendChild(comment);
 
             // Comments have a "Done" flag, which by default, is false. 
-            // If a comment suggests that a change could be made within the document, // INSP: "be made" passive voice
-            // we can make the change, and then use that flag to indicate the correction.
+            // If a comment suggests that a we make a change within the document,
+            // we can apply the change, and then also use that flag to indicate the correction.
             Assert.False(comment.Done);
 
             doc.FirstSection.Body.FirstParagraph.Runs[0].Text = "Hello world!";
             comment.Done = true;
 
-            // Comments that are done will differentiate themselves // INSP: "are done" passive voice
-            // from ones that are not done with a faded text color. // INSP: "are not done" passive voice
+            // Comments that are "done" will differentiate themselves
+            // from ones that are not "done" with a faded text color.
             comment = new Comment(doc, "John Doe", "J.D.", DateTime.Now);
             comment.SetText("Add text to this paragraph.");
             builder.CurrentParagraph.AppendChild(comment);
