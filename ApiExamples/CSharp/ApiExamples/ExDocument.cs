@@ -861,11 +861,11 @@ namespace ApiExamples
             // which commonly occurs if we edit the same paragraph multiple times in Microsoft Word.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // This document has a lot of runs.
-            // If any number of them are adjacent with identical formatting, the document may be simplified.
+            // If any number of these runs are adjacent with identical formatting,
+            // then the document may be simplified.
             Assert.AreEqual(317, doc.GetChildNodes(NodeType.Run, true).Count);
 
-            // Combine such runs with this method.
+            // Combine such runs with this method, and verify the number of run joins that will take place.
             Assert.AreEqual(121, doc.JoinRunsWithSameFormatting());
 
             // The number of joins and the number of runs we have after the join
@@ -881,13 +881,14 @@ namespace ApiExamples
             //ExFor:Document.DefaultTabStop
             //ExFor:ControlChar.Tab
             //ExFor:ControlChar.TabChar
-            //ExSummary:Shows how to change default tab positions for the document and inserts text with some tab characters.
+            //ExSummary:Shows how to set a custom interval for tab stop positions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set default tab stop to 72 points (1 inch)
+            // Set tab stops to appear every 72 points (1 inch).
             builder.Document.DefaultTabStop = 72;
 
+            // Each tab character snaps the text after it to the next closest tab stop position.
             builder.Writeln("Hello" + ControlChar.Tab + "World!");
             builder.Writeln("Hello" + ControlChar.TabChar + "World!");
             //ExEnd
@@ -902,10 +903,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Clone
             //ExSummary:Shows how to deep clone a document.
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Hello world!");
+
+            // Cloning will produce a new document with the same contents as the original,
+            // but with a unique copy of each of the original document's nodes.
             Document clone = doc.Clone();
 
-            Assert.AreNotEqual(doc, clone);
+            Assert.AreEqual(doc.FirstSection.Body.FirstParagraph.Runs[0].GetText(), 
+                clone.FirstSection.Body.FirstParagraph.Runs[0].Text);
+            Assert.AreNotEqual(doc.FirstSection.Body.FirstParagraph.Runs[0].GetHashCode(),
+                clone.FirstSection.Body.FirstParagraph.Runs[0].GetHashCode());
             //ExEnd
         }
 
@@ -917,31 +927,31 @@ namespace ApiExamples
             //ExFor:FieldOptions
             //ExFor:FieldOptions.FieldUpdateCultureSource
             //ExFor:FieldUpdateCultureSource
-            //ExSummary:Shows how to specify where the culture used for date formatting during field update and mail merge is chosen from.
+            //ExSummary:Shows how to specify where the culture used for date formatting during a field update or mail merge is sourced from.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert two merge fields with German locale
+            // Insert two merge fields with German locale.
             builder.Font.LocaleId = 1031;
             builder.InsertField("MERGEFIELD Date1 \\@ \"dddd, d MMMM yyyy\"");
             builder.Write(" - ");
             builder.InsertField("MERGEFIELD Date2 \\@ \"dddd, d MMMM yyyy\"");
 
-            // Store the current culture in a variable and explicitly set it to US English
+            // Set the current culture to US English after preserving its original value in a variable.
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
 
-            // Execute a mail merge for the first MERGEFIELD using the current culture (US English) for date formatting
+            // This merge will use the current thread's culture to format the date, which will be US English.
             doc.MailMerge.Execute(new[] { "Date1" }, new object[] { new DateTime(2020, 1, 01) });
 
-            // Execute a mail merge for the second MERGEFIELD using the field's culture (German) for date formatting
+            // Configure the next merge to source its culture value from the field code. The value of that culture will be German.
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
             doc.MailMerge.Execute(new[] { "Date2" }, new object[] { new DateTime(2020, 1, 01) });
 
-            // The first MERGEFIELD has received a date formatted in English, while the second one is in German
+            // The first merge result contains a date formatted in English, while the second one is in German.
             Assert.AreEqual("Wednesday, 1 January 2020 - Mittwoch, 1 Januar 2020", doc.Range.Text.Trim());
 
-            // Restore the original culture
+            // Restore the original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
             //ExEnd
         }
@@ -955,14 +965,13 @@ namespace ApiExamples
             //ExSummary:Shows the difference between calling the GetText and ToString methods on a node.
             Document doc = new Document();
 
-            // Enter a field into the document
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertField("MERGEFIELD Field");
 
-            // GetText will retrieve all field codes and special characters
+            // GetText will retrieve the visible text as well as field codes and special characters.
             Assert.AreEqual("\u0013MERGEFIELD Field\u0014«Field»\u0015\u000c", doc.GetText());
 
-            // ToString will give us the plaintext version of the document in the save format we put into the parameter
+            // ToString will give us the document's appearance if saved to a passed save format.
             Assert.AreEqual("«Field»\r\n", doc.ToString(SaveFormat.Text));
             //ExEnd
         }
@@ -998,33 +1007,42 @@ namespace ApiExamples
             //ExFor:Document.Unprotect
             //ExFor:Document.Unprotect(String)
             //ExSummary:Shows how to protect a document.
-            // Create a new document and protect it with a password
             Document doc = new Document();
             doc.Protect(ProtectionType.ReadOnly, "password");
+
             Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType);
 
-            // If we open this document with Microsoft Word and wish to edit it, 
-            // we will first need to stop the protection, which can only be done with the password
+            // If we open this document with Microsoft Word with the intention of editing it, 
+            // we will need to apply the password to get through the protection.
             doc.Save(ArtifactsDir + "Document.Protect.docx");
 
-            // Note that the protection only applies to Microsoft Word users opening out document
-            // The document can still be opened and edited programmatically without a password, despite its protection status
-            // Encryption offers a more robust option for protecting document content
+            // Note that the protection only applies to Microsoft Word users opening our document.
+            // The document is not in any way encrypted, and can be opened and edited programmatically without a password.
             Document protectedDoc = new Document(ArtifactsDir + "Document.Protect.docx");
+
             Assert.AreEqual(ProtectionType.ReadOnly, protectedDoc.ProtectionType);
 
             DocumentBuilder builder = new DocumentBuilder(protectedDoc);
             builder.Writeln("Text added to a protected document.");
             Assert.AreEqual("Text added to a protected document.", protectedDoc.Range.Text.Trim()); //ExSkip
 
-            // Documents can have protection removed either with no password, or with the correct password
+            // There are two ways of removing protection from a document.
+            // 1 -  With no password:
             doc.Unprotect();
+
             Assert.AreEqual(ProtectionType.NoProtection, doc.ProtectionType);
 
-            doc.Protect(ProtectionType.ReadOnly, "newPassword");
-            doc.Unprotect("wrongPassword"); //ExSkip
-            Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType); //ExSkip
-            doc.Unprotect("newPassword");
+            // 2 -  With the correct password:
+            doc.Protect(ProtectionType.ReadOnly, "NewPassword");
+
+            Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType);
+
+            doc.Unprotect("WrongPassword");
+
+            Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType);
+
+            doc.Unprotect("NewPassword");
+
             Assert.AreEqual(ProtectionType.NoProtection, doc.ProtectionType);
             //ExEnd
         }
