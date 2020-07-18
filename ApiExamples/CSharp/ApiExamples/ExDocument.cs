@@ -1111,23 +1111,22 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.PageCount
-            //ExSummary:Shows how to invoke page layout and retrieve the number of pages in the document.
+            //ExSummary:Shows how to count the number of pages in the document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert text spanning 3 pages
             builder.Write("Page 1");
             builder.InsertBreak(BreakType.PageBreak);
             builder.Write("Page 2");
             builder.InsertBreak(BreakType.PageBreak);
             builder.Write("Page 3");
 
-            // Get the page count
+            // Verify the expected page count of the document.
             Assert.AreEqual(3, doc.PageCount);
 
-            // Getting the PageCount property invoked the document's page layout to calculate the value
-            // This operation will not need to be re-done when rendering the document to a save format like .pdf,
-            // which can save time with larger documents
+            // Getting the PageCount property invoked the document's page layout to calculate the value.
+            // This operation will not need to be re-done when rendering the document to a fixed-page save format,
+            // such as .pdf. This can save some time, especially with more complex documents.
             doc.Save(ArtifactsDir + "Document.GetPageCount.pdf");
             //ExEnd
         }
@@ -1146,30 +1145,29 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            // Add a paragraph of text to the document
             builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
                             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
             builder.Write("Ut enim ad minim veniam, " +
                             "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
 
-            // Document metrics are not tracked in code in real time
+            // Document metrics are not tracked in real time.
             Assert.AreEqual(0, doc.BuiltInDocumentProperties.Characters);
             Assert.AreEqual(0, doc.BuiltInDocumentProperties.Words);
             Assert.AreEqual(1, doc.BuiltInDocumentProperties.Paragraphs);
             Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
 
-            // We will need to call this method to update them
+            // To get accurate values for three of these properties, we will need to manually update them.
             doc.UpdateWordCount();
 
-            // Check the values of the properties
             Assert.AreEqual(196, doc.BuiltInDocumentProperties.Characters);
             Assert.AreEqual(36, doc.BuiltInDocumentProperties.Words);
             Assert.AreEqual(2, doc.BuiltInDocumentProperties.Paragraphs);
+
+            // For the line count, we will need to call an overload of the updating method.
             Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
 
-            // To also get the line count as it would appear in Microsoft Word,
-            // we will need to pass "true" to UpdateWordCount()
             doc.UpdateWordCount(true);
+
             Assert.AreEqual(4, doc.BuiltInDocumentProperties.Lines);
             //ExEnd
         }
@@ -1180,28 +1178,36 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompositeNode.GetChild
             //ExFor:Document.ExpandTableStylesToDirectFormatting
-            //ExSummary:Shows how to expand the formatting from styles onto the rows and cells of the table as direct formatting.
-            Document doc = new Document(MyDir + "Tables.docx");
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            //ExSummary:Shows how to apply attributes of a table's style directly to the table's elements.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // First print the color of the cell shading. This should be empty as the current shading
-            // is stored in the table style
-            double cellShadingBefore = table.FirstRow.RowFormat.Height;
-            Console.WriteLine("Cell shading before style expansion: " + cellShadingBefore);
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Hello world!");
+            builder.EndTable();
 
-            // Expand table style formatting to direct formatting
+            TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
+            tableStyle.RowStripe = 3;
+            tableStyle.CellSpacing = 5;
+            tableStyle.Shading.BackgroundPatternColor = Color.AntiqueWhite;
+            tableStyle.Borders.Color = Color.Blue;
+            tableStyle.Borders.LineStyle = LineStyle.DotDash;
+
+            table.Style = tableStyle;
+
+            // This method concerns table style attributes such as the ones we set above.
             doc.ExpandTableStylesToDirectFormatting();
-
-            // Now print the cell shading after expanding table styles. A blue background pattern color
-            // should have been applied from the table style
-            double cellShadingAfter = table.FirstRow.RowFormat.Height;
-            Console.WriteLine("Cell shading after style expansion: " + cellShadingAfter);
 
             doc.Save(ArtifactsDir + "Document.TableStyleToDirectFormatting.docx");
             //ExEnd
 
-            Assert.AreEqual(0.0d, cellShadingBefore);
-            Assert.AreEqual(0.0d, cellShadingAfter);
+            TestUtil.DocPackageFileContainsString("<w:tblStyleRowBandSize w:val=\"3\" />", 
+                ArtifactsDir + "Document.TableStyleToDirectFormatting.docx", "document.xml");
+            TestUtil.DocPackageFileContainsString("<w:tblCellSpacing w:w=\"100\" w:type=\"dxa\" />", 
+                ArtifactsDir + "Document.TableStyleToDirectFormatting.docx", "document.xml");
+            TestUtil.DocPackageFileContainsString("<w:tblBorders><w:top w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:left w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:bottom w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:right w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:insideH w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:insideV w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /></w:tblBorders>",
+                ArtifactsDir + "Document.TableStyleToDirectFormatting.docx", "document.xml");
         }
 
         [Test]
@@ -1210,14 +1216,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.OriginalFileName
             //ExFor:Document.OriginalLoadFormat
-            //ExSummary:Shows how to retrieve the details of the path, filename and LoadFormat of a document from when the document was first loaded into memory.
+            //ExSummary:Shows how to retrieve details of a document's load operation.
             Document doc = new Document(MyDir + "Document.docx");
 
-            // This property will return the full path and file name where the document was loaded from
             Assert.AreEqual(MyDir + "Document.docx", doc.OriginalFileName);
-
-            // This is the original LoadFormat of the document
-            Assert.AreEqual(Aspose.Words.LoadFormat.Docx, doc.OriginalLoadFormat);
+            Assert.AreEqual(LoadFormat.Docx, doc.OriginalLoadFormat);
             //ExEnd
         }
 
@@ -1228,17 +1231,14 @@ namespace ApiExamples
             //ExStart
             //ExFor:FootnoteOptions
             //ExFor:FootnoteOptions.Columns
-            //ExSummary:Shows how to set the number of columns with which the footnotes area is formatted.
+            //ExSummary:Shows how to split the footnote section into a given number of columns.
             Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
             Assert.AreEqual(0, doc.FootnoteOptions.Columns); //ExSkip
 
-            // We can change number of columns for footnotes on page. If columns value is 0 than footnotes area
-            // is formatted with a number of columns based on the number of columns on the displayed page
             doc.FootnoteOptions.Columns = 2;
             doc.Save(ArtifactsDir + "Document.FootnoteColumns.docx");
             //ExEnd
 
-            // Assert that number of columns gets correct
             doc = new Document(ArtifactsDir + "Document.FootnoteColumns.docx");
 
             Assert.AreEqual(2, doc.FirstSection.PageSetup.FootnoteOptions.Columns);
@@ -1255,11 +1255,10 @@ namespace ApiExamples
             //ExFor:FootnoteOptions.StartNumber
             //ExFor:FootnoteNumberingRule
             //ExFor:FootnotePosition
-            //ExSummary:Shows how to insert footnotes and edit their appearance.
+            //ExSummary:Shows how to insert footnotes, and modify their appearance.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert 3 paragraphs with a footnote at the end of each one
             builder.Write("Text 1. ");
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote 1");
             builder.InsertBreak(BreakType.PageBreak);
@@ -1268,7 +1267,6 @@ namespace ApiExamples
             builder.Write("Text 3. ");
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote 3", "Custom reference mark");
 
-            // Edit the numbering and positioning of footnotes 
             doc.FootnoteOptions.Position = FootnotePosition.BeneathText;
             doc.FootnoteOptions.NumberStyle = NumberStyle.UppercaseRoman;
             doc.FootnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
