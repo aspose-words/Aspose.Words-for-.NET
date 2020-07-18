@@ -1107,40 +1107,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void UpdateTableLayout()
-        {
-            //ExStart
-            //ExFor:Document.UpdateTableLayout
-            //ExSummary:Shows how to preserve a table's layout when saving to .txt.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.InsertCell();
-            builder.Write("Cell 1");
-            builder.InsertCell();
-            builder.Write("Cell 2");
-            builder.InsertCell();
-            builder.Write("Cell 3");
-
-            // Create a SaveOptions object to prepare this document to be saved to .txt.
-            TxtSaveOptions options = new TxtSaveOptions();
-            options.PreserveTableLayout = true;
-        
-            // Previewing the appearance of the document in .txt form shows that the table will not be represented accurately.
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true); //ExSkip
-            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.Width); //ExSkip
-            Assert.AreEqual("CCC\r\neee\r\nlll\r\nlll\r\n   \r\n123\r\n\r\n", doc.ToString(options));
-
-            // We can call UpdateTableLayout() to fix some of these issues.
-            doc.UpdateTableLayout();
-
-            Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
-            //ExEnd
-
-            Assert.AreEqual(155.0d, table.FirstRow.Cells[0].CellFormat.Width, 2f);
-        }
-
-        [Test]
         public void GetPageCount()
         {
             //ExStart
