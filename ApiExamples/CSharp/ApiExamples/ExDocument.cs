@@ -1052,30 +1052,39 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.EnsureMinimum
-            //ExSummary:Shows how to ensure the Document is valid (has the minimum nodes required to be valid).
+            //ExSummary:Shows how to ensure that a document contains the minimal set of nodes required for editing its contents.
+            // A newly created document contains one child Section, which contains one child Body,
+            // which contains one child Paragraph. We can edit the document body's contents
+            // by adding nodes such as Runs or inline Shapes to that paragraph.
             Document doc = new Document();
+            NodeCollection nodes = doc.GetChildNodes(NodeType.Any, true);
 
-            // Every blank document that we create will contain
-            // the minimal set nodes requited for editing; a Section, Body and Paragraph
-            Assert.AreEqual(3, doc.GetChildNodes(NodeType.Any, true).Count);
+            Assert.AreEqual(NodeType.Section, nodes[0].NodeType);
+            Assert.AreEqual(doc, nodes[0].ParentNode);
 
-            // We can remove every node from the document with RemoveAllChildren()
+            Assert.AreEqual(NodeType.Body, nodes[1].NodeType);
+            Assert.AreEqual(nodes[0], nodes[1].ParentNode);
+
+            Assert.AreEqual(NodeType.Paragraph, nodes[2].NodeType);
+            Assert.AreEqual(nodes[1], nodes[2].ParentNode);
+
+            // We will not be able to edit the document if we remove any of those nodes.
             doc.RemoveAllChildren();
+
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Any, true).Count);
 
-            // EnsureMinimum() can ensure that the document has at least those three nodes
+            // EnsureMinimum can be called to make sure that the document has at least those three nodes.
             doc.EnsureMinimum();
-            Assert.AreEqual(3, doc.GetChildNodes(NodeType.Any, true).Count);
-            //ExEnd
-
-            NodeCollection nodes = doc.GetChildNodes(NodeType.Any, true);
 
             Assert.AreEqual(NodeType.Section, nodes[0].NodeType);
             Assert.AreEqual(NodeType.Body, nodes[1].NodeType);
             Assert.AreEqual(NodeType.Paragraph, nodes[2].NodeType);
 
-            Assert.True(nodes[1].ParentNode == nodes[0]);
-            Assert.True(nodes[2].ParentNode == nodes[1]);
+            // We can edit the document again.
+            ((Paragraph)nodes[2]).Runs.Add(new Run(doc, "Hello world!"));
+            //ExEnd
+
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
         }
 
         [Test]
@@ -1084,17 +1093,16 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.RemoveMacros
             //ExSummary:Shows how to remove all macros from a document.
-            // Open a document that contains a VBA project and macros
             Document doc = new Document(MyDir + "Macro.docm");
 
             Assert.IsTrue(doc.HasMacros);
-            Assert.AreEqual("Project", doc.VbaProject.Name); //ExSkip
+            Assert.AreEqual("Project", doc.VbaProject.Name);
 
-            // We can strip the document of this content by calling this method
+            // Remove the document's VBA project, along with all of its macros.
             doc.RemoveMacros();
 
             Assert.IsFalse(doc.HasMacros);
-            Assert.Null(doc.VbaProject); //ExSkip
+            Assert.Null(doc.VbaProject);
             //ExEnd
         }
 
@@ -1103,8 +1111,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.UpdateTableLayout
-            //ExSummary:Shows how to update the layout of tables in a document.
-            // Create a new document and insert a table
+            //ExSummary:Shows how to preserve a table's layout when saving to .txt.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1115,16 +1122,16 @@ namespace ApiExamples
             builder.InsertCell();
             builder.Write("Cell 3");
 
-            // Create a SaveOptions object to prepare this document to be saved to .txt
+            // Create a SaveOptions object to prepare this document to be saved to .txt.
             TxtSaveOptions options = new TxtSaveOptions();
             options.PreserveTableLayout = true;
         
-            // Previewing the appearance of the document in .txt form shows that the table will not be represented accurately
+            // Previewing the appearance of the document in .txt form shows that the table will not be represented accurately.
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true); //ExSkip
             Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.Width); //ExSkip
             Assert.AreEqual("CCC\r\neee\r\nlll\r\nlll\r\n   \r\n123\r\n\r\n", doc.ToString(options));
 
-            // We can call UpdateTableLayout() to fix some of these issues
+            // We can call UpdateTableLayout() to fix some of these issues.
             doc.UpdateTableLayout();
 
             Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
