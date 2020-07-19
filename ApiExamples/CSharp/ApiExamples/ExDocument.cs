@@ -6,7 +6,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
@@ -23,7 +22,6 @@ using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
 using Aspose.Words.Lists;
 using Aspose.Words.Markup;
-using Aspose.Words.Properties;
 using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
@@ -1649,72 +1647,6 @@ namespace ApiExamples
             Assert.That(() => doc.HyphenationOptions.ConsecutiveHyphenLimit = -1,
                 Throws.TypeOf<ArgumentOutOfRangeException>());
             doc.HyphenationOptions.HyphenationZone = 360;
-        }
-
-        [Test]
-        public void ExtractPlainTextFromDocument()
-        {
-            //ExStart
-            //ExFor:PlainTextDocument
-            //ExFor:PlainTextDocument.#ctor(String)
-            //ExFor:PlainTextDocument.#ctor(String, LoadOptions)
-            //ExFor:PlainTextDocument.Text
-            //ExSummary:Shows how to simply extract text from a document.
-            TxtLoadOptions loadOptions = new TxtLoadOptions { DetectNumberingWithWhitespaces = false };
-
-            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Document.docx");
-            Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip 
-
-            plaintext = new PlainTextDocument(MyDir + "Document.docx", loadOptions);
-            Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip
-            //ExEnd
-        }
-
-        [Test]
-        public void GetPlainTextBuiltInDocumentProperties()
-        {
-            //ExStart
-            //ExFor:PlainTextDocument.BuiltInDocumentProperties
-            //ExSummary:Shows how to get BuiltIn properties of plain text document.
-            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx");
-            BuiltInDocumentProperties builtInDocumentProperties = plaintext.BuiltInDocumentProperties;
-            //ExEnd
-
-            Assert.AreEqual("Aspose", builtInDocumentProperties.Company);
-        }
-
-        [Test]
-        public void GetPlainTextCustomDocumentProperties()
-        {
-            //ExStart
-            //ExFor:PlainTextDocument.CustomDocumentProperties
-            //ExSummary:Shows how to get custom properties of plain text document.
-            PlainTextDocument plaintext = new PlainTextDocument(MyDir + "Bookmarks.docx");
-            CustomDocumentProperties customDocumentProperties = plaintext.CustomDocumentProperties;
-            //ExEnd
-
-            Assert.That(customDocumentProperties, Is.Empty);
-        }
-
-        [Test]
-        public void ExtractPlainTextFromStream()
-        {
-            //ExStart
-            //ExFor:PlainTextDocument.#ctor(Stream)
-            //ExFor:PlainTextDocument.#ctor(Stream, LoadOptions)
-            //ExSummary:Shows how to simply extract text from a stream.
-            TxtLoadOptions loadOptions = new TxtLoadOptions();
-            loadOptions.DetectNumberingWithWhitespaces = false;
-
-            using (Stream stream = new FileStream(MyDir + "Document.docx", FileMode.Open))
-            {
-                PlainTextDocument plaintext = new PlainTextDocument(stream);
-                Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip
-
-                plaintext = new PlainTextDocument(stream, loadOptions);
-                Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip
-            }
-            //ExEnd
         }
 
         [Test]
