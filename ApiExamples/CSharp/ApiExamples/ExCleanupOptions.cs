@@ -32,7 +32,7 @@ namespace ApiExamples
 
             // Combined with the built in styles, the document now has 8 styles.
             // A custom style counts as "used" while it is applied to some part of the document,
-            // which means the 4 styles we added are currently unused.
+            // which means that the 4 styles we added are currently unused.
             Assert.AreEqual(8, doc.Styles.Count);
 
             // Apply a custom character style, and then a custom list style. Doing so will mark them as "used".
@@ -56,7 +56,7 @@ namespace ApiExamples
             Assert.AreEqual(6, doc.Styles.Count);
 
             // Removing every node that a custom style is applied to marks it as "unused" again. 
-            // We can run the Cleanup method again to remove such styles.
+            // Run the Cleanup method again to remove them.
             doc.FirstSection.Body.RemoveAllChildren();
             doc.Cleanup(cleanupOptions);
 

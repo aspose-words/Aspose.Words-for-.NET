@@ -1654,14 +1654,12 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Compliance
-            //ExSummary:Shows how to get OOXML compliance version.
-            // Open a DOC and check its OOXML compliance version
+            //ExSummary:Shows how to read a loaded document's Open Office XML compliance version, which varies between different versions of Microsoft Word.
             Document doc = new Document(MyDir + "Document.doc");
 
             OoxmlCompliance compliance = doc.Compliance;
             Assert.AreEqual(compliance, OoxmlCompliance.Ecma376_2006);
 
-            // Open a DOCX which should have a newer one
             doc = new Document(MyDir + "Document.docx");
             compliance = doc.Compliance;
 
@@ -1700,46 +1698,44 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CleanUpStyles()
+        public void Cleanup()
         {
             //ExStart
             //ExFor:Document.Cleanup
-            //ExSummary:Shows how to remove unused styles and lists from a document.
-            // Create a new document
+            //ExSummary:Shows how to remove unused custom styles from a document.
             Document doc = new Document();
+
+            doc.Styles.Add(StyleType.List, "MyListStyle1");
+            doc.Styles.Add(StyleType.List, "MyListStyle2");
+            doc.Styles.Add(StyleType.Character, "MyParagraphStyle1");
+            doc.Styles.Add(StyleType.Character, "MyParagraphStyle2");
+
+            // Combined with the built in styles, the document now has 8 styles.
+            // A custom style counts as "used" while it is applied to some part of the document,
+            // which means that the 4 styles we added are currently unused.
+            Assert.AreEqual(8, doc.Styles.Count);
+
+            // Apply a custom character style, and then a custom list style. Doing so will mark them as "used".
             DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Font.Style = doc.Styles["MyParagraphStyle1"];
+            builder.Writeln("Hello world!");
 
-            // Add two styles and apply them to the builder's formats, marking them as "used" 
-            builder.ParagraphFormat.Style = doc.Styles.Add(StyleType.Paragraph, "My Used Style");
-            builder.ListFormat.List = doc.Lists.Add(ListTemplate.BulletDiamonds);
-
-            // And two more styles and leave them unused by not applying them to anything
-            doc.Styles.Add(StyleType.Paragraph, "My Unused Style");
-            doc.Lists.Add(ListTemplate.NumberArabicDot);
-            Assert.NotNull(doc.Styles["My Used Style"]); //ExSkip
-            Assert.NotNull(doc.Styles["My Unused Style"]); //ExSkip
-            Assert.IsTrue(doc.Lists.Any(l => l.ListLevels[0].NumberStyle == NumberStyle.Bullet)); //ExSkip
-            Assert.IsTrue(doc.Lists.Any(l => l.ListLevels[0].NumberStyle == NumberStyle.Arabic)); //ExSkip
+            Aspose.Words.Lists.List list = doc.Lists.Add(doc.Styles["MyListStyle1"]);
+            builder.ListFormat.List = list;
+            builder.Writeln("Item 1");
+            builder.Writeln("Item 2");
 
             doc.Cleanup();
 
-            // The used styles are still in the document
-            Assert.NotNull(doc.Styles["My Used Style"]);
-            Assert.IsTrue(doc.Lists.Any(l => l.ListLevels[0].NumberStyle == NumberStyle.Bullet));
+            Assert.AreEqual(6, doc.Styles.Count);
 
-            // The unused styles have been removed
-            Assert.IsNull(doc.Styles["My Unused Style"]);
-            Assert.IsFalse(doc.Lists.Any(l => l.ListLevels[0].NumberStyle == NumberStyle.Arabic));
-            //ExEnd
-
-            Assert.AreEqual(5, doc.Styles.Count); 
-            Assert.AreEqual(1, doc.Lists.Count);
-
-            doc.RemoveAllChildren();
+            // Removing every node that a custom style is applied to marks it as "unused" again. 
+            // Run the Cleanup method again to remove them.
+            doc.FirstSection.Body.RemoveAllChildren();
             doc.Cleanup();
 
             Assert.AreEqual(4, doc.Styles.Count);
-            Assert.AreEqual(0, doc.Lists.Count);
+            //ExEnd
         }
 
         [Test]
@@ -1760,26 +1756,28 @@ namespace ApiExamples
             //ExFor:Document.HasRevisions
             //ExFor:Document.TrackRevisions
             //ExFor:Document.Revisions
-            //ExSummary:Shows how to check if a document has revisions.
+            //ExSummary:Shows how to work with revisions in a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Normal editing of the document does not count as a revision
+            // Normal editing of the document does not count as a revision.
             builder.Write("This does not count as a revision. ");
+
             Assert.IsFalse(doc.HasRevisions);
 
-            // In order for our edits to count as revisions, we need to declare an author and start tracking them
+            // To register our edits as revisions, we need to declare an author, and then start tracking them.
             doc.StartTrackRevisions("John Doe", DateTime.Now);
+
             builder.Write("This is revision #1. ");
 
-            // This flag corresponds to the "Track Changes" option being turned on in Microsoft Word, to track the editing manually
-            // done there and not the programmatic changes we are about to do here
-            Assert.IsFalse(doc.TrackRevisions);
-
-            // As well as nodes in the document, revisions get referenced in this collection
             Assert.IsTrue(doc.HasRevisions);
             Assert.AreEqual(1, doc.Revisions.Count);
 
+            // This flag corresponds to the Review -> Tracking -> "Track Changes" option being turned on in Microsoft Word, 
+            // and it is independent of the programmatic revision tracking that is taking place here.
+            Assert.IsFalse(doc.TrackRevisions);
+            
+            // Our first revision is an insertion-type revision, since we added text with the document builder.
             Revision revision = doc.Revisions[0];
             Assert.AreEqual("John Doe", revision.Author);
             Assert.AreEqual("This is revision #1. ", revision.ParentNode.GetText());
@@ -1787,25 +1785,30 @@ namespace ApiExamples
             Assert.AreEqual(revision.DateTime.Date, DateTime.Now.Date);
             Assert.AreEqual(doc.Revisions.Groups[0], revision.Group);
 
-            // Deleting content also counts as a revision
-            // The most recent revisions are put at the start of the collection
+            // Remove a run to create a deletion-type revision.
             doc.FirstSection.Body.FirstParagraph.Runs[0].Remove();
+
+            // Every new revision is put at the beginning of the revision collection.
             Assert.AreEqual(RevisionType.Deletion, doc.Revisions[0].RevisionType);
             Assert.AreEqual(2, doc.Revisions.Count);
 
             // Insert revisions are treated as document text by the GetText() method before they are accepted,
-            // since they are still nodes with text and are in the body
+            // since they are still nodes with text and are in the body.
             Assert.AreEqual("This does not count as a revision. This is revision #1.", doc.GetText().Trim());
 
-            // Accepting the deletion revision will assimilate it into the paragraph text and remove it from the collection
+            // Accepting the delete revision will remove its parent node from the paragraph text,
+            // and then remove the revision itself from the collection.
             doc.Revisions[0].Accept();
+
             Assert.AreEqual(1, doc.Revisions.Count);
 
-            // Once the delete revision is accepted, the nodes that it concerns are removed and their text will not show up here
+            // Once the delete revision is accepted, the nodes that it concerns are removed,
+            // and their contents will no longer be anywhere in the document.
             Assert.AreEqual("This is revision #1.", doc.GetText().Trim());
 
-            // The second insertion revision is now at index 0, which we can reject to ignore and discard it
+            // The insertion-type revision is now at index 0, which we can reject to ignore and discard it
             doc.Revisions[0].Reject();
+
             Assert.AreEqual(0, doc.Revisions.Count);
             Assert.AreEqual("", doc.GetText().Trim());
             //ExEnd
