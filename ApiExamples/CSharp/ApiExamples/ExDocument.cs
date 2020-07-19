@@ -1714,7 +1714,7 @@ namespace ApiExamples
             // which means that the 4 styles we added are currently unused.
             Assert.AreEqual(8, doc.Styles.Count);
 
-            // Apply a custom character style, and then a custom list style. Doing so will mark them as "used".
+            // Apply a custom character style, and then a custom list style. Doing so will mark the styles as "used".
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Font.Style = doc.Styles["MyParagraphStyle1"];
             builder.Writeln("Hello world!");
@@ -1745,16 +1745,13 @@ namespace ApiExamples
             //ExSummary:Shows how to update a document's styles based on its template.
             Document doc = new Document();
 
-            // Empty Microsoft Word documents by default come with an attached template called "Normal.dotm"
-            // There is no default template for Aspose Words documents
+            // Microsoft Word documents by default come with an attached template called "Normal.dotm"
+            // There is no default template for blank Aspose.Words documents.
             Assert.AreEqual(string.Empty, doc.AttachedTemplate);
 
-            // For AutomaticallyUpdateStyles to have any effect, we need a document with a template
-            // We can make a document with word and open it
-            // Or we can attach a template from our file system, as below
+            // In order to be able to automatically update our document's styles according to changes
+            // being done to a template, we will first need to attach that template, then set the relevant flag.
             doc.AttachedTemplate = MyDir + "Business brochure.dotx";
-
-            // Any changes to the styles in this template will be propagated to those styles in the document
             doc.AutomaticallyUpdateStyles = true;
 
             doc.Save(ArtifactsDir + "Document.AutomaticallyUpdateStyles.docx");
