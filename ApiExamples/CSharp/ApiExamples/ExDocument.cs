@@ -1590,26 +1590,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.UpdateThumbnail.FirstImage.epub");
             //ExEnd
         }
-
-        [Test]
-        public void SuppressHyphens()
-        {
-            //ExStart
-            //ExFor:ParagraphFormat.SuppressAutoHyphens
-            //ExSummary:Shows how to suppress document hyphenation.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Font.Size = 24;
-            builder.ParagraphFormat.SuppressAutoHyphens = false;
-
-            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-
-            doc.Save(ArtifactsDir + "Document.SuppressHyphens.docx");
-            //ExEnd
-        }
-
+        
         [Test]
         public void HyphenationOptions()
         {

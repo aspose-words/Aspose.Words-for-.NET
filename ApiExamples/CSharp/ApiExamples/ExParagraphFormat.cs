@@ -298,5 +298,24 @@ namespace ApiExamples
             Assert.AreEqual(4, paragraphs[0].ParagraphFormat.LinesToDrop);
             Assert.AreEqual(0, paragraphs[1].ParagraphFormat.LinesToDrop);
         }
+
+        [Test]
+        public void SuppressHyphens()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.SuppressAutoHyphens
+            //ExSummary:Shows how to suppress document hyphenation.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Size = 24;
+            builder.ParagraphFormat.SuppressAutoHyphens = false;
+
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            doc.Save(ArtifactsDir + "ParagraphFormat.SuppressHyphens.docx");
+            //ExEnd
+        }
     }
 }
