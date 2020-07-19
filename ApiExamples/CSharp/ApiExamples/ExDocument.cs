@@ -1436,39 +1436,50 @@ namespace ApiExamples
         }
 
         [Test]
-        public void StartTrackRevisions()
+        public void TrackRevisions()
         {
             //ExStart
             //ExFor:Document.StartTrackRevisions(String)
             //ExFor:Document.StartTrackRevisions(String, DateTime)
             //ExFor:Document.StopTrackRevisions
-            //ExSummary:Shows how tracking revisions affects document editing. 
+            //ExSummary:Shows how to track revisions while editing a document. 
             Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // This text will appear as normal text in the document and no revisions will be counted
-            doc.FirstSection.Body.FirstParagraph.Runs.Add(new Run(doc, "Hello world!"));
+            // Editing a document normally does not count as a revision until we begin tracking them.
+            builder.Write("Hello world! ");
+
             Assert.AreEqual(0, doc.Revisions.Count);
+            Assert.False(doc.FirstSection.Body.Paragraphs[0].Runs[0].IsInsertRevision);
 
-            doc.StartTrackRevisions("Author");
+            doc.StartTrackRevisions("John Doe");
 
-            // This text will appear as a revision
-            // We did not specify a time while calling StartTrackRevisions(), so the date/time that's noted
-            // on the revision will be the real time when StartTrackRevisions() executes
-            doc.FirstSection.Body.AppendParagraph("Hello again!");
-            Assert.AreEqual(2, doc.Revisions.Count);
+            builder.Write("Hello again! ");
 
-            // Stopping the tracking of revisions makes this text appear as normal text
-            // Revisions are not counted when the document is changed
+            Assert.AreEqual(1, doc.Revisions.Count);
+            Assert.True(doc.FirstSection.Body.Paragraphs[0].Runs[1].IsInsertRevision);
+            Assert.AreEqual("John Doe", doc.Revisions[0].Author);
+            Assert.That(doc.Revisions[0].DateTime, Is.EqualTo(DateTime.Now).Within(10).Milliseconds);
+
+            // The tracking of revisions can be stopped at any time.
             doc.StopTrackRevisions();
-            doc.FirstSection.Body.AppendParagraph("Hello again!");
+            builder.Write("Hello again! ");
+
+            Assert.AreEqual(1, doc.Revisions.Count);
+            Assert.False(doc.FirstSection.Body.Paragraphs[0].Runs[2].IsInsertRevision);
+
+            // By default, a date and time is applied to every revision.
+            // We can suppress that by passing DateTime.MinValue when we start tracking revisions.
+            doc.StartTrackRevisions("John Doe", DateTime.MinValue);
+            builder.Write("Hello again! ");
+
             Assert.AreEqual(2, doc.Revisions.Count);
-
-            // Specifying some date/time will apply that date/time to all subsequent revisions until StopTrackRevisions() is called
-            // Note that placing values such as DateTime.MinValue as an argument will create revisions that do not have a date/time at all
-            doc.StartTrackRevisions("Author", new DateTime(1970, 1, 1));
-            doc.FirstSection.Body.AppendParagraph("Hello again!");
-            Assert.AreEqual(4, doc.Revisions.Count);
-
+            Assert.AreEqual("John Doe", doc.Revisions[1].Author);
+            Assert.AreEqual(DateTime.MinValue, doc.Revisions[1].DateTime);
+            
+            // We can accept/reject these revisions programmatically
+            // by calling methods such as Document.AcceptAllRevisions, or each revision's Accept method. 
+            // In Microsoft Word, they can be processed via Review -> Changes.
             doc.Save(ArtifactsDir + "Document.StartTrackRevisions.docx");
             //ExEnd
         }
@@ -1478,14 +1489,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:RevisionOptions.ShowInBalloons
-            //ExSummary:Shows how render tracking changes in balloons
+            //ExSummary:Shows how display revisions in balloons.
             Document doc = new Document(MyDir + "Revisions.docx");
 
-            // Set option true, if you need render tracking changes in balloons in pdf document,
-            // while comments will stay visible
-            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.None;
-
-            // Check that revisions are in balloons 
+            // By default, revisions are identifiable by a different text color. 
+            // Set a revision option to show more details about each revision in a balloon
+            // on the right margin of the page when we save the document to a format such as .pdf.
+            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
             doc.Save(ArtifactsDir + "Document.ShowRevisionBalloons.pdf");
             //ExEnd
         }
@@ -1496,17 +1506,24 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.AcceptAllRevisions
             //ExSummary:Shows how to accept all tracking changes in the document.
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Start tracking and make some revisions
-            doc.StartTrackRevisions("Author");
-            doc.FirstSection.Body.AppendParagraph("Hello world!");
-            Assert.AreEqual(2, doc.Revisions.Count); //ExSkip
+            // Edit the document while tracking changes to create a few revisions. 
+            doc.StartTrackRevisions("John Doe");
+            builder.Write("Hello world! ");
+            builder.Write("Hello again! "); 
+            builder.Write("This is another revision.");
+            doc.StopTrackRevisions();
 
-            // Revisions will now show up as normal text in the output document
+            Assert.AreEqual(3, doc.Revisions.Count);
+
+            // We can iterate through every revision and accept/reject it as a part of our document.
+            // If we know we wish to accept every revision, we can do in a more simple manner so by calling this method.
             doc.AcceptAllRevisions();
-            doc.Save(ArtifactsDir + "Document.AcceptAllRevisions.docx");
-            Assert.AreEqual(0, doc.Revisions.Count); //ExSKip
+
+            Assert.AreEqual(0, doc.Revisions.Count);
+            Assert.AreEqual("Hello world! Hello again! This is another revision.", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -1516,38 +1533,29 @@ namespace ApiExamples
             //ExStart
             //ExFor:RevisionsView
             //ExFor:Document.RevisionsView
-            //ExSummary:Shows how to get revised version of list label and list level formatting in a document.
+            //ExSummary:Shows how to switch between the revised, and the original view of a document.
             Document doc = new Document(MyDir + "Revisions at list levels.docx");
             doc.UpdateListLabels();
 
-            // Switch to the revised version of the document
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+            Assert.AreEqual("1.", paragraphs[0].ListLabel.LabelString);
+            Assert.AreEqual("a.", paragraphs[1].ListLabel.LabelString);
+            Assert.AreEqual(string.Empty, paragraphs[2].ListLabel.LabelString);
+
+            // View the document object as if all the revisions are accepted. Currently supports list labels.
             doc.RevisionsView = RevisionsView.Final;
 
-            foreach (Revision revision in doc.Revisions)
-            {
-                if (revision.ParentNode.NodeType == NodeType.Paragraph)
-                {
-                    Paragraph paragraph = (Paragraph)revision.ParentNode;
-
-                    if (paragraph.IsListItem)
-                    {
-                        // Print revised version of LabelString and ListLevel
-                        Console.WriteLine(paragraph.ListLabel.LabelString);
-                        Console.WriteLine(paragraph.ListFormat.ListLevel);
-                    }
-                }
-            }
+            Assert.AreEqual(string.Empty, paragraphs[0].ListLabel.LabelString);
+            Assert.AreEqual("1.", paragraphs[1].ListLabel.LabelString);
+            Assert.AreEqual("a.", paragraphs[2].ListLabel.LabelString);
             //ExEnd
 
-            Assert.AreEqual("", ((Paragraph)doc.Revisions[0].ParentNode).ListLabel.LabelString);
-            Assert.AreEqual("1.", ((Paragraph)doc.Revisions[1].ParentNode).ListLabel.LabelString);
-            Assert.AreEqual("a.", ((Paragraph)doc.Revisions[3].ParentNode).ListLabel.LabelString);
-
             doc.RevisionsView = RevisionsView.Original;
+            doc.AcceptAllRevisions();
 
-            Assert.AreEqual("1.", ((Paragraph)doc.Revisions[0].ParentNode).ListLabel.LabelString);
-            Assert.AreEqual("a.", ((Paragraph)doc.Revisions[1].ParentNode).ListLabel.LabelString);
-            Assert.AreEqual("", ((Paragraph)doc.Revisions[3].ParentNode).ListLabel.LabelString);
+            Assert.AreEqual("a.", paragraphs[0].ListLabel.LabelString);
+            Assert.AreEqual(string.Empty, paragraphs[1].ListLabel.LabelString);
+            Assert.AreEqual("b.", paragraphs[2].ListLabel.LabelString);
         }
 
         [Test]
@@ -1560,26 +1568,45 @@ namespace ApiExamples
             //ExFor:ThumbnailGeneratingOptions.GenerateFromFirstPage
             //ExFor:ThumbnailGeneratingOptions.ThumbnailSize
             //ExSummary:Shows how to update a document's thumbnail.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // If we aren't setting the thumbnail via built in document properties,
-            // we can set the first page of the document to be the thumbnail in an output .epub like this
+            builder.Writeln("Hello world!");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            // There are two ways of setting a thumbnail image when saving a document to .epub.
+            // 1 -  Use the document's first page:
             doc.UpdateThumbnail();
             doc.Save(ArtifactsDir + "Document.UpdateThumbnail.FirstPage.epub");
 
-            // Another way is to use the first image shape found in the document as the thumbnail
-            // Insert an image with a builder that we want to use as a thumbnail
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertImage(ImageDir + "Logo.jpg");
-
+            // 2 -  Use the first image found in the document:
             ThumbnailGeneratingOptions options = new ThumbnailGeneratingOptions();
             Assert.AreEqual(new Size(600, 900), options.ThumbnailSize); //ExSKip
-            Assert.IsTrue(options.GenerateFromFirstPage); //ExSkip
+            Assert.True(options.GenerateFromFirstPage); //ExSkip
             options.ThumbnailSize = new Size(400, 400);
             options.GenerateFromFirstPage = false;
 
             doc.UpdateThumbnail(options);
             doc.Save(ArtifactsDir + "Document.UpdateThumbnail.FirstImage.epub");
+            //ExEnd
+        }
+
+        [Test]
+        public void SuppressHyphens()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.SuppressAutoHyphens
+            //ExSummary:Shows how to suppress document hyphenation.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Size = 24;
+            builder.ParagraphFormat.SuppressAutoHyphens = false;
+
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            doc.Save(ArtifactsDir + "Document.SuppressHyphens.docx");
             //ExEnd
         }
 
@@ -1593,25 +1620,18 @@ namespace ApiExamples
             //ExFor:HyphenationOptions.ConsecutiveHyphenLimit
             //ExFor:HyphenationOptions.HyphenationZone
             //ExFor:HyphenationOptions.HyphenateCaps
-            //ExFor:ParagraphFormat.SuppressAutoHyphens
-            //ExSummary:Shows how to configure document hyphenation options.
+            //ExSummary:Shows how to configure automatic hyphenation.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set this to insert a page break before this paragraph
             builder.Font.Size = 24;
-            builder.ParagraphFormat.SuppressAutoHyphens = false;
-
             builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
                             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 
             doc.HyphenationOptions.AutoHyphenation = true;
             doc.HyphenationOptions.ConsecutiveHyphenLimit = 2;
-            doc.HyphenationOptions.HyphenationZone = 720; // 0.5 inch
+            doc.HyphenationOptions.HyphenationZone = 720;
             doc.HyphenationOptions.HyphenateCaps = true;
-
-            // Each paragraph has this flag that can be set to suppress hyphenation
-            Assert.False(builder.ParagraphFormat.SuppressAutoHyphens);
 
             doc.Save(ArtifactsDir + "Document.HyphenationOptions.docx");
             //ExEnd
