@@ -83,6 +83,45 @@ namespace ApiExamples
         }
 
         [Test]
+        public void FirstAndLast()
+        {
+            //ExStart
+            //ExFor:Document.FirstSection
+            //ExFor:Document.LastSection
+            //ExSummary:Shows how to create a new section with a document builder.
+            Document doc = new Document();
+
+            // A blank document contains one section by default,
+            // in order for us to be able to edit it straight away.
+            Assert.AreEqual(1, doc.Sections.Count);
+
+            // Use a document builder to add text, and then to create a new section by inserting a section break.
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+
+            Assert.AreEqual(2, doc.Sections.Count);
+
+            // Each section is a subdivision of the document that has its own page setup settings.
+            // We can split up the text in the second section into two columns without affecting the first section in any way.
+            doc.LastSection.PageSetup.TextColumns.SetCount(2);
+            builder.Writeln("Column 1.");
+            builder.InsertBreak(BreakType.ColumnBreak);
+            builder.Writeln("Column 2.");
+
+            Assert.AreEqual(1, doc.FirstSection.PageSetup.TextColumns.Count);
+            Assert.AreEqual(2, doc.LastSection.PageSetup.TextColumns.Count);
+
+            doc.Save(ArtifactsDir + "Section.Create.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Section.Create.docx");
+
+            Assert.AreEqual(1, doc.FirstSection.PageSetup.TextColumns.Count);
+            Assert.AreEqual(2, doc.LastSection.PageSetup.TextColumns.Count);
+        }
+
+        [Test]
         public void CreateFromScratch()
         {
             //ExStart

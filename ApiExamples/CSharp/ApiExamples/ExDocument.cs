@@ -1742,15 +1742,15 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.AutomaticallyUpdateStyles
-            //ExSummary:Shows how to update a document's styles based on its template.
+            //ExSummary:Shows how to attach a template to a document.
             Document doc = new Document();
 
-            // Microsoft Word documents by default come with an attached template called "Normal.dotm"
+            // Microsoft Word documents by default come with an attached template called "Normal.dotm".
             // There is no default template for blank Aspose.Words documents.
             Assert.AreEqual(string.Empty, doc.AttachedTemplate);
 
-            // In order to be able to automatically update our document's styles according to changes
-            // being done to a template, we will first need to attach that template, then set the relevant flag.
+            // Attach a template, then set the flag to apply style changes
+            // within the template to styles in our document.
             doc.AttachedTemplate = MyDir + "Business brochure.dotx";
             doc.AutomaticallyUpdateStyles = true;
 
@@ -1769,62 +1769,26 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.AttachedTemplate
+            //ExFor:Document.AutomaticallyUpdateStyles
             //ExFor:SaveOptions.CreateSaveOptions(String)
             //ExFor:SaveOptions.DefaultTemplate
-            //ExSummary:Shows how to set a default .docx document template.
+            //ExSummary:Shows how to set a default template for documents that do not have attached templates.
             Document doc = new Document();
 
-            // If we set this flag to true while not having a template attached to the document,
-            // there will be no effect because there is no template document to draw style changes from
+            // Enable automatic style updating, but do not attach a template document.
             doc.AutomaticallyUpdateStyles = true;
-            Assert.That(doc.AttachedTemplate, Is.Empty);
 
-            // We can set a default template document filename in a SaveOptions object to make it apply to
-            // all documents we save with it that have no AttachedTemplate value
+            Assert.AreEqual(string.Empty, doc.AttachedTemplate);
+
+            // Since there is no template document, the document had nowhere to track style changes from.
+            // Use a SaveOptions object to automatically set a template if a document that's being saved does not have one.
             SaveOptions options = SaveOptions.CreateSaveOptions("Document.DefaultTemplate.docx");
             options.DefaultTemplate = MyDir + "Business brochure.dotx";
-            Assert.True(File.Exists(options.DefaultTemplate)); //ExSkip
 
             doc.Save(ArtifactsDir + "Document.DefaultTemplate.docx", options);
             //ExEnd
-        }
 
-        [Test]
-        public void Sections()
-        {
-            //ExStart
-            //ExFor:Document.LastSection
-            //ExSummary:Shows how to edit the last section of a document.
-            // Open the template document, containing obsolete copyright information in the footer
-            Document doc = new Document(MyDir + "Footer.docx");
-            
-            // Create a new copyright information string to replace an older one with
-            int currentYear = DateTime.Now.Year;
-            string newCopyrightInformation = $"Copyright (C) {currentYear} by Aspose Pty Ltd.";
-            
-            FindReplaceOptions findReplaceOptions = new FindReplaceOptions();
-            findReplaceOptions.MatchCase = false;
-            findReplaceOptions.FindWholeWordsOnly = false;
-            
-            // Each section has its own set of headers/footers,
-            // so the text in each one has to be replaced individually if we want the entire document to be affected
-            HeaderFooter firstSectionFooter = doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary];
-            firstSectionFooter.Range.Replace("(C) 2006 Aspose Pty Ltd.", newCopyrightInformation, findReplaceOptions);
-
-            HeaderFooter lastSectionFooter = doc.LastSection.HeadersFooters[HeaderFooterType.FooterPrimary];
-            lastSectionFooter.Range.Replace("(C) 2006 Aspose Pty Ltd.", newCopyrightInformation, findReplaceOptions);
-
-            doc.Save(ArtifactsDir + "Document.Sections.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "Document.Sections.docx");
-            Assert.AreEqual(doc.FirstSection, doc.Sections[0]);
-            Assert.AreEqual(doc.LastSection, doc.Sections[1]);
-
-            Assert.True(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Contains($"Copyright (C) {currentYear} by Aspose Pty Ltd."));
-            Assert.True(doc.LastSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Contains($"Copyright (C) {currentYear} by Aspose Pty Ltd."));
-            Assert.False(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Contains("(C) 2006 Aspose Pty Ltd."));
-            Assert.False(doc.LastSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Contains("(C) 2006 Aspose Pty Ltd."));
+            Assert.True(File.Exists(options.DefaultTemplate));
         }
 
         //ExStart
