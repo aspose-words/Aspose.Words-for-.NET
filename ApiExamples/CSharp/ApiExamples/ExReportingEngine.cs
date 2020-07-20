@@ -224,7 +224,7 @@ namespace ApiExamples
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestLeaveChartSeries.docx", GoldsDir + "ReportingEngine.TestLeaveChartSeries Gold.docx"));
         }
 
-        [Test]
+        [Test, Ignore("WORDSNET-20810")]
         public void ConditionalExpressionForRemoveChartSeries()
         {
             Document doc = new Document(MyDir + "Reporting engine template - Chart series.docx");
