@@ -299,5 +299,82 @@ namespace ApiExamples
             Assert.AreEqual(4, paragraphs[0].ParagraphFormat.LinesToDrop);
             Assert.AreEqual(0, paragraphs[1].ParagraphFormat.LinesToDrop);
         }
+
+        [Test]
+        public void ParagraphSpacingAndIndents()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.CharacterUnitLeftIndent
+            //ExFor:ParagraphFormat.CharacterUnitRightIndent
+            //ExFor:ParagraphFormat.CharacterUnitFirstLineIndent
+            //ExFor:ParagraphFormat.LineUnitBefore
+            //ExFor:ParagraphFormat.LineUnitAfter
+            //ExSummary:Shows how to change paragraph spacing and indents.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            ParagraphFormat format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
+            
+            Assert.AreEqual(format.LeftIndent, 0.0d); //ExSkip
+            Assert.AreEqual(format.RightIndent, 0.0d); //ExSkip
+            Assert.AreEqual(format.FirstLineIndent, 0.0d); //ExSkip
+            Assert.AreEqual(format.SpaceBefore, 0.0d); //ExSkip
+            Assert.AreEqual(format.SpaceAfter, 0.0d); //ExSkip
+
+            // Also ParagraphFormat.LeftIndent will be updated
+            format.CharacterUnitLeftIndent = 10.0;
+            // Also ParagraphFormat.RightIndent will be updated
+            format.CharacterUnitRightIndent = -5.5;
+            // Also ParagraphFormat.FirstLineIndent will be updated
+            format.CharacterUnitFirstLineIndent = 20.3;
+            // Also ParagraphFormat.SpaceBefore will be updated
+            format.LineUnitBefore = 5.1;
+            // Also ParagraphFormat.SpaceAfter will be updated
+            format.LineUnitAfter= 10.9;
+
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+            builder.Write("测试文档测试文档测试文档测试文档测试文档测试文档测试文档测试文档测试" +
+                          "文档测试文档测试文档测试文档测试文档测试文档测试文档测试文档测试文档测试文档");
+            //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
+            
+            Assert.AreEqual(format.CharacterUnitLeftIndent, 10.0d);
+            Assert.AreEqual(format.LeftIndent, 120.0d);
+            
+            Assert.AreEqual(format.CharacterUnitRightIndent, -5.5d);
+            Assert.AreEqual(format.RightIndent, -66.0d);
+            
+            Assert.AreEqual(format.CharacterUnitFirstLineIndent, 20.3d);
+            Assert.AreEqual(format.FirstLineIndent, 243.59d, 0.1d);
+            
+            Assert.AreEqual(format.LineUnitBefore, 5.1d, 0.1d);
+            Assert.AreEqual(format.SpaceBefore, 61.1d, 0.1d);
+            
+            Assert.AreEqual(format.LineUnitAfter, 10.9d);
+            Assert.AreEqual(format.SpaceAfter, 130.8d, 0.1d);
+        }
+
+        [Test]
+        public void SnapToGrid()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.SnapToGrid
+            //ExSummary:Shows how to work with extremely wide spacing in the document.
+            Document doc = new Document();
+            Paragraph par = doc.FirstSection.Body.FirstParagraph;
+            // Set 'SnapToGrid' to true if need optimize the layout when typing in Asian characters
+            // Use 'SnapToGrid' for the whole paragraph
+            par.ParagraphFormat.SnapToGrid = true;
+            
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod " +
+                            "tempor incididunt ut labore et dolore magna aliqua.");
+            // Use 'SnapToGrid' for the specific run
+            par.Runs[0].Font.SnapToGrid = true;
+
+            doc.Save(ArtifactsDir + "Paragraph.SnapToGrid.docx");
+        }
     }
 }
