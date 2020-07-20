@@ -22,7 +22,6 @@ using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
 using Aspose.Words.Markup;
 using Aspose.Words.Rendering;
-using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using Aspose.Words.Tables;
@@ -1789,81 +1788,6 @@ namespace ApiExamples
             //ExEnd
 
             Assert.True(File.Exists(options.DefaultTemplate));
-        }
-
-        //ExStart
-        //ExFor:FindReplaceOptions.UseLegacyOrder
-        //ExSummary:Shows how to include text box analyzing, during replacing text.
-        [TestCase(true)] //ExSkip
-        [TestCase(false)] //ExSkip
-        public void UseLegacyOrder(bool isUseLegacyOrder)
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert 3 tags to appear in sequential order, the second of which will be inside a text box
-            builder.Writeln("[tag 1]");
-            Shape textBox = builder.InsertShape(ShapeType.TextBox, 100, 50);
-            builder.Writeln("[tag 3]");
-
-            builder.MoveTo(textBox.FirstParagraph);
-            builder.Write("[tag 2]");
-
-            UseLegacyOrderReplacingCallback callback = new UseLegacyOrderReplacingCallback();     
-            FindReplaceOptions options = new FindReplaceOptions();
-            options.ReplacingCallback = callback;
-
-            // Use this option if want to search text sequentially from top to bottom considering the text boxes
-            options.UseLegacyOrder = isUseLegacyOrder;
- 
-            doc.Range.Replace(new Regex(@"\[(.*?)\]"), "", options);
-            CheckUseLegacyOrderResults(isUseLegacyOrder, callback); //ExSkip
-
-            foreach (string match in ((UseLegacyOrderReplacingCallback)options.ReplacingCallback).Matches)
-                Console.WriteLine(match);
-        }
-
-        private class UseLegacyOrderReplacingCallback : IReplacingCallback
-        {
-            ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
-            {
-                Matches.Add(e.Match.Value); 
-                return ReplaceAction.Replace;
-            }
-
-            public List<string> Matches { get; } = new List<string>();
-        }
-        //ExEnd
-
-        private static void CheckUseLegacyOrderResults(bool isUseLegacyOrder, UseLegacyOrderReplacingCallback callback)
-        {
-            Assert.AreEqual(
-                isUseLegacyOrder
-                    ? new List<string> { "[tag 1]", "[tag 2]", "[tag 3]" }
-                    : new List<string> { "[tag 1]", "[tag 3]", "[tag 2]" }, callback.Matches);
-        }
-
-        [Test]
-        public void UseSubstitutions()
-        {
-            //ExStart
-            //ExFor:FindReplaceOptions.UseSubstitutions
-            //ExSummary:Shows how to recognize and use substitutions within replacement patterns.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-             
-            // Write some text
-            builder.Write("Jason give money to Paul.");
-             
-            Regex regex = new Regex(@"([A-z]+) give money to ([A-z]+)");
-             
-            // Replace text using substitutions
-            FindReplaceOptions options = new FindReplaceOptions();
-            options.UseSubstitutions = true;
-            doc.Range.Replace(regex, @"$2 take money from $1", options);
-            
-            Assert.AreEqual(doc.GetText(), "Paul take money from Jason.\f");
-            //ExEnd
         }
 
         [Test]
