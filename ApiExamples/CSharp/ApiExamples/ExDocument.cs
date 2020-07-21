@@ -1614,16 +1614,15 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Compliance
-            //ExSummary:Shows how to read a loaded document's Open Office XML compliance version, which varies between different versions of Microsoft Word.
+            //ExSummary:Shows how to read a loaded document's Open Office XML compliance version.
+            // The compliance version varies between documents created by different versions of Microsoft Word.
             Document doc = new Document(MyDir + "Document.doc");
 
-            OoxmlCompliance compliance = doc.Compliance;
-            Assert.AreEqual(compliance, OoxmlCompliance.Ecma376_2006);
+            Assert.AreEqual(doc.Compliance, OoxmlCompliance.Ecma376_2006);
 
             doc = new Document(MyDir + "Document.docx");
-            compliance = doc.Compliance;
 
-            Assert.AreEqual(compliance, OoxmlCompliance.Iso29500_2008_Transitional);
+            Assert.AreEqual(doc.Compliance, OoxmlCompliance.Iso29500_2008_Transitional);
             //ExEnd
         }
 
@@ -1761,32 +1760,31 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a date field
             Field field = builder.InsertField("DATE", null);
 
-            // Based on the field code we entered above, the type of the field has been set to "FieldDate"
+            // Based on the field code we entered above, the type of the field has been set to "FieldDate".
             Assert.AreEqual(FieldType.FieldDate, field.Type);
 
-            // We can manually access the content of the field we added and change it
+            // Manually change the raw text of the field, which determines the field code.
             Run fieldText = (Run)doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Run, true)[0];
             Assert.AreEqual("DATE", fieldText.Text); //ExSkip
             fieldText.Text = "PAGE";
 
-            // We changed the text to "PAGE" but the field's type property did not update accordingly
-            Assert.AreEqual("PAGE", fieldText.GetText());
+            // Changing the field code has changed this field to one of a different type,
+            // but the field's type attributes still display the old type.
+            Assert.AreEqual("PAGE", field.GetFieldCode());
             Assert.AreEqual(FieldType.FieldDate, field.Type);
-            Assert.AreEqual(FieldType.FieldDate, field.Start.FieldType); //ExSkip
-            Assert.AreEqual(FieldType.FieldDate, field.Separator.FieldType); //ExSkip
-            Assert.AreEqual(FieldType.FieldDate, field.End.FieldType); //ExSkip
+            Assert.AreEqual(FieldType.FieldDate, field.Start.FieldType);
+            Assert.AreEqual(FieldType.FieldDate, field.Separator.FieldType);
+            Assert.AreEqual(FieldType.FieldDate, field.End.FieldType);
 
-            // After running this method the type of the field, as well as its FieldStart,
-            // FieldSeparator and FieldEnd nodes to "FieldPage", which matches the text "PAGE"
+            // Update those attributes with this method to display an up-to-date value.
             doc.NormalizeFieldTypes();
 
             Assert.AreEqual(FieldType.FieldPage, field.Type);
-            Assert.AreEqual(FieldType.FieldPage, field.Start.FieldType); //ExSkip
-            Assert.AreEqual(FieldType.FieldPage, field.Separator.FieldType); //ExSkip
-            Assert.AreEqual(FieldType.FieldPage, field.End.FieldType); //ExSkip
+            Assert.AreEqual(FieldType.FieldPage, field.Start.FieldType);
+            Assert.AreEqual(FieldType.FieldPage, field.Separator.FieldType); 
+            Assert.AreEqual(FieldType.FieldPage, field.End.FieldType);
             //ExEnd
         }
 
