@@ -28,6 +28,7 @@ using Aspose.Words.WebExtensions;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
 #if NET462 || NETCOREAPP2_1 || JAVA
+using Aspose.Pdf.Text;
 using Aspose.Words.Shaping.HarfBuzz;
 #endif
 #if NETCOREAPP2_1 || __MOBILE__
@@ -1789,51 +1790,103 @@ namespace ApiExamples
         }
 
         [Test]
-        public void LayoutOptions()
+        public void LayoutOptionsRevisions()
         {
             //ExStart
             //ExFor:Document.LayoutOptions
             //ExFor:LayoutOptions
             //ExFor:LayoutOptions.RevisionOptions
-            //ExFor:Layout.LayoutOptions.ShowHiddenText
-            //ExFor:Layout.LayoutOptions.ShowParagraphMarks
             //ExFor:RevisionColor
             //ExFor:RevisionOptions
             //ExFor:RevisionOptions.InsertedTextColor
             //ExFor:RevisionOptions.ShowRevisionBars
-            //ExSummary:Shows how to set a document's layout options.
+            //ExSummary:Shows how to alter the appearance of revisions in a rendered output document.
             Document doc = new Document();
-            LayoutOptions options = doc.LayoutOptions;
-            Assert.IsFalse(options.ShowHiddenText); //ExSkip
-            Assert.IsFalse(options.ShowParagraphMarks); //ExSkip
-
-            // The appearance of revisions can be controlled from the layout options property
-            doc.StartTrackRevisions("John Doe", DateTime.Now);
-            Assert.AreEqual(RevisionColor.ByAuthor, options.RevisionOptions.InsertedTextColor); //ExSkip
-            Assert.True(options.RevisionOptions.ShowRevisionBars); //ExSkip
-            options.RevisionOptions.InsertedTextColor = RevisionColor.BrightGreen;
-            options.RevisionOptions.ShowRevisionBars = false;
-
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln(
-                "This is a revision. Normally the text is red with a bar to the left, but we made some changes to the revision options.");
 
+            // Insert a revision, then change the color of all revisions to green,
+            // and also remove the bar that appears to the left of every revised line. 
+            builder.Writeln("This is not a revision.");
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+            Assert.AreEqual(RevisionColor.ByAuthor, doc.LayoutOptions.RevisionOptions.InsertedTextColor); //ExSkip
+            Assert.True(doc.LayoutOptions.RevisionOptions.ShowRevisionBars); //ExSkip
+            builder.Writeln("This is a revision.");
             doc.StopTrackRevisions();
+            builder.Writeln("This is not a revision.");
 
-            // Layout options can be used to show hidden text too
+            doc.LayoutOptions.RevisionOptions.InsertedTextColor = RevisionColor.BrightGreen;
+            doc.LayoutOptions.RevisionOptions.ShowRevisionBars = false;
+
+            doc.Save(ArtifactsDir + "Document.LayoutOptionsRevisions.pdf");
+            //ExEnd
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void LayoutOptionsHiddenText(bool showHiddenText)
+        {
+            //ExStart
+            //ExFor:Document.LayoutOptions
+            //ExFor:LayoutOptions
+            //ExFor:Layout.LayoutOptions.ShowHiddenText
+            //ExSummary:Shows how to hide text in a rendered output document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Assert.IsFalse(doc.LayoutOptions.ShowHiddenText); //ExSkip
+            
+            // Insert hidden text, then specify whether we wish to omit it from a rendered document.
             builder.Writeln("This text is not hidden.");
             builder.Font.Hidden = true;
-            builder.Writeln(
-                "This text is hidden. It will only show up in the output if we allow it to via doc.LayoutOptions.");
+            builder.Writeln("This text is hidden.");
 
-            options.ShowHiddenText = true;
+            doc.LayoutOptions.ShowHiddenText = showHiddenText;
 
-            // This option is equivalent to enabling paragraph marks in Microsoft Word via Home > paragraph > Show Paragraph Marks,
-            // and can be used to display these features in a .pdf
-            options.ShowParagraphMarks = true;
-
-            doc.Save(ArtifactsDir + "Document.LayoutOptions.pdf");
+            doc.Save(ArtifactsDir + "Document.LayoutOptionsHiddenText.pdf");
             //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.LayoutOptionsHiddenText.pdf");
+            TextAbsorber textAbsorber = new TextAbsorber();
+            textAbsorber.Visit(pdfDoc);
+
+            Assert.AreEqual(showHiddenText ? 
+                    "This text is not hidden.\r\nThis text is hidden." : 
+                    "This text is not hidden.", textAbsorber.Text);
+#endif
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void LayoutOptionsParagraphMarks(bool showParagraphMarks)
+        {
+            //ExStart
+            //ExFor:Document.LayoutOptions
+            //ExFor:LayoutOptions
+            //ExFor:Layout.LayoutOptions.ShowParagraphMarks
+            //ExSummary:Shows how to show paragraph marks in a rendered output document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Assert.IsFalse(doc.LayoutOptions.ShowParagraphMarks); //ExSkip
+
+            // Add some paragraphs, then enable paragraph marks to show the ends of paragraphs
+            // with a pilcrow (¶) symbol when we render the document.
+            builder.Writeln("Hello world!");
+            builder.Writeln("Hello again!");
+
+            doc.LayoutOptions.ShowParagraphMarks = showParagraphMarks;
+
+            doc.Save(ArtifactsDir + "Document.LayoutOptionsParagraphMarks.pdf");
+            //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.LayoutOptionsParagraphMarks.pdf");
+            TextAbsorber textAbsorber = new TextAbsorber();
+            textAbsorber.Visit(pdfDoc);
+
+            Assert.AreEqual(showParagraphMarks ? 
+                    "Hello world!¶\r\nHello again!¶\r\n¶" : 
+                    "Hello world!\r\nHello again!", textAbsorber.Text);
+#endif
         }
 
         [Test]
