@@ -1807,42 +1807,70 @@ namespace ApiExamples
             Assert.IsFalse(doc.WriteProtection.ValidatePassword("wrongpassword"));
         }
 
-        [Test]
-        public void RemovePersonalInformation()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void RemovePersonalInformation(bool saveWithoutPersonalInfo)
         {
             //ExStart
             //ExFor:Document.RemovePersonalInformation
-            //ExSummary:Shows how to get or set a flag to remove all user information upon saving the MS Word document.
-            Document doc = new Document(MyDir + "Revisions.docx");
-            // If flag sets to 'true' that MS Word will remove all user information from comments, revisions and
-            // document properties upon saving the document. In MS Word 2013 and 2016 you can see this using
-            // File -> Options -> Trust Center -> Trust Center Settings -> Privacy Options -> then the
-            // checkbox "Remove personal information from file properties on save"
-            doc.RemovePersonalInformation = true;
-            
-            // Personal information will not be removed at this time
-            // This will happen when we open this document in Microsoft Word and save it manually
-            // Once noticeable change will be the revisions losing their author names
-            doc.Save(ArtifactsDir + "Document.RemovePersonalInformation.docx");
-            //ExEnd
+            //ExSummary:Shows how to enable the removal of personal information during a manual save.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert some content with personal information.
+            doc.BuiltInDocumentProperties.Author = "John Doe";
+            doc.BuiltInDocumentProperties.Company = "Placeholder Inc.";
+
+            doc.StartTrackRevisions(doc.BuiltInDocumentProperties.Author, DateTime.Now);
+            builder.Write("Hello world!");
+            doc.StopTrackRevisions();
+
+            // This flag is equivalent to File -> Options -> Trust Center ->
+            // Trust Center Settings... -> Privacy Options -> Remove personal information from file properties on save.
+            doc.RemovePersonalInformation = saveWithoutPersonalInfo;
+            
+            // This option will not take effect during a save operation made using Aspose.Words.
+            // Personal data will be removed from our document with the flag set when we save it manually using Microsoft Word.
+            doc.Save(ArtifactsDir + "Document.RemovePersonalInformation.docx");
             doc = new Document(ArtifactsDir + "Document.RemovePersonalInformation.docx");
-            Assert.IsTrue(doc.RemovePersonalInformation);
+
+            Assert.AreEqual(saveWithoutPersonalInfo, doc.RemovePersonalInformation);
+            Assert.AreEqual("John Doe", doc.BuiltInDocumentProperties.Author);
+            Assert.AreEqual("Placeholder Inc.", doc.BuiltInDocumentProperties.Company);
+            Assert.AreEqual("John Doe", doc.Revisions[0].Author);
+            //ExEnd
         }
 
-        [Test]
-        public void HideComments()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ShowComments(bool showComments)
         {
             //ExStart
             //ExFor:LayoutOptions.ShowComments
-            //ExSummary:Shows how to show or hide comments in PDF document.
-            Document doc = new Document(MyDir + "Comments.docx");
-            doc.LayoutOptions.ShowComments = false;
+            //ExSummary:Shows how to show/hide comments when saving a document to a rendered format.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Hello world!");
+
+            Comment comment = new Comment(doc, "John Doe", "J.D.", DateTime.Now);
+            comment.SetText("My comment.");
+            builder.CurrentParagraph.AppendChild(comment);
+
+            doc.LayoutOptions.ShowComments = showComments;
             
-            doc.Save(ArtifactsDir + "Document.HideComments.pdf");
+            doc.Save(ArtifactsDir + "Document.ShowComments.pdf");
             //ExEnd
 
-            Assert.False(doc.LayoutOptions.ShowComments);
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.ShowComments.pdf");
+            TextAbsorber textAbsorber = new TextAbsorber();
+            textAbsorber.Visit(pdfDoc);
+
+            Assert.AreEqual(showComments ?
+                "Hello world!                                                                    Commented [J.D.1]:  My comment." :
+                "Hello world!", textAbsorber.Text);
+#endif
         }
 
         [Test]
