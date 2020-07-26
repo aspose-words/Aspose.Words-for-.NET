@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using Aspose.Words;
+using Aspose.Words.Layout;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -150,6 +151,128 @@ namespace ApiExamples
             revisions.RejectAll();
 
             Assert.AreEqual(0, revisions.Count);
+            //ExEnd
+        }
+
+        [Test]
+        public void GetInfoAboutRevisionsInRevisionGroups()
+        {
+            //ExStart
+            //ExFor:RevisionGroup
+            //ExFor:RevisionGroup.Author
+            //ExFor:RevisionGroup.RevisionType
+            //ExFor:RevisionGroup.Text
+            //ExFor:RevisionGroupCollection
+            //ExFor:RevisionGroupCollection.Count
+            //ExSummary:Shows how to get info about a group of revisions in document.
+            Document doc = new Document(MyDir + "Revisions.docx");
+
+            Assert.AreEqual(7, doc.Revisions.Groups.Count);
+
+            // Get info about all of revisions in document
+            foreach (RevisionGroup group in doc.Revisions.Groups)
+            {
+                Console.WriteLine(
+                    $"Revision author: {group.Author}; Revision type: {group.RevisionType} \n\tRevision text: {group.Text}");
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void GetSpecificRevisionGroup()
+        {
+            //ExStart
+            //ExFor:RevisionGroupCollection
+            //ExFor:RevisionGroupCollection.Item(Int32)
+            //ExSummary:Shows how to get a group of revisions in document.
+            Document doc = new Document(MyDir + "Revisions.docx");
+
+            // Get revision group by index
+            RevisionGroup revisionGroup = doc.Revisions.Groups[0];
+            //ExEnd
+
+            // Check revision group details
+            Assert.AreEqual(RevisionType.Deletion, revisionGroup.RevisionType);
+            Assert.AreEqual("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ",
+                revisionGroup.Text);
+        }
+
+        [Test]
+        public void ShowRevisionBalloons()
+        {
+            //ExStart
+            //ExFor:RevisionOptions.ShowInBalloons
+            //ExSummary:Shows how display revisions in balloons.
+            Document doc = new Document(MyDir + "Revisions.docx");
+
+            // By default, revisions are identifiable by a different text color. 
+            // Set a revision option to show more details about each revision in a balloon
+            // on the right margin of the page when we save the document to a format such as .pdf.
+            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
+            doc.Save(ArtifactsDir + "Revision.ShowRevisionBalloons.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void RevisionOptions()
+        {
+            //ExStart
+            //ExFor:ShowInBalloons
+            //ExFor:RevisionOptions.ShowInBalloons
+            //ExFor:RevisionOptions.CommentColor
+            //ExFor:RevisionOptions.DeletedTextColor
+            //ExFor:RevisionOptions.DeletedTextEffect
+            //ExFor:RevisionOptions.InsertedTextEffect
+            //ExFor:RevisionOptions.MovedFromTextColor
+            //ExFor:RevisionOptions.MovedFromTextEffect
+            //ExFor:RevisionOptions.MovedToTextColor
+            //ExFor:RevisionOptions.MovedToTextEffect
+            //ExFor:RevisionOptions.RevisedPropertiesColor
+            //ExFor:RevisionOptions.RevisedPropertiesEffect
+            //ExFor:RevisionOptions.RevisionBarsColor
+            //ExFor:RevisionOptions.RevisionBarsWidth
+            //ExFor:RevisionOptions.ShowOriginalRevision
+            //ExFor:RevisionOptions.ShowRevisionMarks
+            //ExFor:RevisionTextEffect
+            //ExSummary:Shows how to edit appearance of revisions.
+            Document doc = new Document(MyDir + "Revisions.docx");
+
+            // Get the RevisionOptions object that controls the appearance of revisions
+            RevisionOptions revisionOptions = doc.LayoutOptions.RevisionOptions;
+
+            // Render text inserted while revisions were being tracked in italic green
+            revisionOptions.InsertedTextColor = RevisionColor.Green;
+            revisionOptions.InsertedTextEffect = RevisionTextEffect.Italic;
+
+            // Render text deleted while revisions were being tracked in bold red
+            revisionOptions.DeletedTextColor = RevisionColor.Red;
+            revisionOptions.DeletedTextEffect = RevisionTextEffect.Bold;
+
+            // In a movement revision, the same text will appear twice: once at the departure point and once at the arrival destination
+            // Render the text at the moved-from revision yellow with double strike through and double underlined blue at the moved-to revision
+            revisionOptions.MovedFromTextColor = RevisionColor.Yellow;
+            revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleStrikeThrough;
+            revisionOptions.MovedToTextColor = RevisionColor.Blue;
+            revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleUnderline;
+
+            // Render text which had its format changed while revisions were being tracked in bold dark red
+            revisionOptions.RevisedPropertiesColor = RevisionColor.DarkRed;
+            revisionOptions.RevisedPropertiesEffect = RevisionTextEffect.Bold;
+
+            // Place a thick dark blue bar on the left side of the page next to lines affected by revisions
+            revisionOptions.RevisionBarsColor = RevisionColor.DarkBlue;
+            revisionOptions.RevisionBarsWidth = 15.0f;
+
+            // Show revision marks and original text
+            revisionOptions.ShowOriginalRevision = true;
+            revisionOptions.ShowRevisionMarks = true;
+
+            // Get movement, deletion, formatting revisions and comments to show up in green balloons on the right side of the page
+            revisionOptions.ShowInBalloons = ShowInBalloons.Format;
+            revisionOptions.CommentColor = RevisionColor.BrightGreen;
+
+            // These features are only applicable to formats such as .pdf or .jpg
+            doc.Save(ArtifactsDir + "Revision.RevisionOptions.pdf");
             //ExEnd
         }
     }
