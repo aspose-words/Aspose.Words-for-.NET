@@ -1909,42 +1909,43 @@ namespace ApiExamples
             //ExFor:CustomPartCollection.Item(Int32)
             //ExFor:CustomPartCollection.RemoveAt(Int32)
             //ExFor:Document.PackageCustomParts
-            //ExSummary:Shows how to open a document with custom parts and access them.
-            // Open a document that contains custom parts
-            // CustomParts are arbitrary content OOXML parts
-            // Not to be confused with Custom XML data which is represented by CustomXmlParts
-            // This part is internal, meaning it is contained inside the OOXML package
+            //ExSummary:Shows how to access a document's arbitrary custom parts collection.
             Document doc = new Document(MyDir + "Custom parts OOXML package.docx");
 
-            // Clone the second part
-            CustomPart clonedPart = doc.PackageCustomParts[1].Clone();
+            Assert.AreEqual(2, doc.PackageCustomParts.Count);
 
-            // Add the clone to the collection
+            // Clone the second part, then add the clone to the collection.
+            CustomPart clonedPart = doc.PackageCustomParts[1].Clone();
             doc.PackageCustomParts.Add(clonedPart);
             TestDocPackageCustomParts(doc.PackageCustomParts); //ExSkip
 
-            // Use an enumerator to print information about the contents of each part 
+            Assert.AreEqual(3, doc.PackageCustomParts.Count);
+
+            // Enumerate over the collection and print every part.
             using (IEnumerator<CustomPart> enumerator = doc.PackageCustomParts.GetEnumerator())
             {
                 int index = 0;
                 while (enumerator.MoveNext())
                 {
                     Console.WriteLine($"Part index {index}:");
-                    Console.WriteLine($"\tName: {enumerator.Current.Name}");
-                    Console.WriteLine($"\tContentType: {enumerator.Current.ContentType}");
-                    Console.WriteLine($"\tRelationshipType: {enumerator.Current.RelationshipType}");
-                    Console.WriteLine(enumerator.Current.IsExternal
-                        ? "\tSourced from outside the document"
-                        : $"\tSourced from within the document, length: {enumerator.Current.Data.Length} bytes");
+                    Console.WriteLine($"\tName:\t\t\t\t{enumerator.Current.Name}");
+                    Console.WriteLine($"\tContent type:\t\t{enumerator.Current.ContentType}");
+                    Console.WriteLine($"\tRelationship type:\t{enumerator.Current.RelationshipType}");
+                    Console.WriteLine(enumerator.Current.IsExternal ?
+                        "\tSourced from outside the document" :
+                        $"\tStored within the document, length: {enumerator.Current.Data.Length} bytes");
                     index++;
                 }
             }
 
-            // The parts collection can have individual entries removed or be cleared like this
+            // The parts collection can have individual entries removed, or be cleared at once.
             doc.PackageCustomParts.RemoveAt(2);
-            Assert.AreEqual(2, doc.PackageCustomParts.Count); //ExSkip
+
+            Assert.AreEqual(2, doc.PackageCustomParts.Count);
+
             doc.PackageCustomParts.Clear();
-            Assert.AreEqual(0, doc.PackageCustomParts.Count); //ExSkip
+
+            Assert.AreEqual(0, doc.PackageCustomParts.Count);
             //ExEnd
         }
 
@@ -1958,7 +1959,6 @@ namespace ApiExamples
             Assert.AreEqual(false, parts[0].IsExternal); 
             Assert.AreEqual(18, parts[0].Data.Length); 
 
-            // This part is external and its content is sourced from outside the document
             Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", parts[1].Name); 
             Assert.AreEqual("", parts[1].ContentType); 
             Assert.AreEqual("http://mytest.payload.external", parts[1].RelationshipType); 
@@ -1972,30 +1972,29 @@ namespace ApiExamples
             Assert.AreEqual(0, parts[2].Data.Length); 
         }
 
-        [Test]
-        public void ShadeFormData()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ShadeFormData(bool useGreyShading)
         {
             //ExStart
             //ExFor:Document.ShadeFormData
-            //ExSummary:Shows how to apply gray shading to bookmarks.
+            //ExSummary:Shows how to apply gray shading to form fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            Assert.True(doc.ShadeFormData); //ExSkip
 
-            // By default, bookmarked text is highlighted gray
-            Assert.IsTrue(doc.ShadeFormData);
-
-            builder.Write("Text before bookmark. ");
-
-            builder.InsertTextInput("My bookmark", TextFormFieldType.Regular, "",
-                "If gray form field shading is turned on, this is the text that will have a gray background.", 0);
+            builder.Write("Hello world! ");
+            builder.InsertTextInput("My form field", TextFormFieldType.Regular, "",
+                "Text contents of form field, which are shaded in grey by default.", 0);
 
             // We can turn the grey shading off so the bookmarked text will blend in with the other text
-            doc.ShadeFormData = false;
+            doc.ShadeFormData = useGreyShading;
             doc.Save(ArtifactsDir + "Document.ShadeFormData.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Document.ShadeFormData.docx");
-            Assert.IsFalse(doc.ShadeFormData);
+
+            Assert.AreEqual(useGreyShading, doc.ShadeFormData);
         }
 
         [Test]
@@ -2003,19 +2002,17 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.VersionsCount
-            //ExSummary:Shows how to count how many previous versions a document has.
-            // Document versions are not supported but we can open an older document that has them
+            //ExSummary:Shows how to work with the versions count feature of older Microsoft Word documents.
             Document doc = new Document(MyDir + "Versions.doc");
 
-            // We can use this property to see how many there are
-            // If we save and open the document, they will be lost
+            // The version count of a loaded document can be read, but will be lost when the document is saved.
             Assert.AreEqual(4, doc.VersionsCount);
-            //ExEnd
 
-            doc.Save(ArtifactsDir + "Document.VersionsCount.docx");      
-            doc = new Document(ArtifactsDir + "Document.VersionsCount.docx");
+            doc.Save(ArtifactsDir + "Document.VersionsCount.doc");      
+            doc = new Document(ArtifactsDir + "Document.VersionsCount.doc");
 
             Assert.AreEqual(0, doc.VersionsCount);
+            //ExEnd
         }
 
         [Test]
@@ -2030,42 +2027,38 @@ namespace ApiExamples
             //ExFor:WriteProtection.ValidatePassword(String)
             //ExSummary:Shows how to protect a document with a password.
             Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world! This document is protected.");
             Assert.IsFalse(doc.WriteProtection.IsWriteProtected); //ExSkip
             Assert.IsFalse(doc.WriteProtection.ReadOnlyRecommended); //ExSkip
 
-            // Enter a password that is up to 15 characters long
+            // Enter a password up to 15 characters in length, and then verify the document's protection status.
             doc.WriteProtection.SetPassword("MyPassword");
+            doc.WriteProtection.ReadOnlyRecommended = true;
 
             Assert.IsTrue(doc.WriteProtection.IsWriteProtected);
             Assert.IsTrue(doc.WriteProtection.ValidatePassword("MyPassword"));
 
-            // This flag applies to RTF documents and will be ignored by Microsoft Word
-            doc.WriteProtection.ReadOnlyRecommended = true;
-
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("Write protection does not prevent us from editing the document programmatically.");
-
-            // Save the document
-            // Without the password, we can only read this document in Microsoft Word
-            // With the password, we can read and write
+            // Protection does not prevent the document from being edited programmatically,
+            // nor does it encrypt the contents in any way.
             doc.Save(ArtifactsDir + "Document.WriteProtection.docx");
-            //ExEnd
-
             doc = new Document(ArtifactsDir + "Document.WriteProtection.docx");
 
             Assert.IsTrue(doc.WriteProtection.IsWriteProtected);
-            Assert.IsTrue(doc.WriteProtection.ReadOnlyRecommended);
-            Assert.IsTrue(doc.WriteProtection.ValidatePassword("MyPassword"));
-            Assert.IsFalse(doc.WriteProtection.ValidatePassword("wrongpassword"));
 
             builder = new DocumentBuilder(doc);
             builder.MoveToDocumentEnd();
             builder.Writeln("Writing text in a protected document.");
 
-            Assert.AreEqual("Write protection does not prevent us from editing the document programmatically." +
+            Assert.AreEqual("Hello world! This document is protected." +
                             "\rWriting text in a protected document.", doc.GetText().Trim());
+            //ExEnd
+
+            Assert.IsTrue(doc.WriteProtection.ReadOnlyRecommended);
+            Assert.IsTrue(doc.WriteProtection.ValidatePassword("MyPassword"));
+            Assert.IsFalse(doc.WriteProtection.ValidatePassword("wrongpassword"));
         }
-        
+
         [Test]
         public void AddEditingLanguage()
         {
@@ -2074,7 +2067,7 @@ namespace ApiExamples
             //ExFor:LanguagePreferences.AddEditingLanguage(EditingLanguage)
             //ExFor:LoadOptions.LanguagePreferences
             //ExFor:EditingLanguage
-            //ExSummary:Shows how to set up language preferences that will be used when document is loading
+            //ExSummary:Shows how to apply language preferences when loading a document.
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LanguagePreferences.AddEditingLanguage(EditingLanguage.Japanese);
 
