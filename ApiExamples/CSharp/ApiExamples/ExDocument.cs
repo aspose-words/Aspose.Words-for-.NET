@@ -1825,8 +1825,8 @@ namespace ApiExamples
             builder.Write("Hello world!");
             doc.StopTrackRevisions();
 
-            // This flag is equivalent to File -> Options -> Trust Center ->
-            // Trust Center Settings... -> Privacy Options -> Remove personal information from file properties on save.
+            // This flag is equivalent to File -> Options -> Trust Center -> Trust Center Settings... ->
+            // Privacy Options -> "Remove personal information from file properties on save" in Microsoft Word.
             doc.RemovePersonalInformation = saveWithoutPersonalInfo;
             
             // This option will not take effect during a save operation made using Aspose.Words.
@@ -1891,19 +1891,57 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CopyTemplateStylesViaString()
+        public void CopyTemplateStylesViaDocumentNew()
         {
             //ExStart
+            //ExFor:Document.CopyStylesFromTemplate(Document)
             //ExFor:Document.CopyStylesFromTemplate(String)
-            //ExSummary:Shows how to copies styles from the template to a document via string.
-            Document target = new Document(MyDir + "Document.docx");
-            Assert.AreEqual(4, target.Styles.Count); //ExSkip
+            //ExSummary:Shows how to copy styles from one document to another.
+            // Create a document, and then add styles that we will copy to another document.
+            Document template = new Document();
+            
+            Style style = template.Styles.Add(StyleType.Paragraph, "TemplateStyle1");
+            style.Font.Name = "Times New Roman";
+            style.Font.Color = Color.Navy;
 
+            style = template.Styles.Add(StyleType.Paragraph, "TemplateStyle2");
+            style.Font.Name = "Arial";
+            style.Font.Color = Color.DeepSkyBlue;
+
+            style = template.Styles.Add(StyleType.Paragraph, "TemplateStyle3");
+            style.Font.Name = "Courier New";
+            style.Font.Color = Color.RoyalBlue;
+
+            Assert.AreEqual(7, template.Styles.Count);
+
+            // Create a document which we will copy the styles to.
+            Document target = new Document();
+
+            // Create a style with same name as a style from the template document, and add it to the target document.
+            style = target.Styles.Add(StyleType.Paragraph, "TemplateStyle3");
+            style.Font.Name = "Calibri";
+            style.Font.Color = Color.Orange;
+
+            Assert.AreEqual(5, target.Styles.Count);
+
+            // There are two ways of calling the method to copy all the styles from one document to another.
+            // 1 -  By passing the template document object:
+            target.CopyStylesFromTemplate(template);
+
+            // Copying styles adds all styles from the template document to the target,
+            // and overwrites existing styles with the same name.
+            Assert.AreEqual(7, target.Styles.Count);
+
+            Assert.AreEqual("Courier New", target.Styles["TemplateStyle3"].Font.Name);
+            Assert.AreEqual(Color.RoyalBlue.ToArgb(), target.Styles["TemplateStyle3"].Font.Color.ToArgb());
+
+            // 2 -  By passing the local system filename of a template document:
             target.CopyStylesFromTemplate(MyDir + "Rendering.docx");
-            Assert.AreEqual(18, target.Styles.Count); //ExSkip
+
+            Assert.AreEqual(21, target.Styles.Count);
             //ExEnd
         }
-
+        
         [Test]
         public void LayoutCollector()
         {
