@@ -215,16 +215,22 @@ namespace ApiExamples
         public void ConditionalExpressionForLeaveChartSeries()
         {
             Document doc = new Document(MyDir + "Reporting engine template - Chart series.docx");
+            
+            int condition = 3;
+            BuildReport(doc, new object[] { Common.GetManagers(), condition }, new[] { "managers", "condition" });
 
             doc.Save(ArtifactsDir + "ReportingEngine.TestLeaveChartSeries.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestLeaveChartSeries.docx", GoldsDir + "ReportingEngine.TestLeaveChartSeries Gold.docx"));
         }
 
-        [Test]
+        [Test, Ignore("WORDSNET-20810")]
         public void ConditionalExpressionForRemoveChartSeries()
         {
             Document doc = new Document(MyDir + "Reporting engine template - Chart series.docx");
+            
+            int condition = 2;
+            BuildReport(doc, new object[] { Common.GetManagers(), condition }, new[] { "managers", "condition" });
 
             doc.Save(ArtifactsDir + "ReportingEngine.TestRemoveChartSeries.docx");
 

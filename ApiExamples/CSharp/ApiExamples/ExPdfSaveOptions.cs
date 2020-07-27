@@ -1007,7 +1007,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions.InterpolateImages
-            //ExSummary:Shows how to improve the quality of an image in the rendered documents.
+            //ExSummary:Shows how to improve the quality of an image in the rendered documents (.NetStandard 2.0).
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
