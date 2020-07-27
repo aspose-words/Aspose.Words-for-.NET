@@ -1925,7 +1925,7 @@ namespace ApiExamples
             Assert.AreEqual(5, target.Styles.Count);
 
             // There are two ways of calling the method to copy all the styles from one document to another.
-            // 1 -  By passing the template document object:
+            // 1 -  Passing the template document object:
             target.CopyStylesFromTemplate(template);
 
             // Copying styles adds all styles from the template document to the target,
@@ -1935,39 +1935,35 @@ namespace ApiExamples
             Assert.AreEqual("Courier New", target.Styles["TemplateStyle3"].Font.Name);
             Assert.AreEqual(Color.RoyalBlue.ToArgb(), target.Styles["TemplateStyle3"].Font.Color.ToArgb());
 
-            // 2 -  By passing the local system filename of a template document:
+            // 2 -  Passing the local system filename of a template document:
             target.CopyStylesFromTemplate(MyDir + "Rendering.docx");
 
             Assert.AreEqual(21, target.Styles.Count);
             //ExEnd
         }
         
-        [Test]
-        public void AlwaysCompressMetafiles()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AlwaysCompressMetafiles(bool compressAllMetafiles)
         {
             //ExStart
             //ExFor:DocSaveOptions.AlwaysCompressMetafiles
             //ExSummary:Shows how to change metafiles compression in a document while saving.
-            // Open a document that contains a Microsoft Equation 3.0 mathematical formula
+            // Open a document that contains a Microsoft Equation 3.0 formula.
             Document doc = new Document(MyDir + "Microsoft equation object.docx");
-            
-            // Large metafiles are always compressed when exporting a document in Aspose.Words, but small metafiles are not
-            // compressed for performance reason. Some other document editors, such as LibreOffice, cannot read uncompressed
-            // metafiles. The following option 'AlwaysCompressMetafiles' was introduced to choose appropriate behavior
+
+            // When we save a document, smaller metafiles are not compressed for performance reasons.
+            // We can set a flag in a SaveOptions object to compress every metafile when saving.
+            // Some editors such as LibreOffice cannot read uncompressed metafiles.
             DocSaveOptions saveOptions = new DocSaveOptions();
-            // False - small metafiles are not compressed for performance reason
-            saveOptions.AlwaysCompressMetafiles = false;
-            
-            doc.Save(ArtifactsDir + "Document.AlwaysCompressMetafiles.False.docx", saveOptions);
+            saveOptions.AlwaysCompressMetafiles = compressAllMetafiles;
 
-            // True - all metafiles are compressed regardless of its size
-            saveOptions.AlwaysCompressMetafiles = true;
-
-            doc.Save(ArtifactsDir + "Document.AlwaysCompressMetafiles.True.docx", saveOptions);
-
-            Assert.True(new FileInfo(ArtifactsDir + "Document.AlwaysCompressMetafiles.True.docx").Length <
-                        new FileInfo(ArtifactsDir + "Document.AlwaysCompressMetafiles.False.docx").Length);
+            doc.Save(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx", saveOptions);
             //ExEnd
+            if (compressAllMetafiles)
+                Assert.AreEqual(13300, new FileInfo(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx").Length, TestUtil.FileInfoLengthDelta);
+            else
+                Assert.AreEqual(21500, new FileInfo(ArtifactsDir + "Document.AlwaysCompressMetafiles.docx").Length, TestUtil.FileInfoLengthDelta);
         }
 
         [Test]
