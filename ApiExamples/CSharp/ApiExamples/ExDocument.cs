@@ -1960,10 +1960,10 @@ namespace ApiExamples
             //ExFor:VbaProject.Modules
             //ExFor:VbaProject.CodePage
             //ExFor:VbaProject.IsSigned
-            //ExSummary:Shows how to get access to VBA project information in the document.
+            //ExSummary:Shows how to access a document's VBA project information.
             Document doc = new Document(MyDir + "VBA project.docm");
 
-            // A VBA project inside the document is defined as a collection of VBA modules
+            // A VBA project inside the document is defined as a collection of VBA modules.
             VbaProject vbaProject = doc.VbaProject;
             Assert.True(vbaProject.IsSigned); //ExSkip
             Console.WriteLine(vbaProject.IsSigned
@@ -1977,12 +1977,11 @@ namespace ApiExamples
             foreach (VbaModule module in vbaModules)
                 Console.WriteLine($"Module name: {module.Name};\nModule code:\n{module.SourceCode}\n");
 
-            // Set new source code for VBA module
-            // You can retrieve object by integer or by name
+            // Set new source code for VBA module. You can access VBA modules in the collection either by index or by name.
             vbaModules[0].SourceCode = "Your VBA code...";
             vbaModules["Module1"].SourceCode = "Your VBA code...";
 
-            // Remove one of VbaModule from VbaModuleCollection
+            // Remove a module from the collection.
             vbaModules.Remove(vbaModules[2]);
             //ExEnd
 
@@ -2004,15 +2003,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:SaveOutputParameters
             //ExFor:SaveOutputParameters.ContentType
-            //ExSummary:Shows how to verify Content-Type strings from save output parameters.
-            Document doc = new Document(MyDir + "Document.docx");
+            //ExSummary:Shows how to access output parameters of a document's save operation.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
 
-            // Save the document as a .doc and check parameters
+            // After we save a document, we can access the Internet Media Type (MIME type) of the newly created output document.
             SaveOutputParameters parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.doc");
+
             Assert.AreEqual("application/msword", parameters.ContentType);
 
-            // A .docx or a .pdf will have different parameters
+            // This property changes depending on the save format.
             parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.pdf");
+
             Assert.AreEqual("application/pdf", parameters.ContentType);
             //ExEnd
         }
@@ -2029,9 +2032,9 @@ namespace ApiExamples
             NodeCollection subDocuments = doc.GetChildNodes(NodeType.SubDocument, true);
             Assert.AreEqual(1, subDocuments.Count); //ExSkip
 
+            // This node serves as a reference to an external document, and its contents cannot be accessed.
             SubDocument subDocument = (SubDocument)subDocuments[0];
 
-            // The SubDocument object itself does not contain the documents of the subdocument and only serves as a reference
             Assert.False(subDocument.IsComposite);
             //ExEnd
         }
@@ -2041,6 +2044,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:BaseWebExtensionCollection`1.Add(`0)
+            //ExFor:BaseWebExtensionCollection`1.Clear
             //ExFor:TaskPane
             //ExFor:TaskPane.DockState
             //ExFor:TaskPane.IsVisible
@@ -2065,40 +2069,42 @@ namespace ApiExamples
             //ExFor:WebExtensionBindingType
             //ExFor:TaskPaneDockState
             //ExFor:TaskPaneCollection
-            //ExSummary:Shows how to create add-ins inside the document.
+            //ExSummary:Shows how to add a web extension to a document.
             Document doc = new Document();
 
-            // Create taskpane with "MyScript" add-in which will be used by the document
+            // Create task pane with "MyScript" add-in which will be used by the document,
+            // then set its default location.
             TaskPane myScriptTaskPane = new TaskPane();
             doc.WebExtensionTaskPanes.Add(myScriptTaskPane);
-
-            // Define task pane location when the document opens
             myScriptTaskPane.DockState = TaskPaneDockState.Right;
             myScriptTaskPane.IsVisible = true;
             myScriptTaskPane.Width = 300;
             myScriptTaskPane.IsLocked = true;
-            // Use this option if you have several task panes
+
+            // If there are multiple task panes in the same docking location, we can set this index to arrange them.
             myScriptTaskPane.Row = 1;
 
-            // Add "MyScript Math Sample" add-in which will be displayed inside task pane
+            // Create an add-in called "MyScript Math Sample", which will be displayed inside task pane.
             WebExtension webExtension = myScriptTaskPane.WebExtension;
 
-            // Application Id from store
+            // Set application store reference parameters for our add-in, such as the ID.
             webExtension.Reference.Id = "WA104380646";
-            // The current version of the application used
             webExtension.Reference.Version = "1.0.0.0";
-            // Type of marketplace
             webExtension.Reference.StoreType = WebExtensionStoreType.OMEX;
-            // Marketplace based on your locale
             webExtension.Reference.Store = CultureInfo.CurrentCulture.Name;
-
             webExtension.Properties.Add(new WebExtensionProperty("MyScript", "MyScript Math Sample"));
             webExtension.Bindings.Add(new WebExtensionBinding("MyScript", WebExtensionBindingType.Text, "104380646"));
 
-            // Use this option if you need to block web extension from any action
+            // Allow the user to interact with the add-in.
             webExtension.IsFrozen = false;
 
+            // We can access the web extension in Microsoft Word via Developer -> Add-ins.
             doc.Save(ArtifactsDir + "Document.WebExtension.docx");
+
+            // Remove all web extension task panes at once like this.
+            doc.WebExtensionTaskPanes.Clear();
+
+            Assert.AreEqual(0, doc.WebExtensionTaskPanes.Count);
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Document.WebExtension.docx");
@@ -2131,22 +2137,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:BaseWebExtensionCollection`1
-            //ExFor:BaseWebExtensionCollection`1.Add(`0)
-            //ExFor:BaseWebExtensionCollection`1.Clear
             //ExFor:BaseWebExtensionCollection`1.GetEnumerator
             //ExFor:BaseWebExtensionCollection`1.Remove(Int32)
             //ExFor:BaseWebExtensionCollection`1.Count
             //ExFor:BaseWebExtensionCollection`1.Item(Int32)
-            //ExSummary:Shows how to work with web extension collections.
+            //ExSummary:Shows how to work with a document's collection of web extensions.
             Document doc = new Document(MyDir + "Web extension.docx");
-            Assert.AreEqual(1, doc.WebExtensionTaskPanes.Count); //ExSkip
 
-            // Add new taskpane to the collection
-            TaskPane newTaskPane = new TaskPane();
-            doc.WebExtensionTaskPanes.Add(newTaskPane);
-            Assert.AreEqual(2, doc.WebExtensionTaskPanes.Count); //ExSkip
+            Assert.AreEqual(1, doc.WebExtensionTaskPanes.Count);
 
-            // Enumerate all WebExtensionProperty in a collection
+            // Print all properties of the document's web extension.
             WebExtensionPropertyCollection webExtensionPropertyCollection = doc.WebExtensionTaskPanes[0].WebExtension.Properties;
             using (IEnumerator<WebExtensionProperty> enumerator = webExtensionPropertyCollection.GetEnumerator())
             {
@@ -2157,11 +2157,10 @@ namespace ApiExamples
                 }
             }
 
-            // We can remove task panes one by one or clear the entire collection
-            doc.WebExtensionTaskPanes.Remove(1);
-            Assert.AreEqual(1, doc.WebExtensionTaskPanes.Count); //ExSkip
-            doc.WebExtensionTaskPanes.Clear();
-            Assert.AreEqual(0, doc.WebExtensionTaskPanes.Count); //ExSkip
+            // Remove the web extension.
+            doc.WebExtensionTaskPanes.Remove(0);
+
+            Assert.AreEqual(0, doc.WebExtensionTaskPanes.Count);
             //ExEnd
 		}
 
@@ -2184,40 +2183,64 @@ namespace ApiExamples
         }
         
         [Test]
-        public void WorkWithWatermark()
+        public void TextWatermark()
         {
             //ExStart
             //ExFor:Watermark.SetText(String)
             //ExFor:Watermark.SetText(String, TextWatermarkOptions)
-            //ExFor:Watermark.SetImage(Image, ImageWatermarkOptions)
             //ExFor:Watermark.Remove
             //ExFor:TextWatermarkOptions.FontFamily
             //ExFor:TextWatermarkOptions.FontSize
             //ExFor:TextWatermarkOptions.Color
             //ExFor:TextWatermarkOptions.Layout
             //ExFor:TextWatermarkOptions.IsSemitrasparent
-            //ExFor:ImageWatermarkOptions.Scale
-            //ExFor:ImageWatermarkOptions.IsWashout
             //ExFor:WatermarkLayout
             //ExFor:WatermarkType
-            //ExSummary:Shows how to create and remove watermarks in the document.
+            //ExSummary:Shows how to create a text watermark.
             Document doc = new Document();
 
+            // A watermark featuring plain text can be added to a document like this.
             doc.Watermark.SetText("Aspose Watermark");
             
+            // If we wish to edit the formatting of the text to be used as a watermark,
+            // we can do so by passing a TextWatermarkOptions object when creating the watermark.
             TextWatermarkOptions textWatermarkOptions = new TextWatermarkOptions();
             textWatermarkOptions.FontFamily = "Arial";
             textWatermarkOptions.FontSize = 36;
             textWatermarkOptions.Color = Color.Black;
-            textWatermarkOptions.Layout = WatermarkLayout.Horizontal;
+            textWatermarkOptions.Layout = WatermarkLayout.Diagonal;
             textWatermarkOptions.IsSemitrasparent = false;
 
             doc.Watermark.SetText("Aspose Watermark", textWatermarkOptions);
 
+            doc.Save(ArtifactsDir + "Document.TextWatermark.docx");
+
+            // We can remove a watermark from a document like this.
+            if (doc.Watermark.Type == WatermarkType.Text)
+                doc.Watermark.Remove();
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.TextWatermark.docx");
+
+            Assert.AreEqual(WatermarkType.Text, doc.Watermark.Type);
+        }
+
+        [Test]
+        public void ImageWatermark()
+        {
+            //ExStart
+            //ExFor:Watermark.SetImage(Image, ImageWatermarkOptions)
+            //ExFor:ImageWatermarkOptions.Scale
+            //ExFor:ImageWatermarkOptions.IsWashout
+            //ExSummary:Shows how to create a watermark from an image in the local file system.
+            Document doc = new Document();
+
+            // Modify the appearance of the image watermark with an ImageWatermarkOptions object,
+            // then pass it while creating a watermark from an image file.
             ImageWatermarkOptions imageWatermarkOptions = new ImageWatermarkOptions();
             imageWatermarkOptions.Scale = 5;
             imageWatermarkOptions.IsWashout = false;
-            
+
 #if NET462 || JAVA
             doc.Watermark.SetImage(Image.FromFile(ImageDir + "Logo.jpg"), imageWatermarkOptions);
 #elif NETCOREAPP2_1 || __MOBILE__
@@ -2226,27 +2249,46 @@ namespace ApiExamples
                 doc.Watermark.SetImage(image, imageWatermarkOptions);
             }
 #endif
-            if (doc.Watermark.Type == WatermarkType.Text)
-                doc.Watermark.Remove();
+
+            doc.Save(ArtifactsDir + "Document.ImageWatermark.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.ImageWatermark.docx");
+
+            Assert.AreEqual(WatermarkType.Image, doc.Watermark.Type);
         }
 
-        [Test]
-        public void HideGrammarErrors()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void SpellingAndGrammarErrors(bool showErrors)
         {
             //ExStart
             //ExFor:Document.ShowGrammaticalErrors
             //ExFor:Document.ShowSpellingErrors
-            //ExSummary:Shows how to hide grammar errors in the document.
-            Document doc = new Document(MyDir + "Document.docx");
+            //ExSummary:Shows how to show/hide errors in the document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert two sentences with mistakes that would be picked up
+            // by the spelling and grammar checkers in Microsoft Word.
+            builder.Writeln("There is a speling error in this sentence.");
+            builder.Writeln("Their is a grammatical error in this sentence.");
+
+            // If these options are enabled, then spelling errors will be underlined
+            // in the output document by a red jagged line,
+            // and grammatical errors will be underlined by a double blue line.
+            doc.ShowGrammaticalErrors = showErrors;
+            doc.ShowSpellingErrors = showErrors;
             
-            doc.ShowGrammaticalErrors = true;
-            doc.ShowSpellingErrors = false;
-            
-            doc.Save(ArtifactsDir + "Document.HideGrammarErrors.docx");
+            doc.Save(ArtifactsDir + "Document.SpellingAndGrammarErrors.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.SpellingAndGrammarErrors.docx");
+
+            Assert.AreEqual(showErrors, doc.ShowGrammaticalErrors);
+            Assert.AreEqual(showErrors, doc.ShowSpellingErrors);
         }
-        
+
         [TestCase(Granularity.CharLevel)]
         [TestCase(Granularity.WordLevel)]
         public void GranularityCompareOption(Granularity granularity)
@@ -2254,7 +2296,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompareOptions.Granularity
             //ExFor:Granularity
-            //ExSummary:Shows to specify comparison granularity.
+            //ExSummary:Shows to specify a granularity while comparing documents.
             Document docA = new Document();
             DocumentBuilder builderA = new DocumentBuilder(docA);
             builderA.Writeln("Alpha Lorem ipsum dolor sit amet, consectetur adipiscing elit");
@@ -2263,13 +2305,14 @@ namespace ApiExamples
             DocumentBuilder builderB = new DocumentBuilder(docB);
             builderB.Writeln("Lorems ipsum dolor sit amet consectetur - \"adipiscing\" elit");
  
-            // Specify whether changes are tracked by character ('Granularity.CharLevel') or by word ('Granularity.WordLevel')
+            // Specify whether changes are tracked by character ('Granularity.CharLevel'),
+            // or by word ('Granularity.WordLevel').
             CompareOptions compareOptions = new CompareOptions();
             compareOptions.Granularity = granularity;
  
             docA.Compare(docB, "author", DateTime.Now, compareOptions);
 
-            // Revision groups contain all of our text changes
+            // The first document's collection of revision groups contains all the differences between documents.
             RevisionGroupCollection groups = docA.Revisions.Groups;
             Assert.AreEqual(5, groups.Count);
             //ExEnd
