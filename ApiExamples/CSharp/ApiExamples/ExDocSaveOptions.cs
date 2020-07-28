@@ -125,5 +125,29 @@ namespace ApiExamples
             Assert.AreNotEqual(isUpdateLastPrintedProperty, (DateTime.MinValue.Date == doc.BuiltInDocumentProperties.LastPrinted));
             //ExEnd
         }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AlwaysCompressMetafiles(bool compressAllMetafiles)
+        {
+            //ExStart
+            //ExFor:DocSaveOptions.AlwaysCompressMetafiles
+            //ExSummary:Shows how to change metafiles compression in a document while saving.
+            // Open a document that contains a Microsoft Equation 3.0 formula.
+            Document doc = new Document(MyDir + "Microsoft equation object.docx");
+
+            // When we save a document, smaller metafiles are not compressed for performance reasons.
+            // We can set a flag in a SaveOptions object to compress every metafile when saving.
+            // Some editors such as LibreOffice cannot read uncompressed metafiles.
+            DocSaveOptions saveOptions = new DocSaveOptions();
+            saveOptions.AlwaysCompressMetafiles = compressAllMetafiles;
+
+            doc.Save(ArtifactsDir + "DocSaveOptions.AlwaysCompressMetafiles.docx", saveOptions);
+            //ExEnd
+            if (compressAllMetafiles)
+                Assert.AreEqual(13300, new FileInfo(ArtifactsDir + "DocSaveOptions.AlwaysCompressMetafiles.docx").Length, TestUtil.FileInfoLengthDelta);
+            else
+                Assert.AreEqual(21500, new FileInfo(ArtifactsDir + "DocSaveOptions.AlwaysCompressMetafiles.docx").Length, TestUtil.FileInfoLengthDelta);
+        }
     }
 }
