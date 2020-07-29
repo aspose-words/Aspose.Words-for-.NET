@@ -3102,6 +3102,25 @@ namespace ApiExamples
             Assert.AreEqual(Color.Red.ToArgb(), dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Color.ToArgb());
         }
 
+        //TODO: Check docs on dev side
+        [Test]
+        public void IgnoreHeaderFooter()
+        {
+            //ExStart
+            //ExFor:ImportFormatOptions.IgnoreHeaderFooter
+            //ExSummary:Shows how to specifies ignoring source formatting of headers/footers content.
+            Document dstDoc = new Document(MyDir + "Header and footer types.docx");
+            Document srcDoc = new Document(MyDir + "Document.docx");
+ 
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
+            importFormatOptions.IgnoreHeaderFooter = true;
+ 
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
+
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.IgnoreHeaderFooter.docx");
+            //ExEnd
+        }
+
         #if NET462 || NETCOREAPP2_1 || JAVA
         /// <summary>
         /// All markdown tests work with the same file
