@@ -10,9 +10,16 @@ using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
+using Document = Aspose.Words.Document;
+using IResourceLoadingCallback = Aspose.Words.Loading.IResourceLoadingCallback;
+using SaveFormat = Aspose.Words.SaveFormat;
 #if NET462 || JAVA
+using System.IO;
 using Aspose.Words.Loading;
 using System.Net;
+#endif
+#if NET462 || NETCOREAPP2_1 || JAVA
+using Aspose.Pdf;
 #endif
 
 namespace ApiExamples
@@ -26,11 +33,14 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBase
             //ExSummary:Shows how to initialize the subclasses of DocumentBase.
-            // DocumentBase is the abstract base class for the Document and GlossaryDocument classes
             Document doc = new Document();
+
+            Assert.AreEqual(typeof(DocumentBase), doc.GetType().BaseType);
 
             GlossaryDocument glossaryDoc = new GlossaryDocument();
             doc.GlossaryDocument = glossaryDoc;
+
+            Assert.AreEqual(typeof(DocumentBase), glossaryDoc.GetType().BaseType);
             //ExEnd
         }
 
@@ -39,8 +49,10 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBase.PageColor
-            //ExSummary:Shows how to set the page color.
+            //ExSummary:Shows how to set the background color for all pages of a document.
             Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
 
             doc.PageColor = System.Drawing.Color.LightGray;
 
@@ -48,6 +60,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBase.SetPageColor.docx");
+
             Assert.AreEqual(System.Drawing.Color.LightGray.ToArgb(), doc.PageColor.ToArgb());
         }
 
@@ -56,35 +69,41 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBase.ImportNode(Node, Boolean)
-            //ExSummary:Shows how to import node from source document to destination document.
-            Document src = new Document();
-            Document dst = new Document();
+            //ExSummary:Shows how to import a node from one document to another.
+            // Create a source document and a destination document, then add text to both of them.
+            Document srcDoc = new Document();
+            Document dstDoc = new Document();
 
-            // Add text to both documents
-            src.FirstSection.Body.FirstParagraph.AppendChild(new Run(src, "Source document first paragraph text."));
-            dst.FirstSection.Body.FirstParagraph.AppendChild(new Run(dst, "Destination document first paragraph text."));
+            srcDoc.FirstSection.Body.FirstParagraph.AppendChild(
+                new Run(srcDoc, "Source document first paragraph text."));
+            dstDoc.FirstSection.Body.FirstParagraph.AppendChild(
+                new Run(dstDoc, "Destination document first paragraph text."));
 
-            // In order for a child node to be successfully appended to another node in a document,
-            // both nodes must have the same parent document, or an exception is thrown
-            Assert.AreNotEqual(dst, src.FirstSection.Document);
-            Assert.Throws<ArgumentException>(() => { dst.AppendChild(src.FirstSection); });
+            // Every node has a parent document, which is the document that contains the node.
+            // If we insert a node into a document that the node does not belong to, an exception will be thrown.
+            Assert.AreNotEqual(dstDoc, srcDoc.FirstSection.Document);
+            Assert.Throws<ArgumentException>(() =>
+            {
+                dstDoc.AppendChild(srcDoc.FirstSection);
+            });
 
-            // For that reason, we can't just append a section of the source document to the destination document using Node.AppendChild()
-            // Document.ImportNode() lets us get around this by creating a clone of a node and sets its parent to the calling document
-            Section importedSection = (Section)dst.ImportNode(src.FirstSection, true);
+            // Use the ImportNode method to create a copy of a node,
+            // which will have the document that the ImportNode method is called on as its new parent document.
+            Section importedSection = (Section)dstDoc.ImportNode(srcDoc.FirstSection, true);
 
-            // Now it is ready to be placed in the document
-            dst.AppendChild(importedSection);
+            Assert.AreEqual(dstDoc, importedSection.Document);
 
-            // Our document now contains both the original and imported section
+            // We can now successfully insert the node into the document.
+            dstDoc.AppendChild(importedSection);
+
             Assert.AreEqual("Destination document first paragraph text.\r\nSource document first paragraph text.\r\n",
-                dst.ToString(SaveFormat.Text));
+                dstDoc.ToString(SaveFormat.Text));
             //ExEnd
 
-            Assert.AreNotEqual(importedSection, src.FirstSection);
-            Assert.AreNotEqual(importedSection.Document, src.FirstSection.Document);
+            Assert.AreNotEqual(importedSection, srcDoc.FirstSection);
+            Assert.AreNotEqual(importedSection.Document, srcDoc.FirstSection.Document);
             Assert.AreEqual(importedSection.Body.FirstParagraph.GetText(),
-                src.FirstSection.Body.FirstParagraph.GetText());
+                srcDoc.FirstSection.Body.FirstParagraph.GetText());
         }
 
         [Test]
@@ -93,35 +112,36 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBase.ImportNode(Node, System.Boolean, ImportFormatMode)
             //ExSummary:Shows how to import node from source document to destination document with specific options.
-            // Create two documents with two styles that differ in font but have the same name
-            Document src = new Document();
-            Style srcStyle = src.Styles.Add(StyleType.Character, "My style");
+            // Create two documents, and add a character style to each document.
+            // Configure the styles to have the same name, but different text formatting.
+            Document srcDoc = new Document();
+            Style srcStyle = srcDoc.Styles.Add(StyleType.Character, "My style");
             srcStyle.Font.Name = "Courier New";
-            DocumentBuilder srcBuilder = new DocumentBuilder(src);
+            DocumentBuilder srcBuilder = new DocumentBuilder(srcDoc);
             srcBuilder.Font.Style = srcStyle;
             srcBuilder.Writeln("Source document text.");
 
-            Document dst = new Document();
-            Style dstStyle = dst.Styles.Add(StyleType.Character, "My style");
+            Document dstDoc = new Document();
+            Style dstStyle = dstDoc.Styles.Add(StyleType.Character, "My style");
             dstStyle.Font.Name = "Calibri";
-            DocumentBuilder dstBuilder = new DocumentBuilder(dst);
+            DocumentBuilder dstBuilder = new DocumentBuilder(dstDoc);
             dstBuilder.Font.Style = dstStyle;
             dstBuilder.Writeln("Destination document text.");
 
             // Import the Section from the destination document into the source document, causing a style name collision
             // If we use destination styles then the imported source text with the same style name as destination text
             // will adopt the destination style 
-            Section importedSection = (Section)dst.ImportNode(src.FirstSection, true, ImportFormatMode.UseDestinationStyles);
+            Section importedSection = (Section)dstDoc.ImportNode(srcDoc.FirstSection, true, ImportFormatMode.UseDestinationStyles);
             Assert.AreEqual("Source document text.", importedSection.Body.Paragraphs[0].Runs[0].GetText().Trim()); //ExSkip
-            Assert.IsNull(dst.Styles["My style_0"]); //ExSkip
+            Assert.IsNull(dstDoc.Styles["My style_0"]); //ExSkip
             Assert.AreEqual(dstStyle.Font.Name, importedSection.Body.FirstParagraph.Runs[0].Font.Name);
             Assert.AreEqual(dstStyle.Name, importedSection.Body.FirstParagraph.Runs[0].Font.StyleName);
 
             // If we use ImportFormatMode.KeepDifferentStyles,
             // the source style is preserved and the naming clash is resolved by adding a suffix 
-            dst.ImportNode(src.FirstSection, true, ImportFormatMode.KeepDifferentStyles);
-            Assert.AreEqual(dstStyle.Font.Name, dst.Styles["My style"].Font.Name);
-            Assert.AreEqual(srcStyle.Font.Name, dst.Styles["My style_0"].Font.Name);
+            dstDoc.ImportNode(srcDoc.FirstSection, true, ImportFormatMode.KeepDifferentStyles);
+            Assert.AreEqual(dstStyle.Font.Name, dstDoc.Styles["My style"].Font.Name);
+            Assert.AreEqual(srcStyle.Font.Name, dstDoc.Styles["My style_0"].Font.Name);
             //ExEnd
         }
 
@@ -130,41 +150,57 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBase.BackgroundShape
-            //ExSummary:Shows how to set the background shape of a document.
+            //ExSummary:Shows how to set a background shape for every page of a document.
             Document doc = new Document();
+
             Assert.IsNull(doc.BackgroundShape);
 
-            // A background shape can only be a rectangle
-            // We will set the color of this rectangle to light blue
+            // The only shape type that we are able to use as a background is a rectangle.
             Shape shapeRectangle = new Shape(doc, ShapeType.Rectangle);
+
+            // There are two ways of using this shape as a page background.
+            // 1 -  A flat color:
+            shapeRectangle.FillColor = System.Drawing.Color.LightBlue;
             doc.BackgroundShape = shapeRectangle;
 
-            // This rectangle covers the entire page in the output document
-            // We can also do this by setting doc.PageColor
-            shapeRectangle.FillColor = System.Drawing.Color.LightBlue;
-            doc.Save(ArtifactsDir + "DocumentBase.BackgroundShapeFlatColor.docx");
+            doc.Save(ArtifactsDir + "DocumentBase.BackgroundShape.FlatColor.docx");
 
-            // Setting the image will override the flat background color with the image
+            // 2 -  An image:
+            shapeRectangle = new Shape(doc, ShapeType.Rectangle);
             shapeRectangle.ImageData.SetImage(ImageDir + "Transparent background logo.png");
-            Assert.IsTrue(doc.BackgroundShape.HasImage);
 
-            // This image is a photo with a white background
-            // To make it suitable as a watermark, we will need to do some image processing
-            // The default values for these variables are 0.5, so here we are lowering the contrast and increasing the brightness
+            // Adjust the image's appearance to make it more suitable as a watermark.
             shapeRectangle.ImageData.Contrast = 0.2;
             shapeRectangle.ImageData.Brightness = 0.7;
 
-            // Microsoft Word does not support images in background shapes, so even though we set the background as an image,
-            // the output will show a light blue background like before
-            // However, we can see our watermark in an output pdf
-            doc.Save(ArtifactsDir + "DocumentBase.BackgroundShape.pdf");
+            doc.BackgroundShape = shapeRectangle;
+
+            Assert.IsTrue(doc.BackgroundShape.HasImage);
+
+            // Microsoft Word does not support shapes with images as backgrounds,
+            // but we can still see these backgrounds in other save formats such as .pdf.
+            doc.Save(ArtifactsDir + "DocumentBase.BackgroundShape.Image.pdf");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBase.BackgroundShapeFlatColor.docx");
+            doc = new Document(ArtifactsDir + "DocumentBase.BackgroundShape.FlatColor.docx");
+
             Assert.AreEqual(System.Drawing.Color.LightBlue.ToArgb(), doc.BackgroundShape.FillColor.ToArgb());
+            Assert.Throws<ArgumentException>(() =>
+            {
+                doc.BackgroundShape = new Shape(doc, ShapeType.Triangle);
+            });
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "DocumentBase.BackgroundShape.Image.pdf");
+            XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
+
+            Assert.AreEqual(400, pdfDocImage.Width);
+            Assert.AreEqual(400, pdfDocImage.Height);
+            Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
+#endif
         }
 
-        #if NET462 || JAVA
+#if NET462 || JAVA
         //ExStart
         //ExFor:DocumentBase.ResourceLoadingCallback
         //ExFor:IResourceLoadingCallback
@@ -175,74 +211,61 @@ namespace ApiExamples
         //ExFor:ResourceLoadingArgs.ResourceType
         //ExFor:ResourceLoadingArgs.SetData(Byte[])
         //ExFor:ResourceType
-        //ExSummary:Shows how to process inserted resources differently.
+        //ExSummary:Shows how to customize the process of loading external resources into a document.
         [Test] //ExSkip
         public void ResourceLoadingCallback()
         {
             Document doc = new Document();
-
-            // Enable our custom image loading
             doc.ResourceLoadingCallback = new ImageNameHandler();
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // We usually insert images as a URI or byte array, but there are many other possibilities with ResourceLoadingCallback
-            // In this case we are referencing images with simple names and keep the image fetching logic somewhere else
-            builder.InsertImage("Google Logo");
-            builder.InsertImage("Aspose Logo");
-            builder.InsertImage("My Watermark");
+            // Images are normally inserted using a URI, or a byte array.
+            // Every instance of a resource being loaded will call our callback's ResourceLoading method.
+            builder.InsertImage("Google logo");
+            builder.InsertImage("Aspose logo");
+            builder.InsertImage("Watermark");
 
-            // Images belong to Shape objects, which are placed and scaled in the document
             Assert.AreEqual(3, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             doc.Save(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx");
             TestResourceLoadingCallback(new Document(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx")); //ExSkip
         }
 
+        /// <summary>
+        /// Allows us to load images into a document using predefined shorthands, as opposed to URIs.
+        /// This will separate image loading logic from the rest of the document construction.
+        /// </summary>
         private class ImageNameHandler : IResourceLoadingCallback
         {
             public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
             {
+                // If one of the image shorthands is encountered while loading an image,
+                // this callback will apply unique logic for each defined shorthand instead of treating it as a URI.
                 if (args.ResourceType == ResourceType.Image)
-                {
-                    // builder.InsertImage expects a URI so inputs like "Google Logo" would normally trigger a FileNotFoundException
-                    // We can still process those inputs and find an image any way we like, as long as an image byte array is passed to args.SetData()
-                    if (args.OriginalUri == "Google Logo")
+                    switch (args.OriginalUri)
                     {
-                        using (WebClient webClient = new WebClient())
-                        {
-                            byte[] imageBytes =
-                                webClient.DownloadData("http://www.google.com/images/logos/ps_logo2.png");
-                            args.SetData(imageBytes);
-                            // We need this return statement any time a resource is loaded in a custom manner
+                        case "Google logo":
+                            using (WebClient webClient = new WebClient())
+                            {
+                                args.SetData(webClient.DownloadData("http://www.google.com/images/logos/ps_logo2.png"));
+                            }
+
                             return ResourceLoadingAction.UserProvided;
-                        }
-                    }
 
-                    if (args.OriginalUri == "Aspose Logo")
-                    {
-                        using (WebClient webClient = new WebClient())
-                        {
-                            byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
-                            args.SetData(imageBytes);
+                        case "Aspose logo":
+                            using (WebClient webClient = new WebClient())
+                            {
+                                args.SetData(webClient.DownloadData(AsposeLogoUrl));
+                            }
                             return ResourceLoadingAction.UserProvided;
-                        }
+
+                        case "Watermark":
+                            args.SetData(File.ReadAllBytes(ImageDir + "Transparent background logo.png"));
+
+                            return ResourceLoadingAction.UserProvided;
                     }
 
-                    // We can find and add an image any way we like, as long as args.SetData() is called with some image byte array as a parameter
-                    if (args.OriginalUri == "My Watermark")
-                    {
-                        System.Drawing.Image watermark = System.Drawing.Image.FromFile(ImageDir + "Transparent background logo.png");
-
-                        System.Drawing.ImageConverter converter = new System.Drawing.ImageConverter();
-                        byte[] imageBytes = (byte[])converter.ConvertTo(watermark, typeof(byte[]));
-                        args.SetData(imageBytes);
-
-                        return ResourceLoadingAction.UserProvided;
-                    }
-                }
-
-                // All other resources such as documents, CSS stylesheets and images passed as URIs are handled as they were normally
                 return ResourceLoadingAction.Default;
             }
         }
@@ -255,7 +278,10 @@ namespace ApiExamples
                 Assert.IsTrue(shape.HasImage);
                 Assert.IsNotEmpty(shape.ImageData.ImageBytes);
             }
+
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "http://www.google.com/images/logos/ps_logo2.png");
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, AsposeLogoUrl);
         }
-        #endif
+#endif
     }
 }
