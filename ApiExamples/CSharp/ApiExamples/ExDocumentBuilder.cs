@@ -40,11 +40,11 @@ namespace ApiExamples
             //ExFor:Font.Color
             //ExFor:Font.Underline
             //ExFor:DocumentBuilder.#ctor
-            //ExSummary:Inserts formatted text using DocumentBuilder.
+            //ExSummary:Shows how to insert formatted text using DocumentBuilder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Specify font formatting before adding text
+            // Specify font formatting, then add text.
             Aspose.Words.Font font = builder.Font;
             font.Size = 16;
             font.Bold = true;
@@ -59,7 +59,7 @@ namespace ApiExamples
             Run firstRun = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
             Assert.AreEqual("Hello world!", firstRun.GetText().Trim());
-            Assert.AreEqual(16, firstRun.Font.Size);
+            Assert.AreEqual(16.0d, firstRun.Font.Size);
             Assert.True(firstRun.Font.Bold);
             Assert.AreEqual("Courier New", firstRun.Font.Name);
             Assert.AreEqual(Color.Blue.ToArgb(), firstRun.Font.Color.ToArgb());
@@ -84,11 +84,12 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Specify that we want headers and footers different for first, even and odd pages
+            // Specify that we want different headers and footers for first, even and odd pages.
             builder.PageSetup.DifferentFirstPageHeaderFooter = true;
             builder.PageSetup.OddAndEvenPagesHeaderFooter = true;
 
-            // Create the headers
+            // Create the headers, then add three pages to the document
+            // in order to be able to display each header type.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderFirst);
             builder.Write("Header for the first page");
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderEven);
@@ -96,7 +97,6 @@ namespace ApiExamples
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.Write("Header for all other pages");
 
-            // Create three pages in the document
             builder.MoveToSection(0);
             builder.Writeln("Page1");
             builder.InsertBreak(BreakType.PageBreak);
