@@ -123,28 +123,38 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertField(String)
             //ExFor:DocumentBuilder.MoveToMergeField(String, Boolean, Boolean)
-            //ExSummary:Shows how to insert merge fields and move between them.
+            //ExSummary:Shows how to insert fields, and move the document builder's cursor to them.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertField(@"MERGEFIELD MyMergeField1 \* MERGEFORMAT");
             builder.InsertField(@"MERGEFIELD MyMergeField2 \* MERGEFORMAT");
 
-            // The second merge field starts immediately after the end of the first
-            // We'll move the builder's cursor to the end of the first so we can split them by text
+            // Move the cursor to the first MERGEFIELD.
             builder.MoveToMergeField("MyMergeField1", true, false);
+            
+            // Note that the cursor is placed immediately after the first MERGEFIELD, and before the second.
             Assert.AreEqual(doc.Range.Fields[1].Start, builder.CurrentNode);
+            Assert.AreEqual(doc.Range.Fields[0].End, builder.CurrentNode.PreviousSibling);
 
-            builder.Write(" Text between our two merge fields. ");
+            // If we wish to edit the field's field code or contents using the builder,
+            // its cursor would need to be inside a field.
+            // To place it inside a field we would need to call the document builder's MoveTo method,
+            // and pass the field's start or separator node as an argument.
+            builder.Write(" Text between our merge fields. ");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.MergeFields.docx");
             //ExEnd		
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.MergeFields.docx");
 
+            Assert.AreEqual("\u0013MERGEFIELD MyMergeField1 \\* MERGEFORMAT\u0014«MyMergeField1»\u0015" +
+                            " Text between our merge fields. " +
+                            "\u0013MERGEFIELD MyMergeField2 \\* MERGEFORMAT\u0014«MyMergeField2»\u0015", doc.GetText().Trim());
             Assert.AreEqual(2, doc.Range.Fields.Count);
-
-            TestUtil.VerifyField(FieldType.FieldMergeField, @"MERGEFIELD MyMergeField1 \* MERGEFORMAT", "«MyMergeField1»", doc.Range.Fields[0]);
-            TestUtil.VerifyField(FieldType.FieldMergeField, @"MERGEFIELD MyMergeField2 \* MERGEFORMAT", "«MyMergeField2»", doc.Range.Fields[1]);
+            TestUtil.VerifyField(FieldType.FieldMergeField, @"MERGEFIELD MyMergeField1 \* MERGEFORMAT", 
+                "«MyMergeField1»", doc.Range.Fields[0]);
+            TestUtil.VerifyField(FieldType.FieldMergeField, @"MERGEFIELD MyMergeField2 \* MERGEFORMAT", 
+                "«MyMergeField2»", doc.Range.Fields[1]);
         }
 
         [Test]
@@ -160,8 +170,7 @@ namespace ApiExamples
             //ExFor:HorizontalRuleFormat.Height
             //ExFor:HorizontalRuleFormat.Color
             //ExFor:HorizontalRuleFormat.NoShade
-            //ExSummary:Shows how to insert horizontal rule shape in a document and customize the formatting.
-            // Use a document builder to insert a horizontal rule
+            //ExSummary:Shows how to insert a horizontal rule shape, and customize its formatting.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             Shape shape = builder.InsertHorizontalRule();
@@ -213,24 +222,21 @@ namespace ApiExamples
             //ExFor:Font.Color
             //ExFor:Font.Underline
             //ExFor:Underline
-            //ExSummary:Shows how to insert a hyperlink into a document using DocumentBuilder.
+            //ExSummary:Shows how to insert a hyperlink field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Write("Please make sure to visit ");
+            builder.Write("For more information, please visit the ");
 
-            // Specify font formatting for the hyperlink
+            // Insert a hyperlink, and apply formatting to emphasize it.
+            // The hyperlink will be a clickable piece of text which will take us to the location specified in the URL.
             builder.Font.Color = Color.Blue;
             builder.Font.Underline = Underline.Single;
-
-            // Insert the link
-            builder.InsertHyperlink("Aspose Website", "http://www.aspose.com", false);
-
-            // Revert to default formatting
+            builder.InsertHyperlink("Aspose website", "http://www.aspose.com", false);
             builder.Font.ClearFormatting();
-            builder.Write(" for more information.");
+            builder.Writeln(".");
 
-            // Holding Ctrl and left clicking on the field in Microsoft Word will take you to the link's address in a web browser
+            // Ctrl + left clicking the link in the text in Microsoft Word will take us to the URL via a new web browser window.
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertHyperlink.docx");
             //ExEnd
 
