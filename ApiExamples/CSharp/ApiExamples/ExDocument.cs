@@ -3340,6 +3340,8 @@ namespace ApiExamples
             //ExFor:RevisionOptions.RevisionBarsWidth
             //ExFor:RevisionOptions.ShowOriginalRevision
             //ExFor:RevisionOptions.ShowRevisionMarks
+            //ExFor:RevisionOptions.RevisionBarsPosition
+            //ExFor:RevisionOptions.MeasurementUnit
             //ExFor:RevisionTextEffect
             //ExSummary:Shows how to edit appearance of revisions.
             Document doc = new Document(MyDir + "Revisions.docx");
@@ -3366,15 +3368,18 @@ namespace ApiExamples
             revisionOptions.RevisedPropertiesColor = RevisionColor.DarkRed;
             revisionOptions.RevisedPropertiesEffect = RevisionTextEffect.Bold;
 
-            // Place a thick dark blue bar on the left side of the page next to lines affected by revisions
+            // Place a thick dark blue bar on the right side of the page next to lines affected by revisions
             revisionOptions.RevisionBarsColor = RevisionColor.DarkBlue;
             revisionOptions.RevisionBarsWidth = 15.0f;
+            revisionOptions.RevisionBarsPosition = HorizontalAlignment.Right;
 
             // Show revision marks and original text
             revisionOptions.ShowOriginalRevision = true;
             revisionOptions.ShowRevisionMarks = true;
 
             // Get movement, deletion, formatting revisions and comments to show up in green balloons on the right side of the page
+            // and define measurement units inside the revision comments
+            revisionOptions.MeasurementUnit = MeasurementUnits.Points;
             revisionOptions.ShowInBalloons = ShowInBalloons.Format;
             revisionOptions.CommentColor = RevisionColor.BrightGreen;
 

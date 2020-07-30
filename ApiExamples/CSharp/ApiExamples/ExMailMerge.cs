@@ -1256,5 +1256,35 @@ namespace ApiExamples
                 Assert.AreEqual("\u0013 IF 1 = 2 \u0013 MERGEFIELD  FullName \u0014«FullName»\u0015\u0014\u0015", doc.GetText().Trim());
             //ExEnd
         }
+
+        [TestCase(true, SectionStart.Continuous, SectionStart.Continuous)]
+        [TestCase(true, SectionStart.NewColumn, SectionStart.NewColumn)]
+        [TestCase(true, SectionStart.NewPage, SectionStart.NewPage)]
+        [TestCase(true, SectionStart.EvenPage, SectionStart.EvenPage)]
+        [TestCase(true, SectionStart.OddPage, SectionStart.OddPage)]
+        [TestCase(false, SectionStart.Continuous, SectionStart.NewPage)]
+        [TestCase(false, SectionStart.NewColumn, SectionStart.NewPage)]
+        [TestCase(false, SectionStart.NewPage, SectionStart.NewPage)]
+        [TestCase(false, SectionStart.EvenPage, SectionStart.EvenPage)]
+        [TestCase(false, SectionStart.OddPage, SectionStart.OddPage)]
+        public void RetainFirstSectionStart(bool isRetainFirstSectionStart, SectionStart sectionStart, SectionStart expected)
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            builder.InsertField(" MERGEFIELD  FullName ");
+
+            doc.FirstSection.PageSetup.SectionStart = sectionStart;
+            doc.MailMerge.RetainFirstSectionStart = isRetainFirstSectionStart;
+
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("FullName");
+            dataTable.Rows.Add("James Bond");
+
+            doc.MailMerge.Execute(dataTable);
+
+            foreach (Section section in doc.Sections)
+                Assert.AreEqual(expected, section.PageSetup.SectionStart);
+        }
     }
 }
