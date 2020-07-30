@@ -259,27 +259,30 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.PushFont
             //ExFor:DocumentBuilder.PopFont
             //ExFor:DocumentBuilder.InsertHyperlink
-            //ExSummary:Shows how to use temporarily save and restore character formatting when building a document with DocumentBuilder.
+            //ExSummary:Shows how to use a document builder's formatting stack.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set up font formatting and write text that goes before the hyperlink
+            // Set up font formatting, then write text that goes before the hyperlink.
             builder.Font.Name = "Arial";
             builder.Font.Size = 24;
-            builder.Font.Bold = true;
             builder.Write("To visit Google, hold Ctrl and click ");
 
-            // Save the font formatting so we use different formatting for hyperlink and restore old formatting later
+            // Preserve our current formatting configuration on the stack.
             builder.PushFont();
 
-            // Set new font formatting for the hyperlink and insert the hyperlink
-            // The "Hyperlink" style is a Microsoft Word built-in style so we do not have to worry to 
-            // create it, it will be created automatically if it does not yet exist in the document
+            // Alter the builder's current formatting by applying a new style.
             builder.Font.StyleIdentifier = StyleIdentifier.Hyperlink;
             builder.InsertHyperlink("here", "http://www.google.com", false);
 
-            // Restore the formatting that was before the hyperlink
+            Assert.AreEqual(Color.Blue.ToArgb(), builder.Font.Color.ToArgb());
+            Assert.AreEqual(Underline.Single, builder.Font.Underline);
+
+            // Restore the font formatting that we saved earlier, and remove the element from the stack.
             builder.PopFont();
+
+            Assert.AreEqual(Color.Empty.ToArgb(), builder.Font.Color.ToArgb());
+            Assert.AreEqual(Underline.None, builder.Font.Underline);
 
             builder.Write(". We hope you enjoyed the example.");
 
@@ -301,6 +304,8 @@ namespace ApiExamples
             Assert.AreEqual(Underline.Single, runs[2].Font.Underline);
             Assert.AreNotEqual(runs[0].Font.Color, runs[2].Font.Color);
             Assert.AreNotEqual(runs[0].Font.Underline, runs[2].Font.Underline);
+
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, ((FieldHyperlink)doc.Range.Fields[0]).Address);
         }
 
 #if NET462 || JAVA
@@ -315,24 +320,20 @@ namespace ApiExamples
             //ExFor:WrapType
             //ExFor:RelativeHorizontalPosition
             //ExFor:RelativeVerticalPosition
-            //ExSummary:Shows how to a watermark image into a document using DocumentBuilder.
+            //ExSummary:Shows how to insert an image and use it as a watermark.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The best place for the watermark image is in the header or footer so it is shown on every page
-            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-
+            // Insert the image into the header, so it will be visible on every page.
             Image image = Image.FromFile(ImageDir + "Transparent background logo.png");
-
-            // Insert a floating picture
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             Shape shape = builder.InsertImage(image);
             shape.WrapType = WrapType.None;
             shape.BehindText = true;
 
+            // Place the image at the center of the page.
             shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
             shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
-
-            // Calculate image left and top position so it appears in the center of the page
             shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
             shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
@@ -362,17 +363,19 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            // Insert ole object
+            // OLE objects are links to files in our local file system that can be opened by other installed applications.
+            // Double clicking these shapes will launch the application, and then use it to open the linked object.
+            // There are three ways of using the InsertOleObject method to insert these shapes and configure their appearance.
+            // 1 -  Image taken from the local file system:
             Image representingImage = Image.FromFile(ImageDir + "Logo.jpg");
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
 
-            // Insert ole object with ProgId
+            // 2 -  Icon based on the application that will open the object:
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
 
-            // Insert ole object as Icon
-            // There is one limitation for now: the maximum size of the icon must be 32x32 for the correct display
+            // 3 -  Image icon that's 32 x 32 pixels or smaller from the local file system, with a custom caption:
             builder.InsertOleObjectAsIcon(MyDir + "Presentation.pptx", false, ImageDir + "Logo icon.ico",
-                "Caption (can not be null)");
+                "Double click to view presentation!");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
             //ExEnd
@@ -415,18 +418,16 @@ namespace ApiExamples
             // The best place for the watermark image is in the header or footer so it is shown on every page
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
 
-            Shape shape;
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Transparent background logo.png"))
             {
-                // Insert a floating picture
-                shape = builder.InsertImage(image);
+                builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+                Shape shape = builder.InsertImage(image);
                 shape.WrapType = WrapType.None;
                 shape.BehindText = true;
 
+                // Place the image at the center of the page.
                 shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
                 shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
-
-                // Calculate image left and top position so it appears in the center of the page
                 shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
                 shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
             }
@@ -435,15 +436,15 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.docx");
-            shape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
+            Shape outShape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, shape);
-            Assert.AreEqual(WrapType.None, shape.WrapType);
-            Assert.True(shape.BehindText);
-            Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Page, shape.RelativeVerticalPosition);
-            Assert.AreEqual((doc.FirstSection.PageSetup.PageWidth - shape.Width) / 2, shape.Left);
-            Assert.AreEqual((doc.FirstSection.PageSetup.PageHeight - shape.Height) / 2, shape.Top);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, outShape);
+            Assert.AreEqual(WrapType.None, outShape.WrapType);
+            Assert.True(outShape.BehindText);
+            Assert.AreEqual(RelativeHorizontalPosition.Page, outShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Page, outShape.RelativeVerticalPosition);
+            Assert.AreEqual((doc.FirstSection.PageSetup.PageWidth - outShape.Width) / 2, outShape.Left);
+            Assert.AreEqual((doc.FirstSection.PageSetup.PageHeight - outShape.Height) / 2, outShape.Top);
         }
 
         [Test]
@@ -458,9 +459,15 @@ namespace ApiExamples
 
             using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {
-                // OleObject
+                // OLE objects are links to files in our local file system that can be opened by other installed applications.
+                // Double clicking these shapes will launch the application, and then use it to open the linked object.
+                // There are two ways of using the InsertOleObject method
+                // to create a shape with an image taken from a SKBitmap object.
+                // 1 -  Pass the local file system filename of the linked object:
                 builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
-                // OleObject with ProgId
+
+                // 2 -  Pass the local file system filename of the linked object,
+                // and specify the class key for an application that opens the object:
                 builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, false,
                     representingImage);
             }
@@ -488,7 +495,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHtml(String)
-            //ExSummary:Shows how to insert Html content into a document using a builder.
+            //ExSummary:Shows how to use a document builder to insert html content into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -497,10 +504,7 @@ namespace ApiExamples
 
             builder.InsertHtml(html);
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtml.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertHtml.docx");
+            // Inserting HTML code parses the formatting of each element into equivalent document text formatting.  
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             Assert.AreEqual("Paragraph right", paragraphs[0].GetText().Trim());
@@ -515,6 +519,9 @@ namespace ApiExamples
 
             Assert.AreEqual("Heading 1 left.", paragraphs[3].GetText().Trim());
             Assert.AreEqual("Heading 1", paragraphs[3].ParagraphFormat.Style.Name);
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtml.docx");
+            //ExEnd
         }
 
         [Test]
