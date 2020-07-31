@@ -953,6 +953,53 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test, Category("SkipMono")]
+        public void Dml3DEffectsRenderingModeTest()
+        {
+            Document doc = new Document(MyDir + "DrawingML shape 3D effects.docx");
+            
+            RenderCallback warningCallback = new RenderCallback();
+            doc.WarningCallback = warningCallback;
+            
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced;
+            
+            doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
+
+            Assert.AreEqual(43, warningCallback.Count);
+        }
+
+        public class RenderCallback : IWarningCallback
+        {
+            public void Warning(WarningInfo info)
+            {
+                Console.WriteLine($"{info.WarningType}: {info.Description}.");
+                mWarnings.Add(info);
+            }
+
+            public WarningInfo this[int i] => mWarnings[i];
+
+            /// <summary>
+            /// Clears warning collection.
+            /// </summary>
+            public void Clear()
+            {
+                mWarnings.Clear();
+            }
+
+            public int Count => mWarnings.Count;
+
+            /// <summary>
+            /// Returns true if a warning with the specified properties has been generated.
+            /// </summary>
+            public bool Contains(WarningSource source, WarningType type, string description)
+            {
+                return mWarnings.Any(warning => warning.Source == source && warning.WarningType == type && warning.Description == description);
+            }
+
+            private readonly List<WarningInfo> mWarnings = new List<WarningInfo>();
+        }
+
 #elif NETCOREAPP2_1
         [TestCase(false)]
         [TestCase(true)]
@@ -1155,53 +1202,6 @@ namespace ApiExamples
                     break;
             }
 #endif
-        }
-
-        [Test, Category("SkipMono")]
-        public void Dml3DEffectsRenderingModeTest()
-        {
-            Document doc = new Document(MyDir + "DrawingML shape 3D effects.docx");
-            
-            RenderCallback warningCallback = new RenderCallback();
-            doc.WarningCallback = warningCallback;
-            
-            PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced;
-            
-            doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
-
-            Assert.AreEqual(warningCallback.Count, 43);
-        }
-
-        public class RenderCallback : IWarningCallback
-        {
-            public void Warning(WarningInfo info)
-            {
-                Console.WriteLine($"{info.WarningType}: {info.Description}.");
-                mWarnings.Add(info);
-            }
-
-            public WarningInfo this[int i] => mWarnings[i];
-
-            /// <summary>
-            /// Clears warning collection.
-            /// </summary>
-            public void Clear()
-            {
-                mWarnings.Clear();
-            }
-
-            public int Count => mWarnings.Count;
-
-            /// <summary>
-            /// Returns true if a warning with the specified properties has been generated.
-            /// </summary>
-            public bool Contains(WarningSource source, WarningType type, string description)
-            {
-                return mWarnings.Any(warning => warning.Source == source && warning.WarningType == type && warning.Description == description);
-            }
-
-            private readonly List<WarningInfo> mWarnings = new List<WarningInfo>();
         }
     }
 }
