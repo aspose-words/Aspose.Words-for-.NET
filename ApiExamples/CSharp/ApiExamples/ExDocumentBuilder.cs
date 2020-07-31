@@ -3102,6 +3102,22 @@ namespace ApiExamples
             Assert.AreEqual(Color.Red.ToArgb(), dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Color.ToArgb());
         }
 
+        [Test]
+        public void EmphasesWarningSourceMarkdown()
+        {
+            Document doc = new Document(MyDir + "Emphases markdown warning.docx");
+            
+            WarningInfoCollection warnings = new WarningInfoCollection();
+            doc.WarningCallback = warnings;
+            doc.Save(ArtifactsDir + "DocumentBuilder.EmphasesWarningSourceMarkdown.md");
+ 
+            foreach (WarningInfo warningInfo in warnings)
+            {
+                if (warningInfo.Source == WarningSource.Markdown)
+                    Assert.AreEqual("The (*, 0:11) cannot be properly written into Markdown.", warningInfo.Description);
+            }
+        }
+
         #if NET462 || NETCOREAPP2_1 || JAVA
         /// <summary>
         /// All markdown tests work with the same file

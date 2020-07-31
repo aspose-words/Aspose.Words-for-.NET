@@ -919,5 +919,54 @@ namespace ApiExamples
             // Add the StructuredDocumentTag to the document to display the element in the text 
             doc.FirstSection.Body.AppendChild(sdt);
         }
+
+        [Test]
+        public void MultiSectionTags()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTagRangeStart
+            //ExFor:StructuredDocumentTagRangeStart.Id
+            //ExFor:StructuredDocumentTagRangeStart.Title
+            //ExFor:StructuredDocumentTagRangeStart.IsShowingPlaceholderText
+            //ExFor:StructuredDocumentTagRangeStart.LockContentControl
+            //ExFor:StructuredDocumentTagRangeStart.LockContents
+            //ExFor:StructuredDocumentTagRangeStart.Level
+            //ExFor:StructuredDocumentTagRangeStart.NodeType
+            //ExFor:StructuredDocumentTagRangeStart.RangeEnd
+            //ExFor:StructuredDocumentTagRangeStart.SdtType
+            //ExFor:StructuredDocumentTagRangeStart.Tag
+            //ExFor:StructuredDocumentTagRangeEnd
+            //ExFor:StructuredDocumentTagRangeEnd.Id
+            //ExFor:StructuredDocumentTagRangeEnd.NodeType
+            //ExSummary:Shows how to get multi-section structured document tags properties.
+            Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
+
+            // Note that these nodes can be a child of NodeType.Body node only and all properties of these nodes are read-only.
+            StructuredDocumentTagRangeStart rangeStartTag =
+                doc.GetChildNodes(NodeType.StructuredDocumentTagRangeStart, true)[0] as StructuredDocumentTagRangeStart;
+            StructuredDocumentTagRangeEnd rangeEndTag =
+                doc.GetChildNodes(NodeType.StructuredDocumentTagRangeEnd, true)[0] as StructuredDocumentTagRangeEnd;
+
+            Assert.AreEqual(rangeStartTag.Id, rangeEndTag.Id); //ExSkip
+            Assert.AreEqual(NodeType.StructuredDocumentTagRangeStart, rangeStartTag.NodeType); //ExSkip
+            Assert.AreEqual(NodeType.StructuredDocumentTagRangeEnd, rangeEndTag.NodeType); //ExSkip
+
+            Console.WriteLine("StructuredDocumentTagRangeStart values:");
+            Console.WriteLine($"\t|Id: {rangeStartTag.Id}");
+            Console.WriteLine($"\t|Title: {rangeStartTag.Title}");
+            Console.WriteLine($"\t|IsShowingPlaceholderText: {rangeStartTag.IsShowingPlaceholderText}");
+            Console.WriteLine($"\t|LockContentControl: {rangeStartTag.LockContentControl}");
+            Console.WriteLine($"\t|LockContents: {rangeStartTag.LockContents}");
+            Console.WriteLine($"\t|Level: {rangeStartTag.Level}");
+            Console.WriteLine($"\t|NodeType: {rangeStartTag.NodeType}");
+            Console.WriteLine($"\t|RangeEnd: {rangeStartTag.RangeEnd}");
+            Console.WriteLine($"\t|SdtType: {rangeStartTag.SdtType}");
+            Console.WriteLine($"\t|Tag: {rangeStartTag.Tag}\n");
+
+            Console.WriteLine("StructuredDocumentTagRangeEnd values:");
+            Console.WriteLine($"\t|Id: {rangeEndTag.Id}");
+            Console.WriteLine($"\t|NodeType: {rangeEndTag.NodeType}");
+            //ExEnd
+        }
     }
 }
