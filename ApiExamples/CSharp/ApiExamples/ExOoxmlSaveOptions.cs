@@ -196,7 +196,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentCompression_CheckFileSignatures()
+        public void CheckFileSignatures()
         {
             CompressionLevel[] compressionLevels = {
                 CompressionLevel.Maximum,
@@ -229,13 +229,13 @@ namespace ApiExamples
             for (int i = 0; i < fileSignatures.Length; i++)
             {
                 saveOptions.CompressionLevel = compressionLevels[i];
-                doc.Save(ArtifactsDir + "OoxmlSaveOptions.DocumentCompression_CheckFileSignatures.docx", saveOptions);
+                doc.Save(ArtifactsDir + "OoxmlSaveOptions.CheckFileSignatures.docx", saveOptions);
 
                 using (MemoryStream stream = new MemoryStream())
-                using (FileStream outputFileStream = File.Open(ArtifactsDir + "OoxmlSaveOptions.DocumentCompression_CheckFileSignatures.docx", FileMode.Open))
+                using (FileStream outputFileStream = File.Open(ArtifactsDir + "OoxmlSaveOptions.CheckFileSignatures.docx", FileMode.Open))
                 {
                     long fileSize = outputFileStream.Length;
-                    Assert.Less(prevFileSize, fileSize);
+                    Assert.That(prevFileSize < fileSize);
 
                     TestUtil.CopyStream(outputFileStream, stream);
                     Assert.AreEqual(fileSignatures[i], TestUtil.DumpArray(stream.ToArray(), 0, 10));
