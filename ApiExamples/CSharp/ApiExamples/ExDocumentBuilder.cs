@@ -499,8 +499,10 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            const string html = "<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" +
-                                "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>";
+            const string html = "<p align='right'>Paragraph right</p>" + 
+                                "<b>Implicit paragraph left</b>" +
+                                "<div align='center'>Div center</div>" + 
+                                "<h1 align='left'>Heading 1 left.</h1>";
 
             builder.InsertHtml(html);
 
@@ -524,43 +526,40 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void InsertHtmlWithFormatting()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void InsertHtmlWithFormatting(bool useBuilderFormatting)
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHtml(String, Boolean)
-            //ExSummary:Shows how to insert Html content into a document using a builder while applying the builder's formatting. 
+            //ExSummary:Shows how to apply a document builder's formatting while inserting HTML content. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set the builder's text alignment
+            // Set a text alignment for the builder, then insert an HTML paragraph
+            // with a specified alignment, and one without.
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Distributed;
-
-            // If we insert text while setting useBuilderFormatting to true, any formatting applied to the builder will be applied to inserted .html content
-            // However, if the html text has formatting coded into it, that formatting takes precedence over the builder's formatting
-            // In this case, elements with "align" attributes do not get affected by the ParagraphAlignment we specified above
             builder.InsertHtml(
-                "<P align='right'>Paragraph right</P>" + "<b>Implicit paragraph left</b>" +
-                "<div align='center'>Div center</div>" + "<h1 align='left'>Heading 1 left.</h1>", true);
+                "<p align='right'>Paragraph 1.</p>" +
+                "<p>Paragraph 2.</p>", useBuilderFormatting);
+
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            // The first paragraph has an alignment specified. When the HTML code is parsed by InsertHtml,
+            // the paragraph alignment value found in the HTML code always supersedes the document builder's value.
+            Assert.AreEqual("Paragraph 1.", paragraphs[0].GetText().Trim());
+            Assert.AreEqual(ParagraphAlignment.Right, paragraphs[0].ParagraphFormat.Alignment);
+
+            // The second paragraph has no alignment specified. It can have its alignment value filled in
+            // by the builder's value depending on the flag we passed to the InsertHtml method.
+            Assert.AreEqual("Paragraph 2.", paragraphs[1].GetText().Trim());
+            if (useBuilderFormatting)
+                Assert.AreEqual(ParagraphAlignment.Distributed, paragraphs[1].ParagraphFormat.Alignment);
+            else
+                Assert.AreEqual(ParagraphAlignment.Left, paragraphs[1].ParagraphFormat.Alignment);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtmlWithFormatting.docx");
             //ExEnd
-
-            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertHtmlWithFormatting.docx");
-            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-
-            Assert.AreEqual("Paragraph right", paragraphs[0].GetText().Trim());
-            Assert.AreEqual(ParagraphAlignment.Right, paragraphs[0].ParagraphFormat.Alignment);
-
-            Assert.AreEqual("Implicit paragraph left", paragraphs[1].GetText().Trim());
-            Assert.AreEqual(ParagraphAlignment.Distributed, paragraphs[1].ParagraphFormat.Alignment);
-            Assert.True(paragraphs[1].Runs[0].Font.Bold);
-
-            Assert.AreEqual("Div center", paragraphs[2].GetText().Trim());
-            Assert.AreEqual(ParagraphAlignment.Center, paragraphs[2].ParagraphFormat.Alignment);
-
-            Assert.AreEqual("Heading 1 left.", paragraphs[3].GetText().Trim());
-            Assert.AreEqual("Heading 1", paragraphs[3].ParagraphFormat.Style.Name);
         }
 
         [Test]
@@ -586,19 +585,20 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.StartBookmark
             //ExFor:DocumentBuilder.EndBookmark
-            //ExSummary:Shows how to add some text into the document and encloses the text in a bookmark using DocumentBuilder.
-            DocumentBuilder builder = new DocumentBuilder();
+            //ExSummary:Shows how create a bookmark.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // A valid bookmark needs to have document body text enclosed by
+            // BookmarkStart and BookmarkEnd nodes created with a matching bookmark name.
             builder.StartBookmark("MyBookmark");
-            builder.Writeln("Text inside a bookmark.");
+            builder.Writeln("Hello world!");
             builder.EndBookmark("MyBookmark");
-            //ExEnd
-
-            Document doc = DocumentHelper.SaveOpen(builder.Document);
-
+            
             Assert.AreEqual(1, doc.Range.Bookmarks.Count);
             Assert.AreEqual("MyBookmark", doc.Range.Bookmarks[0].Name);
-            Assert.AreEqual("Text inside a bookmark.", doc.Range.Bookmarks[0].Text.Trim());
+            Assert.AreEqual("Hello world!", doc.Range.Bookmarks[0].Text.Trim());
+            //ExEnd
         }
 
         [Test]
@@ -608,28 +608,22 @@ namespace ApiExamples
             //ExFor:TextFormFieldType
             //ExFor:DocumentBuilder.InsertTextInput
             //ExFor:DocumentBuilder.InsertComboBox
-            //ExSummary:Shows how to build a form field.
+            //ExSummary:Shows how to create form fields.
             DocumentBuilder builder = new DocumentBuilder();
 
-            // Insert a text form field for input a name
+            // Form fields are objects in the document that the user can interact with by being prompted to enter values.
+            // They can be created using a document builder, below are two of the possible ways of doing so.
+            // 1 -  Basic text input:
             builder.InsertTextInput("", TextFormFieldType.Regular, "", "Enter your name here", 30);
-
-            // Insert two blank lines
-            builder.Writeln("");
-            builder.Writeln("");
-
+            
+            // 2 -  Combo box with prompt text, and a range of possible values:
             string[] items =
             {
-                "-- Select your favorite footwear --", "Sneakers", "Oxfords", "Flip-flops", "Other",
-                "I prefer to be barefoot"
+                "-- Select your favorite footwear --", "Sneakers", "Oxfords", "Flip-flops", "Other"
             };
 
-            // Insert a combo box to select a footwear type
+            builder.InsertParagraph();
             builder.InsertComboBox("", items, 0);
-
-            // Insert 2 blank lines
-            builder.Writeln("");
-            builder.Writeln("");
 
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.CreateForm.docx");
             //ExEnd
@@ -645,8 +639,10 @@ namespace ApiExamples
             Assert.AreEqual(TextFormFieldType.Regular, formField.TextInputType);
             Assert.AreEqual("-- Select your favorite footwear --", formField.Result);
             Assert.AreEqual(0, formField.DropDownSelectedIndex);
-            Assert.AreEqual(new[] { "-- Select your favorite footwear --", "Sneakers", "Oxfords", "Flip-flops", "Other",
-                "I prefer to be barefoot" }, formField.DropDownItems.ToArray());
+            Assert.AreEqual(new[]
+            {
+                "-- Select your favorite footwear --", "Sneakers", "Oxfords", "Flip-flops", "Other"
+            }, formField.DropDownItems.ToArray());
         }
 
         [Test]
