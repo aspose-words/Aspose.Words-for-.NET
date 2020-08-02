@@ -614,7 +614,8 @@ namespace ApiExamples
             // Form fields are objects in the document that the user can interact with by being prompted to enter values.
             // They can be created using a document builder, below are two of the possible ways of doing so.
             // 1 -  Basic text input:
-            builder.InsertTextInput("", TextFormFieldType.Regular, "", "Enter your name here", 30);
+            builder.InsertTextInput("My text input", TextFormFieldType.Regular, 
+                "", "Enter your name here", 30);
             
             // 2 -  Combo box with prompt text, and a range of possible values:
             string[] items =
@@ -623,7 +624,7 @@ namespace ApiExamples
             };
 
             builder.InsertParagraph();
-            builder.InsertComboBox("", items, 0);
+            builder.InsertComboBox("My combo box", items, 0);
 
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.CreateForm.docx");
             //ExEnd
@@ -631,11 +632,13 @@ namespace ApiExamples
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.CreateForm.docx");
             FormField formField = doc.Range.FormFields[0];
 
+            Assert.AreEqual("My text input", formField.Name);
             Assert.AreEqual(TextFormFieldType.Regular, formField.TextInputType);
             Assert.AreEqual("Enter your name here", formField.Result);
 
             formField = doc.Range.FormFields[1];
 
+            Assert.AreEqual("My combo box", formField.Name);
             Assert.AreEqual(TextFormFieldType.Regular, formField.TextInputType);
             Assert.AreEqual("-- Select your favorite footwear --", formField.Result);
             Assert.AreEqual(0, formField.DropDownSelectedIndex);
@@ -651,42 +654,44 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertCheckBox(string, bool, bool, int)
             //ExFor:DocumentBuilder.InsertCheckBox(String, bool, int)
-            //ExSummary:Shows how to insert checkboxes to the document.
+            //ExSummary:Shows how to insert checkboxes into the document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert check boxes of varying sizes and default checked statuses.
+            builder.Write("Unchecked check box of a default size: ");
             builder.InsertCheckBox(string.Empty, false, false, 0);
+            builder.InsertParagraph();
+
+            builder.Write("Large checked check box: ");
             builder.InsertCheckBox("CheckBox_Default", true, true, 50);
+            builder.InsertParagraph();
+
+            // Form fields have a name length limit of 20 characters.
+            builder.Write("Very large checked check box: ");
             builder.InsertCheckBox("CheckBox_OnlyCheckedValue", true, 100);
+
+            Assert.AreEqual("CheckBox_OnlyChecked", doc.Range.FormFields[2].Name);
+
+            // We can interact with these check boxes in Microsoft Word by double clicking them.
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertCheckBox.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertCheckBox.docx");
 
-            // Get checkboxes from the document
             FormFieldCollection formFields = doc.Range.FormFields;
 
-            // Check that is the right checkbox
             Assert.AreEqual(string.Empty, formFields[0].Name);
-
-            //Assert that parameters sets correctly
             Assert.AreEqual(false, formFields[0].Checked);
             Assert.AreEqual(false, formFields[0].Default);
             Assert.AreEqual(10, formFields[0].CheckBoxSize);
 
-            // Check that is the right checkbox
-            // Please pay attention that MS Word allows strings with at most 20 characters
             Assert.AreEqual("CheckBox_Default", formFields[1].Name);
-
-            //Assert that parameters sets correctly
             Assert.AreEqual(true, formFields[1].Checked);
             Assert.AreEqual(true, formFields[1].Default);
             Assert.AreEqual(50, formFields[1].CheckBoxSize);
 
-            // Check that is the right checkbox
-            // Please pay attention that MS Word allows strings with at most 20 characters
             Assert.AreEqual("CheckBox_OnlyChecked", formFields[2].Name);
-
-            // Assert that parameters sets correctly
             Assert.AreEqual(true, formFields[2].Checked);
             Assert.AreEqual(true, formFields[2].Default);
             Assert.AreEqual(100, formFields[2].CheckBoxSize);
@@ -715,32 +720,45 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToDocumentEnd
             //ExFor:DocumentBuilder.IsAtEndOfParagraph
             //ExFor:DocumentBuilder.IsAtStartOfParagraph
-            //ExSummary:Shows how to move a DocumentBuilder to different nodes in a document.
+            //ExSummary:Shows how to move a document builder's cursor to different nodes in a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Start a bookmark and add content to it using a DocumentBuilder
+            // Create a valid bookmark, which is an entity which consists of nodes
+            // enclosed by a bookmark start node, and a bookmark end node. 
             builder.StartBookmark("MyBookmark");
-            builder.Writeln("Bookmark contents.");
+            builder.Write("Bookmark contents.");
             builder.EndBookmark("MyBookmark");
 
-            // The node that the DocumentBuilder is currently at is past the boundaries of the bookmark  
-            Assert.AreEqual(doc.Range.Bookmarks[0].BookmarkEnd, builder.CurrentParagraph.FirstChild);
+            NodeCollection firstParagraphNodes = doc.FirstSection.Body.FirstParagraph.ChildNodes;
 
-            // If we wish to revise the content of our bookmark with the DocumentBuilder, we can move back to it like this
+            Assert.AreEqual(NodeType.BookmarkStart, firstParagraphNodes[0].NodeType);
+            Assert.AreEqual(NodeType.Run, firstParagraphNodes[1].NodeType);
+            Assert.AreEqual("Bookmark contents.", firstParagraphNodes[1].GetText().Trim());
+            Assert.AreEqual(NodeType.BookmarkEnd, firstParagraphNodes[2].NodeType);
+
+            // The document builder's cursor is always ahead of the node that we last added with it.
+            // If the builder's cursor is at the end of the document, then its current node will be null.   
+            // The previous node is the bookmark end node that we last added.
+            // Adding new nodes with the builder will append them to the last node.
+            Assert.Null(builder.CurrentNode);
+
+            // If we wish to edit a different part of the document with the builder,
+            // we will need to bring its cursor to the node we wish to edit.
             builder.MoveToBookmark("MyBookmark");
 
-            // Now we're located between the bookmark's BookmarkStart and BookmarkEnd nodes, so any text the builder adds will be within it
-            Assert.AreEqual(doc.Range.Bookmarks[0].BookmarkStart, builder.CurrentParagraph.FirstChild);
+            // Moving it to a bookmark will move it to the first node within the bookmark start and end nodes,
+            // which is the enclosed run.
+            Assert.AreEqual(firstParagraphNodes[1], builder.CurrentNode);
 
-            // We can move the builder to an individual node,
-            // which in this case will be the first node of the first paragraph, like this
+            // We can also move the cursor to an individual node like this. 
             builder.MoveTo(doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Any, false)[0]);
 
             Assert.AreEqual(NodeType.BookmarkStart, builder.CurrentNode.NodeType);
+            Assert.AreEqual(doc.FirstSection.Body.FirstParagraph, builder.CurrentParagraph);
             Assert.IsTrue(builder.IsAtStartOfParagraph);
 
-            // A shorter way of moving the very start/end of a document is with these methods
+            // A shorter way of moving the very start/end of a document can be done using specific MoveTo methods.
             builder.MoveToDocumentEnd();
 
             Assert.IsTrue(builder.IsAtEndOfParagraph);
@@ -758,16 +776,16 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToMergeField(String)
             //ExFor:DocumentBuilder.Bold
             //ExFor:DocumentBuilder.Italic
-            //ExSummary:Shows how to fill MERGEFIELDs with data with a DocumentBuilder and without a mail merge.
+            //ExSummary:Shows how to fill MERGEFIELDs with data with a document builder instead of a mail merge.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert some MERGEFIELDS, which accept data from columns of the same name in a data source during a mail merge
+            // Insert some MERGEFIELDS, which accept data from columns of the same name
+            // in a data source during a mail merge, and then fill them in manually.
             builder.InsertField(" MERGEFIELD Chairman ");
             builder.InsertField(" MERGEFIELD ChiefFinancialOfficer ");
             builder.InsertField(" MERGEFIELD ChiefTechnologyOfficer ");
 
-            // They can also be filled in manually like this
             builder.MoveToMergeField("Chairman");
             builder.Bold = true;
             builder.Writeln("John Doe");
@@ -811,16 +829,15 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a table of contents at the beginning of the document,
-            // and set it to pick up paragraphs with headings of levels 1 to 3 and entries to act like hyperlinks
+            // Insert a table of contents for the first page of the document.
+            // Configure the table to pick up paragraphs with headings of levels 1 to 3.
+            // Also, set its entries to be hyperlinks that will take us
+            // to the location of the heading when left-clicked in Microsoft Word.
             builder.InsertTableOfContents("\\o \"1-3\" \\h \\z \\u");
-
-            // Start the actual document content on the second page
             builder.InsertBreak(BreakType.PageBreak);
 
-            // Build a document with complex structure by applying different heading styles thus creating TOC entries
-            // The heading levels we use below will affect the list levels in which these items will appear in the TOC,
-            // and only levels 1-3 will be picked up by our TOC due to its settings
+            // Populate the table of contents by adding paragraphs with heading styles.
+            // Each such heading will create an entry in the table, as long as its heading level is between 1 and 3.
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
             builder.Writeln("Heading 1");
 
@@ -840,11 +857,15 @@ namespace ApiExamples
             builder.Writeln("Heading 3.1.2");
             builder.Writeln("Heading 3.1.3");
 
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading4;
+            builder.Writeln("Heading 3.1.3.1");
+            builder.Writeln("Heading 3.1.3.2");
+
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading2;
             builder.Writeln("Heading 3.2");
             builder.Writeln("Heading 3.3");
 
-            // Call the method below to update the TOC and save
+            // A table of contents is a field of a type that needs to be updated in order to show an up-to-date result.
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertToc.docx");
             //ExEnd
@@ -881,15 +902,14 @@ namespace ApiExamples
             //ExFor:RowFormat.Borders
             //ExFor:RowFormat.ClearFormatting
             //ExFor:Shading.ClearFormatting
-            //ExSummary:Shows how to build a nice bordered table.
+            //ExSummary:Shows how to build a table with custom borders.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Start building a table
             builder.StartTable();
-            
-            // Set the appropriate paragraph, cell, and row formatting. The formatting properties are preserved
-            // until they are explicitly modified so there's no need to set them for each row or cell
+
+            // Setting table formatting options for a document builder
+            // will apply them to every row and cell that we add with it.
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
             builder.CellFormat.ClearFormatting();
@@ -910,10 +930,11 @@ namespace ApiExamples
 
             builder.InsertCell();
             builder.Write("Row 1, Col 2");
-
             builder.EndRow();
 
-            // Remove the shading (clear background)
+            // Changing the formatting will apply it to the current cell,
+            // and any new cells that we create with the builder afterwards.
+            // This will not affect the cells that we have added previously.
             builder.CellFormat.Shading.ClearFormatting();
 
             builder.InsertCell();
@@ -924,9 +945,8 @@ namespace ApiExamples
 
             builder.EndRow();
 
+            // Increase row height to fit vertical text.
             builder.InsertCell();
-
-            // Make the row height bigger so that a vertically oriented text could fit into cells
             builder.RowFormat.Height = 150;
             builder.CellFormat.Orientation = TextOrientation.Upward;
             builder.Write("Row 3, Col 1");
@@ -936,7 +956,6 @@ namespace ApiExamples
             builder.Write("Row 3, Col 2");
 
             builder.EndRow();
-
             builder.EndTable();
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertTable.docx");
@@ -998,24 +1017,23 @@ namespace ApiExamples
             //ExFor:TableStyleOptions
             //ExFor:Table.AutoFit
             //ExFor:AutoFitBehavior
-            //ExSummary:Shows how to build a new table with a table style applied.
+            //ExSummary:Shows how to build a new table while applying a style.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             Table table = builder.StartTable();
 
-            // We must insert at least one row first before setting any table formatting
+            // We must insert at least one row before setting any table formatting.
             builder.InsertCell();
 
-            // Set the table style used based of the unique style identifier
-            // Note that not all table styles are available when saving as .doc format
+            // Set the table style used based on the style identifier.
+            // Note that not all table styles are available when saving to .doc format.
             table.StyleIdentifier = StyleIdentifier.MediumShading1Accent1;
 
-            // Apply which features should be formatted by the style
+            // Partially apply the style to features of the table based on predicates, then build the table.
             table.StyleOptions =
                 TableStyleOptions.FirstColumn | TableStyleOptions.RowBands | TableStyleOptions.FirstRow;
             table.AutoFit(AutoFitBehavior.AutoFitToContents);
 
-            // Continue with building the table as normal
             builder.Writeln("Item");
             builder.CellFormat.RightPadding = 40;
             builder.InsertCell();
@@ -1045,7 +1063,6 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableWithStyle.docx");
 
-            // Verify that the style was set by expanding to direct formatting
             doc.ExpandTableStylesToDirectFormatting();
 
             Assert.AreEqual("Medium Shading 1 Accent 1", table.Style.Name);
