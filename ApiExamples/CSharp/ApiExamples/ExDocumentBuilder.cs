@@ -1244,30 +1244,23 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Cell.FirstParagraph
-            //ExSummary:Shows how to insert a nested table using DocumentBuilder.
+            //ExSummary:Shows how to create a nested table using a document builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Build the outer table
+            // Build the outer table.
             Cell cell = builder.InsertCell();
             builder.Writeln("Outer Table Cell 1");
-
             builder.InsertCell();
             builder.Writeln("Outer Table Cell 2");
-
-            // This call is important in order to create a nested table within the first table
-            // Without this call the cells inserted below will be appended to the outer table
             builder.EndTable();
 
-            // Move to the first cell of the outer table
+            // Move to the first cell of the outer table, the build another table inside the cell.
             builder.MoveTo(cell.FirstParagraph);
-
-            // Build the inner table
             builder.InsertCell();
             builder.Writeln("Inner Table Cell 1");
             builder.InsertCell();
             builder.Writeln("Inner Table Cell 2");
-
             builder.EndTable();
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertNestedTable.docx");
@@ -1282,53 +1275,43 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CreateSimpleTable()
+        public void CreateTable()
         {
             //ExStart
             //ExFor:DocumentBuilder
             //ExFor:DocumentBuilder.Write
             //ExFor:DocumentBuilder.InsertCell
-            //ExSummary:Shows how to create a simple table using DocumentBuilder with default formatting.
+            //ExSummary:Shows how to use a document builder to create a table.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // We call this method to start building the table
+            // Start the table, then populate the first row with two cells.
             builder.StartTable();
             builder.InsertCell();
-            builder.Write("Row 1, Cell 1 Content.");
-
-            // Build the second cell
+            builder.Write("Row 1, Cell 1.");
             builder.InsertCell();
-            builder.Write("Row 1, Cell 2 Content.");
-            // Call the following method to end the row and start a new row
+            builder.Write("Row 1, Cell 2.");
+
+            // Call the builder's EndRow method to start a new row.
             builder.EndRow();
-
-            // Build the first cell of the second row
             builder.InsertCell();
-            builder.Write("Row 2, Cell 1 Content.");
-
-            // Build the second cell.
+            builder.Write("Row 2, Cell 1.");
             builder.InsertCell();
-            builder.Write("Row 2, Cell 2 Content.");
-            builder.EndRow();
-
-            // Signal that we have finished building the table
+            builder.Write("Row 2, Cell 2.");
             builder.EndTable();
 
-            // Save the document to disk
-            doc.Save(ArtifactsDir + "DocumentBuilder.CreateSimpleTable.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.CreateTable.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilder.CreateSimpleTable.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.CreateTable.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
             Assert.AreEqual(4, table.GetChildNodes(NodeType.Cell, true).Count);
 
-            Assert.AreEqual("Row 1, Cell 1 Content.\a", table.Rows[0].Cells[0].GetText().Trim());
-            Assert.AreEqual("Row 1, Cell 2 Content.\a", table.Rows[0].Cells[1].GetText().Trim());
-            Assert.AreEqual("Row 2, Cell 1 Content.\a", table.Rows[1].Cells[0].GetText().Trim());
-            Assert.AreEqual("Row 2, Cell 2 Content.\a", table.Rows[1].Cells[1].GetText().Trim());
-
+            Assert.AreEqual("Row 1, Cell 1.\a", table.Rows[0].Cells[0].GetText().Trim());
+            Assert.AreEqual("Row 1, Cell 2.\a", table.Rows[0].Cells[1].GetText().Trim());
+            Assert.AreEqual("Row 2, Cell 1.\a", table.Rows[1].Cells[0].GetText().Trim());
+            Assert.AreEqual("Row 2, Cell 2.\a", table.Rows[1].Cells[1].GetText().Trim());
         }
 
         [Test]
@@ -1345,70 +1328,52 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Table table = builder.StartTable();
-
-            // Make the header row
             builder.InsertCell();
+            table.LeftIndent = 20;
 
-            // Set the left indent for the table. Table wide formatting must be applied after 
-            // at least one row is present in the table
-            table.LeftIndent = 20.0;
-
-            // Set height and define the height rule for the header row
-            builder.RowFormat.Height = 40.0;
+            // Set some formatting options for text and table appearance.
+            builder.RowFormat.Height = 40;
             builder.RowFormat.HeightRule = HeightRule.AtLeast;
-
-            // Some special features for the header row
             builder.CellFormat.Shading.BackgroundPatternColor = Color.FromArgb(198, 217, 241);
+
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
             builder.Font.Size = 16;
             builder.Font.Name = "Arial";
             builder.Font.Bold = true;
 
-            builder.CellFormat.Width = 100.0;
+            // Configuring the formatting options in a document builder will apply them
+            // to the current cell/row its cursor is in,
+            // as well as any new cells and rows created using that builder.
             builder.Write("Header Row,\n Cell 1");
-
-            // We do not need to specify the width of this cell because it's inherited from the previous cell
             builder.InsertCell();
             builder.Write("Header Row,\n Cell 2");
-
             builder.InsertCell();
-            builder.CellFormat.Width = 200.0;
             builder.Write("Header Row,\n Cell 3");
             builder.EndRow();
 
-            // Set features for the other rows and cells
+            // Reconfigure the builder's formatting objects for new rows and cells that we are about to make.
+            // The builder will not apply these to the first row that was already created,
+            // so it will stand out as a header row.
             builder.CellFormat.Shading.BackgroundPatternColor = Color.White;
-            builder.CellFormat.Width = 100.0;
             builder.CellFormat.VerticalAlignment = CellVerticalAlignment.Center;
-
-            // Reset height and define a different height rule for table body
-            builder.RowFormat.Height = 30.0;
+            builder.RowFormat.Height = 30;
             builder.RowFormat.HeightRule = HeightRule.Auto;
             builder.InsertCell();
-            // Reset font formatting
             builder.Font.Size = 12;
             builder.Font.Bold = false;
 
-            // Build the other cells
-            builder.Write("Row 1, Cell 1 Content");
+            builder.Write("Row 1, Cell 1.");
             builder.InsertCell();
-            builder.Write("Row 1, Cell 2 Content");
-
+            builder.Write("Row 1, Cell 2.");
             builder.InsertCell();
-            builder.CellFormat.Width = 200.0;
-            builder.Write("Row 1, Cell 3 Content");
+            builder.Write("Row 1, Cell 3.");
             builder.EndRow();
-
             builder.InsertCell();
-            builder.CellFormat.Width = 100.0;
-            builder.Write("Row 2, Cell 1 Content");
-
+            builder.Write("Row 2, Cell 1.");
             builder.InsertCell();
-            builder.Write("Row 2, Cell 2 Content");
-
+            builder.Write("Row 2, Cell 2.");
             builder.InsertCell();
-            builder.CellFormat.Width = 200.0;
-            builder.Write("Row 2, Cell 3 Content.");
+            builder.Write("Row 2, Cell 3.");
             builder.EndRow();
             builder.EndTable();
 
@@ -1455,44 +1420,36 @@ namespace ApiExamples
             //ExFor:BorderCollection.Right
             //ExFor:BorderCollection.Top
             //ExFor:BorderCollection.Bottom
-            //ExSummary:Shows how to format table and cell with different borders and shadings.
+            //ExSummary:Shows how to apply border and shading color while building a table.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Start a table and set a default color/thickness for its borders
+            // Start a table, and set a default color/thickness for its borders.
             Table table = builder.StartTable();
             table.SetBorders(LineStyle.Single, 2.0, Color.Black);
 
-            // Set the cell shading for this cell
+            // Create a row with two cells with different background colors.
             builder.InsertCell();
-            builder.CellFormat.Shading.BackgroundPatternColor = Color.Red;
-            builder.Writeln("Cell #1");
-
-            // Specify a different cell shading for the second cell
+            builder.CellFormat.Shading.BackgroundPatternColor = Color.LightSkyBlue;
+            builder.Writeln("Row 1, Cell 1.");
             builder.InsertCell();
-            builder.CellFormat.Shading.BackgroundPatternColor = Color.Green;
-            builder.Writeln("Cell #2");
-
-            // End this row
+            builder.CellFormat.Shading.BackgroundPatternColor = Color.Orange;
+            builder.Writeln("Row 1, Cell 2.");
             builder.EndRow();
 
-            // Clear the cell formatting from previous operations
+            // Reset cell formatting to disable the background colors,
+            // set a custom border thickness for all new cells created by the builder,
+            // then build a second row.
             builder.CellFormat.ClearFormatting();
-
-            // Create the second row
-            builder.InsertCell();
-            builder.Writeln("Cell #3");
-
-            // Clear the cell formatting from the previous cell
-            builder.CellFormat.ClearFormatting();
-
             builder.CellFormat.Borders.Left.LineWidth = 4.0;
             builder.CellFormat.Borders.Right.LineWidth = 4.0;
             builder.CellFormat.Borders.Top.LineWidth = 4.0;
             builder.CellFormat.Borders.Bottom.LineWidth = 4.0;
 
             builder.InsertCell();
-            builder.Writeln("Cell #4");
+            builder.Writeln("Row 2, Cell 1.");
+            builder.InsertCell();
+            builder.Writeln("Row 2, Cell 2.");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.TableBordersAndShading.docx");
             //ExEnd
@@ -1511,9 +1468,9 @@ namespace ApiExamples
                 Assert.AreEqual(LineStyle.Single, c.CellFormat.Borders.Left.LineStyle);
             }
 
-            Assert.AreEqual(Color.Red.ToArgb(),
+            Assert.AreEqual(Color.LightSkyBlue.ToArgb(),
                 table.FirstRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(),
+            Assert.AreEqual(Color.Orange.ToArgb(),
                 table.FirstRow.Cells[1].CellFormat.Shading.BackgroundPatternColor.ToArgb());
 
             foreach (Cell c in table.LastRow)
