@@ -1080,32 +1080,35 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:RowFormat.HeadingFormat
-            //ExSummary:Shows how to build a table which include heading rows that repeat on subsequent pages. 
+            //ExSummary:Shows how to build a table with rows that repeat on every page. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.StartTable();
+            Table table = builder.StartTable();
+
+            // Any rows inserted while the HeadingFormat flag is set to true
+            // will show up at the top of the table on every page that it spans.
             builder.RowFormat.HeadingFormat = true;
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
             builder.CellFormat.Width = 100;
             builder.InsertCell();
-            builder.Writeln("Heading row 1");
+            builder.Write("Heading row 1");
             builder.EndRow();
             builder.InsertCell();
-            builder.Writeln("Heading row 2");
+            builder.Write("Heading row 2");
             builder.EndRow();
 
             builder.CellFormat.Width = 50;
             builder.ParagraphFormat.ClearFormatting();
+            builder.RowFormat.HeadingFormat = false;
 
-            // Insert some content so the table is long enough to continue onto the next page
+            // Add enough rows for the table to span two pages.
             for (int i = 0; i < 50; i++)
             {
                 builder.InsertCell();
-                builder.RowFormat.HeadingFormat = false;
-                builder.Write("Column 1 Text");
+                builder.Write($"Row {table.Rows.Count}, column 1.");
                 builder.InsertCell();
-                builder.Write("Column 2 Text");
+                builder.Write($"Row {table.Rows.Count}, column 2.");
                 builder.EndRow();
             }
 
@@ -1113,11 +1116,10 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableSetHeadingRow.docx");
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
-            Assert.True(table.FirstRow.RowFormat.HeadingFormat);
-            Assert.True(table.Rows[1].RowFormat.HeadingFormat);
-            Assert.False(table.Rows[2].RowFormat.HeadingFormat);
+            for (int i = 0; i < table.Rows.Count; i++)
+                Assert.AreEqual(i < 2, table.Rows[i].RowFormat.HeadingFormat);
         }
 
         [Test]
@@ -1127,23 +1129,19 @@ namespace ApiExamples
             //ExFor:Table.PreferredWidth
             //ExFor:PreferredWidth.FromPercent
             //ExFor:PreferredWidth
-            //ExSummary:Shows how to set a table to auto fit to 50% of the page width.
+            //ExSummary:Shows how to set a table to auto fit to 50% of the width of the page.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a table with a width that takes up half the page width
             Table table = builder.StartTable();
-
-            // Insert a few cells
             builder.InsertCell();
+            builder.Write("Cell #1");
+            builder.InsertCell();
+            builder.Write("Cell #2");
+            builder.InsertCell();
+            builder.Write("Cell #3");
+
             table.PreferredWidth = PreferredWidth.FromPercent(50);
-            builder.Writeln("Cell #1");
-
-            builder.InsertCell();
-            builder.Writeln("Cell #2");
-
-            builder.InsertCell();
-            builder.Writeln("Cell #3");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableWithPreferredWidth.docx");
             //ExEnd
@@ -1168,42 +1166,36 @@ namespace ApiExamples
             //ExFor:PreferredWidth.FromPercent
             //ExFor:PreferredWidth.GetHashCode
             //ExFor:PreferredWidth.ToString
-            //ExSummary:Shows how to set the different preferred width settings.
+            //ExSummary:Shows how to set a preferred width for table cells.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert a table row made up of three cells which have different preferred widths
             Table table = builder.StartTable();
 
-            // Insert an absolute sized cell
+            // There are two ways of applying the PreferredWidth class to table cells.
+            // 1 -  Set an absolute preferred width based on points.
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPoints(40);
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightYellow;
-            builder.Writeln("Cell at 40 points width");
+            builder.Writeln($"Cell with a width of {builder.CellFormat.PreferredWidth}.");
 
-            PreferredWidth width = builder.CellFormat.PreferredWidth;
-            Console.WriteLine($"Width \"{width.GetHashCode()}\": {width.ToString()}");
-
-            // Insert a relative (percent) sized cell
+            // 2 -  Set a relative preferred width based on percent of the table's width.
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPercent(20);
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightBlue;
-            builder.Writeln("Cell at 20% width");
+            builder.Writeln($"Cell with a width of {builder.CellFormat.PreferredWidth}.");
 
-            // Each cell had its own PreferredWidth
-            Assert.False(builder.CellFormat.PreferredWidth.Equals(width));
-
-            width = builder.CellFormat.PreferredWidth;
-            Console.WriteLine($"Width \"{width.GetHashCode()}\": {width.ToString()}");
-
-            // Insert a auto sized cell
             builder.InsertCell();
-            builder.CellFormat.PreferredWidth = PreferredWidth.Auto;
-            builder.CellFormat.Shading.BackgroundPatternColor = Color.LightGreen;
-            builder.Writeln(
-                "Cell automatically sized. The size of this cell is calculated from the table preferred width.");
-            builder.Writeln("In this case the cell will fill up the rest of the available space.");
 
+            // A cell with no preferred width specified will take up the rest of the available space.
+            builder.CellFormat.PreferredWidth = PreferredWidth.Auto;
+
+            // Each configuration of the PreferredWidth attribute creates a new object.
+            Assert.AreNotEqual(table.FirstRow.Cells[1].CellFormat.PreferredWidth.GetHashCode(),
+                builder.CellFormat.PreferredWidth.GetHashCode());
+
+            builder.CellFormat.Shading.BackgroundPatternColor = Color.LightGreen;
+            builder.Writeln("Automatically sized cell.");
+            
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertCellsWithPreferredWidths.docx");
             //ExEnd
 
@@ -1215,12 +1207,15 @@ namespace ApiExamples
             
             Assert.AreEqual(PreferredWidthType.Points, table.FirstRow.Cells[0].CellFormat.PreferredWidth.Type);
             Assert.AreEqual(40.0d, table.FirstRow.Cells[0].CellFormat.PreferredWidth.Value);
+            Assert.AreEqual("Cell with a width of 800.\r\a", table.FirstRow.Cells[0].GetText().Trim());
 
             Assert.AreEqual(PreferredWidthType.Percent, table.FirstRow.Cells[1].CellFormat.PreferredWidth.Type);
             Assert.AreEqual(20.0d, table.FirstRow.Cells[1].CellFormat.PreferredWidth.Value);
+            Assert.AreEqual("Cell with a width of 20%.\r\a", table.FirstRow.Cells[1].GetText().Trim());
 
             Assert.AreEqual(PreferredWidthType.Auto, table.FirstRow.Cells[2].CellFormat.PreferredWidth.Type);
             Assert.AreEqual(0.0d, table.FirstRow.Cells[2].CellFormat.PreferredWidth.Value);
+            Assert.AreEqual("Automatically sized cell.\r\a", table.FirstRow.Cells[2].GetText().Trim());
         }
 
         [Test]
