@@ -1491,16 +1491,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PreferredWidth.FromPoints
-            //ExSummary:Shows how to specify a cell preferred width by converting inches to points.
+            //ExSummary:Shows how to use unit conversion tools while specifying a preferred width for a cell.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Table table = builder.StartTable();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPoints(ConvertUtil.InchToPoint(3));
             builder.InsertCell();
-            //ExEnd
 
-            Assert.AreEqual(216.0, table.FirstRow.FirstCell.CellFormat.PreferredWidth.Value);
+            Assert.AreEqual(216.0d, table.FirstRow.FirstCell.CellFormat.PreferredWidth.Value);
+            //ExEnd
         }
 
         [Test]
@@ -1510,26 +1510,20 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.StartBookmark
             //ExFor:DocumentBuilder.EndBookmark
             //ExFor:DocumentBuilder.InsertHyperlink
-            //ExSummary:Shows how to insert a hyperlink referencing a local bookmark.
+            //ExSummary:Shows how to insert a hyperlink which references a local bookmark.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.StartBookmark("Bookmark1");
-            builder.Write("Bookmarked text.");
+            builder.Write("Bookmarked text. ");
             builder.EndBookmark("Bookmark1");
+            builder.Writeln("Text outside of the bookmark.");
 
-            builder.Writeln("Some other text");
-
-            // Specify font formatting for the hyperlink
+            // Insert a HYPERLINK field which links to the bookmark. We can pass field switches
+            // to the InsertHyperlink method as part of the argument which contains the referenced bookmark's name.
             builder.Font.Color = Color.Blue;
             builder.Font.Underline = Underline.Single;
-
-            // Insert hyperlink
-            // Switch \o is used to provide hyperlink tip text
-            builder.InsertHyperlink("Hyperlink Text", @"Bookmark1"" \o ""Hyperlink Tip", true);
-
-            // Clear hyperlink formatting
-            builder.Font.ClearFormatting();
+            builder.InsertHyperlink("Link to Bookmark1", @"Bookmark1"" \o ""Hyperlink Tip", true);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertHyperlinkToLocalBookmark.docx");
             //ExEnd
@@ -1537,13 +1531,14 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertHyperlinkToLocalBookmark.docx");
             FieldHyperlink hyperlink = (FieldHyperlink)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldHyperlink, " HYPERLINK \\l \"Bookmark1\" \\o \"Hyperlink Tip\" ", "Hyperlink Text", hyperlink);
+            TestUtil.VerifyField(FieldType.FieldHyperlink, " HYPERLINK \\l \"Bookmark1\" \\o \"Hyperlink Tip\" ", "Link to Bookmark1", hyperlink);
             Assert.AreEqual("Bookmark1", hyperlink.SubAddress);
+            Assert.AreEqual("Hyperlink Tip", hyperlink.ScreenTip);
             Assert.IsTrue(doc.Range.Bookmarks.Any(b => b.Name == "Bookmark1"));
         }
 
         [Test]
-        public void DocumentBuilderCursorPosition()
+        public void CursorPosition()
         {
             // Write some text in a blank Document using a DocumentBuilder
             Document doc = new Document();
@@ -1562,7 +1557,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderMoveToNode()
+        public void MoveTo()
         {
             //ExStart
             //ExFor:Story.LastParagraph
@@ -1570,32 +1565,35 @@ namespace ApiExamples
             //ExSummary:Shows how to move a DocumentBuilder's cursor position to a specified node.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
-            // Write a paragraph with the DocumentBuilder
-            builder.Writeln("Text 1. ");
+            builder.Writeln("Run 1. ");
 
-            // Move the DocumentBuilder to the first paragraph of the document and add another paragraph
+            // The document builder has a cursor, which acts as the part of the document
+            // where new nodes are appended when we use the builder's document construction methods.
+            // This cursor functions in the same way as Microsoft Word's blinking cursor,
+            // and it also always ends up immediately after any node that the builder just inserted. 
+            // To append content to a different part of the document,
+            // we can move the cursor to a different node with the MoveTo method.
             Assert.AreEqual(doc.FirstSection.Body.LastParagraph, builder.CurrentParagraph); //ExSkip
             builder.MoveTo(doc.FirstSection.Body.FirstParagraph.Runs[0]);
             Assert.AreEqual(doc.FirstSection.Body.FirstParagraph, builder.CurrentParagraph); //ExSkip
-            builder.Writeln("Text 2. ");
 
-            // Since we moved to a node before the first paragraph before we added a second paragraph,
-            // the second paragraph will appear in front of the first paragraph
-            Assert.AreEqual("Text 2. \rText 1.", doc.GetText().Trim());
+            // The cursor is now in front of the node that we moved it to.
+            // Adding a second run will insert it in front of the first run.
+            builder.Writeln("Run 2. ");
 
-            // We can move the DocumentBuilder back to the end of the document like this
-            // and carry on adding text to the end of the document
-            builder.MoveTo(doc.FirstSection.Body.LastParagraph);
-            builder.Writeln("Text 3. ");
+            Assert.AreEqual("Run 2. \rRun 1.", doc.GetText().Trim());
 
-            Assert.AreEqual("Text 2. \rText 1. \rText 3.", doc.GetText().Trim());
+            // Move the cursor to the end of the document to continue appending text to the end as before.
+            builder.MoveTo(doc.LastSection.Body.LastParagraph);
+            builder.Writeln("Run 3. ");
+
+            Assert.AreEqual("Run 2. \rRun 1. \rRun 3.", doc.GetText().Trim());
             Assert.AreEqual(doc.FirstSection.Body.LastParagraph, builder.CurrentParagraph); //ExSkip
             //ExEnd
         }
 
         [Test]
-        public void DocumentBuilderMoveToDocumentStartEnd()
+        public void MoveToDocumentStartEnd()
         {
             Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1608,7 +1606,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderMoveToSection()
+        public void MoveToSection()
         {
             // Create a blank document and append a section to it, giving it two sections
             Document doc = new Document();
@@ -1622,26 +1620,28 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderMoveToParagraph()
+        public void MoveToParagraph()
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToParagraph
-            //ExSummary:Shows how to move a cursor position to the specified paragraph.
-            // Open a document with a lot of paragraphs
+            //ExSummary:Shows how to move a cursor position to a specified paragraph.
             Document doc = new Document(MyDir + "Paragraphs.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             Assert.AreEqual(22, paragraphs.Count);
 
-            // When we create a DocumentBuilder for a document, its cursor is at the very beginning of the document by default,
-            // and any content added by the DocumentBuilder will just be prepended to the document
+            // Create document builder to edit the document. The builder's cursor,
+            // which is the point new nodes will be inserted at when we call its document construction methods,
+            // is currently at the beginning of the document.
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Assert.AreEqual(0, paragraphs.IndexOf(builder.CurrentParagraph));
 
-            // We can manually move the DocumentBuilder to any paragraph in the document via a 0-based index like this
+            // Move that cursor to a different paragraph will place that cursor in front of that paragraph.
             builder.MoveToParagraph(2, 0);
             Assert.AreEqual(2, paragraphs.IndexOf(builder.CurrentParagraph)); //ExSkip
+
+            // Any new content that we add will be inserted at that point.
             builder.Writeln("This is a new third paragraph. ");
             //ExEnd
 
@@ -1653,47 +1653,91 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderMoveToTableCell()
+        public void MoveToCell()
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToCell
-            //ExSummary:Shows how to move a cursor position to the specified table cell.
-            Document doc = new Document(MyDir + "Tables.docx");
+            //ExSummary:Shows how to move a document builder's cursor to a cell in a table.
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Move the builder to row 3, cell 4 of the first table
-            builder.MoveToCell(0, 2, 3, 0);
-            builder.Write("\nCell contents added by DocumentBuilder");
+            // Create an empty 2x2 table.
+            builder.StartTable();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.EndRow();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.EndTable();
+
+            // Because we have ended the table with the EndTable method,
+            // the document builder's cursor is currently outside of the table.
+            // This cursor has the same function as Microsoft Word's blinking text cursor.
+            // It can also be moved to a different location in the document using the builder's MoveTo methods.
+            // We can move the cursor back inside the table to a specific cell.
+            builder.MoveToCell(0, 1, 1, 0);
+            builder.Write("Column 2, cell 2.");
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.MoveToCell.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.MoveToCell.docx");
 
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
-            Assert.AreEqual(table.Rows[2].Cells[3], builder.CurrentNode.ParentNode.ParentNode);
-            Assert.AreEqual("Cell contents added by DocumentBuilderCell 3 contents\a", table.Rows[2].Cells[3].GetText().Trim());
-
+            Assert.AreEqual("Column 2, cell 2.\a", table.Rows[1].Cells[1].GetText().Trim());
         }
 
         [Test]
-        public void DocumentBuilderMoveToBookmarkEnd()
+        public void MoveToBookmark()
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToBookmark(String, Boolean, Boolean)
-            //ExSummary:Shows how to move a cursor position to just after the bookmark end.
-            Document doc = new Document(MyDir + "Bookmarks.docx");
+            //ExSummary:Shows how to move a document builder's node insertion point cursor to a bookmark.
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Move to after the end of the first bookmark
-            Assert.True(builder.MoveToBookmark("MyBookmark1", false, true));
-            builder.Write(" Text appended via DocumentBuilder.");
+            // A valid bookmark consists of a BookmarkStart node, a BookmarkEnd node with a
+            // matching bookmark name somewhere afterwards, and contents enclosed by those nodes.
+            builder.StartBookmark("MyBookmark");
+            builder.Write("Hello world! ");
+            builder.EndBookmark("MyBookmark");
+
+            // There are 4 ways of moving a document builder's cursor to a bookmark.
+            // If we are between the BookmarkStart and BookmarkEnd nodes, the cursor will be inside the bookmark.
+            // This means that any text added by the builder will become a part of the bookmark.
+            // 1 -  Outside of the bookmark, in front of the BookmarkStart node:
+            Assert.True(builder.MoveToBookmark("MyBookmark", true, false));
+            builder.Write("1. ");
+
+            Assert.AreEqual("Hello world! ", doc.Range.Bookmarks["MyBookmark"].Text);
+            Assert.AreEqual("1. Hello world!", doc.GetText().Trim());
+
+            // 2 -  Inside the bookmark, right after the BookmarkStart node:
+            Assert.True(builder.MoveToBookmark("MyBookmark", true, true));
+            builder.Write("2. ");
+
+            Assert.AreEqual("2. Hello world! ", doc.Range.Bookmarks["MyBookmark"].Text);
+            Assert.AreEqual("1. 2. Hello world!", doc.GetText().Trim());
+
+            // 2 -  Inside the bookmark, right in front of the BookmarkEnd node:
+            Assert.True(builder.MoveToBookmark("MyBookmark", false, false));
+            builder.Write("3. ");
+
+            Assert.AreEqual("2. Hello world! 3. ", doc.Range.Bookmarks["MyBookmark"].Text);
+            Assert.AreEqual("1. 2. Hello world! 3.", doc.GetText().Trim());
+
+            // 4 -  Outside of the bookmark, after the BookmarkEnd node:
+            Assert.True(builder.MoveToBookmark("MyBookmark", false, true));
+            builder.Write("4.");
+
+            Assert.AreEqual("2. Hello world! 3. ", doc.Range.Bookmarks["MyBookmark"].Text);
+            Assert.AreEqual("1. 2. Hello world! 3. 4.", doc.GetText().Trim());
             //ExEnd
-
-            doc = DocumentHelper.SaveOpen(doc);
-
-            Assert.False(doc.Range.Bookmarks["MyBookmark1"].Text.Contains(" Text appended via DocumentBuilder."));
         }
 
         [Test]
-        public void DocumentBuilderBuildTable()
+        public void BuildTable()
         {
             //ExStart
             //ExFor:Table
@@ -1707,68 +1751,67 @@ namespace ApiExamples
             //ExFor:CellVerticalAlignment
             //ExFor:CellFormat.Orientation
             //ExFor:TextOrientation
-            //ExFor:Table.AutoFit
             //ExFor:AutoFitBehavior
-            //ExSummary:Shows how to build a formatted table that contains 2 rows and 2 columns.
+            //ExSummary:Shows how to build a formatted 2x2 table.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Table table = builder.StartTable();
-
-            // Insert a cell
             builder.InsertCell();
             builder.CellFormat.VerticalAlignment = CellVerticalAlignment.Center;
-            builder.Write("This is row 1 cell 1");
-
-            // Use fixed column widths
-            table.AutoFit(AutoFitBehavior.FixedColumnWidths);
-
-            // Insert a cell
+            builder.Write("Row 1, cell 1.");
             builder.InsertCell();
-            builder.Write("This is row 1 cell 2");
+            builder.Write("Row 1, cell 2.");
             builder.EndRow();
 
-            // Insert a cell
-            builder.InsertCell();
+            // While building the table, the document builder will apply its current RowFormat/CellFormat attribute values
+            // to the current row/cell that its cursor is in, as well as any new rows/cells as it creates them.
+            Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[0].CellFormat.VerticalAlignment);
+            Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[1].CellFormat.VerticalAlignment);
 
-            // Apply new row formatting
+            builder.InsertCell();
             builder.RowFormat.Height = 100;
             builder.RowFormat.HeightRule = HeightRule.Exactly;
-
             builder.CellFormat.Orientation = TextOrientation.Upward;
-            builder.Write("This is row 2 cell 1");
-
-            // Insert a cell
+            builder.Write("Row 2, cell 1.");
             builder.InsertCell();
             builder.CellFormat.Orientation = TextOrientation.Downward;
-            builder.Write("This is row 2 cell 2");
-
+            builder.Write("Row 2, cell 2.");
             builder.EndRow();
             builder.EndTable();
+
+            // Previously added rows and cells are not retroactively affected by changes to the builder's formatting.
+            Assert.AreEqual(0, table.Rows[0].RowFormat.Height);
+            Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
+            Assert.AreEqual(100, table.Rows[1].RowFormat.Height);
+            Assert.AreEqual(HeightRule.Exactly, table.Rows[1].RowFormat.HeightRule);
+            Assert.AreEqual(TextOrientation.Upward, table.Rows[1].Cells[0].CellFormat.Orientation);
+            Assert.AreEqual(TextOrientation.Downward, table.Rows[1].Cells[1].CellFormat.Orientation);
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.BuildTable.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "DocumentBuilder.BuildTable.docx");
             table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             Assert.AreEqual(2, table.Rows.Count);
             Assert.AreEqual(2, table.Rows[0].Cells.Count);
             Assert.AreEqual(2, table.Rows[1].Cells.Count);
-            Assert.False(table.AllowAutoFit);
 
             Assert.AreEqual(0, table.Rows[0].RowFormat.Height);
             Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
             Assert.AreEqual(100, table.Rows[1].RowFormat.Height);
             Assert.AreEqual(HeightRule.Exactly, table.Rows[1].RowFormat.HeightRule);
 
-            Assert.AreEqual("This is row 1 cell 1\a", table.Rows[0].Cells[0].GetText().Trim());
+            Assert.AreEqual("Row 1, cell 1.\a", table.Rows[0].Cells[0].GetText().Trim());
             Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[0].CellFormat.VerticalAlignment);
 
-            Assert.AreEqual("This is row 1 cell 2\a", table.Rows[0].Cells[1].GetText().Trim());
+            Assert.AreEqual("Row 1, cell 2.\a", table.Rows[0].Cells[1].GetText().Trim());
 
-            Assert.AreEqual("This is row 2 cell 1\a", table.Rows[1].Cells[0].GetText().Trim());
+            Assert.AreEqual("Row 2, cell 1.\a", table.Rows[1].Cells[0].GetText().Trim());
             Assert.AreEqual(TextOrientation.Upward, table.Rows[1].Cells[0].CellFormat.Orientation);
 
-            Assert.AreEqual("This is row 2 cell 2\a", table.Rows[1].Cells[1].GetText().Trim());
+            Assert.AreEqual("Row 2, cell 2.\a", table.Rows[1].Cells[1].GetText().Trim());
             Assert.AreEqual(TextOrientation.Downward, table.Rows[1].Cells[1].CellFormat.Orientation);
         }
 
@@ -1791,7 +1834,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderInsertBreak()
+        public void InsertBreak()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1806,7 +1849,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderInsertInlineImage()
+        public void InsertInlineImage()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1815,26 +1858,45 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderInsertFloatingImage()
+        public void InsertFloatingImage()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows how to insert a floating image from a file or URL.
+            //ExSummary:Shows how to insert an image.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // There are 2 ways of using a document builder to source an image, and then insert as a floating shape.
+            // 1 -  From a file in the local file system:
             builder.InsertImage(ImageDir + "Transparent background logo.png", RelativeHorizontalPosition.Margin, 100,
-                RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
+                RelativeVerticalPosition.Margin, 0, 200, 200, WrapType.Square);
+
+            // 2 -  From a URL:
+            builder.InsertImage(AsposeLogoUrl, RelativeHorizontalPosition.Margin, 100,
+                RelativeVerticalPosition.Margin, 250, 200, 200, WrapType.Square);
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertFloatingImage.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertFloatingImage.docx");
             Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Png, image);
             Assert.AreEqual(100.0d, image.Left);
-            Assert.AreEqual(100.0d, image.Top);
+            Assert.AreEqual(0.0d, image.Top);
             Assert.AreEqual(200.0d, image.Width);
-            Assert.AreEqual(100.0d, image.Height);
+            Assert.AreEqual(200.0d, image.Height);
+            Assert.AreEqual(WrapType.Square, image.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
+
+            image = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, image);
+            Assert.AreEqual(100.0d, image.Left);
+            Assert.AreEqual(250.0d, image.Top);
+            Assert.AreEqual(200.0d, image.Width);
+            Assert.AreEqual(200.0d, image.Height);
             Assert.AreEqual(WrapType.Square, image.WrapType);
             Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
@@ -1861,30 +1923,38 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows how to insert a floating image from a file or URL and retain the original image size in the document.
+            //ExSummary:Shows how to insert an image from the local file system into a document while preserving its dimensions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Pass a negative value to the width and height values to specify using the size of the source image
-            builder.InsertImage(ImageDir + "Logo.jpg", RelativeHorizontalPosition.Margin, 200,
-                RelativeVerticalPosition.Margin, 100, -1, -1, WrapType.Square);
+            // The InsertImage method creates a floating shape with the passed image in its image data.
+            // We can specify the dimensions of the shape can be passing them to this method.
+            Shape imageShape = builder.InsertImage(ImageDir + "Logo.jpg", RelativeHorizontalPosition.Margin, 0,
+                RelativeVerticalPosition.Margin, 0, -1, -1, WrapType.Square);
+
+            // Passing negative values as the intended dimensions will automatically define
+            // the shape's dimensions based on the dimensions of its image.
+            Assert.AreEqual(300.0d, imageShape.Width);
+            Assert.AreEqual(300.0d, imageShape.Height);
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertImageOriginalSize.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
-            Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertImageOriginalSize.docx");
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, image);
-            Assert.AreEqual(200.0d, image.Left);
-            Assert.AreEqual(100.0d, image.Top);
-            Assert.AreEqual(270.3d, image.Width);
-            Assert.AreEqual(270.3d, image.Height);
-            Assert.AreEqual(WrapType.Square, image.WrapType);
-            Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, imageShape);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+            Assert.AreEqual(300.0d, imageShape.Width);
+            Assert.AreEqual(300.0d, imageShape.Height);
+            Assert.AreEqual(WrapType.Square, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Margin, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
         }
 
         [Test]
-        public void DocumentBuilderInsertTextInputFormField()
+        public void InsertTextInput()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertTextInput
@@ -1892,41 +1962,48 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertTextInput("TextInput", TextFormFieldType.Regular, "", "Hello", 0);
+            // Insert a form that prompts the user to enter text.
+            builder.InsertTextInput("TextInput", TextFormFieldType.Regular, "", "Enter your text here", 0);
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertTextInput.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTextInput.docx");
             FormField formField = doc.Range.FormFields[0];
 
             Assert.True(formField.Enabled);
             Assert.AreEqual("TextInput", formField.Name);
             Assert.AreEqual(0, formField.MaxLength);
-            Assert.AreEqual("Hello", formField.Result);
+            Assert.AreEqual("Enter your text here", formField.Result);
             Assert.AreEqual(FieldType.FieldFormTextInput, formField.Type);
             Assert.AreEqual("", formField.TextInputFormat);
             Assert.AreEqual(TextFormFieldType.Regular, formField.TextInputType);
         }
 
         [Test]
-        public void DocumentBuilderInsertComboBoxFormField()
+        public void InsertComboBox()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertComboBox
-            //ExSummary:Shows how to insert a combobox form field into a document.
+            //ExSummary:Shows how to insert a combo box form field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            string[] items = { "One", "Two", "Three" };
+            // Insert a form that prompts the user to pick one of the items from the menu.
+            builder.Write("Pick a fruit: ");
+            string[] items = { "Apple", "Banana", "Cherry" };
             builder.InsertComboBox("DropDown", items, 0);
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertComboBox.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertComboBox.docx");
             FormField formField = doc.Range.FormFields[0];
 
             Assert.True(formField.Enabled);
             Assert.AreEqual("DropDown", formField.Name);
             Assert.AreEqual(0, formField.DropDownSelectedIndex);
-            Assert.AreEqual(new[] { "One", "Two", "Three" } , formField.DropDownItems);
+            Assert.AreEqual(items, formField.DropDownItems);
             Assert.AreEqual(FieldType.FieldFormDropDown, formField.Type);
         }
 
@@ -1957,7 +2034,7 @@ namespace ApiExamples
             //ExFor:SignatureLineOptions.AllowComments
             //ExFor:DocumentBuilder.InsertSignatureLine(SignatureLineOptions)
             //ExFor:SignOptions.ProviderId
-            //ExSummary:Shows how to sign document with personal certificate and specific signature line.
+            //ExSummary:Shows how to sign a document with a personal certificate, and a signature line.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
