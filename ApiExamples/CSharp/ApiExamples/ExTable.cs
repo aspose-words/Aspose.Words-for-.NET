@@ -65,6 +65,45 @@ namespace ApiExamples
         }
 
         [Test]
+        public void Padding()
+        {
+            //ExStart
+            //ExFor:Table.LeftPadding
+            //ExFor:Table.RightPadding
+            //ExFor:Table.TopPadding
+            //ExFor:Table.BottomPadding
+            //ExSummary:Shows how to configure content padding in a table.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Table table = builder.StartTable();
+            table.PreferredWidth = PreferredWidth.FromPoints(250);
+            builder.InsertCell();
+            builder.Write("Row 1, cell 1.");
+            builder.InsertCell();
+            builder.Write("Row 1, cell 2.");
+            builder.EndTable();
+
+            // For every cell in the table, set the distance between its contents, and each of its borders. 
+            // Text will be wrapped to maintain this minimum padding distance.
+            table.LeftPadding = 30;
+            table.RightPadding = 60;
+            table.TopPadding = 10;
+            table.BottomPadding = 90;
+            
+            doc.Save(ArtifactsDir + "DocumentBuilder.SetRowFormatting.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.SetRowFormatting.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(30.0d, table.LeftPadding);
+            Assert.AreEqual(60.0d, table.RightPadding);
+            Assert.AreEqual(10.0d, table.TopPadding);
+            Assert.AreEqual(90.0d, table.BottomPadding);
+        }
+
+        [Test]
         public void RowCellFormat()
         {
             //ExStart

@@ -2271,10 +2271,6 @@ namespace ApiExamples
             //ExFor:HeightRule
             //ExFor:RowFormat.Height
             //ExFor:RowFormat.HeightRule
-            //ExFor:Table.LeftPadding
-            //ExFor:Table.RightPadding
-            //ExFor:Table.TopPadding
-            //ExFor:Table.BottomPadding
             //ExSummary:Shows how to format rows with a document builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2282,11 +2278,6 @@ namespace ApiExamples
             Table table = builder.StartTable();
             builder.InsertCell();
             builder.Write("Row 1, cell 1.");
-
-            table.LeftPadding = 30;
-            table.RightPadding = 30;
-            table.TopPadding = 30;
-            table.BottomPadding = 30;
 
             // Start a second row, and then configure its height. The settings will be applied to
             // the builder's current row, as well as any new rows created by the builder.
@@ -2312,11 +2303,6 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.SetRowFormatting.docx");
             table = (Table)doc.GetChild(NodeType.Table, 0, true);
-
-            Assert.AreEqual(30.0d, table.LeftPadding);
-            Assert.AreEqual(30.0d, table.RightPadding);
-            Assert.AreEqual(30.0d, table.TopPadding);
-            Assert.AreEqual(30.0d, table.BottomPadding);
 
             Assert.AreEqual(0.0d, table.Rows[0].RowFormat.Height);
             Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
