@@ -2034,7 +2034,7 @@ namespace ApiExamples
             //ExFor:SignatureLineOptions.AllowComments
             //ExFor:DocumentBuilder.InsertSignatureLine(SignatureLineOptions)
             //ExFor:SignOptions.ProviderId
-            //ExSummary:Shows how to sign a document with a personal certificate, and a signature line.
+            //ExSummary:Shows how to sign a document with a personal certificate and a signature line.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2045,7 +2045,7 @@ namespace ApiExamples
                 Email = "vderyushev@aspose.com",
                 ShowDate = true,
                 DefaultInstructions = false,
-                Instructions = "You need more info about signature line",
+                Instructions = "Please sign here.",
                 AllowComments = true
             };
 
@@ -2077,7 +2077,7 @@ namespace ApiExamples
             Assert.AreEqual("vderyushev@aspose.com", signatureLine.Email);
             Assert.True(signatureLine.ShowDate);
             Assert.False(signatureLine.DefaultInstructions);
-            Assert.AreEqual("You need more info about signature line", signatureLine.Instructions);
+            Assert.AreEqual("Please sign here.", signatureLine.Instructions);
             Assert.True(signatureLine.AllowComments);
             Assert.True(signatureLine.IsSigned);
             Assert.True(signatureLine.IsValid);
@@ -2095,11 +2095,11 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertSignatureLineCurrentPosition()
+        public void SignatureLineInline()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertSignatureLine(SignatureLineOptions, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, WrapType)
-            //ExSummary:Shows how to insert signature line at the specified position.
+            //ExSummary:Shows how to insert an inline signature line into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2110,15 +2110,18 @@ namespace ApiExamples
                 Email = "johndoe@aspose.com",
                 ShowDate = true,
                 DefaultInstructions = false,
-                Instructions = "You need more info about signature line",
+                Instructions = "Please sign here.",
                 AllowComments = true
             };
 
             builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, 2.0,
                 RelativeVerticalPosition.Page, 3.0, WrapType.Inline);
+
+            // The signature line can be signed in Microsoft Word by double clicking it.
+            doc.Save(ArtifactsDir + "DocumentBuilder.SignatureLineInline.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "DocumentBuilder.SignatureLineInline.docx");
 
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             SignatureLine signatureLine = shape.SignatureLine;
@@ -2128,14 +2131,14 @@ namespace ApiExamples
             Assert.AreEqual("johndoe@aspose.com", signatureLine.Email);
             Assert.True(signatureLine.ShowDate);
             Assert.False(signatureLine.DefaultInstructions);
-            Assert.AreEqual("You need more info about signature line", signatureLine.Instructions);
+            Assert.AreEqual("Please sign here.", signatureLine.Instructions);
             Assert.True(signatureLine.AllowComments);
             Assert.False(signatureLine.IsSigned);
             Assert.False(signatureLine.IsValid);
         }
 
         [Test]
-        public void DocumentBuilderSetFontFormatting()
+        public void SetFontFormatting()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2155,45 +2158,45 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderSetParagraphFormatting()
+        public void SetParagraphFormatting()
         {
             //ExStart
             //ExFor:ParagraphFormat.RightIndent
             //ExFor:ParagraphFormat.LeftIndent
-            //ExSummary:Shows how to set paragraph formatting.
+            //ExSummary:Shows how to configure paragraph formatting to create off-center text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set paragraph formatting properties
+            // Center all text that the document builder writes, and set up indents.
+            // The indent configuration below will create a body of text that will sit asymmetrically on the page.
+            // The "center" that the text is aligned to will be the middle of the body of text, not the middle of the page.
             ParagraphFormat paragraphFormat = builder.ParagraphFormat;
             paragraphFormat.Alignment = ParagraphAlignment.Center;
-            paragraphFormat.LeftIndent = 50;
+            paragraphFormat.LeftIndent = 100;
             paragraphFormat.RightIndent = 50;
             paragraphFormat.SpaceAfter = 25;
 
-            // Output text
             builder.Writeln(
-                "This paragraph demonstrates how the left and right indents affect word wrapping.");
+                "This paragraph demonstrates how left and right indentation affects word wrapping.");
             builder.Writeln(
                 "The space between the above paragraph and this one depends on the DocumentBuilder's paragraph format.");
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.DocumentBuilderSetParagraphFormatting.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.SetParagraphFormatting.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilder.DocumentBuilderSetParagraphFormatting.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.SetParagraphFormatting.docx");
 
             foreach (Paragraph paragraph in doc.FirstSection.Body.Paragraphs)
             {
                 Assert.AreEqual(ParagraphAlignment.Center, paragraph.ParagraphFormat.Alignment);
-                Assert.AreEqual(50.0d, paragraph.ParagraphFormat.LeftIndent);
+                Assert.AreEqual(100.0d, paragraph.ParagraphFormat.LeftIndent);
                 Assert.AreEqual(50.0d, paragraph.ParagraphFormat.RightIndent);
                 Assert.AreEqual(25.0d, paragraph.ParagraphFormat.SpaceAfter);
-
             }
         }
 
         [Test]
-        public void DocumentBuilderSetCellFormatting()
+        public void SetCellFormatting()
         {
             //ExStart
             //ExFor:DocumentBuilder.CellFormat
@@ -2204,14 +2207,18 @@ namespace ApiExamples
             //ExFor:CellFormat.BottomPadding
             //ExFor:DocumentBuilder.StartTable
             //ExFor:DocumentBuilder.EndTable
-            //ExSummary:Shows how to create a table that contains a single formatted cell.
+            //ExSummary:Shows how to format cells with a document builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.StartTable();
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Row 1, cell 1.");
+
+            // Insert a second cell, and then configure cell text padding options. The settings will be applied to
+            // the builder's current cell, as well as any new cells created by the builder.
             builder.InsertCell();
 
-            // Set the cell formatting
             CellFormat cellFormat = builder.CellFormat;
             cellFormat.Width = 250;
             cellFormat.LeftPadding = 30;
@@ -2219,28 +2226,45 @@ namespace ApiExamples
             cellFormat.TopPadding = 30;
             cellFormat.BottomPadding = 30;
 
-            builder.Write("Formatted cell");
+            builder.Write("Row 1, cell 2.");
             builder.EndRow();
             builder.EndTable();
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.DocumentBuilderSetCellFormatting.docx");
+            // The first cell was unaffected by the padding reconfiguration, and still holds the default values.
+            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.Width);
+            Assert.AreEqual(5.4d, table.FirstRow.Cells[0].CellFormat.LeftPadding);
+            Assert.AreEqual(5.4d, table.FirstRow.Cells[0].CellFormat.RightPadding);
+            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.TopPadding);
+            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.BottomPadding);
+
+            Assert.AreEqual(250.0d, table.FirstRow.Cells[1].CellFormat.Width);
+            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.LeftPadding);
+            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.RightPadding);
+            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.TopPadding);
+            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.BottomPadding);
+
+            // The first cell will still grow in the output document to match the size of its neighboring cell.
+            doc.Save(ArtifactsDir + "DocumentBuilder.SetCellFormatting.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilder.DocumentBuilderSetCellFormatting.docx");
-            Cell firstCell = ((Table)doc.GetChild(NodeType.Table,0, true)).FirstRow.FirstCell;
+            doc = new Document(ArtifactsDir + "DocumentBuilder.SetCellFormatting.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
-            Assert.AreEqual("Formatted cell\a", firstCell.GetText().Trim());
+            Assert.AreEqual(159.3d, table.FirstRow.Cells[0].CellFormat.Width);
+            Assert.AreEqual(5.4d, table.FirstRow.Cells[0].CellFormat.LeftPadding);
+            Assert.AreEqual(5.4d, table.FirstRow.Cells[0].CellFormat.RightPadding);
+            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.TopPadding);
+            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.BottomPadding);
 
-            Assert.AreEqual(250.0d, firstCell.CellFormat.Width);
-            Assert.AreEqual(30.0d, firstCell.CellFormat.LeftPadding);
-            Assert.AreEqual(30.0d, firstCell.CellFormat.RightPadding);
-            Assert.AreEqual(30.0d, firstCell.CellFormat.TopPadding);
-            Assert.AreEqual(30.0d, firstCell.CellFormat.BottomPadding);
-
+            Assert.AreEqual(310.0d, table.FirstRow.Cells[1].CellFormat.Width);
+            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.LeftPadding);
+            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.RightPadding);
+            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.TopPadding);
+            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.BottomPadding);
         }
 
         [Test]
-        public void DocumentBuilderSetRowFormatting()
+        public void SetRowFormatting()
         {
             //ExStart
             //ExFor:DocumentBuilder.RowFormat
@@ -2251,32 +2275,42 @@ namespace ApiExamples
             //ExFor:Table.RightPadding
             //ExFor:Table.TopPadding
             //ExFor:Table.BottomPadding
-            //ExSummary:Shows how to create a table that contains a single cell and apply row formatting.
+            //ExSummary:Shows how to format rows with a document builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Table table = builder.StartTable();
             builder.InsertCell();
+            builder.Write("Row 1, cell 1.");
 
-            // Set the row formatting
-            RowFormat rowFormat = builder.RowFormat;
-            rowFormat.Height = 100;
-            rowFormat.HeightRule = HeightRule.Exactly;
-            // These formatting properties are set on the table and are applied to all rows in the table
             table.LeftPadding = 30;
             table.RightPadding = 30;
             table.TopPadding = 30;
             table.BottomPadding = 30;
 
-            builder.Writeln("Contents of formatted row.");
-
+            // Start a second row, and then configure its height. The settings will be applied to
+            // the builder's current row, as well as any new rows created by the builder.
             builder.EndRow();
+
+            RowFormat rowFormat = builder.RowFormat;
+            rowFormat.Height = 100;
+            rowFormat.HeightRule = HeightRule.Exactly;
+
+            builder.InsertCell();
+            builder.Write("Row 2, cell 1.");
             builder.EndTable();
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.DocumentBuilderSetRowFormatting.docx");
+            // The first row was unaffected by the padding reconfiguration, and still holds the default values.
+            Assert.AreEqual(0.0d, table.Rows[0].RowFormat.Height);
+            Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
+
+            Assert.AreEqual(100.0d, table.Rows[1].RowFormat.Height);
+            Assert.AreEqual(HeightRule.Exactly, table.Rows[1].RowFormat.HeightRule);
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.SetRowFormatting.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilder.DocumentBuilderSetRowFormatting.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.SetRowFormatting.docx");
             table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
             Assert.AreEqual(30.0d, table.LeftPadding);
@@ -2284,12 +2318,15 @@ namespace ApiExamples
             Assert.AreEqual(30.0d, table.TopPadding);
             Assert.AreEqual(30.0d, table.BottomPadding);
 
-            Assert.AreEqual(100.0d, table.FirstRow.RowFormat.Height);
-            Assert.AreEqual(HeightRule.Exactly, table.FirstRow.RowFormat.HeightRule);
+            Assert.AreEqual(0.0d, table.Rows[0].RowFormat.Height);
+            Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
+
+            Assert.AreEqual(100.0d, table.Rows[1].RowFormat.Height);
+            Assert.AreEqual(HeightRule.Exactly, table.Rows[1].RowFormat.HeightRule);
         }
 
         [Test]
-        public void DocumentBuilderSetListFormatting()
+        public void SetListFormatting()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2321,7 +2358,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderSetSectionFormatting()
+        public void SetSectionFormatting()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
