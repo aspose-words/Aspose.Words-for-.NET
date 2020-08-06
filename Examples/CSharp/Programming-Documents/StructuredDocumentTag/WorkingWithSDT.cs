@@ -20,6 +20,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Struct
             SetContentControlColor(dataDir);
             SetContentControlStyle(dataDir);
             CreatingTableRepeatingSectionMappedToCustomXmlPart(dataDir);
+            MultiSectionSDT(dataDir);
         }
 
         public static void SetContentControlColor(string dataDir)
@@ -135,6 +136,17 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Struct
             doc.Save(dataDir + "Document.docx");
             // ExEnd:CreatingTableRepeatingSectionMappedToCustomXmlPart
             Console.WriteLine("\nCreation of a Table Repeating Section Mapped To a Custom Xml Part is successfull.");
+        }
+
+        public static void MultiSectionSDT(string dataDir)
+        {
+            // ExStart:MultiSectionSDT
+            Document doc = new Document(dataDir + "input.docx");
+            var tags = doc.GetChildNodes(NodeType.StructuredDocumentTagRangeStart, true);
+
+            foreach (StructuredDocumentTagRangeStart tag in tags)
+                Console.WriteLine(tag.Title);
+            // ExEnd:MultiSectionSDT
         }
     }
 }

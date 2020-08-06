@@ -1,10 +1,4 @@
-﻿
-using System.IO;
-using Aspose.Words;
-using System;
-using Aspose.Words.Layout;
-using System.Text.RegularExpressions;
-using Aspose.Words.Replacing;
+﻿using System;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Document
 {
@@ -18,7 +12,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             GetRevisionTypes(dataDir);
             GetRevisionGroups(dataDir);
             SetShowCommentsinPDF(dataDir);
-            SetShowInBalloons(dataDir);
             GetRevisionGroupDetails(dataDir);
             AccessRevisedVersion(dataDir);
         }
@@ -79,22 +72,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             doc.LayoutOptions.ShowComments = false;
             doc.Save(dataDir + "RemoveCommentsinPDF_out.pdf");
             // ExEnd:SetShowCommentsinPDF
-            Console.WriteLine("\nFile saved at " + dataDir);
-        }
-
-        private static void SetShowInBalloons(string dataDir)
-        {
-            // ExStart:SetShowInBalloons
-            Document doc = new Document(dataDir + "Revisions.docx");
-
-            // Get the RevisionOptions object that controls the appearance of revisions
-            RevisionOptions revisionOptions = doc.LayoutOptions.RevisionOptions;
-
-            // Show deletion revisions in balloon
-            revisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
-
-            doc.Save(dataDir + "Revisions.ShowRevisionsInBalloons_out.pdf");
-            // ExEnd:SetShowInBalloons
             Console.WriteLine("\nFile saved at " + dataDir);
         }
 

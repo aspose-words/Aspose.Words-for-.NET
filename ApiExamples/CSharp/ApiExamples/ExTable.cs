@@ -77,20 +77,20 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Table table = builder.StartTable();
-            table.PreferredWidth = PreferredWidth.FromPoints(250);
             builder.InsertCell();
             builder.Write("Row 1, cell 1.");
             builder.InsertCell();
             builder.Write("Row 1, cell 2.");
             builder.EndTable();
-
+            
             // For every cell in the table, set the distance between its contents, and each of its borders. 
             // Text will be wrapped to maintain this minimum padding distance.
             table.LeftPadding = 30;
             table.RightPadding = 60;
             table.TopPadding = 10;
             table.BottomPadding = 90;
-            
+            table.PreferredWidth = PreferredWidth.FromPoints(250);
+
             doc.Save(ArtifactsDir + "DocumentBuilder.SetRowFormatting.docx");
             //ExEnd
 

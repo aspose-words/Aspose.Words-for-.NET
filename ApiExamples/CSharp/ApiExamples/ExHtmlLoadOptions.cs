@@ -91,7 +91,7 @@ namespace ApiExamples
             // A timeout like this will also accumulate warnings that can be picked up by a WarningCallback implementation
             Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[0].Source);
             Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[0].WarningType);
-            Assert.AreEqual($"The resource \'{AsposeLogoUrl}\' couldn't be loaded.", warningCallback.Warnings()[0].Description);
+            Assert.AreEqual($"Couldn't load a resource from \'{AsposeLogoUrl}\'.", warningCallback.Warnings()[0].Description);
 
             Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[1].Source);
             Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[1].WarningType);
