@@ -2392,7 +2392,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderApplyParagraphStyle()
+        public void ApplyParagraphStyle()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2404,7 +2404,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DocumentBuilderApplyBordersAndShading()
+        public void ApplyBordersAndShading()
         {
             //ExStart
             //ExFor:BorderCollection.Item(BorderType)
@@ -2414,11 +2414,10 @@ namespace ApiExamples
             //ExFor:Shading.Texture
             //ExFor:Shading.BackgroundPatternColor
             //ExFor:Shading.ForegroundPatternColor
-            //ExSummary:Shows how to apply borders and shading to a paragraph.
+            //ExSummary:Shows how to decorate text with borders and shading.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set paragraph borders
             BorderCollection borders = builder.ParagraphFormat.Borders;
             borders.DistanceFromText = 20;
             borders[BorderType.Left].LineStyle = LineStyle.Double;
@@ -2426,17 +2425,16 @@ namespace ApiExamples
             borders[BorderType.Top].LineStyle = LineStyle.Double;
             borders[BorderType.Bottom].LineStyle = LineStyle.Double;
 
-            // Set paragraph shading
             Shading shading = builder.ParagraphFormat.Shading;
             shading.Texture = TextureIndex.TextureDiagonalCross;
             shading.BackgroundPatternColor = Color.LightCoral;
             shading.ForegroundPatternColor = Color.LightSalmon;
 
             builder.Write("This paragraph is formatted with a double border and shading.");
-            doc.Save(ArtifactsDir + "DocumentBuilder.DocumentBuilderApplyBordersAndShading.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.ApplyBordersAndShading.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilder.DocumentBuilderApplyBordersAndShading.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.ApplyBordersAndShading.docx");
             borders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
 
             Assert.AreEqual(20.0d, borders.DistanceFromText);
@@ -2448,7 +2446,6 @@ namespace ApiExamples
             Assert.AreEqual(TextureIndex.TextureDiagonalCross, shading.Texture);
             Assert.AreEqual(Color.LightCoral.ToArgb(), shading.BackgroundPatternColor.ToArgb());
             Assert.AreEqual(Color.LightSalmon.ToArgb(), shading.ForegroundPatternColor.ToArgb());
-
         }
 
         [Test]
@@ -2460,53 +2457,26 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a table with 2 rows
             Table table = builder.StartTable();
             builder.InsertCell();
-            builder.Write("Cell 1");
+            builder.Write("Row 1, cell 1.");
             builder.InsertCell();
-            builder.Write("Cell 2");
+            builder.Write("Row 1, cell 2.");
             builder.EndRow();
             builder.InsertCell();
-            builder.Write("Cell 3");
+            builder.Write("Row 2, cell 1.");
             builder.InsertCell();
-            builder.Write("Cell 4");
+            builder.Write("Row 2, cell 2.");
             builder.EndTable();
 
             Assert.AreEqual(2, table.Rows.Count);
 
-            // Delete the first row of the first table in the document
+            // Delete the first row of the first table in the document.
             builder.DeleteRow(0, 0);
 
             Assert.AreEqual(1, table.Rows.Count);
+            Assert.AreEqual("Row 2, cell 1.\aRow 2, cell 2.\a\a", table.GetText().Trim());
             //ExEnd
-
-            Assert.AreEqual("Cell 3\aCell 4\a\a", table.GetText().Trim());
-        }
-
-        [Test]
-        [Ignore("Bug: does not insert headers and footers, all lists (bullets, numbering, multilevel) breaks")]
-        public void InsertDocument()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertDocument(Document, ImportFormatMode)
-            //ExFor:ImportFormatMode
-            //ExSummary:Shows how to insert a document content into another document keep formatting of inserted document.
-            Document doc = new Document(MyDir + "Document.docx");
-
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.MoveToDocumentEnd();
-            builder.InsertBreak(BreakType.PageBreak);
-
-            Document docToInsert = new Document(MyDir + "Formatted elements.docx");
-
-            builder.InsertDocument(docToInsert, ImportFormatMode.KeepSourceFormatting);
-            builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertDocument.docx");
-            //ExEnd
-
-            Assert.AreEqual(29, doc.Styles.Count);
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "DocumentBuilder.InsertDocument.docx", 
-                GoldsDir + "DocumentBuilder.InsertDocument Gold.docx"));
         }
 
         [Test]
@@ -2537,8 +2507,7 @@ namespace ApiExamples
             dstDoc.Save(ArtifactsDir + "DocumentBuilder.KeepSourceNumbering.docx");
             //ExEnd
         }
-
-
+        
         [Test]
         public void ResolveStyleBehaviorWhileAppendDocument()
         {
@@ -3132,6 +3101,31 @@ namespace ApiExamples
             builder.Write("This text is in a custom style. ");
 
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.WithoutStyleSeparator.docx");
+        }
+
+        [Test]
+        [Ignore("Bug: does not insert headers and footers, all lists (bullets, numbering, multilevel) breaks")]
+        public void InsertDocument()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertDocument(Document, ImportFormatMode)
+            //ExFor:ImportFormatMode
+            //ExSummary:Shows how to insert a document into another document.
+            Document doc = new Document(MyDir + "Document.docx");
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.MoveToDocumentEnd();
+            builder.InsertBreak(BreakType.PageBreak);
+
+            Document docToInsert = new Document(MyDir + "Formatted elements.docx");
+
+            builder.InsertDocument(docToInsert, ImportFormatMode.KeepSourceFormatting);
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertDocument.docx");
+            //ExEnd
+
+            Assert.AreEqual(29, doc.Styles.Count);
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "DocumentBuilder.InsertDocument.docx",
+                GoldsDir + "DocumentBuilder.InsertDocument Gold.docx"));
         }
 
         [Test]
