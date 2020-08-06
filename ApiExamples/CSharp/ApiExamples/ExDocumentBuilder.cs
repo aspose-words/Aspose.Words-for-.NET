@@ -2480,119 +2480,121 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ResolveStyleBehaviorWhileAppendDocument()
+        public void AppendDocumentAndResolveStyles()
         {
             //ExStart
             //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
-            //ExSummary:Shows how to resolve styles behavior while append document.
-            // Open a document with text in a custom style and clone it
+            //ExSummary:Shows how to manage list style clashes while appending a document.
+            // Open a document with text in a custom style, and clone it.
             Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
             Document dstDoc = srcDoc.Clone();
 
-            // We now have two documents, each with an identical style named "CustomStyle" 
-            // We can change the text color of one of the styles
+            // We now have two documents, each with an identical style named "CustomStyle".
+            // Change the text color for one of the styles to set it apart from the other.
             dstDoc.Styles["CustomStyle"].Font.Color = Color.DarkRed;
 
+            // If there is a clash of list styles, apply the list format of the source document.
             ImportFormatOptions options = new ImportFormatOptions();
-            // Specify that if numbering clashes in source and destination documents
-            // then a numbering from the source document will be used
             options.KeepSourceNumbering = true;
 
-            // If we join two documents which have different styles that share the same name,
-            // we can resolve the style clash with an ImportFormatMode
+            // Joining two documents which have different styles that share the same name causes a style clash.
+            // We can specify an import format mode while appending documents to resolve this clash.
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepDifferentStyles, options);
             dstDoc.UpdateListLabels();
 
-            dstDoc.Save(ArtifactsDir + "DocumentBuilder.ResolveStyleBehaviorWhileAppendDocument.docx");
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.AppendDocumentAndResolveStyles.docx");
             //ExEnd
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        public void IgnoreTextBoxes(bool isIgnoreTextBoxes)
+        public void IgnoreTextBoxes(bool ignoreTextBoxes)
         {
             //ExStart
             //ExFor:ImportFormatOptions.IgnoreTextBoxes
-            //ExSummary:Shows how to manage formatting in the text boxes of the source destination during the import.
-            // Create a document and add text
+            //ExSummary:Shows how to manage text box formatting while appending a document.
+            // Create a document that will have nodes from another document inserted into it.
             Document dstDoc = new Document();
             DocumentBuilder builder = new DocumentBuilder(dstDoc);
 
-            builder.Writeln("Hello world! Text box to follow.");
+            builder.Writeln("Hello world!");
 
-            // Create another document with a textbox, and insert some formatted text into it
+            // Create another document with a text box, which will be imported into the first document.
             Document srcDoc = new Document();
             builder = new DocumentBuilder(srcDoc);
 
             Shape textBox = builder.InsertShape(ShapeType.TextBox, 300, 100);
             builder.MoveTo(textBox.FirstParagraph);
             builder.ParagraphFormat.Style.Font.Name = "Courier New";
-            builder.ParagraphFormat.Style.Font.Size = 24.0d;
+            builder.ParagraphFormat.Style.Font.Size = 24;
             builder.Write("Textbox contents");
 
-            // When we import the document with the textbox as a node into the first document, by default the text inside the text box will keep its formatting
-            // Setting the IgnoreTextBoxes flag will clear the formatting during importing of the node
+            // Set a flag to specify whether to clear or preserve text box formatting
+            // while importing them to other documents.
             ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-            importFormatOptions.IgnoreTextBoxes = isIgnoreTextBoxes;
+            importFormatOptions.IgnoreTextBoxes = ignoreTextBoxes;
 
+            // Import the text box from the source document into the destination document,
+            // and then verify whether the styling of its text contents has been preserved.
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
+            Shape importedTextBox = (Shape)importer.ImportNode(textBox, true);
+            dstDoc.FirstSection.Body.Paragraphs[1].AppendChild(importedTextBox);
 
-            foreach (Paragraph paragraph in srcDoc.FirstSection.Body.Paragraphs)
+            if (ignoreTextBoxes)
             {
-                Node importedNode = importer.ImportNode(paragraph, true);
-                dstDoc.FirstSection.Body.AppendChild(importedNode);
+                Assert.AreEqual(12.0d, importedTextBox.FirstParagraph.Runs[0].Font.Size);
+                Assert.AreEqual("Times New Roman", importedTextBox.FirstParagraph.Runs[0].Font.Name);
+            }
+            else
+            {
+                Assert.AreEqual(24.0d, importedTextBox.FirstParagraph.Runs[0].Font.Size);
+                Assert.AreEqual("Courier New", importedTextBox.FirstParagraph.Runs[0].Font.Name);
             }
 
             dstDoc.Save(ArtifactsDir + "DocumentBuilder.IgnoreTextBoxes.docx");
             //ExEnd
-
-            dstDoc = new Document(ArtifactsDir + "DocumentBuilder.IgnoreTextBoxes.docx");
-            textBox = (Shape)dstDoc.GetChild(NodeType.Shape, 0, true);
-
-            Assert.AreEqual("Textbox contents", textBox.GetText().Trim());
-
-            if (isIgnoreTextBoxes)
-            {
-                Assert.AreEqual(12.0d, textBox.FirstParagraph.Runs[0].Font.Size);
-                Assert.AreEqual("Times New Roman", textBox.FirstParagraph.Runs[0].Font.Name);
-            }
-            else
-            {
-                Assert.AreEqual(24.0d, textBox.FirstParagraph.Runs[0].Font.Size);
-                Assert.AreEqual("Courier New", textBox.FirstParagraph.Runs[0].Font.Name);
-            }
         }
 
-        [Test]
-        public void MoveToField()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void MoveToField(bool moveCursorToAfterTheField)
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToField
-            //ExSummary:Shows how to move document builder's cursor to a specific field.
+            //ExSummary:Shows how to move a document builder's node insertion point cursor to a specific field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a field using the DocumentBuilder and add a run of text after it
-            Field field = builder.InsertField("MERGEFIELD field");
-            builder.Write(" Text after the field.");
+            // Insert a field using the DocumentBuilder, and add a run of text after it.
+            Field field = builder.InsertField(" AUTHOR \"John Doe\" ");
 
-            // The builder's cursor is currently at end of the document
+            // The builder's cursor is currently at end of the document.
             Assert.Null(builder.CurrentNode);
 
-            // We can move the builder to a field like this, placing the cursor at immediately after the field
-            builder.MoveToField(field, true);
+            // Move the cursor to the field while specifying whether to place that cursor before or after the field.
+            builder.MoveToField(field, moveCursorToAfterTheField);
 
-            // Note that the cursor is at a place past the FieldEnd node of the field, meaning that we are not actually inside the field
-            // If we wish to move the DocumentBuilder to inside a field,
-            // we will need to move it to a field's FieldStart or FieldSeparator node using the DocumentBuilder.MoveTo() method
-            Assert.AreEqual(field.End, builder.CurrentNode.PreviousSibling);
+            // Note that the cursor is outside of the field in both cases.
+            // This means that we cannot edit the field using the builder like this.
+            // In order to edit a field, we can use the builder's MoveTo method
+            // on a field's FieldStart or FieldSeparator node to place the cursor inside.
+            if (moveCursorToAfterTheField)
+            {
+                Assert.Null(builder.CurrentNode);
+                builder.Write(" Text immediately after the field.");
 
-            builder.Write(" Text immediately after the field.");
+                Assert.AreEqual("\u0013 AUTHOR \"John Doe\" \u0014John Doe\u0015 Text immediately after the field.", 
+                    doc.GetText().Trim());
+            }
+            else
+            {
+                Assert.AreEqual(field.Start, builder.CurrentNode);
+                builder.Write("Text immediately before the field. ");
+
+                Assert.AreEqual("Text immediately before the field. \u0013 AUTHOR \"John Doe\" \u0014John Doe\u0015", 
+                    doc.GetText().Trim());
+            }
             //ExEnd
-
-            doc = DocumentHelper.SaveOpen(doc);
-
-            Assert.AreEqual("\u0013MERGEFIELD field\u0014«field»\u0015 Text immediately after the field. Text after the field.", doc.GetText().Trim());
         }
 
         [Test]
@@ -2606,21 +2608,26 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertChartDouble()
+        public void InsertPieChart()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertChart(ChartType, Double, Double)
-            //ExSummary:Shows how to insert a chart into a document.
+            //ExSummary:Shows how to insert a pie chart into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertChart(ChartType.Pie, ConvertUtil.PixelToPoint(300), ConvertUtil.PixelToPoint(300));
+            Chart chart = builder.InsertChart(ChartType.Pie, ConvertUtil.PixelToPoint(300), 
+                ConvertUtil.PixelToPoint(300)).Chart;
             Assert.AreEqual(225.0d, ConvertUtil.PixelToPoint(300)); //ExSkip
+            chart.Series.Clear();
+            chart.Series.Add("My fruit",
+                new[] { "Apples", "Bananas", "Cherries" },
+                new[] { 1.3, 2.2, 1.5 });
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertedChartDouble.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertPieChart.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertedChartDouble.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertPieChart.docx");
             Shape chartShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             Assert.AreEqual("Chart Title", chartShape.Chart.Title.Text);
@@ -2633,7 +2640,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertChart(ChartType, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows how to insert a chart into a document and specify position and size.
+            //ExSummary:Shows how to specify position and wrapping while inserting a chart.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2667,7 +2674,7 @@ namespace ApiExamples
             //ExFor:Field.Type
             //ExFor:Field.Remove
             //ExFor:FieldType
-            //ExSummary:Shows how to insert a field into a document by FieldCode.
+            //ExSummary:Shows how to insert a field into a document using a field code.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
