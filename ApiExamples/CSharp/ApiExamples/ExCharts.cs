@@ -832,7 +832,7 @@ namespace ApiExamples
 
             // Each series will need three decimal arrays of equal length.
             // The first array contains X-values, the second contains corresponding Y-values,
-            // and the third contains diameters of points to be plotted on the graph. // INSP: "be plotted" passive voice
+            // and the third contains diameters for each of the graph's data points.
             chart.Series.Add("Series 1", 
                 new [] { 1.1, 5.0, 9.8 }, 
                 new [] { 1.2, 4.9, 9.9 }, 
