@@ -2480,35 +2480,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void KeepSourceNumbering()
-        {
-            //ExStart
-            //ExFor:ImportFormatOptions.KeepSourceNumbering
-            //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode, ImportFormatOptions)
-            //ExSummary:Shows how the numbering will be imported when it clashes in source and destination documents.
-            // Open a document with a custom list numbering scheme and clone it
-            // Since both have the same numbering format, the formats will clash if we import one document into the other
-            Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
-            Document dstDoc = srcDoc.Clone();
-            
-            // Both documents have the same numbering in their lists, but if we set this flag to false and then import one document into the other
-            // the numbering of the imported source document will continue from where it ends in the destination document
-            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-            importFormatOptions.KeepSourceNumbering = false;
-
-            NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepDifferentStyles, importFormatOptions);
-            foreach (Paragraph paragraph in srcDoc.FirstSection.Body.Paragraphs)
-            {
-                Node importedNode = importer.ImportNode(paragraph, true);
-                dstDoc.FirstSection.Body.AppendChild(importedNode);
-            }
-            
-            dstDoc.UpdateListLabels();
-            dstDoc.Save(ArtifactsDir + "DocumentBuilder.KeepSourceNumbering.docx");
-            //ExEnd
-        }
-        
-        [Test]
         public void ResolveStyleBehaviorWhileAppendDocument()
         {
             //ExStart
