@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -2668,77 +2668,74 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertField(String)
             //ExFor:Field
-            //ExFor:Field.Update
             //ExFor:Field.Result
             //ExFor:Field.GetFieldCode
             //ExFor:Field.Type
-            //ExFor:Field.Remove
             //ExFor:FieldType
             //ExSummary:Shows how to insert a field into a document using a field code.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a simple Date field into the document
-            // When we insert a field through the DocumentBuilder class we can get the
-            // special Field object which contains information about the field
-            Field dateField = builder.InsertField(@"DATE \* MERGEFORMAT");
+            Field field = builder.InsertField("DATE \\@ \"dddd, MMMM dd, yyyy\"");
 
-            // Update this particular field in the document so we can get the FieldResult
-            dateField.Update();
+            Assert.AreEqual(FieldType.FieldDate, field.Type);
+            Assert.AreEqual("DATE \\@ \"dddd, MMMM dd, yyyy\"", field.GetFieldCode());
 
-            // Display some information from this field
-            // The field result is where the last evaluated value is stored. This is what is displayed in the document
-            // When field codes are not showing
-            Assert.AreEqual(DateTime.Today, DateTime.Parse(dateField.Result));
-
-            // Display the field code which defines the behavior of the field. This can be seen in Microsoft Word by pressing ALT+F9
-            Assert.AreEqual(@"DATE \* MERGEFORMAT", dateField.GetFieldCode());
-
-            // The field type defines what type of field in the Document this is. In this case the type is "FieldDate" 
-            Assert.AreEqual(FieldType.FieldDate, dateField.Type);
-
-            // We can also invoke the Remove method on the field to remove it from the document
-            dateField.Remove();
+            // This overload of the InsertField method automatically updates inserted fields.
+            Assert.That(DateTime.Parse(field.Result), Is.EqualTo(DateTime.Today).Within(1).Days);
             //ExEnd			
-
-            Assert.AreEqual(0, doc.Range.Fields.Count);
         }
 
-        [Test]
-        public void InsertFieldByType()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void InsertFieldAndUpdate(bool updateInsertedFieldsImmediately)
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertField(FieldType, Boolean)
+            //ExFor:Field.Update
             //ExSummary:Shows how to insert a field into a document using FieldType.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert an AUTHOR field using a DocumentBuilder
+            // Insert two fields while passing a flag which determines whether to update them as they are inserted.
+            // In some cases updating fields could be computationally expensive, and it may be a good idea to defer the update.
+            // Not all field types require updating, exceptions include BARCODE and MERGEFIELD.
             doc.BuiltInDocumentProperties.Author = "John Doe";
             builder.Write("This document was written by ");
-            builder.InsertField(FieldType.FieldAuthor, true);
-            Assert.AreEqual(" AUTHOR ", doc.Range.Fields[0].GetFieldCode()); //ExSkip
-            Assert.AreEqual("John Doe", doc.Range.Fields[0].Result); //ExSkip
+            builder.InsertField(FieldType.FieldAuthor, updateInsertedFieldsImmediately);
 
-            // Insert a PAGE field using a DocumentBuilder, but do not immediately update it
+            builder.InsertParagraph();
             builder.Write("\nThis is page ");
-            builder.InsertField(FieldType.FieldPage, false);
-            Assert.AreEqual(" PAGE ", doc.Range.Fields[1].GetFieldCode()); //ExSkip
-            Assert.AreEqual("", doc.Range.Fields[1].Result); //ExSkip
-            
-            // Some fields types, such as ones that display document word/page counts may not keep track of their results in real time,
-            // and will only display an accurate result during a field update
-            // We can defer the updating of those fields until right before we need to see an accurate result
-            // This method will manually update all the fields in a document
-            doc.UpdateFields();
+            builder.InsertField(FieldType.FieldPage, updateInsertedFieldsImmediately);
 
-            Assert.AreEqual("1", doc.Range.Fields[1].Result);
+            Assert.AreEqual(" AUTHOR ", doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual(" PAGE ", doc.Range.Fields[1].GetFieldCode());
+
+            if (updateInsertedFieldsImmediately)
+            {
+                Assert.AreEqual("John Doe", doc.Range.Fields[0].Result);
+                Assert.AreEqual("1", doc.Range.Fields[1].Result);
+            }
+            else
+            {
+                Assert.AreEqual(string.Empty, doc.Range.Fields[0].Result);
+                Assert.AreEqual(string.Empty, doc.Range.Fields[1].Result);
+
+                // We will need to manually update these fields using the update methods.
+                doc.Range.Fields[0].Update();
+
+                Assert.AreEqual("John Doe", doc.Range.Fields[0].Result);
+
+                doc.UpdateFields();
+
+                Assert.AreEqual("1", doc.Range.Fields[1].Result);
+            }
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
 
             Assert.AreEqual("This document was written by \u0013 AUTHOR \u0014John Doe\u0015" +
-                            "\rThis is page \u0013 PAGE \u00141\u0015", doc.GetText().Trim());
+                            "\r\rThis is page \u0013 PAGE \u00141\u0015", doc.GetText().Trim());
 
             TestUtil.VerifyField(FieldType.FieldAuthor, " AUTHOR ", "John Doe", doc.Range.Fields[0]);
             TestUtil.VerifyField(FieldType.FieldPage, " PAGE ", "1", doc.Range.Fields[1]);
@@ -2752,36 +2749,42 @@ namespace ApiExamples
         //ExFor:IFieldResultFormatter.FormatNumeric(Double, String)
         //ExFor:FieldOptions.ResultFormatter
         //ExFor:CalendarType
-        //ExSummary:Shows how to control how the field result is formatted.
+        //ExSummary:Shows how to automatically apply a custom format to field results as the fields are updated.
         [Test] //ExSkip
         public void FieldResultFormatting()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldResultFormatter formatter = new FieldResultFormatter("${0}", "Date: {0}", "Item # {0}:");
+            doc.FieldOptions.ResultFormatter = formatter;
 
-            doc.FieldOptions.ResultFormatter = new FieldResultFormatter("${0}", "Date: {0}", "Item # {0}:");
+            // Our field result formatter applies a custom format to newly created fields of three types of formats.
+            // Field result formatters apply new formatting to fields as they are updated,
+            // which happens as soon ad they are created using this InsertField method overload. 
+            // 1 -  Numeric:
+            builder.InsertField(" = 2 + 3 \\# $###");
 
-            // Insert a field with a numeric format
-            builder.InsertField(" = 2 + 3 \\# $###", null);
-
-            // Insert a field with a date/time format
-            builder.InsertField("DATE \\@ \"d MMMM yyyy\"", null);
-
-            // Insert a field with a general format
-            builder.InsertField("QUOTE \"2\" \\* Ordinal", null);
-
-            // Formats will be applied and recorded by the formatter during the field update
-            doc.UpdateFields();
-            ((FieldResultFormatter)doc.FieldOptions.ResultFormatter).PrintInvocations();
-
-            // Our formatter has also overridden the formats that were originally applied in the fields
             Assert.AreEqual("$5", doc.Range.Fields[0].Result);
+            Assert.AreEqual(1, formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.Numeric));
+
+            // 2 -  Date/time:
+            builder.InsertField("DATE \\@ \"d MMMM yyyy\"");
+
             Assert.IsTrue(doc.Range.Fields[1].Result.StartsWith("Date: "));
+            Assert.AreEqual(1, formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.DateTime));
+
+            // 3 -  General:
+            builder.InsertField("QUOTE \"2\" \\* Ordinal");
+
             Assert.AreEqual("Item # 2:", doc.Range.Fields[2].Result);
+            Assert.AreEqual(1, formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.General));
+
+            formatter.PrintFormatInvocations();
         }
 
         /// <summary>
-        /// Custom IFieldResult implementation that applies formats and tracks format invocations
+        /// When fields with formatting are updated, this formatter will override their formatting
+        /// with a custom format, while tracking every invocation.
         /// </summary>
         private class FieldResultFormatter : IFieldResultFormatter
         {
@@ -2794,16 +2797,22 @@ namespace ApiExamples
 
             public string FormatNumeric(double value, string format)
             {
-                mNumberFormatInvocations.Add(new object[] { value, format });
-
-                return string.IsNullOrEmpty(mNumberFormat) ? null : string.Format(mNumberFormat, value);
+                if (string.IsNullOrEmpty(mNumberFormat)) 
+                    return null;
+                
+                string newValue = String.Format(mNumberFormat, value);
+                FormatInvocations.Add(new FormatInvocation(FormatInvocationType.Numeric, value, format, newValue));
+                return newValue;
             }
 
             public string FormatDateTime(DateTime value, string format, CalendarType calendarType)
             {
-                mDateFormatInvocations.Add(new object[] { value, format, calendarType });
+                if (string.IsNullOrEmpty(mDateFormat))
+                    return null;
 
-                return string.IsNullOrEmpty(mDateFormat) ? null : string.Format(mDateFormat, value);
+                string newValue = String.Format(mDateFormat, value);
+                FormatInvocations.Add(new FormatInvocation(FormatInvocationType.DateTime, $"{value} ({calendarType})", format, newValue));
+                return newValue;
             }
 
             public string Format(string value, GeneralFormat format)
@@ -2818,40 +2827,56 @@ namespace ApiExamples
 
             private string Format(object value, GeneralFormat format)
             {
-                mGeneralFormatInvocations.Add(new object[] { value, format });
+                if (string.IsNullOrEmpty(mGeneralFormat))
+                    return null;
 
-                return string.IsNullOrEmpty(mGeneralFormat) ? null : string.Format(mGeneralFormat, value);
+                string newValue = String.Format(mGeneralFormat, value);
+                FormatInvocations.Add(new FormatInvocation(FormatInvocationType.General, value, format.ToString(), newValue));
+                return newValue;
             }
 
-            public void PrintInvocations()
+            public int CountFormatInvocations(FormatInvocationType formatInvocationType)
             {
-                Console.WriteLine("Number format invocations ({0}):", mNumberFormatInvocations.Count);
-                foreach (object[] s in mNumberFormatInvocations)
-                {
-                    Console.WriteLine("\tValue: " + s[0] + ", original format: " + s[1]);
-                }
+                if (formatInvocationType == FormatInvocationType.All)
+                    return FormatInvocations.Count;
+                
+                return FormatInvocations.Count(f => f.FormatInvocationType == formatInvocationType);
+            }
 
-                Console.WriteLine("Date format invocations ({0}):", mDateFormatInvocations.Count);
-                foreach (object[] s in mDateFormatInvocations)
-                {
-                    Console.WriteLine("\tValue: " + s[0] + ", original format: " + s[1] + ", calendar type: " + s[2]);
-                }
-
-                Console.WriteLine("General format invocations ({0}):", mGeneralFormatInvocations.Count);
-                foreach (object[] s in mGeneralFormatInvocations)
-                {
-                    Console.WriteLine("\tValue: " + s[0] + ", original format: " + s[1]);
-                }
+            public void PrintFormatInvocations()
+            { 
+                foreach (FormatInvocation f in FormatInvocations)
+                    Console.WriteLine($"Invocation type:\t{f.FormatInvocationType}\n" +
+                                      $"\tOriginal value:\t\t{f.Value}\n" +
+                                      $"\tOriginal format:\t{f.OriginalFormat}\n" +
+                                      $"\tNew value:\t\t\t{f.NewValue}\n");
             }
 
             private readonly string mNumberFormat;
             private readonly string mDateFormat;
-            private readonly string mGeneralFormat;
+            private readonly string mGeneralFormat; 
+            private List<FormatInvocation> FormatInvocations { get; } = new List<FormatInvocation>();
+            
+            private class FormatInvocation
+            {
+                public FormatInvocationType FormatInvocationType { get; }
+                public object Value { get; }
+                public string OriginalFormat { get; }
+                public string NewValue { get; }
 
-            private readonly ArrayList mNumberFormatInvocations = new ArrayList();
-            private readonly ArrayList mDateFormatInvocations = new ArrayList();
-            private readonly ArrayList mGeneralFormatInvocations = new ArrayList();
+                public FormatInvocation(FormatInvocationType formatInvocationType, object value, string originalFormat, string newValue)
+                {
+                    Value = value;
+                    FormatInvocationType = formatInvocationType;
+                    OriginalFormat = originalFormat;
+                    NewValue = newValue;
+                }
+            }
 
+            public enum FormatInvocationType
+            {
+                Numeric, DateTime, General, All
+            }
         }
         //ExEnd
 
@@ -2860,14 +2885,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, Double, Double)
-            //ExSummary:Shows how to insert online video into a document using video URL
+            //ExSummary:Shows how to insert an online video into a document using a URL.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a video from Youtube
             builder.InsertOnlineVideo("https://youtu.be/t_1LYZ102RA", 360, 270);
 
-            // Click on the shape in the output document to watch the video from Microsoft Word
+            // We can watch the video from Microsoft Word by clicking on the shape.
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertVideoWithUrl.docx");
             //ExEnd
 
@@ -2886,22 +2910,15 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.Underline
-            //ExSummary:Shows how to set and edit a document builder's underline.
+            //ExSummary:Shows how to configure a document builder's underline.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set a new style for our underline
             builder.Underline = Underline.Dash;
-
-            // Same object as DocumentBuilder.Font.Underline
-            Assert.AreEqual(builder.Underline, builder.Font.Underline);
-            Assert.AreEqual(Underline.Dash, builder.Font.Underline);
-
-            // These properties will be applied to the underline as well
             builder.Font.Color = Color.Blue;
             builder.Font.Size = 32;
 
-            builder.Writeln("Underlined text.");
+            builder.Writeln("Large, blue, and underlined text.");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertUnderline.docx");
             //ExEnd
@@ -2909,7 +2926,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertUnderline.docx");
             Run firstRun = doc.FirstSection.Body.FirstParagraph.Runs[0];
 
-            Assert.AreEqual("Underlined text.", firstRun.GetText().Trim());
+            Assert.AreEqual("Large, blue, and underlined text.", firstRun.GetText().Trim());
             Assert.AreEqual(Underline.Dash, firstRun.Font.Underline);
             Assert.AreEqual(Color.Blue.ToArgb(), firstRun.Font.Color.ToArgb());
             Assert.AreEqual(32.0d, firstRun.Font.Size);
@@ -2924,15 +2941,14 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A Story is a type of node that have child Paragraph nodes, such as a Body,
-            // which would usually be a parent node to a DocumentBuilder's current paragraph
+            // A Story is a type of node that have child Paragraph nodes, such as a Body.
             Assert.AreEqual(builder.CurrentStory, doc.FirstSection.Body);
             Assert.AreEqual(builder.CurrentStory, builder.CurrentParagraph.ParentNode);
             Assert.AreEqual(StoryType.MainText, builder.CurrentStory.StoryType);
 
             builder.CurrentStory.AppendParagraph("Text added to current Story.");
 
-            // A Story can contain tables too
+            // A Story can also contain tables.
             Table table = builder.StartTable();
             builder.InsertCell();
             builder.Write("Row 1 cell 1");
@@ -2940,13 +2956,12 @@ namespace ApiExamples
             builder.Write("Row 1 cell 2");
             builder.EndTable();
 
-            // The table we just made is automatically placed in the story
             Assert.IsTrue(builder.CurrentStory.Tables.Contains(table));
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
             Assert.AreEqual(1, doc.FirstSection.Body.Tables.Count);
-            Assert.AreEqual("Row 1 cell 1\aRow 1 cell 2\a\a\rText added to current Story.", doc.FirstSection.Body.GetText().Trim());
+            Assert.AreEqual("Row 1, cell 1\aRow 1, cell 2\a\a\rText added to current Story.", doc.FirstSection.Body.GetText().Trim());
         }
 
         [Test]

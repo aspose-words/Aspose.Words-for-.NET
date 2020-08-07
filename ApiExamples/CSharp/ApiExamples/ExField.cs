@@ -744,6 +744,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Field.Format
+            //ExFor:Field.Update
             //ExFor:FieldFormat
             //ExFor:FieldFormat.DateTimeFormat
             //ExFor:FieldFormat.NumericFormat
@@ -763,9 +764,13 @@ namespace ApiExamples
             // Use a document builder to insert field with no format
             Field field = builder.InsertField("= 2 + 3");
 
+            Assert.AreEqual("5", field.Result);
+
             // We can format our field here instead of in the field code
             FieldFormat format = field.Format;
             format.NumericFormat = "$###.00";
+            
+            // Fields need to be manually updated in order for formatting to take effect
             field.Update();
 
             Assert.AreEqual("$  5.00", field.Result);
@@ -1240,7 +1245,7 @@ namespace ApiExamples
         //ExFor:FieldEnd.Accept(DocumentVisitor)
         //ExFor:FieldEnd.HasSeparator
         //ExFor:Field.End
-        //ExFor:Field.Remove()
+        //ExFor:Field.Remove
         //ExFor:Field.Separator
         //ExFor:Field.Start
         //ExSummary:Shows how to work with a document's field collection.
@@ -4793,7 +4798,7 @@ namespace ApiExamples
             doc.BuiltInDocumentProperties.LastSavedTime = DateTime.Now;
 
             doc.UpdateFields();
-            //doc.Save(ArtifactsDir + "Field.SAVEDATE.docx");
+            doc.Save(ArtifactsDir + "Field.SAVEDATE.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Field.SAVEDATE.docx");
@@ -6933,6 +6938,7 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:Field.Remove
         //ExFor:FieldPrivate
         //ExSummary:Shows how to process PRIVATE fields.
         [Test] //ExSkip
