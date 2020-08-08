@@ -26,6 +26,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             LoadOptionsWarningCallback(dataDir);
             LoadOptionsResourceLoadingCallback(dataDir);
             LoadOptionsEncoding(dataDir);
+            SkipPdfImages(dataDir);
         }
 
         public static void LoadOptionsUpdateDirtyFields(string dataDir)
@@ -183,6 +184,16 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.UTF7 };
             Document doc = new Document(dataDir + "Encoded in UTF-7.txt", loadOptions);
             //ExEnd:LoadOptionsEncoding
+        }
+
+        public static void SkipPdfImages(string dataDir)
+        {
+            //ExStart:SkipPdfImages
+            PdfLoadOptions loadOptions = new PdfLoadOptions();
+            loadOptions.SkipPdfImages = true;
+
+            Document doc = new Document(dataDir + "in.pdf", loadOptions);
+            //ExEnd:SkipPdfImages
         }
     }
 }
