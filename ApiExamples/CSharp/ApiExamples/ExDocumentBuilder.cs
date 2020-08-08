@@ -2910,7 +2910,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.Underline
-            //ExSummary:Shows how to configure a document builder's underline.
+            //ExSummary:Shows how to format text inserted by a document builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2918,6 +2918,8 @@ namespace ApiExamples
             builder.Font.Color = Color.Blue;
             builder.Font.Size = 32;
 
+            // The builder applies formatting to its current paragraph,
+            // as well as any new text added by it afterwards.
             builder.Writeln("Large, blue, and underlined text.");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertUnderline.docx");
@@ -2951,9 +2953,9 @@ namespace ApiExamples
             // A Story can also contain tables.
             Table table = builder.StartTable();
             builder.InsertCell();
-            builder.Write("Row 1 cell 1");
+            builder.Write("Row 1, cell 1");
             builder.InsertCell();
-            builder.Write("Row 1 cell 2");
+            builder.Write("Row 1, cell 2");
             builder.EndTable();
 
             Assert.IsTrue(builder.CurrentStory.Tables.Contains(table));
@@ -2965,62 +2967,61 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertOlePowerpoint()
+        public void InsertOleObjects()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOleObject(Stream, String, Boolean, Image)
-            //ExSummary:Shows how to use document builder to embed Ole objects in a document.
+            //ExSummary:Shows how to use document builder to embed OLE objects in a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a Microsoft Excel spreadsheet from the local file system into the document
+            // Insert a Microsoft Excel spreadsheet from the local file system
+            // into the document while keeping its default appearance.
             using (Stream spreadsheetStream = File.Open(MyDir + "Spreadsheet.xlsx", FileMode.Open))
             {
-                // The spreadsheet can be activated by double clicking the panel in the document immediately under the text we will add
-                // We did not set the area to double click as an icon nor did we change its appearance, so it looks like a simple panel
                 builder.Writeln("Spreadsheet Ole object:");
                 builder.InsertOleObject(spreadsheetStream, "OleObject.xlsx", false, null);
+            }
 
-                // A Microsoft Powerpoint presentation is another type of object we can embed in our document
-                using (Stream powerpointStream = File.Open(MyDir + "Presentation.pptx", FileMode.Open))
+            // Insert a Microsoft Powerpoint presentation as an OLE object.
+            // This time, it will have an image downloaded from the web for an icon.
+            using (Stream powerpointStream = File.Open(MyDir + "Presentation.pptx", FileMode.Open))
+            {
+                using (WebClient webClient = new WebClient())
                 {
-                    // If we insert the Ole object as an icon, we are still provided with a default icon
-                    // If that is not suitable, we can make the icon to look like any image
-                    using (WebClient webClient = new WebClient())
+                    byte[] imgBytes = webClient.DownloadData(AsposeLogoUrl);
+
+                    #if NETCOREAPP2_1 || __MOBILE__
+                    
+                    SKBitmap bitmap = SKBitmap.Decode(imgBytes);
+                    
+                    // If we double click the image, the presentation will open
+                    builder.InsertParagraph();
+                    builder.Writeln("Powerpoint Ole object:");
+                    builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, bitmap);
+                    
+                    #elif NET462
+                    
+                    using (MemoryStream stream = new MemoryStream(imgBytes))
                     {
-                        byte[] imgBytes = webClient.DownloadData(AsposeLogoUrl);
-
-                        #if NETCOREAPP2_1 || __MOBILE__
-                        
-                        SKBitmap bitmap = SKBitmap.Decode(imgBytes);
-                        
-                        // If we double click the image, the presentation will open
-                        builder.InsertParagraph();
-                        builder.Writeln("Powerpoint Ole object:");
-                        builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, bitmap);
-                        
-                        #elif NET462
-                        
-                        using (MemoryStream stream = new MemoryStream(imgBytes))
+                        using (Image image = Image.FromStream(stream))
                         {
-                            using (Image image = Image.FromStream(stream))
-                            {
-                                // If we double click the image, the presentation will open
-                                builder.InsertParagraph();
-                                builder.Writeln("Powerpoint Ole object:");
-                                builder.InsertOleObject(powerpointStream, "OleObject.pptx", true, image);
-                            }
+                            builder.InsertParagraph();
+                            builder.Writeln("Powerpoint Ole object:");
+                            builder.InsertOleObject(powerpointStream, "OleObject.pptx", true, image);
                         }
-
-                        #endif
                     }
+
+                    #endif
                 }
             }
 
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOlePowerpoint.docx");
+            // Double-click these objects in Microsoft Word to open
+            // the linked files using their respective applications.
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjects.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOlePowerpoint.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOleObjects.docx");
 
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count);
 
@@ -3038,32 +3039,30 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertStyleSeparator
-            //ExSummary:Shows how to separate styles from two different paragraphs used in one logical printed paragraph.
+            //ExSummary:Shows how to work with style separators.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Append text in the "Heading 1" style
+            // Each paragraph can only have one style.
+            // The InsertStyleSeparator method allows us to work around this limitation.
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
             builder.Write("This text is in a Heading style. ");
-
-            // Insert a style separator
             builder.InsertStyleSeparator();
 
-            // The style separator appears in the form of a paragraph break that does not start a new line
-            // So, while this looks like one continuous paragraph with two styles in the output document, 
-            // in reality it is two paragraphs with different styles, but no line break between the first and second paragraph
-            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
-
-            // Append text with another style
             Style paraStyle = builder.Document.Styles.Add(StyleType.Paragraph, "MyParaStyle");
             paraStyle.Font.Bold = false;
             paraStyle.Font.Size = 8;
             paraStyle.Font.Name = "Arial";
 
-            // Set the style of the current paragraph to our custom style
-            // This will apply to only the text after the style separator
             builder.ParagraphFormat.StyleName = paraStyle.Name;
             builder.Write("This text is in a custom style. ");
+
+            // Calling the InsertStyleSeparator method actually creates another paragraph,
+            // which can have a different style to the previous. There will be no break between paragraphs,
+            // so our text in the output document will look like one paragraph with two styles.
+            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
+            Assert.AreEqual("Heading 1", doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style.Name);
+            Assert.AreEqual("MyParaStyle", doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style.Name);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertStyleSeparator.docx");
             //ExEnd
@@ -3073,6 +3072,13 @@ namespace ApiExamples
             Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
             Assert.AreEqual("This text is in a Heading style. \r This text is in a custom style.",
                 doc.GetText().Trim());
+            Assert.AreEqual("Heading 1", doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style.Name);
+            Assert.AreEqual("MyParaStyle", doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style.Name);
+            Assert.AreEqual(" ", doc.FirstSection.Body.Paragraphs[1].Runs[0].GetText());
+            TestUtil.DocPackageFileContainsString("w:rPr><w:vanish /><w:specVanish /></w:rPr>", 
+                ArtifactsDir + "DocumentBuilder.InsertStyleSeparator.docx", "document.xml");
+            TestUtil.DocPackageFileContainsString("<w:t xml:space=\"preserve\"> </w:t>", 
+                ArtifactsDir + "DocumentBuilder.InsertStyleSeparator.docx", "document.xml");
         }
 
         [Test]
@@ -3128,7 +3134,7 @@ namespace ApiExamples
             //ExFor:ImportFormatOptions
             //ExFor:ImportFormatOptions.SmartStyleBehavior
             //ExFor:DocumentBuilder.InsertDocument(Document, ImportFormatMode, ImportFormatOptions)
-            //ExSummary:Shows how to resolve styles behavior while inserting documents.
+            //ExSummary:Shows how to resolve duplicate styles while inserting documents.
             Document dstDoc = new Document();
             DocumentBuilder builder = new DocumentBuilder(dstDoc);
 
