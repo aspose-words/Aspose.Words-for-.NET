@@ -3143,18 +3143,17 @@ namespace ApiExamples
             myStyle.Font.Name = "Courier New";
             myStyle.Font.Color = Color.Blue;
 
-            // Append text with custom style
             builder.ParagraphFormat.StyleName = myStyle.Name;
             builder.Writeln("Hello world!");
 
-            // Clone the document, and edit the clone's "MyStyle" style so it is a different color than that of the original
-            // If we append this document to the original, the different styles will clash since they are the same name, and we will need to resolve it
+            // Clone the document, and edit the clone's "MyStyle" style so it is a different color than that of the original.
+            // If we insert the clone into the original document, the two styles with the same name will cause a clash.
             Document srcDoc = dstDoc.Clone();
             srcDoc.Styles["MyStyle"].Font.Color = Color.Red;
 
-            // When SmartStyleBehavior is enabled,
-            // a source style will be expanded into a direct attribute inside a destination document,
-            // if KeepSourceFormatting importing mode is used
+            // When SmartStyleBehavior is enabled and the KeepSourceFormatting import format mode is used,
+            // clashing styles will be resolved by converting source document styles
+            // with the same names as destination styles into direct paragraph attributes.
             ImportFormatOptions options = new ImportFormatOptions();
             options.SmartStyleBehavior = true;
 
@@ -3550,53 +3549,19 @@ namespace ApiExamples
         public void InsertOnlineVideo()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows how to insert online video into a document using html code.
+            //ExSummary:Shows how to insert an online video into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            string videoUrl = "https://vimeo.com/52477838";
 
-            // Visible URL
-            string vimeoVideoUrl = @"https://vimeo.com/52477838";
-
-            // Embed Html code
-            string vimeoEmbedCode =
-                "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
-
-            // This video will have an automatically generated thumbnail, and we are setting the size according to its 16:9 aspect ratio
-            builder.Writeln("Video with an automatically generated thumbnail at the top left corner of the page:");
-            builder.InsertOnlineVideo(vimeoVideoUrl, RelativeHorizontalPosition.LeftMargin, 0,
+            // Insert a shape that plays a video from the web when clicked in Microsoft Word.
+            // This rectangular shape will contain an image based on the first frame of the linked video,
+            // as well as a "play button" visual prompt. The video has an aspect ratio of 16:9, 
+            // so we will set the shape's size to that ratio so the image does not appear stretched.
+            builder.InsertOnlineVideo(videoUrl, RelativeHorizontalPosition.LeftMargin, 0,
                 RelativeVerticalPosition.TopMargin, 0, 320, 180, WrapType.Square);
-            builder.InsertBreak(BreakType.PageBreak);
-
-            // We can get an image to use as a custom thumbnail
-            using (WebClient webClient = new WebClient())
-            {
-                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
-
-                using (MemoryStream stream = new MemoryStream(imageBytes))
-                {
-                    using (Image image = Image.FromStream(stream))
-                    {
-                        // This puts the video where we are with our document builder, with a custom thumbnail and size depending on the size of the image
-                        builder.Writeln("Custom thumbnail at document builder's cursor:");
-                        builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes, image.Width, image.Height);
-                        builder.InsertBreak(BreakType.PageBreak);
-
-                        // We can put the video at the bottom right edge of the page too, but we'll have to take the page margins into account 
-                        double left = builder.PageSetup.RightMargin - image.Width;
-                        double top = builder.PageSetup.BottomMargin - image.Height;
-
-                        // Here we use a custom thumbnail and relative positioning to put it and the bottom right of the page
-                        builder.Writeln("Bottom right of page with custom thumbnail:");
-
-                        builder.InsertOnlineVideo(vimeoVideoUrl, vimeoEmbedCode, imageBytes,
-                            RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
-                            image.Width, image.Height, WrapType.Square);
-                    }
-                }
-            }
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOnlineVideo.docx");
             //ExEnd
@@ -3615,9 +3580,55 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.LeftMargin, shape.RelativeHorizontalPosition);
 
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
+        }
 
-            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+        [Test]
+        public void InsertOnlineVideoCustomThumbnail()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
+            //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
+            //ExSummary:Shows how to insert an online video into a document with a custom thumbnail.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            string videoUrl = "https://vimeo.com/52477838";
+            string videoEmbedCode = "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" " +
+                                    "title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+
+            using (WebClient webClient = new WebClient())
+            {
+                byte[] thumbnailImageBytes = webClient.DownloadData(AsposeLogoUrl);
+
+                using (MemoryStream stream = new MemoryStream(thumbnailImageBytes))
+                {
+                    using (Image image = Image.FromStream(stream))
+                    {
+                        // Below are two ways of creating a shape with a custom thumbnail which links to an online video
+                        // that can we can watch when we click on the shape in Microsoft Word.
+                        // 1 -  Insert an inline shape at the builder's node insertion cursor:
+                        builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes, image.Width, image.Height);
+
+                        builder.InsertBreak(BreakType.PageBreak);
+
+                        // 2 -  Insert a floating shape:
+                        double left = builder.PageSetup.RightMargin - image.Width;
+                        double top = builder.PageSetup.BottomMargin - image.Height;
+
+                        builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes,
+                            RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
+                            image.Width, image.Height, WrapType.Square);
+                    }
+                }
+            }
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOnlineVideoCustomThumbnail.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOnlineVideoCustomThumbnail.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            
             TestUtil.VerifyImageInShape(320, 320, ImageType.Png, shape);
             Assert.AreEqual(320.0d, shape.Width);
             Assert.AreEqual(320.0d, shape.Height);
@@ -3630,6 +3641,20 @@ namespace ApiExamples
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, shape);
+            Assert.AreEqual(320.0d, shape.Width);
+            Assert.AreEqual(320.0d, shape.Height);
+            Assert.AreEqual(-249.15d, shape.Left);
+            Assert.AreEqual(-249.15d, shape.Top);
+            Assert.AreEqual(WrapType.Square, shape.WrapType);
+            Assert.AreEqual(RelativeVerticalPosition.BottomMargin, shape.RelativeVerticalPosition);
+            Assert.AreEqual(RelativeHorizontalPosition.RightMargin, shape.RelativeHorizontalPosition);
+
+            Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
             TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
         }
 #endif
