@@ -90,7 +90,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.#ctor(Stream)
-            //ExSummary:Shows how to . // INSP: Add summary.
+            //ExSummary:Shows how to load a document from a URL.
             // Create a URL that points to a Microsoft Word document.
             const string url = "https://omextemplates.content.office.net/support/templates/en-us/tf16402488.dotx";
 
@@ -442,8 +442,7 @@ namespace ApiExamples
         }
 
         [Test]
-        // Using this file path keeps the example making sense when compared with automation so we expect
-        // the file not to be found. //INSP: 'be found' passive voice
+        // The file path used below does not point to an existing file.
         public void AppendDocumentFromAutomation()
         {
             Document doc = new Document();
@@ -462,8 +461,8 @@ namespace ApiExamples
                 // Append the source document at the end of the destination document.
                 doc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles);
 
-                // In automation, you were required to insert a new section break at this point, however, in Aspose.Words we //INSP: 'were required' passive voice
-                // don't need to do anything here as the appended document is imported as separate sections already
+                // Automation required you to insert a new section break at this point, however, in Aspose.Words we
+                // do not need to do anything here as the appended document is imported as separate sections already
 
                 // Unlink all headers/footers in this section from the previous section headers/footers
                 // if this is the second document or above being appended.
@@ -722,7 +721,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.Protect.docx");
 
             // Note that the protection only applies to Microsoft Word users opening our document.
-            // The document is not in any way encrypted, and can be opened and edited programmatically without a password. //INSP: passive voice
+            // We have not encrypted the document in any way, and we do not need the password to open and edit it programmatically.
             Document protectedDoc = new Document(ArtifactsDir + "Document.Protect.docx");
 
             Assert.AreEqual(ProtectionType.ReadOnly, protectedDoc.ProtectionType);
@@ -772,19 +771,20 @@ namespace ApiExamples
             Assert.AreEqual(NodeType.Paragraph, nodes[2].NodeType);
             Assert.AreEqual(nodes[1], nodes[2].ParentNode);
 
-            // We will not be able to edit the document if we remove any of those nodes.
+            // This is the minimal set of nodes that we need to be able to edit the document.
+            // We will no longer be able to edit the document if we remove any of them.
             doc.RemoveAllChildren();
 
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Any, true).Count);
 
-            // EnsureMinimum can be called to make sure that the document has at least three nodes. //INSP: passive voice
+            // Call this method to make sure that the document has at least those three nodes,
+            // so we can edit the document again.
             doc.EnsureMinimum();
 
             Assert.AreEqual(NodeType.Section, nodes[0].NodeType);
             Assert.AreEqual(NodeType.Body, nodes[1].NodeType);
             Assert.AreEqual(NodeType.Paragraph, nodes[2].NodeType);
 
-            // We can edit the document again.
             ((Paragraph)nodes[2]).Runs.Add(new Run(doc, "Hello world!"));
             //ExEnd
 
@@ -854,7 +854,7 @@ namespace ApiExamples
             builder.Write("Ut enim ad minim veniam, " +
                             "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
 
-            // Document metrics are not tracked in real-time. //INSP: passive voice
+            // Aspose.Words does not track document metrics like these in real time.
             Assert.AreEqual(0, doc.BuiltInDocumentProperties.Characters);
             Assert.AreEqual(0, doc.BuiltInDocumentProperties.Words);
             Assert.AreEqual(1, doc.BuiltInDocumentProperties.Paragraphs);
@@ -867,7 +867,7 @@ namespace ApiExamples
             Assert.AreEqual(36, doc.BuiltInDocumentProperties.Words);
             Assert.AreEqual(2, doc.BuiltInDocumentProperties.Paragraphs);
 
-            // For the line count, we will need to call an overload of the updating method.
+            // For the line count, we will need to call a specific overload of the updating method.
             Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
 
             doc.UpdateWordCount(true);
@@ -963,7 +963,7 @@ namespace ApiExamples
             builder = new DocumentBuilder(docEdited);
             builder.Writeln("This is the edited document.");
 
-            // Comparing documents with revisions will cause an exception to be thrown. //INSP: Passive voice.
+            // Comparing documents with revisions will throw an exception.
             if (docOriginal.Revisions.Count == 0 && docEdited.Revisions.Count == 0)
                 docOriginal.Compare(docEdited, "authorName", DateTime.Now);
 
@@ -1165,15 +1165,15 @@ namespace ApiExamples
             Assert.AreEqual("John Doe", doc.Revisions[0].Author);
             Assert.That(doc.Revisions[0].DateTime, Is.EqualTo(DateTime.Now).Within(10).Milliseconds);
 
-            // The tracking of revisions can be stopped at any time. //INSP: passive voice.
+            // Stop tracking revisions to not count any future edits as revisions.
             doc.StopTrackRevisions();
             builder.Write("Hello again! ");
 
             Assert.AreEqual(1, doc.Revisions.Count);
             Assert.False(doc.FirstSection.Body.Paragraphs[0].Runs[2].IsInsertRevision);
 
-            // By default, date and time are applied to every revision. //INSP: passive voice.
-            // We can suppress that by passing DateTime.MinValue when we start tracking revisions.
+            // Creating revisions gives them a date and time of the operation.
+            // We can disable this by passing DateTime.MinValue when we start tracking revisions.
             doc.StartTrackRevisions("John Doe", DateTime.MinValue);
             builder.Write("Hello again! ");
 
@@ -1471,7 +1471,8 @@ namespace ApiExamples
             Assert.AreEqual(string.Empty, doc.AttachedTemplate);
 
             // Since there is no template document, the document had nowhere to track style changes.
-            // Use a SaveOptions object to automatically set a template if a document that's being saved does not have one. //INSP: passive voice.
+            // Use a SaveOptions object to automatically set a template
+            // if a document that we are saving does not have one.
             SaveOptions options = SaveOptions.CreateSaveOptions("Document.DefaultTemplate.docx");
             options.DefaultTemplate = MyDir + "Business brochure.dotx";
 
@@ -1492,7 +1493,7 @@ namespace ApiExamples
 
             Field field = builder.InsertField("DATE", null);
 
-            // Based on the field code we entered above, the type of the field has been set to "FieldDate". //INSP: passive voice.
+            // Aspose.Words automatically detects field types based on field codes.
             Assert.AreEqual(FieldType.FieldDate, field.Type);
 
             // Manually change the raw text of the field, which determines the field code.
@@ -1667,7 +1668,7 @@ namespace ApiExamples
                 }
             }
 
-            // The parts collection can have individual entries removed, or be cleared at once. //INSP: passive voice.
+            // We can remove elements from this collection individually, or all at once.
             doc.PackageCustomParts.RemoveAt(2);
 
             Assert.AreEqual(2, doc.PackageCustomParts.Count);
@@ -1734,7 +1735,7 @@ namespace ApiExamples
             //ExSummary:Shows how to work with the versions count feature of older Microsoft Word documents.
             Document doc = new Document(MyDir + "Versions.doc");
 
-            // The version count of a loaded document can be read but lost when the document is saved. //INSP: Passive voice.
+            // We can read this property of a document, but we cannot preserve it while saving.
             Assert.AreEqual(4, doc.VersionsCount);
 
             doc.Save(ArtifactsDir + "Document.VersionsCount.doc");      
@@ -1943,7 +1944,7 @@ namespace ApiExamples
             //ExSummary:Shows how to access a document's VBA project information.
             Document doc = new Document(MyDir + "VBA project.docm");
 
-            // A VBA project inside the document is defined as a collection of VBA modules. //INSP:Passive voice.
+            // A VBA project contains a collection of VBA modules.
             VbaProject vbaProject = doc.VbaProject;
             Assert.True(vbaProject.IsSigned); //ExSkip
             Console.WriteLine(vbaProject.IsSigned
@@ -2064,7 +2065,7 @@ namespace ApiExamples
             // If there are multiple task panes in the same docking location, we can set this index to arrange them.
             myScriptTaskPane.Row = 1;
 
-            // Create an add-in called "MyScript Math Sample", which will be displayed inside task pane. //INSP: Passive voice.
+            // Create an add-in called "MyScript Math Sample", which the task pane will display within.
             WebExtension webExtension = myScriptTaskPane.WebExtension;
 
             // Set application store reference parameters for our add-in, such as the ID.
@@ -2179,7 +2180,7 @@ namespace ApiExamples
             //ExSummary:Shows how to create a text watermark.
             Document doc = new Document();
 
-            // A watermark featuring plain text can be added to a document like this. //INSP: passive voice.
+            // Add a plain text watermark.
             doc.Watermark.SetText("Aspose Watermark");
             
             // If we wish to edit the text formatting using it as a watermark,

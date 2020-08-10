@@ -319,7 +319,7 @@ namespace ApiExamples
             //ExFor:WrapType
             //ExFor:RelativeHorizontalPosition
             //ExFor:RelativeVerticalPosition
-            //ExSummary:Shows how to insert an image and use it as a watermark.
+            //ExSummary:Shows how to insert an image, and use it as a watermark.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -400,7 +400,7 @@ namespace ApiExamples
         }
 #elif NETCOREAPP2_1 || __MOBILE__
         [Test]
-        public void InsertWatermarkNetStandard2() //INSP: Do not forget about comments for NetStandard code
+        public void InsertWatermarkNetStandard2()
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToHeaderFooter
@@ -410,11 +410,11 @@ namespace ApiExamples
             //ExFor:WrapType
             //ExFor:RelativeHorizontalPosition
             //ExFor:RelativeVerticalPosition
-            //ExSummary:Shows how to insert a watermark image into a document using DocumentBuilder (.NetStandard 2.0).
+            //ExSummary:Shows how to insert an image, and use it as a watermark (.NetStandard 2.0).
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The best place for the watermark image is in the header or footer so it is shown on every page
+            // Insert the image into the header so that it will be visible on every page.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
 
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Transparent background logo.png"))
@@ -608,7 +608,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // Form fields are objects in the document that the user can interact with by being prompted to enter values.
-            // They can be created using a document builder, below are two of the possible ways of doing so. //INSP: Passive voice.
+            // We can create them using a document builder, and below are two ways of doing so.
             // 1 -  Basic text input:
             builder.InsertTextInput("My text input", TextFormFieldType.Regular, 
                 "", "Enter your name here", 30);
@@ -753,7 +753,7 @@ namespace ApiExamples
             Assert.AreEqual(doc.FirstSection.Body.FirstParagraph, builder.CurrentParagraph);
             Assert.IsTrue(builder.IsAtStartOfParagraph);
 
-            // A shorter way of moving the very start/end of a document can be done using specific MoveTo methods. //INSP: Passive voices.
+            // We can use specific methods to move to the start/end of a document.
             builder.MoveToDocumentEnd();
 
             Assert.IsTrue(builder.IsAtEndOfParagraph);
@@ -1560,7 +1560,7 @@ namespace ApiExamples
             builder.Writeln("Run 1. ");
 
             // The document builder has a cursor, which acts as the part of the document
-            // where new nodes are appended when we use the builder's document construction methods. //INSP: Passive voice.
+            // where the builder appends new nodes when we use its document construction methods.
             // This cursor functions in the same way as Microsoft Word's blinking cursor,
             // and it also always ends up immediately after any node that the builder just inserted.
             // To append content to a different part of the document,
@@ -1589,14 +1589,14 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToParagraph
-            //ExSummary:Shows how to move a cursor position to a specified paragraph.
+            //ExSummary:Shows how to move a builder's cursor position to a specified paragraph.
             Document doc = new Document(MyDir + "Paragraphs.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             Assert.AreEqual(22, paragraphs.Count);
 
             // Create document builder to edit the document. The builder's cursor,
-            // which is the point new nodes will be inserted at when we call its document construction methods, //INSP: Passive voice.
+            // which is the point where it will insert new nodes when we call its document construction methods,
             // is currently at the beginning of the document.
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2060,7 +2060,7 @@ namespace ApiExamples
 
             // Center all text that the document builder writes, and set up indents.
             // The indent configuration below will create a body of text that will sit asymmetrically on the page.
-            // The "center" that the text is aligned to will be the middle of the body of text, not the middle of the page. //INSP: Passive voice.
+            // The "center" that we align the text to will be the middle of the body of text, not the middle of the page.
             ParagraphFormat paragraphFormat = builder.ParagraphFormat;
             paragraphFormat.Alignment = ParagraphAlignment.Center;
             paragraphFormat.LeftIndent = 100;
@@ -2106,8 +2106,8 @@ namespace ApiExamples
             builder.InsertCell();
             builder.Write("Row 1, cell 1.");
 
-            // Insert a second cell, and then configure cell text padding options. The settings will be applied //INSP: Passive voice.
-            // to the builder's current cell and any new cells created by the builder.
+            // Insert a second cell, and then configure cell text padding options.
+            // The builder will apply these settings at its current cell, and any new cells creates afterwards.
             builder.InsertCell();
 
             CellFormat cellFormat = builder.CellFormat;
@@ -2170,8 +2170,8 @@ namespace ApiExamples
             builder.InsertCell();
             builder.Write("Row 1, cell 1.");
 
-            // Start a second row, and then configure its height. The settings will be applied to //INSP: Passive voice.
-            // the builder's current row, as well as any new rows created by the builder.
+            // Start a second row, and then configure its height. The builder will apply these settings to
+            // its current row, as well as any new rows it creates afterwards.
             builder.EndRow();
 
             RowFormat rowFormat = builder.RowFormat;
@@ -2357,7 +2357,7 @@ namespace ApiExamples
 
             builder.Writeln("Hello world!");
 
-            // Create another document with a text box, which will be imported into the first document. //INSP: Passive voice.
+            // Create another document with a text box, which we will import into the first document.
             Document srcDoc = new Document();
             builder = new DocumentBuilder(srcDoc);
 
@@ -2373,7 +2373,7 @@ namespace ApiExamples
             importFormatOptions.IgnoreTextBoxes = ignoreTextBoxes;
 
             // Import the text box from the source document into the destination document,
-            // and then verify whether the styling of its text contents has been preserved. //INSP: Passive voice.
+            // and then verify whether we have preserved the styling of its text contents.
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
             Shape importedTextBox = (Shape)importer.ImportNode(textBox, true);
             dstDoc.FirstSection.Body.Paragraphs[1].AppendChild(importedTextBox);
@@ -2535,7 +2535,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert two fields while passing a flag which determines whether to update them as they are inserted. //INSP: Passive voice.
+            // Insert two fields while passing a flag which determines whether to update them as the builder inserts them.
             // In some cases, updating fields could be computationally expensive, and it may be a good idea to defer the update.
             // Not all field types require updating, exceptions include BARCODE and MERGEFIELD.
             doc.BuiltInDocumentProperties.Author = "John Doe";
@@ -2598,7 +2598,7 @@ namespace ApiExamples
 
             // Our field result formatter applies a custom format to newly created fields of three types of formats.
             // Field result formatters apply new formatting to fields as they are updated,
-            // which happens as soon as they are created using this InsertField method overload. //INSP: Passive voice.
+            // which happens as soon as we create them using this InsertField method overload.
             // 1 -  Numeric:
             builder.InsertField(" = 2 + 3 \\# $###");
 
@@ -2966,8 +2966,8 @@ namespace ApiExamples
             Document srcDoc = dstDoc.Clone();
             srcDoc.Styles["MyStyle"].Font.Color = Color.Red;
 
-            // When SmartStyleBehavior is enabled and the KeepSourceFormatting import format mode is used, //INSP: Passive voice.
-            // clashing styles will be resolved by converting source document styles //INSP: Passive voice.
+            // When we enable SmartStyleBehavior and use the KeepSourceFormatting import format mode,
+            // Aspose.Words will resolve style clashes by converting source document styles.
             // with the same names as destination styles into direct paragraph attributes.
             ImportFormatOptions options = new ImportFormatOptions();
             options.SmartStyleBehavior = true;

@@ -79,17 +79,17 @@ namespace ApiExamples
                 new Run(dstDoc, "Destination document first paragraph text."));
 
             // Every node has a parent document, which is the document that contains the node.
-            // If we insert a node into a document that the node does not belong to, an exception will be thrown. //INSP: Passive voice.
+            // Inserting a node into a document that the node does not belong to will throw an exception.
             Assert.AreNotEqual(dstDoc, srcDoc.FirstSection.Document);
             Assert.Throws<ArgumentException>(() => { dstDoc.AppendChild(srcDoc.FirstSection); });
 
-            // Use the ImportNode method to create a copy of a node,
-            // which will have the document that the ImportNode method is called on as its new parent document. //INSP: Passive voice.
-            Section importedSection = (Section) dstDoc.ImportNode(srcDoc.FirstSection, true);
+            // Use the ImportNode method to create a copy of a node, which will have the document
+            // that called the ImportNode method set as its new owner document.
+            Section importedSection = (Section)dstDoc.ImportNode(srcDoc.FirstSection, true);
 
             Assert.AreEqual(dstDoc, importedSection.Document);
 
-            // We can now successfully insert the node into the document.
+            // We can now insert the node into the document.
             dstDoc.AppendChild(importedSection);
 
             Assert.AreEqual("Destination document first paragraph text.\r\nSource document first paragraph text.\r\n",
@@ -217,7 +217,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Images usually are inserted using a URI, or a byte array.
-            // Every instance of a resource being loaded will call our callback's ResourceLoading method. //INSP: Passive voice.
+            // Every instance of a resource load will call our callback's ResourceLoading method.
             builder.InsertImage("Google logo");
             builder.InsertImage("Aspose logo");
             builder.InsertImage("Watermark");
@@ -236,8 +236,8 @@ namespace ApiExamples
         {
             public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
             {
-                // If one of the image shorthands is encountered while loading an image, //INSP: Passive voice.
-                // this callback will apply unique logic for each defined shorthand instead of treating it as a URI.
+                // If this callback encounters one of the image shorthands while loading an image,
+                // it will apply unique logic for each defined shorthand instead of treating it as a URI.
                 if (args.ResourceType == ResourceType.Image)
                     switch (args.OriginalUri)
                     {
@@ -254,6 +254,7 @@ namespace ApiExamples
                             {
                                 args.SetData(webClient.DownloadData(AsposeLogoUrl));
                             }
+
                             return ResourceLoadingAction.UserProvided;
 
                         case "Watermark":

@@ -31,8 +31,8 @@ namespace ApiExamples
             doc.Styles.Add(StyleType.Character, "MyParagraphStyle2");
 
             // Combined with the built-in styles, the document now has eight styles.
-            // A custom style counts as "used" while it is applied to some part of the document, //INSP: Passive voice.
-            // which means that the 4 styles we added are currently unused.
+            // A custom style is marked as "used" while there is any text within the document
+            // formatted in that style. This means that the 4 styles we added are currently unused.
             Assert.AreEqual(8, doc.Styles.Count);
 
             // Apply a custom character style, and then a custom list style. Doing so will mark them as "used".

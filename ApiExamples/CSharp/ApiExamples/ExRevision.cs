@@ -66,7 +66,7 @@ namespace ApiExamples
             // Remove a run to create a deletion-type revision.
             doc.FirstSection.Body.FirstParagraph.Runs[0].Remove();
 
-            // Every new revision is put at the beginning of the revision collection. //INSP: Passive voice.
+            // Adding a new revision places it at the beginning of the revision collection.
             Assert.AreEqual(RevisionType.Deletion, doc.Revisions[0].RevisionType);
             Assert.AreEqual(2, doc.Revisions.Count);
 
@@ -80,8 +80,8 @@ namespace ApiExamples
 
             Assert.AreEqual(1, doc.Revisions.Count);
 
-            // Once the delete revision is accepted, the nodes that it concerns are removed, //INSP: Passive voice.
-            // and their contents will no longer be anywhere in the document.
+            // Accepting a delete revision removes all the nodes that it concerns,
+            // so their contents will no longer be anywhere in the document.
             Assert.AreEqual("This is revision #1.", doc.GetText().Trim());
 
             // The insertion-type revision is now at index 0, which we can reject to ignore and discard it.
@@ -105,7 +105,8 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Revisions.docx");
             RevisionCollection revisions = doc.Revisions;
 
-            // This collection itself has a collection of revision groups, which are merged sequences of adjacent revisions. //INSP: Passive voice.
+            // This collection itself has a collection of revision groups.
+            // Each group is a sequence of adjacent revisions.
             Assert.AreEqual(7, revisions.Groups.Count); //ExSkip
             Console.WriteLine($"{revisions.Groups.Count} revision groups:");
 
@@ -121,7 +122,7 @@ namespace ApiExamples
 
             // Each Run affected by a revision gets its Revision object.
             // The revisions' collection is considerably larger than the condensed form we printed above,
-            // depending on how many Runs the text has been segmented into during editing in Microsoft Word. //INSP: Passive voice.
+            // depending on how many Runs we have segmented the document into during editing in Microsoft Word.
             Assert.AreEqual(11, revisions.Count); //ExSkip
             Console.WriteLine($"\n{revisions.Count} revisions:");
 
@@ -129,8 +130,8 @@ namespace ApiExamples
             {
                 while (e.MoveNext())
                 {
-                    // A StyleDefinitionChange strictly affects styles and not document nodes, so in this case the ParentStyle
-                    // attribute will always be used, while the ParentNode will always be null. //INSP: Passive voice.
+                    // A StyleDefinitionChange strictly affects styles and not document nodes. This means the ParentStyle
+                    // attribute will always be in use, while the ParentNode will always be null.
                     // Since all other changes affect nodes, ParentNode will conversely be in use, and ParentStyle will be null.
                     if (e.Current.RevisionType == RevisionType.StyleDefinitionChange)
                     {
@@ -236,11 +237,11 @@ namespace ApiExamples
             // Get the RevisionOptions object that controls the appearance of revisions.
             RevisionOptions revisionOptions = doc.LayoutOptions.RevisionOptions;
 
-            // Render text inserted while revisions were being tracked in italic green. //INSP: Passive voice.
+            // Render insertion revisions in green and italic.
             revisionOptions.InsertedTextColor = RevisionColor.Green;
             revisionOptions.InsertedTextEffect = RevisionTextEffect.Italic;
 
-            // Render text deleted while revisions were being tracked in bold red. //INSP: Passive voice.
+            // Render deletion revisions in red and bold.
             revisionOptions.DeletedTextColor = RevisionColor.Red;
             revisionOptions.DeletedTextEffect = RevisionTextEffect.Bold;
 
@@ -253,7 +254,7 @@ namespace ApiExamples
             revisionOptions.MovedToTextColor = RevisionColor.Blue;
             revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleUnderline;
 
-            // Render text which had its format changed while revisions were being tracked in bold dark red. //INSP: Passive voice.
+            // Render format revisions in dark red and bold.
             revisionOptions.RevisedPropertiesColor = RevisionColor.DarkRed;
             revisionOptions.RevisedPropertiesEffect = RevisionTextEffect.Bold;
 

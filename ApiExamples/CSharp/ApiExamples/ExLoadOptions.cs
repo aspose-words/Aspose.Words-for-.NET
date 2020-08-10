@@ -31,7 +31,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback();
 
-            // When we load the document, linked resources such as CSS stylesheets and images will be handled by the callback. //INSP: Passive voice.
+            // When we load the document, our callback will handle linked resources such as CSS stylesheets and images.
             Document doc = new Document(MyDir + "Images.html", loadOptions);
             doc.Save(ArtifactsDir + "LoadOptions.LoadOptionsCallback.pdf");
         }
@@ -108,7 +108,7 @@ namespace ApiExamples
 
             Assert.AreNotEqual(Encoding.UTF7, fileFormatInfo.Encoding);
 
-            // If we load the document with no loading configurations, it will be treated as a UTF-8-encoded document. //INSP: Passive voice.
+            // If we load the document with no loading configurations, Aspose.Words will detect its encoding as UTF-8.
             Document doc = new Document(MyDir + "Encoded in UTF-7.txt");
 
             // The contents, parsed in UTF-8, create a valid string.
@@ -158,7 +158,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.MswVersion
             //ExSummary:Shows how to emulate the loading procedure of a specific Microsoft Word version during document loading.
-            // By default, documents are loaded according to Microsoft Word 2019 specification. //INSP: Passive voice.
+            // By default, Aspose.Words loads documents according to Microsoft Word 2019 specification.
             LoadOptions loadOptions = new LoadOptions();
 
             Assert.AreEqual(MsWordVersion.Word2019, loadOptions.MswVersion);
