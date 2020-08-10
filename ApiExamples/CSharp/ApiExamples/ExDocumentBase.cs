@@ -70,7 +70,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBase.ImportNode(Node, Boolean)
             //ExSummary:Shows how to import a node from one document to another.
-            // Create a source document and a destination document, then add text to both of them.
             Document srcDoc = new Document();
             Document dstDoc = new Document();
 
@@ -80,16 +79,13 @@ namespace ApiExamples
                 new Run(dstDoc, "Destination document first paragraph text."));
 
             // Every node has a parent document, which is the document that contains the node.
-            // If we insert a node into a document that the node does not belong to, an exception will be thrown.
+            // If we insert a node into a document that the node does not belong to, an exception will be thrown. //INSP: Passive voice.
             Assert.AreNotEqual(dstDoc, srcDoc.FirstSection.Document);
-            Assert.Throws<ArgumentException>(() =>
-            {
-                dstDoc.AppendChild(srcDoc.FirstSection);
-            });
+            Assert.Throws<ArgumentException>(() => { dstDoc.AppendChild(srcDoc.FirstSection); });
 
             // Use the ImportNode method to create a copy of a node,
-            // which will have the document that the ImportNode method is called on as its new parent document.
-            Section importedSection = (Section)dstDoc.ImportNode(srcDoc.FirstSection, true);
+            // which will have the document that the ImportNode method is called on as its new parent document. //INSP: Passive voice.
+            Section importedSection = (Section) dstDoc.ImportNode(srcDoc.FirstSection, true);
 
             Assert.AreEqual(dstDoc, importedSection.Document);
 
@@ -128,17 +124,17 @@ namespace ApiExamples
             dstBuilder.Font.Style = dstStyle;
             dstBuilder.Writeln("Destination document text.");
 
-            // Import the Section from the destination document into the source document, causing a style name collision
-            // If we use destination styles then the imported source text with the same style name as destination text
-            // will adopt the destination style 
+            // Import the Section from the destination document into the source document, causing a style name collision.
+            // If we use destination styles, then the imported source text with the same style name
+            // as destination text will adopt the destination style.
             Section importedSection = (Section)dstDoc.ImportNode(srcDoc.FirstSection, true, ImportFormatMode.UseDestinationStyles);
             Assert.AreEqual("Source document text.", importedSection.Body.Paragraphs[0].Runs[0].GetText().Trim()); //ExSkip
             Assert.IsNull(dstDoc.Styles["My style_0"]); //ExSkip
             Assert.AreEqual(dstStyle.Font.Name, importedSection.Body.FirstParagraph.Runs[0].Font.Name);
             Assert.AreEqual(dstStyle.Name, importedSection.Body.FirstParagraph.Runs[0].Font.StyleName);
 
-            // If we use ImportFormatMode.KeepDifferentStyles,
-            // the source style is preserved and the naming clash is resolved by adding a suffix 
+            // If we use ImportFormatMode.KeepDifferentStyles, the source style is preserved,
+            // and the naming clash resolves by adding a suffix.
             dstDoc.ImportNode(srcDoc.FirstSection, true, ImportFormatMode.KeepDifferentStyles);
             Assert.AreEqual(dstStyle.Font.Name, dstDoc.Styles["My style"].Font.Name);
             Assert.AreEqual(srcStyle.Font.Name, dstDoc.Styles["My style_0"].Font.Name);
@@ -155,7 +151,7 @@ namespace ApiExamples
 
             Assert.IsNull(doc.BackgroundShape);
 
-            // The only shape type that we are able to use as a background is a rectangle.
+            // The only shape type that we can use as a background is a rectangle.
             Shape shapeRectangle = new Shape(doc, ShapeType.Rectangle);
 
             // There are two ways of using this shape as a page background.
@@ -220,8 +216,8 @@ namespace ApiExamples
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Images are normally inserted using a URI, or a byte array.
-            // Every instance of a resource being loaded will call our callback's ResourceLoading method.
+            // Images usually are inserted using a URI, or a byte array.
+            // Every instance of a resource being loaded will call our callback's ResourceLoading method. //INSP: Passive voice.
             builder.InsertImage("Google logo");
             builder.InsertImage("Aspose logo");
             builder.InsertImage("Watermark");
@@ -240,7 +236,7 @@ namespace ApiExamples
         {
             public ResourceLoadingAction ResourceLoading(ResourceLoadingArgs args)
             {
-                // If one of the image shorthands is encountered while loading an image,
+                // If one of the image shorthands is encountered while loading an image, //INSP: Passive voice.
                 // this callback will apply unique logic for each defined shorthand instead of treating it as a URI.
                 if (args.ResourceType == ResourceType.Image)
                     switch (args.OriginalUri)

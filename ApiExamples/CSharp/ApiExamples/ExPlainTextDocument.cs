@@ -29,7 +29,6 @@ namespace ApiExamples
             builder.Writeln("Hello world!");
             doc.Save(ArtifactsDir + "PlainTextDocument.Load.docx");
 
-            // Open a plaintext version of our document from the local file system.
             PlainTextDocument plaintext = new PlainTextDocument(ArtifactsDir + "PlainTextDocument.Load.docx");
 
             Assert.AreEqual("Hello world!", plaintext.Text.Trim());
@@ -55,7 +54,6 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.Password = "MyPassword";
 
-            // Open a plaintext version of document from the local file system, and supply its password via a LoadOptions object.
             PlainTextDocument plaintext = new PlainTextDocument(ArtifactsDir + "PlainTextDocument.LoadWithOptions.docx", loadOptions);
 
             Assert.AreEqual("Hello world!", plaintext.Text.Trim());
@@ -74,7 +72,6 @@ namespace ApiExamples
             builder.Writeln("Hello world!");
             doc.Save(ArtifactsDir + "PlainTextDocument.LoadFromStream.docx");
 
-            // Open a plaintext version of our document from a stream.
             using (FileStream stream = new FileStream(ArtifactsDir + "PlainTextDocument.LoadFromStream.docx", FileMode.Open))
             {
                 PlainTextDocument plaintext = new PlainTextDocument(stream);
@@ -103,7 +100,6 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.Password = "MyPassword";
 
-            // Open a plaintext version of our encrypted document from a stream, and supply its password via a LoadOptions object.
             using (FileStream stream = new FileStream(ArtifactsDir + "PlainTextDocument.LoadFromStreamWithOptions.docx", FileMode.Open))
             {
                 PlainTextDocument plaintext = new PlainTextDocument(stream, loadOptions);

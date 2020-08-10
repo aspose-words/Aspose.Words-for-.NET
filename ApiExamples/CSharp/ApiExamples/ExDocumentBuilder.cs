@@ -88,8 +88,7 @@ namespace ApiExamples
             builder.PageSetup.DifferentFirstPageHeaderFooter = true;
             builder.PageSetup.OddAndEvenPagesHeaderFooter = true;
 
-            // Create the headers, then add three pages to the document
-            // in order to be able to display each header type.
+            // Create the headers, then add three pages to the document to display each header type.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderFirst);
             builder.Write("Header for the first page");
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderEven);
@@ -138,7 +137,7 @@ namespace ApiExamples
 
             // If we wish to edit the field's field code or contents using the builder,
             // its cursor would need to be inside a field.
-            // To place it inside a field we would need to call the document builder's MoveTo method,
+            // To place it inside a field, we would need to call the document builder's MoveTo method
             // and pass the field's start or separator node as an argument.
             builder.Write(" Text between our merge fields. ");
 
@@ -263,7 +262,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set up font formatting, then write text that goes before the hyperlink.
+            // Set up font formatting, then write the text that goes before the hyperlink.
             builder.Font.Name = "Arial";
             builder.Font.Size = 24;
             builder.Write("To visit Google, hold Ctrl and click ");
@@ -324,7 +323,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert the image into the header, so it will be visible on every page.
+            // Insert the image into the header so that it will be visible on every page.
             Image image = Image.FromFile(ImageDir + "Transparent background logo.png");
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             Shape shape = builder.InsertImage(image);
@@ -401,7 +400,7 @@ namespace ApiExamples
         }
 #elif NETCOREAPP2_1 || __MOBILE__
         [Test]
-        public void InsertWatermarkNetStandard2()
+        public void InsertWatermarkNetStandard2() //INSP: Do not forget about comments for NetStandard code
         {
             //ExStart
             //ExFor:DocumentBuilder.MoveToHeaderFooter
@@ -506,7 +505,7 @@ namespace ApiExamples
 
             builder.InsertHtml(html);
 
-            // Inserting HTML code parses the formatting of each element into equivalent document text formatting.  
+            // Inserting HTML code parses the formatting of each element into equivalent document text formatting.
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             Assert.AreEqual("Paragraph right", paragraphs[0].GetText().Trim());
@@ -532,12 +531,11 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHtml(String, Boolean)
-            //ExSummary:Shows how to apply a document builder's formatting while inserting HTML content. 
+            //ExSummary:Shows how to apply a document builder's formatting while inserting HTML content.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set a text alignment for the builder, then insert an HTML paragraph
-            // with a specified alignment, and one without.
+            // Set a text alignment for the builder, insert an HTML paragraph with a specified alignment, and one without.
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Distributed;
             builder.InsertHtml(
                 "<p align='right'>Paragraph 1.</p>" +
@@ -545,7 +543,7 @@ namespace ApiExamples
 
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            // The first paragraph has an alignment specified. When the HTML code is parsed by InsertHtml,
+            // The first paragraph has an alignment specified. When InsertHtml parses the HTML code,
             // the paragraph alignment value found in the HTML code always supersedes the document builder's value.
             Assert.AreEqual("Paragraph 1.", paragraphs[0].GetText().Trim());
             Assert.AreEqual(ParagraphAlignment.Right, paragraphs[0].ParagraphFormat.Alignment);
@@ -553,17 +551,15 @@ namespace ApiExamples
             // The second paragraph has no alignment specified. It can have its alignment value filled in
             // by the builder's value depending on the flag we passed to the InsertHtml method.
             Assert.AreEqual("Paragraph 2.", paragraphs[1].GetText().Trim());
-            if (useBuilderFormatting)
-                Assert.AreEqual(ParagraphAlignment.Distributed, paragraphs[1].ParagraphFormat.Alignment);
-            else
-                Assert.AreEqual(ParagraphAlignment.Left, paragraphs[1].ParagraphFormat.Alignment);
+            Assert.AreEqual(useBuilderFormatting ? ParagraphAlignment.Distributed : ParagraphAlignment.Left,
+                paragraphs[1].ParagraphFormat.Alignment);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtmlWithFormatting.docx");
             //ExEnd
         }
 
         [Test]
-        public void MathML()
+        public void MathMl()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -612,7 +608,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // Form fields are objects in the document that the user can interact with by being prompted to enter values.
-            // They can be created using a document builder, below are two of the possible ways of doing so.
+            // They can be created using a document builder, below are two of the possible ways of doing so. //INSP: Passive voice.
             // 1 -  Basic text input:
             builder.InsertTextInput("My text input", TextFormFieldType.Regular, 
                 "", "Enter your name here", 30);
@@ -658,7 +654,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert check boxes of varying sizes and default checked statuses.
+            // Insert checkboxes of varying sizes and default checked statuses.
             builder.Write("Unchecked check box of a default size: ");
             builder.InsertCheckBox(string.Empty, false, false, 0);
             builder.InsertParagraph();
@@ -724,8 +720,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a valid bookmark, which is an entity which consists of nodes
-            // enclosed by a bookmark start node, and a bookmark end node. 
+            // Create a valid bookmark, an entity that consists of nodes enclosed by a bookmark start node,
+            // and a bookmark end node. 
             builder.StartBookmark("MyBookmark");
             builder.Write("Bookmark contents.");
             builder.EndBookmark("MyBookmark");
@@ -738,7 +734,7 @@ namespace ApiExamples
             Assert.AreEqual(NodeType.BookmarkEnd, firstParagraphNodes[2].NodeType);
 
             // The document builder's cursor is always ahead of the node that we last added with it.
-            // If the builder's cursor is at the end of the document, then its current node will be null.   
+            // If the builder's cursor is at the end of the document, its current node will be null.
             // The previous node is the bookmark end node that we last added.
             // Adding new nodes with the builder will append them to the last node.
             Assert.Null(builder.CurrentNode);
@@ -747,18 +743,17 @@ namespace ApiExamples
             // we will need to bring its cursor to the node we wish to edit.
             builder.MoveToBookmark("MyBookmark");
 
-            // Moving it to a bookmark will move it to the first node within the bookmark start and end nodes,
-            // which is the enclosed run.
+            // Moving it to a bookmark will move it to the first node within the bookmark start and end nodes, the enclosed run.
             Assert.AreEqual(firstParagraphNodes[1], builder.CurrentNode);
 
-            // We can also move the cursor to an individual node like this. 
+            // We can also move the cursor to an individual node like this.
             builder.MoveTo(doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Any, false)[0]);
 
             Assert.AreEqual(NodeType.BookmarkStart, builder.CurrentNode.NodeType);
             Assert.AreEqual(doc.FirstSection.Body.FirstParagraph, builder.CurrentParagraph);
             Assert.IsTrue(builder.IsAtStartOfParagraph);
 
-            // A shorter way of moving the very start/end of a document can be done using specific MoveTo methods.
+            // A shorter way of moving the very start/end of a document can be done using specific MoveTo methods. //INSP: Passive voices.
             builder.MoveToDocumentEnd();
 
             Assert.IsTrue(builder.IsAtEndOfParagraph);
@@ -780,8 +775,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert some MERGEFIELDS, which accept data from columns of the same name
-            // in a data source during a mail merge, and then fill them in manually.
+            // Insert some MERGEFIELDS, which accept data from columns of the same name in a data source during a mail merge,
+            // and then fill them manually.
             builder.InsertField(" MERGEFIELD Chairman ");
             builder.InsertField(" MERGEFIELD ChiefFinancialOfficer ");
             builder.InsertField(" MERGEFIELD ChiefTechnologyOfficer ");
@@ -865,7 +860,7 @@ namespace ApiExamples
             builder.Writeln("Heading 3.2");
             builder.Writeln("Heading 3.3");
 
-            // A table of contents is a field of a type that needs to be updated in order to show an up-to-date result.
+            // A table of contents is a field of a type that needs to be updated to show an up-to-date result.
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertToc.docx");
             //ExEnd
@@ -933,7 +928,7 @@ namespace ApiExamples
             builder.EndRow();
 
             // Changing the formatting will apply it to the current cell,
-            // and any new cells that we create with the builder afterwards.
+            // and any new cells that we create with the builder afterward.
             // This will not affect the cells that we have added previously.
             builder.CellFormat.Shading.ClearFormatting();
 
@@ -945,7 +940,7 @@ namespace ApiExamples
 
             builder.EndRow();
 
-            // Increase row height to fit vertical text.
+            // Increase row height to fit the vertical text.
             builder.InsertCell();
             builder.RowFormat.Height = 150;
             builder.CellFormat.Orientation = TextOrientation.Upward;
@@ -1231,7 +1226,6 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertTableFromHtml.docx");
 
-            // Verify the table was constructed properly
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableFromHtml.docx");
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
@@ -1352,8 +1346,7 @@ namespace ApiExamples
             builder.EndRow();
 
             // Reconfigure the builder's formatting objects for new rows and cells that we are about to make.
-            // The builder will not apply these to the first row that was already created,
-            // so it will stand out as a header row.
+            // The builder will not apply these to the first row already created so that it will stand out as a header row.
             builder.CellFormat.Shading.BackgroundPatternColor = Color.White;
             builder.CellFormat.VerticalAlignment = CellVerticalAlignment.Center;
             builder.RowFormat.Height = 30;
@@ -1437,7 +1430,7 @@ namespace ApiExamples
             builder.Writeln("Row 1, Cell 2.");
             builder.EndRow();
 
-            // Reset cell formatting to disable the background colors,
+            // Reset cell formatting to disable the background colors
             // set a custom border thickness for all new cells created by the builder,
             // then build a second row.
             builder.CellFormat.ClearFormatting();
@@ -1519,8 +1512,8 @@ namespace ApiExamples
             builder.EndBookmark("Bookmark1");
             builder.Writeln("Text outside of the bookmark.");
 
-            // Insert a HYPERLINK field which links to the bookmark. We can pass field switches
-            // to the InsertHyperlink method as part of the argument which contains the referenced bookmark's name.
+            // Insert a HYPERLINK field that links to the bookmark. We can pass field switches
+            // to the InsertHyperlink method as part of the argument containing the referenced bookmark's name.
             builder.Font.Color = Color.Blue;
             builder.Font.Underline = Underline.Single;
             builder.InsertHyperlink("Link to Bookmark1", @"Bookmark1"" \o ""Hyperlink Tip", true);
@@ -1540,18 +1533,17 @@ namespace ApiExamples
         [Test]
         public void CursorPosition()
         {
-            // Write some text in a blank Document using a DocumentBuilder
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write("Hello world!");
 
-            // If the builder's cursor is at the end of the document, there will be no nodes in front of it so the current node will be null
+            // If the builder's cursor is at the end of the document,
+            // there will be no nodes in front of it so that the current node will be null.
             Assert.Null(builder.CurrentNode);
 
-            // However, the current paragraph the cursor is in will be valid
             Assert.AreEqual("Hello world!", builder.CurrentParagraph.GetText().Trim());
 
-            // Move to the beginning of the document and place the cursor at an existing node
+            // Move to the beginning of the document and place the cursor at an existing node.
             builder.MoveToDocumentStart();          
             Assert.AreEqual(NodeType.Run, builder.CurrentNode.NodeType);
         }
@@ -1568,9 +1560,9 @@ namespace ApiExamples
             builder.Writeln("Run 1. ");
 
             // The document builder has a cursor, which acts as the part of the document
-            // where new nodes are appended when we use the builder's document construction methods.
+            // where new nodes are appended when we use the builder's document construction methods. //INSP: Passive voice.
             // This cursor functions in the same way as Microsoft Word's blinking cursor,
-            // and it also always ends up immediately after any node that the builder just inserted. 
+            // and it also always ends up immediately after any node that the builder just inserted.
             // To append content to a different part of the document,
             // we can move the cursor to a different node with the MoveTo method.
             Assert.AreEqual(doc.FirstSection.Body.LastParagraph, builder.CurrentParagraph); //ExSkip
@@ -1593,33 +1585,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void MoveToDocumentStartEnd()
-        {
-            Document doc = new Document(MyDir + "Document.docx");
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.MoveToDocumentEnd();
-            builder.Writeln("This is the end of the document.");
-
-            builder.MoveToDocumentStart();
-            builder.Writeln("This is the beginning of the document.");
-        }
-
-        [Test]
-        public void MoveToSection()
-        {
-            // Create a blank document and append a section to it, giving it two sections
-            Document doc = new Document();
-            doc.AppendChild(new Section(doc));
-
-            // Move a DocumentBuilder to the second section and add text
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.MoveToSection(1);
-            builder.Writeln("Text added to the 2nd section.");
-        }
-
-        [Test]
         public void MoveToParagraph()
         {
             //ExStart
@@ -1631,7 +1596,7 @@ namespace ApiExamples
             Assert.AreEqual(22, paragraphs.Count);
 
             // Create document builder to edit the document. The builder's cursor,
-            // which is the point new nodes will be inserted at when we call its document construction methods,
+            // which is the point new nodes will be inserted at when we call its document construction methods, //INSP: Passive voice.
             // is currently at the beginning of the document.
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1671,7 +1636,7 @@ namespace ApiExamples
             builder.EndTable();
 
             // Because we have ended the table with the EndTable method,
-            // the document builder's cursor is currently outside of the table.
+            // the document builder's cursor is currently outside the table.
             // This cursor has the same function as Microsoft Word's blinking text cursor.
             // It can also be moved to a different location in the document using the builder's MoveTo methods.
             // We can move the cursor back inside the table to a specific cell.
@@ -1698,7 +1663,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // A valid bookmark consists of a BookmarkStart node, a BookmarkEnd node with a
-            // matching bookmark name somewhere afterwards, and contents enclosed by those nodes.
+            // matching bookmark name somewhere afterward, and contents enclosed by those nodes.
             builder.StartBookmark("MyBookmark");
             builder.Write("Hello world! ");
             builder.EndBookmark("MyBookmark");
@@ -1765,7 +1730,7 @@ namespace ApiExamples
             builder.EndRow();
 
             // While building the table, the document builder will apply its current RowFormat/CellFormat attribute values
-            // to the current row/cell that its cursor is in, as well as any new rows/cells as it creates them.
+            // to the current row/cell that its cursor is in and any new rows/cells as it creates them.
             Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[0].CellFormat.VerticalAlignment);
             Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[1].CellFormat.VerticalAlignment);
 
@@ -1834,30 +1799,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertBreak()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Writeln("This is page 1.");
-            builder.InsertBreak(BreakType.PageBreak);
-
-            builder.Writeln("This is page 2.");
-            builder.InsertBreak(BreakType.PageBreak);
-
-            builder.Writeln("This is page 3.");
-        }
-
-        [Test]
-        public void InsertInlineImage()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.InsertImage(ImageDir + "Transparent background logo.png");
-        }
-
-        [Test]
         public void InsertFloatingImage()
         {
             //ExStart
@@ -1866,7 +1807,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // There are 2 ways of using a document builder to source an image, and then insert as a floating shape.
+            // There are two ways of using a document builder to source an image and then insert it as a floating shape.
             // 1 -  From a file in the local file system:
             builder.InsertImage(ImageDir + "Transparent background logo.png", RelativeHorizontalPosition.Margin, 100,
                 RelativeVerticalPosition.Margin, 0, 200, 200, WrapType.Square);
@@ -1900,22 +1841,6 @@ namespace ApiExamples
             Assert.AreEqual(WrapType.Square, image.WrapType);
             Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
             Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
-        }
-
-        [Test]
-        public void InsertImageFromUrl()
-        {
-            // Insert an image from a URL
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertImage(AsposeLogoUrl);
-
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertImageFromUrl.doc");
-
-            // Verify that the image was inserted into the document
-            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-            Assert.IsNotNull(shape);
-            Assert.True(shape.HasImage);
         }
 
         [Test]
@@ -2005,20 +1930,6 @@ namespace ApiExamples
             Assert.AreEqual(0, formField.DropDownSelectedIndex);
             Assert.AreEqual(items, formField.DropDownItems);
             Assert.AreEqual(FieldType.FieldFormDropDown, formField.Type);
-        }
-
-        [Test]
-        public void DocumentBuilderInsertToc()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert a table of contents at the beginning of the document
-            builder.InsertTableOfContents("\\o \"1-3\" \\h \\z \\u");
-
-            // The newly inserted table of contents will be initially empty
-            // It needs to be populated by updating the fields in the document
-            doc.UpdateFields();
         }
 
         [Test]
@@ -2138,26 +2049,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetFontFormatting()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Set font formatting properties
-            Aspose.Words.Font font = builder.Font;
-            font.Bold = true;
-            font.Color = Color.DarkBlue;
-            font.Italic = true;
-            font.Name = "Arial";
-            font.Size = 24;
-            font.Spacing = 5;
-            font.Underline = Underline.Double;
-
-            // Output formatted text
-            builder.Writeln("I'm a very nice formatted String.");
-        }
-
-        [Test]
         public void SetParagraphFormatting()
         {
             //ExStart
@@ -2169,7 +2060,7 @@ namespace ApiExamples
 
             // Center all text that the document builder writes, and set up indents.
             // The indent configuration below will create a body of text that will sit asymmetrically on the page.
-            // The "center" that the text is aligned to will be the middle of the body of text, not the middle of the page.
+            // The "center" that the text is aligned to will be the middle of the body of text, not the middle of the page. //INSP: Passive voice.
             ParagraphFormat paragraphFormat = builder.ParagraphFormat;
             paragraphFormat.Alignment = ParagraphAlignment.Center;
             paragraphFormat.LeftIndent = 100;
@@ -2215,8 +2106,8 @@ namespace ApiExamples
             builder.InsertCell();
             builder.Write("Row 1, cell 1.");
 
-            // Insert a second cell, and then configure cell text padding options. The settings will be applied to
-            // the builder's current cell, as well as any new cells created by the builder.
+            // Insert a second cell, and then configure cell text padding options. The settings will be applied //INSP: Passive voice.
+            // to the builder's current cell and any new cells created by the builder.
             builder.InsertCell();
 
             CellFormat cellFormat = builder.CellFormat;
@@ -2279,7 +2170,7 @@ namespace ApiExamples
             builder.InsertCell();
             builder.Write("Row 1, cell 1.");
 
-            // Start a second row, and then configure its height. The settings will be applied to
+            // Start a second row, and then configure its height. The settings will be applied to //INSP: Passive voice.
             // the builder's current row, as well as any new rows created by the builder.
             builder.EndRow();
 
@@ -2291,7 +2182,7 @@ namespace ApiExamples
             builder.Write("Row 2, cell 1.");
             builder.EndTable();
 
-            // The first row was unaffected by the padding reconfiguration, and still holds the default values.
+            // The first row was unaffected by the padding reconfiguration and still holds the default values.
             Assert.AreEqual(0.0d, table.Rows[0].RowFormat.Height);
             Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
 
@@ -2312,50 +2203,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetListFormatting()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.ListFormat.ApplyNumberDefault();
-
-            builder.Writeln("Item 1");
-            builder.Writeln("Item 2");
-
-            builder.ListFormat.ListIndent();
-
-            builder.Writeln("Item 2.1");
-            builder.Writeln("Item 2.2");
-
-            builder.ListFormat.ListIndent();
-
-            builder.Writeln("Item 2.2.1");
-            builder.Writeln("Item 2.2.2");
-
-            builder.ListFormat.ListOutdent();
-
-            builder.Writeln("Item 2.3");
-
-            builder.ListFormat.ListOutdent();
-
-            builder.Writeln("Item 3");
-
-            builder.ListFormat.RemoveNumbers();
-        }
-
-        [Test]
-        public void SetSectionFormatting()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Set page properties
-            builder.PageSetup.Orientation = Orientation.Landscape;
-            builder.PageSetup.LeftMargin = 50;
-            builder.PageSetup.PaperSize = PaperSize.Paper10x14;
-        }
-
-        [Test]
         public void InsertFootnote()
         {
             //ExStart
@@ -2367,17 +2214,20 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             
             // Insert some text and mark it with a footnote with the IsAuto attribute set to "true" by default,
-            // so the marker seen in the body text will be auto-numbered at "1", and the footnote will appear at the bottom of the page
+            // so the marker seen in the body text will be auto-numbered at "1",
+            // and the footnote will appear at the bottom of the page.
             builder.Write("This text will be referenced by a footnote.");
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote comment regarding referenced text.");
 
             // Insert more text and mark it with an endnote with a custom reference mark,
-            // which will be used in place of the number "2" and will set "IsAuto" to false
+            // which will be used in place of the number "2" and set "IsAuto" to false.
             builder.Write("This text will be referenced by an endnote.");
             builder.InsertFootnote(FootnoteType.Endnote, "Endnote comment regarding referenced text.", "CustomMark");
 
-            // Footnotes always appear at the bottom of the page of their referenced text, so this page break will not affect the footnote
-            // On the other hand, endnotes are always at the end of the document, so this page break will push the endnote down to the next page
+            // Footnotes always appear at the bottom of their referenced text,
+            // so this page break will not affect the footnote.
+            // On the other hand, endnotes are always at the end of the document
+            // so that this page break will push the endnote down to the next page.
             builder.InsertBreak(BreakType.PageBreak);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertFootnote.docx");
@@ -2389,18 +2239,6 @@ namespace ApiExamples
                 "Footnote comment regarding referenced text.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
             TestUtil.VerifyFootnote(FootnoteType.Endnote, false, "CustomMark",
                 "CustomMark Endnote comment regarding referenced text.", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
-        }
-
-        [Test]
-        public void ApplyParagraphStyle()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Set paragraph style
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Title;
-
-            builder.Write("Hello");
         }
 
         [Test]
@@ -2497,7 +2335,7 @@ namespace ApiExamples
             ImportFormatOptions options = new ImportFormatOptions();
             options.KeepSourceNumbering = true;
 
-            // Joining two documents which have different styles that share the same name causes a style clash.
+            // Joining two documents that have different styles that share the same name causes a style clash.
             // We can specify an import format mode while appending documents to resolve this clash.
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepDifferentStyles, options);
             dstDoc.UpdateListLabels();
@@ -2519,7 +2357,7 @@ namespace ApiExamples
 
             builder.Writeln("Hello world!");
 
-            // Create another document with a text box, which will be imported into the first document.
+            // Create another document with a text box, which will be imported into the first document. //INSP: Passive voice.
             Document srcDoc = new Document();
             builder = new DocumentBuilder(srcDoc);
 
@@ -2535,7 +2373,7 @@ namespace ApiExamples
             importFormatOptions.IgnoreTextBoxes = ignoreTextBoxes;
 
             // Import the text box from the source document into the destination document,
-            // and then verify whether the styling of its text contents has been preserved.
+            // and then verify whether the styling of its text contents has been preserved. //INSP: Passive voice.
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
             Shape importedTextBox = (Shape)importer.ImportNode(textBox, true);
             dstDoc.FirstSection.Body.Paragraphs[1].AppendChild(importedTextBox);
@@ -2576,8 +2414,8 @@ namespace ApiExamples
 
             // Note that the cursor is outside of the field in both cases.
             // This means that we cannot edit the field using the builder like this.
-            // In order to edit a field, we can use the builder's MoveTo method
-            // on a field's FieldStart or FieldSeparator node to place the cursor inside.
+            // To edit a field, we can use the builder's MoveTo method on a field's FieldStart
+            // or FieldSeparator node to place the cursor inside.
             if (moveCursorToAfterTheField)
             {
                 Assert.Null(builder.CurrentNode);
@@ -2697,8 +2535,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert two fields while passing a flag which determines whether to update them as they are inserted.
-            // In some cases updating fields could be computationally expensive, and it may be a good idea to defer the update.
+            // Insert two fields while passing a flag which determines whether to update them as they are inserted. //INSP: Passive voice.
+            // In some cases, updating fields could be computationally expensive, and it may be a good idea to defer the update.
             // Not all field types require updating, exceptions include BARCODE and MERGEFIELD.
             doc.BuiltInDocumentProperties.Author = "John Doe";
             builder.Write("This document was written by ");
@@ -2721,7 +2559,7 @@ namespace ApiExamples
                 Assert.AreEqual(string.Empty, doc.Range.Fields[0].Result);
                 Assert.AreEqual(string.Empty, doc.Range.Fields[1].Result);
 
-                // We will need to manually update these fields using the update methods.
+                // We will need to update these fields using the update methods manually.
                 doc.Range.Fields[0].Update();
 
                 Assert.AreEqual("John Doe", doc.Range.Fields[0].Result);
@@ -2760,7 +2598,7 @@ namespace ApiExamples
 
             // Our field result formatter applies a custom format to newly created fields of three types of formats.
             // Field result formatters apply new formatting to fields as they are updated,
-            // which happens as soon ad they are created using this InsertField method overload. 
+            // which happens as soon as they are created using this InsertField method overload. //INSP: Passive voice.
             // 1 -  Numeric:
             builder.InsertField(" = 2 + 3 \\# $###");
 
@@ -2918,8 +2756,7 @@ namespace ApiExamples
             builder.Font.Color = Color.Blue;
             builder.Font.Size = 32;
 
-            // The builder applies formatting to its current paragraph,
-            // as well as any new text added by it afterwards.
+            // The builder applies formatting to its current paragraph and any new text added by it afterward.
             builder.Writeln("Large, blue, and underlined text.");
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertUnderline.docx");
@@ -2943,7 +2780,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A Story is a type of node that have child Paragraph nodes, such as a Body.
+            // A Story is a type of node that has child Paragraph nodes, such as a Body.
             Assert.AreEqual(builder.CurrentStory, doc.FirstSection.Body);
             Assert.AreEqual(builder.CurrentStory, builder.CurrentParagraph.ParentNode);
             Assert.AreEqual(StoryType.MainText, builder.CurrentStory.StoryType);
@@ -2995,7 +2832,6 @@ namespace ApiExamples
                     
                     SKBitmap bitmap = SKBitmap.Decode(imgBytes);
                     
-                    // If we double click the image, the presentation will open
                     builder.InsertParagraph();
                     builder.Writeln("Powerpoint Ole object:");
                     builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, bitmap);
@@ -3082,27 +2918,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void WithoutStyleSeparator()
-        {
-            DocumentBuilder builder = new DocumentBuilder(new Document());
-
-            Style paraStyle = builder.Document.Styles.Add(StyleType.Paragraph, "MyParaStyle");
-            paraStyle.Font.Bold = false;
-            paraStyle.Font.Size = 8;
-            paraStyle.Font.Name = "Arial";
-
-            // Append text with "Heading 1" style
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
-            builder.Write("This text is in a Heading style. ");
-
-            // Append text with another style
-            builder.ParagraphFormat.StyleName = paraStyle.Name;
-            builder.Write("This text is in a custom style. ");
-
-            builder.Document.Save(ArtifactsDir + "DocumentBuilder.WithoutStyleSeparator.docx");
-        }
-
-        [Test]
         [Ignore("Bug: does not insert headers and footers, all lists (bullets, numbering, multilevel) breaks")]
         public void InsertDocument()
         {
@@ -3146,13 +2961,13 @@ namespace ApiExamples
             builder.ParagraphFormat.StyleName = myStyle.Name;
             builder.Writeln("Hello world!");
 
-            // Clone the document, and edit the clone's "MyStyle" style so it is a different color than that of the original.
+            // Clone the document and edit the clone's "MyStyle" style, so it is a different color than that of the original.
             // If we insert the clone into the original document, the two styles with the same name will cause a clash.
             Document srcDoc = dstDoc.Clone();
             srcDoc.Styles["MyStyle"].Font.Color = Color.Red;
 
-            // When SmartStyleBehavior is enabled and the KeepSourceFormatting import format mode is used,
-            // clashing styles will be resolved by converting source document styles
+            // When SmartStyleBehavior is enabled and the KeepSourceFormatting import format mode is used, //INSP: Passive voice.
+            // clashing styles will be resolved by converting source document styles //INSP: Passive voice.
             // with the same names as destination styles into direct paragraph attributes.
             ImportFormatOptions options = new ImportFormatOptions();
             options.SmartStyleBehavior = true;
@@ -3175,19 +2990,18 @@ namespace ApiExamples
 
         #if NET462 || NETCOREAPP2_1 || JAVA
         /// <summary>
-        /// All markdown tests work with the same file
-        /// That's why we need order for them 
+        /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
         [Test, Order(1), Category("SkipTearDown")]
         public void MarkdownDocumentEmphases()
         {
             DocumentBuilder builder = new DocumentBuilder();
             
-            // Bold and Italic are represented as Font.Bold and Font.Italic
+            // Bold and Italic are represented as Font.Bold and Font.Italic.
             builder.Font.Italic = true;
             builder.Writeln("This text will be italic");
             
-            // Use clear formatting if we don't want to combine styles between paragraphs
+            // Use clear formatting if we don't want to combine styles between paragraphs.
             builder.Font.ClearFormatting();
             
             builder.Font.Bold = true;
@@ -3195,7 +3009,6 @@ namespace ApiExamples
             
             builder.Font.ClearFormatting();
             
-            // You can also create bold and italic text
             builder.Font.Italic = true;
             builder.Write("You ");
             builder.Font.Bold = true;
@@ -3208,13 +3021,12 @@ namespace ApiExamples
             builder.Font.StrikeThrough = true;
             builder.Writeln("This text will be strikethrough");
             
-            // Markdown treats asterisks (*), underscores (_) and tilde (~) as indicators of emphasis
+            // Markdown treats asterisks (*), underscores (_) and tilde (~) as indicators of emphasis.
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
         /// <summary>
-        /// All markdown tests work with the same file
-        /// That's why we need order for them 
+        /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
         [Test, Order(2), Category("SkipTearDown")]
         public void MarkdownDocumentInlineCode()
@@ -3223,19 +3035,19 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             
             // Prepare our created document for further work
-            // And clear paragraph formatting not to use the previous styles
+            // and clear paragraph formatting not to use the previous styles.
             builder.MoveToDocumentEnd();
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln("\n");
             
-            // Style with name that starts from word InlineCode, followed by optional dot (.) and number of backticks (`)
-            // If number of backticks is missed, then one backtick will be used by default
+            // Style with name that starts from word InlineCode, followed by optional dot (.) and number of backticks (`).
+            // If number of backticks is missed, then one backtick will be used by default.
             Style inlineCode1BackTicks = doc.Styles.Add(StyleType.Character, "InlineCode");
             builder.Font.Style = inlineCode1BackTicks;
             builder.Writeln("Text with InlineCode style with one backtick");
             
-            // Use optional dot (.) and number of backticks (`)
-            // There will be 3 backticks
+            // Use optional dot (.) and number of backticks (`).
+            // There will be 3 backticks.
             Style inlineCode3BackTicks = doc.Styles.Add(StyleType.Character, "InlineCode.3");
             builder.Font.Style = inlineCode3BackTicks;
             builder.Writeln("Text with InlineCode style with 3 backticks");
@@ -3244,8 +3056,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// All markdown tests work with the same file
-        /// That's why we need order for them 
+        /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
         [Test, Order(3), Category("SkipTearDown")]
         [Description("WORDSNET-19850")]
@@ -3255,27 +3066,27 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
-            // And clear paragraph formatting not to use the previous styles
+            // and clear paragraph formatting not to use the previous styles.
             builder.MoveToDocumentEnd();
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln("\n");
             
-            // By default, Heading styles in Word may have bold and italic formatting
-            // If we do not want text to be emphasized, set these properties explicitly to false
-            // Thus we can't use 'builder.Font.ClearFormatting()' because Bold/Italic will be set to true
+            // By default, Heading styles in Word may have bold and italic formatting.
+            // If we do not want text to be emphasized, set these properties explicitly to false.
+            // Thus we can't use 'builder.Font.ClearFormatting()' because Bold/Italic will be set to true.
             builder.Font.Bold = false;
             builder.Font.Italic = false;
             
-            // Create for one heading for each level
+            // Create for one heading for each level.
             builder.ParagraphFormat.StyleName = "Heading 1";
             builder.Font.Italic = true;
             builder.Writeln("This is an italic H1 tag");
 
-            // Reset our styles from the previous paragraph to not combine styles between paragraphs
+            // Reset our styles from the previous paragraph to not combine styles between paragraphs.
             builder.Font.Bold = false;
             builder.Font.Italic = false;
 
-            // Structure-enhanced text heading can be added through style inheritance
+            // Structure-enhanced text heading can be added through style inheritance.
             Style setextHeading1 = doc.Styles.Add(StyleType.Paragraph, "SetextHeading1");
             builder.ParagraphFormat.Style = setextHeading1;
             doc.Styles["SetextHeading1"].BaseStyleName = "Heading 1";
@@ -3320,8 +3131,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// All markdown tests work with the same file
-        /// That's why we need order for them 
+        /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
         [Test, Order(4), Category("SkipTearDown")]
         public void MarkdownDocumentBlockquotes()
@@ -3330,16 +3140,16 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
-            // And clear paragraph formatting not to use the previous styles
+            // and clear paragraph formatting not to use the previous styles.
             builder.MoveToDocumentEnd();
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln("\n");
 
-            // By default, the document stores blockquote style for the first level
+            // By default, the document stores blockquote style for the first level.
             builder.ParagraphFormat.StyleName = "Quote";
             builder.Writeln("Blockquote");
             
-            // Create styles for nested levels through style inheritance
+            // Create styles for nested levels through style inheritance.
             Style quoteLevel2 = doc.Styles.Add(StyleType.Paragraph, "Quote1");
             builder.ParagraphFormat.Style = quoteLevel2;
             doc.Styles["Quote1"].BaseStyleName = "Quote";
@@ -3380,8 +3190,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// All markdown tests work with the same file
-        /// That's why we need order for them 
+        /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
         [Test, Order(5), Category("SkipTearDown")]
         public void MarkdownDocumentIndentedCode()
@@ -3390,7 +3199,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
-            // And clear paragraph formatting not to use the previous styles
+            // and clear paragraph formatting not to use the previous styles.
             builder.MoveToDocumentEnd();
             builder.Writeln("\n");
             builder.ParagraphFormat.ClearFormatting();
@@ -3404,8 +3213,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// All markdown tests work with the same file
-        /// That's why we need order for them 
+        /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
         [Test, Order(6), Category("SkipTearDown")]
         public void MarkdownDocumentFencedCode()
@@ -3414,7 +3222,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
-            // And clear paragraph formatting not to use the previous styles
+            // and clear paragraph formatting not to use the previous styles.
             builder.MoveToDocumentEnd();
             builder.Writeln("\n");
             builder.ParagraphFormat.ClearFormatting();
@@ -3432,8 +3240,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// All markdown tests work with the same file
-        /// That's why we need order for them 
+        /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
         [Test, Order(7), Category("SkipTearDown")]
         public void MarkdownDocumentHorizontalRule()
@@ -3442,20 +3249,19 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
-            // And clear paragraph formatting not to use the previous styles
+            // and clear paragraph formatting not to use the previous styles.
             builder.MoveToDocumentEnd();
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln("\n");
 
-            // Insert HorizontalRule that will be present in .md file as '-----'
+            // Insert HorizontalRule that will be present in .md file as '-----'.
             builder.InsertHorizontalRule();
  
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
         /// <summary>
-        /// All markdown tests work with the same file
-        /// That's why we need order for them 
+        /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
         [Test, Order(8), Category("SkipTearDown")]
         public void MarkdownDocumentBulletedList()
@@ -3464,15 +3270,15 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Prepare our created document for further work
-            // And clear paragraph formatting not to use the previous styles
+            // and clear paragraph formatting not to use the previous styles.
             builder.MoveToDocumentEnd();
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln("\n");
 
-            // Bulleted lists are represented using paragraph numbering
+            // Bulleted lists are represented using paragraph numbering.
             builder.ListFormat.ApplyBulletDefault();
-            // There can be 3 types of bulleted lists
-            // The only diff in a numbering format of the very first level are ‘-’, ‘+’ or ‘*’ respectively
+            // There can be 3 types of bulleted lists.
+            // The only diff in a numbering format of the very first level are ‘-’, ‘+’ or ‘*’ respectively.
             builder.ListFormat.List.ListLevels[0].NumberFormat = "-";
             
             builder.Writeln("Item 1");
@@ -3485,8 +3291,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// All markdown tests work with the same file.
-        /// That's why we need order for them.
+        /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
         [Test, Order(9)]
         [TestCase("Italic", "Normal", true, false, Category = "SkipTearDown")]
@@ -3515,7 +3320,7 @@ namespace ApiExamples
         [TestCase("Item 1", "Normal", false, false)]
         public void LoadMarkdownDocumentAndAssertContent(string text, string styleName, bool isItalic, bool isBold)
         {
-            // Load created document from previous tests
+            // Load created document from previous tests.
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
             
@@ -3523,7 +3328,7 @@ namespace ApiExamples
             {
                 if (paragraph.Runs.Count != 0)
                 {
-                    // Check that all document text has the necessary styles
+                    // Check that all document text has the necessary styles.
                     if (paragraph.Runs[0].Text == text && !text.Contains("InlineCode"))
                     {
                         Assert.AreEqual(styleName, paragraph.ParagraphFormat.Style.Name);
@@ -3536,7 +3341,7 @@ namespace ApiExamples
                     }
                 }
 
-                // Check that document also has a HorizontalRule present as a shape
+                // Check that document also has a HorizontalRule present as a shape.
                 NodeCollection shapesCollection = doc.FirstSection.Body.GetChildNodes(NodeType.Shape, true);
                 Shape horizontalRuleShape = (Shape) shapesCollection[0];
                 
@@ -3557,9 +3362,9 @@ namespace ApiExamples
             string videoUrl = "https://vimeo.com/52477838";
 
             // Insert a shape that plays a video from the web when clicked in Microsoft Word.
-            // This rectangular shape will contain an image based on the first frame of the linked video,
-            // as well as a "play button" visual prompt. The video has an aspect ratio of 16:9, 
-            // so we will set the shape's size to that ratio so the image does not appear stretched.
+            // This rectangular shape will contain an image based on the first frame of the linked video
+            // and a "play button" visual prompt. The video has an aspect ratio of 16:9,
+            // so we will set the shape's size to that ratio, so the image does not appear stretched.
             builder.InsertOnlineVideo(videoUrl, RelativeHorizontalPosition.LeftMargin, 0,
                 RelativeVerticalPosition.TopMargin, 0, 320, 180, WrapType.Square);
 
@@ -3605,7 +3410,7 @@ namespace ApiExamples
                 {
                     using (Image image = Image.FromStream(stream))
                     {
-                        // Below are two ways of creating a shape with a custom thumbnail which links to an online video
+                        // Below are two ways of creating a shape with a custom thumbnail, which links to an online video
                         // that can we can watch when we click on the shape in Microsoft Word.
                         // 1 -  Insert an inline shape at the builder's node insertion cursor:
                         builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes, image.Width, image.Height);

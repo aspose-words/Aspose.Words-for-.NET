@@ -30,8 +30,8 @@ namespace ApiExamples
             doc.Styles.Add(StyleType.Character, "MyParagraphStyle1");
             doc.Styles.Add(StyleType.Character, "MyParagraphStyle2");
 
-            // Combined with the built in styles, the document now has 8 styles.
-            // A custom style counts as "used" while it is applied to some part of the document,
+            // Combined with the built-in styles, the document now has eight styles.
+            // A custom style counts as "used" while it is applied to some part of the document, //INSP: Passive voice.
             // which means that the 4 styles we added are currently unused.
             Assert.AreEqual(8, doc.Styles.Count);
 
@@ -45,7 +45,7 @@ namespace ApiExamples
             builder.Writeln("Item 1");
             builder.Writeln("Item 2");
 
-            // Now, there is one unused character style, and one unused list style.
+            // Now, there is one unused character style and one unused list style.
             // The Cleanup() method, when configured with a CleanupOptions object, can target unused styles and remove them.
             CleanupOptions cleanupOptions = new CleanupOptions();
             cleanupOptions.UnusedLists = true;
@@ -56,7 +56,7 @@ namespace ApiExamples
             Assert.AreEqual(6, doc.Styles.Count);
 
             // Removing every node that a custom style is applied to marks it as "unused" again. 
-            // Run the Cleanup method again to remove them.
+            // Rerun the Cleanup method to remove them.
             doc.FirstSection.Body.RemoveAllChildren();
             doc.Cleanup(cleanupOptions);
 

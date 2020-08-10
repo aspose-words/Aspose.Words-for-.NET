@@ -31,7 +31,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback();
 
-            // When we load the document, linked resources such as CSS stylesheets and images will be handled by the callback.
+            // When we load the document, linked resources such as CSS stylesheets and images will be handled by the callback. //INSP: Passive voice.
             Document doc = new Document(MyDir + "Images.html", loadOptions);
             doc.Save(ArtifactsDir + "LoadOptions.LoadOptionsCallback.pdf");
         }
@@ -78,8 +78,8 @@ namespace ApiExamples
             //ExSummary:Shows how to convert EquationXML shapes to Office Math objects.
             LoadOptions loadOptions = new LoadOptions();
 
-            // Use this flag to specify whether to convert the shapes that have EquationXML attributes
-            // to Office Math objects, then load the document.
+            // Use this flag to specify whether to convert the shapes with EquationXML attributes
+            // to Office Math objects and then load the document.
             loadOptions.ConvertShapeToOfficeMath = isConvertShapeToOfficeMath;
 
             Document doc = new Document(MyDir + "Math shapes.docx", loadOptions);
@@ -108,7 +108,7 @@ namespace ApiExamples
 
             Assert.AreNotEqual(Encoding.UTF7, fileFormatInfo.Encoding);
 
-            // If we load the document with no loading configurations, it will be treated as a UTF-8-encoded document.
+            // If we load the document with no loading configurations, it will be treated as a UTF-8-encoded document. //INSP: Passive voice.
             Document doc = new Document(MyDir + "Encoded in UTF-7.txt");
 
             // The contents, parsed in UTF-8, create a valid string.
@@ -116,7 +116,7 @@ namespace ApiExamples
             Assert.AreEqual("Hello world+ACE-", doc.ToString(SaveFormat.Text).Trim());
 
             // In cases of ambiguous encoding such as this one, we can set a specific encoding variant
-            // to parse the file with in a LoadOptions object.
+            // to parse the file within a LoadOptions object.
             LoadOptions loadOptions = new LoadOptions
             {
                 Encoding = Encoding.UTF7
@@ -135,7 +135,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.FontSettings
             //ExSummary:Shows how to apply font substitution settings while loading a document. 
-            // Create a FontSettings object that will substitute the "Times New Roman" font with the font "Arvo" from our "MyFonts" folder.
+            // Create a FontSettings object that will substitute the "Times New Roman" font
+            // with the font "Arvo" from our "MyFonts" folder.
             FontSettings fontSettings = new FontSettings();
             fontSettings.SetFontsFolder(FontsDir, false);
             fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Times New Roman", "Arvo");
@@ -157,7 +158,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.MswVersion
             //ExSummary:Shows how to emulate the loading procedure of a specific Microsoft Word version during document loading.
-            // By default, documents are loaded according to Microsoft Word 2019 specification.
+            // By default, documents are loaded according to Microsoft Word 2019 specification. //INSP: Passive voice.
             LoadOptions loadOptions = new LoadOptions();
 
             Assert.AreEqual(MsWordVersion.Word2019, loadOptions.MswVersion);
@@ -183,11 +184,12 @@ namespace ApiExamples
         [Test] //ExSkip
         public void LoadOptionsWarningCallback()
         {
-            // Create a new LoadOptions object and set its WarningCallback attribute as an instance of our IWarningCallback implementation 
+            // Create a new LoadOptions object and set its WarningCallback attribute
+            // as an instance of our IWarningCallback implementation.
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.WarningCallback = new DocumentLoadingWarningCallback();
 
-            // Warnings that occur during loading of the document will now be printed and stored
+            // Warnings that occur during the loading of the document will now be printed and stored.
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
             List<WarningInfo> warnings = ((DocumentLoadingWarningCallback)loadOptions.WarningCallback).GetWarnings();
