@@ -36,8 +36,8 @@ namespace ApiExamples
             // Some information about the document is stored in member attributes, and can be accessed like this
             Console.WriteLine($"Document filename:\n\t \"{doc.OriginalFileName}\"");
 
-            // The majority of metadata, such as author name, file size,
-            // word/page counts can be found in the built in properties collection like this
+            // Most of the document's metadata, such as author name, file size,
+            // word/page counts can be found in the built-in properties collection like this
             Console.WriteLine("Built-in Properties:");
             foreach (DocumentProperty docProperty in doc.BuiltInDocumentProperties)
             {
@@ -72,10 +72,10 @@ namespace ApiExamples
             //ExSummary:Shows how to work with custom document properties.
             Document doc = new Document(MyDir + "Properties.docx");
 
-            // A document's built in properties contains a set of predetermined keys
+            // A document's built-in properties contain a set of predetermined keys
             // with values such as the author's name or document's word count
             // We can add our own keys and values to a custom properties collection also
-            // Before we add a custom property, we need to make sure that one with the same name doesn't already exist
+            // Before we add a custom property, we need to make sure that one with the same name does not already exist
             Assert.AreEqual("Value of custom document property", doc.CustomDocumentProperties["CustomProperty"].ToString());
 
             doc.CustomDocumentProperties.Add("CustomProperty2", "Value of custom document property #2");
@@ -336,7 +336,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
-            // The thumbnail property resides in a document's built in properties, but is used exclusively by Epub e-book documents
+            // The thumbnail property resides in a document's built-in properties, but is used exclusively by Epub e-book documents
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
             // Load an image from our file system into a byte array
@@ -372,7 +372,7 @@ namespace ApiExamples
             // Insert a relative hyperlink to "Document.docx", which will open that document when clicked on
             builder.InsertHyperlink("Relative hyperlink", "Document.docx", false);
 
-            // If we don't have a "Document.docx" in the same folder as the document we are about to save, we will end up with a broken link
+            // If we do not have a "Document.docx" in the same folder as the document we are about to save, we will end up with a broken link
             Assert.False(File.Exists(ArtifactsDir + "Document.docx"));
             doc.Save(ArtifactsDir + "Properties.HyperlinkBase.BrokenLink.docx");
 

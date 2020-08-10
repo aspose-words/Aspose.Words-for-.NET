@@ -38,7 +38,6 @@ namespace ApiExamples
             }
 
             if (!Directory.Exists(ArtifactsDir))
-                //Create new empty directory
                 Directory.CreateDirectory(ArtifactsDir);
         }
 
@@ -47,14 +46,13 @@ namespace ApiExamples
         {
             Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
         }
-
+        
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
             if (!CheckForSkipTearDown())
             {
                 if (Directory.Exists(ArtifactsDir))
-                    //Delete all dirs and files from directory
                     Directory.Delete(ArtifactsDir, true);
             }
         }
@@ -78,7 +76,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Checks when we need to skip post-condition after test.
+        /// Checks when we need to ignore test on mono.
         /// </summary>
         private static bool CheckForSkipMono()
         {
@@ -185,7 +183,7 @@ namespace ApiExamples
         internal static string FontsDir { get; }
 
         /// <summary>
-        /// Gets the url of the Aspose logo.
+        /// Gets the URL of the Aspose logo.
         /// </summary>
         internal static string AsposeLogoUrl { get; }
 

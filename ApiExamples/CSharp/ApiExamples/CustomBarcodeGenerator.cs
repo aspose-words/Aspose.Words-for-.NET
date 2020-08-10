@@ -53,27 +53,27 @@ namespace ApiExamples
 
             return Color.FromArgb(color >> 16, (color & 0xFF00) >> 8, color & 0xFF);
 
-            // Backword conversion -
+            // Backward conversion -
             //return string.Format("0x{0,6:X6}", mControl.ForeColor.ToArgb() & 0xFFFFFF);
         }
 
         /// <summary>
-        /// Converts bar code scaling factor from percents to float.
+        /// Converts bar code scaling factor from percent to float.
         /// </summary>
         /// <param name="scalingFactor"></param>
         /// <returns></returns>
         private static float ConvertScalingFactor(string scalingFactor)
         {
             bool isParsed = false;
-            int percents = TryParseInt(scalingFactor);
+            int percent = TryParseInt(scalingFactor);
 
-            if (percents != int.MinValue && percents >= 10 && percents <= 10000)
+            if (percent != int.MinValue && percent >= 10 && percent <= 10000)
                 isParsed = true;
 
             if (!isParsed)
                 throw new Exception("Error! Incorrect scaling factor - " + scalingFactor + ".");
 
-            return percents / 100.0f;
+            return percent / 100.0f;
         }
 
         /// <summary>

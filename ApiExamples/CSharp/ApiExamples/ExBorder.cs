@@ -84,19 +84,28 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Border.ClearFormatting
+            //ExFor:Border.IsVisible
             //ExSummary:Shows how to remove borders from a paragraph.
             Document doc = new Document(MyDir + "Borders.docx");
 
-            // Get the first paragraph's collection of borders
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            BorderCollection borders = builder.ParagraphFormat.Borders;
-            Assert.AreEqual(Color.Red.ToArgb(), borders[0].Color.ToArgb()); //ExSkip
-            Assert.AreEqual(3.0d, borders[0].LineWidth); // ExSkip
-            Assert.AreEqual(LineStyle.Single, borders[0].LineStyle); // ExSkip
+            // Each paragraph has an individual set of borders.
+            // We can access the settings for the appearance of these borders via the paragraph format object.
+            BorderCollection borders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
 
-            foreach (Border border in borders) border.ClearFormatting();
+            Assert.AreEqual(Color.Red.ToArgb(), borders[0].Color.ToArgb());
+            Assert.AreEqual(3.0d, borders[0].LineWidth);
+            Assert.AreEqual(LineStyle.Single, borders[0].LineStyle);
+            Assert.True(borders[0].IsVisible);
 
-            builder.CurrentParagraph.Runs[0].Text = "Paragraph with no border";
+            // We can remove a border at once by running the ClearFormatting method. 
+            // Running this method on every border of a paragraph will remove all of its borders.
+            foreach (Border border in borders)
+                border.ClearFormatting();
+
+            Assert.AreEqual(Color.Empty.ToArgb(), borders[0].Color.ToArgb());
+            Assert.AreEqual(0.0d, borders[0].LineWidth);
+            Assert.AreEqual(LineStyle.None, borders[0].LineStyle);
+            Assert.IsFalse(borders[0].IsVisible);
 
             doc.Save(ArtifactsDir + "Border.ClearFormatting.docx");
             //ExEnd
@@ -112,61 +121,53 @@ namespace ApiExamples
         }
 
         [Test]
-        public void EqualityCountingAndVisibility()
+        public void SharedElements()
         {
             //ExStart
             //ExFor:Border.Equals(Object)
             //ExFor:Border.Equals(Border)
             //ExFor:Border.GetHashCode
-            //ExFor:Border.IsVisible
             //ExFor:BorderCollection.Count
             //ExFor:BorderCollection.Equals(BorderCollection)
             //ExFor:BorderCollection.Item(Int32)
-            //ExSummary:Shows the equality of BorderCollections as well counting, visibility of their elements.
+            //ExSummary:Shows how border collections can share elements.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.CurrentParagraph.AppendChild(new Run(doc, "Paragraph 1."));
 
-            Paragraph firstParagraph = doc.FirstSection.Body.FirstParagraph;
-            BorderCollection firstParaBorders = firstParagraph.ParagraphFormat.Borders;
+            builder.Writeln("Paragraph 1.");
+            builder.Write("Paragraph 2.");
 
-            builder.InsertParagraph();
-            builder.CurrentParagraph.AppendChild(new Run(doc, "Paragraph 2."));
+            // Since both paragraphs were created with the same border configuration,
+            // the border collections of the two paragraphs share the same elements.
+            BorderCollection firstParagraphBorders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
+            BorderCollection secondParagraphBorders = builder.CurrentParagraph.ParagraphFormat.Borders;
+            Assert.AreEqual(6, firstParagraphBorders.Count); //ExSkip
 
-            Paragraph secondParagraph = builder.CurrentParagraph;
-            BorderCollection secondParaBorders = secondParagraph.ParagraphFormat.Borders;
-
-            // Two paragraphs have two different BorderCollections, but share the elements that are in from the first paragraph
-            for (int i = 0; i < firstParaBorders.Count; i++)
+            for (int i = 0; i < firstParagraphBorders.Count; i++)
             {
-                Assert.IsTrue(firstParaBorders[i].Equals(secondParaBorders[i]));
-                Assert.AreEqual(firstParaBorders[i].GetHashCode(), secondParaBorders[i].GetHashCode());
-
-                // Borders are invisible by default
-                Assert.IsFalse(firstParaBorders[i].IsVisible);
+                Assert.IsTrue(firstParagraphBorders[i].Equals(secondParagraphBorders[i]));
+                Assert.AreEqual(firstParagraphBorders[i].GetHashCode(), secondParagraphBorders[i].GetHashCode());
+                Assert.False(firstParagraphBorders[i].IsVisible);
             }
 
-            // Each border in the second paragraph collection becomes no longer the same as its counterpart from the first paragraph collection
-            // Change all the elements in the second collection to make it completely different from the first
-            Assert.AreEqual(6, secondParaBorders.Count); // ExSkip
-            foreach (Border border in secondParaBorders)
-            {
+            foreach (Border border in secondParagraphBorders)
                 border.LineStyle = LineStyle.DotDash;
-            }
 
-            // Now the BorderCollections both have their own elements
-            for (int i = 0; i < firstParaBorders.Count; i++)
+            // After changing the line style of the borders in just the second paragraph,
+            // the border collections no longer share the same elements.
+            for (int i = 0; i < firstParagraphBorders.Count; i++)
             {
-                Assert.IsFalse(firstParaBorders[i].Equals(secondParaBorders[i]));
-                Assert.AreNotEqual(firstParaBorders[i].GetHashCode(), secondParaBorders[i].GetHashCode());
-                // Changing the line style made the borders visible
-                Assert.IsTrue(secondParaBorders[i].IsVisible);
+                Assert.IsFalse(firstParagraphBorders[i].Equals(secondParagraphBorders[i]));
+                Assert.AreNotEqual(firstParagraphBorders[i].GetHashCode(), secondParagraphBorders[i].GetHashCode());
+
+                // Changing the appearance of an empty border makes it visible.
+                Assert.True(secondParagraphBorders[i].IsVisible);
             }
 
-            doc.Save(ArtifactsDir + "Border.EqualityCountingAndVisibility.docx");
+            doc.Save(ArtifactsDir + "Border.SharedElements.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Border.EqualityCountingAndVisibility.docx");
+            doc = new Document(ArtifactsDir + "Border.SharedElements.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             foreach (Border testBorder in paragraphs[0].ParagraphFormat.Borders)
@@ -177,78 +178,87 @@ namespace ApiExamples
         }
 
         [Test]
-        public void VerticalAndHorizontalBorders()
+        public void HorizontalBorders()
+        {
+            //ExStart
+            //ExFor:BorderCollection.Horizontal
+            //ExSummary:Shows how to apply settings to horizontal borders to a paragraph's format.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a red horizontal border for the paragraph. Any paragraphs created afterwards will inherit these border settings.
+            BorderCollection borders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
+            borders.Horizontal.Color = Color.Red;
+            borders.Horizontal.LineStyle = LineStyle.DashSmallGap;
+            borders.Horizontal.LineWidth = 3;
+
+            // Write text to the document without creating a new paragraph afterward.
+            // Since there is no paragraph underneath, the horizontal border will not be visible.
+            builder.Write("Paragraph above horizontal border.");
+
+            // Once we add a second paragraph, the border of the first paragraph will become visible.
+            builder.InsertParagraph();
+            builder.Write("Paragraph below horizontal border.");
+
+            doc.Save(ArtifactsDir + "Border.HorizontalBorders.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Border.HorizontalBorders.docx");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            Assert.AreEqual(LineStyle.DashSmallGap, paragraphs[0].ParagraphFormat.Borders[BorderType.Horizontal].LineStyle);
+            Assert.AreEqual(LineStyle.DashSmallGap, paragraphs[1].ParagraphFormat.Borders[BorderType.Horizontal].LineStyle);
+        }
+
+        [Test]
+        public void VerticalBorders()
         {
             //ExStart
             //ExFor:BorderCollection.Horizontal
             //ExFor:BorderCollection.Vertical
             //ExFor:Cell.LastParagraph
-            //ExSummary:Shows the difference between the Horizontal and Vertical properties of BorderCollection.
+            //ExSummary:Shows how to apply settings to vertical borders to a table row's format.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A BorderCollection is one of a Paragraph's formatting properties
-            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
-            BorderCollection paragraphBorders = paragraph.ParagraphFormat.Borders;
-
-            // paragraphBorders belongs to the first paragraph, but these changes will apply to subsequently created paragraphs
-            paragraphBorders.Horizontal.Color = Color.Red;
-            paragraphBorders.Horizontal.LineStyle = LineStyle.DashSmallGap;
-            paragraphBorders.Horizontal.LineWidth = 3;
-
-            // Horizontal borders only appear under a paragraph if there's another paragraph under it
-            // Right now the first paragraph has no borders
-            builder.CurrentParagraph.AppendChild(new Run(doc, "Paragraph above horizontal border."));
-
-            // Now the first paragraph will have a red dashed line border under it
-            // This new second paragraph can have a border too, but only if we add another paragraph underneath it
-            builder.InsertParagraph();
-            builder.CurrentParagraph.AppendChild(new Run(doc, "Paragraph below horizontal border."));
-
-            // A table makes use of both vertical and horizontal properties of BorderCollection
-            // Both these properties can only affect the inner borders of a table
-            Table table = new Table(doc);
-            doc.FirstSection.Body.AppendChild(table);
+            // Create a table with red and blue inner borders.
+            Table table = builder.StartTable();
 
             for (int i = 0; i < 3; i++)
             {
-                Row row = new Row(doc);
-                BorderCollection rowBorders = row.RowFormat.Borders;
+                builder.InsertCell();
+                builder.Write($"Row {i + 1}, Column 1");
+                builder.InsertCell();
+                builder.Write($"Row {i + 1}, Column 2");
 
-                // Vertical borders are ones between rows in a table
-                rowBorders.Horizontal.Color = Color.Red;
-                rowBorders.Horizontal.LineStyle = LineStyle.Dot;
-                rowBorders.Horizontal.LineWidth = 2.0d;
+                Row row = builder.EndRow();
+                BorderCollection borders = row.RowFormat.Borders;
 
-                // Vertical borders are ones between cells in a table
-                rowBorders.Vertical.Color = Color.Blue;
-                rowBorders.Vertical.LineStyle = LineStyle.Dot;
-                rowBorders.Vertical.LineWidth = 2.0d;
+                // Adjust the appearance of borders that will appear between rows.
+                borders.Horizontal.Color = Color.Red;
+                borders.Horizontal.LineStyle = LineStyle.Dot;
+                borders.Horizontal.LineWidth = 2.0d;
 
-                // A blue dotted vertical border will appear between cells
-                // A red dotted border will appear between rows
-                row.AppendChild(new Cell(doc));
-                row.LastCell.AppendChild(new Paragraph(doc));
-                row.LastCell.FirstParagraph.AppendChild(new Run(doc, "Vertical border to the right."));
-
-                row.AppendChild(new Cell(doc));
-                row.LastCell.AppendChild(new Paragraph(doc));
-                row.LastCell.LastParagraph.AppendChild(new Run(doc, "Vertical border to the left."));
-                table.AppendChild(row);
+                // Adjust the appearance of borders that will appear between cells.
+                borders.Vertical.Color = Color.Blue;
+                borders.Vertical.LineStyle = LineStyle.Dot;
+                borders.Vertical.LineWidth = 2.0d;
             }
 
-            doc.Save(ArtifactsDir + "Border.VerticalAndHorizontalBorders.docx");
+            // A row format's border settings are separate from those of the cell paragraph.
+            Border border = table.FirstRow.FirstCell.LastParagraph.ParagraphFormat.Borders.Vertical;
+
+            Assert.AreEqual(Color.Empty.ToArgb(), border.Color.ToArgb());
+            Assert.AreEqual(0.0d, border.LineWidth);
+            Assert.AreEqual(LineStyle.None, border.LineStyle);
+
+            doc.Save(ArtifactsDir + "Border.VerticalBorders.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Border.VerticalAndHorizontalBorders.docx");
-            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+            doc = new Document(ArtifactsDir + "Border.VerticalBorders.docx");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
-            Assert.AreEqual(LineStyle.DashSmallGap, paragraphs[0].ParagraphFormat.Borders[BorderType.Horizontal].LineStyle);
-            Assert.AreEqual(LineStyle.DashSmallGap, paragraphs[1].ParagraphFormat.Borders[BorderType.Horizontal].LineStyle);
-
-            Table outTable = (Table)doc.GetChild(NodeType.Table, 0, true);
-
-            foreach (Row row in outTable.GetChildNodes(NodeType.Row, true))
+            foreach (Row row in table.GetChildNodes(NodeType.Row, true))
             {
                 Assert.AreEqual(Color.Red.ToArgb(), row.RowFormat.Borders.Horizontal.Color.ToArgb());
                 Assert.AreEqual(LineStyle.Dot, row.RowFormat.Borders.Horizontal.LineStyle);

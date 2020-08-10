@@ -557,7 +557,7 @@ namespace ApiExamples
             imageData.Brightness = 0.8d;
             imageData.Contrast = 1.0d;
 
-            // Our image will have a lot of white now that we've changed the brightness and contrast like that
+            // Our image will have a lot of white now that we have changed the brightness and contrast like that
             // We can treat white as transparent with the following attribute
             imageData.ChromaKey = Color.White;
 

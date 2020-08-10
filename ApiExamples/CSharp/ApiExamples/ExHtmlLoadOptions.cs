@@ -101,7 +101,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Stores all warnings occuring during a document loading operation in a list.
+        /// Stores all warnings that occur during a document loading operation in a List.
         /// </summary>
         private class ListDocumentWarnings : IWarningCallback
         {
@@ -153,11 +153,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlLoadOptions.#ctor(LoadFormat,String,String)
+            //ExFor:LoadOptions.LoadFormat
+            //ExFor:LoadFormat
             //ExSummary:Shows how to specify a base URI when opening an html document.
             // If we want to load an .html document which contains an image linked by a relative URI
             // while the image is in a different location, we will need to resolve the relative URI into an absolute one
             // by creating an HtmlLoadOptions and providing a base URI 
             HtmlLoadOptions loadOptions = new HtmlLoadOptions(LoadFormat.Html, "", ImageDir);
+
+            Assert.AreEqual(LoadFormat.Html, loadOptions.LoadFormat);
+
             Document doc = new Document(MyDir + "Missing image.html", loadOptions);
         
             // While the image was broken in the input .html, it was successfully found in our base URI
@@ -208,7 +213,7 @@ namespace ApiExamples
                 </html>
             ";
 
-            // By default "HtmlLoadOptions.PreferredControlType" value is "HtmlControlType.FormField"
+            // By default, "HtmlLoadOptions.PreferredControlType" value is "HtmlControlType.FormField"
             // So, we do not set this value
             HtmlLoadOptions htmlLoadOptions = new HtmlLoadOptions();
 

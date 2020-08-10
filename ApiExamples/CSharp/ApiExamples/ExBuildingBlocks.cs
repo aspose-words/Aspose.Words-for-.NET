@@ -36,42 +36,43 @@ namespace ApiExamples
         //ExFor:BuildingBlocks.BuildingBlockType
         //ExSummary:Shows how to add a custom building block to a document.
         [Test] //ExSkip
-        public void BuildingBlockFields()
+        public void CreateAndInsert()
         {
+            // A document's glossary document stores building blocks.
             Document doc = new Document();
-
-            // BuildingBlocks are stored inside the glossary document
-            // If you're making a document from scratch, the glossary document must also be manually created
             GlossaryDocument glossaryDoc = new GlossaryDocument();
             doc.GlossaryDocument = glossaryDoc;
 
-            // Create a building block and name it
-            BuildingBlock block = new BuildingBlock(glossaryDoc);
-            block.Name = "Custom Block";
-            
-            // Put in in the document's glossary document
-            glossaryDoc.AppendChild(block);
-            Assert.AreEqual(1, glossaryDoc.Count);
+            // Create a building block, name it, and then add it to the glossary document.
+            BuildingBlock block = new BuildingBlock(glossaryDoc)
+            {
+                Name = "Custom Block"
+            };
 
-            // All GUIDs are this value by default
+            glossaryDoc.AppendChild(block);
+
+            // All new building block GUIDs have the same zero value by default, and we can give them a new unique value.
             Assert.AreEqual("00000000-0000-0000-0000-000000000000", block.Guid.ToString());
 
-            // In Microsoft Word, we can use these attributes to find blocks in Insert > Quick Parts > Building Blocks Organizer  
+            block.Guid = Guid.NewGuid();
+
+            // The following attributes categorize building blocks
+            // in the menu found via Insert -> Quick Parts -> Building Blocks Organizer in Microsoft Word.
             Assert.AreEqual("(Empty Category)", block.Category);
             Assert.AreEqual(BuildingBlockType.None, block.Type);
             Assert.AreEqual(BuildingBlockGallery.All, block.Gallery);
             Assert.AreEqual(BuildingBlockBehavior.Content, block.Behavior);
 
-            // If we want to use our building block as an AutoText quick part, we need to give it some text and change some properties
-            // All the necessary preparation will be done in a custom document visitor that we will accept
+            // Before we can add this building block to our document, we will need to give it some contents.
+            // We will do that and set a category, gallery, and behavior with a document visitor.
             BuildingBlockVisitor visitor = new BuildingBlockVisitor(glossaryDoc);
             block.Accept(visitor);
 
-            // We can find the block we made in the glossary document like this
+            // We can access the block that we just made from the glossary document.
             BuildingBlock customBlock = glossaryDoc.GetBuildingBlock(BuildingBlockGallery.QuickParts,
                 "My custom building blocks", "Custom Block");
 
-            // Our block contains one section which now contains our text
+            // The block itself is a section that contains the text.
             Assert.AreEqual($"Text inside {customBlock.Name}\f", customBlock.FirstSection.Body.FirstParagraph.GetText());
             Assert.AreEqual(customBlock.FirstSection, customBlock.LastSection);
             Assert.DoesNotThrow(() => Guid.Parse(customBlock.Guid.ToString())); //ExSkip
@@ -80,15 +81,15 @@ namespace ApiExamples
             Assert.AreEqual(BuildingBlockGallery.QuickParts, customBlock.Gallery); //ExSkip
             Assert.AreEqual(BuildingBlockBehavior.Paragraph, customBlock.Behavior); //ExSkip
 
-            // Then we can insert it into the document as a new section
+            // Now, we can insert it into the document as a new section.
             doc.AppendChild(doc.ImportNode(customBlock.FirstSection, true));
 
-            // Or we can find it in Microsoft Word's Building Blocks Organizer and place it manually
-            doc.Save(ArtifactsDir + "BuildingBlocks.BuildingBlockFields.dotx");
+            // We can also find it in Microsoft Word's Building Blocks Organizer and place it manually.
+            doc.Save(ArtifactsDir + "BuildingBlocks.CreateAndInsert.dotx");
         }
 
         /// <summary>
-        /// Simple implementation of adding text to a building block and preparing it for usage in the document. Implemented as a Visitor.
+        /// Sets up a visited building block to be inserted into the document as a quick part and adds text to its contents.
         /// </summary>
         public class BuildingBlockVisitor : DocumentVisitor
         {
@@ -100,26 +101,19 @@ namespace ApiExamples
 
             public override VisitorAction VisitBuildingBlockStart(BuildingBlock block)
             {
-                // Change values by default of created BuildingBlock
+                // Configure the building block as a quick part, and add attributes used by Building Blocks Organizer.
                 block.Behavior = BuildingBlockBehavior.Paragraph;
                 block.Category = "My custom building blocks";
                 block.Description =
                     "Using this block in the Quick Parts section of word will place its contents at the cursor.";
                 block.Gallery = BuildingBlockGallery.QuickParts;
 
-                block.Guid = Guid.NewGuid();
-
-                // Add content for the BuildingBlock to have an effect when used in the document
+                // Add a section with text.
+                // Inserting the block into the document will append this section with its child nodes at the location.
                 Section section = new Section(mGlossaryDoc);
                 block.AppendChild(section);
+                block.FirstSection.EnsureMinimum();
 
-                Body body = new Body(mGlossaryDoc);
-                section.AppendChild(body);
-
-                Paragraph paragraph = new Paragraph(mGlossaryDoc);
-                body.AppendChild(paragraph);
-
-                // Add text that will be visible in the document
                 Run run = new Run(mGlossaryDoc, "Text inside " + block.Name);
                 block.FirstSection.Body.FirstParagraph.AppendChild(run);
 
@@ -152,13 +146,13 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitBuildingBlockStart(BuildingBlock)
         //ExFor:DocumentVisitor.VisitGlossaryDocumentEnd(GlossaryDocument)
         //ExFor:DocumentVisitor.VisitGlossaryDocumentStart(GlossaryDocument)
-        //ExSummary:Shows how to use GlossaryDocument and BuildingBlockCollection.
+        //ExSummary:Shows ways of accessing building blocks in a glossary document.
         [Test] //ExSkip
         public void GlossaryDocument()
         {
             Document doc = new Document();
-
             GlossaryDocument glossaryDoc = new GlossaryDocument();
+
             glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 1" });
             glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 2" });
             glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 3" });
@@ -169,26 +163,34 @@ namespace ApiExamples
 
             doc.GlossaryDocument = glossaryDoc;
 
-            // There is a different ways how to get created building blocks
+            // There are various ways of accessing building blocks.
+            // 1 -  Get the first/last building blocks in the collection:
             Assert.AreEqual("Block 1", glossaryDoc.FirstBuildingBlock.Name);
-            Assert.AreEqual("Block 2", glossaryDoc.BuildingBlocks[1].Name);
-            Assert.AreEqual("Block 3", glossaryDoc.BuildingBlocks.ToArray()[2].Name);
-            Assert.AreEqual("Block 4", glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4").Name);
             Assert.AreEqual("Block 5", glossaryDoc.LastBuildingBlock.Name);
 
-            // We will do that using a custom visitor, which also will give every BuildingBlock in the GlossaryDocument a unique GUID
+            // 2 -  Get a building block by index:
+            Assert.AreEqual("Block 2", glossaryDoc.BuildingBlocks[1].Name);
+            Assert.AreEqual("Block 3", glossaryDoc.BuildingBlocks.ToArray()[2].Name);
+
+            // 3 -  Get the first building block that matches a gallery, name and category:
+            Assert.AreEqual("Block 4", 
+                glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4").Name);
+
+            // We will do that using a custom visitor,
+            // which will give every BuildingBlock in the GlossaryDocument a unique GUID
             GlossaryDocVisitor visitor = new GlossaryDocVisitor();
             glossaryDoc.Accept(visitor);
             Assert.AreEqual(5, visitor.GetDictionary().Count); //ExSkip
 
             Console.WriteLine(visitor.GetText());
 
-            // We can find our new blocks in Microsoft Word via Insert > Quick Parts > Building Blocks Organizer...
+            // When we open this document using Microsoft Word,
+            // we can find the building blocks via Insert -> Quick Parts -> Building Blocks Organizer.
             doc.Save(ArtifactsDir + "BuildingBlocks.GlossaryDocument.dotx"); 
         }
 
         /// <summary>
-        /// Simple implementation of giving each building block in a glossary document a unique GUID. Implemented as a Visitor.
+        /// Gives each building block in a visited glossary document a unique GUID, and stores the GUID-building block pairs in a dictionary.
         /// </summary>
         public class GlossaryDocVisitor : DocumentVisitor
         {

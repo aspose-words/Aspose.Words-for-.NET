@@ -132,7 +132,7 @@ namespace ApiExamples
                 ShapeRenderer renderer = new ShapeRenderer(shape);
                 Graphics formGraphics = CreateGraphics();
 
-                // Call this method on the renderer to render the chart in the passed Graphics object,
+                // Call this method on the renderer to render the chart in the Graphics object,
                 // on a specified x/y coordinate and scale
                 renderer.RenderToScale(formGraphics, 0, 0, 1.5f);
 
@@ -162,7 +162,7 @@ namespace ApiExamples
             shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
             shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
 
-            // Calculate image left and top position so it appears in the centre of the page
+            // Calculate image left and top position so it appears in the center of the page
             shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
             shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
@@ -193,7 +193,7 @@ namespace ApiExamples
                     shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
                     shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
 
-                    // Calculate image left and top position so it appears in the centre of the page
+                    // Calculate image left and top position so it appears in the center of the page
                     shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
                     shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
@@ -289,7 +289,7 @@ namespace ApiExamples
             // If we insert a child shape and set its distance from the left to 2000 and the distance from the top to 1000,
             // its origin will be at the bottom right corner of the shape group
             // We can offset the coordinate origin by setting the CoordOrigin attribute
-            // In this instance, we move the origin to the centre of the shape group
+            // In this instance, we move the origin to the center of the shape group
             group.CoordOrigin = new Point(-1000, -500);
             
             // Populate the shape group with child shapes
@@ -298,7 +298,7 @@ namespace ApiExamples
             subShape.Width = 500;
             subShape.Height = 700;
 
-            // Place its top left corner at the parent group's coordinate origin, which is currently at its centre
+            // Place its top left corner at the parent group's coordinate origin, which is currently at its center
             subShape.Left = 0;
             subShape.Top = 0;
 
@@ -385,7 +385,7 @@ namespace ApiExamples
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.GroupShape, true).Count);
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
 
-            // GroupShapes also have to be deleted manually
+            // GroupShapes must also be deleted manually
             NodeCollection groupShapes = doc.GetChildNodes(NodeType.GroupShape, true);
             groupShapes.Clear();
 
@@ -490,7 +490,7 @@ namespace ApiExamples
             builder.Write("Some text under the shape.");
 
             // Create a red balloon, semitransparent
-            // The shape is floating and its coordinates are (0,0) by default, relative to the current paragraph
+            // The shape is floating, and its coordinates are (0,0) by default, relative to the current paragraph
             Shape shape = new Shape(builder.Document, ShapeType.Balloon);
             shape.FillColor = Color.Red;
             shape.Fill.Opacity = 0.3;
@@ -555,7 +555,7 @@ namespace ApiExamples
 
             foreach (Shape shape in shapes.OfType<Shape>())
             {
-                // Filter out all shapes that we don't need
+                // Filter out all shapes of a certain type
                 if (shape.ShapeType.Equals(ShapeType.TextBox))
                 {
                     // Create a new shape that will replace the existing shape
@@ -620,7 +620,7 @@ namespace ApiExamples
             // Set the textbox in front of other shapes with a lower ZOrder
             textBox.ZOrder = 2;
 
-            // Let's create a new paragraph for the textbox manually and align it in the center
+            // Create a new paragraph for the textbox manually and align it in the center
             // Make sure we add the new nodes to the textbox as well
             textBox.AppendChild(new Paragraph(doc));
             Paragraph para = textBox.FirstParagraph;
@@ -791,7 +791,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.OleLinks.docx");
 
-            // We can get a stream with the OLE data entry, if the object has this
+            // If the object has OLE data, we can access it in the form of a stream
             using (MemoryStream stream = oleFormat.GetOleEntry("\x0001CompObj"))
             {
                 byte[] oleEntryBytes = stream.ToArray();
@@ -1002,8 +1002,8 @@ namespace ApiExamples
             //ExSummary:Shows how to set "AspectRatioLocked" for the shape object.
             Document doc = new Document(MyDir + "ActiveX controls.docx");
 
-            // Get shape object from the document and set AspectRatioLocked(it is possible to get/set AspectRatioLocked for child shapes (mimic MS Word behavior), 
-            // but AspectRatioLocked has effect only for top level shapes!)
+            // Get shape object from the document and set AspectRatioLocked,
+            // which is affects only top level shapes, to mimic Microsoft Word behavior
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             shape.AspectRatioLocked = isLocked;
             //ExEnd
@@ -1233,7 +1233,7 @@ namespace ApiExamples
                 builder.InsertNode(watermark);
             }
 
-            // Behaviour of MS Word on working with shapes in table cells is changed in the last versions
+            // Behavior of Microsoft Word on working with shapes in table cells is changed in the last versions
             // Adding the following line is needed to make the shape displayed in center of a page
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
 
@@ -1457,7 +1457,7 @@ namespace ApiExamples
 
             // Insert the signature line, applying our SignatureLineOptions
             // We can control where the signature line will appear on the page using a combination of left/top indents and margin-relative positions
-            // Since we're placing the signature line at the bottom right of the page, we will need to use negative indents to move it into view 
+            // Since we are placing the signature line at the bottom right of the page, we will need to use negative indents to move it into view 
             Shape shape = builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, -170.0, RelativeVerticalPosition.BottomMargin, -60.0, WrapType.None);
             Assert.True(shape.IsSignatureLine);
 
@@ -1632,10 +1632,11 @@ namespace ApiExamples
             if (textBox2.IsValidLinkTarget(textBox3))
                 textBox2.Next = textBox3;
 
-            // You can only create link on empty textbox
+            // You can only create a link on an empty textbox
             builder.MoveTo(textBoxShape4.LastParagraph);
             builder.Write("Vertical text");
-            // Thus it's not valid link target
+
+            // Thus, this textbox is not a valid link target
             Assert.IsFalse(textBox3.IsValidLinkTarget(textBox4));
             
             if (textBox1.Next != null && textBox1.Previous == null)
@@ -1754,8 +1755,8 @@ namespace ApiExamples
             Assert.AreEqual("Bold & Italic", shape.TextPath.Text);
             Assert.AreEqual(ShapeType.TextPlainText, shape.ShapeType);
 
-            // Toggle whether or not to display text
-            shape = AppendWordArt(doc, "On set to true", "Calibri", 150, 24, Color.Yellow, Color.Purple, ShapeType.TextPlainText);
+            // Toggle whether to display text
+            shape = AppendWordArt(doc, "On set to true", "Calibri", 150, 24, Color.Yellow, Color.Red, ShapeType.TextPlainText);
             shape.TextPath.On = true;
 
             shape = AppendWordArt(doc, "On set to false", "Calibri", 150, 24, Color.Yellow, Color.Purple, ShapeType.TextPlainText);
@@ -1973,7 +1974,7 @@ namespace ApiExamples
             // Create a RectangleF object, which represents a rectangle, which we could potentially use as the coordinates and bounds for a shape
             RectangleF rectangleF = new RectangleF(200, 200, 1000, 1000);
 
-            // Run this method to get the size of the rectangle adjusted for all of our shape's effects
+            // Run this method to get the size of the rectangle adjusted for all our shape's effects
             RectangleF rectangleFOut = shape.AdjustWithEffects(rectangleF);
 
             // Since the shape has no border-changing effects, its boundary dimensions are unaffected
