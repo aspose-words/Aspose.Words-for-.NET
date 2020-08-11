@@ -54,7 +54,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Draw a dotted horizontal half-transparent red line with an arrow on the left end and a diamond on the other
+            // Below are four examples of shapes that we can insert into our documents.
+            // 1 -  Dotted, horizontal, half-transparent red line
+            // with an arrow on the left end and a diamond on the right end.
             Shape arrow = new Shape(doc, ShapeType.Line);
             arrow.Width = 200;
             arrow.Stroke.Color = Color.Red;
@@ -71,7 +73,7 @@ namespace ApiExamples
 
             builder.InsertNode(arrow);
 
-            // Draw a thick black diagonal line with rounded ends
+            // 2 -  Thick black diagonal line with rounded ends.
             Shape line = new Shape(doc, ShapeType.Line);
             line.Top = 40;
             line.Width = 200;
@@ -81,7 +83,7 @@ namespace ApiExamples
 
             builder.InsertNode(line);
 
-            // Draw an arrow with a green fill
+            // 3 -  Arrow with a green fill.
             Shape filledInArrow = new Shape(doc, ShapeType.Arrow);
             filledInArrow.Width = 200;
             filledInArrow.Height = 40;
@@ -91,7 +93,7 @@ namespace ApiExamples
 
             builder.InsertNode(filledInArrow);
 
-            // Draw an arrow filled in with the Aspose logo and flip its orientation
+            // 4 -  Arrow with a flipped orientation filled in with the Aspose logo.
             Shape filledInArrowImg = new Shape(doc, ShapeType.Arrow);
             filledInArrowImg.Width = 200;
             filledInArrowImg.Height = 40;
@@ -105,8 +107,8 @@ namespace ApiExamples
                 using (MemoryStream stream = new MemoryStream(imageBytes))
                 {
                     Image image = Image.FromStream(stream);
-                    // When we flipped the orientation of our arrow, the image content was flipped too
-                    // If we want it to be displayed the right side up, we have to reverse the arrow flip on the image
+                    // When we flip the orientation of our arrow, we also flip the image that the arrow contains.
+                    // Flip the image the other way to cancel this out before getting the shape to display it.
                     image.RotateFlip(RotateFlipType.RotateNoneFlipXY);
 
                     filledInArrowImg.ImageData.SetImage(image);
@@ -181,7 +183,7 @@ namespace ApiExamples
                 {
                     Image image = Image.FromStream(stream);
 
-                    // The image started off as an animated .gif but it gets converted to a .png since there cannot be animated images in documents
+                    // The image in the URL is a .gif. Inserting it into a document converts it into a .png.
                     Shape imgShape = builder.InsertImage(image);
                     Assert.AreEqual(ImageType.Png, imgShape.ImageData.ImageType);
                 }
@@ -196,19 +198,17 @@ namespace ApiExamples
             //ExFor:ImageData.HasImage
             //ExFor:ImageData.ToImage
             //ExFor:ImageData.Save(Stream)
-            //ExSummary:Shows how to save all the images from a document to the file system.
+            //ExSummary:Shows how to save all images from a document to the file system.
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
-            // Images are stored inside shapes, and if a shape contains an image, its "HasImage" flag will be set
-            // Get an enumerator for all shapes with that flag in the document
-            IEnumerable<Shape> shapes = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Where(s => s.HasImage);
-            
-            // We will use an ImageFormatConverter to determine an image's file extension
+            // Shapes with the "HasImage" flag set store and display all of the document's images.
+            IEnumerable<Shape> shapesWithImages = 
+                imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Where(s => s.HasImage);
+
+            // Go through each shape and save its image.
             ImageFormatConverter formatConverter = new ImageFormatConverter();
 
-            // Go over all of the document's shapes
-            // If a shape contains image data, save the image in the local file system
-            using (IEnumerator<Shape> enumerator = shapes.GetEnumerator())
+            using (IEnumerator<Shape> enumerator = shapesWithImages.GetEnumerator())
             {
                 int shapeIndex = 0;
 
@@ -253,18 +253,23 @@ namespace ApiExamples
             //ExStart
             //ExFor:ImageData.SetImage(Image)
             //ExFor:ImageData.SetImage(Stream)
-            //ExSummary:Shows two ways of importing images from the local file system into a document.
+            //ExSummary:Shows how to display images from the local file system in a document.
             Document doc = new Document();
 
-            // We can get an image from a file, set it as the image of a shape and append it to a paragraph
-            Image srcImage = Image.FromFile(ImageDir + "Logo.jpg");
+            // To display an image in a document, we will need to create a shape
+            // which will contain an image, and then append it to the document's body.
+            Shape imgShape;
 
-            Shape imgShape = new Shape(doc, ShapeType.Image);
-            doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
-            imgShape.ImageData.SetImage(srcImage);
-            srcImage.Dispose();
-
-            // We can also open an image file using a stream and set its contents as a shape's image 
+            // Below are two ways of getting an image from a file in the local file system.
+            // 1 -  Create an image object from an image file:
+            using (Image srcImage = Image.FromFile(ImageDir + "Logo.jpg"))
+            {
+                imgShape = new Shape(doc, ShapeType.Image);
+                doc.FirstSection.Body.FirstParagraph.AppendChild(imgShape);
+                imgShape.ImageData.SetImage(srcImage);
+            }
+            
+            // 2 -  Open an image file from the local file system using a stream:
             using (Stream stream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open, FileAccess.Read))
             {
                 imgShape = new Shape(doc, ShapeType.Image);
@@ -306,21 +311,17 @@ namespace ApiExamples
             //ExFor:Stroke.Color2
             //ExFor:Stroke.ImageBytes
             //ExSummary:Shows how to process shape stroke features.
-            // Open a document which contains a rectangle with a thick, two-tone-patterned outline
             Document doc = new Document(MyDir + "Shape stroke pattern border.docx");
-
-            // Get the first shape's stroke
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            Stroke s = shape.Stroke;
+            Stroke stroke = shape.Stroke;
 
-            // Every stroke will have a Color attribute, but only strokes from older Word versions have a Color2 attribute,
-            // since the two-tone pattern line feature which requires the Color2 attribute is no longer supported
-            Assert.AreEqual(Color.FromArgb(255, 128, 0, 0), s.Color);
-            Assert.AreEqual(Color.FromArgb(255, 255, 255, 0), s.Color2);
+            // Strokes can have two colors, which are used to create a pattern defined by two-tone image data.
+            // Strokes with a single color do not use the Color2 attribute.
+            Assert.AreEqual(Color.FromArgb(255, 128, 0, 0), stroke.Color);
+            Assert.AreEqual(Color.FromArgb(255, 255, 255, 0), stroke.Color2);
 
-            // This attribute contains the image data for the pattern, which we can save to our local file system
-            Assert.NotNull(s.ImageBytes);
-            File.WriteAllBytes(ArtifactsDir + "Drawing.StrokePattern.png", s.ImageBytes);
+            Assert.NotNull(stroke.ImageBytes);
+            File.WriteAllBytes(ArtifactsDir + "Drawing.StrokePattern.png", stroke.ImageBytes);
             //ExEnd
 
             TestUtil.VerifyImage(8, 8, ArtifactsDir + "Drawing.StrokePattern.png");
@@ -337,16 +338,16 @@ namespace ApiExamples
         //ExFor:Drawing.GroupShape.Accept(DocumentVisitor)
         //ExFor:ShapeBase.IsGroup
         //ExFor:ShapeBase.ShapeType
-        //ExSummary:Shows how to create a group of shapes, and let it accept a visitor
+        //ExSummary:Shows how to create a group of shapes, and print its contents using a document visitor.
         [Test] //ExSkip
         public void GroupOfShapes()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            // If you need to create "NonPrimitive" shapes, like SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
+            // If you need to create "NonPrimitive" shapes, such as SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
             // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, DiagonalCornersRounded
-            // please use DocumentBuilder.InsertShape methods
+            // please use DocumentBuilder.InsertShape methods.
             Shape balloon = new Shape(doc, ShapeType.Balloon)
             {
                 Width = 200, 
@@ -369,7 +370,7 @@ namespace ApiExamples
 
             builder.InsertNode(group);
 
-            ShapeInfoPrinter printer = new ShapeInfoPrinter();
+            ShapeGroupPrinter printer = new ShapeGroupPrinter();
             group.Accept(printer);
 
             Console.WriteLine(printer.GetText());
@@ -377,11 +378,11 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Visitor that prints shape group contents information to the console.
+        /// Prints the contents of a visited shape group to the console.
         /// </summary>
-        public class ShapeInfoPrinter : DocumentVisitor
+        public class ShapeGroupPrinter : DocumentVisitor
         {
-            public ShapeInfoPrinter()
+            public ShapeGroupPrinter()
             {
                 mBuilder = new StringBuilder();
             }
@@ -450,7 +451,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Drawing.LayoutFlow
-            //ExSummary:Shows how to add text to a textbox and change its orientation
+            //ExSummary:Shows how to add text to a text box, and change its orientation
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -487,18 +488,18 @@ namespace ApiExamples
             //ExFor:ImageData.ImageBytes
             //ExFor:ImageData.ToByteArray
             //ExFor:ImageData.ToStream
-            //ExSummary:Shows how to access raw image data in a shape's ImageData object.
+            //ExSummary:Shows how to access a shape's raw image data.
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
             Assert.AreEqual(10, imgSourceDoc.GetChildNodes(NodeType.Shape, true).Count); //ExSkip
 
-            // Get a shape from the document that contains an image
             Shape imgShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 0, true);
 
-            // ToByteArray() returns the value of the ImageBytes property
+            Assert.True(imgShape.HasImage);
+
+            // ToByteArray() returns the array stored in the ImageBytes property.
             Assert.AreEqual(imgShape.ImageData.ImageBytes, imgShape.ImageData.ToByteArray());
 
-            // Put the shape's image data into a stream
-            // Then, put the image data from that stream into another stream which creates an image file in the local file system
+            // Save the shape's image data to an image file in the local file system.
             using (Stream imgStream = imgShape.ImageData.ToStream())
             {
                 using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png", FileMode.Create))
@@ -528,59 +529,58 @@ namespace ApiExamples
             //ExFor:ImageData.IsLink
             //ExFor:ImageData.IsLinkOnly
             //ExFor:ImageData.Title
-            //ExSummary:Shows how to edit images using the ImageData attribute.
+            //ExSummary:Shows how to edit a shape's image data.
             // Open a document that contains images
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
             Shape sourceShape = (Shape)imgSourceDoc.GetChildNodes(NodeType.Shape, true)[0];
             Document dstDoc = new Document();
 
-            // Import a shape from the source document and append it to the first paragraph, effectively cloning it
+            // Import a shape from the source document, and append it to the first paragraph.
             Shape importedShape = (Shape)dstDoc.ImportNode(sourceShape, true);
             dstDoc.FirstSection.Body.FirstParagraph.AppendChild(importedShape);
 
-            // Get the ImageData of the imported shape
+            // The imported shape contains an image. We can access the image's attributes and raw data via the ImageData object.
             ImageData imageData = importedShape.ImageData;
             imageData.Title = "Imported Image";
 
-            // If an image appears to have no borders, its ImageData object will still have them, but in an unspecified color
+            Assert.True(imageData.HasImage);
+
+            // If an image has no borders, its ImageData object will define the border color as empty.
             Assert.AreEqual(4, imageData.Borders.Count);
             Assert.AreEqual(Color.Empty, imageData.Borders[0].Color);
 
-            Assert.True(imageData.HasImage);
-
-            // This image is not linked to a shape or to an image in the file system
+            // This image is not linked externally to another shape or an image file in the file system.
             Assert.False(imageData.IsLink);
             Assert.False(imageData.IsLinkOnly);
 
-            // Brightness and contrast are defined on a 0-1 scale, with 0.5 being the default value
-            imageData.Brightness = 0.8d;
-            imageData.Contrast = 1.0d;
+            // Brightness and contrast are defined on a 0-1 scale, with the default value at 0.5.
+            imageData.Brightness = 0.8;
+            imageData.Contrast = 1.0;
 
-            // Our image will have a lot of white now that we have changed the brightness and contrast like that
-            // We can treat white as transparent with the following attribute
+            // The above brightness and contrast values have created an image with a lot of white.
+            // We can select a color with the ChromaKey attribute to replace with transparency, such as white.
             imageData.ChromaKey = Color.White;
 
-            // Import the source shape again, set it to black and white
+            // Import the source shape again, and set the image to monochrome.
             importedShape = (Shape)dstDoc.ImportNode(sourceShape, true);
             dstDoc.FirstSection.Body.FirstParagraph.AppendChild(importedShape);
 
             importedShape.ImageData.GrayScale = true;
 
-            // Import the source shape again to create a third image, and set it to BiLevel
-            // Unlike greyscale, which preserves the brightness of the original colors,
-            // BiLevel sets every pixel to either black or white, whichever is closer to the original color
+            // Import the source shape again to create a third image, and set it to BiLevel.
+            // BiLevel sets every pixel to either black or white, whichever is closer to the original color.
             importedShape = (Shape)dstDoc.ImportNode(sourceShape, true);
             dstDoc.FirstSection.Body.FirstParagraph.AppendChild(importedShape);
 
             importedShape.ImageData.BiLevel = true;
 
-            // Cropping is determined on a 0-1 scale
-            // Cropping a side by 0.3 will crop 30% of the image out at that side
-            importedShape.ImageData.CropBottom = 0.3d;
-            importedShape.ImageData.CropLeft = 0.3d;
-            importedShape.ImageData.CropTop = 0.3d;
-            importedShape.ImageData.CropRight = 0.3d;
+            // Cropping is determined on a 0-1 scale. Cropping a side by 0.3
+            // will crop 30% of the image out at the cropped side.
+            importedShape.ImageData.CropBottom = 0.3;
+            importedShape.ImageData.CropLeft = 0.3;
+            importedShape.ImageData.CropTop = 0.3;
+            importedShape.ImageData.CropRight = 0.3;
 
             dstDoc.Save(ArtifactsDir + "Drawing.ImageData.docx");
             //ExEnd
@@ -617,17 +617,18 @@ namespace ApiExamples
             //ExFor:ImageSize.HorizontalResolution
             //ExFor:ImageSize.VerticalResolution
             //ExFor:ImageSize.WidthPixels
-            //ExSummary:Shows how to access and use a shape's ImageSize property.
+            //ExSummary:Shows how to read the attributes of an image in a shape.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a shape into the document which contains an image taken from our local file system
+            // Insert a shape into the document which contains an image taken from our local file system.
             Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
 
-            // If the shape contains an image, its ImageData property will be valid, and it will contain an ImageSize object
+            // If the shape contains an image, its ImageData property will be valid,
+            // and it will contain an ImageSize object.
             ImageSize imageSize = shape.ImageData.ImageSize; 
 
-            // The ImageSize object contains raw information about the image within the shape
+            // The ImageSize object contains read-only information about the image within the shape.
             Assert.AreEqual(400, imageSize.HeightPixels);
             Assert.AreEqual(400, imageSize.WidthPixels);
 
@@ -635,10 +636,7 @@ namespace ApiExamples
             Assert.AreEqual(95.98d, imageSize.HorizontalResolution, delta);
             Assert.AreEqual(95.98d, imageSize.VerticalResolution, delta);
 
-            // These values are read-only
-            // If we want to transform the image, we need to change the size of the shape that contains it
-            // We can still use values within ImageSize as a reference
-            // In the example below, we will get the shape to display the image in twice its original size
+            // We can base the size of the shape on the size of its image to avoid stretching the image.
             shape.Width = imageSize.WidthPoints * 2;
             shape.Height = imageSize.HeightPoints * 2;
 
