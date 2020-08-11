@@ -113,7 +113,7 @@ namespace ApiExamples
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
             {
-                // 'ExportListLabels.Auto' - this option uses <ul> and <ol> tags are used for list label representation if it doesn't cause formatting loss, 
+                // 'ExportListLabels.Auto' - this option uses <ul> and <ol> tags are used for list label representation if it does not cause formatting loss, 
                 // otherwise HTML <p> tag is used. This is also the default value
                 // 'ExportListLabels.AsInlineText' - using this option the <p> tag is used for any list label representation
                 // 'ExportListLabels.ByHtmlTags' - The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible
@@ -226,9 +226,11 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Document.docx");
 
+            string fontsFolder = ArtifactsDir + "HtmlSaveOptions.ExportFonts.Resources";
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
                 ExportFontResources = true,
+                FontsFolder = fontsFolder,
                 ExportFontsAsBase64 = exportAsBase64
             };
 
@@ -237,14 +239,14 @@ namespace ApiExamples
                 case false:
 
                     doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFonts.False.html", saveOptions);
-                    Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportFonts.False.times.ttf",
+                    Assert.IsNotEmpty(Directory.GetFiles(fontsFolder, "HtmlSaveOptions.ExportFonts.False.times.ttf",
                         SearchOption.AllDirectories));
                     break;
 
                 case true:
 
                     doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFonts.True.html", saveOptions);
-                    Assert.IsEmpty(Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportFonts.True.times.ttf",
+                    Assert.IsEmpty(Directory.GetFiles(fontsFolder, "HtmlSaveOptions.ExportFonts.True.times.ttf",
                         SearchOption.AllDirectories));
                     break;
             }
@@ -429,7 +431,7 @@ namespace ApiExamples
             
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
             {
-                // By default this option is set to 'False' and Aspose.Words writes font names as specified in the source document
+                // By default, this option is set to 'False' and Aspose.Words writes font names as specified in the source document
                 ResolveFontNames = true 
             };
 
@@ -541,6 +543,77 @@ namespace ApiExamples
             //ExEnd
         }
 
+        //ExStart
+        //ExFor:HtmlSaveOptions.ExportFontResources
+        //ExFor:HtmlSaveOptions.FontSavingCallback
+        //ExFor:IFontSavingCallback
+        //ExFor:IFontSavingCallback.FontSaving
+        //ExFor:FontSavingArgs
+        //ExFor:FontSavingArgs.Bold
+        //ExFor:FontSavingArgs.Document
+        //ExFor:FontSavingArgs.FontFamilyName
+        //ExFor:FontSavingArgs.FontFileName
+        //ExFor:FontSavingArgs.FontStream
+        //ExFor:FontSavingArgs.IsExportNeeded
+        //ExFor:FontSavingArgs.IsSubsettingNeeded
+        //ExFor:FontSavingArgs.Italic
+        //ExFor:FontSavingArgs.KeepFontStreamOpen
+        //ExFor:FontSavingArgs.OriginalFileName
+        //ExFor:FontSavingArgs.OriginalFileSize
+        //ExSummary:Shows how to define custom logic for exporting fonts when saving to HTML.
+        [Test] //ExSkip
+        public void SaveExportedFonts()
+        {
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            // Configure a SaveOptions object to export fonts to separate files, in a manner specified by a custom callback.
+            HtmlSaveOptions options = new HtmlSaveOptions
+            {
+                ExportFontResources = true,
+                FontSavingCallback = new HandleFontSaving()
+            };
+
+            // The callback will export .ttf files and saved alongside the output document.
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.SaveExportedFonts.html", options);
+
+            foreach (string t in Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")))
+            {
+                Console.WriteLine(t);
+            }
+            Assert.AreEqual(10, Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length); //ExSkip
+        }
+
+        /// <summary>
+        /// Prints information about exported fonts, and saves them alongside their output .html.
+        /// </summary>
+        public class HandleFontSaving : IFontSavingCallback
+        {
+            void IFontSavingCallback.FontSaving(FontSavingArgs args)
+            {
+                // Print information for every font resource that is about to be saved.
+                Console.Write($"Font:\t{args.FontFamilyName}");
+                if (args.Bold) Console.Write(", bold");
+                if (args.Italic) Console.Write(", italic");
+                Console.WriteLine($"\nSource:\t{args.OriginalFileName}, {args.OriginalFileSize} bytes\n");
+
+                // The source document can also be accessed from here.
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
+
+                Assert.True(args.IsExportNeeded);
+                Assert.True(args.IsSubsettingNeeded);
+
+                // There are two ways of saving an exported font.
+                // 1 -  Save it to a local file system location determined by a filename:
+                args.FontFileName = args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last();
+
+                // 2 -  Save it to a stream.
+                args.FontStream =
+                    new FileStream(ArtifactsDir + args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last(), FileMode.Create);
+                Assert.False(args.KeepFontStreamOpen);
+            }
+        }
+        //ExEnd
+
         [Test]
         public void HtmlVersion()
         {
@@ -589,7 +662,7 @@ namespace ApiExamples
             builder.Writeln("Heading #6");
 
             // Epub readers normally treat paragraphs with "Heading" styles as anchors for a table of contents-style navigation pane
-            // We set a maximum heading level above which headings won't be registered by the reader as navigation points with
+            // We set a maximum heading level above which headings will not be registered by the reader as navigation points with
             // a HtmlSaveOptions object and its EpubNavigationLevel attribute
             // Our document has headings of levels 1 to 3,
             // but our output epub will only place level 1 and 2 headings in the table of contents
@@ -597,6 +670,40 @@ namespace ApiExamples
             options.EpubNavigationMapLevel = 2;
             
             doc.Save(ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void Doc2EpubSaveOptions()
+        {
+            //ExStart
+            //ExFor:DocumentSplitCriteria
+            //ExFor:HtmlSaveOptions
+            //ExFor:HtmlSaveOptions.#ctor
+            //ExFor:HtmlSaveOptions.Encoding
+            //ExFor:HtmlSaveOptions.DocumentSplitCriteria
+            //ExFor:HtmlSaveOptions.ExportDocumentProperties
+            //ExFor:HtmlSaveOptions.SaveFormat
+            //ExFor:SaveOptions
+            //ExFor:SaveOptions.SaveFormat
+            //ExSummary:Shows how to specify saving options while converting a document to .epub.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            // Specify encoding for a document that we will save with a SaveOptions object.
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.SaveFormat = SaveFormat.Epub;
+            saveOptions.Encoding = Encoding.UTF8;
+
+            // By default, an output .epub document will have all the contents in one HTML part.
+            // A split criteria allows us to segment the document into several HTML parts.
+            // We will set the criteria to split the document at heading paragraphs.
+            // This is useful for readers which cannot read HTML files greater than a certain size.
+            saveOptions.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph;
+
+            // Specify that we want to export document properties.
+            saveOptions.ExportDocumentProperties = true;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.Doc2EpubSaveOptions.epub", saveOptions);
             //ExEnd
         }
 
@@ -653,7 +760,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // By default, when converting a document with images to .html, resources such as images will be linked to in external files
-            // We can set these flags to embed resources inside the output .html instead, cutting down on the amount of files created during the conversion
+            // We can set these flags to embed resources inside the output .html instead, reducing the number of files created during the conversion
             HtmlSaveOptions options = new HtmlSaveOptions
             {
                 ExportFontsAsBase64 = true,
@@ -918,10 +1025,12 @@ namespace ApiExamples
             // When saving to .html, font subsetting fully applies by default, meaning that when we export fonts with our file,
             // the symbols not used by our document are not represented by the exported fonts, which cuts down file size dramatically
             // Font files of a file size larger than FontResourcesSubsettingSizeThreshold get subsetted, so a value of 0 will apply default full subsetting
-            // Setting the value to something large will fully suppress subsetting, saving some very large font files that cover every glyph
+            // Setting the value to something large will fully suppress subsetting, which could result in large font files that cover every glyph
+            string fontsFolder = ArtifactsDir + "HtmlSaveOptions.FontSubsetting.Fonts";
             HtmlSaveOptions options = new HtmlSaveOptions
             {
                 ExportFontResources = true,
+                FontsFolder = fontsFolder,
                 FontResourcesSubsettingSizeThreshold = int.MaxValue
             };
 
@@ -994,6 +1103,38 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
+        public void ImageFolder()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions
+            //ExFor:HtmlSaveOptions.ExportTextInputFormFieldAsText
+            //ExFor:HtmlSaveOptions.ImagesFolder
+            //ExSummary:Shows how to specify the folder for storing linked images after saving to .html.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            // Set a directory where images will be saved to, then ensure that it exists, and is empty.
+            string imagesDir = Path.Combine(ArtifactsDir, "SaveHtmlWithOptions");
+
+            if (Directory.Exists(imagesDir))
+                Directory.Delete(imagesDir, true);
+
+            Directory.CreateDirectory(imagesDir);
+
+            // Set an option to export form fields as plain text instead of HTML input elements.
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
+            options.ExportTextInputFormFieldAsText = true;
+            options.ImagesFolder = imagesDir;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.SaveHtmlWithOptions.html", options);
+            //ExEnd
+
+            Assert.IsTrue(File.Exists(ArtifactsDir + "HtmlSaveOptions.SaveHtmlWithOptions.html"));
+            Assert.AreEqual(9, Directory.GetFiles(imagesDir).Length);
+
+            Directory.Delete(imagesDir, true);
+        }
+
         //ExStart
         //ExFor:ImageSavingArgs.CurrentShape
         //ExFor:ImageSavingArgs.Document
@@ -1038,5 +1179,58 @@ namespace ApiExamples
             private int mImageCount;
         }
         //ExEnd
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void PrettyFormat(bool usePrettyFormat)
+        {
+            //ExStart
+            //ExFor:SaveOptions.PrettyFormat
+            //ExSummary:Shows how to enhance the readability of the raw code of a saved .html document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+
+            // Enable pretty format via a SaveOptions object, then save the document in .html to the local file system.
+            HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html);
+            htmlOptions.PrettyFormat = usePrettyFormat;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.PrettyFormat.html", htmlOptions);
+
+            // Enabling pretty format makes the raw html code more readable by adding tab stop and new line characters.  
+            string html = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.PrettyFormat.html");
+
+            if (usePrettyFormat)
+                Assert.AreEqual(
+                    "<html>\r\n" +
+                                "\t<head>\r\n" +
+                                    "\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n" +
+                                    "\t\t<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />\r\n" +
+                                    $"\t\t<meta name=\"generator\" content=\"{BuildVersionInfo.Product} {BuildVersionInfo.Version}\" />\r\n" +
+                                    "\t\t<title>\r\n" +
+                                    "\t\t</title>\r\n" +
+                                "\t</head>\r\n" +
+                                "\t<body style=\"font-family:'Times New Roman'; font-size:12pt\">\r\n" +
+                                    "\t\t<div>\r\n" +
+                                        "\t\t\t<p style=\"margin-top:0pt; margin-bottom:0pt\">\r\n" +
+                                            "\t\t\t\t<span>Hello world!</span>\r\n" +
+                                        "\t\t\t</p>\r\n" +
+                                        "\t\t\t<p style=\"margin-top:0pt; margin-bottom:0pt\">\r\n" +
+                                            "\t\t\t\t<span style=\"-aw-import:ignore\">&#xa0;</span>\r\n" +
+                                        "\t\t\t</p>\r\n" +
+                                    "\t\t</div>\r\n" +
+                                "\t</body>\r\n</html>", 
+                    html);
+            else
+                Assert.AreEqual(
+                    "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />" +
+                            "<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />" +
+                            $"<meta name=\"generator\" content=\"{BuildVersionInfo.Product} {BuildVersionInfo.Version}\" /><title></title></head>" +
+                            "<body style=\"font-family:'Times New Roman'; font-size:12pt\">" +
+                            "<div><p style=\"margin-top:0pt; margin-bottom:0pt\"><span>Hello world!</span></p>" +
+                            "<p style=\"margin-top:0pt; margin-bottom:0pt\"><span style=\"-aw-import:ignore\">&#xa0;</span></p></div></body></html>", 
+                    html);
+            //ExEnd
+        }
     }
 }

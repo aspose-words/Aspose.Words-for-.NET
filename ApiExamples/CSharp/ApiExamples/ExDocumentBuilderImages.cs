@@ -28,19 +28,24 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.InsertImage(Stream)
             //ExFor:DocumentBuilder.InsertImage(Stream, Double, Double)
             //ExFor:DocumentBuilder.InsertImage(Stream, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows different solutions of how to import an image into a document from a stream.
+            //ExSummary:Shows how to insert an image from a stream into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             using (Stream stream = File.OpenRead(ImageDir + "Logo.jpg"))
             {
-                builder.Writeln("Inserted image from stream: ");
+                // Below are three ways of inserting an image from a stream:
+                // 1 -  Inline shape with a default size based on the image's original dimensions:
                 builder.InsertImage(stream);
-                
-                builder.Writeln("\nInserted image from stream with a custom size: ");
+
+                builder.InsertBreak(BreakType.PageBreak);
+
+                // 2 -  Inline shape with custom dimensions:
                 builder.InsertImage(stream, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
-                
-                builder.Writeln("\nInserted image from stream using relative positions: ");
+
+                builder.InsertBreak(BreakType.PageBreak);
+
+                // 3 -  Floating shape with custom dimensions:
                 builder.InsertImage(stream, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
                     100, 200, 100, WrapType.Square);
             }
@@ -97,31 +102,36 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertImageFromString()
+        public void InsertImageFromFilename()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(String)
             //ExFor:DocumentBuilder.InsertImage(String, Double, Double)
             //ExFor:DocumentBuilder.InsertImage(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows different solutions of how to import an image into a document from a string.
+            //ExSummary:Shows how to insert an image from the local file system into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Writeln("\nInserted image from string: ");
+            // Below are three ways of inserting an image from a local system filename:
+            // 1 -  Inline shape with a default size based on the image's original dimensions:
             builder.InsertImage(ImageDir + "Logo.jpg");
 
-            builder.Writeln("\nInserted image from string with a custom size: ");
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // 2 -  Inline shape with custom dimensions:
             builder.InsertImage(ImageDir + "Transparent background logo.png", ConvertUtil.PixelToPoint(250),
                 ConvertUtil.PixelToPoint(144));
 
-            builder.Writeln("\nInserted image from string using relative positions: ");
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // 3 -  Floating shape with custom dimensions:
             builder.InsertImage(ImageDir + "Windows Metafile.wmf", RelativeHorizontalPosition.Margin, 100, 
                 RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
 
-            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromString.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromFilename.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilderImages.InsertImageFromString.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilderImages.InsertImageFromFilename.docx");
 
             Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
@@ -169,33 +179,38 @@ namespace ApiExamples
             Assert.AreEqual(400.0d, imageShape.ImageData.ImageSize.WidthPoints);
         }
 
-        #if NET462 || JAVA
+#if NET462 || JAVA
         [Test]
-        public void InsertImageFromImageClass()
+        public void InsertImageFromImageObject()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(Image, Double, Double)
             //ExFor:DocumentBuilder.InsertImage(Image, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows different solutions of how to import an image into a document from Image class.
+            //ExSummary:Shows how to insert an image from an object into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Image image = Image.FromFile(ImageDir + "Logo.jpg");
 
-            builder.Writeln("\nInserted image from Image class: ");
+            // Below are three ways of inserting an image from an Image object instance:
+            // 1 -  Inline shape with a default size based on the image's original dimensions:
             builder.InsertImage(image);
 
-            builder.Writeln("\nInserted image from Image class with a custom size: ");
+            builder.InsertBreak(BreakType.PageBreak);
+
+            // 2 -  Inline shape with custom dimensions:
             builder.InsertImage(image, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
 
-            builder.Writeln("\nInserted image from Image class using relative positions: ");
-            builder.InsertImage(image, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
-                100, 200, 100, WrapType.Square);
+            builder.InsertBreak(BreakType.PageBreak);
 
-            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageClass.docx");
+            // 3 -  Floating shape with custom dimensions:
+            builder.InsertImage(image, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
+            100, 200, 100, WrapType.Square);
+
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageObject.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageClass.docx");
+            doc = new Document(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageObject.docx");
 
             Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
@@ -250,7 +265,7 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.InsertImage(Byte[])
             //ExFor:DocumentBuilder.InsertImage(Byte[], Double, Double)
             //ExFor:DocumentBuilder.InsertImage(Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows different solutions of how to import an image into a document from a byte array.
+            //ExSummary:Shows how to insert an image from a byte array into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -260,16 +275,21 @@ namespace ApiExamples
             {
                 image.Save(ms, ImageFormat.Png);
                 byte[] imageByteArray = ms.ToArray();
- 
-                builder.Writeln("\nInserted image from byte array: ");
+
+                // Below are three ways of inserting an image from a byte array:
+                // 1 -  Inline shape with a default size based on the image's original dimensions:
                 builder.InsertImage(imageByteArray);
 
-                builder.Writeln("\nInserted image from byte array with a custom size: ");
+                builder.InsertBreak(BreakType.PageBreak);
+
+                // 2 -  Inline shape with custom dimensions:
                 builder.InsertImage(imageByteArray, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
 
-                builder.Writeln("\nInserted image from byte array using relative positions: ");
+                builder.InsertBreak(BreakType.PageBreak);
+
+                // 3 -  Floating shape with custom dimensions:
                 builder.InsertImage(imageByteArray, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 
-                    100, 200, 100, WrapType.Square);
+                100, 200, 100, WrapType.Square);
             }
 
             doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromByteArray.docx");
@@ -324,30 +344,83 @@ namespace ApiExamples
         }
 #elif NETCOREAPP2_1 || __MOBILE__
         [Test]
-        public void InsertImageFromImageClassNetStandard2()
+        public void InsertImageFromImageObjectNetStandard2()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(Image, Double, Double)
             //ExFor:DocumentBuilder.InsertImage(Image, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows different solutions of how to import an image into a document from Image class (.NetStandard 2.0).
+            //ExSummary:Shows how to insert an image from an object into a document (.NetStandard 2.0).
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Decoding the image will convert it to the .png format.
             using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {
-                builder.Writeln("\nInserted image from Image class: ");
+                // Below are three ways of inserting an image from an Image object instance:
+                // 1 -  Inline shape with a default size based on the image's original dimensions:
                 builder.InsertImage(bitmap);
 
-                builder.Writeln("\nInserted image from Image class with a custom size: ");
+                builder.InsertBreak(BreakType.PageBreak);
+
+                // 2 -  Inline shape with custom dimensions:
                 builder.InsertImage(bitmap, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
 
-                builder.Writeln("\nInserted image from Image class using relative positions: ");
+                builder.InsertBreak(BreakType.PageBreak);
+
+                // 3 -  Floating shape with custom dimensions:
                 builder.InsertImage(bitmap, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
                     100, 200, 100, WrapType.Square);
             }
 
-            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageClassNetStandard2.docx");
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageObjectNetStandard2.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilderImages.InsertImageFromImageObjectNetStandard2.docx");
+
+            Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(300.0d, imageShape.Height);
+            Assert.AreEqual(300.0d, imageShape.Width);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Inline, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.AreEqual(108.0d, imageShape.Height);
+            Assert.AreEqual(187.5d, imageShape.Width);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Inline, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            Assert.AreEqual(100.0d, imageShape.Height);
+            Assert.AreEqual(200.0d, imageShape.Width);
+            Assert.AreEqual(100.0d, imageShape.Left);
+            Assert.AreEqual(100.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Square, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Margin, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
         }
 
         [Test]
@@ -357,26 +430,32 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.InsertImage(Byte[])
             //ExFor:DocumentBuilder.InsertImage(Byte[], Double, Double)
             //ExFor:DocumentBuilder.InsertImage(Byte[], RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows different solutions of how to import an image into a document from a byte array (.NetStandard 2.0).
+            //ExSummary:Shows how to insert an image from a byte array into a document (.NetStandard 2.0).
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Decoding the image will convert it to the .png format.
             using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {
                 using (SKImage image = SKImage.FromBitmap(bitmap))
                 {
-                    using (SKData data = image.Encode()) // Encode the image (defaults to PNG)
+                    using (SKData data = image.Encode())
                     {
                         byte[] imageByteArray = data.ToArray();
 
-                        builder.Writeln("\nInserted image from byte array: ");
+                        // Below are three ways of inserting an image from a byte array:
+                        // 1 -  Inline shape with a default size based on the image's original dimensions:
                         builder.InsertImage(imageByteArray);
 
-                        builder.Writeln("\nInserted image from byte array with a custom size: ");
+                        builder.InsertBreak(BreakType.PageBreak);
+
+                        // 2 -  Inline shape with custom dimensions:
                         builder.InsertImage(imageByteArray, ConvertUtil.PixelToPoint(250), ConvertUtil.PixelToPoint(144));
 
-                        builder.Writeln("\nInserted image from byte array using relative positions: ");
-                        builder.InsertImage(imageByteArray, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin, 
+                        builder.InsertBreak(BreakType.PageBreak);
+
+                        // 3 -  Floating shape with custom dimensions:
+                        builder.InsertImage(imageByteArray, RelativeHorizontalPosition.Margin, 100, RelativeVerticalPosition.Margin,
                             100, 200, 100, WrapType.Square);
                     }
                 }
@@ -384,6 +463,53 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromByteArrayNetStandard2.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "DocumentBuilderImages.InsertImageFromByteArrayNetStandard2.docx");
+
+            Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(300.0d, imageShape.Height, 0.1d);
+            Assert.AreEqual(300.0d, imageShape.Width, 0.1d);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Inline, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.AreEqual(108.0d, imageShape.Height);
+            Assert.AreEqual(187.5d, imageShape.Width);
+            Assert.AreEqual(0.0d, imageShape.Left);
+            Assert.AreEqual(0.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Inline, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Column, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            Assert.AreEqual(100.0d, imageShape.Height);
+            Assert.AreEqual(200.0d, imageShape.Width);
+            Assert.AreEqual(100.0d, imageShape.Left);
+            Assert.AreEqual(100.0d, imageShape.Top);
+
+            Assert.AreEqual(WrapType.Square, imageShape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Margin, imageShape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
+
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, imageShape);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
         }
 #endif
     }

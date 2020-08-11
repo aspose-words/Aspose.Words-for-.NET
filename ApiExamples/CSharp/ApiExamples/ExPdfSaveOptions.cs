@@ -72,7 +72,7 @@ namespace ApiExamples
 
             // Create "PdfSaveOptions" with some mandatory parameters
             // "HeadingsOutlineLevels" specifies how many levels of headings to include in the document outline
-            // "CreateMissingOutlineLevels" determining whether or not to create missing heading levels
+            // "CreateMissingOutlineLevels" determining whether to create missing heading levels
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 9;
             pdfSaveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
@@ -113,7 +113,7 @@ namespace ApiExamples
             builder.Write("Cell 1");
             builder.EndTable();
 
-            // Create a PdfSaveOptions object that, when saving to .pdf with it, creates entries in the document outline for all headings levels 1-9,
+            // Create a PdfSaveOptions object that, when saving to .pdf with it, creates entries in the document outline for heading levels 1-9,
             // and make sure headings inside tables are registered by the outline also
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 9;
@@ -246,6 +246,37 @@ namespace ApiExamples
                 TestUtil.VerifyImage(2467, 1500, pdfDocImageStream);
             }
 #endif
+        }
+
+        [Test]
+        public void DownsampleOptions()
+        {
+            //ExStart
+            //ExFor:DownsampleOptions
+            //ExFor:DownsampleOptions.DownsampleImages
+            //ExFor:DownsampleOptions.Resolution
+            //ExFor:DownsampleOptions.ResolutionThreshold
+            //ExFor:PdfSaveOptions.DownsampleOptions
+            //ExSummary:Shows how to change the resolution of images in output pdf documents.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            // Create a SaveOptions object, verify its default image downsampling settings,
+            // and then convert the document to .pdf with it.
+            PdfSaveOptions options = new PdfSaveOptions();
+
+            Assert.True(options.DownsampleOptions.DownsampleImages);
+            Assert.AreEqual(220, options.DownsampleOptions.Resolution);
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.Default.pdf", options);
+
+            // Set the output resolution to a lower value, then set a downsampling resolution threshold
+            // which will prevent any images with a resolution of less than 128 from being downsampled.
+            options.DownsampleOptions.Resolution = 36;
+            options.DownsampleOptions.ResolutionThreshold = 128;
+
+            // Only the first two images from the document will be downsampled at this stage.
+            doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.LowerResolution.pdf", options);
+            //ExEnd
         }
 
         [Test]
@@ -394,7 +425,7 @@ namespace ApiExamples
             /// </summary>
             public void Warning(WarningInfo info)
             {
-                // For now type of warnings about unsupported metafile records changed from
+                // For now, type of warnings about unsupported metafile records changed from
                 // DataLoss/UnexpectedContent to MinorFormattingLoss
                 if (info.WarningType == WarningType.MinorFormattingLoss)
                 {
@@ -586,8 +617,8 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
             options.UseBookFoldPrintingSettings = doRenderTextAsBookfold;
 
-            // In order to make a booklet, we will need to print this document, stack the pages
-            // in the order they come out of the printer and then fold down the middle
+            // Once we print this document, we can turn it into a booklet by stacking the pages
+            // in the order they come out of the printer and then folding down the middle
             doc.Save(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf", options);
             //ExEnd
 
@@ -747,7 +778,7 @@ namespace ApiExamples
             //ExSummary:Shows how to export custom properties while saving to .pdf.
             Document doc = new Document();
 
-            // Add a custom document property that doesn't use the name of some built in properties
+            // Add a custom document property that does not use the name of some built in properties
             doc.CustomDocumentProperties.Add("Company", "My value");
             
             // Configure the PdfSaveOptions like this will display the properties
@@ -865,8 +896,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
             // Create a PdfSaveOptions object and configure it to preserve the logical structure that's in the input document
-            // The file size will be increased and the structure will be visible in the "Content" navigation pane
-            // of Adobe Acrobat Pro
+            // The file size will be increased, and the structure will be visible in the "Content" navigation pane of Adobe Acrobat Pro
             PdfSaveOptions options = new PdfSaveOptions();
             options.ExportDocumentStructure = doExportStructure;
 
@@ -951,6 +981,53 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "PdfSaveOptions.InterpolateImages.pdf", saveOptions);
             //ExEnd
+        }
+
+        [Test, Category("SkipMono")]
+        public void Dml3DEffectsRenderingModeTest()
+        {
+            Document doc = new Document(MyDir + "DrawingML shape 3D effects.docx");
+            
+            RenderCallback warningCallback = new RenderCallback();
+            doc.WarningCallback = warningCallback;
+            
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced;
+            
+            doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
+
+            Assert.AreEqual(43, warningCallback.Count);
+        }
+
+        public class RenderCallback : IWarningCallback
+        {
+            public void Warning(WarningInfo info)
+            {
+                Console.WriteLine($"{info.WarningType}: {info.Description}.");
+                mWarnings.Add(info);
+            }
+
+            public WarningInfo this[int i] => mWarnings[i];
+
+            /// <summary>
+            /// Clears warning collection.
+            /// </summary>
+            public void Clear()
+            {
+                mWarnings.Clear();
+            }
+
+            public int Count => mWarnings.Count;
+
+            /// <summary>
+            /// Returns true if a warning with the specified properties has been generated.
+            /// </summary>
+            public bool Contains(WarningSource source, WarningType type, string description)
+            {
+                return mWarnings.Any(warning => warning.Source == source && warning.WarningType == type && warning.Description == description);
+            }
+
+            private readonly List<WarningInfo> mWarnings = new List<WarningInfo>();
         }
 
 #elif NETCOREAPP2_1
@@ -1155,53 +1232,6 @@ namespace ApiExamples
                     break;
             }
 #endif
-        }
-
-        [Test, Category("SkipMono")]
-        public void Dml3DEffectsRenderingModeTest()
-        {
-            Document doc = new Document(MyDir + "DrawingML shape 3D effects.docx");
-            
-            RenderCallback warningCallback = new RenderCallback();
-            doc.WarningCallback = warningCallback;
-            
-            PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced;
-            
-            doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
-
-            Assert.AreEqual(warningCallback.Count, 43);
-        }
-
-        public class RenderCallback : IWarningCallback
-        {
-            public void Warning(WarningInfo info)
-            {
-                Console.WriteLine($"{info.WarningType}: {info.Description}.");
-                mWarnings.Add(info);
-            }
-
-            public WarningInfo this[int i] => mWarnings[i];
-
-            /// <summary>
-            /// Clears warning collection.
-            /// </summary>
-            public void Clear()
-            {
-                mWarnings.Clear();
-            }
-
-            public int Count => mWarnings.Count;
-
-            /// <summary>
-            /// Returns true if a warning with the specified properties has been generated.
-            /// </summary>
-            public bool Contains(WarningSource source, WarningType type, string description)
-            {
-                return mWarnings.Any(warning => warning.Source == source && warning.WarningType == type && warning.Description == description);
-            }
-
-            private readonly List<WarningInfo> mWarnings = new List<WarningInfo>();
         }
     }
 }
