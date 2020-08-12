@@ -627,6 +627,25 @@ namespace ApiExamples
         }
 
         /// <summary>
+        /// Checks whether values of attributes of an editable range are equal to their expected values.
+        /// </summary>
+        internal static void VerifyEditableRange(int expectedId, string expectedEditorUser, EditorType expectedEditorGroup, EditableRange editableRange)
+        {
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedId, editableRange.Id);
+                Assert.AreEqual(expectedEditorUser, editableRange.SingleUser);
+                Assert.AreEqual(expectedEditorGroup, editableRange.EditorGroup);
+            });
+#elif __MOBILE__
+            Assert.AreEqual(expectedId, editableRange.Id);
+            Assert.AreEqual(expectedEditorUser, editableRange.SingleUser);
+            Assert.AreEqual(expectedEditorGroup, editableRange.EditorGroup);
+#endif
+        }
+
+        /// <summary>
         /// Margin of error, in bytes, for file size comparisons which take system-to-system variance of metadata size into account.
         /// </summary>
         internal static int FileInfoLengthDelta { get; } = 200;
