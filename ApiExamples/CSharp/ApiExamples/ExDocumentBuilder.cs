@@ -2537,7 +2537,6 @@ namespace ApiExamples
 
             // Insert two fields while passing a flag which determines whether to update them as the builder inserts them.
             // In some cases, updating fields could be computationally expensive, and it may be a good idea to defer the update.
-            // Not all field types require updating, exceptions include BARCODE and MERGEFIELD.
             doc.BuiltInDocumentProperties.Author = "John Doe";
             builder.Write("This document was written by ");
             builder.InsertField(FieldType.FieldAuthor, updateInsertedFieldsImmediately);

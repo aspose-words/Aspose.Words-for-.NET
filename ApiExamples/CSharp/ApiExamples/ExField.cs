@@ -47,26 +47,27 @@ namespace ApiExamples
             //ExFor:FieldChar.IsLocked
             //ExFor:FieldChar.GetField
             //ExFor:Field.IsLocked
-            //ExSummary:Demonstrates how to retrieve the field class from an existing FieldStart node in the document.
+            //ExSummary:Shows how to work with a FieldStart node.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             FieldDate field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
             field.Format.DateTimeFormat = "dddd, MMMM dd, yyyy";
             field.Update();
-
+            
             FieldChar fieldStart = field.Start;
+
             Assert.AreEqual(FieldType.FieldDate, fieldStart.FieldType);
             Assert.AreEqual(false, fieldStart.IsDirty);
             Assert.AreEqual(false, fieldStart.IsLocked);
 
-            // Retrieve the facade object which represents the field in the document
+            // Retrieve the facade object which represents the field in the document.
             field = (FieldDate)fieldStart.GetField();
 
             Assert.AreEqual(false, field.IsLocked);
             Assert.AreEqual(" DATE  \\@ \"dddd, MMMM dd, yyyy\"", field.GetFieldCode());
 
-            // Update the field to show the current date
+            // Update the field to show the current date.
             field.Update();         
             //ExEnd
 
@@ -81,50 +82,54 @@ namespace ApiExamples
             //ExStart
             //ExFor:Field.GetFieldCode
             //ExFor:Field.GetFieldCode(bool)
-            //ExSummary:Shows how to get text between field start and field separator (or field end if there is no separator).
-            // Open a document which contains a MERGEFIELD inside an IF field
+            //ExSummary:Shows how to get a field's field code.
+            // Open a document which contains a MERGEFIELD inside an IF field.
             Document doc = new Document(MyDir + "Nested fields.docx");
-            Assert.AreEqual(1, doc.Range.Fields.Count(f => f.Type == FieldType.FieldIf)); //ExSkip
-
-            // Get the outer IF field and print its full field code
             FieldIf fieldIf = (FieldIf)doc.Range.Fields[0];
-            Console.WriteLine($"Full field code including child fields:\n\t{fieldIf.GetFieldCode()}");
 
-            // All inner nested fields are printed by default
-            Assert.AreEqual(fieldIf.GetFieldCode(), fieldIf.GetFieldCode(true));
-
-            // Print the field code again but this time without the inner MERGEFIELD
-            Console.WriteLine($"Field code with nested fields omitted:\n\t{fieldIf.GetFieldCode(false)}");
-            //ExEnd
-
+            // There are two ways of getting a field's field code:
+            // 1 -  Omit its inner fields.
             Assert.AreEqual(" IF  > 0 \" (surplus of ) \" \"\" ", fieldIf.GetFieldCode(false));
-            Assert.AreEqual($" IF {ControlChar.FieldStartChar} MERGEFIELD NetIncome {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar} > 0 \" (surplus of {ControlChar.FieldStartChar} MERGEFIELD  NetIncome \\f $ {ControlChar.FieldSeparatorChar}{ControlChar.FieldEndChar}) \" \"\" ", 
+
+            // 2 -  Include its inner fields.
+            Assert.AreEqual($" IF \u0013 MERGEFIELD NetIncome \u0014\u0015 > 0 \" (surplus of \u0013 MERGEFIELD  NetIncome \\f $ \u0014\u0015) \" \"\" ",
                 fieldIf.GetFieldCode(true));
+
+            // All inner nested fields are included by default.
+            Assert.AreEqual(fieldIf.GetFieldCode(), fieldIf.GetFieldCode(true));
+            //ExEnd
         }
 
         [Test]
-        public void FieldDisplayResult()
+        public void DisplayResult()
         {
             //ExStart
             //ExFor:Field.DisplayResult
-            //ExSummary:Shows how to get the text that represents the displayed field result.
-            Document document = new Document(MyDir + "Various fields.docx");
+            //ExSummary:Shows how to get the real text that a field displays in the document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            builder.Write("This document was written by ");
+            FieldAuthor fieldAuthor = (FieldAuthor)builder.InsertField(FieldType.FieldAuthor, true);
+            fieldAuthor.AuthorName = "John Doe";
 
-            FieldCollection fields = document.Range.Fields;
+            // We can use the DisplayResult attribute to verify what exact text
+            // a field would display in its place in the document.
+            Assert.AreEqual(string.Empty, fieldAuthor.DisplayResult);
 
-            Assert.AreEqual("111", fields[0].DisplayResult);
-            Assert.AreEqual("222", fields[1].DisplayResult);
-            Assert.AreEqual("Multi\rLine\rText", fields[2].DisplayResult);
-            Assert.AreEqual("%", fields[3].DisplayResult);
-            Assert.AreEqual("Macro Button Text", fields[4].DisplayResult);
-            Assert.AreEqual(string.Empty, fields[5].DisplayResult);
+            // Fields do not maintain accurate result values in real time. 
+            // To make sure our fields display the accurate result at any given time,
+            // such as right before a save operation, we need to manually update them.
+            fieldAuthor.Update();
 
-            // Method must be called to obtain correct value for the "FieldListNum", "FieldAutoNum",
-            // "FieldAutoNumOut" and "FieldAutoNumLgl" fields
-            document.UpdateListLabels();
+            Assert.AreEqual("John Doe", fieldAuthor.DisplayResult);
 
-            Assert.AreEqual("1)", fields[5].DisplayResult);
+            doc.Save(ArtifactsDir + "Field.DisplayResult.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Field.DisplayResult.docx");
+
+            Assert.AreEqual("John Doe", doc.Range.Fields[0].DisplayResult);
         }
 
         [Test]
@@ -133,22 +138,23 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldBuilder.#ctor(FieldType)
             //ExFor:FieldBuilder.BuildAndInsert(Inline)
-            //ExSummary:Builds and inserts a field into the document before the specified inline node.
+            //ExSummary:Shows how to create and insert a field using a field builder.
             Document doc = new Document();
 
-            // A convenient way of adding text content to a document is with a DocumentBuilder
+            // A convenient way of adding text content to a document is with a document builder.
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write(" Hello world! This text is one Run, which is an inline node.");
 
-            // Fields can be constructed in a similar way with a FieldBuilder, with arguments and switches added individually
-            // In this case we will construct a BARCODE field which represents a US postal code
+            // Fields have their own builder, which we can use to construct a field code piece by piece.
+            // In this case, we will construct a BARCODE field which represents a US postal code,
+            // and then insert it in front of a Run.
             FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldBarcode);
             fieldBuilder.AddArgument("90210");
             fieldBuilder.AddSwitch("\\f", "A");
             fieldBuilder.AddSwitch("\\u");
 
-            // Insert the field before any inline node
             fieldBuilder.BuildAndInsert(doc.FirstSection.Body.FirstParagraph.Runs[0]);
+
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.CreateWithFieldBuilder.docx");
             //ExEnd
@@ -163,27 +169,27 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CreateRevNumFieldByDocumentBuilder()
+        public void RevNum()
         {
             //ExStart
+            //ExFor:BuiltInDocumentProperties.RevisionNumber
             //ExFor:FieldRevNum
             //ExSummary:Shows how to work with REVNUM fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add some text to a blank document with a DocumentBuilder
             builder.Write("Current revision #");
 
-            // Insert a REVNUM field, which displays the document's current revision number property
+            // Insert a REVNUM field, which displays the document's current revision number property.
             FieldRevNum field = (FieldRevNum)builder.InsertField(FieldType.FieldRevisionNum, true);
 
             Assert.AreEqual(" REVNUM ", field.GetFieldCode());
             Assert.AreEqual("1", field.Result);
             Assert.AreEqual(1, doc.BuiltInDocumentProperties.RevisionNumber);
 
-            // This property counts how many times a document has been saved in Microsoft Word, is unrelated to revision tracking,
-            // can be found by right clicking the document in Windows Explorer via Properties > Details
-            // This property is only manually updated by Aspose.Words
+            // This property counts how many times a document has been saved in Microsoft Word,
+            // and is unrelated to tracked revisions. We can find it by right clicking the document in Windows Explorer
+            // via Properties -> Details. We can update this property manually.
             doc.BuiltInDocumentProperties.RevisionNumber++;
             Assert.AreEqual("1", field.Result); //ExSkip
             field.Update();
@@ -247,13 +253,13 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a field that does not denote a real field type in its field code
+            // Insert a field that does not denote a real field type in its field code.
             Field field = builder.InsertField(" NOTAREALFIELD //a");
 
-            // Fields like that can be written and read, and are assigned a special "FieldNone" type
+            // Fields like that can be created and read, and are assigned a special "FieldNone" type.
             Assert.AreEqual(FieldType.FieldNone, field.Type);
 
-            // We can also still work with these fields, and assign them as instances of a special "FieldUnknown" class
+            // We can also still work with these fields, and assign them as instances of the FieldUnknown class.
             FieldUnknown fieldUnknown = (FieldUnknown)field;
             Assert.AreEqual(" NOTAREALFIELD //a", fieldUnknown.GetFieldCode());
             //ExEnd
@@ -282,17 +288,17 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a DATE field and print the date it will display, formatted according to your thread's current culture
+            // Insert a DATE field, and then print the date it will display.
+            // Your thread's current culture determines the formatting of the date.
             Field field = builder.InsertField(@"DATE");
             Console.WriteLine($"Today's date, as displayed in the \"{CultureInfo.CurrentCulture.EnglishName}\" culture: {field.Result}");
 
             Assert.AreEqual(1033, field.LocaleId);
             Assert.AreEqual(FieldUpdateCultureSource.CurrentThread, doc.FieldOptions.FieldUpdateCultureSource); //ExSkip
 
-            // We can get the field to display a date in a different format if we change the current thread's culture
-            // If we want to avoid making such an all-encompassing change,
-            // we can set this option to get the document's fields to get their culture from themselves
-            // Then, we can change a field's LocaleId and it will display its result in any culture we choose
+            // Changing the culture of our thread will impact the result of the DATE field.
+            // Another way to get the DATE field to display a date in a different culture is to use the field's LocaleId attribute.
+            // This way allows us to avoid changing the thread's culture to get this effect.
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
             CultureInfo de = new CultureInfo("de-DE");
             field.LocaleId = de.LCID;
