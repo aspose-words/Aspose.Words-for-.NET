@@ -396,7 +396,7 @@ namespace ApiExamples
         [TestCase(true)]
         [TestCase(false)]
         [Ignore("WORDSNET-16037")]
-        public void UpdateDirtyFields(bool doUpdateDirtyFields)
+        public void UpdateDirtyFields(bool updateDirtyFields)
         {
             //ExStart
             //ExFor:Field.IsDirty
@@ -405,38 +405,38 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Give the document's built in property "Author" a value and display it with a field
+            // Give the document's built in "Author" property a value, and then display it with a field.
             doc.BuiltInDocumentProperties.Author = "John Doe";
             FieldAuthor field = (FieldAuthor)builder.InsertField(FieldType.FieldAuthor, true);
 
             Assert.False(field.IsDirty);
             Assert.AreEqual("John Doe", field.Result);
 
-            // Update the "Author" property
+            // Update the property. The field still displays the old value.
             doc.BuiltInDocumentProperties.Author = "John & Jane Doe";
 
-            // Fields of some types, such as AUTHOR, do not update according to their source values in real time,
-            // and need to be updated manually beforehand every time an accurate value is required
             Assert.AreEqual("John Doe", field.Result);
 
-            // Since the field's value is out of date, we can mark it as "Dirty"
+            // Since the field's value is out of date, we can mark it as "Dirty".
+            // This value will stay out of date until we update the field manually with the Field.Update() method.
             field.IsDirty = true;
             
             using (MemoryStream docStream = new MemoryStream())
             {
+                // If we save without calling an update method,
+                // the field will keep displaying the out of date value in the output document.
                 doc.Save(docStream, SaveFormat.Docx);
 
-                // Re-open the document from the stream while using a LoadOptions object to specify
-                // whether to update all fields marked as "Dirty" in the process, so they can display accurate values immediately
+                // The LoadOptions object has an option to update all fields when loading the document.
                 LoadOptions options = new LoadOptions();
-                options.UpdateDirtyFields = doUpdateDirtyFields;
+                options.UpdateDirtyFields = updateDirtyFields;
                 doc = new Document(docStream, options);
                 
                 Assert.AreEqual("John & Jane Doe", doc.BuiltInDocumentProperties.Author);
 
                 field = (FieldAuthor)doc.Range.Fields[0];
 
-                if (doUpdateDirtyFields)
+                if (updateDirtyFields)
                 {
                     Assert.AreEqual("John & Jane Doe", field.Result);
                     Assert.False(field.IsDirty);
