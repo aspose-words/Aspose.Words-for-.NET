@@ -23,6 +23,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Replacing;
+using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 using LoadOptions = Aspose.Words.LoadOptions;
@@ -535,14 +536,12 @@ namespace ApiExamples
             //ExFor:FieldDatabase.LastRecord
             //ExFor:FieldDatabase.Query
             //ExFor:FieldDatabase.TableFormat
-            //ExSummary:Shows how to extract data from a database and insert it as a field into a document.
+            //ExSummary:Shows how to extract data from a database, and insert it as a field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Use a document builder to insert a database field
+            
+            // This DATABASE field will run a query on a database, and display the result in the form of a table.
             FieldDatabase field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
-
-            // Create a simple query that extracts one table from the database
             field.FileName = MyDir + @"Database\Northwind.mdb";
             field.Connection = "DSN=MS Access Databases";
             field.Query = "SELECT * FROM [Products]";
@@ -550,12 +549,10 @@ namespace ApiExamples
             Assert.AreEqual($" DATABASE  \\d \"{DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"}\" \\c \"DSN=MS Access Databases\" \\s \"SELECT * FROM [Products]\"", 
                 field.GetFieldCode());
 
-            // Insert another database field
+            // Insert another DATABASE field with a more complex query which sorts all products in descending order by gross sales.
             field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
             field.FileName = MyDir + @"Database\Northwind.mdb";
             field.Connection = "DSN=MS Access Databases";
-
-            // This query will sort all the products by their gross sales in descending order
             field.Query =
                 "SELECT [Products].ProductName, FORMAT(SUM([Order Details].UnitPrice * (1 - [Order Details].Discount) * [Order Details].Quantity), 'Currency') AS GrossSales " +
                 "FROM([Products] " +
@@ -563,19 +560,18 @@ namespace ApiExamples
                 "GROUP BY[Products].ProductName " +
                 "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC";
 
-            // You can use these variables instead of a LIMIT or TOP clause, to simplify your query
-            // In this case we are taking the first 10 values of the result of our query
+            // These attributes have the same function as LIMIT and TOP clauses.
+            // Configure them to display only rows 1 to 10 of the query result in the field's table.
             field.FirstRecord = "1";
             field.LastRecord = "10";
 
-            // The number we put here is the index of the format we want to use for our table
-            // The list of table formats is in the "Table AutoFormat..." menu we find in MS Word when we create a data table field
-            // Index "10" corresponds to the "Colorful 3" format
+            // This attribute is the index of the format we want to use for our table. The list of table formats is in the "Table AutoFormat..." menu
+            // that shows up when we create a DATABASE field in Microsoft Word. Index #10 corresponds to the "Colorful 3" format.
             field.TableFormat = "10";
 
-            // This attribute decides which elements of the table format we picked above we incorporate into our table
-            // The number we use is a sum of a combination of values corresponding to which elements we choose
-            // 63 represents borders (1) + shading (2) + font (4) + colour (8) + autofit (16) + heading rows (32)
+            // This attribute decides which elements of the table format we picked above are incorporated into our table.
+            // The number we use is the sum of a combination of values corresponding to different aspects of the table style.
+            // 63 represents 1 (borders) + 2 (shading) + 4 (font) + 8 (color) + 16 (autofit) + 32 (heading rows).
             field.FormatAttributes = "63";
             field.InsertHeadings = true;
             field.InsertOnceOnMailMerge = true;
@@ -621,31 +617,48 @@ namespace ApiExamples
             TestUtil.TableMatchesQueryResult(table, DatabaseDir + "Northwind.mdb", field.Query.Insert(7, " TOP 10 "));
         }
 #endif
-        [Test]
-        public void UpdateFieldIgnoringMergeFormat()
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void PreserveIncludePicture(bool preserveIncludePictureField)
         {
             //ExStart
             //ExFor:Field.Update(bool)
             //ExFor:LoadOptions.PreserveIncludePictureField
-            //ExSummary:Shows a way to update a field ignoring the MERGEFORMAT switch.
-            LoadOptions loadOptions = new LoadOptions { PreserveIncludePictureField = true };
-            Document doc = new Document(MyDir + "Field sample - INCLUDEPICTURE.docx", loadOptions);
+            //ExSummary:Shows how to preserve or discard INCLUDEPICTURE fields when loading a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            FieldIncludePicture includePicture = (FieldIncludePicture)doc.Range.Fields.First(f => f.Type == FieldType.FieldIncludePicture);
+            FieldIncludePicture includePicture = (FieldIncludePicture)builder.InsertField(FieldType.FieldIncludePicture, true);
             includePicture.SourceFullName = ImageDir + "Transparent background logo.png";
             includePicture.Update(true);
 
-            doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.UpdateFieldIgnoringMergeFormat.docx");
+            using (MemoryStream docStream = new MemoryStream())
+            {
+                doc.Save(docStream, new OoxmlSaveOptions(SaveFormat.Docx));
+
+                // We can set a flag in a LoadOptions object to decide whether to convert all INCLUDEPICTURE fields
+                // into image shapes when loading a document that contains them.
+                LoadOptions loadOptions = new LoadOptions
+                {
+                    PreserveIncludePictureField = preserveIncludePictureField
+                };
+
+                doc = new Document(docStream, loadOptions);
+
+                if (preserveIncludePictureField)
+                {
+                    Assert.True(doc.Range.Fields.Any(f => f.Type == FieldType.FieldIncludePicture));
+
+                    doc.UpdateFields();
+                    doc.Save(ArtifactsDir + "Field.PreserveIncludePicture.docx");
+                }
+                else
+                {
+                    Assert.False(doc.Range.Fields.Any(f => f.Type == FieldType.FieldIncludePicture));
+                }
+            }
             //ExEnd
-
-            Assert.True(doc.Range.Fields.Any(f => f.Type == FieldType.FieldIncludePicture));
-
-            doc = new Document(ArtifactsDir + "Field.UpdateFieldIgnoringMergeFormat.docx");
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-
-            Assert.True(shape.IsImage);
-            Assert.False(doc.Range.Fields.Any(f => f.Type == FieldType.FieldIncludePicture));
         }
 
         [Test]
