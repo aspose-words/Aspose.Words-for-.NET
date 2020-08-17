@@ -5,10 +5,13 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Drawing;
 using System.Globalization;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using NUnit.Framework;
 
@@ -352,5 +355,112 @@ namespace ApiExamples
             }
         }
         //ExEnd
+
+#if NET462 || JAVA
+        [Test]
+        public void BarcodeGenerator()
+        {
+            //ExStart
+            //ExFor:BarcodeParameters
+            //ExFor:BarcodeParameters.AddStartStopChar
+            //ExFor:BarcodeParameters.BackgroundColor
+            //ExFor:BarcodeParameters.BarcodeType
+            //ExFor:BarcodeParameters.BarcodeValue
+            //ExFor:BarcodeParameters.CaseCodeStyle
+            //ExFor:BarcodeParameters.DisplayText
+            //ExFor:BarcodeParameters.ErrorCorrectionLevel
+            //ExFor:BarcodeParameters.FacingIdentificationMark
+            //ExFor:BarcodeParameters.FixCheckDigit
+            //ExFor:BarcodeParameters.ForegroundColor
+            //ExFor:BarcodeParameters.IsBookmark
+            //ExFor:BarcodeParameters.IsUSPostalAddress
+            //ExFor:BarcodeParameters.PosCodeStyle
+            //ExFor:BarcodeParameters.PostalAddress
+            //ExFor:BarcodeParameters.ScalingFactor
+            //ExFor:BarcodeParameters.SymbolHeight
+            //ExFor:BarcodeParameters.SymbolRotation
+            //ExFor:IBarcodeGenerator
+            //ExFor:IBarcodeGenerator.GetBarcodeImage(BarcodeParameters)
+            //ExFor:IBarcodeGenerator.GetOldBarcodeImage(BarcodeParameters)
+            //ExFor:FieldOptions.BarcodeGenerator
+            //ExSummary:Shows how to use a barcode generator.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Assert.IsNull(doc.FieldOptions.BarcodeGenerator); //ExSkip
+
+            // Barcodes generated in this way will be in the form of images.
+            // We can use a custom IBarcodeGenerator implementation to generate them.
+            // This generator can be found here:
+            // https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/ApiExamples/CSharp/ApiExamples/CustomBarcodeGenerator.cs
+            doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
+
+            // Below are four of the types of barcodes that we can insert this way.
+            // 1 -  QR code:
+            BarcodeParameters barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "QR";
+            barcodeParameters.BarcodeValue = "ABC123";
+            barcodeParameters.BackgroundColor = "0xF8BD69";
+            barcodeParameters.ForegroundColor = "0xB5413B";
+            barcodeParameters.ErrorCorrectionLevel = "3";
+            barcodeParameters.ScalingFactor = "250";
+            barcodeParameters.SymbolHeight = "1000";
+            barcodeParameters.SymbolRotation = "0";
+
+            // We can generate the barcode after we have set the parameters for the barcode generator.
+            // The barcode will be an image that we can insert into the document and save to the local file system.
+            Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
+
+            builder.InsertImage(img);
+
+            // 2 -  EAN13 barcode:
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "EAN13";
+            barcodeParameters.BarcodeValue = "501234567890";
+            barcodeParameters.DisplayText = true;
+            barcodeParameters.PosCodeStyle = "CASE";
+            barcodeParameters.FixCheckDigit = true;
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
+            builder.InsertImage(img);
+
+            // 3 -  CODE39 barcode:
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "CODE39";
+            barcodeParameters.BarcodeValue = "12345ABCDE";
+            barcodeParameters.AddStartStopChar = true;
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
+            builder.InsertImage(img);
+
+            // 4 -  ITF14 barcode:
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "ITF14";
+            barcodeParameters.BarcodeValue = "09312345678907";
+            barcodeParameters.CaseCodeStyle = "STD";
+
+            img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+            img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");
+            builder.InsertImage(img);
+
+            doc.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.docx");
+            //ExEnd
+
+            TestUtil.VerifyImage(378, 378, ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
+            TestUtil.VerifyImage(220, 78, ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
+            TestUtil.VerifyImage(414, 65, ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
+            TestUtil.VerifyImage(300, 65, ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");
+
+            doc = new Document(ArtifactsDir + "FieldOptions.BarcodeGenerator.docx");
+            Shape barcode = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.True(barcode.HasImage);
+
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK,
+                "https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/ApiExamples/CSharp/ApiExamples/CustomBarcodeGenerator.cs");
+        }
+#endif
     }
 }
