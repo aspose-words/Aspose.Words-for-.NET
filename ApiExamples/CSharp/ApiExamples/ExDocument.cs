@@ -277,6 +277,23 @@ namespace ApiExamples
         }
 
         [Test]
+        public void TempFolder()
+        {
+            //ExStart
+            //ExFor:LoadOptions.TempFolder
+            //ExSummary:Shows how to load a document using temporary files.
+            // Note that such an approach can reduce memory usage but degrades speed
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.TempFolder = @"C:\TempFolder\";
+            
+            // Ensure that the directory exists and load
+            Directory.CreateDirectory(loadOptions.TempFolder);
+             
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
+            //ExEnd
+        }
+
+        [Test]
         public void ConvertToHtml()
         {
             //ExStart
@@ -1480,6 +1497,29 @@ namespace ApiExamples
             //ExEnd
 
             Assert.True(File.Exists(options.DefaultTemplate));
+        }
+
+        [Test]
+        public void UseSubstitutions()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.UseSubstitutions
+            //ExSummary:Shows how to recognize and use substitutions within replacement patterns.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+             
+            // Write some text
+            builder.Write("Jason give money to Paul.");
+             
+            Regex regex = new Regex(@"([A-z]+) give money to ([A-z]+)");
+             
+            // Replace text using substitutions
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.UseSubstitutions = true;
+            doc.Range.Replace(regex, @"$2 take money from $1", options);
+            
+            Assert.AreEqual(doc.GetText(), "Paul take money from Jason.\f");
+            //ExEnd
         }
 
         [Test]
