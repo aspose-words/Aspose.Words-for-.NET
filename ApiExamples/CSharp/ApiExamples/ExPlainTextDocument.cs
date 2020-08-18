@@ -113,7 +113,7 @@ namespace ApiExamples
         public void BuiltInProperties()
         {
             //ExStart
-            //ExFor:PlainTextDocument.BuiltInProperties
+            //ExFor:PlainTextDocument.BuiltInDocumentProperties
             //ExSummary:Shows how to load a plaintext version of a document, and also access its built in properties.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

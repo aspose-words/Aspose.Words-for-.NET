@@ -16,25 +16,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExNodeImporter : ApiExampleBase
     {
-        //ExStart
-        //ExFor:Paragraph.IsEndOfSection
-        //ExFor:NodeImporter
-        //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode)
-        //ExFor:NodeImporter.ImportNode(Node, Boolean)
-        //ExSummary:Shows how to insert the contents of one document to a bookmark in another document.
-        [Test]
-        public void InsertAtBookmark()
-        {
-            Document mainDoc = new Document(MyDir + "Document insertion destination.docx");
-            Document docToInsert = new Document(MyDir + "Document.docx");
-
-            Bookmark bookmark = mainDoc.Range.Bookmarks["insertionPlace"];
-            InsertDocument(bookmark.BookmarkStart.ParentNode, docToInsert);
-
-            mainDoc.Save(ArtifactsDir + "NodeImporter.InsertAtBookmark.docx");
-            TestInsertAtBookmark(new Document(ArtifactsDir + "NodeImporter.InsertAtBookmark.docx")); //ExSkip
-        }
-
         [Test]
         public void KeepSourceNumbering()
         {
@@ -62,6 +43,25 @@ namespace ApiExamples
             dstDoc.UpdateListLabels();
             dstDoc.Save(ArtifactsDir + "NodeImporter.KeepSourceNumbering.docx");
             //ExEnd
+        }
+
+        //ExStart
+        //ExFor:Paragraph.IsEndOfSection
+        //ExFor:NodeImporter
+        //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode)
+        //ExFor:NodeImporter.ImportNode(Node, Boolean)
+        //ExSummary:Shows how to insert the contents of one document to a bookmark in another document.
+        [Test]
+        public void InsertAtBookmark()
+        {
+            Document mainDoc = new Document(MyDir + "Document insertion destination.docx");
+            Document docToInsert = new Document(MyDir + "Document.docx");
+
+            Bookmark bookmark = mainDoc.Range.Bookmarks["insertionPlace"];
+            InsertDocument(bookmark.BookmarkStart.ParentNode, docToInsert);
+
+            mainDoc.Save(ArtifactsDir + "NodeImporter.InsertAtBookmark.docx");
+            TestInsertAtBookmark(new Document(ArtifactsDir + "NodeImporter.InsertAtBookmark.docx")); //ExSkip
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace ApiExamples
             }
         }
         //ExEnd
-
+        
         private void TestInsertAtBookmark(Document doc)
         {
             Assert.AreEqual("1) At text that can be identified by regex:\r[MY_DOCUMENT]\r" +
