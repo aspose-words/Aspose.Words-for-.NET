@@ -20,6 +20,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.Layout;
 using Aspose.Words.Markup;
 using Aspose.Words.Rendering;
+using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using Aspose.Words.WebExtensions;
