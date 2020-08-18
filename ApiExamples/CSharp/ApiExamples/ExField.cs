@@ -679,33 +679,36 @@ namespace ApiExamples
             //ExFor:GeneralFormatCollection.Remove(GeneralFormat)
             //ExFor:GeneralFormatCollection.RemoveAt(Int32)
             //ExFor:GeneralFormatCollection.GetEnumerator
-            //ExSummary:Shows how to format fields.
+            //ExSummary:Shows how to format field results.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert field with no format
+            // Use a document builder to insert a field which displays a result with no format applied.
             Field field = builder.InsertField("= 2 + 3");
 
+            Assert.AreEqual("= 2 + 3", field.GetFieldCode());
             Assert.AreEqual("5", field.Result);
 
-            // We can format our field here instead of in the field code
+            // We can apply a format to a field's result using the field's attributes.
+            // Below are three types of formats that can be applied to a field's result.
+            // 1 -  Numeric format:
             FieldFormat format = field.Format;
             format.NumericFormat = "$###.00";
-            
-            // Fields need to be manually updated in order for formatting to take effect
             field.Update();
 
+            Assert.AreEqual("= 2 + 3 \\# $###.00", field.GetFieldCode());
             Assert.AreEqual("$  5.00", field.Result);
 
-            // Apply a date/time format
+            // 2 -  Date/time format:
             field = builder.InsertField("DATE");
             format = field.Format;
             format.DateTimeFormat = "dddd, MMMM dd, yyyy";
             field.Update();
-            
+
+            Assert.AreEqual("DATE \\@ \"dddd, MMMM dd, yyyy\"", field.GetFieldCode());
             Console.WriteLine($"Today's date, in {format.DateTimeFormat} format:\n\t{field.Result}");
 
-            // Apply 2 general formats at the same time
+            // 3 -  General format:
             field = builder.InsertField("= 25 + 33");
             format = field.Format;
             format.GeneralFormats.Add(GeneralFormat.LowercaseRoman);
@@ -717,35 +720,25 @@ namespace ApiExamples
                 while (generalFormatEnumerator.MoveNext())
                     Console.WriteLine($"General format index {index++}: {generalFormatEnumerator.Current}");
 
+            Assert.AreEqual("= 25 + 33 \\* roman \\* Upper", field.GetFieldCode());
             Assert.AreEqual("LVIII", field.Result);
             Assert.AreEqual(2, format.GeneralFormats.Count);
             Assert.AreEqual(GeneralFormat.LowercaseRoman, format.GeneralFormats[0]);
 
-            // Removing field formats
+            // We can remove our formats to revert the field's result to its original form.
             format.GeneralFormats.Remove(GeneralFormat.LowercaseRoman);
             format.GeneralFormats.RemoveAt(0);
             Assert.AreEqual(0, format.GeneralFormats.Count);
             field.Update();
 
-            // Our field has no general formats left and is back to default form
+            Assert.AreEqual("= 25 + 33  ", field.GetFieldCode());
             Assert.AreEqual("58", field.Result);
+            Assert.AreEqual(0, format.GeneralFormats.Count);
             //ExEnd
-
-            doc = DocumentHelper.SaveOpen(doc);
-
-            Assert.AreEqual("$###.00", doc.Range.Fields[0].Format.NumericFormat);
-            Assert.AreEqual("$  5.00", doc.Range.Fields[0].Result);
-
-            Assert.AreEqual("dddd, MMMM dd, yyyy", doc.Range.Fields[1].Format.DateTimeFormat);
-            Assert.AreEqual(DateTime.Today, DateTime.Parse(doc.Range.Fields[1].Result));
-
-            Assert.That(doc.Range.Fields[2].Format.GeneralFormats, Is.Empty);
-            Assert.AreEqual("58", doc.Range.Fields[2].Result);
-
         }
 
         [Test]
-        public void UnlinkAllFieldsInDocument()
+        public void Unlink()
         {
             //ExStart
             //ExFor:Document.UnlinkFields
@@ -766,7 +759,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Range.UnlinkFields
-            //ExSummary:Shows how to unlink all fields in range.
+            //ExSummary:Shows how to unlink all fields in a range.
             Document doc = new Document(MyDir + "Linked fields.docx");
 
             Section newSection = (Section)doc.Sections[0].Clone(true);
@@ -787,7 +780,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Field.Unlink
-            //ExSummary:Shows how to unlink specific field.
+            //ExSummary:Shows how to unlink a field.
             Document doc = new Document(MyDir + "Linked fields.docx");
             doc.Range.Fields[1].Unlink();
             //ExEnd
@@ -889,15 +882,15 @@ namespace ApiExamples
             //ExFor:Fields.DropDownItemCollection.Item(Int32)
             //ExFor:Fields.DropDownItemCollection.Remove(String)
             //ExFor:Fields.DropDownItemCollection.RemoveAt(Int32)
-            //ExSummary:Shows how to insert a combo box field and manipulate the elements in its item collection.
+            //ExSummary:Shows how to insert a combo box field, and edit the elements in its item collection.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to create and populate a combo box
+            // Insert a combo box, and then verify its collection of drop down items.
+            // In Microsoft Word, the user will be able to click the combo box,
+            // and then choose one of the items of text in the collection to display.
             string[] items = { "One", "Two", "Three" };
             FormField comboBoxField = builder.InsertComboBox("DropDown", items, 0);
-
-            // Get the list of drop-down items
             DropDownItemCollection dropDownItems = comboBoxField.DropDownItems;
 
             Assert.AreEqual(3, dropDownItems.Count);
@@ -905,25 +898,34 @@ namespace ApiExamples
             Assert.AreEqual(1, dropDownItems.IndexOf("Two"));
             Assert.IsTrue(dropDownItems.Contains("Three"));
 
-            // We can add an item to the end of the collection or insert it at a desired index
+            // There are two ways of adding a new item to an existing collection of drop down box items.
+            // 1 -  Append an item to the end of the collection:
             dropDownItems.Add("Four");
+
+            // 2 -  Insert an item before another item at a specified index:
             dropDownItems.Insert(3, "Three and a half");
+
             Assert.AreEqual(5, dropDownItems.Count);
 
-            // Iterate over the collection and print every element
+            // Iterate over the collection and print every element.
             using (IEnumerator<string> dropDownCollectionEnumerator = dropDownItems.GetEnumerator())
                 while (dropDownCollectionEnumerator.MoveNext())
                     Console.WriteLine(dropDownCollectionEnumerator.Current);
 
-            // We can remove elements in the same way we added them
+            // There are two ways of removing elements from a collection of drop down items.
+            // 1 -  Remove an item with contents equal to the passed string:
             dropDownItems.Remove("Four");
+
+            // 2 -  Remove an item at an index:
             dropDownItems.RemoveAt(3);
+
+            Assert.AreEqual(3, dropDownItems.Count);
             Assert.IsFalse(dropDownItems.Contains("Three and a half"));
             Assert.IsFalse(dropDownItems.Contains("Four"));
 
             doc.Save(ArtifactsDir + "Field.DropDownItemCollection.docx");
 
-            // Empty the collection
+            // Empty the whole collection of drop down items.
             dropDownItems.Clear();
             //ExEnd
 
@@ -950,19 +952,21 @@ namespace ApiExamples
         //ExFor:FieldOptions.UserPromptRespondent
         //ExFor:IFieldUserPromptRespondent
         //ExFor:IFieldUserPromptRespondent.Respond(String,String)
-        //ExSummary:Shows how to create an ASK field and set its properties.
+        //ExSummary:Shows how to create an ASK field, and set its properties.
         [Test]
         public void FieldAsk()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Place a field where the response to our ASK field will be placed
+            // Place a field where the response to our ASK field will be placed.
             FieldRef fieldRef = (FieldRef)builder.InsertField(FieldType.FieldRef, true);
             fieldRef.BookmarkName = "MyAskField";
             builder.Writeln();
 
-            // Insert the ASK field and edit its properties, making sure to reference our REF field
+            Assert.AreEqual(" REF  MyAskField", fieldRef.GetFieldCode());
+
+            // Insert the ASK field and edit its properties, making sure to reference our REF field by bookmark name.
             FieldAsk fieldAsk = (FieldAsk)builder.InsertField(FieldType.FieldAsk, true);
             fieldAsk.BookmarkName = "MyAskField";
             fieldAsk.PromptText = "Please provide a response for this ASK field";
@@ -970,7 +974,11 @@ namespace ApiExamples
             fieldAsk.PromptOnceOnMailMerge = true;
             builder.Writeln();
 
-            // ASK fields apply the default response to their respective REF fields during a mail merge
+            Assert.AreEqual(
+                " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"Response from within the field.\" \\o",
+                fieldAsk.GetFieldCode());
+
+            // ASK fields apply the default response to their respective REF fields during a mail merge.
             DataTable table = new DataTable("My Table");
             table.Columns.Add("Column 1");
             table.Rows.Add("Row 1");
@@ -979,22 +987,18 @@ namespace ApiExamples
             FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
             fieldMergeField.FieldName = "Column 1";
 
-            // We can modify or override the default response in our ASK fields with a custom prompt responder, which will take place during a mail merge
+            // We can modify or override the default response in our ASK fields with a custom prompt responder,
+            // which will take place during a mail merge.
             doc.FieldOptions.UserPromptRespondent = new MyPromptRespondent();
             doc.MailMerge.Execute(table);
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.ASK.docx");
-
-            Assert.AreEqual(" REF  MyAskField", fieldRef.GetFieldCode());
-            Assert.AreEqual(
-                " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"Response from within the field.\" \\o",
-                fieldAsk.GetFieldCode());
             TestFieldAsk(table, doc); //ExSkip
         }
 
         /// <summary>
-        /// IFieldUserPromptRespondent implementation that appends a line to the default response of an ASK field during a mail merge.
+        /// Prepends text to the default response of an ASK field during a mail merge.
         /// </summary>
         private class MyPromptRespondent : IFieldUserPromptRespondent
         {
@@ -1037,35 +1041,35 @@ namespace ApiExamples
             //ExFor:Fields.FieldAdvance.RightOffset
             //ExFor:Fields.FieldAdvance.UpOffset
             //ExFor:Fields.FieldAdvance.VerticalPosition
-            //ExSummary:Shows how to insert an advance field and edit its properties. 
+            //ExSummary:Shows how to insert an ADVANCE field, and edit its properties. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Write("This text is in its normal place.");
-            // Create an advance field using document builder
+
+            // Below are two ways of using the ADVANCE field to adjust the position of text that follows it.
+            // The effects of an ADVANCE field continue to be applied until the paragraph ends,
+            // or another ADVANCE field updates the offset/coordinate values.
+            // 1 -  Specify a directional offset:
             FieldAdvance field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
-
-            builder.Write("This text is moved up and to the right.");
-
             Assert.AreEqual(FieldType.FieldAdvance, field.Type); //ExSkip
             Assert.AreEqual(" ADVANCE ", field.GetFieldCode()); //ExSkip
-            // The second text that the builder added will now be moved
             field.RightOffset = "5";
             field.UpOffset = "5";
 
             Assert.AreEqual(" ADVANCE  \\r 5 \\u 5", field.GetFieldCode());
-            // If we want to move text in the other direction, and try do that by using negative values for the above field members, we will get an error in our document
-            // Instead, we need to specify a positive value for the opposite respective field directional variable
+
+            builder.Write("This text will be moved up and to the right.");
+            
             field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
             field.DownOffset = "5";
             field.LeftOffset = "100";
 
             Assert.AreEqual(" ADVANCE  \\d 5 \\l 100", field.GetFieldCode());
-            // We are still on one paragraph
-            Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
-            // Since we're setting horizontal and vertical positions next, ending the paragraph prevents the previous line from getting moved with the next one
+
             builder.Writeln("This text is moved down and to the left, overlapping the previous text.");
-            // This time we can also use negative values 
+
+            // 2 -  Move text to a position specified by coordinates:
             field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
             field.HorizontalPosition = "-100";
             field.VerticalPosition = "200";
