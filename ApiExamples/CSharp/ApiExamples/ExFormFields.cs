@@ -196,7 +196,7 @@ namespace ApiExamples
             Console.WriteLine(formFieldVisitor.GetText());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.FormField.docx");
+            doc.Save(ArtifactsDir + "FormFields.FormField.docx");
             TestFormField(doc); //ExSkip
         }
 
@@ -300,6 +300,82 @@ namespace ApiExamples
             Assert.AreEqual(TextFormFieldType.Regular, formFields[2].TextInputType);
             Assert.AreEqual(50, formFields[2].MaxLength);
             Assert.AreEqual("This value overrides the one we set during initialization", formFields[2].Result);
+        }
+
+        [Test]
+        public void DropDownItemCollection()
+        {
+            //ExStart
+            //ExFor:Fields.DropDownItemCollection
+            //ExFor:Fields.DropDownItemCollection.Add(String)
+            //ExFor:Fields.DropDownItemCollection.Clear
+            //ExFor:Fields.DropDownItemCollection.Contains(String)
+            //ExFor:Fields.DropDownItemCollection.Count
+            //ExFor:Fields.DropDownItemCollection.GetEnumerator
+            //ExFor:Fields.DropDownItemCollection.IndexOf(String)
+            //ExFor:Fields.DropDownItemCollection.Insert(Int32, String)
+            //ExFor:Fields.DropDownItemCollection.Item(Int32)
+            //ExFor:Fields.DropDownItemCollection.Remove(String)
+            //ExFor:Fields.DropDownItemCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to insert a combo box field, and edit the elements in its item collection.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a combo box, and then verify its collection of drop down items.
+            // In Microsoft Word, the user will be able to click the combo box,
+            // and then choose one of the items of text in the collection to display.
+            string[] items = { "One", "Two", "Three" };
+            FormField comboBoxField = builder.InsertComboBox("DropDown", items, 0);
+            DropDownItemCollection dropDownItems = comboBoxField.DropDownItems;
+
+            Assert.AreEqual(3, dropDownItems.Count);
+            Assert.AreEqual("One", dropDownItems[0]);
+            Assert.AreEqual(1, dropDownItems.IndexOf("Two"));
+            Assert.IsTrue(dropDownItems.Contains("Three"));
+
+            // There are two ways of adding a new item to an existing collection of drop down box items.
+            // 1 -  Append an item to the end of the collection:
+            dropDownItems.Add("Four");
+
+            // 2 -  Insert an item before another item at a specified index:
+            dropDownItems.Insert(3, "Three and a half");
+
+            Assert.AreEqual(5, dropDownItems.Count);
+
+            // Iterate over the collection and print every element.
+            using (IEnumerator<string> dropDownCollectionEnumerator = dropDownItems.GetEnumerator())
+                while (dropDownCollectionEnumerator.MoveNext())
+                    Console.WriteLine(dropDownCollectionEnumerator.Current);
+
+            // There are two ways of removing elements from a collection of drop down items.
+            // 1 -  Remove an item with contents equal to the passed string:
+            dropDownItems.Remove("Four");
+
+            // 2 -  Remove an item at an index:
+            dropDownItems.RemoveAt(3);
+
+            Assert.AreEqual(3, dropDownItems.Count);
+            Assert.IsFalse(dropDownItems.Contains("Three and a half"));
+            Assert.IsFalse(dropDownItems.Contains("Four"));
+
+            doc.Save(ArtifactsDir + "FormFields.DropDownItemCollection.docx");
+
+            // Empty the whole collection of drop down items.
+            dropDownItems.Clear();
+            //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+            dropDownItems = doc.Range.FormFields[0].DropDownItems;
+
+            Assert.AreEqual(0, dropDownItems.Count);
+
+            doc = new Document(ArtifactsDir + "FormFields.DropDownItemCollection.docx");
+            dropDownItems = doc.Range.FormFields[0].DropDownItems;
+
+            Assert.AreEqual(3, dropDownItems.Count);
+            Assert.AreEqual("One", dropDownItems[0]);
+            Assert.AreEqual("Two", dropDownItems[1]);
+            Assert.AreEqual("Three", dropDownItems[2]);
         }
     }
 }
