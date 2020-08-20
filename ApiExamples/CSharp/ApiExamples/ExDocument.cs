@@ -132,7 +132,7 @@ namespace ApiExamples
         }
 
 #if NET462 || NETCOREAPP2_1 || JAVA
-        [Test, Category("IgnoreOnJenkins")]
+        [Test, Category("IgnoreOnJenkins"), Category("SkipMono")]
         public void OpenType()
         {
             //ExStart
@@ -1621,7 +1621,7 @@ namespace ApiExamples
             textAbsorber.Visit(pdfDoc);
 
             Assert.AreEqual(showHiddenText ? 
-                    "This text is not hidden.\r\nThis text is hidden." : 
+                    $"This text is not hidden.{Environment.NewLine}This text is hidden." : 
                     "This text is not hidden.", textAbsorber.Text);
 #endif
         }
@@ -1655,8 +1655,8 @@ namespace ApiExamples
             textAbsorber.Visit(pdfDoc);
 
             Assert.AreEqual(showParagraphMarks ? 
-                    "Hello world!¶\r\nHello again!¶\r\n¶" : 
-                    "Hello world!\r\nHello again!", textAbsorber.Text);
+                    $"Hello world!¶{Environment.NewLine}Hello again!¶{Environment.NewLine}¶" : 
+                    $"Hello world!{Environment.NewLine}Hello again!", textAbsorber.Text);
 #endif
         }
 

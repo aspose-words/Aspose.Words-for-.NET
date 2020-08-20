@@ -65,8 +65,7 @@ namespace ApiExamples
             TestUtil.MailMergeMatchesArray(new[] { new[] { "James Bond", "MI5 Headquarters", "Milbank", "London" } }, doc, true);
         }
 
-        [Test]
-        [Category("SkipMono")]
+        [Test, Category("SkipMono")]
         public void ExecuteDataReader()
         {
             //ExStart
@@ -119,7 +118,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:MailMerge.ExecuteADO(Object)
         //ExSummary:Shows how to run a mail merge with data from an ADO dataset.
-        [Test] //ExSkip
+        [Test, Category("SkipMono")] //ExSkip
         public void ExecuteADO()
         {
             // Create a document that will be merged
@@ -169,7 +168,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegionsADO(Object,String)
         //ExSummary:Shows how to run a mail merge with regions, compiled with data from an ADO dataset.
-        [Test]
+        [Test, Category("SkipMono")] //ExSkip
         public void ExecuteWithRegionsADO()
         {
             // Create a document that will be merged

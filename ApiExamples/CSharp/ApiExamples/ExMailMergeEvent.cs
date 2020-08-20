@@ -351,8 +351,7 @@ namespace ApiExamples
         //ExFor:IFieldMergingCallback.ImageFieldMerging
         //ExFor:ImageFieldMergingArgs.ImageStream
         //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
-        [Test] //ExSkip
-        [Category("SkipMono")] //ExSkip
+        [Test, Category("SkipMono")] //ExSkip        
         public void ImageFromBlob()
         {
             Document doc = new Document(MyDir + "Mail merge destination - Northwind employees.docx");
