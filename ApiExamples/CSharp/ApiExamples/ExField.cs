@@ -1026,7 +1026,6 @@ namespace ApiExamples
             Assert.AreEqual("200", field.VerticalPosition);
         }
 
-
         [Test]
         public void FieldAddressBlock()
         {
@@ -1036,29 +1035,25 @@ namespace ApiExamples
             //ExFor:Fields.FieldAddressBlock.IncludeCountryOrRegionName
             //ExFor:Fields.FieldAddressBlock.LanguageId
             //ExFor:Fields.FieldAddressBlock.NameAndAddressFormat
-            //ExSummary:Shows how to build a field address block.
+            //ExSummary:Shows how to insert an ADDRESSBLOCK field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert a field address block
             FieldAddressBlock field = (FieldAddressBlock)builder.InsertField(FieldType.FieldAddressBlock, true);
 
-            // Initially our field is an empty address block field with null attributes
             Assert.AreEqual(" ADDRESSBLOCK ", field.GetFieldCode());
 
-            // Setting this to "2" will cause all countries/regions to be included, unless it is the one specified in the ExcludedCountryOrRegionName attribute
+            // Setting this to "2" will cause all countries/regions to be included,
+            // unless it is the one specified in the ExcludedCountryOrRegionName attribute.
             field.IncludeCountryOrRegionName = "2";
             field.FormatAddressOnCountryOrRegion = true;
             field.ExcludedCountryOrRegionName = "United States";
-
-            // Specify our own name and address format
             field.NameAndAddressFormat = "<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>";
 
-            // By default, the language ID will be set to that of the first character of the document
-            // In this case we will specify it to be English
-            field.LanguageId = "1033";
+            // By default, the language ID will be set to that of the first character of the document.
+            // We can set a culture for the field to format the result with like this.
+            field.LanguageId = new CultureInfo("en-US").LCID.ToString();
 
-            // Our field code has changed according to the attribute values that we set
             Assert.AreEqual(
                 " ADDRESSBLOCK  \\c 2 \\d \\e \"United States\" \\f \"<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>\" \\l 1033",
                 field.GetFieldCode());
@@ -1080,13 +1075,8 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:FieldCollection
-        //ExFor:FieldCollection.Clear
         //ExFor:FieldCollection.Count
         //ExFor:FieldCollection.GetEnumerator
-        //ExFor:FieldCollection.Item(Int32)
-        //ExFor:FieldCollection.Remove(Field)
-        //ExFor:FieldCollection.Remove(FieldStart)
-        //ExFor:FieldCollection.RemoveAt(Int32)
         //ExFor:FieldStart
         //ExFor:FieldStart.Accept(DocumentVisitor)
         //ExFor:FieldSeparator
@@ -1095,14 +1085,12 @@ namespace ApiExamples
         //ExFor:FieldEnd.Accept(DocumentVisitor)
         //ExFor:FieldEnd.HasSeparator
         //ExFor:Field.End
-        //ExFor:Field.Remove
         //ExFor:Field.Separator
         //ExFor:Field.Start
-        //ExSummary:Shows how to work with a document's field collection.
+        //ExSummary:Shows how to work with a collection of fields.
         [Test] //ExSkip
         public void FieldCollection()
         {
-            // Create a new document and insert some fields
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1114,11 +1102,13 @@ namespace ApiExamples
             builder.InsertField(" QUOTE \"Hello world!\" ");
             doc.UpdateFields();
 
-            // Get the collection that contains all the fields in a document
+            // This collection stores all of a document's fields.
             FieldCollection fields = doc.Range.Fields;
+
             Assert.AreEqual(6, fields.Count);
 
-            // Iterate over the field collection and print contents and type of every field using a custom visitor implementation
+            // Iterate over the field collection, and print contents and type
+            // of every field using a custom visitor implementation.
             FieldVisitor fieldVisitor = new FieldVisitor();
 
             using (IEnumerator<Field> fieldEnumerator = fields.GetEnumerator())
@@ -1139,23 +1129,7 @@ namespace ApiExamples
             }
 
             Console.WriteLine(fieldVisitor.GetText());
-
-            // Get a field to remove itself
-            fields[0].Remove();
-            Assert.AreEqual(5, fields.Count);
-
-            // Remove a field by reference
-            Field lastField = fields[3];
-            fields.Remove(lastField);
-            Assert.AreEqual(4, fields.Count);
-
-            // Remove a field by index
-            fields.RemoveAt(2);
-            Assert.AreEqual(3, fields.Count);
-
-            // Remove all fields from the document
-            fields.Clear();
-            Assert.AreEqual(0, fields.Count);
+            TestFieldCollection(fieldVisitor.GetText()); //ExSkip
         }
 
         /// <summary>
@@ -1212,6 +1186,65 @@ namespace ApiExamples
         }
         //ExEnd
 
+        private void TestFieldCollection(string fieldVisitorText)
+        {
+            Assert.True(fieldVisitorText.Contains("Found field: FieldDate"));
+            Assert.True(fieldVisitorText.Contains("Found field: FieldTime"));
+            Assert.True(fieldVisitorText.Contains("Found field: FieldRevisionNum"));
+            Assert.True(fieldVisitorText.Contains("Found field: FieldAuthor"));
+            Assert.True(fieldVisitorText.Contains("Found field: FieldSubject"));
+            Assert.True(fieldVisitorText.Contains("Found field: FieldQuote"));
+        }
+
+        [Test]
+        public void RemoveFields()
+        {
+            //ExStart
+            //ExFor:FieldCollection
+            //ExFor:FieldCollection.Count
+            //ExFor:FieldCollection.Clear
+            //ExFor:FieldCollection.Item(Int32)
+            //ExFor:FieldCollection.Remove(Field)
+            //ExFor:FieldCollection.Remove(FieldStart)
+            //ExFor:FieldCollection.RemoveAt(Int32)
+            //ExFor:Field.Remove
+            //ExSummary:Shows how to remove fields from a field collection.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField(" DATE \\@ \"dddd, d MMMM yyyy\" ");
+            builder.InsertField(" TIME ");
+            builder.InsertField(" REVNUM ");
+            builder.InsertField(" AUTHOR  \"John Doe\" ");
+            builder.InsertField(" SUBJECT \"My Subject\" ");
+            builder.InsertField(" QUOTE \"Hello world!\" ");
+            doc.UpdateFields();
+
+            // This collection stores all of a document's fields.
+            FieldCollection fields = doc.Range.Fields;
+
+            Assert.AreEqual(6, fields.Count);
+
+            // Below are four ways of removing fields from a field collection.
+            // 1 -  Get a field to remove itself.
+            fields[0].Remove();
+            Assert.AreEqual(5, fields.Count);
+
+            // 2 -  Get the collection to remove a field that we pass to its removal method.
+            Field lastField = fields[3];
+            fields.Remove(lastField);
+            Assert.AreEqual(4, fields.Count);
+
+            // 3 -  Remove a field from a collection at an index.
+            fields.RemoveAt(2);
+            Assert.AreEqual(3, fields.Count);
+
+            // 4 -  Remove all the fields from the collection at once.
+            fields.Clear();
+            Assert.AreEqual(0, fields.Count);
+            //ExEnd
+        }
+
         [Test]
         public void FieldCompare()
         {
@@ -1220,31 +1253,32 @@ namespace ApiExamples
             //ExFor:FieldCompare.ComparisonOperator
             //ExFor:FieldCompare.LeftExpression
             //ExFor:FieldCompare.RightExpression
-            //ExSummary:Shows how to insert a field that compares expressions.
+            //ExSummary:Shows how to compare expressions using a COMPARE field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a compare field using a document builder
             FieldCompare field = (FieldCompare)builder.InsertField(FieldType.FieldCompare, true);
-
-            // Construct a comparison statement
             field.LeftExpression = "3";
             field.ComparisonOperator = "<";
             field.RightExpression = "2";
+            field.Update();
 
-            // The compare field will print a "0" or "1" depending on the truth of its statement
-            // The result of this statement is false, so a "0" will be show up in the document
+            // The COMPARE field displays a "0", or a "1", depending on the truth of its statement.
+            // The result of this statement is false, so this field will display a "0".
             Assert.AreEqual(" COMPARE  3 < 2", field.GetFieldCode());
+            Assert.AreEqual("0", field.Result);
 
             builder.Writeln();
 
-            // Here a "1" will show up, because the statement is true
             field = (FieldCompare)builder.InsertField(FieldType.FieldCompare, true);
             field.LeftExpression = "5";
             field.ComparisonOperator = "=";
             field.RightExpression = "2 + 3";
+            field.Update();
 
+            // This field displays a "1" since the statement is true.
             Assert.AreEqual(" COMPARE  5 = \"2 + 3\"", field.GetFieldCode());
+            Assert.AreEqual("1", field.Result);
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.COMPARE.docx");
@@ -1279,27 +1313,27 @@ namespace ApiExamples
             //ExFor:FieldIf.RightExpression
             //ExFor:FieldIf.TrueText
             //ExFor:FieldIfComparisonResult
-            //ExSummary:Shows how to insert an if field.
+            //ExSummary:Shows how to insert an IF field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Write("Statement 1: ");
-
-            // Use document builder to insert an if field
             FieldIf field = (FieldIf)builder.InsertField(FieldType.FieldIf, true);
-
-            // The if field will output either the TrueText or FalseText string into the document, depending on the truth of the statement
-            // In this case, "0 = 1" is incorrect, so the output will be "False"
             field.LeftExpression = "0";
             field.ComparisonOperator = "=";
             field.RightExpression = "1";
+
+            // The IF field will display a string from either its "TrueText" attribute,
+            // or its "FalseText" attribute, depending on the truth of the statement that we have constructed.
             field.TrueText = "True";
             field.FalseText = "False";
+            field.Update();
 
+            // In this case, "0 = 1" is incorrect, so the displayed result will be "False".
             Assert.AreEqual(" IF  0 = 1 True False", field.GetFieldCode());
             Assert.AreEqual(FieldIfComparisonResult.False, field.EvaluateCondition());
+            Assert.AreEqual("False", field.Result);
 
-            // This time, the statement is correct, so the output will be "True"
             builder.Write("\nStatement 2: ");
             field = (FieldIf)builder.InsertField(FieldType.FieldIf, true);
             field.LeftExpression = "5";
@@ -1307,9 +1341,12 @@ namespace ApiExamples
             field.RightExpression = "2 + 3";
             field.TrueText = "True";
             field.FalseText = "False";
+            field.Update();
 
+            // This time the statement is correct, so the displayed result will be "True".
             Assert.AreEqual(" IF  5 = \"2 + 3\" True False", field.GetFieldCode());
             Assert.AreEqual(FieldIfComparisonResult.True, field.EvaluateCondition());
+            Assert.AreEqual("True", field.Result);
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.IF.docx");
@@ -1345,7 +1382,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The two fields we insert here will be automatically numbered 1 and 2
+            // AUTONUM fields display a number that increments at each AUTONUM field,
+            // which allows us to automatically number items similar to a numbered list.
+            // This field will display a number "1.".
             FieldAutoNum field = (FieldAutoNum)builder.InsertField(FieldType.FieldAutoNum, true);
             builder.Writeln("\tParagraph 1.");
 
@@ -1354,10 +1393,12 @@ namespace ApiExamples
             field = (FieldAutoNum)builder.InsertField(FieldType.FieldAutoNum, true);
             builder.Writeln("\tParagraph 2.");
 
-            // Leaving the FieldAutoNum.SeparatorCharacter field null will set the separator character to '.' by default
+            // The separator character, which appears in the field result immediately after the number,
+            // is a full stop by default. If we leave this attribute null, our second AUTONUM field will display "2." in the document.
             Assert.IsNull(field.SeparatorCharacter);
 
-            // The first character of the string entered here will be used as the separator character
+            // We can set this attribute to apply the first character of its string as the new separator character.
+            // In this case, our AUTONUM field will now display "2:".
             field.SeparatorCharacter = ":";
 
             Assert.AreEqual(" AUTONUM  \\s :", field.GetFieldCode());
@@ -1382,31 +1423,45 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set a filler paragraph string
-            const string loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+            const string fillerText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
                                       "\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
 
-            // In this case our AUTONUMLGL field will number our first paragraph as "1."
-            InsertNumberedClause(builder, "\tHeading 1", loremIpsum, StyleIdentifier.Heading1);
+            // AUTONUMLGL fields display a number that increments at each AUTONUMLGL field within its current heading level.
+            // These fields maintain a parallel count for each heading level,
+            // and each field also displays the AUTONUMLGL field counts for all heading levels below its own. 
+            // If the count for any heading level changes, the counts for all levels above that level are reset to 1.
+            // This allows us to organize our document in the form of an outline list.
+            // This is the first AUTONUMLGL field at a heading level of 1, so it will display a "1." in the document.
+            InsertNumberedClause(builder, "\tHeading 1", fillerText, StyleIdentifier.Heading1);
 
-            // Our heading style number will be 1 again, so this field will keep counting headings at a heading level of 1
-            InsertNumberedClause(builder, "\tHeading 2", loremIpsum, StyleIdentifier.Heading1);
+            // This is the second AUTONUMLGL field at a heading level of 1, so it will display a "2.".
+            InsertNumberedClause(builder, "\tHeading 2", fillerText, StyleIdentifier.Heading1);
 
-            // Our heading style is 2, setting the paragraph numbering depth to 2, setting this field's value to "2.1."
-            InsertNumberedClause(builder, "\tHeading 3", loremIpsum, StyleIdentifier.Heading2);
+            // This is the first AUTONUMLGL field at a heading level of 2,
+            // and the AUTONUMLGL count for the heading level below it is "2", so it will display a "2.1.".
+            InsertNumberedClause(builder, "\tHeading 3", fillerText, StyleIdentifier.Heading2);
 
-            // Our heading style is 3, so we are going deeper again to "2.1.1."
-            InsertNumberedClause(builder, "\tHeading 4", loremIpsum, StyleIdentifier.Heading3);
+            // This is the first AUTONUMLGL field at a heading level of 3. 
+            // Working in the same way as the field above, it will display "2.1.1.".
+            InsertNumberedClause(builder, "\tHeading 4", fillerText, StyleIdentifier.Heading3);
 
-            // Our heading style is 2, and the next field number at that level is "2.2."
-            InsertNumberedClause(builder, "\tHeading 5", loremIpsum, StyleIdentifier.Heading2);
+            // This field is at a heading level of 2, and its respective AUTONUMLGL count is at 2, so the field will display "2.2.".
+            InsertNumberedClause(builder, "\tHeading 5", fillerText, StyleIdentifier.Heading2);
+
+            // Incrementing the AUTONUMLGL count for a heading level below this one
+            // has reset the count for this level, so this field will display "2.2.1.".
+            InsertNumberedClause(builder, "\tHeading 6", fillerText, StyleIdentifier.Heading3);
 
             foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal))
             {
-                // By default, the separator will appear as "." in the document but here it is null
+                // The separator character, which appears in the field result immediately after the number,
+                // is a full stop by default. If we leave this attribute null,
+                // our last AUTONUMLGL field will display "2.2.1." in the document.
                 Assert.IsNull(field.SeparatorCharacter);
 
-                // Change the separator character and remove trailing separators
+                // Setting a custom separater character and removing the trailing period
+                // will change that field's appearance from "2.2.1." to "2:2:1".
+                // We will apply this to all the fields that we have created.
                 field.SeparatorCharacter = ":";
                 field.RemoveTrailingPeriod = true;
                 Assert.AreEqual(" AUTONUMLGL  \\s : \\e", field.GetFieldCode());
@@ -1417,17 +1472,16 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Get a document builder to insert a clause numbered by an AUTONUMLGL field.
+        /// Uses a document builder to insert a clause numbered by an AUTONUMLGL field.
         /// </summary>
         private static void InsertNumberedClause(DocumentBuilder builder, string heading, string contents, StyleIdentifier headingStyle)
         {
-            // This legal field will automatically number our clauses, taking heading style level into account
             builder.InsertField(FieldType.FieldAutoNumLegal, true);
             builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = headingStyle;
             builder.Writeln(heading);
 
-            // This text will belong to the auto num legal field above it
-            // It will collapse when the arrow next to the corresponding AUTONUMLGL field is clicked in MS Word
+            // This text will belong to the auto num legal field above it.
+            // It will collapse when we click the arrow next to the corresponding AUTONUMLGL field in Microsoft Word.
             builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = StyleIdentifier.BodyText;
             builder.Writeln(contents);
         }
@@ -1455,9 +1509,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The two fields that we insert here will be numbered 1 and 2
+            // AUTONUMOUT fields display a number that increments at each AUTONUMOUT field.
+            // Unlike AUTONUM fields, AUTONUMOUT fields use the outline numbering scheme,
+            // which we can define in Microsoft Word via Format -> Bullets & Numbering -> "Outline Numbered".
+            // This allows us to automatically number items similar to a numbered list.
+            // LISTNUM fields are a newer alternative to AUTONUMOUT fields.
+            // This field will display "1.".
             builder.InsertField(FieldType.FieldAutoNumOutline, true);
             builder.Writeln("\tParagraph 1.");
+
+            // This field will display "2.".
             builder.InsertField(FieldType.FieldAutoNumOutline, true);
             builder.Writeln("\tParagraph 2.");
 
