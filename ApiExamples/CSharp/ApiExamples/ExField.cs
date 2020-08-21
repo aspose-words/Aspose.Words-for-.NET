@@ -1427,18 +1427,18 @@ namespace ApiExamples
                                       "\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
 
             // AUTONUMLGL fields display a number that increments at each AUTONUMLGL field within its current heading level.
-            // These fields maintain a parallel count for each heading level,
+            // These fields maintain a separate count for each heading level,
             // and each field also displays the AUTONUMLGL field counts for all heading levels below its own. 
             // If the count for any heading level changes, the counts for all levels above that level are reset to 1.
             // This allows us to organize our document in the form of an outline list.
-            // This is the first AUTONUMLGL field at a heading level of 1, so it will display a "1." in the document.
+            // This is the first AUTONUMLGL field at a heading level of 1, so it will display "1." in the document.
             InsertNumberedClause(builder, "\tHeading 1", fillerText, StyleIdentifier.Heading1);
 
-            // This is the second AUTONUMLGL field at a heading level of 1, so it will display a "2.".
+            // This is the second AUTONUMLGL field at a heading level of 1, so it will display "2.".
             InsertNumberedClause(builder, "\tHeading 2", fillerText, StyleIdentifier.Heading1);
 
             // This is the first AUTONUMLGL field at a heading level of 2,
-            // and the AUTONUMLGL count for the heading level below it is "2", so it will display a "2.1.".
+            // and the AUTONUMLGL count for the heading level below it is "2", so it will display "2.1.".
             InsertNumberedClause(builder, "\tHeading 3", fillerText, StyleIdentifier.Heading2);
 
             // This is the first AUTONUMLGL field at a heading level of 3. 
@@ -1543,10 +1543,10 @@ namespace ApiExamples
             //ExFor:FieldOptions.BuiltInTemplatesPaths
             //ExFor:FieldGlossary
             //ExFor:FieldGlossary.EntryName
-            //ExSummary:Shows how to insert a building block into a document and display it with AUTOTEXT and GLOSSARY fields. 
+            //ExSummary:Shows how to display a building block with AUTOTEXT and GLOSSARY fields. 
             Document doc = new Document();
 
-            // Create a glossary document and add an AutoText building block
+            // Create a glossary document, and add an AutoText building block to it.
             doc.GlossaryDocument = new GlossaryDocument();
             BuildingBlock buildingBlock = new BuildingBlock(doc.GlossaryDocument);
             buildingBlock.Name = "MyBlock";
@@ -1556,7 +1556,7 @@ namespace ApiExamples
             buildingBlock.Behavior = BuildingBlockBehavior.Paragraph;
             doc.GlossaryDocument.AppendChild(buildingBlock);
 
-            // Create a source and add it as text content to our building block
+            // Create a source, and add it as text to our building block.
             Document buildingBlockSource = new Document();
             DocumentBuilder buildingBlockSourceBuilder = new DocumentBuilder(buildingBlockSource);
             buildingBlockSourceBuilder.Writeln("Hello World!");
@@ -1564,30 +1564,29 @@ namespace ApiExamples
             Node buildingBlockContent = doc.GlossaryDocument.ImportNode(buildingBlockSource.FirstSection, true);
             buildingBlock.AppendChild(buildingBlockContent);
 
-            // Create an advance field using document builder
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            FieldAutoText fieldAutoText = (FieldAutoText)builder.InsertField(FieldType.FieldAutoText, true);
+            // Set a file which contains parts that our document, or its attached template may not contain.
+            doc.FieldOptions.BuiltInTemplatesPaths = new[] { MyDir + "Busniess brochure.dotx" };
 
-            // Refer to our building block by name
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Below are two ways to use fields to display the contents of our building block.
+            // 1 -  Using an AUTOTEXT field:
+            FieldAutoText fieldAutoText = (FieldAutoText)builder.InsertField(FieldType.FieldAutoText, true);
             fieldAutoText.EntryName = "MyBlock";
 
             Assert.AreEqual(" AUTOTEXT  MyBlock", fieldAutoText.GetFieldCode());
-
-            // Put additional templates here
-            doc.FieldOptions.BuiltInTemplatesPaths = new[] { MyDir + "Busniess brochure.dotx" };
-
-            // We can also display our building block with a GLOSSARY field
+            
+            // 2 -  Using a GLOSSARY field:
             FieldGlossary fieldGlossary = (FieldGlossary)builder.InsertField(FieldType.FieldGlossary, true);
             fieldGlossary.EntryName = "MyBlock";
 
             Assert.AreEqual(" GLOSSARY  MyBlock", fieldGlossary.GetFieldCode());
 
-            // The text content of our building block will be visible in the output
 			doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.AUTOTEXT.dotx");
+            doc.Save(ArtifactsDir + "Field.AUTOTEXT.GLOSSARY.dotx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Field.AUTOTEXT.dotx");
+            doc = new Document(ArtifactsDir + "Field.AUTOTEXT.GLOSSARY.dotx");
             
             Assert.That(doc.FieldOptions.BuiltInTemplatesPaths, Is.Empty);
 
@@ -1607,27 +1606,29 @@ namespace ApiExamples
         //ExFor:Fields.FieldAutoTextList.EntryName
         //ExFor:Fields.FieldAutoTextList.ListStyle
         //ExFor:Fields.FieldAutoTextList.ScreenTip
-        //ExSummary:Shows how to use an AutoTextList field to select from a list of AutoText entries.
+        //ExSummary:Shows how to use an AUTOTEXTLIST field to select from a list of AutoText entries.
         [Test] //ExSkip
         public void FieldAutoTextList()
         {
             Document doc = new Document();
 
-            // Create a glossary document and populate it with auto text entries that our auto text list will let us select from
+            // Create a glossary document, and populate it with auto text entries.
             doc.GlossaryDocument = new GlossaryDocument();
             AppendAutoTextEntry(doc.GlossaryDocument, "AutoText 1", "Contents of AutoText 1");
             AppendAutoTextEntry(doc.GlossaryDocument, "AutoText 2", "Contents of AutoText 2");
             AppendAutoTextEntry(doc.GlossaryDocument, "AutoText 3", "Contents of AutoText 3");
 
-            // Insert an auto text list using a document builder and change its properties
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create an AUTOTEXTLIST field, and set the text that the field will display in Microsoft Word.
+            // Set the text to prompt the user to right click this field to select an AutoText building block,
+            // whose contents the field will then display.
             FieldAutoTextList field = (FieldAutoTextList)builder.InsertField(FieldType.FieldAutoTextList, true);
-            // This is the text that will be visible in the document
-            field.EntryName = "Right click here to pick an AutoText block";
+            field.EntryName = "Right click here to select an AutoText block";
             field.ListStyle = "Heading 1";
             field.ScreenTip = "Hover tip text for AutoTextList goes here";
 
-            Assert.AreEqual(" AUTOTEXTLIST  \"Right click here to pick an AutoText block\" " +
+            Assert.AreEqual(" AUTOTEXTLIST  \"Right click here to select an AutoText block\" " +
                             "\\s \"Heading 1\" " +
                             "\\t \"Hover tip text for AutoTextList goes here\"", field.GetFieldCode());
 
@@ -1636,24 +1637,21 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Create an AutoText entry and add it to a glossary document.
+        /// Create an AutoText-type building block, and add it to a glossary document.
         /// </summary>
         private static void AppendAutoTextEntry(GlossaryDocument glossaryDoc, string name, string contents)
         {
-            // Create building block and set it up as an auto text entry
             BuildingBlock buildingBlock = new BuildingBlock(glossaryDoc);
             buildingBlock.Name = name;
             buildingBlock.Gallery = BuildingBlockGallery.AutoText;
             buildingBlock.Category = "General";
             buildingBlock.Behavior = BuildingBlockBehavior.Paragraph;
 
-            // Add content to the building block
             Section section = new Section(glossaryDoc);
             section.AppendChild(new Body(glossaryDoc));
             section.Body.AppendParagraph(contents);
             buildingBlock.AppendChild(section);
 
-            // Add auto text entry to glossary document
             glossaryDoc.AppendChild(buildingBlock);
         }
         //ExEnd
@@ -1673,9 +1671,9 @@ namespace ApiExamples
             FieldAutoTextList field = (FieldAutoTextList)doc.Range.Fields[0];
 
             TestUtil.VerifyField(FieldType.FieldAutoTextList,
-                " AUTOTEXTLIST  \"Right click here to pick an AutoText block\" \\s \"Heading 1\" \\t \"Hover tip text for AutoTextList goes here\"",
+                " AUTOTEXTLIST  \"Right click here to select an AutoText block\" \\s \"Heading 1\" \\t \"Hover tip text for AutoTextList goes here\"",
                 string.Empty, field);
-            Assert.AreEqual("Right click here to pick an AutoText block", field.EntryName);
+            Assert.AreEqual("Right click here to select an AutoText block", field.EntryName);
             Assert.AreEqual("Heading 1", field.ListStyle);
             Assert.AreEqual("Hover tip text for AutoTextList goes here", field.ScreenTip);
         }
@@ -1693,51 +1691,55 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a custom greeting field with document builder along with some content
+            // Create a generic greeting using a GREETINGLINE field, and some text after it.
             FieldGreetingLine field = (FieldGreetingLine)builder.InsertField(FieldType.FieldGreetingLine, true);
             builder.Writeln("\n\n\tThis is your custom greeting, created programmatically using Aspose Words!");
 
-            // This array contains strings that correspond to column names in the data table that we will mail merge into our document
+            // A GREETINGLINE field accepts values from a data source during a mail merge, like a MERGEFIELD.
+            // It can also format the way in which the data from the source
+            // is written in its place once the mail merge is complete.
+            // The field names collection corresponds to the columns from the data source
+            // that the field will take values from.
             Assert.AreEqual(0, field.GetFieldNames().Length);
 
-            // To populate that array, we need to specify a format for our greeting line
+            // To populate that array, we need to specify a format for our greeting line.
             field.NameFormat = "<< _BEFORE_ Dear >><< _TITLE0_ >><< _LAST0_ >><< _AFTER_ ,>> ";
 
-            // In this case, our greeting line's field names array now has "Courtesy Title" and "Last Name"
+            // Now, our field will accept values from these two columns in the data source.
+            Assert.AreEqual("Courtesy Title", field.GetFieldNames()[0]);
+            Assert.AreEqual("Last Name", field.GetFieldNames()[1]);
             Assert.AreEqual(2, field.GetFieldNames().Length);
 
-            // This string will cover any cases where the data in the data table is incorrect by substituting the malformed name with a string
+            // This string will cover any cases where the data in the data table is invalid
+            // by substituting the malformed name with a string.
             field.AlternateText = "Sir or Madam";
 
-            // We can set the language ID here too
-            field.LanguageId = "1033";
+            // Set a locale to format the result with.
+            field.LanguageId = new CultureInfo("en-US").LCID.ToString();
 
             Assert.AreEqual(" GREETINGLINE  \\f \"<< _BEFORE_ Dear >><< _TITLE0_ >><< _LAST0_ >><< _AFTER_ ,>> \" \\e \"Sir or Madam\" \\l 1033", 
                 field.GetFieldCode());
 
-            // Create a source table for our mail merge that has columns that our greeting line will look for
+            // Create a data table with columns whose names match elements
+            // from the field's field names collection, and then carry out the mail merge.
             DataTable table = new DataTable("Employees");
             table.Columns.Add("Courtesy Title");
             table.Columns.Add("First Name");
             table.Columns.Add("Last Name");
             table.Rows.Add("Mr.", "John", "Doe");
             table.Rows.Add("Mrs.", "Jane", "Cardholder");
-            // This row has an invalid value in the Courtesy Title column, so our greeting will default to the alternate text
+
+            // This row has an invalid value in the Courtesy Title column, so our greeting will default to the alternate text.
             table.Rows.Add("", "No", "Name");
 
             doc.MailMerge.Execute(table);
 
-            doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.GREETINGLINE.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "Field.GREETINGLINE.docx");
-
             Assert.That(doc.Range.Fields, Is.Empty);
             Assert.AreEqual("Dear Mr. Doe,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!\r" +
                             "\fDear Mrs. Cardholder,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!\r" +
-                            "\fDear Sir or Madam,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!", 
+                            "\fDear Sir or Madam,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!",
                 doc.GetText().Trim());
+            //ExEnd
         }
 
         [Test]
@@ -1753,43 +1755,56 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a list num field using a document builder
+            // LISTNUM fields display a number that increments at each LISTNUM field.
+            // These fields also have a variety of options that allow us to use them to emulate numbered lists.
             FieldListNum field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
 
-            // Lists start counting at 1 by default, but we can change this number at any time
-            // In this case, we will do a zero-based count
+            // Lists start counting at 1 by default, but we can set this number to a different value, such as 0.
+            // This field will display "0)".
             field.StartingNumber = "0";
             builder.Writeln("Paragraph 1");
 
             Assert.AreEqual(" LISTNUM  \\s 0", field.GetFieldCode());
 
-            // Placing several list num fields in one paragraph increases the list level instead of the current number,
-            // in this case resulting in "1)a)i)", list level 3
+            // LISTNUM fields maintain separate counts for each list level. 
+            // Inserting a LISTNUM field in the same paragraph as another LISTNUM field
+            // increases the list level instead of the count.
+            // The next field will continue the count we started above, and will have a value of 1 at list level 1.
             builder.InsertField(FieldType.FieldListNum, true);
+
+            // This field will start a count at list level 2, and will display a value of 1.
             builder.InsertField(FieldType.FieldListNum, true);
+
+            // This field will start a count at list level 3, and will display a value of 1.
+            // Different list levels have different formatting,
+            // so these fields combined will display a value of "1)a)i)".
             builder.InsertField(FieldType.FieldListNum, true);
             builder.Writeln("Paragraph 2");
 
-            // The list level resets with new paragraphs, so to keep counting at a desired list level, we need to set the ListLevel property accordingly
+            // The next LISTNUM field that we insert will continue the count at the list level
+            // that the previous LISTNUM field was on.
+            // We can use the "ListLevel" attribute to jump to a different list level.
+            // If this LISTNUM field stayed on list level 3, it would display "ii)",
+            // but, since we have moved it to list level 2, it carries on the count at that level and displays "b)".
             field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
-            field.ListLevel = "3";
+            field.ListLevel = "2";
             builder.Writeln("Paragraph 3");
 
-            Assert.AreEqual(" LISTNUM  \\l 3", field.GetFieldCode());
+            Assert.AreEqual(" LISTNUM  \\l 2", field.GetFieldCode());
 
+            // We can set the ListName attribute to get the field to emulate a different AUTONUM field type.
+            // "NumberDefault" emulates AUTONUM, "OutlineDefault" emulates AUTONUMOUT, and "LegalDefault" emulates AUTONUMLGL fields.
+            // The "OutlineDefault" list name with 1 as the starting number will result in the field displaying "I.".
             field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
-
-            // Setting this property to this particular value will emulate the AUTONUMOUT field
-            field.ListName = "OutlineDefault";
-
-            Assert.IsTrue(field.HasListName);
-            Assert.AreEqual(" LISTNUM  OutlineDefault", field.GetFieldCode());
-
-            // Start counting from 1
             field.StartingNumber = "1";
+            field.ListName = "OutlineDefault";
             builder.Writeln("Paragraph 4");
 
-            // Our fields keep track of the count automatically, but the ListName needs to be set with each new field
+            Assert.IsTrue(field.HasListName);
+            Assert.AreEqual(" LISTNUM  OutlineDefault \\s 1", field.GetFieldCode());
+
+            // The ListName does not carry over from the previous field, and needs to be set each time.
+            // This field continues the count with the different list name, and displays "II.".
             field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
             field.ListName = "OutlineDefault";
             builder.Writeln("Paragraph 5");
@@ -1823,9 +1838,9 @@ namespace ApiExamples
 
             field = (FieldListNum)doc.Range.Fields[4];
 
-            TestUtil.VerifyField(FieldType.FieldListNum, " LISTNUM  \\l 3", string.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldListNum, " LISTNUM  \\l 2", string.Empty, field);
             Assert.Null(field.StartingNumber);
-            Assert.AreEqual("3", field.ListLevel);
+            Assert.AreEqual("2", field.ListLevel);
             Assert.False(field.HasListName);
             Assert.Null(field.ListName);
 
@@ -1852,7 +1867,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create data source for our merge fields
+            // Create a data table to be used as a mail merge data source.
             DataTable table = new DataTable("Employees");
             table.Columns.Add("Courtesy Title");
             table.Columns.Add("First Name");
@@ -1860,31 +1875,30 @@ namespace ApiExamples
             table.Rows.Add("Mr.", "John", "Doe");
             table.Rows.Add("Mrs.", "Jane", "Cardholder");
 
-            // Insert a merge field that corresponds to one of our columns and put text before and after it
+            // Insert a MERGEFIELD with a FieldName attribute set to the name of a column in the data source.
             FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
             fieldMergeField.FieldName = "Courtesy Title";
             fieldMergeField.IsMapped = true;
             fieldMergeField.IsVerticalFormatting = false;
+
+            // We can apply text before and after the value that this field accepts when the merge takes place.
             fieldMergeField.TextBefore = "Dear ";
             fieldMergeField.TextAfter = " ";
 
             Assert.AreEqual(" MERGEFIELD  \"Courtesy Title\" \\m \\b \"Dear \" \\f \" \"", fieldMergeField.GetFieldCode());
 
-            // Insert another merge field for another column
-            // We do not need to use every column to perform a mail merge
+            // Insert another MERGEFIELD for a different column in the data source.
             fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
             fieldMergeField.FieldName = "Last Name";
             fieldMergeField.TextAfter = ":";
 
             doc.UpdateFields();
             doc.MailMerge.Execute(table);
-            doc.Save(ArtifactsDir + "Field.MERGEFIELD.docx");
+
+            Assert.AreEqual("Dear Mr. Doe:\u000cDear Mrs. Cardholder:", doc.GetText().Trim());
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Field.MERGEFIELD.docx");
-
             Assert.That(doc.Range.Fields, Is.Empty);
-            Assert.AreEqual("Dear Mr. Doe:\u000cDear Mrs. Cardholder:", doc.GetText().Trim());
         }
 
         //ExStart
