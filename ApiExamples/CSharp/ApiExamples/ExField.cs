@@ -1915,35 +1915,40 @@ namespace ApiExamples
         //ExFor:FieldToc.UpdatePageNumbers
         //ExFor:FieldToc.UseParagraphOutlineLevel
         //ExFor:FieldOptions.CustomTocStyleSeparator
-        //ExSummary:Shows how to insert a TOC and populate it with entries based on heading styles.
+        //ExSummary:Shows how to insert a TOC, and populate it with entries based on heading styles.
         [Test] //ExSkip
         public void FieldToc()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The table of contents we will insert will accept entries that are only within the scope of this bookmark
             builder.StartBookmark("MyBookmark");
 
-            // Insert a list num field using a document builder
+            // Insert a TOC field, which will compile all headings into a table of contents.
+            // For each heading, this field will create a line with the text in that heading style to the left,
+            // and the page the heading appears on to the right.
             FieldToc field = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
 
-            // Limit possible TOC entries to only those within the bookmark we name here
+            // Use the BookmarkName attribute to only list headings
+            // that appear within the bounds of a bookmark with the "MyBookmark" name.
             field.BookmarkName = "MyBookmark";
 
-            // Normally paragraphs with a "Heading n" style will be the only ones that will be added to a TOC as entries
-            // We can set this attribute to include other styles, such as "Quote" and "Intense Quote" in this case
+            // Text with a built-in heading style, such as "Heading 1", applied to it will count as a heading.
+            // We can name additional styles to be picked up as headings by the TOC in this attribute,
+            // as well as their TOC levels.
             field.CustomStyles = "Quote; 6; Intense Quote; 7";
 
-            // Styles are normally separated by a comma (",") but we can use this property to set a custom delimiter
+            // By default, Styles/TOC levels are separated in the CustomStyles attribute by a comma,
+            // but we can set a custom delimiter in this attribute.
             doc.FieldOptions.CustomTocStyleSeparator = ";";
 
-            // Filter out any headings that are outside this range
+            // Configure the field to exclude any headings that have TOC levels outside of this range.
             field.HeadingLevelRange = "1-3";
 
-            // Headings in this range will not display their page number in their TOC entry
+            // The TOC will not display the page numbers of headings whose TOC levels are within this range.
             field.PageNumberOmittingLevelRange = "2-5";
 
+            // Set a custom string that will be placed between every heading and its page number.
             field.EntrySeparator = "-";
             field.InsertHyperlinks = true;
             field.HideInWebLayout = false;
@@ -1957,17 +1962,17 @@ namespace ApiExamples
             InsertNewPageWithHeading(builder, "Third entry", "Quote");
             InsertNewPageWithHeading(builder, "Fourth entry", "Intense Quote");
 
-            // These two headings will have the page numbers omitted because they are within the "2-5" range
+            // These two headings will have the page numbers omitted because they are within the "2-5" range.
             InsertNewPageWithHeading(builder, "Fifth entry", "Heading 2");
             InsertNewPageWithHeading(builder, "Sixth entry", "Heading 3");
 
-            // This entry will be omitted because "Heading 4" is outside of the "1-3" range we set earlier
+            // This entry will be omitted because "Heading 4" is outside of the "1-3" range that we have set earlier.
             InsertNewPageWithHeading(builder, "Seventh entry", "Heading 4");
 
             builder.EndBookmark("MyBookmark");
             builder.Writeln("Paragraph text.");
 
-            // This entry will be omitted because it is outside the bookmark specified by the TOC
+            // This entry will be omitted because it is outside the bookmark specified by the TOC.
             InsertNewPageWithHeading(builder, "Eighth entry", "Heading 1");
 
             Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote; 6; Intense Quote; 7\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", field.GetFieldCode());
@@ -1975,7 +1980,6 @@ namespace ApiExamples
             field.UpdatePageNumbers();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TOC.docx");
-            
             TestFieldToc(doc); //ExSkip
         }
 
@@ -2025,33 +2029,34 @@ namespace ApiExamples
         //ExFor:FieldTC.Text
         //ExFor:FieldTC.TypeIdentifier
         //ExFor:FieldTC.EntryLevel
-        //ExSummary:Shows how to insert a TOC field and filter which TC fields end up as entries.
+        //ExSummary:Shows how to insert a TOC field, and filter which TC fields end up as entries.
         [Test] //ExSkip
         public void FieldTocEntryIdentifier()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.StartBookmark("MyBookmark");
-
-            // Insert a list num field using a document builder
+            // Insert a TOC field, which will compile all TC fields into a table of contents.
             FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+
+            // Configure the field to only pick up TC entries of the "A" type,
+            // and of an entry level between 1 and 3.
             fieldToc.EntryIdentifier = "A";
             fieldToc.EntryLevelRange = "1-3";
 
             Assert.AreEqual(" TOC  \\f A \\l 1-3", fieldToc.GetFieldCode());
 
-            // These two entries will appear in the table
+            // These two entries will appear in the table.
             builder.InsertBreak(BreakType.PageBreak);
             InsertTocEntry(builder, "TC field 1", "A", "1");
             InsertTocEntry(builder, "TC field 2", "A", "2");
 
             Assert.AreEqual(" TC  \"TC field 1\" \\n \\f A \\l 1", doc.Range.Fields[1].GetFieldCode());
 
-            // These two entries will be omitted because of an incorrect type identifier
+            // This entry will be omitted from the table because it has a type that is different from "A".
             InsertTocEntry(builder, "TC field 3", "B", "1");
 
-            // ...and an out-of-range entry level
+            // This entry will be omitted from the table because it has an entry level outside of the 1-3 range.
             InsertTocEntry(builder, "TC field 4", "A", "5");
             
             doc.UpdateFields();
@@ -2060,7 +2065,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Insert a table of contents entry via a document builder.
+        /// Use a document builder to insert a TC field.
         /// </summary>
         public void InsertTocEntry(DocumentBuilder builder, string text, string typeIdentifier, string entryLevel)
         {
