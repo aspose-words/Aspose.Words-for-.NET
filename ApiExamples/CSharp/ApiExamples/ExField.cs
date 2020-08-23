@@ -2133,14 +2133,25 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a TOC field that creates a table of contents entry for each paragraph
-            // that contains a SEQ field with a sequence identifier of "MySequence" with the number of the page which contains that field
+            // A TOC field can create an entry in its table of contents for every SEQ field in the document.
+            // Each entry contains the paragraph that contains the SEQ field,
+            // and the number of the page that they appear on.
             FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+
+            // SEQ fields and display a count that increments at each SEQ field.
+            // These fields also maintain separate counts for each named sequence,
+            // identified by the "SequenceIdentifier" attribute of the SEQ field.
+            // Use the "TableOfFiguresLabel" attribute to name a main sequence for the TOC.
+            // Now, this TOC will only create entries out of SEQ fields
+            // if their "SequenceIdentifier" is set to "MySequence".
             fieldToc.TableOfFiguresLabel = "MySequence";
 
-            // This identifier is for a parallel SEQ sequence,
-            // the number that it is at will be displayed in front of the page number of the paragraph with the other sequence,
-            // separated by a sequence separator character also defined below
+            // We can name another SEQ sequence in the "PrefixedSequenceIdentifier" attribute.
+            // SEQ fields from this prefix sequence will not show up as separate entries. 
+            // Instead, each TOC entry will display the number that the prefix sequence count
+            // is currently on at each SEQ field from the main sequence.
+            // We can specify a separator that each TOC entry will place between the prefix sequence number,
+            // and the main sequence SEQ field's page number.
             fieldToc.PrefixedSequenceIdentifier = "PrefixSequence";
             fieldToc.SequenceSeparator = ">";
 
@@ -2148,20 +2159,40 @@ namespace ApiExamples
 
             builder.InsertBreak(BreakType.PageBreak);
 
-            // Insert a SEQ field to increment the sequence counter of "PrefixSequence" to 1
-            // Since this paragraph doesn't contain a SEQ field of the "MySequence" sequence,
-            // this will not appear as an entry in the TOC
+            // There are two ways of using SEQ fields to populate this TOC.
+            // 1 -  Inserting a SEQ field that belongs to the TOC's prefix sequence:
+            // This field will increment the SEQ sequence count for the "PrefixSequence" by 1.
+            // Since this field does not belong to the main sequence "MySequence" identified
+            // by the "TableOfFiguresLabel" attribute of the TOC, it will not show up as an entry.
             FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "PrefixSequence";
             builder.InsertParagraph();
 
             Assert.AreEqual(" SEQ  PrefixSequence", fieldSeq.GetFieldCode());
 
-            // Insert two SEQ fields, one for each of the sequences we defined above
-            // The "MySequence" SEQ appears on page 2 and the "PrefixSequence" is at number 1 in this paragraph,
-            // which means that our TOC will display this as an entry with the contents on the left and "1>2" on the right
+            // 2 -  Inserting a SEQ field that belongs to the TOC's main sequence:
+            // This SEQ field will create an entry in the TOC.
+            // The TOC entry will contain the paragraph that the SEQ field is in,
+            // as well as the number of the page that it appears on.
+            // This entry will also display the count that the prefix sequence is currently at,
+            // separated from the page number by the value in the TOC's SeqenceSeparator attribute.
+            // The "PrefixSequence" count is at 1, this SEQ field, which is from the main sequence is on page 2,
+            // and the separator is ">", so entry will display "1>2".
             builder.Write("First TOC entry, MySequence #");
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "MySequence";
+
+            Assert.AreEqual(" SEQ  MySequence", fieldSeq.GetFieldCode());
+
+            // Insert a page, advance the prefix sequence by 2, and insert a SEQ field which will create a TOC entry afterwards.
+            // The prefix sequence is now at 2, and the main sequence SEQ field is on page 3,
+            // so the TOC entry will display "2>3" at its page count.
+            builder.InsertBreak(BreakType.PageBreak);
+            fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            fieldSeq.SequenceIdentifier = "PrefixSequence";
+            builder.InsertParagraph();
+            fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
+            builder.Write("Second TOC entry, MySequence #");
             fieldSeq.SequenceIdentifier = "MySequence";
 
             doc.UpdateFields();
@@ -2170,12 +2201,14 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.TOC.SEQ.docx");
 
-            Assert.AreEqual(5, doc.Range.Fields.Count);
+            Assert.AreEqual(9, doc.Range.Fields.Count);
 
             fieldToc = (FieldToc)doc.Range.Fields[0];
-
-            TestUtil.VerifyField(FieldType.FieldTOC, " TOC  \\c MySequence \\s PrefixSequence \\d >", 
-                "First TOC entry, MySequence #1\t\u0013 SEQ PrefixSequence _Toc256000000 \\* ARABIC \u00141\u0015>\u0013 PAGEREF _Toc256000000 \\h \u00142\u0015\r", fieldToc);
+            Console.WriteLine(fieldToc.DisplayResult);
+            TestUtil.VerifyField(FieldType.FieldTOC, " TOC  \\c MySequence \\s PrefixSequence \\d >",
+                "First TOC entry, MySequence #12\t\u0013 SEQ PrefixSequence _Toc256000000 \\* ARABIC \u00141\u0015>\u0013 PAGEREF _Toc256000000 \\h \u00142\u0015\r2" +
+                "Second TOC entry, MySequence #\t\u0013 SEQ PrefixSequence _Toc256000001 \\* ARABIC \u00142\u0015>\u0013 PAGEREF _Toc256000001 \\h \u00143\u0015\r", 
+                fieldToc);
             Assert.AreEqual("MySequence", fieldToc.TableOfFiguresLabel);
             Assert.AreEqual("PrefixSequence", fieldToc.PrefixedSequenceIdentifier);
             Assert.AreEqual(">", fieldToc.SequenceSeparator);
@@ -2194,12 +2227,33 @@ namespace ApiExamples
 
             fieldSeq = (FieldSeq)doc.Range.Fields[3];
 
+            TestUtil.VerifyField(FieldType.FieldSequence, " SEQ PrefixSequence _Toc256000001 \\* ARABIC ", "2", fieldSeq);
+            Assert.AreEqual("PrefixSequence", fieldSeq.SequenceIdentifier);
+
+            fieldPageRef = (FieldPageRef)doc.Range.Fields[4];
+
+            TestUtil.VerifyField(FieldType.FieldPageRef, " PAGEREF _Toc256000001 \\h ", "3", fieldPageRef);
+            Assert.AreEqual("PrefixSequence", fieldSeq.SequenceIdentifier);
+            Assert.AreEqual("_Toc256000001", fieldPageRef.BookmarkName);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[5];
+
             TestUtil.VerifyField(FieldType.FieldSequence, " SEQ  PrefixSequence", "1", fieldSeq);
             Assert.AreEqual("PrefixSequence", fieldSeq.SequenceIdentifier);
 
-            fieldSeq = (FieldSeq)doc.Range.Fields[4];
+            fieldSeq = (FieldSeq)doc.Range.Fields[6];
 
             TestUtil.VerifyField(FieldType.FieldSequence, " SEQ  MySequence", "1", fieldSeq);
+            Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[7];
+
+            TestUtil.VerifyField(FieldType.FieldSequence, " SEQ  PrefixSequence", "2", fieldSeq);
+            Assert.AreEqual("PrefixSequence", fieldSeq.SequenceIdentifier);
+
+            fieldSeq = (FieldSeq)doc.Range.Fields[8];
+
+            TestUtil.VerifyField(FieldType.FieldSequence, " SEQ  MySequence", "2", fieldSeq);
             Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
         }
 
@@ -2212,43 +2266,58 @@ namespace ApiExamples
             //ExFor:FieldSeq.ResetHeadingLevel
             //ExFor:FieldSeq.ResetNumber
             //ExFor:FieldSeq.SequenceIdentifier
-            //ExSummary:Shows how to reset numbering of a SEQ field.
+            //ExSummary:Shows create numbering using SEQ fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set the current number of the sequence to 100
+            // SEQ fields and display a count that increments at each SEQ field.
+            // These fields also maintain separate counts for each named sequence,
+            // identified by the "SequenceIdentifier" attribute of the SEQ field.
+            // Insert a SEQ field which will display the current count value of "MySequence",
+            // after setting it to 100.
             builder.Write("#");
             FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
             fieldSeq.ResetNumber = "100";
+            fieldSeq.Update();
 
             Assert.AreEqual(" SEQ  MySequence \\r 100", fieldSeq.GetFieldCode());
+            Assert.AreEqual("100", fieldSeq.Result);
 
+            // Display the next number in this sequence with another SEQ field.
             builder.Write(", #");
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
+            fieldSeq.Update();
 
-            // Insert a heading
+            Assert.AreEqual("101", fieldSeq.Result);
+
+            // Insert a level 1 heading.
             builder.InsertBreak(BreakType.ParagraphBreak);
             builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
             builder.Writeln("This level 1 heading will reset MySequence to 1");
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
 
-            // Reset the sequence back to 1 when we encounter a heading of a specified level, which in this case is "1", same as the heading above
+            // Insert another SEQ field from the same sequence, and configure it
+            // to reset the count at every heading with a level of 1, such as the heading we have created above.
             builder.Write("\n#");
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
             fieldSeq.ResetHeadingLevel = "1";
+            fieldSeq.Update();
 
             Assert.AreEqual(" SEQ  MySequence \\s 1", fieldSeq.GetFieldCode());
+            Assert.AreEqual("1", fieldSeq.Result);
 
-            // Move to the next number
+            // Move to the next number of this sequence.
             builder.Write(", #");
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
             fieldSeq.InsertNextNumber = true;
+            fieldSeq.Update();
 
             Assert.AreEqual(" SEQ  MySequence \\n", fieldSeq.GetFieldCode());
+            Assert.AreEqual("2", fieldSeq.Result);
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.SEQ.ResetNumbering.docx");
@@ -2290,38 +2359,57 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // This TOC takes in all SEQ fields with "MySequence" inside "TOCBookmark"
+            // A TOC field can create an entry in its table of contents for every SEQ field in the document.
+            // Each entry contains the paragraph that contains the SEQ field,
+            // Each entry contains the paragraph that contains the SEQ field,
+            // and the number of the page that they appear on.
             FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+
+            // Configure this TOC field to only pick up SEQ fields that are within the bounds of a bookmark
+            // named "TOCBookmark", and also have a SequenceIdentifier attribute with a value of "MySequence".
             fieldToc.TableOfFiguresLabel = "MySequence";
             fieldToc.BookmarkName = "TOCBookmark";
             builder.InsertBreak(BreakType.PageBreak);
 
             Assert.AreEqual(" TOC  \\c MySequence \\b TOCBookmark", fieldToc.GetFieldCode());
 
+            // SEQ fields and display a count that increments at each SEQ field.
+            // These fields also maintain separate counts for each named sequence,
+            // identified by the "SequenceIdentifier" attribute of the SEQ field.
+            // Insert a SEQ field which will not show up in the TOC.
+            // While it does have a sequence identifier that matches the TOC's
+            // TableOfFiguresLabel attribute, it is outside the bounds of the TOC's bookmark,
+            // designated by the "BookmarkName" attribute.
             builder.Write("MySequence #");
             FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
-            builder.Writeln(", won't show up in the TOC because it is outside of the bookmark.");
+            builder.Writeln(", will not show up in the TOC because it is outside of the bookmark.");
 
             builder.StartBookmark("TOCBookmark");
 
+            // This SEQ field's sequence matches the TOC's "TableOfFiguresLabel" attribute, and is within the bounds of the bookmark.
+            // Its paragraph will show up in the TOC as an entry.
             builder.Write("MySequence #");
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
             builder.Writeln(", will show up in the TOC next to the entry for the above caption.");
 
+            // This SEQ field's sequence does not match the TOC's "TableOfFiguresLabel" attribute,
+            // and is within the bounds of the bookmark. Its paragraph will not show up in the TOC as an entry.
             builder.Write("MySequence #");
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "OtherSequence";
-            builder.Writeln(", won't show up in the TOC because it's from a different sequence identifier.");
+            builder.Writeln(", will not show up in the TOC because it's from a different sequence identifier.");
 
-            // The contents of the bookmark we reference here will not appear at the SEQ field, but will appear in the corresponding TOC entry
+            // This SEQ field's sequence matches the TOC's "TableOfFiguresLabel" attribute, and is within the bounds of the bookmark.
+            // This field also references another bookmark. The contents of that bookmark will appear in the TOC entry for this SEQ field.
+            // The SEQ field itself will not display the contents of that bookmark.
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
             fieldSeq.BookmarkName = "SEQBookmark";
             Assert.AreEqual(" SEQ  MySequence SEQBookmark", fieldSeq.GetFieldCode());
 
-            // Add bookmark to reference
+            // Create a bookmark with contents that will show up in the TOC entry due to the above SEQ field referencing it.
             builder.InsertBreak(BreakType.PageBreak);
             builder.StartBookmark("SEQBookmark");
             builder.Write("MySequence #");
@@ -2405,19 +2493,19 @@ namespace ApiExamples
             //ExFor:FieldBibliography
             //ExFor:FieldBibliography.FormatLanguageId
             //ExSummary:Shows how to work with CITATION and BIBLIOGRAPHY fields.
-            // Open a document that has bibliographical sources
+            // Open a document that contains bibliographical sources
+            // which we can find in Microsoft Word via References -> Citations & Bibliography -> Manage Sources.
             Document doc = new Document(MyDir + "Bibliography.docx");
             Assert.AreEqual(2, doc.Range.Fields.Count); //ExSkip
 
-            // Add text that we can cite
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write("Text to be cited with one source.");
 
-            // Create a citation field using the document builder
+            // Create a citation with just the page number, and the name of the author of the referenced book.
             FieldCitation fieldCitation = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
 
-            // A simple citation can have just the page number and author's name
-            fieldCitation.SourceTag = "Book1"; // We refer to sources using their tag names
+            // We refer to sources using their tag names.
+            fieldCitation.SourceTag = "Book1";
             fieldCitation.PageNumber = "85";
             fieldCitation.SuppressAuthor = false;
             fieldCitation.SuppressTitle = true;
@@ -2425,7 +2513,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" CITATION  Book1 \\p 85 \\t \\y", fieldCitation.GetFieldCode());
 
-            // We can make a more detailed citation and make it cite 2 sources
+            // Create a more detailed citation which cites two sources.
             builder.InsertParagraph();
             builder.Write("Text to be cited with two sources.");
             fieldCitation = (FieldCitation)builder.InsertField(FieldType.FieldCitation, true);
@@ -2442,10 +2530,8 @@ namespace ApiExamples
 
             Assert.AreEqual(" CITATION  Book1 \\m Book2 \\l en-US \\p 19 \\f \"Prefix \" \\s \" Suffix\" \\v VII", fieldCitation.GetFieldCode());
 
-            // Insert a new page which will contain our bibliography
+            // We can use a BIBLIOGRAPHY field to display all the sources within the document.
             builder.InsertBreak(BreakType.PageBreak);
-
-            // All our sources can be displayed using a BIBLIOGRAPHY field
             FieldBibliography fieldBibliography = (FieldBibliography)builder.InsertField(FieldType.FieldBibliography, true);
             fieldBibliography.FormatLanguageId = "1124";
 
@@ -2507,11 +2593,10 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldData
-            //ExSummary:Shows how to insert a data field into a document.
+            //ExSummary:Shows how to insert a DATA field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert a data field
             FieldData field = (FieldData)builder.InsertField(FieldType.FieldData, true);
             Assert.AreEqual(" DATA ", field.GetFieldCode());
             //ExEnd
@@ -2528,11 +2613,12 @@ namespace ApiExamples
             //ExFor:FieldInclude.LockFields
             //ExFor:FieldInclude.SourceFullName
             //ExFor:FieldInclude.TextConverter
-            //ExSummary:Shows how to create an INCLUDE field and set its properties.
+            //ExSummary:Shows how to create an INCLUDE field, and set its properties.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add an INCLUDE field with document builder and import a portion of the document defined by a bookmark
+            // We can use an INCLUDE field to import a portion of another document in the local file system.
+            // The bookmark from the other document that we reference with this field contains this imported portion.
             FieldInclude field = (FieldInclude)builder.InsertField(FieldType.FieldInclude, true);
             field.SourceFullName = MyDir + "Bookmarks.docx";
             field.BookmarkName = "MyBookmark1";
@@ -2576,18 +2662,20 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Below are two similar field types which we can use to display images linked from the local file system.
+            // 1 -  The INCLUDEPICTURE field:
             FieldIncludePicture fieldIncludePicture = (FieldIncludePicture)builder.InsertField(FieldType.FieldIncludePicture, true);
             fieldIncludePicture.SourceFullName = ImageDir + "Transparent background logo.png";
 
             Assert.True(Regex.Match(fieldIncludePicture.GetFieldCode(), " INCLUDEPICTURE  .*").Success);
 
-            // Here we apply the PNG32.FLT filter
+            // Apply the PNG32.FLT filter.
             fieldIncludePicture.GraphicFilter = "PNG32";
             fieldIncludePicture.IsLinked = true;
             fieldIncludePicture.ResizeHorizontally = true;
             fieldIncludePicture.ResizeVertically = true;
 
-            // We can do the same thing with an IMPORT field
+            // 2 -  The IMPORT field:
             FieldImport fieldImport = (FieldImport)builder.InsertField(FieldType.FieldImport, true);
             fieldImport.SourceFullName = ImageDir + "Transparent background logo.png";
             fieldImport.GraphicFilter = "PNG32";
@@ -2596,7 +2684,7 @@ namespace ApiExamples
             Assert.True(Regex.Match(fieldImport.GetFieldCode(), " IMPORT  .* \\\\c PNG32 \\\\d").Success);
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.INCLUDEPICTURE.docx");
+            doc.Save(ArtifactsDir + "Field.IMPORT.INCLUDEPICTURE.docx");
             //ExEnd
 
             Assert.AreEqual(ImageDir + "Transparent background logo.png", fieldIncludePicture.SourceFullName);
@@ -2609,7 +2697,7 @@ namespace ApiExamples
             Assert.AreEqual("PNG32", fieldImport.GraphicFilter);
             Assert.True(fieldImport.IsLinked);
             
-            doc = new Document(ArtifactsDir + "Field.INCLUDEPICTURE.docx");
+            doc = new Document(ArtifactsDir + "Field.IMPORT.INCLUDEPICTURE.docx");
 
             // The INCLUDEPICTURE fields have been converted into shapes with linked images during loading
             Assert.AreEqual(0, doc.Range.Fields.Count);
@@ -2639,7 +2727,7 @@ namespace ApiExamples
         //ExFor:FieldIncludeText.TextConverter
         //ExFor:FieldIncludeText.XPath
         //ExFor:FieldIncludeText.XslTransformation
-        //ExSummary:Shows how to create an INCLUDETEXT field and set its properties.
+        //ExSummary:Shows how to create an INCLUDETEXT field, and set its properties.
         [Test] //ExSkip
         [Ignore("WORDSNET-17543")] //ExSkip
         public void FieldIncludeText()
@@ -2647,13 +2735,14 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert an include text field and perform an XSL transformation on an XML document
+            // Below are two ways that we can use INCLUDETEXT fields to display contents of an XML file in the local file system.
+            // 1 -  Perform an XSL transformation on an XML document.
             FieldIncludeText fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "CD collection data.xml", false, "text/xml", "XML", "ISO-8859-1");
             fieldIncludeText.XslTransformation = MyDir + "CD collection XSL transformation.xsl";
 
             builder.Writeln();
 
-            // Use a document builder to insert an include text field and use an XPath to take specific elements
+            // 2 -  Use an XPath to take specific elements from an XML document.
             fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "CD collection data.xml", false, "text/xml", "XML", "ISO-8859-1");
             fieldIncludeText.NamespaceMappings = "xmlns:n='myNamespace'";
             fieldIncludeText.XPath = "/catalog/cd/title";
@@ -2764,21 +2853,22 @@ namespace ApiExamples
             //ExFor:FieldHyperlink.ScreenTip
             //ExFor:FieldHyperlink.SubAddress
             //ExFor:FieldHyperlink.Target
-            //ExSummary:Shows how to insert HYPERLINK fields.
+            //ExSummary:Shows how to use HYPERLINK fields to link to documents in the local file system.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a hyperlink with a document builder
             FieldHyperlink field = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
 
-            // When link is clicked, open a document and place the cursor on the bookmarked location
+            // When we click this HYPERLINK field in Microsoft Word,
+            // it will open the linked document, and also place the cursor at the specified bookmark.
             field.Address = MyDir + "Bookmarks.docx";
             field.SubAddress = "MyBookmark3";
             field.ScreenTip = "Open " + field.Address + " on bookmark " + field.SubAddress + " in a new window";
 
             builder.Writeln();
 
-            // Open html file at a specific frame
+            // When we click this HYPERLINK field in Microsoft Word,
+            // it will open the linked document, and automatically scroll down to the specified iframe.
             field = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
             field.Address = MyDir + "Iframes.html";
             field.ScreenTip = "Open " + field.Address;
@@ -2823,26 +2913,28 @@ namespace ApiExamples
         //ExFor:ImageFieldMergingArgs.ImageFileName
         //ExFor:ImageFieldMergingArgs.ImageWidth
         //ExFor:ImageFieldMergingArgs.ImageHeight
-        //ExSummary:Shows how to set the dimensions of merged images.
+        //ExSummary:Shows how to set the dimensions of images as they are accepted by MERGEFIELDS during a mail merge.
         [Test] //ExSkip
         public void MergeFieldImageDimension()
         {
             Document doc = new Document();
 
-            // Insert a merge field where images will be placed during the mail merge
+            // Insert a MERGEFIELD which will accept images from a source during a mail merge. Use the field code to reference
+            // a column in the data source. This column will need to contain local file system filenames of images.
             DocumentBuilder builder = new DocumentBuilder(doc);
             FieldMergeField field = (FieldMergeField)builder.InsertField("MERGEFIELD Image:ImageColumn");
 
+            // In this case, the field expects the data source to have such a column named "ImageColumn".
             Assert.AreEqual("Image:ImageColumn", field.FieldName);
 
-            // Create a data table for the mail merge
-            // The name of the column that contains our image filenames needs to match the name of our merge field
+            // Create a suitable data source.
             DataTable dataTable = new DataTable("Images");
             dataTable.Columns.Add(new DataColumn("ImageColumn"));
             dataTable.Rows.Add(ImageDir + "Logo.jpg");
             dataTable.Rows.Add(ImageDir + "Transparent background logo.png");
             dataTable.Rows.Add(ImageDir + "Enhanced Windows MetaFile.emf");
-
+            
+            // Configure a callback to modify the sizes of images at merge time, then execute the mail merge.
             doc.MailMerge.FieldMergingCallback = new MergedImageResizer(200, 200, MergeFieldImageDimensionUnit.Point);
             doc.MailMerge.Execute(dataTable);
 
@@ -2914,35 +3006,37 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:ImageFieldMergingArgs.Image
-        //ExSummary:Shows how to set which images to merge during the mail merge.
+        //ExSummary:Shows how to use a callback to customize image merging logic.
         [Test] //ExSkip
         public void MergeFieldImages()
         {
             Document doc = new Document();
 
-            // Insert a merge field where images will be placed during the mail merge
+            // Insert a MERGEFIELD which will accept images from a source during a mail merge. Use the field code to reference
+            // a column in the data source. This column will need to contain local file system filenames of images.
             DocumentBuilder builder = new DocumentBuilder(doc);
             FieldMergeField field = (FieldMergeField)builder.InsertField("MERGEFIELD Image:ImageColumn");
 
+            // In this case, the field expects the data source to have such a column named "ImageColumn".
             Assert.AreEqual("Image:ImageColumn", field.FieldName);
 
-            // When we merge images, our data table will normally have the full e. of the images we wish to merge
-            // If this is cumbersome, we can move image filename logic to another place and populate the data table with shorter name references for images
+            // When we merge images, our data table will normally have a column with absolute filenames of images that we wish to merge.
+            // If this is too cumbersome, we can reduce the size of the data source by referring to images in it using shorthands.
             DataTable dataTable = new DataTable("Images");
             dataTable.Columns.Add(new DataColumn("ImageColumn"));
             dataTable.Rows.Add("Dark logo");
             dataTable.Rows.Add("Transparent logo");
 
-            // A custom merging callback will contain filenames that our references will refer to
+            // We can delegate image sourcing logic to our callback.
             doc.MailMerge.FieldMergingCallback = new ImageFilenameCallback();
             doc.MailMerge.Execute(dataTable);
 
             doc.Save(ArtifactsDir + "Field.MERGEFIELD.Images.docx");
-            TestMergeFieldImages(new Document(ArtifactsDir + "Field.MERGEFIELD.Images.docx"));
+            TestMergeFieldImages(new Document(ArtifactsDir + "Field.MERGEFIELD.Images.docx")); //ExSkip
         }
 
         /// <summary>
-        /// Image merging callback that pairs image shorthand names with filenames.
+        /// Pairs image shorthand names with local file system filenames.
         /// </summary>
         private class ImageFilenameCallback : IFieldMergingCallback
         {
