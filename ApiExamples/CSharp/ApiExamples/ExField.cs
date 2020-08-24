@@ -2922,11 +2922,11 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Insert a MERGEFIELD which will accept images from a source during a mail merge. Use the field code to reference
-            // a column in the data source. This column will need to contain local file system filenames of images.
+            // a column in the data source which contains local system filenames of images we wish to use in the mail merge.
             DocumentBuilder builder = new DocumentBuilder(doc);
             FieldMergeField field = (FieldMergeField)builder.InsertField("MERGEFIELD Image:ImageColumn");
 
-            // In this case, the field expects the data source to have such a column named "ImageColumn".
+            // The data source should have such a column named "ImageColumn".
             Assert.AreEqual("Image:ImageColumn", field.FieldName);
 
             // Create a suitable data source.
@@ -3015,21 +3015,23 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Insert a MERGEFIELD which will accept images from a source during a mail merge. Use the field code to reference
-            // a column in the data source. This column will need to contain local file system filenames of images.
+            // a column in the data source which contains local system filenames of images we wish to use in the mail merge.
             DocumentBuilder builder = new DocumentBuilder(doc);
             FieldMergeField field = (FieldMergeField)builder.InsertField("MERGEFIELD Image:ImageColumn");
 
             // In this case, the field expects the data source to have such a column named "ImageColumn".
             Assert.AreEqual("Image:ImageColumn", field.FieldName);
 
-            // When we merge images, our data table will normally have a column with absolute filenames of images that we wish to merge.
-            // If this is too cumbersome, we can reduce the size of the data source by referring to images in it using shorthands.
+            // Filenames can be lengthy, and if we can find a way to avoid storing them
+            // in the data source, we may be able to considerably reduce its size.
+            // Create a data source which refers to images using short names.
             DataTable dataTable = new DataTable("Images");
             dataTable.Columns.Add(new DataColumn("ImageColumn"));
             dataTable.Rows.Add("Dark logo");
             dataTable.Rows.Add("Transparent logo");
 
-            // We can delegate image sourcing logic to our callback.
+            // Assign a merging callback that contains all logic that processes those names,
+            // and then execute the mail merge. 
             doc.MailMerge.FieldMergingCallback = new ImageFilenameCallback();
             doc.MailMerge.Execute(dataTable);
 
@@ -3038,7 +3040,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Pairs image shorthand names with local file system filenames.
+        /// Contains a dictionary that maps names of images to local system filenames that contain these images.
+        /// If a mail merge data source uses one of the names in the dictionary to refer to an image,
+        /// this callback will pass the respective filename to the merge destination.
         /// </summary>
         private class ImageFilenameCallback : IFieldMergingCallback
         {
@@ -3104,44 +3108,46 @@ namespace ApiExamples
             //ExFor:FieldXE
             //ExFor:FieldXE.EntryType
             //ExFor:FieldXE.Text
-            //ExSummary:Shows how to omit entries while populating an INDEX field with entries from XE fields.
+            //ExSummary:Shows how create an INDEX field, and then use XE fields to populate it with entries.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create an INDEX field which will display the page locations of XE fields in the document body
+            // Create an INDEX field which will display an entry for each XE field found in the document.
+            // Each entry will display the XE field's Text attribute value on the left side,
+            // and the number of the page that contains the XE field on the right.
+            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
-            // Set these attributes so that an XE field shows up in the INDEX field's result
-            // only if it is within the bounds of a bookmark named "MainBookmark", and is of type "A"
+            // Configure the INDEX field to only display XE fields that are within the bounds
+            // of a bookmark named "MainBookmark", and whose "EntryType" attributes have a value of "A".
+            // For both INDEX and XE fields, the "EntryType" attribute only uses the first character of its string value.
             index.BookmarkName = "MainBookmark";
             index.EntryType = "A";
 
             Assert.AreEqual(" INDEX  \\b MainBookmark \\f A", index.GetFieldCode());
 
-            // Our index will take up the first page
+            // On a new page, start the bookmark with a name that matches the value
+            // of the INDEX field's "BookmarkName" attribute.
             builder.InsertBreak(BreakType.PageBreak);
-
-            // Start the bookmark that will contain all eligible XE entries
             builder.StartBookmark("MainBookmark");
 
-            // This entry will be picked up by the INDEX field because it is inside the bookmark
-            // and its type matches the INDEX field's type
-            // Note that even though the type is a string, it is defined by only the first character
+            // This entry will be picked up by the INDEX field because it is inside the bookmark,
+            // and its entry type also matches the INDEX field's entry type.
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Index entry 1";
             indexEntry.EntryType = "A";
 
             Assert.AreEqual(" XE  \"Index entry 1\" \\f A", indexEntry.GetFieldCode());
 
-            // Insert an XE field that will not appear in the INDEX field because it is of the wrong type
+            // Insert an XE field that will not appear in the INDEX because the entry types do not match.
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Index entry 2";
             indexEntry.EntryType = "B";
 
-            // End the bookmark and insert an XE field afterwards
-            // It is of the same type as the INDEX field, but will not appear since it is outside of the bookmark
-            // Note that the INDEX field itself does not have to be within its bookmark
+            // End the bookmark and insert an XE field afterwards.
+            // It is of the same type as the INDEX field, but will not appear
+            // since it is outside the boundaries of the bookmark.
             builder.EndBookmark("MainBookmark");
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
@@ -3192,28 +3198,31 @@ namespace ApiExamples
             //ExFor:FieldXE.IsBold
             //ExFor:FieldXE.IsItalic
             //ExFor:FieldXE.Text
-            //ExSummary:Shows how to modify an INDEX field's appearance while populating it with XE field entries.
+            //ExSummary:Shows how to populate an INDEX field with entries using XE fields, and also modify its appearance.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create an INDEX field which will display the page locations of XE fields in the document body
+            // Create an INDEX field which will display an entry for each XE field found in the document.
+            // Each entry will display the XE field's Text attribute value on the left side,
+            // and the number of the page that contains the XE field on the right.
+            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
             index.LanguageId = "1033";
 
-            // Setting this attribute's value to "A" will group all the entries by their first letter
-            // and place that letter in uppercase above each group
+            // Setting this attribute's value to "A" will group all the entries by their first letter,
+            // and place that letter in uppercase above each group.
             index.Heading = "A";
 
-            // Set the table created by the INDEX field to span over 2 columns
+            // Set the table created by the INDEX field to span over 2 columns.
             index.NumberOfColumns = "2";
 
-            // Set any entries with starting letters outside the "a-c" character range to be omitted
+            // Set any entries with starting letters outside the "a-c" character range to be omitted.
             index.LetterRange = "a-c";
 
             Assert.AreEqual(" INDEX  \\z 1033 \\h A \\c 2 \\p a-c", index.GetFieldCode());
 
             // These next two XE fields will show up under the "A" heading,
-            // with their respective text stylings also applied to their page numbers 
+            // with their respective text stylings also applied to their page numbers .
             builder.InsertBreak(BreakType.PageBreak);
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Apple";
@@ -3228,7 +3237,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" XE  Apricot \\b", indexEntry.GetFieldCode());
 
-            // Both the next two XE fields will be under a "B" and "C" heading in the INDEX fields table of contents
+            // Both the next two XE fields will be under a "B" and "C" heading in the INDEX fields table of contents.
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Banana";
@@ -3237,12 +3246,13 @@ namespace ApiExamples
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Cherry";
 
-            // All INDEX field entries are sorted alphabetically, so this entry will show up under "A" with the other two
+            // All INDEX field entries are sorted alphabetically, so this entry will show up under "A" with the other two.
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Avocado";
 
-            // This entry will be excluded because, starting with the letter "D", it is outside the "a-c" range
+            // This entry will be excluded because it starts with the letter "D",
+            // which is outside the "a-c" character tange defined by the INDEX field's LetterRange attribute.
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Durian";
@@ -3319,53 +3329,65 @@ namespace ApiExamples
             //ExFor:FieldIndex.HasSequenceName
             //ExFor:FieldIndex.SequenceName
             //ExFor:FieldIndex.SequenceSeparator
-            //ExSummary:Shows how to split a document into sections by combining INDEX and SEQ fields.
+            //ExSummary:Shows how to split a document into portions by combining INDEX and SEQ fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create an INDEX field which will display the page locations of XE fields in the document body
+            // Create an INDEX field which will display an entry for each XE field found in the document.
+            // Each entry will display the XE field's Text attribute value on the left side,
+            // and the number of the page that contains the XE field on the right.
+            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
-            // Set these two attributes to get the INDEX field's table of contents
-            // to place the number that the "MySeq" sequence is at in each XE entry's location before the entry's page number,
-            // separated by a custom character
-            // Note that PageNumberSeparator and SequenceSeparator cannot be longer than 15 characters
+            // In the SequenceName attribute, name a SEQ field sequence. Each entry of this INDEX field will now also display the
+            // number that the sequence count is on at the location of the XE field that created this entry.
             index.SequenceName = "MySequence";
+
+            // Set text that will around the sequence and page numbers in order to explain their meaning to the user.
+            // An entry created with this configuration will display something like "MySequence at 1 on page 1" at its page number.
+            // PageNumberSeparator and SequenceSeparator cannot be longer than 15 characters.
             index.PageNumberSeparator = "\tMySequence at ";
             index.SequenceSeparator = " on page ";
             Assert.IsTrue(index.HasSequenceName);
 
             Assert.AreEqual(" INDEX  \\s MySequence \\e \"\tMySequence at \" \\d \" on page \"", index.GetFieldCode());
 
-            // Insert a SEQ field which moves the "MySequence" sequence to 1
-            // This field is treated as normal document text and will not show up on an INDEX field's table of contents
+            // SEQ fields display a count that increments at each SEQ field.
+            // These fields also maintain separate counts for each unique named sequence
+            // identified by the SEQ field's "SequenceIdentifier" attribute.
+            // Insert a SEQ field which moves the "MySequence" sequence to 1.
+            // This field is treated as normal document text. It will not show up on an INDEX field's table of contents.
             builder.InsertBreak(BreakType.PageBreak);
             FieldSeq sequenceField = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             sequenceField.SequenceIdentifier = "MySequence";
 
             Assert.AreEqual(" SEQ  MySequence", sequenceField.GetFieldCode());
 
-            // Insert a XE field which will show up in the INDEX field
+            // Insert an XE field which will create an entry in the INDEX field.
             // Since "MySequence" is at 1 and this XE field is on page 2, along with the custom separators we defined above,
-            // this field's INDEX entry will say "MySequence at 1 on page 2"
+            // this field's INDEX entry will display "Cat" on the left side, and "MySequence at 1 on page 2" on the right.
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Cat";
 
             Assert.AreEqual(" XE  Cat", indexEntry.GetFieldCode());
 
-            // Insert a page break and advance "MySequence" by 2
+            // Insert a page break, and use SEQ fields to advance "MySequence" to 3.
             builder.InsertBreak(BreakType.PageBreak);
             sequenceField = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             sequenceField.SequenceIdentifier = "MySequence";
             sequenceField = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             sequenceField.SequenceIdentifier = "MySequence";
 
-            // Insert a XE field with the same text as the one above, which will thus be appended to the same entry in the INDEX field
-            // Since we are on page 2 with "MySequence" at 3, ", 3 on page 3" will be appended to the same INDEX entry as above
+            // Insert an XE field with the same Text attribute as the one above.
+            // XE fields with matching Text attributes will be collected into one INDEX entry,
+            // as opposed to each creating their own.
+            // Since we are on page 2 with "MySequence" at 3, ", 3 on page 3" will be appended to the same INDEX entry as above.
+            // The page number portion of that INDEX entry will now display "MySequence at 1 on page 2, 3 on page 3".
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Cat";
 
-            // Insert an XE field which makes a new entry with MySequence at 3 on page 4
+            // Insert an XE field with a new and unique Text attribute value.
+            // This will add a new entry, with MySequence at 3 on page 4.
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Dog";
@@ -3400,20 +3422,22 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create an INDEX field which will display a table with the page locations of XE fields in the document body
+            // Create an INDEX field which will display an entry for each XE field found in the document.
+            // Each entry will display the XE field's Text attribute value on the left side,
+            // and the number of the page that contains the XE field on the right.
+            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
-            // Set a page number separator and a page number separator
-            // The page number separator will go between the INDEX entry's name and first page a corresponsing XE field appears,
-            // while the page number list separator will appear between page numbers if there are multiple in the same INDEX field entry
+            // If our INDEX field has an entry for a group of XE fields,
+            // the number of each page that contains each XE field will be displayed in the page number portion of the entry.
+            // We can set custom separators to customize the appearance of these page numbers.
             index.PageNumberSeparator = ", on page(s) ";
             index.PageNumberListSeparator = " & ";
             
             Assert.AreEqual(" INDEX  \\e \", on page(s) \" \\l \" & \"", index.GetFieldCode());
             Assert.True(index.HasPageNumberSeparator);
 
-            // Insert 3 XE entries with the same name on three different pages so they all end up in one INDEX field table entry,
-            // where both our separators will be applied, resulting in a value of "First entry, on page(s) 2 & 3 & 4"
+            // After we insert these XE fields, the INDEX field will display "First entry, on page(s) 2 & 3 & 4".
             builder.InsertBreak(BreakType.PageBreak);
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "First entry";
@@ -3453,30 +3477,34 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create an INDEX field which will display the page locations of XE fields in the document body
+            // Create an INDEX field which will display an entry for each XE field found in the document.
+            // Each entry will display the XE field's Text attribute value on the left side,
+            // and the number of the page that contains the XE field on the right.
+            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
+            // For INDEX entries that display page ranges, we can specify a separator string
+            // which will be placed between the number of the first page, and the number of the last.
             index.PageNumberSeparator = ", on page(s) ";
             index.PageRangeSeparator = " to ";
 
             Assert.AreEqual(" INDEX  \\e \", on page(s) \" \\g \" to \"", index.GetFieldCode());
 
-            // Insert an XE field on page 2
             builder.InsertBreak(BreakType.PageBreak);
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "My entry";
 
-            // If we use this attribute to refer to a bookmark,
-            // this XE field's page number will be substituted by the page range that the referenced bookmark spans 
+            // If an XE field names a bookmark using the PageRangeBookmarkName attribute,
+            // its INDEX entry will show the range of pages that the bookmark spans
+            // instead of the number of the page that contains the XE field.
             indexEntry.PageRangeBookmarkName = "MyBookmark";
 
             Assert.AreEqual(" XE  \"My entry\" \\r MyBookmark", indexEntry.GetFieldCode());
             Assert.True(indexEntry.HasPageRangeBookmarkName);
 
-            // Insert a bookmark that starts on page 3 and ends on page 5
-            // Since the XE field references this bookmark,
-            // its location page number will show up in the INDEX field's table as "3 to 5" instead of "2",
-            // which is its actual page
+            // Insert a bookmark that starts on page 3, and ends on page 5.
+            // The INDEX entry for the XE field that references this bookmark will display this page range.
+            // In our table, the INDEX entry will display "My entry, on page(s) 3 to 5".
             builder.InsertBreak(BreakType.PageBreak);
             builder.StartBookmark("MyBookmark");
             builder.Write("Start of MyBookmark");
@@ -3515,24 +3543,32 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create an INDEX field which will display the page locations of XE fields in the document body
+            // Create an INDEX field which will display an entry for each XE field found in the document.
+            // Each entry will display the XE field's Text attribute value on the left side,
+            // and the number of the page that contains the XE field on the right.
+            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
-            // Define a custom separator that is applied if an XE field contains a page number replacement
+            // We can configure an XE field to get its INDEX entry to display a string instead of a page number.
+            // First, for entries that substitute a page number with a string,
+            // specify a custom separator that goes between the XE field's Text attribute value, and the string.
             index.CrossReferenceSeparator = ", see: ";
 
             Assert.AreEqual(" INDEX  \\k \", see: \"", index.GetFieldCode());
 
-            // Insert an XE field on page 2
-            // That page number, together with the field's Text attribute, will show up as a table of contents entry in the INDEX field,
+            // Insert an XE field which creates a regular INDEX entry which displays this field's page number,
+            // and does not invoke the CrossReferenceSeparator value.
+            // The entry for this XE field will display "Apple, 2".
             builder.InsertBreak(BreakType.PageBreak);
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Apple";
 
             Assert.AreEqual(" XE  Apple", indexEntry.GetFieldCode());
 
-            // Insert another XE field on page 3, and set a value for "PageNumberReplacement"
-            // In the INDEX field's table, this field will display the value of that attribute after the field's CrossReferenceSeparator instead of the page number
+            // Insert another XE field on page 3, and set a value for the PageNumberReplacement attribute.
+            // This value will show up instead of the number of the page that this field is on,
+            // and the INDEX field's CrossReferenceSeparator value will be placed in front of it.
+            // The entry for this XE field will display "Banana, see: Tropical fruit".
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Banana";
