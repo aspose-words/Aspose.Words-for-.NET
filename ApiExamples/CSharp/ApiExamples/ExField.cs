@@ -2133,26 +2133,29 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A TOC field can create an entry in its table of contents for every SEQ field in the document.
+            // A TOC field can create an entry in its table of contents for each SEQ field found in the document.
             // Each entry contains the paragraph that contains the SEQ field,
-            // and the number of the page that they appear on.
+            // and the number of the page that the field appears on.
             FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
 
-            // SEQ fields and display a count that increments at each SEQ field.
-            // These fields also maintain separate counts for each named sequence,
-            // identified by the "SequenceIdentifier" attribute of the SEQ field.
+            // SEQ fields display a count that increments at each SEQ field.
+            // These fields also maintain separate counts for each unique named sequence
+            // identified by the SEQ field's "SequenceIdentifier" attribute.
             // Use the "TableOfFiguresLabel" attribute to name a main sequence for the TOC.
             // Now, this TOC will only create entries out of SEQ fields
-            // if their "SequenceIdentifier" is set to "MySequence".
+            // that have their "SequenceIdentifier" set to "MySequence".
             fieldToc.TableOfFiguresLabel = "MySequence";
 
-            // We can name another SEQ sequence in the "PrefixedSequenceIdentifier" attribute.
-            // SEQ fields from this prefix sequence will not show up as separate entries. 
-            // Instead, each TOC entry will display the number that the prefix sequence count
-            // is currently on at each SEQ field from the main sequence.
-            // We can specify a separator that each TOC entry will place between the prefix sequence number,
-            // and the main sequence SEQ field's page number.
+            // We can name another SEQ field sequence in the "PrefixedSequenceIdentifier" attribute.
+            // SEQ fields from this prefix sequence will not create TOC entries. 
+            // Every TOC entry created from a main sequence SEQ field
+            // will now also display the count that the prefix sequence is currently on
+            // at the location of main sequence SEQ field that created the entry.
             fieldToc.PrefixedSequenceIdentifier = "PrefixSequence";
+
+            // Each TOC entry will display the prefix sequence count immediately to the left
+            // of the page number that the main sequence SEQ field appears on.
+            // We can specify a custom separator that will appear between these two numbers.
             fieldToc.SequenceSeparator = ">";
 
             Assert.AreEqual(" TOC  \\c MySequence \\s PrefixSequence \\d >", fieldToc.GetFieldCode());
@@ -2162,7 +2165,7 @@ namespace ApiExamples
             // There are two ways of using SEQ fields to populate this TOC.
             // 1 -  Inserting a SEQ field that belongs to the TOC's prefix sequence:
             // This field will increment the SEQ sequence count for the "PrefixSequence" by 1.
-            // Since this field does not belong to the main sequence "MySequence" identified
+            // Since this field does not belong to the main sequence identified
             // by the "TableOfFiguresLabel" attribute of the TOC, it will not show up as an entry.
             FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "PrefixSequence";
@@ -2176,7 +2179,7 @@ namespace ApiExamples
             // as well as the number of the page that it appears on.
             // This entry will also display the count that the prefix sequence is currently at,
             // separated from the page number by the value in the TOC's SeqenceSeparator attribute.
-            // The "PrefixSequence" count is at 1, this SEQ field, which is from the main sequence is on page 2,
+            // The "PrefixSequence" count is at 1, this main sequence SEQ field is on page 2,
             // and the separator is ">", so entry will display "1>2".
             builder.Write("First TOC entry, MySequence #");
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
@@ -2270,11 +2273,11 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // SEQ fields and display a count that increments at each SEQ field.
-            // These fields also maintain separate counts for each named sequence,
-            // identified by the "SequenceIdentifier" attribute of the SEQ field.
+            // SEQ fields display a count that increments at each SEQ field.
+            // These fields also maintain separate counts for each unique named sequence
+            // identified by the SEQ field's "SequenceIdentifier" attribute.
             // Insert a SEQ field which will display the current count value of "MySequence",
-            // after setting it to 100.
+            // after using the "ResetNumber" attribute to set it to 100.
             builder.Write("#");
             FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
@@ -2299,13 +2302,14 @@ namespace ApiExamples
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
 
             // Insert another SEQ field from the same sequence, and configure it
-            // to reset the count at every heading with a level of 1, such as the heading we have created above.
+            // to reset the count at every heading with a level of 1.
             builder.Write("\n#");
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
             fieldSeq.ResetHeadingLevel = "1";
             fieldSeq.Update();
 
+            // The above heading is a level 1 heading, so the count for this sequence is reset to 1.
             Assert.AreEqual(" SEQ  MySequence \\s 1", fieldSeq.GetFieldCode());
             Assert.AreEqual("1", fieldSeq.Result);
 
@@ -2359,10 +2363,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A TOC field can create an entry in its table of contents for every SEQ field in the document.
+            // A TOC field can create an entry in its table of contents for each SEQ field found in the document.
             // Each entry contains the paragraph that contains the SEQ field,
-            // Each entry contains the paragraph that contains the SEQ field,
-            // and the number of the page that they appear on.
+            // and the number of the page that the field appears on.
             FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
 
             // Configure this TOC field to only pick up SEQ fields that are within the bounds of a bookmark
@@ -2373,13 +2376,12 @@ namespace ApiExamples
 
             Assert.AreEqual(" TOC  \\c MySequence \\b TOCBookmark", fieldToc.GetFieldCode());
 
-            // SEQ fields and display a count that increments at each SEQ field.
-            // These fields also maintain separate counts for each named sequence,
-            // identified by the "SequenceIdentifier" attribute of the SEQ field.
-            // Insert a SEQ field which will not show up in the TOC.
-            // While it does have a sequence identifier that matches the TOC's
-            // TableOfFiguresLabel attribute, it is outside the bounds of the TOC's bookmark,
-            // designated by the "BookmarkName" attribute.
+            // SEQ fields display a count that increments at each SEQ field.
+            // These fields also maintain separate counts for each unique named sequence
+            // identified by the SEQ field's "SequenceIdentifier" attribute.
+            // Insert a SEQ field that has a sequence identifier that matches the TOC's
+            // TableOfFiguresLabel attribute. This field will not create an entry in the TOC
+            // since it is outside the bounds of a bookmark designated by "BookmarkName".
             builder.Write("MySequence #");
             FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
@@ -2388,7 +2390,7 @@ namespace ApiExamples
             builder.StartBookmark("TOCBookmark");
 
             // This SEQ field's sequence matches the TOC's "TableOfFiguresLabel" attribute, and is within the bounds of the bookmark.
-            // Its paragraph will show up in the TOC as an entry.
+            // The paragraph that contains this field will show up in the TOC as an entry.
             builder.Write("MySequence #");
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
@@ -2752,7 +2754,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Use a document builder to insert an INCLUDETEXT field and set its properties.
+        /// Use a document builder to insert an INCLUDETEXT field with custom properties.
         /// </summary>
         public FieldIncludeText CreateFieldIncludeText(DocumentBuilder builder, string sourceFullName, bool lockFields, string mimeType, string textConverter, string encoding)
         {
@@ -2800,18 +2802,18 @@ namespace ApiExamples
                 {
                     if (i == 0)
                     {
-                        // When on the first row from the input document's table, ensure that all table's cells match all XML element Names
+                        // When on the first row from the input document's table, ensure that all table's cells match all XML element Names.
                         for (int k = 0; k < table.Rows.Count - 1; k++)
                             Assert.AreEqual(catalogData.ChildNodes[k].ChildNodes[j].Name,
                                 table.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, string.Empty).ToLower());
 
-                        // Also make sure that the whole first row has the same color as the XSL transform
+                        // Also make sure that the whole first row has the same color as the XSL transform.
                         Assert.AreEqual(cdCollectionXslTransformation.SelectNodes("//xsl:stylesheet/xsl:template/html/body/table/tr", manager)[0].Attributes.GetNamedItem("bgcolor").Value,
                             ColorTranslator.ToHtml(table.Rows[i].Cells[j].CellFormat.Shading.BackgroundPatternColor).ToLower());
                     }
                     else
                     {
-                        // When on all other rows of the input document's table, ensure that cell contents match XML element Values
+                        // When on all other rows of the input document's table, ensure that cell contents match XML element Values.
                         Assert.AreEqual(catalogData.ChildNodes[i - 1].ChildNodes[j].FirstChild.Value,
                             table.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, string.Empty));
                         Assert.AreEqual(Color.Empty, table.Rows[i].Cells[j].CellFormat.Shading.BackgroundPatternColor);
