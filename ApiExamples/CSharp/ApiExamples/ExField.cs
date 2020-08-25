@@ -3604,7 +3604,7 @@ namespace ApiExamples
         [TestCase(true)]
         [TestCase(false)]
         [Ignore("WORDSNET-17524")]
-        public void FieldIndexSubheading(bool doRunSubentriesOnTheSameLine)
+        public void FieldIndexSubheading(bool runSubentriesOnTheSameLine)
         {
             //ExStart
             //ExFor:FieldIndex.RunSubentriesOnSameLine
@@ -3612,27 +3612,35 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create an INDEX field which will display the page locations of XE fields in the document body
+            // Create an INDEX field which will display an entry for each XE field found in the document.
+            // Each entry will display the XE field's Text attribute value on the left side,
+            // and the number of the page that contains the XE field on the right.
+            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
-
-            // Normally, every XE field that's a subheading of any level is displayed on a unique line entry
-            // in the INDEX field's table of contents
-            // We can reduce the length of our INDEX table by putting all subheading entries along with their page locations on one line
-            index.RunSubentriesOnSameLine = doRunSubentriesOnTheSameLine;
             index.PageNumberSeparator = ", see page ";
             index.Heading = "A";
 
-            if (doRunSubentriesOnTheSameLine)
-                Assert.AreEqual(" INDEX  \\r \\e \", see page \" \\h A", index.GetFieldCode());
+            // XE fields that have a Text attribute whose value becomes the heading of the INDEX entry.
+            // If this value contains two string segments split by a colon (:) delimiter, the first segment will be treated by the INDEX entry as the heading,
+            // and the second segment will become the subheading. The INDEX field first groups entries alphabetically, then,
+            // if there are multiple XE fields with the same headings, the INDEX field will further subgroup them by the values of these headings.
+            // There can be multiple layers of subgrouping, depending on how many times the Text attributes of XE fields get segmented like this.
+            // By default, an INDEX field entry group will create a new line for every subheading within this group. 
+            // We can set the RunSubentriesOnSameLine flag to true to keep the heading,
+            // and every subheading for the group on one line instead, which will make the INDEX field more compact.
+            index.RunSubentriesOnSameLine = runSubentriesOnTheSameLine;
+            
+            if (runSubentriesOnTheSameLine)
+                Assert.AreEqual(" INDEX  \\e \", see page \" \\h A \\r", index.GetFieldCode());
             else
                 Assert.AreEqual(" INDEX  \\e \", see page \" \\h A", index.GetFieldCode());
 
-            // An XE field's "Text" attribute is the same thing as the "Heading" that will appear in the INDEX field's table of contents
-            // This attribute can also contain one or multiple subheadings, separated by a colon (:),
-            // which will be grouped under their parent headings/subheadings in the INDEX field
-            // If index.RunSubentriesOnSameLine is false, "Heading 1" will take up one line as a heading,
-            // followed by a two-line indented list of "Subheading 1" and "Subheading 2" with their respective page numbers
-            // Otherwise, the two subheadings and their page numbers will be on the same line as their heading
+            // Insert two XE fields, each on a new page, and with the same heading named "Heading 1",
+            // which the INDEX field will use to group them.
+            // If RunSubentriesOnSameLine is false, then the INDEX table will create three lines;
+            // one line for the grouping heading "Heading 1", and one more line for each subheading.
+            // If RunSubentriesOnSameLine is true, then the INDEX table will create one line entry
+            // that encompasses the heading, as well as every subheading.
             builder.InsertBreak(BreakType.PageBreak);
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Heading 1:Subheading 1";
@@ -3644,13 +3652,13 @@ namespace ApiExamples
             indexEntry.Text = "Heading 1:Subheading 2";
             
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.INDEX.XE.Subheading.docx");
+            doc.Save(ArtifactsDir + $"Field.INDEX.XE.Subheading.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Field.INDEX.XE.Subheading.docx");
+            doc = new Document(ArtifactsDir + $"Field.INDEX.XE.Subheading.docx");
             index = (FieldIndex)doc.Range.Fields[0];
 
-            if (doRunSubentriesOnTheSameLine)
+            if (runSubentriesOnTheSameLine)
             {
                 TestUtil.VerifyField(FieldType.FieldIndex, " INDEX  \\r \\e \", see page \" \\h A",
                     "H\r" +
@@ -3681,7 +3689,7 @@ namespace ApiExamples
         [TestCase(true)]
         [TestCase(false)]
         [Ignore("WORDSNET-17524")]
-        public void FieldIndexYomi(bool doSortEntriesUsingYomi)
+        public void FieldIndexYomi(bool sortEntriesUsingYomi)
         {
             //ExStart
             //ExFor:FieldIndex.UseYomi
@@ -3690,26 +3698,29 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create an INDEX field which will display the page locations of XE fields in the document body
+            // Create an INDEX field which will display an entry for each XE field found in the document.
+            // Each entry will display the XE field's Text attribute value on the left side,
+            // and the number of the page that contains the XE field on the right.
+            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
-            // Set the INDEX table to sort entries phonetically using Hiragana
-            index.UseYomi = doSortEntriesUsingYomi;
+            // The INDEX table automatically sorts its entries by the values of their Text attributes in alphabetic order.
+            // Set the INDEX table to sort entries phonetically using Hiragana instead.
+            index.UseYomi = sortEntriesUsingYomi;
 
-            if (doSortEntriesUsingYomi)
+            if (sortEntriesUsingYomi)
                 Assert.AreEqual(" INDEX  \\y", index.GetFieldCode());
             else
                 Assert.AreEqual(" INDEX ", index.GetFieldCode());
 
-            // Insert 4 XE fields, which would show up as entries in the INDEX field's table of contents,
-            // sorted in lexicographic order on their "Text" attribute
+            // Insert 4 XE fields, which would show up as entries in the INDEX field's table of contents.
+            // The "Text" attribute may contain a word's spelling in Kanji, whose pronunciation may be ambiguous,
+            // while a "Yomi" version of the word will be spelled exactly how it is pronounced using Hiragana.
+            // If our INDEX field is set to use Yomi, then it will sort these entries
+            // by the value of their Yomi attribures, instead of their Text values.
             builder.InsertBreak(BreakType.PageBreak);
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "愛子";
-
-            // The "Text" attribute may contain a word's spelling in Kanji, whose pronunciation may be ambiguous,
-            // while a "Yomi" version of the word will be spelled exactly how it is pronounced using Hiragana
-            // If our INDEX field is set to use Yomi, then we can sort phonetically using the "Yomi" attribute values instead of the "Text" attribute
             indexEntry.Yomi = "あ";
 
             Assert.AreEqual(" XE  愛子 \\y あ", indexEntry.GetFieldCode());
@@ -3736,7 +3747,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Field.INDEX.XE.Yomi.docx");
             index = (FieldIndex)doc.Range.Fields[0];
 
-            if (doSortEntriesUsingYomi)
+            if (sortEntriesUsingYomi)
             {
                 Assert.True(index.UseYomi);
                 Assert.AreEqual(" INDEX  \\y", index.GetFieldCode());
@@ -3789,35 +3800,39 @@ namespace ApiExamples
             //ExFor:FieldBarcode.IsBookmark
             //ExFor:FieldBarcode.IsUSPostalAddress
             //ExFor:FieldBarcode.PostalAddress
-            //ExSummary:Shows how to insert a BARCODE field and set its properties. 
+            //ExSummary:Shows how to use the BARCODE field to display U.S. ZIP codes in the form of a barcode. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert a bookmark with a US postal code in it
-            builder.StartBookmark("BarcodeBookmark");
-            builder.Writeln("96801");
-            builder.EndBookmark("BarcodeBookmark");
-
             builder.Writeln();
 
-            // Reference a US postal code directly
+            // Below are two ways of using BARCODE fields to display custom values as barcodes.
+            // 1 -  Store the value that the bardcode will display in the PostalAddress attribute:
             FieldBarcode field = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
-            field.FacingIdentificationMark = "C";
+
+            // This value needs to be a valid ZIP code.
             field.PostalAddress = "96801";
             field.IsUSPostalAddress = true;
+            field.FacingIdentificationMark = "C";
 
             Assert.AreEqual(" BARCODE  96801 \\f C \\u", field.GetFieldCode());
 
-            builder.Writeln();
+            builder.InsertBreak(BreakType.LineBreak);
 
-            // Reference a US postal code from a bookmark
+            // 2 -  Reference a bookmark that stores the value that this barcode will display:
             field = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
             field.PostalAddress = "BarcodeBookmark";
             field.IsBookmark = true;
 
             Assert.AreEqual(" BARCODE  BarcodeBookmark \\b", field.GetFieldCode());
 
-            doc.UpdateFields();
+            // The bookmark that the BARCODE field references in its PostalAddress attribute
+            // needs to contain nothing besides the valid ZIP code.
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.StartBookmark("BarcodeBookmark");
+            builder.Writeln("968877");
+            builder.EndBookmark("BarcodeBookmark");
+
             doc.Save(ArtifactsDir + "Field.BARCODE.docx");
             //ExEnd
 
@@ -3857,13 +3872,14 @@ namespace ApiExamples
             //ExFor:FieldDisplayBarcode.ScalingFactor
             //ExFor:FieldDisplayBarcode.SymbolHeight
             //ExFor:FieldDisplayBarcode.SymbolRotation
-            //ExSummary:Shows how to insert a DISPLAYBARCODE field and set its properties. 
+            //ExSummary:Shows how to insert a DISPLAYBARCODE field, and set its properties. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             FieldDisplayBarcode field = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
 
-            // Insert a QR code
+            // Below are four types of barcodes, decorated in various ways, that the DISPLAYBARCODE field can display.
+            // 1 -  QR code with custom colors:
             field.BarcodeType = "QR";
             field.BarcodeValue = "ABC123";
             field.BackgroundColor = "0xF8BD69";
@@ -3876,7 +3892,7 @@ namespace ApiExamples
             Assert.AreEqual(" DISPLAYBARCODE  ABC123 QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0", field.GetFieldCode());
             builder.Writeln();
 
-            // Insert an EAN13 barcode
+            // 2 -  EAN13 barcode, with the digits displayed below the bars:
             field = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
             field.BarcodeType = "EAN13";
             field.BarcodeValue = "501234567890";
@@ -3887,7 +3903,7 @@ namespace ApiExamples
             Assert.AreEqual(" DISPLAYBARCODE  501234567890 EAN13 \\t \\p CASE \\x", field.GetFieldCode());
             builder.Writeln();
 
-            // Insert a CODE39 barcode
+            // 3 -  CODE39 barcode:
             field = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
             field.BarcodeType = "CODE39";
             field.BarcodeValue = "12345ABCDE";
@@ -3896,7 +3912,7 @@ namespace ApiExamples
             Assert.AreEqual(" DISPLAYBARCODE  12345ABCDE CODE39 \\d", field.GetFieldCode());
             builder.Writeln();
 
-            // Insert an ITF14 barcode
+            // 4 -  ITF4 barcode, with a specified case code:
             field = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
             field.BarcodeType = "ITF14";
             field.BarcodeValue = "09312345678907";
@@ -3904,7 +3920,6 @@ namespace ApiExamples
 
             Assert.AreEqual(" DISPLAYBARCODE  09312345678907 ITF14 \\c STD", field.GetFieldCode());
 
-            doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.DISPLAYBARCODE.docx");
             //ExEnd
 
@@ -3948,7 +3963,6 @@ namespace ApiExamples
             Assert.AreEqual("STD", field.CaseCodeStyle);
         }
 
-
         [Test]
         public void FieldMergeBarcode_QR()
         {
@@ -3967,14 +3981,13 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a MERGEBARCODE field,
-            // which functions like a MERGEFIELD by creating a barcode from the merged data source's values
-            // This field will convert all rows in a merge data source's "MyQRCode" column into QR barcodes
+            // Insert a MERGEBARCODE field, which will accept values from a data source during a mail merge.
+            // This field will convert all values in a merge data source's "MyQRCode" column into QR codes.
             FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
             field.BarcodeType = "QR";
             field.BarcodeValue = "MyQRCode";
 
-            // Edit its appearance such as colors and scale
+            // Apply custom colors and scale.
             field.BackgroundColor = "0xF8BD69";
             field.ForegroundColor = "0xB5413B";
             field.ErrorCorrectionLevel = "3";
@@ -3987,9 +4000,7 @@ namespace ApiExamples
                 field.GetFieldCode());
             builder.Writeln();
 
-            // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue
-            // When we execute the mail merge,
-            // a barcode of a type we specified in the MERGEBARCODE field will be created with each row's value
+            // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue.
             DataTable table = new DataTable("Barcodes");
             table.Columns.Add("MyQRCode");
             table.Rows.Add(new[] { "ABC123" });
@@ -3997,7 +4008,7 @@ namespace ApiExamples
 
             doc.MailMerge.Execute(table);
 
-            // Every row in the "MyQRCode" column has created a DISPLAYBARCODE field, which shows a barcode with the merged value
+            // Every row in the "MyQRCode" column has created a DISPLAYBARCODE field, which shows a barcode with the merged value.
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
             Assert.AreEqual("DISPLAYBARCODE \"ABC123\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B", 
                 doc.Range.Fields[0].GetFieldCode());
