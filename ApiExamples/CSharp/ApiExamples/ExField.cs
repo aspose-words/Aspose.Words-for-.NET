@@ -3815,7 +3815,7 @@ namespace ApiExamples
             field.IsUSPostalAddress = true;
             field.FacingIdentificationMark = "C";
 
-            Assert.AreEqual(" BARCODE  96801 \\f C \\u", field.GetFieldCode());
+            Assert.AreEqual(" BARCODE  96801 \\u \\f C", field.GetFieldCode());
 
             builder.InsertBreak(BreakType.LineBreak);
 
@@ -3842,7 +3842,7 @@ namespace ApiExamples
 
             field = (FieldBarcode)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldBarcode, " BARCODE  96801 \\f C \\u", string.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldBarcode, " BARCODE  96801 \\u \\f C", string.Empty, field);
             Assert.AreEqual("C", field.FacingIdentificationMark);
             Assert.AreEqual("96801", field.PostalAddress);
             Assert.True(field.IsUSPostalAddress);
