@@ -3987,7 +3987,7 @@ namespace ApiExamples
             field.BarcodeType = "QR";
             field.BarcodeValue = "MyQRCode";
 
-            // Apply custom colors and scale.
+            // Apply custom colors and scaling.
             field.BackgroundColor = "0xF8BD69";
             field.ForegroundColor = "0xB5413B";
             field.ErrorCorrectionLevel = "3";
@@ -4001,6 +4001,8 @@ namespace ApiExamples
             builder.Writeln();
 
             // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue.
+            // The mail merge will create a new page for each row. Each page will contain a DISPLAYBARCODE field,
+            // which will display a QR code with the value from the merged row.
             DataTable table = new DataTable("Barcodes");
             table.Columns.Add("MyQRCode");
             table.Rows.Add(new[] { "ABC123" });
@@ -4008,7 +4010,6 @@ namespace ApiExamples
 
             doc.MailMerge.Execute(table);
 
-            // Every row in the "MyQRCode" column has created a DISPLAYBARCODE field, which shows a barcode with the merged value.
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
             Assert.AreEqual("DISPLAYBARCODE \"ABC123\" QR \\q 3 \\s 250 \\h 1000 \\r 0 \\b 0xF8BD69 \\f 0xB5413B", 
                 doc.Range.Fields[0].GetFieldCode());
@@ -4052,14 +4053,13 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a MERGEBARCODE field,
-            // which functions like a MERGEFIELD by creating a barcode from the merged data source's values
-            // This field will convert all rows in a merge data source's "MyEAN13Barcode" column into EAN13 barcodes
+            // Insert a MERGEBARCODE field, which will accept values from a data source during a mail merge.
+            // This field will convert all values in a merge data source's "MyEAN13Barcode" column into EAN13 barcodes.
             FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
             field.BarcodeType = "EAN13";
             field.BarcodeValue = "MyEAN13Barcode";
 
-            // Edit its appearance to display barcode data under the lines
+            // Display the numeric value of the barcode underneath the bars.
             field.DisplayText = true;
             field.PosCodeStyle = "CASE";
             field.FixCheckDigit = true;
@@ -4068,9 +4068,9 @@ namespace ApiExamples
             Assert.AreEqual(" MERGEBARCODE  MyEAN13Barcode EAN13 \\t \\p CASE \\x", field.GetFieldCode());
             builder.Writeln();
 
-            // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue
-            // When we execute the mail merge,
-            // a barcode of a type we specified in the MERGEBARCODE field will be created with each row's value
+            // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue.
+            // The mail merge will create a new page for each row. Each page will contain a DISPLAYBARCODE field,
+            // which will display an EAN13 barcode with the value from the merged row.
             DataTable table = new DataTable("Barcodes");
             table.Columns.Add("MyEAN13Barcode");
             table.Rows.Add(new[] { "501234567890" });
@@ -4078,8 +4078,6 @@ namespace ApiExamples
 
             doc.MailMerge.Execute(table);
 
-            // Every row in the "MyEAN13Barcode" column has created a DISPLAYBARCODE field,
-            // which shows a barcode with the merged value
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
             Assert.AreEqual("DISPLAYBARCODE \"501234567890\" EAN13 \\t \\p CASE \\x",
                 doc.Range.Fields[0].GetFieldCode());
@@ -4118,23 +4116,22 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a MERGEBARCODE field,
-            // which functions like a MERGEFIELD by creating a barcode from the merged data source's values
-            // This field will convert all rows in a merge data source's "MyCODE39Barcode" column into CODE39 barcodes
+            // Insert a MERGEBARCODE field, which will accept values from a data source during a mail merge.
+            // This field will convert all values in a merge data source's "MyCODE39Barcode" column into CODE39 barcodes.
             FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
             field.BarcodeType = "CODE39";
             field.BarcodeValue = "MyCODE39Barcode";
 
-            // Edit its appearance to display start/stop characters
+            // Edit its appearance to display start/stop characters.
             field.AddStartStopChar = true;
 
             Assert.AreEqual(FieldType.FieldMergeBarcode, field.Type);
             Assert.AreEqual(" MERGEBARCODE  MyCODE39Barcode CODE39 \\d", field.GetFieldCode());
             builder.Writeln();
 
-            // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue
-            // When we execute the mail merge,
-            // a barcode of a type we specified in the MERGEBARCODE field will be created with each row's value
+            // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue.
+            // The mail merge will create a new page for each row. Each page will contain a DISPLAYBARCODE field,
+            // which will display a CODE39 barcode with the value from the merged row.
             DataTable table = new DataTable("Barcodes");
             table.Columns.Add("MyCODE39Barcode");
             table.Rows.Add(new[] { "12345ABCDE" });
@@ -4142,8 +4139,6 @@ namespace ApiExamples
 
             doc.MailMerge.Execute(table);
 
-            // Every row in the "MyCODE39Barcode" column has created a DISPLAYBARCODE field,
-            // which shows a barcode with the merged value
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
             Assert.AreEqual("DISPLAYBARCODE \"12345ABCDE\" CODE39 \\d",
                 doc.Range.Fields[0].GetFieldCode());
@@ -4182,9 +4177,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a MERGEBARCODE field,
-            // which functions like a MERGEFIELD by creating a barcode from the merged data source's values
-            // This field will convert all rows in a merge data source's "MyITF14Barcode" column into ITF14 barcodes
+            // Insert a MERGEBARCODE field, which will accept values from a data source during a mail merge.
+            // This field will convert all values in a merge data source's "MyITF14Barcode" column into ITF14 barcodes.
             FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
             field.BarcodeType = "ITF14";
             field.BarcodeValue = "MyITF14Barcode";
@@ -4193,9 +4187,9 @@ namespace ApiExamples
             Assert.AreEqual(FieldType.FieldMergeBarcode, field.Type);
             Assert.AreEqual(" MERGEBARCODE  MyITF14Barcode ITF14 \\c STD", field.GetFieldCode());
 
-            // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue
-            // When we execute the mail merge,
-            // a barcode of a type we specified in the MERGEBARCODE field will be created with each row's value
+            // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue.
+            // The mail merge will create a new page for each row. Each page will contain a DISPLAYBARCODE field,
+            // which will display a ITF14 barcode with the value from the merged row.
             DataTable table = new DataTable("Barcodes");
             table.Columns.Add("MyITF14Barcode");
             table.Rows.Add(new[] { "09312345678907" });
@@ -4203,8 +4197,6 @@ namespace ApiExamples
 
             doc.MailMerge.Execute(table);
 
-            // Every row in the "MyITF14Barcode" column has created a DISPLAYBARCODE field,
-            // which shows a barcode with the merged value
             Assert.AreEqual(FieldType.FieldDisplayBarcode, doc.Range.Fields[0].Type);
             Assert.AreEqual("DISPLAYBARCODE \"09312345678907\" ITF14 \\c STD",
                 doc.Range.Fields[0].GetFieldCode());
@@ -4269,7 +4261,7 @@ namespace ApiExamples
         //ExFor:FieldDdeAuto.ProgId
         //ExFor:FieldDdeAuto.SourceFullName
         //ExFor:FieldDdeAuto.SourceItem
-        //ExSummary:Shows how to insert linked objects as LINK, DDE and DDEAUTO fields and present them within the document in different ways.
+        //ExSummary:Shows how to use various field types to link to other documents in the local file system, and display their contents.
         [TestCase(InsertLinkedObjectAs.Text)] //ExSkip
         [TestCase(InsertLinkedObjectAs.Unicode)] //ExSkip
         [TestCase(InsertLinkedObjectAs.Html)] //ExSkip
@@ -4280,14 +4272,17 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert fields containing text from another document and present them as text (see InsertLinkedObjectAs enum)
+            // Below are three types of fields we can use to display contents from a linked document in the form of text.
+            // 1 -  A LINK field:
             builder.Writeln("FieldLink:\n");
             InsertFieldLink(builder, insertLinkedObjectAs, "Word.Document.8", MyDir + "Document.docx", null, true);
 
+            // 2 -  A DDE field:
             builder.Writeln("FieldDde:\n");
             InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
                 "Sheet1!R1C1", true, true);
 
+            // 3 -  A DDEAUTO field:
             builder.Writeln("FieldDdeAuto:\n");
             InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
                 "Sheet1!R1C1", true);
@@ -4304,15 +4299,18 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert one cell from a spreadsheet as an image (see InsertLinkedObjectAs enum)
+            // Below are three types of fields we can use to display contents from a linked document in the form of an image.
+            // 1 -  A LINK field:
             builder.Writeln("FieldLink:\n");
             InsertFieldLink(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "MySpreadsheet.xlsx",
                 "Sheet1!R2C2", true);
 
+            // 2 -  A DDE field:
             builder.Writeln("FieldDde:\n");
             InsertFieldDde(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
                 "Sheet1!R1C1", true, true);
 
+            // 3 -  A DDEAUTO field:
             builder.Writeln("FieldDdeAuto:\n");
             InsertFieldDdeAuto(builder, insertLinkedObjectAs, "Excel.Sheet", MyDir + "Spreadsheet.xlsx",
                 "Sheet1!R1C1", true);
@@ -4322,7 +4320,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Use a document builder to insert a LINK field and set its properties according to parameters.
+        /// Use a document builder to insert a LINK field, and set its properties according to parameters.
         /// </summary>
         private static void InsertFieldLink(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs,
             string progId, string sourceFullName, string sourceItem, bool shouldAutoUpdate)
@@ -4360,7 +4358,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Use a document builder to insert a DDE field and set its properties according to parameters.
+        /// Use a document builder to insert a DDE field, and set its properties according to parameters.
         /// </summary>
         private static void InsertFieldDde(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs, string progId,
             string sourceFullName, string sourceItem, bool isLinked, bool shouldAutoUpdate)
@@ -4399,7 +4397,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Use a document builder to insert a DDEAUTO field and set its properties according to parameters.
+        /// Use a document builder to insert a DDEAUTO, field and set its properties according to parameters.
         /// </summary>
         private static void InsertFieldDdeAuto(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs,
             string progId, string sourceFullName, string sourceItem, bool isLinked)
@@ -4456,27 +4454,28 @@ namespace ApiExamples
             //ExSummary:Shows how to use the USERADDRESS field.
             Document doc = new Document();
 
-            // Create a user information object and set it as the data source for our field
+            // Create a UserInformation object, and set it as the source of user information for any fields that we create.
             UserInformation userInformation = new UserInformation();
             userInformation.Address = "123 Main Street";
             doc.FieldOptions.CurrentUser = userInformation;
 
-            // Display the current user's address with a USERADDRESS field
+            // Create a USERADDRESS field to display the current user's address,
+            // which will be taken from the UserInformation object we created above.
             DocumentBuilder builder = new DocumentBuilder(doc);
             FieldUserAddress fieldUserAddress = (FieldUserAddress)builder.InsertField(FieldType.FieldUserAddress, true);
-            Assert.AreEqual(userInformation.Address, fieldUserAddress.Result);
+            Assert.AreEqual(userInformation.Address, fieldUserAddress.Result); //ExSkip
 
             Assert.AreEqual(" USERADDRESS ", fieldUserAddress.GetFieldCode());
             Assert.AreEqual("123 Main Street", fieldUserAddress.Result);
 
-            // We can set this attribute to get our field to display a different value
+            // We can set this attribute to get our field to override the value currently stored in the UserInformation object. 
             fieldUserAddress.UserAddress = "456 North Road";
             fieldUserAddress.Update();
 
             Assert.AreEqual(" USERADDRESS  \"456 North Road\"", fieldUserAddress.GetFieldCode());
             Assert.AreEqual("456 North Road", fieldUserAddress.Result);
 
-            // This does not change the value in the user information object
+            // This does not affect the value in the UserInformation object.
             Assert.AreEqual("123 Main Street", doc.FieldOptions.CurrentUser.Address);
 
             doc.UpdateFields();
@@ -4500,12 +4499,13 @@ namespace ApiExamples
             //ExSummary:Shows how to use the USERINITIALS field.
             Document doc = new Document();
 
-            // Create a user information object and set it as the data source for our field
+            // Create a UserInformation object, and set it as the source of user information for any fields that we create.
             UserInformation userInformation = new UserInformation();
             userInformation.Initials = "J. D.";
             doc.FieldOptions.CurrentUser = userInformation;
 
-            // Display the current user's Initials with a USERINITIALS field
+            // Create a USERINITIALS field to display the current user's initials,
+            // which will be taken from the UserInformation object we created above.
             DocumentBuilder builder = new DocumentBuilder(doc);
             FieldUserInitials fieldUserInitials = (FieldUserInitials)builder.InsertField(FieldType.FieldUserInitials, true);
             Assert.AreEqual(userInformation.Initials, fieldUserInitials.Result);
@@ -4513,14 +4513,14 @@ namespace ApiExamples
             Assert.AreEqual(" USERINITIALS ", fieldUserInitials.GetFieldCode());
             Assert.AreEqual("J. D.", fieldUserInitials.Result);
 
-            // We can set this attribute to get our field to display a different value
+            // We can set this attribute to get our field to override the value currently stored in the UserInformation object. 
             fieldUserInitials.UserInitials = "J. C.";
             fieldUserInitials.Update();
 
             Assert.AreEqual(" USERINITIALS  \"J. C.\"", fieldUserInitials.GetFieldCode());
             Assert.AreEqual("J. C.", fieldUserInitials.Result);
 
-            // This does not change the value in the user information object
+            // This does not affect the value in the UserInformation object.
             Assert.AreEqual("J. D.", doc.FieldOptions.CurrentUser.Initials);
 
             doc.UpdateFields();
@@ -4544,28 +4544,29 @@ namespace ApiExamples
             //ExSummary:Shows how to use the USERNAME field.
             Document doc = new Document();
 
-            // Create a user information object and set it as the data source for our field
+            // Create a UserInformation object, and set it as the source of user information for any fields that we create.
             UserInformation userInformation = new UserInformation();
             userInformation.Name = "John Doe";
             doc.FieldOptions.CurrentUser = userInformation;
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Display the current user's Name with a USERNAME field
+            // Create a USERNAME field to display the current user's name,
+            // which will be taken from the UserInformation object we created above.
             FieldUserName fieldUserName = (FieldUserName)builder.InsertField(FieldType.FieldUserName, true);
             Assert.AreEqual(userInformation.Name, fieldUserName.Result);
 
             Assert.AreEqual(" USERNAME ", fieldUserName.GetFieldCode());
             Assert.AreEqual("John Doe", fieldUserName.Result);
 
-            // We can set this attribute to get our field to display a different value
+            // We can set this attribute to get our field to override the value currently stored in the UserInformation object. 
             fieldUserName.UserName = "Jane Doe";
             fieldUserName.Update();
 
             Assert.AreEqual(" USERNAME  \"Jane Doe\"", fieldUserName.GetFieldCode());
             Assert.AreEqual("Jane Doe", fieldUserName.Result);
 
-            // This does not change the value in the user information object
+            // This does not affect the value in the UserInformation object.
             Assert.AreEqual("John Doe", doc.FieldOptions.CurrentUser.Name);
 
             doc.UpdateFields();
@@ -4597,15 +4598,15 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a list based on one of the Microsoft Word list templates
+            // Create a list based using a Microsoft Word list template.
             Aspose.Words.Lists.List list = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.NumberDefault);
 
-            // This generated list will look like "1.a )"
-            // The space before the bracket is a non-delimiter character that can be suppressed
+            // This generated list will display "1.a )".
+            // The space before the bracket is a non-delimiter character, and can be suppressed.
             list.ListLevels[0].NumberFormat = "\x0000.";
             list.ListLevels[1].NumberFormat = "\x0001 )";
 
-            // Add text and apply paragraph styles that will be referenced by STYLEREF fields
+            // Add text, and apply paragraph styles that STYLEREF fields will reference.
             builder.ListFormat.List = list;
             builder.ListFormat.ListIndent();
             builder.ParagraphFormat.Style = doc.Styles["List Paragraph"];
@@ -4617,12 +4618,12 @@ namespace ApiExamples
             builder.ListFormat.RemoveNumbers();
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
 
-            // Place a STYLEREF field in the header and have it display the first "List Paragraph"-styled text in the document
+            // Place a STYLEREF field in the header, and have it display the first "List Paragraph"-styled text in the document.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             FieldStyleRef field = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
             field.StyleName = "List Paragraph";
 
-            // Place a STYLEREF field in the footer and have it display the last text
+            // Place a STYLEREF field in the footer, and have it display the last text.
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
             field = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
             field.StyleName = "List Paragraph";
@@ -4630,7 +4631,7 @@ namespace ApiExamples
 
             builder.MoveToDocumentEnd();
 
-            // We can also use STYLEREF fields to reference the list numbers of lists
+            // We can also use STYLEREF fields to reference the list numbers of lists.
             builder.Write("\nParagraph number: ");
             field = (FieldStyleRef)builder.InsertField(FieldType.FieldStyleRef, true);
             field.StyleName = "Quote";
@@ -4705,31 +4706,32 @@ namespace ApiExamples
             //ExFor:FieldDate.UseSakaEraCalendar
             //ExFor:FieldDate.UseUmAlQuraCalendar
             //ExFor:FieldDate.UseLastFormat
-            //ExSummary:Shows how to insert DATE fields with different kinds of calendars.
+            //ExSummary:Shows how to use DATE fields to display dates according to different kinds of calendars.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // One way of putting dates into our documents is inserting DATE fields with document builder
+            // If we want text in the document to always display the correct date, we can use a DATE field.
+            // Below are three types of culrutal calendars that a DATE field can use to diplay a date.
+            // 1 -  Islamic Lunar Calendar:
             FieldDate field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
-
-            // Set the field's date to the current date of the Islamic Lunar Calendar
             field.UseLunarCalendar = true;
             Assert.AreEqual(" DATE  \\h", field.GetFieldCode());
             builder.Writeln();
 
-            // Insert a date field with the current date of the Umm al-Qura calendar
+            // 2 -  Umm al-Qura calendar:
             field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
             field.UseUmAlQuraCalendar = true;
             Assert.AreEqual(" DATE  \\u", field.GetFieldCode());
             builder.Writeln();
 
-            // Insert a date field with the current date of the Indian national calendar
+            // 3 -  Indian National Calendar:
             field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
             field.UseSakaEraCalendar = true;
             Assert.AreEqual(" DATE  \\s", field.GetFieldCode());
             builder.Writeln();
 
-            // Insert a date field with the current date of the calendar used in the (Insert > Date and Time) dialog box
+            // Insert a DATE field, and set its calendar type to the one last used by the host application.
+            // In Microsoft Word, the type will be the most recent used in the Insert -> Text -> Date and Time dialog box.
             field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
             field.UseLastFormat = true;
             Assert.AreEqual(" DATE  \\l", field.GetFieldCode());
@@ -4774,28 +4776,29 @@ namespace ApiExamples
             //ExFor:FieldCreateDate.UseLunarCalendar
             //ExFor:FieldCreateDate.UseSakaEraCalendar
             //ExFor:FieldCreateDate.UseUmAlQuraCalendar
-            //ExSummary:Shows how to insert CREATEDATE fields to display document creation dates.
-            // Open an existing document and move a document builder to the end
+            //ExSummary:Shows how to use the CREATEDATE field to display when the document was created.
             Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveToDocumentEnd();
             builder.Writeln(" Date this document was created:");
 
-            // Insert a CREATEDATE field and display, using the Lunar Calendar, the date the document was created
+            // We can use the CREATEDATE field to display the date and time of the creation of the document.
+            // Below are three different calendar types according to which the CREATEDATE field can display the date/time.
+            // 1 -  Islamic Lunar Calendar:
             builder.Write("According to the Lunar Calendar - ");
             FieldCreateDate field = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
             field.UseLunarCalendar = true;
 
             Assert.AreEqual(" CREATEDATE  \\h", field.GetFieldCode());
 
-            // Display the date using the Umm al-Qura Calendar
+            // 2 -  Umm al-Qura calendar:
             builder.Write("\nAccording to the Umm al-Qura Calendar - ");
             field = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
             field.UseUmAlQuraCalendar = true;
 
             Assert.AreEqual(" CREATEDATE  \\u", field.GetFieldCode());
 
-            // Display the date using the Indian National Calendar
+            // 3 -  Indian National Calendar:
             builder.Write("\nAccording to the Indian National Calendar - ");
             field = (FieldCreateDate)builder.InsertField(FieldType.FieldCreateDate, true);
             field.UseSakaEraCalendar = true;
@@ -4834,40 +4837,44 @@ namespace ApiExamples
         public void FieldSaveDate()
         {
             //ExStart
+            //ExFor:BuiltInDocumentProperties.LastSavedTime
             //ExFor:FieldSaveDate
             //ExFor:FieldSaveDate.UseLunarCalendar
             //ExFor:FieldSaveDate.UseSakaEraCalendar
             //ExFor:FieldSaveDate.UseUmAlQuraCalendar
-            //ExSummary:Shows how to insert SAVEDATE fields the date and time a document was last saved.
-            // Open an existing document and move a document builder to the end
+            //ExSummary:Shows how to use the SAVEDATE field to display when the document was last saved.
             Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveToDocumentEnd();
             builder.Writeln(" Date this document was last saved:");
 
-            // Insert a SAVEDATE field and display, using the Lunar Calendar, the date the document was last saved
+            // We can use the SAVEDATE field to display the date and time of the last save operation performed on the document.
+            // The save operation that these fields refer to is the manual save in an application like Microsoft Word,
+            // not the document's Save method.
+            // Below are three different calendar types according to which the SAVEDATE field can display the date/time.
+            // 1 -  Islamic Lunar Calendar:
             builder.Write("According to the Lunar Calendar - ");
             FieldSaveDate field = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
             field.UseLunarCalendar = true;
 
             Assert.AreEqual(" SAVEDATE  \\h", field.GetFieldCode());
-            
-            // Display the date using the Umm al-Qura Calendar
+
+            // 2 -  Umm al-Qura calendar:
             builder.Write("\nAccording to the Umm al-Qura calendar - ");
             field = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
             field.UseUmAlQuraCalendar = true;
 
             Assert.AreEqual(" SAVEDATE  \\u", field.GetFieldCode());
 
-            // Display the date using the Indian National Calendar
+            // 3 -  Indian National calendar:
             builder.Write("\nAccording to the Indian National calendar - ");
             field = (FieldSaveDate)builder.InsertField(FieldType.FieldSaveDate, true);
             field.UseSakaEraCalendar = true;
 
             Assert.AreEqual(" SAVEDATE  \\s", field.GetFieldCode());
-            
-            // While the date/time of the most recent save operation is tracked automatically by Microsoft Word,
-            // we will need to update the value manually if we wish to do the same thing when calling the Save() method
+
+            // The SAVEDATE fields draw their date/time values from the LastSavedTime built-in property.
+            // The document's Save method will not update this value, but we can still update it manually.
             doc.BuiltInDocumentProperties.LastSavedTime = DateTime.Now;
 
             doc.UpdateFields();
@@ -4913,10 +4920,12 @@ namespace ApiExamples
             //ExFor:FieldArgumentBuilder.AddField(FieldBuilder)
             //ExFor:FieldArgumentBuilder.AddText(String)
             //ExFor:FieldArgumentBuilder.AddNode(Inline)
-            //ExSummary:Shows how to insert fields using a field builder.
+            //ExSummary:Shows how to construct fields using a field builder, and then insert them into the document.
             Document doc = new Document();
 
-            // Use a field builder to add a SYMBOL field which displays the "F with hook" symbol
+            // Below are three examples of field construction done using a field builder.
+            // 1 -  Single field:
+            // Use a field builder to add a SYMBOL field which displays the ƒ (Florin) symbol.
             FieldBuilder builder = new FieldBuilder(FieldType.FieldSymbol);
             builder.AddArgument(402);
             builder.AddSwitch("\\f", "Arial");
@@ -4926,24 +4935,29 @@ namespace ApiExamples
 
             Assert.AreEqual(" SYMBOL 402 \\f Arial \\s 25 \\u ", field.GetFieldCode());
 
-            // Use a field builder to create a formula field that will be used by another field builder
+            // 2 -  Nested field:
+            // Use a field builder to create a formula field that will be used
+            // as an inner field by another field builder.
             FieldBuilder innerFormulaBuilder = new FieldBuilder(FieldType.FieldFormula);
             innerFormulaBuilder.AddArgument(100);
             innerFormulaBuilder.AddArgument("+");
             innerFormulaBuilder.AddArgument(74);
 
-            // Add a field builder as an argument to another field builder
-            // The result of our formula field will be used as an ANSI value representing the "enclosed R" symbol,
-            // to be displayed by this SYMBOL field
+            // Create another builder for another SYMBOL field, and insert the formula field
+            // that we have created above into the SYMBOL field as its argument. 
             builder = new FieldBuilder(FieldType.FieldSymbol);
             builder.AddArgument(innerFormulaBuilder);
-            field = builder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
+            field = builder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(string.Empty));
 
+            // The outer SYMBOL field will use the result of the formula field, 174, as its argument,
+            // which will make the field display the ® (Registered Sign) symbol, since its character number is 174.
             Assert.AreEqual(" SYMBOL \u0013 = 100 + 74 \u0014\u0015 ", field.GetFieldCode());
 
-            // Now we will use our builder to construct a more complex field with nested fields
-            // For our IF field, we will first create two formula fields to serve as expressions
-            // Their results will be tested for equality to decide what value an IF field displays
+            // 3 -  Multiple nested fields and arguments:
+            // Now, we will use a builder to create an IF field, which displays one of two custom string values,
+            // depending on the true/false value of its expression. To get a true/false value
+            // that determines which string the IF field displays, the IF field will test two numeric expressions for equality.
+            // We will provide the two expressions in the form of formula fields, which we will nest inside the IF field.
             FieldBuilder leftExpression = new FieldBuilder(FieldType.FieldFormula);
             leftExpression.AddArgument(2);
             leftExpression.AddArgument("+");
@@ -4954,8 +4968,8 @@ namespace ApiExamples
             rightExpression.AddArgument("*");
             rightExpression.AddArgument(5.2);
 
-            // Next, we will create two field arguments using field argument builders
-            // These will serve as the two possible outputs of our IF field and they will also use our two expressions
+            // Next, we will build two field arguments, which will serve as the true/false output strings for the IF field.
+            // These arguments will reuse the output values of our numeric expressions.
             FieldArgumentBuilder trueOutput = new FieldArgumentBuilder();
             trueOutput.AddText("True, both expressions amount to ");
             trueOutput.AddField(leftExpression);
@@ -4966,16 +4980,18 @@ namespace ApiExamples
             falseOutput.AddNode(new Run(doc, " does not equal "));
             falseOutput.AddField(rightExpression);
 
-            // Finally, we will use a field builder to create an IF field which takes two field builders as expressions,
-            // and two field argument builders as the two potential outputs
+            // Finally, we will create one more field builder for the IF field, and put all of its pieces together. 
             builder = new FieldBuilder(FieldType.FieldIf);
             builder.AddArgument(leftExpression);
             builder.AddArgument("=");
             builder.AddArgument(rightExpression);
             builder.AddArgument(trueOutput);
             builder.AddArgument(falseOutput);
+            field = builder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(string.Empty));
 
-            builder.BuildAndInsert(doc.FirstSection.Body.AppendParagraph(""));
+            Assert.AreEqual(" IF \u0013 = 2 + 3 \u0014\u0015 = \u0013 = 2.5 * 5.2 \u0014\u0015 " +
+                            "\"True, both expressions amount to \u0013 = 2 + 3 \u0014\u0015\" " +
+                            "\"False, \u0013 = 2 + 3 \u0014\u0015 does not equal \u0013 = 2.5 * 5.2 \u0014\u0015\" ", field.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.SYMBOL.docx");
@@ -5026,12 +5042,19 @@ namespace ApiExamples
             //ExFor:FieldAuthor
             //ExFor:FieldAuthor.AuthorName  
             //ExFor:FieldOptions.DefaultDocumentAuthor
-            //ExSummary:Shows how to display a document creator's name with an AUTHOR field.
+            //ExSummary:Shows how to use an AUTHOR field to display a document creator's name.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // If we open an existing document, the document's author's full name will be displayed by the field
-            // If we create a document programmatically, we need to set this attribute to the author's name, so our field has something to display
+            // AUTHOR fields source their results from the built-in document property called "Author".
+            // If we create and save a document in Microsoft Word,
+            // it will have our username in that property.
+            // However, if we create a document programmatically using Aspose.Words,
+            // the "Author" property by default will be an empty string. 
+            Assert.AreEqual(string.Empty, doc.BuiltInDocumentProperties.Author);
+
+            // Set a backup author name for AUTHOR fields to use
+            // in case the "Author" property contains an empty string.
             doc.FieldOptions.DefaultDocumentAuthor = "Joe Bloggs";
 
             builder.Write("This document was created by ");
@@ -5040,22 +5063,27 @@ namespace ApiExamples
 
             Assert.AreEqual(" AUTHOR ", field.GetFieldCode());
             Assert.AreEqual("Joe Bloggs", field.Result);
-            
-            // If this property has a value, it will supersede the one we set above 
+
+            // Updating an AUTHOR field which contains a value
+            // will apply that value to the "Author" built-in property.
+            Assert.AreEqual("Joe Bloggs", doc.BuiltInDocumentProperties.Author);
+
+            // Changing this property, then updating the AUTHOR field will apply this value to the field.
             doc.BuiltInDocumentProperties.Author = "John Doe";      
             field.Update();
 
             Assert.AreEqual(" AUTHOR ", field.GetFieldCode());
             Assert.AreEqual("John Doe", field.Result);
             
-            // Our field can also override the document's built in author name like this
+            // If we give an AUTHOR field a different name again, and then update it,
+            // then the field will apply this value to the built-in property.
             field.AuthorName = "Jane Doe";
             field.Update();
 
             Assert.AreEqual(" AUTHOR  \"Jane Doe\"", field.GetFieldCode());
             Assert.AreEqual("Jane Doe", field.Result);
 
-            // The author name in the built-in properties was changed by the field, but the default document author stays the same
+            // AUTHOR fields do not affect the DefaultDocumentAuthor property.
             Assert.AreEqual("Jane Doe", doc.BuiltInDocumentProperties.Author);
             Assert.AreEqual("Joe Bloggs", doc.FieldOptions.DefaultDocumentAuthor);
 
@@ -5080,27 +5108,29 @@ namespace ApiExamples
             //ExFor:FieldDocProperty
             //ExFor:FieldDocVariable
             //ExFor:FieldDocVariable.VariableName
-            //ExSummary:Shows how to use fields to display document properties and variables.
+            //ExSummary:Shows how to use DOCPROPERTY fields to display document properties and variables.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set the value of a document property
+            // Below are two ways of using DOCPROPERTY fields.
+            // 1 -  Display a built-in property:
+            // Set a custom value for the "Category" built-in property,
+            // then insert a DOCPROPERTY field that references the property.
             doc.BuiltInDocumentProperties.Category = "My category";
 
-            // Display the value of that property with a DOCPROPERTY field
             FieldDocProperty fieldDocProperty = (FieldDocProperty)builder.InsertField(" DOCPROPERTY Category ");
             fieldDocProperty.Update();
 
             Assert.AreEqual(" DOCPROPERTY Category ", fieldDocProperty.GetFieldCode());
             Assert.AreEqual("My category", fieldDocProperty.Result);
 
-            builder.Writeln();
+            builder.InsertParagraph();
 
-            // While the set of a document's properties is fixed, we can add, name, and define our own values in the variables collection
+            // 2 -  Display a custom document variable:
+            // Define a custom variable, then reference that variable with a DOCPROPERTY field.
             Assert.That(doc.Variables, Is.Empty);
             doc.Variables.Add("My variable", "My variable's value");
 
-            // We can access a variable using its name and display it with a DOCVARIABLE field
             FieldDocVariable fieldDocVariable = (FieldDocVariable)builder.InsertField(FieldType.FieldDocVariable, true);
             fieldDocVariable.VariableName = "My Variable";
             fieldDocVariable.Update();
@@ -5134,10 +5164,10 @@ namespace ApiExamples
             //ExSummary:Shows how to use the SUBJECT field.
             Document doc = new Document();
 
-            // Set a value for the document's subject property
+            // Set a value for the document's "Subject" built-in property.
             doc.BuiltInDocumentProperties.Subject = "My subject";
 
-            // We can display this value with a SUBJECT field
+            // Create a SUBJECT field to ditsplay the value of that built-in property.
             DocumentBuilder builder = new DocumentBuilder(doc);
             FieldSubject field = (FieldSubject)builder.InsertField(FieldType.FieldSubject, true);
             field.Update();
@@ -5145,14 +5175,15 @@ namespace ApiExamples
             Assert.AreEqual(" SUBJECT ", field.GetFieldCode());
             Assert.AreEqual("My subject", field.Result);
 
-            // We can also set the field's Text attribute to override the current value of the Subject property
+            // If we give the SUBJECT field's Text property a value and update it, the field will
+            // overwrite the current value of the "Subject" built-in property with the value of its Text property,
+            // and then display the new value.
             field.Text = "My new subject";
             field.Update();
 
             Assert.AreEqual(" SUBJECT  \"My new subject\"", field.GetFieldCode());
             Assert.AreEqual("My new subject", field.Result);
 
-            // As well as displaying a new value in our field, we also changed the value of the document property
             Assert.AreEqual("My new subject", doc.BuiltInDocumentProperties.Subject);
 
             doc.Save(ArtifactsDir + "Field.SUBJECT.docx");
@@ -5174,21 +5205,23 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldComments
             //ExFor:FieldComments.Text
-            //ExSummary:Shows how to use the COMMENTS field to display a document's comments.
+            //ExSummary:Shows how to use the COMMENTS field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // This property is where the COMMENTS field will source its content from
+            // Set a value for the document's "Comments" built-in property.
             doc.BuiltInDocumentProperties.Comments = "My comment.";
 
-            // Insert a COMMENTS field with a document builder
+            // Create a COMMENTS field to ditsplay the value of that built-in property.
             FieldComments field = (FieldComments)builder.InsertField(FieldType.FieldComments, true);
             field.Update();
 
             Assert.AreEqual(" COMMENTS ", field.GetFieldCode());
             Assert.AreEqual("My comment.", field.Result);
 
-            // We can override the comment from the document's built in properties and display any text we put here instead
+            // If we give the COMMENTS field's Text property a value and update it, the field will
+            // overwrite the current value of the "Comments" built-in property with the value of its Text property,
+            // and then display the new value.
             field.Text = "My overriding comment.";
             field.Update();
 
@@ -5225,14 +5258,16 @@ namespace ApiExamples
             builder.MoveToDocumentEnd();
             builder.InsertParagraph();
 
-            // By default, file size is displayed in bytes
+            // Below are three different units of measure which FILESIZE fields
+            // can display the document's file size with.
+            // 1 -  Bytes:
             FieldFileSize field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.Update();
 
             Assert.AreEqual(" FILESIZE ", field.GetFieldCode());
             Assert.AreEqual("10590", field.Result);
 
-            // Set the field to display size in kilobytes
+            // 2 -  Kilobytes:
             builder.InsertParagraph();
             field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.IsInKilobytes = true;
@@ -5241,7 +5276,7 @@ namespace ApiExamples
             Assert.AreEqual(" FILESIZE  \\k", field.GetFieldCode());
             Assert.AreEqual("11", field.Result);
 
-            // Set the field to display size in megabytes
+            // 3 -  Megabytes:
             builder.InsertParagraph();
             field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.IsInMegabytes = true;
@@ -5251,7 +5286,7 @@ namespace ApiExamples
             Assert.AreEqual("0", field.Result);
 
             // To update the values of these fields while editing in Microsoft Word,
-            // the changes must first be saved, then the fields need to be manually updated
+            // the changes must first be saved, and then the fields need to be manually updated.
             doc.Save(ArtifactsDir + "Field.FILESIZE.docx");
             //ExEnd
 
@@ -5261,7 +5296,7 @@ namespace ApiExamples
 
             TestUtil.VerifyField(FieldType.FieldFileSize, " FILESIZE ", "10590", field);
 
-            // These fields will need to be updated to produce an accurate result
+            // These fields will need to be updated to produce an accurate result.
             doc.UpdateFields();
 
             field = (FieldFileSize)doc.Range.Fields[1];
