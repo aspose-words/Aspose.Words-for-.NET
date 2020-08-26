@@ -439,42 +439,6 @@ namespace ApiExamples
             Assert.AreEqual((doc.FirstSection.PageSetup.PageWidth - shape.Width) / 2, shape.Left);
             Assert.AreEqual((doc.FirstSection.PageSetup.PageHeight - shape.Height) / 2, shape.Top);
         }
-
-        [Test]
-        public void InsertOleObjectNetStandard2()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
-            //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
-            //ExSummary:Shows how to insert an OLE object into a document (.NetStandard 2.0).
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Logo.jpg"))
-            {
-                // OleObject
-                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
-                // OleObject with ProgId
-                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, false,
-                    representingImage);
-            }
-
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape,0, true);
-            
-            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
-            Assert.AreEqual("Excel.Sheet.12", shape.OleFormat.ProgId);
-            Assert.AreEqual(".xlsx", shape.OleFormat.SuggestedExtension);
-
-            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
-
-            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
-            Assert.AreEqual("Package", shape.OleFormat.ProgId);
-            Assert.AreEqual(".xlsx", shape.OleFormat.SuggestedExtension);
-        }
 #endif
 
         [Test]
@@ -1879,33 +1843,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertImageOriginalSize()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertImage(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
-            //ExSummary:Shows how to insert a floating image from a file or URL and retain the original image size in the document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Pass a negative value to the width and height values to specify using the size of the source image
-            builder.InsertImage(ImageDir + "Logo.jpg", RelativeHorizontalPosition.Margin, 200,
-                RelativeVerticalPosition.Margin, 100, -1, -1, WrapType.Square);
-            //ExEnd
-
-            doc = DocumentHelper.SaveOpen(doc);
-            Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-
-            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, image);
-            Assert.AreEqual(200.0d, image.Left);
-            Assert.AreEqual(100.0d, image.Top);
-            Assert.AreEqual(270.3d, image.Width);
-            Assert.AreEqual(270.3d, image.Height);
-            Assert.AreEqual(WrapType.Square, image.WrapType);
-            Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
-        }
-
-        [Test]
         public void DocumentBuilderInsertTextInputFormField()
         {
             //ExStart
@@ -2007,7 +1944,7 @@ namespace ApiExamples
                 SignTime = DateTime.Now
             };
 
-            CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            CertificateHolder certHolder = CertificateHolder.Create(File.ReadAllBytes(MyDir + "morzal.pfx"), "aw");
 
             DigitalSignatureUtil.Sign(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.docx", 
                 ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx", certHolder, signOptions);
@@ -2934,7 +2871,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Let's take a spreadsheet from our system and insert it into the document
-            using (Stream spreadsheetStream = File.Open(MyDir + "Spreadsheet.xlsx", FileMode.Open))
+            using (Stream spreadsheetStream = File.Open(MyDir + "Spreadsheet.xlsx", FileMode.Open, FileAccess.Read))
             {
                 // The spreadsheet can be activated by double clicking the panel that you'll see in the document immediately under the text we will add
                 // We did not set the area to double click as an icon nor did we change its appearance so it looks like a simple panel
@@ -2943,7 +2880,7 @@ namespace ApiExamples
 
                 // A powerpoint presentation is another type of object we can embed in our document
                 // This time we'll also exercise some control over how it looks 
-                using (Stream powerpointStream = File.Open(MyDir + "Presentation.pptx", FileMode.Open))
+                using (Stream powerpointStream = File.Open(MyDir + "Presentation.pptx", FileMode.Open, FileAccess.Read))
                 {
                     // If we insert the Ole object as an icon, we are still provided with a default icon
                     // If that is not suitable, we can make the icon to look like any image

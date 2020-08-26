@@ -115,7 +115,7 @@ namespace ApiExamples
                 ConvertUtil.PixelToPoint(144));
 
             builder.Writeln("\nInserted image from string using relative positions: ");
-            builder.InsertImage(ImageDir + "Windows Metafile.wmf", RelativeHorizontalPosition.Margin, 100, 
+            builder.InsertImage(ImageDir + "Windows MetaFile.wmf", RelativeHorizontalPosition.Margin, 100, 
                 RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
 
             doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromString.docx");

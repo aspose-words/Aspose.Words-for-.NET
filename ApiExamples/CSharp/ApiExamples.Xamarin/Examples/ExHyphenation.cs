@@ -64,7 +64,7 @@ namespace ApiExamples
             Hyphenation.WarningCallback = warningInfoCollection;
 
             // Register an English (US) hyphenation dictionary by stream
-            Stream dictionaryStream = new FileStream(MyDir + "hyph_en_US.dic", FileMode.Open);
+            Stream dictionaryStream = new FileStream(MyDir + "hyph_en_US.dic", FileMode.Open, FileAccess.Read);
             Hyphenation.RegisterDictionary("en-US", dictionaryStream);
 
             // No warnings detected

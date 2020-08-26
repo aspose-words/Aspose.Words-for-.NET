@@ -315,58 +315,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CustomColumnWidth()
-        {
-            //ExStart
-            //ExFor:TextColumnCollection.LineBetween
-            //ExFor:TextColumnCollection.EvenlySpaced
-            //ExFor:TextColumnCollection.Item
-            //ExFor:TextColumn
-            //ExFor:TextColumn.Width
-            //ExFor:TextColumn.SpaceAfter
-            //ExSummary:Shows how to set widths of columns.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            TextColumnCollection columns = builder.PageSetup.TextColumns;
-            // Show vertical line between columns
-            columns.LineBetween = true;
-            // Indicate we want to create column with different widths
-            columns.EvenlySpaced = false;
-            // Create two columns, note they will be created with zero widths, need to set them
-            columns.SetCount(2);
-
-            // Set the first column to be narrow
-            TextColumn column = columns[0];
-            column.Width = 100;
-            column.SpaceAfter = 20;
-
-            // Set the second column to take the rest of the space available on the page
-            column = columns[1];
-            PageSetup pageSetup = builder.PageSetup;
-            double contentWidth = pageSetup.PageWidth - pageSetup.LeftMargin - pageSetup.RightMargin;
-            column.Width = contentWidth - column.Width - column.SpaceAfter;
-
-            builder.Writeln("Narrow column 1.");
-            builder.InsertBreak(BreakType.ColumnBreak);
-            builder.Writeln("Wide column 2.");
-
-            doc.Save(ArtifactsDir + "PageSetup.CustomColumnWidth.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "PageSetup.CustomColumnWidth.docx");
-            pageSetup = doc.FirstSection.PageSetup;
-
-            Assert.True(pageSetup.TextColumns.LineBetween);
-            Assert.False(pageSetup.TextColumns.EvenlySpaced);
-            Assert.AreEqual(2, pageSetup.TextColumns.Count);
-            Assert.AreEqual(100.0d, pageSetup.TextColumns[0].Width);
-            Assert.AreEqual(20.0d, pageSetup.TextColumns[0].SpaceAfter);
-            Assert.AreEqual(470.3d, pageSetup.TextColumns[1].Width);
-            Assert.AreEqual(0.0d, pageSetup.TextColumns[1].SpaceAfter);
-        }
-
-        [Test]
         public void LineNumbers()
         {
             //ExStart
