@@ -67,7 +67,7 @@ namespace ApiExamples
         /// <returns>True if being executed in Mono, false otherwise.</returns>
         internal static bool IsRunningOnMono() {
             return Type.GetType("Mono.Runtime") != null;
-        }
+        }        
 
         internal static void SetUnlimitedLicense()
         {

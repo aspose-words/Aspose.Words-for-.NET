@@ -240,12 +240,8 @@ namespace ApiExamples
 
                     doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFonts.False.html", saveOptions);
 
-                    if (!IsRunningOnMono())
-                        Assert.IsNotEmpty(Directory.GetFiles(fontsFolder, "HtmlSaveOptions.ExportFonts.False.times.ttf",
-                            SearchOption.AllDirectories));
-                    else
-                        Assert.IsNotEmpty(Directory.GetFiles(fontsFolder, "HtmlSaveOptions.ExportFonts.False.times new roman.ttf",
-                            SearchOption.AllDirectories));
+                    Assert.IsNotEmpty(Directory.GetFiles(fontsFolder, "HtmlSaveOptions.ExportFonts.False.times.ttf",
+                        SearchOption.AllDirectories));
 
                     Directory.Delete(fontsFolder, true);
                     break;

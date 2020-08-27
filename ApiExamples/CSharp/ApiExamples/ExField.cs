@@ -5466,7 +5466,7 @@ namespace ApiExamples
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
             // Insert character and word counts
-            FieldNumChars fieldNumChars = (FieldNumChars)builder.InsertField(FieldType.FieldNumChars, true);       
+            FieldNumChars fieldNumChars = (FieldNumChars)builder.InsertField(FieldType.FieldNumChars, true);
             builder.Writeln(" characters");
             FieldNumWords fieldNumWords = (FieldNumWords)builder.InsertField(FieldType.FieldNumWords, true);
             builder.Writeln(" words");
@@ -5492,16 +5492,8 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldNumChars, " NUMCHARS ", "6009", doc.Range.Fields[0]);
             TestUtil.VerifyField(FieldType.FieldNumWords, " NUMWORDS ", "1054", doc.Range.Fields[1]);
 
-            if (!IsRunningOnMono())
-            {
-                TestUtil.VerifyField(FieldType.FieldPage, " PAGE ", "6", doc.Range.Fields[2]);
-                TestUtil.VerifyField(FieldType.FieldNumPages, " NUMPAGES ", "6", doc.Range.Fields[3]);
-            }
-            else
-            {
-                TestUtil.VerifyField(FieldType.FieldPage, " PAGE ", "7", doc.Range.Fields[2]);
-                TestUtil.VerifyField(FieldType.FieldNumPages, " NUMPAGES ", "7", doc.Range.Fields[3]);
-            }
+            TestUtil.VerifyField(FieldType.FieldPage, " PAGE ", "6", doc.Range.Fields[2]);
+            TestUtil.VerifyField(FieldType.FieldNumPages, " NUMPAGES ", "6", doc.Range.Fields[3]);
         }
 
         [Test]

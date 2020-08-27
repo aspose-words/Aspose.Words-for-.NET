@@ -222,10 +222,7 @@ namespace ApiExamples
             // Also, these values can also be viewed in Microsoft Word by navigating File > Properties > Advanced Properties > Statistics
             // Page count: The PageCount attribute shows the page count in real time and its value can be assigned to the Pages property
             properties.Pages = doc.PageCount;
-            if (!IsRunningOnMono())
-                Assert.AreEqual(6, properties.Pages);
-            else
-                Assert.AreEqual(7, properties.Pages);
+            Assert.AreEqual(6, properties.Pages);
 
             // Word count: The UpdateWordCount() automatically assigns the real time word/character counts to the respective built in properties
             doc.UpdateWordCount();
@@ -314,10 +311,7 @@ namespace ApiExamples
         {
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
-            if (!IsRunningOnMono())
-                Assert.AreEqual(6, properties.Pages);
-            else
-                Assert.AreEqual(7, properties.Pages);
+            Assert.AreEqual(6, properties.Pages);
 
             Assert.AreEqual(1035, properties.Words);
             Assert.AreEqual(6026, properties.Characters);

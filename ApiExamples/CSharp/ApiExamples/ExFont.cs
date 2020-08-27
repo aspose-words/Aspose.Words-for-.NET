@@ -942,8 +942,8 @@ namespace ApiExamples
 
             // Warnings are stored in this format
             Assert.AreEqual(WarningSource.Layout, substitutionWarningHandler.FontWarnings[0].Source);
-            Assert.True(new Regex("Font '28 Days Later' has not been found. Using (.*) font instead. Reason: font info substitution.")
-                .Match(substitutionWarningHandler.FontWarnings[0].Description).Success);
+            Assert.True(new Regex("Font '28 Days Later' has not been found. Using (.*) font instead. Reason: alternative name from document.")
+                    .Match(substitutionWarningHandler.FontWarnings[0].Description).Success);
 
             // The warning info collection can also be cleared like this
             substitutionWarningHandler.FontWarnings.Clear();
