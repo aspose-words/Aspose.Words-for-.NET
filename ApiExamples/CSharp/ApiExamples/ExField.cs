@@ -5258,7 +5258,8 @@ namespace ApiExamples
             builder.MoveToDocumentEnd();
             builder.InsertParagraph();
 
-            // Below are three different units of measure which FILESIZE fields
+            // Below are three different units of measure
+            // which FILESIZE fields
             // can display the document's file size with.
             // 1 -  Bytes:
             FieldFileSize field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
@@ -5321,14 +5322,15 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a GOTOBUTTON which will take us to a bookmark referenced by "MyBookmark"
+            // Add a GOTOBUTTON field. When we double-click this field in Microsoft Word,
+            // it will take the text cursor to the bookmark whose name the Location property references.
             FieldGoToButton field = (FieldGoToButton)builder.InsertField(FieldType.FieldGoToButton, true);
             field.DisplayText = "My Button";
             field.Location = "MyBookmark";
 
             Assert.AreEqual(" GOTOBUTTON  MyBookmark My Button", field.GetFieldCode());
 
-            // Add an arrival destination for our button
+            // Insert a valid bookmark for the field to reference.
             builder.InsertBreak(BreakType.PageBreak);
             builder.StartBookmark(field.Location);
             builder.Writeln("Bookmark text contents.");
@@ -5358,20 +5360,23 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a FILLIN field with a document builder
+            // Insert a FILLIN field. When we manually update this field in Microsoft Word,
+            // it will prompt us to enter a response. The field will then display the response as text.
             FieldFillIn field = (FieldFillIn)builder.InsertField(FieldType.FieldFillIn, true);
             field.PromptText = "Please enter a response:";
             field.DefaultResponse = "A default response.";
 
-            // Set this to prompt the user for a response when a mail merge is performed
+            // We can also use these fields to ask the user for a unique response for each page
+            // that is created during a mail merge done using Microsoft Word.
             field.PromptOnceOnMailMerge = true;
 
             Assert.AreEqual(" FILLIN  \"Please enter a response:\" \\d \"A default response.\" \\o", field.GetFieldCode());
 
-            // Perform a simple mail merge
             FieldMergeField mergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
             mergeField.FieldName = "MergeField";
             
+            // If we perform a mail merge programmatically, we can use a custom prompt respondent
+            // to automatically edit responses for FILLIN fields that the mail merge encounters.
             doc.FieldOptions.UserPromptRespondent = new PromptRespondent();
             doc.MailMerge.Execute(new [] { "MergeField" }, new object[] { "" });
             
@@ -5381,7 +5386,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// IFieldUserPromptRespondent implementation that appends a line to the default response of an FILLIN field during a mail merge.
+        /// Prepends a line to the default response of every FILLIN field during a mail merge.
         /// </summary>
         private class PromptRespondent : IFieldUserPromptRespondent
         {
@@ -5418,11 +5423,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set the value of a document property
+            // Set a value for the "Comments" built-in property, and then insert an INFO field
+            // to display the value of that property.
             doc.BuiltInDocumentProperties.Comments = "My comment";
-
-            // We can access a property using its name and display it with an INFO field
-            // In this case, it will be the Comments property
             FieldInfo field = (FieldInfo)builder.InsertField(FieldType.FieldInfo, true);
             field.InfoType = "Comments";
             field.Update();
@@ -5432,13 +5435,13 @@ namespace ApiExamples
 
             builder.Writeln();
 
-            // We can override the value of a document property by setting an INFO field's optional new value
+            // Setting a value for the field's NewValue property,
+            // and then updating the field will also overwrite the corresponding built-in property with the new value.
             field = (FieldInfo)builder.InsertField(FieldType.FieldInfo, true);
             field.InfoType = "Comments";
             field.NewValue = "New comment";
             field.Update();
 
-            // Our field's new value has been applied to the corresponding property
             Assert.AreEqual(" INFO  Comments \"New comment\"", field.GetFieldCode());
             Assert.AreEqual("New comment", field.Result);
             Assert.AreEqual("New comment", doc.BuiltInDocumentProperties.Comments);
@@ -5470,22 +5473,24 @@ namespace ApiExamples
             //ExFor:FieldMacroButton
             //ExFor:FieldMacroButton.DisplayText
             //ExFor:FieldMacroButton.MacroName
-            //ExSummary:Shows how to use MACROBUTTON fields that enable us to run macros by clicking.
-            // Open a document that contains macros
+            //ExSummary:Shows how to use MACROBUTTON fields to allow us to run a document's macros by clicking.
             Document doc = new Document(MyDir + "Macro.docm");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Assert.IsTrue(doc.HasMacros);
 
-            // Insert a MACROBUTTON field and reference by name a macro that exists within the input document
+            // Insert a MACROBUTTON field, and reference one of the document's macros by name in the MacroName property.
             FieldMacroButton field = (FieldMacroButton)builder.InsertField(FieldType.FieldMacroButton, true);
             field.MacroName = "MyMacro";
             field.DisplayText = "Double click to run macro: " + field.MacroName;
 
             Assert.AreEqual(" MACROBUTTON  MyMacro Double click to run macro: MyMacro", field.GetFieldCode());
 
-            // Reference "ViewZoom200", a macro that was shipped with Microsoft Word, found under "Word commands"
-            // If our document has a macro of the same name as one from another source, the field will select ours to run
+            // Use the property to reference "ViewZoom200", a macro that was shipped with Microsoft Word.
+            // We can find all other such macros via View -> Macros (drop down) -> View Macros.
+            // In that menu, select "Word Commands" from the "Macros in:" drop down.
+            // If our document contains a custom macro with the same name as a stock macro,
+            // our macro will be the one that the MACROBUTTON field runs.
             builder.InsertParagraph();
             field = (FieldMacroButton)builder.InsertField(FieldType.FieldMacroButton, true);
             field.MacroName = "ViewZoom200";
@@ -5493,7 +5498,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" MACROBUTTON  ViewZoom200 Run ViewZoom200", field.GetFieldCode());
 
-            // Save the document as a macro-enabled document type
+            // Save the document as a macro-enabled document type.
             doc.Save(ArtifactsDir + "Field.MACROBUTTON.docm");
             //ExEnd
 
@@ -5522,24 +5527,23 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add some keywords, also referred to as "tags" in File Explorer
+            // Add some keywords, also referred to as "tags" in File Explorer.
             doc.BuiltInDocumentProperties.Keywords = "Keyword1, Keyword2";
 
-            // Add a KEYWORDS field which will display our keywords
+            // The KEYWORDS field displays the value of this property.
             FieldKeywords field = (FieldKeywords)builder.InsertField(FieldType.FieldKeyword, true);
             field.Update();
 
             Assert.AreEqual(" KEYWORDS ", field.GetFieldCode());
             Assert.AreEqual("Keyword1, Keyword2", field.Result);
 
-            // We can set the Text property of our field to display a different value to the one within the document's properties
+            // Setting a value for the field's Text property,
+            // and then updating the field will also overwrite the corresponding built-in property with the new value.
             field.Text = "OverridingKeyword";
             field.Update();
 
             Assert.AreEqual(" KEYWORDS  OverridingKeyword", field.GetFieldCode());
             Assert.AreEqual("OverridingKeyword", field.Result);
-
-            // Setting a KEYWORDS field's Text property also updates the document's keywords to our new value
             Assert.AreEqual("OverridingKeyword", doc.BuiltInDocumentProperties.Keywords);
 
             doc.Save(ArtifactsDir + "Field.KEYWORDS.docx");
@@ -5564,21 +5568,23 @@ namespace ApiExamples
             //ExFor:FieldNumPages
             //ExFor:FieldNumWords
             //ExSummary:Shows how to use NUMCHARS, NUMWORDS, NUMPAGES and PAGE fields to track the size of our documents.
-            // Open a document to which we want to add character/word/page counts
             Document doc = new Document(MyDir + "Paragraphs.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Move the document builder to the footer, where we will store our fields
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
-            // Insert character and word counts
+            // Below are three types of fields that we can use to track the size of our documents.
+            // 1 -  Track the character count with a NUMCHARS field.
             FieldNumChars fieldNumChars = (FieldNumChars)builder.InsertField(FieldType.FieldNumChars, true);       
             builder.Writeln(" characters");
+
+            // 2 -  Track the word count with a NUMWORDS field.
             FieldNumWords fieldNumWords = (FieldNumWords)builder.InsertField(FieldType.FieldNumWords, true);
             builder.Writeln(" words");
 
-            // Insert a "Page x of y" page count
+            // 3 -  Use both PAGE and NUMPAGES fields to display what page the field is on,
+            // and the total number of pages in the document.
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
             builder.Write("Page ");
             FieldPage fieldPage = (FieldPage)builder.InsertField(FieldType.FieldPage, true);
@@ -5590,6 +5596,9 @@ namespace ApiExamples
             Assert.AreEqual(" NUMPAGES ", fieldNumPages.GetFieldCode());
             Assert.AreEqual(" PAGE ", fieldPage.GetFieldCode());
 
+            // These fields will not maintain accurate values in real time
+            // while we edit the document programmatically using Aspose.Words, or in Microsoft Word.
+            // We need to update them every we need to see an up-to-date value. 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.NUMCHARS.NUMWORDS.NUMPAGES.PAGE.docx");
             //ExEnd
@@ -5615,15 +5624,15 @@ namespace ApiExamples
 
             builder.Write("My paragraph");
 
-            // The PRINT field can send instructions to the printer that we use to print our document
+            // The PRINT field can send instructions to the printer.
             FieldPrint field = (FieldPrint)builder.InsertField(FieldType.FieldPrint, true);
 
-            // Set the area for the printer to perform instructions over
-            // In this case, it will be the paragraph that contains our PRINT field
+            // Set the area for the printer to perform instructions over.
+            // In this case, it will be the paragraph that contains our PRINT field.
             field.PostScriptGroup = "para";
 
-            // When our document is printed using a printer that supports PostScript,
-            // this command will turn the entire area that we specified in field.PostScriptGroup white 
+            // When we use a printer that supports PostScript to print our document,
+            // this command will turn the entire area that we specified in field.PostScriptGroup white.
             field.PrinterInstructions = "erasepage";
 
             Assert.AreEqual(" PRINT  erasepage \\p para", field.GetFieldCode());
@@ -5651,16 +5660,18 @@ namespace ApiExamples
             //ExFor:FieldPrintDate.UseUmAlQuraCalendar
             //ExSummary:Shows read PRINTDATE fields.
             Document doc = new Document(MyDir + "Field sample - PRINTDATE.docx");
-            
-            // A PRINTDATE field will display "0/0/0000" by default
-            // When a document is printed by a printer or printed as a PDF (but not exported as PDF),
-            // these fields will display the date/time of that print operation
+
+            // When a document is printed by a printer or printed as a PDF (but not exported to PDF),
+            // PRINTDATE fields will display the date/time of that print operation.
+            // If no printing has taken place, these fields will display "0/0/0000".
             FieldPrintDate field = (FieldPrintDate)doc.Range.Fields[0];
 
             Assert.AreEqual("3/25/2020 12:00:00 AM", field.Result);
             Assert.AreEqual(" PRINTDATE ", field.GetFieldCode());
 
-            // These fields can also display the date using other various international calendars
+            // Below are three different calendar types according to which the PRINTDATE field
+            // can display the date and time of the last printing operation.
+            // 1 -  Islamic Lunar Calendar:
             field = (FieldPrintDate)doc.Range.Fields[1];
 
             Assert.True(field.UseLunarCalendar);
@@ -5669,12 +5680,14 @@ namespace ApiExamples
 
             field = (FieldPrintDate)doc.Range.Fields[2];
 
+            // 2 -  Umm al-Qura calendar:
             Assert.True(field.UseUmAlQuraCalendar);
             Assert.AreEqual("8/1/1441 12:00:00 AM", field.Result);
             Assert.AreEqual(" PRINTDATE  \\u", field.GetFieldCode());
 
             field = (FieldPrintDate)doc.Range.Fields[3];
 
+            // 3 -  Indian National Calendar:
             Assert.True(field.UseSakaEraCalendar);
             Assert.AreEqual("1/5/1942 12:00:00 AM", field.Result);
             Assert.AreEqual(" PRINTDATE  \\s", field.GetFieldCode());
@@ -5692,15 +5705,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a QUOTE field, which will display content from the Text attribute
+            // Insert a QUOTE field, which will display the value of its Text property.
             FieldQuote field = (FieldQuote)builder.InsertField(FieldType.FieldQuote, true);
             field.Text = "\"Quoted text\"";
 
             Assert.AreEqual(" QUOTE  \"\\\"Quoted text\\\"\"", field.GetFieldCode());
 
-            // Insert a QUOTE field with a nested DATE field
-            // DATE fields normally update their value to the current date every time the document is opened
-            // Nesting the DATE field inside the QUOTE field like this will freeze its value to the date when we created the document
+            // Insert a QUOTE field, and insert a DATE field inside it.
+            // DATE fields update their value to the current date every time the document is opened.
+            // Nesting the DATE field inside the QUOTE field like this will freeze its value
+            // to the date when we created the document.
             builder.Write("\nDocument creation date: ");
             field = (FieldQuote)builder.InsertField(FieldType.FieldQuote, true);
             builder.MoveTo(field.Separator);
@@ -5708,9 +5722,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" QUOTE \u0013 DATE \u0014" + DateTime.Now.Date.ToShortDateString() + "\u0015", field.GetFieldCode());
 
-            // Some field types don't display the correct result until they are manually updated
-            Assert.AreEqual(string.Empty, doc.Range.Fields[0].Result); 
-
+            // Update all the fields to display their correct results.
             doc.UpdateFields();
 
             Assert.AreEqual("\"Quoted text\"", doc.Range.Fields[0].Result);
@@ -5733,15 +5745,15 @@ namespace ApiExamples
         //ExFor:FieldNextIf.ComparisonOperator
         //ExFor:FieldNextIf.LeftExpression
         //ExFor:FieldNextIf.RightExpression
-        //ExSummary:Shows how to use NEXT/NEXTIF fields to merge more than one row into one page during a mail merge.
+        //ExSummary:Shows how to use NEXT/NEXTIF fields to merge multiple rows into one page during a mail merge.
         [Test] //ExSkip
         public void FieldNext()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a data source for our mail merge with 3 rows,
-            // This would normally amount to 3 pages in the output of a mail merge
+            // Create a data source for our mail merge with 3 rows.
+            // A mail merge that uses this table would normally create a 3-page document.
             DataTable table = new DataTable("Employees");
             table.Columns.Add("Courtesy Title");
             table.Columns.Add("First Name");
@@ -5750,45 +5762,46 @@ namespace ApiExamples
             table.Rows.Add("Mrs.", "Jane", "Cardholder");
             table.Rows.Add("Mr.", "Joe", "Bloggs");
 
-            // Insert a set of merge fields
             InsertMergeFields(builder, "First row: ");
 
             // If we have multiple merge fields with the same FieldName,
-            // they will receive data from the same row of the data source and will display the same value after the merge
+            // they will receive data from the same row of the data source,
+            // and will display the same value after the merge.
             // A NEXT field tells the mail merge instantly to move down one row,
-            // so any upcoming merge fields will have data deposited from the next row
-            // Make sure not to skip with a NEXT/NEXTIF field while on the last row
+            // so any MERGEFIELDs after the NEXT will receive from the next row.
+            // Make sure to never try to skip to the next row while already on the last row.
             FieldNext fieldNext = (FieldNext)builder.InsertField(FieldType.FieldNext, true);
 
             Assert.AreEqual(" NEXT ", fieldNext.GetFieldCode());
 
-            // These merge fields are the same as the ones as above but will take values from the second row
+            // After the merge, the data source values that these MERGEFIELDs accept
+            // will end up on the same page as the MERGEFIELDs above. 
             InsertMergeFields(builder, "Second row: ");
 
             // A NEXTIF field has the same function as a NEXT field,
-            // but it skips to the next row only if a condition expressed by the following 3 attributes is fulfilled
+            // but it skips to the next row only if a statement constructed by the following 3 properties is true.
             FieldNextIf fieldNextIf = (FieldNextIf)builder.InsertField(FieldType.FieldNextIf, true);
             fieldNextIf.LeftExpression = "5";
             fieldNextIf.RightExpression = "2 + 3";
             fieldNextIf.ComparisonOperator = "=";
 
-            // If the comparison asserted by the above field is correct,
-            // the following 3 merge fields will take data from the third row
-            // Otherwise, these fields will take data from row 2 again 
-            InsertMergeFields(builder, "Third row: ");
-
-            // Our data source has 3 rows and we skipped rows twice, so our output will have one page
-            // with data from all 3 rows
-            doc.MailMerge.Execute(table);
-
             Assert.AreEqual(" NEXTIF  5 = \"2 + 3\"", fieldNextIf.GetFieldCode());
 
+            // If the comparison asserted by the above field is correct,
+            // the following 3 merge fields will take data from the third row.
+            // Otherwise, these fields will take data from row 2 again.
+            InsertMergeFields(builder, "Third row: ");
+
+            doc.MailMerge.Execute(table);
+
+            // Our data source has 3 rows, and we skipped rows twice. 
+            // Our output document will have 1 page with data from all 3 rows
             doc.Save(ArtifactsDir + "Field.NEXT.NEXTIF.docx");
             TestFieldNext(doc); //ExSKip
         }
 
         /// <summary>
-        /// Uses a document builder to insert merge fields for a data table that has "Courtesy Title", "First Name" and "Last Name" columns.
+        /// Uses a document builder to insert MERGEFIELDs for a data source that contains columns named "Courtesy Title", "First Name" and "Last Name".
         /// </summary>
         public void InsertMergeFields(DocumentBuilder builder, string firstFieldTextBefore)
         {
@@ -5799,7 +5812,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Uses a document builder to insert a merge field.
+        /// Uses a document builder to insert a MERRGEFIELD with specified properties.
         /// </summary>
         public void InsertMergeField(DocumentBuilder builder, string fieldName, string textBefore, string textAfter)
         {
@@ -5826,7 +5839,7 @@ namespace ApiExamples
         //ExFor:FieldNoteRef.InsertHyperlink
         //ExFor:FieldNoteRef.InsertReferenceMark
         //ExFor:FieldNoteRef.InsertRelativePosition
-        //ExSummary:Shows to insert NOTEREF fields and modify their appearance.
+        //ExSummary:Shows to insert NOTEREF fields, and modify their appearance.
         [Test] //ExSkip
         [Ignore("WORDSNET-17845")] //ExSkip
         public void FieldNoteRef()
@@ -5834,21 +5847,21 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a bookmark with a footnote for the NOTEREF field to reference
+            // Create a bookmark with a footnote that the NOTEREF field will reference.
             InsertBookmarkWithFootnote(builder, "MyBookmark1", "Contents of MyBookmark1", "Footnote from MyBookmark1");
 
-            // This NOTEREF field will display just the number of the footnote inside the referenced bookmark
-            // Setting the InsertHyperlink attribute lets us jump to the bookmark by Ctrl + clicking the field
+            // This NOTEREF field will display the number of the footnote inside the referenced bookmark.
+            // Setting the InsertHyperlink attribute lets us jump to the bookmark by Ctrl + clicking the field in Microsoft Word.
             Assert.AreEqual(" NOTEREF  MyBookmark2 \\h",
                 InsertFieldNoteRef(builder, "MyBookmark2", true, false, false, "Hyperlink to Bookmark2, with footnote number ").GetFieldCode());
 
-            // When using the \p flag, after the footnote number the field also displays the position of the bookmark relative to the field
-            // Bookmark1 is above this field and contains footnote number 1, so the result will be "1 above" on update
+            // When using the \p flag, after the footnote number the field also displays the position of the bookmark relative to the field.
+            // Bookmark1 is above this field and contains footnote number 1, so the result will be "1 above" on update.
             Assert.AreEqual(" NOTEREF  MyBookmark1 \\h \\p",
                 InsertFieldNoteRef(builder, "MyBookmark1", true, true, false, "Bookmark1, with footnote number ").GetFieldCode());
 
-            // Bookmark2 is below this field and contains footnote number 2, so the field will display "2 below"
-            // The \f flag makes the number 2 appear in the same format as the footnote number label in the actual text
+            // Bookmark2 is below this field and contains footnote number 2, so the field will display "2 below".
+            // The \f flag makes the number 2 appear in the same format as the footnote number label in the actual text.
             Assert.AreEqual(" NOTEREF  MyBookmark2 \\h \\p \\f",
                 InsertFieldNoteRef(builder, "MyBookmark2", true, true, true, "Bookmark2, with footnote number ").GetFieldCode());
 
@@ -5861,7 +5874,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Uses a document builder to insert a NOTEREF field and sets its attributes.
+        /// Uses a document builder to insert a NOTEREF field with specified properties.
         /// </summary>
         private static FieldNoteRef InsertFieldNoteRef(DocumentBuilder builder, string bookmarkName, bool insertHyperlink, bool insertRelativePosition, bool insertReferenceMark, string textBefore)
         {
@@ -5924,24 +5937,21 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldFootnoteRef
             //ExSummary:Shows how to cross-reference footnotes with the FOOTNOTEREF field
-            // Create a blank document and a document builder for it
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert some text, and a footnote, all inside a bookmark named "CrossRefBookmark"
             builder.StartBookmark("CrossRefBookmark");
             builder.Write("Hello world!");
             builder.InsertFootnote(FootnoteType.Footnote, "Cross referenced footnote.");
             builder.EndBookmark("CrossRefBookmark");
-
             builder.InsertParagraph();
-            builder.Write("CrossReference: ");
 
-            // Insert a FOOTNOTEREF field, which lets us reference a footnote more than once while re-using the same footnote marker
+            // Insert a FOOTNOTEREF field, which lets us reference a footnote more than once while re-using the same footnote marker.
+            builder.Write("CrossReference: ");
             FieldFootnoteRef field = (FieldFootnoteRef) builder.InsertField(FieldType.FieldFootnoteRef, true);
 
-            // Get this field to reference a bookmark
-            // The bookmark that we chose contains a footnote marker belonging to the footnote we inserted, which will be displayed by the field, just by itself
+            // Reference the bookmark that we have created with the FOOTNOTEREF field. That bookmark contains a footnote marker
+            // belonging to the footnote we inserted. The field will display that footnote marker.
             builder.MoveTo(field.Separator);
             builder.Write("CrossRefBookmark");
 
@@ -5949,7 +5959,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
 
-            // This field works only in older versions of Microsoft Word
+            // This field works only in older versions of Microsoft Word.
             doc.Save(ArtifactsDir + "Field.FOOTNOTEREF.doc");
             //ExEnd
 
@@ -5966,7 +5976,7 @@ namespace ApiExamples
         //ExFor:FieldPageRef.BookmarkName
         //ExFor:FieldPageRef.InsertHyperlink
         //ExFor:FieldPageRef.InsertRelativePosition
-        //ExSummary:Shows to insert PAGEREF fields and present them in different ways.
+        //ExSummary:Shows to insert PAGEREF fields to display the relative location of bookmarks.
         [Test] //ExSkip
         [Ignore("WORDSNET-17836")] //ExSkip
         public void FieldPageRef()
@@ -5976,21 +5986,22 @@ namespace ApiExamples
 
             InsertAndNameBookmark(builder, "MyBookmark1");
 
-            // This field will display just the page number where the bookmark starts
-            // Setting InsertHyperlink attribute makes the field function as a link to the bookmark
+            // Insert a PAGEREF field that displays what page a bookmark is on.
+            // Set the InsertHyperlink flag to make the field also function as a clickable link to the bookmark.
             Assert.AreEqual(" PAGEREF  MyBookmark3 \\h", 
                 InsertFieldPageRef(builder, "MyBookmark3", true, false, "Hyperlink to Bookmark3, on page: ").GetFieldCode());
 
-            // Setting the \p flag makes the field display the relative position of the bookmark to the field instead of a page number
-            // Bookmark1 is on the same page and above this field, so the result will be "above" on update
+            // We can use the \p flag to get the PAGEREF field to display
+            // the position of the bookmark relative to the position of the field.
+            // Bookmark1 is on the same page and above this field, so this field's displayed result will be "above".
             Assert.AreEqual(" PAGEREF  MyBookmark1 \\h \\p", 
                 InsertFieldPageRef(builder, "MyBookmark1", true, true, "Bookmark1 is ").GetFieldCode());
 
-            // Bookmark2 will be on the same page and below this field, so the field will display "below"
+            // Bookmark2 will be on the same page and below this field, so this field's displayed result will be "below".
             Assert.AreEqual(" PAGEREF  MyBookmark2 \\h \\p", 
                 InsertFieldPageRef(builder, "MyBookmark2", true, true, "Bookmark2 is ").GetFieldCode());
 
-            // Bookmark3 will be on a different page, so the field will display "on page 2"
+            // Bookmark3 will be on a different page, so the field will display "on page 2".
             Assert.AreEqual(" PAGEREF  MyBookmark3 \\h \\p", 
                 InsertFieldPageRef(builder, "MyBookmark3", true, true, "Bookmark3 is ").GetFieldCode());
 
@@ -6072,7 +6083,7 @@ namespace ApiExamples
         //ExFor:FieldRef.InsertRelativePosition
         //ExFor:FieldRef.NumberSeparator
         //ExFor:FieldRef.SuppressNonDelimiters
-        //ExSummary:Shows how to insert REF fields to reference bookmarks and present them in various ways.
+        //ExSummary:Shows how to insert REF fields to reference bookmarks.
         [Test] //ExSkip
         [Ignore("WORDSNET-18067")] //ExSkip
         public void FieldRef()
@@ -6080,7 +6091,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert the bookmark that all our REF fields will reference and leave it at the end of the document
             builder.StartBookmark("MyBookmark");
             builder.InsertFootnote(FootnoteType.Footnote, "MyBookmark footnote #1");
             builder.Write("Text that will appear in REF field");
@@ -6088,43 +6098,41 @@ namespace ApiExamples
             builder.EndBookmark("MyBookmark");
             builder.MoveToDocumentStart();
 
-            // We will apply a custom list format, where the amount of angle brackets indicates the list level we are currently at
-            // Note that the angle brackets count as non-delimiter characters
+            // We will apply a custom list format, where the amount of angle brackets indicates the list level we are currently at.
             builder.ListFormat.ApplyNumberDefault();
             builder.ListFormat.ListLevel.NumberFormat = "> \x0000";
 
-            // Insert a REF field that will contain the text within our bookmark, act as a hyperlink, and clone the bookmark's footnotes
+            // Insert a REF field that will contain the text within our bookmark, act as a hyperlink, and clone the bookmark's footnotes.
             FieldRef field = InsertFieldRef(builder, "MyBookmark", "", "\n");
             field.IncludeNoteOrComment = true;
             field.InsertHyperlink = true;
 
             Assert.AreEqual(" REF  MyBookmark \\f \\h", field.GetFieldCode());
 
-            // Insert a REF field and display whether the referenced bookmark is above or below it
+            // Insert a REF field, and display whether the referenced bookmark is above or below it.
             field = InsertFieldRef(builder, "MyBookmark", "The referenced paragraph is ", " this field.\n");
             field.InsertRelativePosition = true;
 
             Assert.AreEqual(" REF  MyBookmark \\p", field.GetFieldCode());
 
-            // Display the list number of the bookmark, as it appears in the document
+            // Display the list number of the bookmark as it appears in the document.
             field = InsertFieldRef(builder, "MyBookmark", "The bookmark's paragraph number is ", "\n");
             field.InsertParagraphNumber = true;
 
             Assert.AreEqual(" REF  MyBookmark \\n", field.GetFieldCode());
 
-            // Display the list number of the bookmark, but with non-delimiter characters omitted
-            // In this case they are the angle brackets
+            // Display the list number of the bookmark, but with non-delimiter characters, such as the angle brackets, omitted.
             field = InsertFieldRef(builder, "MyBookmark", "The bookmark's paragraph number, non-delimiters suppressed, is ", "\n");
             field.InsertParagraphNumber = true;
             field.SuppressNonDelimiters = true;
 
             Assert.AreEqual(" REF  MyBookmark \\n \\t", field.GetFieldCode());
 
-            // Move down one list level
+            // Move down one list level.
             builder.ListFormat.ListLevelNumber++;
             builder.ListFormat.ListLevel.NumberFormat = ">> \x0001";
 
-            // Display the list number of the bookmark as well as the numbers of all the list levels above it
+            // Display the list number of the bookmark, as well as the numbers of all the list levels above it.
             field = InsertFieldRef(builder, "MyBookmark", "The bookmark's full context paragraph number is ", "\n");
             field.InsertParagraphNumberInFullContext = true;
 
@@ -6132,13 +6140,13 @@ namespace ApiExamples
 
             builder.InsertBreak(BreakType.PageBreak);
 
-            // Display the list level numbers between this REF field and the bookmark that it is referencing
+            // Display the list level numbers between this REF field, and the bookmark that it is referencing.
             field = InsertFieldRef(builder, "MyBookmark", "The bookmark's relative paragraph number is ", "\n");
             field.InsertParagraphNumberInRelativeContext = true;
 
             Assert.AreEqual(" REF  MyBookmark \\r", field.GetFieldCode());
 
-            // The bookmark, which is at the end of the document, will show up as a list item here
+            // The bookmark, which is at the end of the document, will show up as a list item here.
             builder.Writeln("List level above bookmark");
             builder.ListFormat.ListLevelNumber++;
             builder.ListFormat.ListLevel.NumberFormat = ">>> \x0002";
@@ -6149,7 +6157,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Get the document builder to insert a REF field, reference a bookmark with it, and add text before and after.
+        /// Get the document builder to insert a REF field, reference a bookmark with it, and add text before and after it.
         /// </summary>
         private static FieldRef InsertFieldRef(DocumentBuilder builder, string bookmarkName, string textBefore, string textAfter)
         {
@@ -6219,25 +6227,27 @@ namespace ApiExamples
             //ExFor:FieldRD
             //ExFor:FieldRD.FileName
             //ExFor:FieldRD.IsPathRelative
-            //ExSummary:Shows to insert an RD field to source table of contents entries from an external document.
+            //ExSummary:Shows to use the RD field to create table of contents entries from headings in other documents.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert a table of contents and, on the following page, one entry
+            // Use a document builder to insert a table of contents,
+            // and then add one entry for the table of contents on the following page.
             builder.InsertField(FieldType.FieldTOC, true);
             builder.InsertBreak(BreakType.PageBreak);
             builder.CurrentParagraph.ParagraphFormat.StyleName = "Heading 1";
             builder.Writeln("TOC entry from within this document");
 
-            // Insert an RD field, designating an external document that our TOC field will look in for more entries
+            // Insert an RD field, which references another local file system document in its FileName property.
+            // The TOC will also now accept all headings from the referenced document as entries for its table.
             FieldRD field = (FieldRD)builder.InsertField(FieldType.FieldRefDoc, true);
             field.FileName = "ReferencedDocument.docx";
             field.IsPathRelative = true;
-            field.Update();
 
             Assert.AreEqual(" RD  ReferencedDocument.docx \\f", field.GetFieldCode());
 
-            // Create the document and insert a TOC entry, which will end up in the TOC of our original document
+            // Create the document that the RD field is referencing, and insert a heading. 
+            // This heading will show up as an entry in the TOC field in our first document.
             Document referencedDoc = new Document();
             DocumentBuilder refDocBuilder = new DocumentBuilder(referencedDoc);
             refDocBuilder.CurrentParagraph.ParagraphFormat.StyleName = "Heading 1";
@@ -6277,33 +6287,36 @@ namespace ApiExamples
             //ExSummary:Shows how to skip pages in a mail merge using the SKIPIF field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            // Insert a SKIPIF field. During a mail merge operation, if the condition specified in this field is fulfilled,
+            // then the mail merge will abort the current data source row, discard its page, and immediately move onto the next row.
+            FieldSkipIf fieldSkipIf = (FieldSkipIf) builder.InsertField(FieldType.FieldSkipIf, true);
 
-            // Create a data table that will be the source for our mail merge
+            // Move the builder to the SKIPIF field's separator so we can place a MERGEFIELD inside the SKIPIF field.
+            builder.MoveTo(fieldSkipIf.Separator);
+            FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Department";
+
+            // The MERGEFIELD refers to the "Department" column in our data table. If a row from that table
+            // has a value of "HR" in its "Department" column, then this condition will be fulfilled.
+            fieldSkipIf.LeftExpression = "=";
+            fieldSkipIf.RightExpression = "HR";
+
+            // Add content to our document, create the data source, and execute the mail merge.
+            builder.MoveToDocumentEnd();
+            builder.Write("Dear ");
+            fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
+            fieldMergeField.FieldName = "Name";
+            builder.Writeln(", ");
+            
+            // This table has three rows, and one of them fulfills the condition of our SKIPIF field. 
+            // The mail merge will produce two pages.
             DataTable table = new DataTable("Employees");
             table.Columns.Add("Name");
             table.Columns.Add("Department");
             table.Rows.Add("John Doe", "Sales");
             table.Rows.Add("Jane Doe", "Accounting");
             table.Rows.Add("John Cardholder", "HR");
-
-            // Insert a SKIPIF field, which will skip a page of a mail merge if the condition is fulfilled
-            // We will move to the SKIPIF field's separator character and insert a MERGEFIELD at that place to create a nested field
-            FieldSkipIf fieldSkipIf = (FieldSkipIf) builder.InsertField(FieldType.FieldSkipIf, true);
-            builder.MoveTo(fieldSkipIf.Separator);
-            FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
-            fieldMergeField.FieldName = "Department";
-
-            // The MERGEFIELD refers to the "Department" column in our data table, and our SKIPIF field will check if its value equals to "HR"
-            // One of three rows satisfy that condition, so we will expect the result of our mail merge to have two pages
-            fieldSkipIf.LeftExpression = "=";
-            fieldSkipIf.RightExpression = "HR";
-
-            // Add some content to our mail merge and execute it
-            builder.MoveToDocumentEnd();
-            builder.Write("Dear ");
-            fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
-            fieldMergeField.FieldName = "Name";
-            builder.Writeln(", ");
 
             doc.MailMerge.Execute(table);
             doc.Save(ArtifactsDir + "Field.SKIPIF.docx");
@@ -6317,42 +6330,51 @@ namespace ApiExamples
         }
       
         [Test]
-        public void FieldSet()
+        public void FieldSetRef()
         {
             //ExStart
+            //ExFor:FieldRef
+            //ExFor:FieldRef.BookmarkName
             //ExFor:FieldSet
             //ExFor:FieldSet.BookmarkName
             //ExFor:FieldSet.BookmarkText
-            //ExSummary:Shows to alter a bookmark's text with a SET field.
+            //ExSummary:Shows how to create bookmarked text with a SET field, and then display it in the document using a REF field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.StartBookmark("MyBookmark");
-            builder.Writeln("Bookmark contents");
-            builder.EndBookmark("MyBookmark");
+            // Name bokmarked text with a SET field. 
+            // The "bookmark" this field refers to is not a bookmark structure
+            // that appears within text, but a named variable.
+            FieldSet fieldSet = (FieldSet)builder.InsertField(FieldType.FieldSet, false);
+            fieldSet.BookmarkName = "MyBookmark";
+            fieldSet.BookmarkText = "Hello world!";
+            fieldSet.Update();
 
-            Bookmark bookmark = doc.Range.Bookmarks["MyBookmark"];
-            bookmark.Text = "Old text";
+            Assert.AreEqual(" SET  MyBookmark \"Hello world!\"", fieldSet.GetFieldCode());
 
-            FieldSet field = (FieldSet)builder.InsertField(FieldType.FieldSet, false);
-            field.BookmarkName = "MyBookmark";
-            field.BookmarkText = "New text";
+            // Refer to the bookmark by name in a REF field, and display its contents.
+            FieldRef fieldRef = (FieldRef)builder.InsertField(FieldType.FieldRef, true);
+            fieldRef.BookmarkName = "MyBookmark";
+            fieldRef.Update();
 
-            Assert.AreEqual(" SET  MyBookmark \"New text\"", field.GetFieldCode());
+            Assert.AreEqual(" REF  MyBookmark", fieldRef.GetFieldCode());
+            Assert.AreEqual("Hello world!", fieldRef.Result);
 
-            doc.UpdateFields();
-            doc.Save(ArtifactsDir + "Field.SET.docx");
+            doc.Save(ArtifactsDir + "Field.SET.REF.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Field.SET.docx");
+            doc = new Document(ArtifactsDir + "Field.SET.REF.docx");
 
-            Assert.AreEqual("New text", doc.Range.Bookmarks[0].Text);
+            Assert.AreEqual("Hello world!", doc.Range.Bookmarks[0].Text);
 
-            field = (FieldSet)doc.Range.Fields[0];
+            fieldSet = (FieldSet)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldSet, " SET  MyBookmark \"New text\"", "New text", field);
-            Assert.AreEqual("MyBookmark", field.BookmarkName);
-            Assert.AreEqual("New text", field.BookmarkText);
+            TestUtil.VerifyField(FieldType.FieldSet, " SET  MyBookmark \"Hello world!\"", "Hello world!", fieldSet);
+            Assert.AreEqual("MyBookmark", fieldSet.BookmarkName);
+            Assert.AreEqual("Hello world!", fieldSet.BookmarkText);
+
+            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark", "Hello world!", fieldRef);
+            Assert.AreEqual("Hello world!", fieldRef.Result);
         }
 
         [Test]
@@ -6362,7 +6384,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldTemplate
             //ExFor:FieldTemplate.IncludeFullPath
-            //ExSummary:Shows how to display the location of the document's template with a TEMPLATE field.
+            //ExSummary:Shows how to use a TEMPLATE field to display the local file system location of a document's template.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -6407,10 +6429,11 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a SYMBOL field to display a symbol, designated by a character code
+            // Below are three ways to use a SYMBOL field to display a single character.
+            // 1 -  Add a SYMBOL field which displays the © (Copyright) symbol, specified by an ANSI character code:
             FieldSymbol field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
 
-            // The ANSI character code "U+00A9", or "169" in integer form, is reserved for the copyright symbol 
+            // The ANSI character code "U+00A9", or "169" in integer form, is reserved for the copyright symbol.
             field.CharacterCode = 0x00a9.ToString();
             field.IsAnsi = true;
 
@@ -6418,26 +6441,27 @@ namespace ApiExamples
 
             builder.Writeln(" Line 1");
 
-            // In Unicode, the "221E" code is reserved for the infinity symbol
+            // 2 -  Add a SYMBOL field which displays the ∞ (Infinity) symbol, and modify its appearance:
             field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
+
+            // In Unicode, the "221E" code is reserved for the infinity symbol.
             field.CharacterCode = 0x221E.ToString();
             field.IsUnicode = true;
 
-            // Change the appearance of our symbol
-            // Note that some symbols can change from font to font
-            // The full list of symbols and their fonts can be looked up in the Windows Character Map
+            // Change the font of our symbol, after using the Windows Character Map
+            // to make sure that the font can represent that symbol.
             field.FontName = "Calibri";
             field.FontSize = "24";
 
-            // A tall symbol like the one we placed can also be made to not push down the text on its line
+            // For tall symbols, we can set this flag to make them not push down the rest of the text on their line.
             field.DontAffectsLineSpacing = true;
 
             Assert.AreEqual(" SYMBOL  8734 \\u \\f Calibri \\s 24 \\h", field.GetFieldCode());
 
             builder.Writeln("Line 2");
 
-            // Display a symbol from the Shift-JIS, also known as the Windows-932 code page
-            // With a font that supports Shift-JIS, this symbol will display "あ"
+            // 3 -  Add a SYMBOL field which displays the あ character,
+            // with a font that supports Shift-JIS (Windows-932) codepage:
             field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
             field.FontName = "MS Gothic";
             field.CharacterCode = 0x82A0.ToString();
@@ -6486,10 +6510,10 @@ namespace ApiExamples
             //ExSummary:Shows how to use the TITLE field.
             Document doc = new Document();
 
-            // A TITLE field will display the value assigned to this variable
+            // Set a value for the "Title" built-in document property. 
             doc.BuiltInDocumentProperties.Title = "My Title";
 
-            // Insert a TITLE field using a document builder
+            // We can use the TITLE field to display the value of this property in the document.
             DocumentBuilder builder = new DocumentBuilder(doc);
             FieldTitle field = (FieldTitle)builder.InsertField(FieldType.FieldTitle, false);
             field.Update();
@@ -6497,7 +6521,8 @@ namespace ApiExamples
             Assert.AreEqual(" TITLE ", field.GetFieldCode());
             Assert.AreEqual("My Title", field.Result);
 
-            // Set the Text attribute to display a different value
+            // Setting a value for the field's Text property,
+            // and then updating the field will also overwrite the corresponding built-in property with the new value.
             builder.Writeln();
             field = (FieldTitle)builder.InsertField(FieldType.FieldTitle, false);
             field.Text = "My New Title";
@@ -6505,8 +6530,6 @@ namespace ApiExamples
 
             Assert.AreEqual(" TITLE  \"My New Title\"", field.GetFieldCode());
             Assert.AreEqual("My New Title", field.Result);
-
-            // In doing that we have also changed the title in the document properties
             Assert.AreEqual("My New Title", doc.BuiltInDocumentProperties.Title);
 
             doc.UpdateFields();
@@ -6553,38 +6576,42 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a TOA field, which will list all the TA entries in the document,
-            // displaying long citations and page numbers for each
+            // Insert a TOA field, which will create an entry for each TA field in the document,
+            // displaying long citations and page numbers for each entry.
             FieldToa fieldToa = (FieldToa)builder.InsertField(FieldType.FieldTOA, false);
 
-            // Set the entry category for our table
-            // For a TA field to be included in this table, it will have to have a matching entry category
+            // Set the entry category for our table. This TOA will now only include TA fields
+            // that have a matching value in their EntryCategory property.
             fieldToa.EntryCategory = "1";
 
             // Moreover, the Table of Authorities category at index 1 is "Cases",
-            // which will show up as the title of our table if we set this variable to true
+            // which will show up as the title of our table if we set this variable to true.
             fieldToa.UseHeading = true;
 
-            // We can further filter TA fields by designating a named bookmark that they have to be inside of
+            // We can further filter TA fields by naming a bookmark
+            // that they will need to be within the bounds of in order to appear in the TOA.
             fieldToa.BookmarkName = "MyBookmark";
 
-            // By default, a dotted line page-wide tab appears between the TA field's citation and its page number
-            // We can replace it with any text we put in this attribute, even preserving the tab if we use tab character
+            // By default, a dotted line page-wide tab appears between the TA field's citation,
+            // and its page number. We can replace it with any text we put in this property.
+            // Inserting a tab character will preserve the original tab.
             fieldToa.EntrySeparator = " \t p.";
 
             // If we have multiple TA entries that share the same long citation,
-            // all their respective page numbers will show up on one row,
-            // and the page numbers separated by a string specified here
+            // all their respective page numbers will show up on one row.
+            // We can use this property to specify a string that will separate their page numbers.
             fieldToa.PageNumberListSeparator = " & p. ";
 
-            // To reduce clutter, we can set this to true to get our table to display the word "passim"
-            // if there are 5 or more page numbers in one row
+            // We can set this to true to get our table to display the word "passim"
+            // if there are 5 or more page numbers in one row.
             fieldToa.UsePassim = true;
 
-            // One TA field can refer to a range of pages, and the sequence specified here will be between the start and end page numbers
+            // One TA field can refer to a range of pages. For such ranges,
+            // we can specify a string here to appear between the start and end page numbers.
             fieldToa.PageRangeSeparator = " to ";
 
-            // The format from the TA fields will carry over into our table, and we can stop it from doing so by setting this variable
+            // The format from the TA fields will carry over into our table.
+            // We can disable this by setting the RemoveEntryFormatting flag.
             fieldToa.RemoveEntryFormatting = true;
             builder.Font.Color = Color.Green;
             builder.Font.Name = "Arial Black";
@@ -6593,38 +6620,38 @@ namespace ApiExamples
 
             builder.InsertBreak(BreakType.PageBreak);
 
-            // We will insert a TA entry using a document builder
-            // This entry is outside the bookmark specified by our table, so it will not be displayed
+            // This TA field will not appear as an entry in the TOA since it is outside the bounds
+            // of the bookmark that the TOA's BookmarkName property specifies.
             FieldTA fieldTA = InsertToaEntry(builder, "1", "Source 1");
 
             Assert.AreEqual(" TA  \\c 1 \\l \"Source 1\"", fieldTA.GetFieldCode());
 
-            // This entry is inside the bookmark,
-            // but the entry category does not match that of the table, so it will also be omitted
+            // This TA field is inside the bookmark,
+            // but the entry category does not match that of the table, so the TA field will not include it as an entry.
             builder.StartBookmark("MyBookmark");
             fieldTA = InsertToaEntry(builder, "2", "Source 2");
 
-            // This entry will appear in the table
+            // This entry will appear in the table.
             fieldTA = InsertToaEntry(builder, "1", "Source 3");
 
             // Short citations are not displayed by a TOA table,
-            // but they can be used as a shorthand to refer to bulky source names that multiple TA fields reference
+            // but we can use them as a shorthand to refer to bulky source names that multiple TA fields reference.
             fieldTA.ShortCitation = "S.3";
 
             Assert.AreEqual(" TA  \\c 1 \\l \"Source 3\" \\s S.3", fieldTA.GetFieldCode());
 
-            // The page number can be made to appear bold and/or italic
-            // This will still be displayed if our table is set to ignore formatting
+            // The page number can be made to appear bold and/or italic.
+            // We will still see these effects if we set our table to ignore formatting.
             fieldTA = InsertToaEntry(builder, "1", "Source 2");
             fieldTA.IsBold = true;
             fieldTA.IsItalic = true;
 
             Assert.AreEqual(" TA  \\c 1 \\l \"Source 2\" \\b \\i", fieldTA.GetFieldCode());
 
-            // We can get TA fields to refer to a range of pages that a bookmark spans across instead of the page that they are on
-            // Note that this entry refers to the same source as the one above, so they will share one row in our table,
-            // displaying the page number of the entry above as well as the page range of this entry,
-            // with the table's page list and page number range separators between page numbers
+            // We can configure TA fields to get their TOA entries to refer to a range of pages that a bookmark spans across.
+            // Note that this entry refers to the same source as the one above, so they will share one row in our table.
+            // This row will have the page number of the entry above, as well as the page range of this entry,
+            // with the table's page list and page number range separators between page numbers.
             fieldTA = InsertToaEntry(builder, "1", "Source 3");
             fieldTA.PageRangeBookmarkName = "MyMultiPageBookmark";
 
@@ -6636,7 +6663,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" TA  \\c 1 \\l \"Source 3\" \\r MyMultiPageBookmark", fieldTA.GetFieldCode());
 
-            // Having 5 or more TA entries with the same source invokes the "passim" feature of our table, if we enabled it
+            // If we have enabled the "Passim" feature of our table, having 5 or more TA entries with the same source will invoke it.
             for (int i = 0; i < 5; i++)
             {
                 InsertToaEntry(builder, "1", "Source 4");
@@ -6651,7 +6678,7 @@ namespace ApiExamples
 
         /// <summary>
         /// Get a builder to insert a TA field, specifying its long citation and category,
-        /// then insert a page break and return the field we created.
+        /// insert a page break, and return the field we created.
         /// </summary>
         private static FieldTA InsertToaEntry(DocumentBuilder builder, string entryCategory, string longCitation)
         {
@@ -6733,10 +6760,9 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldAddIn
             //ExSummary:Shows how to process an ADDIN field.
-            // Open a document that contains an ADDIN field
             Document doc = new Document(MyDir + "Field sample - ADDIN.docx");
 
-            // Aspose.Words does not support inserting ADDIN fields, they can be read
+            // Aspose.Words does not support inserting ADDIN fields, but we can still load and read them.
             FieldAddIn field = (FieldAddIn)doc.Range.Fields[0];
 
             Assert.AreEqual(" ADDIN \"My value\" ", field.GetFieldCode());
@@ -6756,22 +6782,22 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert an EDITTIME field in the header
+            // The EDITTIME field will show, in minutes,
+            // the time spent with the document open in a Microsoft Word window.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.Write("You've been editing this document for ");
             FieldEditTime field = (FieldEditTime)builder.InsertField(FieldType.FieldEditTime, true);
             builder.Writeln(" minutes.");
-
-            // The EDITTIME field will show, in minutes only,
-            // the time spent with the document open in a Microsoft Word window
-            // The minutes are tracked in a document property, which we can change like this
+            
+            // The minutes are tracked in a document property, which we can change.
             doc.BuiltInDocumentProperties.TotalEditingTime = 10;
             field.Update();
 
             Assert.AreEqual(" EDITTIME ", field.GetFieldCode());
             Assert.AreEqual("10", field.Result);
 
-            // The field does not update in real time and will have to be manually updated in Microsoft Word also
+            // The field does not update itself in real time, and will also have to be
+            // manually updated in Microsoft Word anytime we need an accurate value.
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.EDITTIME.docx");
             //ExEnd
@@ -6792,51 +6818,53 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // An EQ field displays a mathematical equation consisting of one or many elements
-            // Each element takes the following form: [switch][options][arguments]
-            // One switch, several possible options, followed by a set of argument values inside round braces
+            // An EQ field displays a mathematical equation consisting of one or many elements.
+            // Each element takes the following form: [switch][options][arguments].
+            // There may be one switch, and several possible options.
+            // The arguments are a set of coma-separated values enclosed by round braces.
 
-            // Here we use a document builder to insert an EQ field, with an "\f" switch, which corresponds to "Fraction"
-            // No options are invoked, and the values 1 and 4 are passed as arguments
-            // This field will display a fraction with 1 as the numerator and 4 as the denominator
+            // Here we use a document builder to insert an EQ field, with an "\f" switch, which corresponds to "Fraction".
+            // We will pass values 1 and 4 as arguments, and we will not use any options.
+            // This field will display a fraction with 1 as the numerator and 4 as the denominator.
             FieldEQ field = InsertFieldEQ(builder, @"\f(1,4)");
 
             Assert.AreEqual(@" EQ \f(1,4)", field.GetFieldCode());
 
             // One EQ field may contain multiple elements placed sequentially,
-            // and elements may also be nested by being placed inside the argument brackets of other elements
+            // and elements may also be nested by being placed inside the argument brackets of other elements.
             // The full list of switches and their corresponding options can be found here:
             // https://blogs.msdn.microsoft.com/murrays/2018/01/23/microsoft-word-eq-field/
 
-            // Array switch "\a", aligned left, 2 columns, 3 points of horizontal and vertical spacing
+            // Below are applications of nine different EQ field switches that we can use to create different kinds of objects. 
+            // 1 -  Array switch "\a", aligned left, 2 columns, 3 points of horizontal and vertical spacing:
             InsertFieldEQ(builder, @"\a \al \co2 \vs3 \hs3(4x,- 4y,-4x,+ y)");
 
-            // Bracket switch "\b", bracket character "[", to enclose the contents in a set of square braces
-            // Note that we are nesting an array inside the brackets, which will altogether look like a matrix in the output
+            // 2 -  Bracket switch "\b", bracket character "[", to enclose the contents in a set of square braces:
+            // Note that we are nesting an array inside the brackets, which will altogether look like a matrix in the output.
             InsertFieldEQ(builder, @"\b \bc\[ (\a \al \co3 \vs3 \hs3(1,0,0,0,1,0,0,0,1))");
 
-            // Displacement switch "\d", displacing text "B" 30 spaces to the right of "A", displaying the gap as an underline
+            // 3 -  Displacement switch "\d", displacing text "B" 30 spaces to the right of "A", displaying the gap as an underline:
             InsertFieldEQ(builder, @"A \d \fo30 \li() B");
 
-            // Formula consisting of multiple fractions
+            // 4 -  Formula consisting of multiple fractions:
             InsertFieldEQ(builder, @"\f(d,dx)(u + v) = \f(du,dx) + \f(dv,dx)");
 
-            // Integral switch "\i", with a summation symbol
+            // 5 -  Integral switch "\i", with a summation symbol:
             InsertFieldEQ(builder, @"\i \su(n=1,5,n)");
 
-            // List switch "\l"
+            // 6 -  List switch "\l":
             InsertFieldEQ(builder, @"\l(1,1,2,3,n,8,13)");
 
-            // Radical switch "\r", displaying a cubed root of x
+            // 7 -  Radical switch "\r", displaying a cubed root of x:
             InsertFieldEQ(builder, @"\r (3,x)");
 
-            // Subscript/superscript switch "/s", first as a superscript and then as a subscript
+            // 8 -  Subscript/superscript switch "/s", first as a superscript and then as a subscript:
             InsertFieldEQ(builder, @"\s \up8(Superscript) Text \s \do8(Subscript)");
 
-            // Box switch "\x", with lines at the top, bottom, left and right of the input
+            // 9 -  Box switch "\x", with lines at the top, bottom, left and right of the input:
             InsertFieldEQ(builder, @"\x \to \bo \le \ri(5)");
 
-            // More complex combinations
+            // Some more complex combinations.
             InsertFieldEQ(builder, @"\a \ac \vs1 \co1(lim,n→∞) \b (\f(n,n2 + 12) + \f(n,n2 + 22) + ... + \f(n,n2 + n2))");
             InsertFieldEQ(builder, @"\i (,,  \b(\f(x,x2 + 3x + 2))) \s \up10(2)");
             InsertFieldEQ(builder, @"\i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)");
@@ -6875,6 +6903,7 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \a \ac \vs1 \co1(lim,n→∞) \b (\f(n,n2 + 12) + \f(n,n2 + 22) + ... + \f(n,n2 + n2))", string.Empty, doc.Range.Fields[10]);
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \i (,,  \b(\f(x,x2 + 3x + 2))) \s \up10(2)", string.Empty, doc.Range.Fields[11]);
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)", string.Empty, doc.Range.Fields[12]);
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "https://blogs.msdn.microsoft.com/murrays/2018/01/23/microsoft-word-eq-field/");
         }
 
         [Test]
@@ -6885,8 +6914,8 @@ namespace ApiExamples
             //ExFor:FieldFormDropDown
             //ExFor:FieldFormText
             //ExSummary:Shows how to process FORMCHECKBOX, FORMDROPDOWN and FORMTEXT fields.
-            // These fields are legacy equivalents of the FormField, and they can be read but not inserted by Aspose.Words,
-            // and can be inserted in Microsoft Word 2019 via the Legacy Tools menu in the Developer tab
+            // These fields are legacy equivalents of the FormField. We can read, but not create these fields using Aspose.Words.
+            // In Microsoft Word, we can insert these fields via the Legacy Tools menu in the Developer tab.
             Document doc = new Document(MyDir + "Form fields.docx");
 
             FieldFormCheckBox fieldFormCheckBox = (FieldFormCheckBox)doc.Range.Fields[1];
@@ -6905,10 +6934,11 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldFormula
-            //ExSummary:Shows how to use the "=" field.
+            //ExSummary:Shows how to use the formula field to display the result of an equation.
             Document doc = new Document();
 
-            // Create a formula field using a field builder
+            // Use a field builder to construct a mathematical equation,
+            // then create a formula field to display the result of the equation in the document.
             FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldFormula);
             fieldBuilder.AddArgument(2);
             fieldBuilder.AddArgument("*");
@@ -6938,19 +6968,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // If we create a document in Microsoft Word, it will have the user's name in the "Last saved by" property
-            // This is the property that a LASTSAVEDBY field looks up and displays
-            // If we make a document programmatically, this property is null and needs to have a value assigned to it first
+            // If we create a document in Microsoft Word, it will have the user's name in the "Last saved by" built-in property.
+            // If we make a document programmatically, this property will be null, and we will need to assign a value. 
             doc.BuiltInDocumentProperties.LastSavedBy = "John Doe";
 
-            // Insert a LASTSAVEDBY field using a document builder
+            // We can use the LASTSAVEDBY field to display the value of this property in the document.
             FieldLastSavedBy field = (FieldLastSavedBy)builder.InsertField(FieldType.FieldLastSavedBy, true);
 
-            // The value from our document property appears here
             Assert.AreEqual(" LASTSAVEDBY ", field.GetFieldCode());
             Assert.AreEqual("John Doe", field.Result);
 
-            doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.LASTSAVEDBY.docx");
             //ExEnd
 
@@ -6967,31 +6994,34 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldMergeRec
             //ExFor:FieldMergeSeq
-            //ExSummary:Shows how to number and count mail merge records in the output documents of a mail merge using MERGEREC and MERGESEQ fields.
+            //ExFor:FieldSkipIf
+            //ExFor:FieldSkipIf.ComparisonOperator
+            //ExFor:FieldSkipIf.LeftExpression
+            //ExFor:FieldSkipIf.RightExpression
+            //ExSummary:Shows how to use MERGEREC and MERGESEQ fields to number and count mail merge records in the output documents of a mail merge.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert a merge field
             builder.Write("Dear ");
             FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
             fieldMergeField.FieldName = "Name";
             builder.Writeln(",");
 
-            // A MERGEREC field will print the row number of the data being merged
+            // A MERGEREC field will print the row number of the data being merged in every merge output document.
             builder.Write("\nRow number of record in data source: ");
             FieldMergeRec fieldMergeRec = (FieldMergeRec)builder.InsertField(FieldType.FieldMergeRec, true);
 
             Assert.AreEqual(" MERGEREC ", fieldMergeRec.GetFieldCode());
 
-            // A MERGESEQ field will count the number of successful merges and print the current value on each respective page
+            // A MERGESEQ field will count the number of successful merges, and print the current value on each respective page.
             // If no rows are skipped and the data source is not sorted, and no SKIP/SKIPIF/NEXT/NEXTIF fields are invoked,
-            // the MERGESEQ and MERGEREC fields will function the same
+            // then all the merges were successful, and the MERGESEQ and MERGEREC fields will print the same results.
             builder.Write("\nSuccessful merge number: ");
             FieldMergeSeq fieldMergeSeq = (FieldMergeSeq)builder.InsertField(FieldType.FieldMergeSeq, true);
 
             Assert.AreEqual(" MERGESEQ ", fieldMergeSeq.GetFieldCode());
 
-            // Insert a SKIPIF field, which will skip a merge if the name is "John Doe"
+            // Insert a SKIPIF field, which will skip a merge if the name is "John Doe".
             FieldSkipIf fieldSkipIf = (FieldSkipIf)builder.InsertField(FieldType.FieldSkipIf, true);
             builder.MoveTo(fieldSkipIf.Separator);
             fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
@@ -6999,17 +7029,16 @@ namespace ApiExamples
             fieldSkipIf.LeftExpression = "=";
             fieldSkipIf.RightExpression = "John Doe";
 
-            // Create a data source with 3 rows, one of them having "John Doe" as a value for the "Name" column
-            // Since a SKIPIF field will be triggered once by that value, the output of our mail merge will have 2 pages instead of 3
-            // On page 1, the MERGESEQ and MERGEREC fields will both display "1"
-            // On page 2, the MERGEREC field will display "3" and the MERGESEQ field will display "2"
+            // Create a data source with 3 rows, one of them having "John Doe" as a value for the "Name" column.
+            // Since a SKIPIF field will be triggered once by that value, the output of our mail merge will have 2 pages instead of 3.
+            // On page 1, the MERGESEQ and MERGEREC fields will both display "1".
+            // On page 2, the MERGEREC field will display "3" and the MERGESEQ field will display "2".
             DataTable table = new DataTable("Employees");
             table.Columns.Add("Name");
             table.Rows.Add(new[] { "Jane Doe" });
             table.Rows.Add(new[] { "John Doe" });
             table.Rows.Add(new[] { "Joe Bloggs" });
 
-            // Execute the mail merge and save document
             doc.MailMerge.Execute(table);
             doc.Save(ArtifactsDir + "Field.MERGEREC.MERGESEQ.docx");
             //ExEnd
@@ -7036,7 +7065,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert an OCX field
             FieldOcx field = (FieldOcx)builder.InsertField(FieldType.FieldOcx, true);
 
             Assert.AreEqual(" OCX ", field.GetFieldCode());
@@ -7052,24 +7080,25 @@ namespace ApiExamples
         [Test] //ExSkip
         public void FieldPrivate()
         {
-            // Open a Corel WordPerfect document that was converted to .docx format
+            // Open a Corel WordPerfect document that was converted to .docx format.
             Document doc = new Document(MyDir + "Field sample - PRIVATE.docx");
 
-            // WordPerfect 5.x/6.x documents like the one we opened may contain PRIVATE fields
-            // The PRIVATE field is a WordPerfect artifact that is preserved when a file is opened and saved in Microsoft Word
-            // However, they have no functionality in Microsoft Word
+            // WordPerfect 5.x/6.x documents like the one we have loaded may contain PRIVATE fields.
+            // The PRIVATE field is a WordPerfect artifact that is preserved when
+            // a file is opened and saved in Microsoft Word. 
             FieldPrivate field = (FieldPrivate)doc.Range.Fields[0];
 
             Assert.AreEqual(" PRIVATE \"My value\" ", field.GetFieldCode());
             Assert.AreEqual(FieldType.FieldPrivate, field.Type);
 
-            // PRIVATE fields can also be inserted by a document builder
+            // We can also insert PRIVATE fields using a document builder.
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertField(FieldType.FieldPrivate, true);
 
-            // It is strongly advised against using them to attempt to hide or store private information
-            // Unless backward compatibility with older versions of WordPerfect is necessary, these fields can safely be removed
-            // This can be done using a document visitor implementation
+            // These fields have no functionality in Microsoft Word,
+            // and it is not advised to use them in an attempt to protect sensitive information.
+            // Unless backward compatibility with older versions of WordPerfect is essential,
+            // we can safely remove these fields. We can do this using a DocumentVisiitor implementation.
             Assert.AreEqual(2, doc.Range.Fields.Count);
 
             FieldPrivateRemover remover = new FieldPrivateRemover();
@@ -7080,7 +7109,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Visitor implementation that removes all PRIVATE fields that it encounters.
+        /// Removes all encountered PRIVATE fields.
         /// </summary>
         public class FieldPrivateRemover : DocumentVisitor
         {
@@ -7119,44 +7148,44 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldSection
             //ExFor:FieldSectionPages
-            //ExSummary:Shows how to use SECTION and SECTIONPAGES fields to facilitate page numbering separated by sections.
+            //ExSummary:Shows how to use SECTION and SECTIONPAGES fields to number pages by sections.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Move the document builder to the header that appears across all pages and align to the top right
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
 
-            // A SECTION field displays the number of the section it is placed in
+            // A SECTION field displays the number of the section it is in.
             builder.Write("Section ");
             FieldSection fieldSection = (FieldSection)builder.InsertField(FieldType.FieldSection, true);
 
             Assert.AreEqual(" SECTION ", fieldSection.GetFieldCode());
 
-            // A PAGE field displays the number of the page it is placed in
+            // A PAGE field displays the number of the page it is in.
             builder.Write("\nPage ");
             FieldPage fieldPage = (FieldPage)builder.InsertField(FieldType.FieldPage, true);
 
             Assert.AreEqual(" PAGE ", fieldPage.GetFieldCode());
 
-            // A SECTIONPAGES field displays the number of pages that the section it is in spans across
+            // A SECTIONPAGES field displays the number of pages that the section it is in spans across.
             builder.Write(" of ");
             FieldSectionPages fieldSectionPages = (FieldSectionPages)builder.InsertField(FieldType.FieldSectionPages, true);
 
             Assert.AreEqual(" SECTIONPAGES ", fieldSectionPages.GetFieldCode());
 
-            // Move out of the header back into the main document and insert two pages
-            // Both these pages will be in the first section and our three fields will keep track of the numbers in each header
+            // Move out of the header back into the main document, and insert two pages.
+            // All of these pages will be in the first section. Our fields, which appear once every header,
+            // will number the current/total pages of this section.
             builder.MoveToDocumentEnd();
             builder.InsertBreak(BreakType.PageBreak);
             builder.InsertBreak(BreakType.PageBreak);
 
-            // We can insert a new section with the document builder like this
-            // This will change the values displayed in the SECTION and SECTIONPAGES fields in all upcoming headers
+            // We can insert a new section with the document builder like this.
+            // This will affect the values displayed in the SECTION and SECTIONPAGES fields in all upcoming headers.
             builder.InsertBreak(BreakType.SectionBreakNewPage);
 
-            // The PAGE field will keep counting pages across the whole document
-            // We can manually reset its count after a new section is added to keep track of pages section-by-section
+            // The PAGE field will keep counting pages across the whole document.
+            // We can manually reset its count after a new section is added to keep track of pages section-by-section.
             builder.CurrentSection.PageSetup.RestartPageNumbering = true;
             builder.InsertBreak(BreakType.PageBreak);
 
@@ -7180,17 +7209,17 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // By default, time is displayed in the "h:mm am/pm" format
+            // By default, time is displayed in the "h:mm am/pm" format.
             FieldTime field = InsertFieldTime(builder, "");
 
             Assert.AreEqual(" TIME ", field.GetFieldCode());
 
-            // By using the \@ flag, we can change the appearance of our time
+            // We can use the \@ flag to change the format of our displayed time.
             field = InsertFieldTime(builder, "\\@ HHmm");
 
             Assert.AreEqual(" TIME \\@ HHmm", field.GetFieldCode());
 
-            // We can even display the date, according to the Gregorian calendar
+            // We can adjust the format to get TIME field to also display the date, according to the Gregorian calendar.
             field = InsertFieldTime(builder, "\\@ \"M/d/yyyy h mm:ss am/pm\"");
 
             Assert.AreEqual(" TIME \\@ \"M/d/yyyy h mm:ss am/pm\"", field.GetFieldCode());
@@ -7200,7 +7229,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Use a document builder to insert a TIME field, insert a new paragraph and return the field
+        /// Use a document builder to insert a TIME field, insert a new paragraph and return the field.
         /// </summary>
         private static FieldTime InsertFieldTime(DocumentBuilder builder, string format)
         {
@@ -7247,33 +7276,31 @@ namespace ApiExamples
             //ExFor:FieldShape.Text
             //ExFor:ParagraphFormat.Bidi
             //ExSummary:Shows how to create RTL lists with BIDIOUTLINE fields.
-            // Create a blank document and a document builder
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use our builder to insert a BIDIOUTLINE field
-            // This field numbers paragraphs like the AUTONUM/LISTNUM fields,
-            // but is only visible when a RTL editing language is enabled, such as Hebrew or Arabic
-            // The following field will display ".1", the RTL equivalent of list number "1."
+            // The BIDIOUTLINE field numbers paragraphs like the AUTONUM/LISTNUM fields,
+            // but is only visible when a RTL editing language is enabled, such as Hebrew or Arabic.
+            // The following field will display ".1", the RTL equivalent of list number "1.".
             FieldBidiOutline field = (FieldBidiOutline)builder.InsertField(FieldType.FieldBidiOutline, true);
             builder.Writeln("שלום");
 
             Assert.AreEqual(" BIDIOUTLINE ", field.GetFieldCode());
 
-            // Add two more BIDIOUTLINE fields, which will be automatically numbered ".2" and ".3"
+            // Add two more BIDIOUTLINE fields, which will display ".2" and ".3".
             builder.InsertField(FieldType.FieldBidiOutline, true);
             builder.Writeln("שלום");
             builder.InsertField(FieldType.FieldBidiOutline, true);
             builder.Writeln("שלום");
 
-            // Set the horizontal text alignment for every paragraph in the document to RTL
+            // Set the horizontal text alignment for every paragraph in the document to RTL.
             foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true))
             {
                 para.ParagraphFormat.Bidi = true;
             }
 
-            // If a RTL editing language is enabled in Microsoft Word, our fields will display numbers
-            // Otherwise, they will appear as "###" 
+            // If a RTL editing language is enabled in Microsoft Word, our fields will display numbers.
+            // Otherwise, they will appear as "###".
             doc.Save(ArtifactsDir + "Field.BIDIOUTLINE.docx");
             //ExEnd
 
@@ -7290,30 +7317,32 @@ namespace ApiExamples
             //ExFor:FieldEmbed
             //ExFor:FieldShape
             //ExFor:FieldShape.Text
-            //ExSummary:Shows how some older Microsoft Word fields such as SHAPE and EMBED are handled.
-            // Open a document that was created in Microsoft Word 2003
+            //ExSummary:Shows how some older Microsoft Word fields such as SHAPE and EMBED are handled during loading.
+            // Open a document that was created in Microsoft Word 2003.
             Document doc = new Document(MyDir + "Legacy fields.doc");
 
-            // If we open the document in Word and press Alt+F9, we will see a SHAPE and an EMBED field
-            // A SHAPE field is the anchor/canvas for an autoshape object with the "In line with text" wrapping style enabled
-            // An EMBED field has the same function, but for an embedded object, such as a spreadsheet from an external Excel document
-            // However, these fields will not appear in the document's Fields collection
+            // If we open the document in Word and press Alt+F9, we will see a SHAPE and an EMBED field.
+            // A SHAPE field is the anchor/canvas for an autoshape object with the "In line with text" wrapping style enabled.
+            // An EMBED field has the same function, but for an embedded object, such as a spreadsheet from an external Excel document.
+            // However, these fields will not appear in the document's Fields collection.
             Assert.AreEqual(0, doc.Range.Fields.Count);
 
-            // These fields are supported only by old versions of Microsoft Word
-            // As such, they are converted into shapes during the document importation process and can instead be found in the collection of Shape nodes
+            // These fields are supported only by old versions of Microsoft Word.
+            // As such, they are converted into shapes during the document loading process,
+            // and can instead be found in the collection of Shape nodes.
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             Assert.AreEqual(3, shapes.Count);
 
-            // The first Shape node corresponds to what was the SHAPE field in the input document: the inline canvas for an autoshape
+            // The first Shape node corresponds to what was the SHAPE field
+            // in the input document: the inline canvas for an AutoShape.
             Shape shape = (Shape)shapes[0];
             Assert.AreEqual(ShapeType.Image, shape.ShapeType);
 
-            // The next Shape node is the autoshape that is within the canvas
+            // The second Shape node is the AutoShape itself.
             shape = (Shape)shapes[1];
             Assert.AreEqual(ShapeType.Can, shape.ShapeType);
 
-            // The third Shape is what was the EMBED field that contained the external spreadsheet
+            // The third Shape is what was the EMBED field that contained the external spreadsheet.
             shape = (Shape)shapes[2];
             Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
             //ExEnd
