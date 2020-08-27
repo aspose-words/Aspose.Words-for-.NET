@@ -5249,7 +5249,7 @@ namespace ApiExamples
             //ExFor:FieldFileSize.IsInKilobytes
             //ExFor:FieldFileSize.IsInMegabytes            
             //ExSummary:Shows how to display the file size of a document with a FILESIZE field.
-            // Open a document and verify its file size
+            // Open a document, and verify its file size.
             Document doc = new Document(MyDir + "Document.docx");
 
             Assert.AreEqual(10590, doc.BuiltInDocumentProperties.Bytes);
@@ -5259,8 +5259,7 @@ namespace ApiExamples
             builder.InsertParagraph();
 
             // Below are three different units of measure
-            // which FILESIZE fields
-            // can display the document's file size with.
+            // with which FILESIZE fields can display the document's file size.
             // 1 -  Bytes:
             FieldFileSize field = (FieldFileSize)builder.InsertField(FieldType.FieldFileSize, true);
             field.Update();
