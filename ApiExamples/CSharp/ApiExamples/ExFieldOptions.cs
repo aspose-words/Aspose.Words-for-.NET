@@ -21,7 +21,7 @@ namespace ApiExamples
     public class ExFieldOptions : ApiExampleBase
     {
         [Test]
-        public void FieldOptionsCurrentUser()
+        public void CurrentUser()
         {
             //ExStart
             //ExFor:Document.UpdateFields
@@ -31,23 +31,27 @@ namespace ApiExamples
             //ExFor:UserInformation.Initials
             //ExFor:UserInformation.Address
             //ExFor:UserInformation.DefaultUser
-            //ExSummary:Shows how to set user details and display them with fields.
+            //ExSummary:Shows how to set user details, and display them using fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set user information
-            UserInformation userInformation = new UserInformation();
-            userInformation.Name = "John Doe";
-            userInformation.Initials = "J. D.";
-            userInformation.Address = "123 Main Street";
+            // Create a UserInformation object,
+            // and set it as the source of data for fields that display user information.
+            UserInformation userInformation = new UserInformation
+            {
+                Name = "John Doe",
+                Initials = "J. D.",
+                Address = "123 Main Street"
+            };
             doc.FieldOptions.CurrentUser = userInformation;
 
-            // Insert fields that reference our user information
+            // Insert USERNAME, USERINITIALS, and USERADDRESS fields, which display values of
+            // the respective properties of the UserInformation object that we have created above. 
             Assert.AreEqual(userInformation.Name, builder.InsertField(" USERNAME ").Result);
             Assert.AreEqual(userInformation.Initials, builder.InsertField(" USERINITIALS ").Result);
             Assert.AreEqual(userInformation.Address, builder.InsertField(" USERADDRESS ").Result);
 
-            // The field options object also has a static default user value that fields from many documents can refer to
+            // The field options object also has a static default user that fields from all documents can refer to.
             UserInformation.DefaultUser.Name = "Default User";
             UserInformation.DefaultUser.Initials = "D. U.";
             UserInformation.DefaultUser.Address = "One Microsoft Way";
@@ -58,10 +62,10 @@ namespace ApiExamples
             Assert.AreEqual("One Microsoft Way", builder.InsertField(" USERADDRESS ").Result);
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "FieldOptions.FieldOptionsCurrentUser.docx");
+            doc.Save(ArtifactsDir + "FieldOptions.CurrentUser.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "FieldOptions.FieldOptionsCurrentUser.docx");
+            doc = new Document(ArtifactsDir + "FieldOptions.CurrentUser.docx");
 
             Assert.Null(doc.FieldOptions.CurrentUser);
 
@@ -82,7 +86,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FieldOptionsFileName()
+        public void FileName()
         {
             //ExStart
             //ExFor:FieldOptions.FileName
@@ -95,7 +99,7 @@ namespace ApiExamples
             builder.MoveToDocumentEnd();
             builder.Writeln();
 
-            // This FILENAME field will display the file name of the document we opened
+            // This FILENAME field will display the local system file name of the document we loaded.
             FieldFileName field = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
             field.Update();
 
@@ -104,11 +108,17 @@ namespace ApiExamples
 
             builder.Writeln();
 
-            // By default, the FILENAME field does not show the full path, and we can change this
+            // By default, the FILENAME field shows the name of the file,
+            // but not its full local file system path.
+            // We can set a flag to make it show the full file path.
             field = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
             field.IncludeFullPath = true;
+            field.Update();
 
-            // We can override the values displayed by our FILENAME fields by setting this attribute
+            Assert.AreEqual(MyDir + "Document.docx", field.Result);
+
+            // We can also set a value for this property to
+            // override the value that the FILENAME field displays.
             doc.FieldOptions.FileName = "FieldOptions.FILENAME.docx";
             field.Update();
 
@@ -126,7 +136,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FieldOptionsBidi()
+        public void Bidi()
         {
             //ExStart
             //ExFor:FieldOptions.IsBidiTextSupportedOnUpdate
@@ -134,18 +144,18 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Ensure that any field operation involving right-to-left text is performed correctly 
+            // Ensure that any field operation involving right-to-left text is performed correctly.
             doc.FieldOptions.IsBidiTextSupportedOnUpdate = true;
 
-            // Use a document builder to insert a field which contains right-to-left text
+            // Use a document builder to insert a field which contains right-to-left text.
             FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "עֶשְׂרִים", "שְׁלוֹשִׁים", "אַרְבָּעִים", "חֲמִשִּׁים", "שִׁשִּׁים" }, 0);
             comboBox.CalculateOnExit = true;
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "FieldOptions.FieldOptionsBidi.docx");
+            doc.Save(ArtifactsDir + "FieldOptions.Bidi.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "FieldOptions.FieldOptionsBidi.docx");
+            doc = new Document(ArtifactsDir + "FieldOptions.Bidi.docx");
 
             Assert.False(doc.FieldOptions.IsBidiTextSupportedOnUpdate);
 
@@ -155,11 +165,11 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FieldOptionsLegacyNumberFormat()
+        public void LegacyNumberFormat()
         {
             //ExStart
             //ExFor:FieldOptions.LegacyNumberFormat
-            //ExSummary:Shows how use FieldOptions to change the number format.
+            //ExSummary:Shows how enable legacy number formatting for fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -180,7 +190,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FieldOptionsPreProcessCulture()
+        public void PreProcessCulture()
         {
             //ExStart
             //ExFor:FieldOptions.PreProcessCulture
@@ -188,17 +198,19 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Set the culture according to which some fields will format their displayed values.
             doc.FieldOptions.PreProcessCulture = new CultureInfo("de-DE");
 
             Field field = builder.InsertField(" DOCPROPERTY CreateTime");
 
-            // Conforming to the German culture, the date/time will be presented in the "dd.mm.yyyy hh:mm" format
+            // The DOCPROPERTY field will display its result formatted according to the preprocess culture,
+            // which we have set to German. The field will display the date/time using the "dd.mm.yyyy hh:mm" format.
             Assert.IsTrue(Regex.Match(field.Result, @"\d{2}[.]\d{2}[.]\d{4} \d{2}[:]\d{2}").Success);
 
             doc.FieldOptions.PreProcessCulture = CultureInfo.InvariantCulture;
             field.Update();
 
-            // After switching to the invariant culture, the date/time will be presented in the "mm/dd/yyyy hh:mm" format
+            // After switching to the invariant culture, the DOCPROPERTY field will use the "mm/dd/yyyy hh:mm" format
             Assert.IsTrue(Regex.Match(field.Result, @"\d{2}[/]\d{2}[/]\d{4} \d{2}[:]\d{2}").Success);
             //ExEnd
 
@@ -209,34 +221,44 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FieldOptionsToaCategories()
+        public void TableOfAuthorityCategories()
         {
             //ExStart
             //ExFor:FieldOptions.ToaCategories
             //ExFor:ToaCategories
             //ExFor:ToaCategories.Item(Int32)
             //ExFor:ToaCategories.DefaultCategories
-            //ExSummary:Shows how to specify a table of authorities categories for a document.
+            //ExSummary:Shows how to specify a set of categories for TOA fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // There are default category values we can use, or we can make our own like this
+            // TOA fields can filter their entries by categories defined in this collection.
             ToaCategories toaCategories = new ToaCategories();
             doc.FieldOptions.ToaCategories = toaCategories;
 
-            toaCategories[1] = "My Category 1"; // Replaces default value "Cases"
-            toaCategories[2] = "My Category 2"; // Replaces default value "Statutes"
+            // This collection of categories comes with default values, which we can overwrite with custom values.
+            Assert.AreEqual("Cases", toaCategories[1]);
+            Assert.AreEqual("Statutes", toaCategories[2]);
 
-            // Even if we changed the categories in the FieldOptions object, the default categories are still available here
+            toaCategories[1] = "My Category 1";
+            toaCategories[2] = "My Category 2";
+
+            // We can always access the default values via this collection.
             Assert.AreEqual("Cases", ToaCategories.DefaultCategories[1]);
             Assert.AreEqual("Statutes", ToaCategories.DefaultCategories[2]);
 
-            // Insert 2 tables of authorities, one per category
+            // Insert 2 TOA fields. TOA fields create an entry for each TA field in the document.
+            // Use the "\c" switch to select the index of a category from our collection.
+            // A TOA field with this switch will only pick up entries from TA fields that
+            // also have a "\c" switch with a matching category index. Each TOA field will also
+            // display the name of the category that its "\c" switch points to.
             builder.InsertField("TOA \\c 1 \\h", null);
             builder.InsertField("TOA \\c 2 \\h", null);
             builder.InsertBreak(BreakType.PageBreak);
 
-            // Insert TOA entries across 2 categories
+            // Insert TOA entries across 2 categories. Our first TOA field will receive one entry,
+            // from the second TA field whose "\c" switch also points to the first category.
+            // The second TOA field will have two entries from the other two TA fields.
             builder.InsertField("TA \\c 2 \\l \"entry 1\"");
             builder.InsertBreak(BreakType.PageBreak);
             builder.InsertField("TA \\c 1 \\l \"entry 2\"");
@@ -259,7 +281,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void FieldOptionsUseInvariantCultureNumberFormat()
+        public void UseInvariantCultureNumberFormat()
         {
             //ExStart
             //ExFor:FieldOptions.UseInvariantCultureNumberFormat
@@ -271,11 +293,14 @@ namespace ApiExamples
             Field field = builder.InsertField(" = 1234567,89 \\# $#,###,###.##");
             field.Update();
 
-            // The combination of field, number format and thread culture can sometimes produce an unsuitable result
+            // Sometimes, fields may not format their numbers correctly under certain cultures. 
             Assert.IsFalse(doc.FieldOptions.UseInvariantCultureNumberFormat);
             Assert.AreEqual("$1234567,89 .     ", field.Result);
 
-            // We can set this attribute to avoid changing the whole thread culture just for numeric formats
+            // To fix this, we could change the culture for the entire thread.
+            // Another way to fix this is to set this flag,
+            // which gets all fields to use the invariant culture when formatting numbers.
+            // This way allows us to avoid changing the culture for the entire thread.
             doc.FieldOptions.UseInvariantCultureNumberFormat = true;
             field.Update();
             Assert.AreEqual("$1.234.567,89", field.Result);
@@ -291,7 +316,7 @@ namespace ApiExamples
         //ExFor:FieldOptions.FieldUpdateCultureProvider
         //ExFor:IFieldUpdateCultureProvider
         //ExFor:IFieldUpdateCultureProvider.GetCulture(string, Field)
-        //ExSummary:Shows how to specify a culture defining date/time formatting on per field basis.
+        //ExSummary:Shows how to specify a culture which parses date/time formatting for each individual field.
         [Test]
         public void DefineDateTimeFormatting()
         {
@@ -302,7 +327,7 @@ namespace ApiExamples
 
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
 
-            // Set a provider that returns a culture object specific for each field
+            // Set a provider that returns a culture object specific for each field.
             doc.FieldOptions.FieldUpdateCultureProvider = new FieldUpdateCultureProvider();
 
             FieldTime fieldDate = (FieldTime)doc.Range.Fields[0];
@@ -388,58 +413,66 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             Assert.IsNull(doc.FieldOptions.BarcodeGenerator); //ExSkip
 
-            // Barcodes generated in this way will be in the form of images.
-            // We can use a custom IBarcodeGenerator implementation to generate them.
+            // We can use a custom IBarcodeGenerator implementation to generate barcodes,
+            // and then insert them into the document as images.
             // This generator can be found here:
             // https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/ApiExamples/CSharp/ApiExamples/CustomBarcodeGenerator.cs
             doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
 
-            // Below are four of the types of barcodes that we can insert this way.
+            // Below are four examples of different barcode types that we can create using our generator.
+            // For each barcode, we specify a new set of barcode parameters, and then generate the image.
+            // Afterwards, we can insert the image into the document, or save it to the local file system.
             // 1 -  QR code:
-            BarcodeParameters barcodeParameters = new BarcodeParameters();
-            barcodeParameters.BarcodeType = "QR";
-            barcodeParameters.BarcodeValue = "ABC123";
-            barcodeParameters.BackgroundColor = "0xF8BD69";
-            barcodeParameters.ForegroundColor = "0xB5413B";
-            barcodeParameters.ErrorCorrectionLevel = "3";
-            barcodeParameters.ScalingFactor = "250";
-            barcodeParameters.SymbolHeight = "1000";
-            barcodeParameters.SymbolRotation = "0";
+            BarcodeParameters barcodeParameters = new BarcodeParameters
+            {
+                BarcodeType = "QR",
+                BarcodeValue = "ABC123",
+                BackgroundColor = "0xF8BD69",
+                ForegroundColor = "0xB5413B",
+                ErrorCorrectionLevel = "3",
+                ScalingFactor = "250",
+                SymbolHeight = "1000",
+                SymbolRotation = "0"
+            };
 
-            // We can generate the barcode after we have set the parameters for the barcode generator.
-            // The barcode will be an image that we can insert into the document and save to the local file system.
             Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
 
             builder.InsertImage(img);
 
             // 2 -  EAN13 barcode:
-            barcodeParameters = new BarcodeParameters();
-            barcodeParameters.BarcodeType = "EAN13";
-            barcodeParameters.BarcodeValue = "501234567890";
-            barcodeParameters.DisplayText = true;
-            barcodeParameters.PosCodeStyle = "CASE";
-            barcodeParameters.FixCheckDigit = true;
+            barcodeParameters = new BarcodeParameters
+            {
+                BarcodeType = "EAN13",
+                BarcodeValue = "501234567890",
+                DisplayText = true,
+                PosCodeStyle = "CASE",
+                FixCheckDigit = true
+            };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
             builder.InsertImage(img);
 
             // 3 -  CODE39 barcode:
-            barcodeParameters = new BarcodeParameters();
-            barcodeParameters.BarcodeType = "CODE39";
-            barcodeParameters.BarcodeValue = "12345ABCDE";
-            barcodeParameters.AddStartStopChar = true;
+            barcodeParameters = new BarcodeParameters
+            {
+                BarcodeType = "CODE39",
+                BarcodeValue = "12345ABCDE",
+                AddStartStopChar = true
+            };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
             builder.InsertImage(img);
 
             // 4 -  ITF14 barcode:
-            barcodeParameters = new BarcodeParameters();
-            barcodeParameters.BarcodeType = "ITF14";
-            barcodeParameters.BarcodeValue = "09312345678907";
-            barcodeParameters.CaseCodeStyle = "STD";
+            barcodeParameters = new BarcodeParameters
+            {
+                BarcodeType = "ITF14",
+                BarcodeValue = "09312345678907",
+                CaseCodeStyle = "STD"
+            };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");
