@@ -39,27 +39,23 @@ namespace ApiExamples
             //ExFor:Run
             //ExFor:Run.#ctor(DocumentBase,String)
             //ExFor:Story.FirstParagraph
-            //ExSummary:Shows how to add a formatted run of text to a document using the object model.
+            //ExSummary:Shows how to format a run of text using its font property.
             Document doc = new Document();
+            Run run = new Run(doc, "Hello world!");
 
-            // Create a new run of text
-            Run run = new Run(doc, "Hello");
-
-            // Specify character formatting for the run of text
             Aspose.Words.Font f = run.Font;
             f.Name = "Courier New";
             f.Size = 36;
             f.HighlightColor = Color.Yellow;
 
-            // Append the run of text to the end of the first paragraph
-            // in the body of the first section of the document
             doc.FirstSection.Body.FirstParagraph.AppendChild(run);
+            doc.Save(ArtifactsDir + "Font.CreateFormattedRun.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "Font.CreateFormattedRun.docx");
             run = doc.FirstSection.Body.FirstParagraph.Runs[0];
 
-            Assert.AreEqual("Hello", run.GetText().Trim());
+            Assert.AreEqual("Hello world!", run.GetText().Trim());
             Assert.AreEqual("Courier New", run.Font.Name);
             Assert.AreEqual(36, run.Font.Size);
             Assert.AreEqual(Color.Yellow.ToArgb(), run.Font.HighlightColor.ToArgb());
@@ -72,15 +68,23 @@ namespace ApiExamples
             //ExStart
             //ExFor:Font.AllCaps
             //ExFor:Font.SmallCaps
-            //ExSummary:Shows how to use all capitals and small capitals character formatting properties.
+            //ExSummary:Shows how to format a run to display its contents in capitals.
             Document doc = new Document();
             Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
 
-            Run run = new Run(doc, "All capitals");
+            // There are two ways of getting a run to display its lowercase text in uppercase without changing the contents.
+            // 1 -  Set the AllCaps flag to display all characters in regular capitals.
+            Run run = new Run(doc, "all capitals");
             run.Font.AllCaps = true;
             para.AppendChild(run);
 
-            run = new Run(doc, "SMALL CAPITALS");
+            para = (Paragraph)para.ParentNode.AppendChild(new Paragraph(doc));
+
+            // 2 -  Set the SmallCaps flag to display all characters in small capitals.
+            // If a character is lower case, it will appear in its upper case form,
+            // but will have the same height it had when it was lower case (the font's x-height).
+            // Characters that were in upper case originally will look the same.
+            run = new Run(doc, "Small Capitals");
             run.Font.SmallCaps = true;
             para.AppendChild(run);
 
@@ -88,14 +92,14 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Font.Caps.docx");
-            run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+            run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("All capitals", run.GetText().Trim());
+            Assert.AreEqual("all capitals", run.GetText().Trim());
             Assert.True(run.Font.AllCaps);
 
-            run = doc.FirstSection.Body.FirstParagraph.Runs[1];
+            run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
 
-            Assert.AreEqual("SMALL CAPITALS", run.GetText().Trim());
+            Assert.AreEqual("Small Capitals", run.GetText().Trim());
             Assert.True(run.Font.SmallCaps);
         }
 
@@ -111,17 +115,15 @@ namespace ApiExamples
             //ExSummary:Shows how to print the details of what fonts are present in a document.
             Document doc = new Document(MyDir + "Embedded font.docx");
 
-            FontInfoCollection fonts = doc.FontInfos;
-            Assert.AreEqual(5, fonts.Count); //ExSkip
+            FontInfoCollection allFonts = doc.FontInfos;
+            Assert.AreEqual(5, allFonts.Count); //ExSkip
 
-            // The fonts info extracted from this document does not necessarily mean that the fonts themselves are
-            // used in the document. If a font is present but not used then most likely they were referenced at some time
-            // and then removed from the Document
-            for (int i = 0; i < fonts.Count; i++)
+            // Print all the used and unused fonts in the document.
+            for (int i = 0; i < allFonts.Count; i++)
             {
                 Console.WriteLine($"Font index #{i}");
-                Console.WriteLine($"\tName: {fonts[i].Name}");
-                Console.WriteLine($"\tIs {(fonts[i].IsTrueType ? "" : "not ")}a trueType font");
+                Console.WriteLine($"\tName: {allFonts[i].Name}");
+                Console.WriteLine($"\tIs {(allFonts[i].IsTrueType ? "" : "not ")}a trueType font");
             }
             //ExEnd
         }
@@ -137,8 +139,9 @@ namespace ApiExamples
             Assert.IsFalse(doc.FontInfos.SaveSubsetFonts);
         }
 
-        [Test]
-        public void FontInfoCollection()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void FontInfoCollection(bool embedAllFonts)
         {
             //ExStart
             //ExFor:FontInfoCollection
@@ -150,19 +153,19 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx");
 
             FontInfoCollection fontInfos = doc.FontInfos;
-            fontInfos.EmbedTrueTypeFonts = true;
-            fontInfos.EmbedSystemFonts = false;
-            fontInfos.SaveSubsetFonts = false;
+            fontInfos.EmbedTrueTypeFonts = embedAllFonts;
+            fontInfos.EmbedSystemFonts = embedAllFonts;
+            fontInfos.SaveSubsetFonts = embedAllFonts;
 
             doc.Save(ArtifactsDir + "Font.FontInfoCollection.docx");
+
+            FileInfo fileInfo = new FileInfo(ArtifactsDir + "Font.FontInfoCollection.docx");
+
+            if (embedAllFonts)
+                Assert.True(fileInfo.Length > 23000);
+            else
+                Assert.True(fileInfo.Length < 9000);
             //ExEnd
-
-            doc = new Document(ArtifactsDir + "Font.FontInfoCollection.docx");
-            fontInfos = doc.FontInfos;
-
-            Assert.True(fontInfos.EmbedTrueTypeFonts);
-            Assert.False(fontInfos.EmbedSystemFonts);
-            Assert.False(fontInfos.SaveSubsetFonts);
         }
 
         [TestCase(true, false, false, Description =
@@ -192,31 +195,34 @@ namespace ApiExamples
             //ExStart
             //ExFor:Font.StrikeThrough
             //ExFor:Font.DoubleStrikeThrough
-            //ExSummary:Shows how to use strike-through character formatting properties.
+            //ExSummary:Shows how to add a line strikethrough to text.
             Document doc = new Document();
-            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
 
-            Run run = new Run(doc, "Double strike through text");
-            run.Font.DoubleStrikeThrough = true;
+            Run run = new Run(doc, "Text with a single-line strikethrough.");
+            run.Font.StrikeThrough = true;
             para.AppendChild(run);
 
-            run = new Run(doc, "Single strike through text");
-            run.Font.StrikeThrough = true;
+            para = (Paragraph)para.ParentNode.AppendChild(new Paragraph(doc));
+
+            run = new Run(doc, "Text with a double-line strikethrough.");
+            run.Font.DoubleStrikeThrough = true;
             para.AppendChild(run);
 
             doc.Save(ArtifactsDir + "Font.StrikeThrough.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Font.StrikeThrough.docx");
-            run = doc.FirstSection.Body.FirstParagraph.Runs[0];
 
-            Assert.AreEqual("Double strike through text", run.GetText().Trim());
-            Assert.True(run.Font.DoubleStrikeThrough);
+            run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            run = doc.FirstSection.Body.FirstParagraph.Runs[1];
-
-            Assert.AreEqual("Single strike through text", run.GetText().Trim());
+            Assert.AreEqual("Text with a single-line strikethrough.", run.GetText().Trim());
             Assert.True(run.Font.StrikeThrough);
+
+            run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
+
+            Assert.AreEqual("Text with a double-line strikethrough.", run.GetText().Trim());
+            Assert.True(run.Font.DoubleStrikeThrough);
         }
 
         [Test]
@@ -226,26 +232,31 @@ namespace ApiExamples
             //ExFor:Font.Position
             //ExFor:Font.Subscript
             //ExFor:Font.Superscript
-            //ExSummary:Shows how to use subscript, superscript, complex script, text effects, and baseline text position properties.
+            //ExSummary:Shows how to format text to offset its position.
             Document doc = new Document();
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
-            // Add a run of text that is raised 5 points above the baseline
-            Run run = new Run(doc, "Raised text");
+            // Add a run of text that is raised 5 points above the baseline.
+            Run run = new Run(doc, "Raised text. ");
             run.Font.Position = 5;
             para.AppendChild(run);
 
-            // Add a run of normal text
-            run = new Run(doc, "Normal text");
+            // Add a run of text that is lowered 10 points below the baseline.
+            run = new Run(doc, "Lowered text. ");
+            run.Font.Position = -10;
             para.AppendChild(run);
 
-            // Add a run of text that appears as subscript
-            run = new Run(doc, "Subscript");
+            // Add a run of normal text.
+            run = new Run(doc, "Text in its default position. ");
+            para.AppendChild(run);
+
+            // Add a run of text that appears as subscript.
+            run = new Run(doc, "Subscript. ");
             run.Font.Subscript = true;
             para.AppendChild(run);
 
-            // Add a run of text that appears as superscript
-            run = new Run(doc, "Superscript");
+            // Add a run of text that appears as superscript.
+            run = new Run(doc, "Superscript.");
             run.Font.Superscript = true;
             para.AppendChild(run);
 
@@ -255,17 +266,23 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.PositionSubscript.docx");
             run = doc.FirstSection.Body.FirstParagraph.Runs[0];
 
-            Assert.AreEqual("Raised text", run.GetText().Trim());
+            Assert.AreEqual("Raised text.", run.GetText().Trim());
             Assert.AreEqual(5, run.Font.Position);
 
-            run = doc.FirstSection.Body.FirstParagraph.Runs[2];
+            doc = new Document(ArtifactsDir + "Font.PositionSubscript.docx");
+            run = doc.FirstSection.Body.FirstParagraph.Runs[1];
 
-            Assert.AreEqual("Subscript", run.GetText().Trim());
-            Assert.True(run.Font.Subscript);
+            Assert.AreEqual("Lowered text.", run.GetText().Trim());
+            Assert.AreEqual(-10, run.Font.Position);
 
             run = doc.FirstSection.Body.FirstParagraph.Runs[3];
 
-            Assert.AreEqual("Superscript", run.GetText().Trim());
+            Assert.AreEqual("Subscript.", run.GetText().Trim());
+            Assert.True(run.Font.Subscript);
+
+            run = doc.FirstSection.Body.FirstParagraph.Runs[4];
+
+            Assert.AreEqual("Superscript.", run.GetText().Trim());
             Assert.True(run.Font.Superscript);
         }
 
@@ -275,19 +292,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:Font.Scaling
             //ExFor:Font.Spacing
-            //ExSummary:Shows how to use character scaling and spacing properties.
+            //ExSummary:Shows how to set horizontal scaling and spacing for characters.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a run of text with characters 150% width of normal characters
+            // Add run of text, and set character width to 150%.
             builder.Font.Scaling = 150;
             builder.Writeln("Wide characters");
 
-            // Add a run of text with extra 1pt space between characters
+            // Add run of text, and add 1pt of extra horizontal spacing between each character.
             builder.Font.Spacing = 1;
             builder.Writeln("Expanded by 1pt");
 
-            // Add a run of text with space between characters reduced by 1pt
+            // Add run of text, and bring characters closer together by 1pt.
             builder.Font.Spacing = -1;
             builder.Writeln("Condensed by 1pt");
 
@@ -316,12 +333,12 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.Italic
-            //ExSummary:Shows how to italicize a run of text.
+            //ExSummary:Shows how to write italicized text using a document builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.Font.Size = 36;
             builder.Font.Italic = true;
-
             builder.Writeln("Hello world!");
 
             doc.Save(ArtifactsDir + "Font.Italic.docx");
