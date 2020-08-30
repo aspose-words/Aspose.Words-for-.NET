@@ -43,10 +43,10 @@ namespace ApiExamples
             Document doc = new Document();
             Run run = new Run(doc, "Hello world!");
 
-            Aspose.Words.Font f = run.Font;
-            f.Name = "Courier New";
-            f.Size = 36;
-            f.HighlightColor = Color.Yellow;
+            Aspose.Words.Font font = run.Font;
+            font.Name = "Courier New";
+            font.Size = 36;
+            font.HighlightColor = Color.Yellow;
 
             doc.FirstSection.Body.FirstParagraph.AppendChild(run);
             doc.Save(ArtifactsDir + "Font.CreateFormattedRun.docx");
@@ -296,7 +296,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add run of text, and set character width to 150%.
+            // Add run of text, and increase character width to 150%.
             builder.Font.Scaling = 150;
             builder.Writeln("Wide characters");
 
@@ -357,15 +357,20 @@ namespace ApiExamples
             //ExStart
             //ExFor:Font.Emboss
             //ExFor:Font.Engrave
-            //ExSummary:Shows the difference between embossing and engraving text via font formatting.
+            //ExSummary:Shows how to apply engraving/embossing effects to text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.Font.Size = 36;
-            builder.Font.Color = Color.White;
+            builder.Font.Color = Color.LightBlue;
+
+            // Below are two ways of using shadows to apply a 3D-like effect to text.
+            // 1 -  Engrave text to make it look like the letters are sunken into the page.
             builder.Font.Engrave = true;
 
             builder.Writeln("This text is engraved.");
 
+            // 2 -  Emboss text to make it look like the letters pop out of the page.
             builder.Font.Engrave = false;
             builder.Font.Emboss = true;
 
@@ -396,8 +401,11 @@ namespace ApiExamples
             //ExSummary:Shows how to create a run of text formatted with a shadow.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Font.Size = 36;
+
+            // Set the Shadow flag to apply an offset shadow effect
+            // which makes it look like the letters are floating above the page.
             builder.Font.Shadow = true;
+            builder.Font.Size = 36;
 
             builder.Writeln("This text has a shadow.");
 
@@ -419,8 +427,12 @@ namespace ApiExamples
             //ExSummary:Shows how to create a run of text formatted as outline.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Font.Size = 36;
+
+            // Set the Outline flag to change the fill color of the text to white,
+            // and to leave a thin outline around each character in the original color of the text. 
             builder.Font.Outline = true;
+            builder.Font.Color = Color.Blue;
+            builder.Font.Size = 36;
 
             builder.Writeln("This text has an outline.");
 
@@ -439,15 +451,19 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.Hidden
-            //ExSummary:Shows how to create a hidden run of text.
+            //ExSummary:Shows how to create a run of hidden text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Font.Size = 36;
-            builder.Font.Hidden = true;
 
-            // With the Hidden flag set to true, we can add text that will be present but invisible in the document
-            // It is not recommended to use this as a way of hiding sensitive information as the text is still easily reachable
-            builder.Writeln("This text won't be visible in the document.");
+            // With the Hidden flag set to true, any text that we create using this Font object will be invisible in the document.
+            // We will not be able to see or highlight hidden text unless we enable the "Hidden text" option
+            // found in Microsoft Word via File -> Options -> Display. The text will still be there,
+            // and we will be able to access this text programmatically.
+            // It is not advised to use this method to hide sensitive information.
+            builder.Font.Hidden = true;
+            builder.Font.Size = 36;
+            
+            builder.Writeln("This text will not be visible in the document.");
 
             doc.Save(ArtifactsDir + "Font.Hidden.docx");
             //ExEnd
@@ -455,7 +471,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.Hidden.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("This text won't be visible in the document.", run.GetText().Trim());
+            Assert.AreEqual("This text will not be visible in the document.", run.GetText().Trim());
             Assert.True(run.Font.Hidden);
         }
 
@@ -464,24 +480,23 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.Kerning
-            //ExSummary:Shows how to specify the font size at which kerning starts.
+            //ExSummary:Shows how to specify the font size at which kerning begins to take effect.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Font.Name = "Arial Black";
 
-            // Set the font's kerning size threshold and font size 
-            builder.Font.Kerning = 24;
+            // Set the builder's font size, and minimum size at which kerning will be applied.
+            // The font size falls below the kerning threshold, so kerning will not be applied.
             builder.Font.Size = 18;
+            builder.Font.Kerning = 24;
 
-            // The font size falls below the kerning threshold so kerning will not be applied
             builder.Writeln("TALLY. (Kerning not applied)");
 
-            // If we add runs of text with a document builder's writing methods,
-            // the Font attributes of any new runs will inherit the values from the Font attributes of the previous runs
-            // The font size is still 18, and we will change the kerning threshold to a value below that
+            // Set the kerning threshold so that the builder's current font size is above it.
+            // Any text we add from this point will have kerning applied. The spaces between characters
+            // will be adjusted, normally resulting in a slightly more aesthetically pleasing run of text.
             builder.Font.Kerning = 12;
             
-            // Kerning has now been applied to this run
             builder.Writeln("TALLY. (Kerning applied)");
 
             doc.Save(ArtifactsDir + "Font.Kerning.docx");
@@ -506,12 +521,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.NoProofing
-            //ExSummary:Shows how to specify that the run of text is not to be spell checked by Microsoft Word.
+            //ExSummary:Shows how to prevent text from being spell checked by Microsoft Word.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Normally, Microsoft Word emphasizes spelling errors with a red jagged underline.
+            // We can un-set the NoProofing flag in order to create a portion of text
+            // which bypasses the spell checker while avoiding disabling it completely.
             builder.Font.NoProofing = true;
 
-            builder.Writeln("Proofing has been disabled for this run, so these spelking errrs will not display red lines underneath.");
+            builder.Writeln("Proofing has been disabled, so these spelking errrs will not display red lines underneath.");
 
             doc.Save(ArtifactsDir + "Font.NoProofing.docx");
             //ExEnd
@@ -519,7 +538,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.NoProofing.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Proofing has been disabled for this run, so these spelking errrs will not display red lines underneath.", run.GetText().Trim());
+            Assert.AreEqual("Proofing has been disabled, so these spelking errrs will not display red lines underneath.", run.GetText().Trim());
             Assert.True(run.Font.NoProofing);
         }
 
@@ -528,11 +547,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.LocaleId
-            //ExSummary:Shows how to specify the language of a text run so Microsoft Word can use a proper spell checker.
+            //ExSummary:Shows how to set the locale of the text that we are adding with a document builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Specify the locale so Microsoft Word recognizes this text as Russian
+            // If we set the font's locale to English, and insert some text in Russian,
+            // the English locale spell checker will not be able to recognize the text and detect it as a spelling error.
+            builder.Font.LocaleId = new CultureInfo("en-US", false).LCID;
+            builder.Writeln("Привет!");
+            
+            // Set a matching locale for the text that we are about to add to apply the appropriate spell checker.
             builder.Font.LocaleId = new CultureInfo("ru-RU", false).LCID;
             builder.Writeln("Привет!");
 
@@ -541,6 +565,11 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Font.LocaleId.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("Привет!", run.GetText().Trim());
+            Assert.AreEqual(1033, run.Font.LocaleId);
+
+            run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
 
             Assert.AreEqual("Привет!", run.GetText().Trim());
             Assert.AreEqual(1049, run.Font.LocaleId);
@@ -552,11 +581,10 @@ namespace ApiExamples
             //ExStart
             //ExFor:Font.Underline
             //ExFor:Font.UnderlineColor
-            //ExSummary:Shows how use the underline character formatting properties.
+            //ExSummary:Shows how to configure the style and color of a text underline.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set an underline color and style
             builder.Font.Underline = Underline.Dotted;
             builder.Font.UnderlineColor = Color.Red;
 
@@ -578,9 +606,10 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.ComplexScript
-            //ExSummary:Shows how to make a run that's always treated as complex script.
+            //ExSummary:Shows how to add text that is always treated as complex script.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.Font.ComplexScript = true;
 
             builder.Writeln("Text treated as complex script.");
@@ -603,12 +632,13 @@ namespace ApiExamples
             //ExSummary:Shows how to apply a visual effect to a run.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.Font.Size = 36;
             builder.Font.TextEffect = TextEffect.SparkleText;
 
             builder.Writeln("Text with a sparkle effect.");
             
-            // Font animation effects are only visible in older versions of Microsoft Word
+            // Font animation effects are only supported by older versions of Microsoft Word.
             doc.Save(ArtifactsDir + "Font.SparklingText.doc");
             //ExEnd
 
@@ -624,18 +654,20 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.Shading
-            //ExSummary:Shows how to apply shading for a run of text.
+            //ExSummary:Shows how to apply shading to text created by a document builder.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Shading shd = builder.Font.Shading;
-            shd.Texture = TextureIndex.TextureDiagonalUp;
-            shd.BackgroundPatternColor = Color.OrangeRed;
-            shd.ForegroundPatternColor = Color.DarkBlue;
-
             builder.Font.Color = Color.White;
 
-            builder.Writeln("White text on an orange background with texture.");
+            // One way to make the text created using our white font color visible
+            // is to apply a background shading effect.
+            Shading shading = builder.Font.Shading;
+            shading.Texture = TextureIndex.TextureDiagonalUp;
+            shading.BackgroundPatternColor = Color.OrangeRed;
+            shading.ForegroundPatternColor = Color.DarkBlue;
+
+            builder.Writeln("White text on an orange background with a two-tone texture.");
 
             doc.Save(ArtifactsDir + "Font.Shading.docx");
             //ExEnd
@@ -643,7 +675,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.Shading.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("White text on an orange background with texture.", run.GetText().Trim());
+            Assert.AreEqual("White text on an orange background with a two-tone texture.", run.GetText().Trim());
             Assert.AreEqual(Color.White.ToArgb(), run.Font.Color.ToArgb());
 
             Assert.AreEqual(TextureIndex.TextureDiagonalUp, run.Font.Shading.Texture);
@@ -661,40 +693,65 @@ namespace ApiExamples
             //ExFor:Font.ItalicBi
             //ExFor:Font.BoldBi
             //ExFor:Font.LocaleIdBi
-            //ExSummary:Shows how to insert and format right-to-left text.
+            //ExSummary:Shows how to define a parallel set of formatting attributes for right-to-left text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            // Define a set of font settings for left-to-right text.
+            builder.Font.Name = "Courier New";
+            builder.Font.Size = 16;
+            builder.Font.Italic = false;
+            builder.Font.Bold = false;
+            builder.Font.LocaleId = new CultureInfo("en-US", false).LCID;
 
-            // Signal to Microsoft Word that this run of text contains right-to-left text
-            builder.Font.Bidi = true;
-
-            // Specify the font and font size to be used for the right-to-left text
+            // Define another set of font settings for right-to-left text.
             builder.Font.NameBi = "Andalus";
-            builder.Font.SizeBi = 48;
-
-            // Specify that the right-to-left text in this run is bold and italic
+            builder.Font.SizeBi = 24;
             builder.Font.ItalicBi = true;
             builder.Font.BoldBi = true;
-
-            // Specify the locale so Microsoft Word recognizes this text as Arabic - Saudi Arabia
             builder.Font.LocaleIdBi = new CultureInfo("ar-AR", false).LCID;
 
-            // Insert some Arabic text
-            builder.Writeln("مرحبًا");
+            // We can use the Bidi flag to indicate whether the text we are about to add
+            // with the document builder is right-to-left. When we add text with this flag set to true,
+            // it will be formatted using the right-to-left set of font settings.
+            builder.Font.Bidi = true;
+            builder.Write("مرحبًا");
+
+            // Set the flag to false, and then add left-to-right text.
+            // The document builder will format these using the left-to-right set of font settings.
+            builder.Font.Bidi = false;
+            builder.Write(" Hello world!");
 
             doc.Save(ArtifactsDir + "Font.Bidi.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Font.Bidi.docx");
-            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("مرحبًا", run.GetText().Trim());
-            Assert.AreEqual(1033, run.Font.LocaleId);
-            Assert.True(run.Font.Bidi);
-            Assert.AreEqual(48, run.Font.SizeBi);
-            Assert.AreEqual("Andalus", run.Font.NameBi);
-            Assert.True(run.Font.ItalicBi);
-            Assert.True(run.Font.BoldBi);
+            foreach (Run run in doc.FirstSection.Body.Paragraphs[0].Runs)
+            {
+                switch (doc.FirstSection.Body.Paragraphs[0].IndexOf(run))
+                {
+                    case 0:
+                        Assert.AreEqual("مرحبًا", run.GetText().Trim());
+                        Assert.True(run.Font.Bidi);
+                        break;
+                    case 1:
+                        Assert.AreEqual("Hello world!", run.GetText().Trim());
+                        Assert.False(run.Font.Bidi);
+                        break;
+                }
+
+                Assert.AreEqual(1033, run.Font.LocaleId);
+                Assert.AreEqual(16, run.Font.Size);
+                Assert.AreEqual("Courier New", run.Font.Name);
+                Assert.False(run.Font.Italic);
+                Assert.False(run.Font.Bold);
+                Assert.AreEqual(1025, run.Font.LocaleIdBi);
+                Assert.AreEqual(24, run.Font.SizeBi);
+                Assert.AreEqual("Andalus", run.Font.NameBi);
+                Assert.True(run.Font.ItalicBi);
+                Assert.True(run.Font.BoldBi);
+            }
         }
 
         [Test]
