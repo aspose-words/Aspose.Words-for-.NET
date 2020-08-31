@@ -953,44 +953,82 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SubstitutionNotification()
+        public void DefaultFontInstance()
         {
-            // Store the font sources currently used so we can restore them later
-            FontSourceBase[] origFontSources = FontSettings.DefaultInstance.GetFontsSources();
-
             //ExStart
-            //ExFor:IWarningCallback
-            //ExFor:DocumentBase.WarningCallback
             //ExFor:Fonts.FontSettings.DefaultInstance
-            //ExSummary:Demonstrates how to receive notifications of font substitutions by using IWarningCallback.
-            // Load the document to render
-            Document doc = new Document(MyDir + "Document.docx");
+            //ExSummary:Shows how to 
+            // Configure the default font settings instance to use the "Courier New" font
+            // as a backup substitute in the event of an unknown font being used.
+            FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Courier New";
 
-            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
-            HandleDocumentSubstitutionWarnings callback = new HandleDocumentSubstitutionWarnings();
+            Assert.True(FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.Enabled);
+
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Non-existent font";
+            builder.Write("Hello world!");
+            
+            // This document does not have a FontSettings configuration. When we render the document,
+            // the default FontSettings instance will be invoked in order to resolve the missing font.
+            // The text using the "Non-existent font" will be rendered using "Courier New".
+            Assert.Null(doc.FontSettings);
+
+            doc.Save(ArtifactsDir + "Font.DefaultFontInstance.pdf");
+            //ExEnd
+        }
+
+        //ExStart
+        //ExFor:IWarningCallback
+        //ExFor:DocumentBase.WarningCallback
+        //ExFor:Fonts.FontSettings.DefaultInstance
+        //ExSummary:Shows how to use the IWarningCallback interface to monitor font substitution warnings.
+        [Test] //ExSkip
+        public void SubstitutionWarning()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Times New Roman";
+            builder.Writeln("Hello world!");
+
+            FontSubstitutionWarningCollector callback = new FontSubstitutionWarningCollector();
             doc.WarningCallback = callback;
 
-            // We can choose the default font to use in the case of any missing fonts
-            FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
+            // Store the current collection of font sources, which is applied to
+            // every document without its own set of font settings specified.
+            FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
-            // For testing we will set Aspose.Words to look for fonts only in a folder which does not exist. Since Aspose.Words won't
-            // find any fonts in the specified directory, then during rendering the fonts in the document will be substituted with the default 
-            // font specified under FontSettings.DefaultFontName. We can pick up on this substitution using our callback
+            // For testing purposes, we will set Aspose.Words to look for fonts only in a folder which does not exist.
             FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
 
-            // Pass the save options along with the save path to the save method
-            doc.Save(ArtifactsDir + "Font.SubstitutionNotification.pdf");
-            //ExEnd
+            // When rendering the document, the will be no place to find the "Times New Roman" font.
+            // This will cause a font substitution warning, which our callback will detect.
+            doc.Save(ArtifactsDir + "Font.SubstitutionWarning.pdf");
 
-            Assert.Greater(callback.FontWarnings.Count, 0);
-            Assert.True(callback.FontWarnings[0].WarningType == WarningType.FontSubstitution);
-            Assert.True(callback.FontWarnings[0].Description
-                .Equals(
-                    "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
+            FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
 
-            // Restore default fonts
-            FontSettings.DefaultInstance.SetFontsSources(origFontSources);
+            Assert.AreEqual(1, callback.FontSubstitutionWarnings.Count); //ExSkip
+            Assert.True(callback.FontSubstitutionWarnings[0].WarningType == WarningType.FontSubstitution);
+            Assert.True(callback.FontSubstitutionWarnings[0].Description
+                .Equals("Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
         }
+
+        public class FontSubstitutionWarningCollector : IWarningCallback
+        {
+            /// <summary>
+            /// Called every time a warning occurs during loading/saving.
+            /// </summary>
+            public void Warning(WarningInfo info)
+            {
+                if (info.WarningType == WarningType.FontSubstitution)
+                    FontSubstitutionWarnings.Warning(info);
+            }
+
+            public WarningInfoCollection FontSubstitutionWarnings = new WarningInfoCollection();
+        }
+        //ExEnd
 
         [Test]
         public void GetAvailableFonts()
@@ -1002,8 +1040,8 @@ namespace ApiExamples
             //ExFor:PhysicalFontInfo.FullFontName
             //ExFor:PhysicalFontInfo.Version
             //ExFor:PhysicalFontInfo.FilePath
-            //ExSummary:Shows how to get available fonts and information about them.
-            // Add a new folder source which will instruct Aspose.Words to search the following folder for fonts
+            //ExSummary:Shows how to list available fonts.
+            // Configure Aspose.Words to source fonts from a custom folder, and then print every available font.
             FontSourceBase[] folderFontSource = { new FolderFontSource(FontsDir, true) };
             
             foreach (PhysicalFontInfo fontInfo in folderFontSource[0].GetAvailableFonts())
@@ -1070,13 +1108,10 @@ namespace ApiExamples
         public class HandleDocumentSubstitutionWarnings : IWarningCallback
         {
             /// <summary>
-            /// Our callback only needs to implement the "Warning" method. This method is called whenever there is a
-            /// potential issue during document processing. The callback can be set to listen for warnings generated during document
-            /// load and/or document save.
+            /// Called every time a warning occurs during loading/saving.
             /// </summary>
             public void Warning(WarningInfo info)
             {
-                // We are only interested in fonts being substituted
                 if (info.WarningType == WarningType.FontSubstitution)
                     FontWarnings.Warning(info);
             }
