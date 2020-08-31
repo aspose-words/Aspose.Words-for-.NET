@@ -169,7 +169,7 @@ namespace ApiExamples
                             " we cannot edit this paragraph without the password.");
 
             // When we write-protect documents, editable ranges allow us to pick specific areas that users are allowed to edit.
-            // There are two mutually exclusive ways to narrow down the list of allowed editors. 
+            // There are two mutually exclusive ways to narrow down the list of allowed editors.
             // 1 -  Specify a user:
             EditableRange editableRange = builder.StartEditableRange().EditableRange;
             editableRange.SingleUser = "john.doe@myoffice.com";
@@ -269,7 +269,7 @@ namespace ApiExamples
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Checking that isn't valid structure for the current document
+            // Assert that isn't valid structure for the current document.
             Assert.That(() => builder.EndEditableRange(), Throws.TypeOf<InvalidOperationException>());
 
             builder.StartEditableRange();
@@ -289,7 +289,7 @@ namespace ApiExamples
             startRange1.EditableRange.EditorGroup = EditorType.Everyone;
             doc = DocumentHelper.SaveOpen(doc);
 
-            // Assert that it's not valid structure and editable ranges aren't added to the current document
+            // Assert that it's not valid structure and editable ranges aren't added to the current document.
             NodeCollection startNodes = doc.GetChildNodes(NodeType.EditableRangeStart, true);
             Assert.AreEqual(0, startNodes.Count);
 

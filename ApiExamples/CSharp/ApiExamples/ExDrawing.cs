@@ -56,7 +56,7 @@ namespace ApiExamples
 
             // Below are four examples of shapes that we can insert into our documents.
             // 1 -  Dotted, horizontal, half-transparent red line
-            // with an arrow on the left end and a diamond on the right end.
+            // with an arrow on the left end and a diamond on the right end. // INSP: In some places you use dot at the end of numbered sentence, sometimes colon. Please define one way.
             Shape arrow = new Shape(doc, ShapeType.Line);
             arrow.Width = 200;
             arrow.Stroke.Color = Color.Red;
@@ -424,7 +424,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestGroupShapes(Document doc)
+        private static void TestGroupShapes(Document doc)
         {
             doc = DocumentHelper.SaveOpen(doc);
             GroupShape shapes = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
@@ -502,7 +502,7 @@ namespace ApiExamples
             // Save the shape's image data to an image file in the local file system.
             using (Stream imgStream = imgShape.ImageData.ToStream())
             {
-                using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png", FileMode.Create))
+                using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png", FileMode.Create, FileAccess.Read)) //INSP: Added FileAccess property, needed for Xamarin
                 {
                     imgStream.CopyTo(outStream);
                 }
@@ -530,7 +530,6 @@ namespace ApiExamples
             //ExFor:ImageData.IsLinkOnly
             //ExFor:ImageData.Title
             //ExSummary:Shows how to edit a shape's image data.
-            // Open a document that contains images
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
             Shape sourceShape = (Shape)imgSourceDoc.GetChildNodes(NodeType.Shape, true)[0];

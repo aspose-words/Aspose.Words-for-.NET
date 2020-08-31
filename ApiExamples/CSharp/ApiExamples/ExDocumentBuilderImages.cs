@@ -34,7 +34,7 @@ namespace ApiExamples
 
             using (Stream stream = File.OpenRead(ImageDir + "Logo.jpg"))
             {
-                // Below are three ways of inserting an image from a stream:
+                // Below are three ways of inserting an image from a stream.
                 // 1 -  Inline shape with a default size based on the image's original dimensions:
                 builder.InsertImage(stream);
 
@@ -112,7 +112,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Below are three ways of inserting an image from a local system filename:
+            // Below are three ways of inserting an image from a local system filename.
             // 1 -  Inline shape with a default size based on the image's original dimensions:
             builder.InsertImage(ImageDir + "Logo.jpg");
 
@@ -184,6 +184,7 @@ namespace ApiExamples
         public void InsertImageFromImageObject()
         {
             //ExStart
+            //ExFor:DocumentBuilder.InsertImage(Image)
             //ExFor:DocumentBuilder.InsertImage(Image, Double, Double)
             //ExFor:DocumentBuilder.InsertImage(Image, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
             //ExSummary:Shows how to insert an image from an object into a document.
@@ -192,7 +193,7 @@ namespace ApiExamples
 
             Image image = Image.FromFile(ImageDir + "Logo.jpg");
 
-            // Below are three ways of inserting an image from an Image object instance:
+            // Below are three ways of inserting an image from an Image object instance.
             // 1 -  Inline shape with a default size based on the image's original dimensions:
             builder.InsertImage(image);
 
@@ -276,7 +277,7 @@ namespace ApiExamples
                 image.Save(ms, ImageFormat.Png);
                 byte[] imageByteArray = ms.ToArray();
 
-                // Below are three ways of inserting an image from a byte array:
+                // Below are three ways of inserting an image from a byte array.
                 // 1 -  Inline shape with a default size based on the image's original dimensions:
                 builder.InsertImage(imageByteArray);
 
@@ -356,7 +357,7 @@ namespace ApiExamples
             // Decoding the image will convert it to the .png format.
             using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {
-                // Below are three ways of inserting an image from an Image object instance:
+                // Below are three ways of inserting an image from an Image object instance.
                 // 1 -  Inline shape with a default size based on the image's original dimensions:
                 builder.InsertImage(bitmap);
 
@@ -443,7 +444,7 @@ namespace ApiExamples
                     {
                         byte[] imageByteArray = data.ToArray();
 
-                        // Below are three ways of inserting an image from a byte array:
+                        // Below are three ways of inserting an image from a byte array.
                         // 1 -  Inline shape with a default size based on the image's original dimensions:
                         builder.InsertImage(imageByteArray);
 

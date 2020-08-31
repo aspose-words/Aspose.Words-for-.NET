@@ -35,8 +35,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a UserInformation object,
-            // and set it as the source of data for fields that display user information.
+            // Create a UserInformation object and set it as the data source for fields that display user information.
             UserInformation userInformation = new UserInformation
             {
                 Name = "John Doe",
@@ -108,8 +107,7 @@ namespace ApiExamples
 
             builder.Writeln();
 
-            // By default, the FILENAME field shows the name of the file,
-            // but not its full local file system path.
+            // By default, the FILENAME field shows the file's name, but not its full local file system path.
             // We can set a flag to make it show the full file path.
             field = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
             field.IncludeFullPath = true;
@@ -140,14 +138,14 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldOptions.IsBidiTextSupportedOnUpdate
-            //ExSummary:Shows how to use FieldOptions to ensure that bi-directional text is properly supported during the field update.
+            //ExSummary:Shows how to use FieldOptions to ensure that bi-directional text is properly supported during the field update. //INSP: 'is properly supported' passive voice
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Ensure that any field operation involving right-to-left text is performed correctly.
+            // Ensure that any field operation involving right-to-left text is performed correctly. //INSP: 'is performed' passive voice 
             doc.FieldOptions.IsBidiTextSupportedOnUpdate = true;
 
-            // Use a document builder to insert a field which contains right-to-left text.
+            // Use a document builder to insert a field that contains the right-to-left text.
             FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "עֶשְׂרִים", "שְׁלוֹשִׁים", "אַרְבָּעִים", "חֲמִשִּׁים", "שִׁשִּׁים" }, 0);
             comboBox.CalculateOnExit = true;
 
@@ -203,14 +201,14 @@ namespace ApiExamples
 
             Field field = builder.InsertField(" DOCPROPERTY CreateTime");
 
-            // The DOCPROPERTY field will display its result formatted according to the preprocess culture,
-            // which we have set to German. The field will display the date/time using the "dd.mm.yyyy hh:mm" format.
+            // The DOCPROPERTY field will display its result formatted according to the preprocess culture
+            // we have set to German. The field will display the date/time using the "dd.mm.yyyy hh:mm" format.
             Assert.IsTrue(Regex.Match(field.Result, @"\d{2}[.]\d{2}[.]\d{4} \d{2}[:]\d{2}").Success);
 
             doc.FieldOptions.PreProcessCulture = CultureInfo.InvariantCulture;
             field.Update();
 
-            // After switching to the invariant culture, the DOCPROPERTY field will use the "mm/dd/yyyy hh:mm" format
+            // After switching to the invariant culture, the DOCPROPERTY field will use the "mm/dd/yyyy hh:mm" format.
             Assert.IsTrue(Regex.Match(field.Result, @"\d{2}[/]\d{2}[/]\d{4} \d{2}[:]\d{2}").Success);
             //ExEnd
 
@@ -249,9 +247,9 @@ namespace ApiExamples
 
             // Insert 2 TOA fields. TOA fields create an entry for each TA field in the document.
             // Use the "\c" switch to select the index of a category from our collection.
-            // A TOA field with this switch will only pick up entries from TA fields that
-            // also have a "\c" switch with a matching category index. Each TOA field will also
-            // display the name of the category that its "\c" switch points to.
+            //  With this switch, a TOA field will only pick up entries from TA fields that
+            // also have a "\c" switch with a matching category index. Each TOA field will also display
+            // the name of the category that its "\c" switch points to.
             builder.InsertField("TOA \\c 1 \\h", null);
             builder.InsertField("TOA \\c 2 \\h", null);
             builder.InsertBreak(BreakType.PageBreak);
@@ -316,7 +314,7 @@ namespace ApiExamples
         //ExFor:FieldOptions.FieldUpdateCultureProvider
         //ExFor:IFieldUpdateCultureProvider
         //ExFor:IFieldUpdateCultureProvider.GetCulture(string, Field)
-        //ExSummary:Shows how to specify a culture which parses date/time formatting for each individual field.
+        //ExSummary:Shows how to specify a culture which parses date/time formatting for each field.
         [Test]
         public void DefineDateTimeFormatting()
         {
@@ -327,7 +325,7 @@ namespace ApiExamples
 
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
 
-            // Set a provider that returns a culture object specific for each field.
+            // Set a provider that returns a culture object specific to each field.
             doc.FieldOptions.FieldUpdateCultureProvider = new FieldUpdateCultureProvider();
 
             FieldTime fieldDate = (FieldTime)doc.Range.Fields[0];
@@ -415,7 +413,7 @@ namespace ApiExamples
 
             // We can use a custom IBarcodeGenerator implementation to generate barcodes,
             // and then insert them into the document as images.
-            // This generator can be found here:
+            // This generator can be found here: //INSP: 'be found' passive voice
             // https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/ApiExamples/CSharp/ApiExamples/CustomBarcodeGenerator.cs
             doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
 

@@ -68,7 +68,7 @@ namespace ApiExamples
             //ExFor:FileFormatUtil.ContentTypeToSaveFormat(String)
             //ExSummary:Shows how to find the corresponding Aspose load/save format from each media type string.
             // The ContentTypeToSaveFormat/ContentTypeToLoadFormat methods only accept official IANA media type names, also known as MIME types. 
-            // All valid media types are listed here: https://www.iana.org/assignments/media-types/media-types.xhtml
+            // All valid media types are listed here: https://www.iana.org/assignments/media-types/media-types.xhtml.
 
             // Trying to associate a SaveFormat with a partial media type string will not work.
             Assert.Throws<ArgumentException>(() => FileFormatUtil.ContentTypeToSaveFormat("jpeg"));
@@ -154,7 +154,6 @@ namespace ApiExamples
             Assert.AreEqual(".docx", FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
             Assert.False(info.HasDigitalSignature);
 
-            // Sign the document.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
             DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "File.DetectDigitalSignatures.docx",
                 certificateHolder, new SignOptions() { SignTime = DateTime.Now });

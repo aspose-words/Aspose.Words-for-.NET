@@ -315,7 +315,6 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:PageSetup.PageWidth
             //ExFor:PageSetup.PageHeight
-            //ExFor:DocumentBuilder.InsertImage(Image)
             //ExFor:WrapType
             //ExFor:RelativeHorizontalPosition
             //ExFor:RelativeVerticalPosition
@@ -406,7 +405,6 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:PageSetup.PageWidth
             //ExFor:PageSetup.PageHeight
-            //ExFor:DocumentBuilder.InsertImage(Image)
             //ExFor:WrapType
             //ExFor:RelativeHorizontalPosition
             //ExFor:RelativeVerticalPosition
