@@ -888,30 +888,52 @@ namespace ApiExamples
         }
 
         [Test]
+        public void BuiltIn()
+        {
+            //ExStart
+            //ExFor:Style.BuiltIn
+            //ExSummary:Shows how to differentiate custom styles from built-in styles.
+            Document doc = new Document();
+
+            // When we create a document using Microsoft Word, or programmatically using Aspose.Words, 
+            // the document will come with a collection of styles, which we can apply to its text to modify its appearance.
+            // We can access these built-in styles via the document's "Styles" collection.
+            // These styles will all have the "BuiltIn" flag set to "true".
+            Style style = doc.Styles["Emphasis"];
+
+            Assert.True(style.BuiltIn);
+
+            // Create a custom style, and add it to the collection.
+            // Custom styles such as this will have the "BuiltIn" flag set to "false". 
+            style = doc.Styles.Add(StyleType.Character, "MyStyle");
+            style.Font.Color = Color.Navy;
+            style.Font.Name = "Courier New";
+
+            Assert.False(style.BuiltIn);
+            //ExEnd
+        }
+
+        [Test]
         public void Style()
         {
             //ExStart
             //ExFor:Font.Style
-            //ExFor:Style.BuiltIn
             //ExSummary:Applies double underline to all runs in a document that are formatted with custom character styles.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a custom style.
+            // Insert a custom style, and apply it to text created using a document builder.
             Style style = doc.Styles.Add(StyleType.Character, "MyStyle");
             style.Font.Color = Color.Red;
             style.Font.Name = "Courier New";
 
-            // Set the style of the current paragraph to our custom style.
-            // This will apply to only the text after the style separator.
             builder.Font.StyleName = "MyStyle";
             builder.Write("This text is in a custom style.");
             
-            // Iterate through every run node and apply underlines to the run if its style is not a built in style,
-            // like the one we added
-            foreach (Node node in doc.GetChildNodes(NodeType.Run, true))
+            // Iterate over every run, checking its style to see if it is a custom style.
+            // If so, add a double underline to that style.
+            foreach (Run run in doc.GetChildNodes(NodeType.Run, true).OfType<Run>())
             {
-                Run run = (Run)node;
                 Style charStyle = run.Font.Style;
 
                 if (!charStyle.BuiltIn)
