@@ -693,7 +693,7 @@ namespace ApiExamples
             //ExFor:Font.ItalicBi
             //ExFor:Font.BoldBi
             //ExFor:Font.LocaleIdBi
-            //ExSummary:Shows how to define a parallel set of formatting attributes for right-to-left text.
+            //ExSummary:Shows how to define separate sets of font settings for right-to-left, and right-to-left text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -764,13 +764,21 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Specify the font name
+            // Specify font settings which the document builder will apply to any text that it inserts.
+            builder.Font.Name = "Courier New";
+            builder.Font.LocaleId = new CultureInfo("en-US", false).LCID;
+
+            // Name "FarEast" equivalents for our font and locale.
+            // If the builder inserts Asian characters with this Font configuration, then each run that contains
+            // these characters will display them using the "FarEast" font/locale instead of the default.
+            // This could be useful when a western font does not have ideal representations for Asian characters.
             builder.Font.NameFarEast = "SimSun";
-
-            // Specify the locale so Microsoft Word recognizes this text as Chinese
             builder.Font.LocaleIdFarEast = new CultureInfo("zh-CN", false).LCID;
+            
+            // This text will be displayed in the default font/locale.
+            builder.Writeln("Hello world!");
 
-            // Insert some Chinese text
+            // Since these are Asian characters, this run will apply our "FarEast" font/locale equivalents.
             builder.Writeln("你好世界");
 
             doc.Save(ArtifactsDir + "Font.FarEast.docx");
@@ -779,13 +787,23 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Font.FarEast.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
+            Assert.AreEqual("Hello world!", run.GetText().Trim());
+            Assert.AreEqual(1033, run.Font.LocaleId);
+            Assert.AreEqual("Courier New", run.Font.Name);
+            Assert.AreEqual(2052, run.Font.LocaleIdFarEast);
+            Assert.AreEqual("SimSun", run.Font.NameFarEast);
+
+            run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
+
             Assert.AreEqual("你好世界", run.GetText().Trim());
+            Assert.AreEqual(1033, run.Font.LocaleId);
+            Assert.AreEqual("SimSun", run.Font.Name);
             Assert.AreEqual(2052, run.Font.LocaleIdFarEast);
             Assert.AreEqual("SimSun", run.Font.NameFarEast);
         }
 
         [Test]
-        public void Names()
+        public void NameAscii()
         {
             //ExStart
             //ExFor:Font.NameAscii
@@ -794,24 +812,25 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Specify a font to use for all characters that fall within the ASCII character set
+            // If a run that we use the builder to insert while using this font configuration
+            // contains characters within the range of ASCII characters, it will display those characters using this font.
             builder.Font.NameAscii = "Calibri";
 
-            // Specify a font to use for all other characters
-            // This font should have a glyph for every other required character code
-            builder.Font.NameOther = "Courier New";
-
-            // The builder's font is the ASCII font
+            // With no other font specified, the builder will also apply this font to all characters that it inserts.
             Assert.AreEqual("Calibri", builder.Font.Name);
 
-            // Insert a run with one word consisting of ASCII characters, and one word with all characters outside that range
-            // This will create a run with two fonts
+            // Specify a font to use for all characters outside of the ASCII range.
+            // Ideally, this font should have a glyph for each required non-ASCII character code.
+            builder.Font.NameOther = "Courier New";
+
+            // Insert a run with one word consisting of ASCII characters, and one word with all characters outside that range.
+            // Each character will be displayed using either of the fonts, depending on .
             builder.Writeln("Hello, Привет");
 
-            doc.Save(ArtifactsDir + "Font.Names.docx");
+            doc.Save(ArtifactsDir + "Font.NameAscii.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Font.Names.docx");
+            doc = new Document(ArtifactsDir + "Font.NameAscii.docx");
             Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
             Assert.AreEqual("Hello, Привет", run.GetText().Trim());
@@ -827,24 +846,26 @@ namespace ApiExamples
             //ExFor:Font.StyleName
             //ExFor:Font.StyleIdentifier
             //ExFor:StyleIdentifier
-            //ExSummary:Shows how to use style name or identifier to find text formatted with a specific character style and apply different character style.
+            //ExSummary:Shows how to change the style of existing text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert text with two styles that will be replaced by another style
-            builder.Font.StyleIdentifier = StyleIdentifier.Emphasis;
+            // Below are two ways of referencing styles.
+            // 1 -  Using the style name:
+            builder.Font.StyleName = "Emphasis";
             builder.Writeln("Text originally in \"Emphasis\" style");
+
+            // 2 -  Using a built-in style identifier:
             builder.Font.StyleIdentifier = StyleIdentifier.IntenseEmphasis;
             builder.Writeln("Text originally in \"Intense Emphasis\" style");
        
-            // Loop through every run node
+            // Convert all uses of one style to another,
+            // using the above methods to reference old and new styles.
             foreach (Run run in doc.GetChildNodes(NodeType.Run, true).OfType<Run>())
             {
-                // If the run's text is of the "Emphasis" style, referenced by name, change the style to "Strong"
                 if (run.Font.StyleName.Equals("Emphasis"))
                     run.Font.StyleName = "Strong";
 
-                // If the run's text style is "Intense Emphasis", change it to "Strong" also, but this time reference using a StyleIdentifier
                 if (run.Font.StyleIdentifier.Equals(StyleIdentifier.IntenseEmphasis))
                     run.Font.StyleIdentifier = StyleIdentifier.Strong;
             }
@@ -873,17 +894,16 @@ namespace ApiExamples
             //ExFor:Font.Style
             //ExFor:Style.BuiltIn
             //ExSummary:Applies double underline to all runs in a document that are formatted with custom character styles.
-            //Document doc = new Document(MyDir + "Custom style.docx");
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a custom style
+            // Insert a custom style.
             Style style = doc.Styles.Add(StyleType.Character, "MyStyle");
             style.Font.Color = Color.Red;
             style.Font.Name = "Courier New";
 
-            // Set the style of the current paragraph to our custom style
-            // This will apply to only the text after the style separator
+            // Set the style of the current paragraph to our custom style.
+            // This will apply to only the text after the style separator.
             builder.Font.StyleName = "MyStyle";
             builder.Write("This text is in a custom style.");
             
