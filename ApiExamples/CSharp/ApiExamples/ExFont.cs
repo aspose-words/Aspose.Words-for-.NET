@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Aspose.Words;
@@ -918,7 +919,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.Style
-            //ExSummary:Applies double underline to all runs in a document that are formatted with custom character styles.
+            //ExSummary:Applies a double underline to all runs in a document that are formatted with custom character styles.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -930,8 +931,7 @@ namespace ApiExamples
             builder.Font.StyleName = "MyStyle";
             builder.Write("This text is in a custom style.");
             
-            // Iterate over every run, checking its style to see if it is a custom style.
-            // If so, add a double underline to that style.
+            // Iterate over every run, and add a double underline to every custom style.
             foreach (Run run in doc.GetChildNodes(NodeType.Run, true).OfType<Run>())
             {
                 Style charStyle = run.Font.Style;
@@ -1070,36 +1070,35 @@ namespace ApiExamples
         //ExFor:WarningInfoCollection.Clear
         //ExFor:WarningType
         //ExFor:DocumentBase.WarningCallback
-        //ExSummary:Shows how to set the property for finding the closest match font among the available font sources instead missing font.
+        //ExSummary:Shows how to set the property for finding the closest match for a missing font from the available font sources.
         [Test]
         public void EnableFontSubstitution()
         {
+            // Open a document which contains text formatted with a font which does not exist in any of our font sources.
             Document doc = new Document(MyDir + "Missing font.docx");
 
-            // Assign a custom warning callback
+            // Assign a callback for handling font substitution warnings.
             HandleDocumentSubstitutionWarnings substitutionWarningHandler = new HandleDocumentSubstitutionWarnings();
             doc.WarningCallback = substitutionWarningHandler;
 
-            // Set a default font name and enable font substitution
+            // Set a default font name, and enable font substitution.
             FontSettings fontSettings = new FontSettings();
             fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial"; ;
             fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
 
-            // When saving the document with the missing font, we should get a warning
+            // We will get a font substitution warning if we save a document with a missing font.
             doc.FontSettings = fontSettings;
             doc.Save(ArtifactsDir + "Font.EnableFontSubstitution.pdf");
 
-            // List all warnings using an enumerator
             using (IEnumerator<WarningInfo> warnings = substitutionWarningHandler.FontWarnings.GetEnumerator()) 
                 while (warnings.MoveNext()) 
                     Console.WriteLine(warnings.Current.Description);
 
-            // Warnings are stored in this format
+            // We can also verify warnings in the collection, and clear them.
             Assert.AreEqual(WarningSource.Layout, substitutionWarningHandler.FontWarnings[0].Source);
             Assert.AreEqual("Font '28 Days Later' has not been found. Using 'Calibri' font instead. Reason: alternative name from document.", 
                 substitutionWarningHandler.FontWarnings[0].Description);
 
-            // The warning info collection can also be cleared like this
             substitutionWarningHandler.FontWarnings.Clear();
 
             Assert.That(substitutionWarningHandler.FontWarnings, Is.Empty);
@@ -1193,22 +1192,29 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.AutoColor
-            //ExSummary:Shows how calculated color of the text (black or white) to be used for 'auto color'
+            //ExSummary:Shows how to improve readability by automatically selecting text color based on the brightness of its background.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Remove direct color, so it can be calculated automatically with Font.AutoColor
-            builder.Font.Color = Color.Empty;
+            // If a run's Font object does not specify a text color,
+            // it will automatically select either black or white depending on the color of the background pattern color.
+            Assert.AreEqual(Color.Empty.ToArgb(), builder.Font.Color.ToArgb());
 
-            // When we set black color for background, autocolor for font must be white
-            builder.Font.Shading.BackgroundPatternColor = Color.Black;
+            // The default color for text is black. If the color of the background is dark, black text will be difficult to see.
+            // To solve this problem, the AutoColor property will display this text in white.
+            builder.Font.Shading.BackgroundPatternColor = Color.DarkBlue;
 
             builder.Writeln("The text color automatically chosen for this run is white.");
 
-            // When we set white color for background, autocolor for font must be black
-            builder.Font.Shading.BackgroundPatternColor = Color.White;
+            Assert.AreEqual(Color.White.ToArgb(), doc.FirstSection.Body.Paragraphs[0].Runs[0].Font.AutoColor.ToArgb());
+
+            // If we change the background to a light color, black will be a more suitable text color than white,
+            // so the auto color will display this text in black.
+            builder.Font.Shading.BackgroundPatternColor = Color.LightBlue;
 
             builder.Writeln("The text color automatically chosen for this run is black.");
+
+            Assert.AreEqual(Color.Black.ToArgb(), doc.FirstSection.Body.Paragraphs[1].Runs[0].Font.AutoColor.ToArgb());
 
             doc.Save(ArtifactsDir + "Font.SetFontAutoColor.docx");
             //ExEnd
@@ -1218,13 +1224,13 @@ namespace ApiExamples
 
             Assert.AreEqual("The text color automatically chosen for this run is white.", run.GetText().Trim());
             Assert.AreEqual(Color.Empty.ToArgb(), run.Font.Color.ToArgb());
-            Assert.AreEqual(Color.Black.ToArgb(), run.Font.Shading.BackgroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.DarkBlue.ToArgb(), run.Font.Shading.BackgroundPatternColor.ToArgb());
 
             run = doc.FirstSection.Body.Paragraphs[1].Runs[0];
 
             Assert.AreEqual("The text color automatically chosen for this run is black.", run.GetText().Trim());
             Assert.AreEqual(Color.Empty.ToArgb(), run.Font.Color.ToArgb());
-            Assert.AreEqual(Color.White.ToArgb(), run.Font.Shading.BackgroundPatternColor.ToArgb());
+            Assert.AreEqual(Color.LightBlue.ToArgb(), run.Font.Shading.BackgroundPatternColor.ToArgb());
         }
 
         //ExStart
@@ -1244,35 +1250,35 @@ namespace ApiExamples
         //ExFor:Node.Accept
         //ExFor:Paragraph.ParagraphBreakFont
         //ExFor:Table.Accept
-        //ExSummary:Implements the Visitor Pattern to remove all content formatted as hidden from the document.
+        //ExSummary:Shows how to use a DocumentVisitor implementation to remove all hidden content from a document.
         [Test] //ExSkip
         public void RemoveHiddenContentFromDocument()
         {
-            // Open the document we want to remove hidden content from
             Document doc = new Document(MyDir + "Hidden content.docx");
             Assert.AreEqual(26, doc.GetChildNodes(NodeType.Paragraph, true).Count); //ExSkip
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count); //ExSkip
 
-            // Create an object that inherits from the DocumentVisitor class
             RemoveHiddenContentVisitor hiddenContentRemover = new RemoveHiddenContentVisitor();
 
-            // We can run it over the entire the document like so
-            doc.Accept(hiddenContentRemover);
-
-            // Or we can run it on only a specific node
+            // Below are three types of fields which can accept a document visitor,
+            // which will allow it to visit the accepting node, and then traverse its child nodes in a depth-first manner.
+            // 1 -  Paragraph node:
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 4, true);
             para.Accept(hiddenContentRemover);
 
-            // Or over a different type of node like below
+            // 2 -  Table node:
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             table.Accept(hiddenContentRemover);
+
+            // 3 -  Document node:
+            doc.Accept(hiddenContentRemover);
 
             doc.Save(ArtifactsDir + "Font.RemoveHiddenContentFromDocument.docx");
             TestRemoveHiddenContent(new Document(ArtifactsDir + "Font.RemoveHiddenContentFromDocument.docx")); //ExSkip
         }
 
         /// <summary>
-        /// This class when executed will remove all hidden content from the Document. Implemented as a Visitor.
+        /// Removes all visited nodes marked as "hidden content".
         /// </summary>
         public class RemoveHiddenContentVisitor : DocumentVisitor
         {
@@ -1402,17 +1408,15 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitTableEnd(Table table)
             {
-                // Currently there is no way to tell if a particular Table/Row/Cell is hidden. 
-                // Instead, if the content of a table is hidden, then all inline child nodes of the table should be 
-                // hidden and thus removed by previous visits as well. This will result in the container being empty
-                // If this is the case, we know to remove the table node.
-                //
-                // Note that a table which is not hidden but simply has no content will not be affected by this algorithm,
-                // as technically they are not completely empty (for example a properly formed Cell will have at least 
-                // an empty paragraph in it)
+                // The content inside table cells may be flagged as hidden content, but the tables themselves cannot. 
+                // If this table had nothing but hidden content, all of it would have been removed by this visitor,
+                // and there would be no child nodes left.
+                // Thus, we can also treat the table itself as hidden content and remove it.
+                // Tables which are empty but do not have hidden content will have cells with empty paragraphs inside,
+                // which will not be removed, and will remain as child nodes of this table.
                 if (!table.HasChildNodes)
                     table.Remove();
-
+                
                 return VisitorAction.Continue;
             }
 
@@ -1487,7 +1491,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void BlankDocumentFonts()
+        public void DefaultFonts()
         {
             //ExStart
             //ExFor:Fonts.FontInfoCollection.Contains(String)
@@ -1495,13 +1499,15 @@ namespace ApiExamples
             //ExSummary:Shows info about the fonts that are present in the blank document.
             Document doc = new Document();
 
-            // A blank document comes with 3 fonts
+            // A blank document contains 3 default fonts. Each font in the document
+            // will have a corresponding FontInfo object which contains details about that font.
             Assert.AreEqual(3, doc.FontInfos.Count);
 
-            // Their names can be looked up like this
-            Assert.AreEqual("Times New Roman", doc.FontInfos[0].Name);
-            Assert.AreEqual("Symbol", doc.FontInfos[1].Name);
-            Assert.AreEqual("Arial", doc.FontInfos[2].Name);
+            Assert.True(doc.FontInfos.Contains("Times New Roman"));
+            Assert.AreEqual(204, doc.FontInfos["Times New Roman"].Charset);
+
+            Assert.True(doc.FontInfos.Contains("Symbol"));
+            Assert.True(doc.FontInfos.Contains("Arial"));
             //ExEnd
         }
 
@@ -1515,26 +1521,26 @@ namespace ApiExamples
             //ExFor:Fonts.FontInfo.GetEmbeddedFontAsOpenType(EmbeddedFontStyle)
             //ExFor:Fonts.FontInfoCollection.Item(Int32)
             //ExFor:Fonts.FontInfoCollection.Item(String)
-            //ExSummary:Shows how to extract embedded font from a document.
+            //ExSummary:Shows how to extract an embedded font from a document, and save it to the local file system.
             Document doc = new Document(MyDir + "Embedded font.docx");
 
-            // Get the FontInfo for the embedded font
             FontInfo embeddedFont = doc.FontInfos["Alte DIN 1451 Mittelschrift"];
-
-            // We can now extract this embedded font
             byte[] embeddedFontBytes = embeddedFont.GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular);
-            Assert.IsNotNull(embeddedFontBytes);
+            Assert.IsNotNull(embeddedFontBytes); //ExSkip
 
-            // Then we can save the font to our directory
             File.WriteAllBytes(ArtifactsDir + "Alte DIN 1451 Mittelschrift.ttf", embeddedFontBytes);
             
-            // If we want to extract a font from a .doc as opposed to a .docx, we need to make sure to set the appropriate embedded font format
+            // Embedded font formats may be different in other formats such as .doc.
+            // We need to know the correct format before we can extract the font.
             doc = new Document(MyDir + "Embedded font.doc");
 
             Assert.IsNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.OpenType, EmbeddedFontStyle.Regular));
             Assert.IsNotNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFont(EmbeddedFontFormat.EmbeddedOpenType, EmbeddedFontStyle.Regular));
-            // Also, we can convert embedded OpenType format, which comes from .doc documents, to OpenType
-            Assert.IsNotNull(doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFontAsOpenType(EmbeddedFontStyle.Regular));
+
+            // Also, we can convert embedded OpenType format, which comes from .doc documents, to OpenType.
+            embeddedFontBytes = doc.FontInfos["Alte DIN 1451 Mittelschrift"].GetEmbeddedFontAsOpenType(EmbeddedFontStyle.Regular);
+
+            File.WriteAllBytes(ArtifactsDir + "Alte DIN 1451 Mittelschrift.otf", embeddedFontBytes);
             //ExEnd
         }
 
@@ -1550,19 +1556,18 @@ namespace ApiExamples
             //ExFor:Fonts.FontInfo.Panose
             //ExFor:Fonts.FontInfo.Pitch
             //ExFor:Fonts.FontInfoCollection.GetEnumerator
-            //ExSummary:Shows how to get information about each font in a document.
+            //ExSummary:Shows how to access and print details of each font in a document.
             Document doc = new Document(MyDir + "Document.docx");
             
-            // We can iterate over all the fonts with an enumerator
             IEnumerator fontCollectionEnumerator = doc.FontInfos.GetEnumerator();
-            // Print detailed information about each font to the console
             while (fontCollectionEnumerator.MoveNext())
             {
                 FontInfo fontInfo = (FontInfo)fontCollectionEnumerator.Current;
                 if (fontInfo != null)
                 {
                     Console.WriteLine("Font name: " + fontInfo.Name);
-                    // Alt names are usually blank
+
+                    // Alt names are usually blank.
                     Console.WriteLine("Alt name: " + fontInfo.AltName);
                     Console.WriteLine("\t- Family: " + fontInfo.Family);
                     Console.WriteLine("\t- " + (fontInfo.IsTrueType ? "Is TrueType" : "Is not TrueType"));
@@ -1583,8 +1588,9 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.AreEqual(new int[] { 2, 15, 5, 2, 2, 2, 4, 3, 2, 4 }, doc.FontInfos["Calibri"].Panose);
-            Assert.AreEqual(new int[] { 2, 2, 6, 3, 5, 4, 5, 2, 3, 4 }, doc.FontInfos["Times New Roman"].Panose);
+            Assert.AreEqual(new[] { 2, 15, 5, 2, 2, 2, 4, 3, 2, 4 }, doc.FontInfos["Calibri"].Panose);
+            Assert.AreEqual(new[] { 2, 15, 3, 2, 2, 2, 4, 3, 2, 4 }, doc.FontInfos["Calibri Light"].Panose);
+            Assert.AreEqual(new[] { 2, 2, 6, 3, 5, 4, 5, 2, 3, 4 }, doc.FontInfos["Times New Roman"].Panose);
         }
 
         [Test]
@@ -1600,16 +1606,11 @@ namespace ApiExamples
             //ExFor:Fonts.FontSourceBase.Priority
             //ExFor:Fonts.FontSourceBase.Type
             //ExFor:Fonts.FontSourceType
-            //ExSummary:Shows how to create a file font source.
-            Document doc = new Document();
-
-            // Create a font settings object for our document
-            doc.FontSettings = new FontSettings();
-
-            // Create a font source from a file in our system
+            //ExSummary:Shows how to use a font file in the local file system as a font source.
             FileFontSource fileFontSource = new FileFontSource(MyDir + "Alte DIN 1451 Mittelschrift.ttf", 0);
 
-            // Import the font source into our document
+            Document doc = new Document();
+            doc.FontSettings = new FontSettings();
             doc.FontSettings.SetFontsSources(new FontSourceBase[] { fileFontSource });
 
             Assert.AreEqual(MyDir + "Alte DIN 1451 Mittelschrift.ttf", fileFontSource.FilePath);
@@ -1628,16 +1629,13 @@ namespace ApiExamples
             //ExFor:Fonts.FolderFontSource.FolderPath
             //ExFor:Fonts.FolderFontSource.ScanSubfolders
             //ExFor:Fonts.FolderFontSource.Type
-            //ExSummary:Shows how to create a folder font source.
-            Document doc = new Document();
-
-            // Create a font settings object for our document
-            doc.FontSettings = new FontSettings();
-
-            // Create a font source from a folder that contains font files
+            //ExSummary:Shows how to use a local system folder which contains fonts as a font source.
+            
+            // Create a font source from a folder that contains font files.
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false, 1);
 
-            // Add that source to our document
+            Document doc = new Document();
+            doc.FontSettings = new FontSettings();
             doc.FontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
             Assert.AreEqual(FontsDir, folderFontSource.FolderPath);
@@ -1656,19 +1654,13 @@ namespace ApiExamples
             //ExFor:Fonts.MemoryFontSource.#ctor(Byte[], Int32)
             //ExFor:Fonts.MemoryFontSource.FontData
             //ExFor:Fonts.MemoryFontSource.Type
-            //ExSummary:Shows how to create a memory font source.
-            Document doc = new Document();
+            //ExSummary:Shows how to use a byte array with data from a font file as a font source.
 
-            // Create a font settings object for our document
-            doc.FontSettings = new FontSettings();
-
-            // Import a font file, putting its contents into a byte array
             byte[] fontBytes = File.ReadAllBytes(MyDir + "Alte DIN 1451 Mittelschrift.ttf");
-
-            // Create a memory font source from our array
             MemoryFontSource memoryFontSource = new MemoryFontSource(fontBytes, 0);
 
-            // Add that font source to our document
+            Document doc = new Document();
+            doc.FontSettings = new FontSettings();
             doc.FontSettings.SetFontsSources(new FontSourceBase[] { memoryFontSource });
 
             Assert.AreEqual(FontSourceType.MemoryFont, memoryFontSource.Type);
@@ -1693,11 +1685,9 @@ namespace ApiExamples
             //ExFor:Fonts.SystemFontSource.Type
             //ExSummary:Shows how to access a document's system font source and set font substitutes.
             Document doc = new Document();
-
-            // Create a font settings object for our document
             doc.FontSettings = new FontSettings();
 
-            // By default, we always start with a system font source
+            // By default, a blank document always contains a system font source.
             Assert.AreEqual(1, doc.FontSettings.GetFontsSources().Length);
 
             SystemFontSource systemFontSource = (SystemFontSource)doc.FontSettings.GetFontsSources()[0];
@@ -1717,19 +1707,19 @@ namespace ApiExamples
                 Console.WriteLine(systemFontFolder);
             }
 
-            // Set a font that exists in the Windows Fonts directory as a substitute for one that doesn't
+            // Set a font that exists in the Windows Fonts directory as a substitute for one that doesn't.
             doc.FontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
-            doc.FontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Kreon-Regular", new string[] { "Calibri" });
+            doc.FontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Kreon-Regular", new[] { "Calibri" });
 
             Assert.AreEqual(1, doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").Count());
             Assert.Contains("Calibri", doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").ToArray());
 
-            // Alternatively, we could add a folder font source in which the corresponding folder contains the font
+            // Alternatively, we could add a folder font source in which the corresponding folder contains the font.
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
             doc.FontSettings.SetFontsSources(new FontSourceBase[] { systemFontSource, folderFontSource });
             Assert.AreEqual(2, doc.FontSettings.GetFontsSources().Length);
 
-            // Resetting the font sources still leaves us with the system font source as well as our substitutes
+            // Resetting the font sources still leaves us with the system font source as well as our substitutes.
             doc.FontSettings.ResetFontSources();
 
             Assert.AreEqual(1, doc.FontSettings.GetFontsSources().Length);
@@ -1744,17 +1734,17 @@ namespace ApiExamples
             //ExStart
             //ExFor:FontFallbackSettings.Load(String)
             //ExFor:FontFallbackSettings.Save(String)
-            //ExSummary:Shows how to load and save font fallback settings from file.
+            //ExSummary:Shows how to load and save font fallback settings to/from an XML document in the local file system.
             Document doc = new Document(MyDir + "Rendering.docx");
             
-            // By default, fallback settings are initialized with predefined settings which mimics the Microsoft Word fallback
+            // Load an XML document which defines a set of font fallback settings.
             FontSettings fontSettings = new FontSettings();
             fontSettings.FallbackSettings.Load(MyDir + "Font fallback rules.xml");
 
             doc.FontSettings = fontSettings;
             doc.Save(ArtifactsDir + "Font.LoadFontFallbackSettingsFromFile.pdf");
 
-            // Saves font fallback setting by string
+            // Save our document's current font fallback settings as an XML document.
             doc.FontSettings.FallbackSettings.Save(ArtifactsDir + "FallbackSettings.xml");
             //ExEnd
         }
@@ -1765,10 +1755,10 @@ namespace ApiExamples
             //ExStart
             //ExFor:FontFallbackSettings.Load(Stream)
             //ExFor:FontFallbackSettings.Save(Stream)
-            //ExSummary:Shows how to load and save font fallback settings from stream.
+            //ExSummary:Shows how to load and save font fallback settings to/from a stream.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // By default, fallback settings are initialized with predefined settings which mimics the Microsoft Word fallback
+            // Load an XML document which defines a set of font fallback settings.
             using (FileStream fontFallbackStream = new FileStream(MyDir + "Font fallback rules.xml", FileMode.Open))
             {
                 FontSettings fontSettings = new FontSettings();
@@ -1779,7 +1769,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Font.LoadFontFallbackSettingsFromStream.pdf");
 
-            // Saves font fallback setting by stream
+            // Use a stream to save our document's current font fallback settings as an XML document.
             using (FileStream fontFallbackStream =
                 new FileStream(ArtifactsDir + "FallbackSettings.xml", FileMode.Create))
             {
@@ -1821,13 +1811,14 @@ namespace ApiExamples
             //ExSummary:Shows how to add predefined font fallback settings for Google Noto fonts.
             FontSettings fontSettings = new FontSettings();
 
-            // These are free fonts licensed under SIL OFL
-            // They can be downloaded from https://www.google.com/get/noto/#sans-lgc
+            // These are free fonts licensed under the SIL Open Font License.
+            // We can download the fonts here:
+            // https://www.google.com/get/noto/#sans-lgc
             fontSettings.SetFontsFolder(FontsDir + "Noto", false);
 
-            // Note that only Sans style Noto fonts with regular weight are used in the predefined settings
-            // Some of the Noto fonts uses advanced typography features
-            // Advanced typography is currently not supported by AW and these fonts may be rendered inaccurately
+            // Note that the predefined settings only use Sans-style Noto fonts with regular weight. 
+            // Some of the Noto fonts use advanced typography features.
+            // Fonts featuring advanced typography may not be rendered correctly as Aspose.Words currently does not support them.
             fontSettings.FallbackSettings.LoadNotoFallbackSettings();
             fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = false;
             fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Noto Sans";
@@ -1835,6 +1826,8 @@ namespace ApiExamples
             Document doc = new Document();
             doc.FontSettings = fontSettings;
             //ExEnd
+
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "https://www.google.com/get/noto/#sans-lgc");
         }
 
         [Test]
@@ -1845,21 +1838,21 @@ namespace ApiExamples
             //ExFor:Fonts.DefaultFontSubstitutionRule.DefaultFontName
             //ExFor:Fonts.FontSubstitutionSettings.DefaultFontSubstitution
             //ExSummary:Shows how to set the default font substitution rule.
-            // Create a blank document and a new FontSettings property
             Document doc = new Document();
             FontSettings fontSettings = new FontSettings();
             doc.FontSettings = fontSettings;
 
-            // Get the default substitution rule within FontSettings, which will be enabled by default and will substitute all missing fonts with "Times New Roman"
+            // Get the default substitution rule within FontSettings.
+            // This rule will substitute all missing fonts with "Times New Roman".
             DefaultFontSubstitutionRule defaultFontSubstitutionRule = fontSettings.SubstitutionSettings.DefaultFontSubstitution;
             Assert.True(defaultFontSubstitutionRule.Enabled);
             Assert.AreEqual("Times New Roman", defaultFontSubstitutionRule.DefaultFontName);
 
-            // Set the default font substitute to "Courier New"
+            // Set the default font substitute to "Courier New".
             defaultFontSubstitutionRule.DefaultFontName = "Courier New";
 
             // Using a document builder, add some text in a font that we do not have to see the substitution take place,
-            // and render the result in a PDF
+            // and then render the result in a PDF.
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Font.Name = "Missing Font";
@@ -1882,16 +1875,15 @@ namespace ApiExamples
             //ExFor:Fonts.FontSubstitutionRule
             //ExFor:Fonts.FontSubstitutionRule.Enabled
             //ExFor:Fonts.FontSubstitutionSettings.FontConfigSubstitution
-            //ExSummary:Shows OS-dependent font config substitution.
-            // Create a new FontSettings object and get its font config substitution rule
+            //ExSummary:Shows operating system-dependent font config substitution.
             FontSettings fontSettings = new FontSettings();
             FontConfigSubstitutionRule fontConfigSubstitution = fontSettings.SubstitutionSettings.FontConfigSubstitution;
 
             bool isWindows = new[] { PlatformID.Win32NT, PlatformID.Win32S, PlatformID.Win32Windows, PlatformID.WinCE }
                 .Any(p => Environment.OSVersion.Platform == p);
 
-            // The FontConfigSubstitutionRule object works differently on Windows/non-Windows platforms
-            // On Windows, it is unavailable
+            // The FontConfigSubstitutionRule object works differently on Windows/non-Windows platforms.
+            // On Windows, it is unavailable.
             if (isWindows)
             {
                 Assert.False(fontConfigSubstitution.Enabled);
@@ -1900,7 +1892,7 @@ namespace ApiExamples
 
             bool isLinuxOrMac = new[] { PlatformID.Unix, PlatformID.MacOSX }.Any(p => Environment.OSVersion.Platform == p);
 
-            // On Linux/Mac, we will have access and will be able to perform operations
+            // On Linux/Mac, we will have access to it, and will be able to perform operations.
             if (isLinuxOrMac)
             {
                 Assert.True(fontConfigSubstitution.Enabled);
@@ -1920,23 +1912,22 @@ namespace ApiExamples
             //ExSummary:Shows how to load pre-defined fallback font settings.
             Document doc = new Document();
 
-            // Create a FontSettings object for our document and get its FallbackSettings attribute
             FontSettings fontSettings = new FontSettings();
             doc.FontSettings = fontSettings;
             FontFallbackSettings fontFallbackSettings = fontSettings.FallbackSettings;
 
-            // Save the default fallback font scheme in an XML document
-            // For example, one of the elements has a value of "0C00-0C7F" for Range and a corresponding "Vani" value for FallbackFonts
-            // This means that if the font we are using does not have symbols for the 0x0C00-0x0C7F Unicode block,
-            // the symbols from the "Vani" font will be used as a substitute
+            // Save the default fallback font scheme to an XML document.
+            // For example, one of the elements has a value of "0C00-0C7F" for Range and a corresponding "Vani" value for FallbackFonts.
+            // This means that if the font some text is using does not have symbols for the 0x0C00-0x0C7F Unicode block,
+            // the fallback scheme will use symbols from the "Vani" font as a substitute.
             fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.Default.xml");
 
-            // There are two pre-defined font fallback schemes we can choose from
-            // 1: Use the default Microsoft Office scheme, which is the same one as the default
+            // Below are two pre-defined font fallback schemes we can choose from.
+            // 1 -  Use the default Microsoft Office scheme, which is the same one as the default:
             fontFallbackSettings.LoadMsOfficeFallbackSettings();
             fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.LoadMsOfficeFallbackSettings.xml");
 
-            // 2: Use the scheme built from Google Noto fonts
+            // 2 -  Use the scheme built from Google Noto fonts:
             fontFallbackSettings.LoadNotoFallbackSettings();
             fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.LoadNotoFallbackSettings.xml");
             //ExEnd
@@ -1962,31 +1953,32 @@ namespace ApiExamples
             //ExSummary:Shows how to distribute fallback fonts across Unicode character code ranges.
             Document doc = new Document();
 
-            // Create a FontSettings object for our document and get its FallbackSettings attribute
             FontSettings fontSettings = new FontSettings();
             doc.FontSettings = fontSettings;
             FontFallbackSettings fontFallbackSettings = fontSettings.FallbackSettings;
 
-            // Set our fonts to be sourced exclusively from the "MyFonts" folder
+            // Configure our font settings to source fonts only from the "MyFonts" folder.
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
             fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
-            // Calling BuildAutomatic() will generate a fallback scheme that distributes accessible fonts across as many Unicode character codes as possible
-            // In our case, it only has access to the handful of fonts inside the "MyFonts" folder
+            // Calling BuildAutomatic() will generate a fallback scheme that
+            // distributes accessible fonts across as many Unicode character codes as possible.
+            // In our case, it only has access to the handful of fonts inside the "MyFonts" folder.
             fontFallbackSettings.BuildAutomatic();
             fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettingsCustom.BuildAutomatic.xml");
 
-            // We can also load a custom substitution scheme from a file like this
+            // We can also load a custom substitution scheme from a file like this.
             // This scheme applies the "Arvo" font across the "0000-00ff" Unicode blocks, the "Squarish Sans CT" font across "0100-024f",
-            // and the "M+ 2m" font in every place that none of the other fonts cover
+            // and the "M+ 2m" font in all other ranges that other fonts in the scheme do not cover.
             fontFallbackSettings.Load(MyDir + "Custom font fallback settings.xml");
 
-            // Create a document builder and set its font to one that does not exist in any of our sources
-            // In doing that we will rely completely on our font fallback scheme to render text
+            // Create a document builder, and set its font to one that does not exist in any of our sources.
+            // Our font settings will invoke the fallback scheme for characters that we type using the unavailable font.
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Font.Name = "Missing Font";
 
-            // Type out every Unicode character from 0x0021 to 0x052F, with descriptive lines dividing Unicode blocks we defined in our custom font fallback scheme
+            // Use the builder to print every Unicode character from 0x0021 to 0x052F,
+            // with descriptive lines dividing Unicode blocks we defined in our custom font fallback scheme.
             for (int i = 0x0021; i < 0x0530; i++)
             {
                 switch (i)
@@ -2038,27 +2030,30 @@ namespace ApiExamples
             //ExFor:Fonts.TableSubstitutionRule.Save(System.IO.Stream)
             //ExFor:Fonts.TableSubstitutionRule.Save(System.String)
             //ExSummary:Shows how to access font substitution tables for Windows and Linux.
-            // Create a blank document and a new FontSettings object
             Document doc = new Document();
             FontSettings fontSettings = new FontSettings();
             doc.FontSettings = fontSettings;
 
-            // Create a new table substitution rule and load the default Windows font substitution table
+            // Create a new table substitution rule, and load the default Microsoft Windows font substitution table.
             TableSubstitutionRule tableSubstitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
             tableSubstitutionRule.LoadWindowsSettings();
 
-            // In Windows, the default substitute for the "Times New Roman CE" font is "Times New Roman"
-            Assert.AreEqual(new[] { "Times New Roman" }, tableSubstitutionRule.GetSubstitutes("Times New Roman CE").ToArray());
+            // In Windows, the default substitute for the "Times New Roman CE" font is "Times New Roman".
+            Assert.AreEqual(new[] { "Times New Roman" }, 
+                tableSubstitutionRule.GetSubstitutes("Times New Roman CE").ToArray());
 
-            // We can save the table for viewing in the form of an XML document
+            // We can save the table in the form of an XML document.
             tableSubstitutionRule.Save(ArtifactsDir + "Font.TableSubstitutionRule.Windows.xml");
 
-            // Linux has its own substitution table
-            // If "FreeSerif" is unavailable to substitute for "Times New Roman CE", we then look for "Liberation Serif", and so on
+            // Linux has its own substitution table.
+            // There are multiple substitute fonts for "Times New Roman CE".
+            // If the first substitute, "FreeSerif" is also unavailable,
+            // this rule will cycle through the others in the array until it finds one that is available.
             tableSubstitutionRule.LoadLinuxSettings();
-            Assert.AreEqual(new[] { "FreeSerif", "Liberation Serif", "DejaVu Serif" }, tableSubstitutionRule.GetSubstitutes("Times New Roman CE").ToArray());
+            Assert.AreEqual(new[] { "FreeSerif", "Liberation Serif", "DejaVu Serif" }, 
+                tableSubstitutionRule.GetSubstitutes("Times New Roman CE").ToArray());
 
-            // Save the Linux substitution table using a stream
+            // Save the Linux substitution table in the form of an XML document using a stream.
             using (FileStream fileStream = new FileStream(ArtifactsDir + "Font.TableSubstitutionRule.Linux.xml", FileMode.Create))
             {
                 tableSubstitutionRule.Save(fileStream);
@@ -2093,48 +2088,48 @@ namespace ApiExamples
             //ExFor:Fonts.TableSubstitutionRule.Load(System.String)
             //ExFor:Fonts.TableSubstitutionRule.SetSubstitutes(System.String,System.String[])
             //ExSummary:Shows how to work with custom font substitution tables.
-            // Create a blank document and a new FontSettings object
             Document doc = new Document();
             FontSettings fontSettings = new FontSettings();
             doc.FontSettings = fontSettings;
 
-            // Create a new table substitution rule and load the default Windows font substitution table
+            // Create a new table substitution rule, and load the default Windows font substitution table.
             TableSubstitutionRule tableSubstitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
 
-            // If we select fonts exclusively from our own folder, we will need a custom substitution table
+            // If we select fonts exclusively from our own folder, we will need a custom substitution table.
+            // We will no longer have access to the Microsoft Windows fonts,
+            // such as "Arial" or "Times New Roman", since they do not exist in our new font folder.
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
             fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
-            // There are two ways of loading a substitution table from a file in the local file system
-            // 1: Loading from a stream
+            // Below are two ways of loading a substitution table from a file in the local file system.
+            // 1 -  From a stream:
             using (FileStream fileStream = new FileStream(MyDir + "Font substitution rules.xml", FileMode.Open))
             {
                 tableSubstitutionRule.Load(fileStream);
             }
 
-            // 2: Load directly from file
+            // 2 -  Directly from a file:
             tableSubstitutionRule.Load(MyDir + "Font substitution rules.xml");
 
-            // Since we no longer have access to "Arial", our font table will first try substitute it with "Nonexistent Font", which we don't have,
-            // and then with "Kreon", found in the "MyFonts" folder
+            // Since we no longer have access to "Arial", our font table will first try substitute it with "Nonexistent Font".
+            // We don't have this font, so it will move onto the next substitute, which is "Kreon", found in the "MyFonts" folder.
             Assert.AreEqual(new[] { "Missing Font", "Kreon" }, tableSubstitutionRule.GetSubstitutes("Arial").ToArray());
 
-            // If we find this substitution table lacking, we can also expand it programmatically
-            // In this case, we add an entry that substitutes "Times New Roman" with "Arvo"
+            // We can expand this table programmatically. We will add an entry that substitutes "Times New Roman" with "Arvo"
             Assert.Null(tableSubstitutionRule.GetSubstitutes("Times New Roman"));
             tableSubstitutionRule.AddSubstitutes("Times New Roman", "Arvo");
             Assert.AreEqual(new[] { "Arvo" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
 
             // We can add a secondary fallback substitute for an existing font entry with AddSubstitutes()
-            // In case "Arvo" is unavailable, our table will look for "M+ 2m"
+            // In case "Arvo" is unavailable, our table will look for "M+ 2m" as a second substitute option.
             tableSubstitutionRule.AddSubstitutes("Times New Roman", "M+ 2m");
             Assert.AreEqual(new[] { "Arvo", "M+ 2m" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
 
-            // SetSubstitutes() can set a new list of substitute fonts for a font
+            // SetSubstitutes() can set a new list of substitute fonts for a font.
             tableSubstitutionRule.SetSubstitutes("Times New Roman", new[] { "Squarish Sans CT", "M+ 2m" });
             Assert.AreEqual(new[] { "Squarish Sans CT", "M+ 2m" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
 
-            // TO demonstrate substitution, write text in fonts we have no access to and render the result in a PDF
+            // Writing text in fonts that we do not have access to will invoke our substitution rules.
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Font.Name = "Arial";
             builder.Writeln("Text written in Arial, to be substituted by Kreon.");
@@ -2155,14 +2150,17 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.FontSettings = new FontSettings();
 
-            // Set a font substitution rule for a LoadOptions object that replaces a font that's not installed in our system with one that is
+            // Set a font substitution rule for a LoadOptions object.
+            // If the document we are loading uses a font which we do not have,
+            // this rule will substitute the unavailable font with one that does exist.
+            // In this case, all uses of the "MissingFont" will convert to "Comic Sans MS".
             TableSubstitutionRule substitutionRule = loadOptions.FontSettings.SubstitutionSettings.TableSubstitution;
-            substitutionRule.AddSubstitutes("MissingFont", new string[] { "Comic Sans MS" });
+            substitutionRule.AddSubstitutes("MissingFont", new[] { "Comic Sans MS" });
 
-            // If we pass that object while loading a document, any text with the "MissingFont" font will change to "Comic Sans MS"
             Document doc = new Document(MyDir + "Missing font.html", loadOptions);
 
-            // At this point such text will still be in "MissingFont", and font substitution will be carried out once we save
+            // At this point such text will still be in "MissingFont".
+            // Font substitution will take place when we render the document.
             Assert.AreEqual("MissingFont", doc.FirstSection.Body.FirstParagraph.Runs[0].Font.Name);
 
             doc.Save(ArtifactsDir + "Font.ResolveFontsBeforeLoadingDocument.pdf");
@@ -2174,11 +2172,11 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.LineSpacing
-            //ExSummary:Shows how to get line spacing of current font (in points).
+            //ExSummary:Shows how to get a font's line spacing, in points.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set different fonts for the DocumentBuilder and verify their line spacing
+            // Set different fonts for the DocumentBuilder, and verify their line spacing.
             builder.Font.Name = "Calibri";
             Assert.AreEqual(14.6484375d, builder.Font.LineSpacing);
 
@@ -2192,7 +2190,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.HasDmlEffect(TextDmlEffect)
-            //ExSummary:Shows how to checks if particular Dml text effect is applied.
+            //ExSummary:Shows how to check if a run displays a DrawingML text effect.
             Document doc = new Document(MyDir + "DrawingML text effects.docx");
             
             RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
@@ -2208,7 +2206,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:StreamFontSource
         //ExFor:StreamFontSource.OpenFontDataStream
-        //ExSummary:Shows how to allows to load fonts from stream.
+        //ExSummary:Shows how to load fonts from stream.
         [Test] //ExSkip
         public void StreamFontSourceFileRendering()
         {
@@ -2224,7 +2222,7 @@ namespace ApiExamples
         }
         
         /// <summary>
-        /// Load the font data only when it is required and not to store it in the memory for the "FontSettings" lifetime.
+        /// Load the font data only when it is required as opposed to storing it in the memory for the entire lifetime of the "FontSettings" object.
         /// </summary>
         private class StreamFontSourceFile : StreamFontSource
         {
