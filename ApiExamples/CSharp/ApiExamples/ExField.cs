@@ -90,14 +90,14 @@ namespace ApiExamples
             FieldIf fieldIf = (FieldIf)doc.Range.Fields[0];
 
             // There are two ways of getting a field's field code:
-            // 1 -  Omit its inner fields.
+            // 1 -  Omit its inner fields:
             Assert.AreEqual(" IF  > 0 \" (surplus of ) \" \"\" ", fieldIf.GetFieldCode(false));
 
-            // 2 -  Include its inner fields.
+            // 2 -  Include its inner fields:
             Assert.AreEqual($" IF \u0013 MERGEFIELD NetIncome \u0014\u0015 > 0 \" (surplus of \u0013 MERGEFIELD  NetIncome \\f $ \u0014\u0015) \" \"\" ",
                 fieldIf.GetFieldCode(true));
 
-            // All inner nested fields are included by default. // INSP: 'are included' passive voice
+            // By default, the GetFieldCode method displays inner fields.
             Assert.AreEqual(fieldIf.GetFieldCode(), fieldIf.GetFieldCode(true));
             //ExEnd
         }
@@ -487,7 +487,8 @@ namespace ApiExamples
             // that shows up when we create a DATABASE field in Microsoft Word. Index #10 corresponds to the "Colorful 3" format.
             field.TableFormat = "10";
 
-            // This attribute decides which elements of the table format we picked above are incorporated into our table. // INSP: 'are incorporated' passive voice
+            // The FormatAttribute property is a string representation of an integer which stores multiple flags.
+            // We can patrially apply the format which the TableFormat property points to by setting different flags in this property.
             // The number we use is the sum of a combination of values corresponding to different aspects of the table style.
             // 63 represents 1 (borders) + 2 (shading) + 4 (font) + 8 (color) + 16 (autofit) + 32 (heading rows).
             field.FormatAttributes = "63";
@@ -608,7 +609,7 @@ namespace ApiExamples
             Assert.AreEqual("5", field.Result);
 
             // We can apply a format to a field's result using the field's attributes.
-            // Below are three types of formats that can be applied to a field's result. // INSP: 'be applied' passive voice
+            // Below are three types of formats that we can apply to a field's result.
             // 1 -  Numeric format:
             FieldFormat format = field.Format;
             format.NumericFormat = "$###.00";
@@ -958,15 +959,15 @@ namespace ApiExamples
 
             Assert.AreEqual(" ADDRESSBLOCK ", field.GetFieldCode());
 
-            // Setting this to "2" will cause all countries/regions to be included, // INSP: 'be included' passive voice
+            // Setting this to "2" will include all countries and regions,
             // unless it is the one specified in the ExcludedCountryOrRegionName attribute.
             field.IncludeCountryOrRegionName = "2";
             field.FormatAddressOnCountryOrRegion = true;
             field.ExcludedCountryOrRegionName = "United States";
             field.NameAndAddressFormat = "<Title> <Forename> <Surname> <Address Line 1> <Region> <Postcode> <Country>";
 
-            // By default, the language ID will be set to that of the first character of the document. // INSP: 'be set' passive voice
-            // We can set a culture for the field to format the result with like this.
+            // By default, this property will contain the language ID of the first character of the document.
+            // We can set a different culture for the field to format the result with like this.
             field.LanguageId = new CultureInfo("en-US").LCID.ToString();
 
             Assert.AreEqual(
@@ -1141,20 +1142,20 @@ namespace ApiExamples
             Assert.AreEqual(6, fields.Count);
 
             // Below are four ways of removing fields from a field collection.
-            // 1 -  Get a field to remove itself.
+            // 1 -  Get a field to remove itself:
             fields[0].Remove();
             Assert.AreEqual(5, fields.Count);
 
-            // 2 -  Get the collection to remove a field that we pass to its removal method.
+            // 2 -  Get the collection to remove a field that we pass to its removal method:
             Field lastField = fields[3];
             fields.Remove(lastField);
             Assert.AreEqual(4, fields.Count);
 
-            // 3 -  Remove a field from a collection at an index.
+            // 3 -  Remove a field from a collection at an index:
             fields.RemoveAt(2);
             Assert.AreEqual(3, fields.Count);
 
-            // 4 -  Remove all the fields from the collection at once.
+            // 4 -  Remove all the fields from the collection at once:
             fields.Clear();
             Assert.AreEqual(0, fields.Count);
             //ExEnd
@@ -1344,7 +1345,7 @@ namespace ApiExamples
             // AUTONUMLGL fields display a number that increments at each AUTONUMLGL field within its current heading level.
             // These fields maintain a separate count for each heading level,
             // and each field also displays the AUTONUMLGL field counts for all heading levels below its own. 
-            // If the count for any heading level changes, the counts for all levels above that level are reset to 1. // INSP: 'are reset' passive voice
+            // Changing the count for any heading level resets the counts for all levels above that level to 1.
             // This allows us to organize our document in the form of an outline list.
             // This is the first AUTONUMLGL field at a heading level of 1, displaying "1." in the document.
             InsertNumberedClause(builder, "\tHeading 1", fillerText, StyleIdentifier.Heading1);
@@ -1707,7 +1708,8 @@ namespace ApiExamples
             Assert.AreEqual(" LISTNUM  \\l 2", field.GetFieldCode());
 
             // We can set the ListName attribute to get the field to emulate a different AUTONUM field type.
-            // "NumberDefault" emulates AUTONUM, "OutlineDefault" emulates AUTONUMOUT, and "LegalDefault" emulates AUTONUMLGL fields.
+            // "NumberDefault" emulates AUTONUM, "OutlineDefault" emulates AUTONUMOUT,
+            // and "LegalDefault" emulates AUTONUMLGL fields.
             // The "OutlineDefault" list name with 1 as the starting number will result in displaying "I.".
             field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
             field.StartingNumber = "1";
@@ -1717,7 +1719,7 @@ namespace ApiExamples
             Assert.IsTrue(field.HasListName);
             Assert.AreEqual(" LISTNUM  OutlineDefault \\s 1", field.GetFieldCode());
 
-            // The ListName does not carry over from the previous field, and needs to be set each time. // INSP: 'be set' passive voice
+            // The ListName does not carry over from the previous field, so we will need to set it for each new field.
             // This field continues the count with the different list name, and displays "II.".
             field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
             field.ListName = "OutlineDefault";
@@ -1861,7 +1863,7 @@ namespace ApiExamples
             // The TOC will not display the page numbers of headings whose TOC levels are within this range.
             field.PageNumberOmittingLevelRange = "2-5";
 
-            // Set a custom string that will be placed between every heading and its page number. // INSP: 'be placed' passive voice
+            // Set a custom string that will separate every heading from its page number. 
             field.EntrySeparator = "-";
             field.InsertHyperlinks = true;
             field.HideInWebLayout = false;
@@ -1879,13 +1881,13 @@ namespace ApiExamples
             InsertNewPageWithHeading(builder, "Fifth entry", "Heading 2");
             InsertNewPageWithHeading(builder, "Sixth entry", "Heading 3");
 
-            // This entry will be omitted because "Heading 4" is outside of the "1-3" range that we have set earlier. //INSP: 'be omitted' passive voice
+            // This entry not appear because "Heading 4" is outside of the "1-3" range that we have set earlier.
             InsertNewPageWithHeading(builder, "Seventh entry", "Heading 4");
 
             builder.EndBookmark("MyBookmark");
             builder.Writeln("Paragraph text.");
 
-            // This entry will be omitted because it is outside the bookmark specified by the TOC. //INSP: 'be omitted' passive voice
+            // This entry not appear because it is outside the bookmark specified by the TOC.
             InsertNewPageWithHeading(builder, "Eighth entry", "Heading 1");
 
             Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote; 6; Intense Quote; 7\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", field.GetFieldCode());
@@ -2645,13 +2647,13 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Below are two ways to use INCLUDETEXT fields to display the contents of an XML file in the local file system.
-            // 1 -  Perform an XSL transformation on an XML document.
+            // 1 -  Perform an XSL transformation on an XML document:
             FieldIncludeText fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "CD collection data.xml", false, "text/xml", "XML", "ISO-8859-1");
             fieldIncludeText.XslTransformation = MyDir + "CD collection XSL transformation.xsl";
 
             builder.Writeln();
 
-            // 2 -  Use an XPath to take specific elements from an XML document.
+            // 2 -  Use an XPath to take specific elements from an XML document:
             fieldIncludeText = CreateFieldIncludeText(builder, MyDir + "CD collection data.xml", false, "text/xml", "XML", "ISO-8859-1");
             fieldIncludeText.NamespaceMappings = "xmlns:n='myNamespace'";
             fieldIncludeText.XPath = "/catalog/cd/title";
@@ -3022,7 +3024,8 @@ namespace ApiExamples
             // Create an INDEX field which will display an entry for each XE field found in the document.
             // Each entry will display the XE field's Text attribute value on the left side
             // and the page containing the XE field on the right.
-            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry. //INSP: 'are grouped' passive voice
+            // If the XE fields have the same value in their "Text" property,
+            // the INDEX field will group them into one entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
             // Configure the INDEX field only to display XE fields that are within the bounds
@@ -3112,7 +3115,8 @@ namespace ApiExamples
             // Create an INDEX field which will display an entry for each XE field found in the document.
             // Each entry will display the XE field's Text attribute value on the left side,
             // and the number of the page that contains the XE field on the right.
-            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry. //INSP: 'are grouped' passive voice
+            // If the XE fields have the same value in their "Text" property,
+            // the INDEX field will group them into one entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
             index.LanguageId = "1033";
 
@@ -3153,13 +3157,13 @@ namespace ApiExamples
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Cherry";
 
-            // All INDEX field entries are sorted alphabetically, so this entry will show up under "A" with the other two. //INSP: 'are sorted' passive voice
+            // INDEX fields sort all entries alphabetically, so this entry will show up under "A" with the other two.
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Avocado";
 
-            // This entry will be excluded because it starts with the letter "D" //INSP: 'be excluded' passive voice
-            // outside the "a-c" character range defined by the INDEX field's LetterRange attribute.
+            // This entry will not appear because it starts with the letter "D",
+            // which is outside the "a-c" character range that the INDEX field's LetterRange attribute defines.
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Durian";
@@ -3243,7 +3247,8 @@ namespace ApiExamples
             // Create an INDEX field which will display an entry for each XE field found in the document.
             // Each entry will display the XE field's Text attribute value on the left side,
             // and the number of the page that contains the XE field on the right.
-            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry. //INSP: 'are grouped' passive voice
+            // If the XE fields have the same value in their "Text" property,
+            // the INDEX field will group them into one entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
             // In the SequenceName attribute, name a SEQ field sequence. Each entry of this INDEX field will now also display
@@ -3263,7 +3268,7 @@ namespace ApiExamples
             // These fields also maintain separate counts for each unique named sequence
             // identified by the SEQ field's "SequenceIdentifier" attribute.
             // Insert a SEQ field which moves the "MySequence" sequence to 1.
-            // This field is treated as normal document text. It will not show up on an INDEX field's table of contents. //INSP: 'is treated' passive voice
+            // This field no different from normal document text. It will not appear on an INDEX field's table of contents.
             builder.InsertBreak(BreakType.PageBreak);
             FieldSeq sequenceField = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             sequenceField.SequenceIdentifier = "MySequence";
@@ -3286,7 +3291,8 @@ namespace ApiExamples
             sequenceField.SequenceIdentifier = "MySequence";
 
             // Insert an XE field with the same Text attribute as the one above.
-            // XE fields with matching Text attributes will be collected into one INDEX entry instead of each creating their own. //INSP: 'be collected' passive voice
+            // The INDEX entry will group XE fields with matching valeus in the "Text" property
+            // into one entry as opposed to making an entry for each XE field.
             // Since we are on page 2 with "MySequence" at 3, ", 3 on page 3" will be appended to the same INDEX entry as above.
             // The page number portion of that INDEX entry will now display "MySequence at 1 on page 2, 3 on page 3".
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
@@ -3331,11 +3337,12 @@ namespace ApiExamples
             // Create an INDEX field which will display an entry for each XE field found in the document.
             // Each entry will display the XE field's Text attribute value on the left side,
             // and the number of the page that contains the XE field on the right.
-            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry. //INSP: 'are grouped' passive voice
+            // The INDEX entry will group XE fields with matching valeus in the "Text" property
+            // into one entry as opposed to making an entry for each XE field.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
             // If our INDEX field has an entry for a group of XE fields,
-            // the number of each page that contains each XE field will be displayed in the page number portion of the entry. //INSP: 'be displayed' passive voice
+            // this entry will display the number of each page that contains an XE field that belongs to this group.
             // We can set custom separators to customize the appearance of these page numbers.
             index.PageNumberSeparator = ", on page(s) ";
             index.PageNumberListSeparator = " & ";
@@ -3386,11 +3393,12 @@ namespace ApiExamples
             // Create an INDEX field which will display an entry for each XE field found in the document.
             // Each entry will display the XE field's Text attribute value on the left side,
             // and the number of the page that contains the XE field on the right.
-            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry. //INSP: 'are grouped' passive voice
+            // The INDEX entry will collect all XE fields with matching valeus in the "Text" property
+            // into one entry as opposed to making an entry for each XE field.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
             // For INDEX entries that display page ranges, we can specify a separator string
-            // which will be placed between the number of the first page, and the number of the last. //INSP: 'be placed' passive voice
+            // which will appear between the number of the first page, and the number of the last.
             index.PageNumberSeparator = ", on page(s) ";
             index.PageRangeSeparator = " to ";
 
@@ -3452,7 +3460,8 @@ namespace ApiExamples
             // Create an INDEX field which will display an entry for each XE field found in the document.
             // Each entry will display the XE field's Text attribute value on the left side,
             // and the number of the page that contains the XE field on the right.
-            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry. //INSP: 'are grouped' passive voice
+            // The INDEX entry will collect all XE fields with matching valeus in the "Text" property
+            // into one entry as opposed to making an entry for each XE field.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
             // We can configure an XE field to get its INDEX entry to display a string instead of a page number.
@@ -3473,7 +3482,7 @@ namespace ApiExamples
 
             // Insert another XE field on page 3, and set a value for the PageNumberReplacement attribute.
             // This value will show up instead of the number of the page that this field is on,
-            // and the INDEX field's CrossReferenceSeparator value will be placed in front of it. //INSP: 'be placed' passive voice
+            // and the INDEX field's CrossReferenceSeparator value will appear in front of it.
             // The entry for this XE field will display "Banana, see: Tropical fruit".
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
@@ -3521,7 +3530,8 @@ namespace ApiExamples
             // Create an INDEX field which will display an entry for each XE field found in the document.
             // Each entry will display the XE field's Text attribute value on the left side,
             // and the number of the page that contains the XE field on the right.
-            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry. //INSP: 'are grouped' passive voice
+            // The INDEX entry will collect all XE fields with matching valeus in the "Text" property
+            // into one entry as opposed to making an entry for each XE field.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
             index.PageNumberSeparator = ", see page ";
             index.Heading = "A";
@@ -3609,7 +3619,8 @@ namespace ApiExamples
             // Create an INDEX field which will display an entry for each XE field found in the document.
             // Each entry will display the XE field's Text attribute value on the left side,
             // and the number of the page that contains the XE field on the right.
-            // Multiple XE fields with matching Text attribute values are grouped into one INDEX field entry. //INSP: 'are grouped' passive voice
+            // The INDEX entry will collect all XE fields with matching valeus in the "Text" property
+            // into one entry as opposed to making an entry for each XE field.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
             // The INDEX table automatically sorts its entries by the values of their Text attributes in alphabetic order.
@@ -3623,8 +3634,8 @@ namespace ApiExamples
 
             // Insert 4 XE fields, which would show up as entries in the INDEX field's table of contents.
             // The "Text" attribute may contain a word's spelling in Kanji, whose pronunciation may be ambiguous,
-            // while a "Yomi" version of the word will be spelled exactly how it is pronounced using Hiragana. //INSP: passive voice
-            // If our INDEX field is set to use Yomi, it will sort these entries //INSP: 'is set' passive voice
+            // while the "Yomi" version of the word will spell exactly how it is pronounced using Hiragana.
+            // If we set our INDEX field to use Yomi, it will sort these entries
             // by the value of their Yomi attributes, instead of their Text values.
             builder.InsertBreak(BreakType.PageBreak);
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
@@ -4510,7 +4521,7 @@ namespace ApiExamples
             Aspose.Words.Lists.List list = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.NumberDefault);
 
             // This generated list will display "1.a )".
-            // Space before the bracket is a non-delimiter character and can be suppressed. //INSP: 'be suppressed' passive voice
+            // Space before the bracket is a non-delimiter character, which we can suppress. 
             list.ListLevels[0].NumberFormat = "\x0000.";
             list.ListLevels[1].NumberFormat = "\x0001 )";
 
@@ -4684,7 +4695,7 @@ namespace ApiExamples
             //ExFor:FieldCreateDate.UseLunarCalendar
             //ExFor:FieldCreateDate.UseSakaEraCalendar
             //ExFor:FieldCreateDate.UseUmAlQuraCalendar
-            //ExSummary:Shows how to use the CREATEDATE field to display when the document was created. //INSP: 'was created' passive voice
+            //ExSummary:Shows how to use the CREATEDATE field to display the creation date/time of the document.
             Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveToDocumentEnd();
@@ -4750,7 +4761,7 @@ namespace ApiExamples
             //ExFor:FieldSaveDate.UseLunarCalendar
             //ExFor:FieldSaveDate.UseSakaEraCalendar
             //ExFor:FieldSaveDate.UseUmAlQuraCalendar
-            //ExSummary:Shows how to use the SAVEDATE field to display when the document was last saved. //INSP: 'was last saved' passive voice
+            //ExSummary:Shows how to use the SAVEDATE field to display the date/time of the document's most recent save operation performed using Microsoft Word.
             Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveToDocumentEnd();
@@ -5191,7 +5202,7 @@ namespace ApiExamples
             Assert.AreEqual("0", field.Result);
 
             // To update the values of these fields while editing in Microsoft Word,
-            // the changes must first be saved, and then the fields need to be manually updated. //INSP: 'be saved' passive voice
+            // we must first save the changes, and then manually update these fields.
             doc.Save(ArtifactsDir + "Field.FILESIZE.docx");
             //ExEnd
 
@@ -5389,7 +5400,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" MACROBUTTON  MyMacro Double click to run macro: MyMacro", field.GetFieldCode());
 
-            // Use the property to reference "ViewZoom200", a macro that was shipped with Microsoft Word. //INSP: 'was shipped' passive voice
+            // Use the property to reference "ViewZoom200", a macro that ships with Microsoft Word.
             // We can find all other macros via View -> Macros (dropdown) -> View Macros.
             // In that menu, select "Word Commands" from the "Macros in:" drop down.
             // If our document contains a custom macro with the same name as a stock macro,
@@ -5478,16 +5489,16 @@ namespace ApiExamples
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
             // Below are three types of fields that we can use to track the size of our documents.
-            // 1 -  Track the character count with a NUMCHARS field.
+            // 1 -  Track the character count with a NUMCHARS field:
             FieldNumChars fieldNumChars = (FieldNumChars)builder.InsertField(FieldType.FieldNumChars, true);       
             builder.Writeln(" characters");
 
-            // 2 -  Track the word count with a NUMWORDS field.
+            // 2 -  Track the word count with a NUMWORDS field:
             FieldNumWords fieldNumWords = (FieldNumWords)builder.InsertField(FieldType.FieldNumWords, true);
             builder.Writeln(" words");
 
             // 3 -  Use both PAGE and NUMPAGES fields to display what page the field is on,
-            // and the total number of pages in the document.
+            // and the total number of pages in the document:
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
             builder.Write("Page ");
             FieldPage fieldPage = (FieldPage)builder.InsertField(FieldType.FieldPage, true);
@@ -5615,7 +5626,7 @@ namespace ApiExamples
             Assert.AreEqual(" QUOTE  \"\\\"Quoted text\\\"\"", field.GetFieldCode());
 
             // Insert a QUOTE field, and insert a DATE field inside it.
-            // DATE fields update their value to the current date every time the document is opened. //INSP: 'is opened' passive voice
+            // DATE fields update their value to the current date every time we open the document using Microsoft Word.
             // Nesting the DATE field inside the QUOTE field like this will freeze its value
             // to the date when we created the document.
             builder.Write("\nDocument creation date: ");
@@ -6190,9 +6201,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            // Insert a SKIPIF field. If the condition specified in this field is fulfilled during a mail merge operation, //INSP: 'is fulfilled' passive voice
-            // then the mail merge will abort the current data source row, discard its page,
-            // and immediately move onto the next row.
+            // Insert a SKIPIF field. If the current row of a mail merge operation fulfills the condition
+            // which the expressions of this field state, then the mail merge operation aborts the current row,
+            // discards the current merge document, and then immediately moves to the next row to begin the next merge document.
             FieldSkipIf fieldSkipIf = (FieldSkipIf) builder.InsertField(FieldType.FieldSkipIf, true);
 
             // Move the builder to the SKIPIF field's separator so we can place a MERGEFIELD inside the SKIPIF field.
@@ -6201,7 +6212,7 @@ namespace ApiExamples
             fieldMergeField.FieldName = "Department";
 
             // The MERGEFIELD refers to the "Department" column in our data table. If a row from that table
-            // has a value of "HR" in its "Department" column, then this condition will be fulfilled. //INSP: 'be fulfilled' passive voice
+            // has a value of "HR" in its "Department" column, then this row will fulfill the condition.
             fieldSkipIf.LeftExpression = "=";
             fieldSkipIf.RightExpression = "HR";
 
@@ -6346,7 +6357,7 @@ namespace ApiExamples
             // 2 -  Add a SYMBOL field which displays the ∞ (Infinity) symbol, and modify its appearance:
             field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
 
-            // In Unicode, the "221E" code is reserved for the infinity symbol. //INSP: 'is reserved' passive voice
+            // In Unicode, the infinity symbol occupies the "221E" code.
             field.CharacterCode = 0x221E.ToString();
             field.IsUnicode = true;
 
@@ -6541,7 +6552,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" TA  \\c 1 \\l \"Source 3\" \\s S.3", fieldTA.GetFieldCode());
 
-            // The page number can be made to appear bold and/or italic. //INSP: 'be made' passive voice
+            // We can format the page number to make it bold/italic using the following properties.
             // We will still see these effects if we set our table to ignore formatting.
             fieldTA = InsertToaEntry(builder, "1", "Source 2");
             fieldTA.IsBold = true;
@@ -6690,7 +6701,8 @@ namespace ApiExamples
             FieldEditTime field = (FieldEditTime)builder.InsertField(FieldType.FieldEditTime, true);
             builder.Writeln(" minutes.");
             
-            // The minutes are tracked in a document property, which we can change. //INSP: 'are tracked' passive voice
+            // This built in document property tracks the minutes. Microsoft Word uses this property
+            // to track the time spent with the document open. We can also edit it ourselves.
             doc.BuiltInDocumentProperties.TotalEditingTime = 10;
             field.Update();
 
@@ -6731,9 +6743,10 @@ namespace ApiExamples
 
             Assert.AreEqual(@" EQ \f(1,4)", field.GetFieldCode());
 
-            // One EQ field may contain multiple elements placed sequentially,
-            // and elements may also be nested by being placed inside the other elements' argument brackets. //INSP: 'be nested' passive voice
-            // The full list of switches and their corresponding options can be found here: //INSP: 'be found' passive voice
+            // One EQ field may contain multiple elements placed sequentially.
+            // We can also nest elements inside one another by placing the inner elements
+            // inside the argument brackets of outer elements.
+            // We can find the full list of switches, along with their uses here:
             // https://blogs.msdn.microsoft.com/murrays/2018/01/23/microsoft-word-eq-field/
 
             // Below are applications of nine different EQ field switches that we can use to create different kinds of objects. 
@@ -6915,8 +6928,8 @@ namespace ApiExamples
             Assert.AreEqual(" MERGEREC ", fieldMergeRec.GetFieldCode());
 
             // A MERGESEQ field will count the number of successful merges, and print the current value on each respective page.
-            // If no rows are skipped and the data source is not sorted, and no SKIP/SKIPIF/NEXT/NEXTIF fields are invoked, //INSP: passive voice
-            // then all the merges were successful, and the MERGESEQ and MERGEREC fields will print the same results. //INSP: passive voice
+            // If a mail merge skips no rows and invokes no SKIP/SKIPIF/NEXT/NEXTIF fields, then all of its merges are successful.
+            // The MERGESEQ and MERGEREC fields will display the same results of their mail merge was successful.
             builder.Write("\nSuccessful merge number: ");
             FieldMergeSeq fieldMergeSeq = (FieldMergeSeq)builder.InsertField(FieldType.FieldMergeSeq, true);
 
@@ -6981,11 +6994,12 @@ namespace ApiExamples
         [Test] //ExSkip
         public void FieldPrivate()
         {
-            // Open a Corel WordPerfect document that was converted to .docx format. //INSP: 'was converted' passive voice
+            // Open a Corel WordPerfect document which we have converted to .docx format.
             Document doc = new Document(MyDir + "Field sample - PRIVATE.docx");
 
             // WordPerfect 5.x/6.x documents like the one we have loaded may contain PRIVATE fields.
-            // The PRIVATE field is a WordPerfect artifact preserved when a file is opened and saved in Microsoft Word. //INSP: 'is opened' passive voice
+            // Microsoft Word preserves PRIVATE fields during load/save operations,
+            // but provides no functionality for them.
             FieldPrivate field = (FieldPrivate)doc.Range.Fields[0];
 
             Assert.AreEqual(" PRIVATE \"My value\" ", field.GetFieldCode());
@@ -6995,8 +7009,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertField(FieldType.FieldPrivate, true);
 
-            // These fields have no functionality in Microsoft Word,
-            // and it is not advised to use them to protect sensitive information. //INSP: 'is not advised' passive voice
+            // These fields are not a viable way of protecting sensitive information.
             // Unless backward compatibility with older versions of WordPerfect is essential,
             // we can safely remove these fields. We can do this using a DocumentVisiitor implementation.
             Assert.AreEqual(2, doc.Range.Fields.Count);
@@ -7085,7 +7098,7 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.SectionBreakNewPage);
 
             // The PAGE field will keep counting pages across the whole document.
-            // We can manually reset its count after a new section is added to keep track of pages section-by-section. //INSP: 'is added' passive voice
+            // We can manually reset its count at each section to keep track of pages section-by-section.
             builder.CurrentSection.PageSetup.RestartPageNumbering = true;
             builder.InsertBreak(BreakType.PageBreak);
 
@@ -7175,12 +7188,12 @@ namespace ApiExamples
             //ExFor:FieldShape
             //ExFor:FieldShape.Text
             //ExFor:ParagraphFormat.Bidi
-            //ExSummary:Shows how to create RTL lists with BIDIOUTLINE fields.
+            //ExSummary:Shows how to create right-to-left language-compatible lists with BIDIOUTLINE fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // The BIDIOUTLINE field numbers paragraphs like the AUTONUM/LISTNUM fields,
-            // but is only visible when a RTL editing language is enabled, such as Hebrew or Arabic.
+            // but is only visible when a right-to-left editing language is enabled, such as Hebrew or Arabic.
             // The following field will display ".1", the RTL equivalent of list number "1.".
             FieldBidiOutline field = (FieldBidiOutline)builder.InsertField(FieldType.FieldBidiOutline, true);
             builder.Writeln("שלום");
@@ -7199,8 +7212,8 @@ namespace ApiExamples
                 para.ParagraphFormat.Bidi = true;
             }
 
-            // If a RTL editing language is enabled in Microsoft Word, our fields will display numbers. //INSP: 'is enabled' passive voice
-            // Otherwise, they will appear as "###".
+            // If we enable a right-to-left editing language in Microsoft Word, our fields will display numbers.
+            // Otherwise, they will display "###".
             doc.Save(ArtifactsDir + "Field.BIDIOUTLINE.docx");
             //ExEnd
 
@@ -7223,17 +7236,19 @@ namespace ApiExamples
 
             // If we open the Word document and press Alt+F9, we will see a SHAPE and an EMBED field.
             // A SHAPE field is the anchor/canvas for an autoshape object with the "In line with text" wrapping style enabled.
-            // An EMBED field has the same function, but for an embedded object, such as a spreadsheet from an external Excel document.
+            // An EMBED field has the same function, but for an embedded object,
+            // such as a spreadsheet from an external Excel document.
             // However, these fields will not appear in the document's Fields collection.
             Assert.AreEqual(0, doc.Range.Fields.Count);
 
             // These fields are supported only by old versions of Microsoft Word.
-            // As such, they are converted into shapes during the document loading process,
-            // and can instead be found in the collection of Shape nodes. //INSP: 'be found' passive voice
+            // The document loading process will convert these fields into Shape objects,
+            // which we can access in the document's node collection.
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             Assert.AreEqual(3, shapes.Count);
 
-            // The first Shape node corresponds to the SHAPE field in the input document: the inline canvas for an AutoShape.
+            // The first Shape node corresponds to the SHAPE field in the input document,
+            // which is the inline canvas for the AutoShape.
             Shape shape = (Shape)shapes[0];
             Assert.AreEqual(ShapeType.Image, shape.ShapeType);
 

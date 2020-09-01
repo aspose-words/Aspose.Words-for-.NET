@@ -49,14 +49,14 @@ namespace ApiExamples
             //ExFor:Document.#ctor(String,LoadOptions)
             //ExSummary:Shows how to create and load documents.
             // There are two ways of creating a Document object using Aspose.Words.
-            // 1 -  Create a blank document.
+            // 1 -  Create a blank document:
             Document doc = new Document();
 
             // New Document objects by default come with a section, body, and paragraph;
             // the minimal set of nodes required to begin editing.
             doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
 
-            // 2 -  Load a document that exists in the local file system.
+            // 2 -  Load a document that exists in the local file system:
             doc = new Document(MyDir + "Document.docx");
 
             // Loaded documents will have contents that we can access and edit.
@@ -263,11 +263,11 @@ namespace ApiExamples
             LoadOptions options = new LoadOptions("docPassword");
 
             // There are two ways of loading an encrypted document with a LoadOptions object.
-            // 1 -  Load the document from the local file system by filename.
+            // 1 -  Load the document from the local file system by filename:
             doc = new Document(MyDir + "Encrypted.docx", options);
             Assert.AreEqual("Test encrypted document.", doc.GetText().Trim()); //ExSkip
 
-            // 2 -  Load the document from a stream.
+            // 2 -  Load the document from a stream:
             using (Stream stream = File.OpenRead(MyDir + "Encrypted.docx"))
             {
                 doc = new Document(stream, options);

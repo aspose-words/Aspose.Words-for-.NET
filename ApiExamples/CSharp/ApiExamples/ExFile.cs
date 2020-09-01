@@ -189,11 +189,11 @@ namespace ApiExamples
                 Assert.AreEqual(LoadFormat.Doc, loadFormat);
 
                 // Below are two methods of converting a LoadFormat to its corresponding SaveFormat.
-                // 1 -  Get the file extension string for the LoadFormat, then get the corresponding SaveFormat from that string.
+                // 1 -  Get the file extension string for the LoadFormat, then get the corresponding SaveFormat from that string:
                 string fileExtension = FileFormatUtil.LoadFormatToExtension(loadFormat);
                 SaveFormat saveFormat = FileFormatUtil.ExtensionToSaveFormat(fileExtension);
 
-                // 2 -  Convert the LoadFormat directly to its SaveFormat.
+                // 2 -  Convert the LoadFormat directly to its SaveFormat:
                 saveFormat = FileFormatUtil.LoadFormatToSaveFormat(loadFormat);
 
                 // Load a document from the stream, and then save it to the automatically detected file extension.

@@ -138,11 +138,11 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldOptions.IsBidiTextSupportedOnUpdate
-            //ExSummary:Shows how to use FieldOptions to ensure that bi-directional text is properly supported during the field update. //INSP: 'is properly supported' passive voice
+            //ExSummary:Shows how to use FieldOptions to ensure that field updating fully supports bi-directional text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Ensure that any field operation involving right-to-left text is performed correctly. //INSP: 'is performed' passive voice 
+            // Ensure that any field operation involving right-to-left text is performs as expected. 
             doc.FieldOptions.IsBidiTextSupportedOnUpdate = true;
 
             // Use a document builder to insert a field that contains the right-to-left text.
@@ -413,7 +413,7 @@ namespace ApiExamples
 
             // We can use a custom IBarcodeGenerator implementation to generate barcodes,
             // and then insert them into the document as images.
-            // This generator can be found here: //INSP: 'be found' passive voice
+            // We can find the source code for the barcode generator here:
             // https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/ApiExamples/CSharp/ApiExamples/CustomBarcodeGenerator.cs
             doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
 

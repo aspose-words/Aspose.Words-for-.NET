@@ -73,14 +73,14 @@ namespace ApiExamples
             Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
 
             // There are two ways of getting a run to display its lowercase text in uppercase without changing the contents.
-            // 1 -  Set the AllCaps flag to display all characters in regular capitals.
+            // 1 -  Set the AllCaps flag to display all characters in regular capitals:
             Run run = new Run(doc, "all capitals");
             run.Font.AllCaps = true;
             para.AppendChild(run);
 
             para = (Paragraph)para.ParentNode.AppendChild(new Paragraph(doc));
 
-            // 2 -  Set the SmallCaps flag to display all characters in small capitals.
+            // 2 -  Set the SmallCaps flag to display all characters in small capitals:
             // If a character is lower case, it will appear in its upper case form,
             // but will have the same height it had when it was lower case (the font's x-height).
             // Characters that were in upper case originally will look the same.
@@ -365,12 +365,12 @@ namespace ApiExamples
             builder.Font.Color = Color.LightBlue;
 
             // Below are two ways of using shadows to apply a 3D-like effect to text.
-            // 1 -  Engrave text to make it look like the letters are sunken into the page.
+            // 1 -  Engrave text to make it look like the letters are sunken into the page:
             builder.Font.Engrave = true;
 
             builder.Writeln("This text is engraved.");
 
-            // 2 -  Emboss text to make it look like the letters pop out of the page.
+            // 2 -  Emboss text to make it look like the letters pop out of the page:
             builder.Font.Engrave = false;
             builder.Font.Emboss = true;
 

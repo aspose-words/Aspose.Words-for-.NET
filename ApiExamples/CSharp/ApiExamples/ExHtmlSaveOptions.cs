@@ -606,7 +606,7 @@ namespace ApiExamples
                 // 1 -  Save it to a local file system location determined by a filename:
                 args.FontFileName = args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last();
 
-                // 2 -  Save it to a stream.
+                // 2 -  Save it to a stream:
                 args.FontStream =
                     new FileStream(ArtifactsDir + args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last(), FileMode.Create);
                 Assert.False(args.KeepFontStreamOpen);

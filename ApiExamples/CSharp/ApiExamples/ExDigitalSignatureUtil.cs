@@ -31,7 +31,7 @@ namespace ApiExamples
             // If this collection is nonempty, then we can verify that the document is digitally signed.
             Assert.AreEqual(1, digitalSignatures.Count);
 
-            // 2 -  Load from a document from a FileStream.
+            // 2 -  Load from a document from a FileStream:
             using (Stream stream = new FileStream(MyDir + "Digitally signed.docx", FileMode.Open))
             {
                 digitalSignatures = DigitalSignatureUtil.LoadSignatures(stream);

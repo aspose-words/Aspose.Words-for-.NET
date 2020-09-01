@@ -1165,13 +1165,13 @@ namespace ApiExamples
             Table table = builder.StartTable();
 
             // There are two ways of applying the PreferredWidth class to table cells.
-            // 1 -  Set an absolute preferred width based on points.
+            // 1 -  Set an absolute preferred width based on points:
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPoints(40);
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightYellow;
             builder.Writeln($"Cell with a width of {builder.CellFormat.PreferredWidth}.");
 
-            // 2 -  Set a relative preferred width based on percent of the table's width.
+            // 2 -  Set a relative preferred width based on percent of the table's width:
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPercent(20);
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightBlue;

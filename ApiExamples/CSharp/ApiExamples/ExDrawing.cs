@@ -56,7 +56,7 @@ namespace ApiExamples
 
             // Below are four examples of shapes that we can insert into our documents.
             // 1 -  Dotted, horizontal, half-transparent red line
-            // with an arrow on the left end and a diamond on the right end. // INSP: In some places you use dot at the end of numbered sentence, sometimes colon. Please define one way.
+            // with an arrow on the left end and a diamond on the right end:
             Shape arrow = new Shape(doc, ShapeType.Line);
             arrow.Width = 200;
             arrow.Stroke.Color = Color.Red;
@@ -73,7 +73,7 @@ namespace ApiExamples
 
             builder.InsertNode(arrow);
 
-            // 2 -  Thick black diagonal line with rounded ends.
+            // 2 -  Thick black diagonal line with rounded ends:
             Shape line = new Shape(doc, ShapeType.Line);
             line.Top = 40;
             line.Width = 200;
@@ -83,7 +83,7 @@ namespace ApiExamples
 
             builder.InsertNode(line);
 
-            // 3 -  Arrow with a green fill.
+            // 3 -  Arrow with a green fill:
             Shape filledInArrow = new Shape(doc, ShapeType.Arrow);
             filledInArrow.Width = 200;
             filledInArrow.Height = 40;
@@ -93,7 +93,7 @@ namespace ApiExamples
 
             builder.InsertNode(filledInArrow);
 
-            // 4 -  Arrow with a flipped orientation filled in with the Aspose logo.
+            // 4 -  Arrow with a flipped orientation filled in with the Aspose logo:
             Shape filledInArrowImg = new Shape(doc, ShapeType.Arrow);
             filledInArrowImg.Width = 200;
             filledInArrowImg.Height = 40;
@@ -502,7 +502,7 @@ namespace ApiExamples
             // Save the shape's image data to an image file in the local file system.
             using (Stream imgStream = imgShape.ImageData.ToStream())
             {
-                using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png", FileMode.Create, FileAccess.Read)) //INSP: Added FileAccess property, needed for Xamarin
+                using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png", FileMode.Create, FileAccess.Read))
                 {
                     imgStream.CopyTo(outStream);
                 }
