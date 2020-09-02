@@ -19,55 +19,66 @@ namespace ApiExamples
     public class ExFormFields : ApiExampleBase
     {
         [Test]
-        public void FormFieldsWorkWithProperties()
+        public void Create()
         {
             //ExStart
             //ExFor:FormField
             //ExFor:FormField.Result
             //ExFor:FormField.Type
             //ExFor:FormField.Name
-            //ExSummary:Shows how to work with form field name, type, and result.
+            //ExSummary:Shows how to insert a combo box.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a DocumentBuilder to insert a combo box form field
-            FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "One", "Two", "Three" }, 0);
+            builder.Write("Please select a fruit: ");
 
-            // Verify some of our form field's attributes
+            // Insert a combo box which will allow a user to choose an option from a collection of strings.
+            FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "Apple", "Banana", "Cherry" }, 0);
+
             Assert.AreEqual("MyComboBox", comboBox.Name);
             Assert.AreEqual(FieldType.FieldFormDropDown, comboBox.Type);
-            Assert.AreEqual("One", comboBox.Result);
+            Assert.AreEqual("Apple", comboBox.Result);
+
+            // The form field will appear in the form of a "select" html tag.
+            doc.Save(ArtifactsDir + "FormFields.Create.html");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "FormFields.Create.html");
             comboBox = doc.Range.FormFields[0];
 
             Assert.AreEqual("MyComboBox", comboBox.Name);
             Assert.AreEqual(FieldType.FieldFormDropDown, comboBox.Type);
-            Assert.AreEqual("One", comboBox.Result);
+            Assert.AreEqual("Apple", comboBox.Result);
         }
 
         [Test]
-        public void InsertAndRetrieveFormFields()
+        public void TextInput()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertTextInput
-            //ExSummary:Shows how to insert form fields, set options and gather them back in for use.
+            //ExSummary:Shows how to insert a text input form field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a text input field. The unique name of this field is "TextInput1", the other parameters define
-            // what type of FormField it is, the format of the text, the field result and the maximum text length (0 = no limit)
-            builder.InsertTextInput("TextInput1", TextFormFieldType.Regular, "", "", 0);
+            builder.Write("Please enter text here: ");
+
+            // Insert a text input field, which will allow the user to click it and enter text.
+            // Assign some placeholder text which the user may overwrite,
+            // and pass a maximum text length of 0 to apply no limit on the length of the form field's contents.
+            builder.InsertTextInput("TextInput1", TextFormFieldType.Regular, "", "Placeholder text", 0);
+
+            // The form field will appear in the form of an "input" html tag, with a type of "text".
+            doc.Save(ArtifactsDir + "FormFields.TextInput.html");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "FormFields.TextInput.html");
+
             FormField textInput = doc.Range.FormFields[0];
 
             Assert.AreEqual("TextInput1", textInput.Name);
             Assert.AreEqual(TextFormFieldType.Regular, textInput.TextInputType);
             Assert.AreEqual(string.Empty, textInput.TextInputFormat);
-            Assert.AreEqual(string.Empty, textInput.Result);
+            Assert.AreEqual("Placeholder text", textInput.Result);
             Assert.AreEqual(0, textInput.MaxLength);
         }
 
@@ -76,7 +87,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FormField.RemoveField
-            //ExSummary:Shows how to delete complete form field.
+            //ExSummary:Shows how to delete a form field.
             Document doc = new Document(MyDir + "Form fields.docx");
 
             FormField formField = doc.Range.FormFields[3];
@@ -140,21 +151,26 @@ namespace ApiExamples
         //ExFor:FormFieldCollection.Remove(String)
         //ExFor:FormFieldCollection.RemoveAt(Int32)
         //ExFor:Range.FormFields
-        //ExSummary:Shows how insert different kinds of form fields into a document and process them with a visitor implementation.
+        //ExSummary:Shows how insert different kinds of form fields into a document, and process them with using a document visitor implementation.
         [Test] //ExSkip
-        public void FormField()
+        public void Visitor()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert a combo box
+
+            // Use a document builder to insert a combo box.
+            builder.Write("Choose a value from this combo box: ");
             FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "One", "Two", "Three" }, 0);
             comboBox.CalculateOnExit = true;
             Assert.AreEqual(3, comboBox.DropDownItems.Count);
             Assert.AreEqual(0, comboBox.DropDownSelectedIndex);
             Assert.True(comboBox.Enabled);
 
-            // Use a document builder to insert a check box
+            builder.InsertBreak(BreakType.ParagraphBreak);
+
+            // Use a document builder to insert a check box.
+            builder.Write("Click this check box to tick/untick it: ");
             FormField checkBox = builder.InsertCheckBox("MyCheckBox", false, 50);
             checkBox.IsCheckBoxExactSize = true;
             checkBox.HelpText = "Right click to check this box";
@@ -165,28 +181,32 @@ namespace ApiExamples
             Assert.False(checkBox.Checked);
             Assert.False(checkBox.Default);
 
-            builder.Writeln();
+            builder.InsertBreak(BreakType.ParagraphBreak);
 
-            // Use a document builder to insert text input form field
-            FormField textInput = builder.InsertTextInput("MyTextInput", TextFormFieldType.Regular, "", "Your text goes here", 50);
+            // Use a document builder to insert text input form field.
+            builder.Write("Enter text here: ");
+            FormField textInput = builder.InsertTextInput("MyTextInput", TextFormFieldType.Regular, "", "Placeholder text", 50);
             textInput.EntryMacro = "EntryMacro";
             textInput.ExitMacro = "ExitMacro";
             textInput.TextInputDefault = "Regular";
             textInput.TextInputFormat = "FIRST CAPITAL";
-            textInput.SetTextInputValue("This value overrides the one we set during initialization");
+            textInput.SetTextInputValue("New placeholder text");
             Assert.AreEqual(TextFormFieldType.Regular, textInput.TextInputType);
             Assert.AreEqual(50, textInput.MaxLength);
 
-            // Get the collection of form fields that has accumulated in our document
+            // This collection contains all of our form fields.
             FormFieldCollection formFields = doc.Range.FormFields;
             Assert.AreEqual(3, formFields.Count);
 
-            // Our form fields are represented as fields, with field codes FORMDROPDOWN, FORMCHECKBOX and FORMTEXT respectively,
-            // made visible by pressing Alt + F9 in Microsoft Word
-            // These fields have no switches and the content of their form fields is fully governed by members of the FormField object
+            // Our form fields are displayed by fields. We can see their field codes by opening this document
+            // in Microsoft, and then pressing Alt + F9. These fields have no switches and the content
+            // of their form fields is fully governed by members of the FormField object.
             Assert.AreEqual(3, doc.Range.Fields.Count);
+            Assert.AreEqual(" FORMDROPDOWN \u0001", doc.Range.Fields[0].GetFieldCode());
+            Assert.AreEqual(" FORMCHECKBOX \u0001", doc.Range.Fields[1].GetFieldCode());
+            Assert.AreEqual(" FORMTEXT \u0001", doc.Range.Fields[2].GetFieldCode());
 
-            // Iterate over the collection with an enumerator, accepting a visitor with each form field
+            // Allow each form field to accept a document visitor.
             FormFieldVisitor formFieldVisitor = new FormFieldVisitor();
 
             using (IEnumerator<FormField> fieldEnumerator = formFields.GetEnumerator())
@@ -196,12 +216,12 @@ namespace ApiExamples
             Console.WriteLine(formFieldVisitor.GetText());
 
             doc.UpdateFields();
-            doc.Save(ArtifactsDir + "FormFields.FormField.docx");
+            doc.Save(ArtifactsDir + "FormFields.Visitor.html");
             TestFormField(doc); //ExSkip
         }
 
         /// <summary>
-        /// Visitor implementation that prints information about visited form fields. 
+        /// Visitor implementation that prints details of form fields that it visits. 
         /// </summary>
         public class FormFieldVisitor : DocumentVisitor
         {
@@ -269,7 +289,7 @@ namespace ApiExamples
 
             TestUtil.VerifyField(FieldType.FieldFormDropDown, " FORMDROPDOWN \u0001", string.Empty, doc.Range.Fields[0]);
             TestUtil.VerifyField(FieldType.FieldFormCheckBox, " FORMCHECKBOX \u0001", string.Empty, doc.Range.Fields[1]);
-            TestUtil.VerifyField(FieldType.FieldFormTextInput, " FORMTEXT \u0001", "This value overrides the one we set during initialization", doc.Range.Fields[2]);
+            TestUtil.VerifyField(FieldType.FieldFormTextInput, " FORMTEXT \u0001", "New placeholder text", doc.Range.Fields[2]);
 
             FormFieldCollection formFields = doc.Range.FormFields;
             Assert.AreEqual(3, formFields.Count);
@@ -299,7 +319,7 @@ namespace ApiExamples
             Assert.AreEqual("FIRST CAPITAL", formFields[2].TextInputFormat);
             Assert.AreEqual(TextFormFieldType.Regular, formFields[2].TextInputType);
             Assert.AreEqual(50, formFields[2].MaxLength);
-            Assert.AreEqual("This value overrides the one we set during initialization", formFields[2].Result);
+            Assert.AreEqual("New placeholder text", formFields[2].Result);
         }
 
         [Test]
@@ -358,7 +378,7 @@ namespace ApiExamples
             Assert.IsFalse(dropDownItems.Contains("Three and a half"));
             Assert.IsFalse(dropDownItems.Contains("Four"));
 
-            doc.Save(ArtifactsDir + "FormFields.DropDownItemCollection.docx");
+            doc.Save(ArtifactsDir + "FormFields.DropDownItemCollection.html");
 
             // Empty the whole collection of drop down items.
             dropDownItems.Clear();
@@ -369,7 +389,7 @@ namespace ApiExamples
 
             Assert.AreEqual(0, dropDownItems.Count);
 
-            doc = new Document(ArtifactsDir + "FormFields.DropDownItemCollection.docx");
+            doc = new Document(ArtifactsDir + "FormFields.DropDownItemCollection.html");
             dropDownItems = doc.Range.FormFields[0].DropDownItems;
 
             Assert.AreEqual(3, dropDownItems.Count);
