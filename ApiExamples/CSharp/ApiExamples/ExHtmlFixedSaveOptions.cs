@@ -24,7 +24,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlFixedSaveOptions.Encoding
-            //ExSummary:Shows how to set encoding while exporting to HTML.
+            //ExSummary:Shows how to set which encoding to use while exporting a document to HTML.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -69,9 +69,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // When we export a document to html, Aspose.Words will also create a CSS stylesheet to format the document with.
-            // Setting the "ExportEmbeddedCss" to "false" will embed the CSS stylesheet within the Html document.
-            // Setting this flag to "true" save the CSS stylesheet to a .css file,
+            // Setting the "ExportEmbeddedCss" flag to "true" save the CSS stylesheet to a .css file,
             // and link to the file from the html document using a <link> element.
+            // Setting flag to "false" will embed the CSS stylesheet within the Html document,
+            // which will create only one file instead of two.
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
                 ExportEmbeddedCss = exportEmbeddedCss
@@ -105,9 +106,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Embedded font.docx");
 
             // When we export a document with embedded fonts to .html,
-            // there are two places where Aspose.Words can place the embedded fonts.
+            // Aspose.Words can place the fonts in two possible locations.
             // Setting the "ExportEmbeddedFonts" flag to "true" will store the raw data for embedded fonts
-            // in the CSS stylesheet, in the "url" property of the "@font-face" rule. This may create a very large stylesheet.
+            // within the CSS stylesheet, in the "url" property of the "@font-face" rule. This may create a very large CSS stylesheet file,
+            // but will reduce the number of external files that this HTML conversion will create.
             // Setting this flag to "false" will create a file for each font.
             // The CSS stylesheet will link to each font file using the "url" property of the "@font-face" rule.
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
@@ -144,9 +146,11 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Images.docx");
 
             // When we export a document with embedded images to .html,
-            // there are two places where Aspose.Words can place the images.
-            // Setting the "ExportEmbeddedImages" flag to false will create an image file in the local file system for every image, and store all these files in a separate folder.
-            // Setting this flag to "true" will store the raw data for all images inside <image> tags, in the "src" attribute.
+            // Aspose.Words can place the images in two possible locations.
+            // Setting the "ExportEmbeddedImages" flag to "true" will store the raw data
+            // for all images within the output HTML document, in the "src" attribute of <image> tags.
+            // Setting this flag to "false" will create an image file in the local file system for every image,
+            // and store all these files in a separate folder.
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
                 ExportEmbeddedImages = exportImages
@@ -182,10 +186,11 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Images.docx");
 
             // When we export a document with SVG objects to .html,
-            // there are two places where Aspose.Words can place the SVG objects.
-            // Setting the "ExportEmbeddedSvg" flag to "false" will place create a file in the local file system for each SVG object,
-            // and link to each file from the Html using the "data" attribute of an <object> tag.
-            // Setting this flag to "true" will embed all SVG object raw data inside the <image> tags of our output Html.
+            // Aspose.Words can place these objects in two possible locations.
+            // Setting the "ExportEmbeddedSvg" flag to "true" will embed all SVG object raw data
+            // within the output HTML, inside <image> tags.
+            // Setting this flag to "false" will create a file in the local file system for each SVG object.
+            // The HTML will link to each file using the "data" attribute of an <object> tag.
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
                 ExportEmbeddedSvg = exportSvgs
@@ -224,9 +229,10 @@ namespace ApiExamples
 
             // When we export a document with form fields to .html,
             // there are two ways in which Aspose.Words can export form fields.
-            // Setting the "ExportFormFields" flag to "false" will display form fields as plain text.
-            // This will freeze them at their current value, and prevent us from being able to interact with them.
-            // Setting this flag to "true" will export them as interactive objects.
+            // Setting the "ExportFormFields" flag to "true" will export them as interactive objects.
+            // Setting this flag to "false" will display form fields as plain text.
+            // This will freeze them at their current value, and prevent the reader of our HTML document
+            // from being able to interact with them.
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
                 ExportFormFields = exportFormFields
@@ -414,7 +420,7 @@ namespace ApiExamples
         //ExFor:ResourceSavingArgs.Document
         //ExFor:ResourceSavingArgs.ResourceFileName
         //ExFor:ResourceSavingArgs.ResourceFileUri
-        //ExSummary:Shows how to use a callback to track saved resources while saving a document to HTML.
+        //ExSummary:Shows how to use a callback to track external resources created while converting a document to HTML.
         [Test] //ExSkip
         public void ResourceSavingCallback()
         {
@@ -471,11 +477,13 @@ namespace ApiExamples
         //ExFor:IResourceSavingCallback.ResourceSaving(ResourceSavingArgs)
         //ExFor:ResourceSavingArgs.KeepResourceStreamOpen
         //ExFor:ResourceSavingArgs.ResourceStream
-        //ExSummary:Shows how to use a callback to print the URIs of resources created while saving a document to HTML.
+        //ExSummary:Shows how to use a callback to print the URIs of external resources created while converting a document to HTML.
         [Test] //ExSkip
         public void HtmlFixedResourceFolder()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
+
+            ResourceUriPrinter callback = new ResourceUriPrinter();
 
             HtmlFixedSaveOptions options = new HtmlFixedSaveOptions
             {
@@ -484,7 +492,7 @@ namespace ApiExamples
                 ResourcesFolder = ArtifactsDir + "HtmlFixedResourceFolder",
                 ResourcesFolderAlias = ArtifactsDir + "HtmlFixedResourceFolderAlias",
                 ShowPageBorder = false,
-                ResourceSavingCallback = new ResourceUriPrinter()
+                ResourceSavingCallback = callback
             };
 
             // A folder specified by ResourcesFolderAlias will contain the resources instead of ResourcesFolder.
@@ -493,12 +501,15 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.HtmlFixedResourceFolder.html", options);
 
+            Console.WriteLine(callback.GetText());
+
             string[] resourceFiles = Directory.GetFiles(ArtifactsDir + "HtmlFixedResourceFolderAlias");
 
             Assert.False(Directory.Exists(ArtifactsDir + "HtmlFixedResourceFolder"));
             Assert.AreEqual(6, resourceFiles.Count(f => f.EndsWith(".jpeg") || f.EndsWith(".png") || f.EndsWith(".css")));
+            TestHtmlFixedResourceFolder(callback); //ExSkip
         }
-
+        
         /// <summary>
         /// Counts and prints URIs of resources contained by as they are converted to fixed .Html.
         /// </summary>
@@ -506,8 +517,8 @@ namespace ApiExamples
         {
             void IResourceSavingCallback.ResourceSaving(ResourceSavingArgs args)
             {
-                // If we set a folder alias in the SaveOptions object, it will be printed here.
-                Console.WriteLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
+                // If we set a folder alias in the SaveOptions object, we will be able to print it from here.
+                mText.AppendLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
 
                 string extension = Path.GetExtension(args.ResourceFileName);
                 switch (extension)
@@ -516,12 +527,13 @@ namespace ApiExamples
                     case ".woff":
                     {
                         // By default, 'ResourceFileUri' uses system folder for fonts.
-                        // To avoid problems across platforms you must explicitly specify the path for the fonts.
+                        // To avoid problems in other platforms you must explicitly specify the path for the fonts.
                         args.ResourceFileUri = ArtifactsDir + Path.DirectorySeparatorChar + args.ResourceFileName;
                         break;
                     }
                 }
-                Console.WriteLine("\t" + args.ResourceFileUri);
+
+                mText.AppendLine("\t" + args.ResourceFileUri);
 
                 // If we have specified a folder in the "ResourcesFolderAlias" property,
                 // we will also need to redirect each stream to put its resource in that folder.
@@ -529,8 +541,19 @@ namespace ApiExamples
                 args.KeepResourceStreamOpen = false;
             }
 
+            public string GetText()
+            {
+                return mText.ToString();
+            }
+
             private int mSavedResourceCount;
+            private readonly StringBuilder mText = new StringBuilder();
         }
         //ExEnd
+
+        private void TestHtmlFixedResourceFolder(ResourceUriPrinter callback)
+        {
+            Assert.AreEqual(16, Regex.Matches(callback.GetText(), "Resource #").Count);
+        }
     }
 }
