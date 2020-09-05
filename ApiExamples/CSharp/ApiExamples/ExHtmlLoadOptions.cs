@@ -22,51 +22,56 @@ namespace ApiExamples
     {
         [TestCase(true)]
         [TestCase(false)]
-        public void SupportVml(bool doSupportVml)
+        public void SupportVml(bool supportVml)
         {
             //ExStart
             //ExFor:HtmlLoadOptions.#ctor
             //ExFor:HtmlLoadOptions.SupportVml
-            //ExSummary:Shows how to support VML while parsing a document.
+            //ExSummary:Shows how to support conditional comments while loading an HTML document.
             HtmlLoadOptions loadOptions = new HtmlLoadOptions();
 
             // If value is true, then we take VML code into account while parsing the loaded document
-            loadOptions.SupportVml = doSupportVml;
+            loadOptions.SupportVml = supportVml;
 
-            // This document contains an image within "<!--[if gte vml 1]>" tags, and another different image within "<![if !vml]>" tags
-            // Upon loading the document, only the contents of the first tag will be shown if VML is enabled,
-            // and only the contents of the second tag will be shown otherwise
+            // This document contains a JPEG image within "<!--[if gte vml 1]>" tags,
+            // and a different PNG image within "<![if !vml]>" tags.
+            // If we set the "SupportVml" flag to "true", then Aspose.Words will load the JPEG.
+            // If we set this flag to "false", then Aspose.Words will only load the PNG.
             Document doc = new Document(MyDir + "VML conditional.htm", loadOptions);
 
-            // Only one of the two unique images will be loaded, depending on the value of loadOptions.SupportVml
+            if (supportVml)
+                Assert.AreEqual(ImageType.Jpeg, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageType);
+            else
+                Assert.AreEqual(ImageType.Png, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageType);
+            //ExEnd
+
             Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            if (doSupportVml)
+            if (supportVml)
                 TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, imageShape);
             else
                 TestUtil.VerifyImageInShape(400, 400, ImageType.Png, imageShape);
-            //ExEnd
         }
 
         //ExStart
         //ExFor:HtmlLoadOptions.WebRequestTimeout
-        //ExSummary:Shows how to set a time limit for web requests that will occur when loading an html document which links external resources.
+        //ExSummary:Shows how to set a time limit for web requests when loading a document with external resources linked by URLs.
         [Test] //ExSkip
         public void WebRequestTimeout()
         {
-            // Create a new HtmlLoadOptions object and verify its timeout threshold for a web request
+            // Create a new HtmlLoadOptions object, and verify its timeout threshold for a web request.
             HtmlLoadOptions options = new HtmlLoadOptions();
 
             // When loading an Html document with resources externally linked by a web address URL,
-            // web requests that fetch these resources that fail to complete within this time limit will be aborted
+            // web requests that fetch these resources that fail to complete within this time limit will be aborted.
             Assert.AreEqual(100000, options.WebRequestTimeout);
 
-            // Set a WarningCallback that will record all warnings that occur during loading
+            // Set a WarningCallback that will record all warnings that occur during loading.
             ListDocumentWarnings warningCallback = new ListDocumentWarnings();
             options.WarningCallback = warningCallback;
 
-            // Load such a document and verify that a shape with image data has been created,
-            // provided the request to get that image took place within the timeout limit
+            // Load such a document, and verify that a shape with image data has been created.
+            // This linked image will require a web request to load, which will have to complete within our time limit.
             string html = $@"
                 <html>
                     <img src=""{AsposeLogoUrl}"" alt=""Aspose logo"" style=""width:400px;height:400px;"">
@@ -79,16 +84,16 @@ namespace ApiExamples
             Assert.AreEqual(7498, imageShape.ImageData.ImageBytes.Length);
             Assert.AreEqual(0, warningCallback.Warnings().Count);
 
-            // Set an unreasonable timeout limit and load the document again
+            // Set an unreasonable timeout limit, and try load the document again.
             options.WebRequestTimeout = 0;
             doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), options);
 
-            // If a request fails to complete within the timeout limit, a shape with image data will still be produced
-            // However, the image will be the red 'x' that commonly signifies missing images
+            // If a request fails to complete within the timeout limit, a shape with image data will still be produced.
+            // However, the image will be the red 'x' that commonly signifies missing images.
             imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(924, imageShape.ImageData.ImageBytes.Length);
 
-            // A timeout like this will also accumulate warnings that can be picked up by a WarningCallback implementation
+            // We can also configure a custom callback to pick up any warnings from timed out web requests.
             Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[0].Source);
             Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[0].WarningType);
             Assert.AreEqual($"Couldn't load a resource from \'{AsposeLogoUrl}\'.", warningCallback.Warnings()[0].Description);
@@ -123,8 +128,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlLoadOptions.#ctor(String)
-            //ExSummary:Shows how to encrypt an Html document and then open it using a password.
-            // Create and sign an encrypted html document from an encrypted .docx
+            //ExSummary:Shows how to encrypt an Html document, and then open it using a password.
+            // Create and sign an encrypted HTML document from an encrypted .docx.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
             SignOptions signOptions = new SignOptions
@@ -138,12 +143,14 @@ namespace ApiExamples
             string outputFileName = ArtifactsDir + "HtmlLoadOptions.EncryptedHtml.html";
             DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);
 
-            // This .html document will need a password to be decrypted, opened and have its contents accessed
-            // The password is specified by HtmlLoadOptions.Password
+            // In order to be able to load and read this document,
+            // we will need to pass its decryption password using a HtmlLoadOptions object.
             HtmlLoadOptions loadOptions = new HtmlLoadOptions("docPassword");
+
             Assert.AreEqual(signOptions.DecryptionPassword, loadOptions.Password);
 
             Document doc = new Document(outputFileName, loadOptions);
+
             Assert.AreEqual("Test encrypted document.", doc.GetText().Trim());       
             //ExEnd
         }
@@ -157,19 +164,19 @@ namespace ApiExamples
             //ExFor:LoadFormat
             //ExSummary:Shows how to specify a base URI when opening an html document.
             // If we want to load an .html document which contains an image linked by a relative URI
-            // while the image is in a different location, we will need to resolve the relative URI into an absolute one
-            // by creating an HtmlLoadOptions and providing a base URI 
+            // while the image is in a different location, we will need to resolve the relative URI into an absolute one.
+            // We can provide a base URI using an HtmlLoadOptions object. 
             HtmlLoadOptions loadOptions = new HtmlLoadOptions(LoadFormat.Html, "", ImageDir);
 
             Assert.AreEqual(LoadFormat.Html, loadOptions.LoadFormat);
 
             Document doc = new Document(MyDir + "Missing image.html", loadOptions);
         
-            // While the image was broken in the input .html, it was successfully found in our base URI
+            // While the image was broken in the input .html, our base URI repaired the link for us.
             Shape imageShape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
             Assert.True(imageShape.IsImage);
 
-            // The image will be displayed correctly by the output document
+            // This output document will display the image that was missing.
             doc.Save(ArtifactsDir + "HtmlLoadOptions.BaseUri.docx");
             //ExEnd
         }
