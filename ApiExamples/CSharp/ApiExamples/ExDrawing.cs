@@ -502,7 +502,7 @@ namespace ApiExamples
             // Save the shape's image data to an image file in the local file system.
             using (Stream imgStream = imgShape.ImageData.ToStream())
             {
-                using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png", FileMode.Create, FileAccess.Read))
+                using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png", FileMode.Create, FileAccess.ReadWrite))
                 {
                     imgStream.CopyTo(outStream);
                 }
