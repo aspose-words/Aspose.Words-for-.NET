@@ -356,17 +356,26 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlSaveOptions.CssClassNamePrefix
-            //ExSummary:Shows how to specifies a prefix which is added to all CSS class names.
+            //ExSummary:Shows how to save a document to HTML, and add a prefix to all of its CSS class names.
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
-                CssStyleSheetType = CssStyleSheetType.Embedded,
+                CssStyleSheetType = CssStyleSheetType.External,
                 CssClassNamePrefix = "myprefix-"
             };
 
-            // The prefix will be found before CSS element names in the embedded stylesheet
             doc.Save(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.html", saveOptions);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.html");
+
+            Assert.True(outDocContents.Contains("<p class=\"myprefix-Header\">"));
+            Assert.True(outDocContents.Contains("<p class=\"myprefix-Footer\">"));
+
+            outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.css");
+
+            Assert.True(outDocContents.Contains(".myprefix-Footer { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt }\r\n" +
+                                                ".myprefix-Header { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt }\r\n"));
             //ExEnd
         }
 
@@ -406,15 +415,21 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ContentIdScheme.mhtml", saveOptions);
         }
 
-        [Test]
+        [TestCase(false)]
+        [TestCase(true)]
         [Ignore("Bug")]
-        public void ResolveFontNames()
+        public void ResolveFontNames(bool resolveFontNames)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ResolveFontNames
             //ExSummary:Shows how to resolve all font names before writing them to HTML.
-            Document document = new Document(MyDir + "Missing font.docx");
+            Document doc = new Document(MyDir + "Missing font.docx");
 
+            // This document contains text that names a font that we do not have.
+            Assert.NotNull(doc.FontInfos["28 Days Later"]);
+
+            // If we have no way of getting this font, and we want to be able to display all the text
+            // in this document in an output HTML, we can substitute it with another font.
             FontSettings fontSettings = new FontSettings
             {
                 SubstitutionSettings =
@@ -427,19 +442,22 @@ namespace ApiExamples
                 }
             };
 
-            document.FontSettings = fontSettings;
+            doc.FontSettings = fontSettings;
             
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
             {
                 // By default, this option is set to 'False' and Aspose.Words writes font names as specified in the source document
-                ResolveFontNames = true 
+                ResolveFontNames = resolveFontNames
             };
 
-            document.Save(ArtifactsDir + "HtmlSaveOptions.ResolveFontNames.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ResolveFontNames.html", saveOptions);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ResolveFontNames.html");
 
-            Assert.True(Regex.Match(outDocContents, "<span style=\"font-family:Arial\">").Success);
+            if (resolveFontNames)
+                Assert.True(Regex.Match(outDocContents, "<span style=\"font-family:Arial\">").Success);
+            else
+                Assert.True(Regex.Match(outDocContents, "<span style=\"font-family:\'28 Days Later\'\">").Success);
             //ExEnd
         }
 
@@ -448,11 +466,10 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlSaveOptions.DocumentSplitHeadingLevel
-            //ExSummary:Shows how to split a document into several html documents by heading levels.
+            //ExSummary:Shows how to split an output HTML document by headings into several parts.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert headings of levels 1 - 3
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 1"];
             builder.Writeln("Heading #1");
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 2"];
@@ -466,16 +483,39 @@ namespace ApiExamples
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 3"];
             builder.Writeln("Heading #6");
 
-            // Create a HtmlSaveOptions object and set the split criteria to "HeadingParagraph", meaning that the document 
-            // will be split into parts at the beginning of every paragraph of a "Heading" style, and each part will be saved as a separate document
-            // Also, we will set the DocumentSplitHeadingLevel to 2, which will split the document only at headings that have levels from 1 to 2
+            // Create a HtmlSaveOptions object and set the split criteria to "HeadingParagraph". 
+            // This criteria will split the document at paragraphs with "Heading" styles into several smaller documents,
+            // and save each document in a separate HTML file in the local file system.
+            // We will also set the maximum heading level which splits the document to 2.
+            // Saving the document will split it at headings of levels 1 and 2, but not at levels of 3 to 9.
             HtmlSaveOptions options = new HtmlSaveOptions
             {
                 DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph,
                 DocumentSplitHeadingLevel = 2
             };
             
+            // Our document has four headings of levels 1 - 2. One of those headings will not be
+            // a split point since is at the beginning of the document.
+            // The saving operation will split our document at three places, into four smaller documents.
             doc.Save(ArtifactsDir + "HtmlSaveOptions.HeadingLevels.html", options);
+
+            doc = new Document(ArtifactsDir + "HtmlSaveOptions.HeadingLevels.html");
+
+            Assert.AreEqual("Heading #1", doc.GetText().Trim());
+
+            doc = new Document(ArtifactsDir + "HtmlSaveOptions.HeadingLevels-01.html");
+
+            Assert.AreEqual("Heading #2\r" +
+                            "Heading #3", doc.GetText().Trim());
+
+            doc = new Document(ArtifactsDir + "HtmlSaveOptions.HeadingLevels-02.html");
+
+            Assert.AreEqual("Heading #4", doc.GetText().Trim());
+
+            doc = new Document(ArtifactsDir + "HtmlSaveOptions.HeadingLevels-03.html");
+
+            Assert.AreEqual("Heading #5\r" +
+                            "Heading #6", doc.GetText().Trim());
             //ExEnd
         }
 
