@@ -26,59 +26,33 @@ namespace ApiExamples
         public void OneTimeSetUp()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
-            if (CheckForSkipMono() && IsRunningOnMono())
-            {
-                Assert.Ignore("Test skipped on mono");
-            }
-
-            if (!CheckForSkipSetUp())
-            {
-                SetUnlimitedLicense();
-            }
+            
+            SetUnlimitedLicense();
 
             if (!Directory.Exists(ArtifactsDir))
-                //Create new empty directory
                 Directory.CreateDirectory(ArtifactsDir);
         }
 
         [SetUp]
         public void SetUp()
         {
+            if (CheckForSkipMono() && IsRunningOnMono())
+            {
+                Assert.Ignore("Test skipped on mono");
+            }
+
             Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
         }
 
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            if (!CheckForSkipTearDown())
-            {
-                if (Directory.Exists(ArtifactsDir))
-                    //Delete all dirs and files from directory
-                    Directory.Delete(ArtifactsDir, true);
-            }
+            if (Directory.Exists(ArtifactsDir))
+                Directory.Delete(ArtifactsDir, true);
         }
 
         /// <summary>
-        /// Checks when we need to skip precondition before test.
-        /// </summary>
-        private static bool CheckForSkipSetUp()
-        {
-            bool skipSetup = TestContext.CurrentContext.Test.Properties["Category"].Contains("SkipSetup");
-            return skipSetup;
-        }
-
-        /// <summary>
-        /// Checks when we need to skip post-condition after test.
-        /// </summary>
-        private static bool CheckForSkipTearDown()
-        {
-            bool skipSetup = TestContext.CurrentContext.Test.Properties["Category"].Contains("SkipTearDown");
-            return skipSetup;
-        }
-
-        /// <summary>
-        /// Checks when we need to skip post-condition after test.
+        /// Checks when we need to ignore test on mono.
         /// </summary>
         private static bool CheckForSkipMono()
         {
@@ -91,9 +65,9 @@ namespace ApiExamples
         /// Workaround for .netcore.
         /// </summary>
         /// <returns>True if being executed in Mono, false otherwise.</returns>
-        public static bool IsRunningOnMono() {
+        internal static bool IsRunningOnMono() {
             return Type.GetType("Mono.Runtime") != null;
-        }
+        }        
 
         internal static void SetUnlimitedLicense()
         {
@@ -185,7 +159,7 @@ namespace ApiExamples
         internal static string FontsDir { get; }
 
         /// <summary>
-        /// Gets the url of the Aspose logo.
+        /// Gets the URL of the Aspose logo.
         /// </summary>
         internal static string AsposeLogoUrl { get; }
 

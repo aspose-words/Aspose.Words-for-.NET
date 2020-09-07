@@ -54,7 +54,7 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Inserts a brand new column before this column into the table.
+            /// Inserts a new column before this column into the table.
             /// </summary>
             public Column InsertColumnBefore()
             {
@@ -74,7 +74,7 @@ namespace ApiExamples
                 foreach (Cell cell in column.Cells)
                     cell.EnsureMinimum();
 
-                // Increase the index which this column represents since there is now one extra column infront
+                // Increase the index which this column represents since there is a new column in front of it
                 mColumnIndex++;
 
                 return column;

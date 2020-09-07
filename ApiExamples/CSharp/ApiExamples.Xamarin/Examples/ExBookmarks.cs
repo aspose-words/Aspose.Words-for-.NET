@@ -157,7 +157,7 @@ namespace ApiExamples
             //ExFor:Bookmark.FirstColumn
             //ExFor:Bookmark.LastColumn
             //ExSummary:Shows how to get information about table column bookmark.
-            Document doc = new Document(MyDir + "TableColumnBookmark.doc");
+            Document doc = new Document(MyDir + "Table column bookmarks.doc");
             foreach (Bookmark bookmark in doc.Range.Bookmarks)
             {
                 Console.WriteLine("Bookmark: {0}{1}", bookmark.Name, bookmark.IsColumn ? " (Column)" : "");

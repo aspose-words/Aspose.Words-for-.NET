@@ -109,11 +109,9 @@ namespace ApiExamples
         }
 
         #if NET462 || JAVA
-        [Test]
-        [Category("SkipMono")]
+        [Test, Category("SkipMono")]
         public void CreateFromImage()
         {
-            // This creates a builder and also an empty document inside the builder
             DocumentBuilder builder = new DocumentBuilder();
 
             // Insert a raster image
@@ -139,11 +137,9 @@ namespace ApiExamples
         [Category("SkipMono")]
         public void CreateFromImageNetStandard2()
         {
-            // This creates a builder and also an empty document inside the builder
             DocumentBuilder builder = new DocumentBuilder();
 
             // Insert a raster image
-            // SKBitmap doesn't allow to insert a metafiles
             using (SKBitmap rasterImage = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {
                 builder.Write("Raster image: ");
@@ -341,19 +337,19 @@ namespace ApiExamples
 
             TestUtil.VerifyImageInShape(0, 0, ImageType.Wmf, shape);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
-            Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName);
+            Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName.Replace("%20", " "));
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
-            Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName);
+            Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName.Replace("%20", " "));
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
 
             TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
-            Assert.AreEqual(string.Empty, shape.ImageData.SourceFullName);
+            Assert.AreEqual(string.Empty, shape.ImageData.SourceFullName.Replace("%20", " "));
         }
 
         [Test]

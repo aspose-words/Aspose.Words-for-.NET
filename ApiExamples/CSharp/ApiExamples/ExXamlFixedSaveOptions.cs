@@ -52,7 +52,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Counts and prints URIs of resources created during conversion to to fixed .xaml.
+        /// Counts and prints URIs of resources created during conversion to fixed .xaml.
         /// </summary>
         private class ResourceUriPrinter : IResourceSavingCallback
         {

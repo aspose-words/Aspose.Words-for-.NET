@@ -6,10 +6,12 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
@@ -268,8 +270,9 @@ namespace ApiExamples
             FindReplaceOptions options = new FindReplaceOptions();
             // Highlight newly inserted content with a color
             options.ApplyFont.HighlightColor = Color.LightGray;
-            // Apply an IReplacingCallback to make the replacement to convert integers into hex equivalents
-            // and also to count replacements in the order they take place
+
+            // Apply an IReplacingCallback to make the replacement to convert integers into hex equivalents,
+            // and then to count replacements in the order they take place
             options.ReplacingCallback = new NumberHexer();
             // By default, text is searched for replacements front to back, but we can change it to go the other way
             options.Direction = FindReplaceDirection.Backward;
@@ -285,7 +288,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Replaces arabic numbers with hexadecimal equivalents and appends the number of each replacement.
+        /// Replaces Arabic numbers with hexadecimal equivalents and appends the number of each replacement.
         /// </summary>
         private class NumberHexer : IReplacingCallback
         {
@@ -386,6 +389,81 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        //ExStart
+        //ExFor:FindReplaceOptions.UseLegacyOrder
+        //ExSummary:Shows how to change the searching order of nodes when performing a find-and-replace text operation.
+        public void UseLegacyOrder(bool isUseLegacyOrder)
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert three runs which can be used as tags, with the second placed inside a text box.
+            builder.Writeln("[tag 1]");
+            Shape textBox = builder.InsertShape(ShapeType.TextBox, 100, 50);
+            builder.Writeln("[tag 3]");
+            builder.MoveTo(textBox.FirstParagraph);
+            builder.Write("[tag 2]");
+
+            FindReplaceOptions options = new FindReplaceOptions();
+            TextReplacementTracker callback = new TextReplacementTracker();
+            options.ReplacingCallback = callback;
+
+            // When a text replacement is performed, all of the runs of a document have their contents searched
+            // for every instance of the string that we wish to replace.
+            // This flag can change the search priority of runs inside text boxes.
+            options.UseLegacyOrder = isUseLegacyOrder;
+
+            doc.Range.Replace(new Regex(@"\[tag \d*\]"), "", options);
+
+            // Using legacy order goes through all runs of a range in sequential order.
+            // Not using legacy order goes through runs within text boxes after all runs outside of text boxes have been searched.
+            Assert.AreEqual(isUseLegacyOrder ?
+                new List<string> { "[tag 1]", "[tag 2]", "[tag 3]" } :
+                new List<string> { "[tag 1]", "[tag 3]", "[tag 2]" }, callback.Matches);
+        }
+
+        /// <summary>
+        /// Creates a list of string matches from a regex-based text find-and-replacement operation
+        /// in the order that they are encountered.
+        /// </summary>
+        private class TextReplacementTracker : IReplacingCallback
+        {
+            ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
+            {
+                Matches.Add(e.Match.Value);
+                return ReplaceAction.Replace;
+            }
+
+            public List<string> Matches { get; } = new List<string>();
+        }
+        //ExEnd
+
+        [Test]
+        public void UseSubstitutions()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.UseSubstitutions
+            //ExSummary:Shows how to replace text with substitutions.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("John sold a car to Paul.");
+            builder.Writeln("Jane sold a house to Joe.");
+
+            // Perform a find-and-replace operation on a range's text contents
+            // while preserving some elements from the replaced text using substitutions.
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.UseSubstitutions = true;
+
+            Regex regex = new Regex(@"([A-z]+) sold a ([A-z]+) to ([A-z]+)");
+            doc.Range.Replace(regex, @"$3 bought a $2 from $1", options);
+
+            Assert.AreEqual(doc.GetText(), "Paul bought a car from John.\rJoe bought a house from Jane.\r\f");
+            //ExEnd
+        }
+
         //ExStart
         //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
         //ExFor:IReplacingCallback
@@ -446,7 +524,7 @@ namespace ApiExamples
                 foreach (Section srcSection in docToInsert.Sections.OfType<Section>())
                     foreach (Node srcNode in srcSection.Body)
                     {
-                        // Let's skip the node if it is a last empty paragraph in a section
+                        // Skip the node if it is a last empty paragraph in a section
                         if (srcNode.NodeType.Equals(NodeType.Paragraph))
                         {
                             Paragraph para = (Paragraph)srcNode;

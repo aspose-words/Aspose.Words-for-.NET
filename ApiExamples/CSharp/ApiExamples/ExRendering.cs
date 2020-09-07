@@ -140,7 +140,7 @@ namespace ApiExamples
             xpsOptions.PageIndex = 1;
             xpsOptions.PageCount = 3;
 
-            // All paragraphs in the "Heading 1" style will be included in the outline but "Heading 2" and onwards won't
+            // All paragraphs in the "Heading 1" style will be included in the outline but "Heading 2" and onwards will not
             xpsOptions.OutlineOptions.HeadingsOutlineLevels = 1;
 
             doc.Save(ArtifactsDir + "Rendering.SaveAsXps.PartialDocument.xps", xpsOptions);
@@ -166,8 +166,8 @@ namespace ApiExamples
             XpsSaveOptions xpsOptions = new XpsSaveOptions(SaveFormat.Xps);
             xpsOptions.UseBookFoldPrintingSettings = true;
 
-            // In order to make a booklet, we will need to print this document, stack the pages
-            // in the order they come out of the printer and then fold down the middle
+            // Once we print this document, we can turn it into a booklet by stacking the pages
+            // in the order they come out of the printer and then folding down the middle
             doc.Save(ArtifactsDir + "Rendering.SaveAsXpsBookFold.xps", xpsOptions);
             //ExEnd
         }
@@ -204,16 +204,14 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        [Category("SkipMono")]
+        [Test, Category("SkipMono")]
         public void SaveToTiffDefault()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
             doc.Save(ArtifactsDir + "Rendering.SaveToTiffDefault.tiff");
         }
 
-        [Test]
-        [Category("SkipMono")]
+        [Test, Category("SkipMono")]
         public void SaveToTiffCompression()
         {
             //ExStart
@@ -254,8 +252,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        [Category("SkipMono")]
+        [Test, Category("SkipMono")]
         public void SaveToEmf()
         {
             //ExStart
@@ -355,7 +352,7 @@ namespace ApiExamples
                     // transform, anti-aliasing, page units, etc.
                     gr.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
-                    // Let's say we want to fit the page into a 3" x 3" square on the screen so use inches as units
+                    // If we want to fit the page into a 3" x 3" square on the screen, we will need to set the measurement units to inches
                     gr.PageUnit = GraphicsUnit.Inch;
 
                     // The output should be offset 0.5" from the edge and rotated
@@ -413,11 +410,11 @@ namespace ApiExamples
             if (remainder > 0)
                 thumbRows++;
 
-            // Lets say I want thumbnails to be of this zoom
+            // Define a zoom factor for the thumbnails 
             const float scale = 0.25f;
 
-            // For simplicity lets pretend all pages in the document are of the same size, 
-            // so we can use the size of the first page to calculate the size of the thumbnail
+            // We can use the size of the first page to calculate the size of the thumbnail,
+            // assuming that all pages in the document are of the same size
             Size thumbSize = doc.GetPageInfo(0).GetSizeInPixels(scale, 96);
 
             // Calculate the size of the image that will contain all the thumbnails
@@ -426,8 +423,7 @@ namespace ApiExamples
             
             using (Bitmap img = new Bitmap(imgWidth, imgHeight))
             {
-                // The user has to provides a Graphics object to draw on
-                // The Graphics object can be created from a bitmap, from a metafile, printer or window
+                // The Graphics object, which we will draw on, can be created from a bitmap, metafile, printer, or window
                 using (Graphics gr = Graphics.FromImage(img))
                 {
                     gr.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
@@ -479,7 +475,7 @@ namespace ApiExamples
         /// <summary>
         /// The way to print in the .NET Framework is to implement a class derived from PrintDocument.
         /// This class is an example on how to implement custom printing of an Aspose.Words document.
-        /// It selects an appropriate paper size, orientation and paper tray when printing.
+        /// It selects an appropriate paper size, orientation, and paper tray when printing.
         /// </summary>
         public class MyPrintDocument : PrintDocument
         {
@@ -519,11 +515,11 @@ namespace ApiExamples
                 base.OnQueryPageSettings(e);
 
                 // A single Word document can have multiple sections that specify pages with different sizes, 
-                // orientation and paper trays. This code is called by the .NET printing framework before 
+                // orientations, and paper trays. This code is called by the .NET printing framework before 
                 // each page is printed and we get a chance to specify how the page is to be printed
                 PageInfo pageInfo = mDocument.GetPageInfo(mCurrentPage - 1);
                 e.PageSettings.PaperSize = pageInfo.GetDotNetPaperSize(PrinterSettings.PaperSizes);
-                // MS Word stores the paper source (printer tray) for each section as a printer-specfic value
+                // MS Word stores the paper source (printer tray) for each section as a printer-specific value
                 // To obtain the correct tray value you will need to use the RawKindValue returned
                 // by .NET for your printer
                 e.PageSettings.PaperSource.RawKind = pageInfo.PaperTray;
@@ -541,7 +537,7 @@ namespace ApiExamples
                 // but there is some hard margin in the printer and the .NET printing framework
                 // renders from there. We need to offset by that hard margin
 
-                // In .NET 1.1 the hard margin is not available programmatically, lets hardcode to about 4mm
+                // In .NET 1.1 the hard margin is not available programmatically, set it to approximately 4mm
                 float hardOffsetX = 20;
                 float hardOffsetY = 20;
 
@@ -838,11 +834,11 @@ namespace ApiExamples
             if (remainder > 0)
                 thumbRows++;
 
-            // Lets say I want thumbnails to be of this zoom
+            // Define a zoom factor for the thumbnails 
             const float scale = 0.25f;
 
-            // For simplicity lets pretend all pages in the document are of the same size, 
-            // so we can use the size of the first page to calculate the size of the thumbnail
+            // We can use the size of the first page to calculate the size of the thumbnail,
+            // assuming that all pages in the document are of the same size
             Size thumbSize = doc.GetPageInfo(0).GetSizeInPixels(scale, 96);
 
             // Calculate the size of the image that will contain all the thumbnails
@@ -851,8 +847,7 @@ namespace ApiExamples
 
             using (SKBitmap bitmap = new SKBitmap(imgWidth, imgHeight))
             {
-                // The user has to provides a Graphics object to draw on
-                // The Graphics object can be created from a bitmap, from a metafile, printer or window
+                // The Graphics object, which we will draw on, can be created from a bitmap, metafile, printer, or window
                 using (SKCanvas canvas = new SKCanvas(bitmap))
                 {
                     // Fill the "paper" with white, otherwise it will be transparent
@@ -979,7 +974,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // Retrieve the array of environment-dependent font sources that are searched by default
-            // For example this will contain a "Windows\Fonts\" source on a Windows machines
+            // For example, this will contain a "Windows\Fonts\" source on a Windows machines
             // We add this array to a new ArrayList to make adding or removing font entries much easier
             ArrayList fontSources = new ArrayList(FontSettings.DefaultInstance.GetFontsSources());
 
@@ -1122,7 +1117,7 @@ namespace ApiExamples
             // We can choose the default font to use in the case of any missing fonts
             FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
 
-            // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
+            // For testing we will set Aspose.Words to look for fonts only in a folder which does not exist. Since Aspose.Words won't
             // find any fonts in the specified directory, then during rendering the fonts in the document will be substituted with the default 
             // font specified under FontSettings.DefaultFontName. We can pick up on this substitution using our callback
             FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);

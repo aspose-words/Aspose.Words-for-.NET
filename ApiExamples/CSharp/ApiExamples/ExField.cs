@@ -25,6 +25,7 @@ using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 using LoadOptions = Aspose.Words.LoadOptions;
+using Aspose.Words.Fonts;
 #if NET462 || JAVA
 using Aspose.BarCode.BarCodeRecognition;
 #elif NETCOREAPP2_1
@@ -66,7 +67,7 @@ namespace ApiExamples
             Assert.AreEqual(false, field.IsLocked);
             Assert.AreEqual(" DATE  \\@ \"dddd, MMMM dd, yyyy\"", field.GetFieldCode());
 
-            // This updates only this field in the document
+            // Update the field to show the current date
             field.Update();         
             //ExEnd
 
@@ -290,7 +291,7 @@ namespace ApiExamples
             Assert.AreEqual(FieldUpdateCultureSource.CurrentThread, doc.FieldOptions.FieldUpdateCultureSource); //ExSkip
 
             // We can get the field to display a date in a different format if we change the current thread's culture
-            // If we want to avoid making such an all encompassing change,
+            // If we want to avoid making such an all-encompassing change,
             // we can set this option to get the document's fields to get their culture from themselves
             // Then, we can change a field's LocaleId and it will display its result in any culture we choose
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
@@ -409,7 +410,7 @@ namespace ApiExamples
             // Update the "Author" property
             doc.BuiltInDocumentProperties.Author = "John & Jane Doe";
 
-            // AUTHOR is one of the field types whose fields do not update according to their source values in real time,
+            // Fields of some types, such as AUTHOR, do not update according to their source values in real time,
             // and need to be updated manually beforehand every time an accurate value is required
             Assert.AreEqual("John Doe", field.Result);
 
@@ -744,6 +745,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Field.Format
+            //ExFor:Field.Update
             //ExFor:FieldFormat
             //ExFor:FieldFormat.DateTimeFormat
             //ExFor:FieldFormat.NumericFormat
@@ -763,9 +765,13 @@ namespace ApiExamples
             // Use a document builder to insert field with no format
             Field field = builder.InsertField("= 2 + 3");
 
+            Assert.AreEqual("5", field.Result);
+
             // We can format our field here instead of in the field code
             FieldFormat format = field.Format;
             format.NumericFormat = "$###.00";
+            
+            // Fields need to be manually updated in order for formatting to take effect
             field.Update();
 
             Assert.AreEqual("$  5.00", field.Result);
@@ -970,7 +976,7 @@ namespace ApiExamples
             string[] items = { "One", "Two", "Three" };
             FormField comboBoxField = builder.InsertComboBox("DropDown", items, 0);
 
-            // Get the list of drop down items
+            // Get the list of drop-down items
             DropDownItemCollection dropDownItems = comboBoxField.DropDownItems;
 
             Assert.AreEqual(3, dropDownItems.Count);
@@ -1136,7 +1142,7 @@ namespace ApiExamples
             Assert.AreEqual(" ADVANCE  \\d 5 \\l 100", field.GetFieldCode());
             // We are still on one paragraph
             Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
-            // Since we're setting horizontal and vertical positions next, we need to end the paragraph so the previous line does not get moved with the next one
+            // Since we're setting horizontal and vertical positions next, ending the paragraph prevents the previous line from getting moved with the next one
             builder.Writeln("This text is moved down and to the left, overlapping the previous text.");
             // This time we can also use negative values 
             field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
@@ -1240,7 +1246,7 @@ namespace ApiExamples
         //ExFor:FieldEnd.Accept(DocumentVisitor)
         //ExFor:FieldEnd.HasSeparator
         //ExFor:Field.End
-        //ExFor:Field.Remove()
+        //ExFor:Field.Remove
         //ExFor:Field.Separator
         //ExFor:Field.Start
         //ExSummary:Shows how to work with a document's field collection.
@@ -1531,7 +1537,7 @@ namespace ApiExamples
             const string loremIpsum = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
                                       "\nUt enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
 
-            // In this case our autonum legal field will number our first paragraph as "1."
+            // In this case our AUTONUMLGL field will number our first paragraph as "1."
             InsertNumberedClause(builder, "\tHeading 1", loremIpsum, StyleIdentifier.Heading1);
 
             // Our heading style number will be 1 again, so this field will keep counting headings at a heading level of 1
@@ -1548,7 +1554,7 @@ namespace ApiExamples
 
             foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal))
             {
-                // By default the separator will appear as "." in the document but here it is null
+                // By default, the separator will appear as "." in the document but here it is null
                 Assert.IsNull(field.SeparatorCharacter);
 
                 // Change the separator character and remove trailing separators
@@ -1572,7 +1578,7 @@ namespace ApiExamples
             builder.Writeln(heading);
 
             // This text will belong to the auto num legal field above it
-            // It will collapse when the arrow next to the corresponding autonum legal field is clicked in MS Word
+            // It will collapse when the arrow next to the corresponding AUTONUMLGL field is clicked in MS Word
             builder.CurrentParagraph.ParagraphFormat.StyleIdentifier = StyleIdentifier.BodyText;
             builder.Writeln(contents);
         }
@@ -1841,7 +1847,7 @@ namespace ApiExamples
             FieldListNum field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
 
             // Lists start counting at 1 by default, but we can change this number at any time
-            // In this case, we'll do a zero-based count
+            // In this case, we will do a zero-based count
             field.StartingNumber = "0";
             builder.Writeln("Paragraph 1");
 
@@ -1955,7 +1961,7 @@ namespace ApiExamples
             Assert.AreEqual(" MERGEFIELD  \"Courtesy Title\" \\m \\b \"Dear \" \\f \" \"", fieldMergeField.GetFieldCode());
 
             // Insert another merge field for another column
-            // We don't need to use every column to perform a mail merge
+            // We do not need to use every column to perform a mail merge
             fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
             fieldMergeField.FieldName = "Last Name";
             fieldMergeField.TextAfter = ":";
@@ -2011,7 +2017,7 @@ namespace ApiExamples
             // Filter out any headings that are outside this range
             field.HeadingLevelRange = "1-3";
 
-            // Headings in this range won't display their page number in their TOC entry
+            // Headings in this range will not display their page number in their TOC entry
             field.PageNumberOmittingLevelRange = "2-5";
 
             field.EntrySeparator = "-";
@@ -2684,13 +2690,13 @@ namespace ApiExamples
 
             Assert.True(image.IsImage);
             Assert.Null(image.ImageData.ImageBytes);
-            Assert.AreEqual(ImageDir + "Transparent background logo.png", image.ImageData.SourceFullName);
+            Assert.AreEqual(ImageDir + "Transparent background logo.png", image.ImageData.SourceFullName.Replace("%20", " "));
 
             image = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             Assert.True(image.IsImage);
             Assert.Null(image.ImageData.ImageBytes);
-            Assert.AreEqual(ImageDir + "Transparent background logo.png", image.ImageData.SourceFullName);
+            Assert.AreEqual(ImageDir + "Transparent background logo.png", image.ImageData.SourceFullName.Replace("%20", " "));
         }
 
         //ExStart
@@ -2776,7 +2782,7 @@ namespace ApiExamples
                 {
                     if (i == 0)
                     {
-                        // When on the first row from the input document's table, ensure that all of the table's cells match all XML element Names
+                        // When on the first row from the input document's table, ensure that all table's cells match all XML element Names
                         for (int k = 0; k < table.Rows.Count - 1; k++)
                             Assert.AreEqual(catalogData.ChildNodes[k].ChildNodes[j].Name,
                                 table.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, string.Empty).ToLower());
@@ -2992,13 +2998,13 @@ namespace ApiExamples
             Assert.AreEqual("Image:ImageColumn", field.FieldName);
 
             // When we merge images, our data table will normally have the full e. of the images we wish to merge
-            // If this is cumbersome, we can move image filename logic to another place and populate the data table with just shorthands for images
+            // If this is cumbersome, we can move image filename logic to another place and populate the data table with shorter name references for images
             DataTable dataTable = new DataTable("Images");
             dataTable.Columns.Add(new DataColumn("ImageColumn"));
             dataTable.Rows.Add("Dark logo");
             dataTable.Rows.Add("Transparent logo");
 
-            // A custom merging callback will contain filenames that our shorthands will refer to
+            // A custom merging callback will contain filenames that our references will refer to
             doc.MailMerge.FieldMergingCallback = new ImageFilenameCallback();
             doc.MailMerge.Execute(dataTable);
 
@@ -3058,8 +3064,8 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Png, shape);
-            Assert.AreEqual(300.0d, shape.Width);
-            Assert.AreEqual(300.0d, shape.Height);
+            Assert.AreEqual(300.0d, shape.Width, 1);
+            Assert.AreEqual(300.0d, shape.Height, 1);
         }
 
         [Test]
@@ -3315,7 +3321,7 @@ namespace ApiExamples
             Assert.AreEqual(" SEQ  MySequence", sequenceField.GetFieldCode());
 
             // Insert a XE field which will show up in the INDEX field
-            // Since "MySequence" is at 1 and this XE field is on page 2, along with with the custom separators we defined above,
+            // Since "MySequence" is at 1 and this XE field is on page 2, along with the custom separators we defined above,
             // this field's INDEX entry will say "MySequence at 1 on page 2"
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Cat";
@@ -3565,7 +3571,7 @@ namespace ApiExamples
             // which will be grouped under their parent headings/subheadings in the INDEX field
             // If index.RunSubentriesOnSameLine is false, "Heading 1" will take up one line as a heading,
             // followed by a two-line indented list of "Subheading 1" and "Subheading 2" with their respective page numbers
-            // Otherwise, the two subheadings and their page numbers will be on tha same line as their heading
+            // Otherwise, the two subheadings and their page numbers will be on the same line as their heading
             builder.InsertBreak(BreakType.PageBreak);
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Heading 1:Subheading 1";
@@ -3640,7 +3646,7 @@ namespace ApiExamples
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "愛子";
 
-            // The "Text" attrubute may contain a word's spelling in Kanji, whose pronounciation may be ambiguous,
+            // The "Text" attribute may contain a word's spelling in Kanji, whose pronunciation may be ambiguous,
             // while a "Yomi" version of the word will be spelled exactly how it is pronounced using Hiragana
             // If our INDEX field is set to use Yomi, then we can sort phonetically using the "Yomi" attribute values instead of the "Text" attribute
             indexEntry.Yomi = "あ";
@@ -3809,7 +3815,7 @@ namespace ApiExamples
             Assert.AreEqual(" DISPLAYBARCODE  ABC123 QR \\b 0xF8BD69 \\f 0xB5413B \\q 3 \\s 250 \\h 1000 \\r 0", field.GetFieldCode());
             builder.Writeln();
 
-            // insert a EAN13 barcode
+            // Insert an EAN13 barcode
             field = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
             field.BarcodeType = "EAN13";
             field.BarcodeValue = "501234567890";
@@ -3820,7 +3826,7 @@ namespace ApiExamples
             Assert.AreEqual(" DISPLAYBARCODE  501234567890 EAN13 \\t \\p CASE \\x", field.GetFieldCode());
             builder.Writeln();
 
-            // insert a CODE39 barcode
+            // Insert a CODE39 barcode
             field = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
             field.BarcodeType = "CODE39";
             field.BarcodeValue = "12345ABCDE";
@@ -3829,7 +3835,7 @@ namespace ApiExamples
             Assert.AreEqual(" DISPLAYBARCODE  12345ABCDE CODE39 \\d", field.GetFieldCode());
             builder.Writeln();
 
-            // insert a ITF14 barcode
+            // Insert an ITF14 barcode
             field = (FieldDisplayBarcode)builder.InsertField(FieldType.FieldDisplayBarcode, true);
             field.BarcodeType = "ITF14";
             field.BarcodeValue = "09312345678907";
@@ -3901,7 +3907,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a MERGEBARCODE field,
-            // which functions similar to a MERGEFIELD by creating a barcode from the merged data source's values
+            // which functions like a MERGEFIELD by creating a barcode from the merged data source's values
             // This field will convert all rows in a merge data source's "MyQRCode" column into QR barcodes
             FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
             field.BarcodeType = "QR";
@@ -3975,7 +3981,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a MERGEBARCODE field,
-            // which functions similar to a MERGEFIELD by creating a barcode from the merged data source's values
+            // which functions like a MERGEFIELD by creating a barcode from the merged data source's values
             // This field will convert all rows in a merge data source's "MyEAN13Barcode" column into EAN13 barcodes
             FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
             field.BarcodeType = "EAN13";
@@ -4041,7 +4047,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a MERGEBARCODE field,
-            // which functions similar to a MERGEFIELD by creating a barcode from the merged data source's values
+            // which functions like a MERGEFIELD by creating a barcode from the merged data source's values
             // This field will convert all rows in a merge data source's "MyCODE39Barcode" column into CODE39 barcodes
             FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
             field.BarcodeType = "CODE39";
@@ -4105,7 +4111,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a MERGEBARCODE field,
-            // which functions similar to a MERGEFIELD by creating a barcode from the merged data source's values
+            // which functions like a MERGEFIELD by creating a barcode from the merged data source's values
             // This field will convert all rows in a merge data source's "MyITF14Barcode" column into ITF14 barcodes
             FieldMergeBarcode field = (FieldMergeBarcode)builder.InsertField(FieldType.FieldMergeBarcode, true);
             field.BarcodeType = "ITF14";
@@ -4793,7 +4799,7 @@ namespace ApiExamples
             doc.BuiltInDocumentProperties.LastSavedTime = DateTime.Now;
 
             doc.UpdateFields();
-            //doc.Save(ArtifactsDir + "Field.SAVEDATE.docx");
+            doc.Save(ArtifactsDir + "Field.SAVEDATE.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Field.SAVEDATE.docx");
@@ -4953,7 +4959,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // If we open an existing document, the document's author's full name will be displayed by the field
-            // If we create a document programmatically, we need to set this attribute to the author's name so our field has something to display
+            // If we create a document programmatically, we need to set this attribute to the author's name, so our field has something to display
             doc.FieldOptions.DefaultDocumentAuthor = "Joe Bloggs";
 
             builder.Write("This document was created by ");
@@ -4977,7 +4983,7 @@ namespace ApiExamples
             Assert.AreEqual(" AUTHOR  \"Jane Doe\"", field.GetFieldCode());
             Assert.AreEqual("Jane Doe", field.Result);
 
-            // The author name in the built in properties was changed by the field, but the default document author stays the same
+            // The author name in the built-in properties was changed by the field, but the default document author stays the same
             Assert.AreEqual("Jane Doe", doc.BuiltInDocumentProperties.Author);
             Assert.AreEqual("Joe Bloggs", doc.FieldOptions.DefaultDocumentAuthor);
 
@@ -5018,7 +5024,7 @@ namespace ApiExamples
 
             builder.Writeln();
 
-            // While the set of a document's properties is fixed, we can add, name and define our own values in the variables collection
+            // While the set of a document's properties is fixed, we can add, name, and define our own values in the variables collection
             Assert.That(doc.Variables, Is.Empty);
             doc.Variables.Add("My variable", "My variable's value");
 
@@ -5173,7 +5179,7 @@ namespace ApiExamples
             Assert.AreEqual("0", field.Result);
 
             // To update the values of these fields while editing in Microsoft Word,
-            // the changes first have to be saved, then the fields manually updated
+            // the changes must first be saved, then the fields need to be manually updated
             doc.Save(ArtifactsDir + "Field.FILESIZE.docx");
             //ExEnd
 
@@ -5309,7 +5315,7 @@ namespace ApiExamples
             doc.BuiltInDocumentProperties.Comments = "My comment";
 
             // We can access a property using its name and display it with an INFO field
-            // In this case it will be the Comments property
+            // In this case, it will be the Comments property
             FieldInfo field = (FieldInfo)builder.InsertField(FieldType.FieldInfo, true);
             field.InfoType = "Comments";
             field.Update();
@@ -5460,7 +5466,7 @@ namespace ApiExamples
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
             // Insert character and word counts
-            FieldNumChars fieldNumChars = (FieldNumChars)builder.InsertField(FieldType.FieldNumChars, true);       
+            FieldNumChars fieldNumChars = (FieldNumChars)builder.InsertField(FieldType.FieldNumChars, true);
             builder.Writeln(" characters");
             FieldNumWords fieldNumWords = (FieldNumWords)builder.InsertField(FieldType.FieldNumWords, true);
             builder.Writeln(" words");
@@ -5485,6 +5491,7 @@ namespace ApiExamples
 
             TestUtil.VerifyField(FieldType.FieldNumChars, " NUMCHARS ", "6009", doc.Range.Fields[0]);
             TestUtil.VerifyField(FieldType.FieldNumWords, " NUMWORDS ", "1054", doc.Range.Fields[1]);
+
             TestUtil.VerifyField(FieldType.FieldPage, " PAGE ", "6", doc.Range.Fields[2]);
             TestUtil.VerifyField(FieldType.FieldNumPages, " NUMPAGES ", "6", doc.Range.Fields[3]);
         }
@@ -5506,7 +5513,7 @@ namespace ApiExamples
             FieldPrint field = (FieldPrint)builder.InsertField(FieldType.FieldPrint, true);
 
             // Set the area for the printer to perform instructions over
-            // In this case it will be the paragraph that contains our PRINT field
+            // In this case, it will be the paragraph that contains our PRINT field
             field.PostScriptGroup = "para";
 
             // When our document is printed using a printer that supports PostScript,
@@ -5721,7 +5728,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a boomkark with a footnote for the NOTEREF field to reference
+            // Create a bookmark with a footnote for the NOTEREF field to reference
             InsertBookmarkWithFootnote(builder, "MyBookmark1", "Contents of MyBookmark1", "Footnote from MyBookmark1");
 
             // This NOTEREF field will display just the number of the footnote inside the referenced bookmark
@@ -6181,7 +6188,7 @@ namespace ApiExamples
             fieldMergeField.FieldName = "Department";
 
             // The MERGEFIELD refers to the "Department" column in our data table, and our SKIPIF field will check if its value equals to "HR"
-            // One of three rows satisfies that condition, so we will expect the result of our mail merge to have two pages
+            // One of three rows satisfy that condition, so we will expect the result of our mail merge to have two pages
             fieldSkipIf.LeftExpression = "=";
             fieldSkipIf.RightExpression = "HR";
 
@@ -6305,7 +6312,7 @@ namespace ApiExamples
 
             builder.Writeln(" Line 1");
 
-            // In Unicode, the "221E" code is reserved for ths infinity symbol
+            // In Unicode, the "221E" code is reserved for the infinity symbol
             field = (FieldSymbol)builder.InsertField(FieldType.FieldSymbol, true);
             field.CharacterCode = 0x221E.ToString();
             field.IsUnicode = true;
@@ -6393,7 +6400,7 @@ namespace ApiExamples
             Assert.AreEqual(" TITLE  \"My New Title\"", field.GetFieldCode());
             Assert.AreEqual("My New Title", field.Result);
 
-            // In doing that we've also changed the title in the document properties
+            // In doing that we have also changed the title in the document properties
             Assert.AreEqual("My New Title", doc.BuiltInDocumentProperties.Title);
 
             doc.UpdateFields();
@@ -6465,7 +6472,7 @@ namespace ApiExamples
             fieldToa.PageNumberListSeparator = " & p. ";
 
             // To reduce clutter, we can set this to true to get our table to display the word "passim"
-            // if there would be 5 or more page numbers in one row
+            // if there are 5 or more page numbers in one row
             fieldToa.UsePassim = true;
 
             // One TA field can refer to a range of pages, and the sequence specified here will be between the start and end page numbers
@@ -6481,20 +6488,20 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
 
             // We will insert a TA entry using a document builder
-            // This entry is outside the bookmark specified by our table, so it won't be displayed
+            // This entry is outside the bookmark specified by our table, so it will not be displayed
             FieldTA fieldTA = InsertToaEntry(builder, "1", "Source 1");
 
             Assert.AreEqual(" TA  \\c 1 \\l \"Source 1\"", fieldTA.GetFieldCode());
 
             // This entry is inside the bookmark,
-            // but the entry category doesn't match that of the table, so it will also be omitted
+            // but the entry category does not match that of the table, so it will also be omitted
             builder.StartBookmark("MyBookmark");
             fieldTA = InsertToaEntry(builder, "2", "Source 2");
 
             // This entry will appear in the table
             fieldTA = InsertToaEntry(builder, "1", "Source 3");
 
-            // Short citations aren't displayed by a TOA table,
+            // Short citations are not displayed by a TOA table,
             // but they can be used as a shorthand to refer to bulky source names that multiple TA fields reference
             fieldTA.ShortCitation = "S.3";
 
@@ -6933,6 +6940,7 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:Field.Remove
         //ExFor:FieldPrivate
         //ExSummary:Shows how to process PRIVATE fields.
         [Test] //ExSkip
@@ -7076,7 +7084,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" TIME \\@ HHmm", field.GetFieldCode());
 
-            // We can even display the date, according to the gregorian calendar
+            // We can even display the date, according to the Gregorian calendar
             field = InsertFieldTime(builder, "\\@ \"M/d/yyyy h mm:ss am/pm\"");
 
             Assert.AreEqual(" TIME \\@ \"M/d/yyyy h mm:ss am/pm\"", field.GetFieldCode());

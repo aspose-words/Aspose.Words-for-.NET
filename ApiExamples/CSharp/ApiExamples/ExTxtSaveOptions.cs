@@ -8,6 +8,7 @@
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
+using Aspose.Words.Tables;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -286,7 +287,7 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        public void TableLayout(bool preserveTableLayout)
+        public void PreserveTableLayout(bool preserveTableLayout)
         {
             //ExStart
             //ExFor:TxtSaveOptions.PreserveTableLayout
@@ -311,9 +312,9 @@ namespace ApiExamples
             // However, we can configure a SaveOptions object to arrange table contents to preserve some of the table's appearance
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions { PreserveTableLayout = preserveTableLayout };
 
-            doc.Save(ArtifactsDir + "TxtSaveOptions.TableLayout.txt", txtSaveOptions);
+            doc.Save(ArtifactsDir + "TxtSaveOptions.PreserveTableLayout.txt", txtSaveOptions);
 
-            string docText = File.ReadAllText(ArtifactsDir + "TxtSaveOptions.TableLayout.txt");
+            string docText = File.ReadAllText(ArtifactsDir + "TxtSaveOptions.PreserveTableLayout.txt");
 
             if (preserveTableLayout)
                 Assert.AreEqual("Row 1, cell 1                Row 1, cell 2\r\n" +
@@ -323,6 +324,40 @@ namespace ApiExamples
                                 "Row 1, cell 2\r\n" +
                                 "Row 2, cell 1\r\n" +
                                 "Row 2, cell 2\r\n\r\n", docText);
+            //ExEnd
+        }
+
+        [Test]
+        public void UpdateTableLayout()
+        {
+            //ExStart
+            //ExFor:Document.UpdateTableLayout
+            //ExSummary:Shows how to preserve a table's layout when saving to .txt.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Cell 1");
+            builder.InsertCell();
+            builder.Write("Cell 2");
+            builder.InsertCell();
+            builder.Write("Cell 3");
+            builder.EndTable();
+
+            // Create a SaveOptions object to prepare this document to be saved to .txt.
+            TxtSaveOptions options = new TxtSaveOptions();
+            options.PreserveTableLayout = true;
+
+            // Previewing the appearance of the document in .txt form shows that the table will not be represented accurately.
+            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.Width);
+            Assert.AreEqual("CCC\r\neee\r\nlll\r\nlll\r\n   \r\n123\r\n\r\n", doc.ToString(options));
+
+            // We can call UpdateTableLayout() to fix some of these issues.
+            doc.UpdateTableLayout();
+
+            Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
+            Assert.AreEqual(155.0d, table.FirstRow.Cells[0].CellFormat.Width, 2f);
             //ExEnd
         }
     }

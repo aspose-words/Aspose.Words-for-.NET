@@ -141,36 +141,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void DetectDigitalSignatures()
-        {
-            //ExStart
-            //ExFor:FileFormatUtil.DetectFileFormat(String)
-            //ExFor:FileFormatInfo
-            //ExFor:FileFormatInfo.LoadFormat
-            //ExFor:FileFormatInfo.HasDigitalSignature
-            //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and presence of digital signatures.
-            // Use a FileFormatInfo instance to verify that a document is not digitally signed
-            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.docx");
-
-            Assert.AreEqual(".docx", FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
-            Assert.False(info.HasDigitalSignature);
-
-            // Sign the document
-            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
-            DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "File.DetectDigitalSignatures.docx",
-                certificateHolder, new SignOptions() { SignTime = DateTime.Now });
-
-            // Use a new FileFormatInstance to confirm that it is signed
-            info = FileFormatUtil.DetectFileFormat(ArtifactsDir + "File.DetectDigitalSignatures.docx");
-
-            Assert.True(info.HasDigitalSignature);
-
-            // The signatures can then be accessed like this
-            Assert.AreEqual(1, DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "File.DetectDigitalSignatures.docx").Count);
-            //ExEnd
-        }
-
-        [Test]
         public void SaveToDetectedFileFormat()
         {
             //ExStart

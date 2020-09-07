@@ -603,23 +603,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void TempFolder()
-        {
-            //ExStart
-            //ExFor:LoadOptions.TempFolder
-            //ExSummary:Shows how to load a document using temporary files.
-            // Note that such an approach can reduce memory usage but degrades speed
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.TempFolder = @"C:\TempFolder\";
-            
-            // Ensure that the directory exists and load
-            Directory.CreateDirectory(loadOptions.TempFolder);
-             
-            Document doc = new Document(MyDir + "Document.docx", loadOptions);
-            //ExEnd
-        }
-
-        [Test]
         public void ConvertToHtml()
         {
             //ExStart
@@ -811,68 +794,6 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:HtmlSaveOptions.ExportFontResources
-        //ExFor:HtmlSaveOptions.FontSavingCallback
-        //ExFor:IFontSavingCallback
-        //ExFor:IFontSavingCallback.FontSaving
-        //ExFor:FontSavingArgs
-        //ExFor:FontSavingArgs.Bold
-        //ExFor:FontSavingArgs.Document
-        //ExFor:FontSavingArgs.FontFamilyName
-        //ExFor:FontSavingArgs.FontFileName
-        //ExFor:FontSavingArgs.FontStream
-        //ExFor:FontSavingArgs.IsExportNeeded
-        //ExFor:FontSavingArgs.IsSubsettingNeeded
-        //ExFor:FontSavingArgs.Italic
-        //ExFor:FontSavingArgs.KeepFontStreamOpen
-        //ExFor:FontSavingArgs.OriginalFileName
-        //ExFor:FontSavingArgs.OriginalFileSize
-        //ExSummary:Shows how to define custom logic for handling font exporting when saving to HTML based formats.
-        [Test] //ExSkip
-        public void SaveHtmlExportFonts()
-        {
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            // Set the option to export font resources and create and pass the object which implements the handler methods
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
-            options.ExportFontResources = true;
-            options.FontSavingCallback = new HandleFontSaving();
-            
-            // The fonts from the input document will now be exported as .ttf files and saved alongside the output document
-            doc.Save(ArtifactsDir + "Document.SaveHtmlExportFonts.html", options);
-            Assert.AreEqual(10, Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length); //ExSkip
-        }
-
-        /// <summary>
-        /// Prints information about fonts and saves them alongside their output .html.
-        /// </summary>
-        public class HandleFontSaving : IFontSavingCallback
-        {
-            void IFontSavingCallback.FontSaving(FontSavingArgs args)
-            {
-                // Print information about fonts
-                Console.Write($"Font:\t{args.FontFamilyName}");
-                if (args.Bold) Console.Write(", bold");
-                if (args.Italic) Console.Write(", italic");
-                Console.WriteLine($"\nSource:\t{args.OriginalFileName}, {args.OriginalFileSize} bytes\n");
-
-                Assert.True(args.IsExportNeeded);
-                Assert.True(args.IsSubsettingNeeded);
-
-                // We can designate where each font will be saved by either specifying a file name, or creating a new stream
-                args.FontFileName = args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last();
-
-                args.FontStream = 
-                    new FileStream(ArtifactsDir + args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last(), FileMode.Create);
-                Assert.False(args.KeepFontStreamOpen);
-
-                // We can access the source document from here also
-                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
-            }
-        }
-        //ExEnd
-
-        //ExStart
         //ExFor:INodeChangingCallback
         //ExFor:INodeChangingCallback.NodeInserting
         //ExFor:INodeChangingCallback.NodeInserted
@@ -1036,113 +957,6 @@ namespace ApiExamples
             Assert.True(digitalSig.CertificateHolder.Certificate.Subject.Contains("Aspose Pty Ltd"));
             Assert.True(digitalSig.CertificateHolder.Certificate.IssuerName.Name != null &&
                         digitalSig.CertificateHolder.Certificate.IssuerName.Name.Contains("VeriSign"));
-        }
-
-        [Test]
-        public void DigitalSignature()
-        {
-            //ExStart
-            //ExFor:DigitalSignature.CertificateHolder
-            //ExFor:DigitalSignature.IssuerName
-            //ExFor:DigitalSignature.SubjectName
-            //ExFor:DigitalSignatureCollection
-            //ExFor:DigitalSignatureCollection.IsValid
-            //ExFor:DigitalSignatureCollection.Count
-            //ExFor:DigitalSignatureCollection.Item(Int32)
-            //ExFor:DigitalSignatureUtil.Sign(Stream, Stream, CertificateHolder)
-            //ExFor:DigitalSignatureUtil.Sign(String, String, CertificateHolder)
-            //ExFor:DigitalSignatureType
-            //ExFor:Document.DigitalSignatures
-            //ExSummary:Shows how to sign documents with X.509 certificates.
-            // Verify that a document isn't signed
-            Assert.False(FileFormatUtil.DetectFileFormat(MyDir + "Document.docx").HasDigitalSignature);
-
-            // Create a CertificateHolder object from a PKCS #12 file, which we will use to sign the document
-            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
-
-            // There are 2 ways of saving a signed copy of a document to the local file system
-            // 1: Designate unsigned input and signed output files by filename and sign with the passed CertificateHolder 
-            DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "Document.DigitalSignature.docx", 
-                certificateHolder, new SignOptions() { SignTime = DateTime.Now } );
-
-            Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
-
-            // 2: Create a stream for the input file and one for the output and create a file, signed with the CertificateHolder, at the file system location determine
-            using (FileStream inDoc = new FileStream(MyDir + "Document.docx", FileMode.Open))
-            {
-                using (FileStream outDoc = new FileStream(ArtifactsDir + "Document.DigitalSignature.docx", FileMode.Create))
-                {
-                    DigitalSignatureUtil.Sign(inDoc, outDoc, certificateHolder);
-                }
-            }
-
-            Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
-
-            // Open the signed document and get its digital signature collection
-            Document signedDoc = new Document(ArtifactsDir + "Document.DigitalSignature.docx");
-            DigitalSignatureCollection digitalSignatureCollection = signedDoc.DigitalSignatures;
-
-            // Verify that all of the document's digital signatures are valid and check their details
-            Assert.True(digitalSignatureCollection.IsValid);
-            Assert.AreEqual(1, digitalSignatureCollection.Count);
-            Assert.AreEqual(DigitalSignatureType.XmlDsig, digitalSignatureCollection[0].SignatureType);
-            Assert.AreEqual("CN=Morzal.Me", signedDoc.DigitalSignatures[0].IssuerName);
-            Assert.AreEqual("CN=Morzal.Me", signedDoc.DigitalSignatures[0].SubjectName);
-            //ExEnd
-        }
-
-        [Test]
-        public void AppendAllDocumentsInFolder()
-        {
-            string path = ArtifactsDir + "Document.AppendAllDocumentsInFolder.doc";
-
-            // Delete the file that was created by the previous run as I don't want to append it again
-            if (File.Exists(path))
-                File.Delete(path);
-
-            //ExStart
-            //ExFor:Document.AppendDocument(Document, ImportFormatMode)
-            //ExSummary:Shows how to use the AppendDocument method to combine all the documents in a folder to the end of a template document.
-            // Lets start with a simple template and append all the documents in a folder to this document
-            Document baseDoc = new Document();
-
-            // Add some content to the template
-            DocumentBuilder builder = new DocumentBuilder(baseDoc);
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
-            builder.Writeln("Template Document");
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Normal;
-            builder.Writeln("Some content here");
-
-            // Gather the files which will be appended to our template document
-            // In this case we add the optional parameter to include the search only for files with the ".doc" extension
-            ArrayList files = new ArrayList(Directory.GetFiles(MyDir, "*.doc")
-                .Where(file => file.EndsWith(".doc", StringComparison.CurrentCultureIgnoreCase)).ToArray());
-            Assert.AreEqual(7, files.Count); //ExSkip
-
-            // The list of files may come in any order, let's sort the files by name so the documents are enumerated alphabetically
-            files.Sort();
-            Assert.AreEqual(5, baseDoc.Styles.Count); //ExSkip
-            Assert.AreEqual(1, baseDoc.Sections.Count); //ExSkip
-
-            // Iterate through every file in the directory and append each one to the end of the template document
-            foreach (string fileName in files)
-            {
-                // We have some encrypted test documents in our directory, Aspose.Words can open encrypted documents 
-                // but only with the correct password. Let's just skip them here for simplicity
-                FileFormatInfo info = FileFormatUtil.DetectFileFormat(fileName);
-                if (info.IsEncrypted)
-                    continue;
-
-                Document subDoc = new Document(fileName);
-                baseDoc.AppendDocument(subDoc, ImportFormatMode.UseDestinationStyles);
-            }
-
-            // Save the combined document to disk
-            baseDoc.Save(path);
-            //ExEnd
-
-            Assert.AreEqual(7, baseDoc.Styles.Count);
-            Assert.AreEqual(8, baseDoc.Sections.Count);
         }
 
         [Test]
@@ -2183,7 +1997,7 @@ namespace ApiExamples
             TxtLoadOptions loadOptions = new TxtLoadOptions();
             loadOptions.DetectNumberingWithWhitespaces = false;
 
-            using (Stream stream = new FileStream(MyDir + "Document.docx", FileMode.Open))
+            using (Stream stream = new FileStream(MyDir + "Document.docx", FileMode.Open, FileAccess.Read))
             {
                 PlainTextDocument plaintext = new PlainTextDocument(stream);
                 Assert.AreEqual("Hello World!", plaintext.Text.Trim()); //ExSkip

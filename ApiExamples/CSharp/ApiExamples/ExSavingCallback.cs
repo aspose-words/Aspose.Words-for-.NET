@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System.IO;
+using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -61,7 +62,7 @@ namespace ApiExamples
 
             doc.Save($"{ArtifactsDir}SavingCallback.PageFileName.html", htmlFixedSaveOptions);
 
-            string[] filePaths = Directory.GetFiles(ArtifactsDir, "SavingCallback.PageFileName.Page_*.html");
+            string[] filePaths = Directory.GetFiles(ArtifactsDir).Where(s => s.StartsWith(ArtifactsDir + "SavingCallback.PageFileName.Page_")).OrderBy(s => s).ToArray();
 
             for (int i = 0; i < doc.PageCount; i++)
             {
@@ -132,7 +133,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Renames saved document parts that are produced when an HTML document is saved while being split according to a criteria.
+        /// Renames saved document parts that are produced when an HTML document is saved while being split according to a DocumentSplitCriteria.
         /// </summary>
         private class SavedDocumentPartRename : IDocumentPartSavingCallback
         {
