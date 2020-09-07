@@ -312,6 +312,7 @@ namespace ApiExamples
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
             Assert.AreEqual(6, properties.Pages);
+
             Assert.AreEqual(1035, properties.Words);
             Assert.AreEqual(6026, properties.Characters);
             Assert.AreEqual(7041, properties.CharactersWithSpaces);

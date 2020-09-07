@@ -680,7 +680,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.DarkBlue.ToArgb(), run.Font.Shading.ForegroundPatternColor.ToArgb());
         }
 
-        [Test]
+        [Test, Category("SkipMono")]
         public void Bidi()
         {
             //ExStart

@@ -114,7 +114,7 @@ namespace ApiExamples
         }
 
 #if NET462 || NETCOREAPP2_1 || JAVA // because of a Xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
-        [Test]
+        [Test, Category("SkipMono")]
         public void Date()
         {
             //ExStart
@@ -807,7 +807,7 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.AreEqual(updateSdtContent ? "Value 2" : "Click here to enter a date.\r\nChoose an item.",
+            Assert.AreEqual(updateSdtContent ? "Value 2" : $"Click here to enter a date.{Environment.NewLine}Choose an item.",
                 textAbsorber.Text);
 #endif
         }

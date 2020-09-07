@@ -33,16 +33,16 @@ namespace ApiExamples
             DigitalSignatureUtil.RemoveAllSignatures(MyDir + "Digitally signed.docx", ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx");
 
             // Remove all signatures from the document using stream parameters
-            using (Stream streamIn = new FileStream(MyDir + "Digitally signed.docx", FileMode.Open))
+            using (Stream streamIn = new FileStream(MyDir + "Digitally signed.docx", FileMode.Open, FileAccess.Read))
             {
-                using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Create))
+                using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Create, FileAccess.ReadWrite))
                 {
                     DigitalSignatureUtil.RemoveAllSignatures(streamIn, streamOut);
                 } 
             }
 
             // We can also load a document's digital signatures via stream, which we will do to verify that all signatures have been removed
-            using (Stream stream = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Open))
+            using (Stream stream = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Open, FileAccess.Read))
             {
                 digitalSignatures = DigitalSignatureUtil.LoadSignatures(stream);
                 Assert.AreEqual(0, digitalSignatures.Count);
@@ -61,20 +61,20 @@ namespace ApiExamples
             //ExFor:SignOptions.Comments
             //ExFor:SignOptions.SignTime
             //ExSummary:Shows how to sign documents using certificate holder and sign options.
-            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            CertificateHolder certificateHolder = CertificateHolder.Create(File.ReadAllBytes(MyDir + "morzal.pfx"), "aw");
 
             SignOptions signOptions = new SignOptions { Comments = "My comment", SignTime = DateTime.Now };
 
-            using (Stream streamIn = new FileStream(MyDir + "Digitally signed.docx", FileMode.Open))
+            using (Stream streamIn = new FileStream(MyDir + "Digitally signed.docx", FileMode.Open, FileAccess.Read))
             {
-                using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.SignDocument.docx", FileMode.OpenOrCreate))
+                using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.SignDocument.docx", FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     DigitalSignatureUtil.Sign(streamIn, streamOut, certificateHolder, signOptions);
                 }
             }
             //ExEnd
 
-            using (Stream stream = new FileStream(ArtifactsDir + "DigitalSignatureUtil.SignDocument.docx", FileMode.Open))
+            using (Stream stream = new FileStream(ArtifactsDir + "DigitalSignatureUtil.SignDocument.docx", FileMode.Open, FileAccess.Read))
             {
                 DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(stream);
                 Assert.AreEqual(1, digitalSignatures.Count);
@@ -92,7 +92,7 @@ namespace ApiExamples
         [Description("WORDSNET-13036, WORDSNET-16868")]
         public void SignDocumentObfuscationBug()
         {
-            CertificateHolder ch = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            CertificateHolder ch = CertificateHolder.Create(File.ReadAllBytes(MyDir + "morzal.pfx"), "aw");
 
             Document doc = new Document(MyDir + "Structured document tags.docx");
             string outputFileName = ArtifactsDir + "DigitalSignatureUtil.SignDocumentObfuscationBug.doc";
@@ -106,7 +106,7 @@ namespace ApiExamples
         [Description("WORDSNET-16868")]
         public void IncorrectDecryptionPassword()
         {
-            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            CertificateHolder certificateHolder = CertificateHolder.Create(File.ReadAllBytes(MyDir + "morzal.pfx"), "aw");
 
             Document doc = new Document(MyDir + "Encrypted.docx", new LoadOptions("docPassword"));
             string outputFileName = ArtifactsDir + "DigitalSignatureUtil.IncorrectDecryptionPassword.docx";
@@ -134,7 +134,7 @@ namespace ApiExamples
             //ExFor:LoadOptions.Password
             //ExSummary:Shows how to sign encrypted document file.
             // Create certificate holder from a file
-            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            CertificateHolder certificateHolder = CertificateHolder.Create(File.ReadAllBytes(MyDir + "morzal.pfx"), "aw");
 
             SignOptions signOptions = new SignOptions
             {

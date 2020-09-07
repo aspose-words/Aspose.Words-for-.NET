@@ -125,7 +125,7 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
 
             // 3 -  Floating shape with custom dimensions:
-            builder.InsertImage(ImageDir + "Windows Metafile.wmf", RelativeHorizontalPosition.Margin, 100, 
+            builder.InsertImage(ImageDir + "Windows MetaFile.wmf", RelativeHorizontalPosition.Margin, 100, 
                 RelativeVerticalPosition.Margin, 100, 200, 100, WrapType.Square);
 
             doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertImageFromFilename.docx");

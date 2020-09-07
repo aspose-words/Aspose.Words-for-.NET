@@ -317,7 +317,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ParagraphFormat.SuppressHyphens.docx");
             //ExEnd
         }
-            
+        
         public void ParagraphSpacingAndIndents()
         {
             //ExStart

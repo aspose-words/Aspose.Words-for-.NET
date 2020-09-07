@@ -138,7 +138,6 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        [Category("SkipMono")]
         public void UpdateFields(bool doUpdateFields)
         {
             //ExStart
@@ -598,8 +597,8 @@ namespace ApiExamples
 #endif
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
+        [TestCase(false, Category = "SkipMono")]
+        [TestCase(true, Category = "SkipMono")]
         public void SaveAsPdfBookFold(bool doRenderTextAsBookfold)
         {
             //ExStart
@@ -744,26 +743,27 @@ namespace ApiExamples
 
             if (doCreateHyperlinks)
             {
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [157.80099487 720.90106201 159.35600281 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 677 0]>>", 
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [157.80099487 720.90106201 159.35600281 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 677 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [202.16900635 720.90106201 206.06201172 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 79 0]>>", 
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [202.16900635 720.90106201 206.06201172 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 79 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [212.23199463 699.2510376 215.34199524 711.90002441]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 654 0]>>", 
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [212.23199463 699.2510376 215.34199524 711.90002441]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 654 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [258.15499878 699.2510376 262.04800415 711.90002441]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 68 0]>>", 
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [258.15499878 699.2510376 262.04800415 711.90002441]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 68 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 68.19905853 88.66500092 79.69805908]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 202 733 0]>>", 
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 68.19905853 88.66500092 79.69805908]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 202 733 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 56.70005798 88.66500092 68.19905853]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 258 711 0]>>", 
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 56.70005798 88.66500092 68.19905853]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 258 711 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 666.10205078 86.4940033 677.60107422]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 157 733 0]>>", 
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 666.10205078 86.4940033 677.60107422]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 157 733 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 643.10406494 87.93800354 654.60308838]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 212 711 0]>>", 
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 643.10406494 87.93800354 654.60308838]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 212 711 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
             }
             else
             {
-                Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect", ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf"));
+                if (!IsRunningOnMono())
+                    Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect", ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf"));
             }
         }
 
@@ -792,10 +792,13 @@ namespace ApiExamples
             switch (pdfCustomPropertiesExportMode)
             {
                 case PdfCustomPropertiesExport.None:
-                    Assert.Throws<AssertionException>(() => TestUtil.FileContainsString(doc.CustomDocumentProperties[0].Name, 
-                        ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf"));
-                    Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("<</Type /Metadata/Subtype /XML/Length 8 0 R/Filter /FlateDecode>>", 
-                        ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf"));
+                    if (!IsRunningOnMono())
+                    {
+                        Assert.Throws<AssertionException>(() => TestUtil.FileContainsString(doc.CustomDocumentProperties[0].Name,
+                            ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf"));
+                        Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("<</Type /Metadata/Subtype /XML/Length 8 0 R/Filter /FlateDecode>>",
+                            ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf"));
+                    }
                     break;
                 case PdfCustomPropertiesExport.Standard:
                     TestUtil.FileContainsString(doc.CustomDocumentProperties[0].Name, ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
@@ -918,8 +921,8 @@ namespace ApiExamples
         }
 
 #if NET462 || JAVA
-        [TestCase(false)]
-        [TestCase(true)]
+        [TestCase(false, Category = "SkipMono")]
+        [TestCase(true, Category = "SkipMono")]
         public void PreblendImages(bool doPreblendImages)
         {
             //ExStart

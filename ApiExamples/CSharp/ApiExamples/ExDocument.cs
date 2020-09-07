@@ -20,6 +20,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.Layout;
 using Aspose.Words.Markup;
 using Aspose.Words.Rendering;
+using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using Aspose.Words.WebExtensions;
@@ -131,7 +132,7 @@ namespace ApiExamples
         }
 
 #if NET462 || NETCOREAPP2_1 || JAVA
-        [Test, Category("IgnoreOnJenkins")]
+        [Test, Category("IgnoreOnJenkins"), Category("SkipMono")]
         public void OpenType()
         {
             //ExStart
@@ -273,6 +274,23 @@ namespace ApiExamples
                 doc = new Document(stream, options);
                 Assert.AreEqual("Test encrypted document.", doc.GetText().Trim()); //ExSkip
             }
+            //ExEnd
+        }
+
+        [Test]
+        public void TempFolder()
+        {
+            //ExStart
+            //ExFor:LoadOptions.TempFolder
+            //ExSummary:Shows how to load a document using temporary files.
+            // Note that such an approach can reduce memory usage but degrades speed
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.TempFolder = @"C:\TempFolder\";
+            
+            // Ensure that the directory exists and load
+            Directory.CreateDirectory(loadOptions.TempFolder);
+             
+            Document doc = new Document(MyDir + "Document.docx", loadOptions);
             //ExEnd
         }
 
@@ -1483,6 +1501,29 @@ namespace ApiExamples
         }
 
         [Test]
+        public void UseSubstitutions()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.UseSubstitutions
+            //ExSummary:Shows how to recognize and use substitutions within replacement patterns.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+             
+            // Write some text
+            builder.Write("Jason give money to Paul.");
+             
+            Regex regex = new Regex(@"([A-z]+) give money to ([A-z]+)");
+             
+            // Replace text using substitutions
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.UseSubstitutions = true;
+            doc.Range.Replace(regex, @"$2 take money from $1", options);
+            
+            Assert.AreEqual(doc.GetText(), "Paul take money from Jason.\f");
+            //ExEnd
+        }
+
+        [Test]
         public void SetInvalidateFieldTypes()
         {
             //ExStart
@@ -1580,7 +1621,7 @@ namespace ApiExamples
             textAbsorber.Visit(pdfDoc);
 
             Assert.AreEqual(showHiddenText ? 
-                    "This text is not hidden.\r\nThis text is hidden." : 
+                    $"This text is not hidden.{Environment.NewLine}This text is hidden." : 
                     "This text is not hidden.", textAbsorber.Text);
 #endif
         }
@@ -1614,8 +1655,8 @@ namespace ApiExamples
             textAbsorber.Visit(pdfDoc);
 
             Assert.AreEqual(showParagraphMarks ? 
-                    "Hello world!¶\r\nHello again!¶\r\n¶" : 
-                    "Hello world!\r\nHello again!", textAbsorber.Text);
+                    $"Hello world!¶{Environment.NewLine}Hello again!¶{Environment.NewLine}¶" : 
+                    $"Hello world!{Environment.NewLine}Hello again!", textAbsorber.Text);
 #endif
         }
 

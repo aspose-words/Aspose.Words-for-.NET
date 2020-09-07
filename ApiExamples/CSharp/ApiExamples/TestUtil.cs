@@ -32,7 +32,7 @@ using Shape = Aspose.Words.Drawing.Shape;
 
 namespace ApiExamples
 {
-    class TestUtil
+    class TestUtil : ApiExampleBase
     {
         /// <summary>
         /// Checks whether a file at a specified filename contains a valid image with specified dimensions.
@@ -71,8 +71,8 @@ namespace ApiExamples
                 #if NET462 || NETCOREAPP2_1 || JAVA
                 Assert.Multiple(() =>
                 {
-                    Assert.AreEqual(expectedWidth, image.Width);
-                    Assert.AreEqual(expectedHeight, image.Height);
+                    Assert.AreEqual(expectedWidth, image.Width, 1);
+                    Assert.AreEqual(expectedHeight, image.Height, 1);
                 });
                 #elif __MOBILE__
                 Assert.AreEqual(expectedWidth, image.Width);
@@ -294,9 +294,12 @@ namespace ApiExamples
         /// <param name="filename">Local system filename of a file which, when read from the beginning, should contain the string.</param>
         internal static void FileContainsString(string expected, string filename)
         {
-            using (Stream stream = new FileStream(filename, FileMode.Open))
+            if (!IsRunningOnMono())
             {
-                StreamContainsString(expected, stream);
+                using (Stream stream = new FileStream(filename, FileMode.Open))
+                {
+                    StreamContainsString(expected, stream);
+                }
             }
         }
 
