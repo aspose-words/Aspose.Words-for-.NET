@@ -28,17 +28,17 @@ namespace ApiExamples
             XpsSaveOptions saveOptions = new XpsSaveOptions { OptimizeOutput = optimizeOutput };
 
             doc.Save(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", saveOptions);
+            //ExEnd
 
             // The input document had adjacent runs with the same formatting, which, if output optimization was enabled,
             // have been combined to save space
             FileInfo outFileInfo = new FileInfo(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps");
 
             if (optimizeOutput)
-                Assert.True(outFileInfo.Length < 45000);
+                Assert.True(outFileInfo.Length < 51000);
             else
                 Assert.True(outFileInfo.Length > 60000);
-            //ExEnd
-
+            
             TestUtil.DocPackageFileContainsString(
                 optimizeOutput
                     ? "Glyphs OriginX=\"34.294998169\" OriginY=\"10.31799984\" " +

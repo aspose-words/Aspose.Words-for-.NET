@@ -109,8 +109,7 @@ namespace ApiExamples
         }
 
         #if NET462 || JAVA
-        [Test]
-        [Category("SkipMono")]
+        [Test, Category("SkipMono")]
         public void CreateFromImage()
         {
             DocumentBuilder builder = new DocumentBuilder();
@@ -338,19 +337,19 @@ namespace ApiExamples
 
             TestUtil.VerifyImageInShape(0, 0, ImageType.Wmf, shape);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
-            Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName);
+            Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName.Replace("%20", " "));
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
-            Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName);
+            Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName.Replace("%20", " "));
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
 
             TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
-            Assert.AreEqual(string.Empty, shape.ImageData.SourceFullName);
+            Assert.AreEqual(string.Empty, shape.ImageData.SourceFullName.Replace("%20", " "));
         }
 
         [Test]

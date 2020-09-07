@@ -20,8 +20,8 @@ namespace ApiExamples
     [TestFixture]
     internal class ExHtmlLoadOptions : ApiExampleBase
     {
-        [TestCase(true)]
-        [TestCase(false)]
+        [TestCase(true, Category = "SkipMono")]
+        [TestCase(false, Category = "SkipMono")]
         public void SupportVml(bool doSupportVml)
         {
             //ExStart

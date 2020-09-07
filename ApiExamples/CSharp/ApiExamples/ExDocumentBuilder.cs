@@ -2992,7 +2992,7 @@ namespace ApiExamples
         /// <summary>
         /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
-        [Test, Order(1), Category("SkipTearDown")]
+        [Test, Order(1)]
         public void MarkdownDocumentEmphases()
         {
             DocumentBuilder builder = new DocumentBuilder();
@@ -3028,7 +3028,7 @@ namespace ApiExamples
         /// <summary>
         /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
-        [Test, Order(2), Category("SkipTearDown")]
+        [Test, Order(2)]
         public void MarkdownDocumentInlineCode()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3058,7 +3058,7 @@ namespace ApiExamples
         /// <summary>
         /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
-        [Test, Order(3), Category("SkipTearDown")]
+        [Test, Order(3)]
         [Description("WORDSNET-19850")]
         public void MarkdownDocumentHeadings()
         {
@@ -3133,7 +3133,7 @@ namespace ApiExamples
         /// <summary>
         /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
-        [Test, Order(4), Category("SkipTearDown")]
+        [Test, Order(4)]
         public void MarkdownDocumentBlockquotes()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3192,7 +3192,7 @@ namespace ApiExamples
         /// <summary>
         /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
-        [Test, Order(5), Category("SkipTearDown")]
+        [Test, Order(5)]
         public void MarkdownDocumentIndentedCode()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3215,7 +3215,7 @@ namespace ApiExamples
         /// <summary>
         /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
-        [Test, Order(6), Category("SkipTearDown")]
+        [Test, Order(6)]
         public void MarkdownDocumentFencedCode()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3242,7 +3242,7 @@ namespace ApiExamples
         /// <summary>
         /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
-        [Test, Order(7), Category("SkipTearDown")]
+        [Test, Order(7)]
         public void MarkdownDocumentHorizontalRule()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3263,7 +3263,7 @@ namespace ApiExamples
         /// <summary>
         /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
-        [Test, Order(8), Category("SkipTearDown")]
+        [Test, Order(8)]
         public void MarkdownDocumentBulletedList()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3294,29 +3294,29 @@ namespace ApiExamples
         /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>
         [Test, Order(9)]
-        [TestCase("Italic", "Normal", true, false, Category = "SkipTearDown")]
-        [TestCase("Bold", "Normal", false, true, Category = "SkipTearDown")]
-        [TestCase("ItalicBold", "Normal", true, true, Category = "SkipTearDown")]
-        [TestCase("Text with InlineCode style with one backtick", "InlineCode", false, false, Category = "SkipTearDown")]
-        [TestCase("Text with InlineCode style with 3 backticks", "InlineCode.3", false, false, Category = "SkipTearDown")]
-        [TestCase("This is an italic H1 tag", "Heading 1", true, false, Category = "SkipTearDown")]
-        [TestCase("SetextHeading 1", "SetextHeading1", false, false, Category = "SkipTearDown")]
-        [TestCase("This is an H2 tag", "Heading 2", false, false, Category = "SkipTearDown")]
-        [TestCase("SetextHeading 2", "SetextHeading2", false, false, Category = "SkipTearDown")]
-        [TestCase("This is an H3 tag", "Heading 3", false, false, Category = "SkipTearDown")]
-        [TestCase("This is an bold H4 tag", "Heading 4", false, true, Category = "SkipTearDown")]
-        [TestCase("This is an italic and bold H5 tag", "Heading 5", true, true, Category = "SkipTearDown")]
-        [TestCase("This is an H6 tag", "Heading 6", false, false, Category = "SkipTearDown")]
-        [TestCase("Blockquote", "Quote", false, false, Category = "SkipTearDown")]
-        [TestCase("1. Nested blockquote", "Quote1", false, false, Category = "SkipTearDown")]
-        [TestCase("2. Nested italic blockquote", "Quote2", true, false, Category = "SkipTearDown")]
-        [TestCase("3. Nested bold blockquote", "Quote3", false, true, Category = "SkipTearDown")]
-        [TestCase("4. Nested blockquote", "Quote4", false, false, Category = "SkipTearDown")]
-        [TestCase("5. Nested blockquote", "Quote5", false, false, Category = "SkipTearDown")]
-        [TestCase("6. Nested italic bold blockquote", "Quote6", true, true, Category = "SkipTearDown")]
-        [TestCase("This is an indented code", "IndentedCode", false, false, Category = "SkipTearDown")]
-        [TestCase("This is a fenced code", "FencedCode", false, false, Category = "SkipTearDown")]
-        [TestCase("This is a fenced code with info string", "FencedCode.C#", false, false, Category = "SkipTearDown")]
+        [TestCase("Italic", "Normal", true, false)]
+        [TestCase("Bold", "Normal", false, true)]
+        [TestCase("ItalicBold", "Normal", true, true)]
+        [TestCase("Text with InlineCode style with one backtick", "InlineCode", false, false)]
+        [TestCase("Text with InlineCode style with 3 backticks", "InlineCode.3", false, false)]
+        [TestCase("This is an italic H1 tag", "Heading 1", true, false)]
+        [TestCase("SetextHeading 1", "SetextHeading1", false, false)]
+        [TestCase("This is an H2 tag", "Heading 2", false, false)]
+        [TestCase("SetextHeading 2", "SetextHeading2", false, false)]
+        [TestCase("This is an H3 tag", "Heading 3", false, false)]
+        [TestCase("This is an bold H4 tag", "Heading 4", false, true)]
+        [TestCase("This is an italic and bold H5 tag", "Heading 5", true, true)]
+        [TestCase("This is an H6 tag", "Heading 6", false, false)]
+        [TestCase("Blockquote", "Quote", false, false)]
+        [TestCase("1. Nested blockquote", "Quote1", false, false)]
+        [TestCase("2. Nested italic blockquote", "Quote2", true, false)]
+        [TestCase("3. Nested bold blockquote", "Quote3", false, true)]
+        [TestCase("4. Nested blockquote", "Quote4", false, false)]
+        [TestCase("5. Nested blockquote", "Quote5", false, false)]
+        [TestCase("6. Nested italic bold blockquote", "Quote6", true, true)]
+        [TestCase("This is an indented code", "IndentedCode", false, false)]
+        [TestCase("This is a fenced code", "FencedCode", false, false)]
+        [TestCase("This is a fenced code with info string", "FencedCode.C#", false, false)]
         [TestCase("Item 1", "Normal", false, false)]
         public void LoadMarkdownDocumentAndAssertContent(string text, string styleName, bool isItalic, bool isBold)
         {

@@ -104,7 +104,7 @@ namespace ApiExamples
         //ExFor:ShapeRenderer
         //ExFor:ShapeRenderer.#ctor(ShapeBase)
         //ExSummary:Shows how to render a shape with a Graphics object.
-        [Test, Category("IgnoreOnJenkins")] //ExSkip
+        [Test, Category("IgnoreOnJenkins"), Category("SkipMono")] //ExSkip
         public void DisplayShapeForm()
         {
             // Create a new ShapeForm instance and show it as a dialog box
@@ -883,8 +883,11 @@ namespace ApiExamples
             OfficeMath math = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
             math.GetMathRenderer().Save(ArtifactsDir + "Shape.SaveShapeObjectAsImage.png", new ImageSaveOptions(SaveFormat.Png));
             //ExEnd
-            
-            TestUtil.VerifyImage(159, 18, ArtifactsDir + "Shape.SaveShapeObjectAsImage.png");
+
+            if (!IsRunningOnMono())
+                TestUtil.VerifyImage(159, 18, ArtifactsDir + "Shape.SaveShapeObjectAsImage.png");
+            else
+                TestUtil.VerifyImage(147, 26, ArtifactsDir + "Shape.SaveShapeObjectAsImage.png");
         }
 
         [Test]
@@ -2049,7 +2052,7 @@ namespace ApiExamples
             Assert.AreEqual(2, count);
         }
 
-        [Test]
+        [Test, Category("SkipMono")]
         public void OfficeMathRenderer()
         {
             //ExStart

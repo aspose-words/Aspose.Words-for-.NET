@@ -25,6 +25,7 @@ using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 using LoadOptions = Aspose.Words.LoadOptions;
+using Aspose.Words.Fonts;
 #if NET462 || JAVA
 using Aspose.BarCode.BarCodeRecognition;
 #elif NETCOREAPP2_1
@@ -2689,13 +2690,13 @@ namespace ApiExamples
 
             Assert.True(image.IsImage);
             Assert.Null(image.ImageData.ImageBytes);
-            Assert.AreEqual(ImageDir + "Transparent background logo.png", image.ImageData.SourceFullName);
+            Assert.AreEqual(ImageDir + "Transparent background logo.png", image.ImageData.SourceFullName.Replace("%20", " "));
 
             image = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             Assert.True(image.IsImage);
             Assert.Null(image.ImageData.ImageBytes);
-            Assert.AreEqual(ImageDir + "Transparent background logo.png", image.ImageData.SourceFullName);
+            Assert.AreEqual(ImageDir + "Transparent background logo.png", image.ImageData.SourceFullName.Replace("%20", " "));
         }
 
         //ExStart
@@ -3063,8 +3064,8 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Png, shape);
-            Assert.AreEqual(300.0d, shape.Width);
-            Assert.AreEqual(300.0d, shape.Height);
+            Assert.AreEqual(300.0d, shape.Width, 1);
+            Assert.AreEqual(300.0d, shape.Height, 1);
         }
 
         [Test]
@@ -5465,7 +5466,7 @@ namespace ApiExamples
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
             // Insert character and word counts
-            FieldNumChars fieldNumChars = (FieldNumChars)builder.InsertField(FieldType.FieldNumChars, true);       
+            FieldNumChars fieldNumChars = (FieldNumChars)builder.InsertField(FieldType.FieldNumChars, true);
             builder.Writeln(" characters");
             FieldNumWords fieldNumWords = (FieldNumWords)builder.InsertField(FieldType.FieldNumWords, true);
             builder.Writeln(" words");
@@ -5490,6 +5491,7 @@ namespace ApiExamples
 
             TestUtil.VerifyField(FieldType.FieldNumChars, " NUMCHARS ", "6009", doc.Range.Fields[0]);
             TestUtil.VerifyField(FieldType.FieldNumWords, " NUMWORDS ", "1054", doc.Range.Fields[1]);
+
             TestUtil.VerifyField(FieldType.FieldPage, " PAGE ", "6", doc.Range.Fields[2]);
             TestUtil.VerifyField(FieldType.FieldNumPages, " NUMPAGES ", "6", doc.Range.Fields[3]);
         }

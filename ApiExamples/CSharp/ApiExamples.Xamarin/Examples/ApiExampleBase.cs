@@ -18,7 +18,8 @@ namespace ApiExamples
     public class ApiExampleBase
     {
 #if __ANDROID__
-        private static readonly string mExternalAppPath = "";//Android.OS.Environment.ExternalStorageDirectory.AbsolutePath;
+        private static readonly string mExternalAppPath =
+            Android.App.Application.Context.GetExternalFilesDir(string.Empty).Path;
 #elif __IOS__ || __MAC__
         private static readonly string mExternalAppPath = "/Users/vderyusev/Aspose/Aspose.Words-for-.NET/ApiExamples/";
 #endif
@@ -40,7 +41,7 @@ namespace ApiExamples
                     Console.WriteLine(e);
                     throw;
                 }
-                
+
             }
             else
             {
@@ -72,14 +73,16 @@ namespace ApiExamples
 
         internal static void SetUnlimitedLicense()
         {
-            if (File.Exists(TestLicenseFileName))
+            var testLicenseFileName = Path.Combine(mExternalAppPath, "Data/License/Aspose.Words.NET.lic");
+
+            if (File.Exists(testLicenseFileName))
             {
                 // This shows how to use an Aspose.Words license when you have purchased one.
                 // You don't have to specify full path as shown here. You can specify just the 
                 // file name if you copy the license file into the same folder as your application
                 // binaries or you add the license to your project as an embedded resource.
                 License license = new License();
-                license.SetLicense(TestLicenseFileName);
+                license.SetLicense(testLicenseFileName);
             }
         }
 
@@ -121,14 +124,26 @@ namespace ApiExamples
         static ApiExampleBase()
         {
             ArtifactsDir = Path.Combine(mExternalAppPath, "Data/Artifacts/");
+
+#if __ANDROID__
+            foreach (Java.IO.File f in Android.App.Application.Context.GetExternalFilesDirs("/"))
+            {
+                if (Android.OS.Environment.InvokeIsExternalStorageRemovable(f))
+                {
+                    mExternalAppPath = f.Path.Substring(0, f.Path.IndexOf("Android/", StringComparison.Ordinal));
+                }
+            }
+#endif
+
             MyDir = Path.Combine(mExternalAppPath, "Data/");
             ImageDir = Path.Combine(mExternalAppPath, "Data/Images/");
             DatabaseDir = Path.Combine(mExternalAppPath, "Data/Database/");
             GoldsDir = Path.Combine(mExternalAppPath, "Data/Golds/");
             FontsDir = Path.Combine(mExternalAppPath, "Data/MyFonts/");
-            AsposeLogoUrl = new Uri("https://www.aspose.cloud/templates/aspose/App_Themes/V3/images/words/header/aspose_words-for-net.png").AbsoluteUri;
+            AsposeLogoUrl =
+                new Uri(
+                        "https://www.aspose.cloud/templates/aspose/App_Themes/V3/images/words/header/aspose_words-for-net.png")
+                    .AbsoluteUri;
         }
-
-        internal static readonly string TestLicenseFileName = Path.Combine(mExternalAppPath, "Data/License/Aspose.Words.lic");
     }
 }

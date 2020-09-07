@@ -42,9 +42,9 @@ namespace ApiExamples
             doc.Save(ArtifactsDir +"HtmlSaveOptions.ExportPageMargins" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
         }
 
-        [TestCase(SaveFormat.Html, HtmlOfficeMathOutputMode.Image, Category = "SkipMono")]
-        [TestCase(SaveFormat.Mhtml, HtmlOfficeMathOutputMode.MathML, Category = "SkipMono")]
-        [TestCase(SaveFormat.Epub, HtmlOfficeMathOutputMode.Text, Category = "SkipMono")]
+        [TestCase(SaveFormat.Html, HtmlOfficeMathOutputMode.Image)]
+        [TestCase(SaveFormat.Mhtml, HtmlOfficeMathOutputMode.MathML)]
+        [TestCase(SaveFormat.Epub, HtmlOfficeMathOutputMode.Text)]
         public void ExportOfficeMath(SaveFormat saveFormat, HtmlOfficeMathOutputMode outputMode)
         {
             Document doc = new Document(MyDir + "Office math.docx");
@@ -239,15 +239,17 @@ namespace ApiExamples
                 case false:
 
                     doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFonts.False.html", saveOptions);
+
                     Assert.IsNotEmpty(Directory.GetFiles(fontsFolder, "HtmlSaveOptions.ExportFonts.False.times.ttf",
                         SearchOption.AllDirectories));
+
+                    Directory.Delete(fontsFolder, true);
                     break;
 
                 case true:
 
                     doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFonts.True.html", saveOptions);
-                    Assert.IsEmpty(Directory.GetFiles(fontsFolder, "HtmlSaveOptions.ExportFonts.True.times.ttf",
-                        SearchOption.AllDirectories));
+                    Assert.False(Directory.Exists(fontsFolder));
                     break;
             }
         }

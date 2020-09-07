@@ -750,57 +750,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void OleLinks()
-        {
-            //ExStart
-            //ExFor:OleFormat.IconCaption
-            //ExFor:OleFormat.GetOleEntry(String)
-            //ExFor:OleFormat.IsLink
-            //ExFor:OleFormat.OleIcon
-            //ExFor:OleFormat.SourceFullName
-            //ExFor:OleFormat.SourceItem
-            //ExSummary:Shows how to insert linked and unlinked OLE objects.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Embed a Microsoft Visio drawing as an OLE object into the document
-            builder.InsertOleObject(ImageDir + "Microsoft Visio drawing.vsd", "Package", false, false, null);
-
-            // Insert a link to the file in the local file system and display it as an icon
-            builder.InsertOleObject(ImageDir + "Microsoft Visio drawing.vsd", "Package", true, true, null);
-            
-            // Both the OLE objects are stored within shapes
-            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(2, shapes.Count);
-
-            // If the shape is an OLE object, it will have a valid OleFormat property
-            // We can use it check if it is linked or displayed as an icon, among other things
-            OleFormat oleFormat = shapes[0].OleFormat;
-            Assert.AreEqual(false, oleFormat.IsLink);
-            Assert.AreEqual(false, oleFormat.OleIcon);
-
-            oleFormat = shapes[1].OleFormat;
-            Assert.AreEqual(true, oleFormat.IsLink);
-            Assert.AreEqual(true, oleFormat.OleIcon);
-
-            // Get the name or the source file and verify that the whole file is linked
-            Assert.True(oleFormat.SourceFullName.EndsWith(@"Images" + Path.DirectorySeparatorChar + "Microsoft Visio drawing.vsd"));
-            Assert.AreEqual("", oleFormat.SourceItem);
-
-            Assert.AreEqual("Packager", oleFormat.IconCaption);
-
-            doc.Save(ArtifactsDir + "Shape.OleLinks.docx");
-
-            // We can get a stream with the OLE data entry, if the object has this
-            using (MemoryStream stream = oleFormat.GetOleEntry("\x0001CompObj"))
-            {
-                byte[] oleEntryBytes = stream.ToArray();
-                Assert.AreEqual(76, oleEntryBytes.Length);
-            }
-            //ExEnd
-        }
-
-        [Test]
         public void OleControlCollection()
         {
             //ExStart
@@ -868,23 +817,6 @@ namespace ApiExamples
 
             Assert.AreEqual(96, imageOptions.HorizontalResolution);
             Assert.AreEqual(96, imageOptions.VerticalResolution);
-        }
-
-        [Test]
-        public void SaveShapeObjectAsImage()
-        {
-            //ExStart
-            //ExFor:OfficeMath.GetMathRenderer
-            //ExFor:NodeRendererBase.Save(String, ImageSaveOptions)
-            //ExSummary:Shows how to convert specific object into image
-            Document doc = new Document(MyDir + "Office math.docx");
-
-            // Get OfficeMath node from the document and render this as image (you can also do the same with the Shape node)
-            OfficeMath math = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
-            math.GetMathRenderer().Save(ArtifactsDir + "Shape.SaveShapeObjectAsImage.png", new ImageSaveOptions(SaveFormat.Png));
-            //ExEnd
-            
-            TestUtil.VerifyImage(159, 18, ArtifactsDir + "Shape.SaveShapeObjectAsImage.png");
         }
 
         [Test]
@@ -1147,20 +1079,6 @@ namespace ApiExamples
 
             Assert.AreEqual("Cat FileName.zip", getOlePackage.FileName);
             Assert.AreEqual("Cat DisplayName.zip", getOlePackage.DisplayName);
-        }
-
-        [Test]
-        public void GetAccessToOlePackage()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Shape oleObject = builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, null);
-            Shape oleObjectAsOlePackage =
-                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, false, null);
-
-            Assert.AreEqual(null, oleObject.OleFormat.OlePackage);
-            Assert.AreEqual(typeof(OlePackage), oleObjectAsOlePackage.OleFormat.OlePackage.GetType());
         }
 
         [Test]
@@ -2046,62 +1964,6 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual(2, count);
-        }
-
-        [Test]
-        public void OfficeMathRenderer()
-        {
-            //ExStart
-            //ExFor:NodeRendererBase
-            //ExFor:NodeRendererBase.BoundsInPoints
-            //ExFor:NodeRendererBase.GetBoundsInPixels(Single, Single)
-            //ExFor:NodeRendererBase.GetBoundsInPixels(Single, Single, Single)
-            //ExFor:NodeRendererBase.GetOpaqueBoundsInPixels(Single, Single)
-            //ExFor:NodeRendererBase.GetOpaqueBoundsInPixels(Single, Single, Single)
-            //ExFor:NodeRendererBase.GetSizeInPixels(Single, Single)
-            //ExFor:NodeRendererBase.GetSizeInPixels(Single, Single, Single)
-            //ExFor:NodeRendererBase.OpaqueBoundsInPoints
-            //ExFor:NodeRendererBase.SizeInPoints
-            //ExFor:OfficeMathRenderer
-            //ExFor:OfficeMathRenderer.#ctor(Math.OfficeMath)
-            //ExSummary:Shows how to measure and scale shapes.
-            // Open a document that contains an OfficeMath object
-            Document doc = new Document(MyDir + "Office math.docx");
-
-            // Create a renderer for the OfficeMath object 
-            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
-            OfficeMathRenderer renderer = new OfficeMathRenderer(officeMath);
-
-            // We can measure the size of the image that the OfficeMath object will create when we render it
-            Assert.AreEqual(119.0f, renderer.SizeInPoints.Width, 0.2f);
-            Assert.AreEqual(13.0f, renderer.SizeInPoints.Height, 0.1f);
-
-            Assert.AreEqual(119.0f, renderer.BoundsInPoints.Width, 0.2f);
-            Assert.AreEqual(13.0f, renderer.BoundsInPoints.Height, 0.1f);
-
-            // Shapes with transparent parts may return different values here
-            Assert.AreEqual(119.0f, renderer.OpaqueBoundsInPoints.Width, 0.2f);
-            Assert.AreEqual(14.2f, renderer.OpaqueBoundsInPoints.Height, 0.1f);
-
-            // Get the shape size in pixels, with linear scaling to a specific DPI
-            Rectangle bounds = renderer.GetBoundsInPixels(1.0f, 96.0f);
-            Assert.AreEqual(159, bounds.Width);
-            Assert.AreEqual(18, bounds.Height);
-
-            // Get the shape size in pixels, but with a different DPI for the horizontal and vertical dimensions
-            bounds = renderer.GetBoundsInPixels(1.0f, 96.0f, 150.0f);
-            Assert.AreEqual(159, bounds.Width);
-            Assert.AreEqual(28, bounds.Height);
-
-            // The opaque bounds may vary here also
-            bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f);
-            Assert.AreEqual(159, bounds.Width);
-            Assert.AreEqual(18, bounds.Height);
-
-            bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f, 150.0f);
-            Assert.AreEqual(159, bounds.Width);
-            Assert.AreEqual(30, bounds.Height);
-            //ExEnd
         }
     }
 }

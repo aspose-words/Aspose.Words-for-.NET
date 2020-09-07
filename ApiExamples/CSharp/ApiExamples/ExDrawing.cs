@@ -224,9 +224,9 @@ namespace ApiExamples
             }
             //ExEnd
 
-            string[] imageFileNames = Directory.GetFiles(ArtifactsDir).Where(s => s.StartsWith(ArtifactsDir + "Drawing.SaveAllImages.")).ToArray();
+            string[] imageFileNames = Directory.GetFiles(ArtifactsDir).Where(s => s.StartsWith(ArtifactsDir + "Drawing.SaveAllImages.")).OrderBy(s => s).ToArray();
             List<FileInfo> fileInfos = imageFileNames.Select(s => new FileInfo(s)).ToList();
-
+            
             TestUtil.VerifyImage(2467, 1500, fileInfos[0].FullName);
             Assert.AreEqual(".Jpeg", fileInfos[0].Extension);
             TestUtil.VerifyImage(400, 400, fileInfos[1].FullName);

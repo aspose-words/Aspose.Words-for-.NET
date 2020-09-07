@@ -634,7 +634,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.DarkBlue.ToArgb(), run.Font.Shading.ForegroundPatternColor.ToArgb());
         }
 
-        [Test]
+        [Test, Category("SkipMono")]
         public void Bidi()
         {
             //ExStart
@@ -928,7 +928,7 @@ namespace ApiExamples
 
             // Set a default font name and enable font substitution
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial"; ;
+            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
             fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
 
             // When saving the document with the missing font, we should get a warning
@@ -936,14 +936,14 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Font.EnableFontSubstitution.pdf");
 
             // List all warnings using an enumerator
-            using (IEnumerator<WarningInfo> warnings = substitutionWarningHandler.FontWarnings.GetEnumerator()) 
-                while (warnings.MoveNext()) 
+            using (IEnumerator<WarningInfo> warnings = substitutionWarningHandler.FontWarnings.GetEnumerator())
+                while (warnings.MoveNext())
                     Console.WriteLine(warnings.Current.Description);
 
             // Warnings are stored in this format
             Assert.AreEqual(WarningSource.Layout, substitutionWarningHandler.FontWarnings[0].Source);
-            Assert.AreEqual("Font '28 Days Later' has not been found. Using 'Calibri' font instead. Reason: alternative name from document.", 
-                substitutionWarningHandler.FontWarnings[0].Description);
+            Assert.True(new Regex("Font '28 Days Later' has not been found. Using (.*) font instead. Reason: alternative name from document.")
+                    .Match(substitutionWarningHandler.FontWarnings[0].Description).Success);
 
             // The warning info collection can also be cleared like this
             substitutionWarningHandler.FontWarnings.Clear();
@@ -999,7 +999,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Category("SkipMono")]
         public void SubstitutionWarnings()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
@@ -1752,7 +1751,7 @@ namespace ApiExamples
             // On Linux/Mac, we will have access and will be able to perform operations
             if (isLinuxOrMac)
             {
-                Assert.True(fontConfigSubstitution.Enabled);
+                Assert.False(fontConfigSubstitution.Enabled);
                 Assert.True(fontConfigSubstitution.IsFontConfigAvailable());
 
                 fontConfigSubstitution.ResetCache();
@@ -2018,7 +2017,7 @@ namespace ApiExamples
             //ExEnd
         }
         
-        [Test]
+        [Test, Category("SkipMono")]
         public void LineSpacing()
         {
             //ExStart
@@ -2084,7 +2083,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test, Category("IgnoreOnJenkins")]
+        [Test, Category("IgnoreOnJenkins"), Category("SkipMono")]
         public void CheckScanUserFontsFolder()
         {
             // On Windows 10 fonts may be installed either into system folder "%windir%\fonts" for all users
