@@ -488,7 +488,7 @@ namespace ApiExamples
             //ExFor:ImageData.ImageBytes
             //ExFor:ImageData.ToByteArray
             //ExFor:ImageData.ToStream
-            //ExSummary:Shows how to access a shape's raw image data.
+            //ExSummary:Shows how to create an image file from a shape's raw image data.
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
             Assert.AreEqual(10, imgSourceDoc.GetChildNodes(NodeType.Shape, true).Count); //ExSkip
 
@@ -531,8 +531,8 @@ namespace ApiExamples
             //ExFor:ImageData.Title
             //ExSummary:Shows how to edit a shape's image data.
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
-
             Shape sourceShape = (Shape)imgSourceDoc.GetChildNodes(NodeType.Shape, true)[0];
+
             Document dstDoc = new Document();
 
             // Import a shape from the source document, and append it to the first paragraph.
@@ -549,11 +549,12 @@ namespace ApiExamples
             Assert.AreEqual(4, imageData.Borders.Count);
             Assert.AreEqual(Color.Empty, imageData.Borders[0].Color);
 
-            // This image is not linked externally to another shape or an image file in the file system.
+            // This image does not link to another shape or image file in the local file system.
             Assert.False(imageData.IsLink);
             Assert.False(imageData.IsLinkOnly);
 
-            // Brightness and contrast are defined on a 0-1 scale, with the default value at 0.5.
+            // The "Brightness" and "Contrast" properties define image brightness and contrast
+            // on a 0-1 scale, with the default value at 0.5.
             imageData.Brightness = 0.8;
             imageData.Contrast = 1.0;
 

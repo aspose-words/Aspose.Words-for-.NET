@@ -19,7 +19,6 @@ using Aspose.Words.Lists;
 using NUnit.Framework;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
-using HtmlVersion = Aspose.Words.Saving.HtmlVersion;
 
 namespace ApiExamples
 {
@@ -470,6 +469,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Every paragraph that we format using a "Heading" style can serve as a heading.
+            // Each heading may also have a heading level, determined by the number of its heading style.
+            // The headings below are of levels 1-3.
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 1"];
             builder.Writeln("Heading #1");
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 2"];
@@ -483,7 +485,7 @@ namespace ApiExamples
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 3"];
             builder.Writeln("Heading #6");
 
-            // Create a HtmlSaveOptions object and set the split criteria to "HeadingParagraph". 
+            // Create a HtmlSaveOptions object, and set the split criteria to "HeadingParagraph". 
             // This criteria will split the document at paragraphs with "Heading" styles into several smaller documents,
             // and save each document in a separate HTML file in the local file system.
             // We will also set the maximum heading level which splits the document to 2.
@@ -495,7 +497,7 @@ namespace ApiExamples
             };
             
             // Our document has four headings of levels 1 - 2. One of those headings will not be
-            // a split point since is at the beginning of the document.
+            // a split point since it is at the beginning of the document.
             // The saving operation will split our document at three places, into four smaller documents.
             doc.Save(ArtifactsDir + "HtmlSaveOptions.HeadingLevels.html", options);
 
@@ -519,8 +521,9 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void NegativeIndent()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void NegativeIndent(bool allowNegativeIndent)
         {
             //ExStart
             //ExFor:HtmlElementSizeOutputMode
@@ -530,23 +533,55 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a table and give it a negative value for its indent, effectively pushing it out of the left page boundary
+            // Insert a table with a negative indent, which will push it to the left past the left page boundary.
             Table table = builder.StartTable();
             builder.InsertCell();
-            builder.Write("Cell 1");
+            builder.Write("Row 1, Cell 1");
             builder.InsertCell();
-            builder.Write("Cell 2");
+            builder.Write("Row 1, Cell 2");
             builder.EndTable();
             table.LeftIndent = -36;
             table.PreferredWidth = PreferredWidth.FromPoints(144);
 
-            // When saving to .html, this indent will only be preserved if we set this flag
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
-            options.AllowNegativeIndent = true;
-            options.TableWidthOutputMode = HtmlElementSizeOutputMode.RelativeOnly;
+            builder.InsertBreak(BreakType.ParagraphBreak);
 
-            // The first cell with "Cell 1" will not be visible in the output 
+            // Insert a table with a positive indent, which will push the table to the right.
+            table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Row 1, Cell 1");
+            builder.InsertCell();
+            builder.Write("Row 1, Cell 2");
+            builder.EndTable();
+            table.LeftIndent = 36;
+            table.PreferredWidth = PreferredWidth.FromPoints(144);
+
+            // When we save a document to HTML, Aspose.Words will only preserve negative indents
+            // such as the one we have applied to the first table if we set the "AllowNegativeIndent" flag
+            // in a SaveOptions object that we will pass to "true".
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                AllowNegativeIndent = allowNegativeIndent,
+                TableWidthOutputMode = HtmlElementSizeOutputMode.RelativeOnly
+            };
+
             doc.Save(ArtifactsDir + "HtmlSaveOptions.NegativeIndent.html", options);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.NegativeIndent.html");
+
+            if (allowNegativeIndent)
+            {
+                Assert.True(outDocContents.Contains(
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:-41.65pt; border:0.75pt solid #000000; border-collapse:collapse\">"));
+                Assert.True(outDocContents.Contains(
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; border-collapse:collapse\">"));
+            }
+            else
+            {
+                Assert.True(outDocContents.Contains(
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"border:0.75pt solid #000000; border-collapse:collapse\">"));
+                Assert.True(outDocContents.Contains(
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; border-collapse:collapse\">"));
+            }
             //ExEnd
         }
 
@@ -561,7 +596,7 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.ImagesFolderAlias
             //ExFor:HtmlSaveOptions.ResourceFolder
             //ExFor:HtmlSaveOptions.ResourceFolderAlias
-            //ExSummary:Shows how to set folders and folder aliases for externally saved resources when saving to html.
+            //ExSummary:Shows how to set folders and folder aliases for externally saved resources that Aspose.Words will create when saving a document to HTML.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlSaveOptions options = new HtmlSaveOptions
@@ -606,44 +641,44 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Configure a SaveOptions object to export fonts to separate files, in a manner specified by a custom callback.
+            // Configure a SaveOptions object to export fonts to separate files.
+            // Set a callback that will handle font saving in a custom manner.
             HtmlSaveOptions options = new HtmlSaveOptions
             {
                 ExportFontResources = true,
                 FontSavingCallback = new HandleFontSaving()
             };
 
-            // The callback will export .ttf files and saved alongside the output document.
+            // The callback will export .ttf files, and save them alongside the output document.
             doc.Save(ArtifactsDir + "HtmlSaveOptions.SaveExportedFonts.html", options);
 
-            foreach (string t in Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")))
+            foreach (string fontFilename in Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")))
             {
-                Console.WriteLine(t);
+                Console.WriteLine(fontFilename);
             }
             Assert.AreEqual(10, Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length); //ExSkip
         }
 
         /// <summary>
-        /// Prints information about exported fonts, and saves them alongside their output .html.
+        /// Prints information about exported fonts, and saves them in the same local system folder as their output .html.
         /// </summary>
         public class HandleFontSaving : IFontSavingCallback
         {
             void IFontSavingCallback.FontSaving(FontSavingArgs args)
             {
-                // Print information for every font resource that is about to be saved.
                 Console.Write($"Font:\t{args.FontFamilyName}");
                 if (args.Bold) Console.Write(", bold");
                 if (args.Italic) Console.Write(", italic");
                 Console.WriteLine($"\nSource:\t{args.OriginalFileName}, {args.OriginalFileSize} bytes\n");
 
-                // The source document can also be accessed from here.
+                // We can also access the source document from here.
                 Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
 
                 Assert.True(args.IsExportNeeded);
                 Assert.True(args.IsSubsettingNeeded);
 
                 // There are two ways of saving an exported font.
-                // 1 -  Save it to a local file system location determined by a filename:
+                // 1 -  Save it to a local file system location:
                 args.FontFileName = args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last();
 
                 // 2 -  Save it to a stream:
@@ -654,27 +689,77 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
-        public void HtmlVersion()
+        [TestCase(HtmlVersion.Html5)]
+        [TestCase(HtmlVersion.Xhtml)]
+        public void HtmlVersions(HtmlVersion htmlVersion)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.#ctor(SaveFormat)
-            //ExFor:HtmlSaveOptions.ExportXhtmlTransitional
             //ExFor:HtmlSaveOptions.HtmlVersion
             //ExFor:HtmlVersion
-            //ExSummary:Shows how to set a saved .html document to a specific version.
+            //ExSummary:Shows how to save a document to a specific version of HTML.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Save the document to a .html file of the XHTML 1.0 Transitional standard
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
             {
-                HtmlVersion = Aspose.Words.Saving.HtmlVersion.Xhtml,
-                ExportXhtmlTransitional = true,
+                HtmlVersion = htmlVersion,
                 PrettyFormat = true
             };
 
-            // The DOCTYPE declaration at the top of this document will indicate the html version we chose
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.HtmlVersion.html", options);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.HtmlVersions.html", options);
+
+            // Our HTML documents will have minor differences in order to be compatible with different HTML versions.
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.HtmlVersions.html");
+
+            switch (htmlVersion)
+            {
+                case HtmlVersion.Html5:
+                    Assert.True(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"));
+                    Assert.True(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"));
+                    Assert.True(outDocContents.Contains("<table style=\"border-collapse:collapse\">"));
+                    break;
+                case HtmlVersion.Xhtml:
+                    Assert.True(outDocContents.Contains("<a name=\"_Toc76372689\"></a>"));
+                    Assert.True(outDocContents.Contains("<ul type=\"disc\" style=\"margin:0pt; padding-left:0pt\">"));
+                    Assert.True(outDocContents.Contains("<table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse\">"));
+                    break;
+            }
+            //ExEnd
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ExportXhtmlTransitional(bool showDoctypeDeclaration)
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.ExportXhtmlTransitional
+            //ExFor:HtmlSaveOptions.HtmlVersion
+            //ExFor:HtmlVersion
+            //ExSummary:Shows how to display a DOCTYPE heading when converting documents to the Xhtml 1.0 transitional standard.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Hello world!");
+
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                HtmlVersion = HtmlVersion.Xhtml,
+                ExportXhtmlTransitional = showDoctypeDeclaration,
+                PrettyFormat = true
+            };
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportXhtmlTransitional.html", options);
+
+            // Our document will only contain a DOCTYPE declaration heading if we have set the "ExportXhtmlTransitional" flag to "true".
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportXhtmlTransitional.html");
+
+            if (showDoctypeDeclaration)
+                Assert.True(outDocContents.Contains(
+                    "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>\r\n" +
+                    "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n" +
+                    "<html xmlns=\"http://www.w3.org/1999/xhtml\">"));
+            else
+                Assert.True(outDocContents.Contains("<html>"));
             //ExEnd
         }
 
@@ -683,11 +768,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlSaveOptions.EpubNavigationMapLevel
-            //ExSummary:Shows the relationship between heading levels and the Epub navigation panel.
+            //ExSummary:Shows how to filter headings that appear in the navigation panel of a saved Epub document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert headings of levels 1 - 3
+            // Every paragraph that we format using a "Heading" style can serve as a heading.
+            // Each heading may also have a heading level, determined by the number of its heading style.
+            // The headings below are of levels 1-3.
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 1"];
             builder.Writeln("Heading #1");
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 2"];
@@ -701,16 +788,38 @@ namespace ApiExamples
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 3"];
             builder.Writeln("Heading #6");
 
-            // Epub readers normally treat paragraphs with "Heading" styles as anchors for a table of contents-style navigation pane
-            // We set a maximum heading level above which headings will not be registered by the reader as navigation points with
-            // a HtmlSaveOptions object and its EpubNavigationLevel attribute
-            // Our document has headings of levels 1 to 3,
-            // but our output epub will only place level 1 and 2 headings in the table of contents
+            // Epub readers typically create a table of contents for their documents.
+            // Each paragraph with a "Heading" style in the document will create an entry in this table of contents.
+            // We can use the "EpubNavigationMapLevel" property to set a maximum heading level. 
+            // The Epub reader will not add headings with a level above the one we specify to the table of contents.
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Epub);
             options.EpubNavigationMapLevel = 2;
-            
+
+            // Our document has six headings, two of which are above level 2.
+            // The table of contents for this document will have four entries.
             doc.Save(ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", options);
             //ExEnd
+
+            TestUtil.DocPackageFileContainsString("<navLabel><text>Heading #1</text></navLabel>", 
+                ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "HtmlSaveOptions.EpubHeadings.ncx");
+            TestUtil.DocPackageFileContainsString("<navLabel><text>Heading #2</text></navLabel>", 
+                ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "HtmlSaveOptions.EpubHeadings.ncx");
+            TestUtil.DocPackageFileContainsString("<navLabel><text>Heading #4</text></navLabel>", 
+                ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "HtmlSaveOptions.EpubHeadings.ncx");
+            TestUtil.DocPackageFileContainsString("<navLabel><text>Heading #5</text></navLabel>", 
+                ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "HtmlSaveOptions.EpubHeadings.ncx");
+
+            Assert.Throws<AssertionException>(() =>
+            {
+                TestUtil.DocPackageFileContainsString("<navLabel><text>Heading #3</text></navLabel>", 
+                    ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "HtmlSaveOptions.EpubHeadings.ncx");
+            });
+
+            Assert.Throws<AssertionException>(() =>
+            {
+                TestUtil.DocPackageFileContainsString("<navLabel><text>Heading #6</text></navLabel>", 
+                    ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "HtmlSaveOptions.EpubHeadings.ncx");
+            });
         }
 
         [Test]
@@ -726,15 +835,15 @@ namespace ApiExamples
             //ExFor:HtmlSaveOptions.SaveFormat
             //ExFor:SaveOptions
             //ExFor:SaveOptions.SaveFormat
-            //ExSummary:Shows how to specify saving options while converting a document to .epub.
+            //ExSummary:Shows how to use a specific encoding when saving a document to .epub.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Specify encoding for a document that we will save with a SaveOptions object.
+            // Use a SaveOptions object to specify encoding for a document that we will save.
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.SaveFormat = SaveFormat.Epub;
             saveOptions.Encoding = Encoding.UTF8;
 
-            // By default, an output .epub document will have all the contents in one HTML part.
+            // By default, an output .epub document will have all of its contents in one HTML part.
             // A split criteria allows us to segment the document into several HTML parts.
             // We will set the criteria to split the document at heading paragraphs.
             // This is useful for readers which cannot read HTML files greater than a certain size.
@@ -747,30 +856,49 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void ContentIdUrls()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ContentIdUrls(bool exportCidUrlsForMhtmlResources)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportCidUrlsForMhtmlResources
             //ExSummary:Shows how to enable content IDs for output MHTML documents.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Setting this flag will replace "Content-Location" tags with "Content-ID" tags for each resource from the input document
-            // The file names that were next to each "Content-Location" tag are re-purposed as content IDs
+            // Setting this flag will replace "Content-Location" tags
+            // with "Content-ID" tags for each resource from the input document.
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mhtml)
             {
-                ExportCidUrlsForMhtmlResources = true,
+                ExportCidUrlsForMhtmlResources = exportCidUrlsForMhtmlResources,
                 CssStyleSheetType = CssStyleSheetType.External,
                 ExportFontResources = true,
                 PrettyFormat = true
             };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ContentIdUrls.mht", options);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ContentIdUrls.mht");
+
+            if (exportCidUrlsForMhtmlResources)
+            {
+                Assert.True(outDocContents.Contains("Content-ID: <document.html>"));
+                Assert.True(outDocContents.Contains("<link href=3D\"cid:styles.css\" type=3D\"text/css\" rel=3D\"stylesheet\" />"));
+                Assert.True(outDocContents.Contains("@font-face { font-family:'Arial Black'; src:url('cid:ariblk.ttf') }"));
+                Assert.True(outDocContents.Contains("<img src=3D\"cid:image.003.jpeg\" width=3D\"351\" height=3D\"180\" alt=3D\"\" />"));
+            }
+            else
+            {
+                Assert.True(outDocContents.Contains("Content-Location: document.html"));
+                Assert.True(outDocContents.Contains("<link href=3D\"styles.css\" type=3D\"text/css\" rel=3D\"stylesheet\" />"));
+                Assert.True(outDocContents.Contains("@font-face { font-family:'Arial Black'; src:url('ariblk.ttf') }"));
+                Assert.True(outDocContents.Contains("<img src=3D\"image.003.jpeg\" width=3D\"351\" height=3D\"180\" alt=3D\"\" />"));
+            }
             //ExEnd
         }
 
-        [Test]
-        public void DropDownFormField()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void DropDownFormField(bool exportDropDownFormFieldAsText)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportDropDownFormFieldAsText
@@ -778,20 +906,37 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a document builder to insert a combo box with the value "Two" selected
+            // Use a document builder to insert a combo box with the value "Two" selected.
             builder.InsertComboBox("MyComboBox", new[] { "One", "Two", "Three" }, 1);
-            
-            // When converting to .html, drop down combo boxes will be converted to select/option tags to preserve their functionality
-            // If we want to freeze a combo box at its current selected value and convert it into plain text, we can do so with this flag
+
+            // The "ExportDropDownFormFieldAsText" flag of this SaveOptions object allows us to
+            // control how saving the document to HTML treats drop-down combo boxes.
+            // Setting it to "true" will convert each combo box into simple text
+            // which displays the current selected value of the combo box, effectively freezing it.
+            // Setting it to "false" will preserve the functionality of the combo box using <select> and <option> tags.
             HtmlSaveOptions options = new HtmlSaveOptions();
-            options.ExportDropDownFormFieldAsText = true;    
+            options.ExportDropDownFormFieldAsText = exportDropDownFormFieldAsText;    
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.DropDownFormField.html", options);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.DropDownFormField.html");
+
+            if (exportDropDownFormFieldAsText)
+                Assert.True(outDocContents.Contains(
+                    "<span>Two</span>"));
+            else
+                Assert.True(outDocContents.Contains(
+                    "<select name=\"MyComboBox\">" +
+                        "<option>One</option>" +
+                        "<option selected=\"selected\">Two</option>" +
+                        "<option>Three</option>" +
+                    "</select>"));
             //ExEnd
         }
 
-        [Test]
-        public void ExportBase64()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ExportImagesAsBase64(bool exportItemsAsBase64)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportFontsAsBase64
@@ -799,16 +944,45 @@ namespace ApiExamples
             //ExSummary:Shows how to save a .html document with resources embedded inside it.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // By default, when converting a document with images to .html, resources such as images will be linked to in external files
-            // We can set these flags to embed resources inside the output .html instead, reducing the number of files created during the conversion
             HtmlSaveOptions options = new HtmlSaveOptions
             {
-                ExportFontsAsBase64 = true,
-                ExportImagesAsBase64 = true,
+                ExportImagesAsBase64 = exportItemsAsBase64,
                 PrettyFormat = true
             };
 
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportBase64.html", options);
+            doc.Save(ArtifactsDir + $"HtmlSaveOptions.ExportImagesAsBase64.html", options);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + $"HtmlSaveOptions.ExportImagesAsBase64.html");
+
+            if (exportItemsAsBase64)
+            {
+                Assert.True(outDocContents.Contains("<img src=\"data:image/png;base64"));
+            }
+            else
+            {
+                Assert.True(outDocContents.Contains("<img src=\"HtmlSaveOptions.ExportImagesAsBase64.001.png\""));
+            }
+            //ExEnd
+        }
+
+
+        [Test]
+        public void ExportFontsAsBase64()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.ExportFontsAsBase64
+            //ExFor:HtmlSaveOptions.ExportImagesAsBase64
+            //ExSummary:Shows how to embed fonts inside a saved HTML document.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            HtmlSaveOptions options = new HtmlSaveOptions
+            {
+                ExportFontsAsBase64 = true,
+                CssStyleSheetType = CssStyleSheetType.Embedded,
+                PrettyFormat = true
+            };
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFontsAsBase64.html", options);
             //ExEnd
         }
 
