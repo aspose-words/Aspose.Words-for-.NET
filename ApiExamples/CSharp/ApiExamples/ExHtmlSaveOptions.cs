@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -28,7 +29,7 @@ namespace ApiExamples
         [TestCase(SaveFormat.Html)]
         [TestCase(SaveFormat.Mhtml)]
         [TestCase(SaveFormat.Epub)]
-        public void ExportPageMargins(SaveFormat saveFormat)
+        public void ExportPageMarginsEpub(SaveFormat saveFormat)
         {
             Document doc = new Document(MyDir + "TextBoxes.docx");
 
@@ -38,26 +39,26 @@ namespace ApiExamples
                 ExportPageMargins = true
             };
 
-            doc.Save(ArtifactsDir +"HtmlSaveOptions.ExportPageMargins" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageMarginsEpub" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
         }
 
         [TestCase(SaveFormat.Html, HtmlOfficeMathOutputMode.Image)]
         [TestCase(SaveFormat.Mhtml, HtmlOfficeMathOutputMode.MathML)]
         [TestCase(SaveFormat.Epub, HtmlOfficeMathOutputMode.Text)]
-        public void ExportOfficeMath(SaveFormat saveFormat, HtmlOfficeMathOutputMode outputMode)
+        public void ExportOfficeMathEpub(SaveFormat saveFormat, HtmlOfficeMathOutputMode outputMode)
         {
             Document doc = new Document(MyDir + "Office math.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.OfficeMathOutputMode = outputMode;
 
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportOfficeMath" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportOfficeMathEpub" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
         }
 
         [TestCase(SaveFormat.Html, true, Description = "TextBox as svg (html)")]
         [TestCase(SaveFormat.Epub, true, Description = "TextBox as svg (epub)")]
         [TestCase(SaveFormat.Mhtml, false, Description = "TextBox as img (mhtml)")]
-        public void ExportTextBoxAsSvg(SaveFormat saveFormat, bool isTextBoxAsSvg)
+        public void ExportTextBoxAsSvgEpub(SaveFormat saveFormat, bool isTextBoxAsSvg)
         {
             string[] dirFiles;
 
@@ -71,25 +72,25 @@ namespace ApiExamples
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(saveFormat);
             saveOptions.ExportTextBoxAsSvg = isTextBoxAsSvg;
             
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTextBoxAsSvg" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTextBoxAsSvgEpub" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
 
             switch (saveFormat)
             {
                 case SaveFormat.Html:
                     
-                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvg.001.png", SearchOption.AllDirectories);
+                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png", SearchOption.AllDirectories);
                     Assert.That(dirFiles, Is.Empty);
                     return;
 
                 case SaveFormat.Epub:
 
-                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvg.001.png", SearchOption.AllDirectories);
+                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png", SearchOption.AllDirectories);
                     Assert.That(dirFiles, Is.Empty);
                     return;
 
                 case SaveFormat.Mhtml:
 
-                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvg.001.png", SearchOption.AllDirectories);
+                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png", SearchOption.AllDirectories);
                     Assert.That(dirFiles, Is.Empty);
                     return;
             }
@@ -119,7 +120,7 @@ namespace ApiExamples
                 ExportListLabels = howExportListLabels
             };
 
-            doc.Save(ArtifactsDir + $"HtmlSaveOptions.ControlListLabelsExport.html", saveOptions);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ControlListLabelsExport.html", saveOptions);
         }
 
         [TestCase(true)]
@@ -573,16 +574,16 @@ namespace ApiExamples
             if (allowNegativeIndent)
             {
                 Assert.True(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:-41.65pt; border:0.75pt solid #000000; border-collapse:collapse\">"));
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:-41.65pt; border:0.75pt solid #000000; -aw-border:0.5pt single; border-collapse:collapse\">"));
                 Assert.True(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; border-collapse:collapse\">"));
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single; border-collapse:collapse\">"));
             }
             else
             {
                 Assert.True(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"border:0.75pt solid #000000; border-collapse:collapse\">"));
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"border:0.75pt solid #000000; -aw-border:0.5pt single; border-collapse:collapse\">"));
                 Assert.True(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; border-collapse:collapse\">"));
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single; border-collapse:collapse\">"));
             }
             //ExEnd
         }
@@ -943,7 +944,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlSaveOptions.ExportFontsAsBase64
             //ExFor:HtmlSaveOptions.ExportImagesAsBase64
-            //ExSummary:Shows how to save a .html document with resources embedded inside it.
+            //ExSummary:Shows how to save a .html document with images embedded inside it.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlSaveOptions options = new HtmlSaveOptions
@@ -952,9 +953,9 @@ namespace ApiExamples
                 PrettyFormat = true
             };
 
-            doc.Save(ArtifactsDir + $"HtmlSaveOptions.ExportImagesAsBase64.html", options);
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportImagesAsBase64.html", options);
 
-            string outDocContents = File.ReadAllText(ArtifactsDir + $"HtmlSaveOptions.ExportImagesAsBase64.html");
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportImagesAsBase64.html");
 
             if (exportItemsAsBase64)
             {
@@ -988,8 +989,9 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void ExportLanguageInformation()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ExportLanguageInformation(bool exportLanguageInformation)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportLanguageInformation
@@ -997,117 +999,265 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use the builder to write text in more than one language
-            builder.Font.LocaleId = 2057; // en-GB
+            // Use the builder to write text while formatting it in different locales.
+            builder.Font.LocaleId = new CultureInfo("en-US").LCID;
             builder.Writeln("Hello world!");
 
-            builder.Font.LocaleId = 1049; // ru-RU
+            builder.Font.LocaleId = new CultureInfo("en-GB").LCID;
+            builder.Writeln("Hello again!");
+
+            builder.Font.LocaleId = new CultureInfo("ru-RU").LCID;
             builder.Write("Привет, мир!");
 
-            // Normally, when saving a document with more than one proofing language to .html,
-            // only the text content is preserved with no traces of any other languages
-            // Saving with a HtmlSaveOptions object with this flag set will add "lang" attributes to spans 
-            // in places where other proofing languages were used 
+            // When saving the document to HTML, we can pass a SaveOptions object
+            // to either preserve or discard the locale of each formatted text.
+            // If we set the "ExportLanguageInformation" flag to "true",
+            // the output HTML document will contain the locales in "lang" attributes of <span> tags.
+            // If we set the "ExportLanguageInformation" flag to "false',
+            // the text in the output HTML document will not contain any locale information.
             HtmlSaveOptions options = new HtmlSaveOptions
             {
-                ExportLanguageInformation = true,
+                ExportLanguageInformation = exportLanguageInformation,
                 PrettyFormat = true
             };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportLanguageInformation.html", options);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportLanguageInformation.html");
+
+            if (exportLanguageInformation)
+            {
+                Assert.True(outDocContents.Contains("<span>Hello world!</span>"));
+                Assert.True(outDocContents.Contains("<span lang=\"en-GB\">Hello again!</span>"));
+                Assert.True(outDocContents.Contains("<span lang=\"ru-RU\">Привет, мир!</span>"));
+            }
+            else
+            {
+                Assert.True(outDocContents.Contains("<span>Hello world!</span>"));
+                Assert.True(outDocContents.Contains("<span>Hello again!</span>"));
+                Assert.True(outDocContents.Contains("<span>Привет, мир!</span>"));
+            }
             //ExEnd
         }
 
-        [Test]
-        public void List()
+        [TestCase(ExportListLabels.AsInlineText)]
+        [TestCase(ExportListLabels.Auto)]
+        [TestCase(ExportListLabels.ByHtmlTags)]
+        public void List(ExportListLabels exportListLabels)
         {
             //ExStart
             //ExFor:ExportListLabels
             //ExFor:HtmlSaveOptions.ExportListLabels
-            //ExSummary:Shows how to export an indented list to .html as plain text.
+            //ExSummary:Shows how to configure list exporting to HTML.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Use the builder to insert a list
+            
             Aspose.Words.Lists.List list = doc.Lists.Add(ListTemplate.NumberDefault);
             builder.ListFormat.List = list;
             
-            builder.Writeln("List item 1.");
+            builder.Writeln("Default numbered list item 1.");
+            builder.Writeln("Default numbered list item 2.");
             builder.ListFormat.ListIndent();
-            builder.Writeln("List item 2.");
-            builder.ListFormat.ListIndent();
-            builder.Write("List item 3.");
+            builder.Writeln("Default numbered list item 3.");
+            builder.ListFormat.RemoveNumbers();
 
-            // When we save this to .html, normally our list will be represented by <li> tags
-            // We can set this flag to have lists as plain text instead
+            list = doc.Lists.Add(ListTemplate.OutlineHeadingsLegal);
+            builder.ListFormat.List = list;
+
+            builder.Writeln("Outline legal heading list item 1.");
+            builder.Writeln("Outline legal heading list item 2.");
+            builder.ListFormat.ListIndent();
+            builder.Writeln("Outline legal heading list item 3.");
+            builder.ListFormat.ListIndent();
+            builder.Writeln("Outline legal heading list item 4.");
+            builder.ListFormat.ListIndent();
+            builder.Writeln("Outline legal heading list item 5.");
+            builder.ListFormat.RemoveNumbers();
+
+            // When saving the document to HTML, we can pass a SaveOptions object
+            // to decide which HTML elements the document will use to represent lists.
+            // Setting the "ExportListLabels" property to "ExportListLabels.AsInlineText"
+            // will create lists by formatting spans.
+            // Setting the "ExportListLabels" property to "ExportListLabels.Auto" will use the <p> tag
+            // to build lists in cases when using the <ol> and <li> tags may cause loss of formatting.
+            // Setting the "ExportListLabels" property to "ExportListLabels.ByHtmlTags"
+            // will use <ol> and <li> tags to build all lists.
             HtmlSaveOptions options = new HtmlSaveOptions
             {
-                ExportListLabels = ExportListLabels.AsInlineText,
-                PrettyFormat = true
+                ExportListLabels = exportListLabels
             };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.List.html", options);
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.List.html");
+
+            switch (exportListLabels)
+            {
+                case ExportListLabels.AsInlineText:
+                    Assert.True(outDocContents.Contains(
+                        "<p style=\"margin-top:0pt; margin-left:72pt; margin-bottom:0pt; text-indent:-18pt; -aw-import:list-item; -aw-list-level-number:1; -aw-list-number-format:'%1.'; -aw-list-number-styles:'lowerLetter'; -aw-list-number-values:'1'; -aw-list-padding-sml:9.67pt\">" +
+                            "<span style=\"-aw-import:ignore\">" +
+                                "<span>a.</span>" +
+                                "<span style=\"font:7pt 'Times New Roman'; -aw-import:spaces\">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>" +
+                            "</span>" +
+                            "<span>Default numbered list item 3.</span>" +
+                        "</p>"));
+
+                    Assert.True(outDocContents.Contains(
+                        "<p style=\"margin-top:0pt; margin-left:43.2pt; margin-bottom:0pt; text-indent:-43.2pt; -aw-import:list-item; -aw-list-level-number:3; -aw-list-number-format:'%0.%1.%2.%3'; -aw-list-number-styles:'decimal decimal decimal decimal'; -aw-list-number-values:'2 1 1 1'; -aw-list-padding-sml:10.2pt\">" +
+                            "<span style=\"-aw-import:ignore\">" +
+                                "<span>2.1.1.1</span>" +
+                                "<span style=\"font:7pt 'Times New Roman'; -aw-import:spaces\">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>" +
+                            "</span>" +
+                            "<span>Outline legal heading list item 5.</span>" +
+                        "</p>"));
+                    break;
+                case ExportListLabels.Auto:
+                    Assert.True(outDocContents.Contains(
+                        "<ol type=\"a\" style=\"margin-right:0pt; margin-left:0pt; padding-left:0pt\">" +
+                            "<li style=\"margin-left:31.33pt; padding-left:4.67pt\">" +
+                                "<span>Default numbered list item 3.</span>" +
+                            "</li>" +
+                        "</ol>"));
+
+                    Assert.True(outDocContents.Contains(
+                        "<p style=\"margin-top:0pt; margin-left:43.2pt; margin-bottom:0pt; text-indent:-43.2pt; -aw-import:list-item; -aw-list-level-number:3; " +
+                        "-aw-list-number-format:'%0.%1.%2.%3'; -aw-list-number-styles:'decimal decimal decimal decimal'; " +
+                        "-aw-list-number-values:'2 1 1 1'; -aw-list-padding-sml:10.2pt\">" +
+                            "<span style=\"-aw-import:ignore\">" +
+                                "<span>2.1.1.1</span>" +
+                                "<span style=\"font:7pt 'Times New Roman'; -aw-import:spaces\">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>" +
+                            "</span>" +
+                            "<span>Outline legal heading list item 5.</span>" +
+                        "</p>"));
+                    break;
+                case ExportListLabels.ByHtmlTags:
+                    Assert.True(outDocContents.Contains(
+                        "<ol type=\"a\" style=\"margin-right:0pt; margin-left:0pt; padding-left:0pt\">" +
+                            "<li style=\"margin-left:31.33pt; padding-left:4.67pt\">" +
+                                "<span>Default numbered list item 3.</span>" +
+                            "</li>" +
+                        "</ol>"));
+
+                    Assert.True(outDocContents.Contains(
+                        "<ol type=\"1\" class=\"awlist3\" style=\"margin-right:0pt; margin-left:0pt; padding-left:0pt\">" +
+                            "<li style=\"margin-left:7.2pt; text-indent:-43.2pt; -aw-list-padding-sml:10.2pt\">" +
+                                "<span style=\"font:7pt 'Times New Roman'; -aw-import:ignore\">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>" +
+                                "<span>Outline legal heading list item 5.</span>" +
+                            "</li>" +
+                        "</ol>"));
+                    break;
+            }
             //ExEnd
         }
 
-        [Test]
-        public void ExportPageMargins()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ExportPageMargins(bool exportPageMargins)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportPageMargins
-            //ExSummary:Shows how to show out-of-bounds objects in output .html documents.
+            //ExSummary:Shows how to show out-of-bounds objects in output HTML documents.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a builder to insert a shape with no wrapping
+            // Use a builder to insert a shape with no wrapping.
             Shape shape = builder.InsertShape(ShapeType.Cube, 200, 200);
 
             shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
             shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
             shape.WrapType = WrapType.None;
 
-            // Negative values for shape position may cause the shape to go out of page bounds
-            // If we export this to .html, the shape will be truncated
+            // Negative shape position values may place the shape outside of page boundaries.
+            // If we export this to HTML, the shape will appear truncated.
             shape.Left = -150;
 
-            // We can avoid that and have the entire shape be visible by setting this flag
+            // When saving the document to HTML, we can pass a SaveOptions object
+            // to decide whether to adjust the page so it can fully display out-of-bounds objects.
+            // If we set the "ExportPageMargins" flag to "true", the shape will be fully visible in the output HTML.
+            // If we set the "ExportPageMargins" flag to "false",
+            // our document will display the shape truncated as it would be seen in Microsoft Word.
             HtmlSaveOptions options = new HtmlSaveOptions();
-            options.ExportPageMargins = true;
+            options.ExportPageMargins = exportPageMargins;
         
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html", options);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html");
+
+            if (exportPageMargins)
+            {
+                Assert.True(outDocContents.Contains("<style type=\"text/css\">div.Section1 { margin:70.85pt }</style>"));
+                Assert.True(outDocContents.Contains("<div class=\"Section1\"><p style=\"margin-top:0pt; margin-left:151pt; margin-bottom:0pt\">"));
+            }
+            else
+            {
+                Assert.False(outDocContents.Contains("style type=\"text/css\">"));
+                Assert.True(outDocContents.Contains("<div><p style=\"margin-top:0pt; margin-left:221.85pt; margin-bottom:0pt\">"));
+            }
             //ExEnd
         }
 
-        [Test]
-        public void ExportPageSetup()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ExportPageSetup(bool exportPageSetup)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportPageSetup
-            //ExSummary:Shows how to preserve section structure/page setup information when saving to html.
+            //ExSummary:Shows how decide whether to preserve section structure/page setup information when saving to HTML.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a DocumentBuilder to insert two sections with text
-            builder.Writeln("Section 1");
+            // Use a DocumentBuilder to insert two sections with text.
+            builder.Write("Section 1");
             builder.InsertBreak(BreakType.SectionBreakNewPage);
-            builder.Writeln("Section 2");
+            builder.Write("Section 2");
 
-            // Change dimensions and paper size of first section
+            // Change dimensions and paper size of first section.
             PageSetup pageSetup = doc.Sections[0].PageSetup;
             pageSetup.TopMargin = 36.0;
             pageSetup.BottomMargin = 36.0;
             pageSetup.PaperSize = PaperSize.A5;
 
-            // Section structure and pagination are normally lost when when converting to .html
-            // We can create an HtmlSaveOptions object with the ExportPageSetup flag set to true
-            // to preserve the section structure in <div> tags and page dimensions in the output document's CSS
+            // When saving the document to HTML, we can pass a SaveOptions object
+            // to decide whether to preserve or discard page setup settings.
+            // If we set the "ExportPageSetup" flag to "true", the output HTML document will contain our page setup configuration.
+            // If we set the "ExportPageSetup" flag to "false", the save operation will discard pur page setup settings
+            // for the first section, and both sections will look identical.
             HtmlSaveOptions options = new HtmlSaveOptions
             {
-                ExportPageSetup = true,
-                PrettyFormat = true
+                ExportPageSetup = exportPageSetup
             };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageSetup.html", options);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportPageSetup.html");
+
+            if (exportPageSetup)
+            {
+                Assert.True(outDocContents.Contains(
+                    "<style type=\"text/css\">" +
+                        "@page Section1 { size:419.55pt 595.3pt; margin:36pt 70.85pt }" +
+                        "@page Section2 { size:612pt 792pt; margin:70.85pt }" +
+                        "div.Section1 { page:Section1 }div.Section2 { page:Section2 }" +
+                    "</style>"));
+
+                Assert.True(outDocContents.Contains(
+                    "<div class=\"Section1\">" +
+                        "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
+                            "<span>Section 1</span>" +
+                        "</p>" +
+                    "</div>"));
+            }
+            else
+            {
+                Assert.False(outDocContents.Contains("style type=\"text/css\">"));
+
+                Assert.True(outDocContents.Contains(
+                    "<div>" +
+                        "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
+                            "<span>Section 1</span>" +
+                        "</p>" +
+                    "</div>"));
+            }
             //ExEnd
         }
 

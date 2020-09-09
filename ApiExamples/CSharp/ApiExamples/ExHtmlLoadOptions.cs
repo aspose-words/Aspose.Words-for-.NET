@@ -22,7 +22,7 @@ namespace ApiExamples
     {
         [TestCase(true, Category = "SkipMono")]
         [TestCase(false, Category = "SkipMono")]
-        public void SupportVml(bool doSupportVml)
+        public void SupportVml(bool supportVml)
         {
             //ExStart
             //ExFor:HtmlLoadOptions.#ctor
