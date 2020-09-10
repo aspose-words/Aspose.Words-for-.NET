@@ -1261,8 +1261,9 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void RelativeFontSize()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void RelativeFontSize(bool exportRelativeFontSize)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportRelativeFontSize
@@ -1272,26 +1273,66 @@ namespace ApiExamples
 
             // Use a builder to write some text in various sizes
             builder.Writeln("Default font size, ");
-            builder.Font.Size = 24.0;
+            builder.Font.Size = 24;
             builder.Writeln("2x default font size,");
             builder.Font.Size = 96;
             builder.Write("8x default font size");
 
-            // We can save font sizes as ratios of the default size, which will be 12 in this case
-            // If we use an input .html, this size can be set with the AbsSize {font-size:12pt} tag
-            // The ExportRelativeFontSize will enable this feature
+            // When we save the document to HTML, we can pass a SaveOptions object
+            // to determine whether to use relative or absolute font sizes.
+            // Set the "ExportRelativeFontSize" flag to "true" to declare font sizes
+            // using the "em" measurement unit, which is a factor that multiplies the current font size. 
+            // Set the "ExportRelativeFontSize" flag to "false" to declare font sizes
+            // using the "pt" measurement unit, which is the font's absolute size in points.
             HtmlSaveOptions options = new HtmlSaveOptions
             {
-                ExportRelativeFontSize = true,
-                PrettyFormat = true
+                ExportRelativeFontSize = exportRelativeFontSize
             };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.RelativeFontSize.html", options);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.RelativeFontSize.html");
+
+            if (exportRelativeFontSize)
+            {
+                Assert.True(outDocContents.Contains(
+                    "<body style=\"font-family:'Times New Roman'\">" +
+                        "<div>" +
+                            "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
+                                "<span>Default font size, </span>" +
+                            "</p>" +
+                            "<p style=\"margin-top:0pt; margin-bottom:0pt; font-size:2em\">" +
+                                "<span>2x default font size,</span>" +
+                            "</p>" +
+                            "<p style=\"margin-top:0pt; margin-bottom:0pt; font-size:8em\">" +
+                                "<span>8x default font size</span>" +
+                            "</p>" +
+                        "</div>" +
+                    "</body>"));
+            }
+            else
+            {
+                Assert.True(outDocContents.Contains(
+                    "<body style=\"font-family:'Times New Roman'; font-size:12pt\">" +
+                        "<div>" +
+                            "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
+                                "<span>Default font size, </span>" +
+                            "</p>" +
+                            "<p style=\"margin-top:0pt; margin-bottom:0pt; font-size:24pt\">" +
+                                "<span>2x default font size,</span>" +
+                            "</p>" +
+                            "<p style=\"margin-top:0pt; margin-bottom:0pt; font-size:96pt\">" +
+                                "<span>8x default font size</span>" +
+                            "</p>" +
+                        "</div>" +
+                    "</body>"));
+            }
             //ExEnd
         }
 
-        [Test]
-        public void ExportTextBox()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ExportTextBox(bool exportTextBoxAsSvg)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportTextBoxAsSvg
@@ -1299,23 +1340,44 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a DocumentBuilder to insert a text box and give it some text content
+            // Use a DocumentBuilder to insert a text box, and give it some text content.
             Shape textBox = builder.InsertShape(ShapeType.TextBox, 100.0, 60.0);
             builder.MoveTo(textBox.FirstParagraph);
             builder.Write("My text box");
 
-            // Normally, all shapes such as the text box we placed are exported to .html as external images linked by the .html document
-            // We can save with an HtmlSaveOptions object with the ExportTextBoxAsSvg set to true to save text boxes as <svg> tags,
-            // which will cause no linked images to be saved and will make the inner text selectable
+            // When we save the document to HTML, we can pass a SaveOptions object
+            // to determine how the saving operation will export text box shapes.
+            // If we set the "ExportTextBoxAsSvg" flag to "true",
+            // the save operation will convert shapes with text into SVG objects.
+            // If we set the "ExportTextBoxAsSvg" flag to "false",
+            // the save operation will convert shapes with text into images.
             HtmlSaveOptions options = new HtmlSaveOptions();
-            options.ExportTextBoxAsSvg = true;
+            options.ExportTextBoxAsSvg = exportTextBoxAsSvg;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTextBox.html", options);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportTextBox.html");
+
+            if (exportTextBoxAsSvg)
+            {
+                Assert.True(outDocContents.Contains(
+                    "<span style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\">" +
+                    "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" width=\"133\" height=\"80\">"));
+            }
+            else
+            {
+                Assert.True(outDocContents.Contains(
+                    "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
+                        "<img src=\"HtmlSaveOptions.ExportTextBox.001.png\" width=\"136\" height=\"83\" alt=\"\" " +
+                        "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />" +
+                    "</p>"));
+            }
             //ExEnd
         }
 
-        [Test]
-        public void RoundTripInformation()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void RoundTripInformation(bool exportRoundtripInformation)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportRoundtripInformation
@@ -1325,19 +1387,79 @@ namespace ApiExamples
             // When converting a document to .html, some elements such as hidden bookmarks, original shape positions,
             // or footnotes will be either removed or converted to plain text and effectively be lost
             // Saving with a HtmlSaveOptions object with ExportRoundtripInformation set to true will preserve these elements
+
+            // When we save the document to HTML, we can pass a SaveOptions object
+            // to determine how the saving operation will export document elements
+            // that HTML does not support or make any use of, such as hidden bookmarks and original shape positions.
+            // If we set the "ExportRoundtripInformation" flag to "true", the save operation will preserve these elements. 
+            // If we set the "ExportRoundTripInformation" flag to "false", the save operation will discard these elements.
+            // We will want to preserve such elements if we intend to load the saved HTML using Aspose.Words,
+            // as they could be of use once again.
             HtmlSaveOptions options = new HtmlSaveOptions
             {
-                ExportRoundtripInformation = true,
-                PrettyFormat = true
+                ExportRoundtripInformation = exportRoundtripInformation
             };
 
-            // These elements will have tags that will start with "-aw", such as "-aw-import" or "-aw-left-pos"
             doc.Save(ArtifactsDir + "HtmlSaveOptions.RoundTripInformation.html", options);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.RoundTripInformation.html");
+            doc = new Document(ArtifactsDir + "HtmlSaveOptions.RoundTripInformation.html");
+
+            if (exportRoundtripInformation)
+            {
+                Assert.True(outDocContents.Contains("<div style=\"-aw-headerfooter-type:header-primary; clear:both\">"));
+                Assert.True(outDocContents.Contains("<span style=\"-aw-import:ignore\">&#xa0;</span>"));
+                
+                Assert.True(outDocContents.Contains(
+                    "td colspan=\"2\" style=\"width:210.6pt; border-style:solid; border-width:0.75pt 6pt 0.75pt 0.75pt; " +
+                    "padding-right:2.4pt; padding-left:5.03pt; vertical-align:top; " +
+                    "-aw-border-bottom:0.5pt single; -aw-border-left:0.5pt single; -aw-border-top:0.5pt single\">"));
+                
+                Assert.True(outDocContents.Contains(
+                    "<li style=\"margin-left:30.2pt; padding-left:5.8pt; -aw-font-family:'Courier New'; -aw-font-weight:normal; -aw-number-format:'o'\">"));
+                
+                Assert.True(outDocContents.Contains(
+                    "<img src=\"HtmlSaveOptions.RoundTripInformation.003.jpeg\" width=\"351\" height=\"180\" alt=\"\" " +
+                    "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />"));
+
+
+                Assert.True(outDocContents.Contains(
+                    "<span>Page number </span>" +
+                    "<span style=\"-aw-field-start:true\"></span>" +
+                    "<span style=\"-aw-field-code:' PAGE   \\\\* MERGEFORMAT '\"></span>" +
+                    "<span style=\"-aw-field-separator:true\"></span>" +
+                    "<span>1</span>" +
+                    "<span style=\"-aw-field-end:true\"></span>"));
+
+                Assert.AreEqual(1, doc.Range.Fields.Count(f => f.Type == FieldType.FieldPage));
+            }
+            else
+            {
+                Assert.True(outDocContents.Contains("<div style=\"clear:both\">"));
+                Assert.True(outDocContents.Contains("<span>&#xa0;</span>"));
+                
+                Assert.True(outDocContents.Contains(
+                    "<td colspan=\"2\" style=\"width:210.6pt; border-style:solid; border-width:0.75pt 6pt 0.75pt 0.75pt; " +
+                    "padding-right:2.4pt; padding-left:5.03pt; vertical-align:top\">"));
+                
+                Assert.True(outDocContents.Contains(
+                    "<li style=\"margin-left:30.2pt; padding-left:5.8pt\">"));
+                
+                Assert.True(outDocContents.Contains(
+                    "<img src=\"HtmlSaveOptions.RoundTripInformation.003.jpeg\" width=\"351\" height=\"180\" alt=\"\" />"));
+
+                Assert.True(outDocContents.Contains(
+                    "<span>Page number </span>" +
+                    "<span>1</span>"));
+
+                Assert.AreEqual(0, doc.Range.Fields.Count(f => f.Type == FieldType.FieldPage));
+            }
             //ExEnd
         }
 
-        [Test]
-        public void ExportTocPageNumbers()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ExportTocPageNumbers(bool exportTocPageNumbers)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportTocPageNumbers
@@ -1345,10 +1467,11 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a table of contents
+            // Insert a table of contents, and then populate the document with paragraphs formatted using a "Heading"
+            // style that the table of contents will pick up as entries. Each entry will display the heading paragraph on the left,
+            // and the page number that contains the heading on the right.
             FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
 
-            // Populate the document with paragraphs of a "Heading" style that the table of contents will pick up
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 1"];
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Entry 1");
@@ -1357,22 +1480,47 @@ namespace ApiExamples
             builder.Writeln("Entry 3");
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Entry 4");
-
-            // Our headings span several pages, and those page numbers will be displayed by the TOC at the top of the document
             fieldToc.UpdatePageNumbers();
             doc.UpdateFields();
 
-            // These page numbers are normally omitted since .html has no pagination, but we can still have them displayed
-            // if we save with a HtmlSaveOptions object with the ExportTocPageNumbers set to true 
+            // HTML documents are not split up into pages, so,
+            // if we save the document to HTML, the page numbers that our TOC displays will serve no purpose.
+            // When we save the document to HTML, we can pass a SaveOptions object to omit these page numbers from the TOC.
+            // If we set the "ExportTocPageNumbers" flag to "true",
+            // each TOC entry will display the heading, separator, and also the page number, preserving its appearance in Microsoft Word.
+            // If we set the "ExportTocPageNumbers" flag to "false",
+            // the save operation will omit both the separator and page number, but leave the heading for each entry intact.
             HtmlSaveOptions options = new HtmlSaveOptions();
-            options.ExportTocPageNumbers = true;
+            options.ExportTocPageNumbers = exportTocPageNumbers;
             
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTocPageNumbers.html", options);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportTocPageNumbers.html");
+
+            if (exportTocPageNumbers)
+            {
+                Assert.True(outDocContents.Contains(
+                    "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
+                    "<span>Entry 1</span>" +
+                    "<span style=\"width:428.14pt; font-family:'Lucida Console'; font-size:10pt; display:inline-block; -aw-font-family:'Times New Roman'; " +
+                    "-aw-tabstop-align:right; -aw-tabstop-leader:dots; -aw-tabstop-pos:469.8pt\">.......................................................................</span>" +
+                    "<span>2</span>" +
+                    "</p>"));
+            }
+            else
+            {
+                Assert.True(outDocContents.Contains(
+                    "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
+                    "<span>Entry 1</span>" +
+                    "</p>"));
+            }
             //ExEnd
         }
 
-        [Test]
-        public void FontSubsetting()
+        [TestCase(0)]
+        [TestCase(1000000)]
+        [TestCase(int.MaxValue)]
+        public void FontSubsetting(int fontResourcesSubsettingSizeThreshold)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.FontResourcesSubsettingSizeThreshold
@@ -1380,7 +1528,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a DocumentBuilder to insert text with several fonts
             builder.Font.Name = "Arial";
             builder.Writeln("Hello world!");
             builder.Font.Name = "Times New Roman";
@@ -1388,30 +1535,55 @@ namespace ApiExamples
             builder.Font.Name = "Courier New";
             builder.Writeln("Hello world!");
 
-            // When saving to .html, font subsetting fully applies by default, meaning that when we export fonts with our file,
-            // the symbols not used by our document are not represented by the exported fonts, which cuts down file size dramatically
-            // Font files of a file size larger than FontResourcesSubsettingSizeThreshold get subsetted, so a value of 0 will apply default full subsetting
-            // Setting the value to something large will fully suppress subsetting, which could result in large font files that cover every glyph
+            // When we save the document to HTML, we can pass a SaveOptions object configure font subsetting.
+            // If we set the "ExportFontResources" flag to "true", and also name a folder in the "FontsFolder" property,
+            // then the saving operation will create that folder,
+            // and place a .ttf file inside that folder for each font that our document uses.
+            // Each .ttf file will contain that font's entire glyph set, which can potentially be very large.
+            // When we apply subsetting to a font, its exported raw data will only contain the glyphs that the document is using,
+            // as opposed to the entire glyph set. If the text in our document only uses a small fraction
+            // of a font's glyph set, then subsetting will significantly reduce the size of our output documents.
+            // We can use the "FontResourcesSubsettingSizeThreshold" property to define a .ttf file size, in bytes.
+            // If an exported font will create a file of a size bigger than that,
+            // then the save operation will apply subsetting to that font. 
+            // Setting a threshold of 0 applies subsetting to all fonts,
+            // and setting it to "int.MaxValue" effectively disables subsetting.
             string fontsFolder = ArtifactsDir + "HtmlSaveOptions.FontSubsetting.Fonts";
+
             HtmlSaveOptions options = new HtmlSaveOptions
             {
                 ExportFontResources = true,
                 FontsFolder = fontsFolder,
-                FontResourcesSubsettingSizeThreshold = int.MaxValue
+                FontResourcesSubsettingSizeThreshold = fontResourcesSubsettingSizeThreshold
             };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.FontSubsetting.html", options);
+
+            string[] fontFileNames = Directory.GetFiles(fontsFolder).Where(s => s.EndsWith(".ttf")).ToArray();
+
+            Assert.AreEqual(3, fontFileNames.Length);
+
+            foreach (string filename in fontFileNames)
+            {
+                // By default, the .ttf files for each of our three fonts will be over 700MB.
+                // Subsetting will reduce them all to under 30MB.
+                FileInfo fontFileInfo = new FileInfo(filename);
+
+                Assert.True(fontFileInfo.Length > 700000 || fontFileInfo.Length < 30000);
+                Assert.True(Math.Max(fontResourcesSubsettingSizeThreshold, 30000) > new FileInfo(filename).Length);
+            }
             //ExEnd
         }
 
-        [Test]
-        public void MetafileFormat()
+        [TestCase(HtmlMetafileFormat.Png)]
+        [TestCase(HtmlMetafileFormat.Svg)]
+        [TestCase(HtmlMetafileFormat.EmfOrWmf)]
+        public void MetafileFormat(HtmlMetafileFormat htmlMetafileFormat)
         {
             //ExStart
             //ExFor:HtmlMetafileFormat
             //ExFor:HtmlSaveOptions.MetafileFormat
-            //ExSummary:Shows how to set a meta file in a different format.
-            // Create a document from an html string
+            //ExSummary:Shows how to convert SVG objects to a different format when saving HTML documents.
             string html = 
                 @"<html>
                     <svg xmlns='http://www.w3.org/2000/svg' width='500' height='40' viewBox='0 0 500 40'>
@@ -1421,13 +1593,41 @@ namespace ApiExamples
 
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)));
 
-            // This document contains a <svg> element in the form of text,
-            // which by default will be saved as a linked external .png when we save the document as html
-            // We can save with a HtmlSaveOptions object with this flag set to preserve the <svg> tag
+            // This document contains a <svg> element in the form of text.
+            // When we save the document to HTML, we can pass a SaveOptions object
+            // to determine how the saving operation handles this object.
+            // Setting the "MetafileFormat" property to "HtmlMetafileFormat.Png" to convert it to a PNG image.
+            // Setting the "MetafileFormat" property to "HtmlMetafileFormat.Svg" preserve it as a SVG object.
+            // Setting the "MetafileFormat" property to "HtmlMetafileFormat.EmfOrWmf" to convert it to a metafile.
             HtmlSaveOptions options = new HtmlSaveOptions();
-            options.MetafileFormat = HtmlMetafileFormat.Svg;
+            options.MetafileFormat = htmlMetafileFormat;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.MetafileFormat.html", options);
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.MetafileFormat.html");
+
+            switch (htmlMetafileFormat)
+            {
+                case HtmlMetafileFormat.Png:
+                    Assert.True(outDocContents.Contains(
+                        "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
+                            "<img src=\"HtmlSaveOptions.MetafileFormat.001.png\" width=\"500\" height=\"40\" alt=\"\" " +
+                            "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />" +
+                        "</p>"));
+                    break;
+                case HtmlMetafileFormat.Svg:
+                    Assert.True(outDocContents.Contains(
+                        "<span style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\">" +
+                        "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" width=\"499\" height=\"40\">"));
+                    break;
+                case HtmlMetafileFormat.EmfOrWmf:
+                    Assert.True(outDocContents.Contains(
+                        "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
+                            "<img src=\"HtmlSaveOptions.MetafileFormat.001.emf\" width=\"500\" height=\"40\" alt=\"\" " +
+                            "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />" +
+                        "</p>"));
+                    break;
+            }
             //ExEnd
         }
 
