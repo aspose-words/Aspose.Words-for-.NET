@@ -63,8 +63,8 @@ namespace ApiExamples
             builder.Write("Please enter text here: ");
 
             // Insert a text input field, which will allow the user to click it and enter text.
-            // Assign some placeholder text which the user may overwrite,
-            // and pass a maximum text length of 0 to apply no limit on the length of the form field's contents.
+            // Assign some placeholder text that the user may overwrite and pass
+            // a maximum text length of 0 to apply no limit on the form field's contents.
             builder.InsertTextInput("TextInput1", TextFormFieldType.Regular, "", "Placeholder text", 0);
 
             // The form field will appear in the form of an "input" html tag, with a type of "text".
@@ -158,7 +158,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-
             // Use a document builder to insert a combo box.
             builder.Write("Choose a value from this combo box: ");
             FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "One", "Two", "Three" }, 0);
@@ -198,9 +197,9 @@ namespace ApiExamples
             FormFieldCollection formFields = doc.Range.FormFields;
             Assert.AreEqual(3, formFields.Count);
 
-            // Our form fields are displayed by fields. We can see their field codes by opening this document
-            // in Microsoft, and then pressing Alt + F9. These fields have no switches and the content
-            // of their form fields is fully governed by members of the FormField object.
+            // Fields display our form fields. We can see their field codes by opening this document
+            // in Microsoft and pressing Alt + F9. These fields have no switches,
+            // and members of the FormField object fully govern their form fields' content.
             Assert.AreEqual(3, doc.Range.Fields.Count);
             Assert.AreEqual(" FORMDROPDOWN \u0001", doc.Range.Fields[0].GetFieldCode());
             Assert.AreEqual(" FORMCHECKBOX \u0001", doc.Range.Fields[1].GetFieldCode());
@@ -342,7 +341,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a combo box, and then verify its collection of drop down items.
-            // In Microsoft Word, the user will be able to click the combo box,
+            // In Microsoft Word, the user will click the combo box,
             // and then choose one of the items of text in the collection to display.
             string[] items = { "One", "Two", "Three" };
             FormField comboBoxField = builder.InsertComboBox("DropDown", items, 0);

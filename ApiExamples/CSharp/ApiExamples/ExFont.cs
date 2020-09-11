@@ -78,8 +78,8 @@ namespace ApiExamples
             para = (Paragraph)para.ParentNode.AppendChild(new Paragraph(doc));
 
             // 2 -  Set the SmallCaps flag to display all characters in small capitals:
-            // If a character is lower case, it will appear in its upper case form,
-            // but will have the same height it had when it was lower case (the font's x-height).
+            // If a character is lower case, it will appear in its upper case form
+            // but will have the same height as the lower case (the font's x-height).
             // Characters that were in upper case originally will look the same.
             run = new Run(doc, "Small Capitals");
             run.Font.SmallCaps = true;
@@ -238,7 +238,7 @@ namespace ApiExamples
             run.Font.Position = 5;
             para.AppendChild(run);
 
-            // Add a run of text that is lowered 10 points below the baseline.
+            // Add a run of text that is lowered 10 points below the baseline. //INSP: 'is lowered' passive voice
             run = new Run(doc, "Lowered text. ");
             run.Font.Position = -10;
             para.AppendChild(run);
@@ -361,7 +361,7 @@ namespace ApiExamples
             builder.Font.Size = 36;
             builder.Font.Color = Color.LightBlue;
 
-            // Below are two ways of using shadows to apply a 3D-like effect to text.
+            // Below are two ways of using shadows to apply a 3D-like effect to the text.
             // 1 -  Engrave text to make it look like the letters are sunken into the page:
             builder.Font.Engrave = true;
 
@@ -399,8 +399,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set the Shadow flag to apply an offset shadow effect
-            // which makes it look like the letters are floating above the page.
+            // Set the Shadow flag to apply an offset shadow effect,
+            // making it look like the letters are floating above the page.
             builder.Font.Shadow = true;
             builder.Font.Size = 36;
 
@@ -425,8 +425,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set the Outline flag to change the fill color of the text to white,
-            // and to leave a thin outline around each character in the original color of the text. 
+            // Set the Outline flag to change the text's fill color to white and
+            // leave a thin outline around each character in the original color of the text. 
             builder.Font.Outline = true;
             builder.Font.Color = Color.Blue;
             builder.Font.Size = 36;
@@ -453,7 +453,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // With the Hidden flag set to true, any text that we create using this Font object will be invisible in the document.
-            // We will not be able to see or highlight hidden text unless we enable the "Hidden text" option
+            // We will not see or highlight hidden text unless we enable the "Hidden text" option
             // found in Microsoft Word via File -> Options -> Display. The text will still be there,
             // and we will be able to access this text programmatically.
             // It is not advised to use this method to hide sensitive information.
@@ -482,7 +482,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Font.Name = "Arial Black";
 
-            // Set the builder's font size, and minimum size at which kerning will be applied.
+            // Set the builder's font size, and minimum size at which kerning will be applied. //INSP: 'be applied' passive voice
             // The font size falls below the kerning threshold, so kerning will not be applied.
             builder.Font.Size = 18;
             builder.Font.Kerning = 24;
@@ -491,7 +491,7 @@ namespace ApiExamples
 
             // Set the kerning threshold so that the builder's current font size is above it.
             // Any text we add from this point will have kerning applied. The spaces between characters
-            // will be adjusted, normally resulting in a slightly more aesthetically pleasing run of text.
+            // will be adjusted, normally resulting in a slightly more aesthetically pleasing text run.
             builder.Font.Kerning = 12;
             
             builder.Writeln("TALLY. (Kerning applied)");
@@ -522,9 +522,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Normally, Microsoft Word emphasizes spelling errors with a red jagged underline.
-            // We can un-set the NoProofing flag in order to create a portion of text
-            // which bypasses the spell checker while avoiding disabling it completely.
+            // Normally, Microsoft Word emphasizes spelling errors with a jagged red underline.
+            // We can un-set the NoProofing flag to create a portion of text that
+            // bypasses the spell checker while completely disabling it.
             builder.Font.NoProofing = true;
 
             builder.Writeln("Proofing has been disabled, so these spelking errrs will not display red lines underneath.");
@@ -548,8 +548,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // If we set the font's locale to English, and insert some text in Russian,
-            // the English locale spell checker will not be able to recognize the text and detect it as a spelling error.
+            // If we set the font's locale to English and insert some Russian text,
+            // the English locale spell checker will not recognize the text and detect it as a spelling error.
             builder.Font.LocaleId = new CultureInfo("en-US", false).LCID;
             builder.Writeln("Привет!");
             
@@ -634,8 +634,8 @@ namespace ApiExamples
             builder.Font.TextEffect = TextEffect.SparkleText;
 
             builder.Writeln("Text with a sparkle effect.");
-            
-            // Font animation effects are only supported by older versions of Microsoft Word.
+
+            // Older versions of Microsoft Word only support font animation effects.
             doc.Save(ArtifactsDir + "Font.SparklingText.doc");
             //ExEnd
 
@@ -761,7 +761,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Specify font settings which the document builder will apply to any text that it inserts.
+            // Specify font settings that the document builder will apply to any text that it inserts.
             builder.Font.Name = "Courier New";
             builder.Font.LocaleId = new CultureInfo("en-US", false).LCID;
 
@@ -809,8 +809,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // If a run that we use the builder to insert while using this font configuration
-            // contains characters within the range of ASCII characters, it will display those characters using this font.
+            // Suppose a run that we use the builder to insert while using this font configuration
+            // contains characters within the ASCII characters' range. In that case,
+            // it will display those characters using this font.
             builder.Font.NameAscii = "Calibri";
 
             // With no other font specified, the builder will also apply this font to all characters that it inserts.
@@ -821,7 +822,7 @@ namespace ApiExamples
             builder.Font.NameOther = "Courier New";
 
             // Insert a run with one word consisting of ASCII characters, and one word with all characters outside that range.
-            // Each character will be displayed using either of the fonts, depending on .
+            // Each character will be displayed using either of the fonts, depending on.
             builder.Writeln("Hello, Привет");
 
             doc.Save(ArtifactsDir + "Font.NameAscii.docx");
@@ -892,8 +893,8 @@ namespace ApiExamples
             //ExSummary:Shows how to differentiate custom styles from built-in styles.
             Document doc = new Document();
 
-            // When we create a document using Microsoft Word, or programmatically using Aspose.Words, 
-            // the document will come with a collection of styles, which we can apply to its text to modify its appearance.
+            // When we create a document using Microsoft Word, or programmatically using Aspose.Words,
+            // the document will come with a collection of styles to apply to its text to modify its appearance.
             // We can access these built-in styles via the document's "Styles" collection.
             // These styles will all have the "BuiltIn" flag set to "true".
             Style style = doc.Styles["Emphasis"];
@@ -1002,8 +1003,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // If a run's Font object does not specify a text color,
-            // it will automatically select either black or white depending on the color of the background pattern color.
+            // If a run's Font object does not specify text color, it will automatically
+            // select either black or white depending on the background color's color.
             Assert.AreEqual(Color.Empty.ToArgb(), builder.Font.Color.ToArgb());
 
             // The default color for text is black. If the color of the background is dark, black text will be difficult to see.
@@ -1014,8 +1015,8 @@ namespace ApiExamples
 
             Assert.AreEqual(Color.White.ToArgb(), doc.FirstSection.Body.Paragraphs[0].Runs[0].Font.AutoColor.ToArgb());
 
-            // If we change the background to a light color, black will be a more suitable text color than white,
-            // so the auto color will display this text in black.
+            // If we change the background to a light color, black will be a more
+            // suitable text color than white so that the auto color will display it in black.
             builder.Font.Shading.BackgroundPatternColor = Color.LightBlue;
 
             builder.Writeln("The text color automatically chosen for this run is black.");
@@ -1214,12 +1215,12 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitTableEnd(Table table)
             {
-                // The content inside table cells may be flagged as hidden content, but the tables themselves cannot. 
-                // If this table had nothing but hidden content, all of it would have been removed by this visitor,
+                // The content inside table cells may be flagged as hidden content, but the tables themselves cannot. //INSP: 'be flagged' passive voice
+                // If this table had nothing but hidden content, all of it would have been removed by this visitor, //INSP: 'been removed' passive voice
                 // and there would be no child nodes left.
                 // Thus, we can also treat the table itself as hidden content and remove it.
                 // Tables which are empty but do not have hidden content will have cells with empty paragraphs inside,
-                // which will not be removed, and will remain as child nodes of this table.
+                // which will not be removed, and will remain as child nodes of this table. //INSP: 'be removed' passive voice
                 if (!table.HasChildNodes)
                     table.Remove();
                 
@@ -1439,7 +1440,7 @@ namespace ApiExamples
         public void CheckScanUserFontsFolder()
         {
             // On Windows 10 fonts may be installed either into system folder "%windir%\fonts" for all users
-            // or into user folder "%userprofile%\AppData\Local\Microsoft\Windows\Fonts" for current user
+            // or into user folder "%userprofile%\AppData\Local\Microsoft\Windows\Fonts" for current user.
             SystemFontSource systemFontSource = new SystemFontSource();
             Assert.NotNull(systemFontSource.GetAvailableFonts()
                     .FirstOrDefault(x => x.FilePath.Contains("\\AppData\\Local\\Microsoft\\Windows\\Fonts")),

@@ -30,7 +30,7 @@ namespace ApiExamples
             //ExSummary:Shows how to support conditional comments while loading an HTML document.
             HtmlLoadOptions loadOptions = new HtmlLoadOptions();
 
-            // If value is true, then we take VML code into account while parsing the loaded document
+            // If the value is true, then we take VML code into account while parsing the loaded document.
             loadOptions.SupportVml = supportVml;
 
             // This document contains a JPEG image within "<!--[if gte vml 1]>" tags,
@@ -63,7 +63,7 @@ namespace ApiExamples
             HtmlLoadOptions options = new HtmlLoadOptions();
 
             // When loading an Html document with resources externally linked by a web address URL,
-            // web requests that fetch these resources that fail to complete within this time limit will be aborted.
+            // web requests that fetch these resources that fail to complete within this time limit will be aborted. //INSP: 'be aborted' passive voice
             Assert.AreEqual(100000, options.WebRequestTimeout);
 
             // Set a WarningCallback that will record all warnings that occur during loading.
@@ -88,7 +88,7 @@ namespace ApiExamples
             options.WebRequestTimeout = 0;
             doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), options);
 
-            // If a request fails to complete within the timeout limit, a shape with image data will still be produced.
+            // If a request fails to complete within the timeout limit, a shape with image data will still be produced. //INSP: 'be produced' passive voice
             // However, the image will be the red 'x' that commonly signifies missing images.
             imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(924, imageShape.ImageData.ImageBytes.Length);
@@ -143,8 +143,8 @@ namespace ApiExamples
             string outputFileName = ArtifactsDir + "HtmlLoadOptions.EncryptedHtml.html";
             DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);
 
-            // In order to be able to load and read this document,
-            // we will need to pass its decryption password using a HtmlLoadOptions object.
+            // To load and read this document, we will need to pass its decryption
+            // password using a HtmlLoadOptions object.
             HtmlLoadOptions loadOptions = new HtmlLoadOptions("docPassword");
 
             Assert.AreEqual(signOptions.DecryptionPassword, loadOptions.Password);
@@ -163,16 +163,16 @@ namespace ApiExamples
             //ExFor:LoadOptions.LoadFormat
             //ExFor:LoadFormat
             //ExSummary:Shows how to specify a base URI when opening an html document.
-            // If we want to load an .html document which contains an image linked by a relative URI
-            // while the image is in a different location, we will need to resolve the relative URI into an absolute one.
+            // Suppose we want to load an .html document that contains an image linked by a relative URI
+            // while the image is in a different location. In that case, we will need to resolve the relative URI into an absolute one.
             // We can provide a base URI using an HtmlLoadOptions object. 
             HtmlLoadOptions loadOptions = new HtmlLoadOptions(LoadFormat.Html, "", ImageDir);
 
             Assert.AreEqual(LoadFormat.Html, loadOptions.LoadFormat);
 
             Document doc = new Document(MyDir + "Missing image.html", loadOptions);
-        
-            // While the image was broken in the input .html, our base URI repaired the link for us.
+
+            // While the image was broken in the input .html, our base URI repaired the link for us. //INSP: 'was broken' passive voice
             Shape imageShape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
             Assert.True(imageShape.IsImage);
 
@@ -220,8 +220,8 @@ namespace ApiExamples
                 </html>
             ";
 
-            // By default, "HtmlLoadOptions.PreferredControlType" value is "HtmlControlType.FormField"
-            // So, we do not set this value
+            // By default, "HtmlLoadOptions.PreferredControlType" value is "HtmlControlType.FormField".
+            // So, we do not set this value.
             HtmlLoadOptions htmlLoadOptions = new HtmlLoadOptions();
 
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), htmlLoadOptions);

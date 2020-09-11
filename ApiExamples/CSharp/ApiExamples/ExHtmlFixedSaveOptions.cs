@@ -71,7 +71,7 @@ namespace ApiExamples
             // When we export a document to html, Aspose.Words will also create a CSS stylesheet to format the document with.
             // Setting the "ExportEmbeddedCss" flag to "true" save the CSS stylesheet to a .css file,
             // and link to the file from the html document using a <link> element.
-            // Setting flag to "false" will embed the CSS stylesheet within the Html document,
+            // Setting the flag to "false" will embed the CSS stylesheet within the Html document,
             // which will create only one file instead of two.
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
@@ -107,9 +107,9 @@ namespace ApiExamples
 
             // When we export a document with embedded fonts to .html,
             // Aspose.Words can place the fonts in two possible locations.
-            // Setting the "ExportEmbeddedFonts" flag to "true" will store the raw data for embedded fonts
-            // within the CSS stylesheet, in the "url" property of the "@font-face" rule. This may create a very large CSS stylesheet file,
-            // but will reduce the number of external files that this HTML conversion will create.
+            // Setting the "ExportEmbeddedFonts" flag to "true" will store the raw data for embedded fonts within the CSS stylesheet,
+            // in the "url" property of the "@font-face" rule. This may create a huge CSS stylesheet file
+            // and reduce the number of external files that this HTML conversion will create.
             // Setting this flag to "false" will create a file for each font.
             // The CSS stylesheet will link to each font file using the "url" property of the "@font-face" rule.
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions

@@ -29,7 +29,7 @@ namespace ApiExamples
             //ExFor:Fonts.FontSettings.DefaultInstance
             //ExSummary:Shows how to 
             // Configure the default font settings instance to use the "Courier New" font
-            // as a backup substitute in the event of an unknown font being used.
+            // as a backup substitute in the event of an unknown font being used. //INSP: 'being used' passive voice
             FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Courier New";
 
             Assert.True(FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.Enabled);
@@ -41,8 +41,8 @@ namespace ApiExamples
             builder.Write("Hello world!");
 
             // This document does not have a FontSettings configuration. When we render the document,
-            // the default FontSettings instance will be invoked in order to resolve the missing font.
-            // The text using the "Non-existent font" will be rendered using "Courier New".
+            // the default FontSettings instance will be invoked in order to resolve the missing font. //INSP: 'be invoked' passive voice
+            // The text using the "Non-existent font" will be rendered using "Courier New". //INSP: 'be rendered' passive voice
             Assert.Null(doc.FontSettings);
 
             doc.Save(ArtifactsDir + "FontSettings.DefaultFontInstance.pdf");
@@ -66,11 +66,11 @@ namespace ApiExamples
             ExFont.FontSubstitutionWarningCollector callback = new ExFont.FontSubstitutionWarningCollector();
             doc.WarningCallback = callback;
 
-            // Store the current collection of font sources, which is applied to
+            // Store the current collection of font sources, which is applied to //INSP: 'is applied' passive voice
             // every document without its own set of font settings specified.
             FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
-            // For testing purposes, we will set Aspose.Words to look for fonts only in a folder which does not exist.
+            // For testing purposes, we will set Aspose.Words to look for fonts only in a folder that does not exist.
             FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
 
             // When rendering the document, the will be no place to find the "Times New Roman" font.
@@ -103,7 +103,7 @@ namespace ApiExamples
         [Test]
         public void EnableFontSubstitution()
         {
-            // Open a document which contains text formatted with a font which does not exist in any of our font sources.
+            // Open a document that contains text formatted with a font that does not exist in any of our font sources.
             Document doc = new Document(MyDir + "Missing font.docx");
 
             // Assign a callback for handling font substitution warnings.
@@ -153,7 +153,6 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Bullet points with alternative font.docx");
 
-            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
             HandleDocumentSubstitutionWarnings callback = new HandleDocumentSubstitutionWarnings();
             doc.WarningCallback = callback;
 
@@ -168,7 +167,6 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Missing font.docx");
 
-            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
             HandleDocumentSubstitutionWarnings callback = new HandleDocumentSubstitutionWarnings();
             doc.WarningCallback = callback;
 
@@ -198,7 +196,6 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
             HandleDocumentSubstitutionWarnings callback = new HandleDocumentSubstitutionWarnings();
             doc.WarningCallback = callback;
 
@@ -360,7 +357,7 @@ namespace ApiExamples
             //ExSummary:Shows how to load and save font fallback settings to/from an XML document in the local file system.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Load an XML document which defines a set of font fallback settings.
+            // Load an XML document that defines a set of font fallback settings.
             FontSettings fontSettings = new FontSettings();
             fontSettings.FallbackSettings.Load(MyDir + "Font fallback rules.xml");
 
@@ -381,7 +378,7 @@ namespace ApiExamples
             //ExSummary:Shows how to load and save font fallback settings to/from a stream.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Load an XML document which defines a set of font fallback settings.
+            // Load an XML document that defines a set of font fallback settings.
             using (FileStream fontFallbackStream = new FileStream(MyDir + "Font fallback rules.xml", FileMode.Open))
             {
                 FontSettings fontSettings = new FontSettings();
@@ -441,7 +438,7 @@ namespace ApiExamples
 
             // Note that the predefined settings only use Sans-style Noto fonts with regular weight. 
             // Some of the Noto fonts use advanced typography features.
-            // Fonts featuring advanced typography may not be rendered correctly as Aspose.Words currently does not support them.
+            // Fonts featuring advanced typography may not be rendered correctly as Aspose.Words currently do not support them.
             fontSettings.FallbackSettings.LoadNotoFallbackSettings();
             fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = false;
             fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Noto Sans";
@@ -542,7 +539,7 @@ namespace ApiExamples
             // Save the default fallback font scheme to an XML document.
             // For example, one of the elements has a value of "0C00-0C7F" for Range and a corresponding "Vani" value for FallbackFonts.
             // This means that if the font some text is using does not have symbols for the 0x0C00-0x0C7F Unicode block,
-            // the fallback scheme will use symbols from the "Vani" font as a substitute.
+            // the fallback scheme will use symbols from the "Vani" font substitute.
             fontFallbackSettings.Save(ArtifactsDir + "FontSettings.FallbackSettings.Default.xml");
 
             // Below are two pre-defined font fallback schemes we can choose from.
@@ -671,7 +668,7 @@ namespace ApiExamples
             // Linux has its own substitution table.
             // There are multiple substitute fonts for "Times New Roman CE".
             // If the first substitute, "FreeSerif" is also unavailable,
-            // this rule will cycle through the others in the array until it finds one that is available.
+            // this rule will cycle through the others in the array until it finds an available one.
             tableSubstitutionRule.LoadLinuxSettings();
             Assert.AreEqual(new[] { "FreeSerif", "Liberation Serif", "DejaVu Serif" },
                 tableSubstitutionRule.GetSubstitutes("Times New Roman CE").ToArray());
@@ -718,7 +715,7 @@ namespace ApiExamples
             // Create a new table substitution rule, and load the default Windows font substitution table.
             TableSubstitutionRule tableSubstitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
 
-            // If we select fonts exclusively from our own folder, we will need a custom substitution table.
+            // If we select fonts exclusively from our folder, we will need a custom substitution table.
             // We will no longer have access to the Microsoft Windows fonts,
             // such as "Arial" or "Times New Roman", since they do not exist in our new font folder.
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
@@ -735,7 +732,7 @@ namespace ApiExamples
             tableSubstitutionRule.Load(MyDir + "Font substitution rules.xml");
 
             // Since we no longer have access to "Arial", our font table will first try substitute it with "Nonexistent Font".
-            // We don't have this font, so it will move onto the next substitute, which is "Kreon", found in the "MyFonts" folder.
+            // We don't have this font so that it will move onto the next substitute, "Kreon", found in the "MyFonts" folder.
             Assert.AreEqual(new[] { "Missing Font", "Kreon" }, tableSubstitutionRule.GetSubstitutes("Arial").ToArray());
 
             // We can expand this table programmatically. We will add an entry that substitutes "Times New Roman" with "Arvo"
@@ -743,7 +740,7 @@ namespace ApiExamples
             tableSubstitutionRule.AddSubstitutes("Times New Roman", "Arvo");
             Assert.AreEqual(new[] { "Arvo" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
 
-            // We can add a secondary fallback substitute for an existing font entry with AddSubstitutes()
+            // We can add a secondary fallback substitute for an existing font entry with AddSubstitutes().
             // In case "Arvo" is unavailable, our table will look for "M+ 2m" as a second substitute option.
             tableSubstitutionRule.AddSubstitutes("Times New Roman", "M+ 2m");
             Assert.AreEqual(new[] { "Arvo", "M+ 2m" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
@@ -809,7 +806,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Load the font data only when it is required as opposed to storing it in the memory for the entire lifetime of the "FontSettings" object.
+        /// Load the font data only when required instead of storing it in the memory for the entire lifetime of the "FontSettings" object.
         /// </summary>
         private class StreamFontSourceFile : StreamFontSource
         {
