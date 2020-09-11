@@ -233,12 +233,12 @@ namespace ApiExamples
             Document doc = new Document();
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
-            // Add a run of text that is raised 5 points above the baseline.
+            // Raise this run of text 5 points above the baseline.
             Run run = new Run(doc, "Raised text. ");
             run.Font.Position = 5;
             para.AppendChild(run);
 
-            // Add a run of text that is lowered 10 points below the baseline. //INSP: 'is lowered' passive voice
+            // Lower this run of text 10 points below the baseline.
             run = new Run(doc, "Lowered text. ");
             run.Font.Position = -10;
             para.AppendChild(run);
@@ -482,8 +482,8 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Font.Name = "Arial Black";
 
-            // Set the builder's font size, and minimum size at which kerning will be applied. //INSP: 'be applied' passive voice
-            // The font size falls below the kerning threshold, so kerning will not be applied.
+            // Set the builder's font size, and minimum size at which kerning will take effect.
+            // The font size falls below the kerning threshold, so the run bellow will not have kerning.
             builder.Font.Size = 18;
             builder.Font.Kerning = 24;
 
@@ -1215,12 +1215,12 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitTableEnd(Table table)
             {
-                // The content inside table cells may be flagged as hidden content, but the tables themselves cannot. //INSP: 'be flagged' passive voice
-                // If this table had nothing but hidden content, all of it would have been removed by this visitor, //INSP: 'been removed' passive voice
+                // The content inside table cells may have the hidden content flag, but the tables themselves cannot.
+                // If this table had nothing but hidden content, this visitor would have removed all of it,
                 // and there would be no child nodes left.
                 // Thus, we can also treat the table itself as hidden content and remove it.
                 // Tables which are empty but do not have hidden content will have cells with empty paragraphs inside,
-                // which will not be removed, and will remain as child nodes of this table. //INSP: 'be removed' passive voice
+                // which this visitor will not remove.
                 if (!table.HasChildNodes)
                     table.Remove();
                 

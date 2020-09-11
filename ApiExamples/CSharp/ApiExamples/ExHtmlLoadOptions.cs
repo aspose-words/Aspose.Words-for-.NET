@@ -63,7 +63,7 @@ namespace ApiExamples
             HtmlLoadOptions options = new HtmlLoadOptions();
 
             // When loading an Html document with resources externally linked by a web address URL,
-            // web requests that fetch these resources that fail to complete within this time limit will be aborted. //INSP: 'be aborted' passive voice
+            // Aspose.Words will abort web requests that fail to fetch the resources within this time limit, in milliseconds.
             Assert.AreEqual(100000, options.WebRequestTimeout);
 
             // Set a WarningCallback that will record all warnings that occur during loading.
@@ -88,7 +88,7 @@ namespace ApiExamples
             options.WebRequestTimeout = 0;
             doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), options);
 
-            // If a request fails to complete within the timeout limit, a shape with image data will still be produced. //INSP: 'be produced' passive voice
+            // A web request that fails to obtain an image within the time limit will still produce an image.
             // However, the image will be the red 'x' that commonly signifies missing images.
             imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(924, imageShape.ImageData.ImageBytes.Length);
@@ -172,13 +172,17 @@ namespace ApiExamples
 
             Document doc = new Document(MyDir + "Missing image.html", loadOptions);
 
-            // While the image was broken in the input .html, our base URI repaired the link for us. //INSP: 'was broken' passive voice
+            // While the image was broken in the input .html, our custom base URI helped us repair the link.
             Shape imageShape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
             Assert.True(imageShape.IsImage);
 
             // This output document will display the image that was missing.
             doc.Save(ArtifactsDir + "HtmlLoadOptions.BaseUri.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "HtmlLoadOptions.BaseUri.docx");
+
+            Assert.True(((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageBytes.Length > 0);
         }
 
         [Test]

@@ -200,7 +200,7 @@ namespace ApiExamples
             //ExSummary:Shows how to omit headers/footers when saving a document to HTML.
             Document doc = new Document(MyDir + "Header and footer types.docx");
 
-            // This document contains headers and footers, whose text contents can be looked up like this. //INSP: 'be looked up' passive voice
+            // This document contains headers and footers. We can access them via the "HeadersFooters" collection.
             Assert.AreEqual("First header", doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderFirst].GetText().Trim());
 
             // Formats such as .html do not split the document into pages, so headers/footers will not function the same way
@@ -286,7 +286,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Records the contents of every node in which text that we are replacing with other text has been found. //INSP: 'been found' passive voice
+        /// During a find-and-replace operation, records the contents of every node that has text that the operation 'finds',
+        /// in the state it is in before the replacement takes place.
         /// This will display the order in which the text replacement operation traverses nodes.
         /// </summary>
         private class ReplaceLog : IReplacingCallback

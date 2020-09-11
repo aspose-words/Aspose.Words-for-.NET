@@ -29,7 +29,7 @@ namespace ApiExamples
             //ExFor:Fonts.FontSettings.DefaultInstance
             //ExSummary:Shows how to 
             // Configure the default font settings instance to use the "Courier New" font
-            // as a backup substitute in the event of an unknown font being used. //INSP: 'being used' passive voice
+            // as a backup substitute when we attempt to use an unknown font.
             FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Courier New";
 
             Assert.True(FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.Enabled);
@@ -41,8 +41,8 @@ namespace ApiExamples
             builder.Write("Hello world!");
 
             // This document does not have a FontSettings configuration. When we render the document,
-            // the default FontSettings instance will be invoked in order to resolve the missing font. //INSP: 'be invoked' passive voice
-            // The text using the "Non-existent font" will be rendered using "Courier New". //INSP: 'be rendered' passive voice
+            // the default FontSettings instance will resolve the missing font.
+            // Aspose.Words will use "Courier New" to render text that uses the unknown font.
             Assert.Null(doc.FontSettings);
 
             doc.Save(ArtifactsDir + "FontSettings.DefaultFontInstance.pdf");
@@ -66,8 +66,8 @@ namespace ApiExamples
             ExFont.FontSubstitutionWarningCollector callback = new ExFont.FontSubstitutionWarningCollector();
             doc.WarningCallback = callback;
 
-            // Store the current collection of font sources, which is applied to //INSP: 'is applied' passive voice
-            // every document without its own set of font settings specified.
+            // Store the current collection of font sources, which will be the default font source for every document
+            // for which we do not specify a different font source.
             FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
             // For testing purposes, we will set Aspose.Words to look for fonts only in a folder that does not exist.
