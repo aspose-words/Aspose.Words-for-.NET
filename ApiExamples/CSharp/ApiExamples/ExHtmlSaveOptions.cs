@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -20,6 +21,9 @@ using Aspose.Words.Lists;
 using NUnit.Framework;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
+#if NETCOREAPP2_1 || __MOBILE__
+using SkiaSharp;
+#endif
 
 namespace ApiExamples
 {
@@ -1631,41 +1635,118 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void OfficeMathOutputMode()
+        [TestCase(HtmlOfficeMathOutputMode.Image)]
+        [TestCase(HtmlOfficeMathOutputMode.MathML)]
+        [TestCase(HtmlOfficeMathOutputMode.Text)]
+        public void OfficeMathOutputMode(HtmlOfficeMathOutputMode htmlOfficeMathOutputMode)
         {
             //ExStart
             //ExFor:HtmlOfficeMathOutputMode
             //ExFor:HtmlSaveOptions.OfficeMathOutputMode
-            //ExSummary:Shows how to control the way how OfficeMath objects are exported to .html.
-            // Open a document that contains OfficeMath objects
+            //ExSummary:Shows how to specify how to export Microsoft OfficeMath objects to HTML.
             Document doc = new Document(MyDir + "Office math.docx");
 
-            // Create a HtmlSaveOptions object and configure it to export OfficeMath objects as images
+            // When we save the document to HTML, we can pass a SaveOptions object
+            // to determine how the saving operation handles OfficeMath objects.
+            // Setting the "OfficeMathOutputMode" property to "HtmlOfficeMathOutputMode.Image"
+            // will render each OfficeMath object into an image.
+            // Setting the "OfficeMathOutputMode" property to "HtmlOfficeMathOutputMode.MathML"
+            // will convert each OfficeMath object into MathML.
+            // Setting the "OfficeMathOutputMode" property to "HtmlOfficeMathOutputMode.Text"
+            // will represent each OfficeMath formula using plain HTML text.
             HtmlSaveOptions options = new HtmlSaveOptions();
-            options.OfficeMathOutputMode = HtmlOfficeMathOutputMode.Image;
+            options.OfficeMathOutputMode = htmlOfficeMathOutputMode;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.OfficeMathOutputMode.html", options);
+            string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.OfficeMathOutputMode.html");
+
+            switch (htmlOfficeMathOutputMode)
+            {
+                case HtmlOfficeMathOutputMode.Image:
+                    Assert.True(Regex.Match(outDocContents, 
+                        "<p style=\"margin-top:0pt; margin-bottom:10pt\">" +
+                            "<img src=\"HtmlSaveOptions.OfficeMathOutputMode.001.png\" width=\"159\" height=\"19\" alt=\"\" style=\"vertical-align:middle; " +
+                            "-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />" +
+                        "</p>").Success);
+                    break;
+                case HtmlOfficeMathOutputMode.MathML:
+                    Assert.True(Regex.Match(outDocContents, 
+                        "<p style=\"margin-top:0pt; margin-bottom:10pt\">" +
+                            "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">" +
+                                "<mi>i</mi>" +
+                                "<mo>[+]</mo>" +
+                                "<mi>b</mi>" +
+                                "<mo>-</mo>" +
+                                "<mi>c</mi>" +
+                                "<mo>≥</mo>" +
+                                ".*" +
+                            "</math>" +
+                        "</p>").Success);
+                    break;
+                case HtmlOfficeMathOutputMode.Text:
+                    Assert.True(Regex.Match(outDocContents, 
+                        "<p style=\"margin-top:0pt; margin-bottom:10pt\">" +
+                            "<span style=\"font-family:'Cambria Math'\">i[+]b-c≥</span>" +
+                            ".*" +
+                        "</p>").Success);
+                    break;
+            }
             //ExEnd
         }
 
-        [Test]
-        public void ScaleImageToShapeSize()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ScaleImageToShapeSize(bool scaleImageToShapeSize)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ScaleImageToShapeSize
             //ExSummary:Shows how to disable the scaling of images to their parent shape dimensions when saving to .html.
-            // Open a document which contains shapes with images
-            Document doc = new Document(MyDir + "Rendering.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // By default, images inside shapes get scaled to the size of their shapes while the document gets 
-            // converted to .html, reducing image file size
-            // We can save the document with a HtmlSaveOptions with ScaleImageToShapeSize set to false to prevent the scaling
-            // and preserve the full quality and file size of the linked images
+            // Insert a shape which contains an image, and then make that shape considerably smaller than the image.
+#if NET462 || JAVA
+            Image image = Image.FromFile(ImageDir + "Transparent background logo.png");
+
+            Assert.AreEqual(400, image.Size.Width);
+            Assert.AreEqual(400, image.Size.Height);
+#elif NETCOREAPP2_1
+            SKBitmap image = SKBitmap.Decode(ImageDir + "Transparent background logo.png");
+
+            Assert.AreEqual(400, image.Width);
+            Assert.AreEqual(400, image.Height);
+#endif
+
+            Shape imageShape = builder.InsertImage(image);
+            imageShape.Width = 50;
+            imageShape.Height = 50;
+
+            // Saving a document which contains shapes with images to HTML will create a image file in the local file system
+            // for each such shape. The output HTML document will use <image> tags to link to and display these images.
+            // When we save the document to HTML, we can pass a SaveOptions object to determine
+            // whether to scale all images that are inside shapes to the sizes of their shapes.
+            // Setting the "ScaleImageToShapeSize" flag to "true" will shrink every image
+            // to the size of the shape that contains it, so that no saved images will be larger than the document requires them to be.
+            // Setting the "ScaleImageToShapeSize" flag to "false" will preserve the original sizes of these images,
+            // which will take up more space in exchange for preserving image quality.
             HtmlSaveOptions options = new HtmlSaveOptions();
-            options.ScaleImageToShapeSize = false;
+            options.ScaleImageToShapeSize = scaleImageToShapeSize;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.html", options);
+
+            FileInfo fileInfo = new FileInfo(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.001.png");
+
+#if NET462 || JAVA
+        if (scaleImageToShapeSize)
+            Assert.AreEqual(2200, fileInfo.Length, 200);
+        else
+            Assert.AreEqual(27400, fileInfo.Length, 200);
+#elif NETCOREAPP2_1
+        if (scaleImageToShapeSize)
+            Assert.AreEqual(5700, fileInfo.Length, 200);
+        else
+            Assert.AreEqual(40300, fileInfo.Length, 200);
+#endif
             //ExEnd
         }
 
@@ -1707,14 +1788,14 @@ namespace ApiExamples
         //ExFor:ImageSavingArgs.ImageStream
         //ExFor:ImageSavingArgs.IsImageAvailable
         //ExFor:ImageSavingArgs.KeepImageStreamOpen
-        //ExSummary:Shows how to involve an image saving callback in an .html conversion process.
+        //ExSummary:Shows how to involve an image saving callback in an HTML conversion process.
         [Test] //ExSkip
         public void ImageSavingCallback()
         {
-            // Open a document which contains shapes with images
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Create a HtmlSaveOptions object with a custom image saving callback that will print image information
+            // When we save the document to HTML, we can pass a SaveOptions object to designate a callback
+            // which will customize the image saving process.
             HtmlSaveOptions options = new HtmlSaveOptions();
             options.ImageSavingCallback = new ImageShapePrinter();
            
@@ -1722,7 +1803,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Prints information of all images that are about to be saved from within a document to image files
+        /// Prints the properties of each image as the saving process saves it to an image file in the local file system
+        /// during the exporting of a document to HTML.
         /// </summary>
         private class ImageShapePrinter : IImageSavingCallback
         {
