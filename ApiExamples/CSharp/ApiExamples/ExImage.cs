@@ -27,18 +27,18 @@ namespace ApiExamples
     public class ExImage : ApiExampleBase
     {
         [Test]
-        public void CreateImageDirectly()
+        public void FromFile()
         {
             //ExStart
             //ExFor:Shape.#ctor(DocumentBase,ShapeType)
             //ExFor:ShapeType
-            //ExSummary:Shows how to add a shape with an image to a document.
+            //ExSummary:Shows how to insert a shape with an image from the local file system into a document.
             Document doc = new Document();
 
-            // Public constructor of "Shape" class creates shape with "ShapeMarkupLanguage.Vml" markup type
-            // If you need to create non-primitive shapes, such as SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
-            // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, DiagonalCornersRounded
-            // please use DocumentBuilder.InsertShape
+            // The public constructor of the "Shape" class will create a shape with "ShapeMarkupLanguage.Vml" markup type.
+            // If you need to create a shape of a non-primitive type, such as SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
+            // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, or DiagonalCornersRounded,
+            // please use DocumentBuilder.InsertShape.
             Shape shape = new Shape(doc, ShapeType.Image);
             shape.ImageData.SetImage(ImageDir + "Windows MetaFile.wmf");
             shape.Width = 100;
@@ -46,10 +46,10 @@ namespace ApiExamples
 
             doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
 
-            doc.Save(ArtifactsDir + "Image.CreateImageDirectly.docx");
+            doc.Save(ArtifactsDir + "Image.FromFile.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Image.CreateImageDirectly.docx");
+            doc = new Document(ArtifactsDir + "Image.FromFile.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
@@ -58,26 +58,30 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CreateFromUrl()
+        public void FromUrl()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(String)
-            //ExSummary:Shows how to inserts an image from a URL.
+            //ExSummary:Shows how to insert a shape with an image into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Below are two locations that the document builder's "InsertShape" method
+            // can source the image that the shape will display from.
+            // 1 -  Pass a local file system filename of an image file:
             builder.Write("Image from local file: ");
             builder.InsertImage(ImageDir + "Logo.jpg");
             builder.Writeln();
 
+            // 2 -  Pass a URL which points to an image.
             builder.Write("Image from a URL: ");
             builder.InsertImage(AsposeLogoUrl);
             builder.Writeln();
 
-            doc.Save(ArtifactsDir + "Image.CreateFromUrl.docx");
+            doc.Save(ArtifactsDir + "Image.FromUrl.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Image.CreateFromUrl.docx");
+            doc = new Document(ArtifactsDir + "Image.FromUrl.docx");
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             Assert.AreEqual(2, shapes.Count);
@@ -86,11 +90,11 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CreateFromStream()
+        public void FromStream()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(Stream)
-            //ExSummary:Shows how to insert an image from a stream. 
+            //ExSummary:Shows how to insert a shape with an image from a stream into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -100,17 +104,17 @@ namespace ApiExamples
                 builder.InsertImage(stream);
             }
 
-            doc.Save(ArtifactsDir + "Image.CreateFromStream.docx");
+            doc.Save(ArtifactsDir + "Image.FromStream.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Image.CreateFromStream.docx");
+            doc = new Document(ArtifactsDir + "Image.FromStream.docx");
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, (Shape)doc.GetChildNodes(NodeType.Shape, true)[0]);
         }
 
         #if NET462 || JAVA
         [Test, Category("SkipMono")]
-        public void CreateFromImage()
+        public void FromImage()
         {
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -130,12 +134,12 @@ namespace ApiExamples
                 builder.Writeln();
             }
 
-            builder.Document.Save(ArtifactsDir + "Image.CreateFromImage.docx");
+            builder.Document.Save(ArtifactsDir + "Image.FromImage.docx");
         }
-        #elif NETCOREAPP2_1 || __MOBILE__
+#elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         [Category("SkipMono")]
-        public void CreateFromImageNetStandard2()
+        public void FromImageNetStandard2()
         {
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -147,9 +151,9 @@ namespace ApiExamples
                 builder.Writeln();
             }
 
-            builder.Document.Save(ArtifactsDir + "Image.CreateFromImage.docx");
+            builder.Document.Save(ArtifactsDir + "Image.FromImage.docx");
         }
-        #endif
+#endif
 
         [Test]
         public void CreateFloatingPageCenter()
