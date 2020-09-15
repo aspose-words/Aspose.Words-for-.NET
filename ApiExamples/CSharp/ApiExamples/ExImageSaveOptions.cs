@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
@@ -19,41 +20,79 @@ namespace ApiExamples
     [TestFixture]
     internal class ExImageSaveOptions : ApiExampleBase
     {
-        [Test]
-        public void Renderer()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void Renderer(bool useGdiEmfRenderer)
         {
             //ExStart
             //ExFor:ImageSaveOptions.UseGdiEmfRenderer
-            //ExSummary:Shows how to save metafiles directly without using GDI+ to EMF.
-            Document doc = new Document(MyDir + "Images.docx");
+            //ExSummary:Shows how to choose a renderer when converting a document to .emf.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Writeln("Hello world!");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            // When we save the document as an EMF image, we can pass a SaveOptions object to select a renderer for the image.
+            // If we set the "UseGdiEmfRenderer" flag to "true", Aspose.Words will use the GDI+ renderer.
+            // If we set the "UseGdiEmfRenderer" flag to "false", Aspose.Words will use its own metafile renderer.
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Emf);
-            saveOptions.UseGdiEmfRenderer = false;
+            saveOptions.UseGdiEmfRenderer = useGdiEmfRenderer;
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.Renderer.emf", saveOptions);
+
+            // The GDI+ renderer usually creates larger files.
+            if (useGdiEmfRenderer)
+#if NET462 || JAVA
+                Assert.AreEqual(343600, new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length, 200);
+#elif NETCOREAPP2_1
+                Assert.AreEqual(21100, new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length, 200);
+#endif
+            else
+                Assert.AreEqual(21100, new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length, 200);
             //ExEnd
-            #if NET462 || JAVA
+
+#if NET462 || JAVA
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.Renderer.emf");
-            #endif
+#endif
         }
 
         [Test]
-        public void SaveSinglePage()
+        public void PageIndex()
         {
             //ExStart
             //ExFor:ImageSaveOptions.PageIndex
-            //ExSummary:Shows how to save specific document page as image file.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to specify which page in a document to render as an image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // For formats that can only save one page at a time,
-            // the SaveOptions object can determine which page gets saved
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Writeln("Hello world! This is page 1.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("This is page 2.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("This is page 3.");
+
+            Assert.AreEqual(3, doc.PageCount);
+
+            // When we save the document as an image, Aspose.Words only renders the first page by default.
+            // We can pass a SaveOptions object to specify a different to page to render.
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Gif);
-            saveOptions.PageIndex = 1;
 
-            doc.Save(ArtifactsDir + "ImageSaveOptions.SaveSinglePage.gif", saveOptions);
+            // Render every page of the document to a separate image file.
+            for (int i = 1; i <= doc.PageCount; i++)
+            {
+                saveOptions.PageIndex = 1;
+
+                doc.Save(ArtifactsDir + $"ImageSaveOptions.PageIndex.Page {i}.gif", saveOptions);
+            }
             //ExEnd
 
-            TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.SaveSinglePage.gif");
+            TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.PageIndex.Page 1.gif");
+            TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.PageIndex.Page 2.gif");
+            TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.PageIndex.Page 3.gif");
+            Assert.False(File.Exists(ArtifactsDir + "ImageSaveOptions.PageIndex.Page 4.gif"));
         }
 
 #if NET462 || JAVA
@@ -69,7 +108,7 @@ namespace ApiExamples
             //ExFor:GraphicsQualityOptions.SmoothingMode
             //ExFor:GraphicsQualityOptions.TextRenderingHint
             //ExFor:ImageSaveOptions.GraphicsQualityOptions
-            //ExSummary:Shows how to set render quality options when converting documents to image formats. 
+            //ExSummary:Shows how to set render quality options while converting documents to image formats. 
             Document doc = new Document(MyDir + "Rendering.docx");
 
             GraphicsQualityOptions qualityOptions = new GraphicsQualityOptions
@@ -91,22 +130,26 @@ namespace ApiExamples
             TestUtil.VerifyImage(794, 1122, ArtifactsDir + "ImageSaveOptions.GraphicsQuality.jpg");
         }
 
-        [Test, Category("SkipMono")]
-        public void WindowsMetaFile()
+        [TestCase(MetafileRenderingMode.Vector), Category("SkipMono")]
+        [TestCase(MetafileRenderingMode.Bitmap), Category("SkipMono")]
+        [TestCase(MetafileRenderingMode.VectorWithFallback), Category("SkipMono")]
+        public void WindowsMetaFile(MetafileRenderingMode metafileRenderingMode)
         {
             //ExStart
             //ExFor:ImageSaveOptions.MetafileRenderingOptions
-            //ExSummary:Shows how to set the rendering mode for Windows Metafiles. 
+            //ExSummary:Shows how to set the rendering mode when saving documents with Windows Metafile images to other image formats. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Use a DocumentBuilder to insert a .wmf image into the document
+            
             builder.InsertImage(Image.FromFile(ImageDir + "Windows MetaFile.wmf"));
-
-            // Save the document as an image while setting different metafile rendering modes,
-            // which will be applied to the image we inserted
+            
+            // When we save the document as an image, we can pass a SaveOptions object to
+            // determine how the saving operation will process Windows Metafiles in the document.
+            // If we set the "RenderingMode" property to "MetafileRenderingMode.Vector",
+            // or "MetafileRenderingMode.VectorWithFallback", we will render all metafiles as vector graphics.
+            // If we set the "RenderingMode" property to "MetafileRenderingMode.Bitmap", we will render all metafiles as bitmaps.
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
-            options.MetafileRenderingOptions.RenderingMode = MetafileRenderingMode.Vector;
+            options.MetafileRenderingOptions.RenderingMode = metafileRenderingMode;
             
             doc.Save(ArtifactsDir + "ImageSaveOptions.WindowsMetaFile.png", options);
             //ExEnd
@@ -115,31 +158,138 @@ namespace ApiExamples
         }
 #endif
 
-        [Test]
-        public void BlackAndWhite()
+        [TestCase(ImageColorMode.BlackAndWhite)]
+        [TestCase(ImageColorMode.Grayscale)]
+        [TestCase(ImageColorMode.None)]
+        public void ColorMode(ImageColorMode imageColorMode)
         {
             //ExStart
             //ExFor:ImageColorMode
-            //ExFor:ImagePixelFormat
-            //ExFor:ImageSaveOptions.Clone
             //ExFor:ImageSaveOptions.ImageColorMode
-            //ExFor:ImageSaveOptions.PixelFormat
-            //ExSummary:Show how to convert document images to black and white with 1 bit per pixel
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to set a color mode when rendering documents.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Writeln("Hello world!");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            Assert.AreEqual(20100, new FileInfo(ImageDir + "Logo.jpg").Length, 200);
+
+            // When we save the document as an image, we can pass a SaveOptions object to
+            // select a color mode for the image that the saving operation will generate.
+            // If we set the "ImageColorMode" property to "ImageColorMode.BlackAndWhite",
+            // the saving operation will apply grayscale color reduction while rendering the document
+            // so it only consists of black and white.
+            // If we set the "ImageColorMode" property to "ImageColorMode.Grayscale", 
+            // the saving operation will render the document into a monochrome image.
+            // If we set the "ImageColorMode" property to "None", the saving operation will apply the default method
+            // and preserve all the colors of the document in the output image.
             ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
-            imageSaveOptions.ImageColorMode = ImageColorMode.BlackAndWhite;
-            imageSaveOptions.PixelFormat = ImagePixelFormat.Format1bppIndexed;
+            imageSaveOptions.ImageColorMode = imageColorMode;
+            
+            doc.Save(ArtifactsDir + "ImageSaveOptions.ColorMode.png", imageSaveOptions);
 
-            // ImageSaveOptions instances can be cloned
-            Assert.AreNotEqual(imageSaveOptions, imageSaveOptions.Clone());  
-
-            doc.Save(ArtifactsDir + "ImageSaveOptions.BlackAndWhite.png", imageSaveOptions);
+#if NET462 || JAVA
+            switch (imageColorMode)
+            {
+                case ImageColorMode.None:
+                    Assert.AreEqual(174100, new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length, 200);
+                    break;
+                case ImageColorMode.Grayscale:
+                    Assert.AreEqual(89100, new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length, 200);
+                    break;
+                case ImageColorMode.BlackAndWhite:
+                    Assert.AreEqual(14800, new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length, 200);
+                    break;
+            }
+#elif NETCOREAPP2_1
+            switch (imageColorMode)
+            {
+                case ImageColorMode.None:
+                    Assert.AreEqual(131700, new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length, 200);
+                    break;
+                case ImageColorMode.Grayscale:
+                    Assert.AreEqual(89100, new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length, 200);
+                    break;
+                case ImageColorMode.BlackAndWhite:
+                    Assert.AreEqual(10900, new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length, 200);
+                    break;
+            }
+#endif
             //ExEnd
-
-            TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.BlackAndWhite.png");
         }
 
+        [TestCase(ImagePixelFormat.Format1bppIndexed)]
+        [TestCase(ImagePixelFormat.Format16BppRgb555)]
+        [TestCase(ImagePixelFormat.Format24BppRgb)]
+        [TestCase(ImagePixelFormat.Format32BppRgb)]
+        [TestCase(ImagePixelFormat.Format48BppRgb)]
+        public void PixelFormat(ImagePixelFormat imagePixelFormat)
+        {
+            //ExStart
+            //ExFor:ImagePixelFormat
+            //ExFor:ImageSaveOptions.Clone
+            //ExFor:ImageSaveOptions.PixelFormat
+            //ExSummary:Shows how to select a bit-per-pixel rate with which to render a document to an image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Writeln("Hello world!");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            Assert.AreEqual(20100, new FileInfo(ImageDir + "Logo.jpg").Length, 200);
+
+            // When we save the document as an image, we can pass a SaveOptions object to
+            // select a pixel format for the image that the saving operation will generate.
+            // Various bit per pixel rates will affect the quality and file size of the generated image.
+            ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
+            imageSaveOptions.PixelFormat = imagePixelFormat;
+
+            // We can clone ImageSaveOptions instances.
+            Assert.AreNotEqual(imageSaveOptions, imageSaveOptions.Clone());
+
+            doc.Save(ArtifactsDir + "ImageSaveOptions.PixelFormat.png", imageSaveOptions);
+
+#if NET462 || JAVA
+            switch (imagePixelFormat)
+            {
+                case ImagePixelFormat.Format1bppIndexed:
+                    Assert.AreEqual(2300, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    break;
+                case ImagePixelFormat.Format16BppRgb555:
+                    Assert.AreEqual(87600, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    break;
+                case ImagePixelFormat.Format24BppRgb:
+                    Assert.AreEqual(158200, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    break;
+                case ImagePixelFormat.Format32BppRgb:
+                    Assert.AreEqual(174100, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    break;
+                case ImagePixelFormat.Format48BppRgb:
+                    Assert.AreEqual(211200, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    break;
+            }
+#elif NETCOREAPP2_1
+            switch (imagePixelFormat)
+            {
+                case ImagePixelFormat.Format1bppIndexed:
+                    Assert.AreEqual(5600, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    break;
+                case ImagePixelFormat.Format24BppRgb:
+                    Assert.AreEqual(76000, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    break;
+                case ImagePixelFormat.Format16BppRgb555:
+                case ImagePixelFormat.Format32BppRgb:
+                case ImagePixelFormat.Format48BppRgb:
+                    Assert.AreEqual(131700, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    break;
+            }
+#endif
+            //ExEnd
+        }
+        
         [Test, Category("SkipMono")]
         public void FloydSteinbergDithering()
         {
@@ -162,9 +312,9 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
             
-            #if NET462 || JAVA
+#if NET462 || JAVA
             TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff");
-            #endif
+#endif
         }
 
         [Test]
