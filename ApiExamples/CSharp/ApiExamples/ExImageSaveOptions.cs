@@ -297,23 +297,30 @@ namespace ApiExamples
             //ExFor:ImageBinarizationMethod
             //ExFor:ImageSaveOptions.ThresholdForFloydSteinbergDithering
             //ExFor:ImageSaveOptions.TiffBinarizationMethod
-            //ExSummary: Shows how to control the threshold for TIFF binarization in the Floyd-Steinberg method
-            Document doc = new Document (MyDir + "Rendering.docx");
+            //ExSummary:Shows how to set the TIFF binarization error threshold when using the Floyd-Steinberg method to render a TIFF image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Writeln("Hello world!");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            // When we save the document as a TIFF, we can pass a SaveOptions object to
+            // adjust the dithering that Aspose.Words will apply when rendering this image.
+            // The default value of the "ThresholdForFloydSteinbergDithering" property is 128.
+            // Higher values tend to produce darker images.
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff)
             {
                 TiffCompression = TiffCompression.Ccitt3,
-                ImageColorMode = ImageColorMode.Grayscale,
                 TiffBinarizationMethod = ImageBinarizationMethod.FloydSteinbergDithering,
-                // The default value of this property is 128. The higher value, the darker image
-                ThresholdForFloydSteinbergDithering = 254
+                ThresholdForFloydSteinbergDithering = 240
             };
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
             
 #if NET462 || JAVA
-            TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff");
+            TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff");
 #endif
         }
 
@@ -327,23 +334,38 @@ namespace ApiExamples
             //ExFor:ImageSaveOptions.SaveFormat
             //ExFor:ImageSaveOptions.Scale
             //ExFor:ImageSaveOptions.VerticalResolution
-            //ExSummary:Shows how to edit image.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to edit the image while Aspose.Words converts a document to one.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // When saving the document as an image, we can use an ImageSaveOptions object to edit various aspects of it
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Writeln("Hello world!");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            // When we save the document as an image, we can pass a SaveOptions object to
+            // edit the image while the saving operation renders it.
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png)
             {
-                ImageBrightness = 0.3f,     // 0 - 1 scale, default at 0.5
-                ImageContrast = 0.7f,       // 0 - 1 scale, default at 0.5
-                HorizontalResolution = 72f, // Default at 96.0 meaning 96dpi, image dimensions will be affected if we change resolution
-                VerticalResolution = 72f,   // Default at 96.0 meaning 96dpi
-                Scale = 96f / 72f           // Default at 1.0 for normal scale, can be used to negate resolution impact in image size
+                // We can adjust these properties to change the image's brightness and contrast.
+                // Both are on a 0-1 scale, and are at 0.5 by default.
+                ImageBrightness = 0.3f,
+                ImageContrast = 0.7f,
+
+                // We can adjust horizontal and vertical resolution with these properties.
+                // This will affect the dimensions of the image.
+                // The default value for these properties is 96.0, for a resolution of 96dpi.
+                HorizontalResolution = 72f,
+                VerticalResolution = 72f,
+
+                // We can scale the image using this property. The default value is 1.0, for a scaling of 100%.
+                // We can use this property to negate any changes in image dimensions that changing the resolution would cause.
+                Scale = 96f / 72f
             };
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.EditImage.png", options);
             //ExEnd
 
-            TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.EditImage.png");
+            TestUtil.VerifyImage(817, 1057, ArtifactsDir + "ImageSaveOptions.EditImage.png");
         }
     }
 }
