@@ -19,86 +19,318 @@ namespace ApiExamples
     [TestFixture]
     public class ExInlineStory : ApiExampleBase
     {
-        [Test]
-        public void Footnotes()
+        [TestCase(FootnotePosition.BeneathText)]
+        [TestCase(FootnotePosition.BottomOfPage)]
+        public void PositionFootnote(FootnotePosition footnotePosition)
         {
             //ExStart
+            //ExFor:Document.FootnoteOptions
             //ExFor:FootnoteOptions
-            //ExFor:FootnoteOptions.NumberStyle
             //ExFor:FootnoteOptions.Position
-            //ExFor:FootnoteOptions.RestartRule
-            //ExFor:FootnoteOptions.StartNumber
-            //ExFor:FootnoteNumberingRule
             //ExFor:FootnotePosition
-            //ExSummary:Shows how to insert footnotes, and modify their appearance.
+            //ExSummary:Shows how to select a different place where the document collects and displays its footnotes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Write("Text 1. ");
-            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 1");
-            builder.InsertBreak(BreakType.PageBreak);
-            builder.Write("Text 2. ");
-            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 2");
-            builder.Write("Text 3. ");
-            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 3", "Custom reference mark");
+            // A footnote is a way to attach a reference, or a side comment to text
+            // which does not interfere with the flow of the main body text. 
+            // Inserting a footnote adds a small superscript reference symbol
+            // at the location in the main body text where we insert the footnote.
+            // Each footnote also creates an entry at the bottom of the page, which consists of a symbol
+            // that matches the reference symbol in the main body text, and the reference text that
+            // we pass to the document builder's "InsertFootnote" method.
+            builder.Write("Hello world!");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote contents.");
 
-            doc.FootnoteOptions.Position = FootnotePosition.BeneathText;
-            doc.FootnoteOptions.NumberStyle = NumberStyle.UppercaseRoman;
-            doc.FootnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
-            doc.FootnoteOptions.StartNumber = 1;
+            // We can use the "Position" property to determine where the document will place all of its footnotes.
+            // If we set the value of the "Position" property to "FootnotePosition.BottomOfPage",
+            // every footnote will show up at the bottom of the page that contains its reference mark. This is the default value.
+            // If we set the value of the "Position" property to "FootnotePosition.BeneathText",
+            // every footnote will show up at the end of the text of the page that contains its reference mark.
+            doc.FootnoteOptions.Position = footnotePosition;
 
-            doc.Save(ArtifactsDir + "InlineStory.Footnotes.docx");
+            doc.Save(ArtifactsDir + "InlineStory.PositionFootnote.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "InlineStory.Footnotes.docx");
+            doc = new Document(ArtifactsDir + "InlineStory.PositionFootnote.docx");
+
+            Assert.AreEqual(footnotePosition, doc.FootnoteOptions.Position);
 
             TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
-                "Footnote 1", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
-            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
-                "Footnote 2", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
-            TestUtil.VerifyFootnote(FootnoteType.Footnote, false, "Custom reference mark",
-                "Custom reference mark Footnote 3", (Footnote)doc.GetChild(NodeType.Footnote, 2, true));
+                "Footnote contents.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+        }
+
+        [TestCase(EndnotePosition.EndOfDocument)]
+        [TestCase(EndnotePosition.EndOfSection)]
+        public void PositionEndnote(EndnotePosition endnotePosition)
+        {
+            //ExStart
+            //ExFor:Document.EndnoteOptions
+            //ExFor:EndnoteOptions
+            //ExFor:EndnoteOptions.Position
+            //ExFor:EndnotePosition
+            //ExSummary:Shows how to select a different place where the document collects and displays its endnotes.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // An endnote is a way to attach a reference, or a side comment to text
+            // which does not interfere with the flow of the main body text. 
+            // Inserting an endnote adds a small superscript reference symbol
+            // at the location in the main body text where we insert the endnote.
+            // Each endnote also creates an entry at the end of the document, which consists of a symbol
+            // that matches the reference symbol in the main body text, and the reference text that
+            // we pass to the document builder's "InsertEndnote" method.
+            builder.Write("Hello world!");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote contents.");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("This is the second section.");
+
+            // We can use the "Position" property to determine where the document will place all of its endnotes.
+            // If we set the value of the "Position" property to "EndnotePosition.EndOfDocument",
+            // every footnote will show up in a collection at the end of the document. This is the default value.
+            // If we set the value of the "Position" property to "EndnotePosition.EndOfSection",
+            // every footnote will show up in a collection at the end of the section whose text contains the endnote's reference mark.
+            doc.EndnoteOptions.Position = endnotePosition;
+
+            doc.Save(ArtifactsDir + "InlineStory.PositionEndnote.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "InlineStory.PositionEndnote.docx");
+
+            Assert.AreEqual(endnotePosition, doc.EndnoteOptions.Position);
+
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote contents.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
         }
 
         [Test]
-        public void Endnotes()
+        public void RefMarkNumberStyle()
         {
             //ExStart
             //ExFor:Document.EndnoteOptions
             //ExFor:EndnoteOptions
             //ExFor:EndnoteOptions.NumberStyle
-            //ExFor:EndnoteOptions.Position
-            //ExFor:EndnoteOptions.RestartRule
-            //ExFor:EndnoteOptions.StartNumber
-            //ExFor:EndnotePosition
-            //ExSummary:Shows how to insert endnotes, and modify their appearance.
+            //ExFor:Document.FootnoteOptions
+            //ExFor:FootnoteOptions
+            //ExFor:FootnoteOptions.NumberStyle
+            //ExSummary:Shows how to change the number style of footnote/endnote reference marks.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Footnotes and endnotes are a way to attach a reference, or a side comment to text
+            // which does not interfere with the flow of the main body text. 
+            // Inserting a footnote/endnote adds a small superscript reference symbol
+            // at the location in the main body text where we insert the footnote/endnote.
+            // Each footnote/endnote also creates an entry, which consists of a symbol
+            // that matches the reference symbol in the main body text, and the reference text that
+            // we pass to the document builder's "InsertEndnote" method.
+            // Footnote entries by default show up at the bottom or each page that contains
+            // their reference symbols, and endnotes show up at the end of the document.
             builder.Write("Text 1. ");
-            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 1");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 1.");
             builder.Write("Text 2. ");
-            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 2");
-            builder.InsertBreak(BreakType.PageBreak);
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 2.");
             builder.Write("Text 3. ");
-            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 3", "Custom reference mark");
-            
-            doc.EndnoteOptions.Position = EndnotePosition.EndOfDocument;
-            doc.EndnoteOptions.NumberStyle = NumberStyle.UppercaseRoman;
-            doc.EndnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
-            doc.EndnoteOptions.StartNumber = 1;
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 3.", "Custom footnote reference mark");
 
-            doc.Save(ArtifactsDir + "InlineStory.Endnotes.docx");
+            builder.InsertParagraph();
+
+            builder.Write("Text 1. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 1.");
+            builder.Write("Text 2. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 2.");
+            builder.Write("Text 3. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 3.", "Custom endnote reference mark");
+
+            // By default, the reference symbol for each footnote and endnote is its index
+            // among all of the document's footnotes/endnotes. Each document maintains separate counts
+            // for footnotes and for endnotes. By default, footnotes display their numbers in arabic,
+            // and endnotes display their numbers in lowercase Roman numerals.
+            Assert.AreEqual(NumberStyle.Arabic, doc.FootnoteOptions.NumberStyle);
+            Assert.AreEqual(NumberStyle.LowercaseRoman, doc.EndnoteOptions.NumberStyle);
+
+            // We can use the "NumberStyle" property to apply custom numbering styles to footnotes and endnotes.
+            // This will not affect footnotes/endnotes with custom reference marks.
+            doc.FootnoteOptions.NumberStyle = NumberStyle.UppercaseRoman;
+            doc.EndnoteOptions.NumberStyle = NumberStyle.UppercaseLetter;
+
+            doc.Save(ArtifactsDir + "InlineStory.RefMarkNumberStyle.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "InlineStory.Endnotes.docx");
+            doc = new Document(ArtifactsDir + "InlineStory.RefMarkNumberStyle.docx");
 
+            Assert.AreEqual(NumberStyle.UppercaseRoman, doc.FootnoteOptions.NumberStyle);
+            Assert.AreEqual(NumberStyle.UppercaseLetter, doc.EndnoteOptions.NumberStyle);
+
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote 1.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote 2.", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, false, "Custom footnote reference mark",
+                "Custom footnote reference mark Footnote 3.", (Footnote)doc.GetChild(NodeType.Footnote, 2, true));
             TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
-                "Endnote 1", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+                "Endnote 1.", (Footnote)doc.GetChild(NodeType.Footnote, 3, true));
             TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
-                "Endnote 2", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
-            TestUtil.VerifyFootnote(FootnoteType.Endnote, false, "Custom reference mark",
-                "Custom reference mark Endnote 3", (Footnote)doc.GetChild(NodeType.Footnote, 2, true));
+                "Endnote 2.", (Footnote)doc.GetChild(NodeType.Footnote, 4, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, false, "Custom endnote reference mark",
+                "Custom endnote reference mark Endnote 3.", (Footnote)doc.GetChild(NodeType.Footnote, 5, true));
+        }
+
+        [Test]
+        public void NumberingRule()
+        {
+            //ExStart
+            //ExFor:Document.EndnoteOptions
+            //ExFor:EndnoteOptions
+            //ExFor:EndnoteOptions.RestartRule
+            //ExFor:FootnoteNumberingRule
+            //ExFor:Document.FootnoteOptions
+            //ExFor:FootnoteOptions
+            //ExFor:FootnoteOptions.RestartRule
+            //ExSummary:Shows how to restart footnote/endnote numbering at certain places in the document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Footnotes and endnotes are a way to attach a reference, or a side comment to text
+            // which does not interfere with the flow of the main body text. 
+            // Inserting a footnote/endnote adds a small superscript reference symbol
+            // at the location in the main body text where we insert the footnote/endnote.
+            // Each footnote/endnote also creates an entry, which consists of a symbol
+            // that matches the reference symbol in the main body text, and the reference text that
+            // we pass to the document builder's "InsertEndnote" method.
+            // Footnote entries by default show up at the bottom or each page that contains
+            // their reference symbols, and endnotes show up at the end of the document.
+            builder.Write("Text 1. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 1.");
+            builder.Write("Text 2. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 2.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Write("Text 3. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 3.");
+            builder.Write("Text 4. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 4.");
+
+            builder.InsertBreak(BreakType.PageBreak);
+
+            builder.Write("Text 1. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 1.");
+            builder.Write("Text 2. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 2.");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("Text 3. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 3.");
+            builder.Write("Text 4. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 4.");
+
+            // By default, the reference symbol for each footnote and endnote is its index
+            // among all of the document's footnotes/endnotes. Each document maintains separate counts
+            // for footnotes and for endnotes, and does not restart these counts at any point.
+            Assert.AreEqual(doc.FootnoteOptions.RestartRule, FootnoteNumberingRule.Default);
+            Assert.AreEqual(FootnoteNumberingRule.Default, FootnoteNumberingRule.Continuous);
+
+            // We can use the "RestartRule" property to get the document to restart
+            // the footnote/endnote counts at a new page or section.
+            doc.FootnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
+            doc.EndnoteOptions.RestartRule = FootnoteNumberingRule.RestartSection;
+
+            doc.Save(ArtifactsDir + "InlineStory.NumberingRule.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "InlineStory.NumberingRule.docx");
+
+            Assert.AreEqual(FootnoteNumberingRule.RestartPage, doc.FootnoteOptions.RestartRule);
+            Assert.AreEqual(FootnoteNumberingRule.RestartSection, doc.EndnoteOptions.RestartRule);
+
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote 1.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote 2.", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote 3.", (Footnote)doc.GetChild(NodeType.Footnote, 2, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote 4.", (Footnote)doc.GetChild(NodeType.Footnote, 3, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote 1.", (Footnote)doc.GetChild(NodeType.Footnote, 4, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote 2.", (Footnote)doc.GetChild(NodeType.Footnote, 5, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote 3.", (Footnote)doc.GetChild(NodeType.Footnote, 6, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote 4.", (Footnote)doc.GetChild(NodeType.Footnote, 7, true));
+        }
+
+        [Test]
+        public void StartNumber()
+        {
+            //ExStart
+            //ExFor:Document.EndnoteOptions
+            //ExFor:EndnoteOptions
+            //ExFor:EndnoteOptions.StartNumber
+            //ExFor:Document.FootnoteOptions
+            //ExFor:FootnoteOptions
+            //ExFor:FootnoteOptions.StartNumber
+            //ExSummary:Shows how to set a number at which the document begins the footnote/endnote count.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Footnotes and endnotes are a way to attach a reference, or a side comment to text
+            // which does not interfere with the flow of the main body text. 
+            // Inserting a footnote/endnote adds a small superscript reference symbol
+            // at the location in the main body text where we insert the footnote/endnote.
+            // Each footnote/endnote also creates an entry, which consists of a symbol
+            // that matches the reference symbol in the main body text, and the reference text that
+            // we pass to the document builder's "InsertEndnote" method.
+            // Footnote entries by default show up at the bottom or each page that contains
+            // their reference symbols, and endnotes show up at the end of the document.
+            builder.Write("Text 1. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 1.");
+            builder.Write("Text 2. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 2.");
+            builder.Write("Text 3. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 3.");
+
+            builder.InsertParagraph();
+
+            builder.Write("Text 1. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 1.");
+            builder.Write("Text 2. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 2.");
+            builder.Write("Text 3. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 3.");
+
+            // By default, the reference symbol for each footnote and endnote is its index
+            // among all of the document's footnotes/endnotes. Each document maintains separate counts
+            // for footnotes and for endnotes, which both begin at 1.
+            Assert.AreEqual(1, doc.FootnoteOptions.StartNumber);
+            Assert.AreEqual(1, doc.EndnoteOptions.StartNumber);
+
+            // We can use the "StartNumber" property to get the document to
+            // begin a footnote or endnote count at a different number.
+            doc.EndnoteOptions.NumberStyle = NumberStyle.Arabic;
+            doc.EndnoteOptions.StartNumber = 50;
+
+            doc.Save(ArtifactsDir + "InlineStory.StartNumber.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "InlineStory.StartNumber.docx");
+
+            Assert.AreEqual(1, doc.FootnoteOptions.StartNumber);
+            Assert.AreEqual(50, doc.EndnoteOptions.StartNumber);
+            Assert.AreEqual(NumberStyle.Arabic, doc.FootnoteOptions.NumberStyle);
+            Assert.AreEqual(NumberStyle.Arabic, doc.EndnoteOptions.NumberStyle);
+
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote 1.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote 2.", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote 3.", (Footnote)doc.GetChild(NodeType.Footnote, 2, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote 1.", (Footnote)doc.GetChild(NodeType.Footnote, 3, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote 2.", (Footnote)doc.GetChild(NodeType.Footnote, 4, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote 3.", (Footnote)doc.GetChild(NodeType.Footnote, 5, true));
         }
 
         [Test]
