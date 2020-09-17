@@ -113,38 +113,43 @@ namespace ApiExamples
             //ExFor:InlineStory.FirstParagraph
             //ExFor:FootnoteType
             //ExFor:Footnote.#ctor
-            //ExSummary:Shows how to add a footnote to a paragraph in the document and set its marker.
+            //ExSummary:Shows how to insert and customize footnotes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add text that will be referenced by a footnote
+            // Add text, and reference it with a footnote. This footnote will place a
+            // small superscript reference mark after the text that it references, 
+            // and will create an entry below the main body text at the bottom of the page.
+            // This entry will contain the footnote's reference mark, as well as the reference text,
+            // which we will pass to the document builder's "InsertFootnote" method.
             builder.Write("Main body text.");
-
-            // Add a footnote and give it text, which will appear at the bottom of the page
             Footnote footnote = builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.");
 
-            // This attribute means the footnote in the main text will automatically be assigned a number, "1" in this instance
-            // The next footnote will get "2"
+            // If this property is set to "true", then our footnote's reference mark
+            // will be its index among all of the section's footnotes.
+            // This is the first footnote, so the reference mark will be "1".
             Assert.True(footnote.IsAuto);
 
-            // We can edit the footnote's text like this
-            // Make sure to move the builder back into the document body afterwards
+            // We can move the document builder inside the footnote to edit its reference text. 
             builder.MoveTo(footnote.FirstParagraph);
             builder.Write(" More text added by a DocumentBuilder.");
             builder.MoveToDocumentEnd();
 
-            Assert.AreEqual("Footnote text. More text added by a DocumentBuilder.", footnote.Paragraphs[0].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("\u0002 Footnote text. More text added by a DocumentBuilder.", footnote.GetText().Trim());
 
             builder.Write(" More main body text.");
             footnote = builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.");
 
-            // Substitute the reference number for our own custom mark by setting this variable, "IsAuto" will also be set to false
+            // We can set a custom reference mark which the footnote will use instead of its index number.
             footnote.ReferenceMark = "RefMark";
+
             Assert.False(footnote.IsAuto);
 
-            // This bookmark will get a number "3" even though there was no "2"
+            // A bookmark with the "IsAuto" flag set to true will still show its real index
+            // even if previous bookmarks display custom reference marks, so this bookmark's reference mark will be a "3".
             builder.Write(" More main body text.");
             footnote = builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.");
+
             Assert.True(footnote.IsAuto);
 
             doc.Save(ArtifactsDir + "InlineStory.AddFootnote.docx");
@@ -165,19 +170,25 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Footnote.FootnoteType
-            //ExSummary:Demonstrates the difference between footnotes and endnotes.
+            //ExSummary:Shows the difference between footnotes and endnotes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Write text and insert a footnote to reference it at the bottom of the page
+            // Below are two ways of attaching numbered references to text. Both these types of references
+            // will add a small superscript reference mark at the location that we insert them.
+            // The reference mark, by default, is the index number of the reference among all the references in the document.
+            // Each reference will also create an entry, which will have the same reference mark as in the body text,
+            // as well as reference text, which we will pass to the document builder's "InsertFootnote" method.
+            // 1 -  A footnote, whose entry will appear on the same page as the text that it references:
             builder.Write("Footnote referenced main body text.");
-            Footnote footnote = builder.InsertFootnote(FootnoteType.Footnote, "Footnote text, will appear at the bottom of the page that contains the referenced text.");
+            Footnote footnote = builder.InsertFootnote(FootnoteType.Footnote, 
+                "Footnote text, will appear at the bottom of the page that contains the referenced text.");
 
-            // Write text and insert an endnote to reference it at the end of the document
+            // 2 -  An endnote, whose entry will will appear at the end of the document:
             builder.Write("Endnote referenced main body text.");
-            Footnote endnote = builder.InsertFootnote(FootnoteType.Endnote, "Endnote text, will appear at the very end of the document.");
+            Footnote endnote = builder.InsertFootnote(FootnoteType.Endnote, 
+                "Endnote text, will appear at the very end of the document.");
 
-            // Since endnotes are at the end of the document, breaks like this will push them down while the footnotes stay where they are
             builder.InsertBreak(BreakType.SectionBreakNewPage);
             builder.InsertBreak(BreakType.SectionBreakNewPage);
 
@@ -204,16 +215,17 @@ namespace ApiExamples
             //ExFor:InlineStory.Paragraphs
             //ExFor:InlineStory.FirstParagraph
             //ExFor:Comment.#ctor(DocumentBase, String, String, DateTime)
-            //ExSummary:Shows how to add a comment to a paragraph in the document.
+            //ExSummary:Shows how to add a comment to a paragraph.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Write("Some text is added.");
+            builder.Write("Hello world!");
 
-            Comment comment = new Comment(doc, "Amy Lee", "AL", DateTime.Today);
+            Comment comment = new Comment(doc, "John Doe", "JD", DateTime.Today);
             builder.CurrentParagraph.AppendChild(comment);
-            comment.Paragraphs.Add(new Paragraph(doc));
-            comment.FirstParagraph.Runs.Add(new Run(doc, "Comment text."));
+            builder.MoveTo(comment.AppendChild(new Paragraph(doc)));
+            builder.Write("Comment text.");
 
+            // In Microsoft Word, we can right-click this comment in the document body to edit it, or reply to it. 
             doc.Save(ArtifactsDir + "InlineStory.AddComment.docx");
             //ExEnd
 
@@ -221,8 +233,8 @@ namespace ApiExamples
             comment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
             
             Assert.AreEqual("Comment text.\r", comment.GetText());
-            Assert.AreEqual("Amy Lee", comment.Author);
-            Assert.AreEqual("AL", comment.Initial);
+            Assert.AreEqual("John Doe", comment.Author);
+            Assert.AreEqual("JD", comment.Initial);
             Assert.AreEqual(DateTime.Today, comment.DateTime);
         }
 
@@ -235,26 +247,43 @@ namespace ApiExamples
             //ExFor:InlineStory.IsMoveFromRevision
             //ExFor:InlineStory.IsMoveToRevision
             //ExSummary:Shows how to view revision-related properties of InlineStory nodes.
-            // Open a document that has revisions from changes being tracked
             Document doc = new Document(MyDir + "Revision footnotes.docx");
+
+            // When we edit the document while the "Track Changes" option, found in via Review -> Tracking,
+            // is turned on in Microsoft Word, the changes we apply count as revisions.
+            // When editing a document using Aspose.Words, we can begin tracking revisions by
+            // invoking the document's "StartTrackRevisions" method, and stop tracking by using the "StopTrackRevisions" method.
+            // We can either accept revisions to assimilate them into the document,
+            // or reject them to undo and discard the change that they proposed.
             Assert.IsTrue(doc.HasRevisions);
 
-            // Get a collection of all footnotes from the document
             List<Footnote> footnotes = doc.GetChildNodes(NodeType.Footnote, true).Cast<Footnote>().ToList();
+
             Assert.AreEqual(5, footnotes.Count);
 
-            // If a node was inserted in Microsoft Word while changes were being tracked, this flag will be set to true
+            // Below are five types of revisions that an InlineStory node can be flagged as.
+            // 1 -  An "insert" revision:
+            // This revision occurs when we insert text while tracking changes.
             Assert.IsTrue(footnotes[2].IsInsertRevision);
 
-            // If one node was moved from one place to another while changes were tracked,
-            // the node will be placed at the departure location as a "move to revision",
-            // and a "move from revision" node will be left behind at the origin, in case we want to reject changes
-            // Highlighting text and dragging it to another place with the mouse and cut-and-pasting (but not copy-pasting) both count as "move revisions"
-            // The node with the "IsMoveToRevision" flag is the arrival of the move operation, and the node with the "IsMoveFromRevision" flag is the departure point
-            Assert.IsTrue(footnotes[1].IsMoveToRevision);
+            // 2 -  A "move from" revision:
+            // When we highlight text in Microsoft Word, and then drag it to a different place in the document
+            // while tracking changes, two revisions appear.
+            // The "move from" revision is the copy of the text where it originally was before we moved it.
             Assert.IsTrue(footnotes[4].IsMoveFromRevision);
 
-            // If a node was deleted while changes were being tracked, it will stay behind as a delete revision until we accept/reject changes
+            // 3 -  A "move to" revision:
+            // The "move to" revision is the text that we moved, in its new position in the document.
+            // "Move from" and "move to" revisions appear in pairs for every move revision we carry out.
+            // Accepting a move revision deletes the "move from" revision and its text,
+            // and keeps the text from the "move to" revision.
+            // Rejecting a move revision conversely keeps the "move from" revision and deletes the "move to" revision.
+            Assert.IsTrue(footnotes[1].IsMoveToRevision);
+
+            // 4 -  A "delete" revision:
+            // This revision occurs when we delete text while tracking changes. When we delete text like this,
+            // it will stay in the document as a revision until we either accept the revision,
+            // which will delete the text for good, or reject the revision, which will keep the text we deleted where it was.
             Assert.IsTrue(footnotes[3].IsDeleteRevision);
             //ExEnd
         }
@@ -276,7 +305,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             Footnote footnote = builder.InsertFootnote(FootnoteType.Footnote, null);
 
-            // Table nodes have an "EnsureMinimum()" method that makes sure the table has at least one cell
+            // Table nodes have an "EnsureMinimum()" method that makes sure the table has at least one cell.
             Table table = new Table(doc);
             table.EnsureMinimum();
 
@@ -341,17 +370,17 @@ namespace ApiExamples
             //ExFor:Story.DeleteShapes
             //ExFor:Story.StoryType
             //ExFor:StoryType
-            //ExSummary:Shows how to clear a body of inline shapes.
+            //ExSummary:Shows how to remove all shapes from a node.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a DocumentBuilder to insert a shape
-            // This is an inline shape, which has a parent Paragraph, which is in turn a child of the Body
+            // Use a DocumentBuilder to insert a shape. This is an inline shape,
+            // which has a parent Paragraph, which is a child node of the first section's Body.
             builder.InsertShape(ShapeType.Cube, 100.0, 100.0);
 
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
 
-            // We can delete all such shapes from the Body, affecting all child Paragraphs
+            // We can delete all shapes from the child paragraphs of this Body.
             Assert.AreEqual(StoryType.MainText, doc.FirstSection.Body.StoryType);
             doc.FirstSection.Body.DeleteShapes();
 

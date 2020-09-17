@@ -48,7 +48,7 @@ namespace ApiExamples
 
             Assert.AreEqual(6, runs.ToArray().Length);
 
-            // Below are five types of revisions that an inline node can be flagged as.
+            // Below are five types of revisions that an Inline node can be flagged as.
             // 1 -  An "insert" revision:
             // This revision occurs when we insert text while tracking changes.
             Assert.IsTrue(runs[2].IsInsertRevision);
