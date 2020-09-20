@@ -29,37 +29,67 @@ namespace ApiExamples
             //ExFor:ListFormat.ListOutdent
             //ExFor:ListFormat.RemoveNumbers
             //ExFor:ListFormat.ListLevelNumber
-            //ExSummary:Shows how to apply default bulleted or numbered list formatting to paragraphs when using DocumentBuilder.
+            //ExSummary:Shows how to create bulleted and numbered lists.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Writeln("Aspose.Words allows:");
-            builder.Writeln();
+            builder.Writeln("Aspose.Words main advantages are:");
 
-            // Start a numbered list with default formatting
+            // A list allows us to organize and decorate sets of paragraphs with prefix symbols and indents.
+            // We can nested lists by increasing the indent level. 
+            // We can begin and end a list by using a document builder's "ListFormat" property. 
+            // Each paragraph that we add between a list's start and end will become an item in the list.
+            // Below are two types of lists that we can create with a document builder.
+            // 1 -  A bulleted list:
+            // This list will apply an indent, and a bullet symbol ("•") before each paragraph.
+            builder.ListFormat.ApplyBulletDefault();
+            builder.Writeln("Great performance");
+            builder.Writeln("High reliability");
+            builder.Writeln("Quality code and working");
+            builder.Writeln("Wide variety of features");
+            builder.Writeln("Easy to understand API");
+
+            // End the bulleted list.
+            builder.ListFormat.RemoveNumbers();
+
+            builder.InsertBreak(BreakType.ParagraphBreak);
+            builder.Writeln("Aspose.Words allows:");
+
+            // 2 -  A numbered list:
+            // Numbered lists create a logical order for their paragraphs by numbering each item.
             builder.ListFormat.ApplyNumberDefault();
+
+            // This paragraph is the first item. The first item of a numbered list will have a "1." as its list item symbol.
             builder.Writeln("Opening documents from different formats:");
 
             Assert.AreEqual(0, builder.ListFormat.ListLevelNumber);
 
-            // Go to second list level, add more text
+            // Call the "ListIndent" method to increase the current list level,
+            // which will start a new self-contained list, with a deeper indent, at the current item of the first list level.
             builder.ListFormat.ListIndent();
 
             Assert.AreEqual(1, builder.ListFormat.ListLevelNumber);
 
+            // These are the first three list items of the second list level, which will maintain a count
+            // that is independent of the count of the first list level. According to the current list format,
+            // they will have symbols of "a.", "b.", and "c.".
             builder.Writeln("DOC");
             builder.Writeln("PDF");
             builder.Writeln("HTML");
 
-            // Outdent to the first list level
+            // Call the "ListOutdent" method to return to the previous list level.
             builder.ListFormat.ListOutdent();
 
             Assert.AreEqual(0, builder.ListFormat.ListLevelNumber);
 
+            // These two paragraphs will continue the count of the first list level.
+            // These items will have symbols of "2.", and "3."
             builder.Writeln("Processing documents");
             builder.Writeln("Saving documents in different formats:");
 
-            // Indent the list level again
+            // If we increase the list level to one we have added items to previously,
+            // the nested list will be independent from the previous, and its numbering will start again. 
+            // These list items will have symbols of "a.", "b.", "c.", "d.", and "e".
             builder.ListFormat.ListIndent();
             builder.Writeln("DOC");
             builder.Writeln("PDF");
@@ -73,30 +103,15 @@ namespace ApiExamples
 
             // End the numbered list
             builder.ListFormat.RemoveNumbers();
-            builder.Writeln();
-
-            builder.Writeln("Aspose.Words main advantages are:");
-            builder.Writeln();
-
-            // Start a bulleted list with default formatting
-            builder.ListFormat.ApplyBulletDefault();
-            builder.Writeln("Great performance");
-            builder.Writeln("High reliability");
-            builder.Writeln("Quality code and working");
-            builder.Writeln("Wide variety of features");
-            builder.Writeln("Easy to understand API");
-
-            // End the bulleted list
-            builder.ListFormat.RemoveNumbers();
 
             doc.Save(ArtifactsDir + "Lists.ApplyDefaultBulletsAndNumbers.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Lists.ApplyDefaultBulletsAndNumbers.docx");
 
-            TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, doc.Lists[0].ListLevels[0]);
-            TestUtil.VerifyListLevel("\u0001.", 54.0d, NumberStyle.LowercaseLetter, doc.Lists[0].ListLevels[1]);
-            TestUtil.VerifyListLevel("\uf0b7", 18.0d, NumberStyle.Bullet, doc.Lists[1].ListLevels[0]);
+            TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, doc.Lists[1].ListLevels[0]);
+            TestUtil.VerifyListLevel("\u0001.", 54.0d, NumberStyle.LowercaseLetter, doc.Lists[1].ListLevels[1]);
+            TestUtil.VerifyListLevel("\uf0b7", 18.0d, NumberStyle.Bullet, doc.Lists[0].ListLevels[0]);
         }
 
         [Test]
@@ -111,7 +126,7 @@ namespace ApiExamples
             //ExFor:ListTemplate
             //ExFor:DocumentBase.Lists
             //ExFor:ListCollection.Add(ListTemplate)
-            //ExSummary:Shows how to specify list level number when building a list using DocumentBuilder.
+            //ExSummary:Shows how to specify list level number when building a list.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
