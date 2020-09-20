@@ -35,7 +35,7 @@ namespace ApiExamples
 
             // If we pass the name of a file without a path,
             // the SetLicense will search several local file system locations for this file.
-            // One of those locations will be the "bin" folder, which contains a copy of our licence file.
+            // One of those locations will be the "bin" folder, which contains a copy of our license file.
             license.SetLicense("Aspose.Words.NET.lic");
             //ExEnd
 
