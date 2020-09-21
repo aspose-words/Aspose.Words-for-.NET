@@ -36,7 +36,7 @@ namespace ApiExamples
             builder.Writeln("Aspose.Words main advantages are:");
 
             // A list allows us to organize and decorate sets of paragraphs with prefix symbols and indents.
-            // We can nested lists by increasing the indent level. 
+            // We can create nested lists by increasing the indent level. 
             // We can begin and end a list by using a document builder's "ListFormat" property. 
             // Each paragraph that we add between a list's start and end will become an item in the list.
             // Below are two types of lists that we can create with a document builder.
@@ -121,29 +121,43 @@ namespace ApiExamples
             //ExFor:ListCollection
             //ExFor:List
             //ExFor:ListFormat
+            //ExFor:ListFormat.IsListItem
             //ExFor:ListFormat.ListLevelNumber
             //ExFor:ListFormat.List
             //ExFor:ListTemplate
             //ExFor:DocumentBase.Lists
             //ExFor:ListCollection.Add(ListTemplate)
-            //ExSummary:Shows how to specify list level number when building a list.
+            //ExSummary:Shows how to work with list levels.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a numbered list based on one of the Microsoft Word list templates and
-            // apply it to the current paragraph in the document builder
-            builder.ListFormat.List = doc.Lists.Add(ListTemplate.NumberArabicDot);
+            Assert.False(builder.ListFormat.IsListItem);
 
-            // Insert text at each of the 9 indent levels
+            // A list allows us to organize and decorate sets of paragraphs with prefix symbols and indents.
+            // We can create nested lists by increasing the indent level. 
+            // We can begin and end a list by using a document builder's "ListFormat" property. 
+            // Each paragraph that we add between a list's start and end will become an item in the list.
+            // Below are two types of lists that we can create using a document builder.
+            // 1 -  A numbered list:
+            // Numbered lists create a logical order for their paragraphs by numbering each item.
+            builder.ListFormat.List = doc.Lists.Add(ListTemplate.NumberDefault);
+
+            Assert.True(builder.ListFormat.IsListItem);
+
+            // By setting the "ListLevelNumber" property, we can increase the list level
+            // to begin a self-contained sub-list at the current list item.
+            // The Microsoft Word list template called "NumberDefault" uses numbers to create list levels for the first list level.
+            // Deeper list levels use letters and lowercase Roman numerals. 
             for (int i = 0; i < 9; i++)
             {
                 builder.ListFormat.ListLevelNumber = i;
                 builder.Writeln("Level " + i);
             }
 
-            // Create a bulleted list based on one of the Microsoft Word list templates
-            // and apply it to the current paragraph in the document builder
-            builder.ListFormat.List = doc.Lists.Add(ListTemplate.BulletDiamonds);
+            // 2 -  A bulleted list:
+            // This list will apply an indent, and a bullet symbol ("•") before each paragraph.
+            // Deeper levels of this list will use different symbols, such as "■" and "○".
+            builder.ListFormat.List = doc.Lists.Add(ListTemplate.BulletDefault);
 
             for (int i = 0; i < 9; i++)
             {
@@ -151,8 +165,10 @@ namespace ApiExamples
                 builder.Writeln("Level " + i);
             }
 
-            // This is a way to stop list formatting
+            // We can disable list formatting to not format any subsequent paragraphs as lists by un-setting the "List" flag.
             builder.ListFormat.List = null;
+
+            Assert.False(builder.ListFormat.IsListItem);
 
             doc.Save(ArtifactsDir + "Lists.SpecifyListLevel.docx");
             //ExEnd
