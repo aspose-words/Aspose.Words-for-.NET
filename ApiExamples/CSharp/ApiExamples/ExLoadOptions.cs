@@ -141,7 +141,7 @@ namespace ApiExamples
             fontSettings.SetFontsFolder(FontsDir, false);
             fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Times New Roman", "Arvo");
 
-            // Set that FontSettings object as a member of a newly created LoadOptions object.
+            // Set that FontSettings object as a property of a newly created LoadOptions object.
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.FontSettings = fontSettings;
 
@@ -164,13 +164,13 @@ namespace ApiExamples
             Assert.AreEqual(MsWordVersion.Word2019, loadOptions.MswVersion);
 
             // This document is missing the default paragraph formatting style.
-            // This default style will be regenerated when we load the document either with Microsoft Word or Aspose.Words.
+            // This default style regenerate when we load the document either with Microsoft Word or Aspose.Words.
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
-            // The style's line spacing will have this value when loaded by Microsoft Word 2019 specification.
+            // The style's line spacing will have this value when we load this according to Microsoft Word 2019 specification.
             Assert.AreEqual(12.95d, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.01d);
 
-            // When loaded according to Microsoft Word 2007 specification, the value will be slightly different.
+            // When we load this document according to Microsoft Word 2007 specification, the value will be slightly different.
             loadOptions.MswVersion = MsWordVersion.Word2007;
             doc = new Document(MyDir + "Document.docx", loadOptions);
 
@@ -189,7 +189,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.WarningCallback = new DocumentLoadingWarningCallback();
 
-            // Warnings that occur during the loading of the document will now be printed and stored.
+            // Our callback will print all warnings that come up during the load operation.
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
             List<WarningInfo> warnings = ((DocumentLoadingWarningCallback)loadOptions.WarningCallback).GetWarnings();
