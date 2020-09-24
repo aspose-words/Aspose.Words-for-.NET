@@ -36,7 +36,7 @@ namespace ApiExamples
             //ExFor:MailMerge.Execute(String[], Object[])
             //ExFor:ContentDisposition
             //ExFor:Document.Save(HttpResponse,String,ContentDisposition,SaveOptions)
-            //ExSummary:Performs a simple insertion of data into merge fields and sends the document to the browser inline.
+            //ExSummary:Shows how to perform a mail merge, and then save the document to the client browser.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -48,15 +48,14 @@ namespace ApiExamples
             builder.InsertParagraph();
             builder.InsertField(" MERGEFIELD City ");
 
-            // Fill the fields in the document with user data
             doc.MailMerge.Execute(new string[] { "FullName", "Company", "Address", "City" },
                 new object[] { "James Bond", "MI5 Headquarters", "Milbank", "London" });
 
-            // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser
+            // Send the document to the client browser.
             Assert.That(() => doc.Save(response, "Artifacts/MailMerge.ExecuteArray.docx", ContentDisposition.Inline, null),
                 Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
 
-            // The response will need to be closed manually to make sure that no superfluous content is added to the document after saving
+            // We will need to close this response manually to make sure that we do not add any superfluous content to the document after saving.
             Assert.That(() => response.End(), Throws.TypeOf<NullReferenceException>());
             //ExEnd
 
@@ -71,9 +70,9 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMerge.Execute(IDataReader)
             //ExSummary:Shows how to run a mail merge using data from a data reader.
-            // Create a new document and populate it with merge fields
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.Write("Product:\t");
             builder.InsertField(" MERGEFIELD ProductName");
             builder.Write("\nSupplier:\t");
@@ -83,27 +82,30 @@ namespace ApiExamples
             builder.Write(" for $");
             builder.InsertField(" MERGEFIELD UnitPrice");
 
-            // Create a connection string which points to the "Northwind" database file in our local file system and open a connection, and set up a query
+            // Create a connection string which points to the "Northwind" database file
+            // in our local file system, open a connection, and set up an SQL query.
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + DatabaseDir + "Northwind.mdb";
-            string query = @"SELECT Products.ProductName, Suppliers.CompanyName, Products.QuantityPerUnit, {fn ROUND(Products.UnitPrice,2)} as UnitPrice
-                                        FROM Products 
-                                        INNER JOIN Suppliers 
-                                        ON Products.SupplierID = Suppliers.SupplierID";
+            string query = 
+                @"SELECT Products.ProductName, Suppliers.CompanyName, Products.QuantityPerUnit, {fn ROUND(Products.UnitPrice,2)} as UnitPrice
+                FROM Products 
+                INNER JOIN Suppliers 
+                ON Products.SupplierID = Suppliers.SupplierID";
 
             using (OdbcConnection connection = new OdbcConnection())
             {
                 connection.ConnectionString = connectionString;
                 connection.Open();
 
-                // Create an SQL command that will source data for our mail merge
-                // The names of the columns returned by this SELECT statement should correspond to the merge fields we placed above
+                // Create an SQL command that will source data for our mail merge.
+                // The names of the columns of the table that this SELECT statement will return
+                // will need to correspond to the merge fields we placed above.
                 OdbcCommand command = connection.CreateCommand();
                 command.CommandText = query;
 
-                // This will run the command and store the data in the reader
+                // This will run the command and store the data in the reader.
                 OdbcDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
 
-                // Now we can take the data from the reader and use it in the mail merge
+                // Take the data from the reader, and use it in the mail merge.
                 doc.MailMerge.Execute(reader);
             }
 
@@ -121,26 +123,26 @@ namespace ApiExamples
         [Test, Category("SkipMono")] //ExSkip
         public void ExecuteADO()
         {
-            // Create a document that will be merged
             Document doc = CreateSourceDocADOMailMerge();
 
-            // To work with ADO DataSets, we need to add a reference to the Microsoft ActiveX Data Objects library,
-            // which is included in the .NET distribution and stored in "adodb.dll", then create a connection
+            // To work with ADO DataSets, we will need to add a reference to the Microsoft ActiveX Data Objects library,
+            // which is included in the .NET distribution and stored in "adodb.dll".
             ADODB.Connection connection = new ADODB.Connection();
 
-            // Create a connection string which points to the "Northwind" database file in our local file system and open a connection
+            // Create a connection string which points to the "Northwind" database file
+            // in our local file system, and open a connection.
             string connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DatabaseDir + "Northwind.mdb";
             connection.Open(connectionString);
 
-            // Create a record set
+            // Populate our DataSet by running an SQL command on our database.
+            // The names of the columns in the result table will need to correspond
+            // to the values of the MERGEFIELDS that will accommodate our data.
             ADODB.Recordset recordset = new ADODB.Recordset();
 
-            // Populate our DataSrt by running an SQL command on the database we are connected to
-            // The names of the columns returned here correspond to the values of the MERGEFIELDS that will accommodate our data
             string command = @"SELECT ProductName, QuantityPerUnit, UnitPrice FROM Products";
             recordset.Open(command, connection);
 
-            // Execute the mail merge and save the document
+            // Execute the mail merge, and save the document.
             doc.MailMerge.ExecuteADO(recordset);
             doc.Save(ArtifactsDir + "MailMerge.ExecuteADO.docx");
             TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.mdb", command, doc, true); //ExSkip
