@@ -1286,7 +1286,7 @@ namespace ApiExamples
 
             foreach (Section section in doc.Sections)
                 Assert.AreEqual(expected, section.PageSetup.SectionStart);
-}
+        }
 
         [Test]
         public void MailMergeSettings()

@@ -3004,8 +3004,9 @@ namespace ApiExamples
                 if (warningInfo.Source == WarningSource.Markdown)
                     Assert.AreEqual("The (*, 0:11) cannot be properly written into Markdown.", warningInfo.Description);
             }
-}
+        }
 
+        [Test]
         public void DoNotIgnoreHeaderFooter()
         {
             //ExStart
