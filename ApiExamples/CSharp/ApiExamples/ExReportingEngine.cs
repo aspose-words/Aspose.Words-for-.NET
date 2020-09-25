@@ -670,7 +670,7 @@ namespace ApiExamples
                 // Assert that the image is really insert in textbox 
                 Assert.IsNotNull(shape.Fill.ImageBytes);
 
-                // Assert that width is keeped and height is changed
+                // Assert that the width is preserved, and the height is changed
                 Assert.AreNotEqual(346.35, shape.Height);
                 Assert.AreEqual(431.5, shape.Width);
             }
@@ -693,10 +693,9 @@ namespace ApiExamples
 
             foreach (Shape shape in shapes.OfType<Shape>())
             {
-                // Assert that the image is really insert in textbox and 
                 Assert.IsNotNull(shape.Fill.ImageBytes);
 
-                // Assert that height is keeped and width is changed
+                // Assert that the height is preserved, and the width is changed
                 Assert.AreNotEqual(431.5, shape.Width);
                 Assert.AreEqual(346.35, shape.Height);
             }
@@ -719,10 +718,9 @@ namespace ApiExamples
 
             foreach (Shape shape in shapes.OfType<Shape>())
             {
-                // Assert that the image is really insert in textbox 
                 Assert.IsNotNull(shape.Fill.ImageBytes);
 
-                // Assert that height is changed and width is changed
+                // Assert that the height and the width are changed
                 Assert.AreNotEqual(346.35, shape.Height);
                 Assert.AreNotEqual(431.5, shape.Width);
             }
@@ -745,7 +743,6 @@ namespace ApiExamples
 
             foreach (Shape shape in shapes.OfType<Shape>())
             {
-                // Assert that the image is really insert in textbox 
                 Assert.IsNotNull(shape.Fill.ImageBytes);
 
                 // Assert that textbox size are equal image size
@@ -932,31 +929,50 @@ namespace ApiExamples
         [Test]
         public void JsonDataString()
         {
-            Document doc = new Document(MyDir + "Reporting engine template - XML data destination.docx");
+            Document doc = new Document(MyDir + "Reporting engine template - JSON data destination.docx");
 
-            JsonDataSource dataSource = new JsonDataSource(MyDir + "List of people.json");
+            JsonDataLoadOptions options = new JsonDataLoadOptions();
+            options.ExactDateTimeParseFormat = "MM/dd/yyyy";
+
+            JsonDataSource dataSource = new JsonDataSource(MyDir + "List of people.json", options);
             BuildReport(doc, dataSource, "persons");
             
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataString.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataString.docx",
-                GoldsDir + "ReportingEngine.DataSource Gold.docx"));
+                GoldsDir + "ReportingEngine.JsonDataString Gold.docx"));
+        }
+
+        [Test]
+        public void JsonDataStringException()
+        {
+            Document doc = new Document(MyDir + "Reporting engine template - JSON data destination.docx");
+
+            JsonDataLoadOptions options = new JsonDataLoadOptions();
+            options.SimpleValueParseMode = JsonSimpleValueParseMode.Strict;
+            
+            JsonDataSource dataSource = new JsonDataSource(MyDir + "List of people.json", options);
+            Assert.Throws<InvalidOperationException>(() => BuildReport(doc, dataSource, "persons"));
         }
 
         [Test]
         public void JsonDataStream()
         {
-            Document doc = new Document(MyDir + "Reporting engine template - XML data destination.docx");
+            Document doc = new Document(MyDir + "Reporting engine template - JSON data destination.docx");
+            
+            JsonDataLoadOptions options = new JsonDataLoadOptions();
+            options.ExactDateTimeParseFormat = "MM/dd/yyyy";
+            
             using (FileStream stream = File.OpenRead(MyDir + "List of people.json"))
             {
-                JsonDataSource dataSource = new JsonDataSource(stream);
+                JsonDataSource dataSource = new JsonDataSource(stream, options);
                 BuildReport(doc, dataSource, "persons");
             }
 
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataStream.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataStream.docx",
-                GoldsDir + "ReportingEngine.DataSource Gold.docx"));
+                GoldsDir + "ReportingEngine.JsonDataString Gold.docx"));
         }
 
         [Test]

@@ -46,8 +46,6 @@ namespace ApiExamples
                 "content=\"text/html; charset=us-ascii\"").Success);
         }
 
-        // Note: Test doesn't contain validation result, because it's may take a lot of time for assert result
-        // For validation result, you can save the document to HTML file and check out with notepad++, that file encoding will be correctly displayed (Encoding tab in Notepad++)
         [Test]
         public void GetEncoding()
         {
@@ -463,7 +461,7 @@ namespace ApiExamples
                     case ".ttf":
                     case ".woff":
                     {
-                        // By default 'ResourceFileUri' used system folder for fonts
+                        // By default, 'ResourceFileUri' used system folder for fonts
                         // To avoid problems across platforms you must explicitly specify the path for the fonts
                         args.ResourceFileUri = ArtifactsDir + Path.DirectorySeparatorChar + args.ResourceFileName;
                         break;

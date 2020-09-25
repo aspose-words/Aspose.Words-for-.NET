@@ -251,7 +251,7 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Return null because we haven't any child elements for this sort of object.
+            /// Return null because we do not have any child elements for this sort of object.
             /// </summary>
             public IMailMergeDataSource GetChildDataSource(string tableName)
             {

@@ -28,11 +28,11 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Images.docx");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Emf);
-            saveOptions.UseGdiEmfRenderer = true;
+            saveOptions.UseGdiEmfRenderer = false;
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.Renderer.emf", saveOptions);
             //ExEnd
-            #if NET462 || JAVA // NetStandard doesn't work with emf 
+            #if NET462 || JAVA
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.Renderer.emf");
             #endif
         }
@@ -91,7 +91,7 @@ namespace ApiExamples
             TestUtil.VerifyImage(794, 1122, ArtifactsDir + "ImageSaveOptions.GraphicsQuality.jpg");
         }
 
-        [Test]
+        [Test, Category("SkipMono")]
         public void WindowsMetaFile()
         {
             //ExStart
@@ -107,7 +107,7 @@ namespace ApiExamples
             // which will be applied to the image we inserted
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
             options.MetafileRenderingOptions.RenderingMode = MetafileRenderingMode.Vector;
-
+            
             doc.Save(ArtifactsDir + "ImageSaveOptions.WindowsMetaFile.png", options);
             //ExEnd
 
@@ -116,7 +116,6 @@ namespace ApiExamples
 #endif
 
         [Test]
-        [Category("SkipMono")]
         public void BlackAndWhite()
         {
             //ExStart
@@ -141,7 +140,7 @@ namespace ApiExamples
             TestUtil.VerifyImage(794, 1123, ArtifactsDir + "ImageSaveOptions.BlackAndWhite.png");
         }
 
-        [Test]
+        [Test, Category("SkipMono")]
         public void FloydSteinbergDithering()
         {
             //ExStart

@@ -56,7 +56,7 @@ namespace ApiExamples
         private class HandleMergeFieldInsertHtml : IFieldMergingCallback
         {
             /// <summary>
-            /// This is called when merge field is actually merged with data in the document.
+            /// This is called when merge field is merged with data in the document.
             /// </summary>
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
@@ -110,7 +110,7 @@ namespace ApiExamples
         private class FieldValueMergingCallback : IFieldMergingCallback
         {
             /// <summary>
-            /// This is called when merge field is actually merged with data in the document.
+            /// This is called when merge field is merged with data in the document.
             /// </summary>
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
             {
@@ -268,8 +268,7 @@ namespace ApiExamples
                     // Select the color depending on whether the row number is even or odd
                     Color rowColor = IsOdd(mRowIdx) ? Color.FromArgb(213, 227, 235) : Color.FromArgb(242, 242, 242);
 
-                    // There is no way to set cell properties for the whole row at the moment,
-                    // so we have to iterate over all cells in the row
+                    // Set properties for each cell in the row
                     for (int colIdx = 0; colIdx < 4; colIdx++)
                     {
                         mBuilder.MoveToCell(0, mRowIdx, colIdx, 0);
@@ -352,8 +351,7 @@ namespace ApiExamples
         //ExFor:IFieldMergingCallback.ImageFieldMerging
         //ExFor:ImageFieldMergingArgs.ImageStream
         //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
-        [Test] //ExSkip
-        [Category("SkipMono")] //ExSkip
+        [Test, Category("SkipMono")] //ExSkip        
         public void ImageFromBlob()
         {
             Document doc = new Document(MyDir + "Mail merge destination - Northwind employees.docx");

@@ -20,8 +20,8 @@ namespace ApiExamples
     [TestFixture]
     internal class ExHtmlLoadOptions : ApiExampleBase
     {
-        [TestCase(true)]
-        [TestCase(false)]
+        [TestCase(true, Category = "SkipMono")]
+        [TestCase(false, Category = "SkipMono")]
         public void SupportVml(bool doSupportVml)
         {
             //ExStart
@@ -91,7 +91,7 @@ namespace ApiExamples
             // A timeout like this will also accumulate warnings that can be picked up by a WarningCallback implementation
             Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[0].Source);
             Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[0].WarningType);
-            Assert.AreEqual($"The resource \'{AsposeLogoUrl}\' couldn't be loaded.", warningCallback.Warnings()[0].Description);
+            Assert.AreEqual($"Couldn't load a resource from \'{AsposeLogoUrl}\'.", warningCallback.Warnings()[0].Description);
 
             Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[1].Source);
             Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[1].WarningType);
@@ -101,7 +101,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Stores all warnings occuring during a document loading operation in a list.
+        /// Stores all warnings that occur during a document loading operation in a List.
         /// </summary>
         private class ListDocumentWarnings : IWarningCallback
         {
@@ -153,11 +153,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlLoadOptions.#ctor(LoadFormat,String,String)
+            //ExFor:LoadOptions.LoadFormat
+            //ExFor:LoadFormat
             //ExSummary:Shows how to specify a base URI when opening an html document.
             // If we want to load an .html document which contains an image linked by a relative URI
             // while the image is in a different location, we will need to resolve the relative URI into an absolute one
             // by creating an HtmlLoadOptions and providing a base URI 
             HtmlLoadOptions loadOptions = new HtmlLoadOptions(LoadFormat.Html, "", ImageDir);
+
+            Assert.AreEqual(LoadFormat.Html, loadOptions.LoadFormat);
+
             Document doc = new Document(MyDir + "Missing image.html", loadOptions);
         
             // While the image was broken in the input .html, it was successfully found in our base URI
@@ -208,7 +213,7 @@ namespace ApiExamples
                 </html>
             ";
 
-            // By default "HtmlLoadOptions.PreferredControlType" value is "HtmlControlType.FormField"
+            // By default, "HtmlLoadOptions.PreferredControlType" value is "HtmlControlType.FormField"
             // So, we do not set this value
             HtmlLoadOptions htmlLoadOptions = new HtmlLoadOptions();
 
