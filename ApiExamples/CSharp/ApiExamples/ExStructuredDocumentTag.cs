@@ -931,13 +931,11 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTagRangeStart.LockContentControl
             //ExFor:StructuredDocumentTagRangeStart.LockContents
             //ExFor:StructuredDocumentTagRangeStart.Level
-            //ExFor:StructuredDocumentTagRangeStart.NodeType
             //ExFor:StructuredDocumentTagRangeStart.RangeEnd
             //ExFor:StructuredDocumentTagRangeStart.SdtType
             //ExFor:StructuredDocumentTagRangeStart.Tag
             //ExFor:StructuredDocumentTagRangeEnd
             //ExFor:StructuredDocumentTagRangeEnd.Id
-            //ExFor:StructuredDocumentTagRangeEnd.NodeType
             //ExSummary:Shows how to get multi-section structured document tags properties.
             Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
 
