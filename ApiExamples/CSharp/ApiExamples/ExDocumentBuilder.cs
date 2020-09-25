@@ -3105,20 +3105,20 @@ namespace ApiExamples
         }
 
         [Test]
-        public void IgnoreHeaderFooter()
+        public void DoNotIgnoreHeaderFooter()
         {
             //ExStart
             //ExFor:ImportFormatOptions.IgnoreHeaderFooter
-            //ExSummary:Shows how to specifies ignoring source formatting of headers/footers content.
+            //ExSummary:Shows how to specifies ignoring or not source formatting of headers/footers content.
             Document dstDoc = new Document(MyDir + "Document.docx");
             Document srcDoc = new Document(MyDir + "Header and footer types.docx");
  
             ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-            importFormatOptions.IgnoreHeaderFooter = true;
+            importFormatOptions.IgnoreHeaderFooter = false;
  
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
 
-            dstDoc.Save(ArtifactsDir + "DocumentBuilder.IgnoreHeaderFooter.docx");
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.DoNotIgnoreHeaderFooter.docx");
             //ExEnd
         }
 
