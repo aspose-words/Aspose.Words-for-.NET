@@ -137,9 +137,9 @@ namespace ApiExamples
             // Populate our DataSet by running an SQL command on our database.
             // The names of the columns in the result table will need to correspond
             // to the values of the MERGEFIELDS that will accommodate our data.
-            ADODB.Recordset recordset = new ADODB.Recordset();
-
             string command = @"SELECT ProductName, QuantityPerUnit, UnitPrice FROM Products";
+
+            ADODB.Recordset recordset = new ADODB.Recordset();
             recordset.Open(command, connection);
 
             // Execute the mail merge, and save the document.
@@ -169,38 +169,39 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegionsADO(Object,String)
-        //ExSummary:Shows how to run a mail merge with regions, compiled with data from an ADO dataset.
+        //ExSummary:Shows how to run a mail merge with multiple regions, compiled with data from an ADO dataset.
         [Test, Category("SkipMono")] //ExSkip
         public void ExecuteWithRegionsADO()
         {
-            // Create a document that will be merged
             Document doc = CreateSourceDocADOMailMergeWithRegions();
 
-            // To work with ADO DataSets, we need to add a reference to the Microsoft ActiveX Data Objects library,
-            // which is included in the .NET distribution and stored in "adodb.dll", then create a connection
+            // To work with ADO DataSets, we will need to add a reference to the Microsoft ActiveX Data Objects library,
+            // which is included in the .NET distribution and stored in "adodb.dll".
             ADODB.Connection connection = new ADODB.Connection();
 
-            // Create a connection string which points to the "Northwind" database file in our local file system and open a connection
+            // Create a connection string which points to the "Northwind" database file
+            // in our local file system, and open a connection.
             string connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DatabaseDir + "Northwind.mdb";
             connection.Open(connectionString);
 
-            // Create a record set
-            ADODB.Recordset recordset = new ADODB.Recordset();
-
-            // Create an SQL query that fetches data with column names that are suitable for our first mail merge region,
-            // then populate our record set with the data
+            // Populate our DataSet by running an SQL command on our database.
+            // The names of the columns in the result table will need to correspond
+            // to the values of the MERGEFIELDS that will accommodate our data.
             string command = "SELECT FirstName, LastName, City FROM Employees";
+
+            ADODB.Recordset recordset = new ADODB.Recordset();
             recordset.Open(command, connection);
 
-            // Run a mail merge on just the first region, filling its MERGEFIELDS with data from the ADO record set
+            // Run a mail merge on just the first region, filling its MERGEFIELDS with data from the record set.
             doc.MailMerge.ExecuteWithRegionsADO(recordset, "MergeRegion1");
 
-            // Close the record set and reopen it with data from another SQL query
-            recordset.Close();
+            // Close the record set, and reopen it with data from another SQL query.
             command = "SELECT * FROM Customers";
+
+            recordset.Close();
             recordset.Open(command, connection);
 
-            // Run a mail merge on the second region and save the document
+            // Run a second mail merge on the second region, and save the document.
             doc.MailMerge.ExecuteWithRegionsADO(recordset, "MergeRegion2");
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx");
@@ -208,14 +209,13 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Create a blank document and use MERGEFIELDS to create two sequential mail merge regions with TableStart/TableEnd tags
+        /// Create a document with two mail merge regions.
         /// </summary>
         private static Document CreateSourceDocADOMailMergeWithRegions()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // First mail merge region
             builder.Writeln("\tEmployees: ");
             builder.InsertField(" MERGEFIELD TableStart:MergeRegion1");
             builder.InsertField(" MERGEFIELD FirstName");
@@ -226,7 +226,6 @@ namespace ApiExamples
             builder.InsertField(" MERGEFIELD TableEnd:MergeRegion1");
             builder.InsertParagraph();
 
-            // Second mail merge region
             builder.Writeln("\tCustomers: ");
             builder.InsertField(" MERGEFIELD TableStart:MergeRegion2");
             builder.InsertField(" MERGEFIELD ContactName");
@@ -241,53 +240,63 @@ namespace ApiExamples
         //ExEnd
 #endif
 
-        [Test]
+        //ExStart
+        //ExFor:Document
+        //ExFor:MailMerge
+        //ExFor:MailMerge.Execute(DataTable)
+        //ExFor:MailMerge.Execute(DataRow)
+        //ExFor:Document.MailMerge
+        //ExSummary:Shows how to execute a mail merge with data from a DataTable.
+        [Test] //ExSkip
         public void ExecuteDataTable()
         {
-            //ExStart
-            //ExFor:Document
-            //ExFor:MailMerge
-            //ExFor:MailMerge.Execute(DataTable)
-            //ExFor:MailMerge.Execute(DataRow)
-            //ExFor:Document.MailMerge
-            //ExSummary:Executes mail merge from an ADO.NET DataTable.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertField(" MERGEFIELD CustomerName ");
-            builder.InsertParagraph();
-            builder.InsertField(" MERGEFIELD Address ");
-
-            // This example creates a table, but you would normally load table from a database
             DataTable table = new DataTable("Test");
             table.Columns.Add("CustomerName");
             table.Columns.Add("Address");
             table.Rows.Add(new object[] { "Thomas Hardy", "120 Hanover Sq., London" });
             table.Rows.Add(new object[] { "Paolo Accorti", "Via Monte Bianco 34, Torino" });
 
-            // Field values from the table are inserted into the mail merge fields found in the document
+            // Below are two ways of using a DataTable as the data source for a mail merge.
+            // 1 -  Use the entire table for the mail merge to create one output mail merge document for every row in the table:
+            Document doc = CreateSourceDocExecuteDataTable();
+
             doc.MailMerge.Execute(table);
 
-            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.docx");
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.WholeTable.docx");
 
-            // Create a copy of our document to perform another mail merge
-            doc = new Document();
-            builder = new DocumentBuilder(doc);
+            // 2 -  Use one row of the table to create one output mail merge document:
+            doc = CreateSourceDocExecuteDataTable();
+            
+            doc.MailMerge.Execute(table.Rows[1]);
+
+            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx");
+            TestADODataTable(new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.WholeTable.docx"), new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx"), table); //ExSkip
+        }
+
+        /// <summary>
+        /// Creates a mail merge source document.
+        /// </summary>
+        private static Document CreateSourceDocExecuteDataTable()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.InsertField(" MERGEFIELD CustomerName ");
             builder.InsertParagraph();
             builder.InsertField(" MERGEFIELD Address ");
 
-            // We can also source values for a mail merge from a single row in the table
-            doc.MailMerge.Execute(table.Rows[1]);
+            return doc;
+        }
+        //ExEnd
 
-            doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx");
-            //ExEnd
-
-            TestUtil.MailMergeMatchesDataTable(table, new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.docx"), true);
+        private void TestADODataTable(Document docWholeTable, Document docOneRow, DataTable table)
+        {
+            TestUtil.MailMergeMatchesDataTable(table, docWholeTable, true);
 
             DataTable rowAsTable = new DataTable();
             rowAsTable.ImportRow(table.Rows[1]);
 
-            TestUtil.MailMergeMatchesDataTable(rowAsTable, new Document(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx"), true);
+            TestUtil.MailMergeMatchesDataTable(rowAsTable, docOneRow, true);
         }
 
         [Test]
