@@ -81,7 +81,7 @@ namespace ApiExamples
             {
                 Document doc = new Document(stream);
 
-                Assert.AreEqual("Hello World!", doc.GetText().Trim());
+                Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
             }
             //ExEnd
         }
@@ -341,7 +341,7 @@ namespace ApiExamples
                 doc.Save(dstStream, SaveFormat.Docx);
 
                 // Verify that the stream contains the document.
-                Assert.AreEqual("Hello World!", new Document(dstStream).GetText().Trim());
+                Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", new Document(dstStream).GetText().Trim());
             }
             //ExEnd
         }
@@ -1762,10 +1762,74 @@ namespace ApiExamples
             doc.ShadeFormData = useGreyShading;
             doc.Save(ArtifactsDir + "Document.ShadeFormData.docx");
             //ExEnd
+        }
 
-            doc = new Document(ArtifactsDir + "Document.ShadeFormData.docx");
+        [Test]
+        public void RevisionOptions()
+        {
+            //ExStart
+            //ExFor:ShowInBalloons
+            //ExFor:RevisionOptions.ShowInBalloons
+            //ExFor:RevisionOptions.CommentColor
+            //ExFor:RevisionOptions.DeletedTextColor
+            //ExFor:RevisionOptions.DeletedTextEffect
+            //ExFor:RevisionOptions.InsertedTextEffect
+            //ExFor:RevisionOptions.MovedFromTextColor
+            //ExFor:RevisionOptions.MovedFromTextEffect
+            //ExFor:RevisionOptions.MovedToTextColor
+            //ExFor:RevisionOptions.MovedToTextEffect
+            //ExFor:RevisionOptions.RevisedPropertiesColor
+            //ExFor:RevisionOptions.RevisedPropertiesEffect
+            //ExFor:RevisionOptions.RevisionBarsColor
+            //ExFor:RevisionOptions.RevisionBarsWidth
+            //ExFor:RevisionOptions.ShowOriginalRevision
+            //ExFor:RevisionOptions.ShowRevisionMarks
+            //ExFor:RevisionOptions.RevisionBarsPosition
+            //ExFor:RevisionOptions.MeasurementUnit
+            //ExFor:RevisionTextEffect
+            //ExSummary:Shows how to edit appearance of revisions.
+            Document doc = new Document(MyDir + "Revisions.docx");
 
-            Assert.AreEqual(useGreyShading, doc.ShadeFormData);
+            // Get the RevisionOptions object that controls the appearance of revisions
+            RevisionOptions revisionOptions = doc.LayoutOptions.RevisionOptions;
+
+            // Render text inserted while revisions were being tracked in italic green
+            revisionOptions.InsertedTextColor = RevisionColor.Green;
+            revisionOptions.InsertedTextEffect = RevisionTextEffect.Italic;
+
+            // Render text deleted while revisions were being tracked in bold red
+            revisionOptions.DeletedTextColor = RevisionColor.Red;
+            revisionOptions.DeletedTextEffect = RevisionTextEffect.Bold;
+
+            // In a movement revision, the same text will appear twice: once at the departure point and once at the arrival destination
+            // Render the text at the moved-from revision yellow with double strike through and double underlined blue at the moved-to revision
+            revisionOptions.MovedFromTextColor = RevisionColor.Yellow;
+            revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleStrikeThrough;
+            revisionOptions.MovedToTextColor = RevisionColor.Blue;
+            revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleUnderline;
+
+            // Render text which had its format changed while revisions were being tracked in bold dark red
+            revisionOptions.RevisedPropertiesColor = RevisionColor.DarkRed;
+            revisionOptions.RevisedPropertiesEffect = RevisionTextEffect.Bold;
+
+            // Place a thick dark blue bar on the right side of the page next to lines affected by revisions
+            revisionOptions.RevisionBarsColor = RevisionColor.DarkBlue;
+            revisionOptions.RevisionBarsWidth = 15.0f;
+            revisionOptions.RevisionBarsPosition = HorizontalAlignment.Right;
+
+            // Show revision marks and original text
+            revisionOptions.ShowOriginalRevision = true;
+            revisionOptions.ShowRevisionMarks = true;
+
+            // Get movement, deletion, formatting revisions and comments to show up in green balloons on the right side of the page
+            // and define measurement units inside the revision comments
+            revisionOptions.MeasurementUnit = MeasurementUnits.Points;
+            revisionOptions.ShowInBalloons = ShowInBalloons.Format;
+            revisionOptions.CommentColor = RevisionColor.BrightGreen;
+
+            // These features are only applicable to formats such as .pdf or .jpg
+            doc.Save(ArtifactsDir + "Document.RevisionOptions.pdf");
+            //ExEnd
         }
 
         [Test]
@@ -1905,7 +1969,7 @@ namespace ApiExamples
             Document target = new Document(MyDir + "Document.docx");
 
             Assert.AreEqual(18, template.Styles.Count); //ExSkip
-            Assert.AreEqual(4, target.Styles.Count); //ExSkip
+            Assert.AreEqual(8, target.Styles.Count); //ExSkip
 
             target.CopyStylesFromTemplate(template);
             Assert.AreEqual(18, target.Styles.Count); //ExSkip

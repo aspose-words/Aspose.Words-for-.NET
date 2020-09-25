@@ -21,6 +21,8 @@ using Color = System.Drawing.Color;
 using Document = Aspose.Words.Document;
 using Table = Aspose.Words.Tables.Table;
 using System.Drawing;
+using Aspose.Words.Saving;
+
 #if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -2988,6 +2990,40 @@ namespace ApiExamples
             Assert.AreEqual(Color.Red.ToArgb(), dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Color.ToArgb());
         }
 
+        [Test]
+        public void EmphasesWarningSourceMarkdown()
+        {
+            Document doc = new Document(MyDir + "Emphases markdown warning.docx");
+            
+            WarningInfoCollection warnings = new WarningInfoCollection();
+            doc.WarningCallback = warnings;
+            doc.Save(ArtifactsDir + "DocumentBuilder.EmphasesWarningSourceMarkdown.md");
+ 
+            foreach (WarningInfo warningInfo in warnings)
+            {
+                if (warningInfo.Source == WarningSource.Markdown)
+                    Assert.AreEqual("The (*, 0:11) cannot be properly written into Markdown.", warningInfo.Description);
+            }
+        }
+
+        [Test]
+        public void DoNotIgnoreHeaderFooter()
+        {
+            //ExStart
+            //ExFor:ImportFormatOptions.IgnoreHeaderFooter
+            //ExSummary:Shows how to specifies ignoring or not source formatting of headers/footers content.
+            Document dstDoc = new Document(MyDir + "Document.docx");
+            Document srcDoc = new Document(MyDir + "Header and footer types.docx");
+ 
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
+            importFormatOptions.IgnoreHeaderFooter = false;
+ 
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
+
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.DoNotIgnoreHeaderFooter.docx");
+            //ExEnd
+        }
+
         #if NET462 || NETCOREAPP2_1 || JAVA
         /// <summary>
         /// All markdown tests work with the same file. That's why we need order for them.
@@ -3347,6 +3383,58 @@ namespace ApiExamples
                 
                 Assert.IsTrue(shapesCollection.Count == 1);
                 Assert.IsTrue(horizontalRuleShape.IsHorizontalRule);
+            }
+        }
+
+        [TestCase(TableContentAlignment.Left)]
+        [TestCase(TableContentAlignment.Right)]
+        [TestCase(TableContentAlignment.Center)]
+        [TestCase(TableContentAlignment.Auto)]
+        public void MarkdownDocumentTableContentAlignment(TableContentAlignment tableContentAlignment)
+        {
+            DocumentBuilder builder = new DocumentBuilder();
+
+            builder.InsertCell();
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
+            builder.Write("Cell1");
+            builder.InsertCell();
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            builder.Write("Cell2");
+
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.TableContentAlignment = tableContentAlignment;
+
+            builder.Document.Save(ArtifactsDir + "MarkdownDocumentTableContentAlignment.md", saveOptions);
+
+            Document doc = new Document(ArtifactsDir + "MarkdownDocumentTableContentAlignment.md");
+            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+
+            switch (tableContentAlignment)
+            {
+                case TableContentAlignment.Auto:
+                    Assert.AreEqual(ParagraphAlignment.Right,
+                        table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.AreEqual(ParagraphAlignment.Center,
+                        table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+                    break;
+                case TableContentAlignment.Left:
+                    Assert.AreEqual(ParagraphAlignment.Left,
+                        table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.AreEqual(ParagraphAlignment.Left,
+                        table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+                    break;
+                case TableContentAlignment.Center:
+                    Assert.AreEqual(ParagraphAlignment.Center,
+                        table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.AreEqual(ParagraphAlignment.Center,
+                        table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+                    break;
+                case TableContentAlignment.Right:
+                    Assert.AreEqual(ParagraphAlignment.Right,
+                        table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.AreEqual(ParagraphAlignment.Right,
+                        table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+                    break;
             }
         }
 
