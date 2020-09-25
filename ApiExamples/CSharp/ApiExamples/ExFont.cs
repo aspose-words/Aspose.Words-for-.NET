@@ -634,7 +634,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.DarkBlue.ToArgb(), run.Font.Shading.ForegroundPatternColor.ToArgb());
         }
 
-        [Test]
+        [Test, Category("SkipMono")]
         public void Bidi()
         {
             //ExStart
@@ -857,7 +857,7 @@ namespace ApiExamples
             // We can choose the default font to use in the case of any missing fonts
             FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
 
-            // For testing we will set Aspose.Words to look for fonts only in a folder which doesn't exist. Since Aspose.Words won't
+            // For testing we will set Aspose.Words to look for fonts only in a folder which does not exist. Since Aspose.Words won't
             // find any fonts in the specified directory, then during rendering the fonts in the document will be substituted with the default 
             // font specified under FontSettings.DefaultFontName. We can pick up on this substitution using our callback
             FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
@@ -928,7 +928,7 @@ namespace ApiExamples
 
             // Set a default font name and enable font substitution
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial"; ;
+            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
             fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
 
             // When saving the document with the missing font, we should get a warning
@@ -936,14 +936,14 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Font.EnableFontSubstitution.pdf");
 
             // List all warnings using an enumerator
-            using (IEnumerator<WarningInfo> warnings = substitutionWarningHandler.FontWarnings.GetEnumerator()) 
-                while (warnings.MoveNext()) 
+            using (IEnumerator<WarningInfo> warnings = substitutionWarningHandler.FontWarnings.GetEnumerator())
+                while (warnings.MoveNext())
                     Console.WriteLine(warnings.Current.Description);
 
             // Warnings are stored in this format
             Assert.AreEqual(WarningSource.Layout, substitutionWarningHandler.FontWarnings[0].Source);
-            Assert.AreEqual("Font '28 Days Later' has not been found. Using 'Calibri' font instead. Reason: alternative name from document.", 
-                substitutionWarningHandler.FontWarnings[0].Description);
+            Assert.True(new Regex("Font '28 Days Later' has not been found. Using (.*) font instead. Reason: alternative name from document.")
+                    .Match(substitutionWarningHandler.FontWarnings[0].Description).Success);
 
             // The warning info collection can also be cleared like this
             substitutionWarningHandler.FontWarnings.Clear();
@@ -999,7 +999,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Category("SkipMono")]
         public void SubstitutionWarnings()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
@@ -1104,10 +1103,6 @@ namespace ApiExamples
 
             // Create an object that inherits from the DocumentVisitor class
             RemoveHiddenContentVisitor hiddenContentRemover = new RemoveHiddenContentVisitor();
-
-            // This is the well known Visitor pattern. Get the model to accept a visitor
-            // The model will iterate through itself by calling the corresponding methods
-            // on the visitor object (this is called visiting)
 
             // We can run it over the entire the document like so
             doc.Accept(hiddenContentRemover);
@@ -1255,10 +1250,10 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitTableEnd(Table table)
             {
-                // At the moment there is no way to tell if a particular Table/Row/Cell is hidden. 
+                // Currently there is no way to tell if a particular Table/Row/Cell is hidden. 
                 // Instead, if the content of a table is hidden, then all inline child nodes of the table should be 
                 // hidden and thus removed by previous visits as well. This will result in the container being empty
-                // so if this is the case we know to remove the table node.
+                // If this is the case, we know to remove the table node.
                 //
                 // Note that a table which is not hidden but simply has no content will not be affected by this algorithm,
                 // as technically they are not completely empty (for example a properly formed Cell will have at least 
@@ -1550,7 +1545,7 @@ namespace ApiExamples
             // Create a font settings object for our document
             doc.FontSettings = new FontSettings();
 
-            // By default we always start with a system font source
+            // By default, we always start with a system font source
             Assert.AreEqual(1, doc.FontSettings.GetFontsSources().Length);
 
             SystemFontSource systemFontSource = (SystemFontSource)doc.FontSettings.GetFontsSources()[0];
@@ -1570,7 +1565,7 @@ namespace ApiExamples
                 Console.WriteLine(systemFontFolder);
             }
 
-            // Set a font that exists in the windows fonts directory as a substitute for one that doesn't
+            // Set a font that exists in the Windows Fonts directory as a substitute for one that doesn't
             doc.FontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
             doc.FontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Kreon-Regular", new string[] { "Calibri" });
 
@@ -1600,7 +1595,7 @@ namespace ApiExamples
             //ExSummary:Shows how to load and save font fallback settings from file.
             Document doc = new Document(MyDir + "Rendering.docx");
             
-            // By default fallback settings are initialized with predefined settings which mimics the Microsoft Word fallback
+            // By default, fallback settings are initialized with predefined settings which mimics the Microsoft Word fallback
             FontSettings fontSettings = new FontSettings();
             fontSettings.FallbackSettings.Load(MyDir + "Font fallback rules.xml");
 
@@ -1621,7 +1616,7 @@ namespace ApiExamples
             //ExSummary:Shows how to load and save font fallback settings from stream.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // By default fallback settings are initialized with predefined settings which mimics the Microsoft Word fallback
+            // By default, fallback settings are initialized with predefined settings which mimics the Microsoft Word fallback
             using (FileStream fontFallbackStream = new FileStream(MyDir + "Font fallback rules.xml", FileMode.Open))
             {
                 FontSettings fontSettings = new FontSettings();
@@ -1711,7 +1706,7 @@ namespace ApiExamples
             // Set the default font substitute to "Courier New"
             defaultFontSubstitutionRule.DefaultFontName = "Courier New";
 
-            // Using a document builder, add some text in a font that we don't have to see the substitution take place,
+            // Using a document builder, add some text in a font that we do not have to see the substitution take place,
             // and render the result in a PDF
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1756,7 +1751,7 @@ namespace ApiExamples
             // On Linux/Mac, we will have access and will be able to perform operations
             if (isLinuxOrMac)
             {
-                Assert.True(fontConfigSubstitution.Enabled);
+                Assert.False(fontConfigSubstitution.Enabled);
                 Assert.True(fontConfigSubstitution.IsFontConfigAvailable());
 
                 fontConfigSubstitution.ResetCache();
@@ -1780,7 +1775,7 @@ namespace ApiExamples
 
             // Save the default fallback font scheme in an XML document
             // For example, one of the elements has a value of "0C00-0C7F" for Range and a corresponding "Vani" value for FallbackFonts
-            // This means that if the font we are using does not have symbols for the 0x0C00-0x0C7F unicode block,
+            // This means that if the font we are using does not have symbols for the 0x0C00-0x0C7F Unicode block,
             // the symbols from the "Vani" font will be used as a substitute
             fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettings.Default.xml");
 
@@ -1801,8 +1796,8 @@ namespace ApiExamples
 
             XmlNodeList rules = fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
 
-            Assert.AreEqual("0C00-0C7F", rules[3].Attributes["Ranges"].Value);
-            Assert.AreEqual("Vani", rules[3].Attributes["FallbackFonts"].Value);
+            Assert.AreEqual("0C00-0C7F", rules[5].Attributes["Ranges"].Value);
+            Assert.AreEqual("Vani", rules[5].Attributes["FallbackFonts"].Value);
         }
 
         [Test]
@@ -1812,7 +1807,7 @@ namespace ApiExamples
             //ExFor:Fonts.FontSettings.FallbackSettings
             //ExFor:Fonts.FontFallbackSettings
             //ExFor:Fonts.FontFallbackSettings.BuildAutomatic
-            //ExSummary:Shows how to distribute fallback fonts across unicode character code ranges.
+            //ExSummary:Shows how to distribute fallback fonts across Unicode character code ranges.
             Document doc = new Document();
 
             // Create a FontSettings object for our document and get its FallbackSettings attribute
@@ -1824,28 +1819,28 @@ namespace ApiExamples
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
             fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
-            // Calling BuildAutomatic() will generate a fallback scheme that distributes accessible fonts across as many unicode character codes as possible
+            // Calling BuildAutomatic() will generate a fallback scheme that distributes accessible fonts across as many Unicode character codes as possible
             // In our case, it only has access to the handful of fonts inside the "MyFonts" folder
             fontFallbackSettings.BuildAutomatic();
             fontFallbackSettings.Save(ArtifactsDir + "Font.FallbackSettingsCustom.BuildAutomatic.xml");
 
             // We can also load a custom substitution scheme from a file like this
-            // This scheme applies the "Arvo" font across the "0000-00ff" unicode blocks, the "Squarish Sans CT" font across "0100-024f",
+            // This scheme applies the "Arvo" font across the "0000-00ff" Unicode blocks, the "Squarish Sans CT" font across "0100-024f",
             // and the "M+ 2m" font in every place that none of the other fonts cover
             fontFallbackSettings.Load(MyDir + "Custom font fallback settings.xml");
 
-            // Create a document builder and set its font to one that doesn't exist in any of our sources
+            // Create a document builder and set its font to one that does not exist in any of our sources
             // In doing that we will rely completely on our font fallback scheme to render text
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Font.Name = "Missing Font";
 
-            // Type out every unicode character from 0x0021 to 0x052F, with descriptive lines dividing unicode blocks we defined in our custom font fallback scheme
+            // Type out every Unicode character from 0x0021 to 0x052F, with descriptive lines dividing Unicode blocks we defined in our custom font fallback scheme
             for (int i = 0x0021; i < 0x0530; i++)
             {
                 switch (i)
                 {
                     case 0x0021:
-                        builder.Writeln("\n\n0x0021 - 0x00FF: \nBasic Latin/Latin-1 Supplement unicode blocks in \"Arvo\" font:");
+                        builder.Writeln("\n\n0x0021 - 0x00FF: \nBasic Latin/Latin-1 Supplement Unicode blocks in \"Arvo\" font:");
                         break;
                     case 0x0100:
                         builder.Writeln("\n\n0x0100 - 0x024F: \nLatin Extended A/B blocks, mostly in \"Squarish Sans CT\" font:");
@@ -2022,7 +2017,7 @@ namespace ApiExamples
             //ExEnd
         }
         
-        [Test]
+        [Test, Category("SkipMono")]
         public void LineSpacing()
         {
             //ExStart
@@ -2088,7 +2083,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test, Category("IgnoreOnJenkins")]
+        [Test, Category("IgnoreOnJenkins"), Category("SkipMono")]
         public void CheckScanUserFontsFolder()
         {
             // On Windows 10 fonts may be installed either into system folder "%windir%\fonts" for all users

@@ -256,12 +256,11 @@ namespace ApiExamples
             builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
                             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 
-            // This line is referred to as an "Orphan",
-            // and a line left behind on the end of the previous page is likewise called a "Widow"
-            // These are not ideal for readability, and the alternative to changing size/line spacing/page margins
-            // in order to accomodate ill fitting text is this flag, for which the corresponding Microsoft Word option is 
+            // This line is referred to as an "Orphan", and a line left behind on the end of the previous page is called a "Widow"
+            // They can be fixed by changing size/line spacing/page margins
+            // Alternatively, we can use this flag, for which the corresponding Microsoft Word option is 
             // found in Home > Paragraph > Paragraph Settings (button on the bottom right of the tab) 
-            // In our document this will add more text to the orphan by putting two lines of text into the second page
+            // This will add more text to the orphan by putting two lines of text into the second page
             builder.ParagraphFormat.WidowControl = true;
 
             doc.Save(ArtifactsDir + "ParagraphFormat.WidowControl.docx");
@@ -301,6 +300,24 @@ namespace ApiExamples
         }
 
         [Test]
+        public void SuppressHyphens()
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.SuppressAutoHyphens
+            //ExSummary:Shows how to suppress document hyphenation.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Size = 24;
+            builder.ParagraphFormat.SuppressAutoHyphens = false;
+
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            doc.Save(ArtifactsDir + "ParagraphFormat.SuppressHyphens.docx");
+            //ExEnd
+        }
+        
         public void ParagraphSpacingAndIndents()
         {
             //ExStart

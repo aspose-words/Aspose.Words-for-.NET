@@ -16,6 +16,35 @@ namespace ApiExamples
     [TestFixture]
     public class ExNodeImporter : ApiExampleBase
     {
+        [Test]
+        public void KeepSourceNumbering()
+        {
+            //ExStart
+            //ExFor:ImportFormatOptions.KeepSourceNumbering
+            //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode, ImportFormatOptions)
+            //ExSummary:Shows how the numbering will be imported when it clashes in source and destination documents.
+            // Open a document with a custom list numbering scheme and clone it
+            // Since both have the same numbering format, the formats will clash if we import one document into the other
+            Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
+            Document dstDoc = srcDoc.Clone();
+
+            // Both documents have the same numbering in their lists, but if we set this flag to false and then import one document into the other
+            // the numbering of the imported source document will continue from where it ends in the destination document
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
+            importFormatOptions.KeepSourceNumbering = false;
+
+            NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepDifferentStyles, importFormatOptions);
+            foreach (Paragraph paragraph in srcDoc.FirstSection.Body.Paragraphs)
+            {
+                Node importedNode = importer.ImportNode(paragraph, true);
+                dstDoc.FirstSection.Body.AppendChild(importedNode);
+            }
+
+            dstDoc.UpdateListLabels();
+            dstDoc.Save(ArtifactsDir + "NodeImporter.KeepSourceNumbering.docx");
+            //ExEnd
+        }
+
         //ExStart
         //ExFor:Paragraph.IsEndOfSection
         //ExFor:NodeImporter
@@ -31,8 +60,8 @@ namespace ApiExamples
             Bookmark bookmark = mainDoc.Range.Bookmarks["insertionPlace"];
             InsertDocument(bookmark.BookmarkStart.ParentNode, docToInsert);
 
-            mainDoc.Save(ArtifactsDir + "InsertDocument.InsertAtBookmark.docx");
-            TestInsertAtBookmark(new Document(ArtifactsDir + "InsertDocument.InsertAtBookmark.docx")); //ExSkip
+            mainDoc.Save(ArtifactsDir + "NodeImporter.InsertAtBookmark.docx");
+            TestInsertAtBookmark(new Document(ArtifactsDir + "NodeImporter.InsertAtBookmark.docx")); //ExSkip
         }
 
         /// <summary>
@@ -54,7 +83,7 @@ namespace ApiExamples
                 foreach (Section srcSection in docToInsert.Sections.OfType<Section>())
                     foreach (Node srcNode in srcSection.Body)
                     {
-                        // Let's skip the node if it is a last empty paragraph in a section
+                        // Skip the node if it is a last empty paragraph in a section
                         if (srcNode.NodeType.Equals(NodeType.Paragraph))
                         {
                             Paragraph para = (Paragraph)srcNode;
@@ -76,7 +105,7 @@ namespace ApiExamples
             }
         }
         //ExEnd
-
+        
         private void TestInsertAtBookmark(Document doc)
         {
             Assert.AreEqual("1) At text that can be identified by regex:\r[MY_DOCUMENT]\r" +
@@ -98,8 +127,8 @@ namespace ApiExamples
             // that should be inserted to this field
             mainDoc.MailMerge.Execute(new string[] { "Document_1" }, new object[] { MyDir + "Document.docx" });
 
-            mainDoc.Save(ArtifactsDir + "InsertDocument.InsertAtMailMerge.docx");
-            TestInsertAtMailMerge(new Document(ArtifactsDir + "InsertDocument.InsertAtMailMerge.docx")); //ExSkip
+            mainDoc.Save(ArtifactsDir + "NodeImporter.InsertAtMailMerge.docx");
+            TestInsertAtMailMerge(new Document(ArtifactsDir + "NodeImporter.InsertAtMailMerge.docx")); //ExSkip
         }
 
         private class InsertDocumentAtMailMergeHandler : IFieldMergingCallback

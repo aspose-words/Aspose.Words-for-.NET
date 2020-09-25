@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
@@ -45,12 +46,15 @@ namespace ApiExamples
             }
             else
             {
-                Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("nonshppict", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
-                Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("shprslt", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
+                if (!IsRunningOnMono())
+                {
+                    Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("nonshppict", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
+                    Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("shprslt", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
+                }
             }
         }
     
-        [Test]
+        [Test, Category("SkipMono")]
         public void SaveImagesAsWmf()
         {
             //ExStart

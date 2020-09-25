@@ -91,7 +91,7 @@ namespace ApiExamples
             // Every "tab" character takes the builder's cursor to the next tab stop
             builder.Writeln("Start\tTab 1\tTab 2");
 
-            // Get the collection of paragraphs that we've created
+            // Get the collection of paragraphs that we have created
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
             Assert.AreEqual(2, paragraphs.Count);
 

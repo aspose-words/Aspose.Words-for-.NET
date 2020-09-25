@@ -21,23 +21,24 @@ namespace ApiExamples
         //ExFor:CompatibilityOptions
         //ExFor:CompatibilityOptions.OptimizeFor(MsWordVersion)
         //ExFor:Document.CompatibilityOptions
-        //ExSummary:Shows how to optimize document for different word versions.
+        //ExSummary:Shows how to optimize the document for different versions of Microsoft Word.
         [Test] //ExSkip
         public void OptimizeFor()
         {
-            // Create a blank document and get its CompatibilityOptions object
             Document doc = new Document();
+
+            // This object contains an extensive list of flags unique to each document
+            // that allow us to facilitate backward compatibility with older versions of Microsoft Word.
             CompatibilityOptions options = doc.CompatibilityOptions;
 
-            // By default, the CompatibilityOptions will contain the set of values printed below
+            // Print the default settings for a blank document.
             Console.WriteLine("\nDefault optimization settings:");
             PrintCompatibilityOptions(options);
 
-            // These attributes can be accessed in the output document via File > Options > Advanced > Compatibility for...
+            // These settings can be accessed in Microsoft Word via File -> Options -> Advanced -> Compatibility options for...
             doc.Save(ArtifactsDir + "CompatibilityOptions.OptimizeFor.DefaultSettings.docx");
 
-            // We can use the OptimizeFor method to set these values automatically
-            // for maximum compatibility with some Microsoft Word versions
+            // We can use the OptimizeFor method to ensure optimal compatibility with a specific Microsoft Word version.
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
             Console.WriteLine("\nOptimized for Word 2010:");
             PrintCompatibilityOptions(options);
@@ -48,7 +49,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Prints all options of a CompatibilityOptions object and indicates whether they are enabled or disabled
+        /// Groups all flags in a document's compatibility options object by state, then prints each group.
         /// </summary>
         private static void PrintCompatibilityOptions(CompatibilityOptions options)
         {
@@ -100,7 +101,8 @@ namespace ApiExamples
             Assert.AreEqual(true, compatibilityOptions.UseWord2002TableStyleRules);
             Assert.AreEqual(false, compatibilityOptions.UseWord2010TableStyleRules);
 
-            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
+            // In the output document, these settings can be accessed in Microsoft Word via
+            // File -> Options -> Advanced -> Compatibility options for...
             doc.Save(ArtifactsDir + "CompatibilityOptions.Tables.docx");
         }
 
@@ -119,7 +121,8 @@ namespace ApiExamples
             Assert.AreEqual(true, compatibilityOptions.UseAltKinsokuLineBreakRules);
             Assert.AreEqual(false, compatibilityOptions.UseWord97LineBreakRules);
 
-            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
+            // In the output document, these settings can be accessed in Microsoft Word via
+            // File -> Options -> Advanced -> Compatibility options for...
             doc.Save(ArtifactsDir + "CompatibilityOptions.Breaks.docx");
         }
 
@@ -144,7 +147,8 @@ namespace ApiExamples
             Assert.AreEqual(false, compatibilityOptions.SuppressTopSpacing);
             Assert.AreEqual(false, compatibilityOptions.UlTrailSpace);
 
-            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
+            // In the output document, these settings can be accessed in Microsoft Word via
+            // File -> Options -> Advanced -> Compatibility options for...
             doc.Save(ArtifactsDir + "CompatibilityOptions.Spacing.docx");
         }
 
@@ -162,7 +166,8 @@ namespace ApiExamples
             Assert.AreEqual(false, compatibilityOptions.WPSpaceWidth);
             Assert.AreEqual(false, compatibilityOptions.WrapTrailSpaces);
 
-            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
+            // In the output document, these settings can be accessed in Microsoft Word via
+            // File -> Options -> Advanced -> Compatibility options for...
             doc.Save(ArtifactsDir + "CompatibilityOptions.WordPerfect.docx");
         }
 
@@ -179,7 +184,8 @@ namespace ApiExamples
             Assert.AreEqual(true, compatibilityOptions.DoNotWrapTextWithPunct);
             Assert.AreEqual(false, compatibilityOptions.NoTabHangInd);
 
-            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
+            // In the output document, these settings can be accessed in Microsoft Word via
+            // File -> Options -> Advanced -> Compatibility options for...
             doc.Save(ArtifactsDir + "CompatibilityOptions.Alignment.docx");
         }
 
@@ -197,7 +203,8 @@ namespace ApiExamples
             Assert.AreEqual(false, compatibilityOptions.ShapeLayoutLikeWW8);
             Assert.AreEqual(false, compatibilityOptions.UICompat97To2003);
 
-            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
+            // In the output document, these settings can be accessed in Microsoft Word via
+            // File -> Options -> Advanced -> Compatibility options for...
             doc.Save(ArtifactsDir + "CompatibilityOptions.Legacy.docx");
         }
 
@@ -212,7 +219,8 @@ namespace ApiExamples
             Assert.AreEqual(true, compatibilityOptions.UnderlineTabInNumList);
             Assert.AreEqual(true, compatibilityOptions.UseNormalStyleForList);
 
-            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
+            // In the output document, these settings can be accessed in Microsoft Word via
+            // File -> Options -> Advanced -> Compatibility options for...
             doc.Save(ArtifactsDir + "CompatibilityOptions.List.docx");
         }
 
@@ -240,7 +248,8 @@ namespace ApiExamples
             Assert.AreEqual(false, compatibilityOptions.UseFELayout);
             Assert.AreEqual(false, compatibilityOptions.UsePrinterMetrics);
 
-            // These options will become available in File > Options > Advanced > Compatibility Options in the output document
+            // In the output document, these settings can be accessed in Microsoft Word via
+            // File -> Options -> Advanced -> Compatibility options for...
             doc.Save(ArtifactsDir + "CompatibilityOptions.Misc.docx");
         }
     }

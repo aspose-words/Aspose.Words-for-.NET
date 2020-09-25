@@ -20,6 +20,88 @@ namespace ApiExamples
     public class ExInlineStory : ApiExampleBase
     {
         [Test]
+        public void Footnotes()
+        {
+            //ExStart
+            //ExFor:FootnoteOptions
+            //ExFor:FootnoteOptions.NumberStyle
+            //ExFor:FootnoteOptions.Position
+            //ExFor:FootnoteOptions.RestartRule
+            //ExFor:FootnoteOptions.StartNumber
+            //ExFor:FootnoteNumberingRule
+            //ExFor:FootnotePosition
+            //ExSummary:Shows how to insert footnotes, and modify their appearance.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Text 1. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 1");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Write("Text 2. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 2");
+            builder.Write("Text 3. ");
+            builder.InsertFootnote(FootnoteType.Footnote, "Footnote 3", "Custom reference mark");
+
+            doc.FootnoteOptions.Position = FootnotePosition.BeneathText;
+            doc.FootnoteOptions.NumberStyle = NumberStyle.UppercaseRoman;
+            doc.FootnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
+            doc.FootnoteOptions.StartNumber = 1;
+
+            doc.Save(ArtifactsDir + "InlineStory.Footnotes.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "InlineStory.Footnotes.docx");
+
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote 1", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
+                "Footnote 2", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, false, "Custom reference mark",
+                "Custom reference mark Footnote 3", (Footnote)doc.GetChild(NodeType.Footnote, 2, true));
+        }
+
+        [Test]
+        public void Endnotes()
+        {
+            //ExStart
+            //ExFor:Document.EndnoteOptions
+            //ExFor:EndnoteOptions
+            //ExFor:EndnoteOptions.NumberStyle
+            //ExFor:EndnoteOptions.Position
+            //ExFor:EndnoteOptions.RestartRule
+            //ExFor:EndnoteOptions.StartNumber
+            //ExFor:EndnotePosition
+            //ExSummary:Shows how to insert endnotes, and modify their appearance.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Text 1. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 1");
+            builder.Write("Text 2. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 2");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Write("Text 3. ");
+            builder.InsertFootnote(FootnoteType.Endnote, "Endnote 3", "Custom reference mark");
+            
+            doc.EndnoteOptions.Position = EndnotePosition.EndOfDocument;
+            doc.EndnoteOptions.NumberStyle = NumberStyle.UppercaseRoman;
+            doc.EndnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
+            doc.EndnoteOptions.StartNumber = 1;
+
+            doc.Save(ArtifactsDir + "InlineStory.Endnotes.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "InlineStory.Endnotes.docx");
+
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote 1", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
+                "Endnote 2", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
+            TestUtil.VerifyFootnote(FootnoteType.Endnote, false, "Custom reference mark",
+                "Custom reference mark Endnote 3", (Footnote)doc.GetChild(NodeType.Footnote, 2, true));
+        }
+
+        [Test]
         public void AddFootnote()
         {
             //ExStart
@@ -204,8 +286,8 @@ namespace ApiExamples
             Assert.AreEqual(1, footnote.Tables.Count);
             Assert.AreEqual(NodeType.Table, footnote.LastChild.NodeType);
 
-            // An InlineStory has an "EnsureMinimum()" method as well, but in this case it makes sure the last child of the node is a paragraph,
-            // so we can click and write text easily in Microsoft Word
+            // An InlineStory has an "EnsureMinimum()" method as well, but in this case,
+            // it makes sure the last child of the node is a paragraph, in order for us to be able to click and write text easily in Microsoft Word
             footnote.EnsureMinimum();
             Assert.AreEqual(NodeType.Paragraph, footnote.LastChild.NodeType);
 

@@ -377,7 +377,7 @@ namespace ApiExamples
             Style listStyle = doc.Styles.Add(StyleType.List, "MyListStyle");
 
             // This list defines the formatting of the list style
-            // Note this list can not be used directly to apply formatting to paragraphs (see below)
+            // Note that this list can not be used directly to apply formatting to paragraphs (see below)
             List list1 = listStyle.List;
 
             // Check some basic rules about the list that defines a list style
@@ -798,8 +798,9 @@ namespace ApiExamples
             // Level 2 labels will be "Section (1.01)" and restarting after Level 2 item appears
             list.ListLevels[1].NumberFormat = "Section (\x0000.\x0001)";
             list.ListLevels[1].NumberStyle = NumberStyle.LeadingZero;
-            // Notice the higher level uses UppercaseLetter numbering, but we want arabic number
-            // of the higher levels to appear in this level, therefore set this property
+
+            // Note that the higher level uses UppercaseLetter numbering
+            // We can set this property to use Arabic numbers for the higher list levels
             list.ListLevels[1].IsLegal = true;
             list.ListLevels[1].RestartAfterLevel = 0;
 
@@ -863,7 +864,7 @@ namespace ApiExamples
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            // Find if we have the paragraph list. In our document our list uses plain arabic numbers,
+            // Find if we have the paragraph list. In our document our list uses plain Arabic numbers,
             // which start at three and ends at six
             foreach (Paragraph paragraph in paras.OfType<Paragraph>().Where(p => p.ListFormat.IsListItem))
             {
@@ -875,8 +876,9 @@ namespace ApiExamples
                 Console.WriteLine($"\tExported Text: {paragraphText}");
 
                 ListLabel label = paragraph.ListLabel;
-                // This gets the position of the paragraph in current level of the list. If we have a list with multiple level then this
-                // will tell us what position it is on that particular level
+
+                // This gets the position of the paragraph in current level of the list. If we have a list with multiple levels,
+                // this will tell us what position it is on that level
                 Console.WriteLine($"\tNumerical Id: {label.LabelValue}");
 
                 // Combine them together to include the list label with the text in the output

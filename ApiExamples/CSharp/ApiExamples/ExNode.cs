@@ -43,7 +43,7 @@ namespace ApiExamples
             Assert.IsTrue(((CompositeNode)cloneWithChildren).HasChildNodes);
             Assert.AreEqual("Hello world!", cloneWithChildren.GetText().Trim());
 
-            // Clone the paragraph without its clild nodes
+            // Clone the paragraph without its child nodes
             Node cloneWithoutChildren = para.Clone(false);
 
             Assert.IsFalse(((CompositeNode)cloneWithoutChildren).HasChildNodes);
@@ -380,7 +380,7 @@ namespace ApiExamples
                 while (e.MoveNext())
                     Console.WriteLine($"Table paragraph index {index++}, contents: \"{e.Current.GetText().Trim()}\"");
 
-            // This expression will select any paragraphs that are direct children of any body node in the document
+            // This expression will select any paragraphs that are direct children of any Body node in the document
             nodeList = doc.SelectNodes("//Body/Paragraph");
 
             // We can treat the list as an array too

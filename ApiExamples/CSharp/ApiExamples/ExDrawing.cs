@@ -224,9 +224,9 @@ namespace ApiExamples
             }
             //ExEnd
 
-            string[] imageFileNames = Directory.GetFiles(ArtifactsDir).Where(s => s.StartsWith(ArtifactsDir + "Drawing.SaveAllImages.")).ToArray();
+            string[] imageFileNames = Directory.GetFiles(ArtifactsDir).Where(s => s.StartsWith(ArtifactsDir + "Drawing.SaveAllImages.")).OrderBy(s => s).ToArray();
             List<FileInfo> fileInfos = imageFileNames.Select(s => new FileInfo(s)).ToList();
-
+            
             TestUtil.VerifyImage(2467, 1500, fileInfos[0].FullName);
             Assert.AreEqual(".Jpeg", fileInfos[0].Extension);
             TestUtil.VerifyImage(400, 400, fileInfos[1].FullName);
@@ -557,7 +557,7 @@ namespace ApiExamples
             imageData.Brightness = 0.8d;
             imageData.Contrast = 1.0d;
 
-            // Our image will have a lot of white now that we've changed the brightness and contrast like that
+            // Our image will have a lot of white now that we have changed the brightness and contrast like that
             // We can treat white as transparent with the following attribute
             imageData.ChromaKey = Color.White;
 

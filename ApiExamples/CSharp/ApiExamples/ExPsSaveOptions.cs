@@ -37,8 +37,8 @@ namespace ApiExamples
                 UseBookFoldPrintingSettings = true
             };
 
-            // In order to make a booklet, we will need to print this document, stack the pages
-            // in the order they come out of the printer and then fold down the middle
+            // Once we print this document, we can turn it into a booklet by stacking the pages
+            // in the order they come out of the printer and then folding down the middle
             doc.Save(ArtifactsDir + "PsSaveOptions.UseBookFoldPrintingSettings.ps", saveOptions);
             //ExEnd
         }
