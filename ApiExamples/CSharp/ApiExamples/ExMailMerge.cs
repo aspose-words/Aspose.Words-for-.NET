@@ -304,8 +304,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:MailMerge.Execute(DataView)
-            //ExSummary:Shows how to process a DataTable's data with a DataView before using it in a mail merge.
-            // Create a new document and populate it with merge fields
+            //ExSummary:Shows how to edit mail merge data with a DataView.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write("Congratulations ");
@@ -313,7 +312,7 @@ namespace ApiExamples
             builder.Write(" for passing with a grade of ");
             builder.InsertField(" MERGEFIELD Grade");
 
-            // Create a data table that merge data will be sourced from 
+            // Create a data table that our mail merge will source data from.
             DataTable table = new DataTable("ExamResults");
             table.Columns.Add("Name");
             table.Columns.Add("Grade");
@@ -322,14 +321,15 @@ namespace ApiExamples
             table.Rows.Add(new object[] { "John Cardholder", "47" });
             table.Rows.Add(new object[] { "Joe Bloggs", "75" });
 
-            // If we execute the mail merge on the table, a page will be created for each row in the order that it appears in the table
-            // If we want to sort/filter rows without changing the table, we can use a data view
+            // We can use a data view to alter the data that the mail merge will use
+            // without making changes to the data table itself.
             DataView view = new DataView(table);
             view.Sort = "Grade DESC";
             view.RowFilter = "Grade >= 50";
 
-            // This mail merge will be executed on a view where the rows are sorted by the "Grade" column
-            // and rows where the Grade values are below 50 are filtered out
+            // Our data view sorts the entries in descending order along the "Grade" column,
+            // and also filters out rows which have values of less than 50 on that column.
+            // Three out of the four rows fit that criteria, so the output document will contain three merge documents.
             doc.MailMerge.Execute(view);
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteDataView.docx");
@@ -340,7 +340,7 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegions(DataSet)
-        //ExSummary:Shows how to create a nested mail merge with regions with data from a data set with two related tables.
+        //ExSummary:Shows how to execute a nested mail merge with two merge regions and two data tables.
         [Test]
         public void ExecuteWithRegionsNested()
         {
