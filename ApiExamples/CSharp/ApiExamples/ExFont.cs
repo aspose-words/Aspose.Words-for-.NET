@@ -1446,6 +1446,32 @@ namespace ApiExamples
                     .FirstOrDefault(x => x.FilePath.Contains("\\AppData\\Local\\Microsoft\\Windows\\Fonts")),
                 "Fonts did not install to the user font folder");
         }
+
+        [TestCase(EmphasisMark.None)]
+        [TestCase(EmphasisMark.OverComma)]
+        [TestCase(EmphasisMark.OverSolidCircle)]
+        [TestCase(EmphasisMark.OverWhiteCircle)]
+        [TestCase(EmphasisMark.UnderSolidCircle)]
+        public void SetEmphasisMark(EmphasisMark emphasisMark)
+        {
+            //ExStart
+            //ExFor:EmphasisMark
+            //ExFor:Font.EmphasisMark
+            //ExSummary:Shows how to add additional character rendered above/below the glyph-character.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            // Possible types of emphasis mark:
+            // https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.word.wdemphasismark?view=word-pia
+            builder.Font.EmphasisMark = emphasisMark; 
+            
+            builder.Write("Emphasis text");
+            builder.Writeln();
+            builder.Font.ClearFormatting();
+            builder.Write("Simple text");
+ 
+            builder.Document.Save(ArtifactsDir + "Fonts.SetEmphasisMark.docx");
+            //ExEnd
+        }
     }
 }
 #endif

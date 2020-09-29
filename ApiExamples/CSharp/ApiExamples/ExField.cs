@@ -5169,7 +5169,7 @@ namespace ApiExamples
             //ExSummary:Shows how to display the file size of a document with a FILESIZE field.
             Document doc = new Document(MyDir + "Document.docx");
 
-            Assert.AreEqual(10590, doc.BuiltInDocumentProperties.Bytes);
+            Assert.AreEqual(16222, doc.BuiltInDocumentProperties.Bytes);
 
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveToDocumentEnd();
@@ -5182,7 +5182,7 @@ namespace ApiExamples
             field.Update();
 
             Assert.AreEqual(" FILESIZE ", field.GetFieldCode());
-            Assert.AreEqual("10590", field.Result);
+            Assert.AreEqual("16222", field.Result);
 
             // 2 -  Kilobytes:
             builder.InsertParagraph();
@@ -5191,7 +5191,7 @@ namespace ApiExamples
             field.Update();
 
             Assert.AreEqual(" FILESIZE  \\k", field.GetFieldCode());
-            Assert.AreEqual("11", field.Result);
+            Assert.AreEqual("16", field.Result);
 
             // 3 -  Megabytes:
             builder.InsertParagraph();
@@ -5211,14 +5211,14 @@ namespace ApiExamples
 
             field = (FieldFileSize)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldFileSize, " FILESIZE ", "10590", field);
+            TestUtil.VerifyField(FieldType.FieldFileSize, " FILESIZE ", "16222", field);
 
             // These fields will need to be updated to produce an accurate result.
             doc.UpdateFields();
 
             field = (FieldFileSize)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldFileSize, " FILESIZE  \\k", "9", field);
+            TestUtil.VerifyField(FieldType.FieldFileSize, " FILESIZE  \\k", "13", field);
             Assert.True(field.IsInKilobytes);
 
             field = (FieldFileSize)doc.Range.Fields[2];
