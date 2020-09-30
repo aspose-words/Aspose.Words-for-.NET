@@ -347,18 +347,18 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a MERGEFIELD with a value of "TableStart:Customers"
-            // Normally, MERGEFIELDs specify the name of the column that they take row data from
-            // "TableStart:Customers" however means that we are starting a mail merge region which belongs to a table called "Customers"
-            // This will start the outer region and an "TableEnd:Customers" MERGEFIELD will signify its end 
+            // Normally, MERGEFIELDs contain the name of a column of a mail merge data source.
+            // We can instead use "TableStart:" and "TableEnd:" prefixes to begin/end a mail merge region.
+            // Each region will belong to a table with a name that matches the string immediately after the colon in the prefix.
             builder.InsertField(" MERGEFIELD TableStart:Customers");
 
-            // Data from rows of the "CustomerName" column of the "Customers" table will go in this MERGEFIELD
+            // This MERGEFIELD is inside the mail merge region of the "Customers" table.
+            // When we execute the mail merge, this field will receive data from rows in a table called "Customers".
             builder.Write("Orders for ");
             builder.InsertField(" MERGEFIELD CustomerName");
             builder.Write(":");
 
-            // Create column headers for a table which will contain values from the second inner region
+            // Create column headers for a table which will contain values from a second inner region.
             builder.StartTable();
             builder.InsertCell();
             builder.Write("Item");
@@ -366,26 +366,24 @@ namespace ApiExamples
             builder.Write("Quantity");
             builder.EndRow();
 
-            // We have a second data table called "Orders", which has a many-to-one relationship with "Customers",
-            // related by a "CustomerID" column
-            // We will start this inner mail merge region over which the "Orders" table will preside,
-            // which will iterate over the "Orders" table once for each merge of the outer "Customers" region,
-            // picking up rows with the same CustomerID value
+            // Create a second mail merge region inside the outer region for a table named "Orders".
+            // The "Orders" table has a many-to-one relationship with the "Customers" table on the "CustomerID" column.
             builder.InsertCell();
             builder.InsertField(" MERGEFIELD TableStart:Orders");
             builder.InsertField(" MERGEFIELD ItemName");
             builder.InsertCell();
             builder.InsertField(" MERGEFIELD Quantity");
 
-            // End the inner region
-            // One stipulation of using regions and tables is that the opening and closing of a mail merge region must
-            // only happen over one row of a document's table  
+            // End the inner region, and then end the outer region. The opening and closing of a mail merge region must
+            // happen on the same row of a table.
             builder.InsertField(" MERGEFIELD TableEnd:Orders");
             builder.EndTable();
 
-            // End the outer region
             builder.InsertField(" MERGEFIELD TableEnd:Customers");
 
+            // Create a dataset that contains the two tables with the required names and relationships.
+            // Each merge document for each row of the "Customers" table of the outer merge region will perform its own mail merge on the "Orders" table.
+            // Each merge document will display all rows of the latter table whose "CustomerID" column values match that of the current "Customers" table row.
             DataSet customersAndOrders = CreateDataSet();
             doc.MailMerge.ExecuteWithRegions(customersAndOrders);
 
@@ -398,14 +396,12 @@ namespace ApiExamples
         /// </summary>
         private static DataSet CreateDataSet()
         {
-            // Create the outer mail merge
             DataTable tableCustomers = new DataTable("Customers");
             tableCustomers.Columns.Add("CustomerID");
             tableCustomers.Columns.Add("CustomerName");
             tableCustomers.Rows.Add(new object[] { 1, "John Doe" });
             tableCustomers.Rows.Add(new object[] { 2, "Jane Doe" });
 
-            // Create the table for the inner merge
             DataTable tableOrders = new DataTable("Orders");
             tableOrders.Columns.Add("CustomerID");
             tableOrders.Columns.Add("ItemName");
@@ -414,12 +410,9 @@ namespace ApiExamples
             tableOrders.Rows.Add(new object[] { 2, "Pepperoni", 1 });
             tableOrders.Rows.Add(new object[] { 2, "Chicago", 1 });
 
-            // Add both tables to a data set
             DataSet dataSet = new DataSet();
             dataSet.Tables.Add(tableCustomers);
             dataSet.Tables.Add(tableOrders);
-
-            // The "CustomerID" column, also the primary key of the customers table is the foreign key for the Orders table
             dataSet.Relations.Add(tableCustomers.Columns["CustomerID"], tableOrders.Columns["CustomerID"]);
 
             return dataSet;
@@ -437,22 +430,24 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // If we want to perform two consecutive mail merges on one document while taking data from two tables
-            // that are related to each other in any way, we can separate the mail merges with regions
-            // A mail merge region starts and ends with "TableStart:[RegionName]" and "TableEnd:[RegionName]" MERGEFIELDs
-            // These regions are separate for unrelated data, while they can be nested for hierarchical data
+            // that are related to each other in any way, we can separate the mail merges with regions.
+            // Normally, MERGEFIELDs contain the name of a column of a mail merge data source.
+            // We can instead use "TableStart:" and "TableEnd:" prefixes to begin/end a mail merge region.
+            // Each region will belong to a table with a name that matches the string immediately after the colon in the prefix.
+            // These regions are separate for unrelated data, while they can be nested for hierarchical data.
             builder.Writeln("\tCities: ");
             builder.InsertField(" MERGEFIELD TableStart:Cities");
             builder.InsertField(" MERGEFIELD Name");
             builder.InsertField(" MERGEFIELD TableEnd:Cities");
             builder.InsertParagraph();
 
-            // Both MERGEFIELDs refer to a same column name, but values for each will come from different data tables
+            // Both MERGEFIELDs refer to a same column name, but values for each will come from different data tables.
             builder.Writeln("\tFruit: ");
             builder.InsertField(" MERGEFIELD TableStart:Fruit");
             builder.InsertField(" MERGEFIELD Name");
             builder.InsertField(" MERGEFIELD TableEnd:Fruit");
 
-            // Create two data tables that are not linked or related in any way which we still want in the same document
+            // Create two unrelated data tables.
             DataTable tableCities = new DataTable("Cities");
             tableCities.Columns.Add("Name");
             tableCities.Rows.Add(new object[] { "Washington" });
@@ -466,12 +461,12 @@ namespace ApiExamples
             tableFruit.Rows.Add(new object[] { "Watermelon" });
             tableFruit.Rows.Add(new object[] { "Banana" });
 
-            // We will need to run one mail merge per table
-            // This mail merge will populate the MERGEFIELDs in the "Cities" range, while leaving the fields in "Fruit" empty
+            // We will need to run one mail merge per table. This mail merge will populate the MERGEFIELDs
+            // in the "Cities" range, while leaving the fields the "Fruit" range unfilled.
             doc.MailMerge.ExecuteWithRegions(tableCities);
 
-            // Run a second merge for the "Fruit" table
-            // We can use a DataView to sort or filter values of a DataTable before it is merged
+            // Run a second merge for the "Fruit" table, while using a data view
+            // to sort the rows in ascending order on the "Name" column before the merge.
             DataView dv = new DataView(tableFruit);
             dv.Sort = "Name ASC";
             doc.MailMerge.ExecuteWithRegions(dv);
