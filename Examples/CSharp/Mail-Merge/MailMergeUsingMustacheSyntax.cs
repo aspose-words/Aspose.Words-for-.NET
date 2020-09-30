@@ -17,15 +17,37 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
         public static void Run()
         {
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting();
-            MustacheSyntax(dataDir);
+            MustacheSyntaxUsingDataSet(dataDir);
             UseOfifelseMustacheSyntax(dataDir);
         }
 
-        public static void MustacheSyntax(string dataDir)
+        public static void MustacheSyntaxUsingDataTable(string dataDir)
+        {
+            //ExStart:MustacheSyntaxUsingDataTable
+            // Load a document
+            Document doc = new Document(dataDir + @"Test.docx");
+
+            // Loop through each row and fill it with data
+            DataTable dataTable = new DataTable("list");
+            dataTable.Columns.Add("Number");
+            for (int i = 0; i < 10; i++)
+            {
+                DataRow datarow = dataTable.NewRow();
+                dataTable.Rows.Add(datarow);
+                datarow[0] = "Number " + i;
+            }
+
+            // Activate performing a mail merge operation into additional field types 
+            doc.MailMerge.UseNonMergeFields = true;
+            doc.MailMerge.ExecuteWithRegions(dataTable);
+            doc.Save(dataDir + "MailMerge.Mustache.docx");
+            //ExEnd:MustacheSyntaxUsingDataTable
+        }
+
+        public static void MustacheSyntaxUsingDataSet(string dataDir)
         {
             // ExStart:MailMergeUsingMustacheSyntax
             DataSet ds = new DataSet();
-
             ds.ReadXml(dataDir + "Vendors.xml");
 
             // Open a template document.
