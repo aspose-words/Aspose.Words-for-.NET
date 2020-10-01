@@ -139,7 +139,7 @@
     <Compile Include="Loading-and-Saving\ExportResourcesUsingHtmlSaveOptions.cs" />
     <Compile Include="Loading-and-Saving\LoadAndSaveHtmlFormFieldasContentControlinDOCX.cs" />
     <Compile Include="Loading-and-Saving\Load_Options.cs" />
-    <Compile Include="Loading-and-Saving\SpecifyMarkdownSaveOptions.cs" />
+    <Compile Include="Loading-and-Saving\ConvertDocumentToMarkdown.cs" />
     <Compile Include="Loading-and-Saving\WorkingWithDoc.cs" />
     <Compile Include="Loading-and-Saving\WorkingWithOoxml.cs" />
     <Compile Include="Loading-and-Saving\WorkingWithRTF.cs" />
