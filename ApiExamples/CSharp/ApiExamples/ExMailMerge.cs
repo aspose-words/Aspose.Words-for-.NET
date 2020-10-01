@@ -10,6 +10,7 @@ using System.Data;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using Aspose.Words.Fields;
 using Aspose.Words;
@@ -461,7 +462,7 @@ namespace ApiExamples
             tableFruit.Rows.Add(new object[] { "Watermelon" });
             tableFruit.Rows.Add(new object[] { "Banana" });
 
-            // We will need to run one mail merge per table. This mail merge will populate the MERGEFIELDs
+            // We will need to run one mail merge per table. The first mail merge will populate the MERGEFIELDs
             // in the "Cities" range, while leaving the fields the "Fruit" range unfilled.
             doc.MailMerge.ExecuteWithRegions(tableCities);
 
@@ -491,41 +492,49 @@ namespace ApiExamples
             //ExFor:MailMerge.GetRegionsByName(System.String)
             //ExFor:MailMerge.RegionEndTag
             //ExFor:MailMerge.RegionStartTag
-            //ExSummary:Shows how to create, list and read mail merge regions.
+            //ExSummary:Shows how to create, list, and read mail merge regions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // These tags, which go inside MERGEFIELDs, denote the strings that signify the starts and ends of mail merge regions 
+            // "TableStart" and "TableEnd" tags, which go inside MERGEFIELDs,
+            // denote the strings that signify the starts and ends of mail merge regions.
             Assert.AreEqual("TableStart", doc.MailMerge.RegionStartTag);
             Assert.AreEqual("TableEnd", doc.MailMerge.RegionEndTag);
 
-            // By using these tags, we will start and end a "MailMergeRegion1", which will contain MERGEFIELDs for two columns
+            // Use these tags to start and end a mail merge region named "MailMergeRegion1",
+            // which will contain MERGEFIELDs for two columns.
             builder.InsertField(" MERGEFIELD TableStart:MailMergeRegion1");
             builder.InsertField(" MERGEFIELD Column1");
             builder.Write(", ");
             builder.InsertField(" MERGEFIELD Column2");
             builder.InsertField(" MERGEFIELD TableEnd:MailMergeRegion1");
 
-            // We can keep track of merge regions and their columns by looking at these collections
+            // We can keep track of merge regions and their columns by looking at these collections.
             IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName("MailMergeRegion1");
+
             Assert.AreEqual(1, regions.Count);
             Assert.AreEqual("MailMergeRegion1", regions[0].Name);
 
             string[] mergeFieldNames = doc.MailMerge.GetFieldNamesForRegion("MailMergeRegion1");
+
             Assert.AreEqual("Column1", mergeFieldNames[0]);
             Assert.AreEqual("Column2", mergeFieldNames[1]);
 
-            // Insert a region with the same name as an existing region, which will make it a duplicate
-            builder.InsertParagraph(); // A single row/paragraph cannot be shared by multiple regions
+            // Insert a region with the same name as an existing region, which will make it a duplicate.
+            // A single row/paragraph cannot be shared by multiple mail merge regions.
+            builder.InsertParagraph(); 
             builder.InsertField(" MERGEFIELD TableStart:MailMergeRegion1");
             builder.InsertField(" MERGEFIELD Column3");
             builder.InsertField(" MERGEFIELD TableEnd:MailMergeRegion1");
 
-            // Regions that share the same name are still accounted for and can be accessed by index
+            // If we look up a name of duplicate regions using the "GetRegionsByName" method,
+            // it will return all such regions in a collection.
             regions = doc.MailMerge.GetRegionsByName("MailMergeRegion1");
+
             Assert.AreEqual(2, regions.Count);
 
             mergeFieldNames = doc.MailMerge.GetFieldNamesForRegion("MailMergeRegion1", 1);
+
             Assert.AreEqual("Column3", mergeFieldNames[0]);
             //ExEnd
         }
@@ -535,25 +544,25 @@ namespace ApiExamples
         //ExSummary:Shows how to work with duplicate mail merge regions.
         [TestCase(true)] //ExSkip
         [TestCase(false)] //ExSkip
-        public void MergeDuplicateRegions(bool isMergeDuplicateRegions)
+        public void MergeDuplicateRegions(bool mergeDuplicateRegions)
         {
-            // Create a document and table that we will merge
             Document doc = CreateSourceDocMergeDuplicateRegions();
             DataTable dataTable = CreateSourceTableMergeDuplicateRegions();
 
-            // If this property is false, the first region will be merged
-            // while the MERGEFIELDs of the second one will be left in the pre-merge state
-            // To get both regions merged we would have to execute the mail merge twice, on a table of the same name
-            // If this is set to true, both regions will be affected by the merge
-            doc.MailMerge.MergeDuplicateRegions = isMergeDuplicateRegions;
+            // If the "MergeDuplicateRegions" property is false, the mail merge will take effect on the first region,
+            // while the MERGEFIELDs of the second one will be left in the pre-merge state.
+            // To get both regions merged like that,
+            // we would have to execute the mail merge twice on a table of the same name.
+            // If the "MergeDuplicateRegions" property is set to true, the mail merge will affect both regions.
+            doc.MailMerge.MergeDuplicateRegions = mergeDuplicateRegions;
 
             doc.MailMerge.ExecuteWithRegions(dataTable);
             doc.Save(ArtifactsDir + "MailMerge.MergeDuplicateRegions.docx");
-            TestMergeDuplicateRegions(dataTable, doc, isMergeDuplicateRegions); //ExSkip
+            TestMergeDuplicateRegions(dataTable, doc, mergeDuplicateRegions); //ExSkip
         }
 
         /// <summary>
-        /// Return a document that contains two duplicate mail merge regions (sharing the same name in the "TableStart/End" tags).
+        /// Returns a document that contains two duplicate mail merge regions (sharing the same name in the "TableStart/End" tags).
         /// </summary>
         private static Document CreateSourceDocMergeDuplicateRegions()
         {
@@ -573,7 +582,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Create a data table with one row and two columns.
+        /// Creates a data table with one row and two columns.
         /// </summary>
         private static DataTable CreateSourceTableMergeDuplicateRegions()
         {
@@ -596,32 +605,46 @@ namespace ApiExamples
                 TestUtil.MailMergeMatchesDataTable(dataTable, doc, true);
             }
         }
-        
+
         //ExStart
         //ExFor:MailMerge.PreserveUnusedTags
+        //ExFor:MailMerge.UseNonMergeFields
         //ExSummary:Shows how to preserve the appearance of alternative mail merge tags that go unused during a mail merge. 
         [TestCase(false)] //ExSkip
         [TestCase(true)] //ExSkip
-        public void PreserveUnusedTags(bool doPreserveUnusedTags)
+        public void PreserveUnusedTags(bool preserveUnusedTags)
         {
-            // Create a document and table that we will merge
             Document doc = CreateSourceDocWithAlternativeMergeFields();
             DataTable dataTable = CreateSourceTablePreserveUnusedTags();
 
             // By default, alternative merge tags that cannot receive data because the data source has no columns with their name
             // are converted to and left on display as MERGEFIELDs after the mail merge
             // We can preserve their original appearance setting this attribute to true
-            doc.MailMerge.PreserveUnusedTags = doPreserveUnusedTags;
+
+            // By default, a mail merge places data from each row of a table into MERGEFIELDs which name columns in that table. 
+            // Our document has no such fields, but it does have plaintext tags enclosed by curly braces.
+            // If we set the "PreserveUnusedTags" flag to "true", we could treat these tags as MERGEFIELDs
+            // to allow our mail merge to insert data from the data source at those tags.
+            // If we set the "PreserveUnusedTags" flag to "false",
+            // the mail merge will convert these tags to MERGEFIELDs, and leave them unfilled.
+            doc.MailMerge.PreserveUnusedTags = preserveUnusedTags;
             doc.MailMerge.Execute(dataTable);
 
             doc.Save(ArtifactsDir + "MailMerge.PreserveUnusedTags.docx");
 
-            Assert.AreEqual(doc.GetText().Contains("{{ Column2 }}"), doPreserveUnusedTags);
+            // Our document has a tag for a column named "Column2", which does not exist in the table.
+            // If we set the "PreserveUnusedTags" flag to "false", then the mail merge will convert this tag into a MERGEFIELD.
+            Assert.AreEqual(doc.GetText().Contains("{{ Column2 }}"), preserveUnusedTags);
+
+            if (preserveUnusedTags)
+                Assert.AreEqual(0, doc.Range.Fields.Count(f => f.Type == FieldType.FieldMergeField));
+            else
+                Assert.AreEqual(1, doc.Range.Fields.Count(f => f.Type == FieldType.FieldMergeField));
             TestUtil.MailMergeMatchesDataTable(dataTable, doc, true); //ExSkip
         }
 
         /// <summary>
-        /// Create a document and add two tags that can accept mail merge data that are not the traditional MERGEFIELDs.
+        /// Create a document and add two plaintext tags that can may act as MERGEFIELDs during a mail merge.
         /// </summary>
         private static Document CreateSourceDocWithAlternativeMergeFields()
         {
@@ -631,7 +654,7 @@ namespace ApiExamples
             builder.Writeln("{{ Column1 }}");
             builder.Writeln("{{ Column2 }}");
 
-            // Our tags will only register as destinations for mail merge data if we set this to true
+            // Our tags will register as destinations for mail merge data only if we set this to true.
             doc.MailMerge.UseNonMergeFields = true;
 
             return doc;
@@ -652,53 +675,50 @@ namespace ApiExamples
         
         //ExStart
         //ExFor:MailMerge.MergeWholeDocument
-        //ExSummary:Shows the relationship between mail merges with regions and field updating.
+        //ExSummary:Shows the relationship between mail merges with regions, and field updating.
         [TestCase(false)] //ExSkip
         [TestCase(true)] //ExSkip
-        public void MergeWholeDocument(bool doMergeWholeDocument)
+        public void MergeWholeDocument(bool mergeWholeDocument)
         {
-            // Create a document and data table that will both be merged
             Document doc = CreateSourceDocMergeWholeDocument();
             DataTable dataTable = CreateSourceTableMergeWholeDocument();
 
-            // A regular mail merge will update all fields in the document as part of the procedure,
-            // which will happen if this property is set to true
-            // Otherwise, a mail merge with regions will only update fields
-            // within a mail merge region which matches the name of the DataTable
-            doc.MailMerge.MergeWholeDocument = doMergeWholeDocument;
+            // If we set the "MergeWholeDocument" flag to "true",
+            // the mail merge with regions will update every field in the document.
+            // If we set the "MergeWholeDocument" flag to "false", the mail merge will only update fields
+            // within the mail merge region whose name matches the name of the data source table.
+            doc.MailMerge.MergeWholeDocument = mergeWholeDocument;
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
-            // If true, all fields in the document will be updated upon merging
-            // In this case that property is false, so the first QUOTE field will not be updated and will not show a value,
-            // but the second one inside the region designated by the data table name will show the correct value
+            // The mail merge will only update the QUOTE field that is outside
+            // of the mail merge region if the "MergeWholeDocument" flag is set to "true".
             doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.docx");
 
-            Assert.AreEqual(doMergeWholeDocument, doc.GetText().Contains("This QUOTE field is outside of the \"MyTable\" merge region."));
+            Assert.True(doc.GetText().Contains("This QUOTE field is inside the \"MyTable\" merge region."));
+            Assert.AreEqual(mergeWholeDocument, 
+                doc.GetText().Contains("This QUOTE field is outside of the \"MyTable\" merge region."));
             TestUtil.MailMergeMatchesDataTable(dataTable, doc, true); //ExSkip
         }
 
         /// <summary>
-        /// Create a document with a QUOTE field outside and one more inside a mail merge region called "MyTable"
+        /// Create a document with a mail merge region that belongs to a data source named "MyTable".
+        /// Insert one QUOTE field inside this region, and one more outside it.
         /// </summary>
         private static Document CreateSourceDocMergeWholeDocument()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert QUOTE field outside of any mail merge regions
             FieldQuote field = (FieldQuote)builder.InsertField(FieldType.FieldQuote, true);
             field.Text = "This QUOTE field is outside of the \"MyTable\" merge region.";
 
-            // Start "MyTable" merge region
             builder.InsertParagraph();
             builder.InsertField(" MERGEFIELD TableStart:MyTable");
 
-            // Insert QUOTE field inside "MyTable" merge region
             field = (FieldQuote)builder.InsertField(FieldType.FieldQuote, true);
             field.Text = "This QUOTE field is inside the \"MyTable\" merge region.";
             builder.InsertParagraph();
 
-            // Add a MERGEFIELD for a column in the data table, end the "MyTable" region and return the document
             builder.InsertField(" MERGEFIELD MyColumn");
             builder.InsertField(" MERGEFIELD TableEnd:MyTable");
 
@@ -706,7 +726,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Create a simple data table that will be used in a mail merge.
+        /// Create a data table that will be used in a mail merge.
         /// </summary>
         private static DataTable CreateSourceTableMergeWholeDocument()
         {
@@ -721,25 +741,31 @@ namespace ApiExamples
         //ExStart
         //ExFor:MailMerge.UseWholeParagraphAsRegion
         //ExSummary:Shows the relationship between mail merge regions and paragraphs.
-        [Test] //ExSkip
-        public void UseWholeParagraphAsRegion()
+        [TestCase(false)] //ExSkip
+        [TestCase(true)] //ExSkip
+        public void UseWholeParagraphAsRegion(bool useWholeParagraphAsRegion)
         {
-            // Create a document with 2 mail merge regions in one paragraph and a table to which can fill one of the regions during a mail merge
             Document doc = CreateSourceDocWithNestedMergeRegions();
             DataTable dataTable = CreateSourceTableDataTableForOneRegion();
 
-            // By default, a paragraph can belong to no more than one mail merge region
-            // Our document breaks this rule so executing a mail merge with regions now will cause an exception to be thrown
-            Assert.True(doc.MailMerge.UseWholeParagraphAsRegion);
-            Assert.Throws<InvalidOperationException>(() => doc.MailMerge.ExecuteWithRegions(dataTable));
+            // By default, a paragraph can belong to no more than one mail merge region.
+            // The contents of our document do not meet this criteria.
+            // If we set the "UseWholeParagraphAsRegion" flag to "true",
+            // running a mail merge on this document will throw an exception.
+            // If we set the "UseWholeParagraphAsRegion" flag to "false",
+            // we will be able to execute a mail merge on this document.
+            doc.MailMerge.UseWholeParagraphAsRegion = useWholeParagraphAsRegion;
 
-            // If we set this variable to false, paragraphs and mail merge regions are independent so we can safely run our mail merge
-            doc.MailMerge.UseWholeParagraphAsRegion = false;
-            doc.MailMerge.ExecuteWithRegions(dataTable);
+            if (useWholeParagraphAsRegion)
+                Assert.Throws<InvalidOperationException>(() => doc.MailMerge.ExecuteWithRegions(dataTable));
+            else
+                doc.MailMerge.ExecuteWithRegions(dataTable);
 
-            // Our first region is populated, while our second is safely displayed as unused all across one paragraph
+            // The mail merge populates our first region, while leaving the second region unused,
+            // since it is the region that breaks the rule.
             doc.Save(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx");
-            TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx"), true); //ExSkip
+            if (!useWholeParagraphAsRegion) //ExSkip
+                TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx"), true); //ExSkip
         }
 
         /// <summary>
@@ -780,20 +806,20 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        public void TrimWhiteSpaces(bool doTrimWhitespaces)
+        public void TrimWhiteSpaces(bool trimWhitespaces)
         {
             //ExStart
             //ExFor:MailMerge.TrimWhitespaces
-            //ExSummary:Shows how to trimmed whitespaces from mail merge values.
+            //ExSummary:Shows how to trim whitespaces from values of a data source while executing a mail merge.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertField("MERGEFIELD myMergeField", null);
 
-            doc.MailMerge.TrimWhitespaces = doTrimWhitespaces;
+            doc.MailMerge.TrimWhitespaces = trimWhitespaces;
             doc.MailMerge.Execute(new[] { "myMergeField" }, new object[] { "\t hello world! " });
 
-            if (doTrimWhitespaces)
+            if (trimWhitespaces)
                 Assert.AreEqual("hello world!\f", doc.GetText());
             else
                 Assert.AreEqual("\t hello world! \f", doc.GetText());
@@ -803,22 +829,63 @@ namespace ApiExamples
         [Test]
         public void MailMergeGetFieldNames()
         {
-            Document doc = new Document();
             //ExStart
             //ExFor:MailMerge.GetFieldNames
             //ExSummary:Shows how to get names of all merge fields in a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField(" MERGEFIELD FirstName ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD LastName ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD City ");
+
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("LastName");
+            dataTable.Columns.Add("City");
+            dataTable.Rows.Add(new object[] { "John", "Doe", "New York" });
+            dataTable.Rows.Add(new object[] { "Joe", "Bloggs", "Washington" });
+            
+            // For every MERGEFIELD name in the document, ensure that the data table contains a column
+            // with the same name, and then execute the mail merge. 
             string[] fieldNames = doc.MailMerge.GetFieldNames();
+
+            Assert.AreEqual(3, fieldNames.Length);
+
+            foreach (string fieldName in fieldNames)
+                Assert.True(dataTable.Columns.Contains(fieldName));
+
+            doc.MailMerge.Execute(dataTable);
             //ExEnd
+
+            TestUtil.MailMergeMatchesDataTable(dataTable, doc, true);
         }
 
         [Test]
         public void DeleteFields()
         {
-            Document doc = new Document();
             //ExStart
             //ExFor:MailMerge.DeleteFields
-            //ExSummary:Shows how to delete all merge fields from a document without executing mail merge.
+            //ExSummary:Shows how to delete all MERGEFIELDs from a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Dear ");
+            builder.InsertField(" MERGEFIELD FirstName ");
+            builder.Write(" ");
+            builder.InsertField(" MERGEFIELD LastName ");
+            builder.Writeln(",");
+            builder.Writeln("Greetings!");
+
+            Assert.AreEqual(
+                "Dear \u0013 MERGEFIELD FirstName \u0014«FirstName»\u0015 \u0013 MERGEFIELD LastName \u0014«LastName»\u0015,\rGreetings!", 
+                doc.GetText().Trim());
+
             doc.MailMerge.DeleteFields();
+
+            Assert.AreEqual("Dear  ,\rGreetings!", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -829,7 +896,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMerge.CleanupOptions
             //ExFor:MailMergeCleanupOptions
-            //ExSummary:Shows how to instruct the mail merge engine to remove any containing fields from around a merge field during mail merge.
+            //ExSummary:Shows how to remove any containing fields from around a merge field during mail merge.
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveContainingFields;
             //ExEnd
         }
@@ -1024,17 +1091,6 @@ namespace ApiExamples
             string[] greetingLineFieldNames = greetingLineField.GetFieldNames();
 
             Assert.AreEqual(greetingFieldsExpect, greetingLineFieldNames);
-        }
-
-        [Test]
-        public void UseNonMergeFields()
-        {
-            Document doc = new Document();
-            //ExStart
-            //ExFor:MailMerge.UseNonMergeFields
-            //ExSummary:Shows how to perform mail merge into merge fields and into additional fields types.
-            doc.MailMerge.UseNonMergeFields = true;
-            //ExEnd
         }
 
         /// <summary>
