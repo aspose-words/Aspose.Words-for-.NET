@@ -836,7 +836,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertField(" MERGEFIELD FirstName ");
-            builder.InsertParagraph();
+            builder.Write(" ");
             builder.InsertField(" MERGEFIELD LastName ");
             builder.InsertParagraph();
             builder.InsertField(" MERGEFIELD City ");
@@ -889,40 +889,97 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void RemoveContainingFields()
+        [TestCase(MailMergeCleanupOptions.None)]
+        [TestCase(MailMergeCleanupOptions.RemoveContainingFields)]
+        [TestCase(MailMergeCleanupOptions.RemoveEmptyParagraphs)]
+        [TestCase(MailMergeCleanupOptions.RemoveEmptyTableRows)]
+        [TestCase(MailMergeCleanupOptions.RemoveStaticFields)]
+        [TestCase(MailMergeCleanupOptions.RemoveUnusedFields)]
+        [TestCase(MailMergeCleanupOptions.RemoveUnusedRegions)]
+        public void RemoveUnusedFields(MailMergeCleanupOptions mailMergeCleanupOptions)
         {
-            Document doc = new Document();
             //ExStart
             //ExFor:MailMerge.CleanupOptions
             //ExFor:MailMergeCleanupOptions
-            //ExSummary:Shows how to remove any containing fields from around a merge field during mail merge.
-            doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveContainingFields;
+            //ExSummary:Shows how to automatically remove MERGEFIELDs that go unused during mail merge.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create a document with MERGEFIELDs for three columns of a mail merge data source table,
+            // and then create a table with only two columns whose names match the names of our MERGEFIELDs.
+            builder.InsertField(" MERGEFIELD FirstName ");
+            builder.Write(" ");
+            builder.InsertField(" MERGEFIELD LastName ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD City ");
+
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("LastName");
+            dataTable.Rows.Add(new object[] { "John", "Doe" });
+            dataTable.Rows.Add(new object[] { "Joe", "Bloggs" });
+
+            // Our third MERGEFIELD references a "City" column, which does not exist in our data source.
+            // The mail merge will leave fields such as this intact in their pre-merge state.
+            // Setting the "CleanupOptions" property to "RemoveUnusedFields" will remove any MERGEFIELDs
+            // that go unused during a mail merge to clean up the merge documents.
+            doc.MailMerge.CleanupOptions = mailMergeCleanupOptions;
+            doc.MailMerge.Execute(dataTable);
+
+            if (mailMergeCleanupOptions == MailMergeCleanupOptions.RemoveUnusedFields || 
+                mailMergeCleanupOptions == MailMergeCleanupOptions.RemoveStaticFields)
+                Assert.AreEqual(0, doc.Range.Fields.Count);
+            else
+                Assert.AreEqual(2, doc.Range.Fields.Count);
             //ExEnd
+
+            TestUtil.MailMergeMatchesDataTable(dataTable, doc, true);
         }
 
-        [Test]
-        public void RemoveUnusedFields()
+        [TestCase(MailMergeCleanupOptions.None)]
+        [TestCase(MailMergeCleanupOptions.RemoveContainingFields)]
+        [TestCase(MailMergeCleanupOptions.RemoveEmptyParagraphs)]
+        [TestCase(MailMergeCleanupOptions.RemoveEmptyTableRows)]
+        [TestCase(MailMergeCleanupOptions.RemoveStaticFields)]
+        [TestCase(MailMergeCleanupOptions.RemoveUnusedFields)]
+        [TestCase(MailMergeCleanupOptions.RemoveUnusedRegions)]
+        public void RemoveEmptyParagraphs(MailMergeCleanupOptions mailMergeCleanupOptions)
         {
-            Document doc = new Document();
             //ExStart
             //ExFor:MailMerge.CleanupOptions
             //ExFor:MailMergeCleanupOptions
-            //ExSummary:Shows how to automatically remove unmerged merge fields during mail merge.
-            doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveUnusedFields;
-            //ExEnd
-        }
+            //ExSummary:Shows how to remove empty paragraphs that a mail merge may create from the merge output document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-        [Test]
-        public void RemoveEmptyParagraphs()
-        {
-            Document doc = new Document();
-            //ExStart
-            //ExFor:MailMerge.CleanupOptions
-            //ExFor:MailMergeCleanupOptions
-            //ExSummary:Shows how to make sure empty paragraphs that result from merging fields with no data are removed from the document.
-            doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyParagraphs;
+            builder.InsertField(" MERGEFIELD TableStart:MyTable");
+            builder.InsertField(" MERGEFIELD FirstName ");
+            builder.Write(" ");
+            builder.InsertField(" MERGEFIELD LastName ");
+            builder.InsertField(" MERGEFIELD TableEnd:MyTable");
+
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("LastName");
+            dataTable.Rows.Add(new object[] { "John", "Doe" });
+            dataTable.Rows.Add(new object[] { "", "" });
+            dataTable.Rows.Add(new object[] { "Jane", "Doe" });
+
+            doc.MailMerge.CleanupOptions = mailMergeCleanupOptions;
+            doc.MailMerge.ExecuteWithRegions(dataTable);
+
+            if (doc.MailMerge.CleanupOptions == MailMergeCleanupOptions.RemoveEmptyParagraphs) 
+                Assert.AreEqual(
+                    "John Doe\r" +
+                    "Jane Doe", doc.GetText().Trim());
+            else
+                Assert.AreEqual(
+                    "John Doe\r" +
+                    " \r" +
+                    "Jane Doe", doc.GetText().Trim());
             //ExEnd
+
+            TestUtil.MailMergeMatchesDataTable(dataTable, doc, false);
         }
 
         [Ignore("WORDSNET-17733")]
