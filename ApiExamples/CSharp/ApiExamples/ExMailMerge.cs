@@ -1000,27 +1000,31 @@ namespace ApiExamples
         [TestCase("  ¡  ", true, "  ¡  \f")]
         [TestCase("  ¿  ", true, "  ¿  \f")]
         public void RemoveColonBetweenEmptyMergeFields(string punctuationMark,
-            bool isCleanupParagraphsWithPunctuationMarks, string resultText)
+            bool cleanupParagraphsWithPunctuationMarks, string resultText)
         {
             //ExStart
             //ExFor:MailMerge.CleanupParagraphsWithPunctuationMarks
-            //ExSummary:Shows how to remove paragraphs with punctuation marks after mail merge operation.
+            //ExSummary:Shows how to remove paragraphs with punctuation marks after a mail merge operation.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             FieldMergeField mergeFieldOption1 = (FieldMergeField) builder.InsertField("MERGEFIELD", "Option_1");
             mergeFieldOption1.FieldName = "Option_1";
 
-            // Here is the complete list of cleanable punctuation marks: ! , . : ; ? ¡ ¿
             builder.Write(punctuationMark);
 
             FieldMergeField mergeFieldOption2 = (FieldMergeField) builder.InsertField("MERGEFIELD", "Option_2");
             mergeFieldOption2.FieldName = "Option_2";
 
+            // Configure the "CleanupOptions" property to remove any empty paragraphs that this mail merge would create.
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyParagraphs;
-            // The default value of the option is true which means that the behavior was changed to mimic MS Word
-            // We can revert to the old behavior by setting the option to false
-            doc.MailMerge.CleanupParagraphsWithPunctuationMarks = isCleanupParagraphsWithPunctuationMarks;
+
+            // Setting the "CleanupParagraphsWithPunctuationMarks" property to "true" will also count paragraphs
+            // with punctuation marks as empty, and will get the mail merge operation to remove them as well.
+            // Setting the "CleanupParagraphsWithPunctuationMarks" property to "false"
+            // will remove empty paragraphs, but not ones with punctuation marks.
+            // This is a list of punctuation marks that this property concerns: "!", ",", ".", ":", ";", "?", "¡", "¿"
+            doc.MailMerge.CleanupParagraphsWithPunctuationMarks = cleanupParagraphsWithPunctuationMarks;
 
             doc.MailMerge.Execute(new[] { "Option_1", "Option_2" }, new object[] { null, null });
 
@@ -1045,31 +1049,32 @@ namespace ApiExamples
         [Test] //ExSkip
         public void MappedDataFieldCollection()
         {
-            // Create a document and table that we will merge
             Document doc = CreateSourceDocMappedDataFields();
             DataTable dataTable = CreateSourceTableMappedDataFields();
 
-            // We have a column "Column2" in the data table that does not have a respective MERGEFIELD in the document
-            // Also, we have a MERGEFIELD named "Column3" that does not exist as a column in the data source
+            // The table has a column named "Column2", but there are no MERGEFIELDs with that name.
+            // Also, we have a MERGEFIELD named "Column3", but the data source does not have a column with that name.
             // If data from "Column2" is suitable for the "Column3" MERGEFIELD,
-            // we can map that column name to the MERGEFIELD in the "MappedDataFields" key/value pair
+            // we can map that column name to the MERGEFIELD in the "MappedDataFields" key/value pair.
             MappedDataFieldCollection mappedDataFields = doc.MailMerge.MappedDataFields;
 
-            // A data source column name is linked to a MERGEFIELD name by adding an element like this
+            // We can link a data source column name to a MERGEFIELD name like this.
             mappedDataFields.Add("MergeFieldName", "DataSourceColumnName");
 
-            // So, values from "Column2" will now go into MERGEFIELDs named "Column3" as well as "Column2", if there are any
+            // Link the data source column named "Column2" to MERGEFIELDs named "Column3".
             mappedDataFields.Add("Column3", "Column2");
 
-            // The MERGEFIELD name is the "key" to the respective data source column name "value"
+            // The MERGEFIELD name is the "key" to the respective data source column name "value".
             Assert.AreEqual("DataSourceColumnName", mappedDataFields["MergeFieldName"]);
             Assert.True(mappedDataFields.ContainsKey("MergeFieldName"));
             Assert.True(mappedDataFields.ContainsValue("DataSourceColumnName"));
 
-            // Now if we run this mail merge, the "Column3" MERGEFIELDs will take data from "Column2" of the table
+            // Now if we run this mail merge, the "Column3" MERGEFIELDs will take data from "Column2" of the table.
             doc.MailMerge.Execute(dataTable);
 
-            // We can count and iterate over the mapped columns/fields
+            doc.Save(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx");
+
+            // We can iterate over the elements in this collection.
             Assert.AreEqual(2, mappedDataFields.Count);
 
             using (IEnumerator<KeyValuePair<string, string>> enumerator = mappedDataFields.GetEnumerator())
@@ -1077,28 +1082,27 @@ namespace ApiExamples
                     Console.WriteLine(
                         $"Column named {enumerator.Current.Value} is mapped to MERGEFIELDs named {enumerator.Current.Key}");
 
-            // We can also remove some or all of the elements
+            // We can also remove elements from the collection.
             mappedDataFields.Remove("MergeFieldName");
+
             Assert.False(mappedDataFields.ContainsKey("MergeFieldName"));
             Assert.False(mappedDataFields.ContainsValue("DataSourceColumnName"));
 
             mappedDataFields.Clear();
-            Assert.AreEqual(0, mappedDataFields.Count);
 
-            // Removing the mapped key/value pairs has no effect on the document because the merge was already done with them in place
-            doc.Save(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx");
+            Assert.AreEqual(0, mappedDataFields.Count);
             TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx"), true); //ExSkip
         }
 
         /// <summary>
-        /// Create a document with 2 MERGEFIELDs, one of which does not have a corresponding column in the data table.
+        /// Create a document with 2 MERGEFIELDs, one of which does not have a
+        /// corresponding column in the data table from the method below.
         /// </summary>
         private static Document CreateSourceDocMappedDataFields()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert two MERGEFIELDs that will accept data from that table
             builder.InsertField(" MERGEFIELD Column1");
             builder.Write(", ");
             builder.InsertField(" MERGEFIELD Column3");
@@ -1107,11 +1111,11 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Create a data table with 2 columns, one of which does not have a corresponding MERGEFIELD in our source document.
+        /// Create a data table with 2 columns, one of which does not have a
+        /// corresponding MERGEFIELD in the source document from the method above.
         /// </summary>
         private static DataTable CreateSourceTableMappedDataFields()
         {
-            // Create a data table that will be used in a mail merge
             DataTable dataTable = new DataTable("MyTable");
             dataTable.Columns.Add("Column1");
             dataTable.Columns.Add("Column2");
@@ -1127,7 +1131,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FieldAddressBlock
             //ExFor:FieldAddressBlock.GetFieldNames
-            //ExSummary:Shows how to get mail merge field names used by the field.
+            //ExSummary:Shows how to get mail merge field names used by a field.
             Document doc = new Document(MyDir + "Field sample - ADDRESSBLOCK.docx");
 
             string[] addressFieldsExpect =
@@ -1211,48 +1215,53 @@ namespace ApiExamples
             //ExFor:MailMergeRegionInfo.StartField
             //ExFor:MailMergeRegionInfo.EndField
             //ExFor:MailMergeRegionInfo.Level
-            //ExSummary:Shows how to get MailMergeRegionInfo and work with it.
+            //ExSummary:Shows how to verify mail merge regions.
             Document doc = new Document(MyDir + "Mail merge regions.docx");
 
-            // Returns a full hierarchy of regions (with fields) available in the document
+            // Returns a full hierarchy of merge regions that contain MERGEFIELDs available in the document.
             MailMergeRegionInfo regionInfo = doc.MailMerge.GetRegionsHierarchy();
 
-            // Get top regions in the document
+            // Get top regions in the document.
             IList<MailMergeRegionInfo> topRegions = regionInfo.Regions;
+
             Assert.AreEqual(2, topRegions.Count);
             Assert.AreEqual("Region1", topRegions[0].Name);
             Assert.AreEqual("Region2", topRegions[1].Name);
             Assert.AreEqual(1, topRegions[0].Level);
             Assert.AreEqual(1, topRegions[1].Level);
 
-            // Get nested region in first top region
+            // Get nested region in first top region.
             IList<MailMergeRegionInfo> nestedRegions = topRegions[0].Regions;
+
             Assert.AreEqual(2, nestedRegions.Count);
             Assert.AreEqual("NestedRegion1", nestedRegions[0].Name);
             Assert.AreEqual("NestedRegion2", nestedRegions[1].Name);
             Assert.AreEqual(2, nestedRegions[0].Level);
             Assert.AreEqual(2, nestedRegions[1].Level);
 
-            // Get field list in first top region
+            // Get list of fields inside the first top region.
             IList<Field> fieldList = topRegions[0].Fields;
+
             Assert.AreEqual(4, fieldList.Count);
 
             FieldMergeField startFieldMergeField = nestedRegions[0].StartField;
+
             Assert.AreEqual("TableStart:NestedRegion1", startFieldMergeField.FieldName);
 
             FieldMergeField endFieldMergeField = nestedRegions[0].EndField;
+
             Assert.AreEqual("TableEnd:NestedRegion1", endFieldMergeField.FieldName);
             //ExEnd
         }
 
-        [Test]
-        public void TestTagsReplacedEventShouldRisedWithUseNonMergeFieldsOption()
+        //ExStart
+        //ExFor:MailMerge.MailMergeCallback
+        //ExFor:IMailMergeCallback
+        //ExFor:IMailMergeCallback.TagsReplaced
+        //ExSummary:Shows how to define custom logic for handling events during mail merge.
+        [Test] //ExSkip
+        public void Callback()
         {
-            //ExStart
-            //ExFor:MailMerge.MailMergeCallback
-            //ExFor:IMailMergeCallback
-            //ExFor:IMailMergeCallback.TagsReplaced
-            //ExSummary:Shows how to define custom logic for handling events during mail merge.
             Document document = new Document();
             document.MailMerge.UseNonMergeFields = true;
 
