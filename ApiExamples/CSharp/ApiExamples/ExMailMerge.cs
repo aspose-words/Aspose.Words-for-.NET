@@ -1262,25 +1262,44 @@ namespace ApiExamples
         [Test] //ExSkip
         public void Callback()
         {
-            Document document = new Document();
-            document.MailMerge.UseNonMergeFields = true;
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            MailMergeCallbackStub mailMergeCallbackStub = new MailMergeCallbackStub();
-            document.MailMerge.MailMergeCallback = mailMergeCallbackStub;
+            // Insert two mail merge tags referencing two columns in a data source.
+            builder.Write("{{FirstName}}");
+            builder.Write("{{LastName}}");
 
-            document.MailMerge.Execute(new string[0], new object[0]);
+            // Create a data source that only contains one of the columns that our merge tags reference.
+            DataTable table = new DataTable("Test");
+            table.Columns.Add("FirstName");
+            table.Rows.Add("John");
+            table.Rows.Add("Jane");
 
-            Assert.AreEqual(1, mailMergeCallbackStub.TagsReplacedCounter);
+            // Configure our mail merge to use alternative mail merge tags.
+            doc.MailMerge.UseNonMergeFields = true;
+
+            // Then, ensure that the mail merge will convert tags, such as our "LastName" tag,
+            // into MERGEFIELDs in the merge documents.
+            doc.MailMerge.PreserveUnusedTags = false;
+
+            MailMergeTagReplacementCounter counter = new MailMergeTagReplacementCounter();
+            doc.MailMerge.MailMergeCallback = counter;
+            doc.MailMerge.Execute(table);
+
+            Assert.AreEqual(1, counter.TagsReplacedCount);
         }
 
-        private class MailMergeCallbackStub : IMailMergeCallback
+        /// <summary>
+        /// Counts the number of times a mail merge replaces mail merge tags that it could not fill with data with MERGEFIELDs.
+        /// </summary>
+        private class MailMergeTagReplacementCounter : IMailMergeCallback
         {
             public void TagsReplaced()
             {
-                TagsReplacedCounter++;
+                TagsReplacedCount++;
             }
 
-            public int TagsReplacedCounter { get; private set; }
+            public int TagsReplacedCount { get; private set; }
         }
         //ExEnd
 
