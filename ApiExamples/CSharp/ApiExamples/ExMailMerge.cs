@@ -1346,8 +1346,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Create DataTable and fill it with data.
-        /// In real life this DataTable should be filled from a database.
+        /// Return a data table filled with sample data.
         /// </summary>
         private static DataTable GetDataTable()
         {
@@ -1370,7 +1369,7 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        public void UnconditionalMergeFieldsAndRegions(bool doCountAllMergeFields)
+        public void UnconditionalMergeFieldsAndRegions(bool countAllMergeFields)
         {
             //ExStart
             //ExFor:MailMerge.UnconditionalMergeFieldsAndRegions
@@ -1378,27 +1377,28 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a MERGEFIELD nested inside an IF field
-            // Since the statement of the IF field is false, the result of the inner MERGEFIELD will not be displayed
-            // and the MERGEFIELD will not receive any data during a mail merge
+            // Insert a MERGEFIELD nested inside an IF field.
+            // Since the statement of the IF field is false, it will not display the result of the MERGEFIELD.
+            // The MERGEFIELD will also not receive any data during a mail merge.
             FieldIf fieldIf = (FieldIf)builder.InsertField(" IF 1 = 2 ");
             builder.MoveTo(fieldIf.Separator);
             builder.InsertField(" MERGEFIELD  FullName ");
 
-            // We can still count MERGEFIELDs inside IF fields with false statements if we set this flag to true
-            doc.MailMerge.UnconditionalMergeFieldsAndRegions = doCountAllMergeFields;
+            // If we set the "UnconditionalMergeFieldsAndRegions" flag to "true",
+            // our mail merge will insert data into non-displayed fields such as our MERGEFIELD as well as all others.
+            // If we set the "UnconditionalMergeFieldsAndRegions" flag to "false",
+            // our mail merge will not insert data into MERGEFIELDs hidden by IF fields with false statements.
+            doc.MailMerge.UnconditionalMergeFieldsAndRegions = countAllMergeFields;
 
             DataTable dataTable = new DataTable();
             dataTable.Columns.Add("FullName");
             dataTable.Rows.Add("James Bond");
 
-            // Execute the mail merge
             doc.MailMerge.Execute(dataTable);
-
-            // The result will not be visible in the document because the IF field is false, but the inner MERGEFIELD did indeed receive data
+            
             doc.Save(ArtifactsDir + "MailMerge.UnconditionalMergeFieldsAndRegions.docx");
 
-            if (doCountAllMergeFields)
+            if (countAllMergeFields)
                 Assert.AreEqual("\u0013 IF 1 = 2 \"James Bond\"\u0014\u0015", doc.GetText().Trim());
             else
                 Assert.AreEqual("\u0013 IF 1 = 2 \u0013 MERGEFIELD  FullName \u0014«FullName»\u0015\u0014\u0015", doc.GetText().Trim());
@@ -1462,8 +1462,7 @@ namespace ApiExamples
             //ExFor:Odso.DataSourceType
             //ExFor:Odso.FirstRowContainsColumnNames
             //ExFor:OdsoDataSourceType
-            //ExSummary:Shows how to execute an Office Data Source Object mail merge with MailMergeSettings.
-            // We'll create a simple document that will act as a destination for mail merge data
+            //ExSummary:Shows how to execute a mail merge with data from an Office Data Source Object.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1474,16 +1473,15 @@ namespace ApiExamples
             builder.Writeln(": ");
             builder.InsertField("MERGEFIELD Message", "<Message>");
 
-            // We will use an ASCII file as a data source
-            // We can use any character we want as a delimiter, in this case we'll choose '|'
-            // The delimiter character is selected in the ODSO settings of mail merge settings
+            // Create a data source in the form of an ASCII file, with the "|" character
+            // acting as the delimiter that separates columns. The first line contains the names of the three columns, 
+            // and each subsequent line is a row with their respective values.
             string[] lines = { "FirstName|LastName|Message",
                 "John|Doe|Hello! This message was created with Aspose Words mail merge." };
             string dataSrcFilename = ArtifactsDir + "MailMerge.MailMergeSettings.DataSource.txt";
 
             File.WriteAllLines(dataSrcFilename, lines);
 
-            // Set the data source, query and other things
             MailMergeSettings settings = doc.MailMergeSettings;
             settings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
             settings.CheckErrors = MailMergeCheckErrors.Simulate;
@@ -1496,18 +1494,16 @@ namespace ApiExamples
             Assert.AreEqual(MailMergeDestination.Default, settings.Destination);
             Assert.False(settings.DoNotSupressBlankLines);
 
-            // Office Data Source Object settings
             Odso odso = settings.Odso;
             odso.DataSource = dataSrcFilename;
             odso.DataSourceType = OdsoDataSourceType.Text;
             odso.ColumnDelimiter = '|';
             odso.FirstRowContainsColumnNames = true;
 
-            // ODSO/MailMergeSettings objects can also be cloned
             Assert.AreNotSame(odso, odso.Clone());
             Assert.AreNotSame(settings, settings.Clone());
 
-            // The mail merge will be performed when this document is opened 
+            // Opening this document in Microsoft Word will execute the mail merge before displaying the contents. 
             doc.Save(ArtifactsDir + "MailMerge.MailMergeSettings.docx");
             //ExEnd
 
@@ -1559,7 +1555,8 @@ namespace ApiExamples
             Console.WriteLine($"Table:\n\t{odso.TableName}");
             Console.WriteLine($"Query:\n\t{doc.MailMergeSettings.Query}");
 
-            // We can clear the settings, which will take place during saving
+            // We can reset these settings by clearing them. Once we do that and save the document,
+            // Microsoft Word will no longer execute a mail merge when we use it to load the document.
             settings.Clear();
 
             doc.Save(ArtifactsDir + "MailMerge.OdsoEmail.docx");
@@ -1593,8 +1590,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:MailMergeSettings.DataSource
             //ExFor:MailMergeSettings.HeaderSource
-            //ExSummary:Shows how to execute a mail merge while drawing data from a header and a data file.
-            // Create a mailing label merge header file, which will consist of a table with one row 
+            //ExSummary:Shows how to construct a data source for a mail merge from a header source and a data source.
+            // Create a mailing label merge header file, which will consist of a table with one row.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1607,8 +1604,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMerge.MailingLabelMerge.Header.docx");
 
-            // Create a mailing label merge date file, which will consist of a table with one row and the same amount of columns as 
-            // the header table, which will determine the names for these columns
+            // Create a mailing label merge date file, which will consist of a table with
+            // one row and the same amount of columns as the table in the header document. 
             doc = new Document();
             builder = new DocumentBuilder(doc);
 
@@ -1621,7 +1618,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMerge.MailingLabelMerge.Data.docx");
 
-            // Create a merge destination document with MERGEFIELDS that will accept data
+            // Create a merge destination document with MERGEFIELDS with names that
+            // match the column names in the merge header file table.
             doc = new Document();
             builder = new DocumentBuilder(doc);
 
@@ -1630,22 +1628,23 @@ namespace ApiExamples
             builder.Write(" ");
             builder.InsertField("MERGEFIELD LastName", "<LastName>");
 
-            // Configure settings to draw data and headers from other documents
             MailMergeSettings settings = doc.MailMergeSettings;
 
-            // The "header" document contains column names for the data in the "data" document,
-            // which will correspond to the names of our MERGEFIELDs
+            // Construct a data source for our mail merge by specifying two document filenames.
+            // The header source will name the columns of the data source table.
             settings.HeaderSource = ArtifactsDir + "MailMerge.MailingLabelMerge.Header.docx";
+
+            // The data source will provide rows of data for all the columns in the header document table.
             settings.DataSource = ArtifactsDir + "MailMerge.MailingLabelMerge.Data.docx";
 
-            // Configure the rest of the MailMergeSettings object
+            // Configure a mailing label type mail merge, which Microsoft Word will execute
+            // as soon as we use it to load the output document.
             settings.Query = "SELECT * FROM " + settings.DataSource;
             settings.MainDocumentType = MailMergeMainDocumentType.MailingLabels;
             settings.DataType = MailMergeDataType.TextFile;
             settings.LinkToQuery = true;
             settings.ViewMergedData = true;
 
-            // The mail merge will be performed when this document is opened 
             doc.Save(ArtifactsDir + "MailMerge.MailingLabelMerge.docx");
             //ExEnd
 
@@ -1694,8 +1693,8 @@ namespace ApiExamples
             //ExSummary:Shows how to access the collection of data that maps data source columns to merge fields.
             Document doc = new Document(MyDir + "Odso data.docx");
 
-            // This collection defines how columns from an external data source will be mapped to predefined MERGEFIELD,
-            // ADDRESSBLOCK and GREETINGLINE fields during a mail merge
+            // This collection defines how a mail merge will map columns from a data source
+            // to predefined MERGEFIELD, ADDRESSBLOCK and GREETINGLINE fields
             OdsoFieldMapDataCollection dataCollection = doc.MailMergeSettings.Odso.FieldMapDatas;
             Assert.AreEqual(30, dataCollection.Count);
 
@@ -1713,14 +1712,17 @@ namespace ApiExamples
                 }
             }
 
-            // Elements of the collection can be cloned
+            // We can clone the elements in this collection.
             Assert.AreNotEqual(dataCollection[0], dataCollection[0].Clone());
 
-            // The collection can have individual entries removed or be cleared like this
+            // We can also remove elements individually, or clear the entire collection at once.
             dataCollection.RemoveAt(0);
-            Assert.AreEqual(29, dataCollection.Count); //ExSkip
+
+            Assert.AreEqual(29, dataCollection.Count);
+
             dataCollection.Clear();
-            Assert.AreEqual(0, dataCollection.Count); //ExSkip
+
+            Assert.AreEqual(0, dataCollection.Count);
             //ExEnd
         }
 
@@ -1742,10 +1744,9 @@ namespace ApiExamples
             //ExFor:OdsoRecipientDataCollection.GetEnumerator
             //ExFor:OdsoRecipientDataCollection.Item(Int32)
             //ExFor:OdsoRecipientDataCollection.RemoveAt(Int32)
-            //ExSummary:Shows how to access the collection of data that designates merge data source records to be excluded from a merge.
+            //ExSummary:Shows how to access the collection of data that designates which merge data source records a mail merge will exclude.
             Document doc = new Document(MyDir + "Odso data.docx");
 
-            // Records in this collection that do not have the "Active" flag set to true will be excluded from the mail merge
             OdsoRecipientDataCollection dataCollection = doc.MailMergeSettings.Odso.RecipientDatas;
 
             Assert.AreEqual(70, dataCollection.Count);
@@ -1763,14 +1764,17 @@ namespace ApiExamples
                 }
             }
 
-            // Elements of the collection can be cloned
+            // We can clone the elements in this collection.
             Assert.AreNotEqual(dataCollection[0], dataCollection[0].Clone());
 
-            // The collection can have individual entries removed or be cleared like this
+            // We can also remove elements individually, or clear the entire collection at once.
             dataCollection.RemoveAt(0);
-            Assert.AreEqual(69, dataCollection.Count); //ExSkip
+
+            Assert.AreEqual(69, dataCollection.Count);
+
             dataCollection.Clear();
-            Assert.AreEqual(0, dataCollection.Count); //ExSkip
+
+            Assert.AreEqual(0, dataCollection.Count);
             //ExEnd
         }
 
@@ -1782,12 +1786,12 @@ namespace ApiExamples
             //ExFor:FieldOptions
             //ExFor:FieldOptions.FieldUpdateCultureSource
             //ExFor:FieldUpdateCultureSource
-            //ExSummary:Shows how to specify where the culture used for date formatting during a field update or mail merge is sourced from.
+            //ExSummary:Shows how to specify the source of the culture used for date formatting during a field update or mail merge.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert two merge fields with German locale.
-            builder.Font.LocaleId = 1031;
+            builder.Font.LocaleId = new CultureInfo("de-DE").LCID;
             builder.InsertField("MERGEFIELD Date1 \\@ \"dddd, d MMMM yyyy\"");
             builder.Write(" - ");
             builder.InsertField("MERGEFIELD Date2 \\@ \"dddd, d MMMM yyyy\"");
@@ -1806,7 +1810,7 @@ namespace ApiExamples
             // The first merge result contains a date formatted in English, while the second one is in German.
             Assert.AreEqual("Wednesday, 1 January 2020 - Mittwoch, 1 Januar 2020", doc.Range.Text.Trim());
 
-            // Restore the original culture.
+            // Restore the thread's original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
             //ExEnd
         }
