@@ -160,21 +160,16 @@ namespace ApiExamples
             //ExSummary:Shows how to emulate the loading procedure of a specific Microsoft Word version during document loading.
             // By default, Aspose.Words loads documents according to Microsoft Word 2019 specification.
             LoadOptions loadOptions = new LoadOptions();
-
+            
             Assert.AreEqual(MsWordVersion.Word2019, loadOptions.MswVersion);
 
             // This document is missing the default paragraph formatting style.
             // This default style will be regenerated when we load the document either with Microsoft Word or Aspose.Words.
+            loadOptions.MswVersion = MsWordVersion.Word2007;
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
-            // The style's line spacing will have this value when loaded by Microsoft Word 2019 specification.
+            // The style's line spacing will have this value when loaded by Microsoft Word 2007 specification.
             Assert.AreEqual(12.95d, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.01d);
-
-            // When loaded according to Microsoft Word 2007 specification, the value will be slightly different.
-            loadOptions.MswVersion = MsWordVersion.Word2007;
-            doc = new Document(MyDir + "Document.docx", loadOptions);
-
-            Assert.AreEqual(13.80d, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.01d);
             //ExEnd
         }
 
