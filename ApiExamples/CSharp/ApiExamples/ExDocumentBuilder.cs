@@ -21,6 +21,8 @@ using Color = System.Drawing.Color;
 using Document = Aspose.Words.Document;
 using Table = Aspose.Words.Tables.Table;
 using System.Drawing;
+using Aspose.Words.Saving;
+
 #if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -355,8 +357,8 @@ namespace ApiExamples
         public void InsertOleObject()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
-            //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
+            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Stream)
+            //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Stream)
             //ExFor:DocumentBuilder.InsertOleObjectAsIcon(String, Boolean, String, String)
             //ExSummary:Shows how to insert an OLE object into a document.
             Document doc = new Document();
@@ -366,9 +368,11 @@ namespace ApiExamples
             // Double clicking these shapes will launch the application, and then use it to open the linked object.
             // There are three ways of using the InsertOleObject method to insert these shapes and configure their appearance.
             // 1 -  Image taken from the local file system:
-            Image representingImage = Image.FromFile(ImageDir + "Logo.jpg");
-            builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
-
+            using (FileStream imageStream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open))
+            {
+                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, imageStream); 
+            }
+            
             // 2 -  Icon based on the application that will open the object:
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
 
@@ -444,48 +448,6 @@ namespace ApiExamples
             Assert.AreEqual(RelativeVerticalPosition.Page, outShape.RelativeVerticalPosition);
             Assert.AreEqual((doc.FirstSection.PageSetup.PageWidth - outShape.Width) / 2, outShape.Left);
             Assert.AreEqual((doc.FirstSection.PageSetup.PageHeight - outShape.Height) / 2, outShape.Top);
-        }
-
-        [Test]
-        public void InsertOleObjectNetStandard2()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.InsertOleObject(String, Boolean, Boolean, Image)
-            //ExFor:DocumentBuilder.InsertOleObject(String, String, Boolean, Boolean, Image)
-            //ExSummary:Shows how to insert an OLE object into a document (.NetStandard 2.0).
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            using (SKBitmap representingImage = SKBitmap.Decode(ImageDir + "Logo.jpg"))
-            {
-                // OLE objects are links to files in our local file system that can be opened by other installed applications.
-                // Double clicking these shapes will launch the application, and then use it to open the linked object.
-                // There are two ways of using the InsertOleObject method
-                // to create a shape with an image taken from a SKBitmap object.
-                // 1 -  Pass the local file system filename of the linked object:
-                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, representingImage);
-
-                // 2 -  Pass the local file system filename of the linked object,
-                // and specify the class key for an application that opens the object:
-                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, false,
-                    representingImage);
-            }
-
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOleObjectNetStandard2.docx");
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape,0, true);
-            
-            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
-            Assert.AreEqual("Excel.Sheet.12", shape.OleFormat.ProgId);
-            Assert.AreEqual(".xlsx", shape.OleFormat.SuggestedExtension);
-
-            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
-
-            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
-            Assert.AreEqual("Package", shape.OleFormat.ProgId);
-            Assert.AreEqual(".xlsx", shape.OleFormat.SuggestedExtension);
         }
 #endif
 
@@ -2807,7 +2769,7 @@ namespace ApiExamples
         public void InsertOleObjects()
         {
             //ExStart
-            //ExFor:DocumentBuilder.InsertOleObject(Stream, String, Boolean, Image)
+            //ExFor:DocumentBuilder.InsertOleObject(Stream, String, Boolean, Stream)
             //ExSummary:Shows how to use document builder to embed OLE objects in a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2828,27 +2790,12 @@ namespace ApiExamples
                 {
                     byte[] imgBytes = webClient.DownloadData(AsposeLogoUrl);
 
-                    #if NETCOREAPP2_1 || __MOBILE__
-                    
-                    SKBitmap bitmap = SKBitmap.Decode(imgBytes);
-                    
-                    builder.InsertParagraph();
-                    builder.Writeln("Powerpoint Ole object:");
-                    builder.InsertOleObject(powerpointStream, "MyOleObject.pptx", true, bitmap);
-                    
-                    #elif NET462
-                    
-                    using (MemoryStream stream = new MemoryStream(imgBytes))
+                    using (MemoryStream imageStream = new MemoryStream(imgBytes))
                     {
-                        using (Image image = Image.FromStream(stream))
-                        {
-                            builder.InsertParagraph();
-                            builder.Writeln("Powerpoint Ole object:");
-                            builder.InsertOleObject(powerpointStream, "OleObject.pptx", true, image);
-                        }
+                        builder.InsertParagraph();
+                        builder.Writeln("Powerpoint Ole object:");
+                        builder.InsertOleObject(powerpointStream, "OleObject.pptx", true, imageStream);
                     }
-
-                    #endif
                 }
             }
 
@@ -2986,6 +2933,40 @@ namespace ApiExamples
             Assert.AreEqual(14, dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Size);
             Assert.AreEqual("Courier New", dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Name);
             Assert.AreEqual(Color.Red.ToArgb(), dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Color.ToArgb());
+        }
+
+        [Test]
+        public void EmphasesWarningSourceMarkdown()
+        {
+            Document doc = new Document(MyDir + "Emphases markdown warning.docx");
+            
+            WarningInfoCollection warnings = new WarningInfoCollection();
+            doc.WarningCallback = warnings;
+            doc.Save(ArtifactsDir + "DocumentBuilder.EmphasesWarningSourceMarkdown.md");
+ 
+            foreach (WarningInfo warningInfo in warnings)
+            {
+                if (warningInfo.Source == WarningSource.Markdown)
+                    Assert.AreEqual("The (*, 0:11) cannot be properly written into Markdown.", warningInfo.Description);
+            }
+        }
+
+        [Test]
+        public void DoNotIgnoreHeaderFooter()
+        {
+            //ExStart
+            //ExFor:ImportFormatOptions.IgnoreHeaderFooter
+            //ExSummary:Shows how to specifies ignoring or not source formatting of headers/footers content.
+            Document dstDoc = new Document(MyDir + "Document.docx");
+            Document srcDoc = new Document(MyDir + "Header and footer types.docx");
+ 
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
+            importFormatOptions.IgnoreHeaderFooter = false;
+ 
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
+
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.DoNotIgnoreHeaderFooter.docx");
+            //ExEnd
         }
 
         #if NET462 || NETCOREAPP2_1 || JAVA
@@ -3347,6 +3328,58 @@ namespace ApiExamples
                 
                 Assert.IsTrue(shapesCollection.Count == 1);
                 Assert.IsTrue(horizontalRuleShape.IsHorizontalRule);
+            }
+        }
+
+        [TestCase(TableContentAlignment.Left)]
+        [TestCase(TableContentAlignment.Right)]
+        [TestCase(TableContentAlignment.Center)]
+        [TestCase(TableContentAlignment.Auto)]
+        public void MarkdownDocumentTableContentAlignment(TableContentAlignment tableContentAlignment)
+        {
+            DocumentBuilder builder = new DocumentBuilder();
+
+            builder.InsertCell();
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
+            builder.Write("Cell1");
+            builder.InsertCell();
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            builder.Write("Cell2");
+
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.TableContentAlignment = tableContentAlignment;
+
+            builder.Document.Save(ArtifactsDir + "MarkdownDocumentTableContentAlignment.md", saveOptions);
+
+            Document doc = new Document(ArtifactsDir + "MarkdownDocumentTableContentAlignment.md");
+            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+
+            switch (tableContentAlignment)
+            {
+                case TableContentAlignment.Auto:
+                    Assert.AreEqual(ParagraphAlignment.Right,
+                        table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.AreEqual(ParagraphAlignment.Center,
+                        table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+                    break;
+                case TableContentAlignment.Left:
+                    Assert.AreEqual(ParagraphAlignment.Left,
+                        table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.AreEqual(ParagraphAlignment.Left,
+                        table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+                    break;
+                case TableContentAlignment.Center:
+                    Assert.AreEqual(ParagraphAlignment.Center,
+                        table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.AreEqual(ParagraphAlignment.Center,
+                        table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+                    break;
+                case TableContentAlignment.Right:
+                    Assert.AreEqual(ParagraphAlignment.Right,
+                        table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.AreEqual(ParagraphAlignment.Right,
+                        table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+                    break;
             }
         }
 

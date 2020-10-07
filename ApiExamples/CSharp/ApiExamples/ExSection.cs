@@ -327,8 +327,8 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx");
 
             // All the document's content is stored in the child nodes of sections like this one
-            Assert.AreEqual("Hello World!", doc.GetText().Trim());
-            Assert.AreEqual(5, doc.Sections[0].GetChildNodes(NodeType.Any, true).Count);
+            Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
+            Assert.AreEqual(19, doc.Sections[0].GetChildNodes(NodeType.Any, true).Count);
 
             doc.Sections.Clear();
             
@@ -381,7 +381,7 @@ namespace ApiExamples
             //ExSummary:Shows how to clear the content of a section.
             Document doc = new Document(MyDir + "Document.docx");
 
-            Assert.AreEqual("Hello World!", doc.GetText().Trim());
+            Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
 
             doc.FirstSection.ClearContent();
 

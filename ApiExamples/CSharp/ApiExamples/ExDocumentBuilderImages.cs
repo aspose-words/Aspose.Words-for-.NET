@@ -379,8 +379,8 @@ namespace ApiExamples
 
             Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual(300.0d, imageShape.Height);
-            Assert.AreEqual(300.0d, imageShape.Width);
+            Assert.AreEqual(300.0d, imageShape.Height, 0.1d);
+            Assert.AreEqual(300.0d, imageShape.Width, 0.1d);
             Assert.AreEqual(0.0d, imageShape.Left);
             Assert.AreEqual(0.0d, imageShape.Top);
 
@@ -389,8 +389,8 @@ namespace ApiExamples
             Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Png, imageShape);
-            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
-            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
 
             imageShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
@@ -404,8 +404,8 @@ namespace ApiExamples
             Assert.AreEqual(RelativeVerticalPosition.Paragraph, imageShape.RelativeVerticalPosition);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Png, imageShape);
-            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
-            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
 
             imageShape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
 
@@ -419,8 +419,8 @@ namespace ApiExamples
             Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Png, imageShape);
-            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints);
-            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
+            Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
         }
 
         [Test]

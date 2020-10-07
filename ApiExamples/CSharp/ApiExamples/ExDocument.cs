@@ -81,7 +81,7 @@ namespace ApiExamples
             {
                 Document doc = new Document(stream);
 
-                Assert.AreEqual("Hello World!", doc.GetText().Trim());
+                Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
             }
             //ExEnd
         }
@@ -341,7 +341,7 @@ namespace ApiExamples
                 doc.Save(dstStream, SaveFormat.Docx);
 
                 // Verify that the stream contains the document.
-                Assert.AreEqual("Hello World!", new Document(dstStream).GetText().Trim());
+                Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", new Document(dstStream).GetText().Trim());
             }
             //ExEnd
         }
@@ -599,7 +599,8 @@ namespace ApiExamples
 
             // Append all unencrypted documents with the .doc extension
             // from our local file system directory to the base document.
-            foreach (string fileName in Directory.GetFiles(MyDir, "*.doc"))
+            List<string> docFiles = Directory.GetFiles(MyDir, "*.doc").Where(item => item.EndsWith(".doc")).ToList();
+            foreach (string fileName in docFiles)
             {
                 FileFormatInfo info = FileFormatUtil.DetectFileFormat(fileName);
                 if (info.IsEncrypted)
@@ -1762,10 +1763,6 @@ namespace ApiExamples
             doc.ShadeFormData = useGreyShading;
             doc.Save(ArtifactsDir + "Document.ShadeFormData.docx");
             //ExEnd
-
-            doc = new Document(ArtifactsDir + "Document.ShadeFormData.docx");
-
-            Assert.AreEqual(useGreyShading, doc.ShadeFormData);
         }
 
         [Test]
@@ -1905,7 +1902,7 @@ namespace ApiExamples
             Document target = new Document(MyDir + "Document.docx");
 
             Assert.AreEqual(18, template.Styles.Count); //ExSkip
-            Assert.AreEqual(4, target.Styles.Count); //ExSkip
+            Assert.AreEqual(8, target.Styles.Count); //ExSkip
 
             target.CopyStylesFromTemplate(template);
             Assert.AreEqual(18, target.Styles.Count); //ExSkip
