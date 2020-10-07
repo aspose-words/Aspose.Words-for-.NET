@@ -599,7 +599,8 @@ namespace ApiExamples
 
             // Append all unencrypted documents with the .doc extension
             // from our local file system directory to the base document.
-            foreach (string fileName in Directory.GetFiles(MyDir, "*.doc"))
+            List<string> docFiles = Directory.GetFiles(MyDir, "*.doc").Where(item => item.EndsWith(".doc")).ToList();
+            foreach (string fileName in docFiles)
             {
                 FileFormatInfo info = FileFormatUtil.DetectFileFormat(fileName);
                 if (info.IsEncrypted)
@@ -1761,74 +1762,6 @@ namespace ApiExamples
             // We can turn the grey shading off, so the bookmarked text will blend in with the other text.
             doc.ShadeFormData = useGreyShading;
             doc.Save(ArtifactsDir + "Document.ShadeFormData.docx");
-            //ExEnd
-        }
-
-        [Test]
-        public void RevisionOptions()
-        {
-            //ExStart
-            //ExFor:ShowInBalloons
-            //ExFor:RevisionOptions.ShowInBalloons
-            //ExFor:RevisionOptions.CommentColor
-            //ExFor:RevisionOptions.DeletedTextColor
-            //ExFor:RevisionOptions.DeletedTextEffect
-            //ExFor:RevisionOptions.InsertedTextEffect
-            //ExFor:RevisionOptions.MovedFromTextColor
-            //ExFor:RevisionOptions.MovedFromTextEffect
-            //ExFor:RevisionOptions.MovedToTextColor
-            //ExFor:RevisionOptions.MovedToTextEffect
-            //ExFor:RevisionOptions.RevisedPropertiesColor
-            //ExFor:RevisionOptions.RevisedPropertiesEffect
-            //ExFor:RevisionOptions.RevisionBarsColor
-            //ExFor:RevisionOptions.RevisionBarsWidth
-            //ExFor:RevisionOptions.ShowOriginalRevision
-            //ExFor:RevisionOptions.ShowRevisionMarks
-            //ExFor:RevisionOptions.RevisionBarsPosition
-            //ExFor:RevisionOptions.MeasurementUnit
-            //ExFor:RevisionTextEffect
-            //ExSummary:Shows how to edit appearance of revisions.
-            Document doc = new Document(MyDir + "Revisions.docx");
-
-            // Get the RevisionOptions object that controls the appearance of revisions
-            RevisionOptions revisionOptions = doc.LayoutOptions.RevisionOptions;
-
-            // Render text inserted while revisions were being tracked in italic green
-            revisionOptions.InsertedTextColor = RevisionColor.Green;
-            revisionOptions.InsertedTextEffect = RevisionTextEffect.Italic;
-
-            // Render text deleted while revisions were being tracked in bold red
-            revisionOptions.DeletedTextColor = RevisionColor.Red;
-            revisionOptions.DeletedTextEffect = RevisionTextEffect.Bold;
-
-            // In a movement revision, the same text will appear twice: once at the departure point and once at the arrival destination
-            // Render the text at the moved-from revision yellow with double strike through and double underlined blue at the moved-to revision
-            revisionOptions.MovedFromTextColor = RevisionColor.Yellow;
-            revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleStrikeThrough;
-            revisionOptions.MovedToTextColor = RevisionColor.Blue;
-            revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleUnderline;
-
-            // Render text which had its format changed while revisions were being tracked in bold dark red
-            revisionOptions.RevisedPropertiesColor = RevisionColor.DarkRed;
-            revisionOptions.RevisedPropertiesEffect = RevisionTextEffect.Bold;
-
-            // Place a thick dark blue bar on the right side of the page next to lines affected by revisions
-            revisionOptions.RevisionBarsColor = RevisionColor.DarkBlue;
-            revisionOptions.RevisionBarsWidth = 15.0f;
-            revisionOptions.RevisionBarsPosition = HorizontalAlignment.Right;
-
-            // Show revision marks and original text
-            revisionOptions.ShowOriginalRevision = true;
-            revisionOptions.ShowRevisionMarks = true;
-
-            // Get movement, deletion, formatting revisions and comments to show up in green balloons on the right side of the page
-            // and define measurement units inside the revision comments
-            revisionOptions.MeasurementUnit = MeasurementUnits.Points;
-            revisionOptions.ShowInBalloons = ShowInBalloons.Format;
-            revisionOptions.CommentColor = RevisionColor.BrightGreen;
-
-            // These features are only applicable to formats such as .pdf or .jpg
-            doc.Save(ArtifactsDir + "Document.RevisionOptions.pdf");
             //ExEnd
         }
 
