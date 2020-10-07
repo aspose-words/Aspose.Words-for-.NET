@@ -1,10 +1,8 @@
 ﻿
 using System;
-using System.IO;
-using System.Reflection;
 using Aspose.Words.Fonts;
-using Aspose.Words;
 using System.Collections;
+using NUnit.Framework;
 
 namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
 {
@@ -16,6 +14,13 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_RenderingAndPrinting(); 
 
+            SetFontsFolders(dataDir);
+            GetSubstitutionWithoutSuffixes(dataDir);
+        }
+
+        public static void SetFontsFolders(string dataDir)
+        {
+            // ExStart:SetFontsFoldersSystemAndCustomFolder
             Document doc = new Document(dataDir + "Rendering.doc");
             FontSettings FontSettings = new FontSettings();
 
@@ -40,7 +45,46 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             doc.Save(dataDir);
             // ExEnd:SetFontsFoldersSystemAndCustomFolder 
             Console.WriteLine("\nFonts system and coustom folder is setup.\nFile saved at " + dataDir);
-                     
         }
+
+        //ExStart:GetSubstitutionWithoutSuffixes
+        public static void GetSubstitutionWithoutSuffixes(string dataDir)
+        {
+            Document doc = new Document(dataDir + "Get substitution without suffixes.docx");
+
+            DocumentSubstitutionWarnings substitutionWarningHandler = new DocumentSubstitutionWarnings();
+            doc.WarningCallback = substitutionWarningHandler;
+
+            ArrayList fontSources = new ArrayList(FontSettings.DefaultInstance.GetFontsSources());
+            FolderFontSource folderFontSource = new FolderFontSource(dataDir + "Fonts/", true);
+            fontSources.Add(folderFontSource);
+    
+            FontSourceBase[] updatedFontSources = (FontSourceBase[]) fontSources.ToArray(typeof(FontSourceBase));
+            FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
+    
+            doc.Save(dataDir + "GetSubstitutionWithoutSuffixes_out.pdf");
+
+            Assert.AreEqual(
+                "Font 'DINOT-Regular' has not been found. Using 'DINOT' font instead. Reason: font name substitution.",
+                substitutionWarningHandler.FontWarnings[0].Description);
+        }
+
+        public class DocumentSubstitutionWarnings : IWarningCallback
+        {
+            /// <summary>
+            /// Our callback only needs to implement the "Warning" method. This method is called whenever there is a
+            /// potential issue during document processing. The callback can be set to listen for warnings generated during document
+            /// load and/or document save.
+            /// </summary>
+            public void Warning(WarningInfo info)
+            {
+                // We are only interested in fonts being substituted.
+                if (info.WarningType == WarningType.FontSubstitution)
+                    FontWarnings.Warning(info);
+            }
+
+            public WarningInfoCollection FontWarnings = new WarningInfoCollection();
+        }
+        //ExEnd:GetSubstitutionWithoutSuffixes
     }
 }
