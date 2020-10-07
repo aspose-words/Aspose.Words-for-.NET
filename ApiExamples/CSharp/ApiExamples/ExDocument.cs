@@ -599,7 +599,8 @@ namespace ApiExamples
 
             // Append all unencrypted documents with the .doc extension
             // from our local file system directory to the base document.
-            foreach (string fileName in Directory.GetFiles(MyDir, "*.doc"))
+            List<string> docFiles = Directory.GetFiles(MyDir, "*.doc").Where(item => item.EndsWith(".doc")).ToList();
+            foreach (string fileName in docFiles)
             {
                 FileFormatInfo info = FileFormatUtil.DetectFileFormat(fileName);
                 if (info.IsEncrypted)

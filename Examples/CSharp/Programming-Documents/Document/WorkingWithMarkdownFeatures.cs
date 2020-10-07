@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aspose.Words.Saving;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             ReadMarkdownDocument(dataDir);
             UseWarningSourceMarkdown(dataDir);
             CreateMarkdownDocument(dataDir);
+            ExportIntoMarkdownWithTableContentAlignment(dataDir);
         }
 
         private static void MarkdownDocumentWithEmphases(string dataDir)
@@ -228,6 +230,39 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_With_Docume
             // Save your document as a Markdown file.
             doc.Save(dataDir + "CreateMarkdownDocument.md");
             //ExEnd:CreateMarkdownDocument
+        }
+
+        private static void ExportIntoMarkdownWithTableContentAlignment(string dataDir)
+        {
+            // ExStart:ExportIntoMarkdownWithTableContentAlignment
+            DocumentBuilder builder = new DocumentBuilder();
+
+            // Create a new table with two cells.
+            builder.InsertCell();
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
+            builder.Write("Cell1");
+            builder.InsertCell();
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            builder.Write("Cell2");
+
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            // Makes all paragraphs inside table to be aligned to Left. 
+            saveOptions.TableContentAlignment = TableContentAlignment.Left;
+            builder.Document.Save(dataDir + "left.md", saveOptions);
+
+            // Makes all paragraphs inside table to be aligned to Right. 
+            saveOptions.TableContentAlignment = TableContentAlignment.Right;
+            builder.Document.Save(dataDir + "right.md", saveOptions);
+
+            // Makes all paragraphs inside table to be aligned to Center. 
+            saveOptions.TableContentAlignment = TableContentAlignment.Center;
+            builder.Document.Save(dataDir + "center.md", saveOptions);
+
+            // Makes all paragraphs inside table to be aligned automatically.
+            // The alignment in this case will be taken from the first paragraph in corresponding table column.
+            saveOptions.TableContentAlignment = TableContentAlignment.Auto;
+            builder.Document.Save(dataDir + "auto.md", saveOptions);
+            // ExEnd:ExportIntoMarkdownWithTableContentAlignment
         }
     }
 }
