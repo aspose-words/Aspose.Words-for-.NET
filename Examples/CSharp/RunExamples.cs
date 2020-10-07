@@ -97,7 +97,8 @@ namespace Aspose.Words.Examples.CSharp
             // SaveOptionsHtmlFixed.Run();
             // SaveDocWithHtmlSaveOptions.Run();
             // WorkingWithVbaMacros.Run();
-            // SpecifyMarkdownSaveOptions.Run();
+            // ConvertDocumentToMarkdown.Run();
+            // WorkingWithVbaReferenceCollection.Run();
 
 
             //// =====================================================
@@ -247,6 +248,7 @@ namespace Aspose.Words.Examples.CSharp
             // FormFieldsGetFormFieldsCollection.Run();
             // FormFieldsGetByName.Run();
             // FormFieldsWorkWithProperties.Run();
+            // FormFieldsFontFormatting.Run();
             // RenameMergeFields.Run();
             // ChangeFieldUpdateCultureSource.Run();
             // GetFieldNames.Run();

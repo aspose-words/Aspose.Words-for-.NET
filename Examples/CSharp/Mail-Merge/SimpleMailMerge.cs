@@ -13,25 +13,31 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
 {
     class SimpleMailMerge
     {
-        public static void Run()
+        // ExStart:SimpleMailMergeExecuteArray 
+        public static void SimpleMailMergeExecuteArray()
         {
-            // ExStart:SimpleMailMerge           
             // The path to the documents directory.
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting(); 
-            // Open an existing document.
-            Document doc = new Document(dataDir + "MailMerge.ExecuteArray.doc");
 
-            doc.MailMerge.UseNonMergeFields = true;
+            // Include the code for our template.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Create Merge Fields.
+            builder.InsertField(" MERGEFIELD CustomerName ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD Item ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD Quantity ");
+
+            builder.Document.Save(dataDir + "MailMerge.TestTemplate.docx");
+            
             // Fill the fields in the document with user data.
-            doc.MailMerge.Execute(
-                new string[] { "FullName", "Company", "Address", "Address2", "City" },
-                new object[] { "James Bond", "MI5 Headquarters", "Milbank", "", "London" });
+            doc.MailMerge.Execute(new string[] { "CustomerName", "Item", "Quantity" },
+                new object[] { "John Doe", "Hawaiian", "2" });
 
-            dataDir = dataDir + "MailMerge.ExecuteArray_out.doc";
-            // Send the document in Word format to the client browser with an option to save to disk or open inside the current browser.
-            doc.Save(dataDir);
-            // ExEnd:SimpleMailMerge
+            builder.Document.Save(dataDir + "MailMerge.Simple.docx");
+            // ExEnd:SimpleMailMergeExecuteArray
             Console.WriteLine("\nSimple Mail merge performed with array data successfully.\nFile saved at " + dataDir);
         }
     }

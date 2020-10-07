@@ -16,37 +16,36 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
     {
         public static void Run()
         {
-            // ExStart:ProduceMultipleDocuments            
-            // The path to the documents directory.
+            //ExStart:ProduceMultipleDocuments            
+            //Put the path to the documents directory and open the template:
             string dataDir = RunExamples.GetDataDir_MailMergeAndReporting();
+            Document doc = new Document(dataDir + "TestFile.doc");
+
             // Open the database connection.
             string connString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + dataDir + "Customers.mdb";
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();
+
             // Get data from a database.
             OleDbCommand cmd = new OleDbCommand("SELECT * FROM Customers", conn);
             OleDbDataAdapter da = new OleDbDataAdapter(cmd);
             DataTable data = new DataTable();
             da.Fill(data);
 
-            // Open the template document.
-            Document doc = new Document(dataDir + "TestFile.doc");
+            //Perform a loop through each DataRow to iterate through the DataTable.
+            //Clone the template document instead of loading it from disk for better speed performance before the mail merge operation.
+            //You can load the template document from a file or stream but it is faster to load the document only once and then clone it in memory before each mail merge operation.
 
             int counter = 1;
-            // Loop though all records in the data source.
             foreach (DataRow row in data.Rows)
             {
-                // Clone the template instead of loading it from disk (for speed).
-                Document dstDoc = (Document)doc.Clone(true);
-
-                // Execute mail merge.
+                Document dstDoc = (Document) doc.Clone(true);
                 dstDoc.MailMerge.Execute(row);
-
-                // Save the document.
                 dstDoc.Save(string.Format(dataDir + "TestFile_out{0}.doc", counter++));
             }
-            // ExEnd:ProduceMultipleDocuments
-            Console.WriteLine("\nProduce multiple documents performed successfully.\nFile saved at " + dataDir);            
+
+            Console.WriteLine("\nProduce multiple documents performed successfully.\nFile saved at " + dataDir);
+            //ExEnd:ProduceMultipleDocuments           
         }
     }
 }

@@ -90,10 +90,14 @@ namespace Aspose.Words.Examples.CSharp.Mail_Merge
                 }
             }
 
+            //ExStart:ImageFieldMerging
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
-                // Do nothing.
+                args.ImageFileName = "Image.png";
+                args.ImageWidth.Value = 200;
+                args.ImageHeight = new MergeFieldImageDimension(200, MergeFieldImageDimensionUnit.Percent);
             }
+            //ExEnd:ImageFieldMerging
 
             private DocumentBuilder mBuilder;
         }
