@@ -24,27 +24,24 @@ namespace ApiExamples
         //ExFor:IMailMergeDataSource.GetValue
         //ExFor:IMailMergeDataSource.GetChildDataSource
         //ExFor:MailMerge.Execute(IMailMergeDataSourceCore)
-        //ExSummary:Performs mail merge from a custom data source.
+        //ExSummary:Shows how to execute a mail merge with a data source in the form of a custom object.
         [Test] //ExSkip
         public void CustomDataSource()
         {
-            // Create a destination document for the mail merge
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertField(" MERGEFIELD FullName ");
             builder.InsertParagraph();
             builder.InsertField(" MERGEFIELD Address ");
 
-            // Create some data that we will use in the mail merge
             CustomerList customers = new CustomerList();
             customers.Add(new Customer("Thomas Hardy", "120 Hanover Sq., London"));
             customers.Add(new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino"));
 
-            // To be able to mail merge from your own data source, it must be wrapped
-            // into an object that implements the IMailMergeDataSource interface
+            // In order to be able to use a custom object as a data source,
+            // it must implement the IMailMergeDataSource interface. 
             CustomerMailMergeDataSource dataSource = new CustomerMailMergeDataSource(customers);
 
-            // Now you can pass your data source into Aspose.Words
             doc.MailMerge.Execute(dataSource);
 
             doc.Save(ArtifactsDir + "MailMergeCustom.CustomDataSource.docx");
@@ -88,7 +85,7 @@ namespace ApiExamples
             {
                 mCustomers = customers;
 
-                // When the data source is initialized, it must be positioned before the first record.
+                // When we initialize the data source, its position must be before the first record.
                 mRecordIndex = -1;
             }
 
@@ -114,8 +111,8 @@ namespace ApiExamples
                         fieldValue = mCustomers[mRecordIndex].Address;
                         return true;
                     default:
-                        // A field with this name was not found, 
-                        // return false to the Aspose.Words mail merge engine.
+                        // Return "false" to the Aspose.Words mail merge engine to signify
+                        // that we could not find a field with this name.
                         fieldValue = null;
                         return false;
                 }
@@ -165,11 +162,11 @@ namespace ApiExamples
         [Test] //ExSkip
         public void CustomDataSourceRoot()
         {
-            // Create a document with two mail merge regions named "Washington" and "Seattle"
+            // Create a document with two mail merge regions named "Washington" and "Seattle".
             string[] mailMergeRegions = { "Vancouver", "Seattle" };
             Document doc = CreateSourceDocumentWithMailMergeRegions(mailMergeRegions);
 
-            // Create two data sources
+            // Create two data sources for the mail merge.
             EmployeeList employeesWashingtonBranch = new EmployeeList();
             employeesWashingtonBranch.Add(new Employee("John Doe", "Sales"));
             employeesWashingtonBranch.Add(new Employee("Jane Doe", "Management"));
@@ -178,13 +175,16 @@ namespace ApiExamples
             employeesSeattleBranch.Add(new Employee("John Cardholder", "Management"));
             employeesSeattleBranch.Add(new Employee("Joe Bloggs", "Sales"));
 
-            // Register our data sources by name in a data source root
+            // Register our data sources by name in a data source root.
+            // If we are about to use this data source root in a mail merge with regions,
+            // the registered name of each source must match the name of an existing mail merge region in the mail merge source document.
             DataSourceRoot sourceRoot = new DataSourceRoot();
             sourceRoot.RegisterSource(mailMergeRegions[0], new EmployeeListMailMergeSource(employeesWashingtonBranch));
             sourceRoot.RegisterSource(mailMergeRegions[1], new EmployeeListMailMergeSource(employeesSeattleBranch));
 
-            // Since we have consecutive mail merge regions, we would normally have to perform two mail merges
-            // However, one mail merge source with a data root can fill in multiple regions as long as the root contains tables with corresponding names/column names 
+            // Since we have consecutive mail merge regions, we would normally have to perform two mail merges.
+            // However, one mail merge source with a data root can fill in multiple regions
+            // as long as the root contains tables with corresponding names/column names.
             doc.MailMerge.ExecuteWithRegions(sourceRoot);
 
             doc.Save(ArtifactsDir + "MailMergeCustom.CustomDataSourceRoot.docx");
@@ -316,8 +316,8 @@ namespace ApiExamples
                         fieldValue = mEmployees[mRecordIndex].Department;
                         return true;
                     default:
-                        // A field with this name was not found, 
-                        // return false to the Aspose.Words mail merge engine
+                        // Return "false" to the Aspose.Words mail merge engine to signify
+                        // that we could not find a field with this name.
                         fieldValue = null;
                         return false;
                 }
