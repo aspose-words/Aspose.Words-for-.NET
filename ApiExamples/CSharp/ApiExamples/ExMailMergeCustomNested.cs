@@ -18,22 +18,29 @@ namespace ApiExamples
     {
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegions(IMailMergeDataSource)
-        //ExSummary:Performs mail merge with regions from a custom data source.
+        //ExSummary:Shows how to use mail merge regions to execute a nested mail merge.
         [Test] //ExSkip
         public void CustomDataSource()
         {
-            // Create a destination document for the mail merge
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertField(" MERGEFIELD TableStart:Customer");
 
+            // Normally, MERGEFIELDs contain the name of a column of a mail merge data source.
+            // We can instead use "TableStart:" and "TableEnd:" prefixes to begin/end a mail merge region.
+            // Each region will belong to a table with a name that matches the string immediately after the colon in the prefix.
+            builder.InsertField(" MERGEFIELD TableStart:Customers");
+
+            // These MERGEFIELDs are inside the mail merge region of the "Customers" table.
+            // When we execute the mail merge, this field will receive data from rows in a data source named "Customers".
             builder.Write("Full name:\t");
             builder.InsertField(" MERGEFIELD FullName ");
             builder.Write("\nAddress:\t");
             builder.InsertField(" MERGEFIELD Address ");
             builder.Write("\nOrders:\n");
 
-            builder.InsertField(" MERGEFIELD TableStart:Order");
+            // Create a second mail merge region inside the outer region for a data source named "Orders".
+            // The "Orders" data entries have a many-to-one relationship with the "Customers" data source.
+            builder.InsertField(" MERGEFIELD TableStart:Orders");
 
             builder.Write("\tItem name:\t");
             builder.InsertField(" MERGEFIELD Name ");
@@ -41,25 +48,22 @@ namespace ApiExamples
             builder.InsertField(" MERGEFIELD Quantity ");
             builder.InsertParagraph();
 
-            builder.InsertField(" MERGEFIELD TableEnd:Order");
+            builder.InsertField(" MERGEFIELD TableEnd:Orders");
+            builder.InsertField(" MERGEFIELD TableEnd:Customers");
 
-            builder.InsertField(" MERGEFIELD TableEnd:Customer");
-
-            // Create some data that we will use in the mail merge
+            // Create related data with names that match those of our mail merge regions.
             CustomerList customers = new CustomerList();
             customers.Add(new Customer("Thomas Hardy", "120 Hanover Sq., London"));
             customers.Add(new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino"));
 
-            // Create some data for nesting in the mail merge
             customers[0].Orders.Add(new Order("Rugby World Cup Cap", 2));
             customers[0].Orders.Add(new Order("Rugby World Cup Ball", 1));
             customers[1].Orders.Add(new Order("Rugby World Cup Guide", 1));
 
-            // To be able to mail merge from your own data source, it must be wrapped
-            // into an object that implements the IMailMergeDataSource interface
+            // To be able to mail merge from your own data source, we must wrap it
+            // into an object that implements the IMailMergeDataSource interface.
             CustomerMailMergeDataSource customersDataSource = new CustomerMailMergeDataSource(customers);
-
-            // Now you can pass your data source into Aspose.Words
+            
             doc.MailMerge.ExecuteWithRegions(customersDataSource);
 
             doc.Save(ArtifactsDir + "NestedMailMergeCustom.CustomDataSource.docx");
@@ -132,7 +136,7 @@ namespace ApiExamples
             {
                 mCustomers = customers;
 
-                // When the data source is initialized, it must be positioned before the first record
+                // When we initialize the data source, its position must be before the first record.
                 mRecordIndex = -1;
             }
 
@@ -141,7 +145,7 @@ namespace ApiExamples
             /// </summary>
             public string TableName
             {
-                get { return "Customer"; }
+                get { return "Customers"; }
             }
 
             /// <summary>
@@ -161,8 +165,8 @@ namespace ApiExamples
                         fieldValue = mCustomers[mRecordIndex].Orders;
                         return true;
                     default:
-                        // A field with this name was not found, 
-                        // return false to the Aspose.Words mail merge engine
+                        // Return "false" to the Aspose.Words mail merge engine to signify
+                        // that we could not find a field with this name.
                         fieldValue = null;
                         return false;
                 }
@@ -183,8 +187,8 @@ namespace ApiExamples
             {
                 switch (tableName)
                 {
-                    // Get the child collection to merge it with the region provided with tableName variable
-                    case "Order":
+                    // Get the child data source, whose name matches the mail merge region that uses its columns.
+                    case "Orders":
                         return new OrderMailMergeDataSource(mCustomers[mRecordIndex].Orders);
                     default:
                         return null;
@@ -206,7 +210,7 @@ namespace ApiExamples
             {
                 mOrders = orders;
 
-                // When the data source is initialized, it must be positioned before the first record
+                // When we initialize the data source, its position must be before the first record.
                 mRecordIndex = -1;
             }
 
@@ -215,7 +219,7 @@ namespace ApiExamples
             /// </summary>
             public string TableName
             {
-                get { return "Order"; }
+                get { return "Orders"; }
             }
 
             /// <summary>
@@ -232,8 +236,8 @@ namespace ApiExamples
                         fieldValue = mOrders[mRecordIndex].Quantity;
                         return true;
                     default:
-                        // A field with this name was not found, 
-                        // return false to the Aspose.Words mail merge engine
+                        // Return "false" to the Aspose.Words mail merge engine to signify
+                        // that we could not find a field with this name.
                         fieldValue = null;
                         return false;
                 }

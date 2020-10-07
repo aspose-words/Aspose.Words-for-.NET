@@ -354,7 +354,7 @@ namespace ApiExamples
             builder.InsertField(" MERGEFIELD TableStart:Customers");
 
             // This MERGEFIELD is inside the mail merge region of the "Customers" table.
-            // When we execute the mail merge, this field will receive data from rows in a table called "Customers".
+            // When we execute the mail merge, this field will receive data from rows in a data source named "Customers".
             builder.Write("Orders for ");
             builder.InsertField(" MERGEFIELD CustomerName");
             builder.Write(":");
