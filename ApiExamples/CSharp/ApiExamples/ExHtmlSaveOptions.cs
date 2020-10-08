@@ -1453,8 +1453,7 @@ namespace ApiExamples
                     "<img src=\"HtmlSaveOptions.RoundTripInformation.003.jpeg\" width=\"351\" height=\"180\" alt=\"\" />"));
 
                 Assert.True(outDocContents.Contains(
-                    "<span>Page number </span>" +
-                    "<span>1</span>"));
+                    "<span>Page number 1</span>"));
 
                 Assert.AreEqual(0, doc.Range.Fields.Count(f => f.Type == FieldType.FieldPage));
             }
@@ -1684,10 +1683,9 @@ namespace ApiExamples
                         "</p>").Success);
                     break;
                 case HtmlOfficeMathOutputMode.Text:
-                    Assert.True(Regex.Match(outDocContents, 
-                        "<p style=\"margin-top:0pt; margin-bottom:10pt\">" +
-                            "<span style=\"font-family:'Cambria Math'\">i[+]b-c≥</span>" +
-                            ".*" +
+                    Assert.True(Regex.Match(outDocContents,
+                        @"<p style=\""margin-top:0pt; margin-bottom:10pt\"">" +
+                            @"<span style=\""font-family:'Cambria Math'\"">i[+]b-c≥iM[+]bM-cM </span>" +
                         "</p>").Success);
                     break;
             }

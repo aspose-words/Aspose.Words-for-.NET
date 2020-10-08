@@ -112,7 +112,7 @@ namespace ApiExamples
                 new string[] { "TextField", "TextField2", "NumericField" },
                 new object[] { "Original value", "Original value", 10 });
 
-            Assert.AreEqual("New Value, New value from FieldMergingArgs, 20.0", doc.GetText().Trim());
+            Assert.AreEqual("New Value For \"Textfield\", New value from FieldMergingArgs, 20.0", doc.GetText().Trim());
         }
 
         private class FieldValueMergingCallback : IFieldMergingCallback

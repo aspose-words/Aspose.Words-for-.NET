@@ -159,9 +159,9 @@ namespace ApiExamples
             FileInfo fileInfo = new FileInfo(ArtifactsDir + "Font.FontInfoCollection.docx");
 
             if (embedAllFonts)
-                Assert.True(fileInfo.Length > 23000);
+                Assert.True(fileInfo.Length > 26000);
             else
-                Assert.True(fileInfo.Length < 9000);
+                Assert.True(fileInfo.Length < 15000);
             //ExEnd
         }
 
