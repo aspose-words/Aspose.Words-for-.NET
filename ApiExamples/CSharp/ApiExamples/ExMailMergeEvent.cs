@@ -5,14 +5,12 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
 using System.Drawing;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
-using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
 
@@ -32,54 +30,64 @@ namespace ApiExamples
         //ExFor:FieldMergingArgsBase.Document
         //ExFor:IFieldMergingCallback.FieldMerging
         //ExFor:FieldMergingArgs.Text
-        //ExFor:FieldMergeField.TextBefore
-        //ExSummary:Shows how to mail merge HTML data into a document.
+        //ExSummary:Shows how to execute a mail merge with a custom callback that handles merge data in the form of HTML documents.
         [Test] //ExSkip
-        public void InsertHtml()
+        public void MergeHtml()
         {
-            Document doc = new Document(MyDir + "Field sample - MERGEFIELD.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a handler for the MergeField event
+            builder.InsertField(@"MERGEFIELD  html_Title  \b Content");
+            builder.InsertField(@"MERGEFIELD  html_Body  \b Content");
+
+            object[] mergeData =
+            {
+                "<html>" +
+                    "<h1>" +
+                        "<span style=\"color: #0000ff; font-family: Arial;\">Hello World!</span>" +
+                    "</h1>" +
+                "</html>", 
+
+                "<html>" +
+                    "<blockquote>" +
+                        "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>" +
+                    "</blockquote>" +
+                "</html>"
+            };
+            
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertHtml();
-
-            const string html = @"<html>
-                    <h1>Hello world!</h1>
-            </html>";
-
-            // Execute mail merge
-            doc.MailMerge.Execute(new string[] { "htmlField1" }, new object[] { html });
-
-            // Save resulting document with a new name
-            doc.Save(ArtifactsDir + "MailMergeEvent.InsertHtml.docx");
+            doc.MailMerge.Execute(new[] { "html_Title", "html_Body" }, mergeData);
+            
+            doc.Save(ArtifactsDir + "MailMergeEvent.MergeHtml.docx");
         }
 
+        /// <summary>
+        /// If the mail merge encounters a MERGEFIELD whose name starts with the "html_" prefix,
+        /// this callback parses its merge data as HTML content, and adds the result to the document in the location of the MERGEFIELD.
+        /// </summary>
         private class HandleMergeFieldInsertHtml : IFieldMergingCallback
         {
             /// <summary>
-            /// This is called when merge field is merged with data in the document.
+            /// Called when a mail merge merges data into a MERGEFIELD.
             /// </summary>
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
-                // All merge fields that expect HTML data should be marked with some prefix, e.g. 'html'
-                if (args.DocumentFieldName.StartsWith("html") && args.Field.GetFieldCode().Contains("\\b"))
+                if (args.DocumentFieldName.StartsWith("html_") && args.Field.GetFieldCode().Contains("\\b"))
                 {
-                    FieldMergeField field = args.Field;
-
-                    // Insert the text for this merge field as HTML data, using DocumentBuilder
+                    // Add parsed HTML data to the document's body.
                     DocumentBuilder builder = new DocumentBuilder(args.Document);
                     builder.MoveToMergeField(args.DocumentFieldName);
-                    builder.Write(field.TextBefore);
-                    builder.InsertHtml((string) args.FieldValue);
+                    builder.InsertHtml((string)args.FieldValue);
 
-                    // The HTML text itself should not be inserted
-                    // We have already inserted it as an HTML
-                    args.Text = "";
+                    // Since we have already inserted the merge content manually,
+                    // we will not need to respond to this event by returning content via the "Text" property. 
+                    args.Text = string.Empty;
                 }
             }
 
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
-                // Do nothing
+                // Do nothing.
             }
         }
         //ExEnd
@@ -118,7 +126,7 @@ namespace ApiExamples
                 {
                     case "TextField":
                         Assert.AreEqual("Original value", e.FieldValue);
-                        e.FieldValue = "New value";
+                        e.FieldValue = "New value for \"TextField\"";
                         break;
                     case "TextField2":
                         Assert.AreEqual("Original value", e.FieldValue);
@@ -134,7 +142,7 @@ namespace ApiExamples
 
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs e)
             {
-                // Do nothing
+                // Do nothing.
             }
         }
         //ExEnd

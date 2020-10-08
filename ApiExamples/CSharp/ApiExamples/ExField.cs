@@ -1780,6 +1780,7 @@ namespace ApiExamples
             //ExFor:FieldMergeField.IsMapped
             //ExFor:FieldMergeField.IsVerticalFormatting
             //ExFor:FieldMergeField.TextAfter
+            //ExFor:FieldMergeField.TextBefore
             //ExSummary:Shows how to use MERGEFIELD fields to perform a mail merge.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
