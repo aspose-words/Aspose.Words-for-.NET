@@ -94,50 +94,45 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:FieldMergingArgsBase.FieldValue
-        //ExSummary:Shows how to use data source value of the field.
+        //ExSummary:Shows how to edit values that MERGEFIELDs receive as a mail merge takes place.
         [Test] //ExSkip
         public void FieldFormats()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertField("MERGEFIELD TextField \\* Caps", null);
+
+            // Insert some MERGEFIELDs with format switches which will edit the values
+            // that they will receive during a mail merge.
+            builder.InsertField("MERGEFIELD text_Field1 \\* Caps", null);
             builder.Write(", ");
-            builder.InsertField("MERGEFIELD TextField2 \\* Upper", null);
+            builder.InsertField("MERGEFIELD text_Field2 \\* Upper", null);
             builder.Write(", ");
-            builder.InsertField("MERGEFIELD NumericField \\# 0.0", null);
+            builder.InsertField("MERGEFIELD numeric_Field1 \\# 0.0", null);
 
             builder.Document.MailMerge.FieldMergingCallback = new FieldValueMergingCallback();
 
             builder.Document.MailMerge.Execute(
-                new string[] { "TextField", "TextField2", "NumericField" },
-                new object[] { "Original value", "Original value", 10 });
+                new string[] { "text_Field1", "text_Field2", "numeric_Field1" },
+                new object[] { "Field 1", "Field 2", 10 });
 
             Assert.AreEqual("New Value For \"Textfield\", New value from FieldMergingArgs, 20.0", doc.GetText().Trim());
         }
 
+        /// <summary>
+        /// Edits the values that MERGEFIELDs receive during a mail merge.
+        /// The name of a MERGEFIELD must have a prefix in order for this callback to take effect on its value.
+        /// </summary>
         private class FieldValueMergingCallback : IFieldMergingCallback
         {
             /// <summary>
-            /// This is called when merge field is merged with data in the document.
+            /// Called when a mail merge merges data into a MERGEFIELD.
             /// </summary>
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
             {
-                switch (e.FieldName)
-                {
-                    case "TextField":
-                        Assert.AreEqual("Original value", e.FieldValue);
-                        e.FieldValue = "New value for \"TextField\"";
-                        break;
-                    case "TextField2":
-                        Assert.AreEqual("Original value", e.FieldValue);
-                        e.Text = "New value from FieldMergingArgs";   // Should suppress e.FieldValue and ignore format
-                        e.FieldValue = "new value";
-                        break;
-                    case "NumericField":
-                        Assert.AreEqual(10.0d, e.FieldValue);
-                        e.FieldValue = 20;
-                        break;
-                }
+                if (e.FieldName.StartsWith("text_"))
+                    e.FieldValue = $"Merge value for \"{e.FieldName}\": {(string)e.FieldValue}";
+                else if (e.FieldName.StartsWith("numeric_"))
+                    e.FieldValue = (int)e.FieldValue * 1000;
             }
 
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs e)
