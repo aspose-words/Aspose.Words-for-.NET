@@ -43,7 +43,9 @@ namespace ApiExamples
                 ExportPageMargins = true
             };
 
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageMarginsEpub" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
+            doc.Save(
+                ArtifactsDir + "HtmlSaveOptions.ExportPageMarginsEpub" +
+                FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
         }
 
         [TestCase(SaveFormat.Html, HtmlOfficeMathOutputMode.Image)]
@@ -53,10 +55,11 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Office math.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
-            saveOptions.OfficeMathOutputMode = outputMode;
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions { OfficeMathOutputMode = outputMode };
 
-            doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportOfficeMathEpub" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
+            doc.Save(
+                ArtifactsDir + "HtmlSaveOptions.ExportOfficeMathEpub" +
+                FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
         }
 
         [TestCase(SaveFormat.Html, true, Description = "TextBox as svg (html)")]
@@ -81,20 +84,23 @@ namespace ApiExamples
             switch (saveFormat)
             {
                 case SaveFormat.Html:
-                    
-                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png", SearchOption.AllDirectories);
+
+                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
+                        SearchOption.AllDirectories);
                     Assert.That(dirFiles, Is.Empty);
                     return;
 
                 case SaveFormat.Epub:
 
-                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png", SearchOption.AllDirectories);
+                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
+                        SearchOption.AllDirectories);
                     Assert.That(dirFiles, Is.Empty);
                     return;
 
                 case SaveFormat.Mhtml:
 
-                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png", SearchOption.AllDirectories);
+                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
+                        SearchOption.AllDirectories);
                     Assert.That(dirFiles, Is.Empty);
                     return;
             }
@@ -118,9 +124,9 @@ namespace ApiExamples
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
             {
                 // 'ExportListLabels.Auto' - this option uses <ul> and <ol> tags are used for list label representation if it does not cause formatting loss, 
-                // otherwise HTML <p> tag is used. This is also the default value
-                // 'ExportListLabels.AsInlineText' - using this option the <p> tag is used for any list label representation
-                // 'ExportListLabels.ByHtmlTags' - The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible
+                // otherwise HTML <p> tag is used. This is also the default value.
+                // 'ExportListLabels.AsInlineText' - using this option the <p> tag is used for any list label representation.
+                // 'ExportListLabels.ByHtmlTags' - The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible.
                 ExportListLabels = howExportListLabels
             };
 
@@ -137,7 +143,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportUrlForLinkedImage.html", saveOptions);
 
-            string[] dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportUrlForLinkedImage.001.png", SearchOption.AllDirectories);
+            string[] dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportUrlForLinkedImage.001.png",
+                SearchOption.AllDirectories);
 
             DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ExportUrlForLinkedImage.html",
                 dirFiles.Length == 0
@@ -157,7 +164,6 @@ namespace ApiExamples
         [Test]
         public void RoundtripInformationDefaulValue()
         {
-            //Assert that default value is true for HTML and false for MHTML and EPUB
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
             Assert.AreEqual(true, saveOptions.ExportRoundtripInformation);
 
@@ -183,16 +189,20 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExternalResourceSavingConfig.html", saveOptions);
 
-            string[] imageFiles = Directory.GetFiles(ArtifactsDir + "Resources/", "HtmlSaveOptions.ExternalResourceSavingConfig*.png", SearchOption.AllDirectories);
+            string[] imageFiles = Directory.GetFiles(ArtifactsDir + "Resources/",
+                "HtmlSaveOptions.ExternalResourceSavingConfig*.png", SearchOption.AllDirectories);
             Assert.AreEqual(8, imageFiles.Length);
 
-            string[] fontFiles = Directory.GetFiles(ArtifactsDir + "Resources/", "HtmlSaveOptions.ExternalResourceSavingConfig*.ttf", SearchOption.AllDirectories);
+            string[] fontFiles = Directory.GetFiles(ArtifactsDir + "Resources/",
+                "HtmlSaveOptions.ExternalResourceSavingConfig*.ttf", SearchOption.AllDirectories);
             Assert.AreEqual(10, fontFiles.Length);
 
-            string[] cssFiles = Directory.GetFiles(ArtifactsDir + "Resources/", "HtmlSaveOptions.ExternalResourceSavingConfig*.css", SearchOption.AllDirectories);
+            string[] cssFiles = Directory.GetFiles(ArtifactsDir + "Resources/",
+                "HtmlSaveOptions.ExternalResourceSavingConfig*.css", SearchOption.AllDirectories);
             Assert.AreEqual(1, cssFiles.Length);
 
-            DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ExternalResourceSavingConfig.html", "<link href=\"https://www.aspose.com/HtmlSaveOptions.ExternalResourceSavingConfig.css\"");
+            DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ExternalResourceSavingConfig.html",
+                "<link href=\"https://www.aspose.com/HtmlSaveOptions.ExternalResourceSavingConfig.css\"");
         }
 
         [Test]
@@ -200,25 +210,24 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "TextBoxes.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
-            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
-            saveOptions.ResourceFolder = "Resources";
-            saveOptions.ExportFontResources = true;
-            saveOptions.ExportFontsAsBase64 = true;
-            
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions
+            {
+                CssStyleSheetType = CssStyleSheetType.External,
+                ResourceFolder = "Resources",
+                ExportFontResources = true,
+                ExportFontsAsBase64 = true
+            };
+
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ConvertFontsAsBase64.html", saveOptions);
 		}
 
-        [TestCase(Aspose.Words.Saving.HtmlVersion.Html5)]
-        [TestCase(Aspose.Words.Saving.HtmlVersion.Xhtml)]
+        [TestCase(HtmlVersion.Html5)]
+        [TestCase(HtmlVersion.Xhtml)]
         public void Html5Support(HtmlVersion htmlVersion)
         {
             Document doc = new Document(MyDir + "Document.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                HtmlVersion = htmlVersion
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions { HtmlVersion = htmlVersion };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.Html5Support.html", saveOptions);
         }
@@ -228,9 +237,10 @@ namespace ApiExamples
         [TestCase(true)]
         public void ExportFonts(bool exportAsBase64)
         {
-            Document doc = new Document(MyDir + "Document.docx");
-
             string fontsFolder = ArtifactsDir + "HtmlSaveOptions.ExportFonts.Resources";
+            
+            Document doc = new Document(MyDir + "Document.docx");
+            
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
                 ExportFontResources = true,
@@ -263,16 +273,16 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
-            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
-            saveOptions.ExportFontResources = true;
-            saveOptions.ResourceFolder = ArtifactsDir + "Resources";
-            saveOptions.ResourceFolderAlias = "http://example.com/resources";
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions
+            {
+                CssStyleSheetType = CssStyleSheetType.External,
+                ExportFontResources = true,
+                ResourceFolder = ArtifactsDir + "Resources",
+                ResourceFolderAlias = "http://example.com/resources"
+            };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ResourceFolderPriority.html", saveOptions);
 
-            string[] a = Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.001.jpeg",
-                SearchOption.AllDirectories);
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.001.png", SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.002.png", SearchOption.AllDirectories));
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.arial.ttf", SearchOption.AllDirectories));
@@ -283,6 +293,7 @@ namespace ApiExamples
         public void ResourceFolderLowPriority()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
+            
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
                 CssStyleSheetType = CssStyleSheetType.External,
@@ -460,10 +471,9 @@ namespace ApiExamples
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ResolveFontNames.html");
 
-            if (resolveFontNames)
-                Assert.True(Regex.Match(outDocContents, "<span style=\"font-family:Arial\">").Success);
-            else
-                Assert.True(Regex.Match(outDocContents, "<span style=\"font-family:\'28 Days Later\'\">").Success);
+            Assert.True(resolveFontNames
+                ? Regex.Match(outDocContents, "<span style=\"font-family:Arial\">").Success
+                : Regex.Match(outDocContents, "<span style=\"font-family:\'28 Days Later\'\">").Success);
             //ExEnd
         }
 
@@ -492,11 +502,11 @@ namespace ApiExamples
             builder.ParagraphFormat.Style = builder.Document.Styles["Heading 3"];
             builder.Writeln("Heading #6");
 
-            // Create a HtmlSaveOptions object, and set the split criteria to "HeadingParagraph". 
+            // Create a HtmlSaveOptions object, and set the split criteria to "HeadingParagraph".
             // This criteria will split the document at paragraphs with "Heading" styles into several smaller documents,
             // and save each document in a separate HTML file in the local file system.
-            // We will also set the maximum heading level which splits the document to 2.
-            // Saving the document will split it at headings of levels 1 and 2, but not at levels of 3 to 9.
+            // We will also set the maximum heading level, which splits the document to 2.
+            // Saving the document will split it at headings of levels 1 and 2, but not at 3 to 9.
             HtmlSaveOptions options = new HtmlSaveOptions
             {
                 DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph,
@@ -663,6 +673,7 @@ namespace ApiExamples
             {
                 Console.WriteLine(fontFilename);
             }
+
             Assert.AreEqual(10, Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length); //ExSkip
         }
 
@@ -715,7 +726,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.HtmlVersions.html", options);
 
-            // Our HTML documents will have minor differences in order to be compatible with different HTML versions.
+            // Our HTML documents will have minor differences to be compatible with different HTML versions.
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.HtmlVersions.html");
 
             switch (htmlVersion)
@@ -798,7 +809,7 @@ namespace ApiExamples
             // Epub readers typically create a table of contents for their documents.
             // Each paragraph with a "Heading" style in the document will create an entry in this table of contents.
             // We can use the "EpubNavigationMapLevel" property to set a maximum heading level. 
-            // The Epub reader will not add headings with a level above the one we specify to the table of contents.
+            // The Epub reader will not add headings with a level above the one we specify to the contents table.
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Epub);
             options.EpubNavigationMapLevel = 2;
 
@@ -845,15 +856,15 @@ namespace ApiExamples
             //ExSummary:Shows how to use a specific encoding when saving a document to .epub.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Use a SaveOptions object to specify encoding for a document that we will save.
+            // Use a SaveOptions object to specify the encoding for a document that we will save.
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.SaveFormat = SaveFormat.Epub;
             saveOptions.Encoding = Encoding.UTF8;
 
             // By default, an output .epub document will have all of its contents in one HTML part.
-            // A split criteria allows us to segment the document into several HTML parts.
-            // We will set the criteria to split the document at heading paragraphs.
-            // This is useful for readers which cannot read HTML files greater than a certain size.
+            // A split criterion allows us to segment the document into several HTML parts.
+            // We will set the criteria to split the document into heading paragraphs.
+            // This is useful for readers who cannot read HTML files more significant than a specific size.
             saveOptions.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph;
 
             // Specify that we want to export document properties.
@@ -919,7 +930,7 @@ namespace ApiExamples
             // The "ExportDropDownFormFieldAsText" flag of this SaveOptions object allows us to
             // control how saving the document to HTML treats drop-down combo boxes.
             // Setting it to "true" will convert each combo box into simple text
-            // which displays the current selected value of the combo box, effectively freezing it.
+            // that displays the combo box's currently selected value, effectively freezing it.
             // Setting it to "false" will preserve the functionality of the combo box using <select> and <option> tags.
             HtmlSaveOptions options = new HtmlSaveOptions();
             options.ExportDropDownFormFieldAsText = exportDropDownFormFieldAsText;    
@@ -961,14 +972,9 @@ namespace ApiExamples
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportImagesAsBase64.html");
 
-            if (exportItemsAsBase64)
-            {
-                Assert.True(outDocContents.Contains("<img src=\"data:image/png;base64"));
-            }
-            else
-            {
-                Assert.True(outDocContents.Contains("<img src=\"HtmlSaveOptions.ExportImagesAsBase64.001.png\""));
-            }
+            Assert.True(exportItemsAsBase64
+                ? outDocContents.Contains("<img src=\"data:image/png;base64")
+                : outDocContents.Contains("<img src=\"HtmlSaveOptions.ExportImagesAsBase64.001.png\""));
             //ExEnd
         }
 
@@ -1014,7 +1020,7 @@ namespace ApiExamples
             builder.Write("Привет, мир!");
 
             // When saving the document to HTML, we can pass a SaveOptions object
-            // to either preserve or discard the locale of each formatted text.
+            // to either preserve or discard each formatted text's locale.
             // If we set the "ExportLanguageInformation" flag to "true",
             // the output HTML document will contain the locales in "lang" attributes of <span> tags.
             // If we set the "ExportLanguageInformation" flag to "false',
@@ -1086,10 +1092,7 @@ namespace ApiExamples
             // to build lists in cases when using the <ol> and <li> tags may cause loss of formatting.
             // Setting the "ExportListLabels" property to "ExportListLabels.ByHtmlTags"
             // will use <ol> and <li> tags to build all lists.
-            HtmlSaveOptions options = new HtmlSaveOptions
-            {
-                ExportListLabels = exportListLabels
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions { ExportListLabels = exportListLabels };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.List.html", options);
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.List.html");
@@ -1176,13 +1179,12 @@ namespace ApiExamples
             shape.Left = -150;
 
             // When saving the document to HTML, we can pass a SaveOptions object
-            // to decide whether to adjust the page so it can fully display out-of-bounds objects.
+            // to decide whether to adjust the page to display out-of-bounds objects fully.
             // If we set the "ExportPageMargins" flag to "true", the shape will be fully visible in the output HTML.
             // If we set the "ExportPageMargins" flag to "false",
-            // our document will display the shape truncated as it would be seen in Microsoft Word.
-            HtmlSaveOptions options = new HtmlSaveOptions();
-            options.ExportPageMargins = exportPageMargins;
-        
+            // our document will display the shape truncated as it would be seen in Microsoft Word. //INSP: 'it would be seen' passive voice
+            HtmlSaveOptions options = new HtmlSaveOptions { ExportPageMargins = exportPageMargins };
+
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html", options);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html");
@@ -1210,12 +1212,10 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a DocumentBuilder to insert two sections with text.
             builder.Write("Section 1");
             builder.InsertBreak(BreakType.SectionBreakNewPage);
             builder.Write("Section 2");
 
-            // Change dimensions and paper size of first section.
             PageSetup pageSetup = doc.Sections[0].PageSetup;
             pageSetup.TopMargin = 36.0;
             pageSetup.BottomMargin = 36.0;
@@ -1224,12 +1224,9 @@ namespace ApiExamples
             // When saving the document to HTML, we can pass a SaveOptions object
             // to decide whether to preserve or discard page setup settings.
             // If we set the "ExportPageSetup" flag to "true", the output HTML document will contain our page setup configuration.
-            // If we set the "ExportPageSetup" flag to "false", the save operation will discard pur page setup settings
+            // If we set the "ExportPageSetup" flag to "false", the save operation will discard our page setup settings
             // for the first section, and both sections will look identical.
-            HtmlSaveOptions options = new HtmlSaveOptions
-            {
-                ExportPageSetup = exportPageSetup
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions { ExportPageSetup = exportPageSetup };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageSetup.html", options);
 
@@ -1275,7 +1272,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a builder to write some text in various sizes
             builder.Writeln("Default font size, ");
             builder.Font.Size = 24;
             builder.Writeln("2x default font size,");
@@ -1288,10 +1284,7 @@ namespace ApiExamples
             // using the "em" measurement unit, which is a factor that multiplies the current font size. 
             // Set the "ExportRelativeFontSize" flag to "false" to declare font sizes
             // using the "pt" measurement unit, which is the font's absolute size in points.
-            HtmlSaveOptions options = new HtmlSaveOptions
-            {
-                ExportRelativeFontSize = exportRelativeFontSize
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions { ExportRelativeFontSize = exportRelativeFontSize };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.RelativeFontSize.html", options);
 
@@ -1344,7 +1337,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Use a DocumentBuilder to insert a text box, and give it some text content.
             Shape textBox = builder.InsertShape(ShapeType.TextBox, 100.0, 60.0);
             builder.MoveTo(textBox.FirstParagraph);
             builder.Write("My text box");
@@ -1355,8 +1347,7 @@ namespace ApiExamples
             // the save operation will convert shapes with text into SVG objects.
             // If we set the "ExportTextBoxAsSvg" flag to "false",
             // the save operation will convert shapes with text into images.
-            HtmlSaveOptions options = new HtmlSaveOptions();
-            options.ExportTextBoxAsSvg = exportTextBoxAsSvg;
+            HtmlSaveOptions options = new HtmlSaveOptions { ExportTextBoxAsSvg = exportTextBoxAsSvg };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTextBox.html", options);
 
@@ -1389,20 +1380,17 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // When converting a document to .html, some elements such as hidden bookmarks, original shape positions,
-            // or footnotes will be either removed or converted to plain text and effectively be lost
-            // Saving with a HtmlSaveOptions object with ExportRoundtripInformation set to true will preserve these elements
+            // or footnotes will be either removed or converted to plain text and effectively be lost.
+            // Saving with a HtmlSaveOptions object with ExportRoundtripInformation set to true will preserve these elements.
 
-            // When we save the document to HTML, we can pass a SaveOptions object
-            // to determine how the saving operation will export document elements
-            // that HTML does not support or make any use of, such as hidden bookmarks and original shape positions.
-            // If we set the "ExportRoundtripInformation" flag to "true", the save operation will preserve these elements. 
+            // When we save the document to HTML, we can pass a SaveOptions object to determine
+            // how the saving operation will export document elements that HTML does not support or use,
+            // such as hidden bookmarks and original shape positions.
+            // If we set the "ExportRoundtripInformation" flag to "true", the save operation will preserve these elements.
             // If we set the "ExportRoundTripInformation" flag to "false", the save operation will discard these elements.
             // We will want to preserve such elements if we intend to load the saved HTML using Aspose.Words,
             // as they could be of use once again.
-            HtmlSaveOptions options = new HtmlSaveOptions
-            {
-                ExportRoundtripInformation = exportRoundtripInformation
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions { ExportRoundtripInformation = exportRoundtripInformation };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.RoundTripInformation.html", options);
 
@@ -1486,16 +1474,15 @@ namespace ApiExamples
             fieldToc.UpdatePageNumbers();
             doc.UpdateFields();
 
-            // HTML documents are not split up into pages, so,
+            // HTML documents are not split up into pages, so, //INSP: 'are not split up' passive voice
             // if we save the document to HTML, the page numbers that our TOC displays will serve no purpose.
             // When we save the document to HTML, we can pass a SaveOptions object to omit these page numbers from the TOC.
             // If we set the "ExportTocPageNumbers" flag to "true",
-            // each TOC entry will display the heading, separator, and also the page number, preserving its appearance in Microsoft Word.
+            // each TOC entry will display the heading, separator, and page number, preserving its appearance in Microsoft Word.
             // If we set the "ExportTocPageNumbers" flag to "false",
             // the save operation will omit both the separator and page number, but leave the heading for each entry intact.
-            HtmlSaveOptions options = new HtmlSaveOptions();
-            options.ExportTocPageNumbers = exportTocPageNumbers;
-            
+            HtmlSaveOptions options = new HtmlSaveOptions { ExportTocPageNumbers = exportTocPageNumbers };
+
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTocPageNumbers.html", options);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportTocPageNumbers.html");
@@ -1539,16 +1526,15 @@ namespace ApiExamples
             builder.Writeln("Hello world!");
 
             // When we save the document to HTML, we can pass a SaveOptions object configure font subsetting.
-            // If we set the "ExportFontResources" flag to "true", and also name a folder in the "FontsFolder" property,
-            // then the saving operation will create that folder,
-            // and place a .ttf file inside that folder for each font that our document uses.
+            // Suppose we set the "ExportFontResources" flag to "true", and also name a folder in the "FontsFolder" property.
+            // In that case, the saving operation will create that folder and place a .ttf file inside
+            // that folder for each font that our document uses.
             // Each .ttf file will contain that font's entire glyph set, which can potentially be very large.
-            // When we apply subsetting to a font, its exported raw data will only contain the glyphs that the document is using,
-            // as opposed to the entire glyph set. If the text in our document only uses a small fraction
-            // of a font's glyph set, then subsetting will significantly reduce the size of our output documents.
+            // When we apply subsetting to a font, its exported raw data will only contain the glyphs that the document is
+            // using instead of the entire glyph set. If the text in our document only uses a small fraction of a font's
+            // glyph set, then subsetting will significantly reduce our output documents' size.
             // We can use the "FontResourcesSubsettingSizeThreshold" property to define a .ttf file size, in bytes.
-            // If an exported font will create a file of a size bigger than that,
-            // then the save operation will apply subsetting to that font. 
+            // If an exported font creates a size bigger file than that, then the save operation will apply subsetting to that font. 
             // Setting a threshold of 0 applies subsetting to all fonts,
             // and setting it to "int.MaxValue" effectively disables subsetting.
             string fontsFolder = ArtifactsDir + "HtmlSaveOptions.FontSubsetting.Fonts";
@@ -1602,8 +1588,7 @@ namespace ApiExamples
             // Setting the "MetafileFormat" property to "HtmlMetafileFormat.Png" to convert it to a PNG image.
             // Setting the "MetafileFormat" property to "HtmlMetafileFormat.Svg" preserve it as a SVG object.
             // Setting the "MetafileFormat" property to "HtmlMetafileFormat.EmfOrWmf" to convert it to a metafile.
-            HtmlSaveOptions options = new HtmlSaveOptions();
-            options.MetafileFormat = htmlMetafileFormat;
+            HtmlSaveOptions options = new HtmlSaveOptions { MetafileFormat = htmlMetafileFormat };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.MetafileFormat.html", options);
 
@@ -1653,8 +1638,7 @@ namespace ApiExamples
             // will convert each OfficeMath object into MathML.
             // Setting the "OfficeMathOutputMode" property to "HtmlOfficeMathOutputMode.Text"
             // will represent each OfficeMath formula using plain HTML text.
-            HtmlSaveOptions options = new HtmlSaveOptions();
-            options.OfficeMathOutputMode = htmlOfficeMathOutputMode;
+            HtmlSaveOptions options = new HtmlSaveOptions { OfficeMathOutputMode = htmlOfficeMathOutputMode };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.OfficeMathOutputMode.html", options);
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.OfficeMathOutputMode.html");
@@ -1719,16 +1703,15 @@ namespace ApiExamples
             imageShape.Width = 50;
             imageShape.Height = 50;
 
-            // Saving a document which contains shapes with images to HTML will create a image file in the local file system
+            // Saving a document that contains shapes with images to HTML will create an image file in the local file system
             // for each such shape. The output HTML document will use <image> tags to link to and display these images.
             // When we save the document to HTML, we can pass a SaveOptions object to determine
             // whether to scale all images that are inside shapes to the sizes of their shapes.
             // Setting the "ScaleImageToShapeSize" flag to "true" will shrink every image
             // to the size of the shape that contains it, so that no saved images will be larger than the document requires them to be.
-            // Setting the "ScaleImageToShapeSize" flag to "false" will preserve the original sizes of these images,
+            // Setting the "ScaleImageToShapeSize" flag to "false" will preserve these images' original sizes,
             // which will take up more space in exchange for preserving image quality.
-            HtmlSaveOptions options = new HtmlSaveOptions();
-            options.ScaleImageToShapeSize = scaleImageToShapeSize;
+            HtmlSaveOptions options = new HtmlSaveOptions { ScaleImageToShapeSize = scaleImageToShapeSize };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.html", options);
 
@@ -1758,7 +1741,6 @@ namespace ApiExamples
             //ExSummary:Shows how to specify the folder for storing linked images after saving to .html.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Set a directory where images will be saved to, then ensure that it exists, and is empty.
             string imagesDir = Path.Combine(ArtifactsDir, "SaveHtmlWithOptions");
 
             if (Directory.Exists(imagesDir))
@@ -1767,9 +1749,11 @@ namespace ApiExamples
             Directory.CreateDirectory(imagesDir);
 
             // Set an option to export form fields as plain text instead of HTML input elements.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
-            options.ExportTextInputFormFieldAsText = true;
-            options.ImagesFolder = imagesDir;
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
+            {
+                ExportTextInputFormFieldAsText = true, 
+                ImagesFolder = imagesDir
+            };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.SaveHtmlWithOptions.html", options);
             //ExEnd
@@ -1793,7 +1777,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // When we save the document to HTML, we can pass a SaveOptions object to designate a callback
-            // which will customize the image saving process.
+            // to customize the image saving process.
             HtmlSaveOptions options = new HtmlSaveOptions();
             options.ImageSavingCallback = new ImageShapePrinter();
            
@@ -1816,7 +1800,7 @@ namespace ApiExamples
                 LayoutCollector layoutCollector = new LayoutCollector(args.Document);
 
                 Console.WriteLine($"\tOn page:\t{layoutCollector.GetStartPageIndex(args.CurrentShape)}");
-                Console.WriteLine($"\tDimensions:\t{args.CurrentShape.Bounds.ToString()}");
+                Console.WriteLine($"\tDimensions:\t{args.CurrentShape.Bounds}");
                 Console.WriteLine($"\tAlignment:\t{args.CurrentShape.VerticalAlignment}");
                 Console.WriteLine($"\tWrap type:\t{args.CurrentShape.WrapType}");
                 Console.WriteLine($"Output filename:\t{args.ImageFileName}\n");
@@ -1837,13 +1821,11 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
-            // Enable pretty format via a SaveOptions object, then save the document in .html to the local file system.
-            HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html);
-            htmlOptions.PrettyFormat = usePrettyFormat;
+            HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html) { PrettyFormat = usePrettyFormat };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.PrettyFormat.html", htmlOptions);
 
-            // Enabling pretty format makes the raw html code more readable by adding tab stop and new line characters.  
+            // Enabling pretty format makes the raw html code more readable by adding tab stop and new line characters.
             string html = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.PrettyFormat.html");
 
             if (usePrettyFormat)

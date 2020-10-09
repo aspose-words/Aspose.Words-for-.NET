@@ -77,7 +77,7 @@ namespace ApiExamples
             Assert.AreEqual(3, doc.PageCount);
 
             // When we save the document as an image, Aspose.Words only renders the first page by default.
-            // We can pass a SaveOptions object to specify a different to page to render.
+            // We can pass a SaveOptions object to specify a different page to render.
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Gif);
 
             // Render every page of the document to a separate image file.
@@ -179,12 +179,12 @@ namespace ApiExamples
             // When we save the document as an image, we can pass a SaveOptions object to
             // select a color mode for the image that the saving operation will generate.
             // If we set the "ImageColorMode" property to "ImageColorMode.BlackAndWhite",
-            // the saving operation will apply grayscale color reduction while rendering the document
+            // the saving operation will apply grayscale color reduction while rendering the document,
             // so it only consists of black and white.
             // If we set the "ImageColorMode" property to "ImageColorMode.Grayscale", 
             // the saving operation will render the document into a monochrome image.
             // If we set the "ImageColorMode" property to "None", the saving operation will apply the default method
-            // and preserve all the colors of the document in the output image.
+            // and preserve all the document's colors in the output image.
             ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
             imageSaveOptions.ImageColorMode = imageColorMode;
             
@@ -347,7 +347,7 @@ namespace ApiExamples
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png)
             {
                 // We can adjust these properties to change the image's brightness and contrast.
-                // Both are on a 0-1 scale, and are at 0.5 by default.
+                // Both are on a 0-1 scale and are at 0.5 by default.
                 ImageBrightness = 0.3f,
                 ImageContrast = 0.7f,
 
@@ -357,7 +357,7 @@ namespace ApiExamples
                 HorizontalResolution = 72f,
                 VerticalResolution = 72f,
 
-                // We can scale the image using this property. The default value is 1.0, for a scaling of 100%.
+                // We can scale the image using this property. The default value is 1.0, for scaling of 100%.
                 // We can use this property to negate any changes in image dimensions that changing the resolution would cause.
                 Scale = 96f / 72f
             };

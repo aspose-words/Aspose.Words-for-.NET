@@ -50,7 +50,7 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.InsertBreak(BreakType.PageBreak);
 
-            // We need to call the "UpdatePageLayout" method before the layout collector can give us
+            // Before the layout collector, we need to call the "UpdatePageLayout" method to give us
             // an accurate figure for any layout-related metric, such as the page count.
             Assert.AreEqual(0, layoutCollector.GetNumPagesSpanned(doc));
 
@@ -59,7 +59,7 @@ namespace ApiExamples
 
             Assert.AreEqual(5, layoutCollector.GetNumPagesSpanned(doc));
 
-            // We can see the numbers of the start and end pages of any node, as well as their overall page spans.
+            // We can see the numbers of the start and end pages of any node and their overall page spans.
             NodeCollection nodes = doc.GetChildNodes(NodeType.Any, true);
             foreach (Node node in nodes)
             {
@@ -125,9 +125,9 @@ namespace ApiExamples
             layoutEnumerator.Reset();
 
             // There are two orders that determine how the layout enumerator continues traversing layout entities
-            // when it encounters entities that are split up across multiple pages.
+            // when it encounters entities that are split up across multiple pages. //INSP: 'are split up' passive voice
             // 1 -  In visual order:
-            // When moving through an entity's children that are broken across pages,
+            // When moving through an entity's children that are broken across pages, //INSP: 'are broken' passive voice
             // page layout takes precedence, and we move to other child elements on this page and avoid the ones on the next.
             Console.WriteLine("Traversing from first to last, elements between pages separated:");
             TraverseLayoutForward(layoutEnumerator, 1);
@@ -137,7 +137,7 @@ namespace ApiExamples
             TraverseLayoutBackward(layoutEnumerator, 1);
 
             // 2 -  In logical order:
-            // When moving through an entity's children that are broken across pages,
+            // When moving through an entity's children that are broken across pages, //INSP: 'are broken' passive voice
             // the enumerator will move between pages to traverse all the child entities.
             Console.WriteLine("Traversing from first to last, elements between pages mixed:");
             TraverseLayoutForwardLogical(layoutEnumerator, 1);
@@ -220,7 +220,7 @@ namespace ApiExamples
 
         /// <summary>
         /// Print information about layoutEnumerator's current entity to the console, while indenting the text with tab characters
-        /// based on its depth relative to the root node that we provided in the constructor of this LayoutEnumerator instance.
+        /// based on its depth relative to the root node that we provided in the constructor LayoutEnumerator instance.
         /// The rectangle that we process at the end represents the area and location that the entity takes up in the document.
         /// </summary>
         private static void PrintCurrentEntity(LayoutEnumerator layoutEnumerator, int indent)

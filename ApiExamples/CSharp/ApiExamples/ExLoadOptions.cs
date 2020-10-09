@@ -158,7 +158,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.MswVersion
             //ExSummary:Shows how to emulate the loading procedure of a specific Microsoft Word version during document loading.
-            // By default, Aspose.Words loads documents according to Microsoft Word 2019 specification.
+            // By default, Aspose.Words load documents according to Microsoft Word 2019 specification.
             LoadOptions loadOptions = new LoadOptions();
             
             Assert.AreEqual(MsWordVersion.Word2019, loadOptions.MswVersion);
@@ -235,7 +235,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.TempFolder
             //ExSummary:Shows how to use the hard drive instead of memory when loading a document.
-            // When we load a document, various elements are temporarily stored in memory as the save operation is taking place.
+            // When we load a document, various elements are temporarily stored in memory as the save operation occurs.
             // We can use this option to use a temporary folder in the local file system instead,
             // which will reduce our application's memory overhead.
             LoadOptions options = new LoadOptions();

@@ -32,13 +32,13 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A footnote is a way to attach a reference, or a side comment to text
-            // which does not interfere with the flow of the main body text. 
+            // A footnote is a way to attach a reference or a side comment to text
+            // that does not interfere with the main body text's flow.  
             // Inserting a footnote adds a small superscript reference symbol
-            // at the location in the main body text where we insert the footnote.
-            // Each footnote also creates an entry at the bottom of the page, which consists of a symbol
-            // that matches the reference symbol in the main body text, and the reference text that
-            // we pass to the document builder's "InsertFootnote" method.
+            // at the main body text where we insert the footnote.
+            // Each footnote also creates an entry at the bottom of the page, consisting of a symbol
+            // that matches the reference symbol in the main body text.
+            // The reference text that we pass to the document builder's "InsertFootnote" method.
             builder.Write("Hello world!");
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote contents.");
 
@@ -46,7 +46,7 @@ namespace ApiExamples
             // If we set the value of the "Position" property to "FootnotePosition.BottomOfPage",
             // every footnote will show up at the bottom of the page that contains its reference mark. This is the default value.
             // If we set the value of the "Position" property to "FootnotePosition.BeneathText",
-            // every footnote will show up at the end of the text of the page that contains its reference mark.
+            // every footnote will show up at the end of the page's text that contains its reference mark.
             doc.FootnoteOptions.Position = footnotePosition;
 
             doc.Save(ArtifactsDir + "InlineStory.PositionFootnote.docx");
@@ -73,13 +73,13 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // An endnote is a way to attach a reference, or a side comment to text
-            // which does not interfere with the flow of the main body text. 
+            // An endnote is a way to attach a reference or a side comment to text
+            // that does not interfere with the main body text's flow. 
             // Inserting an endnote adds a small superscript reference symbol
-            // at the location in the main body text where we insert the endnote.
-            // Each endnote also creates an entry at the end of the document, which consists of a symbol
-            // that matches the reference symbol in the main body text, and the reference text that
-            // we pass to the document builder's "InsertEndnote" method.
+            // at the main body text where we insert the endnote.
+            // Each endnote also creates an entry at the end of the document, consisting of a symbol
+            // that matches the reference symbol in the main body text.
+            // The reference text that we pass to the document builder's "InsertEndnote" method.
             builder.Write("Hello world!");
             builder.InsertFootnote(FootnoteType.Endnote, "Endnote contents.");
             builder.InsertBreak(BreakType.SectionBreakNewPage);
@@ -117,14 +117,13 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Footnotes and endnotes are a way to attach a reference, or a side comment to text
-            // which does not interfere with the flow of the main body text. 
+            // Footnotes and endnotes are a way to attach a reference or a side comment to text
+            // that does not interfere with the main body text's flow. 
             // Inserting a footnote/endnote adds a small superscript reference symbol
-            // at the location in the main body text where we insert the footnote/endnote.
-            // Each footnote/endnote also creates an entry, which consists of a symbol
-            // that matches the reference symbol in the main body text, and the reference text that
-            // we pass to the document builder's "InsertEndnote" method.
-            // Footnote entries by default show up at the bottom or each page that contains
+            // at the main body text where we insert the footnote/endnote.
+            // Each footnote/endnote also creates an entry, which consists of a symbol that matches the reference
+            // symbol in the main body text. The reference text that we pass to the document builder's "InsertEndnote" method.
+            // Footnote entries, by default, show up at the bottom of each page that contains
             // their reference symbols, and endnotes show up at the end of the document.
             builder.Write("Text 1. ");
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote 1.");
@@ -191,14 +190,13 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Footnotes and endnotes are a way to attach a reference, or a side comment to text
-            // which does not interfere with the flow of the main body text. 
+            // Footnotes and endnotes are a way to attach a reference or a side comment to text
+            // that does not interfere with the main body text's flow. 
             // Inserting a footnote/endnote adds a small superscript reference symbol
-            // at the location in the main body text where we insert the footnote/endnote.
-            // Each footnote/endnote also creates an entry, which consists of a symbol
-            // that matches the reference symbol in the main body text, and the reference text that
-            // we pass to the document builder's "InsertEndnote" method.
-            // Footnote entries by default show up at the bottom or each page that contains
+            // at the main body text where we insert the footnote/endnote.
+            // Each footnote/endnote also creates an entry, which consists of a symbol that matches the reference
+            // symbol in the main body text. The reference text that we pass to the document builder's "InsertEndnote" method.
+            // Footnote entries, by default, show up at the bottom of each page that contains
             // their reference symbols, and endnotes show up at the end of the document.
             builder.Write("Text 1. ");
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote 1.");
@@ -224,7 +222,7 @@ namespace ApiExamples
 
             // By default, the reference symbol for each footnote and endnote is its index
             // among all of the document's footnotes/endnotes. Each document maintains separate counts
-            // for footnotes and for endnotes, and does not restart these counts at any point.
+            // for footnotes and endnotes and does not restart these counts at any point.
             Assert.AreEqual(doc.FootnoteOptions.RestartRule, FootnoteNumberingRule.Default);
             Assert.AreEqual(FootnoteNumberingRule.Default, FootnoteNumberingRule.Continuous);
 
@@ -273,14 +271,14 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Footnotes and endnotes are a way to attach a reference, or a side comment to text
-            // which does not interfere with the flow of the main body text. 
+            // Footnotes and endnotes are a way to attach a reference or a side comment to text
+            // that does not interfere with the main body text's flow. 
             // Inserting a footnote/endnote adds a small superscript reference symbol
-            // at the location in the main body text where we insert the footnote/endnote.
+            // at the main body text where we insert the footnote/endnote.
             // Each footnote/endnote also creates an entry, which consists of a symbol
-            // that matches the reference symbol in the main body text, and the reference text that
-            // we pass to the document builder's "InsertEndnote" method.
-            // Footnote entries by default show up at the bottom or each page that contains
+            // that matches the reference symbol in the main body text.
+            // The reference text that we pass to the document builder's "InsertEndnote" method.
+            // Footnote entries, by default, show up at the bottom of each page that contains
             // their reference symbols, and endnotes show up at the end of the document.
             builder.Write("Text 1. ");
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote 1.");
@@ -349,10 +347,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add text, and reference it with a footnote. This footnote will place a
-            // small superscript reference mark after the text that it references, 
-            // and will create an entry below the main body text at the bottom of the page.
-            // This entry will contain the footnote's reference mark, as well as the reference text,
+            // Add text, and reference it with a footnote. This footnote will place a small superscript reference
+            // mark after the text that it references and create an entry below the main body text at the bottom of the page.
+            // This entry will contain the footnote's reference mark and the reference text,
             // which we will pass to the document builder's "InsertFootnote" method.
             builder.Write("Main body text.");
             Footnote footnote = builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.");
@@ -406,17 +403,17 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Below are two ways of attaching numbered references to text. Both these types of references
-            // will add a small superscript reference mark at the location that we insert them.
+            // Below are two ways of attaching numbered references to the text. Both these references will add a
+            // small superscript reference mark at the location that we insert them.
             // The reference mark, by default, is the index number of the reference among all the references in the document.
-            // Each reference will also create an entry, which will have the same reference mark as in the body text,
-            // as well as reference text, which we will pass to the document builder's "InsertFootnote" method.
+            // Each reference will also create an entry, which will have the same reference mark as in the body text
+            // and reference text, which we will pass to the document builder's "InsertFootnote" method.
             // 1 -  A footnote, whose entry will appear on the same page as the text that it references:
             builder.Write("Footnote referenced main body text.");
             Footnote footnote = builder.InsertFootnote(FootnoteType.Footnote, 
                 "Footnote text, will appear at the bottom of the page that contains the referenced text.");
 
-            // 2 -  An endnote, whose entry will will appear at the end of the document:
+            // 2 -  An endnote, whose entry will appear at the end of the document:
             builder.Write("Endnote referenced main body text.");
             Footnote endnote = builder.InsertFootnote(FootnoteType.Endnote, 
                 "Endnote text, will appear at the very end of the document.");
@@ -485,15 +482,15 @@ namespace ApiExamples
             // is turned on in Microsoft Word, the changes we apply count as revisions.
             // When editing a document using Aspose.Words, we can begin tracking revisions by
             // invoking the document's "StartTrackRevisions" method, and stop tracking by using the "StopTrackRevisions" method.
-            // We can either accept revisions to assimilate them into the document,
-            // or reject them to undo and discard the change that they proposed.
+            // We can either accept revisions to assimilate them into the document
+            // or reject them to undo and discard the proposed change.
             Assert.IsTrue(doc.HasRevisions);
 
             List<Footnote> footnotes = doc.GetChildNodes(NodeType.Footnote, true).Cast<Footnote>().ToList();
 
             Assert.AreEqual(5, footnotes.Count);
 
-            // Below are five types of revisions that an InlineStory node can be flagged as.
+            // Below are five types of revisions that can flag an InlineStory node.
             // 1 -  An "insert" revision:
             // This revision occurs when we insert text while tracking changes.
             Assert.IsTrue(footnotes[2].IsInsertRevision);
@@ -501,11 +498,11 @@ namespace ApiExamples
             // 2 -  A "move from" revision:
             // When we highlight text in Microsoft Word, and then drag it to a different place in the document
             // while tracking changes, two revisions appear.
-            // The "move from" revision is the copy of the text where it originally was before we moved it.
+            // The "move from" revision is a copy of the text originally before we moved it.
             Assert.IsTrue(footnotes[4].IsMoveFromRevision);
 
             // 3 -  A "move to" revision:
-            // The "move to" revision is the text that we moved, in its new position in the document.
+            // The "move to" revision is the text that we moved in its new position in the document.
             // "Move from" and "move to" revisions appear in pairs for every move revision we carry out.
             // Accepting a move revision deletes the "move from" revision and its text,
             // and keeps the text from the "move to" revision.
@@ -541,37 +538,41 @@ namespace ApiExamples
             Table table = new Table(doc);
             table.EnsureMinimum();
 
-            // We can place a table inside a footnote, which will make it appear at the footer of the referencing page
+            // We can place a table inside a footnote, which will make it appear at the referencing page's footer.
             Assert.That(footnote.Tables, Is.Empty);
             footnote.AppendChild(table);
             Assert.AreEqual(1, footnote.Tables.Count);
             Assert.AreEqual(NodeType.Table, footnote.LastChild.NodeType);
 
             // An InlineStory has an "EnsureMinimum()" method as well, but in this case,
-            // it makes sure the last child of the node is a paragraph, in order for us to be able to click and write text easily in Microsoft Word
+            // it makes sure the last child of the node is a paragraph,
+            // for us to be able to click and write text easily in Microsoft Word.
             footnote.EnsureMinimum();
             Assert.AreEqual(NodeType.Paragraph, footnote.LastChild.NodeType);
 
-            // Edit the appearance of the anchor, which is the small superscript number in the main text that points to the footnote
+            // Edit the appearance of the anchor, which is the small superscript number
+            // in the main text that points to the footnote.
             footnote.Font.Name = "Arial";
             footnote.Font.Color = Color.Green;
 
-            // All inline story nodes have their own respective story types
+            // All inline story nodes have their respective story types.
             Assert.AreEqual(StoryType.Footnotes, footnote.StoryType);
 
-            // A comment is another type of inline story
+            // A comment is another type of inline story.
             Comment comment = (Comment)builder.CurrentParagraph.AppendChild(new Comment(doc, "John Doe", "J. D.", DateTime.Now));
 
-            // The parent paragraph of an inline story node will be the one from the main document body
+            // The parent paragraph of an inline story node will be the one from the main document body.
             Assert.AreEqual(doc.FirstSection.Body.FirstParagraph, comment.ParentParagraph);
 
-            // However, the last paragraph is the one from the comment text contents, which will be outside the main document body in a speech bubble
-            // A comment won't have any child nodes by default, so we can apply the EnsureMinimum() method to place a paragraph here as well
+            // However, the last paragraph is the one from the comment text contents,
+            // which will be outside the main document body in a speech bubble.
+            // A comment won't have any child nodes by default,
+            // so we can apply the EnsureMinimum() method to place a paragraph here as well.
             Assert.Null(comment.LastParagraph);
             comment.EnsureMinimum();
             Assert.AreEqual(NodeType.Paragraph, comment.LastChild.NodeType);
 
-            // Once we have a paragraph, we can move the builder do it and write our comment
+            // Once we have a paragraph, we can move the builder to do it and write our comment.
             builder.MoveTo(comment.LastParagraph);
             builder.Write("My comment.");
 

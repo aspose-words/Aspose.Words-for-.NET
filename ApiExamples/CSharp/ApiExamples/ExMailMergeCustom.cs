@@ -38,8 +38,7 @@ namespace ApiExamples
             customers.Add(new Customer("Thomas Hardy", "120 Hanover Sq., London"));
             customers.Add(new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino"));
 
-            // In order to be able to use a custom object as a data source,
-            // it must implement the IMailMergeDataSource interface. 
+            // To use a custom object as a data source, it must implement the IMailMergeDataSource interface. 
             CustomerMailMergeDataSource dataSource = new CustomerMailMergeDataSource(customers);
 
             doc.MailMerge.Execute(dataSource);
@@ -176,8 +175,8 @@ namespace ApiExamples
             employeesSeattleBranch.Add(new Employee("Joe Bloggs", "Sales"));
 
             // Register our data sources by name in a data source root.
-            // If we are about to use this data source root in a mail merge with regions,
-            // the registered name of each source must match the name of an existing mail merge region in the mail merge source document.
+            //  If we are about to use this data source root in a mail merge with regions,
+            // each source's registered name must match the name of an existing mail merge region in the mail merge source document.
             DataSourceRoot sourceRoot = new DataSourceRoot();
             sourceRoot.RegisterSource(mailMergeRegions[0], new EmployeeListMailMergeSource(employeesWashingtonBranch));
             sourceRoot.RegisterSource(mailMergeRegions[1], new EmployeeListMailMergeSource(employeesSeattleBranch));
@@ -192,7 +191,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Create document that contains consecutive mail merge regions, with names designated by the input array,
+        /// Create a document that contains consecutive mail merge regions, with names designated by the input array,
         /// for a data table of employees.
         /// </summary>
         private static Document CreateSourceDocumentWithMailMergeRegions(string[] regions)
@@ -344,7 +343,7 @@ namespace ApiExamples
 
             for (int i = 0; i < registeredSources.Length; i++)
             {
-                EmployeeListMailMergeSource source = (EmployeeListMailMergeSource)sourceRoot.GetDataSource(registeredSources[i]);
+                EmployeeListMailMergeSource source = (EmployeeListMailMergeSource)sourceRoot.GetDataSource(t);
                 while (source.MoveNext())
                 {
                     source.GetValue("FullName", out object fullName);

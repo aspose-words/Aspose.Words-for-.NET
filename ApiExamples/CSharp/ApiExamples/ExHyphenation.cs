@@ -28,15 +28,15 @@ namespace ApiExamples
             //ExSummary:Shows how to register a hyphenation dictionary.
             // A hyphenation dictionary contains a list of strings that define hyphenation rules for the dictionary's language.
             // When a document contains lines of text in which a word could be split up and continued on the next line,
-            // hyphenation will look through the dictionary's list of strings for substrings of that word.
+            // hyphenation will look through the dictionary's list of strings for that word's substrings.
             // If the dictionary contains a substring, then hyphenation will split the word across two lines
-            // by the substring, and add a hyphen to the end of the first half.
+            // by the substring, and add a hyphen to the first half.
             // Register a dictionary file from the local file system to the "de-CH" locale.
             Hyphenation.RegisterDictionary("de-CH", MyDir + "hyph_de_CH.dic");
 
             Assert.True(Hyphenation.IsDictionaryRegistered("de-CH"));
             
-            // Open a document, which contains text with a locale matching that of our dictionary,
+            // Open a document containing text with a locale matching that of our dictionary,
             // and save it to a fixed-page save format. The text in that document will be hyphenated.
             Document doc = new Document(MyDir + "German text.docx");
 
@@ -78,7 +78,7 @@ namespace ApiExamples
 
             Assert.AreEqual(0, warningInfoCollection.Count);
 
-            // Open a document with a locale that Microsoft Word may not be able to hyphenate on an English machine, such as German.
+            // Open a document with a locale that Microsoft Word may not hyphenate on an English machine, such as German.
             Document doc = new Document(MyDir + "German text.docx");
 
             // To hyphenate that document upon saving, we need a hyphenation dictionary for the "de-CH" language code.

@@ -33,7 +33,7 @@ namespace ApiExamples
             string licenseCopyFileName = Path.Combine(AssemblyDir, "Aspose.Words.NET.lic");
             File.Copy(licenseFileName, licenseCopyFileName);
 
-            // If we pass the name of a file without a path,
+            // If we pass a file's name without a path,
             // the SetLicense will search several local file system locations for this file.
             // One of those locations will be the "bin" folder, which contains a copy of our license file.
             license.SetLicense("Aspose.Words.NET.lic");

@@ -35,7 +35,7 @@ namespace ApiExamples
             //ExSummary:Shows how to insert a shape with an image from the local file system into a document.
             Document doc = new Document();
 
-            // The public constructor of the "Shape" class will create a shape with "ShapeMarkupLanguage.Vml" markup type.
+            // The "Shape" class's public constructor will create a shape with "ShapeMarkupLanguage.Vml" markup type.
             // If you need to create a shape of a non-primitive type, such as SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
             // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, or DiagonalCornersRounded,
             // please use DocumentBuilder.InsertShape.
@@ -66,8 +66,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Below are two locations that the document builder's "InsertShape" method
-            // can source the image that the shape will display from.
+            // Below are two locations where the document builder's "InsertShape" method
+            // can source the image that the shape will display.
             // 1 -  Pass a local file system filename of an image file:
             builder.Write("Image from local file: ");
             builder.InsertImage(ImageDir + "Logo.jpg");
@@ -118,7 +118,6 @@ namespace ApiExamples
         {
             DocumentBuilder builder = new DocumentBuilder();
 
-            // Insert a raster image
             using (Image rasterImage = Image.FromFile(ImageDir + "Logo.jpg"))
             {
                 builder.Write("Raster image: ");
@@ -126,7 +125,6 @@ namespace ApiExamples
                 builder.Writeln();
             }
 
-            // Aspose.Words allows to insert a metafile too
             using (Image metafile = Image.FromFile(ImageDir + "Windows MetaFile.wmf"))
             {
                 builder.Write("Metafile: ");
@@ -177,8 +175,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a floating image that will appear behind overlapping text,
-            // and align it to the center of the page.
+            // Insert a floating image that will appear behind the overlapping text and align it to the page's center.
             Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
             shape.WrapType = WrapType.None;
             shape.BehindText = true;
@@ -237,7 +234,7 @@ namespace ApiExamples
 
             Assert.AreEqual(125.0d, shape.Width);
 
-            // The "Bottom" and "Right" properties contain the locations of the bottom and right edges of the image.
+            // The "Bottom" and "Right" properties contain the bottom and right edges of the image.
             Assert.AreEqual(shape.Top + shape.Height, shape.Bottom);
             Assert.AreEqual(shape.Left + shape.Width, shape.Right);
 
@@ -304,7 +301,7 @@ namespace ApiExamples
 
             string imageFileName = ImageDir + "Windows MetaFile.wmf";
 
-            // Below are two ways of applying an image to a shape, so it can display it.
+            // Below are two ways of applying an image to a shape so that it can display it.
             // 1 -  Set the shape to contain the image.
             Shape shape = new Shape(builder.Document, ShapeType.Image);
             shape.WrapType = WrapType.Inline;
@@ -314,7 +311,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Image.CreateLinkedImage.Embedded.docx");
 
-            // Every image that we store in a shape will increase the size of our document.
+            // Every image that we store in shape will increase the size of our document.
             Assert.True(70000 < new FileInfo(ArtifactsDir + "Image.CreateLinkedImage.Embedded.docx").Length);
 
             doc.FirstSection.Body.FirstParagraph.RemoveAllChildren();
@@ -327,8 +324,8 @@ namespace ApiExamples
             builder.InsertNode(shape);
             doc.Save(ArtifactsDir + "Image.CreateLinkedImage.Linked.docx");
 
-            // Linking to images will save space and result in a smaller document,
-            // but the document can only display the image correctly as long as
+            // Linking to images will save space and result in a smaller document.
+            // However, the document can only display the image correctly as long as
             // the image file is present at the location that the shape's "SourceFullName" property points to.
             Assert.True(10000 > new FileInfo(ArtifactsDir + "Image.CreateLinkedImage.Linked.docx").Length);
             //ExEnd
@@ -436,7 +433,7 @@ namespace ApiExamples
             Assert.AreEqual(300.0d, imageSize.WidthPoints);
             Assert.AreEqual(300.0d, imageSize.HeightPoints);
 
-            // If a shape's dimensions match the dimensions of the image data,
+            // If a shape's dimensions match the image data's dimensions,
             // then the shape is displaying the image in its original size.
             Assert.AreEqual(300.0d, shape.Width);
             Assert.AreEqual(300.0d, shape.Height);

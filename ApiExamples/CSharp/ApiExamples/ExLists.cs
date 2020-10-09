@@ -38,10 +38,10 @@ namespace ApiExamples
             // A list allows us to organize and decorate sets of paragraphs with prefix symbols and indents.
             // We can create nested lists by increasing the indent level. 
             // We can begin and end a list by using a document builder's "ListFormat" property. 
-            // Each paragraph that we add between a list's start and end will become an item in the list.
+            // Each paragraph that we add between a list's start and the end will become an item in the list.
             // Below are two types of lists that we can create with a document builder.
             // 1 -  A bulleted list:
-            // This list will apply an indent, and a bullet symbol ("•") before each paragraph.
+            // This list will apply an indent and a bullet symbol ("•") before each paragraph.
             builder.ListFormat.ApplyBulletDefault();
             builder.Writeln("Great performance");
             builder.Writeln("High reliability");
@@ -71,7 +71,7 @@ namespace ApiExamples
             Assert.AreEqual(1, builder.ListFormat.ListLevelNumber);
 
             // These are the first three list items of the second list level, which will maintain a count
-            // that is independent of the count of the first list level. According to the current list format,
+            // independent of the count of the first list level. According to the current list format,
             // they will have symbols of "a.", "b.", and "c.".
             builder.Writeln("DOC");
             builder.Writeln("PDF");
@@ -88,7 +88,7 @@ namespace ApiExamples
             builder.Writeln("Saving documents in different formats:");
 
             // If we increase the list level to one we have added items to previously,
-            // the nested list will be independent from the previous, and its numbering will start again. 
+            // the nested list will be independent of the previous, and its numbering will start again. 
             // These list items will have symbols of "a.", "b.", "c.", "d.", and "e".
             builder.ListFormat.ListIndent();
             builder.Writeln("DOC");
@@ -97,11 +97,11 @@ namespace ApiExamples
             builder.Writeln("MHTML");
             builder.Writeln("Plain text");
 
-            // Outdent the list level again
+            // Outdent the list level again.
             builder.ListFormat.ListOutdent();
             builder.Writeln("Doing many other things!");
 
-            // End the numbered list
+            // End the numbered list.
             builder.ListFormat.RemoveNumbers();
 
             doc.Save(ArtifactsDir + "Lists.ApplyDefaultBulletsAndNumbers.docx");
@@ -136,7 +136,7 @@ namespace ApiExamples
             // A list allows us to organize and decorate sets of paragraphs with prefix symbols and indents.
             // We can create nested lists by increasing the indent level. 
             // We can begin and end a list by using a document builder's "ListFormat" property. 
-            // Each paragraph that we add between a list's start and end will become an item in the list.
+            // Each paragraph that we add between a list's start and the end will become an item in the list.
             // Below are two types of lists that we can create using a document builder.
             // 1 -  A numbered list:
             // Numbered lists create a logical order for their paragraphs by numbering each item.
@@ -155,7 +155,7 @@ namespace ApiExamples
             }
 
             // 2 -  A bulleted list:
-            // This list will apply an indent, and a bullet symbol ("•") before each paragraph.
+            // This list will apply an indent and a bullet symbol ("•") before each paragraph.
             // Deeper levels of this list will use different symbols, such as "■" and "○".
             builder.ListFormat.List = doc.Lists.Add(ListTemplate.BulletDefault);
 
@@ -194,7 +194,7 @@ namespace ApiExamples
             // A list allows us to organize and decorate sets of paragraphs with prefix symbols and indents.
             // We can create nested lists by increasing the indent level. 
             // We can begin and end a list by using a document builder's "ListFormat" property. 
-            // Each paragraph that we add between a list's start and end will become an item in the list.
+            // Each paragraph that we add between a list's start and the end will become an item in the list.
             // Create an outline list for the headings.
             List outlineList = doc.Lists.Add(ListTemplate.OutlineNumbers);
             builder.ListFormat.List = outlineList;
@@ -269,7 +269,7 @@ namespace ApiExamples
             // A list allows us to organize and decorate sets of paragraphs with prefix symbols and indents.
             // We can create nested lists by increasing the indent level. 
             // We can begin and end a list by using a document builder's "ListFormat" property. 
-            // Each paragraph that we add between a list's start and end will become an item in the list.
+            // Each paragraph that we add between a list's start and the end will become an item in the list.
             // Create a list from a Microsoft Word template, and customize the first two of its list levels.
             List list = doc.Lists.Add(ListTemplate.NumberDefault);
 
@@ -349,7 +349,7 @@ namespace ApiExamples
             // A list allows us to organize and decorate sets of paragraphs with prefix symbols and indents.
             // We can create nested lists by increasing the indent level. 
             // We can begin and end a list by using a document builder's "ListFormat" property. 
-            // Each paragraph that we add between a list's start and end will become an item in the list.
+            // Each paragraph that we add between a list's start and the end will become an item in the list.
             // Create a list from a Microsoft Word template, and customize its first list level.
             List list1 = doc.Lists.Add(ListTemplate.NumberArabicParenthesis);
             list1.ListLevels[0].Font.Color = Color.Red;
@@ -365,7 +365,7 @@ namespace ApiExamples
             builder.ListFormat.RemoveNumbers();
 
             // We can add a copy of an existing list to the document's list collection
-            // in order to be able to create a similar list without making changes to the original.
+            // to create a similar list without making changes to the original.
             List list2 = doc.Lists.AddCopy(list1);
             list2.ListLevels[0].Font.Color = Color.Blue;
             list2.ListLevels[0].StartAt = 10;
@@ -416,7 +416,7 @@ namespace ApiExamples
             // A list allows us to organize and decorate sets of paragraphs with prefix symbols and indents.
             // We can create nested lists by increasing the indent level. 
             // We can begin and end a list by using a document builder's "ListFormat" property. 
-            // Each paragraph that we add between a list's start and end will become an item in the list.
+            // Each paragraph that we add between a list's start and the end will become an item in the list.
             // We can contain an entire List object within a style.
             Style listStyle = doc.Styles.Add(StyleType.List, "MyListStyle");
 
@@ -675,7 +675,7 @@ namespace ApiExamples
 
         private void TestOutlineHeadingTemplates(Document doc)
         {
-            List list = doc.Lists[0]; // Article section list template
+            List list = doc.Lists[0]; // Article section list template.
 
             TestUtil.VerifyListLevel("Article \0.", 0.0d, NumberStyle.UppercaseRoman, list.ListLevels[0]);
             TestUtil.VerifyListLevel("Section \0.\u0001", 0.0d, NumberStyle.LeadingZero, list.ListLevels[1]);
@@ -687,7 +687,7 @@ namespace ApiExamples
             TestUtil.VerifyListLevel("\a.", 50.4d, NumberStyle.LowercaseLetter, list.ListLevels[7]);
             TestUtil.VerifyListLevel("\b.", 72.0d, NumberStyle.LowercaseRoman, list.ListLevels[8]);
 
-            list = doc.Lists[1]; // Legal list template
+            list = doc.Lists[1]; // Legal list template.
 
             TestUtil.VerifyListLevel("\0", 0.0d, NumberStyle.Arabic, list.ListLevels[0]);
             TestUtil.VerifyListLevel("\0.\u0001", 0.0d, NumberStyle.Arabic, list.ListLevels[1]);
@@ -699,7 +699,7 @@ namespace ApiExamples
             TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005.\u0006.\a", 0.0d, NumberStyle.Arabic, list.ListLevels[7]);
             TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005.\u0006.\a.\b", 0.0d, NumberStyle.Arabic, list.ListLevels[8]);
 
-            list = doc.Lists[2]; // Numbered list template
+            list = doc.Lists[2]; // Numbered list template.
 
             TestUtil.VerifyListLevel("\0.", 0.0d, NumberStyle.UppercaseRoman, list.ListLevels[0]);
             TestUtil.VerifyListLevel("\u0001.", 36.0d, NumberStyle.UppercaseLetter, list.ListLevels[1]);
@@ -711,7 +711,7 @@ namespace ApiExamples
             TestUtil.VerifyListLevel("(\a)", 252.0d, NumberStyle.LowercaseLetter, list.ListLevels[7]);
             TestUtil.VerifyListLevel("(\b)", 288.0d, NumberStyle.LowercaseRoman, list.ListLevels[8]);
 
-            list = doc.Lists[3]; // Chapter list template
+            list = doc.Lists[3]; // Chapter list template.
 
             TestUtil.VerifyListLevel("Chapter \0", 0.0d, NumberStyle.Arabic, list.ListLevels[0]);
             TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[1]);
@@ -827,7 +827,7 @@ namespace ApiExamples
             // A list allows us to organize and decorate sets of paragraphs with prefix symbols and indents.
             // We can create nested lists by increasing the indent level. 
             // We can begin and end a list by using a document builder's "ListFormat" property. 
-            // Each paragraph that we add between a list's start and end will become an item in the list.
+            // Each paragraph that we add between a list's start and the end will become an item in the list.
             List list = doc.Lists.Add(ListTemplate.NumberDefault);
 
             // Level 1 labels will be formatted according to the "Heading 1" paragraph style, and will have a prefix.
@@ -836,17 +836,17 @@ namespace ApiExamples
             list.ListLevels[0].NumberStyle = NumberStyle.UppercaseLetter;
             list.ListLevels[0].LinkedStyle = doc.Styles["Heading 1"];
 
-            // Level 2 labels will display the current numbers of the first as well as the second list levels, and will have leading zeroes.
+            // Level 2 labels will display the current numbers of the first and the second list levels and have leading zeroes.
             // If the first list level is at 1, then the list labels from these will look like "Section (1.01)", "Section (1.02)"...
             list.ListLevels[1].NumberFormat = "Section (\x0000.\x0001)";
             list.ListLevels[1].NumberStyle = NumberStyle.LeadingZero;
 
-            // Note that the higher level uses UppercaseLetter numbering.
+            // Note that the higher-level uses UppercaseLetter numbering.
             // We can set the "IsLegal" property to use Arabic numbers for the higher list levels.
             list.ListLevels[1].IsLegal = true;
             list.ListLevels[1].RestartAfterLevel = 0;
 
-            // Level 3 labels will be upper case Roman numerals with a prefix and a suffix, and will restart at each List level 1 item.
+            // Level 3 labels will be upper case Roman numerals with a prefix and a suffix and will restart at each List level 1 item.
             // These list labels will look like "-I-", "-II-"...
             list.ListLevels[2].NumberFormat = "-\x0002-";
             list.ListLevels[2].NumberStyle = NumberStyle.UppercaseRoman;
@@ -907,24 +907,24 @@ namespace ApiExamples
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            // Find if we have the paragraph list. In our document our list uses plain Arabic numbers,
-            // which start at three and ends at six
+            // Find if we have the paragraph list. In our document, our list uses plain Arabic numbers,
+            // which start at three and ends at six.
             foreach (Paragraph paragraph in paras.OfType<Paragraph>().Where(p => p.ListFormat.IsListItem))
             {
                 Console.WriteLine($"List item paragraph #{paras.IndexOf(paragraph)}");
 
-                // This is the text we get when actually getting when we output this node to text format
-                // The list labels are not included in this text output. Trim any paragraph formatting characters
+                // This is the text we get when getting when we output this node to text format.
+                // The list labels are not included in this text output. Trim any paragraph formatting characters. //INSP: 'are not included' passive voice
                 string paragraphText = paragraph.ToString(SaveFormat.Text).Trim();
                 Console.WriteLine($"\tExported Text: {paragraphText}");
 
                 ListLabel label = paragraph.ListLabel;
 
-                // This gets the position of the paragraph in current level of the list. If we have a list with multiple levels,
-                // this will tell us what position it is on that level
+                // This gets the position of the paragraph in the current level of the list. If we have a list with multiple levels,
+                // this will tell us what position it is on that level.
                 Console.WriteLine($"\tNumerical Id: {label.LabelValue}");
 
-                // Combine them together to include the list label with the text in the output
+                // Combine them together to include the list label with the text in the output.
                 Console.WriteLine($"\tList label combined with text: {label.LabelString} {paragraphText}");
             }
             //ExEnd
@@ -943,14 +943,13 @@ namespace ApiExamples
 
             List list = doc.Lists.Add(ListTemplate.BulletCircle);
 
-            // Create picture bullet for the current list level, and set an image from a local file system
+            // Create a picture bullet for the current list level, and set an image from a local file system
             // as the icon that the bullets for this list level will display.
             list.ListLevels[0].CreatePictureBullet();
             list.ListLevels[0].ImageData.SetImage(ImageDir + "Logo icon.ico");
 
             Assert.IsTrue(list.ListLevels[0].ImageData.HasImage);
 
-            // Create a list, configure its bullets to use our image, and then add two list items.
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.ListFormat.List = list;
@@ -959,7 +958,6 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Lists.CreatePictureBullet.docx");
 
-            // Delete picture bullet
             list.ListLevels[0].DeletePictureBullet();
 
             Assert.IsNull(list.ListLevels[0].ImageData);
