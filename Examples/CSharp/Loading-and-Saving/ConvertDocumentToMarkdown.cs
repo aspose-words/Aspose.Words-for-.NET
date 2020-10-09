@@ -1,6 +1,7 @@
 ﻿using Aspose.Words.Saving;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             SaveAsMD(dataDir);
             SpecifySaveOptionsAndSaveAsMD(dataDir);
             SupportedMarkdownFeatures(dataDir);
+            SetImagesFolder(dataDir);
         }
 
         private static void SaveAsMD(string dataDir)
@@ -69,6 +71,20 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             // Save your document as a Markdown file.
             doc.Save("example.md");
             // ExEnd:SupportedMarkdownFeatures
+        }
+
+        private static void SetImagesFolder(string dataDir)
+        {
+            // ExStart:SetImagesFolder
+            // Load the document from disk.
+            Document doc = new Document("http://google.com");
+
+            MarkdownSaveOptions so = new MarkdownSaveOptions();
+            so.ImagesFolder = dataDir + "\\Images";
+            
+            using (MemoryStream stream = new MemoryStream())
+                doc.Save(stream, so);
+            // ExEnd:SetImagesFolder
         }
     }
 }

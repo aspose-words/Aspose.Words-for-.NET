@@ -4,6 +4,7 @@ using Aspose.Words.Settings;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             SpecifyVerticalAnchor(dataDir);
             DetectSmartArtShape(dataDir);
             InsertOLEObjectAsIcon(dataDir);
+            InsertOLEObjectAsIconUsingStream(dataDir);
         }
 
         public static void InsertShapeUsingDocumentBuilder(string dataDir)
@@ -182,6 +184,23 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
 
             Console.WriteLine("The document has been saved with OLE Object as an Icon.");
             // ExEnd:InsertOLEObjectAsIcon
+        }
+
+        public static void InsertOLEObjectAsIconUsingStream(string dataDir)
+        {
+            // ExStart:InsertOLEObjectAsIconUsingStream
+            Document doc = new Document();
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Shape shape = builder.InsertOleObjectAsIcon(dataDir + "embedded.xlsx", false, dataDir + "icon.ico", "My embedded file");
+
+            using (MemoryStream stream = new MemoryStream(File.ReadAllBytes(dataDir + "embedded.xlsx")))
+                builder.InsertOleObjectAsIcon(stream, "Package", dataDir + "icon.ico", "My embedded file");
+
+            doc.Save(dataDir + "EmbeddeWithIconUsingStream_out.docx");
+
+            Console.WriteLine("The document has been saved with OLE Object as an Icon.");
+            // ExEnd:InsertOLEObjectAsIconUsingStream
         }
     }
 }
