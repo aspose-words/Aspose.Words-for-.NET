@@ -125,9 +125,9 @@ namespace ApiExamples
             layoutEnumerator.Reset();
 
             // There are two orders that determine how the layout enumerator continues traversing layout entities
-            // when it encounters entities that are split up across multiple pages. //INSP: 'are split up' passive voice
+            // when it encounters entities that span across multiple pages.
             // 1 -  In visual order:
-            // When moving through an entity's children that are broken across pages, //INSP: 'are broken' passive voice
+            // When moving through an entity's children that span multiple pages,
             // page layout takes precedence, and we move to other child elements on this page and avoid the ones on the next.
             Console.WriteLine("Traversing from first to last, elements between pages separated:");
             TraverseLayoutForward(layoutEnumerator, 1);
@@ -137,7 +137,7 @@ namespace ApiExamples
             TraverseLayoutBackward(layoutEnumerator, 1);
 
             // 2 -  In logical order:
-            // When moving through an entity's children that are broken across pages, //INSP: 'are broken' passive voice
+            // When moving through an entity's children that span multiple pages,
             // the enumerator will move between pages to traverse all the child entities.
             Console.WriteLine("Traversing from first to last, elements between pages mixed:");
             TraverseLayoutForwardLogical(layoutEnumerator, 1);

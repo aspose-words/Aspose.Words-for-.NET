@@ -1182,7 +1182,7 @@ namespace ApiExamples
             // to decide whether to adjust the page to display out-of-bounds objects fully.
             // If we set the "ExportPageMargins" flag to "true", the shape will be fully visible in the output HTML.
             // If we set the "ExportPageMargins" flag to "false",
-            // our document will display the shape truncated as it would be seen in Microsoft Word. //INSP: 'it would be seen' passive voice
+            // our document will display the shape truncated as we would see it in Microsoft Word.
             HtmlSaveOptions options = new HtmlSaveOptions { ExportPageMargins = exportPageMargins };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html", options);
@@ -1474,8 +1474,8 @@ namespace ApiExamples
             fieldToc.UpdatePageNumbers();
             doc.UpdateFields();
 
-            // HTML documents are not split up into pages, so, //INSP: 'are not split up' passive voice
-            // if we save the document to HTML, the page numbers that our TOC displays will serve no purpose.
+            // HTML documents do not have pages. If we save this document to HTML,
+            // the page numbers that our TOC displays will have no meaning.
             // When we save the document to HTML, we can pass a SaveOptions object to omit these page numbers from the TOC.
             // If we set the "ExportTocPageNumbers" flag to "true",
             // each TOC entry will display the heading, separator, and page number, preserving its appearance in Microsoft Word.

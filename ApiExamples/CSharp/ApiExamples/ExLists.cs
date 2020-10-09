@@ -914,7 +914,7 @@ namespace ApiExamples
                 Console.WriteLine($"List item paragraph #{paras.IndexOf(paragraph)}");
 
                 // This is the text we get when getting when we output this node to text format.
-                // The list labels are not included in this text output. Trim any paragraph formatting characters. //INSP: 'are not included' passive voice
+                // This text output will omit list labels. Trim any paragraph formatting characters. 
                 string paragraphText = paragraph.ToString(SaveFormat.Text).Trim();
                 Console.WriteLine($"\tExported Text: {paragraphText}");
 
