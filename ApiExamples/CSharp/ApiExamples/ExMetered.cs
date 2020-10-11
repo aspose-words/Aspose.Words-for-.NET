@@ -29,18 +29,17 @@ namespace ApiExamples
             //ExFor:Metered.GetConsumptionQuantity
             //ExFor:Metered.SetMeteredKey(String, String)
             //ExSummary:Shows how to activate a Metered license and track credit/consumption.
-            // Set a public and private key for a new Metered instance
+            // Create a new Metered license, and then print its usage statistics.
             Metered metered = new Metered();
             metered.SetMeteredKey("MyPublicKey", "MyPrivateKey");
             
-            // Print credit/usage 
             Console.WriteLine($"Credit before operation: {Metered.GetConsumptionCredit()}");
             Console.WriteLine($"Consumption quantity before operation: {Metered.GetConsumptionQuantity()}");
 
-            // Do something
+            // Perform an operation using Aspose.Words, and then print our metered stats again to see how much we spent.
             Document doc = new Document(MyDir + "Document.docx");
+            doc.Save(ArtifactsDir + "Metered.Usage.pdf");
 
-            // Print credit/usage to see how much was spent
             Console.WriteLine($"Credit after operation: {Metered.GetConsumptionCredit()}");
             Console.WriteLine($"Consumption quantity after operation: {Metered.GetConsumptionQuantity()}");
             //ExEnd
