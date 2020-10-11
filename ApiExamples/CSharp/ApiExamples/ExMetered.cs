@@ -17,10 +17,10 @@ namespace ApiExamples
         [Test]
         public void TestMeteredUsage()
         {
-            Assert.Throws<InvalidOperationException>(MeteredUsage);
+            Assert.Throws<InvalidOperationException>(Usage);
         }
 
-        public void MeteredUsage()
+        public void Usage()
         {
             //ExStart
             //ExFor:Metered
