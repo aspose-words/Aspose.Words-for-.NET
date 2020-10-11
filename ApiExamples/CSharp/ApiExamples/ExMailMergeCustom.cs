@@ -343,7 +343,7 @@ namespace ApiExamples
 
             for (int i = 0; i < registeredSources.Length; i++)
             {
-                EmployeeListMailMergeSource source = (EmployeeListMailMergeSource)sourceRoot.GetDataSource(t);
+                EmployeeListMailMergeSource source = (EmployeeListMailMergeSource)sourceRoot.GetDataSource(registeredSources[i]);
                 while (source.MoveNext())
                 {
                     source.GetValue("FullName", out object fullName);

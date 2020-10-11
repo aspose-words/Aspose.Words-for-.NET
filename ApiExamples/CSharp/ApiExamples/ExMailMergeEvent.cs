@@ -114,8 +114,8 @@ namespace ApiExamples
             builder.Document.MailMerge.Execute(
                 new string[] { "text_Field1", "text_Field2", "numeric_Field1" },
                 new object[] { "Field 1", "Field 2", 10 });
-
-            Assert.AreEqual("New Value For \"Textfield\", New value from FieldMergingArgs, 20.0", doc.GetText().Trim());
+            string t = doc.GetText().Trim();
+            Assert.AreEqual("Merge Value For \"Text_Field1\": Field 1, MERGE VALUE FOR \"TEXT_FIELD2\": FIELD 2, 10000.0", doc.GetText().Trim());
         }
 
         /// <summary>
@@ -147,13 +147,15 @@ namespace ApiExamples
         //ExFor:FieldMergingArgsBase.FieldName
         //ExFor:FieldMergingArgsBase.TableName
         //ExFor:FieldMergingArgsBase.RecordIndex
-        //ExSummary:Shows how to insert checkbox form fields into a document during mail merge.
+        //ExSummary:Shows how to insert checkbox form fields into MERGEFIELDs as merge data during mail merge.
         [Test] //ExSkip
         public void InsertCheckBox()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Use MERGEFIELDs with "TableStart"/"TableEnd" tags to define a mail merge region
+            // which belongs to a data source named "StudentCourse", and has a MERGEFIELD which accepts data from a column named "CourseName".
             builder.StartTable();
             builder.InsertCell();
             builder.InsertField(" MERGEFIELD  TableStart:StudentCourse ");
@@ -163,40 +165,36 @@ namespace ApiExamples
             builder.InsertField(" MERGEFIELD  TableEnd:StudentCourse ");
             builder.EndTable();
 
-            // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertCheckBox();
 
-            // Execute mail merge with regions
             DataTable dataTable = GetStudentCourseDataTable();
-            doc.MailMerge.ExecuteWithRegions(dataTable);
 
-            // Save resulting document with a new name
+            doc.MailMerge.ExecuteWithRegions(dataTable);
             doc.Save(ArtifactsDir + "MailMergeEvent.InsertCheckBox.docx");
             TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMergeEvent.InsertCheckBox.docx"), false); //ExSkip
         }
 
+        /// <summary>
+        /// Upon encountering a MERGEFIELD with a specific name, inserts a check box form field instead of merge data text.
+        /// </summary>
         private class HandleMergeFieldInsertCheckBox : IFieldMergingCallback
         {
             /// <summary>
-            /// This is called for each merge field in the document
-            /// when Document.MailMerge.ExecuteWithRegions is called.
+            /// Called when a mail merge merges data into a MERGEFIELD.
             /// </summary>
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
                 if (args.DocumentFieldName.Equals("CourseName"))
                 {
-                    // The name of the table that we are merging can be found here
                     Assert.AreEqual("StudentCourse", args.TableName);
 
-                    // Insert the checkbox for this merge field, using DocumentBuilder
                     DocumentBuilder builder = new DocumentBuilder(args.Document);
                     builder.MoveToMergeField(args.FieldName);
                     builder.InsertCheckBox(args.DocumentFieldName + mCheckBoxCount, false, 0);
 
-                    // Get the actual value of the field
                     string fieldValue = args.FieldValue.ToString();
 
-                    // In this case, for every record index 'n', the corresponding field value is "Course n"
+                    // In this case, for every record index 'n', the corresponding field value is "Course n".
                     Assert.AreEqual(char.GetNumericValue(fieldValue[7]), args.RecordIndex);
 
                     builder.Write(fieldValue);
@@ -206,18 +204,14 @@ namespace ApiExamples
 
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
-                // Do nothing
+                // Do nothing.
             }
 
-            /// <summary>
-            /// Counter for CheckBox name generation.
-            /// </summary>
             private int mCheckBoxCount;
         }
 
         /// <summary>
-        /// Create DataTable and fill it with data.
-        /// In real life this DataTable should be filled from a database.
+        /// Creates a mail merge data source.
         /// </summary>
         private static DataTable GetStudentCourseDataTable()
         {
@@ -236,16 +230,14 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegions(DataTable)
-        //ExSummary:Demonstrates how to implement custom logic in the MergeField event to apply cell formatting.
+        //ExSummary:Demonstrates how to format cells during a mail merge.
         [Test] //ExSkip
         public void AlternatingRows()
         {
             Document doc = new Document(MyDir + "Mail merge destination - Northwind suppliers.docx");
 
-            // Add a handler for the MergeField event
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldAlternatingRows();
 
-            // Execute mail merge with regions
             DataTable dataTable = GetSuppliersDataTable();
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
@@ -253,25 +245,24 @@ namespace ApiExamples
             TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMergeEvent.AlternatingRows.docx"), false); //ExSkip
         }
 
+        /// <summary>
+        /// Formats table rows as a mail merge takes place to alternate between two colors on odd/even rows.
+        /// </summary>
         private class HandleMergeFieldAlternatingRows : IFieldMergingCallback
         {
             /// <summary>
-            /// Called for every merge field encountered in the document.
-            /// We can either return some data to the mail merge engine or do something
-            /// else with the document. In this case we modify cell formatting.
+            /// Called when a mail merge merges data into a MERGEFIELD.
             /// </summary>
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
                 if (mBuilder == null)
                     mBuilder = new DocumentBuilder(args.Document);
 
-                // This way we catch the beginning of a new row
+                // This is true of we are on the first column, which means we have moved to a new row.
                 if (args.FieldName.Equals("CompanyName"))
                 {
-                    // Select the color depending on whether the row number is even or odd
                     Color rowColor = IsOdd(mRowIdx) ? Color.FromArgb(213, 227, 235) : Color.FromArgb(242, 242, 242);
 
-                    // Set properties for each cell in the row
                     for (int colIdx = 0; colIdx < 4; colIdx++)
                     {
                         mBuilder.MoveToCell(0, mRowIdx, colIdx, 0);
@@ -284,7 +275,7 @@ namespace ApiExamples
 
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
-                // Do nothing
+                // Do nothing.
             }
 
             private DocumentBuilder mBuilder;
@@ -292,17 +283,15 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Returns true if the value is odd; false if the value is even.
+        /// Function needed for VB autoporting that returns the parity of the passed number.
         /// </summary>
         private static bool IsOdd(int value)
         {
-            // The code is a bit complex, but otherwise automatic conversion to VB does not work
             return (value / 2 * 2).Equals(value);
         }
 
         /// <summary>
-        /// Create DataTable and fill it with data.
-        /// In real life this DataTable should be filled from a database.
+        /// Creates a mail merge data source.
         /// </summary>
         private static DataTable GetSuppliersDataTable()
         {
@@ -326,25 +315,39 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:MailMerge.Execute(String[], Object[])
-            //ExSummary:Demonstrates how to merge an image from a web address using an Image field.
+            //ExSummary:Shows how to merge an image from a URI as mail merge data into a MERGEFIELD.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertField("MERGEFIELD  Image:Logo ");
 
-            // Pass a URL which points to the image to merge into the document
-            doc.MailMerge.Execute(new string[] { "Logo" },
-                new object[] { AsposeLogoUrl });
+            // MERGEFIELDs with "Image:" tags will receive an image during a mail merge.
+            // The string after the colon in the "Image:" tag corresponds to a column name
+            // in the data source whose cells contain URIs of image files.
+            builder.InsertField("MERGEFIELD  Image:logo_FromWeb ");
+            builder.InsertField("MERGEFIELD  Image:logo_FromFileSystem ");
 
-            doc.Save(ArtifactsDir + "MailMergeEvent.ImageFromUrl.doc");
+            // Create a data source which contains URIs of images that we will merge. 
+            // A URI can be a web URL that points to an image, or a local file system filename of an image file.
+            string[] columns = { "logo_FromWeb", "logo_FromFileSystem" };
+            object[] URIs = { AsposeLogoUrl, ImageDir + "Logo.jpg" };
+
+            // Execute a mail merge on a data source with one row.
+            doc.MailMerge.Execute(columns, URIs);
+
+            doc.Save(ArtifactsDir + "MailMergeEvent.ImageFromUrl.docx");
             //ExEnd
 
-            // Verify the image was merged into the document
-            Shape logoImage = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-            Assert.IsNotNull(logoImage);
-            Assert.IsTrue(logoImage.HasImage);
+            doc = new Document(ArtifactsDir + "MailMergeEvent.ImageFromUrl.docx");
+
+            Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, imageShape);
+
+            imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, imageShape);
         }
 
-#if  NET462 || JAVA
+#if NET462 || JAVA
         //ExStart
         //ExFor:MailMerge.FieldMergingCallback
         //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)
@@ -359,10 +362,8 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Mail merge destination - Northwind employees.docx");
 
-            // Set up the event handler for image fields
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
 
-            // Open a database connection
             string connString = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={DatabaseDir + "Northwind.mdb"};";
             string query = "SELECT FirstName, LastName, Title, Address, City, Region, Country, PhotoBLOB FROM Employees";
 
@@ -370,11 +371,10 @@ namespace ApiExamples
             {
                 conn.Open();
 
-                // Open the data reader. It needs to be in the normal mode that reads all record at once
+                // Open the data reader, which needs to be in a mode that reads all records at once.
                 OleDbCommand cmd = new OleDbCommand(query, conn);
                 IDataReader dataReader = cmd.ExecuteReader();
 
-                // Perform mail merge
                 doc.MailMerge.ExecuteWithRegions(dataReader, "Employees");
             }
 
@@ -386,18 +386,15 @@ namespace ApiExamples
         {
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
-                // Do nothing
+                // Do nothing.
             }
 
             /// <summary>
-            /// This is called when mail merge engine encounters Image:XXX merge field in the document.
-            /// You have a chance to return an Image object, file name or a stream that contains the image.
+            /// This is called when a mail merge encounters a MERGEFIELD in the document with an "Image:" tag in its name.
             /// </summary>
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs e)
             {
-                // The field value is a byte array, just cast it and create a stream on it
                 MemoryStream imageStream = new MemoryStream((byte[])e.FieldValue);
-                // Now the mail merge engine will retrieve the image from the stream
                 e.ImageStream = imageStream;
             }
         }
