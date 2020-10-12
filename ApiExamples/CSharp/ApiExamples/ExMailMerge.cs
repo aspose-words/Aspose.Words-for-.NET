@@ -548,11 +548,11 @@ namespace ApiExamples
             Document doc = CreateSourceDocMergeDuplicateRegions();
             DataTable dataTable = CreateSourceTableMergeDuplicateRegions();
 
-            // If the "MergeDuplicateRegions" property is false, the mail merge will affect the first region,
+            // If we set the "MergeDuplicateRegions" property to "false", the mail merge will affect the first region,
             // while the MERGEFIELDs of the second one will be left in the pre-merge state.
             // To get both regions merged like that,
             // we would have to execute the mail merge twice on a table of the same name.
-            // If the "MergeDuplicateRegions" property is set to true, the mail merge will affect both regions. //INSP: 'is set' passive voice
+            // If we set the "MergeDuplicateRegions" property to "true", the mail merge will affect both regions.
             doc.MailMerge.MergeDuplicateRegions = mergeDuplicateRegions;
 
             doc.MailMerge.ExecuteWithRegions(dataTable);
@@ -690,7 +690,7 @@ namespace ApiExamples
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
             // The mail merge will only update the QUOTE field outside of the mail merge region
-            // if the "MergeWholeDocument" flag is set to "true". //INSP: 'is set' passive voice
+            // if we set the "MergeWholeDocument" flag to "true".
             doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.docx");
 
             Assert.True(doc.GetText().Contains("This QUOTE field is inside the \"MyTable\" merge region."));
