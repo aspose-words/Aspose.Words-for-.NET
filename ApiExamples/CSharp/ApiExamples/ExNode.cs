@@ -32,18 +32,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:Node
             //ExFor:Node.Clone
-            //ExSummary:Shows how to clone composite nodes with and without their child nodes.
+            //ExSummary:Shows how to clone a composite node.
             Document doc = new Document();
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
             para.AppendChild(new Run(doc, "Hello world!"));
 
-            // Clone the paragraph and the child nodes
+            // Below are two ways of cloning a composite node.
+            // 1 -  Create a clone of a node, and create a clone of each of its child nodes as well.
             Node cloneWithChildren = para.Clone(true);
 
             Assert.IsTrue(((CompositeNode)cloneWithChildren).HasChildNodes);
             Assert.AreEqual("Hello world!", cloneWithChildren.GetText().Trim());
 
-            // Clone the paragraph without its child nodes
+            // 2 -  Create a clone of a node just by itself without any children.
             Node cloneWithoutChildren = para.Clone(false);
 
             Assert.IsFalse(((CompositeNode)cloneWithoutChildren).HasChildNodes);
@@ -56,17 +57,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Node.ParentNode
-            //ExSummary:Shows how to access the parent node.
+            //ExSummary:Shows how to access a node's parent node.
             Document doc = new Document();
-
-            // Get the document's first paragraph and append a child node to it in the form of a run with text
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
 
-            // When inserting a new node, the document that the node will belong to must be provided as an argument
+            // Append a child Run node to the document's first paragraph.
             Run run = new Run(doc, "Hello world!");
             para.AppendChild(run);
 
-            // The node lineage can be traced back to the document itself
+            // The paragraph is the parent node of the run node. We can trace this lineage
+            // all the way to the document node, which is the root of the document's node tree.
             Assert.AreEqual(para, run.ParentNode);
             Assert.AreEqual(doc.FirstSection.Body, para.ParentNode);
             Assert.AreEqual(doc.FirstSection, doc.FirstSection.Body.ParentNode);
@@ -81,27 +81,28 @@ namespace ApiExamples
             //ExFor:Node.Document
             //ExFor:Node.ParentNode
             //ExSummary:Shows how to create a node and set its owning document.
-            // Open a file from disk
             Document doc = new Document();
-
-            // Creating a new node of any type requires a document passed into the constructor
             Paragraph para = new Paragraph(doc);
+            para.AppendChild(new Run(doc, "Hello world!"));
 
-            // The new paragraph node does not yet have a parent
-            Console.WriteLine("Paragraph has no parent node: " + (para.ParentNode == null));
+            // We have not yet appended this paragraph as a child to any composite node.
+            Assert.IsNull(para.ParentNode);
 
-            // But the paragraph node knows its document
-            Console.WriteLine("Both nodes' documents are the same: " + (para.Document == doc));
+            // If a node is an appropriate child node type of another composite node,
+            // we can attach it as a child only if both nodes have the same owner document.
+            // The owner document is the document we passed to the node's constructor.
+            // We have not attached this paragraph to the document, so the document does not contain its text.
+            Assert.AreEqual(para.Document, doc);
+            Assert.AreEqual(string.Empty, doc.GetText().Trim());
 
-            // The fact that a node always belongs to a document allows us to access and modify 
-            // properties that reference the document-wide data such as styles or lists
-            para.ParagraphFormat.StyleName = "Heading 1";
+            // Since the document owns this paragraph, we can apply one of its styles to the paragraph's contents.
+            para.ParagraphFormat.Style = doc.Styles["Heading 1"];
 
-            // Now add the paragraph to the main text of the first section
+            // Add this node to the document, and then verify its contents.
             doc.FirstSection.Body.AppendChild(para);
 
-            // The paragraph node is now a child of the Body node
-            Console.WriteLine("Paragraph has a parent node: " + (para.ParentNode != null));
+            Assert.AreEqual(doc.FirstSection.Body, para.ParentNode);
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
             //ExEnd
 
             Assert.AreEqual(doc, para.Document);
