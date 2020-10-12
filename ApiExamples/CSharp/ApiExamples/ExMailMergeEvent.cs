@@ -63,7 +63,7 @@ namespace ApiExamples
 
         /// <summary>
         /// If the mail merge encounters a MERGEFIELD whose name starts with the "html_" prefix,
-        /// this callback parses its merge data as HTML content, and adds the result to the document in the location of the MERGEFIELD.
+        /// this callback parses its merge data as HTML content, and adds the result to the document location of the MERGEFIELD.
         /// </summary>
         private class HandleMergeFieldInsertHtml : IFieldMergingCallback
         {
@@ -79,7 +79,7 @@ namespace ApiExamples
                     builder.MoveToMergeField(args.DocumentFieldName);
                     builder.InsertHtml((string)args.FieldValue);
 
-                    // Since we have already inserted the merge content manually,
+                    // Since we have already inserted the merged content manually,
                     // we will not need to respond to this event by returning content via the "Text" property. 
                     args.Text = string.Empty;
                 }
@@ -101,8 +101,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert some MERGEFIELDs with format switches which will edit the values
-            // that they will receive during a mail merge.
+            // Insert some MERGEFIELDs with format switches that will edit the values they will receive during a mail merge.
             builder.InsertField("MERGEFIELD text_Field1 \\* Caps", null);
             builder.Write(", ");
             builder.InsertField("MERGEFIELD text_Field2 \\* Upper", null);
@@ -325,7 +324,7 @@ namespace ApiExamples
             builder.InsertField("MERGEFIELD  Image:logo_FromWeb ");
             builder.InsertField("MERGEFIELD  Image:logo_FromFileSystem ");
 
-            // Create a data source which contains URIs of images that we will merge. 
+            // Create a data source that contains URIs of images that we will merge. 
             // A URI can be a web URL that points to an image, or a local file system filename of an image file.
             string[] columns = { "logo_FromWeb", "logo_FromFileSystem" };
             object[] URIs = { AsposeLogoUrl, ImageDir + "Logo.jpg" };

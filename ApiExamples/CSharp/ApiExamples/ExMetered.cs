@@ -36,7 +36,7 @@ namespace ApiExamples
             Console.WriteLine($"Credit before operation: {Metered.GetConsumptionCredit()}");
             Console.WriteLine($"Consumption quantity before operation: {Metered.GetConsumptionQuantity()}");
 
-            // Perform an operation using Aspose.Words, and then print our metered stats again to see how much we spent.
+            // Operate using Aspose.Words, and then print our metered stats again to see how much we spent.
             Document doc = new Document(MyDir + "Document.docx");
             doc.Save(ArtifactsDir + "Metered.Usage.pdf");
 

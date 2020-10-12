@@ -26,8 +26,8 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Normally, MERGEFIELDs contain the name of a column of a mail merge data source.
-            // We can instead use "TableStart:" and "TableEnd:" prefixes to begin/end a mail merge region.
-            // Each region will belong to a table with a name that matches the string immediately after the colon in the prefix.
+            // Instead, we can use "TableStart:" and "TableEnd:" prefixes to begin/end a mail merge region.
+            // Each region will belong to a table with a name that matches the string immediately after the prefix's colon.
             builder.InsertField(" MERGEFIELD TableStart:Customers");
 
             // These MERGEFIELDs are inside the mail merge region of the "Customers" table.
@@ -60,8 +60,7 @@ namespace ApiExamples
             customers[0].Orders.Add(new Order("Rugby World Cup Ball", 1));
             customers[1].Orders.Add(new Order("Rugby World Cup Guide", 1));
 
-            // To be able to mail merge from your own data source, we must wrap it
-            // into an object that implements the IMailMergeDataSource interface.
+            // To mail merge from your data source, we must wrap it into an object that implements the IMailMergeDataSource interface.
             CustomerMailMergeDataSource customersDataSource = new CustomerMailMergeDataSource(customers);
             
             doc.MailMerge.ExecuteWithRegions(customersDataSource);

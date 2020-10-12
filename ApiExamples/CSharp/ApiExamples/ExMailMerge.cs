@@ -56,7 +56,7 @@ namespace ApiExamples
             Assert.That(() => doc.Save(response, "Artifacts/MailMerge.ExecuteArray.docx", ContentDisposition.Inline, null),
                 Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
 
-            // We will need to close this response manually to make sure that we do not add any superfluous content to the document after saving.
+            // We will need to close this response manually to ensure that we do not add any superfluous content to the document after saving.
             Assert.That(() => response.End(), Throws.TypeOf<NullReferenceException>());
             //ExEnd
 
@@ -83,7 +83,7 @@ namespace ApiExamples
             builder.Write(" for $");
             builder.InsertField(" MERGEFIELD UnitPrice");
 
-            // Create a connection string which points to the "Northwind" database file
+            // Create a connection string that points to the "Northwind" database file
             // in our local file system, open a connection, and set up an SQL query.
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + DatabaseDir + "Northwind.mdb";
             string query = 
@@ -98,7 +98,7 @@ namespace ApiExamples
                 connection.Open();
 
                 // Create an SQL command that will source data for our mail merge.
-                // The names of the columns of the table that this SELECT statement will return
+                // The names of the table's columns that this SELECT statement will return
                 // will need to correspond to the merge fields we placed above.
                 OdbcCommand command = connection.CreateCommand();
                 command.CommandText = query;
@@ -130,15 +130,15 @@ namespace ApiExamples
             // which is included in the .NET distribution and stored in "adodb.dll".
             ADODB.Connection connection = new ADODB.Connection();
 
-            // Create a connection string which points to the "Northwind" database file
-            // in our local file system, and open a connection.
+            // Create a connection string that points to the "Northwind" database file
+            // in our local file system and open a connection.
             string connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DatabaseDir + "Northwind.mdb";
             connection.Open(connectionString);
 
             // Populate our DataSet by running an SQL command on our database.
             // The names of the columns in the result table will need to correspond
             // to the values of the MERGEFIELDS that will accommodate our data.
-            string command = @"SELECT ProductName, QuantityPerUnit, UnitPrice FROM Products";
+            const string command = @"SELECT ProductName, QuantityPerUnit, UnitPrice FROM Products";
 
             ADODB.Recordset recordset = new ADODB.Recordset();
             recordset.Open(command, connection);
@@ -180,8 +180,8 @@ namespace ApiExamples
             // which is included in the .NET distribution and stored in "adodb.dll".
             ADODB.Connection connection = new ADODB.Connection();
 
-            // Create a connection string which points to the "Northwind" database file
-            // in our local file system, and open a connection.
+            // Create a connection string that points to the "Northwind" database file
+            // in our local file system and open a connection.
             string connectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DatabaseDir + "Northwind.mdb";
             connection.Open(connectionString);
 
@@ -322,15 +322,14 @@ namespace ApiExamples
             table.Rows.Add(new object[] { "John Cardholder", "47" });
             table.Rows.Add(new object[] { "Joe Bloggs", "75" });
 
-            // We can use a data view to alter the data that the mail merge will use
-            // without making changes to the data table itself.
+            // We can use a data view to alter the mail merge data without making changes to the data table itself.
             DataView view = new DataView(table);
             view.Sort = "Grade DESC";
             view.RowFilter = "Grade >= 50";
 
-            // Our data view sorts the entries in descending order along the "Grade" column,
-            // and also filters out rows which have values of less than 50 on that column.
-            // Three out of the four rows fit that criteria, so the output document will contain three merge documents.
+            // Our data view sorts the entries in descending order along the "Grade" column
+            // and filters out rows with values of less than 50 on that column.
+            // Three out of the four rows fit those criteria so that the output document will contain three merge documents.
             doc.MailMerge.Execute(view);
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteDataView.docx");
@@ -349,8 +348,8 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Normally, MERGEFIELDs contain the name of a column of a mail merge data source.
-            // We can instead use "TableStart:" and "TableEnd:" prefixes to begin/end a mail merge region.
-            // Each region will belong to a table with a name that matches the string immediately after the colon in the prefix.
+            // Instead, we can use "TableStart:" and "TableEnd:" prefixes to begin/end a mail merge region.
+            // Each region will belong to a table with a name that matches the string immediately after the prefix's colon.
             builder.InsertField(" MERGEFIELD TableStart:Customers");
 
             // This MERGEFIELD is inside the mail merge region of the "Customers" table.
@@ -359,7 +358,7 @@ namespace ApiExamples
             builder.InsertField(" MERGEFIELD CustomerName");
             builder.Write(":");
 
-            // Create column headers for a table which will contain values from a second inner region.
+            // Create column headers for a table that will contain values from a second inner region.
             builder.StartTable();
             builder.InsertCell();
             builder.Write("Item");
@@ -383,8 +382,8 @@ namespace ApiExamples
             builder.InsertField(" MERGEFIELD TableEnd:Customers");
 
             // Create a dataset that contains the two tables with the required names and relationships.
-            // Each merge document for each row of the "Customers" table of the outer merge region will perform its own mail merge on the "Orders" table.
-            // Each merge document will display all rows of the latter table whose "CustomerID" column values match that of the current "Customers" table row.
+            // Each merge document for each row of the "Customers" table of the outer merge region will perform its mail merge on the "Orders" table.
+            // Each merge document will display all rows of the latter table whose "CustomerID" column values match the current "Customers" table row.
             DataSet customersAndOrders = CreateDataSet();
             doc.MailMerge.ExecuteWithRegions(customersAndOrders);
 
@@ -393,7 +392,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Generates a data set which has two data tables named "Customers" and "Orders", with a one-to-many relationship on the "CustomerID" column.
+        /// Generates a data set that has two data tables named "Customers" and "Orders", with a one-to-many relationship on the "CustomerID" column.
         /// </summary>
         private static DataSet CreateDataSet()
         {
@@ -431,10 +430,10 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // If we want to perform two consecutive mail merges on one document while taking data from two tables
-            // that are related to each other in any way, we can separate the mail merges with regions.
+            // related to each other in any way, we can separate the mail merges with regions.
             // Normally, MERGEFIELDs contain the name of a column of a mail merge data source.
-            // We can instead use "TableStart:" and "TableEnd:" prefixes to begin/end a mail merge region.
-            // Each region will belong to a table with a name that matches the string immediately after the colon in the prefix.
+            // Instead, we can use "TableStart:" and "TableEnd:" prefixes to begin/end a mail merge region.
+            // Each region will belong to a table with a name that matches the string immediately after the prefix's colon.
             // These regions are separate for unrelated data, while they can be nested for hierarchical data.
             builder.Writeln("\tCities: ");
             builder.InsertField(" MERGEFIELD TableStart:Cities");
@@ -442,7 +441,7 @@ namespace ApiExamples
             builder.InsertField(" MERGEFIELD TableEnd:Cities");
             builder.InsertParagraph();
 
-            // Both MERGEFIELDs refer to a same column name, but values for each will come from different data tables.
+            // Both MERGEFIELDs refer to the same column name, but values for each will come from different data tables.
             builder.Writeln("\tFruit: ");
             builder.InsertField(" MERGEFIELD TableStart:Fruit");
             builder.InsertField(" MERGEFIELD Name");
@@ -463,7 +462,7 @@ namespace ApiExamples
             tableFruit.Rows.Add(new object[] { "Banana" });
 
             // We will need to run one mail merge per table. The first mail merge will populate the MERGEFIELDs
-            // in the "Cities" range, while leaving the fields the "Fruit" range unfilled.
+            // in the "Cities" range while leaving the fields the "Fruit" range unfilled.
             doc.MailMerge.ExecuteWithRegions(tableCities);
 
             // Run a second merge for the "Fruit" table, while using a data view
@@ -521,13 +520,13 @@ namespace ApiExamples
             Assert.AreEqual("Column2", mergeFieldNames[1]);
 
             // Insert a region with the same name as an existing region, which will make it a duplicate.
-            // A single row/paragraph cannot be shared by multiple mail merge regions.
+            // Multiple mail merge regions cannot share a single row/paragraph.
             builder.InsertParagraph(); 
             builder.InsertField(" MERGEFIELD TableStart:MailMergeRegion1");
             builder.InsertField(" MERGEFIELD Column3");
             builder.InsertField(" MERGEFIELD TableEnd:MailMergeRegion1");
 
-            // If we look up a name of duplicate regions using the "GetRegionsByName" method,
+            // If we look up the name of duplicate regions using the "GetRegionsByName" method,
             // it will return all such regions in a collection.
             regions = doc.MailMerge.GetRegionsByName("MailMergeRegion1");
 
@@ -549,11 +548,11 @@ namespace ApiExamples
             Document doc = CreateSourceDocMergeDuplicateRegions();
             DataTable dataTable = CreateSourceTableMergeDuplicateRegions();
 
-            // If the "MergeDuplicateRegions" property is false, the mail merge will take effect on the first region,
+            // If the "MergeDuplicateRegions" property is false, the mail merge will affect the first region,
             // while the MERGEFIELDs of the second one will be left in the pre-merge state.
             // To get both regions merged like that,
             // we would have to execute the mail merge twice on a table of the same name.
-            // If the "MergeDuplicateRegions" property is set to true, the mail merge will affect both regions.
+            // If the "MergeDuplicateRegions" property is set to true, the mail merge will affect both regions. //INSP: 'is set' passive voice
             doc.MailMerge.MergeDuplicateRegions = mergeDuplicateRegions;
 
             doc.MailMerge.ExecuteWithRegions(dataTable);
@@ -618,10 +617,10 @@ namespace ApiExamples
             DataTable dataTable = CreateSourceTablePreserveUnusedTags();
 
             // By default, alternative merge tags that cannot receive data because the data source has no columns with their name
-            // are converted to and left on display as MERGEFIELDs after the mail merge
-            // We can preserve their original appearance setting this attribute to true
+            // are converted to and left on display as MERGEFIELDs after the mail merge.
+            // We can preserve their original appearance setting this attribute to true.
 
-            // By default, a mail merge places data from each row of a table into MERGEFIELDs which name columns in that table. 
+            // By default, a mail merge places data from each row of a table into MERGEFIELDs, which name columns in that table. 
             // Our document has no such fields, but it does have plaintext tags enclosed by curly braces.
             // If we set the "PreserveUnusedTags" flag to "true", we could treat these tags as MERGEFIELDs
             // to allow our mail merge to insert data from the data source at those tags.
@@ -690,8 +689,8 @@ namespace ApiExamples
             doc.MailMerge.MergeWholeDocument = mergeWholeDocument;
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
-            // The mail merge will only update the QUOTE field that is outside
-            // of the mail merge region if the "MergeWholeDocument" flag is set to "true".
+            // The mail merge will only update the QUOTE field outside of the mail merge region
+            // if the "MergeWholeDocument" flag is set to "true". //INSP: 'is set' passive voice
             doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.docx");
 
             Assert.True(doc.GetText().Contains("This QUOTE field is inside the \"MyTable\" merge region."));
@@ -749,7 +748,7 @@ namespace ApiExamples
             DataTable dataTable = CreateSourceTableDataTableForOneRegion();
 
             // By default, a paragraph can belong to no more than one mail merge region.
-            // The contents of our document do not meet this criteria.
+            // The contents of our document do not meet these criteria.
             // If we set the "UseWholeParagraphAsRegion" flag to "true",
             // running a mail merge on this document will throw an exception.
             // If we set the "UseWholeParagraphAsRegion" flag to "false",
@@ -761,7 +760,7 @@ namespace ApiExamples
             else
                 doc.MailMerge.ExecuteWithRegions(dataTable);
 
-            // The mail merge populates our first region, while leaving the second region unused,
+            // The mail merge populates our first region while leaving the second region unused
             // since it is the region that breaks the rule.
             doc.Save(ArtifactsDir + "MailMerge.UseWholeParagraphAsRegion.docx");
             if (!useWholeParagraphAsRegion) //ExSkip
@@ -819,10 +818,7 @@ namespace ApiExamples
             doc.MailMerge.TrimWhitespaces = trimWhitespaces;
             doc.MailMerge.Execute(new[] { "myMergeField" }, new object[] { "\t hello world! " });
 
-            if (trimWhitespaces)
-                Assert.AreEqual("hello world!\f", doc.GetText());
-            else
-                Assert.AreEqual("\t hello world! \f", doc.GetText());
+            Assert.AreEqual(trimWhitespaces ? "hello world!\f" : "\t hello world! \f", doc.GetText());
             //ExEnd
         }
 
@@ -906,7 +902,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create a document with MERGEFIELDs for three columns of a mail merge data source table,
-            // and then create a table with only two columns whose names match the names of our MERGEFIELDs.
+            // and then create a table with only two columns whose names match our MERGEFIELDs.
             builder.InsertField(" MERGEFIELD FirstName ");
             builder.Write(" ");
             builder.InsertField(" MERGEFIELD LastName ");
@@ -1023,7 +1019,7 @@ namespace ApiExamples
             // with punctuation marks as empty, and will get the mail merge operation to remove them as well.
             // Setting the "CleanupParagraphsWithPunctuationMarks" property to "false"
             // will remove empty paragraphs, but not ones with punctuation marks.
-            // This is a list of punctuation marks that this property concerns: "!", ",", ".", ":", ";", "?", "¡", "¿"
+            // This is a list of punctuation marks that this property concerns: "!", ",", ".", ":", ";", "?", "¡", "¿".
             doc.MailMerge.CleanupParagraphsWithPunctuationMarks = cleanupParagraphsWithPunctuationMarks;
 
             doc.MailMerge.Execute(new[] { "Option_1", "Option_2" }, new object[] { null, null });
@@ -1378,7 +1374,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a MERGEFIELD nested inside an IF field.
-            // Since the statement of the IF field is false, it will not display the result of the MERGEFIELD.
+            // Since the IF field statement is false, it will not display the result of the MERGEFIELD.
             // The MERGEFIELD will also not receive any data during a mail merge.
             FieldIf fieldIf = (FieldIf)builder.InsertField(" IF 1 = 2 ");
             builder.MoveTo(fieldIf.Separator);
@@ -1398,10 +1394,11 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "MailMerge.UnconditionalMergeFieldsAndRegions.docx");
 
-            if (countAllMergeFields)
-                Assert.AreEqual("\u0013 IF 1 = 2 \"James Bond\"\u0014\u0015", doc.GetText().Trim());
-            else
-                Assert.AreEqual("\u0013 IF 1 = 2 \u0013 MERGEFIELD  FullName \u0014«FullName»\u0015\u0014\u0015", doc.GetText().Trim());
+            Assert.AreEqual(
+                countAllMergeFields
+                    ? "\u0013 IF 1 = 2 \"James Bond\"\u0014\u0015"
+                    : "\u0013 IF 1 = 2 \u0013 MERGEFIELD  FullName \u0014«FullName»\u0015\u0014\u0015",
+                doc.GetText().Trim());
             //ExEnd
         }
 
@@ -1474,7 +1471,7 @@ namespace ApiExamples
             builder.InsertField("MERGEFIELD Message", "<Message>");
 
             // Create a data source in the form of an ASCII file, with the "|" character
-            // acting as the delimiter that separates columns. The first line contains the names of the three columns, 
+            // acting as the delimiter that separates columns. The first line contains the three columns' names,
             // and each subsequent line is a row with their respective values.
             string[] lines = { "FirstName|LastName|Message",
                 "John|Doe|Hello! This message was created with Aspose Words mail merge." };
@@ -1604,8 +1601,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMerge.MailingLabelMerge.Header.docx");
 
-            // Create a mailing label merge date file, which will consist of a table with
-            // one row and the same amount of columns as the table in the header document. 
+            // Create a mailing label merge data file consisting of a table with one row
+            // and the same number of columns as the header document's table. 
             doc = new Document();
             builder = new DocumentBuilder(doc);
 
@@ -1694,7 +1691,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Odso data.docx");
 
             // This collection defines how a mail merge will map columns from a data source
-            // to predefined MERGEFIELD, ADDRESSBLOCK and GREETINGLINE fields
+            // to predefined MERGEFIELD, ADDRESSBLOCK and GREETINGLINE fields.
             OdsoFieldMapDataCollection dataCollection = doc.MailMergeSettings.Odso.FieldMapDatas;
             Assert.AreEqual(30, dataCollection.Count);
 
@@ -1800,7 +1797,7 @@ namespace ApiExamples
             CultureInfo currentCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
 
-            // This merge will use the current thread's culture to format the date, which will be US English.
+            // This merge will use the current thread's culture to format the date, US English.
             doc.MailMerge.Execute(new[] { "Date1" }, new object[] { new DateTime(2020, 1, 01) });
 
             // Configure the next merge to source its culture value from the field code. The value of that culture will be German.
