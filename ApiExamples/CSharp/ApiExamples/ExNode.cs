@@ -110,7 +110,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void EnumerateChildNodes()
+        public void ChildNodesEnumerate()
         {
             //ExStart
             //ExFor:Node
@@ -119,51 +119,86 @@ namespace ApiExamples
             //ExFor:CompositeNode.GetChild
             //ExFor:CompositeNode.ChildNodes
             //ExFor:CompositeNode.GetEnumerator
-            //ExSummary:Shows how to enumerate immediate children of a CompositeNode using the enumerator provided by the ChildNodes collection.
+            //ExSummary:Shows how to traverse through a composite node's collection of child nodes.
             Document doc = new Document();
 
+            // Add two runs and one shape as child nodes to the first paragraph of this document.
             Paragraph paragraph = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
-            paragraph.AppendChild(new Run(doc, "Hello world!"));
-            paragraph.AppendChild(new Run(doc, " Hello again!"));
+            paragraph.AppendChild(new Run(doc, "Hello world! "));
 
+            Shape shape = new Shape(doc, ShapeType.Rectangle);
+            shape.Width = 200;
+            shape.Height = 200;
+            shape.WrapType = WrapType.Inline;
+            paragraph.AppendChild(shape);
+
+            paragraph.AppendChild(new Run(doc, "Hello again!"));
+
+            // Iterate through the paragraph's collection of immediate children,
+            // and print any runs or shapes that we find within.
             NodeCollection children = paragraph.ChildNodes;
 
-            // Paragraph may contain children of various types such as runs, shapes and so on
+            Assert.AreEqual(3, paragraph.ChildNodes.Count);
+
             foreach (Node child in children)
-                if (child.NodeType.Equals(NodeType.Run))
+                switch (child.NodeType)
                 {
-                    Run run = (Run)child;
-                    Console.WriteLine(run.Text);
+                    case NodeType.Run:
+                        Console.WriteLine("Run contents:");
+                        Console.WriteLine($"\t\"{child.GetText().Trim()}\"");
+                        break;
+                    case NodeType.Shape:
+                        Shape childShape = (Shape)child;
+                        Console.WriteLine("Shape:");
+                        Console.WriteLine($"\t{childShape.ShapeType}, {childShape.Width}x{childShape.Height}");
+                        break;
                 }
             //ExEnd
 
             Assert.AreEqual(NodeType.Run, paragraph.GetChild(NodeType.Run, 0, true).NodeType);
-            Assert.AreEqual(2, paragraph.ChildNodes.Count);
             Assert.AreEqual("Hello world! Hello again!", doc.GetText().Trim());
         }
 
         [Test]
-        public void IndexChildNodes()
+        public void ChildNodesIndex()
         {
             //ExStart
             //ExFor:NodeCollection.Count
             //ExFor:NodeCollection.Item
-            //ExSummary:Shows how to enumerate immediate children of a CompositeNode using indexed access.
+            //ExSummary:Shows how to traverse through a composite node's collection of child nodes.
             Document doc = new Document();
-            Paragraph paragraph = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
-            paragraph.AppendChild(new Run(doc, "Hello world!"));
 
+            // Add two runs and one shape as child nodes to the first paragraph of this document.
+            Paragraph paragraph = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+            paragraph.AppendChild(new Run(doc, "Hello world! "));
+
+            Shape shape = new Shape(doc, ShapeType.Rectangle);
+            shape.Width = 200;
+            shape.Height = 200;
+            shape.WrapType = WrapType.Inline;
+            paragraph.AppendChild(shape);
+
+            paragraph.AppendChild(new Run(doc, "Hello again!"));
+
+            // Iterate through the paragraph's collection of immediate children,
+            // and print any runs or shapes that we find within.
             NodeCollection children = paragraph.ChildNodes;
 
             for (int i = 0; i < children.Count; i++)
             {
                 Node child = children[i];
 
-                // Paragraph may contain children of various types such as runs, shapes and so on
-                if (child.NodeType.Equals(NodeType.Run))
+                switch (child.NodeType)
                 {
-                    Run run = (Run)child;
-                    Console.WriteLine(run.Text);
+                    case NodeType.Run:
+                        Console.WriteLine("Run contents:");
+                        Console.WriteLine($"\t\"{child.GetText().Trim()}\"");
+                        break;
+                    case NodeType.Shape:
+                        Shape childShape = (Shape)child;
+                        Console.WriteLine("Shape:");
+                        Console.WriteLine($"\t{childShape.ShapeType}, {childShape.Width}x{childShape.Height}");
+                        break;
                 }
             }
             //ExEnd
@@ -201,16 +236,16 @@ namespace ApiExamples
         //ExFor:BookmarkEnd.NodeType
         //ExFor:GroupShape.NodeType
         //ExFor:CommentRangeStart.NodeType
-        //ExSummary:Shows how to efficiently visit all direct and indirect children of a composite node.
+        //ExSummary:Shows how to traverse a composite node's tree of child nodes.
         [Test] //ExSkip
-        public void RecurseAllNodes()
+        public void RecurseChildren()
         {
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
-            // Any node that can contain child nodes, such as the document itself, is composite
+            // Any node that can contain child nodes, such as the document itself, is composite.
             Assert.True(doc.IsComposite);
 
-            // Invoke the recursive function that will go through and print all the child nodes of a composite node
+            // Invoke the recursive function that will go through and print all the child nodes of a composite node.
             TraverseAllNodes(doc, 0);
         }
 
@@ -219,12 +254,11 @@ namespace ApiExamples
         /// </summary>
         public void TraverseAllNodes(CompositeNode parentNode, int depth)
         {
-            // Loop through immediate children of a node
             for (Node childNode = parentNode.FirstChild; childNode != null; childNode = childNode.NextSibling)
             {
                 Console.Write($"{new string('\t', depth)}{Node.NodeTypeToString(childNode.NodeType)}");
 
-                // Recurse into the node if it is a composite node
+                // Recurse into the node if it is a composite node. Otherwise, print its contents if it is an inline node.
                 if (childNode.IsComposite)
                 {
                     Console.WriteLine();
@@ -250,25 +284,23 @@ namespace ApiExamples
             //ExFor:Node
             //ExFor:Node.NodeType
             //ExFor:Node.Remove
-            //ExSummary:Shows how to remove all nodes of a specific type from a composite node.
+            //ExSummary:Shows how to remove all child nodes of a specific type from a composite node.
             Document doc = new Document(MyDir + "Tables.docx");
 
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
 
-            // Select the first child node in the body
             Node curNode = doc.FirstSection.Body.FirstChild;
 
             while (curNode != null)
             {
-                // Save the next sibling node as a variable in case we want to move to it after deleting this node
+                // Save the next sibling node as a variable in case we want to move to it after deleting this node.
                 Node nextNode = curNode.NextSibling;
 
-                // A section body can contain Paragraph and Table nodes
-                // If the node is a Table, remove it from the parent
+                // A section body can contain Paragraph and Table nodes.
+                // If the node is a Table, remove it from the parent.
                 if (curNode.NodeType.Equals(NodeType.Table))
                     curNode.Remove();
 
-                // Continue going through child nodes until null (no more siblings) is reached
                 curNode = nextNode;
             }
 
@@ -279,20 +311,21 @@ namespace ApiExamples
         [Test]
         public void EnumNextSibling()
         {
-
             //ExStart
             //ExFor:CompositeNode.FirstChild
             //ExFor:Node.NextSibling
             //ExFor:Node.NodeTypeToString
             //ExFor:Node.NodeType
-            //ExSummary:Shows how to enumerate immediate child nodes of a composite node using NextSibling.
+            //ExSummary:Shows how to use a node's NextSibling property to enumerate through its immediate children.
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
-            // Loop starting from the first child until we reach null
             for (Node node = doc.FirstSection.Body.FirstChild; node != null; node = node.NextSibling)
             {
-                // Output the types of the nodes that we come across
-                Console.WriteLine(Node.NodeTypeToString(node.NodeType));
+                Console.WriteLine();
+                Console.WriteLine($"Node type: {Node.NodeTypeToString(node.NodeType)}");
+
+                string contents = node.GetText().Trim();
+                Console.WriteLine(contents == string.Empty ? "This node contains no text" : $"Contents: \"{node.GetText().Trim()}\"");
             }
             //ExEnd
         }
