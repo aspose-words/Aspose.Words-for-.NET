@@ -7,7 +7,6 @@
 
 using System;
 using System.IO;
-using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Lists;
@@ -25,21 +24,23 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OoxmlSaveOptions.Password
-            //ExSummary:Shows how to create a password protected Office Open XML document.
+            //ExSummary:Shows how to create a password encrypted Office Open XML document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
-            // Create a SaveOptions object with a password and save our document with it
+            // Create a SaveOptions object with a password, and save our document with it.
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
             saveOptions.Password = "MyPassword";
 
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.Password.docx", saveOptions);
 
-            // This document cannot be opened like a normal document
-            Assert.Throws<IncorrectPasswordException>(() => doc = new Document(ArtifactsDir + "OoxmlSaveOptions.Password.docx"));
+            // We will not be able to open this document with Microsoft Word or
+            // Aspose.Words without providing the correct password.
+            Assert.Throws<IncorrectPasswordException>(() =>
+                doc = new Document(ArtifactsDir + "OoxmlSaveOptions.Password.docx"));
 
-            // We can open the document and access its contents by passing the correct password to a LoadOptions object
+            // Open the encrypted document by passing the correct password in a LoadOptions object.
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.Password.docx", new LoadOptions("MyPassword"));
 
             Assert.AreEqual("Hello world!", doc.GetText().Trim());
