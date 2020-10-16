@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Diagnostics;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -57,18 +58,20 @@ namespace ApiExamples
             //ExFor:OoxmlCompliance
             //ExFor:OoxmlSaveOptions.Compliance
             //ExFor:ShapeMarkupLanguage
-            //ExSummary:Shows conversion VML shapes to DML using ISO/IEC 29500:2008 Strict compliance level.
+            //ExSummary:Shows how to set an OOXML compliance specification for a saved document to adhere to.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set Word2003 version for document, for inserting image as VML shape
+            // If we configure compatibility options to comply with Microsoft Word 2003,
+            // inserting an image will define its shape using VML.
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2003);
             builder.InsertImage(ImageDir + "Transparent background logo.png");
 
             Assert.AreEqual(ShapeMarkupLanguage.Vml, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage);
 
-            // Iso29500_2008 does not allow VML shapes
-            // You need to use OoxmlCompliance.Iso29500_2008_Strict for converting VML to DML shapes
+            // The "ISO/IEC 29500:2008" OOXML standard does not support VML shapes.
+            // If we set the "Compliance" property of the SaveOptions object to "OoxmlCompliance.Iso29500_2008_Strict",
+            // any document we save while passing this object will have to follow that standard. 
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions
             {
                 Compliance = OoxmlCompliance.Iso29500_2008_Strict,
@@ -77,7 +80,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.Iso29500Strict.docx", saveOptions);
 
-            // The markup language of our shape has changed according to the compliance type 
+            // Our saved document defines the shape using DML to adhere to the "ISO/IEC 29500:2008" OOXML standard.
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.Iso29500Strict.docx");
             
             Assert.AreEqual(ShapeMarkupLanguage.Dml, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage);
@@ -86,22 +89,23 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        public void RestartingDocumentList(bool doRestartListAtEachSection)
+        public void RestartingDocumentList(bool restartListAtEachSection)
         {
             //ExStart
             //ExFor:List.IsRestartAtEachSection
-            //ExSummary:Shows how to specify that the list has to be restarted at each section.
+            //ExFor:OoxmlCompliance
+            //ExFor:OoxmlSaveOptions.Compliance
+            //ExSummary:Shows how to configure a list to restart numbering at each section.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             doc.Lists.Add(ListTemplate.NumberDefault);
 
             Aspose.Words.Lists.List list = doc.Lists[0];
+            list.IsRestartAtEachSection = restartListAtEachSection;
 
-            // Set true to specify that the list has to be restarted at each section
-            list.IsRestartAtEachSection = doRestartListAtEachSection;
-
-            // IsRestartAtEachSection will be written only if compliance is higher then OoxmlComplianceCore.Ecma376
+            // The "IsRestartAtEachSection" property will only be applicable when
+            // the document's OOXML compliance level is to a standard that is newer than "OoxmlComplianceCore.Ecma376".
             OoxmlSaveOptions options = new OoxmlSaveOptions
             {
                 Compliance = OoxmlCompliance.Iso29500_2008_Transitional
@@ -114,86 +118,128 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.SectionBreakNewPage);
             builder.Writeln("List item 3");
             builder.Writeln("List item 4");
-
+            
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.RestartingDocumentList.docx", options);
-            //ExEnd
             
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.RestartingDocumentList.docx");
 
-            Assert.AreEqual(doRestartListAtEachSection, doc.Lists[0].IsRestartAtEachSection);
-        }
-
-        [Test]
-        public void UpdatingLastSavedTimeDocument()
-        {
-            //ExStart
-            //ExFor:SaveOptions.UpdateLastSavedTimeProperty
-            //ExSummary:Shows how to update a document time property when you want to save it.
-            Document doc = new Document(MyDir + "Document.docx");
-
-            // Get last saved time
-            DateTime documentTimeBeforeSave = doc.BuiltInDocumentProperties.LastSavedTime;
-
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions
-            {
-                UpdateLastSavedTimeProperty = true
-            };
-
-            doc.Save(ArtifactsDir + "OoxmlSaveOptions.UpdatingLastSavedTimeDocument.docx", saveOptions);
+            Assert.AreEqual(restartListAtEachSection, doc.Lists[0].IsRestartAtEachSection);
             //ExEnd
-
-            doc = DocumentHelper.SaveOpen(doc);
-            DateTime documentTimeAfterSave = doc.BuiltInDocumentProperties.LastSavedTime;
-
-            Assert.True(documentTimeBeforeSave < documentTimeAfterSave);
         }
 
         [TestCase(false)]
         [TestCase(true)]
-        public void KeepLegacyControlChars(bool doKeepLegacyControlChars)
+        public void LastSavedTime(bool updateLastSavedTimeProperty)
+        {
+            //ExStart
+            //ExFor:SaveOptions.UpdateLastSavedTimeProperty
+            //ExSummary:Shows how to determine whether to preserve the document's "Last saved time" property when saving.
+            Document doc = new Document(MyDir + "Document.docx");
+
+            Assert.AreEqual(new DateTime(2020, 7, 30, 5, 27, 0), 
+                doc.BuiltInDocumentProperties.LastSavedTime);
+
+            // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object,
+            // and then pass it to the document's saving method to modify the way in which we save the document.
+            // Set the "UpdateLastSavedTimeProperty" property to "true" to
+            // set the output document's "Last saved time" built-in property to the current date/time.
+            // Set the "UpdateLastSavedTimeProperty" property to "false" to
+            // preserve the original value of the input document's "Last saved time" built-in property.
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.UpdateLastSavedTimeProperty = updateLastSavedTimeProperty;
+
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.LastSavedTime.docx", saveOptions);
+
+            doc = new Document(ArtifactsDir + "OoxmlSaveOptions.LastSavedTime.docx");
+            DateTime lastSavedTimeNew = doc.BuiltInDocumentProperties.LastSavedTime;
+
+            if (updateLastSavedTimeProperty)
+                Assert.That(DateTime.Now, Is.EqualTo(lastSavedTimeNew).Within(1).Days);
+            else
+                Assert.AreEqual(new DateTime(2020, 7, 30, 5, 27, 0), 
+                    lastSavedTimeNew);
+            //ExEnd
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void KeepLegacyControlChars(bool keepLegacyControlChars)
         {
             //ExStart
             //ExFor:OoxmlSaveOptions.KeepLegacyControlChars
             //ExFor:OoxmlSaveOptions.#ctor(SaveFormat)
             //ExSummary:Shows how to support legacy control characters when converting to .docx.
             Document doc = new Document(MyDir + "Legacy control character.doc");
- 
-            // Note that only one legacy character (ShortDateTime) is supported which declared in the "DOC" format
+
+            // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object,
+            // and then pass it to the document's saving method to modify the way in which we save the document.
+            // Set the "KeepLegacyControlChars" property to "true" to preserve
+            // the "ShortDateTime" legacy character while saving.
+            // Set the "KeepLegacyControlChars" property to "false" to remove
+            // the "ShortDateTime" legacy character from the output document.
             OoxmlSaveOptions so = new OoxmlSaveOptions(SaveFormat.Docx);
-            so.KeepLegacyControlChars = doKeepLegacyControlChars;
+            so.KeepLegacyControlChars = keepLegacyControlChars;
  
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.KeepLegacyControlChars.docx", so);
-
-            // Open the saved document and verify results
+            
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.KeepLegacyControlChars.docx");
 
-            if (doKeepLegacyControlChars)
+            if (keepLegacyControlChars)
                 Assert.AreEqual("\u0013date \\@ \"MM/dd/yyyy\"\u0014\u0015\f", doc.FirstSection.Body.GetText());
             else
                 Assert.AreEqual("\u001e\f", doc.FirstSection.Body.GetText());
             //ExEnd
         }
 
-        [Test]
-        public void DocumentCompression()
+        [TestCase(CompressionLevel.Maximum)]
+        [TestCase(CompressionLevel.Fast)]
+        [TestCase(CompressionLevel.Normal)]
+        [TestCase(CompressionLevel.SuperFast)]
+        public void DocumentCompression(CompressionLevel compressionLevel)
         {
             //ExStart
             //ExFor:OoxmlSaveOptions.CompressionLevel
             //ExFor:CompressionLevel
-            //ExSummary:Shows how to specify the compression level used to save the OOXML document.
-            Document doc = new Document(MyDir + "Document.docx");
-            
+            //ExSummary:Shows how to specify the compression level to use while saving an OOXML document.
+            Document doc = new Document(MyDir + "Images.docx");
+
+            // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object,
+            // and then pass it to the document's saving method to modify the way in which we save the document.
+            // Set the "CompressionLevel" property to "CompressionLevel.Maximum" to apply the strongest and slowest compression.
+            // Set the "CompressionLevel" property to "CompressionLevel.Normal" to apply
+            // the default compression that Aspose.Words uses while saving OOXML documents.
+            // Set the "CompressionLevel" property to "CompressionLevel.Fast" to apply a faster and weaker compression.
+            // Set the "CompressionLevel" property to "CompressionLevel.SuperFast" to apply
+            // the default compression that Microsoft Word uses.
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
-            // DOCX and DOTX files are internally a ZIP-archive, this property controls
-            // the compression level of the archive
-            // Note, that FlatOpc file is not a ZIP-archive, therefore, this property does
-            // not affect the FlatOpc files
-            // Aspose.Words uses CompressionLevel.Normal by default, but MS Word uses
-            // CompressionLevel.SuperFast by default
-            saveOptions.CompressionLevel = CompressionLevel.SuperFast;
+            saveOptions.CompressionLevel = compressionLevel;
             
-            doc.Save(ArtifactsDir + "OoxmlSaveOptions.out.docx", saveOptions);
+            Stopwatch st = Stopwatch.StartNew();
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.docx", saveOptions);
+            st.Stop();
+
+            FileInfo fileInfo = new FileInfo(ArtifactsDir + "OoxmlSaveOptions.docx");
+
+            Console.WriteLine($"Saving operation done using the \"{compressionLevel}\" compression level:");
+            Console.WriteLine($"\tDuration:\t{st.ElapsedMilliseconds} ms");
+            Console.WriteLine($"\tFile Size:\t{fileInfo.Length} bytes");
             //ExEnd
+
+            switch (compressionLevel)
+            {
+                case CompressionLevel.Normal:
+                    Assert.AreEqual(1157500, fileInfo.Length, 200);
+                    break;
+                case CompressionLevel.Maximum:
+                    Assert.AreEqual(1141900, fileInfo.Length, 200);
+                    break;
+                case CompressionLevel.Fast:
+                    Assert.AreEqual(1227500, fileInfo.Length, 200);
+                    break;
+                case CompressionLevel.SuperFast:
+                    Assert.AreEqual(1262800, fileInfo.Length, 200);
+                    break;
+            }
         }
 
         [Test]
