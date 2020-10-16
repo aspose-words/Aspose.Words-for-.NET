@@ -24,6 +24,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
             GetActualShapeBoundsPoints(dataDir);
             SpecifyVerticalAnchor(dataDir);
             DetectSmartArtShape(dataDir);
+            UpdateSmartArtDrawing(dataDir);
             InsertOLEObjectAsIcon(dataDir);
             InsertOLEObjectAsIconUsingStream(dataDir);
         }
@@ -170,6 +171,17 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
 
             Console.WriteLine("The document has {0} shapes with SmartArt.", count);
             // ExEnd:DetectSmartArtShape
+        }
+
+        public static void UpdateSmartArtDrawing(string dataDir)
+        {
+            Document doc = new Document(dataDir + "input.docx");
+
+            // ExStart:UpdateSmartArtDrawing
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
+                if(shape.HasSmartArt)
+                    shape.UpdateSmartArtDrawing();
+            // ExEnd:UpdateSmartArtDrawing
         }
 
         public static void InsertOLEObjectAsIcon(string dataDir)

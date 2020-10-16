@@ -17,7 +17,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
 
             SaveAsMD(dataDir);
             SpecifySaveOptionsAndSaveAsMD(dataDir);
-            SupportedMarkdownFeatures(dataDir);
+            SupportedMarkdownFeatures();
             SetImagesFolder(dataDir);
         }
 
@@ -43,7 +43,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             builder.Document.Save(dataDir + "TestDocument.md", saveOptions);
         }
 
-        private static void SupportedMarkdownFeatures(string dataDir)
+        private static void SupportedMarkdownFeatures()
         {
             // ExStart:SupportedMarkdownFeatures
             Document doc = new Document();
@@ -77,7 +77,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
         {
             // ExStart:SetImagesFolder
             // Load the document from disk.
-            Document doc = new Document("http://google.com");
+            Document doc = new Document(dataDir + "Test.docx");
 
             MarkdownSaveOptions so = new MarkdownSaveOptions();
             so.ImagesFolder = dataDir + "\\Images";
