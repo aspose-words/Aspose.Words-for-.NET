@@ -34,19 +34,29 @@ namespace ApiExamples
             //ExFor:Orientation
             //ExFor:PageVerticalAlignment
             //ExFor:BreakType
-            //ExSummary:Shows how to insert sections using DocumentBuilder, specify page setup for a section and reset page setup to defaults.
+            //ExSummary:Shows how to apply and revert page setup settings to sections in a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Modify the first section in the document
+            // Modify the page setup properties for the builder's current section, and add text.
             builder.PageSetup.Orientation = Orientation.Landscape;
             builder.PageSetup.VerticalAlignment = PageVerticalAlignment.Center;
-            builder.Writeln("Section 1, landscape oriented and text vertically centered.");
+            builder.Writeln("This is the first section, which landscape oriented with vertically centered text.");
 
-            // Start a new section and reset its formatting to defaults
+            // If we start a new section using a document builder,
+            // it will inherit the builder's current page setup properties.
             builder.InsertBreak(BreakType.SectionBreakNewPage);
+
+            Assert.AreEqual(Orientation.Landscape, doc.Sections[1].PageSetup.Orientation);
+            Assert.AreEqual(PageVerticalAlignment.Center, doc.Sections[1].PageSetup.VerticalAlignment);
+
+            // We can revert its page setup properties to their default values using the "ClearFormatting" method.
             builder.PageSetup.ClearFormatting();
-            builder.Writeln("Section 2, back to default Letter paper size, portrait orientation and top alignment.");
+
+            Assert.AreEqual(Orientation.Portrait, doc.Sections[1].PageSetup.Orientation);
+            Assert.AreEqual(PageVerticalAlignment.Top, doc.Sections[1].PageSetup.VerticalAlignment);
+
+            builder.Writeln("This is the second section, which is in default Letter paper size, portrait orientation and top alignment.");
 
             doc.Save(ArtifactsDir + "PageSetup.ClearFormatting.docx");
             //ExEnd
@@ -70,7 +80,7 @@ namespace ApiExamples
             //ExFor:PageSetup.CharactersPerLine
             //ExFor:PageSetup.LinesPerPage
             //ExFor:SectionLayoutMode
-            //ExSummary:Shows how to create headers and footers different for first, even and odd pages using DocumentBuilder.
+            //ExSummary:Shows how to create different headers for first, even and odd pages.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -90,7 +100,6 @@ namespace ApiExamples
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.Writeln("Odd pages header.");
 
-            // Move back to the main story of the first section
             builder.MoveToSection(0);
             builder.Writeln("Text page 1.");
             builder.InsertBreak(BreakType.PageBreak);
