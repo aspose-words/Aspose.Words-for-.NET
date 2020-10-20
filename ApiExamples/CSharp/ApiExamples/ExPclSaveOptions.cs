@@ -22,7 +22,7 @@ namespace ApiExamples
             //ExFor:PclSaveOptions
             //ExFor:PclSaveOptions.SaveFormat
             //ExFor:PclSaveOptions.RasterizeTransformedElements
-            //ExSummary:Shows how to rasterize complex elements before saving.
+            //ExSummary:Shows how to rasterize complex elements while saving a document to PCL.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             PclSaveOptions saveOptions = new PclSaveOptions
@@ -36,24 +36,49 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetPrinterFont()
+        public void FallbackFontName()
         {
             //ExStart
-            //ExFor:PclSaveOptions.AddPrinterFont(string, string)
             //ExFor:PclSaveOptions.FallbackFontName
-            //ExSummary:Shows how to add information about font that is uploaded to the printer and set the font that will be used if no expected font is found in printer and built-in fonts collections.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to declare a font that a printer will apply to printed text as a substitute should its original font be unavailable.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Non-existent font";
+            builder.Write("Hello world!");
 
             PclSaveOptions saveOptions = new PclSaveOptions();
-            saveOptions.AddPrinterFont("Courier", "Courier");
             saveOptions.FallbackFontName = "Times New Roman";
-
+            
+            // This document will instruct the printer to apply "Times New Roman" to the text with the missing font.
+            // Should "Times New Roman" also be unavailable, the printer will default to the "Arial" font.
             doc.Save(ArtifactsDir + "PclSaveOptions.SetPrinterFont.pcl", saveOptions);
             //ExEnd
         }
 
         [Test]
-        [Ignore("This test is manual check that PaperTray information are preserved in pcl document.")]
+        public void AddPrinterFont()
+        {
+            //ExStart
+            //ExFor:PclSaveOptions.AddPrinterFont(string, string)
+            //ExSummary:Shows how to get a printer to substitute all instances of a specific font with a different font. 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Courier";
+            builder.Write("Hello world!");
+
+            PclSaveOptions saveOptions = new PclSaveOptions();
+            saveOptions.AddPrinterFont("Courier New", "Courier");
+
+            // When printing this document, the printer will use the "Courier New" font
+            // that it has access to in places where our document used the "Courier" font.
+            doc.Save(ArtifactsDir + "PclSaveOptions.AddPrinterFont.pcl", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
+        [Ignore("This test is a manual check that PaperTray information is preserved in the output pcl document.")]
         public void GetPreservedPaperTrayInformation()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
