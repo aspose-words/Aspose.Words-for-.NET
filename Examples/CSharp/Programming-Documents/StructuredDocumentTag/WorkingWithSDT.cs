@@ -21,6 +21,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Struct
             SetContentControlStyle(dataDir);
             CreatingTableRepeatingSectionMappedToCustomXmlPart(dataDir);
             MultiSectionSDT(dataDir);
+            StructuredDocumentTagRangeStartXmlMapping(dataDir);
         }
 
         public static void SetContentControlColor(string dataDir)
@@ -147,6 +148,19 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Struct
             foreach (StructuredDocumentTagRangeStart tag in tags)
                 Console.WriteLine(tag.Title);
             // ExEnd:MultiSectionSDT
+        }
+
+        public static void StructuredDocumentTagRangeStartXmlMapping(string dataDir)
+        {
+            // ExStart:StructuredDocumentTagRangeStartXmlMapping
+            Document doc = new Document(dataDir + "input.docx");
+            
+            StructuredDocumentTagRangeStart sdtRangeStart = (StructuredDocumentTagRangeStart)doc.GetChild(NodeType.StructuredDocumentTagRangeStart, 0, true);
+
+            sdtRangeStart.XmlMapping.SetMapping(doc.CustomXmlParts[0], "/Root/Element", null);
+
+            doc.Save(dataDir + "output.docx");
+            // ExEnd:StructuredDocumentTagRangeStartXmlMapping
         }
     }
 }

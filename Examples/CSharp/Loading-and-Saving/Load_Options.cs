@@ -27,6 +27,7 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
             LoadOptionsResourceLoadingCallback(dataDir);
             LoadOptionsEncoding(dataDir);
             SkipPdfImages(dataDir);
+            ConvertMetafilesToPng(dataDir);
         }
 
         public static void LoadOptionsUpdateDirtyFields(string dataDir)
@@ -194,6 +195,16 @@ namespace Aspose.Words.Examples.CSharp.Loading_and_Saving
 
             Document doc = new Document(dataDir + "in.pdf", loadOptions);
             //ExEnd:SkipPdfImages
+        }
+
+        public static void ConvertMetafilesToPng(string dataDir)
+        {
+            //ExStart:ConvertMetafilesToPng
+            LoadOptions lo = new LoadOptions();
+            lo.ConvertMetafilesToPng = true;
+
+            Document doc = new Document(dataDir + "in.doc", lo);
+            //ExEnd:ConvertMetafilesToPng
         }
     }
 }

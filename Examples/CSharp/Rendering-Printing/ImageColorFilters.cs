@@ -161,7 +161,9 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
         {
             // ExStart:SaveImageToOnebitPerPixel
             ImageSaveOptions opt = new ImageSaveOptions(SaveFormat.Png);
-            opt.PageIndex = 1;
+            
+            PageSet pageSet = new PageSet(new PageRange(1, 1));
+            opt.PageSet = pageSet;
             opt.ImageColorMode = ImageColorMode.BlackAndWhite;
             opt.PixelFormat = ImagePixelFormat.Format1bppIndexed;
 
