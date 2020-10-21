@@ -3495,6 +3495,34 @@ namespace ApiExamples
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
             TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
         }
+
+        [Test]
+        public void InsertOleObjectAsIcon()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOleObjectAsIcon(String, String, Boolean, String, String)
+            //ExFor:DocumentBuilder.InsertOleObjectAsIcon(Stream, String, String, String)
+            //ExSummary:Shows how to insert an embedded or linked OLE object as icon into the document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertOleObjectAsIcon(MyDir + "Presentation.pptx", "Package", false, ImageDir + "Logo icon.ico", "My embedded file");
+
+            builder.InsertBreak(BreakType.LineBreak);
+
+            using (FileStream stream = new FileStream(MyDir + "Presentation.pptx", FileMode.Open))
+            {
+                Shape shape = builder.InsertOleObjectAsIcon(stream, "PowerPoint.Application", ImageDir + "Logo icon.ico",
+                    "My embedded file stream");
+
+                OlePackage setOlePackage = shape.OleFormat.OlePackage;
+                setOlePackage.FileName = "Presentation.pptx";
+                setOlePackage.DisplayName = "Presentation.pptx";
+            }
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjectAsIcon.docx");
+            //ExEnd
+        }
 #endif
     }
 }

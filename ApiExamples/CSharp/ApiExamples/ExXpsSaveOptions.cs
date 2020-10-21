@@ -46,5 +46,21 @@ namespace ApiExamples
                     : "<Glyphs OriginX=\"34.294998169\" OriginY=\"10.31799984\" UnicodeString=\"This\"",
                 ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", "1.fpage");
         }
+
+        [Test]
+        public void ExportExactPages()
+        {
+            //ExStart
+            //ExFor:FixedPageSaveOptions.PageSet
+            //ExFor:PageSet(int[])
+            //ExSummary:Shows how to extract pages based on exact page indices.
+            Document doc = new Document(MyDir + "TestMethod.docx");
+
+            XpsSaveOptions xpsOptions = new XpsSaveOptions();
+            xpsOptions.PageSet = new PageSet(0, 1, 2, 4, 1, 3, 2, 3);
+
+            doc.Save(ArtifactsDir + "XpsSaveOptions.ExportExactPages.xps", xpsOptions);
+            //ExEnd
+        }
     }
 }

@@ -1236,5 +1236,20 @@ namespace ApiExamples
             }
 #endif
         }
+
+        [Test]
+        public void ExportOddPages()
+        {
+            //ExStart
+            //ExFor:FixedPageSaveOptions.PageSet
+            //ExSummary:Shows how to export Odd pages from the document.
+            Document doc = new Document(MyDir + "TestMethod.docx");
+    
+            PdfSaveOptions pdfOptions = new PdfSaveOptions();
+            pdfOptions.PageSet = PageSet.Odd;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ExportOddPages.pdf", pdfOptions);
+            //ExEnd
+        }
     }
 }

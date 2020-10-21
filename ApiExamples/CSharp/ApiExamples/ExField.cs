@@ -7212,5 +7212,27 @@ namespace ApiExamples
             Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
             //ExEnd
         }
+
+        [Test]
+        public void SetFieldIndexFormat()
+        {
+            //ExStart
+            //ExFor:FieldOptions.FieldIndexFormat
+            //ExSummary:Shows how to formatting FieldIndex fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("A");
+            builder.InsertBreak(BreakType.LineBreak);
+            builder.InsertField("XE \"A\"");
+            builder.Write("B");
+
+            builder.InsertField(" INDEX \\e \" · \" \\h \"A\" \\c \"2\" \\z \"1033\"", null);
+
+            doc.FieldOptions.FieldIndexFormat = FieldIndexFormat.Fancy;
+            doc.UpdateFields();
+
+            doc.Save(ArtifactsDir + "Field.SetFieldIndexFormat.docx");
+            //ExEnd
+        }
     }
 }

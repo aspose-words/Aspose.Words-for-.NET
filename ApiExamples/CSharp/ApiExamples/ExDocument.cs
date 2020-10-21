@@ -2370,5 +2370,36 @@ namespace ApiExamples
                 Assert.AreEqual("\"", groups[4].Text);   
             }
         }
+
+        [Test]
+        public void IgnorePrinterMetrics()
+        {
+            //ExStart
+            //ExFor:LayoutOptions.IgnorePrinterMetrics
+            //ExSummary:Shows how to ignore 'Use printer metrics to lay out document' option.
+            Document doc = new Document(MyDir + "Rendering.docx");
+    
+            doc.LayoutOptions.IgnorePrinterMetrics = false;
+
+            doc.Save(ArtifactsDir + "Document.IgnorePrinterMetrics.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ExtractPages()
+        {
+            //ExStart
+            //ExFor:Document.ExtractPages
+            //ExSummary:Shows how to get specified range of pages from the document.
+            Document doc = new Document(MyDir + "Layout entities.docx");
+
+            doc = doc.ExtractPages(0, 2);
+    
+            doc.Save(ArtifactsDir + "Document.ExtractPages.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.ExtractPages.docx");
+            Assert.AreEqual(doc.PageCount, 2);
+        }
     }
 }
