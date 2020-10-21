@@ -70,53 +70,160 @@ namespace ApiExamples
             Assert.AreEqual(PageVerticalAlignment.Top, doc.Sections[1].PageSetup.VerticalAlignment);
         }
 
-        [Test]
-        public void DifferentHeaders()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void DifferentFirstPageHeaderFooter(bool differentFirstPageHeaderFooter)
         {
             //ExStart
             //ExFor:PageSetup.DifferentFirstPageHeaderFooter
-            //ExFor:PageSetup.OddAndEvenPagesHeaderFooter
-            //ExFor:PageSetup.LayoutMode
-            //ExFor:PageSetup.CharactersPerLine
-            //ExFor:PageSetup.LinesPerPage
-            //ExFor:SectionLayoutMode
-            //ExSummary:Shows how to create different headers for first, even and odd pages.
+            //ExSummary:Shows how to enable or disable primary headers/footers.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            PageSetup pageSetup = builder.PageSetup;
-            pageSetup.DifferentFirstPageHeaderFooter = true;
-            pageSetup.OddAndEvenPagesHeaderFooter = true;
-            pageSetup.LayoutMode = SectionLayoutMode.LineGrid;
-            pageSetup.CharactersPerLine = 1;
-            pageSetup.LinesPerPage = 1;
-
+            // Below are two types of header/footers.
+            // 1 -  The "First" header/footer, which appear at the first page of the section.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderFirst);
             builder.Writeln("First page header.");
 
-            builder.MoveToHeaderFooter(HeaderFooterType.HeaderEven);
-            builder.Writeln("Even pages header.");
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterFirst);
+            builder.Writeln("First page footer.");
 
+            // 2 -  The "Primary" header/footer, which appears on every page in the section.
+            // We can override the primary header/footer by a first, as well as an even page header/footer. 
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            builder.Writeln("Odd pages header.");
+            builder.Writeln("Primary header.");
+
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.Writeln("Primary footer.");
 
             builder.MoveToSection(0);
-            builder.Writeln("Text page 1.");
+            builder.Writeln("Page 1.");
             builder.InsertBreak(BreakType.PageBreak);
-            builder.Writeln("Text page 2.");
+            builder.Writeln("Page 2.");
             builder.InsertBreak(BreakType.PageBreak);
-            builder.Writeln("Text page 3.");
+            builder.Writeln("Page 3.");
 
-            doc.Save(ArtifactsDir + "PageSetup.DifferentHeaders.docx");
+            // Each section has a "PageSetup" object that specifies page appearance-related properties
+            // such as orientation, size and borders.
+            // Set the "DifferentFirstPageHeaderFooter" property to "true" to apply the first header/footer to the first page.
+            // Set the "DifferentFirstPageHeaderFooter" property to "false"
+            // to make the first page display the primary header/footer.
+            builder.PageSetup.DifferentFirstPageHeaderFooter = differentFirstPageHeaderFooter;
+
+            doc.Save(ArtifactsDir + "PageSetup.DifferentFirstPageHeaderFooter.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "PageSetup.DifferentHeaders.docx");
+            doc = new Document(ArtifactsDir + "PageSetup.DifferentFirstPageHeaderFooter.docx");
 
-            Assert.True(pageSetup.DifferentFirstPageHeaderFooter);
-            Assert.True(pageSetup.OddAndEvenPagesHeaderFooter);
+            Assert.AreEqual(differentFirstPageHeaderFooter, doc.FirstSection.PageSetup.DifferentFirstPageHeaderFooter);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void OddAndEvenPagesHeaderFooter(bool oddAndEvenPagesHeaderFooter)
+        {
+            //ExStart
+            //ExFor:PageSetup.OddAndEvenPagesHeaderFooter
+            //ExSummary:Shows how to enable or disable even page headers/footers.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Below are two types of header/footers.
+            // 1 -  The "Primary" header/footer, which appears on every page in the section.
+            // We can override the primary header/footer by a first, as well as an even page header/footer. 
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.Writeln("Primary header.");
+
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.Writeln("Primary footer.");
+
+            // 2 -  The "Even" header/footer, which appears on every even page of this section.
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderEven);
+            builder.Writeln("Even page header.");
+
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterEven);
+            builder.Writeln("Even page footer.");
+
+            builder.MoveToSection(0);
+            builder.Writeln("Page 1.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 2.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 3.");
+
+            // Each section has a "PageSetup" object that specifies page appearance-related properties
+            // such as orientation, size and borders.
+            // Set the "OddAndEvenPagesHeaderFooter" property to "true"
+            // to display the even page header/footer on even pages.
+            // Set the "OddAndEvenPagesHeaderFooter" property to "false"
+            // to display the primary header/footer on even pages.
+            builder.PageSetup.OddAndEvenPagesHeaderFooter = oddAndEvenPagesHeaderFooter;
+
+            doc.Save(ArtifactsDir + "PageSetup.OddAndEvenPagesHeaderFooter.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.OddAndEvenPagesHeaderFooter.docx");
+
+            Assert.AreEqual(oddAndEvenPagesHeaderFooter, doc.FirstSection.PageSetup.OddAndEvenPagesHeaderFooter);
+        }
+
+        [Test]
+        public void CharactersPerLine()
+        {
+            //ExStart
+            //ExFor:PageSetup.CharactersPerLine
+            //ExFor:PageSetup.LayoutMode
+            //ExFor:SectionLayoutMode
+            //ExSummary:Shows how to specify a for the number of characters that each line may have.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            // Enable pitching, and then use it to set the number of characters per line in this section.
+            builder.PageSetup.LayoutMode = SectionLayoutMode.Grid;
+            builder.PageSetup.CharactersPerLine = 10;
+
+            // The number of characters also depends on the size of the font.
+            doc.Styles["Normal"].Font.Size = 20;
+
+            Assert.AreEqual(8, doc.FirstSection.PageSetup.CharactersPerLine);
+
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            doc.Save(ArtifactsDir + "PageSetup.CharactersPerLine.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.CharactersPerLine.docx");
+
+            Assert.AreEqual(SectionLayoutMode.Grid, doc.FirstSection.PageSetup.LayoutMode);
+            Assert.AreEqual(8, doc.FirstSection.PageSetup.CharactersPerLine);
+        }
+
+        [Test]
+        public void LinesPerPage()
+        {
+            //ExStart
+            //ExFor:PageSetup.LinesPerPage
+            //ExFor:PageSetup.LayoutMode
+            //ExFor:SectionLayoutMode
+            //ExSummary:Shows how to specify a limit for the number of lines that each page may have.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Enable pitching, and then use it to set the number of lines per page in this section.
+            // A large enough font size will push some lines down onto the next page to avoid overlapping characters.
+            builder.PageSetup.LayoutMode = SectionLayoutMode.LineGrid;
+            builder.PageSetup.LinesPerPage = 15;
+
+            for (int i = 0; i < 30; i++)
+                builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+
+            doc.Save(ArtifactsDir + "PageSetup.LinesPerPage.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.LinesPerPage.docx");
+
             Assert.AreEqual(SectionLayoutMode.LineGrid, doc.FirstSection.PageSetup.LayoutMode);
-            Assert.AreEqual(1, doc.FirstSection.PageSetup.CharactersPerLine);
-            Assert.AreEqual(1, doc.FirstSection.PageSetup.LinesPerPage);
+            Assert.AreEqual(15, doc.FirstSection.PageSetup.LinesPerPage);
         }
 
         [Test]
