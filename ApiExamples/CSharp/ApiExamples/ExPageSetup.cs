@@ -233,31 +233,45 @@ namespace ApiExamples
             //ExFor:SectionStart
             //ExFor:PageSetup.SectionStart
             //ExFor:Document.Sections
-            //ExSummary:Shows how to specify how the section starts, from a new page, on the same page or other.
+            //ExSummary:Shows how to specify how a new section separates itself from the previous.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Add text to the first section and that comes with a blank document,
-            // then add a new section that starts a new page and give it text as well
             builder.Writeln("This text is in section 1.");
+
+            // Section break types determine how a new section separates itself from the previous section.
+            // Below are five types of section breaks.
+            // 1 -  Starts the next section on a new page:
             builder.InsertBreak(BreakType.SectionBreakNewPage);
             builder.Writeln("This text is in section 2.");
 
-            // Section break types determine how a new section gets split from the previous section
-            // By inserting a "SectionBreakNewPage" type section break, we have set this section's SectionStart value to "NewPage" 
             Assert.AreEqual(SectionStart.NewPage, doc.Sections[1].PageSetup.SectionStart);
 
-            // Insert a new column section the same way
-            builder.InsertBreak(BreakType.SectionBreakNewColumn);
+            // 2 -  Starts the next section on the current page:
+            builder.InsertBreak(BreakType.SectionBreakContinuous);
             builder.Writeln("This text is in section 3.");
 
-            Assert.AreEqual(SectionStart.NewColumn, doc.Sections[2].PageSetup.SectionStart);
+            Assert.AreEqual(SectionStart.Continuous, doc.Sections[2].PageSetup.SectionStart);
 
-            // We can change the types of section breaks by assigning different values to each section's SectionStart
-            // Setting their values to "Continuous" will put no visible breaks between sections
-            // and will leave all the content of this document on one page
-            doc.Sections[1].PageSetup.SectionStart = SectionStart.Continuous;
-            doc.Sections[2].PageSetup.SectionStart = SectionStart.Continuous;
+            // 3 -  Starts the next section on a new even page:
+            builder.InsertBreak(BreakType.SectionBreakEvenPage);
+            builder.Writeln("This text is in section 4.");
+
+            Assert.AreEqual(SectionStart.EvenPage, doc.Sections[3].PageSetup.SectionStart);
+
+            // 4 -  Starts the next section on a new odd page:
+            builder.InsertBreak(BreakType.SectionBreakOddPage);
+            builder.Writeln("This text is in section 5.");
+
+            Assert.AreEqual(SectionStart.OddPage, doc.Sections[4].PageSetup.SectionStart);
+
+            // 5 -  Starts the next section on a new column:
+            TextColumnCollection columns = builder.PageSetup.TextColumns;
+            columns.SetCount(2);
+
+            builder.InsertBreak(BreakType.SectionBreakNewColumn);
+            builder.Writeln("This text is in section 6.");
+
+            Assert.AreEqual(SectionStart.NewColumn, doc.Sections[5].PageSetup.SectionStart);
 
             doc.Save(ArtifactsDir + "PageSetup.SetSectionStart.docx");
             //ExEnd
@@ -265,8 +279,11 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.SetSectionStart.docx");
 
             Assert.AreEqual(SectionStart.NewPage, doc.Sections[0].PageSetup.SectionStart);
-            Assert.AreEqual(SectionStart.Continuous, doc.Sections[1].PageSetup.SectionStart);
+            Assert.AreEqual(SectionStart.NewPage, doc.Sections[1].PageSetup.SectionStart);
             Assert.AreEqual(SectionStart.Continuous, doc.Sections[2].PageSetup.SectionStart);
+            Assert.AreEqual(SectionStart.EvenPage, doc.Sections[3].PageSetup.SectionStart);
+            Assert.AreEqual(SectionStart.OddPage, doc.Sections[4].PageSetup.SectionStart);
+            Assert.AreEqual(SectionStart.NewColumn, doc.Sections[5].PageSetup.SectionStart);
         }
 
 #if NET462 || NETCOREAPP2_1 || JAVA
@@ -277,17 +294,16 @@ namespace ApiExamples
             //ExStart
             //ExFor:PageSetup.FirstPageTray
             //ExFor:PageSetup.OtherPagesTray
-            //ExSummary:Shows how to change all sections in a document to use the default paper tray of the selected printer.
+            //ExSummary:Shows how to get all the sections in a document to use the default paper tray of the selected printer.
             Document doc = new Document();
 
-            // Find the printer that will be used for printing this document
-            // In this case, it is the default printer
-            // You can define a specific printer using PrinterName
+            // Find the default printer that we will use for printing this document.
+            // You can define a specific printer using the "PrinterName" property of the PrinterSettings object.
             PrinterSettings settings = new PrinterSettings();
-
-            // The paper tray value stored in documents is completely printer specific
-            // This means the code below resets all page tray values to use the current printers default tray
-            // You can enumerate PrinterSettings.PaperSources to find the other valid paper tray values of the selected printer
+            
+            // The paper tray value stored in documents is printer-specific.
+            // This means the code below resets all page tray values to use the current printers default tray.
+            // You can enumerate PrinterSettings.PaperSources to find the other valid paper tray values of the selected printer.
             foreach (Section section in doc.Sections.OfType<Section>())
             {
                 section.PageSetup.FirstPageTray = settings.DefaultPageSettings.PaperSource.RawKind;
@@ -312,17 +328,18 @@ namespace ApiExamples
             //ExSummary:Shows how to set up printing using different printer trays for different paper sizes.
             Document doc = new Document();
 
-            // Choose the default printer to be used for printing this document
+            // Find the default printer that we will use for printing this document.
+            // You can define a specific printer using the "PrinterName" property of the PrinterSettings object.
             PrinterSettings settings = new PrinterSettings();
 
-            // This is the tray we will use for A4 paper size
-            // This is the first tray in the paper sources collection
+            // This is the tray we will use for pages in the "A4" paper size.
             int printerTrayForA4 = settings.PaperSources[0].RawKind;
-            // The is the tray we will use for Letter paper size
-            // This is the second tray in the paper sources collection
+
+            // The is the tray we will use for pages in the "Letter" paper size.
             int printerTrayForLetter = settings.PaperSources[1].RawKind;
 
-            // Set the page tray used for each section based off the paper size used in the section
+            // Modify the PageSettings object of this section to get Microsoft Word to instruct the printer
+            // to use one the trays we identified above, depending on the paper size of this section.
             foreach (Section section in doc.Sections.OfType<Section>())
             {
                 if (section.PageSetup.PaperSize == Aspose.Words.PaperSize.Letter)
@@ -369,7 +386,7 @@ namespace ApiExamples
             //ExFor:PageSetup.RightMargin
             //ExFor:PageSetup.HeaderDistance
             //ExFor:PageSetup.FooterDistance
-            //ExSummary:Shows how to adjust paper size, orientation, margins and other settings for a section.
+            //ExSummary:Shows how to adjust paper size, orientation, margins, along with other settings for a section.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -382,7 +399,7 @@ namespace ApiExamples
             builder.PageSetup.HeaderDistance = ConvertUtil.InchToPoint(0.2);
             builder.PageSetup.FooterDistance = ConvertUtil.InchToPoint(0.2);
 
-            builder.Writeln("Hello world.");
+            builder.Writeln("Hello world!");
 
             doc.Save(ArtifactsDir + "PageSetup.PageMargins.docx");
             //ExEnd
@@ -390,6 +407,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.PageMargins.docx");
 
             Assert.AreEqual(PaperSize.Legal, doc.FirstSection.PageSetup.PaperSize);
+            Assert.AreEqual(1008.0d, doc.FirstSection.PageSetup.PageWidth);
+            Assert.AreEqual(612.0d, doc.FirstSection.PageSetup.PageHeight);
             Assert.AreEqual(Orientation.Landscape, doc.FirstSection.PageSetup.Orientation);
             Assert.AreEqual(72.0d, doc.FirstSection.PageSetup.TopMargin);
             Assert.AreEqual(72.0d, doc.FirstSection.PageSetup.BottomMargin);
@@ -400,6 +419,63 @@ namespace ApiExamples
         }
 
         [Test]
+        public void PaperSizes()
+        {
+            //ExStart
+            //ExFor:PaperSize
+            //ExFor:PageSetup.PaperSize
+            //ExSummary:Shows how to set page sizes.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // We can change the size of the current page to a pre-defined size
+            // by using the "PaperSize" property of this section's PageSetup object.
+            builder.PageSetup.PaperSize = PaperSize.Tabloid;
+
+            Assert.AreEqual(792.0d, builder.PageSetup.PageWidth);
+            Assert.AreEqual(1224.0d, builder.PageSetup.PageHeight);
+
+            builder.Writeln($"This page is {builder.PageSetup.PageWidth}x{builder.PageSetup.PageHeight}.");
+
+            // Each section has its own PageSetup object. When we use a document builder to make a new section,
+            // that section's PageSetup object inherits all the values of the previous section's PageSetup object.
+            builder.InsertBreak(BreakType.SectionBreakEvenPage);
+
+            Assert.AreEqual(PaperSize.Tabloid, builder.PageSetup.PaperSize);
+
+            builder.PageSetup.PaperSize = PaperSize.A5;
+            builder.Writeln($"This page is {builder.PageSetup.PageWidth}x{builder.PageSetup.PageHeight}.");
+
+            Assert.AreEqual(419.55d, builder.PageSetup.PageWidth);
+            Assert.AreEqual(595.30d, builder.PageSetup.PageHeight);
+
+            builder.InsertBreak(BreakType.SectionBreakEvenPage);
+
+            // Set a custom size for this section's pages.
+            builder.PageSetup.PageWidth = 620;
+            builder.PageSetup.PageHeight = 480;
+
+            Assert.AreEqual(PaperSize.Custom, builder.PageSetup.PaperSize);
+
+            builder.Writeln($"This page is {builder.PageSetup.PageWidth}x{builder.PageSetup.PageHeight}.");
+
+            doc.Save(ArtifactsDir + "PageSetup.PaperSizes.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.PaperSizes.docx");
+
+            Assert.AreEqual(PaperSize.Tabloid, doc.Sections[0].PageSetup.PaperSize);
+            Assert.AreEqual(792.0d, doc.Sections[0].PageSetup.PageWidth);
+            Assert.AreEqual(1224.0d, doc.Sections[0].PageSetup.PageHeight);
+            Assert.AreEqual(PaperSize.A5, doc.Sections[1].PageSetup.PaperSize);
+            Assert.AreEqual(419.55d, doc.Sections[1].PageSetup.PageWidth);
+            Assert.AreEqual(595.30d, doc.Sections[1].PageSetup.PageHeight);
+            Assert.AreEqual(PaperSize.Custom, doc.Sections[2].PageSetup.PaperSize);
+            Assert.AreEqual(620.0d, doc.Sections[2].PageSetup.PageWidth);
+            Assert.AreEqual(480.0d, doc.Sections[2].PageSetup.PageHeight);
+        }
+
+        [Test]
         public void ColumnsSameWidth()
         {
             //ExStart
@@ -407,19 +483,17 @@ namespace ApiExamples
             //ExFor:TextColumnCollection
             //ExFor:TextColumnCollection.Spacing
             //ExFor:TextColumnCollection.SetCount
-            //ExSummary:Shows how to create multiple evenly spaced columns in a section using DocumentBuilder.
+            //ExSummary:Shows how to create multiple evenly spaced columns in a section.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             TextColumnCollection columns = builder.PageSetup.TextColumns;
-            // Make spacing between columns wider
             columns.Spacing = 100;
-            // This creates two columns of equal width
             columns.SetCount(2);
 
-            builder.Writeln("Text in column 1.");
+            builder.Writeln("Column 1.");
             builder.InsertBreak(BreakType.ColumnBreak);
-            builder.Writeln("Text in column 2.");
+            builder.Writeln("Column 2.");
 
             doc.Save(ArtifactsDir + "PageSetup.ColumnsSameWidth.docx");
             //ExEnd
@@ -434,33 +508,32 @@ namespace ApiExamples
         public void CustomColumnWidth()
         {
             //ExStart
-            //ExFor:TextColumnCollection.LineBetween
             //ExFor:TextColumnCollection.EvenlySpaced
             //ExFor:TextColumnCollection.Item
             //ExFor:TextColumn
             //ExFor:TextColumn.Width
             //ExFor:TextColumn.SpaceAfter
-            //ExSummary:Shows how to set widths of columns.
+            //ExSummary:Shows how to create unevenly spaced columns.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            PageSetup pageSetup = builder.PageSetup;
 
-            TextColumnCollection columns = builder.PageSetup.TextColumns;
-            // Show vertical line between columns
-            columns.LineBetween = true;
-            // Indicate we want to create column with different widths
+            TextColumnCollection columns = pageSetup.TextColumns;
             columns.EvenlySpaced = false;
-            // Create two columns, note they will be created with zero widths, need to set them
             columns.SetCount(2);
 
-            // Set the first column to be narrow
+            // Determine the amount of room that we have available for arranging columns.
+            double contentWidth = pageSetup.PageWidth - pageSetup.LeftMargin - pageSetup.RightMargin;
+
+            Assert.AreEqual(470.30d, contentWidth, 0.01d);
+
+            // Set the first column to be narrow.
             TextColumn column = columns[0];
             column.Width = 100;
             column.SpaceAfter = 20;
 
-            // Set the second column to take the rest of the space available on the page
+            // Set the second column to take the rest of the space available within the margins of the page.
             column = columns[1];
-            PageSetup pageSetup = builder.PageSetup;
-            double contentWidth = pageSetup.PageWidth - pageSetup.LeftMargin - pageSetup.RightMargin;
             column.Width = contentWidth - column.Width - column.SpaceAfter;
 
             builder.Writeln("Narrow column 1.");
@@ -473,13 +546,43 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.CustomColumnWidth.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.True(pageSetup.TextColumns.LineBetween);
             Assert.False(pageSetup.TextColumns.EvenlySpaced);
             Assert.AreEqual(2, pageSetup.TextColumns.Count);
             Assert.AreEqual(100.0d, pageSetup.TextColumns[0].Width);
             Assert.AreEqual(20.0d, pageSetup.TextColumns[0].SpaceAfter);
             Assert.AreEqual(470.3d, pageSetup.TextColumns[1].Width);
             Assert.AreEqual(0.0d, pageSetup.TextColumns[1].SpaceAfter);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void VerticalLineBetweenColumns(bool lineBetween)
+        {
+            //ExStart
+            //ExFor:TextColumnCollection.LineBetween
+            //ExSummary:Shows how to separate columns with a vertical line.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Configure the current section's PageSetup object to divide the text into several columns.
+            // Set the "LineBetween" property to "true" to put a dividing line between columns.
+            // Set the "LineBetween" property to "false" to leave the space between columns blank.
+            TextColumnCollection columns = builder.PageSetup.TextColumns;
+            columns.LineBetween = lineBetween;
+            columns.SetCount(3);
+
+            builder.Writeln("Column 1.");
+            builder.InsertBreak(BreakType.ColumnBreak);
+            builder.Writeln("Column 2.");
+            builder.InsertBreak(BreakType.ColumnBreak);
+            builder.Writeln("Column 3.");
+
+            doc.Save(ArtifactsDir + "PageSetup.VerticalLineBetweenColumns.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "PageSetup.VerticalLineBetweenColumns.docx");
+
+            Assert.AreEqual(lineBetween, doc.FirstSection.PageSetup.TextColumns.LineBetween);
         }
 
         [Test]
@@ -492,27 +595,28 @@ namespace ApiExamples
             //ExFor:PageSetup.LineNumberRestartMode
             //ExFor:ParagraphFormat.SuppressLineNumbers
             //ExFor:LineNumberRestartMode
-            //ExSummary:Shows how to enable Microsoft Word line numbering for a section.
+            //ExSummary:Shows how to enable line numbering for a section.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Line numbering for each section can be configured via PageSetup
+            // We can use the section's PageSetup object to display numbers to the left of lines of text in the section.
+            // This is the same behavior as a List object,
+            // but it covers the entire section, and does not modify the text in any way.
+            // Our section will restart the numbering on each new page from 1, and will display the number,
+            // if it is a multiple of 3, at a distance of 50pt to the left of the line.
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.LineStartingNumber = 1;
             pageSetup.LineNumberCountBy = 3;
             pageSetup.LineNumberRestartMode = LineNumberRestartMode.RestartPage;
             pageSetup.LineNumberDistanceFromText = 50.0d;
 
-            // LineNumberCountBy is set to 3, so every line whose number is a multiple of 3
-            // will display that line number to the left of the text
             for (int i = 1; i <= 25; i++)
                 builder.Writeln($"Line {i}.");
 
-            // The line counter will skip any paragraph with this flag set to true
-            // Normally, the number "15" would normally appear next to this paragraph, which says "Line 15"
-            // Since we set this flag to true and this paragraph is not counted by numbering,
-            // number 15 will appear next to the next paragraph, "Line 16", and from then on counting will carry on as normal
-            // until it will restart according to LineNumberRestartMode
+            // The line counter will skip any paragraph with the "SuppressLineNumbers" flag set to "true".
+            // This paragraph is on the 15th line, which is a multiple of 3, and thus would normally display a line number.
+            // The section's line counter will also ignore this line, and treat the next line as the 15th,
+            // and continue the count from that point onward.
             doc.FirstSection.Body.Paragraphs[14].ParagraphFormat.SuppressLineNumbers = true;
 
             doc.Save(ArtifactsDir + "PageSetup.LineNumbers.docx");
@@ -538,7 +642,7 @@ namespace ApiExamples
             //ExFor:PageBorderDistanceFrom
             //ExFor:PageBorderAppliesTo
             //ExFor:Border.DistanceFromText
-            //ExSummary:Shows how to create a page border that looks like a wide blue band at the top of the first page only.
+            //ExSummary:Shows how to create a wide blue band border at the top of the first page.
             Document doc = new Document();
 
             PageSetup pageSetup = doc.Sections[0].PageSetup;
