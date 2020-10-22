@@ -52,9 +52,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FixedPageSaveOptions.PageSet
-            //ExFor:PageSet(int[])
+            //ExFor:PageSet.#ctor(int[])
             //ExSummary:Shows how to extract pages based on exact page indices.
-            Document doc = new Document(MyDir + "TestMethod.docx");
+            Document doc = new Document(MyDir + "Images.docx");
 
             XpsSaveOptions xpsOptions = new XpsSaveOptions();
             xpsOptions.PageSet = new PageSet(0, 1, 2, 4, 1, 3, 2, 3);

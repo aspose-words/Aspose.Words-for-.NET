@@ -1243,7 +1243,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FixedPageSaveOptions.PageSet
             //ExSummary:Shows how to export Odd pages from the document.
-            Document doc = new Document(MyDir + "TestMethod.docx");
+            Document doc = new Document(MyDir + "Images.docx");
     
             PdfSaveOptions pdfOptions = new PdfSaveOptions();
             pdfOptions.PageSet = PageSet.Odd;
