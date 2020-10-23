@@ -719,29 +719,39 @@ namespace ApiExamples
             //ExFor:PageSetup.PageStartingNumber
             //ExFor:PageSetup.PageNumberStyle
             //ExFor:DocumentBuilder.InsertField(String, String)
-            //ExSummary:Shows how to control page numbering per section.
+            //ExSummary:Shows how to set up page numbering in a section.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Writeln("Section 1");
+            builder.Writeln("Section 1, page 1.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Section 1, page 2.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Section 1, page 3.");
             builder.InsertBreak(BreakType.SectionBreakNewPage);
-            builder.Writeln("Section 2");
+            builder.Writeln("Section 2, page 1.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Section 2, page 2.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Section 2, page 3.");
 
-            // Use document builder to create a header with a page number field for the first section
-            // The page number will look like "Page V"
+            // Move the document builder to the primary header of the first section,
+            // which every page in that section will display.
             builder.MoveToSection(0);
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+
+            // Insert a PAGE field, which will display the number of the current page.
             builder.Write("Page ");
             builder.InsertField("PAGE", "");
 
-            // Set first section page numbering
+            // Configure the section section to have the page count that PAGE fields display start from 5.
+            // Also, configure all PAGE fields to display their page numbers using uppercase Roman numerals.
             PageSetup pageSetup = doc.Sections[0].PageSetup;
             pageSetup.RestartPageNumbering = true;
             pageSetup.PageStartingNumber = 5;
             pageSetup.PageNumberStyle = NumberStyle.UppercaseRoman;
 
-            // Create a header for the section
-            // The page number will look like " - 10 - ".
+            // Create another primary header for the second section, with another PAGE field.
             builder.MoveToSection(1);
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
@@ -749,7 +759,8 @@ namespace ApiExamples
             builder.InsertField("PAGE", "");
             builder.Write(" - ");
 
-            // Set second section page numbering
+            // Configure the section section to have the page count that PAGE fields display start from 10.
+            // Also, configure all PAGE fields to display their page numbers using Arabic numbers.
             pageSetup = doc.Sections[1].PageSetup;
             pageSetup.PageStartingNumber = 10;
             pageSetup.RestartPageNumbering = true;
@@ -778,24 +789,25 @@ namespace ApiExamples
             //ExStart
             //ExFor:PageSetup.EndnoteOptions
             //ExFor:PageSetup.FootnoteOptions
-            //ExSummary:Shows how to set options for footnotes and endnotes in current section.
+            //ExSummary:Shows how to configure options affecting footnotes/endnotes in a section.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert text and a reference for it in the form of a footnote
-            builder.Write("Hello world!.");
+            builder.Write("Hello world!");
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote reference text.");
 
-            // Set options for footnote position and numbering
+            // Configure all footnotes in the first section to restart the numbering from 1
+            // at each new page, and display themselves directly beneath the text at every page.
             FootnoteOptions footnoteOptions = doc.Sections[0].PageSetup.FootnoteOptions;
             footnoteOptions.Position = FootnotePosition.BeneathText;
             footnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
             footnoteOptions.StartNumber = 1;
 
-            // Endnotes also have a similar options object
             builder.Write(" Hello again.");
             builder.InsertFootnote(FootnoteType.Footnote, "Endnote reference text.");
 
+            // Configure all endnotes in the first section to maintain a continuous count throughout the section,
+            // which starts from 1. Also, set them all to appear collected at the end of the document.
             EndnoteOptions endnoteOptions = doc.Sections[0].PageSetup.EndnoteOptions;
             endnoteOptions.Position = EndnotePosition.EndOfDocument;
             endnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
@@ -818,27 +830,30 @@ namespace ApiExamples
             Assert.AreEqual(1, endnoteOptions.StartNumber);
         }
 
-        [Test]
-        public void Bidi()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void Bidi(bool reverseColumns)
         {
             //ExStart
             //ExFor:PageSetup.Bidi
-            //ExSummary:Shows how to change the order of columns.
+            //ExSummary:Shows how to set the order of text columns in a section.
             Document doc = new Document();
 
             PageSetup pageSetup = doc.Sections[0].PageSetup;
             pageSetup.TextColumns.SetCount(3);
 
             DocumentBuilder builder = new DocumentBuilder(doc);
-
             builder.Write("Column 1.");
             builder.InsertBreak(BreakType.ColumnBreak);
             builder.Write("Column 2.");
             builder.InsertBreak(BreakType.ColumnBreak);
             builder.Write("Column 3.");
 
-            // Reverse the order of the columns
-            pageSetup.Bidi = true;
+            // Set the "Bidi" property to "true" to arrange the columns starting from the right side of the page.
+            // The order of the columns will match the direction of right-to-left text.
+            // Set the "Bidi" property to "false" to arrange the columns starting from the left side of the page.
+            // The order of the columns will match the direction of left-to-right text.
+            pageSetup.Bidi = reverseColumns;
 
             doc.Save(ArtifactsDir + "PageSetup.Bidi.docx");
             //ExEnd
@@ -847,7 +862,7 @@ namespace ApiExamples
             pageSetup = doc.FirstSection.PageSetup;
 
             Assert.AreEqual(3, pageSetup.TextColumns.Count);
-            Assert.True(pageSetup.Bidi);
+            Assert.AreEqual(reverseColumns, pageSetup.Bidi);
         }
 
         [Test]
@@ -859,23 +874,25 @@ namespace ApiExamples
             //ExSummary:Shows how to apply a border to the page and header/footer.
             Document doc = new Document();
 
-            // Insert header and footer text
             DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world! This is the main body text.");
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            builder.Write("Header");
+            builder.Write("This is the header.");
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
-            builder.Write("Footer");
+            builder.Write("This is the footer.");
             builder.MoveToDocumentEnd();
 
-            // Insert a page border and set the color and line style
+            // Insert a blue double-line border.
             PageSetup pageSetup = doc.Sections[0].PageSetup;
             pageSetup.Borders.LineStyle = LineStyle.Double;
             pageSetup.Borders.Color = Color.Blue;
 
-            // By default, page borders do not surround headers and footers
-            // We can change that by setting these flags
-            pageSetup.BorderSurroundsFooter = true;
+            // A section's PageSetup object has "BorderSurroundsHeader" and "BorderSurroundsFooter" flags that determine
+            // whether a page border, which surrounds the main body text, also includes the header or footer, respectively.
+            // Set the "BorderSurroundsHeader" flag to "true" to surround the header with our border,
+            // and then set the "BorderSurroundsFooter" flag to leave the footer outside of the border.
             pageSetup.BorderSurroundsHeader = true;
+            pageSetup.BorderSurroundsFooter = false;
 
             doc.Save(ArtifactsDir + "PageSetup.PageBorder.docx");
             //ExEnd
@@ -883,8 +900,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.PageBorder.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.True(pageSetup.BorderSurroundsFooter);
             Assert.True(pageSetup.BorderSurroundsHeader);
+            Assert.False(pageSetup.BorderSurroundsFooter);
         }
 
         [Test]
@@ -897,24 +914,29 @@ namespace ApiExamples
             //ExSummary:Shows how to set gutter margins.
             Document doc = new Document();
 
-            // Insert text spanning several pages
+            // Insert text that spans several pages.
             DocumentBuilder builder = new DocumentBuilder(doc);
             for (int i = 0; i < 6; i++)
             {
-                builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+                builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                              "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
                 builder.InsertBreak(BreakType.PageBreak);
             }
 
-            // We can access the gutter margin in the section's page options,
-            // which is a margin which is added to the page margin at one side of the page
+            // A gutter adds more whitespace to either the left or right page margin
+            // which makes up for the center folding of pages in a book encroaching on the layout of the page.
             PageSetup pageSetup = doc.Sections[0].PageSetup;
+
+            // Determine how much space our pages have for text within the margins, then add an amount to pad a margin by. 
+            Assert.AreEqual(470.30d, pageSetup.PageWidth - pageSetup.LeftMargin - pageSetup.RightMargin, 0.01d);
+            
             pageSetup.Gutter = 100.0d;
 
-            // If our text is LTR, the gutter will appear on the left side of the page
-            // Setting this flag will move it to the right side
+            // Set the "RtlGutter" property to "true" to place the gutter in a more suitable position for right-to-left text.
             pageSetup.RtlGutter = true;
 
-            // Mirroring the margins will make the gutter alternate in position from page to page
+            // Set the "MultiplePages" property to "MultiplePagesType.MirrorMargins" to alternate
+            // the left/right page side position of margins every page.
             pageSetup.MultiplePages = MultiplePagesType.MirrorMargins;
 
             doc.Save(ArtifactsDir + "PageSetup.Gutter.docx");
@@ -932,11 +954,13 @@ namespace ApiExamples
         public void Booklet()
         {
             //ExStart
+            //ExFor:PageSetup.Gutter
+            //ExFor:PageSetup.MultiplePages
             //ExFor:PageSetup.SheetsPerBooklet
-            //ExSummary:Shows how to create a booklet.
+            //ExSummary:Shows how to configure a document that can be printed as a book fold.
             Document doc = new Document();
 
-            // Use a document builder to create 16 pages of content that will be compiled in a booklet
+            // Insert text that spans 16 pages.
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("My Booklet:");
 
@@ -946,12 +970,15 @@ namespace ApiExamples
                 builder.Write($"Booklet face #{i}");
             }
 
-            // Set the number of sheets that will be used by the printer to create the booklet
-            // After being printed on both sides, the sheets can be stacked and folded down the middle
-            // The contents that we placed in such a way that they will be in order once the booklet is folded
-            // We can only specify the number of sheets in multiples of 4
+            // Configure the first section's "PageSetup" property
+            // so that we can print the document in the form of a book fold.
+            // When we print this document on both sides, we can take the pages
+            // in the order that the printer stacked them, and fold them all down the middle at once. 
+            // The contents of the document will line up into a book fold.
             PageSetup pageSetup = doc.Sections[0].PageSetup;
             pageSetup.MultiplePages = MultiplePagesType.BookFoldPrinting;
+
+            // We can only specify the number of sheets in multiples of 4.
             pageSetup.SheetsPerBooklet = 4;
 
             doc.Save(ArtifactsDir + "PageSetup.Booklet.docx");
@@ -965,7 +992,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SectionTextOrientation()
+        public void SetTextOrientation()
         {
             //ExStart
             //ExFor:PageSetup.TextOrientation
@@ -975,14 +1002,15 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
-            // Setting this value will rotate the section's text 90 degrees to the right
+            // Set the "TextOrientation" property to "TextOrientation.Upward" to rotate all the text 90 degrees
+            // to the right, so that all left-to-right text now goes top-to-bottom.
             PageSetup pageSetup = doc.Sections[0].PageSetup;
             pageSetup.TextOrientation = TextOrientation.Upward;
 
-            doc.Save(ArtifactsDir + "PageSetup.SectionTextOrientation.docx");
+            doc.Save(ArtifactsDir + "PageSetup.SetTextOrientation.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "PageSetup.SectionTextOrientation.docx");
+            doc = new Document(ArtifactsDir + "PageSetup.SetTextOrientation.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
             Assert.AreEqual(TextOrientation.Upward, pageSetup.TextOrientation);
@@ -991,24 +1019,26 @@ namespace ApiExamples
         //ExStart
         //ExFor:PageSetup.SuppressEndnotes
         //ExFor:Body.ParentSection
-        //ExSummary:Shows how to store endnotes at the end of each section instead of the document and manipulate their positions.
+        //ExSummary:Shows how to store endnotes at the end of each section, and modify their positions.
         [Test] //ExSkip
         public void SuppressEndnotes()
         {
-            // Create a new document and make it empty
             Document doc = new Document();
             doc.RemoveAllChildren();
 
-            // Normally endnotes are all stored at the end of a document, but this option lets us store them at the end of each section
+            // By default, a document compiles all endnotes at its end. 
+            Assert.AreEqual(EndnotePosition.EndOfDocument, doc.EndnoteOptions.Position);
+
+            // We use the "Position" property of the document's "EndnoteOptions" object
+            // to collect endnotes at the end of each section instead. 
             doc.EndnoteOptions.Position = EndnotePosition.EndOfSection;
 
-            // Create 3 new sections, each having a paragraph and an endnote at the end
-            InsertSection(doc, "Section 1", "Endnote 1, will stay in section 1");
-            InsertSection(doc, "Section 2", "Endnote 2, will be pushed down to section 3");
-            InsertSection(doc, "Section 3", "Endnote 3, will stay in section 3");
+            InsertSectionWithEndnote(doc, "Section 1", "Endnote 1, will stay in section 1");
+            InsertSectionWithEndnote(doc, "Section 2", "Endnote 2, will be pushed down to section 3");
+            InsertSectionWithEndnote(doc, "Section 3", "Endnote 3, will stay in section 3");
 
-            // Each section contains its own page setup object
-            // Setting this value will push this section's endnotes down to the next section
+            // While getting sections to display their respective endnotes, we can set the "SuppressEndnotes" flag
+            // of a section's "PageSetup" object to "true" to revert to the default behaviour and pass its endnotes onto the next section.
             PageSetup pageSetup = doc.Sections[1].PageSetup;
             pageSetup.SuppressEndnotes = true;
 
@@ -1017,9 +1047,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Add a section to the end of a document, give it a body and a paragraph, then add text and an endnote to that paragraph.
+        /// Append a section with text and an endnote to a document.
         /// </summary>
-        private static void InsertSection(Document doc, string sectionBodyText, string endnoteText)
+        private static void InsertSectionWithEndnote(Document doc, string sectionBodyText, string endnoteText)
         {
             Section section = new Section(doc);
 
