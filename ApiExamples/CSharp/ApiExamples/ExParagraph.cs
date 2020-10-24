@@ -34,7 +34,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Specify font formatting
             Font font = builder.Font;
             font.Size = 16;
             font.Bold = true;
@@ -42,7 +41,6 @@ namespace ApiExamples
             font.Name = "Arial";
             font.Underline = Underline.Dash;
 
-            // Specify paragraph formatting
             ParagraphFormat paragraphFormat = builder.ParagraphFormat;
             paragraphFormat.FirstLineIndent = 8;
             paragraphFormat.Alignment = ParagraphAlignment.Justify;
@@ -50,10 +48,10 @@ namespace ApiExamples
             paragraphFormat.AddSpaceBetweenFarEastAndDigit = true;
             paragraphFormat.KeepTogether = true;
 
-            // Using Writeln() ends the paragraph after writing and makes a new one, while Write() stays on the same paragraph
-            builder.Writeln("A whole paragraph.");
+            // The "Writeln" method ends the paragraph after appending text,
+            // and then starts a new line, which adds a new paragraph.
+            builder.Writeln("Hello world!");
 
-            // We can use this flag to ensure that we are at the end of the document
             Assert.True(builder.CurrentParagraph.IsEndOfDocument);
             //ExEnd
 
@@ -86,8 +84,7 @@ namespace ApiExamples
             //ExFor:Paragraph.InsertField(string, Node, bool)
             //ExFor:Paragraph.InsertField(FieldType, bool, Node, bool)
             //ExFor:Paragraph.InsertField(string, string, Node, bool)
-            //ExSummary:Shows how to insert fields in different ways.
-            // Create a blank document and get its first paragraph
+            //ExSummary:Shows various ways of adding fields to a paragraph.
             Document doc = new Document();
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
 
