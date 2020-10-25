@@ -63,7 +63,7 @@ namespace ApiExamples
             Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndAlpha);
             Assert.True(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndDigit);
             Assert.True(paragraph.ParagraphFormat.KeepTogether);
-            Assert.AreEqual("A whole paragraph.", paragraph.GetText().Trim());
+            Assert.AreEqual("Hello world!", paragraph.GetText().Trim());
 
             Font runFont = paragraph.Runs[0].Font;
 
@@ -75,12 +75,47 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertField()
+        public void AppendField()
         {
             //ExStart
             //ExFor:Paragraph.AppendField(FieldType, Boolean)
             //ExFor:Paragraph.AppendField(String)
             //ExFor:Paragraph.AppendField(String, String)
+            //ExSummary:Shows various ways of appending fields to a paragraph.
+            Document doc = new Document();
+            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
+
+            // Below are three ways of appending a field to the end of a paragraph.
+            // 1 -  Append a DATE field using a field type, and then update it:
+            paragraph.AppendField(FieldType.FieldDate, true);
+
+            // 2 -  Append a TIME field using a field code: 
+            paragraph.AppendField(" TIME  \\@ \"HH:mm:ss\" ");
+
+            // 3 -  Append a QUOTE field using a field code, and get it to display a placeholder value:
+            paragraph.AppendField(" QUOTE \"Real value\"", "Placeholder value");
+
+            Assert.AreEqual("Placeholder value", doc.Range.Fields[2].Result);
+
+            // This field will display its placeholder value until we update it.
+            doc.UpdateFields();
+
+            Assert.AreEqual("Real value", doc.Range.Fields[2].Result);
+
+            doc.Save(ArtifactsDir + "Paragraph.AppendField.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Paragraph.AppendField.docx");
+
+            TestUtil.VerifyField(FieldType.FieldDate, " DATE ", DateTime.Now, doc.Range.Fields[0], new TimeSpan(0, 0, 0, 0));
+            TestUtil.VerifyField(FieldType.FieldTime, " TIME  \\@ \"HH:mm:ss\" ", DateTime.Now, doc.Range.Fields[1], new TimeSpan(0, 0, 0, 5));
+            TestUtil.VerifyField(FieldType.FieldQuote, " QUOTE \"Real value\"", "Real value", doc.Range.Fields[2]);
+        }
+
+        [Test]
+        public void InsertField()
+        {
+            //ExStart
             //ExFor:Paragraph.InsertField(string, Node, bool)
             //ExFor:Paragraph.InsertField(FieldType, bool, Node, bool)
             //ExFor:Paragraph.InsertField(string, string, Node, bool)
@@ -88,43 +123,39 @@ namespace ApiExamples
             Document doc = new Document();
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
 
-            // Choose a DATE field by FieldType, append it to the end of the paragraph and update it
-            para.AppendField(FieldType.FieldDate, true);
-
-            // Append a TIME field using a field code 
-            para.AppendField(" TIME  \\@ \"HH:mm:ss\" ");
-
-            // Append a QUOTE field that will display a placeholder value until it is updated manually in Microsoft Word
-            // or programmatically with Document.UpdateFields() or Field.Update()
-            para.AppendField(" QUOTE \"Real value\"", "Placeholder value");
-
-            // We can choose a node in the paragraph and insert a field
-            // before or after that node instead of appending it to the end of a paragraph
-            para = doc.FirstSection.Body.AppendParagraph("");
-            Run run = new Run(doc) { Text = " My Run. " };
+            // Below are three ways of inserting a field into a paragraph.
+            // 1 -  Insert an AUTHOR field into a paragraph after one of the paragraph's child nodes:
+            Run run = new Run(doc) { Text = "This run was written by " };
             para.AppendChild(run);
 
-            // Insert an AUTHOR field into the paragraph and place it before the run we created
             doc.BuiltInDocumentProperties["Author"].Value = "John Doe";
-            para.InsertField(FieldType.FieldAuthor, true, run, false);
+            para.InsertField(FieldType.FieldAuthor, true, run, true);
 
-            // Insert another field designated by field code before the run
-            para.InsertField(" QUOTE \"Real value\" ", run, false);
+            // 2 -  Insert a QUOTE field after one of the paragraph's child nodes:
+            run = new Run(doc) { Text = "." };
+            para.AppendChild(run);
 
-            // Insert another field with a place holder value and place it after the run
-            para.InsertField(" QUOTE \"Real value\"", " Placeholder value. ", run, true);
+            Field field = para.InsertField(" QUOTE \" Real value\" ", run, true);
+
+            // 3 -  Insert a QUOTE field before one of the paragraph's child nodes,
+            // and get it to display a placeholder value:
+            para.InsertField(" QUOTE \" Real value.\"", " Placeholder value.", field.Start, false);
+
+            Assert.AreEqual(" Placeholder value.", doc.Range.Fields[1].Result);
+
+            // This field will display its placeholder value until we update it.
+            doc.UpdateFields();
+
+            Assert.AreEqual(" Real value.", doc.Range.Fields[1].Result);
 
             doc.Save(ArtifactsDir + "Paragraph.InsertField.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Paragraph.InsertField.docx");
 
-            TestUtil.VerifyField(FieldType.FieldDate, " DATE ", DateTime.Now, doc.Range.Fields[0], new TimeSpan(0, 0, 0, 0));
-            TestUtil.VerifyField(FieldType.FieldTime, " TIME  \\@ \"HH:mm:ss\" ", DateTime.Now, doc.Range.Fields[1], new TimeSpan(0, 0, 0, 5));
-            TestUtil.VerifyField(FieldType.FieldQuote, " QUOTE \"Real value\"", "Placeholder value", doc.Range.Fields[2]);
-            TestUtil.VerifyField(FieldType.FieldAuthor, " AUTHOR ", "John Doe", doc.Range.Fields[3]);
-            TestUtil.VerifyField(FieldType.FieldQuote, " QUOTE \"Real value\" ", "Real value", doc.Range.Fields[4]);
-            TestUtil.VerifyField(FieldType.FieldQuote, " QUOTE \"Real value\"", " Placeholder value. ", doc.Range.Fields[5]);
+            TestUtil.VerifyField(FieldType.FieldAuthor, " AUTHOR ", "John Doe", doc.Range.Fields[0]);
+            TestUtil.VerifyField(FieldType.FieldQuote, " QUOTE \" Real value.\"", " Real value.", doc.Range.Fields[1]);
+            TestUtil.VerifyField(FieldType.FieldQuote, " QUOTE \" Real value\" ", " Real value", doc.Range.Fields[2]);
         }
 
         [Test]
