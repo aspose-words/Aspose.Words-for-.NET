@@ -294,38 +294,45 @@ namespace ApiExamples
             //ExFor:CompositeNode.PrependChild(Node) 
             //ExFor:Paragraph.GetText
             //ExFor:Run
-            //ExSummary:Shows how to add, update and delete child nodes from a CompositeNode's child collection.
+            //ExSummary:Shows how to add, update and delete child nodes in a CompositeNode's collection of children.
             Document doc = new Document();
 
-            // An empty document has one paragraph by default
+            // An empty document by default has one paragraph.
             Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
 
-            // A paragraph is a composite node because it can contain runs, which are another type of node
+            // Composite nodes such as our paragraph can contain other composite and inline nodes as children.
             Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
             Run paragraphText = new Run(doc, "Initial text. ");
             paragraph.AppendChild(paragraphText);
 
-            // We will place these 3 children into the main text of our paragraph
+            // Create three more run nodes.
             Run run1 = new Run(doc, "Run 1. ");
             Run run2 = new Run(doc, "Run 2. ");
             Run run3 = new Run(doc, "Run 3. ");
 
-            // We initialized them but not in our paragraph yet
+            // The three runs will not be included in the document's text contents
+            // until we append them to a composite node that itself is a part of the document's node tree,
+            // as we did with the first run. We can determine where the text contents of nodes that we insert
+            // appears in the document by specifying an insertion location relative to another node in the paragraph.
             Assert.AreEqual("Initial text.", paragraph.GetText().Trim());
 
-            // Insert run2 before initial paragraph text. This will be at the start of the paragraph
+            // Insert the second run into the paragraph in front of the initial run.
             paragraph.InsertBefore(run2, paragraphText);
 
-            // Insert run3 after initial paragraph text. This will be at the end of the paragraph
+            Assert.AreEqual("Run 2. Initial text.", paragraph.GetText().Trim());
+
+            // Insert the third run after the initial run.
             paragraph.InsertAfter(run3, paragraphText);
 
-            // Insert run1 before every other child node. run2 was the start of the paragraph, now it will be run1
+            Assert.AreEqual("Run 2. Initial text. Run 3.", paragraph.GetText().Trim());
+
+            // Insert the first run to the start of the paragraph's child nodes collection.
             paragraph.PrependChild(run1);
 
             Assert.AreEqual("Run 1. Run 2. Initial text. Run 3.", paragraph.GetText().Trim());
             Assert.AreEqual(4, paragraph.GetChildNodes(NodeType.Any, true).Count);
 
-            // Access the child node collection and update/delete children
+            // We can modify the contents of the run by editing and deleting existing child nodes.
             ((Run)paragraph.GetChildNodes(NodeType.Run, true)[1]).Text = "Updated run 2. ";
             paragraph.GetChildNodes(NodeType.Run, true).Remove(paragraphText);
 
@@ -335,7 +342,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void RevisionHistory()
+        public void Revisions()
         {
             //ExStart
             //ExFor:Paragraph.IsMoveFromRevision
@@ -343,26 +350,32 @@ namespace ApiExamples
             //ExFor:ParagraphCollection
             //ExFor:ParagraphCollection.Item(Int32)
             //ExFor:Story.Paragraphs
-            //ExSummary:Shows how to get paragraph that was moved (deleted/inserted) in Microsoft Word while change tracking was enabled.
+            //ExSummary:Shows how to check whether a paragraph is a move revision.
             Document doc = new Document(MyDir + "Revisions.docx");
 
-            // There are two sets of move revisions in this document
-            // One moves a small part of a paragraph, while the other moves a whole paragraph
-            // Paragraph.IsMoveFromRevision/IsMoveToRevision will only be true if a whole paragraph is moved, as in the latter case
-            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-            for (int i = 0; i < paragraphs.Count; i++)
-            {
-                if (paragraphs[i].IsMoveFromRevision)
-                    Console.WriteLine("The paragraph {0} has been moved (deleted).", i);
-                if (paragraphs[i].IsMoveToRevision)
-                    Console.WriteLine("The paragraph {0} has been moved (inserted).", i);
-            }
-            //ExEnd
-
-            Assert.AreEqual(11, doc.Revisions.Count());
+            // This document contains "Move" revisions, which appear when we highlight text with the cursor,
+            // and then drag it to move it to another location
+            // while tracking revisions in Microsoft Word via "Review" -> "Track changes".
             Assert.AreEqual(6, doc.Revisions.Count(r => r.RevisionType == RevisionType.Moving));
-            Assert.AreEqual(1, paragraphs.Count(p => ((Paragraph)p).IsMoveFromRevision));
-            Assert.AreEqual(1, paragraphs.Count(p => ((Paragraph)p).IsMoveToRevision));
+
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            // Move revisions consist of pairs of "Move from", and "Move to" revisions. 
+            // These revisions are proposed changes to the document that we can accept or reject.
+            // During the time before we accept/reject a move revision, the document
+            // must keep track of both the departure and arrival destinations of the text.
+            // The second and the fourth paragraph define one such revision, and thus both have the same contents.
+            Assert.AreEqual(paragraphs[1].GetText(), paragraphs[3].GetText());
+
+            // The "Move from" revision is the paragraph where we dragged the text from.
+            // If we accept the revision, this paragraph will disappear,
+            // and the other will remain and no longer be a revision.
+            Assert.True(paragraphs[1].IsMoveFromRevision);
+
+            // The "Move to" revision is the paragraph where we dragged the text to.
+            // If we reject the revision, this paragraph instead will disappear and the other will remain.
+            Assert.True(paragraphs[3].IsMoveToRevision);
+            //ExEnd
         }
 
         [Test]
@@ -370,10 +383,11 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Paragraph.IsFormatRevision
-            //ExSummary:Shows how to get information about whether this object was formatted in Microsoft Word while change tracking was enabled
+            //ExSummary:Shows how to check whether a paragraph is a format revision.
             Document doc = new Document(MyDir + "Format revision.docx");
 
-            // This paragraph's formatting was changed while revisions were being tracked
+            // This paragraph is a "Format" revision, which occurs when we change the formatting of existing text
+            // while tracking revisions in Microsoft Word via "Review" -> "Track changes".
             Assert.True(doc.FirstSection.Body.FirstParagraph.IsFormatRevision);
             //ExEnd
         }
@@ -399,37 +413,20 @@ namespace ApiExamples
             //ExSummary:Shows how to get information about formatting properties of paragraphs that are frames.
             Document doc = new Document(MyDir + "Paragraph frame.docx");
 
-            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+            Paragraph paragraphFrame = doc.FirstSection.Body.Paragraphs.OfType<Paragraph>().First(p => p.FrameFormat.IsFrame);
 
-            foreach (Paragraph paragraph in paragraphs.OfType<Paragraph>().Where(p => p.FrameFormat.IsFrame))
-            {
-                Console.WriteLine("Width: " + paragraph.FrameFormat.Width);
-                Console.WriteLine("Height: " + paragraph.FrameFormat.Height);
-                Console.WriteLine("HeightRule: " + paragraph.FrameFormat.HeightRule);
-                Console.WriteLine("HorizontalAlignment: " + paragraph.FrameFormat.HorizontalAlignment);
-                Console.WriteLine("VerticalAlignment: " + paragraph.FrameFormat.VerticalAlignment);
-                Console.WriteLine("HorizontalPosition: " + paragraph.FrameFormat.HorizontalPosition);
-                Console.WriteLine("RelativeHorizontalPosition: " +
-                                  paragraph.FrameFormat.RelativeHorizontalPosition);
-                Console.WriteLine("HorizontalDistanceFromText: " +
-                                  paragraph.FrameFormat.HorizontalDistanceFromText);
-                Console.WriteLine("VerticalPosition: " + paragraph.FrameFormat.VerticalPosition);
-                Console.WriteLine("RelativeVerticalPosition: " + paragraph.FrameFormat.RelativeVerticalPosition);
-                Console.WriteLine("VerticalDistanceFromText: " + paragraph.FrameFormat.VerticalDistanceFromText);
-            }
+            Assert.AreEqual(233.3d, paragraphFrame.FrameFormat.Width);
+            Assert.AreEqual(138.8d, paragraphFrame.FrameFormat.Height);
+            Assert.AreEqual(HeightRule.AtLeast, paragraphFrame.FrameFormat.HeightRule);
+            Assert.AreEqual(HorizontalAlignment.Default, paragraphFrame.FrameFormat.HorizontalAlignment);
+            Assert.AreEqual(VerticalAlignment.Default, paragraphFrame.FrameFormat.VerticalAlignment);
+            Assert.AreEqual(34.05d, paragraphFrame.FrameFormat.HorizontalPosition);
+            Assert.AreEqual(RelativeHorizontalPosition.Page, paragraphFrame.FrameFormat.RelativeHorizontalPosition);
+            Assert.AreEqual(9.0d, paragraphFrame.FrameFormat.HorizontalDistanceFromText);
+            Assert.AreEqual(20.5d, paragraphFrame.FrameFormat.VerticalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, paragraphFrame.FrameFormat.RelativeVerticalPosition);
+            Assert.AreEqual(0.0d, paragraphFrame.FrameFormat.VerticalDistanceFromText);
             //ExEnd
-
-            foreach (Paragraph paragraph in paragraphs.OfType<Paragraph>().Where(p => p.FrameFormat.IsFrame))
-            {
-                Assert.AreEqual(233.3, paragraph.FrameFormat.Width);
-                Assert.AreEqual(138.8, paragraph.FrameFormat.Height);
-                Assert.AreEqual(34.05, paragraph.FrameFormat.HorizontalPosition);
-                Assert.AreEqual(RelativeHorizontalPosition.Page, paragraph.FrameFormat.RelativeHorizontalPosition);
-                Assert.AreEqual(9, paragraph.FrameFormat.HorizontalDistanceFromText);
-                Assert.AreEqual(20.5, paragraph.FrameFormat.VerticalPosition);
-                Assert.AreEqual(RelativeVerticalPosition.Paragraph, paragraph.FrameFormat.RelativeVerticalPosition);
-                Assert.AreEqual(0, paragraph.FrameFormat.VerticalDistanceFromText);
-            }
         }
 
         /// <summary>
@@ -473,35 +470,41 @@ namespace ApiExamples
             Body body = doc.FirstSection.Body;
             Paragraph para = body.FirstParagraph;
 
-            // Add text to the first paragraph, then add two more paragraphs
             para.AppendChild(new Run(doc, "Paragraph 1. "));
             body.AppendParagraph("Paragraph 2. ");
             body.AppendParagraph("Paragraph 3. ");
 
-            // We have three paragraphs, none of which registered as any type of revision
-            // If we add/remove any content in the document while tracking revisions,
-            // they will be displayed as such in the document and can be accepted/rejected
+            // The above paragraphs are not revisions.
+            // Paragraphs that we add after starting revision tracking will register as "Insert" revisions.
             doc.StartTrackRevisions("John Doe", DateTime.Now);
 
-            // This paragraph is a revision and will have the according "IsInsertRevision" flag set
             para = body.AppendParagraph("Paragraph 4. ");
+
             Assert.True(para.IsInsertRevision);
 
-            // Get the document's paragraph collection and remove a paragraph
+            // Paragraphs that we remove after starting revision tracking will register as "Delete" revisions.
             ParagraphCollection paragraphs = body.Paragraphs;
+
             Assert.AreEqual(4, paragraphs.Count);
+
             para = paragraphs[2];
             para.Remove();
 
-            // Since we are tracking revisions, the paragraph still exists in the document, will have the "IsDeleteRevision" set
-            // and will be displayed as a revision in Microsoft Word, until we accept or reject all revisions
+            // Such paragraphs will remain until we either accept or reject the delete revision.
+            // Accepting the revision will remove the paragraph for good,
+            // and rejecting the revision will leave it in the document as if we never deleted it.
             Assert.AreEqual(4, paragraphs.Count);
             Assert.True(para.IsDeleteRevision);
 
-            // The delete revision paragraph is removed once we accept changes
+            // Accept the revision, and then verify that the paragraph is gone.
             doc.AcceptAllRevisions();
+
             Assert.AreEqual(3, paragraphs.Count);
             Assert.That(para, Is.Empty);
+            Assert.AreEqual(
+                "Paragraph 1. \r" +
+                "Paragraph 2. \r" +
+                "Paragraph 4.", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -511,31 +514,29 @@ namespace ApiExamples
             //ExStart
             //ExFor:Paragraph.BreakIsStyleSeparator
             //ExSummary:Shows how to write text to the same line as a TOC heading and have it not show up in the TOC.
-            // Create a blank document and insert a table of contents field
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.InsertTableOfContents("\\o \\h \\z \\u");
             builder.InsertBreak(BreakType.PageBreak);
 
-            // Insert a paragraph with a style that will be picked up as an entry in the TOC
+            // Insert a paragraph with a style that the TOC will pick up as an entry.
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
 
-            // Both these strings are on the same line and same paragraph and will therefore show up on the same TOC entry
+            // Both these strings are on the same paragraph, and will therefore show up on the same TOC entry.
             builder.Write("Heading 1. ");
             builder.Write("Will appear in the TOC. ");
 
-            // Any text on a new line that does not have a heading style will not register as a TOC entry
-            // If we insert a style separator, we can write more text on the same line
-            // and use a different style without it showing up in the TOC
-            // If we use a heading type style afterwards, we can draw two TOC entries from one line of document text
+            // If we insert a style separator, we can write more text on the same paragraph,
+            // and use a different style without it showing up in the TOC.
+            // If we use a heading type style after the separator,
+            // we can draw multiple TOC entries from one line of document text.
             builder.InsertStyleSeparator();
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Quote;
             builder.Write("Won't appear in the TOC. ");
 
-            // This flag is set to true for such paragraphs
             Assert.True(doc.FirstSection.Body.FirstParagraph.BreakIsStyleSeparator);
 
-            // Update the TOC and save the document
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Paragraph.BreakIsStyleSeparator.docx");
             //ExEnd
@@ -552,36 +553,38 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Paragraph.GetEffectiveTabStops
-            //ExSummary:Shows how to set custom tab stops.
+            //ExSummary:Shows how to set custom tab stops for a paragraph.
             Document doc = new Document();
             Paragraph para = doc.FirstSection.Body.FirstParagraph;
 
-            // If there are no tab stops in this collection, while we are in this paragraph
-            // the cursor will jump 36 points each time we press the Tab key in Microsoft Word
+            // If we are in a paragraph with no tab stops in this collection,
+            // the cursor will jump 36 points each time we press the Tab key in Microsoft Word.
             Assert.AreEqual(0, doc.FirstSection.Body.FirstParagraph.GetEffectiveTabStops().Length);
 
-            // We can add custom tab stops in Microsoft Word if we enable the ruler via the view tab
-            // Each unit on that ruler is two default tab stops, which is 72 points
-            // Those tab stops can be programmatically added to the paragraph like this
-            ParagraphFormat format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
-            format.TabStops.Add(72, TabAlignment.Left, TabLeader.Dots);
-            format.TabStops.Add(216, TabAlignment.Center, TabLeader.Dashes);
-            format.TabStops.Add(360, TabAlignment.Right, TabLeader.Line);
+            // We can add custom tab stops in Microsoft Word if we enable the ruler via the "View" tab.
+            // Each unit on this ruler is two default tab stops, which is 72 points.
+            // We can add custom tab stops programmatically like this.
+            TabStopCollection tabStops = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.TabStops;
+            tabStops.Add(72, TabAlignment.Left, TabLeader.Dots);
+            tabStops.Add(216, TabAlignment.Center, TabLeader.Dashes);
+            tabStops.Add(360, TabAlignment.Right, TabLeader.Line);
 
-            // These tab stops are added to this collection, and can also be seen by enabling the ruler mentioned above
+            // We can see these tab stops in Microsoft Word by enabling the ruler via "View" -> "Show" -> "Ruler".
             Assert.AreEqual(3, para.GetEffectiveTabStops().Length);
 
-            // Add a Run with tab characters that will snap the text to our TabStop positions and save the document
+            // Any tab characters we add will make use of the tab stops on the ruler, and may,
+            // depending on the value of the tab leader, leave a line between the tab departure and arrival destinations.
             para.AppendChild(new Run(doc, "\tTab 1\tTab 2\tTab 3"));
+
             doc.Save(ArtifactsDir + "Paragraph.TabStops.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Paragraph.TabStops.docx");
-            format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
+            tabStops = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.TabStops;
 
-            TestUtil.VerifyTabStop(72.0d, TabAlignment.Left, TabLeader.Dots, false, format.TabStops[0]);
-            TestUtil.VerifyTabStop(216.0d, TabAlignment.Center, TabLeader.Dashes, false, format.TabStops[1]);
-            TestUtil.VerifyTabStop(360.0d, TabAlignment.Right, TabLeader.Line, false, format.TabStops[2]);
+            TestUtil.VerifyTabStop(72.0d, TabAlignment.Left, TabLeader.Dots, false, tabStops[0]);
+            TestUtil.VerifyTabStop(216.0d, TabAlignment.Center, TabLeader.Dashes, false, tabStops[1]);
+            TestUtil.VerifyTabStop(360.0d, TabAlignment.Right, TabLeader.Line, false, tabStops[2]);
         }
 
         [Test]
@@ -593,28 +596,31 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a few small runs into the document
+            // Insert four runs of text into the paragraph.
             builder.Write("Run 1. ");
             builder.Write("Run 2. ");
             builder.Write("Run 3. ");
             builder.Write("Run 4. ");
 
-            // The Paragraph may look like it's in once piece in Microsoft Word,
-            // but it is fragmented into several Runs, which leaves room for optimization
-            // A big run may be split into many smaller runs with the same formatting
-            // if we keep splitting up a piece of text while manually editing it in Microsoft Word
+            // If we open this document in Microsoft Word, the paragraph will look like one seamless body of text.
+            // In reality, it will consist of four separate runs with the same formatting. Fragmented paragraphs like this
+            // may occur when we manually edit parts of one paragraph many times in Microsoft Word.
             Paragraph para = builder.CurrentParagraph;
+
             Assert.AreEqual(4, para.Runs.Count);
 
-            // Change the style of the last run to something different from the first three
+            // Change the style of the last run to set it apart from the first three.
             para.Runs[3].Font.StyleIdentifier = StyleIdentifier.Emphasis;
 
-            // We can run the JoinRunsWithSameFormatting() method to merge similar Runs
-            // This method also returns the number of joins that occurred during the merge
-            // Two merges occurred to combine Runs 1-3, while Run 4 was left out because it has an incompatible style
+            // We can run the "JoinRunsWithSameFormatting" method to optimize the contents of the document
+            // by merging similar runs into one, reducing their overall count.
+            // This method also returns the number of runs that this method merged.
+            // These two merges occurred to combine Runs #1, #2, and #3,
+            // while leaving out Run #4 because it has an incompatible style.
             Assert.AreEqual(2, para.JoinRunsWithSameFormatting());
 
-            // The paragraph has been simplified to two runs
+            // The number of runs left will equal to the original count
+            // minus the number of run merges that the "JoinRunsWithSameFormatting" method carried out.
             Assert.AreEqual(2, para.Runs.Count);
             Assert.AreEqual("Run 1. Run 2. Run 3. ", para.Runs[0].Text);
             Assert.AreEqual("Run 4. ", para.Runs[1].Text);
