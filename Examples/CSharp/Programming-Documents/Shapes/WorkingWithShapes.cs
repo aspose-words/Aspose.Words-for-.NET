@@ -160,7 +160,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
         public static void DetectSmartArtShape(string dataDir)
         {
             // ExStart:DetectSmartArtShape
-            Document doc = new Document(dataDir + "input.docx");
+            Document doc = new Document(dataDir + "SmartArt.docx");
 
             int count = 0;
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
@@ -175,7 +175,7 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Working_with_Shapes
 
         public static void UpdateSmartArtDrawing(string dataDir)
         {
-            Document doc = new Document(dataDir + "input.docx");
+            Document doc = new Document(dataDir + "SmartArt.docx");
 
             // ExStart:UpdateSmartArtDrawing
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
