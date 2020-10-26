@@ -39,36 +39,44 @@ namespace ApiExamples
             Assert.True(format.HangingPunctuation);
         }
 
-        [Test]
-        public void DropCap()
+        [TestCase(DropCapPosition.Margin)]
+        [TestCase(DropCapPosition.Normal)]
+        [TestCase(DropCapPosition.None)]
+        public void DropCap(DropCapPosition dropCapPosition)
         {
             //ExStart
             //ExFor:DropCapPosition
-            //ExSummary:Shows how to set the position of a drop cap.
+            //ExSummary:Shows how to create a drop cap.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Every paragraph has its own drop cap setting
+            // Insert one paragraph with a large letter that the text in the second and third paragraphs begins with.
+            builder.Font.Size = 54;
+            builder.Writeln("L");
+
+            builder.Font.Size = 18;
+            builder.Writeln("orem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                            "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+            builder.Writeln("Ut enim ad minim veniam, quis nostrud exercitation " +
+                            "ullamco laboris nisi ut aliquip ex ea commodo consequat.");
+
+            // Currently, the second and third paragraphs will appear underneath the first.
+            // We can convert the first paragraph as a drop cap for the other paragraphs via its "ParagraphFormat" object.
+            // Set the "DropCapPosition" property to "DropCapPosition.Margin" to place the drop cap outside
+            // the left hand side page margin, if our text is left-to-right.
+            // Set the "DropCapPosition" property to "DropCapPosition.Normal" to place the drop cap within the page margins,
+            // and to wrap the rest of the text around it.
+            // "DropCapPosition.None" is the default state for all paragraphs.
             ParagraphFormat format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
-
-            // By default, it is "none", for no drop caps
-            Assert.AreEqual(DropCapPosition.None, format.DropCapPosition);
-
-            // Move the first capital to outside the text margin
-            format.DropCapPosition = DropCapPosition.Margin;
-            format.LinesToDrop = 2;
-
-            // This text will be affected
-            builder.Write("Hello world!");
+            format.DropCapPosition = dropCapPosition;
 
             doc.Save(ArtifactsDir + "ParagraphFormat.DropCap.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "ParagraphFormat.DropCap.docx");
-            format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
 
-            Assert.AreEqual(DropCapPosition.Margin, format.DropCapPosition);
-            Assert.AreEqual(2, format.LinesToDrop);
+            Assert.AreEqual(dropCapPosition, doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.DropCapPosition);
+            Assert.AreEqual(DropCapPosition.None, doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.DropCapPosition);
         }
 
         [Test]
@@ -81,26 +89,29 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set the paragraph's line spacing to have a minimum value
-            // This will give vertical padding to lines of text of any size that's too small to maintain the line height
+            // Below are three line spacing rules that we can define using the
+            // paragraph's "LineSpacingRule" property to configure spacing between paragraphs.
+            // 1 -  Set a minimum amount of spacing.
+            // This will give vertical padding to lines of text of any size
+            // that's too small to maintain the minimum line height.
             builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.AtLeast;
-            builder.ParagraphFormat.LineSpacing = 20.0;
+            builder.ParagraphFormat.LineSpacing = 20;
 
             builder.Writeln("Minimum line spacing of 20.");
             builder.Writeln("Minimum line spacing of 20.");
 
-            // Set the line spacing to always be exactly 5 points
-            // If the font size is larger than the spacing, the top of the text will be truncated
+            // 2 -  Set exact spacing.
+            // Using font sizes that are too large for the spacing will truncate the text.
             builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.Exactly;
-            builder.ParagraphFormat.LineSpacing = 5.0;
+            builder.ParagraphFormat.LineSpacing = 5;
 
             builder.Writeln("Line spacing of exactly 5.");
             builder.Writeln("Line spacing of exactly 5.");
 
-            // Set the line spacing to a multiple of the default line spacing, which is 12 points by default
-            // 18 points will set the spacing to always be 1.5 lines, which will scale with different font sizes
+            // 3 -  Set spacing as a multiple of default line spacing, which is 12 points by default.
+            // This kind of spacing will scale to different font sizes.
             builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.Multiple;
-            builder.ParagraphFormat.LineSpacing = 18.0;
+            builder.ParagraphFormat.LineSpacing = 18;
 
             builder.Writeln("Line spacing of 1.5 default lines.");
             builder.Writeln("Line spacing of 1.5 default lines.");
