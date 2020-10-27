@@ -138,51 +138,97 @@ namespace ApiExamples
             Assert.AreEqual(18.0d, paragraphs[5].ParagraphFormat.LineSpacing);
         }
 
-        [Test]
-        public void ParagraphSpacing()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ParagraphSpacingAuto(bool autoSpacing)
         {
             //ExStart
-            //ExFor:ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle
             //ExFor:ParagraphFormat.SpaceAfter
             //ExFor:ParagraphFormat.SpaceAfterAuto
             //ExFor:ParagraphFormat.SpaceBefore
             //ExFor:ParagraphFormat.SpaceBeforeAuto
-            //ExSummary:Shows how to work with paragraph spacing.
+            //ExSummary:Shows how to set automatic paragraph spacing.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set the amount of white space before and after each paragraph to 12 points
-            builder.ParagraphFormat.SpaceBefore = 12.0f;
-            builder.ParagraphFormat.SpaceAfter = 12.0f;
+            // Apply a large amount of spacing before and after paragraphs that this builder will create.
+            builder.ParagraphFormat.SpaceBefore = 24;
+            builder.ParagraphFormat.SpaceAfter = 24;
 
-            // We can set these flags to apply default spacing, effectively ignoring the spacing in the attributes we set above
-            Assert.False(builder.ParagraphFormat.SpaceAfterAuto);
-            Assert.False(builder.ParagraphFormat.SpaceBeforeAuto);
-            Assert.False(builder.ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle);
+            // Set these flags to "true" to apply automatic spacing,
+            // effectively ignoring the spacing in the attributes we set above.
+            // Leave them as "false" will apply our custom paragraph spacing.
+            builder.ParagraphFormat.SpaceAfterAuto = autoSpacing;
+            builder.ParagraphFormat.SpaceBeforeAuto = autoSpacing;
 
-            // Insert two paragraphs which will have padding above and below them and save the document
+            // Insert two paragraphs which will have spacing above and below them and save the document.
             builder.Writeln("Paragraph 1.");
             builder.Writeln("Paragraph 2.");
 
-            doc.Save(ArtifactsDir + "ParagraphFormat.ParagraphSpacing.docx");
+            doc.Save(ArtifactsDir + "ParagraphFormat.ParagraphSpacingAuto.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "ParagraphFormat.ParagraphSpacing.docx");
+            doc = new Document(ArtifactsDir + "ParagraphFormat.ParagraphSpacingAuto.docx");
             ParagraphFormat format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
 
-            Assert.AreEqual(12.0d, format.SpaceBefore);
-            Assert.AreEqual(12.0d, format.SpaceAfter);
-            Assert.False(format.SpaceAfterAuto);
-            Assert.False(format.SpaceBeforeAuto);
-            Assert.False(format.NoSpaceBetweenParagraphsOfSameStyle);
+            Assert.AreEqual(24.0d, format.SpaceBefore);
+            Assert.AreEqual(24.0d, format.SpaceAfter);
+            Assert.AreEqual(autoSpacing, format.SpaceAfterAuto);
+            Assert.AreEqual(autoSpacing, format.SpaceBeforeAuto);
 
             format = doc.FirstSection.Body.Paragraphs[1].ParagraphFormat;
 
-            Assert.AreEqual(12.0d, format.SpaceBefore);
-            Assert.AreEqual(12.0d, format.SpaceAfter);
-            Assert.False(format.SpaceAfterAuto);
-            Assert.False(format.SpaceBeforeAuto);
-            Assert.False(format.NoSpaceBetweenParagraphsOfSameStyle);
+            Assert.AreEqual(24.0d, format.SpaceBefore);
+            Assert.AreEqual(24.0d, format.SpaceAfter);
+            Assert.AreEqual(autoSpacing, format.SpaceAfterAuto);
+            Assert.AreEqual(autoSpacing, format.SpaceBeforeAuto);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ParagraphSpacingSameStyle(bool noSpaceBetweenParagraphsOfSameStyle)
+        {
+            //ExStart
+            //ExFor:ParagraphFormat.SpaceAfter
+            //ExFor:ParagraphFormat.SpaceBefore
+            //ExFor:ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle
+            //ExSummary:Shows how to set automatic paragraph spacing.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Apply a large amount of spacing before and after paragraphs that this builder will create.
+            builder.ParagraphFormat.SpaceBefore = 24;
+            builder.ParagraphFormat.SpaceAfter = 24;
+
+            // Set this flag to "true" to apply no spacing between paragraphs
+            // with the same style, which will group similar paragraphs together.
+            // Leave ths flag as "false" to evenly apply spacing to every paragraph.
+            builder.ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle = noSpaceBetweenParagraphsOfSameStyle;
+
+            builder.ParagraphFormat.Style = doc.Styles["Normal"];
+            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
+            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
+            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
+            builder.ParagraphFormat.Style = doc.Styles["Quote"];
+            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
+            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
+            builder.ParagraphFormat.Style = doc.Styles["Normal"];
+            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
+            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
+
+            doc.Save(ArtifactsDir + "ParagraphFormat.ParagraphSpacingSameStyle.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "ParagraphFormat.ParagraphSpacingSameStyle.docx");
+
+            foreach (Paragraph paragraph in doc.FirstSection.Body.Paragraphs)
+            {
+                ParagraphFormat format = paragraph.ParagraphFormat;
+
+                Assert.AreEqual(24.0d, format.SpaceBefore);
+                Assert.AreEqual(24.0d, format.SpaceAfter);
+                Assert.AreEqual(noSpaceBetweenParagraphsOfSameStyle, format.NoSpaceBetweenParagraphsOfSameStyle);
+            }
         }
 
         [Test]
