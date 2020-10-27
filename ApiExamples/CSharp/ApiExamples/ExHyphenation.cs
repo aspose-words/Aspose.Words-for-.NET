@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using Aspose.Pdf.Text;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -54,6 +55,24 @@ namespace ApiExamples
             doc = new Document(MyDir + "German text.docx");
             doc.Save(ArtifactsDir + "Hyphenation.Dictionary.Unregistered.pdf");
             //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Hyphenation.Dictionary.Registered.pdf");
+            TextAbsorber textAbsorber = new TextAbsorber();
+            textAbsorber.Visit(pdfDoc);
+
+            Assert.True(textAbsorber.Text.Contains("La ob storen an deinen am sachen. Dop-\r\n" +
+                                                   "pelte  um  da  am  spateren  verlogen  ge-\r\n" +
+                                                   "kommen  achtzehn  blaulich."));
+
+            pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Hyphenation.Dictionary.Unregistered.pdf");
+            textAbsorber = new TextAbsorber();
+            textAbsorber.Visit(pdfDoc);
+
+            Assert.True(textAbsorber.Text.Contains("La  ob  storen  an  deinen  am  sachen. \r\n" +
+                                                   "Doppelte  um  da  am  spateren  verlogen \r\n" +
+                                                   "gekommen  achtzehn  blaulich."));
+#endif
         }
 
         //ExStart
