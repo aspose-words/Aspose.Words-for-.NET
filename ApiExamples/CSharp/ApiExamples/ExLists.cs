@@ -932,7 +932,7 @@ namespace ApiExamples
             Assert.AreEqual(10, paras.OfType<Paragraph>().Count(p => p.ListFormat.IsListItem));
         }
 
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void CreatePictureBullet()
         {
             //ExStart
