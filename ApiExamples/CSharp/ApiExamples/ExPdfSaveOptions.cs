@@ -54,8 +54,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create TOC entries
+            // Create headings that can serve as TOC entries of levels 1, 4, and then 9.
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
+
             Assert.True(builder.ParagraphFormat.IsHeading);
 
             builder.Writeln("Heading 1");
@@ -74,9 +75,9 @@ namespace ApiExamples
             // "HeadingsOutlineLevels" specifies how many levels of headings to include in the document outline
             // "CreateMissingOutlineLevels" determining whether to create missing heading levels
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
+            pdfSaveOptions.SaveFormat = SaveFormat.Pdf;
             pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 9;
             pdfSaveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
-            pdfSaveOptions.SaveFormat = SaveFormat.Pdf;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf", pdfSaveOptions);
             //ExEnd
