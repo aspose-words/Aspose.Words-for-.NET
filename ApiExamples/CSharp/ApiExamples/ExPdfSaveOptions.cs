@@ -43,7 +43,7 @@ namespace ApiExamples
     internal class ExPdfSaveOptions : ApiExampleBase
     {
         [Test]
-        public void CreateMissingOutlineLevels()
+        public void HeadingsOutlineLevels()
         {
             //ExStart
             //ExFor:OutlineOptions.CreateMissingOutlineLevels
@@ -54,43 +54,45 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create headings that can serve as TOC entries of levels 1, 4, and then 9.
+            // Insert headings that can serve as TOC entries of levels 1, 2, and then 5.
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
 
             Assert.True(builder.ParagraphFormat.IsHeading);
 
             builder.Writeln("Heading 1");
 
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading4;
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading2;
 
-            builder.Writeln("Heading 1.1.1.1");
-            builder.Writeln("Heading 1.1.1.2");
+            builder.Writeln("Heading 1.1");
+            builder.Writeln("Heading 1.2");
 
-            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading9;
+            builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading3;
 
-            builder.Writeln("Heading 1.1.1.1.1.1.1.1.1");
-            builder.Writeln("Heading 1.1.1.1.1.1.1.1.2");
+            builder.Writeln("Heading 1.1.1");
+            builder.Writeln("Heading 1.1.2");
 
-            // Create "PdfSaveOptions" with some mandatory parameters
-            // "HeadingsOutlineLevels" specifies how many levels of headings to include in the document outline
-            // "CreateMissingOutlineLevels" determining whether to create missing heading levels
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
             pdfSaveOptions.SaveFormat = SaveFormat.Pdf;
-            pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 9;
+
+            // Our PDF document will contain an outline, which is a table of contents that lists headings in the document body.
+            // Clicking on an entry in this outline will take us to the location of its respective heading.
+            // Set the "HeadingsOutlineLevels" property to "2" to exclude all headings whose levels are above 2 from the outline.
+            // The last two headings we have inserted above will not appear.
+            pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 2;
             pdfSaveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf", pdfSaveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.HeadingsOutlineLevels.pdf", pdfSaveOptions);
             //ExEnd
 
             #if NET462 || NETCOREAPP2_1 || JAVA
-            // Bind PDF with Aspose.PDF
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
-            bookmarkEditor.BindPdf(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf");
+            bookmarkEditor.BindPdf(ArtifactsDir + "PdfSaveOptions.HeadingsOutlineLevels.pdf");
 
-            // Get all bookmarks from the document
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
-            Assert.AreEqual(11, bookmarks.Count);
+            Assert.AreEqual(3, bookmarks.Count);
             #endif
         }
 
