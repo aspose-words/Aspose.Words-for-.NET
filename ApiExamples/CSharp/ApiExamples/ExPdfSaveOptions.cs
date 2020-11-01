@@ -136,12 +136,12 @@ namespace ApiExamples
             // and treat the outline level 5 headings as level 2.
             saveOptions.OutlineOptions.CreateMissingOutlineLevels = createMissingOutlineLevels;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.HeadingsOutlineLevels.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf", saveOptions);
             //ExEnd
 
 #if NET462 || NETCOREAPP2_1 || JAVA
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
-            bookmarkEditor.BindPdf(ArtifactsDir + "PdfSaveOptions.HeadingsOutlineLevels.pdf");
+            bookmarkEditor.BindPdf(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf");
 
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
@@ -152,31 +152,46 @@ namespace ApiExamples
 #endif
         }
 
-        [Test]
-        public void TableHeadingOutlines()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void TableHeadingOutlines(bool createOutlinesForHeadingsInTables)
         {
             //ExStart
             //ExFor:OutlineOptions.CreateOutlinesForHeadingsInTables
             //ExSummary:Shows how to create PDF document outline entries for headings inside tables.
-            // Create a blank document and insert a table with a heading-style text inside it
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Create a table with three rows. The first row,
+            // whose text we will format in a heading-type style, will serve as the column header.
             builder.StartTable();
             builder.InsertCell();
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
-            builder.Write("Heading 1");
+            builder.Write("Customers");
             builder.EndRow();
             builder.InsertCell();
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Normal;
-            builder.Write("Cell 1");
+            builder.Write("John Doe");
+            builder.EndRow();
+            builder.InsertCell();
+            builder.Write("Jane Doe");
             builder.EndTable();
 
-            // Create a PdfSaveOptions object that, when saving to .pdf with it, creates entries in the document outline for heading levels 1-9,
-            // and make sure headings inside tables are registered by the outline also
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
-            pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 9;
-            pdfSaveOptions.OutlineOptions.CreateOutlinesForHeadingsInTables = true;
+
+            // The output PDF document will contain an outline, which is a table of contents that lists headings in the document body.
+            // Clicking on an entry in this outline will take us to the location of its respective heading.
+            // Set the "HeadingsOutlineLevels" property to "1" to get the outline
+            // to only register headings that have heading levels that are no larger than 1.
+            pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 1;
+
+            // Set the "CreateOutlinesForHeadingsInTables" property to "false" to exclude all headings within tables,
+            // such as the one we have created above from the outline.
+            // Set the "CreateOutlinesForHeadingsInTables" property to "true" to include all headings within tables
+            // in the outline, provided that they have a heading level that is no larger than the value of the "HeadingsOutlineLevels" property.
+            pdfSaveOptions.OutlineOptions.CreateOutlinesForHeadingsInTables = createOutlinesForHeadingsInTables;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.TableHeadingOutlines.pdf", pdfSaveOptions);
             //ExEnd
@@ -184,29 +199,36 @@ namespace ApiExamples
             #if NET462 || NETCOREAPP2_1 || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.TableHeadingOutlines.pdf");
 
-            Assert.AreEqual(1, pdfDoc.Outlines.Count);
-            Assert.AreEqual("Heading 1", pdfDoc.Outlines[1].Title);
+            if (createOutlinesForHeadingsInTables)
+            {
+                Assert.AreEqual(1, pdfDoc.Outlines.Count);
+                Assert.AreEqual("Customers", pdfDoc.Outlines[1].Title);
+            } else
+                Assert.AreEqual(0, pdfDoc.Outlines.Count);
 
             TableAbsorber tableAbsorber = new TableAbsorber();
             tableAbsorber.Visit(pdfDoc.Pages[1]);
 
-            Assert.AreEqual("Heading 1", tableAbsorber.TableList[0].RowList[0].CellList[0].TextFragments[1].Text);
-            Assert.AreEqual("Cell 1", tableAbsorber.TableList[0].RowList[1].CellList[0].TextFragments[1].Text);
-            #endif
+            Assert.AreEqual("Customers", tableAbsorber.TableList[0].RowList[0].CellList[0].TextFragments[1].Text);
+            Assert.AreEqual("John Doe", tableAbsorber.TableList[0].RowList[1].CellList[0].TextFragments[1].Text);
+            Assert.AreEqual("Jane Doe", tableAbsorber.TableList[0].RowList[2].CellList[0].TextFragments[1].Text);
+#endif
         }
 
         [TestCase(false)]
         [TestCase(true)]
-        public void UpdateFields(bool doUpdateFields)
+        public void UpdateFields(bool updateFields)
         {
             //ExStart
             //ExFor:PdfSaveOptions.Clone
             //ExFor:SaveOptions.UpdateFields
-            //ExSummary:Shows how to update fields before saving into a PDF document.
+            //ExSummary:Shows how to update all the fields in a document immediately before saving it to PDF.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert two pages of text, including two fields that will need to be updated to display an accurate value
+            // Insert text with PAGE and NUMPAGES fields. These fields do not display the correct value in real time.
+            // We will need to manually update them using updating methods such as "Field.Update()", and "Document.UpdateFields()"
+            // each time we need them to display accurate values.
             builder.Write("Page ");
             builder.InsertField("PAGE", "");
             builder.Write(" of ");
@@ -214,10 +236,17 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Hello World!");
 
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-            options.UpdateFields = doUpdateFields;
+
+            // Set the "UpdateFields" property to "false" to not update all the fields in a document right before a save operation.
+            // This is the preferable option if we know that all our fields will be up to date before saving.
+            // Set the "UpdateFields" property to "true" to iterate through all the fields in the document
+            // and update them before we save it as a PDF. This will make sure that all the fields will display the most accurate values in the PDF.
+            options.UpdateFields = updateFields;
             
-            // PdfSaveOptions objects can be cloned
+            // We can clone PdfSaveOptions objects.
             Assert.AreNotSame(options, options.Clone());
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.UpdateFields.pdf", options);
@@ -229,7 +258,7 @@ namespace ApiExamples
             TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
             pdfDocument.Pages.Accept(textFragmentAbsorber);
 
-            if (doUpdateFields)
+            if (updateFields)
                 Assert.AreEqual("Page 1 of 2", textFragmentAbsorber.TextFragments[1].Text);
             else
                 Assert.AreEqual("Page  of ", textFragmentAbsorber.TextFragments[1].Text);
