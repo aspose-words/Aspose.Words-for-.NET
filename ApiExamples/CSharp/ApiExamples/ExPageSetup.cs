@@ -81,7 +81,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Below are two types of header/footers.
-            // 1 -  The "First" header/footer, which appear at the first page of the section.
+            // 1 -  The "First" header/footer, which appears on the first page of the section.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderFirst);
             builder.Writeln("First page header.");
 
@@ -89,7 +89,7 @@ namespace ApiExamples
             builder.Writeln("First page footer.");
 
             // 2 -  The "Primary" header/footer, which appears on every page in the section.
-            // We can override the primary header/footer by a first, as well as an even page header/footer. 
+            // We can override the primary header/footer by a first and an even page header/footer. 
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.Writeln("Primary header.");
 
@@ -104,7 +104,7 @@ namespace ApiExamples
             builder.Writeln("Page 3.");
 
             // Each section has a "PageSetup" object that specifies page appearance-related properties
-            // such as orientation, size and borders.
+            // such as orientation, size, and borders.
             // Set the "DifferentFirstPageHeaderFooter" property to "true" to apply the first header/footer to the first page.
             // Set the "DifferentFirstPageHeaderFooter" property to "false"
             // to make the first page display the primary header/footer.
@@ -130,7 +130,7 @@ namespace ApiExamples
 
             // Below are two types of header/footers.
             // 1 -  The "Primary" header/footer, which appears on every page in the section.
-            // We can override the primary header/footer by a first, as well as an even page header/footer. 
+            // We can override the primary header/footer by a first and an even page header/footer. 
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.Writeln("Primary header.");
 
@@ -152,7 +152,7 @@ namespace ApiExamples
             builder.Writeln("Page 3.");
 
             // Each section has a "PageSetup" object that specifies page appearance-related properties
-            // such as orientation, size and borders.
+            // such as orientation, size, and borders.
             // Set the "OddAndEvenPagesHeaderFooter" property to "true"
             // to display the even page header/footer on even pages.
             // Set the "OddAndEvenPagesHeaderFooter" property to "false"
@@ -341,11 +341,11 @@ namespace ApiExamples
             // This is the tray we will use for pages in the "A4" paper size.
             int printerTrayForA4 = settings.PaperSources[0].RawKind;
 
-            // The is the tray we will use for pages in the "Letter" paper size.
+            // This is the tray we will use for pages in the "Letter" paper size.
             int printerTrayForLetter = settings.PaperSources[1].RawKind;
 
             // Modify the PageSettings object of this section to get Microsoft Word to instruct the printer
-            // to use one the trays we identified above, depending on the paper size of this section.
+            // to use one of the trays we identified above, depending on this section's paper size.
             foreach (Section section in doc.Sections.OfType<Section>())
             {
                 if (section.PageSetup.PaperSize == Aspose.Words.PaperSize.Letter)
@@ -434,7 +434,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // We can change the size of the current page to a pre-defined size
+            // We can change the current page's size to a pre-defined size
             // by using the "PaperSize" property of this section's PageSetup object.
             builder.PageSetup.PaperSize = PaperSize.Tabloid;
 
@@ -444,7 +444,7 @@ namespace ApiExamples
             builder.Writeln($"This page is {builder.PageSetup.PageWidth}x{builder.PageSetup.PageHeight}.");
 
             // Each section has its own PageSetup object. When we use a document builder to make a new section,
-            // that section's PageSetup object inherits all the values of the previous section's PageSetup object.
+            // that section's PageSetup object inherits all the previous section's PageSetup object's values.
             builder.InsertBreak(BreakType.SectionBreakEvenPage);
 
             Assert.AreEqual(PaperSize.Tabloid, builder.PageSetup.PaperSize);
@@ -605,10 +605,10 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // We can use the section's PageSetup object to display numbers to the left of lines of text in the section.
+            // We can use the section's PageSetup object to display numbers to the left of the section's text lines.
             // This is the same behavior as a List object,
-            // but it covers the entire section, and does not modify the text in any way.
-            // Our section will restart the numbering on each new page from 1, and will display the number,
+            // but it covers the entire section and does not modify the text in any way.
+            // Our section will restart the numbering on each new page from 1 and display the number,
             // if it is a multiple of 3, at a distance of 50pt to the left of the line.
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.LineStartingNumber = 1;
@@ -621,7 +621,7 @@ namespace ApiExamples
 
             // The line counter will skip any paragraph with the "SuppressLineNumbers" flag set to "true".
             // This paragraph is on the 15th line, which is a multiple of 3, and thus would normally display a line number.
-            // The section's line counter will also ignore this line, and treat the next line as the 15th,
+            // The section's line counter will also ignore this line, treat the next line as the 15th,
             // and continue the count from that point onward.
             doc.FirstSection.Body.Paragraphs[14].ParagraphFormat.SuppressLineNumbers = true;
 
@@ -741,7 +741,7 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Section 2, page 3.");
 
-            // Move the document builder to the primary header of the first section,
+            // Move the document builder to the first section's primary header,
             // which every page in that section will display.
             builder.MoveToSection(0);
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
@@ -750,7 +750,7 @@ namespace ApiExamples
             builder.Write("Page ");
             builder.InsertField("PAGE", "");
 
-            // Configure the section section to have the page count that PAGE fields display start from 5.
+            // Configure the section to have the page count that PAGE fields display start from 5.
             // Also, configure all PAGE fields to display their page numbers using uppercase Roman numerals.
             PageSetup pageSetup = doc.Sections[0].PageSetup;
             pageSetup.RestartPageNumbering = true;
@@ -765,7 +765,7 @@ namespace ApiExamples
             builder.InsertField("PAGE", "");
             builder.Write(" - ");
 
-            // Configure the section section to have the page count that PAGE fields display start from 10.
+            // Configure the section to have the page count that PAGE fields display start from 10.
             // Also, configure all PAGE fields to display their page numbers using Arabic numbers.
             pageSetup = doc.Sections[1].PageSetup;
             pageSetup.PageStartingNumber = 10;
@@ -803,7 +803,7 @@ namespace ApiExamples
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote reference text.");
 
             // Configure all footnotes in the first section to restart the numbering from 1
-            // at each new page, and display themselves directly beneath the text at every page.
+            // at each new page and display themselves directly beneath the text on every page.
             FootnoteOptions footnoteOptions = doc.Sections[0].PageSetup.FootnoteOptions;
             footnoteOptions.Position = FootnotePosition.BeneathText;
             footnoteOptions.RestartRule = FootnoteNumberingRule.RestartPage;
@@ -813,7 +813,7 @@ namespace ApiExamples
             builder.InsertFootnote(FootnoteType.Footnote, "Endnote reference text.");
 
             // Configure all endnotes in the first section to maintain a continuous count throughout the section,
-            // which starts from 1. Also, set them all to appear collected at the end of the document.
+            // starting from 1. Also, set them all to appear collected at the end of the document.
             EndnoteOptions endnoteOptions = doc.Sections[0].PageSetup.EndnoteOptions;
             endnoteOptions.Position = EndnotePosition.EndOfDocument;
             endnoteOptions.RestartRule = FootnoteNumberingRule.Continuous;
@@ -855,10 +855,10 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.ColumnBreak);
             builder.Write("Column 3.");
 
-            // Set the "Bidi" property to "true" to arrange the columns starting from the right side of the page.
-            // The order of the columns will match the direction of right-to-left text.
-            // Set the "Bidi" property to "false" to arrange the columns starting from the left side of the page.
-            // The order of the columns will match the direction of left-to-right text.
+            // Set the "Bidi" property to "true" to arrange the columns starting from the page's right side.
+            // The order of the columns will match the direction of the right-to-left text.
+            // Set the "Bidi" property to "false" to arrange the columns starting from the page's left side.
+            // The order of the columns will match the direction of the left-to-right text.
             pageSetup.Bidi = reverseColumns;
 
             doc.Save(ArtifactsDir + "PageSetup.Bidi.docx");
@@ -894,7 +894,7 @@ namespace ApiExamples
             pageSetup.Borders.Color = Color.Blue;
 
             // A section's PageSetup object has "BorderSurroundsHeader" and "BorderSurroundsFooter" flags that determine
-            // whether a page border, which surrounds the main body text, also includes the header or footer, respectively.
+            // whether a page border surrounds the main body text, also includes the header or footer, respectively.
             // Set the "BorderSurroundsHeader" flag to "true" to surround the header with our border,
             // and then set the "BorderSurroundsFooter" flag to leave the footer outside of the border.
             pageSetup.BorderSurroundsHeader = true;
@@ -929,11 +929,11 @@ namespace ApiExamples
                 builder.InsertBreak(BreakType.PageBreak);
             }
 
-            // A gutter adds more whitespace to either the left or right page margin
-            // which makes up for the center folding of pages in a book encroaching on the layout of the page.
+            // A gutter adds whitespaces to either the left or right page margin,
+            // which makes up for the center folding of pages in a book encroaching on the page's layout.
             PageSetup pageSetup = doc.Sections[0].PageSetup;
 
-            // Determine how much space our pages have for text within the margins, then add an amount to pad a margin by. 
+            // Determine how much space our pages have for text within the margins and then add an amount to pad a margin. 
             Assert.AreEqual(470.30d, pageSetup.PageWidth - pageSetup.LeftMargin - pageSetup.RightMargin, 0.01d);
             
             pageSetup.Gutter = 100.0d;
@@ -976,11 +976,9 @@ namespace ApiExamples
                 builder.Write($"Booklet face #{i}");
             }
 
-            // Configure the first section's "PageSetup" property
-            // so that we can print the document in the form of a book fold.
-            // When we print this document on both sides, we can take the pages
-            // in the order that the printer stacked them, and fold them all down the middle at once. 
-            // The contents of the document will line up into a book fold.
+            // Configure the first section's "PageSetup" property to print the document in the form of a book fold.
+            // When we print this document on both sides, we can take the pages to stack them
+            // and fold them all down the middle at once. The contents of the document will line up into a book fold.
             PageSetup pageSetup = doc.Sections[0].PageSetup;
             pageSetup.MultiplePages = MultiplePagesType.BookFoldPrinting;
 
@@ -1009,7 +1007,7 @@ namespace ApiExamples
             builder.Writeln("Hello world!");
 
             // Set the "TextOrientation" property to "TextOrientation.Upward" to rotate all the text 90 degrees
-            // to the right, so that all left-to-right text now goes top-to-bottom.
+            // to the right so that all left-to-right text now goes top-to-bottom.
             PageSetup pageSetup = doc.Sections[0].PageSetup;
             pageSetup.TextOrientation = TextOrientation.Upward;
 
@@ -1044,7 +1042,8 @@ namespace ApiExamples
             InsertSectionWithEndnote(doc, "Section 3", "Endnote 3, will stay in section 3");
 
             // While getting sections to display their respective endnotes, we can set the "SuppressEndnotes" flag
-            // of a section's "PageSetup" object to "true" to revert to the default behaviour and pass its endnotes onto the next section.
+            // of a section's "PageSetup" object to "true" to revert to the default behavior and pass its endnotes
+            // onto the next section.
             PageSetup pageSetup = doc.Sections[1].PageSetup;
             pageSetup.SuppressEndnotes = true;
 

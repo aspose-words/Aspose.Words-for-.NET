@@ -57,8 +57,7 @@ namespace ApiExamples
             //ExSummary:Shows how to use different measurement units to define style parameters of a saved ODT document.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // When we export the document to .odt, we can use an OdtSaveOptions object
-            // to modify the way in which we save the document.
+            // When we export the document to .odt, we can use an OdtSaveOptions object to modify how we save the document.
             // We can set the "MeasureUnit" property to "OdtSaveMeasureUnit.Centimeters"
             // to define content such as style parameters using the metric system, which Open Office uses. 
             // We can set the "MeasureUnit" property to "OdtSaveMeasureUnit.Inches"

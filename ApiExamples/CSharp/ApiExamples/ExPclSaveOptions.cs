@@ -72,19 +72,19 @@ namespace ApiExamples
             saveOptions.AddPrinterFont("Courier New", "Courier");
 
             // When printing this document, the printer will use the "Courier New" font
-            // that it has access to in places where our document used the "Courier" font.
+            // to access places where our document used the "Courier" font.
             doc.Save(ArtifactsDir + "PclSaveOptions.AddPrinterFont.pcl", saveOptions);
             //ExEnd
         }
 
         [Test]
-        [Ignore("This test is a manual check that PaperTray information is preserved in the output pcl document.")]
+        [Description("This test is a manual check that PaperTray information is preserved in the output pcl document.")]
         public void GetPreservedPaperTrayInformation()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Paper tray information is now preserved when saving document to PCL format
-            // Following information is transferred from document's model to PCL file
+            // Paper tray information is now preserved when saving document to PCL format.
+            // Following information is transferred from document's model to PCL file.
             foreach (Section section in doc.Sections.OfType<Section>())
             {
                 section.PageSetup.FirstPageTray = 15;

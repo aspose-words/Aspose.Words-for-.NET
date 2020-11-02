@@ -64,9 +64,9 @@ namespace ApiExamples
 
             // Currently, the second and third paragraphs will appear underneath the first.
             // We can convert the first paragraph as a drop cap for the other paragraphs via its "ParagraphFormat" object.
-            // Set the "DropCapPosition" property to "DropCapPosition.Margin" to place the drop cap outside
-            // the left hand side page margin, if our text is left-to-right.
-            // Set the "DropCapPosition" property to "DropCapPosition.Normal" to place the drop cap within the page margins,
+            // Set the "DropCapPosition" property to "DropCapPosition.Margin" to place the drop cap
+            // outside the left-hand side page margin if our text is left-to-right.
+            // Set the "DropCapPosition" property to "DropCapPosition.Normal" to place the drop cap within the page margins
             // and to wrap the rest of the text around it.
             // "DropCapPosition.None" is the default state for all paragraphs.
             ParagraphFormat format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
@@ -95,7 +95,7 @@ namespace ApiExamples
             // paragraph's "LineSpacingRule" property to configure spacing between paragraphs.
             // 1 -  Set a minimum amount of spacing.
             // This will give vertical padding to lines of text of any size
-            // that's too small to maintain the minimum line height.
+            // that's too small to maintain the minimum line-height.
             builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.AtLeast;
             builder.ParagraphFormat.LineSpacing = 20;
 
@@ -163,7 +163,7 @@ namespace ApiExamples
             builder.ParagraphFormat.SpaceAfterAuto = autoSpacing;
             builder.ParagraphFormat.SpaceBeforeAuto = autoSpacing;
 
-            // Insert two paragraphs which will have spacing above and below them and save the document.
+            // Insert two paragraphs that will have spacing above and below them and save the document.
             builder.Writeln("Paragraph 1.");
             builder.Writeln("Paragraph 2.");
 
@@ -202,8 +202,8 @@ namespace ApiExamples
             builder.ParagraphFormat.SpaceBefore = 24;
             builder.ParagraphFormat.SpaceAfter = 24;
 
-            // Set this flag to "true" to apply no spacing between paragraphs
-            // with the same style, which will group similar paragraphs together.
+            // Set this flag to "true" to apply no spacing between paragraphs with the same style,
+            // which will group similar paragraphs.
             // Leave ths flag as "false" to evenly apply spacing to every paragraph.
             builder.ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle = noSpaceBetweenParagraphsOfSameStyle;
 
@@ -248,13 +248,13 @@ namespace ApiExamples
             builder.ParagraphFormat.OutlineLevel = OutlineLevel.Level1;
             builder.Writeln("Paragraph outline level 1.");
 
-            // Level 1 is the topmost level. If there is a paragraph with a lower level below a paragraph with the higher level,
+            // Level 1 is the topmost level. If there is a paragraph with a lower level below a paragraph with a higher level,
             // collapsing the higher level paragraph will collapse the lower level paragraph.
             builder.ParagraphFormat.OutlineLevel = OutlineLevel.Level2;
             builder.Writeln("Paragraph outline level 2.");
 
             // Two paragraphs of the same level will not collapse each other,
-            // and the arrows do not collapse the paragraphs that they point to.
+            // and the arrows do not collapse the paragraphs they point to.
             builder.ParagraphFormat.OutlineLevel = OutlineLevel.Level3;
             builder.Writeln("Paragraph outline level 3.");
             builder.Writeln("Paragraph outline level 3.");
@@ -287,7 +287,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set this flag to "true" to apply a page break to the beginning of each paragraph
+            // Set this flag to "true" to apply a page break to each paragraph's beginning
             // that the document builder will create under this ParagraphFormat configuration.
             // The first paragraph will not receive a page break.
             // Leave this flag as "false" to start each new paragraph on the same page
@@ -331,11 +331,11 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // When we write text that does not fit onto one page, one line may spill over onto the next page.
+            // When we write the text that does not fit onto one page, one line may spill over onto the next page.
             // The single line that ends up on the next page is called an "Orphan",
-            // and the previous line where the orphan broke off from is called a "Widow".
+            // and the previous line where the orphan broke off is called a "Widow".
             // We can fix orphans and widows by rearranging text via font size, spacing, or page margins.
-            // If we wish to preserve the dimensions of our document, we can set this flag to "true"
+            // If we wish to preserve our document's dimensions, we can set this flag to "true"
             // to push widows onto the same page as their respective orphans. 
             // Leave this flag as "false" will leave widow/orphan pairs in text.
             // Every paragraph has this setting accessible in Microsoft Word via Home -> Paragraph -> Paragraph Settings
@@ -366,7 +366,7 @@ namespace ApiExamples
 
             // Modify the "LinesToDrop" property to designate a paragraph as a drop cap,
             // which will turn it into a large capital letter that will decorate the next paragraph.
-            // Give this property a value of 4 to give the drop cap the height of four lines of text.
+            // Give this property a value of 4 to give the drop cap the height of four text lines.
             builder.ParagraphFormat.LinesToDrop = 4;
             builder.Writeln("H");
 
@@ -397,13 +397,13 @@ namespace ApiExamples
             Assert.True(Hyphenation.IsDictionaryRegistered("de-CH"));
 
             // Open a document containing text with a locale matching that of our dictionary.
-            // WHen we save this document to a fixed-page save format, its text will have hyphenation.
+            // When we save this document to a fixed-page save format, its text will have hyphenation.
             Document doc = new Document(MyDir + "German text.docx");
 
-            // We can set the "SuppressAutoHyphens" property to "true" in order to disable hyphenation
-            // for a specific paragraph, while keeping it enabled for the rest of the document.
+            // We can set the "SuppressAutoHyphens" property to "true" to disable hyphenation
+            // for a specific paragraph while keeping it enabled for the rest of the document.
             // The default value for this property is "false",
-            // which means every paragraph by default uses hyphenation, if any is available.
+            // which means every paragraph by default uses hyphenation if any is available.
             doc.FirstSection.Body.FirstParagraph.ParagraphFormat.SuppressAutoHyphens = suppressAutoHyphens;
 
             doc.Save(ArtifactsDir + "ParagraphFormat.SuppressHyphens.pdf");

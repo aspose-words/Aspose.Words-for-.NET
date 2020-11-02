@@ -48,8 +48,8 @@ namespace ApiExamples
             paragraphFormat.AddSpaceBetweenFarEastAndDigit = true;
             paragraphFormat.KeepTogether = true;
 
-            // The "Writeln" method ends the paragraph after appending text,
-            // and then starts a new line, which adds a new paragraph.
+            // The "Writeln" method ends the paragraph after appending text
+            // and then starts a new line, adding a new paragraph.
             builder.Writeln("Hello world!");
 
             Assert.True(builder.CurrentParagraph.IsEndOfDocument);
@@ -297,7 +297,7 @@ namespace ApiExamples
             //ExSummary:Shows how to add, update and delete child nodes in a CompositeNode's collection of children.
             Document doc = new Document();
 
-            // An empty document by default has one paragraph.
+            // An empty document, by default, has one paragraph.
             Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
 
             // Composite nodes such as our paragraph can contain other composite and inline nodes as children.
@@ -310,7 +310,7 @@ namespace ApiExamples
             Run run2 = new Run(doc, "Run 2. ");
             Run run3 = new Run(doc, "Run 3. ");
 
-            // The three runs will not be included in the document's text contents
+            // The three runs will not be included in the document's text contents // INSP: 'The three runs will not be included' passive voice
             // until we append them to a composite node that itself is a part of the document's node tree,
             // as we did with the first run. We can determine where the text contents of nodes that we insert
             // appears in the document by specifying an insertion location relative to another node in the paragraph.
@@ -361,8 +361,8 @@ namespace ApiExamples
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             // Move revisions consist of pairs of "Move from", and "Move to" revisions. 
-            // These revisions are proposed changes to the document that we can accept or reject.
-            // During the time before we accept/reject a move revision, the document
+            // These revisions are proposed changes to the document that we can accept or reject. // INSP: 'are proposed' passive voice
+            // Before we accept/reject a move revision, the document
             // must keep track of both the departure and arrival destinations of the text.
             // The second and the fourth paragraph define one such revision, and thus both have the same contents.
             Assert.AreEqual(paragraphs[1].GetText(), paragraphs[3].GetText());
@@ -373,7 +373,7 @@ namespace ApiExamples
             Assert.True(paragraphs[1].IsMoveFromRevision);
 
             // The "Move to" revision is the paragraph where we dragged the text to.
-            // If we reject the revision, this paragraph instead will disappear and the other will remain.
+            // If we reject the revision, this paragraph instead will disappear, and the other will remain.
             Assert.True(paragraphs[3].IsMoveToRevision);
             //ExEnd
         }
@@ -523,14 +523,13 @@ namespace ApiExamples
             // Insert a paragraph with a style that the TOC will pick up as an entry.
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
 
-            // Both these strings are on the same paragraph, and will therefore show up on the same TOC entry.
+            // Both these strings are in the same paragraph and will therefore show up on the same TOC entry.
             builder.Write("Heading 1. ");
             builder.Write("Will appear in the TOC. ");
 
-            // If we insert a style separator, we can write more text on the same paragraph,
-            // and use a different style without it showing up in the TOC.
-            // If we use a heading type style after the separator,
-            // we can draw multiple TOC entries from one line of document text.
+            // If we insert a style separator, we can write more text in the same paragraph
+            // and use a different style without showing up in the TOC.
+            // If we use a heading type style after the separator, we can draw multiple TOC entries from one document text line.
             builder.InsertStyleSeparator();
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Quote;
             builder.Write("Won't appear in the TOC. ");
@@ -572,8 +571,8 @@ namespace ApiExamples
             // We can see these tab stops in Microsoft Word by enabling the ruler via "View" -> "Show" -> "Ruler".
             Assert.AreEqual(3, para.GetEffectiveTabStops().Length);
 
-            // Any tab characters we add will make use of the tab stops on the ruler, and may,
-            // depending on the value of the tab leader, leave a line between the tab departure and arrival destinations.
+            // Any tab characters we add will make use of the tab stops on the ruler and may,
+            // depending on the tab leader's value, leave a line between the tab departure and arrival destinations.
             para.AppendChild(new Run(doc, "\tTab 1\tTab 2\tTab 3"));
 
             doc.Save(ArtifactsDir + "Paragraph.TabStops.docx");
@@ -602,7 +601,7 @@ namespace ApiExamples
             builder.Write("Run 3. ");
             builder.Write("Run 4. ");
 
-            // If we open this document in Microsoft Word, the paragraph will look like one seamless body of text.
+            // If we open this document in Microsoft Word, the paragraph will look like one seamless text body.
             // In reality, it will consist of four separate runs with the same formatting. Fragmented paragraphs like this
             // may occur when we manually edit parts of one paragraph many times in Microsoft Word.
             Paragraph para = builder.CurrentParagraph;
@@ -612,14 +611,14 @@ namespace ApiExamples
             // Change the style of the last run to set it apart from the first three.
             para.Runs[3].Font.StyleIdentifier = StyleIdentifier.Emphasis;
 
-            // We can run the "JoinRunsWithSameFormatting" method to optimize the contents of the document
+            // We can run the "JoinRunsWithSameFormatting" method to optimize the document's contents
             // by merging similar runs into one, reducing their overall count.
             // This method also returns the number of runs that this method merged.
             // These two merges occurred to combine Runs #1, #2, and #3,
             // while leaving out Run #4 because it has an incompatible style.
             Assert.AreEqual(2, para.JoinRunsWithSameFormatting());
 
-            // The number of runs left will equal to the original count
+            // The number of runs left will equal the original count
             // minus the number of run merges that the "JoinRunsWithSameFormatting" method carried out.
             Assert.AreEqual(2, para.Runs.Count);
             Assert.AreEqual("Run 1. Run 2. Run 3. ", para.Runs[0].Text);

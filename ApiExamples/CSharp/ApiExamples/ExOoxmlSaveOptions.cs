@@ -30,7 +30,6 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
-            // Create a SaveOptions object with a password, and save our document with it.
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
             saveOptions.Password = "MyPassword";
 
@@ -139,8 +138,8 @@ namespace ApiExamples
             Assert.AreEqual(new DateTime(2020, 7, 30, 5, 27, 0), 
                 doc.BuiltInDocumentProperties.LastSavedTime);
 
-            // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object,
-            // and then pass it to the document's saving method to modify the way in which we save the document.
+            // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object
+            // and then pass it to the document's saving method to modify how we save the document.
             // Set the "UpdateLastSavedTimeProperty" property to "true" to
             // set the output document's "Last saved time" built-in property to the current date/time.
             // Set the "UpdateLastSavedTimeProperty" property to "false" to
@@ -171,8 +170,8 @@ namespace ApiExamples
             //ExSummary:Shows how to support legacy control characters when converting to .docx.
             Document doc = new Document(MyDir + "Legacy control character.doc");
 
-            // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object,
-            // and then pass it to the document's saving method to modify the way in which we save the document.
+            // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object
+            // and then pass it to the document's saving method to modify how we save the document.
             // Set the "KeepLegacyControlChars" property to "true" to preserve
             // the "ShortDateTime" legacy character while saving.
             // Set the "KeepLegacyControlChars" property to "false" to remove
@@ -184,10 +183,8 @@ namespace ApiExamples
             
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.KeepLegacyControlChars.docx");
 
-            if (keepLegacyControlChars)
-                Assert.AreEqual("\u0013date \\@ \"MM/dd/yyyy\"\u0014\u0015\f", doc.FirstSection.Body.GetText());
-            else
-                Assert.AreEqual("\u001e\f", doc.FirstSection.Body.GetText());
+            Assert.AreEqual(keepLegacyControlChars ? "\u0013date \\@ \"MM/dd/yyyy\"\u0014\u0015\f" : "\u001e\f",
+                doc.FirstSection.Body.GetText());
             //ExEnd
         }
 
@@ -203,8 +200,8 @@ namespace ApiExamples
             //ExSummary:Shows how to specify the compression level to use while saving an OOXML document.
             Document doc = new Document(MyDir + "Images.docx");
 
-            // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object,
-            // and then pass it to the document's saving method to modify the way in which we save the document.
+            // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object
+            // and then pass it to the document's saving method to modify how we save the document.
             // Set the "CompressionLevel" property to "CompressionLevel.Maximum" to apply the strongest and slowest compression.
             // Set the "CompressionLevel" property to "CompressionLevel.Normal" to apply
             // the default compression that Aspose.Words uses while saving OOXML documents.

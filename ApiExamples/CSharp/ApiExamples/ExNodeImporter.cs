@@ -29,13 +29,13 @@ namespace ApiExamples
             Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
             Document dstDoc = srcDoc.Clone();
 
-            // When we import the clone of the document into the original, and then append it,
+            // When we import the document's clone into the original and then append it,
             // then the two lists with the same list format will join together.
             // If we set the "KeepSourceNumbering" flag to "false", then the list from the document clone
             // that we append to the original will carry on the numbering of the list we append it to.
             // This will effectively merge the two lists into one.
-            // If we set the "KeepSourceNumbering" flag to "true", then the list from the document clone
-            // will preserve its original numbering, making the two lists appear as separate lists. 
+            // If we set the "KeepSourceNumbering" flag to "true", then the document clone
+            // list will preserve its original numbering, making the two lists appear as separate lists. 
             ImportFormatOptions importFormatOptions = new ImportFormatOptions();
             importFormatOptions.KeepSourceNumbering = keepSourceNumbering;
 
@@ -117,8 +117,8 @@ namespace ApiExamples
                 NodeImporter importer =
                     new NodeImporter(docToInsert, insertionDestination.Document, ImportFormatMode.KeepSourceFormatting);
 
-                // Loop through all block level nodes in the body of the section,
-                // and then clone and insert every node that is not the last empty paragraph of a section.
+                // Loop through all block-level nodes in the section's body,
+                // then clone and insert every node that is not the last empty paragraph of a section.
                 foreach (Section srcSection in docToInsert.Sections.OfType<Section>())
                     foreach (Node srcNode in srcSection.Body)
                     {
@@ -161,7 +161,8 @@ namespace ApiExamples
             // The main document has a merge field in it called "Document_1".
             // Execute a mail merge using a data source that contains a local system filename
             // of the document that we wish to insert into the MERGEFIELD.
-            doc.MailMerge.Execute(new string[] { "Document_1" }, new object[] { ArtifactsDir + "NodeImporter.InsertAtMergeField.docx" });
+            doc.MailMerge.Execute(new string[] { "Document_1" },
+                new object[] { ArtifactsDir + "NodeImporter.InsertAtMergeField.docx" });
 
             Assert.AreEqual("A document will appear here: \r" +
                             "Hello world!", doc.GetText().Trim());

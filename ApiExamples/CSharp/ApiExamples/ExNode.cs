@@ -184,10 +184,8 @@ namespace ApiExamples
             // and print any runs or shapes that we find within.
             NodeCollection children = paragraph.ChildNodes;
 
-            for (int i = 0; i < children.Count; i++)
+            foreach (Node child in children)
             {
-                Node child = children[i];
-
                 switch (child.NodeType)
                 {
                     case NodeType.Run:
@@ -250,7 +248,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Recursively traverses a node tree while printing the type of each node with an indent depending on depth as well as the contents of all inline nodes.
+        /// Recursively traverses a node tree while printing the type of each node
+        /// with an indent depending on depth as well as the contents of all inline nodes.
         /// </summary>
         public void TraverseAllNodes(CompositeNode parentNode, int depth)
         {
@@ -397,7 +396,7 @@ namespace ApiExamples
             //ExSummary:Shows how to select certain nodes by using an XPath expression.
             Document doc = new Document(MyDir + "Tables.docx");
 
-            // This expression will extract all paragraph nodes
+            // This expression will extract all paragraph nodes,
             // which are descendants of any table node in the document.
             NodeList nodeList = doc.SelectNodes("//Table//Paragraph");
 
@@ -430,8 +429,8 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Mail merge destination - Northwind employees.docx");
 
             // The NodeList that results from this XPath expression will contain all nodes we find inside a field.
-            // There can however be FieldStart and FieldEnd nodes in the list if there are nested fields in the path.
-            // Currently does not find rare fields in which the FieldCode or FieldResult spans across multiple paragraphs
+            // However, FieldStart and FieldEnd nodes can be on the list if there are nested fields in the path.
+            // Currently does not find rare fields in which the FieldCode or FieldResult spans across multiple paragraphs.
             NodeList resultList =
                 doc.SelectNodes("//FieldStart/following-sibling::node()[following-sibling::FieldEnd]");
 
@@ -562,7 +561,7 @@ namespace ApiExamples
                 Assert.AreEqual(1, navigator.SelectChildren(XPathNodeType.All).Count);
 
                 // The document tree has the document, first section,
-                // body and first paragraph as nodes, with each being an only child of the previous.
+                // body, and first paragraph as nodes, with each being an only child of the previous.
                 // We can add a few more to give the tree some branches for the navigator to traverse.
                 DocumentBuilder docBuilder = new DocumentBuilder(doc);
                 docBuilder.Write("Section 1, Paragraph 1. ");
@@ -582,7 +581,7 @@ namespace ApiExamples
 
         /// <summary>
         /// Traverses all children of a composite node and map the structure in the style of a directory tree.
-        /// Amount of space indentation indicates depth relative to initial node.
+        /// The amount of space indentation indicates depth relative to the initial node.
         /// Prints the text contents of the current node only if it is a Run.
         /// </summary>
         private static void MapDocument(XPathNavigator navigator, StringBuilder stringBuilder, int depth)
@@ -620,7 +619,7 @@ namespace ApiExamples
         //ExFor:NodeChangingArgs.Action
         //ExFor:NodeChangingArgs.NewParent
         //ExFor:NodeChangingArgs.OldParent
-        //ExSummary:Shows how to use a NodeChangingCallback to monitor changes to the document tree in real time as we edit it.
+        //ExSummary:Shows how to use a NodeChangingCallback to monitor changes to the document tree in real-time as we edit it.
         [Test] //ExSkip
         public void NodeChangingCallback()
         {
@@ -763,8 +762,7 @@ namespace ApiExamples
             Assert.True(nodeList.Any(n => n.GetText().Trim() == "Cell 2"));
 
             // Use a double forward slash to select all Run nodes
-            // that are indirect descendants of a Table node.
-            // which would in this case be the runs inside the two cells we inserted
+            // that are indirect descendants of a Table node, which would be the runs inside the two cells we inserted.
             nodeList = doc.SelectNodes("//Table//Run");
 
             Assert.AreEqual(2, nodeList.Count);
