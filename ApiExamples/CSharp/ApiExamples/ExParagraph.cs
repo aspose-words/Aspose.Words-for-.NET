@@ -310,9 +310,9 @@ namespace ApiExamples
             Run run2 = new Run(doc, "Run 2. ");
             Run run3 = new Run(doc, "Run 3. ");
 
-            // The three runs will not be included in the document's text contents // INSP: 'The three runs will not be included' passive voice
-            // until we append them to a composite node that itself is a part of the document's node tree,
-            // as we did with the first run. We can determine where the text contents of nodes that we insert
+            // The document body will not display these runs until we insert them into a composite node
+            // that itself is a part of the document's node tree, as we did with the first run.
+            // We can determine where the text contents of nodes that we insert
             // appears in the document by specifying an insertion location relative to another node in the paragraph.
             Assert.AreEqual("Initial text.", paragraph.GetText().Trim());
 
@@ -361,7 +361,7 @@ namespace ApiExamples
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             // Move revisions consist of pairs of "Move from", and "Move to" revisions. 
-            // These revisions are proposed changes to the document that we can accept or reject. // INSP: 'are proposed' passive voice
+            // These revisions are potential changes to the document that we can either accept or reject.
             // Before we accept/reject a move revision, the document
             // must keep track of both the departure and arrival destinations of the text.
             // The second and the fourth paragraph define one such revision, and thus both have the same contents.
