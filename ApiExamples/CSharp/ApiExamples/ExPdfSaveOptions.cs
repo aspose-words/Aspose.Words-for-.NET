@@ -265,43 +265,85 @@ namespace ApiExamples
             #endif
         }
 
-        [Test]
-        public void ImageCompression()
+        [TestCase(PdfCompliance.PdfA1b)]
+        [TestCase(PdfCompliance.Pdf17)]
+        [TestCase(PdfCompliance.PdfA1a)]
+        public void Compliance(PdfCompliance pdfCompliance)
         {
             //ExStart
             //ExFor:PdfSaveOptions.Compliance
-            //ExFor:PdfSaveOptions.ImageCompression
-            //ExFor:PdfSaveOptions.ImageColorSpaceExportMode
-            //ExFor:PdfSaveOptions.JpegQuality
-            //ExFor:PdfImageCompression
             //ExFor:PdfCompliance
-            //ExFor:PdfImageColorSpaceExportMode
-            //ExSummary:Shows how to save images to PDF using JPEG encoding to decrease file size.
+            //ExSummary:Shows how to set the PDF standards compliance level of saved PDF documents.
             Document doc = new Document(MyDir + "Images.docx");
 
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+
+            // Set the "Compliance" property to "PdfCompliance.PdfA1b" to comply with the "PDF/A-1b" standard,
+            // which aims to preserve the visual appearance of the document as Aspose.Words converts it to PDF.
+            // Set the "Compliance" property to "PdfCompliance.Pdf17" to comply with the "1.7" standard.
+            // Set the "Compliance" property to "PdfCompliance.PdfA1a" to comply with the "PDF/A-1a" standard,
+            // which complies with "PDF/A-1b" as well as preserving the document structure of the original document.
+            // This helps with making documents searchable, but may significantly increase the size of already large documents.
+            saveOptions.Compliance = pdfCompliance;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.Compliance.pdf", saveOptions);
+            //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.Compliance.pdf");
+
+            switch (pdfCompliance)
+            {
+                case PdfCompliance.Pdf17:
+                    Assert.AreEqual(PdfFormat.v_1_7, pdfDocument.PdfFormat);
+                    Assert.AreEqual("1.7", pdfDocument.Version);
+                    break;
+                case PdfCompliance.PdfA1a:
+                    Assert.AreEqual(PdfFormat.PDF_A_1A, pdfDocument.PdfFormat);
+                    Assert.AreEqual("1.4", pdfDocument.Version);
+                    break;
+                case PdfCompliance.PdfA1b:
+                    Assert.AreEqual(PdfFormat.PDF_A_1B, pdfDocument.PdfFormat);
+                    Assert.AreEqual("1.4", pdfDocument.Version);
+                    break;
+            }
+#endif
+        }
+
+        [TestCase(PdfImageCompression.Auto)]
+        [TestCase(PdfImageCompression.Jpeg)]
+        public void ImageCompression(PdfImageCompression pdfImageCompression)
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.ImageCompression
+            //ExFor:PdfSaveOptions.JpegQuality
+            //ExFor:PdfImageCompression
+            //ExSummary:Shows how to specify a compression type for all images in a document that we are converting to PDF.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Jpeg image:");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+            builder.InsertParagraph();
+            builder.Writeln("Png image:");
+            builder.InsertImage(ImageDir + "Transparent background logo.png");
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
-            pdfSaveOptions.ImageCompression = PdfImageCompression.Jpeg;
-            pdfSaveOptions.DownsampleOptions.DownsampleImages = false;
-        
+
+            // Set the "ImageCompression" property to "PdfImageCompression.Auto" to use the
+            // "ImageCompression" property to control the quality of the Jpeg images that end up in the output PDF.
+            // Set the "ImageCompression" property to "PdfImageCompression.Jpeg" to use the
+            // "ImageCompression" property to control the quality of all images that end up in the output PDF.
+            pdfSaveOptions.ImageCompression = pdfImageCompression;
+
+            // Set the "JpegQuality" property to "10" to strengthen compression at the cost of image quality.
+            pdfSaveOptions.JpegQuality = 10;
+
             doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf", pdfSaveOptions);
-
-            PdfSaveOptions pdfSaveOptionsA1B = new PdfSaveOptions();
-            pdfSaveOptionsA1B.Compliance = PdfCompliance.PdfA1b;
-            pdfSaveOptionsA1B.ImageCompression = PdfImageCompression.Jpeg;
-            pdfSaveOptionsA1B.DownsampleOptions.DownsampleImages = false;
-            // Use JPEG compression at 50% quality to reduce file size
-            pdfSaveOptionsA1B.JpegQuality = 100;
-            pdfSaveOptionsA1B.ImageColorSpaceExportMode = PdfImageColorSpaceExportMode.SimpleCmyk;
-            
-            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_B.pdf", pdfSaveOptionsA1B);
-
-            PdfSaveOptions pdfSaveOptionsA1A = new PdfSaveOptions();
-            pdfSaveOptionsA1A.Compliance = PdfCompliance.PdfA1a;
-            pdfSaveOptionsA1A.ExportDocumentStructure = true;
-            pdfSaveOptionsA1A.ImageCompression = PdfImageCompression.Jpeg;
-            pdfSaveOptionsA1A.DownsampleOptions.DownsampleImages = false;
-            
-            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_A.pdf", pdfSaveOptionsA1A);
             //ExEnd
 
 #if NET462 || NETCOREAPP2_1 || JAVA
@@ -310,27 +352,87 @@ namespace ApiExamples
 
             using (pdfDocImageStream)
             {
-                TestUtil.VerifyImage(2467, 1500, pdfDocImageStream);
+                TestUtil.VerifyImage(400, 400, pdfDocImageStream);
             }
-            
-            pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_B.pdf");
-            pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[1].ToStream();
+
+            pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[2].ToStream();
 
             using (pdfDocImageStream)
             {
-#if NET462 || JAVA
-                Assert.Throws<ArgumentException>(() => TestUtil.VerifyImage(2467, 1500, pdfDocImageStream));
-#elif NETCOREAPP2_1
-                Assert.Throws<NullReferenceException>(() => TestUtil.VerifyImage(2467, 1500, pdfDocImageStream));
+                switch (pdfImageCompression)
+                {
+                    case PdfImageCompression.Auto:
+                        Assert.AreEqual(53700, new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length, TestUtil.FileInfoLengthDelta);
+
+                        Assert.Throws<ArgumentException>(() =>
+                        {
+                            TestUtil.VerifyImage(400, 400, pdfDocImageStream);
+                        });
+                        break;
+                    case PdfImageCompression.Jpeg:
+                        Assert.AreEqual(40000, new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length, TestUtil.FileInfoLengthDelta);
+
+                        TestUtil.VerifyImage(400, 400, pdfDocImageStream);
+                        break;
+                }
+            }
 #endif
+        }
+
+        [TestCase(PdfImageColorSpaceExportMode.Auto)]
+        [TestCase(PdfImageColorSpaceExportMode.SimpleCmyk)]
+        public void ImageColorSpaceExportMode(PdfImageColorSpaceExportMode pdfImageColorSpaceExportMode)
+        {
+            //ExStart
+            //ExFor:PdfImageColorSpaceExportMode
+            //ExFor:PdfSaveOptions.ImageColorSpaceExportMode
+            //ExSummary:Shows how to set a different color space for images in a document as we export it to PDF.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Jpeg image:");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+            builder.InsertParagraph();
+            builder.Writeln("Png image:");
+            builder.InsertImage(ImageDir + "Transparent background logo.png");
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
+
+            // Set the "ImageColorSpaceExportMode" property to "PdfImageColorSpaceExportMode.Auto" to get Aspose.Words to
+            // automatically select the color space for images in the document that it converts to PDF. In most cases, the color space will be RGB.
+            // Set the "ImageColorSpaceExportMode" property to "PdfImageColorSpaceExportMode.SimpleCmyk" to use the CMYK color space for all images
+            // in the saved PDF. Aspose.Words will also apply Flate compression to all images and ignore the value of the "ImageCompression" property.
+            pdfSaveOptions.ImageColorSpaceExportMode = pdfImageColorSpaceExportMode;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ImageColorSpaceExportMode.pdf", pdfSaveOptions);
+            //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            switch (pdfImageColorSpaceExportMode)
+            {
+                case PdfImageColorSpaceExportMode.Auto:
+                    Assert.AreEqual(68000, new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageColorSpaceExportMode.pdf").Length, TestUtil.FileInfoLengthDelta);
+                    break;
+                case PdfImageColorSpaceExportMode.SimpleCmyk:
+                    Assert.AreEqual(187500, new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageColorSpaceExportMode.pdf").Length, TestUtil.FileInfoLengthDelta);
+                    break;
             }
 
-            pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.PDF_A_1_A.pdf");
-            pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[1].ToStream();
-            
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf");
+            Stream pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[1].ToStream();
+
             using (pdfDocImageStream)
             {
-                TestUtil.VerifyImage(2467, 1500, pdfDocImageStream);
+                TestUtil.VerifyImage(400, 400, pdfDocImageStream);
+            }
+
+            pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[2].ToStream();
+
+            using (pdfDocImageStream)
+            {
+                TestUtil.VerifyImage(400, 400, pdfDocImageStream);
             }
 #endif
         }
