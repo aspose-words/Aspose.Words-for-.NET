@@ -685,20 +685,23 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "WMF with image.docx");
 
-            MetafileRenderingOptions metafileRenderingOptions =
-                new MetafileRenderingOptions
-                {
-                    EmulateRasterOperations = false,
-                    RenderingMode = MetafileRenderingMode.VectorWithFallback
-                };
+            MetafileRenderingOptions metafileRenderingOptions = new MetafileRenderingOptions();
 
-            // If Aspose.Words cannot correctly render some of the metafile records to vector graphics then Aspose.Words
-            // renders this metafile to a bitmap
-            HandleDocumentWarnings callback = new HandleDocumentWarnings();
-            doc.WarningCallback = callback;
+            // Set the "EmulateRasterOperations" property to "false" to fall back to bitmap when
+            // it encounters a metafile which will require raster operations to render in the output PDF.
+            metafileRenderingOptions.EmulateRasterOperations = false;
 
+            // Set the "RenderingMode" property to "VectorWithFallback" to try to render every metafile using vector graphics.
+            metafileRenderingOptions.RenderingMode = MetafileRenderingMode.VectorWithFallback;
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF,
+            // and apply the configuration in our MetafileRenderingOptions object to the saving operation.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.MetafileRenderingOptions = metafileRenderingOptions;
+
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            doc.WarningCallback = callback;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.HandleBinaryRasterWarnings.pdf", saveOptions);
 
@@ -707,17 +710,13 @@ namespace ApiExamples
                 callback.Warnings[0].Description);
         }
 
+        /// <summary>
+        /// Prints and collects formatting loss-related warnings that occur upon saving a document.
+        /// </summary>
         public class HandleDocumentWarnings : IWarningCallback
         {
-            /// <summary>
-            /// Our callback only needs to implement the "Warning" method. This method is called whenever there is a
-            /// potential issue during document processing. The callback can be set to listen for warnings generated during document
-            /// load and/or document save.
-            /// </summary>
             public void Warning(WarningInfo info)
             {
-                // For now, type of warnings about unsupported metafile records changed from
-                // DataLoss/UnexpectedContent to MinorFormattingLoss
                 if (info.WarningType == WarningType.MinorFormattingLoss)
                 {
                     Console.WriteLine("Unsupported operation: " + info.Description);
@@ -741,20 +740,28 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions.HeaderFooterBookmarksExportMode
             //ExFor:PdfSaveOptions.PageMode
             //ExFor:PdfPageMode
-            //ExSummary:Shows how bookmarks in headers/footers are exported to pdf.
+            //ExSummary:Shows to process bookmarks in headers/footers in a document that we are rendering to PDF.
             Document doc = new Document(MyDir + "Bookmarks in headers and footers.docx");
 
-            // You can specify how bookmarks in headers/footers are exported
-            // There is a several options for this:
-            // "None" - Bookmarks in headers/footers are not exported
-            // "First" - Only bookmark in first header/footer of the section is exported
-            // "All" - Bookmarks in all headers/footers are exported
-            PdfSaveOptions saveOptions = new PdfSaveOptions
-            {
-                HeaderFooterBookmarksExportMode = headerFooterBookmarksExportMode,
-                OutlineOptions = { DefaultBookmarksOutlineLevel = 1 },
-                PageMode = PdfPageMode.UseOutlines
-            };
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+
+            // Set the "PageMode" property to "PdfPageMode.UseOutlines" to display the outline navigation pane in the output PDF.
+            saveOptions.PageMode = PdfPageMode.UseOutlines;
+            
+            // Set the "DefaultBookmarksOutlineLevel" property to "1" to display all
+            // bookmarks at the first level of the outline in the output PDF.
+            saveOptions.OutlineOptions.DefaultBookmarksOutlineLevel = 1;
+
+            // Set the "HeaderFooterBookmarksExportMode" property to "HeaderFooterBookmarksExportMode.None" to
+            // not export any bookmarks that are inside headers/footers.
+            // Set the "HeaderFooterBookmarksExportMode" property to "HeaderFooterBookmarksExportMode.First" to
+            // only export bookmarks in header/footers of the first section.
+            // Set the "HeaderFooterBookmarksExportMode" property to "HeaderFooterBookmarksExportMode.All" to
+            // export bookmarks that are in all headers/footers.
+            saveOptions.HeaderFooterBookmarksExportMode = headerFooterBookmarksExportMode;
+            
             doc.Save(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf", saveOptions);
             //ExEnd
 
@@ -826,31 +833,34 @@ namespace ApiExamples
 		
 		[TestCase(false)]
         [TestCase(true)]
-        public void FontsScaledToMetafileSize(bool doScaleWmfFonts)
+        public void FontsScaledToMetafileSize(bool scaleWmfFonts)
         {
             //ExStart
             //ExFor:MetafileRenderingOptions.ScaleWmfFontsToMetafileSize
             //ExSummary:Shows how to WMF fonts scaling according to metafile size on the page.
             Document doc = new Document(MyDir + "WMF with text.docx");
 
-            // There is a several options for this:
-            // 'True' - Aspose.Words emulates font scaling according to metafile size on the page
-            // 'False' - Aspose.Words displays the fonts as metafile is rendered to its default size
-            // Use 'False' option is used only when metafile is rendered as vector graphics
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.MetafileRenderingOptions.ScaleWmfFontsToMetafileSize = doScaleWmfFonts;
+
+            // Set the "ScaleWmfFontsToMetafileSize" property to "true" to scale fonts
+            // that format text within WMF images according to the size of the metafile on the page.
+            // Set the "ScaleWmfFontsToMetafileSize" property to "false" to
+            // preserve the default scale of these fonts.
+            saveOptions.MetafileRenderingOptions.ScaleWmfFontsToMetafileSize = scaleWmfFonts;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf", saveOptions);
             //ExEnd
 
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf");
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
 
             pdfDocument.Pages[1].Accept(textAbsorber);
             Rectangle textFragmentRectangle = textAbsorber.TextFragments[3].Rectangle;
 
-            Assert.AreEqual(doScaleWmfFonts ? 1.589d : 5.045d, textFragmentRectangle.Width, 0.001d);
+            Assert.AreEqual(scaleWmfFonts ? 1.589d : 5.045d, textFragmentRectangle.Width, 0.001d);
 #endif
         }
 
