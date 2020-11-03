@@ -410,30 +410,38 @@ namespace ApiExamples
             //ExEnd
 
 #if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageColorSpaceExportMode.pdf");
+            XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
+
             switch (pdfImageColorSpaceExportMode)
             {
                 case PdfImageColorSpaceExportMode.Auto:
-                    Assert.AreEqual(68000, new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageColorSpaceExportMode.pdf").Length, TestUtil.FileInfoLengthDelta);
+                    Assert.AreEqual(20115, pdfDocImage.ToStream().Length);
                     break;
                 case PdfImageColorSpaceExportMode.SimpleCmyk:
-                    Assert.AreEqual(187500, new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageColorSpaceExportMode.pdf").Length, TestUtil.FileInfoLengthDelta);
+                    Assert.AreEqual(138927, pdfDocImage.ToStream().Length);
                     break;
             }
 
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf");
-            Stream pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[1].ToStream();
+            Assert.AreEqual(400, pdfDocImage.Width);
+            Assert.AreEqual(400, pdfDocImage.Height);
+            Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
 
-            using (pdfDocImageStream)
+            pdfDocImage = pdfDocument.Pages[1].Resources.Images[2];
+
+            switch (pdfImageColorSpaceExportMode)
             {
-                TestUtil.VerifyImage(400, 400, pdfDocImageStream);
+                case PdfImageColorSpaceExportMode.Auto:
+                    Assert.AreEqual(19289, pdfDocImage.ToStream().Length);
+                    break;
+                case PdfImageColorSpaceExportMode.SimpleCmyk:
+                    Assert.AreEqual(19980, pdfDocImage.ToStream().Length);
+                    break;
             }
 
-            pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[2].ToStream();
-
-            using (pdfDocImageStream)
-            {
-                TestUtil.VerifyImage(400, 400, pdfDocImageStream);
-            }
+            Assert.AreEqual(400, pdfDocImage.Width);
+            Assert.AreEqual(400, pdfDocImage.Height);
+            Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
 #endif
         }
 
@@ -446,30 +454,45 @@ namespace ApiExamples
             //ExFor:DownsampleOptions.Resolution
             //ExFor:DownsampleOptions.ResolutionThreshold
             //ExFor:PdfSaveOptions.DownsampleOptions
-            //ExSummary:Shows how to change the resolution of images in output pdf documents.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to change the resolution of images in the PDF document.
+            Document doc = new Document(MyDir + "Images.docx");
 
-            // Create a SaveOptions object, verify its default image downsampling settings,
-            // and then convert the document to .pdf with it.
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
+            // By default, Aspose.Words downsamples all images in a document that we save to PDF to 220 ppi.
             Assert.True(options.DownsampleOptions.DownsampleImages);
             Assert.AreEqual(220, options.DownsampleOptions.Resolution);
+            Assert.AreEqual(0, options.DownsampleOptions.ResolutionThreshold);
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.Default.pdf", options);
 
-            // Set the output resolution to a lower value, then set a downsampling resolution threshold
-            // which will prevent any images with a resolution of less than 128 from being downsampled.
+            // Set the "Resolution" property to "36" to downsample all images to 36 ppi.
             options.DownsampleOptions.Resolution = 36;
+
+            // Set the "ResolutionThreshold" property to only apply the downsampling to
+            // images with a resolution that is above 128 ppi.
             options.DownsampleOptions.ResolutionThreshold = 128;
 
             // Only the first two images from the document will be downsampled at this stage.
             doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.LowerResolution.pdf", options);
             //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.Default.pdf");
+            XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
+
+            Assert.AreEqual(399039, pdfDocImage.ToStream().Length);
+            Assert.AreEqual(2467, pdfDocImage.Width);
+            Assert.AreEqual(1500, pdfDocImage.Height);
+            Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
+#endif
         }
 
-        [Test]
-        public void ColorRendering()
+        [TestCase(ColorMode.Grayscale)]
+        [TestCase(ColorMode.Normal)]
+        public void ColorRendering(ColorMode colorMode)
         {
             //ExStart
             //ExFor:PdfSaveOptions
@@ -478,8 +501,12 @@ namespace ApiExamples
             //ExSummary:Shows how change image color with save options property.
             Document doc = new Document(MyDir + "Images.docx");
 
-            // Configure PdfSaveOptions to save every image in the input document in greyscale during conversion
-            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = ColorMode.Grayscale };
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            // Set the "ColorMode" property to "Grayscale" to render all images from the document in black and white.
+            // The size of the output document may be larger with this setting.
+            // Set the "ColorMode" property to "Normal" to render all images in color.
+            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = colorMode };
             
             doc.Save(ArtifactsDir + "PdfSaveOptions.ColorRendering.pdf", pdfSaveOptions);
             //ExEnd
@@ -488,46 +515,73 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ColorRendering.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
-            Assert.AreEqual(1506, pdfDocImage.Width);
-            Assert.AreEqual(918, pdfDocImage.Height);
-            Assert.AreEqual(ColorType.Grayscale, pdfDocImage.GetColorType());
+            switch (colorMode)
+            {
+                case ColorMode.Normal:
+                    Assert.AreEqual(399039, pdfDocImage.ToStream().Length);
+                    Assert.AreEqual(2467, pdfDocImage.Width);
+                    Assert.AreEqual(1500, pdfDocImage.Height);
+                    Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
+                    break;
+                case ColorMode.Grayscale:
+                    Assert.AreEqual(1419611, pdfDocImage.ToStream().Length);
+                    Assert.AreEqual(1506, pdfDocImage.Width);
+                    Assert.AreEqual(918, pdfDocImage.Height);
+                    Assert.AreEqual(ColorType.Grayscale, pdfDocImage.GetColorType());
+                    break;
+            }
             #endif
         }
 
-        [Test]
-        public void WindowsBarPdfTitle()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void DocTitle(bool displayDocTitle)
         {
             //ExStart
             //ExFor:PdfSaveOptions.DisplayDocTitle
             //ExSummary:Shows how to display title of the document as title bar.
-            Document doc = new Document(MyDir + "Rendering.docx");
-            doc.BuiltInDocumentProperties.Title = "Windows bar pdf title";
-            
-            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { DisplayDocTitle = true };
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.WindowsBarPdfTitle.pdf", pdfSaveOptions);
+            doc.BuiltInDocumentProperties.Title = "Windows bar pdf title";
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            // Set the "DisplayDocTitle" to "true" to get some PDF readers, such as Adobe Acrobat Pro,
+            // to display the value of the document's "Title" built-in property in the tab that belongs to this document.
+            // Set the "DisplayDocTitle" to "false" to get such readers to display the document's filename.
+            PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { DisplayDocTitle = displayDocTitle };
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.DocTitle.pdf", pdfSaveOptions);
             //ExEnd
 
             #if NET462 || NETCOREAPP2_1 || JAVA
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.WindowsBarPdfTitle.pdf");
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DocTitle.pdf");
 
-            Assert.IsTrue(pdfDocument.DisplayDocTitle);
+            Assert.AreEqual(displayDocTitle, pdfDocument.DisplayDocTitle);
             Assert.AreEqual("Windows bar pdf title", pdfDocument.Info.Title);
             #endif
         }
 
-        [Test]
-        public void MemoryOptimization()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void MemoryOptimization(bool memoryOptimization)
         {
             //ExStart
             //ExFor:SaveOptions.CreateSaveOptions(SaveFormat)
             //ExFor:SaveOptions.MemoryOptimization
-            //ExSummary:Shows an option to optimize memory consumption when you work with large documents.
+            //ExSummary:Shows an option to optimize memory consumption when rendering large documents to PDF.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // When set to true it will improve document memory footprint but will add extra time to processing
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
-            saveOptions.MemoryOptimization = true;
+
+            // Set the "MemoryOptimization" property to "true" to lower the memory footprint of save operations
+            // of large documents at the cost of increasing the duration of the operation.
+            // Set the "MemoryOptimization" property to "false" to save the document as a PDF normally.
+            saveOptions.MemoryOptimization = memoryOptimization;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.MemoryOptimization.pdf", saveOptions);
             //ExEnd
@@ -546,8 +600,14 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
             builder.InsertHyperlink("Testlink", uri, false);
 
-            // Set this property to false if you are sure that hyperlinks in document's model are already escaped
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
+
+            // Set the "EscapeUri" property to "true" if links in the document contain characters,
+            // such as the blank space, that we need to replace with escape sequences, such as "%20".
+            // Set the "EscapeUri" property to "false" if we are sure that the links
+            // in this document no not need any such escape character substitution.
             options.EscapeUri = isEscaped;
             options.OpenHyperlinksInNewWindow = true;
 
@@ -558,9 +618,7 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
-            // Get first page
             Page page = pdfDocument.Pages[1];
-            // Get the first link annotation
             LinkAnnotation linkAnnot = (LinkAnnotation)page.Annotations[1];
 
             JavascriptAction action = (JavascriptAction)linkAnnot.Action;
