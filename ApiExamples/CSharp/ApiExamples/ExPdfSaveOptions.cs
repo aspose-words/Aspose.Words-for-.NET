@@ -587,17 +587,17 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [TestCase(@"https://www.google.com/search?q= aspose", "app.launchURL(\"https://www.google.com/search?q=%20aspose\", true);", true)]
-        [TestCase(@"https://www.google.com/search?q=%20aspose", "app.launchURL(\"https://www.google.com/search?q=%20aspose\", true);", true)]
-        [TestCase(@"https://www.google.com/search?q= aspose", "app.launchURL(\"https://www.google.com/search?q= aspose\", true);", false)]
-        [TestCase(@"https://www.google.com/search?q=%20aspose", "app.launchURL(\"https://www.google.com/search?q=%20aspose\", true);", false)]
+        [TestCase(@"https://www.google.com/search?q= aspose", "https://www.google.com/search?q=%20aspose", true)]
+        [TestCase(@"https://www.google.com/search?q=%20aspose", "https://www.google.com/search?q=%20aspose", true)]
+        [TestCase(@"https://www.google.com/search?q= aspose", "https://www.google.com/search?q= aspose", false)]
+        [TestCase(@"https://www.google.com/search?q=%20aspose", "https://www.google.com/search?q=%20aspose", false)]
         public void EscapeUri(string uri, string result, bool isEscaped)
         {
             //ExStart
             //ExFor:PdfSaveOptions.EscapeUri
-            //ExFor:PdfSaveOptions.OpenHyperlinksInNewWindow
             //ExSummary:Shows how to escape hyperlinks in the document.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertHyperlink("Testlink", uri, false);
 
             // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
@@ -609,23 +609,67 @@ namespace ApiExamples
             // Set the "EscapeUri" property to "false" if we are sure that the links
             // in this document no not need any such escape character substitution.
             options.EscapeUri = isEscaped;
-            options.OpenHyperlinksInNewWindow = true;
 
-            builder.Document.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf", options);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf", options);
             //ExEnd
 
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
             Page page = pdfDocument.Pages[1];
             LinkAnnotation linkAnnot = (LinkAnnotation)page.Annotations[1];
 
-            JavascriptAction action = (JavascriptAction)linkAnnot.Action;
-            string uriText = action.Script;
+            GoToURIAction action = (GoToURIAction)linkAnnot.Action;
 
-            Assert.AreEqual(result, uriText);
-            #endif
+            Assert.AreEqual(result, action.URI);
+#endif
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void OpenHyperlinksInNewWindow(bool openHyperlinksInNewWindow)
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.OpenHyperlinksInNewWindow
+            //ExSummary:Shows how to save hyperlinks in a document we convert to PDF in such a way that they open new pages when we click on them.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertHyperlink("Testlink", @"https://www.google.com/search?q=%20aspose", false);
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            PdfSaveOptions options = new PdfSaveOptions();
+
+            // Set the "OpenHyperlinksInNewWindow" property to "true" to save all hyperlinks using Javascript code
+            // that forces readers to open these links in new windows/browser tabs.
+            // Set the "OpenHyperlinksInNewWindow" property to "false" to save all hyperlinks normally.
+            options.OpenHyperlinksInNewWindow = openHyperlinksInNewWindow;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf", options);
+            //ExEnd
+
+            if (openHyperlinksInNewWindow)
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [70.84999847 707.35101318 110.17799377 721.15002441]/BS " +
+                                            "<</Type/Border/S/S/W 0>>/A<</Type /Action/S /JavaScript/JS(app.launchURL\\(\"https://www.google.com/search?q=%20aspose\", true\\);)>>>>",
+                    ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf");
+            else
+                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [70.84999847 707.35101318 110.17799377 721.15002441]/BS " +
+                                            "<</Type/Border/S/S/W 0>>/A<</Type /Action/S /URI/URI(https://www.google.com/search?q=%20aspose)>>>>", 
+                    ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf");
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument =
+                new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf");
+
+            Page page = pdfDocument.Pages[1];
+            LinkAnnotation linkAnnot = (LinkAnnotation)page.Annotations[1];
+
+            if (openHyperlinksInNewWindow)
+                Assert.AreEqual(typeof(JavascriptAction), linkAnnot.Action.GetType());
+            else
+                Assert.AreEqual(typeof(GoToURIAction), linkAnnot.Action.GetType());
+#endif
         }
 
         //ExStart
