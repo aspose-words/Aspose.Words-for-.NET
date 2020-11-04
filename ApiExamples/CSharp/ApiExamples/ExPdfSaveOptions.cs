@@ -1017,9 +1017,23 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions.PageMode
             //ExFor:PdfPageMode
             //ExSummary:Shows how to set instructions for some PDF readers to follow when opening an output document.
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
 
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
+
+            // Set the "PageMode" property to "PdfPageMode.FullScreen" to get the PDF reader to open the saved
+            // document in full screen mode, which takes over the monitor's display, and also with no controls visible.
+            // Set the "PageMode" property to "PdfPageMode.UseThumbs" to get the PDF reader to also display a separate panel
+            // which has a thumbnail for each page in the document.
+            // Set the "PageMode" property to "PdfPageMode.UseOC" to get the PDF reader to also display a separate panel
+            // which allows us to work with any layers that may be present in the document.
+            // Set the "PageMode" property to "PdfPageMode.UseOutlines" to get the PDF reader
+            // to also display the outline, if possible.
+            // Set the "PageMode" property to "PdfPageMode.UseNone" to get the PDF reader to display just the document itself. 
             options.PageMode = pageMode;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PageMode.pdf", options);
@@ -1047,24 +1061,27 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        public void NoteHyperlinks(bool doCreateHyperlinks)
+        public void NoteHyperlinks(bool createNoteHyperlinks)
         {
             //ExStart
             //ExFor:PdfSaveOptions.CreateNoteHyperlinks
-            //ExSummary:Shows how to make footnotes and endnotes work like hyperlinks.
+            //ExSummary:Shows how to make footnotes and endnotes function as hyperlinks.
             // Open a document with footnotes/endnotes
             Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
-            // Creating a PdfSaveOptions instance with this flag set will convert footnote/endnote number symbols in the text
-            // into hyperlinks pointing to the footnotes, and the actual footnotes/endnotes at the end of pages into links to their
-            // referenced body text
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-            options.CreateNoteHyperlinks = doCreateHyperlinks;
+
+            // Set the "CreateNoteHyperlinks" property to "true" to turn all footnote/endnote symbols
+            // in the text act as links that, upon clicking, take us to their respective footnotes/endnotes.
+            // Set the "CreateNoteHyperlinks" property to "false" to not have footnote/endnote symbols link to anything.
+            options.CreateNoteHyperlinks = createNoteHyperlinks;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf", options);
             //ExEnd
 
-            if (doCreateHyperlinks)
+            if (createNoteHyperlinks)
             {
                 TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [157.80099487 720.90106201 159.35600281 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 677 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
@@ -1098,15 +1115,21 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfCustomPropertiesExport
             //ExFor:PdfSaveOptions.CustomPropertiesExport
-            //ExSummary:Shows how to export custom properties while saving to .pdf.
+            //ExSummary:Shows how to export custom properties while converting a document to PDF.
             Document doc = new Document();
 
-            // Add a custom document property that does not use the name of some built in properties
             doc.CustomDocumentProperties.Add("Company", "My value");
-            
-            // Configure the PdfSaveOptions like this will display the properties
-            // in the "Document Properties" menu of Adobe Acrobat Pro
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
+
+            // Set the "CustomPropertiesExport" property to "PdfCustomPropertiesExport.None" to discard
+            // custom document properties as we save the document to .PDF. 
+            // Set the "CustomPropertiesExport" property to "PdfCustomPropertiesExport.Standard"
+            // to preserve custom properties within the output PDF document.
+            // Set the "CustomPropertiesExport" property to "PdfCustomPropertiesExport.Metadata"
+            // to preserve custom properties in an XMP packet.
             options.CustomPropertiesExport = pdfCustomPropertiesExportMode;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf", options);
@@ -1124,7 +1147,8 @@ namespace ApiExamples
                     }
                     break;
                 case PdfCustomPropertiesExport.Standard:
-                    TestUtil.FileContainsString(doc.CustomDocumentProperties[0].Name, ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
+                    TestUtil.FileContainsString("<</Creator(þÿ\0A\0s\0p\0o\0s\0e\0.\0W\0o\0r\0d\0s)/Producer(þÿ\0A\0s\0p\0o\0s\0e\0.\0W\0o\0r\0d\0s\0 \0f\0o\0r\0 \0.\0N\0E\0T\0 \02\00\0.\01\00\0.\00)/Company(þÿ\0M\0y\0 \0v\0a\0l\0u\0e)>>", 
+                        ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
                     break;
                 case PdfCustomPropertiesExport.Metadata:
                     TestUtil.FileContainsString("<</Type /Metadata/Subtype /XML/Length 8 0 R/Filter /FlateDecode>>", ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
@@ -1143,10 +1167,18 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions.DmlEffectsRenderingMode
             //ExFor:SaveOptions.DmlEffectsRenderingMode
             //ExFor:SaveOptions.DmlRenderingMode
-            //ExSummary:Shows how to configure DrawingML rendering quality with PdfSaveOptions.
+            //ExSummary:Shows how to configure rendering quality of DrawingML effects in a document as we save it to PDF.
             Document doc = new Document(MyDir + "DrawingML shape effects.docx");
 
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
+
+            // Set the "DmlEffectsRenderingMode" property to "DmlEffectsRenderingMode.None" to discard all DrawingML effects.
+            // Set the "DmlEffectsRenderingMode" property to "DmlEffectsRenderingMode.Simplified"
+            // to render a simplified version of DrawingML effects.
+            // Set the "DmlEffectsRenderingMode" property to "DmlEffectsRenderingMode.Fine" to
+            // render DrawingML effects with more accuracy, and also with more processing cost
             options.DmlEffectsRenderingMode = effectsRenderingMode;
 
             Assert.AreEqual(DmlRenderingMode.DrawingML, options.DmlRenderingMode);
@@ -1190,10 +1222,17 @@ namespace ApiExamples
             //ExStart
             //ExFor:DmlRenderingMode
             //ExFor:SaveOptions.DmlRenderingMode
-            //ExSummary:Shows how to render fallback shapes when saving to Pdf.
+            //ExSummary:Shows how to render fallback shapes when saving to PDF.
             Document doc = new Document(MyDir + "DrawingML shape fallbacks.docx");
 
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
+
+            // Set the "DmlRenderingMode" property to "DmlRenderingMode.Fallback"
+            // to substitute DML shapes with their fallback shapes.
+            // Set the "DmlRenderingMode" property to "DmlRenderingMode.DrawingML"
+            // to render the DML shapes themselves.
             options.DmlRenderingMode = dmlRenderingMode;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf", options);
@@ -1214,22 +1253,26 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        public void ExportDocumentStructure(bool doExportStructure)
+        public void ExportDocumentStructure(bool exportDocumentStructure)
         {
             //ExStart
             //ExFor:PdfSaveOptions.ExportDocumentStructure
-            //ExSummary:Shows how to convert a .docx to .pdf while preserving the document structure.
+            //ExSummary:Shows how to preserve document structure while converting a document to PDF.
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
-            // Create a PdfSaveOptions object and configure it to preserve the logical structure that's in the input document
-            // The file size will be increased, and the structure will be visible in the "Content" navigation pane of Adobe Acrobat Pro
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-            options.ExportDocumentStructure = doExportStructure;
+
+            // Set the "ExportDocumentStructure" property to "true" to make the document structure available via the
+            // "Content" navigation pane of Adobe Acrobat at the cost of increased file size.
+            // Set the "ExportDocumentStructure" property to "false" to not export the document structure.
+            options.ExportDocumentStructure = exportDocumentStructure;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExportDocumentStructure.pdf", options);
             //ExEnd
 
-            if (doExportStructure)
+            if (exportDocumentStructure)
             {
                 TestUtil.FileContainsString("4 0 obj\r\n" +
                                             "<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R/FAAABC 12 0 R>>/ExtGState<</GS1 9 0 R/GS2 10 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>/StructParents 0/Tabs /S>>",
