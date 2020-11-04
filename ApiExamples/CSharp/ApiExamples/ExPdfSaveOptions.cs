@@ -873,18 +873,20 @@ namespace ApiExamples
             //ExSummary:Show how to write additional text positioning operators.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // This may help to overcome issues with inaccurate text positioning with some printers, even if the PDF looks fine,
-            // but the file size will increase due to higher text positioning precision used
-            PdfSaveOptions saveOptions = new PdfSaveOptions
-            {
-                AdditionalTextPositioning = applyAdditionalTextPositioning,
-                TextCompression = PdfTextCompression.None
-            };
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.TextCompression = PdfTextCompression.None;
+
+            // Set the "AdditionalTextPositioning" property to "true" to attempt to fix incorrect
+            // element positioning in the output PDF, should there be any, at the cost of an increased file size.
+            // Set the "AdditionalTextPositioning" property to "false" to render the document as usual.
+            saveOptions.AdditionalTextPositioning = applyAdditionalTextPositioning;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf", saveOptions);
             //ExEnd
 
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf");
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
 
@@ -892,44 +894,57 @@ namespace ApiExamples
 
             SetGlyphsPositionShowText tjOperator = (SetGlyphsPositionShowText)textAbsorber.TextFragments[1].Page.Contents[96];
 
-            Assert.AreEqual(
-                applyAdditionalTextPositioning
-                    ? "[0 (s) 0 (e) 1 (g) 0 (m) 0 (e) 0 (n) 0 (t) 0 (s) 0 ( ) 1 (o) 0 (f) 0 ( ) 1 (t) 0 (e) 0 (x) 0 (t)] TJ"
-                    : "[(se) 1 (gments ) 1 (of ) 1 (text)] TJ", tjOperator.ToString());
+            if (applyAdditionalTextPositioning)
+            {
+                Assert.AreEqual(397800, new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length, TestUtil.FileInfoLengthDelta);
+                Assert.AreEqual("[0 (s) 0 (e) 1 (g) 0 (m) 0 (e) 0 (n) 0 (t) 0 (s) 0 ( ) 1 (o) 0 (f) 0 ( ) 1 (t) 0 (e) 0 (x) 0 (t)] TJ", tjOperator.ToString());
+            }
+            else
+            {
+                Assert.AreEqual(381200, new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length, TestUtil.FileInfoLengthDelta);
+                Assert.AreEqual("[(se) 1 (gments ) 1 (of ) 1 (text)] TJ", tjOperator.ToString());
+            }
 #endif
         }
 
         [TestCase(false, Category = "SkipMono")]
         [TestCase(true, Category = "SkipMono")]
-        public void SaveAsPdfBookFold(bool doRenderTextAsBookfold)
+        public void SaveAsPdfBookFold(bool renderTextAsBookfold)
         {
             //ExStart
             //ExFor:PdfSaveOptions.UseBookFoldPrintingSettings
             //ExSummary:Shows how to save a document to the PDF format in the form of a book fold.
-            // Open a document with multiple paragraphs
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
-            // Configure both page setup and PdfSaveOptions to create a book fold
-            foreach (Section s in doc.Sections)
-            {
-                s.PageSetup.MultiplePages = MultiplePagesType.BookFoldPrinting;
-            }
-
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-            options.UseBookFoldPrintingSettings = doRenderTextAsBookfold;
 
-            // Once we print this document, we can turn it into a booklet by stacking the pages
-            // in the order they come out of the printer and then folding down the middle
+            // Set the "UseBookFoldPrintingSettings" property to "true" to arrange the contents
+            // in the output PDF in a way that helps us make a booklet out of it.
+            // Set the "UseBookFoldPrintingSettings" property to "false' to render the PDF a normally.
+            options.UseBookFoldPrintingSettings = renderTextAsBookfold;
+
+            // If we are rendering the document as a booklet, we must set the "MultiplePages"
+            // properties of all page setup objects of all sections to "MultiplePagesType.BookFoldPrinting".
+            if (renderTextAsBookfold)
+                foreach (Section s in doc.Sections)
+                {
+                    s.PageSetup.MultiplePages = MultiplePagesType.BookFoldPrinting;
+                }
+
+            // Once we print this document on both sides of the pages, we can fold all the pages down the middle at once,
+            // and the contents will line up in such a way that this will make a booklet.
             doc.Save(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf", options);
             //ExEnd
 
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
 
             pdfDocument.Pages.Accept(textAbsorber);
 
-            if (doRenderTextAsBookfold)
+            if (renderTextAsBookfold)
             {
                 Assert.True(textAbsorber.Text.IndexOf("Heading #1", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #2", StringComparison.Ordinal));
                 Assert.True(textAbsorber.Text.IndexOf("Heading #2", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #3", StringComparison.Ordinal));
@@ -953,7 +968,7 @@ namespace ApiExamples
                 Assert.True(textAbsorber.Text.IndexOf("Heading #8", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #9", StringComparison.Ordinal));
                 Assert.True(textAbsorber.Text.IndexOf("Heading #9", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #10", StringComparison.Ordinal));
             }
-            #endif
+#endif
         }
 
         [Test]
@@ -963,17 +978,23 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions.ZoomBehavior
             //ExFor:PdfSaveOptions.ZoomFactor
             //ExFor:PdfZoomBehavior
-            //ExSummary:Shows how to set the default zooming of an output PDF to 1/4 of default size.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to set the default zooming that a reader applies when opening a rendered PDF document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
 
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            // Set the "ZoomBehavior" property to "PdfZoomBehavior.ZoomFactor" to get a PDF reader to
+            // apply a percentage-based zoom factor when we open the document with it.
+            // Set the "ZoomFactor" property to "25" to give the zoom factor a value of 25%.
             PdfSaveOptions options = new PdfSaveOptions
             {
                 ZoomBehavior = PdfZoomBehavior.ZoomFactor,
-                ZoomFactor = 25,
+                ZoomFactor = 25
             };
 
-            // Upon opening the .pdf with a viewer such as Adobe Acrobat Pro, the zoom level will be at 25% by default,
-            // with thumbnails for each page to the left
+            // When we open this document using a reader such as Adobe Acrobat, we will see the document scaled at 1/4 of its actual size.
             doc.Save(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf", options);
             //ExEnd
 
