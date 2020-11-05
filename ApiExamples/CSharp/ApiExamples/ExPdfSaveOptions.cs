@@ -1257,25 +1257,33 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions.ExportDocumentStructure
-            //ExSummary:Shows how to preserve document structure while converting a document to PDF.
-            Document doc = new Document(MyDir + "Paragraphs.docx");
+            //ExSummary:Shows how to preserve document structure elements, which can assist in programmatically interpreting our document, while converting a document to PDF.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Writeln("Hello world!");
+            builder.ParagraphFormat.Style = doc.Styles["Normal"];
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 
             // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
             // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
-            // Set the "ExportDocumentStructure" property to "true" to make the document structure available via the
+            // Set the "ExportDocumentStructure" property to "true" to make the document structure, such a tags, available via the
             // "Content" navigation pane of Adobe Acrobat at the cost of increased file size.
             // Set the "ExportDocumentStructure" property to "false" to not export the document structure.
             options.ExportDocumentStructure = exportDocumentStructure;
 
+            // If we export document structure while saving this document, we can open it using Adobe Acrobat, and find tags for elements
+            // such as the heading, and the next paragraph via "View" -> "Show/Hide" -> "Navigation panes" -> "Tags".
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExportDocumentStructure.pdf", options);
             //ExEnd
 
             if (exportDocumentStructure)
             {
                 TestUtil.FileContainsString("4 0 obj\r\n" +
-                                            "<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R/FAAABC 12 0 R>>/ExtGState<</GS1 9 0 R/GS2 10 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>/StructParents 0/Tabs /S>>",
+                                            "<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R/FAAABB 11 0 R>>/ExtGState<</GS1 9 0 R/GS2 13 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>/StructParents 0/Tabs /S>>",
                     ArtifactsDir + "PdfSaveOptions.ExportDocumentStructure.pdf");
             }
             else
@@ -1289,67 +1297,88 @@ namespace ApiExamples
 #if NET462 || JAVA
         [TestCase(false, Category = "SkipMono")]
         [TestCase(true, Category = "SkipMono")]
-        public void PreblendImages(bool doPreblendImages)
+        public void PreblendImages(bool preblendImages)
         {
             //ExStart
             //ExFor:PdfSaveOptions.PreblendImages
-            //ExSummary:Shows how to preblend images with transparent backgrounds.
+            //ExSummary:Shows how to preblend images with transparent backgrounds while saving a document to PDF.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Image img = Image.FromFile(ImageDir + "Transparent background logo.png");
             builder.InsertImage(img);
 
-            // Setting this flag in a SaveOptions object may change the quality and size of the output .pdf
-            // because of the way some images are rendered
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-            options.PreblendImages = doPreblendImages;
+
+            // Set the "PreblendImages" property to "true" to preblend transparent images
+            // with a background, which may reduce artifacts.
+            // Set the "PreblendImages" property to "false" to render transparent images normally.
+            options.PreblendImages = preblendImages;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", options);
             //ExEnd
 
-            TestPreblendImages(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf", doPreblendImages);
-        }
-
-        private void TestPreblendImages(string outFileName, bool doPreblendImages)
-        {
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(outFileName);
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf");
             XImage image = pdfDocument.Pages[1].Resources.Images[1];
 
             using (MemoryStream stream = new MemoryStream())
             {
                 image.Save(stream);
 
-                if (doPreblendImages)
+                if (preblendImages)
                 {
-                    TestUtil.FileContainsString("9 0 obj\r\n20849 ", outFileName);
+                    TestUtil.FileContainsString("9 0 obj\r\n20849 ", ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf");
                     Assert.AreEqual(17898, stream.Length);
                 }
                 else
                 {
-                    TestUtil.FileContainsString("9 0 obj\r\n19289 ", outFileName);
+                    TestUtil.FileContainsString("9 0 obj\r\n19289 ", ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf");
                     Assert.AreEqual(19216, stream.Length);
                 }
             }
         }
 
-        [Test]
-        public void InterpolateImages()
+        [TestCase(false)]
+        [TestCase(true)] 
+        public void InterpolateImages(bool interpolateImages)
         {
             //ExStart
             //ExFor:PdfSaveOptions.InterpolateImages
-            //ExSummary:Shows how to improve the quality of an image in the rendered documents.
+            //ExSummary:Shows how to perform interpolation on images while saving a document to PDF.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Image img = Image.FromFile(ImageDir + "Transparent background logo.png");
             builder.InsertImage(img);
-            
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.InterpolateImages = true;
+
+            // Set the "InterpolateImages" property to "true" to get the reader that opens this document
+            // to interpolate images, should their resolution be lower than that of the device that is displaying the document.
+            // Set the "InterpolateImages" property to "false" to make it so that the reader does not apply any interpolation.
+            saveOptions.InterpolateImages = interpolateImages;
             
+            // When we open this document with a reader such as Adobe Acrobat, we will need to zoom in on the image
+            // to see the interpolation effect, if we saved the document with it enabled.
             doc.Save(ArtifactsDir + "PdfSaveOptions.InterpolateImages.pdf", saveOptions);
             //ExEnd
+
+            if (interpolateImages)
+            {
+                TestUtil.FileContainsString("6 0 obj\r\n" +
+                                            "<</Type /XObject/Subtype /Image/Width 400/Height 400/ColorSpace /DeviceRGB/BitsPerComponent 8/SMask 8 0 R/Interpolate true/Length 9 0 R/Filter /FlateDecode>>",
+                    ArtifactsDir + "PdfSaveOptions.InterpolateImages.pdf");
+            }
+            else
+            {
+                TestUtil.FileContainsString("6 0 obj\r\n" +
+                                            "<</Type /XObject/Subtype /Image/Width 400/Height 400/ColorSpace /DeviceRGB/BitsPerComponent 8/SMask 8 0 R/Length 9 0 R/Filter /FlateDecode>>",
+                    ArtifactsDir + "PdfSaveOptions.InterpolateImages.pdf");
+            }
         }
 
         [Test, Category("SkipMono")]
@@ -1402,7 +1431,7 @@ namespace ApiExamples
 #elif NETCOREAPP2_1
         [TestCase(false)]
         [TestCase(true)]
-        public void PreblendImagesNetStandard2(bool doPreblendImages)
+        public void PreblendImagesNetStandard2(bool preblendImages)
         {
             //ExStart
             //ExFor:PdfSaveOptions.PreblendImages
@@ -1411,45 +1440,43 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             using (Image image = Image.Decode(ImageDir + "Transparent background logo.png"))
-            {
                 builder.InsertImage(image);
-            }
 
-            // Create a PdfSaveOptions object and setting this flag may change the quality and size of the output .pdf
-            // because of the way some images are rendered
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-            options.PreblendImages = doPreblendImages;
+
+            // Set the "PreblendImages" property to "true" to preblend transparent images
+            // with a background, which may reduce artifacts.
+            // Set the "PreblendImages" property to "false" to render transparent images normally.
+            options.PreblendImages = preblendImages;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", options);
             //ExEnd
 
-            TestPreblendImagesNetStandard2(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", doPreblendImages);
-        }
-
-        private void TestPreblendImagesNetStandard2(string outFileName, bool doPreblendImages)
-        {
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(outFileName);
-            XImage image = pdfDocument.Pages[1].Resources.Images[1];
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf");
+            XImage xImage = pdfDocument.Pages[1].Resources.Images[1];
 
             using (MemoryStream stream = new MemoryStream())
             {
-                image.Save(stream);
+                xImage.Save(stream);
 
-                if (doPreblendImages)
+                if (preblendImages)
                 {
-                    TestUtil.FileContainsString("9 0 obj\r\n20849 ", outFileName);
+                    TestUtil.FileContainsString("9 0 obj\r\n20849 ", ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf");
                     Assert.AreEqual(17898, stream.Length);
                 }
                 else
                 {
-                    TestUtil.FileContainsString("9 0 obj\r\n20266 ", outFileName);
+                    TestUtil.FileContainsString("9 0 obj\r\n20266 ", ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf");
                     Assert.AreEqual(19135, stream.Length);
                 }
             }
         }
 
-        [Test]
-        public void InterpolateImages()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void InterpolateImagesNetStandard2(bool interpolateImages)
         {
             //ExStart
             //ExFor:PdfSaveOptions.InterpolateImages
@@ -1458,15 +1485,34 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             using (Image image = Image.Decode(ImageDir + "Transparent background logo.png"))
-            {
                 builder.InsertImage(image);
-            }
-            
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.InterpolateImages = true;
-            
-            doc.Save(ArtifactsDir + "PdfSaveOptions.InterpolateImages.pdf", saveOptions);
+
+            // Set the "InterpolateImages" property to "true" to get the reader that opens this document
+            // to interpolate images, should their resolution be lower than that of the device that is displaying the document.
+            // Set the "InterpolateImages" property to "false" to make it so that the reader does not apply any interpolation.
+            saveOptions.InterpolateImages = interpolateImages;
+
+            // When we open this document with a reader such as Adobe Acrobat, we will need to zoom in on the image
+            // to see the interpolation effect, if we saved the document with it enabled.
+            doc.Save(ArtifactsDir + "PdfSaveOptions.InterpolateImagesNetStandard2.pdf", saveOptions);
             //ExEnd
+
+            if (interpolateImages)
+            {
+                TestUtil.FileContainsString("6 0 obj\r\n" +
+                                            "<</Type /XObject/Subtype /Image/Width 400/Height 400/ColorSpace /DeviceRGB/BitsPerComponent 8/SMask 8 0 R/Interpolate true/Length 9 0 R/Filter /FlateDecode>>",
+                    ArtifactsDir + "PdfSaveOptions.InterpolateImagesNetStandard2.pdf");
+            }
+            else
+            {
+                TestUtil.FileContainsString("6 0 obj\r\n" +
+                                            "<</Type /XObject/Subtype /Image/Width 400/Height 400/ColorSpace /DeviceRGB/BitsPerComponent 8/SMask 8 0 R/Length 9 0 R/Filter /FlateDecode>>",
+                    ArtifactsDir + "PdfSaveOptions.InterpolateImagesNetStandard2.pdf");
+            }
         }
 #endif
 
@@ -1483,25 +1529,26 @@ namespace ApiExamples
             //ExFor:PdfDigitalSignatureDetails.SignatureDate
             //ExFor:PdfDigitalSignatureHashAlgorithm
             //ExFor:PdfSaveOptions.DigitalSignatureDetails
-            //ExSummary:Shows how to sign a generated PDF using Aspose.Words.
+            //ExSummary:Shows how to sign a generated PDF document using Aspose.Words.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("Signed PDF contents.");
+            builder.Writeln("Contents of signed PDF.");
 
-            // Load the certificate from disk
-            // The other constructor overloads can be used to load certificates from different locations
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
-            // Pass the certificate and details to the save options class to sign with
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-            DateTime signingTime = DateTime.Now;
-            options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", signingTime);
 
-            // We can use this attribute to set a different hash algorithm
+            // Configure the "DigitalSignatureDetails" object of the "SaveOptions" object to
+            // digitally sign the document as we render it with the "Save" method.
+            DateTime signingTime = DateTime.Now;
+            options.DigitalSignatureDetails = 
+                new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "My Office", signingTime);
             options.DigitalSignatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.Sha256;
 
             Assert.AreEqual("Test Signing", options.DigitalSignatureDetails.Reason);
-            Assert.AreEqual("Aspose Office", options.DigitalSignatureDetails.Location);
+            Assert.AreEqual("My Office", options.DigitalSignatureDetails.Location);
             Assert.AreEqual(signingTime.ToUniversalTime(), options.DigitalSignatureDetails.SignatureDate);
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf", options);
@@ -1527,24 +1574,27 @@ namespace ApiExamples
             //ExFor:PdfDigitalSignatureTimestampSettings.ServerUrl
             //ExFor:PdfDigitalSignatureTimestampSettings.Timeout
             //ExFor:PdfDigitalSignatureTimestampSettings.UserName
-            //ExSummary:Shows how to sign a generated PDF and timestamp it using Aspose.Words.
+            //ExSummary:Shows how to digitally sign a saved PDF document, and timestamp it using Aspose.Words.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Signed PDF contents.");
 
-            // Create a digital signature for the document that we will save
-            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
+
+            // Create a digital signature, and assign it to our SaveOptions object to sign the document with it when we save it to PDF. 
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
             options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
 
-            // We can set a verified timestamp for our signature as well, with a valid timestamp authority
+            // Create a timestamp authority-verified timestamp.
             options.DigitalSignatureDetails.TimestampSettings =
                 new PdfDigitalSignatureTimestampSettings("https://freetsa.org/tsr", "JohnDoe", "MyPassword");
 
-            // The default lifespan of the timestamp is 100 seconds
+            // The default lifespan of the timestamp is 100 seconds.
             Assert.AreEqual(100.0d, options.DigitalSignatureDetails.TimestampSettings.Timeout.TotalSeconds);
 
-            // We can set our own timeout period via the constructor
+            // We can set our own timeout period via the constructor.
             options.DigitalSignatureDetails.TimestampSettings =
                 new PdfDigitalSignatureTimestampSettings("https://freetsa.org/tsr", "JohnDoe", "MyPassword", TimeSpan.FromMinutes(30));
 
@@ -1553,6 +1603,7 @@ namespace ApiExamples
             Assert.AreEqual("JohnDoe", options.DigitalSignatureDetails.TimestampSettings.UserName);
             Assert.AreEqual("MyPassword", options.DigitalSignatureDetails.TimestampSettings.Password);
 
+            // The "Save" method will apply our signature to the output document at this time.
             doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf", options);
             //ExEnd
 
@@ -1571,11 +1622,24 @@ namespace ApiExamples
             //ExFor:EmfPlusDualRenderingMode
             //ExFor:MetafileRenderingOptions.EmfPlusDualRenderingMode
             //ExFor:MetafileRenderingOptions.UseEmfEmbeddedToWmf
-            //ExSummary:Shows how to adjust EMF (Enhanced Windows Metafile) rendering options when saving to PDF.
+            //ExSummary:Shows how to configure Enhanced Windows Metafile-related rendering options when saving to PDF.
             Document doc = new Document(MyDir + "EMF.docx");
 
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
+
+            // Set the "EmfPlusDualRenderingMode" property to "EmfPlusDualRenderingMode.Emf"
+            // to only render the EMF part of an EMF+ dual metafile.
+            // Set the "EmfPlusDualRenderingMode" property to "EmfPlusDualRenderingMode.EmfPlus" to
+            // to render the EMF+ part of an EMF+ dual metafile.
+            // Set the "EmfPlusDualRenderingMode" property to "EmfPlusDualRenderingMode.EmfPlusWithFallback" to
+            // to render the EMF+ part of an EMF+ dual metafile if all of the EMF+ records are supported.
+            // Otherwise, Aspose.Words will render the EMF part.
             saveOptions.MetafileRenderingOptions.EmfPlusDualRenderingMode = renderingMode;
+
+            // Set the "UseEmfEmbeddedToWmf" property to "true" to render embedded EMF data
+            // for metafiles that we can render as vector graphics.
             saveOptions.MetafileRenderingOptions.UseEmfEmbeddedToWmf = true;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf", saveOptions);
