@@ -30,21 +30,21 @@ namespace ApiExamples
             //ExFor:DocumentProperty.Name
             //ExFor:DocumentProperty.Value
             //ExFor:DocumentProperty.Type
-            //ExSummary:Shows how to work with built in document properties.
+            //ExSummary:Shows how to work with built-in document properties.
             Document doc = new Document(MyDir + "Properties.docx");
 
-            // Some information about the document is stored in member attributes, and can be accessed like this
+            // The "Document" object has properties for metadata.
             Console.WriteLine($"Document filename:\n\t \"{doc.OriginalFileName}\"");
 
-            // Most of the document's metadata, such as author name, file size,
-            // word/page counts can be found in the built-in properties collection like this
+            // The document also stores metadata in its built-in properties.
+            // Each built-in property is a member of the document's "BuiltInDocumentProperties" object.
             Console.WriteLine("Built-in Properties:");
             foreach (DocumentProperty docProperty in doc.BuiltInDocumentProperties)
             {
                 Console.WriteLine(docProperty.Name);
                 Console.WriteLine($"\tType:\t{docProperty.Type}");
 
-                // Some properties may store multiple values
+                // Some properties may store multiple values.
                 if (docProperty.Value is Array)
                 {
                     foreach (object value in docProperty.Value as Array)
@@ -72,15 +72,12 @@ namespace ApiExamples
             //ExSummary:Shows how to work with custom document properties.
             Document doc = new Document(MyDir + "Properties.docx");
 
-            // A document's built-in properties contain a set of predetermined keys
-            // with values such as the author's name or document's word count
-            // We can add our own keys and values to a custom properties collection also
-            // Before we add a custom property, we need to make sure that one with the same name does not already exist
+            // Every document contains a collection of custom properties, which, like the built-in properties, are key-value pairs.
+            // Unlike the built-in properties, many of which the document maintains by itself, we need to create all of our own custom properties. 
             Assert.AreEqual("Value of custom document property", doc.CustomDocumentProperties["CustomProperty"].ToString());
 
             doc.CustomDocumentProperties.Add("CustomProperty2", "Value of custom document property #2");
 
-            // Iterate over all the custom document properties
             Console.WriteLine("Custom Properties:");
             foreach (var customDocumentProperty in doc.CustomDocumentProperties)
             {
