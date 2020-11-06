@@ -33,7 +33,7 @@ namespace ApiExamples
             //ExSummary:Shows how to work with built-in document properties.
             Document doc = new Document(MyDir + "Properties.docx");
 
-            // The "Document" object has properties for metadata.
+            // The "Document" object contains some of its metadata in its members.
             Console.WriteLine($"Document filename:\n\t \"{doc.OriginalFileName}\"");
 
             // The document also stores metadata in its built-in properties.
@@ -100,30 +100,47 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.Keywords
             //ExFor:BuiltInDocumentProperties.Subject
             //ExFor:BuiltInDocumentProperties.Title
-            //ExSummary:Shows how to work with document properties in the "Description" category.
+            //ExSummary:Shows how to work with built-in document properties in the "Description" category.
             Document doc = new Document();
-
-            // The properties we will work with are members of the BuiltInDocumentProperties attribute
+            DocumentBuilder builder = new DocumentBuilder(doc);
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
-            // Set the values of some descriptive properties
-            // These are metadata that can be glanced at without opening the document in the "Details" or "Content" folder views in Windows Explorer 
-            // The "Details" view has columns dedicated to these properties
-            // Fields such as AUTHOR, SUBJECT, TITLE etc. can be used to display these values inside the document
+            // Below are four built-in document properties that have fields that can display their values in the document body.
+            // 1 -  "Author" property, which we can display using an AUTHOR field:
             properties.Author = "John Doe";
-            properties.Title = "John's Document";
-            properties.Subject = "My subject";
-            properties.Category = "My category";
-            properties.Comments = $"This is {properties.Author}'s document about {properties.Subject}";
+            builder.Write("Author:\t");
+            builder.InsertField(FieldType.FieldAuthor, true);
 
-            // Tags can be used as keywords and are separated by semicolons
+            // 2 -  "Title" property, which we can display using a TITLE field:
+            properties.Title = "John's Document";
+            builder.Write("\nDoc title:\t");
+            builder.InsertField(FieldType.FieldTitle, true);
+
+            // 3 -  "Subject" property, which we can display using a SUBJECT field:
+            properties.Subject = "My subject";
+            builder.Write("\nSubject:\t");
+            builder.InsertField(FieldType.FieldSubject, true);
+
+            // 4 -  "Comments" property, which we can display using a COMMENTS field:
+            properties.Comments = $"This is {properties.Author}'s document about {properties.Subject}";
+            builder.Write("\nComments:\t\"");
+            builder.InsertField(FieldType.FieldComments, true);
+            builder.Write("\"");
+
+            // The "Category" built-in property does not have a field that can display its value.
+            properties.Category = "My category";
+
+            // We can set multiple keywords for a document by separating the string value of the "Keywords" property with semicolons.
             properties.Keywords = "Tag 1; Tag 2; Tag 3";
 
-            // When right clicking the document file in Windows Explorer, these properties are found in Properties > Details > Description
+            // We can right-click this document in Windows Explorer and find these properties in "Properties" -> "Details".
+            // The "Author" built-in property is in the "Origin" group, and the others are in the "Description" group.
             doc.Save(ArtifactsDir + "Properties.Description.docx");
             //ExEnd
 
-            properties = new Document(ArtifactsDir + "Properties.Description.docx").BuiltInDocumentProperties;
+            doc = new Document(ArtifactsDir + "Properties.Description.docx");
+
+            properties = doc.BuiltInDocumentProperties;
 
             Assert.AreEqual("John Doe", properties.Author);
             Assert.AreEqual("My category", properties.Category);
@@ -131,6 +148,10 @@ namespace ApiExamples
             Assert.AreEqual("Tag 1; Tag 2; Tag 3", properties.Keywords);
             Assert.AreEqual("My subject", properties.Subject);
             Assert.AreEqual("John's Document", properties.Title);
+            Assert.AreEqual("Author:\t\u0013 AUTHOR \u0014John Doe\u0015\r" +
+                            "Doc title:\t\u0013 TITLE \u0014John's Document\u0015\r" +
+                            "Subject:\t\u0013 SUBJECT \u0014My subject\u0015\r" +
+                            "Comments:\t\"\u0013 COMMENTS \u0014This is John Doe's document about My subject\u0015\"", doc.GetText().Trim());
         }
 
         [Test]
@@ -149,30 +170,31 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.TotalEditingTime
             //ExFor:BuiltInDocumentProperties.Version
             //ExSummary:Shows how to work with document properties in the "Origin" category.
+            // Open a document that we have created and edited using Microsoft Word.
             Document doc = new Document(MyDir + "Properties.docx");
-
-            // The properties we will work with are members of the BuiltInDocumentProperties attribute
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
-            // Since this document has been edited and printed in the past, values generated by Microsoft Word will appear here
-            // These values can be glanced at by right clicking the file in Windows Explorer, without actually opening the document
-            // Fields such as PRINTDATE, EDITTIME etc. can display these values inside the document
+            // The following built-in properties contain information regarding the creation and editing of this document.
+            // We can right-click this document in Windows Explorer and find
+            // these properties via "Properties" -> "Details" -> "Origin" category.
+            // Fields such as PRINTDATE and EDITTIME can display these values in the document body.
             Console.WriteLine($"Created using {properties.NameOfApplication}, on {properties.CreatedTime}");
             Console.WriteLine($"Minutes spent editing: {properties.TotalEditingTime}");
             Console.WriteLine($"Date/time last printed: {properties.LastPrinted}");
             Console.WriteLine($"Template document: {properties.Template}");
 
-            // We can set these properties ourselves
+            // We can also change the values of built-in properties.
             properties.Company = "Doe Ltd.";
             properties.Manager = "Jane Doe";
             properties.Version = 5;
             properties.RevisionNumber++;
 
-            // If we plan on programmatically saving the document, we may record some details like this
+            // Microsoft Word updates the following properties automatically when we save the document.
+            // To use these properties with Aspose.Words, we will need to set values for them manually.
             properties.LastSavedBy = "John Doe";
             properties.LastSavedTime = DateTime.Now;
 
-            // When right clicking the document file in Windows Explorer, these properties are found in Properties > Details > Origin
+            // We can right-click this document in Windows Explorer and find these properties in "Properties" -> "Details" -> "Origin".
             doc.Save(ArtifactsDir + "Properties.Origin.docx");
             //ExEnd
 
@@ -206,10 +228,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void Content()
         {
-            // Open a document with a couple paragraphs of content
             Document doc = new Document(MyDir + "Paragraphs.docx");
-
-            // The properties we will work with are members of the BuiltInDocumentProperties attribute
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
             // By using built in properties,
@@ -218,39 +237,48 @@ namespace ApiExamples
             // If we want to display this data inside the document, we can use fields such as NUMPAGES, NUMWORDS, NUMCHARS etc.
             // Also, these values can also be viewed in Microsoft Word by navigating File > Properties > Advanced Properties > Statistics
             // Page count: The PageCount attribute shows the page count in real time and its value can be assigned to the Pages property
-            properties.Pages = doc.PageCount;
+
+            // The "Pages" property stores the page count of the document. 
             Assert.AreEqual(6, properties.Pages);
 
-            // Word count: The UpdateWordCount() automatically assigns the real time word/character counts to the respective built in properties
+            // The "Words", "Characters", and "CharactersWithSpaces" built-in properties also display various document statistics,
+            // but we need to call the "UpdateWordCount" method on the whole document before we can expect them to contain accurate values.
+            Assert.AreEqual(1054, properties.Words); //ExSkip
+            Assert.AreEqual(6009, properties.Characters); //ExSkip
+            Assert.AreEqual(7049, properties.CharactersWithSpaces); //ExSkip
             doc.UpdateWordCount();
+
             Assert.AreEqual(1035, properties.Words);
             Assert.AreEqual(6026, properties.Characters);
             Assert.AreEqual(7041, properties.CharactersWithSpaces);
 
-            // Line count: Count the lines in a document and assign value to the Lines property
+            // Count the number of lines in the document, and then assign the result to the "Lines" built-in property.
             LineCounter lineCounter = new LineCounter(doc);
             properties.Lines = lineCounter.GetLineCount();
+
             Assert.AreEqual(142, properties.Lines);
 
-            // Paragraph count: Assign the size of the count of child Paragraph-nodes to the Paragraphs built in property
+            // Assign the number of Paragraph nodes in the document to the "Paragraphs" built-in property.
             properties.Paragraphs = doc.GetChildNodes(NodeType.Paragraph, true).Count;
             Assert.AreEqual(29, properties.Paragraphs);
 
-            // Check the real file size of our document
+            // Get an estimate of the file size of our document via the "Bytes" built-in property.
             Assert.AreEqual(20310, properties.Bytes);
 
-            // Template: The Template attribute can reflect the filename of the attached template document
+            // Set a different template for our document, and then update the "Template" built-in property manually to reflect this change.
             doc.AttachedTemplate = MyDir + "Business brochure.dotx";
-            Assert.AreEqual("Normal", properties.Template);          
+
+            Assert.AreEqual("Normal", properties.Template);    
+            
             properties.Template = doc.AttachedTemplate;
 
-            // Content status: This is a descriptive field
+            // "ContentStatus" is a descriptive built-in property.
             properties.ContentStatus = "Draft";
 
-            // Content type: Upon saving, any value we assign to this field will be overwritten by the MIME type of the output save format
+            // Upon saving, the "ContentType" built-in property will contain the MIME type of the output save format.
             Assert.AreEqual(string.Empty, properties.ContentType);
 
-            // If the document contains links and they are all up to date, we can set this to true
+            // If the document contains links, and they are all up to date, we can set the "LinksUpToDate" property to "true".
             Assert.False(properties.LinksUpToDate);
 
             doc.Save(ArtifactsDir + "Properties.Content.docx");
@@ -258,8 +286,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Util class that counts the lines in a document.
-        /// Upon construction, traverses the document's layout entities tree,
+        /// Counts the lines in a document.
+        /// Traverses the document's layout entities tree upon construction,
         /// counting entities of the "Line" type that also contain real text.
         /// </summary>
         private class LineCounter
