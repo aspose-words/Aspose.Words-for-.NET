@@ -356,25 +356,21 @@ namespace ApiExamples
             //ExStart
             //ExFor:BuiltInDocumentProperties.Thumbnail
             //ExFor:DocumentProperty.ToByteArray
-            //ExSummary:Shows how to append a thumbnail to an Epub document.
-            // Create a blank document and add some text with a DocumentBuilder
+            //ExSummary:Shows how to add a thumbnail to a document that we save as an Epub.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
-            // The thumbnail property resides in a document's built-in properties, but is used exclusively by Epub e-book documents
+            // If we save a document, whose "Thumbnail" property contains image data that we added, as an Epub,
+            // a reader that opens that document may display the image before the first page.
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
-            // Load an image from our file system into a byte array
             byte[] thumbnailBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
-
-            // Set the value of the Thumbnail property to the array from above
             properties.Thumbnail = thumbnailBytes;
 
-            // Our thumbnail should be visible at the start of the document, before the text we added
             doc.Save(ArtifactsDir + "Properties.Thumbnail.epub");
 
-            // We can also extract a thumbnail property into a byte array and then into the local file system like this
+            // We can extract a document's thumbnail image and save it to the local file system.
             DocumentProperty thumbnail = doc.BuiltInDocumentProperties["Thumbnail"];
             File.WriteAllBytes(ArtifactsDir + "Properties.Thumbnail.gif", thumbnail.ToByteArray());
             //ExEnd
@@ -391,20 +387,22 @@ namespace ApiExamples
             //ExStart
             //ExFor:BuiltInDocumentProperties.HyperlinkBase
             //ExSummary:Shows how to store the base part of a hyperlink in the document's properties.
-            // Create a blank document and a DocumentBuilder
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a relative hyperlink to "Document.docx", which will open that document when clicked on
+            // Insert a relative hyperlink to a document in the local file system named "Document.docx".
+            // When we click the link in Microsoft Word, it will open the designated document, provided that it is available.
             builder.InsertHyperlink("Relative hyperlink", "Document.docx", false);
 
-            // If we do not have a "Document.docx" in the same folder as the document we are about to save, we will end up with a broken link
+            // This link is relative. If there is no "Document.docx" in the same folder
+            // as the document that contains this link, the link will be broken.
             Assert.False(File.Exists(ArtifactsDir + "Document.docx"));
             doc.Save(ArtifactsDir + "Properties.HyperlinkBase.BrokenLink.docx");
 
-            // We could keep prepending something like "C:\users\...\data" to every hyperlink we place to remedy this
-            // Alternatively, if we know that all our linked files will come from the same folder,
-            // we could set a base hyperlink in the document properties, keeping our hyperlinks short
+            // The document we are trying to link to is in a different directory to the one we are planning to save the document in.
+            // We could fix links like this by putting an absolute filename in each one. 
+            // Alternatively, we could provide a base link that every hyperlink with a relative filename
+            // will prepend to its link when we click on it. 
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
             properties.HyperlinkBase = MyDir;
 
@@ -431,16 +429,15 @@ namespace ApiExamples
             //ExStart
             //ExFor:Properties.BuiltInDocumentProperties.HeadingPairs
             //ExFor:Properties.BuiltInDocumentProperties.TitlesOfParts
-            //ExSummary:Shows the relationship between HeadingPairs and TitlesOfParts properties.
-            // Open a document that contains entries in the HeadingPairs/TitlesOfParts properties
+            //ExSummary:Shows the relationship between "HeadingPairs" and "TitlesOfParts" properties.
             Document doc = new Document(MyDir + "Heading pairs and titles of parts.docx");
             
-            // We can find the combined values of these collections in File > Properties > Advanced Properties > Contents tab
+            // We can find the combined values of these collections via "File" -> "Properties" -> "Advanced Properties" > "Contents" tab.
             // The HeadingPairs property is a collection of <string, int> pairs that determines
-            // how many document parts a heading spans over
+            // how many document parts a heading spans across.
             object[] headingPairs = doc.BuiltInDocumentProperties.HeadingPairs;
 
-            // The TitlesOfParts property contains the names of parts that belong to the above headings
+            // The TitlesOfParts property contains the names of parts that belong to the above headings.
             string[] titlesOfParts = doc.BuiltInDocumentProperties.TitlesOfParts;
 
             int headingPairsIndex = 0;
@@ -487,31 +484,31 @@ namespace ApiExamples
             //ExSummary:Shows how to use document properties to display the security level of a document.
             Document doc = new Document();
 
-            // The "Security" property serves as a description of the security level of a document
             Assert.AreEqual(DocumentSecurity.None, doc.BuiltInDocumentProperties.Security);
 
-            // Upon saving a document after setting its security level, Aspose automatically updates this property to the appropriate value
+            // If we configure a document to be read-only, it will display this status using the "Security" built-in property.
             doc.WriteProtection.ReadOnlyRecommended = true;
             doc.Save(ArtifactsDir + "Properties.Security.ReadOnlyRecommended.docx");
 
-            // Open a document and verify its security level
             Assert.AreEqual(DocumentSecurity.ReadOnlyRecommended, 
                 new Document(ArtifactsDir + "Properties.Security.ReadOnlyRecommended.docx").BuiltInDocumentProperties.Security);
 
-            // Create a new document and set it to Write-Protected
+            // Write-protect a document, and then verify its security level.
             doc = new Document();
 
             Assert.False(doc.WriteProtection.IsWriteProtected);
+
             doc.WriteProtection.SetPassword("MyPassword");
+
             Assert.True(doc.WriteProtection.ValidatePassword("MyPassword"));
             Assert.True(doc.WriteProtection.IsWriteProtected);
+
             doc.Save(ArtifactsDir + "Properties.Security.ReadOnlyEnforced.docx");
             
-            // This document's security level counts as "ReadOnlyEnforced" 
             Assert.AreEqual(DocumentSecurity.ReadOnlyEnforced,
                 new Document(ArtifactsDir + "Properties.Security.ReadOnlyEnforced.docx").BuiltInDocumentProperties.Security);
 
-            // Since this is still a descriptive property, we can protect a document and pick a suitable value ourselves
+            // "Security" is a descriptive property. We can edit its value manually.
             doc = new Document();
 
             doc.Protect(ProtectionType.AllowOnlyComments, "MyPassword");
@@ -530,16 +527,16 @@ namespace ApiExamples
             //ExFor:DocumentPropertyCollection.Item(String)
             //ExFor:CustomDocumentProperties.Add(String,DateTime)
             //ExFor:DocumentProperty.ToDateTime
-            //ExSummary:Shows how to create a custom document property with the value of a date and time.
+            //ExSummary:Shows how to create a custom document property which contains a date and time.
             Document doc = new Document();
 
-            doc.CustomDocumentProperties.Add("AuthorizedDate", DateTime.Now);
+            doc.CustomDocumentProperties.Add("AuthorizationDate", DateTime.Now);
 
-            Console.WriteLine($"Document authorized on {doc.CustomDocumentProperties["AuthorizedDate"].ToDateTime()}");
+            Console.WriteLine($"Document authorized on {doc.CustomDocumentProperties["AuthorizationDate"].ToDateTime()}");
             //ExEnd
 
             TestUtil.VerifyDate(DateTime.Now, 
-                DocumentHelper.SaveOpen(doc).CustomDocumentProperties["AuthorizedDate"].ToDateTime(), 
+                DocumentHelper.SaveOpen(doc).CustomDocumentProperties["AuthorizationDate"].ToDateTime(), 
                 TimeSpan.FromSeconds(1));
         }
 
