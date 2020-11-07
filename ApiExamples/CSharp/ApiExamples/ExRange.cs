@@ -22,34 +22,84 @@ namespace ApiExamples
     public class ExRange : ApiExampleBase
     {
         [Test]
-        public void ReplaceSimple()
+        public void Replace()
+        {
+            //ExStart
+            //ExFor:Range.Replace(String, String)
+            //ExSummary:Shows how to perform a find-and-replace text operation on the contents of a document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Greetings, _FullName_!");
+            
+            // Perform a find-and-replace operation on the contents of our document,
+            // and verify the number of replacements that took place.
+            int replacementCount = doc.Range.Replace("_FullName_", "John Doe");
+
+            Assert.AreEqual(1, replacementCount);
+            Assert.AreEqual("Greetings, John Doe!", doc.GetText().Trim());
+            //ExEnd
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ReplaceMatchCase(bool matchCase)
         {
             //ExStart
             //ExFor:Range.Replace(String, String, FindReplaceOptions)
             //ExFor:FindReplaceOptions
             //ExFor:FindReplaceOptions.MatchCase
-            //ExFor:FindReplaceOptions.FindWholeWordsOnly
-            //ExSummary:Simple find and replace operation.
+            //ExSummary:Shows how to toggle case sensitivity when performing a find-and-replace operation.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Writeln("Hello _CustomerName_,");
+            builder.Writeln("Ruby bought a ruby necklace.");
 
-            // Check the document contains what we are about to test
-            Console.WriteLine(doc.FirstSection.Body.Paragraphs[0].GetText());
-
+            // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
             FindReplaceOptions options = new FindReplaceOptions();
-            options.MatchCase = false;
-            options.FindWholeWordsOnly = false;
 
-            doc.Range.Replace("_CustomerName_", "James Bond", options);
+            // Set the "MatchCase" flag to "true" to apply case sensitivity while finding strings to replace.
+            // Set the "MatchCase" flag to "false" to ignore character case while searching for text to replace.
+            options.MatchCase = matchCase;
 
-            doc.Save(ArtifactsDir + "Range.ReplaceSimple.docx");
+            doc.Range.Replace("Ruby", "Jade", options);
+
+            if (matchCase)
+                Assert.AreEqual("Jade bought a ruby necklace.", doc.GetText().Trim());
+            else
+                Assert.AreEqual("Jade bought a Jade necklace.", doc.GetText().Trim());
             //ExEnd
+        }
 
-            doc = new Document(ArtifactsDir + "Range.ReplaceSimple.docx");
+        [TestCase(false)]
+        [TestCase(true)]
+        public void ReplaceFindWholeWordsOnly(bool findWholeWordsOnly)
+        {
+            //ExStart
+            //ExFor:Range.Replace(String, String, FindReplaceOptions)
+            //ExFor:FindReplaceOptions
+            //ExFor:FindReplaceOptions.FindWholeWordsOnly
+            //ExSummary:Shows how to toggle standalone word-only find-and-replace operations. 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Assert.AreEqual("Hello James Bond,", doc.GetText().Trim());
+            builder.Writeln("Jackson will meet you in Jacksonville.");
+
+            // We can use a "FindReplaceOptions" object to modify the find and replace process.
+            FindReplaceOptions options = new FindReplaceOptions();
+
+            // Set the "FindWholeWordsOnly" flag to "true" to replace the found text
+            // only as long as it is not a part of another word. 
+            // Set the "FindWholeWordsOnly" flag to "false" to disregard the surrounding text of the text we are replacing. 
+            options.FindWholeWordsOnly = findWholeWordsOnly;
+
+            doc.Range.Replace("Jackson", "Louis", options);
+
+            if (findWholeWordsOnly)
+                Assert.AreEqual("Louis will meet you in Jacksonville.", doc.GetText().Trim());
+            else
+                Assert.AreEqual("Louis will meet you in Louisville.", doc.GetText().Trim());
+            //ExEnd
         }
 
         [TestCase(true)]
