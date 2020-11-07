@@ -922,7 +922,7 @@ namespace ApiExamples
 
             // Set the "UseBookFoldPrintingSettings" property to "true" to arrange the contents
             // in the output PDF in a way that helps us make a booklet out of it.
-            // Set the "UseBookFoldPrintingSettings" property to "false' to render the PDF a normally.
+            // Set the "UseBookFoldPrintingSettings" property to "false" to render the PDF a normally.
             options.UseBookFoldPrintingSettings = renderTextAsBookfold;
 
             // If we are rendering the document as a booklet, we must set the "MultiplePages"
@@ -934,7 +934,7 @@ namespace ApiExamples
                 }
 
             // Once we print this document on both sides of the pages, we can fold all the pages down the middle at once,
-            // and the contents will line up in such a way that this will make a booklet.
+            // and the contents will line up in a way that creates a booklet.
             doc.Save(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf", options);
             //ExEnd
 
