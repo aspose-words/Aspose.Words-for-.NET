@@ -550,19 +550,20 @@ namespace ApiExamples
             //ExSummary:Shows how to link a custom document property to a bookmark.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.StartBookmark("MyBookmark");
-            builder.Write("MyBookmark contents.");
+            builder.Write("Hello world!");
             builder.EndBookmark("MyBookmark");
 
-            // Add linked to content property
+            // Link a new custom property to a bookmark. The value of this property
+            // will be the contents of the bookmark that it references in the "LinkSource" member.
             CustomDocumentProperties customProperties = doc.CustomDocumentProperties;
             DocumentProperty customProperty = customProperties.AddLinkToContent("Bookmark", "MyBookmark");
 
-            // Check whether the property is linked to content
             Assert.AreEqual(true, customProperty.IsLinkToContent);
             Assert.AreEqual("MyBookmark", customProperty.LinkSource);
-            Assert.AreEqual("MyBookmark contents.", customProperty.Value);
-
+            Assert.AreEqual("Hello world!", customProperty.Value);
+            
             doc.Save(ArtifactsDir + "Properties.LinkCustomDocumentPropertiesToBookmark.docx");
             //ExEnd
 
@@ -571,7 +572,7 @@ namespace ApiExamples
 
             Assert.AreEqual(true, customProperty.IsLinkToContent);
             Assert.AreEqual("MyBookmark", customProperty.LinkSource);
-            Assert.AreEqual("MyBookmark contents.", customProperty.Value);
+            Assert.AreEqual("Hello world!", customProperty.Value);
         }
 
         [Test]
@@ -592,45 +593,56 @@ namespace ApiExamples
             //ExFor:Properties.DocumentPropertyCollection.RemoveAt(System.Int32)
             //ExFor:Properties.DocumentPropertyCollection.Remove
             //ExFor:PropertyType
-            //ExSummary:Shows how to add custom properties to a document.
+            //ExSummary:Shows how to work with a document's custom properties.
             Document doc = new Document();
             CustomDocumentProperties properties = doc.CustomDocumentProperties;
 
-            // The custom property collection will be empty by default
             Assert.AreEqual(0, properties.Count);
 
-            // We can populate it with key/value pairs with a variety of value types
+            // Custom document properties are key-value pairs that we can add to the document.
             properties.Add("Authorized", true);
             properties.Add("Authorized By", "John Doe");
             properties.Add("Authorized Date", DateTime.Today);
             properties.Add("Authorized Revision", doc.BuiltInDocumentProperties.RevisionNumber);
             properties.Add("Authorized Amount", 123.45);
 
-            // Custom properties are automatically sorted in alphabetic order
+            // The collection sorts the custom properties in alphabetic order.
             Assert.AreEqual(1, properties.IndexOf("Authorized Amount"));
             Assert.AreEqual(5, properties.Count);
 
-            // Enumerate and print all custom properties
+            // Print every custom property in the document.
             using (IEnumerator<DocumentProperty> enumerator = properties.GetEnumerator())
             {
                 while (enumerator.MoveNext())
                     Console.WriteLine($"Name: \"{enumerator.Current.Name}\"\n\tType: \"{enumerator.Current.Type}\"\n\tValue: \"{enumerator.Current.Value}\"");
             }
 
-            // We can view/edit custom properties by opening the document and looking in File > Properties > Advanced Properties > Custom
+            // Display the value of a custom property using a DOCPROPERTY field.
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldDocProperty field = (FieldDocProperty)builder.InsertField(" DOCPROPERTY \"Authorized By\"");
+            field.Update();
+
+            Assert.AreEqual("John Doe", field.Result);
+
+            // We can find these custom properties in Microsoft Word via "File" -> "Properties" > "Advanced Properties" > "Custom".
             doc.Save(ArtifactsDir + "Properties.DocumentPropertyCollection.docx");
 
-            // We can remove elements from the property collection by index or by name
+            // Below are three ways or removing custom properties from a document.
+            // 1 -  Remove by index:
             properties.RemoveAt(1);
+
             Assert.False(properties.Contains("Authorized Amount"));
             Assert.AreEqual(4, properties.Count);
 
+            // 2 -  Remove by name:
             properties.Remove("Authorized Revision");
+
             Assert.False(properties.Contains("Authorized Revision"));
             Assert.AreEqual(3, properties.Count);
 
-            // We can also empty the entire custom property collection at once
+            // 3 -  Empty the entire collection at once:
             properties.Clear();
+
             Assert.AreEqual(0, properties.Count);
             //ExEnd
         }
