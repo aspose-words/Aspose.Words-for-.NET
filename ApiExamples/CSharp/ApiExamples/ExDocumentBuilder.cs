@@ -3474,10 +3474,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, shape.RelativeHorizontalPosition);
 
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
-
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
-
+            
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyImageInShape(320, 320, ImageType.Png, shape);
@@ -3490,6 +3487,8 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.RightMargin, shape.RelativeHorizontalPosition);
 
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
         }
 #endif
