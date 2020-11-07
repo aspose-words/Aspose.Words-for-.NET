@@ -76,7 +76,7 @@
     <Content Include="ExParagraph.cs" />
     <Content Include="ExPclSaveOptions.cs" />
     <Content Include="ExPdfSaveOptions.cs" />
-    <Content Include="ExProperties.cs" />
+    <Content Include="ExDocumentProperties.cs" />
     <Content Include="ExRange.cs" />
     <Content Include="ExRenameMergeFields.cs" />
     <Content Include="ExRendering.cs" />

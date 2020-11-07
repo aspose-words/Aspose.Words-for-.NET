@@ -17,7 +17,7 @@ using NUnit.Framework;
 namespace ApiExamples
 {
     [TestFixture]
-    public class ExProperties : ApiExampleBase
+    public class ExDocumentProperties : ApiExampleBase
     {
         [Test]
         public void BuiltIn()
@@ -135,10 +135,10 @@ namespace ApiExamples
 
             // We can right-click this document in Windows Explorer and find these properties in "Properties" -> "Details".
             // The "Author" built-in property is in the "Origin" group, and the others are in the "Description" group.
-            doc.Save(ArtifactsDir + "Properties.Description.docx");
+            doc.Save(ArtifactsDir + "DocumentProperties.Description.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Properties.Description.docx");
+            doc = new Document(ArtifactsDir + "DocumentProperties.Description.docx");
 
             properties = doc.BuiltInDocumentProperties;
 
@@ -195,10 +195,10 @@ namespace ApiExamples
             properties.LastSavedTime = DateTime.Now;
 
             // We can right-click this document in Windows Explorer and find these properties in "Properties" -> "Details" -> "Origin".
-            doc.Save(ArtifactsDir + "Properties.Origin.docx");
+            doc.Save(ArtifactsDir + "DocumentProperties.Origin.docx");
             //ExEnd
 
-            properties = new Document(ArtifactsDir + "Properties.Origin.docx").BuiltInDocumentProperties;
+            properties = new Document(ArtifactsDir + "DocumentProperties.Origin.docx").BuiltInDocumentProperties;
 
             Assert.AreEqual("Doe Ltd.", properties.Company);
             Assert.AreEqual(new DateTime(2006, 4, 25, 10, 10, 0), properties.CreatedTime);
@@ -281,8 +281,8 @@ namespace ApiExamples
             // If the document contains links, and they are all up to date, we can set the "LinksUpToDate" property to "true".
             Assert.False(properties.LinksUpToDate);
 
-            doc.Save(ArtifactsDir + "Properties.Content.docx");
-            TestContent(new Document(ArtifactsDir + "Properties.Content.docx")); //ExSkip
+            doc.Save(ArtifactsDir + "DocumentProperties.Content.docx");
+            TestContent(new Document(ArtifactsDir + "DocumentProperties.Content.docx")); //ExSkip
         }
 
         /// <summary>
@@ -368,14 +368,14 @@ namespace ApiExamples
             byte[] thumbnailBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
             properties.Thumbnail = thumbnailBytes;
 
-            doc.Save(ArtifactsDir + "Properties.Thumbnail.epub");
+            doc.Save(ArtifactsDir + "DocumentProperties.Thumbnail.epub");
 
             // We can extract a document's thumbnail image and save it to the local file system.
             DocumentProperty thumbnail = doc.BuiltInDocumentProperties["Thumbnail"];
-            File.WriteAllBytes(ArtifactsDir + "Properties.Thumbnail.gif", thumbnail.ToByteArray());
+            File.WriteAllBytes(ArtifactsDir + "DocumentProperties.Thumbnail.gif", thumbnail.ToByteArray());
             //ExEnd
 
-            using (FileStream imgStream = new FileStream(ArtifactsDir + "Properties.Thumbnail.gif", FileMode.Open))
+            using (FileStream imgStream = new FileStream(ArtifactsDir + "DocumentProperties.Thumbnail.gif", FileMode.Open))
             {
                 TestUtil.VerifyImage(400, 400, imgStream);
             }
@@ -397,7 +397,7 @@ namespace ApiExamples
             // This link is relative. If there is no "Document.docx" in the same folder
             // as the document that contains this link, the link will be broken.
             Assert.False(File.Exists(ArtifactsDir + "Document.docx"));
-            doc.Save(ArtifactsDir + "Properties.HyperlinkBase.BrokenLink.docx");
+            doc.Save(ArtifactsDir + "DocumentProperties.HyperlinkBase.BrokenLink.docx");
 
             // The document we are trying to link to is in a different directory to the one we are planning to save the document in.
             // We could fix links like this by putting an absolute filename in each one. 
@@ -408,15 +408,15 @@ namespace ApiExamples
 
             Assert.True(File.Exists(properties.HyperlinkBase + ((FieldHyperlink)doc.Range.Fields[0]).Address));
 
-            doc.Save(ArtifactsDir + "Properties.HyperlinkBase.WorkingLink.docx");
+            doc.Save(ArtifactsDir + "DocumentProperties.HyperlinkBase.WorkingLink.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Properties.HyperlinkBase.BrokenLink.docx");
+            doc = new Document(ArtifactsDir + "DocumentProperties.HyperlinkBase.BrokenLink.docx");
             properties = doc.BuiltInDocumentProperties;
 
             Assert.AreEqual(string.Empty, properties.HyperlinkBase);
 
-            doc = new Document(ArtifactsDir + "Properties.HyperlinkBase.WorkingLink.docx");
+            doc = new Document(ArtifactsDir + "DocumentProperties.HyperlinkBase.WorkingLink.docx");
             properties = doc.BuiltInDocumentProperties;
 
             Assert.AreEqual(MyDir, properties.HyperlinkBase);
@@ -488,10 +488,10 @@ namespace ApiExamples
 
             // If we configure a document to be read-only, it will display this status using the "Security" built-in property.
             doc.WriteProtection.ReadOnlyRecommended = true;
-            doc.Save(ArtifactsDir + "Properties.Security.ReadOnlyRecommended.docx");
+            doc.Save(ArtifactsDir + "DocumentProperties.Security.ReadOnlyRecommended.docx");
 
             Assert.AreEqual(DocumentSecurity.ReadOnlyRecommended, 
-                new Document(ArtifactsDir + "Properties.Security.ReadOnlyRecommended.docx").BuiltInDocumentProperties.Security);
+                new Document(ArtifactsDir + "DocumentProperties.Security.ReadOnlyRecommended.docx").BuiltInDocumentProperties.Security);
 
             // Write-protect a document, and then verify its security level.
             doc = new Document();
@@ -503,20 +503,20 @@ namespace ApiExamples
             Assert.True(doc.WriteProtection.ValidatePassword("MyPassword"));
             Assert.True(doc.WriteProtection.IsWriteProtected);
 
-            doc.Save(ArtifactsDir + "Properties.Security.ReadOnlyEnforced.docx");
+            doc.Save(ArtifactsDir + "DocumentProperties.Security.ReadOnlyEnforced.docx");
             
             Assert.AreEqual(DocumentSecurity.ReadOnlyEnforced,
-                new Document(ArtifactsDir + "Properties.Security.ReadOnlyEnforced.docx").BuiltInDocumentProperties.Security);
+                new Document(ArtifactsDir + "DocumentProperties.Security.ReadOnlyEnforced.docx").BuiltInDocumentProperties.Security);
 
             // "Security" is a descriptive property. We can edit its value manually.
             doc = new Document();
 
             doc.Protect(ProtectionType.AllowOnlyComments, "MyPassword");
             doc.BuiltInDocumentProperties.Security = DocumentSecurity.ReadOnlyExceptAnnotations;
-            doc.Save(ArtifactsDir + "Properties.Security.ReadOnlyExceptAnnotations.docx");
+            doc.Save(ArtifactsDir + "DocumentProperties.Security.ReadOnlyExceptAnnotations.docx");
 
             Assert.AreEqual(DocumentSecurity.ReadOnlyExceptAnnotations,
-                new Document(ArtifactsDir + "Properties.Security.ReadOnlyExceptAnnotations.docx").BuiltInDocumentProperties.Security);
+                new Document(ArtifactsDir + "DocumentProperties.Security.ReadOnlyExceptAnnotations.docx").BuiltInDocumentProperties.Security);
             //ExEnd
         }
 
@@ -564,10 +564,10 @@ namespace ApiExamples
             Assert.AreEqual("MyBookmark", customProperty.LinkSource);
             Assert.AreEqual("Hello world!", customProperty.Value);
             
-            doc.Save(ArtifactsDir + "Properties.LinkCustomDocumentPropertiesToBookmark.docx");
+            doc.Save(ArtifactsDir + "DocumentProperties.LinkCustomDocumentPropertiesToBookmark.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Properties.LinkCustomDocumentPropertiesToBookmark.docx");
+            doc = new Document(ArtifactsDir + "DocumentProperties.LinkCustomDocumentPropertiesToBookmark.docx");
             customProperty = doc.CustomDocumentProperties["Bookmark"];
 
             Assert.AreEqual(true, customProperty.IsLinkToContent);
@@ -625,7 +625,7 @@ namespace ApiExamples
             Assert.AreEqual("John Doe", field.Result);
 
             // We can find these custom properties in Microsoft Word via "File" -> "Properties" > "Advanced Properties" > "Custom".
-            doc.Save(ArtifactsDir + "Properties.DocumentPropertyCollection.docx");
+            doc.Save(ArtifactsDir + "DocumentProperties.DocumentPropertyCollection.docx");
 
             // Below are three ways or removing custom properties from a document.
             // 1 -  Remove by index:
