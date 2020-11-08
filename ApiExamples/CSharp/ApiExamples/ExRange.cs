@@ -85,7 +85,7 @@ namespace ApiExamples
 
             builder.Writeln("Jackson will meet you in Jacksonville.");
 
-            // We can use a "FindReplaceOptions" object to modify the find and replace process.
+            // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
             FindReplaceOptions options = new FindReplaceOptions();
 
             // Set the "FindWholeWordsOnly" flag to "true" to replace the found text
@@ -104,87 +104,109 @@ namespace ApiExamples
 
         [TestCase(true)]
         [TestCase(false)]
-        public void IgnoreDeleted(bool isIgnoreDeleted)
+        public void IgnoreDeleted(bool ignoreTextInsideDeleteRevisions)
         {
             //ExStart
             //ExFor:FindReplaceOptions.IgnoreDeleted
-            //ExSummary:Shows how to ignore text inside delete revisions.
+            //ExSummary:Shows how include or ignore text inside delete revisions during a find-and-replace operation.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
  
-            // Insert non-revised text
-            builder.Writeln("Deleted");
-            builder.Write("Text");
+            builder.Writeln("Hello world!");
+            builder.Writeln("Hello again!");
  
-            // Remove first paragraph with tracking revisions
+            // Start tracking revisions and remove the second paragraph, which will create a delete revision.
+            // That paragraph's will persist in the document until we accept the delete revision,
+            // and the paragraph itself will count as a revision.
             doc.StartTrackRevisions("John Doe", DateTime.Now);
-            doc.FirstSection.Body.FirstParagraph.Remove();
+            doc.FirstSection.Body.Paragraphs[1].Remove();
             doc.StopTrackRevisions();
- 
-            Regex regex = new Regex("e");
-            FindReplaceOptions options = new FindReplaceOptions();
- 
-            // Replace 'e' in document while ignoring/not ignoring deleted text
-            options.IgnoreDeleted = isIgnoreDeleted;
-            doc.Range.Replace(regex, "*", options);
 
-            Assert.AreEqual(doc.GetText().Trim(), isIgnoreDeleted ? "Deleted\rT*xt" : "D*l*t*d\rT*xt");
+            Assert.True(doc.FirstSection.Body.Paragraphs[1].IsDeleteRevision);
+
+            // We can use a "FindReplaceOptions" object to modify the find and replace process.
+            FindReplaceOptions options = new FindReplaceOptions();
+
+            // Set the "IgnoreDeleted" flag to "true" to get the find-and-replace
+            // operation to ignore paragraphs that are delete revisions.
+            // Set the "IgnoreDeleted" flag to "false" to get the find-and-replace
+            // operation to also search for text inside delete revisions.
+            options.IgnoreDeleted = ignoreTextInsideDeleteRevisions;
+            
+            doc.Range.Replace("Hello", "Greetings", options);
+
+            if (ignoreTextInsideDeleteRevisions)
+                Assert.AreEqual("Greetings world!\rHello again!", doc.GetText().Trim());
+            else
+                Assert.AreEqual("Greetings world!\rGreetings again!", doc.GetText().Trim());
             //ExEnd
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        public void IgnoreInserted(bool isIgnoreInserted)
+        public void IgnoreInserted(bool ignoreTextInsideInsertRevisions)
         {
             //ExStart
             //ExFor:FindReplaceOptions.IgnoreInserted
-            //ExSummary:Shows how to ignore text inside insert revisions.
+            //ExSummary:Shows how include or ignore text inside insert revisions during a find-and-replace operation.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
- 
-            // Insert text with tracking revisions
-            doc.StartTrackRevisions("John Doe", DateTime.Now);
-            builder.Writeln("Inserted");
-            doc.StopTrackRevisions();
- 
-            // Insert non-revised text
-            builder.Write("Text");
- 
-            Regex regex = new Regex("e");
-            FindReplaceOptions options = new FindReplaceOptions();
- 
-            // Replace 'e' in document while ignoring/not ignoring inserted text
-            options.IgnoreInserted = isIgnoreInserted;
-            doc.Range.Replace(regex, "*", options);
 
-            Assert.AreEqual(doc.GetText().Trim(), isIgnoreInserted ? "Inserted\rT*xt" : "Ins*rt*d\rT*xt");
+            builder.Writeln("Hello world!");
+
+            // Start tracking revisions and insert a paragraph. That paragraph will be an insert revision.
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+            builder.Writeln("Hello again!");
+            doc.StopTrackRevisions();
+
+            Assert.True(doc.FirstSection.Body.Paragraphs[1].IsInsertRevision);
+
+            // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
+            FindReplaceOptions options = new FindReplaceOptions();
+
+            // Set the "IgnoreInserted" flag to "true" to get the find-and-replace
+            // operation to ignore paragraphs that are insert revisions.
+            // Set the "IgnoreInserted" flag to "false" to get the find-and-replace
+            // operation to also search for text inside insert revisions.
+            options.IgnoreInserted = ignoreTextInsideInsertRevisions;
+
+            doc.Range.Replace("Hello", "Greetings", options);
+
+            if (ignoreTextInsideInsertRevisions)
+                Assert.AreEqual("Greetings world!\rHello again!", doc.GetText().Trim());
+            else
+                Assert.AreEqual("Greetings world!\rGreetings again!", doc.GetText().Trim());
             //ExEnd
         }
 
         [TestCase(true)]
         [TestCase(false)]
-        public void IgnoreFields(bool isIgnoreFields)
+        public void IgnoreFields(bool ignoreTextInsideFields)
         {
             //ExStart
             //ExFor:FindReplaceOptions.IgnoreFields
             //ExSummary:Shows how to ignore text inside fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
- 
-            // Insert field with text inside
-            builder.InsertField("INCLUDETEXT", "Text in field");
- 
-            Regex regex = new Regex("e");
-            FindReplaceOptions options = new FindReplaceOptions();
-            // Replace 'e' in document ignoring/not ignoring text inside field
-            options.IgnoreFields = isIgnoreFields;
-            
-            doc.Range.Replace(regex, "*", options);
 
-            Assert.AreEqual(doc.GetText(),
-                isIgnoreFields
-                    ? "\u0013INCLUDETEXT\u0014Text in field\u0015\f"
-                    : "\u0013INCLUDETEXT\u0014T*xt in fi*ld\u0015\f");
+            builder.Writeln("Hello world!");
+            builder.InsertField("QUOTE", "Hello again!");
+
+            // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
+            FindReplaceOptions options = new FindReplaceOptions();
+
+            // Set the "IgnoreFields" flag to "true" to get the find-and-replace
+            // operation to ignore text inside fields.
+            // Set the "IgnoreFields" flag to "false" to get the find-and-replace
+            // operation to also search for text inside fields.
+            options.IgnoreFields = ignoreTextInsideFields;
+
+            doc.Range.Replace("Hello", "Greetings", options);
+
+            if (ignoreTextInsideFields)
+                Assert.AreEqual("Greetings world!\r\u0013QUOTE\u0014Hello again!\u0015", doc.GetText().Trim());
+            else
+                Assert.AreEqual("Greetings world!\r\u0013QUOTE\u0014Greetings again!\u0015", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -193,23 +215,27 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Range.UpdateFields
-            //ExSummary:Shows how to update document fields in the body of the first section only.
+            //ExSummary:Shows how to update all the fields in a range.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a field that will display the value in the document's body text
-            FieldDocProperty field = (FieldDocProperty)builder.InsertField(" DOCPROPERTY Category");
+            builder.InsertField(" DOCPROPERTY Category");
+            builder.InsertBreak(BreakType.SectionBreakEvenPage);
+            builder.InsertField(" DOCPROPERTY Category");
 
-            // Set the value of the property that should be displayed by the field
+            // The above DOCPROPERTY fields will display the value of this built-in document property.
             doc.BuiltInDocumentProperties.Category = "MyCategory";
 
-            // Some field types need to be explicitly updated before they can display their expected values
-            Assert.AreEqual(string.Empty, field.Result);
+            // If we update the value of a document property, we will then need to
+            // update all the DOCPROPERTY fields that are to display it.
+            Assert.AreEqual(string.Empty, doc.Range.Fields[0].Result);
+            Assert.AreEqual(string.Empty, doc.Range.Fields[1].Result);
 
-            // Update all the fields in the first section of the document, which includes the field we just inserted
+            // Update all the fields that are in the range of the first section.
             doc.FirstSection.Range.UpdateFields();
 
-            Assert.AreEqual("MyCategory", field.Result);
+            Assert.AreEqual("MyCategory", doc.Range.Fields[0].Result);
+            Assert.AreEqual(string.Empty, doc.Range.Fields[1].Result);
             //ExEnd
         }
 
