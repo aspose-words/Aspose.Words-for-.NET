@@ -9,10 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Drawing;
-using Aspose.Words.Fields;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
 
@@ -261,66 +261,71 @@ namespace ApiExamples
         public void ReplaceWithRegex()
         {
             //ExStart
-            //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
-            //ExSummary:Shows how to replace all occurrences of words "sad" or "mad" to "bad".
+            //ExFor:Range.Replace(Regex, String)
+            //ExSummary:Shows how to replace all occurrences of a regular expression pattern with other text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Writeln("sad mad bad");
+            builder.Writeln("I decided to get the curtains in gray, ideal for the grey-accented room.");
 
-            Assert.AreEqual("sad mad bad", doc.GetText().Trim());
+            doc.Range.Replace(new Regex("gr(a|e)y"), "lavender");
 
-            FindReplaceOptions options = new FindReplaceOptions
-            {
-                MatchCase = false,
-                FindWholeWordsOnly = false
-            };
-
-            doc.Range.Replace(new Regex("[s|m]ad"), "bad", options);
-
-            Assert.AreEqual("bad bad bad", doc.GetText().Trim());
+            Assert.AreEqual("I decided to get the curtains in lavender, ideal for the lavender-accented room.", doc.GetText().Trim());
             //ExEnd
         }
 
         //ExStart
+        //ExFor:FindReplaceOptions.ReplacingCallback
         //ExFor:Range.Replace(Regex, String, FindReplaceOptions)
         //ExFor:ReplacingArgs.Replacement
         //ExFor:IReplacingCallback
         //ExFor:IReplacingCallback.Replacing
         //ExFor:ReplacingArgs
-        //ExSummary:Replaces text specified with regular expression with HTML.
+        //ExSummary:Shows how to replace all occurrences of a regular expression pattern with another string, while tracking all such replacements.
         [Test] //ExSkip
-        public void ReplaceWithInsertHtml()
+        public void ReplaceWithCallback()
         {
-            // Open the document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Writeln("Hello <CustomerName>,");
+            builder.Writeln("Our new location in New York City is opening tomorrow. " +
+                            "Hope to see all our NYC-based customers at the opening!");
 
+            // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
             FindReplaceOptions options = new FindReplaceOptions();
-            options.ReplacingCallback = new ReplaceWithHtmlEvaluator();
 
-            doc.Range.Replace(new Regex(@" <CustomerName>,"), string.Empty, options);
+            // Set a callback that tracks any replacements that the "Replace" method will make.
+            TextFindAndReplacementLogger logger = new TextFindAndReplacementLogger();
+            options.ReplacingCallback = logger;
 
-            // Save the modified document
-            doc.Save(ArtifactsDir + "Range.ReplaceWithInsertHtml.docx");
-            Assert.AreEqual("James Bond, Hello\r\x000c",
-                new Document(ArtifactsDir + "Range.ReplaceWithInsertHtml.docx").GetText()); //ExSkip
+            doc.Range.Replace(new Regex("New York City|NYC"), "Washington", options);
+            
+            Assert.AreEqual("Our new location in (Old value:\"New York City\") Washington is opening tomorrow. " +
+                            "Hope to see all our (Old value:\"NYC\") Washington-based customers at the opening!", doc.GetText().Trim());
+
+            Assert.AreEqual("\"New York City\" converted to \"Washington\" 20 characters into a Run node.\r\n" +
+                            "\"NYC\" converted to \"Washington\" 42 characters into a Run node.", logger.GetLog().Trim());
         }
 
-        private class ReplaceWithHtmlEvaluator : IReplacingCallback
+        /// <summary>
+        /// Prints every text replacement to the console, and also notes the original value of the replaced text in the document body.
+        /// </summary>
+        private class TextFindAndReplacementLogger : IReplacingCallback
         {
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
-                DocumentBuilder builder = new DocumentBuilder((Document)args.MatchNode.Document);
-                builder.MoveTo(args.MatchNode);
-
-                // Replace '<CustomerName>' text with a red bold name
-                builder.InsertHtml("<b><font color='red'>James Bond, </font></b>");
-                args.Replacement = "";
-
+                mLog.AppendLine($"\"{args.Match.Value}\" converted to \"{args.Replacement}\" " +
+                                $"{args.MatchOffset} characters into a {args.MatchNode.NodeType} node.");
+                
+                args.Replacement = $"(Old value:\"{args.Match.Value}\") {args.Replacement}";
                 return ReplaceAction.Replace;
             }
+
+            public string GetLog()
+            {
+                return mLog.ToString();
+            }
+
+            private readonly StringBuilder mLog = new StringBuilder();
         }
         //ExEnd
 
@@ -340,31 +345,31 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Font.Name = "Arial";
-            builder.Writeln("Numbers that will be converted to hexadecimal and highlighted:\n" +
+            builder.Writeln("Numbers that the find-and-replace operation will convert to hexadecimal and highlight:\n" +
                             "123, 456, 789 and 17379.");
 
+            // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
             FindReplaceOptions options = new FindReplaceOptions();
-            // Highlight newly inserted content with a color
-            options.ApplyFont.HighlightColor = Color.LightGray;
 
-            // Apply an IReplacingCallback to make the replacement to convert integers into hex equivalents,
-            // and then to count replacements in the order they take place
-            options.ReplacingCallback = new NumberHexer();
-            // By default, text is searched for replacements front to back, but we can change it to go the other way
+            // Set the "HighlightColor" property to a background color that we want to apply to the resulting text of the operation.
+            options.ApplyFont.HighlightColor = Color.LightGray;
+            
+            // Use the "Direction" property to set the direction of the find-and-replace text search.
             options.Direction = FindReplaceDirection.Backward;
 
-            int count = doc.Range.Replace(new Regex("[0-9]+"), "", options);
+            options.ReplacingCallback = new NumberHexer();
 
-            Assert.AreEqual(4, count);
-            Assert.AreEqual("Numbers that will be converted to hexadecimal and highlighted:\r" +
+            int replacementCount = doc.Range.Replace(new Regex("[0-9]+"), "", options);
+
+            Assert.AreEqual(4, replacementCount);
+            Assert.AreEqual("Numbers that the find-and-replace operation will convert to hexadecimal and highlight:\r" +
                             "0x7B, 0x1C8, 0x315 and 0x43E3.", doc.GetText().Trim());
-            Assert.AreEqual(4,
-                doc.GetChildNodes(NodeType.Run, true).OfType<Run>()
+            Assert.AreEqual(4, doc.GetChildNodes(NodeType.Run, true).OfType<Run>()
                     .Count(r => r.Font.HighlightColor.ToArgb() == Color.LightGray.ToArgb()));
         }
 
         /// <summary>
-        /// Replaces Arabic numbers with hexadecimal equivalents and appends the number of each replacement.
+        /// Replaces numeric find-and-replacement matches with their hexadecimal equivalents.
         /// </summary>
         private class NumberHexer : IReplacingCallback
         {
@@ -372,10 +377,8 @@ namespace ApiExamples
             {
                 mCurrentReplacementNumber++;
                 
-                // Parse numbers
                 int number = Convert.ToInt32(args.Match.Value);
-
-                // And write it as HEX
+                
                 args.Replacement = $"0x{number:X}";
 
                 Console.WriteLine($"Match #{mCurrentReplacementNumber}");
