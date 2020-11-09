@@ -307,7 +307,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Prints every text replacement to the console, and also notes the original value of the replaced text in the document body.
+        /// Maintains a log of every text replacement done by a find-and-replace operation,
+        /// and also notes the value of the original matched text.
         /// </summary>
         private class TextFindAndReplacementLogger : IReplacingCallback
         {
@@ -339,7 +340,7 @@ namespace ApiExamples
         //ExFor:ReplacingArgs.MatchOffset
         //ExSummary:Shows how to apply a different font to new content via FindReplaceOptions.
         [Test] //ExSkip
-        public void ReplaceNumbersAsHex()
+        public void ConvertNumbersToHexadecimal()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -357,9 +358,12 @@ namespace ApiExamples
             // Use the "Direction" property to set the direction of the find-and-replace text search.
             options.Direction = FindReplaceDirection.Backward;
 
-            options.ReplacingCallback = new NumberHexer();
+            NumberHexer numberHexer = new NumberHexer();
+            options.ReplacingCallback = numberHexer;
 
             int replacementCount = doc.Range.Replace(new Regex("[0-9]+"), "", options);
+
+            Console.WriteLine(numberHexer.GetLog());
 
             Assert.AreEqual(4, replacementCount);
             Assert.AreEqual("Numbers that the find-and-replace operation will convert to hexadecimal and highlight:\r" +
@@ -369,7 +373,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Replaces numeric find-and-replacement matches with their hexadecimal equivalents.
+        /// Replaces numeric find-and-replacement matches with their hexadecimal equivalents,
+        /// and also logs every replacement.
         /// </summary>
         private class NumberHexer : IReplacingCallback
         {
@@ -381,19 +386,25 @@ namespace ApiExamples
                 
                 args.Replacement = $"0x{number:X}";
 
-                Console.WriteLine($"Match #{mCurrentReplacementNumber}");
-                Console.WriteLine($"\tOriginal value:\t{args.Match.Value}");
-                Console.WriteLine($"\tReplacement:\t{args.Replacement}");
-                Console.WriteLine($"\tOffset in parent {args.MatchNode.NodeType} node:\t{args.MatchOffset}");
+                mLog.AppendLine($"Match #{mCurrentReplacementNumber}");
+                mLog.AppendLine($"\tOriginal value:\t{args.Match.Value}");
+                mLog.AppendLine($"\tReplacement:\t{args.Replacement}");
+                mLog.AppendLine($"\tOffset in parent {args.MatchNode.NodeType} node:\t{args.MatchOffset}");
 
-                Console.WriteLine(string.IsNullOrEmpty(args.GroupName)
+                mLog.AppendLine(string.IsNullOrEmpty(args.GroupName)
                     ? $"\tGroup index:\t{args.GroupIndex}"
                     : $"\tGroup name:\t{args.GroupName}");
 
                 return ReplaceAction.Replace;
             }
 
+            public string GetLog()
+            {
+                return mLog.ToString();
+            }
+
             private int mCurrentReplacementNumber;
+            private readonly StringBuilder mLog = new StringBuilder();
         }
         //ExEnd
 
@@ -402,28 +413,39 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FindReplaceOptions.ApplyParagraphFormat
-            //ExSummary:Shows how to affect the format of paragraphs with successful replacements.
+            //ExFor:Range.Replace(String, String)
+            //ExSummary:Shows how to add formatting to paragraphs in which a find-and-replace operation has found matches.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln("Every paragraph that ends with a full stop like this one will be right aligned.");
             builder.Writeln("This one will not!");
-            builder.Writeln("And this one will.");
-            
+            builder.Write("This one also will.");
+
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            Assert.AreEqual(ParagraphAlignment.Left, paragraphs[0].ParagraphFormat.Alignment);
+            Assert.AreEqual(ParagraphAlignment.Left, paragraphs[1].ParagraphFormat.Alignment);
+            Assert.AreEqual(ParagraphAlignment.Left, paragraphs[2].ParagraphFormat.Alignment);
+
+            // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
             FindReplaceOptions options = new FindReplaceOptions();
+
+            // Set the "Alignment" property to "ParagraphAlignment.Right" to right-align every paragraph
+            // that contains a match that the find-and-replace operation finds.
             options.ApplyParagraphFormat.Alignment = ParagraphAlignment.Right;
 
+            // Replace every full stop that's right before a paragraph break with an exclamation point.
             int count = doc.Range.Replace(".&p", "!&p", options);
+
             Assert.AreEqual(2, count);
-
-            doc.Save(ArtifactsDir + "Range.ApplyParagraphFormat.docx");
-            //ExEnd
-
-            ParagraphCollection paragraphs = new Document(ArtifactsDir + "Range.ApplyParagraphFormat.docx").FirstSection.Body.Paragraphs;
-
             Assert.AreEqual(ParagraphAlignment.Right, paragraphs[0].ParagraphFormat.Alignment);
             Assert.AreEqual(ParagraphAlignment.Left, paragraphs[1].ParagraphFormat.Alignment);
             Assert.AreEqual(ParagraphAlignment.Right, paragraphs[2].ParagraphFormat.Alignment);
+            Assert.AreEqual("Every paragraph that ends with a full stop like this one will be right aligned!\r" +
+                            "This one will not!\r" +
+                            "This one also will!", doc.GetText().Trim());
+            //ExEnd
         }
 
         [Test]
@@ -432,22 +454,22 @@ namespace ApiExamples
             //ExStart
             //ExFor:Node.Range
             //ExFor:Range.Delete
-            //ExSummary:Shows how to delete all characters of a range.
-            // Insert two sections into a blank document
+            //ExSummary:Shows how to delete all the nodes from a range.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
+            
+            // Add text to the first section in the document, and then add another section.
             builder.Write("Section 1. ");
             builder.InsertBreak(BreakType.SectionBreakContinuous);
             builder.Write("Section 2.");
 
-            // Verify the whole text of the document
             Assert.AreEqual("Section 1. \fSection 2.", doc.GetText().Trim());
 
-            // Delete the first section from the document
+            // Remove the first section entirely by removing all of the nodes
+            // within its range, which includes the section itself.
             doc.Sections[0].Range.Delete();
 
-            // Check the first section was deleted by looking at the text of the whole document again
+            Assert.AreEqual(1, doc.Sections.Count);
             Assert.AreEqual("Section 2.", doc.GetText().Trim());
             //ExEnd
         }
@@ -458,7 +480,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Range
             //ExFor:Range.Text
-            //ExSummary:Shows how to get plain, unformatted text of a range.
+            //ExSummary:Shows how to get the text contents of all the nodes that a range covers.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -473,39 +495,42 @@ namespace ApiExamples
         //ExStart
         //ExFor:FindReplaceOptions.UseLegacyOrder
         //ExSummary:Shows how to change the searching order of nodes when performing a find-and-replace text operation.
-        public void UseLegacyOrder(bool isUseLegacyOrder)
+        public void UseLegacyOrder(bool useLegacyOrder)
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert three runs which can be used as tags, with the second placed inside a text box.
+            // Insert three runs which we can search for using a regex pattern.
+            // Place one of those runs inside a text box.
             builder.Writeln("[tag 1]");
             Shape textBox = builder.InsertShape(ShapeType.TextBox, 100, 50);
-            builder.Writeln("[tag 3]");
+            builder.Writeln("[tag 2]");
             builder.MoveTo(textBox.FirstParagraph);
-            builder.Write("[tag 2]");
+            builder.Write("[tag 3]");
 
+            // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
             FindReplaceOptions options = new FindReplaceOptions();
+
+            // Assign a custom callback to the "ReplacingCallback" property.
             TextReplacementTracker callback = new TextReplacementTracker();
             options.ReplacingCallback = callback;
 
-            // When a text replacement is performed, all of the runs of a document have their contents searched
-            // for every instance of the string that we wish to replace.
-            // This flag can change the search priority of runs inside text boxes.
-            options.UseLegacyOrder = isUseLegacyOrder;
+            // If we set the "UseLegacyOrder" property to "true", the
+            // find-and-replace operation will go through all the runs that are outside of a text box
+            // before going through the ones inside a text box.
+            // If we set the "UseLegacyOrder" property to "false", the
+            // find-and-replace operation will go over all the runs in a range in sequential order.
+            options.UseLegacyOrder = useLegacyOrder;
 
             doc.Range.Replace(new Regex(@"\[tag \d*\]"), "", options);
 
-            // Using legacy order goes through all runs of a range in sequential order.
-            // Not using legacy order goes through runs within text boxes after all runs outside of text boxes have been searched.
-            Assert.AreEqual(isUseLegacyOrder ?
-                new List<string> { "[tag 1]", "[tag 2]", "[tag 3]" } :
-                new List<string> { "[tag 1]", "[tag 3]", "[tag 2]" }, callback.Matches);
+            Assert.AreEqual(useLegacyOrder ?
+                new List<string> { "[tag 1]", "[tag 3]", "[tag 2]" } :
+                new List<string> { "[tag 1]", "[tag 2]", "[tag 3]" }, callback.Matches);
         }
 
         /// <summary>
-        /// Creates a list of string matches from a regex-based text find-and-replacement operation
-        /// in the order that they are encountered.
+        /// Records the order of all matches occuring during a find-and-replace operation.
         /// </summary>
         private class TextReplacementTracker : IReplacingCallback
         {
@@ -519,8 +544,9 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
-        public void UseSubstitutions()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void UseSubstitutions(bool useSubstitutions)
         {
             //ExStart
             //ExFor:FindReplaceOptions.UseSubstitutions
@@ -531,15 +557,21 @@ namespace ApiExamples
             builder.Writeln("John sold a car to Paul.");
             builder.Writeln("Jane sold a house to Joe.");
 
-            // Perform a find-and-replace operation on a range's text contents
-            // while preserving some elements from the replaced text using substitutions.
+            // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
             FindReplaceOptions options = new FindReplaceOptions();
-            options.UseSubstitutions = true;
+
+            // Set the "UseSubstitutions" property to "true" to get
+            // the find-and-replace operation to recognize substitution elements.
+            // Set the "UseSubstitutions" property to "false" to ignore substitution elements.
+            options.UseSubstitutions = useSubstitutions;
 
             Regex regex = new Regex(@"([A-z]+) sold a ([A-z]+) to ([A-z]+)");
             doc.Range.Replace(regex, @"$3 bought a $2 from $1", options);
 
-            Assert.AreEqual(doc.GetText(), "Paul bought a car from John.\rJoe bought a house from Jane.\r\f");
+            if (useSubstitutions)
+                Assert.AreEqual("Paul bought a car from John.\rJoe bought a house from Jane.", doc.GetText().Trim());
+            else
+                Assert.AreEqual("$3 bought a $2 from $1.\r$3 bought a $2 from $1.", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -551,12 +583,13 @@ namespace ApiExamples
         //ExFor:ReplacingArgs
         //ExFor:ReplacingArgs.MatchNode
         //ExFor:FindReplaceDirection
-        //ExSummary:Shows how to insert content of one document into another during a customized find and replace operation.
+        //ExSummary:Shows how to insert the contents of an entire document as replacement of a match in a find-and-replace operation.
         [Test] //ExSkip
         public void InsertDocumentAtReplace()
         {
             Document mainDoc = new Document(MyDir + "Document insertion destination.docx");
 
+            // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
             FindReplaceOptions options = new FindReplaceOptions();
             options.Direction = FindReplaceDirection.Backward;
             options.ReplacingCallback = new InsertDocumentAtReplaceHandler();
@@ -585,25 +618,21 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Inserts content of the external document after the specified node.
+        /// Inserts all the nodes of another document after a paragraph or table.
         /// </summary>
         static void InsertDocument(Node insertionDestination, Document docToInsert)
         {
-            // Make sure that the node is either a paragraph or table
             if (insertionDestination.NodeType.Equals(NodeType.Paragraph) || insertionDestination.NodeType.Equals(NodeType.Table))
             {
-                // We will be inserting into the parent of the destination paragraph
                 CompositeNode dstStory = insertionDestination.ParentNode;
 
-                // This object will be translating styles and lists during the import
                 NodeImporter importer =
                     new NodeImporter(docToInsert, insertionDestination.Document, ImportFormatMode.KeepSourceFormatting);
 
-                // Loop through all block level nodes in the body of the section
                 foreach (Section srcSection in docToInsert.Sections.OfType<Section>())
                     foreach (Node srcNode in srcSection.Body)
                     {
-                        // Skip the node if it is a last empty paragraph in a section
+                        // Skip the node if it is a last empty paragraph in a section.
                         if (srcNode.NodeType.Equals(NodeType.Paragraph))
                         {
                             Paragraph para = (Paragraph)srcNode;
@@ -611,17 +640,16 @@ namespace ApiExamples
                                 continue;
                         }
 
-                        // This creates a clone of the node, suitable for insertion into the destination document
+                        // Clone the node, and insert it into the destination document.
                         Node newNode = importer.ImportNode(srcNode, true);
 
-                        // Insert new node after the reference node
                         dstStory.InsertAfter(newNode, insertionDestination);
                         insertionDestination = newNode;
                     }
             }
             else
             {
-                throw new ArgumentException("The destination node should be either a paragraph or table.");
+                throw new ArgumentException("The destination node must be either a paragraph or table.");
             }
         }
         //ExEnd
