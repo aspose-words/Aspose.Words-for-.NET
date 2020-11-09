@@ -695,7 +695,7 @@ namespace ApiExamples
             switch (findReplaceDirection)
             {
                 case FindReplaceDirection.Forward:
-                    Assert.AreEqual(new[] {"Match 1", "Match 2", "Match 3", "Match 4"}, callback.Matches);
+                    Assert.AreEqual(new[] { "Match 1", "Match 2", "Match 3", "Match 4" }, callback.Matches);
                     break;
                 case FindReplaceDirection.Backward:
                     Assert.AreEqual(new[] { "Match 4", "Match 3", "Match 2", "Match 1" }, callback.Matches);
