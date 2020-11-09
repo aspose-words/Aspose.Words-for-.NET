@@ -116,8 +116,7 @@ namespace ApiExamples
             builder.Writeln("Hello again!");
  
             // Start tracking revisions and remove the second paragraph, which will create a delete revision.
-            // That paragraph's will persist in the document until we accept the delete revision,
-            // and the paragraph itself will count as a revision.
+            // That paragraph will persist in the document until we accept the delete revision.
             doc.StartTrackRevisions("John Doe", DateTime.Now);
             doc.FirstSection.Body.Paragraphs[1].Remove();
             doc.StopTrackRevisions();
