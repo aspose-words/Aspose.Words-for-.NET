@@ -30,25 +30,6 @@ namespace ApiExamples
     public class ExRendering : ApiExampleBase
     {
         [Test]
-        public void SaveToPdfWithOutline()
-        {
-            //ExStart
-            //ExFor:Document.Save(String, SaveOptions)
-            //ExFor:PdfSaveOptions
-            //ExFor:OutlineOptions.HeadingsOutlineLevels
-            //ExFor:OutlineOptions.ExpandedOutlineLevels
-            //ExSummary:Converts a whole document to PDF with three levels in the document outline.
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            PdfSaveOptions options = new PdfSaveOptions();
-            options.OutlineOptions.HeadingsOutlineLevels = 3;
-            options.OutlineOptions.ExpandedOutlineLevels = 1;
-
-            doc.Save(ArtifactsDir + "Rendering.SaveToPdfWithOutline.pdf", options);
-            //ExEnd
-        }
-
-        [Test]
         public void SaveToPdfStreamOnePage()
         {
             //ExStart
