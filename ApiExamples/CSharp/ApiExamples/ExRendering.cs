@@ -10,12 +10,15 @@ using System.Drawing;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.Fonts;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+using FolderFontSource = Aspose.Words.Fonts.FolderFontSource;
+using SystemFontSource = Aspose.Words.Fonts.SystemFontSource;
 #if NET462 || JAVA
 using System.Windows.Forms;
 using System.Drawing.Printing;
@@ -36,34 +39,87 @@ namespace ApiExamples
             //ExFor:FixedPageSaveOptions.PageIndex
             //ExFor:FixedPageSaveOptions.PageCount
             //ExFor:Document.Save(Stream, SaveOptions)
-            //ExSummary:Converts just one page (third page in this example) of the document to PDF.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to convert only some of the pages in a document to PDF.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Page 1.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 2.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 3.");
 
             using (Stream stream = File.Create(ArtifactsDir + "Rendering.SaveToPdfStreamOnePage.pdf"))
             {
+                // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+                // to modify the way in which that method converts the document to .PDF.
                 PdfSaveOptions options = new PdfSaveOptions();
-                options.PageIndex = 2;
+
+                // Set the "PageIndex" to "1" to render a portion of the document starting from the second page.
+                options.PageIndex = 1;
+
+                // Set the "PageCount" to "1" to render only one page of the document,
+                // starting from the page that the "PageIndex" property specified.
                 options.PageCount = 1;
+                
+                // This document will contain one page starting from page two, which means it will only contain the second page.
                 doc.Save(stream, options);
             }
             //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "Rendering.SaveToPdfStreamOnePage.pdf");
+
+            Assert.AreEqual(1, pdfDocument.Pages.Count);
+
+            TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
+            pdfDocument.Pages.Accept(textFragmentAbsorber);
+
+            Assert.AreEqual("Page 2.", textFragmentAbsorber.Text);
+#endif
         }
 
-        [Test]
-        public void SaveToPdfNoCompression()
+        [TestCase(PdfTextCompression.None)]
+        [TestCase(PdfTextCompression.Flate)]
+        public void TextCompression(PdfTextCompression pdfTextCompression)
         {
             //ExStart
             //ExFor:PdfSaveOptions
             //ExFor:PdfSaveOptions.TextCompression
             //ExFor:PdfTextCompression
-            //ExSummary:Saves a document to PDF without compression.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to apply text compression when saving a document to PDF.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            for (int i = 0; i < 100; i++)
+                builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                                "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-            options.TextCompression = PdfTextCompression.None;
 
-            doc.Save(ArtifactsDir + "Rendering.SaveToPdfNoCompression.pdf", options);
+            // Set the "TextCompression" property to "PdfTextCompression.None" to not apply any
+            // compression to text when we save the document to PDF.
+            // Set the "TextCompression" property to "PdfTextCompression.Flate" to apply ZIP compression
+            // to text when we save the document to PDF. The larger the document, the bigger the impact that this will have.
+            options.TextCompression = pdfTextCompression;
+
+            doc.Save(ArtifactsDir + "Rendering.TextCompression.pdf", options);
+
+            switch (pdfTextCompression)
+            {
+                case PdfTextCompression.None:
+                    Assert.That(60000, Is.LessThan(new FileInfo(ArtifactsDir + "Rendering.TextCompression.pdf").Length));
+                    TestUtil.FileContainsString("5 0 obj\r\n<</Length 9 0 R>>stream", ArtifactsDir + "Rendering.TextCompression.pdf"); //ExSkip
+                    break;
+                case PdfTextCompression.Flate:
+                    Assert.That(30000, Is.AtLeast(new FileInfo(ArtifactsDir + "Rendering.TextCompression.pdf").Length));
+                    TestUtil.FileContainsString("5 0 obj\r\n<</Length 9 0 R/Filter /FlateDecode>>stream", ArtifactsDir + "Rendering.TextCompression.pdf"); //ExSkip
+                    break;
+            }
             //ExEnd
+
         }
 
         [Test]
