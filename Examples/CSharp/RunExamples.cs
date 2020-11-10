@@ -99,6 +99,7 @@ namespace Aspose.Words.Examples.CSharp
             // WorkingWithVbaMacros.Run();
             // ConvertDocumentToMarkdown.Run();
             // WorkingWithVbaReferenceCollection.Run();
+            // ConvertWordDocument.Run();
 
 
             //// =====================================================
