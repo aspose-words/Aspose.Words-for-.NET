@@ -980,8 +980,8 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "UseBookFoldPrintingSettings" property to "true" to arrange the contents
-            // in the output PDF in a way that helps us make a booklet out of it.
-            // Set the "UseBookFoldPrintingSettings" property to "false" to render the PDF a normally.
+            // in the output PDF in a way that helps us use it to make a booklet.
+            // Set the "UseBookFoldPrintingSettings" property to "false" to render the PDF normally.
             options.UseBookFoldPrintingSettings = renderTextAsBookfold;
 
             // If we are rendering the document as a booklet, we must set the "MultiplePages"
