@@ -46,7 +46,6 @@ namespace ApiExamples
         public void HeadingsOutlineLevels()
         {
             //ExStart
-            //ExFor:OutlineOptions.CreateMissingOutlineLevels
             //ExFor:ParagraphFormat.IsHeading
             //ExFor:PdfSaveOptions.OutlineOptions
             //ExFor:PdfSaveOptions.SaveFormat
@@ -81,7 +80,6 @@ namespace ApiExamples
             // Set the "HeadingsOutlineLevels" property to "2" to exclude all headings whose levels are above 2 from the outline.
             // The last two headings we have inserted above will not appear.
             saveOptions.OutlineOptions.HeadingsOutlineLevels = 2;
-            saveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.HeadingsOutlineLevels.pdf", saveOptions);
             //ExEnd
