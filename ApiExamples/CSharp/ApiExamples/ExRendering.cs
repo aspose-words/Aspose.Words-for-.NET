@@ -251,7 +251,7 @@ namespace ApiExamples
 
             // Once we print this document, we can turn it into a booklet by stacking the pages
             // in the order they come out of the printer and then folding down the middle
-            doc.Save(ArtifactsDir + $"Rendering.SaveAsXpsBookFold.{renderTextAsBookfold}.xps", xpsOptions);
+            doc.Save(ArtifactsDir + "Rendering.SaveAsXpsBookFold.xps", xpsOptions);
             //ExEnd
         }
 
@@ -260,30 +260,31 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ImageSaveOptions.#ctor
-            //ExFor:Document.Save(String)
-            //ExFor:Document.Save(Stream, SaveFormat)
             //ExFor:Document.Save(String, SaveOptions)
-            //ExSummary:Shows how to save a document to the JPEG format using the Save method and the ImageSaveOptions class.
-            // Open the document
-            Document doc = new Document(MyDir + "Rendering.docx");
-            // Save as a JPEG image file with default options
-            doc.Save(ArtifactsDir + "Rendering.SaveAsImage.DefaultJpgOptions.jpg");
-
-            // Save document to stream as a JPEG with default options
-            MemoryStream docStream = new MemoryStream();
-            doc.Save(docStream, SaveFormat.Jpeg);
-            // Rewind the stream position back to the beginning, ready for use
-            docStream.Seek(0, SeekOrigin.Begin);
-
-            // Save document to a JPEG image with specified options
-            // Render the third page only and set the JPEG quality to 80%
-            // In this case we need to pass the desired SaveFormat to the ImageSaveOptions constructor 
-            // to signal what type of image to save as
+            //ExSummary:Shows how to configure compression while saving a document as a JPEG.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertImage(ImageDir + "Logo.jpg");
+            
+            // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method renders the document into an image.
             ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg);
-            imageOptions.PageIndex = 2;
-            imageOptions.PageCount = 1;
-            imageOptions.JpegQuality = 80;
-            doc.Save(ArtifactsDir + "Rendering.SaveAsImage.CustomJpgOptions.jpg", imageOptions);
+
+            // Set the "JpegQuality" property to "10" to use stronger compression when rendering the document.
+            // This will reduce the file size of the document, but the image will display more prominent compression artifacts.
+            imageOptions.JpegQuality = 10;
+
+            doc.Save(ArtifactsDir + "Rendering.SaveAsImage.HighCompression.jpg", imageOptions);
+
+            Assert.That(20000, Is.AtLeast(new FileInfo(ArtifactsDir + "Rendering.SaveAsImage.HighCompression.jpg").Length));
+
+            // Set the "JpegQuality" property to "100" to use weaker compression when rending the document.
+            // This will improve the quality of the image, but will also increase the file size.
+            imageOptions.JpegQuality = 100;
+
+            doc.Save(ArtifactsDir + "Rendering.SaveAsImage.HighQuality.jpg", imageOptions);
+
+            Assert.That(60000, Is.LessThan(new FileInfo(ArtifactsDir + "Rendering.SaveAsImage.HighQuality.jpg").Length));
             //ExEnd
         }
 
@@ -294,8 +295,12 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Rendering.SaveToTiffDefault.tiff");
         }
 
-        [Test, Category("SkipMono")]
-        public void SaveToTiffCompression()
+        [TestCase(TiffCompression.None), Category("SkipMono")]
+        [TestCase(TiffCompression.Rle), Category("SkipMono")]
+        [TestCase(TiffCompression.Lzw), Category("SkipMono")]
+        [TestCase(TiffCompression.Ccitt3), Category("SkipMono")]
+        [TestCase(TiffCompression.Ccitt4), Category("SkipMono")]
+        public void SaveToTiffCompression(TiffCompression tiffCompression)
         {
             //ExStart
             //ExFor:TiffCompression
@@ -303,16 +308,45 @@ namespace ApiExamples
             //ExFor:ImageSaveOptions.PageIndex
             //ExFor:ImageSaveOptions.PageCount
             //ExSummary:Converts a page of a Word document into a TIFF image and uses the CCITT compression.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertImage(ImageDir + "Logo.jpg");
 
-            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff)
-            {
-                TiffCompression = TiffCompression.Ccitt3,
-                PageIndex = 0,
-                PageCount = 1
-            };
+            // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method renders the document into an image.
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff);
+
+            // Set the "TiffCompression" property to "TiffCompression.None" to apply no compression while saving,
+            // which may result in a very large output file.
+            // Set the "TiffCompression" property to "TiffCompression.Rle" to apply RLE compression
+            // Set the "TiffCompression" property to "TiffCompression.Lzw" to apply LZW compression.
+            // Set the "TiffCompression" property to "TiffCompression.Ccitt3" to apply CCITT3 compression.
+            // Set the "TiffCompression" property to "TiffCompression.Ccitt4" to apply CCITT4 compression.
+            options.TiffCompression = tiffCompression;
+
+            options.PageIndex = 0;
+            options.PageCount = 1;
 
             doc.Save(ArtifactsDir + "Rendering.SaveToTiffCompression.tiff", options);
+
+            switch (tiffCompression)
+            {
+                case TiffCompression.None:
+                    Assert.That(3000000, Is.LessThan(new FileInfo(ArtifactsDir + "Rendering.SaveToTiffCompression.tiff").Length));
+                    break;
+                case TiffCompression.Rle:
+                    Assert.That(600000, Is.LessThan(new FileInfo(ArtifactsDir + "Rendering.SaveToTiffCompression.tiff").Length));
+                    break;
+                case TiffCompression.Lzw:
+                    Assert.That(200000, Is.LessThan(new FileInfo(ArtifactsDir + "Rendering.SaveToTiffCompression.tiff").Length));
+                    break;
+                case TiffCompression.Ccitt3:
+                    Assert.That(90000, Is.AtLeast(new FileInfo(ArtifactsDir + "Rendering.SaveToTiffCompression.tiff").Length));
+                    break;
+                case TiffCompression.Ccitt4:
+                    Assert.That(20000, Is.AtLeast(new FileInfo(ArtifactsDir + "Rendering.SaveToTiffCompression.tiff").Length));
+                    break;
+            }
             //ExEnd
         }
 
