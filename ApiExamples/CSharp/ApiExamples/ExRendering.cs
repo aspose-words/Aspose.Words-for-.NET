@@ -119,35 +119,62 @@ namespace ApiExamples
                     break;
             }
             //ExEnd
-
         }
 
-        [Test]
-        public void PdfCustomOptions()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void PreserveFormFields(bool preserveFormFields)
         {
             //ExStart
             //ExFor:PdfSaveOptions.PreserveFormFields
             //ExSummary:Shows how to save a document to the PDF format using the Save method and the PdfSaveOptions class.
             // Open the document
-            Document doc = new Document(MyDir + "Rendering.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Option 1: Save document to file in the PDF format with default options
-            doc.Save(ArtifactsDir + "Rendering.PdfDefaultOptions.pdf");
+            builder.Write("Please select a fruit: ");
 
-            // Option 2: Save the document to stream in the PDF format with default options
-            MemoryStream stream = new MemoryStream();
-            doc.Save(stream, SaveFormat.Pdf);
-            // Rewind the stream position back to the beginning, ready for use
-            stream.Seek(0, SeekOrigin.Begin);
+            // Insert a combo box which will allow a user to choose an option from a collection of strings.
+            builder.InsertComboBox("MyComboBox", new[] { "Apple", "Banana", "Cherry" }, 0);
 
-            // Option 3: Save document to the PDF format with specified options
-            // Render the first page only and preserve form fields as usable controls and not as plain text
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions pdfOptions = new PdfSaveOptions();
-            pdfOptions.PageIndex = 0;
-            pdfOptions.PageCount = 1;
-            pdfOptions.PreserveFormFields = true;
-            doc.Save(ArtifactsDir + "Rendering.PdfCustomOptions.pdf", pdfOptions);
+
+            // Set the "PreserveFormFields" property to "true" to save form fields as interactive objects in the output PDF.
+            // Set the "PreserveFormFields" property to "false" to freeze all form fields in the document at
+            // their current values, and display them as plain text in the output PDF.
+            pdfOptions.PreserveFormFields = preserveFormFields;
+
+            doc.Save(ArtifactsDir + "Rendering.PreserveFormFields.pdf", pdfOptions);
             //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "Rendering.PreserveFormFields.pdf");
+
+            Assert.AreEqual(1, pdfDocument.Pages.Count);
+
+            TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
+            pdfDocument.Pages.Accept(textFragmentAbsorber);
+
+            if (preserveFormFields)
+            {
+                Assert.AreEqual("Please select a fruit: ", textFragmentAbsorber.Text);
+                TestUtil.FileContainsString("10 0 obj\r\n" +
+                                            "<</Type /Annot/Subtype /Widget/P 4 0 R/FT /Ch/F 4/Rect [168.39199829 707.35101318 217.87442017 722.64007568]/Ff 131072/T(þÿ\0M\0y\0C\0o\0m\0b\0o\0B\0o\0x)/Opt " +
+                                            "[(þÿ\0A\0p\0p\0l\0e) (þÿ\0B\0a\0n\0a\0n\0a) (þÿ\0C\0h\0e\0r\0r\0y) ]/V(þÿ\0A\0p\0p\0l\0e)/DA(0 g /FAAABC 12 Tf )/AP<</N 11 0 R>>>>", 
+                    ArtifactsDir + "Rendering.PreserveFormFields.pdf");
+            }
+            else
+            {
+                Assert.AreEqual("Please select a fruit: Apple", textFragmentAbsorber.Text);
+                Assert.Throws<AssertionException>(() =>
+                {
+                    TestUtil.FileContainsString("/Widget", 
+                        ArtifactsDir + "Rendering.PreserveFormFields.pdf");
+                });
+            }
+#endif
         }
 
         [Test]
