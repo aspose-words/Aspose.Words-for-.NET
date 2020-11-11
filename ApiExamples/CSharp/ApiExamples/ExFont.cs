@@ -949,8 +949,6 @@ namespace ApiExamples
             Assert.AreEqual(Underline.Double, docRun.Font.Underline);
         }
 
-        
-
         public class FontSubstitutionWarningCollector : IWarningCallback
         {
             /// <summary>
@@ -991,8 +989,6 @@ namespace ApiExamples
 
             Assert.AreEqual(folderFontSource[0].GetAvailableFonts().Count, Directory.GetFiles(FontsDir).Count(f => f.EndsWith(".ttf")));
         }
-
-
 
         [Test]
         public void SetFontAutoColor()

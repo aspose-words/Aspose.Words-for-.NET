@@ -8,6 +8,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Aspose.Pdf.Text;
@@ -77,6 +78,87 @@ namespace ApiExamples
 
             Assert.AreEqual("Page 2.", textFragmentAbsorber.Text);
 #endif
+        }
+
+        [Test]
+        public void OnePage()
+        {
+            //ExStart
+            //ExFor:Document.Save(String, SaveOptions)
+            //ExFor:FixedPageSaveOptions
+            //ExFor:ImageSaveOptions.PageIndex
+            //ExSummary:Shows how to render one page from a document to a JPEG image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Page 1.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 2.");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 3.");
+
+            // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method renders the document into an image.
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
+
+            // Set the "PageIndex" to "1" to select the second page via
+            // the zero-based index to start rendering the document from.
+            options.PageIndex = 1;
+
+            // When we save the document to the JPEG format, Aspose.Words only renders one page.
+            // This image will contain one page starting from page two,
+            // which will just be the second page of the original document.
+            doc.Save(ArtifactsDir + "Rendering.OnePage.jpg", options);
+            //ExEnd
+
+            TestUtil.VerifyImage(816, 1056, ArtifactsDir + "Rendering.OnePage.jpg");
+        }
+
+        [Test, Category("SkipMono")]
+        public void PageByPage()
+        {
+            //ExStart
+            //ExFor:Document.Save(String, SaveOptions)
+            //ExFor:FixedPageSaveOptions
+            //ExFor:ImageSaveOptions.PageIndex
+            //ExFor:ImageSaveOptions.PageCount
+            //ExSummary:Shows how to render every page of a document to a separate TIFF image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Page 1.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 2.");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 3.");
+
+            // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method renders the document into an image.
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff);
+
+            // Set the "PageCount" property to "1" to render only one page of the document.
+            // Many other image formats only render one page at a time, and do not use this property.
+            options.PageCount = 1;
+
+            for (int i = 0; i < doc.PageCount; i++)
+            {
+                // Set the "PageIndex" property to the number of the first page from
+                // which to start rendering the document from.
+                options.PageIndex = i;
+
+                doc.Save(ArtifactsDir + $"Rendering.PageByPage.{i + 1}.tiff", options);
+            }
+            //ExEnd
+
+            List<string> imageFileNames = Directory.GetFiles(ArtifactsDir, "*.tiff")
+                .Where(item => item.Contains("Rendering.PageByPage.") && item.EndsWith(".tiff")).ToList();
+
+            Assert.AreEqual(3, imageFileNames.Count);
+
+            foreach (string imageFileName in imageFileNames)
+                TestUtil.VerifyImage(816, 1056, imageFileName);
         }
 
         [TestCase(PdfTextCompression.None)]
@@ -305,11 +387,10 @@ namespace ApiExamples
             //ExStart
             //ExFor:TiffCompression
             //ExFor:ImageSaveOptions.TiffCompression
-            //ExFor:ImageSaveOptions.PageIndex
-            //ExFor:ImageSaveOptions.PageCount
-            //ExSummary:Converts a page of a Word document into a TIFF image and uses the CCITT compression.
+            //ExSummary:Shows how to select the compression scheme to apply to a document that we convert into a TIFF image.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.InsertImage(ImageDir + "Logo.jpg");
 
             // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
@@ -323,9 +404,6 @@ namespace ApiExamples
             // Set the "TiffCompression" property to "TiffCompression.Ccitt3" to apply CCITT3 compression.
             // Set the "TiffCompression" property to "TiffCompression.Ccitt4" to apply CCITT4 compression.
             options.TiffCompression = tiffCompression;
-
-            options.PageIndex = 0;
-            options.PageCount = 1;
 
             doc.Save(ArtifactsDir + "Rendering.SaveToTiffCompression.tiff", options);
 
@@ -362,32 +440,12 @@ namespace ApiExamples
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png)
             {
                 Resolution = 300,
-                PageCount = 1
             };
 
             doc.Save(ArtifactsDir + "Rendering.SaveToImageResolution.png", options);
             //ExEnd
         }
-
-        [Test, Category("SkipMono")]
-        public void SaveToEmf()
-        {
-            //ExStart
-            //ExFor:FixedPageSaveOptions
-            //ExFor:Document.Save(String, SaveOptions)
-            //ExSummary:Converts every page of a DOC file into a separate scalable EMF file.
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Emf) { PageCount = 1 };
-
-            for (int i = 0; i < doc.PageCount; i++)
-            {
-                options.PageIndex = i;
-                doc.Save(ArtifactsDir + "Rendering.SaveToEmf." + i + ".emf", options);
-            }
-            //ExEnd
-        }
-
+        
         [Test]
         public void SaveToImageJpegQuality()
         {

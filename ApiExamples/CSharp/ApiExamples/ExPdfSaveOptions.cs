@@ -1206,7 +1206,9 @@ namespace ApiExamples
                     }
                     break;
                 case PdfCustomPropertiesExport.Standard:
-                    TestUtil.FileContainsString("<</Creator(þÿ\0A\0s\0p\0o\0s\0e\0.\0W\0o\0r\0d\0s)/Producer(þÿ\0A\0s\0p\0o\0s\0e\0.\0W\0o\0r\0d\0s\0 \0f\0o\0r\0 \0.\0N\0E\0T\0 \02\00\0.\01\00\0.\00)/Company(þÿ\0M\0y\0 \0v\0a\0l\0u\0e)>>", 
+                    TestUtil.FileContainsString("<</Creator(þÿ\0A\0s\0p\0o\0s\0e\0.\0W\0o\0r\0d\0s)/Producer(þÿ\0A\0s\0p\0o\0s\0e\0.\0W\0o\0r\0d\0s\0 \0f\0o\0r\0", 
+                        ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
+                    TestUtil.FileContainsString("/Company (þÿ\0M\0y\0 \0v\0a\0l\0u\0e)>>",
                         ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
                     break;
                 case PdfCustomPropertiesExport.Metadata:
