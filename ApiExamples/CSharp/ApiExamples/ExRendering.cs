@@ -341,8 +341,11 @@ namespace ApiExamples
         public void SaveAsImage()
         {
             //ExStart
-            //ExFor:ImageSaveOptions.#ctor
             //ExFor:Document.Save(String, SaveOptions)
+            //ExFor:FixedPageSaveOptions.JpegQuality
+            //ExFor:ImageSaveOptions
+            //ExFor:ImageSaveOptions.#ctor
+            //ExFor:ImageSaveOptions.JpegQuality
             //ExSummary:Shows how to configure compression while saving a document as a JPEG.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -486,35 +489,6 @@ namespace ApiExamples
                 Assert.AreEqual(3300, image.Height);
             }
 #endif
-            //ExEnd
-        }
-
-        [Test]
-        public void SetJpegQuality()
-        {
-            //ExStart
-            //ExFor:FixedPageSaveOptions.JpegQuality
-            //ExFor:ImageSaveOptions
-            //ExFor:ImageSaveOptions.JpegQuality
-            //ExSummary:Converts a page of a Word document into JPEG images of different qualities.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Font.Name = "Times New Roman";
-            builder.Font.Size = 24;
-            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-
-            builder.InsertImage(ImageDir + "Logo.jpg");
-
-            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
-
-            // Try worst quality
-            saveOptions.JpegQuality = 0;
-            doc.Save(ArtifactsDir + "Rendering.SetJpegQuality.0.jpeg", saveOptions);
-
-            // Try best quality
-            saveOptions.JpegQuality = 100;
-            doc.Save(ArtifactsDir + "Rendering.SetJpegQuality.100.jpeg", saveOptions);
             //ExEnd
         }
 
