@@ -429,42 +429,92 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SaveToImageResolution()
+        public void SetImageResolution()
         {
             //ExStart
             //ExFor:ImageSaveOptions
             //ExFor:ImageSaveOptions.Resolution
-            //ExSummary:Renders a page of a Word document into a PNG image at a specific resolution.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to specify a resolution while rendering a document to PNG.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png)
+            builder.Font.Name = "Times New Roman";
+            builder.Font.Size = 24;
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method renders the document into an image.
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
+
+            // Set the "Resolution" property to "72" to render the document in 72dpi.
+            options.Resolution = 72;
+            
+            doc.Save(ArtifactsDir + "Rendering.SetImageResolution.72dpi.png", options);
+
+            Assert.That(120000, Is.AtLeast(new FileInfo(ArtifactsDir + "Rendering.SetImageResolution.72dpi.png").Length));
+
+#if NET462 || JAVA
+            Image image = Image.FromFile(ArtifactsDir + "Rendering.SetImageResolution.72dpi.png");
+
+            Assert.AreEqual(612, image.Width);
+            Assert.AreEqual(792, image.Height);
+#elif NETCOREAPP2_1 || __MOBILE__
+            using (SKBitmap image = SKBitmap.Decode(ArtifactsDir + "Rendering.SetImageResolution.72dpi.png")) 
             {
-                Resolution = 300,
-            };
+                Assert.AreEqual(612, image.Width);
+                Assert.AreEqual(792, image.Height);
+            }
+#endif
+            // Set the "Resolution" property to "300" to render the document in 300dpi.
+            options.Resolution = 300;
 
-            doc.Save(ArtifactsDir + "Rendering.SaveToImageResolution.png", options);
+            doc.Save(ArtifactsDir + "Rendering.SetImageResolution.300dpi.png", options);
+
+            Assert.That(1100000, Is.LessThan(new FileInfo(ArtifactsDir + "Rendering.SetImageResolution.300dpi.png").Length));
+
+#if NET462 || JAVA
+            image = Image.FromFile(ArtifactsDir + "Rendering.SetImageResolution.300dpi.png");
+
+            Assert.AreEqual(2550, image.Width);
+            Assert.AreEqual(3300, image.Height);
+#elif NETCOREAPP2_1 || __MOBILE__
+            using (SKBitmap image = SKBitmap.Decode(ArtifactsDir + "Rendering.SetImageResolution.300dpi.png")) 
+            {
+                Assert.AreEqual(2550, image.Width);
+                Assert.AreEqual(3300, image.Height);
+            }
+#endif
             //ExEnd
         }
-        
+
         [Test]
-        public void SaveToImageJpegQuality()
+        public void SetJpegQuality()
         {
             //ExStart
             //ExFor:FixedPageSaveOptions.JpegQuality
             //ExFor:ImageSaveOptions
             //ExFor:ImageSaveOptions.JpegQuality
             //ExSummary:Converts a page of a Word document into JPEG images of different qualities.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Times New Roman";
+            builder.Font.Size = 24;
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            builder.InsertImage(ImageDir + "Logo.jpg");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
 
             // Try worst quality
             saveOptions.JpegQuality = 0;
-            doc.Save(ArtifactsDir + "Rendering.SaveToImageJpegQuality.0.jpeg", saveOptions);
+            doc.Save(ArtifactsDir + "Rendering.SetJpegQuality.0.jpeg", saveOptions);
 
             // Try best quality
             saveOptions.JpegQuality = 100;
-            doc.Save(ArtifactsDir + "Rendering.SaveToImageJpegQuality.100.jpeg", saveOptions);
+            doc.Save(ArtifactsDir + "Rendering.SetJpegQuality.100.jpeg", saveOptions);
             //ExEnd
         }
 
