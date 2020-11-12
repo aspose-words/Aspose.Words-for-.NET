@@ -9,6 +9,7 @@ using System;
 using System.Drawing;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using Aspose.Pdf.Text;
@@ -493,47 +494,91 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SaveToImagePaperColor()
+        public void SetImagePaperColor()
         {
             //ExStart
             //ExFor:ImageSaveOptions
             //ExFor:ImageSaveOptions.PaperColor
             //ExSummary:Renders a page of a Word document into an image with transparent or colored background.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            builder.Font.Name = "Times New Roman";
+            builder.Font.Size = 24;
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method renders the document into an image.
             ImageSaveOptions imgOptions = new ImageSaveOptions(SaveFormat.Png);
 
+            // Set the "PaperColor" property to a transparent color to apply a transparent
+            // background to the document while rendering it to an image.
             imgOptions.PaperColor = Color.Transparent;
-            doc.Save(ArtifactsDir + "Rendering.SaveToImagePaperColor.Transparent.png", imgOptions);
 
+            doc.Save(ArtifactsDir + "Rendering.SetImagePaperColor.Transparent.png", imgOptions);
+
+            // Set the "PaperColor" property to an opaque color to apply that color
+            // as the background of the document as we render it to an image.
             imgOptions.PaperColor = Color.LightCoral;
-            doc.Save(ArtifactsDir + "Rendering.SaveToImagePaperColor.Coral.png", imgOptions);
+
+            doc.Save(ArtifactsDir + "Rendering.SetImagePaperColor.LightCoral.png", imgOptions);
             //ExEnd
+
+            TestUtil.ImageContainsTransparency(ArtifactsDir + "Rendering.SetImagePaperColor.Transparent.png");
+            Assert.Throws<AssertionException>(() =>
+                TestUtil.ImageContainsTransparency(ArtifactsDir + "Rendering.SetImagePaperColor.LightCoral.png"));
         }
 
-        #if NET462 || JAVA
         [Test]
         public void SaveToImageStream()
         {
             //ExStart
             //ExFor:Document.Save(Stream, SaveFormat)
-            //ExSummary:Saves a document page as a BMP image into a stream.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to save a document to an image via stream, and then read the image from that stream.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            MemoryStream stream = new MemoryStream();
-            doc.Save(stream, SaveFormat.Bmp);
+            builder.Font.Name = "Times New Roman";
+            builder.Font.Size = 24;
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 
-            // Rewind the stream and create a .NET image from it
-            stream.Position = 0;
+            builder.InsertImage(ImageDir + "Logo.jpg");
 
-            // Read the stream back into an image
-            using (Image image = Image.FromStream(stream))
+            // Save the document to a stream.
+            using (MemoryStream stream = new MemoryStream())
             {
-                // ...Do something
+                doc.Save(stream, SaveFormat.Bmp);
+
+                stream.Position = 0;
+                
+                // Read the stream back into an image.
+#if NET462 || JAVA
+                using (Image image = Image.FromStream(stream))
+                {
+                    Assert.AreEqual(ImageFormat.Bmp, image.RawFormat);
+                    Assert.AreEqual(816, image.Width);
+                    Assert.AreEqual(1056, image.Height);
+                }
+#elif NETCOREAPP2_1 || __MOBILE__
+                using (SKBitmap image = SKBitmap.Decode(stream))
+                {
+                    Assert.AreEqual(816, image.Width);
+                    Assert.AreEqual(1056, image.Height);
+                }
+
+                stream.Position = 0;
+
+                SKCodec codec = SKCodec.Create(stream);
+
+                Assert.AreEqual(SKEncodedImageFormat.Bmp, codec.EncodedFormat);
+#endif
             }
             //ExEnd
         }
 
+#if NET462 || JAVA
         [Test]
         public void RenderToSize()
         {
