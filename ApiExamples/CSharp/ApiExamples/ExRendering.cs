@@ -584,50 +584,49 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.RenderToSize
-            //ExSummary:Render to a bitmap at a specified location and size.
+            //ExSummary:Shows how to render a document to a bitmap at a specified location and size.
             Document doc = new Document(MyDir + "Rendering.docx");
             
             using (Bitmap bmp = new Bitmap(700, 700))
             {
-                // User has some sort of a Graphics object. In this case created from a bitmap
                 using (Graphics gr = Graphics.FromImage(bmp))
                 {
-                    // The user can specify any options on the Graphics object including
-                    // transform, anti-aliasing, page units, etc.
                     gr.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
-                    // If we want to fit the page into a 3" x 3" square on the screen, we will need to set the measurement units to inches
+                    // Set the "PageUnit" property to "GraphicsUnit.Inch" to use inches as the
+                    // measurement unit for any transformations and dimensions that we will define.
                     gr.PageUnit = GraphicsUnit.Inch;
 
-                    // The output should be offset 0.5" from the edge and rotated
+                    // Offset the output 0.5" from the edge.
                     gr.TranslateTransform(0.5f, 0.5f);
+
+                    // Rotate the output by 10 degrees.
                     gr.RotateTransform(10);
 
-                    // This is our test rectangle
+                    // Draw a 3"x3" rectangle.
                     gr.DrawRectangle(new Pen(Color.Black, 3f / 72f), 0f, 0f, 3f, 3f);
-
-                    // User specifies (in world coordinates) where on the Graphics to render and what size
+                    
+                    // Draw the first page of our document with the same dimensions and transformation as the rectangle.
+                    // The rectangle will frame the first page.
                     float returnedScale = doc.RenderToSize(0, gr, 0f, 0f, 3f, 3f);
 
-                    // This is the calculated scale factor to fit 297mm into 3"
-                    Console.WriteLine("The image was rendered at {0:P0} zoom.", returnedScale);
+                    // This is the scaling factor that the RenderToSize method applied to the first page to fit the size we specified.
+                    Assert.AreEqual(0.2566f, returnedScale, 0.0001f);
 
-                    // One more example, this time in millimeters
+                    // Set the "PageUnit" property to "GraphicsUnit.Millimeter" to use millimeters as the
+                    // measurement unit for any transformations and dimensions that we will define.
                     gr.PageUnit = GraphicsUnit.Millimeter;
 
+                    // Reset the transformations that we used from the previous rendering.
                     gr.ResetTransform();
 
-                    // Move the origin 10mm 
+                    // Apply another set of transformations. 
                     gr.TranslateTransform(10, 10);
-
-                    // Apply both scale transform and page scale for fun
                     gr.ScaleTransform(0.5f, 0.5f);
                     gr.PageScale = 2f;
 
-                    // This is our test rectangle
+                    // Create another rectangle, and use it to frame another page from the document.
                     gr.DrawRectangle(new Pen(Color.Black, 1), 90, 10, 50, 100);
-
-                    // User specifies (in world coordinates) where on the Graphics to render and what size
                     doc.RenderToSize(1, gr, 90, 10, 50, 100);
 
                     bmp.Save(ArtifactsDir + "Rendering.RenderToSize.png");
