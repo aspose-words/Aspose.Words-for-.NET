@@ -640,51 +640,44 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.RenderToScale
-            //ExSummary:Renders individual pages to graphics to create one image with thumbnails of all pages.
+            //ExSummary:Shows how to the individual pages of a document to graphics to create one image with thumbnails of all pages.
             // The user opens or builds a document
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // This defines the number of columns to display the thumbnails in
+            // Calculate the number of rows and columns that we will fill with thumbnails.
             const int thumbColumns = 2;
-
-            // Calculate the required number of rows for thumbnails
-            // We can now get the number of pages in the document
             int thumbRows = Math.DivRem(doc.PageCount, thumbColumns, out int remainder);
+
             if (remainder > 0)
                 thumbRows++;
 
-            // Define a zoom factor for the thumbnails 
+            // Scale the thumbnails relative to the size of the first page. 
             const float scale = 0.25f;
-
-            // We can use the size of the first page to calculate the size of the thumbnail,
-            // assuming that all pages in the document are of the same size
             Size thumbSize = doc.GetPageInfo(0).GetSizeInPixels(scale, 96);
 
-            // Calculate the size of the image that will contain all the thumbnails
+            // Calculate the size of the image that will contain all the thumbnails.
             int imgWidth = thumbSize.Width * thumbColumns;
             int imgHeight = thumbSize.Height * thumbRows;
             
             using (Bitmap img = new Bitmap(imgWidth, imgHeight))
             {
-                // The Graphics object, which we will draw on, can be created from a bitmap, metafile, printer, or window
                 using (Graphics gr = Graphics.FromImage(img))
                 {
                     gr.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
-                    // Fill the "paper" with white, otherwise it will be transparent
+                    // Fill the background, which is transparent by default, in white.
                     gr.FillRectangle(new SolidBrush(Color.White), 0, 0, imgWidth, imgHeight);
 
                     for (int pageIndex = 0; pageIndex < doc.PageCount; pageIndex++)
                     {
                         int rowIdx = Math.DivRem(pageIndex, thumbColumns, out int columnIdx);
 
-                        // Specify where we want the thumbnail to appear
+                        // Specify where we want the thumbnail to appear.
                         float thumbLeft = columnIdx * thumbSize.Width;
                         float thumbTop = rowIdx * thumbSize.Height;
 
+                        // Render a page as a thumbnail, and then frame it in a rectangle of the same size.
                         SizeF size = doc.RenderToScale(pageIndex, gr, thumbLeft, thumbTop, scale);
-
-                        // Draw the page rectangle
                         gr.DrawRectangle(Pens.Black, thumbLeft, thumbTop, size.Width, size.Height);
                     }
 
@@ -701,24 +694,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:PageInfo.GetDotNetPaperSize
             //ExFor:PageInfo.Landscape
-            //ExSummary:Shows how to implement your own .NET PrintDocument to completely customize printing of Aspose.Words documents.
+            //ExSummary:Shows how to customize printing of Aspose.Words documents.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Create an instance of our own PrintDocument
             MyPrintDocument printDoc = new MyPrintDocument(doc);
-            // Specify the page range to print
             printDoc.PrinterSettings.PrintRange = System.Drawing.Printing.PrintRange.SomePages;
             printDoc.PrinterSettings.FromPage = 1;
             printDoc.PrinterSettings.ToPage = 1;
 
-            // Print our document.
             printDoc.Print();
         }
 
         /// <summary>
-        /// The way to print in the .NET Framework is to implement a class derived from PrintDocument.
-        /// This class is an example on how to implement custom printing of an Aspose.Words document.
-        /// It selects an appropriate paper size, orientation, and paper tray when printing.
+        /// Selects an appropriate paper size, orientation, and paper tray when printing.
         /// </summary>
         public class MyPrintDocument : PrintDocument
         {
@@ -728,13 +716,12 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Called before the printing starts. 
+            /// Initializes the range of pages to be printed according to the user selection.
             /// </summary>
             protected override void OnBeginPrint(PrintEventArgs e)
             {
                 base.OnBeginPrint(e);
 
-                // Initialize the range of pages to be printed according to the user selection
                 switch (PrinterSettings.PrintRange)
                 {
                     case System.Drawing.Printing.PrintRange.AllPages:
@@ -757,14 +744,14 @@ namespace ApiExamples
             {
                 base.OnQueryPageSettings(e);
 
-                // A single Word document can have multiple sections that specify pages with different sizes, 
-                // orientations, and paper trays. This code is called by the .NET printing framework before 
-                // each page is printed and we get a chance to specify how the page is to be printed
+                // A single Microsoft Word document can have multiple sections that specify pages with different sizes, 
+                // orientations, and paper trays. The .NET printing framework calls this code before 
+                // each page is printed, which gives us a chance to specify how to print the current page.
                 PageInfo pageInfo = mDocument.GetPageInfo(mCurrentPage - 1);
                 e.PageSettings.PaperSize = pageInfo.GetDotNetPaperSize(PrinterSettings.PaperSizes);
-                // MS Word stores the paper source (printer tray) for each section as a printer-specific value
-                // To obtain the correct tray value you will need to use the RawKindValue returned
-                // by .NET for your printer
+
+                // Microsoft Word stores the paper source (printer tray) for each section as a printer-specific value.
+                // To obtain the correct tray value you will need to use the RawKindValue, which your printer should return.
                 e.PageSettings.PaperSource.RawKind = pageInfo.PaperTray;
                 e.PageSettings.Landscape = pageInfo.Landscape;
             }
@@ -776,23 +763,28 @@ namespace ApiExamples
             {
                 base.OnPrintPage(e);
 
-                // Aspose.Words rendering engine creates a page that is drawn from the 0,0 of the paper,
-                // but there is some hard margin in the printer and the .NET printing framework
-                // renders from there. We need to offset by that hard margin
+                // Aspose.Words rendering engine creates a page that is drawn from the origin (x = 0, y = 0) of the paper.
+                // There will be a hard margin in the printer, which will render each page. We need to offset by that hard margin.
+                float hardOffsetX, hardOffsetY;
 
-                // In .NET 1.1 the hard margin is not available programmatically, set it to approximately 4mm
-                float hardOffsetX = 20;
-                float hardOffsetY = 20;
+                // Below are two ways of setting a hard margin.
+                if (e.PageSettings != null && e.PageSettings.HardMarginX != 0 && e.PageSettings.HardMarginY != 0)
+                {
+                    // 1 -  Via the "PageSettings" property.
+                    hardOffsetX = e.PageSettings.HardMarginX;
+                    hardOffsetY = e.PageSettings.HardMarginY;
+                }
+                else
+                {
+                    // 2 -  Using our own values, if the "PageSettings" property is unavailable.
+                    hardOffsetX = 20;
+                    hardOffsetY = 20;
+                }
 
-                // This is in .NET 2.0 only. Uncomment when needed
-                // float hardOffsetX = e.PageSettings.HardMarginX;
-                // float hardOffsetY = e.PageSettings.HardMarginY;
-
-                int pageIndex = mCurrentPage - 1;
                 mDocument.RenderToScale(mCurrentPage, e.Graphics, -hardOffsetX, -hardOffsetY, 1.0f);
 
                 mCurrentPage++;
-                e.HasMorePages = (mCurrentPage <= mPageTo);
+                e.HasMorePages = mCurrentPage <= mPageTo;
             }
 
             private readonly Document mDocument;
@@ -818,9 +810,9 @@ namespace ApiExamples
             //ExSummary:Shows how to print page size and orientation information for every page in a Word document.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // The first section has 2 pages
-            // We will assign a different printer paper tray to each one, whose number will match a kind of paper source
-            // These sources and their Kinds will vary depending on the installed printer driver
+            // The first section has 2 pages. We will assign a different printer paper tray to each one,
+            // whose number will match a kind of paper source. These sources and their Kinds will vary
+            // depending on the installed printer driver.
             PrinterSettings.PaperSourceCollection paperSources = new PrinterSettings().PaperSources;
 
             doc.FirstSection.PageSetup.FirstPageTray = paperSources[0].RawKind;
@@ -833,17 +825,17 @@ namespace ApiExamples
 
             for (int i = 0; i < doc.PageCount; i++)
             {
-                // Each page has a PageInfo object, whose index is the respective page's number
+                // Each page has a PageInfo object, whose index is the respective page's number.
                 PageInfo pageInfo = doc.GetPageInfo(i);
 
-                // Print the page's orientation and dimensions
+                // Print the page's orientation and dimensions.
                 Console.WriteLine($"Page {i + 1}:");
                 Console.WriteLine($"\tOrientation:\t{(pageInfo.Landscape ? "Landscape" : "Portrait")}");
                 Console.WriteLine($"\tPaper size:\t\t{pageInfo.PaperSize} ({pageInfo.WidthInPoints:F0}x{pageInfo.HeightInPoints:F0}pt)");
                 Console.WriteLine($"\tSize in points:\t{pageInfo.SizeInPoints}");
                 Console.WriteLine($"\tSize in pixels:\t{pageInfo.GetSizeInPixels(1.0f, 96)} at {scale * 100}% scale, {dpi} dpi");
 
-                // Paper source tray information
+                // Print the source tray information.
                 Console.WriteLine($"\tTray:\t{pageInfo.PaperTray}");
                 PaperSource source = pageInfo.GetSpecifiedPrinterPaperSource(paperSources, paperSources[0]);
                 Console.WriteLine($"\tSuitable print source:\t{source.SourceName}, kind: {source.Kind}");
