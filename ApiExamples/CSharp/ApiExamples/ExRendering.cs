@@ -854,12 +854,11 @@ namespace ApiExamples
             //ExFor:PrinterSettingsContainer.PaperSizes
             //ExFor:PrinterSettingsContainer.PaperSources
             //ExSummary:Shows how to access and list your printer's paper sources and sizes.
-            // The PrinterSettingsContainer contains a PrinterSettings object,
-            // which contains unique data for different printer drivers
+            // The "PrinterSettingsContainer" contains a "PrinterSettings" object,
+            // which contains unique data for different printer drivers.
             PrinterSettingsContainer container = new PrinterSettingsContainer(new PrinterSettings());
 
-            // You can find the printer's list of paper sources here
-            Console.WriteLine($"{container.PaperSources.Count} printer paper sources:");
+            Console.WriteLine($"This printer contains {container.PaperSources.Count} printer paper sources:");
             foreach (PaperSource paperSource in container.PaperSources)
             {
                 bool isDefault = container.DefaultPageSettingsPaperSource.SourceName == paperSource.SourceName;
@@ -867,12 +866,12 @@ namespace ApiExamples
                                   $"RawKind: {paperSource.RawKind} {(isDefault ? "(Default)" : "")}");
             }
 
-            // You can find the list of PaperSizes that can be sent to the printer here
+            // The "PaperSizes" property contains the list of paper sizes that we can instruct the printer to use.
             // Both the PrinterSource and PrinterSize contain a "RawKind" attribute,
-            // which equates to a paper type listed on the PaperSourceKind enum
-            // If the list of PaperSources contains a PaperSource with the same RawKind as that of the page being printed,
-            // the page will be printed by the paper source and on the appropriate paper size by the printer
-            // Otherwise, the printer will default to the source designated by DefaultPageSettingsPaperSource 
+            // which equates to a paper type listed on the PaperSourceKind enum.
+            // If there is a paper source with the same "RawKind" value as that of the page we are printing,
+            // the printer will print the page using the provided paper source and size.
+            // Otherwise, the printer will default to the source designated by the "DefaultPageSettingsPaperSource" property.
             Console.WriteLine($"{container.PaperSizes.Count} paper sizes:");
             foreach (System.Drawing.Printing.PaperSize paperSize in container.PaperSizes)
             {
@@ -887,59 +886,54 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.Print
-            //ExSummary:Prints the whole document to the default printer.
-            Document doc = new Document(MyDir + "Document.docx");
-            doc.Print();
-            //ExEnd
-        }
-
-        [Ignore("Run only when the printer driver is installed")]
-        [Test]
-        public void PrintToNamedPrinter()
-        {
-            //ExStart
             //ExFor:Document.Print(String)
-            //ExSummary:Prints the whole document to a specified printer.
-            Document doc = new Document(MyDir + "Document.docx");
-            doc.Print("KONICA MINOLTA magicolor 2400W");
+            //ExSummary:Shows how to print a document using the default printer.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+
+            // Below are two ways of printing our document.
+            // 1 -  Print using the default printer:
+            doc.Print();
+
+            // 2 -  Specify a printer that we wish to print the document with by name:
+            string myPrinter = System.Drawing.Printing.PrinterSettings.InstalledPrinters[4];
+
+            Assert.AreEqual("HPDAAB96 (HP ENVY 5000 series)", myPrinter);
+
+            doc.Print(myPrinter);
             //ExEnd
         }
-
+        
         [Ignore("Run only when the printer driver is installed")]
         [Test]
         public void PrintRange()
         {
             //ExStart
             //ExFor:Document.Print(PrinterSettings)
-            //ExSummary:Prints a range of pages.
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            PrinterSettings printerSettings = new PrinterSettings();
-            // Page numbers in the .NET printing framework are 1-based
-            printerSettings.PrintRange = System.Drawing.Printing.PrintRange.SomePages;
-            printerSettings.FromPage = 1;
-            printerSettings.ToPage = 3;
-
-            doc.Print(printerSettings);
-            //ExEnd
-        }
-
-        [Ignore("Run only when the printer driver is installed")]
-        [Test]
-        public void PrintRangeWithDocumentName()
-        {
-            //ExStart
             //ExFor:Document.Print(PrinterSettings, String)
-            //ExSummary:Prints a range of pages along with the name of the document.
+            //ExSummary:Shows how to print a range of pages.
             Document doc = new Document(MyDir + "Rendering.docx");
-
+            
+            // Create a "PrinterSettings" object to modify the way in which we print the document.
             PrinterSettings printerSettings = new PrinterSettings();
-            // Page numbers in the .NET printing framework are 1-based
+
+            // Set the "PrintRange" property to "PrintRange.SomePages" to
+            // tell the printer that we intend to print only some pages of the document.
             printerSettings.PrintRange = System.Drawing.Printing.PrintRange.SomePages;
+
+            // Set the "FromPage" property to "1", and the "ToPage" property to "3" to print pages 1 through to 3.
+            // Page indexing is 1-based.
             printerSettings.FromPage = 1;
             printerSettings.ToPage = 3;
 
-            doc.Print(printerSettings, "Rendering.PrintRangeWithDocumentName.docx");
+            // Below are two ways of printing our document.
+            // 1 -  Print while applying our printing settings:
+            doc.Print(printerSettings);
+
+            // 2 -  Print while applying our printing settings, while also
+            // giving the document a custom name that we may recognize in the printer queue:
+            doc.Print(printerSettings, "My rendered document");
             //ExEnd
         }
 
