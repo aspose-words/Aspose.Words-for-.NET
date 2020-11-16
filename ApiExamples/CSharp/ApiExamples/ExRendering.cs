@@ -944,14 +944,15 @@ namespace ApiExamples
             //ExStart
             //ExFor:AsposeWordsPrintDocument.#ctor(Document)
             //ExFor:AsposeWordsPrintDocument.CachePrinterSettings
-            //ExSummary:Shows the Print dialog that allows selecting the printer and page range to print with. Then brings up the print preview from which you can preview the document and choose to print or close.
+            //ExSummary:Shows how to select a page range and a printer to print the document with, and then bring up a print preview.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             PrintPreviewDialog previewDlg = new PrintPreviewDialog();
-            // Show non-modal first is a hack for the print preview form to show on top
+
+            // Call the "Show" method to get the print preview form to show on top.
             previewDlg.Show();
 
-            // Initialize the Print Dialog with the number of pages in the document
+            // Initialize the Print Dialog with the number of pages in the document.
             PrintDialog printDlg = new PrintDialog();
             printDlg.AllowSomePages = true;
             printDlg.PrinterSettings.MinimumPage = 1;
@@ -962,45 +963,48 @@ namespace ApiExamples
             if (!printDlg.ShowDialog().Equals(DialogResult.OK))
                 return;
 
-            // Create the Aspose.Words' implementation of the .NET print document 
-            // and pass the printer settings from the dialog to the print document
-            // Use 'CachePrinterSettings' to reduce time of first call of Print() method
+            // Create the "Aspose.Words" implementation of the .NET print document,
+            // and then pass the printer settings from the dialog to it.
             AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(doc);
             awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
+
+            // Use the "CachePrinterSettings" method to reduce time of first call of Print() method.
             awPrintDoc.CachePrinterSettings();
 
-            // Hide and invalidate preview is a hack for print preview to show on top
+            // Call the "Hide", and then the "InvalidatePreview" methods to get the print preview to show on top.
             previewDlg.Hide();
             previewDlg.PrintPreviewControl.InvalidatePreview();
 
-            // Pass the Aspose.Words' print document to the .NET Print Preview dialog
+            // Pass the "Aspose.Words" print document to the .NET Print Preview dialog.
             previewDlg.Document = awPrintDoc;
 
             previewDlg.ShowDialog();
             //ExEnd
         }
+
 #elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         public void RenderToSizeNetStandard2()
         {
             //ExStart
             //ExFor:Document.RenderToSize
-            //ExSummary:Render to a bitmap at a specified location and size (.NetStandard 2.0).
+            //ExSummary:Shows how to render the document as a bitmap at a specified location and size (.NetStandard 2.0).
             Document doc = new Document(MyDir + "Rendering.docx");
             
             using (SKBitmap bitmap = new SKBitmap(700, 700))
             {
-                // User has some sort of a Graphics object. In this case created from a bitmap
                 using (SKCanvas canvas = new SKCanvas(bitmap))
                 {
-                    // Apply scale transform
+                    // Apply a scaling factor of 70% to the page that we will render using this canvas.
                     canvas.Scale(70);
 
-                    // The output should be offset 0.5" from the edge and rotated
+                    // Offset the page 0.5" from the top and left edges of the page.
                     canvas.Translate(0.5f, 0.5f);
+
+                    // Rotate the rendered page by 10 degrees.
                     canvas.RotateDegrees(10);
 
-                    // This is our test rectangle
+                    // Create and draw a rectangle.
                     SKRect rect = new SKRect(0f, 0f, 3f, 3f);
                     canvas.DrawRect(rect, new SKPaint
                     {
@@ -1009,21 +1013,18 @@ namespace ApiExamples
                         StrokeWidth = 3f / 72f
                     });
 
-                    // User specifies (in world coordinates) where on the Graphics to render and what size
+                    // Render the first page of the document to the same size as the above rectangle. 
+                    // The rectangle will frame this page.
                     float returnedScale = doc.RenderToSize(0, canvas, 0f, 0f, 3f, 3f);
 
                     Console.WriteLine("The image was rendered at {0:P0} zoom.", returnedScale);
 
-                    // One more example, this time in millimeters
+                    // Reset the matrix, and then apply a new set of scaling and translations.
                     canvas.ResetMatrix();
-
-                    // Apply scale transform
                     canvas.Scale(5);
-
-                    // Move the origin 10mm 
                     canvas.Translate(10, 10);
 
-                    // This is our test rectangle
+                    // Create another rectangle.
                     rect = new SKRect(0, 0, 50, 100);
                     rect.Offset(90, 10);
                     canvas.DrawRect(rect, new SKPaint
@@ -1033,7 +1034,7 @@ namespace ApiExamples
                         StrokeWidth = 1
                     });
 
-                    // User specifies (in world coordinates) where on the Graphics to render and what size
+                    // Render the first page within the newly created rectangle once again.
                     doc.RenderToSize(0, canvas, 90, 10, 50, 100);
 
                     using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "Rendering.RenderToSizeNetStandard2.png"))
@@ -1051,48 +1052,41 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.RenderToScale
             //ExSummary:Renders individual pages to graphics to create one image with thumbnails of all pages (.NetStandard 2.0).
-            // The user opens or builds a document
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // This defines the number of columns to display the thumbnails in
-            const int thumbColumns = 2;
+            // Calculate the number of rows and columns that we will fill with thumbnails.
+            const int thumbnailColumnsNum = 2;
+            int thumbRows = Math.DivRem(doc.PageCount, thumbnailColumnsNum, out int remainder);
 
-            // Calculate the required number of rows for thumbnails
-            // We can now get the number of pages in the document
-            int thumbRows = Math.DivRem(doc.PageCount, thumbColumns, out int remainder);
             if (remainder > 0)
                 thumbRows++;
 
-            // Define a zoom factor for the thumbnails 
+            // Scale the thumbnails relative to the size of the first page. 
             const float scale = 0.25f;
-
-            // We can use the size of the first page to calculate the size of the thumbnail,
-            // assuming that all pages in the document are of the same size
             Size thumbSize = doc.GetPageInfo(0).GetSizeInPixels(scale, 96);
 
-            // Calculate the size of the image that will contain all the thumbnails
-            int imgWidth = thumbSize.Width * thumbColumns;
+            // Calculate the size of the image that will contain all the thumbnails.
+            int imgWidth = thumbSize.Width * thumbnailColumnsNum;
             int imgHeight = thumbSize.Height * thumbRows;
 
             using (SKBitmap bitmap = new SKBitmap(imgWidth, imgHeight))
             {
-                // The Graphics object, which we will draw on, can be created from a bitmap, metafile, printer, or window
                 using (SKCanvas canvas = new SKCanvas(bitmap))
                 {
-                    // Fill the "paper" with white, otherwise it will be transparent
+                    // Fill the background, which is transparent by default, in white.
                     canvas.Clear(SKColors.White);
 
                     for (int pageIndex = 0; pageIndex < doc.PageCount; pageIndex++)
                     {
-                        int rowIdx = Math.DivRem(pageIndex, thumbColumns, out int columnIdx);
+                        int rowIdx = Math.DivRem(pageIndex, thumbnailColumnsNum, out int columnIdx);
 
-                        // Specify where we want the thumbnail to appear
+                        // Specify where we want the thumbnail to appear.
                         float thumbLeft = columnIdx * thumbSize.Width;
                         float thumbTop = rowIdx * thumbSize.Height;
 
                         SizeF size = doc.RenderToScale(pageIndex, canvas, thumbLeft, thumbTop, scale);
 
-                        // Draw the page rectangle
+                        // Render a page as a thumbnail, and then frame it in a rectangle of the same size.
                         SKRect rect = new SKRect(0, 0, size.Width, size.Height);
                         rect.Offset(thumbLeft, thumbTop);
                         canvas.DrawRect(rect, new SKPaint
@@ -1119,74 +1113,146 @@ namespace ApiExamples
             //ExFor:StyleCollection.Item(String)
             //ExFor:SectionCollection.Item(Int32)
             //ExFor:Document.UpdatePageLayout
-            //ExSummary:Shows when to request page layout of the document to be recalculated.
+            //ExSummary:Shows when to recalculate the page layout of the document.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Saving a document to PDF or to image or printing for the first time will automatically
-            // layout document pages and this information will be cached inside the document
+            // Saving a document to PDF, to an image, or printing for the first time will automatically
+            // cache the layout of the document within its pages.
             doc.Save(ArtifactsDir + "Rendering.UpdatePageLayout.1.pdf");
 
-            // Modify the document in any way
+            // Modify the document in some way.
             doc.Styles["Normal"].Font.Size = 6;
             doc.Sections[0].PageSetup.Orientation = Aspose.Words.Orientation.Landscape;
 
             // In the current version of Aspose.Words, modifying the document does not automatically rebuild 
-            // the cached page layout. If you want to save to PDF or render a modified document again,
-            // you need to manually request page layout to be updated
+            // the cached page layout. If we wish for the cached layout
+            // to stay up-to-date, we will need to update it manually.
             doc.UpdatePageLayout();
 
             doc.Save(ArtifactsDir + "Rendering.UpdatePageLayout.2.pdf");
             //ExEnd
         }
 
-        [Test]
-        public void SetTrueTypeFontsFolder()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void SetTrueTypeFontsFolder(bool recursive)
         {
-            // Store the font sources currently used so we can restore them later
-            FontSourceBase[] fontSources = FontSettings.DefaultInstance.GetFontsSources();
-
             //ExStart
             //ExFor:FontSettings
             //ExFor:FontSettings.SetFontsFolder(String, Boolean)
-            //ExSummary:Demonstrates how to set the folder Aspose.Words uses to look for TrueType fonts during rendering or embedding of fonts.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to set a font source directory.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Note that this setting will override any default font sources that are being searched by default
-            // Now only these folders will be searched for fonts when rendering or embedding fonts
-            // To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and 
-            // FontSettings.SetFontSources instead
-            FontSettings.DefaultInstance.SetFontsFolder(@"C:\MyFonts\", false);
+            builder.Font.Name = "Arvo";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Amethysta";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            // Our font sources do not contain the font that we have used for text in this document.
+            // If we use these font settings while rendering this document,
+            // Aspose.Words will apply a fallback font to text which has a font that Aspose.Words cannot locate.
+            FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            Assert.AreEqual(1, originalFontSources.Length);
+            Assert.AreEqual(480, originalFontSources[0].GetAvailableFonts().Count);
+            Assert.True(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+
+            // The default font sources are missing the two fonts that we are using in this document.
+            Assert.False(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"));
+            Assert.False(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+
+            // Use the "SetFontsFolder" method to set a directory which will act as a new font source.
+            // Pass "false" as the "recursive" argument to include fonts from all the font files that are in the directory
+            // that we are passing in the first argument, but not include any fonts in any of that directory's subfolders.
+            // Pass "true" as the "recursive" argument to include all font files in the directory that we are passing
+            // in the first argument, as well as all the fonts in its subdirectories.
+            FontSettings.DefaultInstance.SetFontsFolder(FontsDir, recursive);
+
+            FontSourceBase[] newFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            Assert.AreEqual(1, newFontSources.Length);
+            Assert.False(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+            Assert.True(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"));
+
+            // The "Amethysta" font is in a subfolder of the font directory.
+            if (recursive)
+            {
+                Assert.AreEqual(22, newFontSources[0].GetAvailableFonts().Count);
+                Assert.True(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+            }
+            else
+            {
+                Assert.AreEqual(15, newFontSources[0].GetAvailableFonts().Count);
+                Assert.False(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+            }
 
             doc.Save(ArtifactsDir + "Rendering.SetTrueTypeFontsFolder.pdf");
-            //ExEnd
 
-            // Restore the original sources used to search for fonts
-            FontSettings.DefaultInstance.SetFontsSources(fontSources);
+            // Restore the original font sources.
+            FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
+            //ExEnd
         }
 
-        [Test]
-        public void SetFontsFoldersMultipleFolders()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void SetFontsFoldersMultipleFolders(bool recursive)
         {
-            // Store the font sources currently used so we can restore them later
-            FontSourceBase[] fontSources = FontSettings.DefaultInstance.GetFontsSources();
-
             //ExStart
             //ExFor:FontSettings
             //ExFor:FontSettings.SetFontsFolders(String[], Boolean)
-            //ExSummary:Demonstrates how to set Aspose.Words to look in multiple folders for TrueType fonts when rendering or embedding fonts.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to set multiple font source directories.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Note that this setting will override any default font sources that are being searched by default
-            // Now only these folders will be searched for fonts when rendering or embedding fonts
-            // To add an extra font source while keeping system font sources then use both FontSettings.GetFontSources and 
-            // FontSettings.SetFontSources instead
-            FontSettings.DefaultInstance.SetFontsFolders(new string[] { @"C:\MyFonts\", @"D:\Misc\Fonts\" }, true);
+            builder.Font.Name = "Amethysta";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+            builder.Font.Name = "Junction Light";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            // Our font sources do not contain the font that we have used for text in this document.
+            // If we use these font settings while rendering this document,
+            // Aspose.Words will apply a fallback font to text which has a font that Aspose.Words cannot locate.
+            FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            Assert.AreEqual(1, originalFontSources.Length);
+            Assert.AreEqual(480, originalFontSources[0].GetAvailableFonts().Count);
+            Assert.True(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+
+            // The default font sources are missing the two fonts that we are using in this document.
+            Assert.False(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+            Assert.False(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Junction Light"));
+
+            // Use the "SetFontsFolders" method to create a font source from each font directory that we pass as the first argument.
+            // Pass "false" as the "recursive" argument to include fonts from all the font files that are in the directories
+            // that we are passing in the first argument, but not include any fonts from any of the directories' subfolders.
+            // Pass "true" as the "recursive" argument to include all font files in the directories that we are passing
+            // in the first argument, as well as all the fonts in their subdirectories.
+            FontSettings.DefaultInstance.SetFontsFolders(new [] {FontsDir + "/Amethysta", FontsDir + "/Junction"}, recursive);
+
+            FontSourceBase[] newFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            Assert.AreEqual(2, newFontSources.Length);
+            Assert.False(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+            Assert.AreEqual(1, newFontSources[0].GetAvailableFonts().Count);
+            Assert.True(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+
+            // The "Junction" folder itself contains no font files, but has subfolders that do.
+            if (recursive)
+            {
+                Assert.AreEqual(6, newFontSources[1].GetAvailableFonts().Count);
+                Assert.True(newFontSources[1].GetAvailableFonts().Any(f => f.FullFontName == "Junction Light"));
+            }
+            else
+            {
+                Assert.AreEqual(0, newFontSources[1].GetAvailableFonts().Count);
+            }
 
             doc.Save(ArtifactsDir + "Rendering.SetFontsFoldersMultipleFolders.pdf");
-            //ExEnd
 
-            // Restore the original sources used to search for fonts
-            FontSettings.DefaultInstance.SetFontsSources(fontSources);
+            // Restore the original font sources.
+            FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
+            //ExEnd
         }
 
         [Test]

@@ -987,7 +987,8 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.AreEqual(folderFontSource[0].GetAvailableFonts().Count, Directory.GetFiles(FontsDir).Count(f => f.EndsWith(".ttf")));
+            Assert.AreEqual(folderFontSource[0].GetAvailableFonts().Count, 
+                Directory.EnumerateFiles(FontsDir, "*.*", SearchOption.AllDirectories).Count(f => f.EndsWith(".ttf")));
         }
 
         [Test]
