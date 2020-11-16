@@ -1273,22 +1273,22 @@ namespace ApiExamples
             builder.Font.Name = "Junction Light";
             builder.Writeln("The quick brown fox jumps over the lazy dog.");
 
-            FontSourceBase[] origFontSources = FontSettings.DefaultInstance.GetFontsSources();
+            FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
-            Assert.AreEqual(1, origFontSources.Length);
+            Assert.AreEqual(1, originalFontSources.Length);
 
-            Assert.True(origFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+            Assert.True(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
 
             // The default font source is missing two of the fonts that we are using in our document.
             // When we save this document, Aspose.Words will apply fallback fonts to all text formatted with inaccessible fonts.
-            Assert.False(origFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
-            Assert.False(origFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Junction Light"));
+            Assert.False(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+            Assert.False(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Junction Light"));
 
             // Create a font source from a folder that contains fonts.
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, true);
 
             // Apply a new array of font sources that contains the original font sources, as well as our custom fonts.
-            FontSourceBase[] updatedFontSources = { origFontSources[0], folderFontSource };
+            FontSourceBase[] updatedFontSources = { originalFontSources[0], folderFontSource };
             FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
 
             // Verify that Aspose.Words has access to all required fonts before we render the document to PDF.
@@ -1301,7 +1301,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Rendering.AddFontSource.pdf");
 
             // Restore the original font sources.
-            FontSettings.DefaultInstance.SetFontsSources(origFontSources);
+            FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
             //ExEnd
         }
 
@@ -1440,7 +1440,7 @@ namespace ApiExamples
         public void UpdatePageLayoutWarnings()
         {
             // Store the font sources currently used so we can restore them later
-            FontSourceBase[] origFontSources = FontSettings.DefaultInstance.GetFontsSources();
+            FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
             // Load the document to render
             Document doc = new Document(MyDir + "Document.docx");
@@ -1469,7 +1469,7 @@ namespace ApiExamples
             Assert.True(callback.FontWarnings[0].Description.Contains("has not been found"));
 
             // Restore default fonts
-            FontSettings.DefaultInstance.SetFontsSources(origFontSources);
+            FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
         }
 
         public class HandleDocumentWarnings : IWarningCallback
@@ -1492,79 +1492,134 @@ namespace ApiExamples
             public WarningInfoCollection FontWarnings = new WarningInfoCollection(); //ExSkip
         }
 
-        [Test]
-        public void EmbedFullFonts()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void EmbedFullFonts(bool embedFullFonts)
         {
             //ExStart
             //ExFor:PdfSaveOptions.#ctor
             //ExFor:PdfSaveOptions.EmbedFullFonts
-            //ExSummary:Demonstrates how to set Aspose.Words to embed full fonts in the output PDF document.
-            // Load the document to render
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to enable or disable subsetting when embedding fonts while rendering a document to PDF.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Aspose.Words embeds full fonts by default when EmbedFullFonts is set to true
-            // The property below can be changed each time a document is rendered
+            builder.Font.Name = "Arial";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Arvo";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            // Configure our font sources to ensure that we have access to both the fonts in this document.
+            FontSourceBase[] originalFontsSources = FontSettings.DefaultInstance.GetFontsSources();
+            FolderFontSource folderFontSource = new FolderFontSource(FontsDir, true);
+            FontSettings.DefaultInstance.SetFontsSources(new [] { originalFontsSources[0], folderFontSource });
+
+            FontSourceBase[] fontSources = FontSettings.DefaultInstance.GetFontsSources();
+            Assert.True(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+            Assert.True(fontSources[1].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"));
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-            options.EmbedFullFonts = true;
 
-            // The output PDF will be embedded with all fonts found in the document
+            // Since our document contains a custom font, embedding in the output document may be desirable.
+            // Set the "EmbedFullFonts" property to "true" to embed every glyph of every embedded font in the output PDF.
+            // The size of the document may become very large, but we will have full use of all fonts if we edit the PDF.
+            // Set the "EmbedFullFonts" property to "false" to apply subsetting to fonts, saving only the glyphs
+            // that the document is using. The file will be considerably smaller,
+            // but we may need access to any custom fonts if we edit the document.
+            options.EmbedFullFonts = embedFullFonts;
+
             doc.Save(ArtifactsDir + "Rendering.EmbedFullFonts.pdf", options);
+
+            if (embedFullFonts) 
+                Assert.That(500000, Is.LessThan(new FileInfo(ArtifactsDir + "Rendering.EmbedFullFonts.pdf").Length));
+            else
+                Assert.That(25000, Is.AtLeast(new FileInfo(ArtifactsDir + "Rendering.EmbedFullFonts.pdf").Length));
+
+            // Restore the original font sources.
+            FontSettings.DefaultInstance.SetFontsSources(originalFontsSources);
             //ExEnd
         }
 
-        [Test]
-        public void SubsetFonts()
-        {
-            //ExStart
-            //ExFor:PdfSaveOptions.EmbedFullFonts
-            //ExSummary:Demonstrates how to set Aspose.Words to subset fonts in the output PDF.
-            // Load the document to render
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            // To subset fonts in the output PDF document, simply create new PdfSaveOptions and set EmbedFullFonts to false
-            PdfSaveOptions options = new PdfSaveOptions();
-            options.EmbedFullFonts = false;
-
-            // The output PDF will contain subsets of the fonts in the document
-            // Only the glyphs used in the document are included in the PDF fonts
-            doc.Save(ArtifactsDir + "Rendering.SubsetFonts.pdf", options);
-            //ExEnd
-        }
-
-        [Test]
-        public void DisableEmbedWindowsFonts()
+        [TestCase(PdfFontEmbeddingMode.EmbedAll)]
+        [TestCase(PdfFontEmbeddingMode.EmbedNone)]
+        [TestCase(PdfFontEmbeddingMode.EmbedNonstandard)]
+        public void EmbedWindowsFonts(PdfFontEmbeddingMode pdfFontEmbeddingMode)
         {
             //ExStart
             //ExFor:PdfSaveOptions.FontEmbeddingMode
             //ExFor:PdfFontEmbeddingMode
             //ExSummary:Shows how to set Aspose.Words to skip embedding Arial and Times New Roman fonts into a PDF document.
-            // Load the document to render
-            Document doc = new Document(MyDir + "Rendering.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // To disable embedding standard windows font use the PdfSaveOptions and set the EmbedStandardWindowsFonts property to false
+            // "Arial" is a standard font, and "Courier New" is a nonstandard font.
+            builder.Font.Name = "Arial";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Courier New";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-            options.FontEmbeddingMode = PdfFontEmbeddingMode.EmbedNone;
+
+            // Set the "EmbedFullFonts" property to "true" to embed every glyph of every embedded font in the output PDF.
+            options.EmbedFullFonts = true;
+
+            // Set the "FontEmbeddingMode" property to "EmbedAll" to embed all fonts in the output PDF.
+            // Set the "FontEmbeddingMode" property to "EmbedNonstandard" to only allow the embedding of
+            // nonstandard fonts in the output PDF.
+            // Set the "FontEmbeddingMode" property to "EmbedNone" to not embed any fonts in the output PDF.
+            options.FontEmbeddingMode = pdfFontEmbeddingMode;
 
             // The output PDF will be saved without embedding standard windows fonts
-            doc.Save(ArtifactsDir + "Rendering.DisableEmbedWindowsFonts.pdf", options);
+            doc.Save(ArtifactsDir + "Rendering.EmbedWindowsFonts.pdf", options);
+
+            switch (pdfFontEmbeddingMode)
+            {
+                case PdfFontEmbeddingMode.EmbedAll:
+                    Assert.That(1000000, Is.LessThan(new FileInfo(ArtifactsDir + "Rendering.EmbedWindowsFonts.pdf").Length));
+                    break;
+                case PdfFontEmbeddingMode.EmbedNonstandard:
+                    Assert.That(480000, Is.LessThan(new FileInfo(ArtifactsDir + "Rendering.EmbedWindowsFonts.pdf").Length));
+                    break;
+                case PdfFontEmbeddingMode.EmbedNone:
+                    Assert.That(4000, Is.AtLeast(new FileInfo(ArtifactsDir + "Rendering.EmbedWindowsFonts.pdf").Length));
+                    break;
+            }
             //ExEnd
         }
 
-        [Test]
-        public void DisableEmbedCoreFonts()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void EmbedCoreFonts(bool useCoreFonts)
         {
             //ExStart
             //ExFor:PdfSaveOptions.UseCoreFonts
-            //ExSummary:Shows how to set Aspose.Words to avoid embedding core fonts and let the reader substitute PDF Type 1 fonts instead.
-            // Load the document to render
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how enable/disable PDF Type 1 font substitution.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // To disable embedding of core fonts and substitute PDF type 1 fonts set UseCoreFonts to true
+            builder.Font.Name = "Arial";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Courier New";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-            options.UseCoreFonts = true;
 
-            // The output PDF will not be embedded with core fonts such as Arial, Times New Roman etc.
-            doc.Save(ArtifactsDir + "Rendering.DisableEmbedCoreFonts.pdf", options);
+            // Set the "UseCoreFonts" property to "true" to replace some fonts,
+            // which include the two fonts in our document, with their PDF Type 1 equivalents.
+            // Set the "UseCoreFonts" property to "false" to not apply PDF Type 1 fonts.
+            options.UseCoreFonts = useCoreFonts;
+
+            doc.Save(ArtifactsDir + "Rendering.EmbedCoreFonts.pdf", options);
+
+            if (useCoreFonts)
+                Assert.That(3000, Is.AtLeast(new FileInfo(ArtifactsDir + "Rendering.EmbedCoreFonts.pdf").Length));
+            else
+                Assert.That(30000, Is.LessThan(new FileInfo(ArtifactsDir + "Rendering.EmbedCoreFonts.pdf").Length));
             //ExEnd
         }
 
