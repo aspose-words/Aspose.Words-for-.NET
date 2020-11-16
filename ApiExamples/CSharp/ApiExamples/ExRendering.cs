@@ -1135,7 +1135,7 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        public void SetTrueTypeFontsFolder(bool recursive)
+        public void SetFontsFolder(bool recursive)
         {
             //ExStart
             //ExFor:FontSettings
@@ -1187,7 +1187,7 @@ namespace ApiExamples
                 Assert.False(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
             }
 
-            doc.Save(ArtifactsDir + "Rendering.SetTrueTypeFontsFolder.pdf");
+            doc.Save(ArtifactsDir + "Rendering.SetFontsFolder.pdf");
 
             // Restore the original font sources.
             FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
@@ -1196,7 +1196,7 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        public void SetFontsFoldersMultipleFolders(bool recursive)
+        public void SetFontsFolders(bool recursive)
         {
             //ExStart
             //ExFor:FontSettings
@@ -1248,7 +1248,7 @@ namespace ApiExamples
                 Assert.AreEqual(0, newFontSources[1].GetAvailableFonts().Count);
             }
 
-            doc.Save(ArtifactsDir + "Rendering.SetFontsFoldersMultipleFolders.pdf");
+            doc.Save(ArtifactsDir + "Rendering.SetFontsFolders.pdf");
 
             // Restore the original font sources.
             FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
@@ -1256,49 +1256,53 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetFontsFoldersSystemAndCustomFolder()
+        public void AddFontSource()
         {
-            // Store the font sources currently used so we can restore them later
-            FontSourceBase[] origFontSources = FontSettings.DefaultInstance.GetFontsSources();
-
             //ExStart
             //ExFor:FontSettings            
             //ExFor:FontSettings.GetFontsSources()
             //ExFor:FontSettings.SetFontsSources()
-            //ExSummary:Demonstrates how to set Aspose.Words to look for TrueType fonts in system folders as well as a custom defined folder when scanning for fonts.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to add a font source to our existing font sources.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Retrieve the array of environment-dependent font sources that are searched by default
-            // For example, this will contain a "Windows\Fonts\" source on a Windows machines
-            // We add this array to a new ArrayList to make adding or removing font entries much easier
-            ArrayList fontSources = new ArrayList(FontSettings.DefaultInstance.GetFontsSources());
+            builder.Font.Name = "Arial";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Amethysta";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+            builder.Font.Name = "Junction Light";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
 
-            // Add a new folder source which will instruct Aspose.Words to search the following folder for fonts
-            FolderFontSource folderFontSource = new FolderFontSource("C:\\MyFonts\\", true);
+            FontSourceBase[] origFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
-            // Add the custom folder which contains our fonts to the list of existing font sources
-            fontSources.Add(folderFontSource);
+            Assert.AreEqual(1, origFontSources.Length);
 
-            // Convert the ArrayList of source back into a primitive array of FontSource objects
-            FontSourceBase[] updatedFontSources = (FontSourceBase[]) fontSources.ToArray(typeof(FontSourceBase));
+            Assert.True(origFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
 
-            // Apply the new set of font sources to use
+            // The default font source is missing two of the fonts that we are using in our document.
+            // When we save this document, Aspose.Words will apply fallback fonts to all text formatted with inaccessible fonts.
+            Assert.False(origFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+            Assert.False(origFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Junction Light"));
+
+            // Create a font source from a folder that contains fonts.
+            FolderFontSource folderFontSource = new FolderFontSource(FontsDir, true);
+
+            // Apply a new array of font sources that contains the original font sources, as well as our custom fonts.
+            FontSourceBase[] updatedFontSources = { origFontSources[0], folderFontSource };
             FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
 
-            doc.Save(ArtifactsDir + "Rendering.SetFontsFoldersSystemAndCustomFolder.pdf");
-            //ExEnd
+            // Verify that Aspose.Words has access to all required fonts before we render the document to PDF.
+            updatedFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
-            // The first source should be a system font source
-            Assert.That(FontSettings.DefaultInstance.GetFontsSources()[0], Is.InstanceOf(typeof(SystemFontSource))); 
-            // The second source should be our folder font source
-            Assert.That(FontSettings.DefaultInstance.GetFontsSources()[1], Is.InstanceOf(typeof(FolderFontSource))); 
-            
-            FolderFontSource folderSource = ((FolderFontSource) FontSettings.DefaultInstance.GetFontsSources()[1]);
-            Assert.AreEqual(@"C:\MyFonts\", folderSource.FolderPath);
-            Assert.True(folderSource.ScanSubfolders);
+            Assert.True(updatedFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+            Assert.True(updatedFontSources[1].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+            Assert.True(updatedFontSources[1].GetAvailableFonts().Any(f => f.FullFontName == "Junction Light"));
 
-            // Restore the original sources used to search for fonts
+            doc.Save(ArtifactsDir + "Rendering.AddFontSource.pdf");
+
+            // Restore the original font sources.
             FontSettings.DefaultInstance.SetFontsSources(origFontSources);
+            //ExEnd
         }
 
         [Test]
