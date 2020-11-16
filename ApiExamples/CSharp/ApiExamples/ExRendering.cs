@@ -1324,26 +1324,46 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetFontSubstitutes()
+        public void TableSubstitution()
         {
             //ExStart
             //ExFor:Document.FontSettings
             //ExFor:TableSubstitutionRule.SetSubstitutes(String, String[])
-            //ExSummary:Shows how to define alternative fonts if original does not exist
-            FontSettings fontSettings = new FontSettings();
-            fontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes("Times New Roman", new string[] { "Slab", "Arvo" });
+            //ExSummary:Shows how set font substitution rules.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Arial";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Amethysta";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            FontSourceBase[] fontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            // The default font sources contain the first font that the document uses.
+            Assert.AreEqual(1, fontSources.Length);
+            Assert.True(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+
+            // The second font, "Amethysta", is unavailable.
+            Assert.False(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+
+            // We can configure a font substitution table which determines
+            // which fonts Aspose.Words will use as substitutes for unavailable fonts.
+            // Set two substitution fonts for "Amethysta": "Arvo", and "Courier New".
+            // If the first substitute is unavailable, Aspose.Words attempts to use the second substitute, and so on.
+            doc.FontSettings = new FontSettings();
+            doc.FontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes(
+                "Amethysta", new[] { "Arvo", "Courier New" });
+
+            // "Amethysta" is unavailable, and the substitution rule states that the first font to use as a substitute is "Arvo". 
+            Assert.False(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"));
+
+            // "Arvo" is also unavailable, but "Courier New" is. 
+            Assert.True(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Courier New"));
+
+            // The output document will display the text that uses the "Amethysta" font formatted with "Courier New".
+            doc.Save(ArtifactsDir + "Rendering.TableSubstitution.pdf");
             //ExEnd
-            Document doc = new Document(MyDir + "Rendering.docx");
-            doc.FontSettings = fontSettings;
-
-            // Check that font source are default
-            FontSourceBase[] fontSource = doc.FontSettings.GetFontsSources();
-            Assert.AreEqual("SystemFonts", fontSource[0].Type.ToString());
-
-            Assert.AreEqual("Times New Roman", doc.FontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName);
-
-            string[] alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Times New Roman").ToArray();
-            Assert.AreEqual(new string[] { "Slab", "Arvo" }, alternativeFonts);
         }
 
         [Test]
@@ -1384,19 +1404,35 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetDefaultFontName()
+        public void DefaultFontName()
         {
             //ExStart
             //ExFor:DefaultFontSubstitutionRule.DefaultFontName
-            //ExSummary:Demonstrates how to specify what font to substitute for a missing font during rendering.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to specify a default font.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // If the default font defined here cannot be found during rendering then the closest font on the machine is used instead
-            FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial Unicode MS";
+            builder.Font.Name = "Arial";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Arvo";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
 
-            // Now the set default font is used in place of any missing fonts during any rendering calls
-            doc.Save(ArtifactsDir + "Rendering.SetDefaultFontName.pdf");
-            doc.Save(ArtifactsDir + "Rendering.SetDefaultFontName.xps");
+            FontSourceBase[] fontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            // The font sources that the document uses contain the font "Arial", but not "Arvo".
+            Assert.AreEqual(1, fontSources.Length);
+            Assert.True(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+            Assert.False(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"));
+
+            // Set the "DefaultFontName" property to "Courier New" to,
+            // while rendering the document, apply that font in all cases when another font is not available. 
+            FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Courier New";
+
+            Assert.True(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Courier New"));
+
+            // Now the set default font is used in place of any missing fonts during any rendering calls.
+            doc.Save(ArtifactsDir + "Rendering.DefaultFontName.pdf");
+            doc.Save(ArtifactsDir + "Rendering.DefaultFontName.docx");
             //ExEnd
         }
 
