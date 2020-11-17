@@ -948,22 +948,7 @@ namespace ApiExamples
             Assert.False(docRun.Font.Style.BuiltIn);
             Assert.AreEqual(Underline.Double, docRun.Font.Underline);
         }
-
-        public class FontSubstitutionWarningCollector : IWarningCallback
-        {
-            /// <summary>
-            /// Called every time a warning occurs during loading/saving.
-            /// </summary>
-            public void Warning(WarningInfo info)
-            {
-                if (info.WarningType == WarningType.FontSubstitution)
-                    FontSubstitutionWarnings.Warning(info);
-            }
-
-            public WarningInfoCollection FontSubstitutionWarnings = new WarningInfoCollection();
-        }
-        //ExEnd
-
+        
         [Test]
         public void GetAvailableFonts()
         {

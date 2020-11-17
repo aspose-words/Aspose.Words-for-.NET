@@ -5,14 +5,18 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 #if NET462 || JAVA
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+#elif NETCOREAPP2_1 || __MOBILE__
+using SkiaSharp;
 #endif
 
 namespace ApiExamples
@@ -20,6 +24,41 @@ namespace ApiExamples
     [TestFixture]
     internal class ExImageSaveOptions : ApiExampleBase
     {
+        [Test]
+        public void OnePage()
+        {
+            //ExStart
+            //ExFor:Document.Save(String, SaveOptions)
+            //ExFor:FixedPageSaveOptions
+            //ExFor:ImageSaveOptions.PageIndex
+            //ExSummary:Shows how to render one page from a document to a JPEG image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Page 1.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 2.");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 3.");
+
+            // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method renders the document into an image.
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
+
+            // Set the "PageIndex" to "1" to select the second page via
+            // the zero-based index to start rendering the document from.
+            options.PageIndex = 1;
+
+            // When we save the document to the JPEG format, Aspose.Words only renders one page.
+            // This image will contain one page starting from page two,
+            // which will just be the second page of the original document.
+            doc.Save(ArtifactsDir + "ImageSaveOptions.OnePage.jpg", options);
+            //ExEnd
+
+            TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.OnePage.jpg");
+        }
+
         [TestCase(false)]
         [TestCase(true)]
         public void Renderer(bool useGdiEmfRenderer)
@@ -156,6 +195,52 @@ namespace ApiExamples
 
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.WindowsMetaFile.png");
         }
+
+        [Test, Category("SkipMono")]
+        public void PageByPage()
+        {
+            //ExStart
+            //ExFor:Document.Save(String, SaveOptions)
+            //ExFor:FixedPageSaveOptions
+            //ExFor:ImageSaveOptions.PageIndex
+            //ExFor:ImageSaveOptions.PageCount
+            //ExSummary:Shows how to render every page of a document to a separate TIFF image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Page 1.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 2.");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 3.");
+
+            // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method renders the document into an image.
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff);
+
+            // Set the "PageCount" property to "1" to render only one page of the document.
+            // Many other image formats only render one page at a time, and do not use this property.
+            options.PageCount = 1;
+
+            for (int i = 0; i < doc.PageCount; i++)
+            {
+                // Set the "PageIndex" property to the number of the first page from
+                // which to start rendering the document from.
+                options.PageIndex = i;
+
+                doc.Save(ArtifactsDir + $"ImageSaveOptions.PageByPage.{i + 1}.tiff", options);
+            }
+            //ExEnd
+
+            List<string> imageFileNames = Directory.GetFiles(ArtifactsDir, "*.tiff")
+                .Where(item => item.Contains("ImageSaveOptions.PageByPage.") && item.EndsWith(".tiff")).ToList();
+
+            Assert.AreEqual(3, imageFileNames.Count);
+
+            foreach (string imageFileName in imageFileNames)
+                TestUtil.VerifyImage(816, 1056, imageFileName);
+        }
 #endif
 
         [TestCase(ImageColorMode.BlackAndWhite)]
@@ -218,6 +303,44 @@ namespace ApiExamples
             }
 #endif
             //ExEnd
+        }
+
+        [Test]
+        public void PaperColor()
+        {
+            //ExStart
+            //ExFor:ImageSaveOptions
+            //ExFor:ImageSaveOptions.PaperColor
+            //ExSummary:Renders a page of a Word document into an image with transparent or colored background.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Times New Roman";
+            builder.Font.Size = 24;
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method renders the document into an image.
+            ImageSaveOptions imgOptions = new ImageSaveOptions(SaveFormat.Png);
+
+            // Set the "PaperColor" property to a transparent color to apply a transparent
+            // background to the document while rendering it to an image.
+            imgOptions.PaperColor = Color.Transparent;
+
+            doc.Save(ArtifactsDir + "ImageSaveOptions.PaperColor.Transparent.png", imgOptions);
+
+            // Set the "PaperColor" property to an opaque color to apply that color
+            // as the background of the document as we render it to an image.
+            imgOptions.PaperColor = Color.LightCoral;
+
+            doc.Save(ArtifactsDir + "ImageSaveOptions.PaperColor.LightCoral.png", imgOptions);
+            //ExEnd
+
+            TestUtil.ImageContainsTransparency(ArtifactsDir + "ImageSaveOptions.PaperColor.Transparent.png");
+            Assert.Throws<AssertionException>(() =>
+                TestUtil.ImageContainsTransparency(ArtifactsDir + "ImageSaveOptions.PaperColor.LightCoral.png"));
         }
 
         [TestCase(ImagePixelFormat.Format1bppIndexed)]
@@ -367,5 +490,167 @@ namespace ApiExamples
 
             TestUtil.VerifyImage(817, 1057, ArtifactsDir + "ImageSaveOptions.EditImage.png");
         }
+
+        [Test]
+        public void JpegQuality()
+        {
+            //ExStart
+            //ExFor:Document.Save(String, SaveOptions)
+            //ExFor:FixedPageSaveOptions.JpegQuality
+            //ExFor:ImageSaveOptions
+            //ExFor:ImageSaveOptions.#ctor
+            //ExFor:ImageSaveOptions.JpegQuality
+            //ExSummary:Shows how to configure compression while saving a document as a JPEG.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method renders the document into an image.
+            ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg);
+
+            // Set the "JpegQuality" property to "10" to use stronger compression when rendering the document.
+            // This will reduce the file size of the document, but the image will display more prominent compression artifacts.
+            imageOptions.JpegQuality = 10;
+
+            doc.Save(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg", imageOptions);
+
+            Assert.That(20000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg").Length));
+
+            // Set the "JpegQuality" property to "100" to use weaker compression when rending the document.
+            // This will improve the quality of the image, but will also increase the file size.
+            imageOptions.JpegQuality = 100;
+
+            doc.Save(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg", imageOptions);
+
+            Assert.That(60000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg").Length));
+            //ExEnd
+        }
+
+        [Test, Category("SkipMono")]
+        public void SaveToTiffDefault()
+        {
+            Document doc = new Document(MyDir + "Rendering.docx");
+            doc.Save(ArtifactsDir + "ImageSaveOptions.SaveToTiffDefault.tiff");
+        }
+
+        [TestCase(TiffCompression.None), Category("SkipMono")]
+        [TestCase(TiffCompression.Rle), Category("SkipMono")]
+        [TestCase(TiffCompression.Lzw), Category("SkipMono")]
+        [TestCase(TiffCompression.Ccitt3), Category("SkipMono")]
+        [TestCase(TiffCompression.Ccitt4), Category("SkipMono")]
+        public void TiffImageCompression(TiffCompression tiffCompression)
+        {
+            //ExStart
+            //ExFor:TiffCompression
+            //ExFor:ImageSaveOptions.TiffCompression
+            //ExSummary:Shows how to select the compression scheme to apply to a document that we convert into a TIFF image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method renders the document into an image.
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff);
+
+            // Set the "TiffCompression" property to "TiffCompression.None" to apply no compression while saving,
+            // which may result in a very large output file.
+            // Set the "TiffCompression" property to "TiffCompression.Rle" to apply RLE compression
+            // Set the "TiffCompression" property to "TiffCompression.Lzw" to apply LZW compression.
+            // Set the "TiffCompression" property to "TiffCompression.Ccitt3" to apply CCITT3 compression.
+            // Set the "TiffCompression" property to "TiffCompression.Ccitt4" to apply CCITT4 compression.
+            options.TiffCompression = tiffCompression;
+
+            doc.Save(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff", options);
+
+            switch (tiffCompression)
+            {
+                case TiffCompression.None:
+                    Assert.That(3000000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
+                    break;
+                case TiffCompression.Rle:
+#if NETCOREAPP2_1
+                    Assert.That(6000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
+#else
+                    Assert.That(600000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
+#endif
+                    break;
+                case TiffCompression.Lzw:
+                    Assert.That(200000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
+                    break;
+                case TiffCompression.Ccitt3:
+                    Assert.That(90000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
+                    break;
+                case TiffCompression.Ccitt4:
+                    Assert.That(20000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
+                    break;
+            }
+            //ExEnd
+        }
+
+        [Test]
+        public void Resolution()
+        {
+            //ExStart
+            //ExFor:ImageSaveOptions
+            //ExFor:ImageSaveOptions.Resolution
+            //ExSummary:Shows how to specify a resolution while rendering a document to PNG.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Times New Roman";
+            builder.Font.Size = 24;
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method renders the document into an image.
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
+
+            // Set the "Resolution" property to "72" to render the document in 72dpi.
+            options.Resolution = 72;
+
+            doc.Save(ArtifactsDir + "ImageSaveOptions.Resolution.72dpi.png", options);
+
+            Assert.That(120000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.Resolution.72dpi.png").Length));
+
+#if NET462 || JAVA
+            Image image = Image.FromFile(ArtifactsDir + "ImageSaveOptions.Resolution.72dpi.png");
+
+            Assert.AreEqual(612, image.Width);
+            Assert.AreEqual(792, image.Height);
+#elif NETCOREAPP2_1 || __MOBILE__
+            using (SKBitmap image = SKBitmap.Decode(ArtifactsDir + "ImageSaveOptions.Resolution.72dpi.png")) 
+            {
+                Assert.AreEqual(612, image.Width);
+                Assert.AreEqual(792, image.Height);
+            }
+#endif
+            // Set the "Resolution" property to "300" to render the document in 300dpi.
+            options.Resolution = 300;
+
+            doc.Save(ArtifactsDir + "ImageSaveOptions.Resolution.300dpi.png", options);
+
+            Assert.That(700000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.Resolution.300dpi.png").Length));
+
+#if NET462 || JAVA
+            image = Image.FromFile(ArtifactsDir + "ImageSaveOptions.Resolution.300dpi.png");
+
+            Assert.AreEqual(2550, image.Width);
+            Assert.AreEqual(3300, image.Height);
+#elif NETCOREAPP2_1 || __MOBILE__
+            using (SKBitmap image = SKBitmap.Decode(ArtifactsDir + "ImageSaveOptions.Resolution.300dpi.png")) 
+            {
+                Assert.AreEqual(2550, image.Width);
+                Assert.AreEqual(3300, image.Height);
+            }
+#endif
+            //ExEnd
+        }
+
+
+
     }
 }

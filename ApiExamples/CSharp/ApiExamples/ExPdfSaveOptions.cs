@@ -11,6 +11,7 @@ using System.Linq;
 using System.Globalization;
 using System.IO;
 using Aspose.Words;
+using Aspose.Words.Fonts;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -42,6 +43,53 @@ namespace ApiExamples
     [TestFixture]
     internal class ExPdfSaveOptions : ApiExampleBase
     {
+        [Test]
+        public void OnePage()
+        {
+            //ExStart
+            //ExFor:FixedPageSaveOptions.PageIndex
+            //ExFor:FixedPageSaveOptions.PageCount
+            //ExFor:Document.Save(Stream, SaveOptions)
+            //ExSummary:Shows how to convert only some of the pages in a document to PDF.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Page 1.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 2.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 3.");
+
+            using (Stream stream = File.Create(ArtifactsDir + "PdfSaveOptions.OnePage.pdf"))
+            {
+                // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+                // to modify the way in which that method converts the document to .PDF.
+                PdfSaveOptions options = new PdfSaveOptions();
+
+                // Set the "PageIndex" to "1" to render a portion of the document starting from the second page.
+                options.PageIndex = 1;
+
+                // Set the "PageCount" to "1" to render only one page of the document,
+                // starting from the page that the "PageIndex" property specified.
+                options.PageCount = 1;
+
+                // This document will contain one page starting from page two, which means it will only contain the second page.
+                doc.Save(stream, options);
+            }
+            //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.OnePage.pdf");
+
+            Assert.AreEqual(1, pdfDocument.Pages.Count);
+
+            TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
+            pdfDocument.Pages.Accept(textFragmentAbsorber);
+
+            Assert.AreEqual("Page 2.", textFragmentAbsorber.Text);
+#endif
+        }
+
         [Test]
         public void HeadingsOutlineLevels()
         {
@@ -324,6 +372,62 @@ namespace ApiExamples
             #endif
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void PreserveFormFields(bool preserveFormFields)
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.PreserveFormFields
+            //ExSummary:Shows how to save a document to the PDF format using the Save method and the PdfSaveOptions class.
+            // Open the document
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Please select a fruit: ");
+
+            // Insert a combo box which will allow a user to choose an option from a collection of strings.
+            builder.InsertComboBox("MyComboBox", new[] { "Apple", "Banana", "Cherry" }, 0);
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            PdfSaveOptions pdfOptions = new PdfSaveOptions();
+
+            // Set the "PreserveFormFields" property to "true" to save form fields as interactive objects in the output PDF.
+            // Set the "PreserveFormFields" property to "false" to freeze all form fields in the document at
+            // their current values, and display them as plain text in the output PDF.
+            pdfOptions.PreserveFormFields = preserveFormFields;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PreserveFormFields.pdf", pdfOptions);
+            //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PreserveFormFields.pdf");
+
+            Assert.AreEqual(1, pdfDocument.Pages.Count);
+
+            TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
+            pdfDocument.Pages.Accept(textFragmentAbsorber);
+
+            if (preserveFormFields)
+            {
+                Assert.AreEqual("Please select a fruit: ", textFragmentAbsorber.Text);
+                TestUtil.FileContainsString("10 0 obj\r\n" +
+                                            "<</Type /Annot/Subtype /Widget/P 4 0 R/FT /Ch/F 4/Rect [168.39199829 707.35101318 217.87442017 722.64007568]/Ff 131072/T(þÿ\0M\0y\0C\0o\0m\0b\0o\0B\0o\0x)/Opt " +
+                                            "[(þÿ\0A\0p\0p\0l\0e) (þÿ\0B\0a\0n\0a\0n\0a) (þÿ\0C\0h\0e\0r\0r\0y) ]/V(þÿ\0A\0p\0p\0l\0e)/DA(0 g /FAAABC 12 Tf )/AP<</N 11 0 R>>>>",
+                    ArtifactsDir + "PdfSaveOptions.PreserveFormFields.pdf");
+            }
+            else
+            {
+                Assert.AreEqual("Please select a fruit: Apple", textFragmentAbsorber.Text);
+                Assert.Throws<AssertionException>(() =>
+                {
+                    TestUtil.FileContainsString("/Widget",
+                        ArtifactsDir + "PdfSaveOptions.PreserveFormFields.pdf");
+                });
+            }
+#endif
+        }
+
         [TestCase(PdfCompliance.PdfA1b)]
         [TestCase(PdfCompliance.Pdf17)]
         [TestCase(PdfCompliance.PdfA1a)]
@@ -371,6 +475,48 @@ namespace ApiExamples
 #endif
         }
 
+        [TestCase(PdfTextCompression.None)]
+        [TestCase(PdfTextCompression.Flate)]
+        public void TextCompression(PdfTextCompression pdfTextCompression)
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions
+            //ExFor:PdfSaveOptions.TextCompression
+            //ExFor:PdfTextCompression
+            //ExSummary:Shows how to apply text compression when saving a document to PDF.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            for (int i = 0; i < 100; i++)
+                builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                                "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            PdfSaveOptions options = new PdfSaveOptions();
+
+            // Set the "TextCompression" property to "PdfTextCompression.None" to not apply any
+            // compression to text when we save the document to PDF.
+            // Set the "TextCompression" property to "PdfTextCompression.Flate" to apply ZIP compression
+            // to text when we save the document to PDF. The larger the document, the bigger the impact that this will have.
+            options.TextCompression = pdfTextCompression;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf", options);
+
+            switch (pdfTextCompression)
+            {
+                case PdfTextCompression.None:
+                    Assert.That(60000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf").Length));
+                    TestUtil.FileContainsString("5 0 obj\r\n<</Length 9 0 R>>stream", ArtifactsDir + "PdfSaveOptions.TextCompression.pdf"); //ExSkip
+                    break;
+                case PdfTextCompression.Flate:
+                    Assert.That(30000, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf").Length));
+                    TestUtil.FileContainsString("5 0 obj\r\n<</Length 9 0 R/Filter /FlateDecode>>stream", ArtifactsDir + "PdfSaveOptions.TextCompression.pdf"); //ExSkip
+                    break;
+            }
+            //ExEnd
+        }
+        
         [TestCase(PdfImageCompression.Auto)]
         [TestCase(PdfImageCompression.Jpeg)]
         public void ImageCompression(PdfImageCompression pdfImageCompression)
@@ -921,6 +1067,137 @@ namespace ApiExamples
 
             Assert.AreEqual(scaleWmfFonts ? 1.589d : 5.045d, textFragmentRectangle.Width, 0.001d);
 #endif
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void EmbedFullFonts(bool embedFullFonts)
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.#ctor
+            //ExFor:PdfSaveOptions.EmbedFullFonts
+            //ExSummary:Shows how to enable or disable subsetting when embedding fonts while rendering a document to PDF.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Arial";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Arvo";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            // Configure our font sources to ensure that we have access to both the fonts in this document.
+            FontSourceBase[] originalFontsSources = FontSettings.DefaultInstance.GetFontsSources();
+            Aspose.Words.Fonts.FolderFontSource folderFontSource = new Aspose.Words.Fonts.FolderFontSource(FontsDir, true);
+            FontSettings.DefaultInstance.SetFontsSources(new[] { originalFontsSources[0], folderFontSource });
+
+            FontSourceBase[] fontSources = FontSettings.DefaultInstance.GetFontsSources();
+            Assert.True(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+            Assert.True(fontSources[1].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"));
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            PdfSaveOptions options = new PdfSaveOptions();
+
+            // Since our document contains a custom font, embedding in the output document may be desirable.
+            // Set the "EmbedFullFonts" property to "true" to embed every glyph of every embedded font in the output PDF.
+            // The size of the document may become very large, but we will have full use of all fonts if we edit the PDF.
+            // Set the "EmbedFullFonts" property to "false" to apply subsetting to fonts, saving only the glyphs
+            // that the document is using. The file will be considerably smaller,
+            // but we may need access to any custom fonts if we edit the document.
+            options.EmbedFullFonts = embedFullFonts;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf", options);
+
+            if (embedFullFonts)
+                Assert.That(500000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf").Length));
+            else
+                Assert.That(25000, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf").Length));
+
+            // Restore the original font sources.
+            FontSettings.DefaultInstance.SetFontsSources(originalFontsSources);
+            //ExEnd
+        }
+
+        [TestCase(PdfFontEmbeddingMode.EmbedAll)]
+        [TestCase(PdfFontEmbeddingMode.EmbedNone)]
+        [TestCase(PdfFontEmbeddingMode.EmbedNonstandard)]
+        public void EmbedWindowsFonts(PdfFontEmbeddingMode pdfFontEmbeddingMode)
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.FontEmbeddingMode
+            //ExFor:PdfFontEmbeddingMode
+            //ExSummary:Shows how to set Aspose.Words to skip embedding Arial and Times New Roman fonts into a PDF document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // "Arial" is a standard font, and "Courier New" is a nonstandard font.
+            builder.Font.Name = "Arial";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Courier New";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            PdfSaveOptions options = new PdfSaveOptions();
+
+            // Set the "EmbedFullFonts" property to "true" to embed every glyph of every embedded font in the output PDF.
+            options.EmbedFullFonts = true;
+
+            // Set the "FontEmbeddingMode" property to "EmbedAll" to embed all fonts in the output PDF.
+            // Set the "FontEmbeddingMode" property to "EmbedNonstandard" to only allow the embedding of
+            // nonstandard fonts in the output PDF.
+            // Set the "FontEmbeddingMode" property to "EmbedNone" to not embed any fonts in the output PDF.
+            options.FontEmbeddingMode = pdfFontEmbeddingMode;
+
+            // The output PDF will be saved without embedding standard windows fonts
+            doc.Save(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf", options);
+
+            switch (pdfFontEmbeddingMode)
+            {
+                case PdfFontEmbeddingMode.EmbedAll:
+                    Assert.That(1000000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
+                    break;
+                case PdfFontEmbeddingMode.EmbedNonstandard:
+                    Assert.That(480000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
+                    break;
+                case PdfFontEmbeddingMode.EmbedNone:
+                    Assert.That(4000, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
+                    break;
+            }
+            //ExEnd
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void EmbedCoreFonts(bool useCoreFonts)
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.UseCoreFonts
+            //ExSummary:Shows how enable/disable PDF Type 1 font substitution.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Arial";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Courier New";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            PdfSaveOptions options = new PdfSaveOptions();
+
+            // Set the "UseCoreFonts" property to "true" to replace some fonts,
+            // which include the two fonts in our document, with their PDF Type 1 equivalents.
+            // Set the "UseCoreFonts" property to "false" to not apply PDF Type 1 fonts.
+            options.UseCoreFonts = useCoreFonts;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf", options);
+
+            if (useCoreFonts)
+                Assert.That(3000, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf").Length));
+            else
+                Assert.That(30000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf").Length));
+            //ExEnd
         }
 
         [TestCase(false)]
@@ -1726,6 +2003,81 @@ namespace ApiExamples
                     break;
             }
 #endif
+        }
+
+        [Test]
+        public void EncryptionPermissions()
+        {
+            //ExStart
+            //ExFor:PdfEncryptionDetails.#ctor
+            //ExFor:PdfSaveOptions.EncryptionDetails
+            //ExFor:PdfEncryptionDetails.Permissions
+            //ExFor:PdfEncryptionDetails.EncryptionAlgorithm
+            //ExFor:PdfEncryptionDetails.OwnerPassword
+            //ExFor:PdfEncryptionDetails.UserPassword
+            //ExFor:PdfEncryptionAlgorithm
+            //ExFor:PdfPermissions
+            //ExFor:PdfEncryptionDetails
+            //ExSummary:Shows how to set permissions on a saved PDF document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Hello world!");
+
+            PdfEncryptionDetails encryptionDetails =
+                new PdfEncryptionDetails("password", string.Empty, PdfEncryptionAlgorithm.RC4_128);
+
+            // Start by disallowing all permissions.
+            encryptionDetails.Permissions = PdfPermissions.DisallowAll;
+
+            // Extend permissions to allow the editing of annotations.
+            encryptionDetails.Permissions = PdfPermissions.ModifyAnnotations | PdfPermissions.DocumentAssembly;
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+
+            // Enable encryption via the "EncryptionDetails" property.
+            saveOptions.EncryptionDetails = encryptionDetails;
+
+            // When we open this document, we will need to provide the password before we can access its contents.
+            doc.Save(ArtifactsDir + "PdfSaveOptions.EncryptionPermissions.pdf", saveOptions);
+            //ExEnd
+        }
+
+        [TestCase(NumeralFormat.ArabicIndic)]
+        [TestCase(NumeralFormat.Context)]
+        [TestCase(NumeralFormat.EasternArabicIndic)]
+        [TestCase(NumeralFormat.European)]
+        [TestCase(NumeralFormat.System)]
+        public void SetNumeralFormat(NumeralFormat numeralFormat)
+        {
+            //ExStart
+            //ExFor:FixedPageSaveOptions.NumeralFormat
+            //ExFor:NumeralFormat
+            //ExSummary:Demonstrates how to set the numeral format used when saving to PDF.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.LocaleId = new CultureInfo("ar-AR").LCID;
+            builder.Writeln("1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 50, 100");
+
+            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .PDF.
+            PdfSaveOptions options = new PdfSaveOptions();
+
+            // Set the "NumeralFormat" property to "NumeralFormat.ArabicIndic" to
+            // use glyphs from the U+0660 to U+0669 range as numbers.
+            // Set the "NumeralFormat" property to "NumeralFormat.Context" to
+            // look up the locale to determine what number glyphs to use.
+            // Set the "NumeralFormat" property to "NumeralFormat.EasternArabicIndic" to
+            // use glyphs from the U+06F0 to U+06F9 range as numbers.
+            // Set the "NumeralFormat" property to "NumeralFormat.European" to use european numerals.
+            // Set the "NumeralFormat" property to "NumeralFormat.System" to determine the symbol set from regional settings.
+            options.NumeralFormat = numeralFormat;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.SetNumeralFormat.pdf", options);
+            //ExEnd
         }
     }
 }

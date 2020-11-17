@@ -49,6 +49,94 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
+        public void DefaultFontName()
+        {
+            //ExStart
+            //ExFor:DefaultFontSubstitutionRule.DefaultFontName
+            //ExSummary:Shows how to specify a default font.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Arial";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Arvo";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            FontSourceBase[] fontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            // The font sources that the document uses contain the font "Arial", but not "Arvo".
+            Assert.AreEqual(1, fontSources.Length);
+            Assert.True(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+            Assert.False(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"));
+
+            // Set the "DefaultFontName" property to "Courier New" to,
+            // while rendering the document, apply that font in all cases when another font is not available. 
+            FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Courier New";
+
+            Assert.True(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Courier New"));
+
+            // Aspose.Words will now use the default font in place of any missing fonts during any rendering calls.
+            doc.Save(ArtifactsDir + "FontSettings.DefaultFontName.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void UpdatePageLayoutWarnings()
+        {
+            // Store the font sources currently used so we can restore them later
+            FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            // Load the document to render
+            Document doc = new Document(MyDir + "Document.docx");
+
+            // Create a new class implementing IWarningCallback and assign it to the PdfSaveOptions class
+            HandleDocumentWarnings callback = new HandleDocumentWarnings();
+            doc.WarningCallback = callback;
+
+            // We can choose the default font to use in the case of any missing fonts
+            FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
+
+            // For testing we will set Aspose.Words to look for fonts only in a folder which does not exist. Since Aspose.Words won't
+            // find any fonts in the specified directory, then during rendering the fonts in the document will be substituted with the default 
+            // font specified under FontSettings.DefaultFontName. We can pick up on this substitution using our callback
+            FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
+
+            // When you call UpdatePageLayout the document is rendered in memory. Any warnings that occurred during rendering
+            // are stored until the document save and then sent to the appropriate WarningCallback
+            doc.UpdatePageLayout();
+
+            // Even though the document was rendered previously, any save warnings are notified to the user during document save
+            doc.Save(ArtifactsDir + "FontSettings.UpdatePageLayoutWarnings.pdf");
+
+            Assert.That(callback.FontWarnings.Count, Is.GreaterThan(0));
+            Assert.True(callback.FontWarnings[0].WarningType == WarningType.FontSubstitution);
+            Assert.True(callback.FontWarnings[0].Description.Contains("has not been found"));
+
+            // Restore default fonts
+            FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
+        }
+
+        public class HandleDocumentWarnings : IWarningCallback
+        {
+            /// <summary>
+            /// Our callback only needs to implement the "Warning" method. This method is called whenever there is a
+            /// potential issue during document processing. The callback can be set to listen for warnings generated during document
+            /// load and/or document save.
+            /// </summary>
+            public void Warning(WarningInfo info)
+            {
+                // We are only interested in fonts being substituted
+                if (info.WarningType == WarningType.FontSubstitution)
+                {
+                    Console.WriteLine("Font substitution: " + info.Description);
+                    FontWarnings.Warning(info); //ExSkip
+                }
+            }
+
+            public WarningInfoCollection FontWarnings = new WarningInfoCollection(); //ExSkip
+        }
+
         //ExStart
         //ExFor:IWarningCallback
         //ExFor:DocumentBase.WarningCallback
@@ -63,7 +151,7 @@ namespace ApiExamples
             builder.Font.Name = "Times New Roman";
             builder.Writeln("Hello world!");
 
-            ExFont.FontSubstitutionWarningCollector callback = new ExFont.FontSubstitutionWarningCollector();
+            FontSubstitutionWarningCollector callback = new FontSubstitutionWarningCollector();
             doc.WarningCallback = callback;
 
             // Store the current collection of font sources, which will be the default font source for every document
@@ -84,6 +172,21 @@ namespace ApiExamples
             Assert.True(callback.FontSubstitutionWarnings[0].Description
                 .Equals("Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
         }
+
+        private class FontSubstitutionWarningCollector : IWarningCallback
+        {
+            /// <summary>
+            /// Called every time a warning occurs during loading/saving.
+            /// </summary>
+            public void Warning(WarningInfo info)
+            {
+                if (info.WarningType == WarningType.FontSubstitution)
+                    FontSubstitutionWarnings.Warning(info);
+            }
+
+            public WarningInfoCollection FontSubstitutionWarnings = new WarningInfoCollection();
+        }
+        //ExEnd
 
         //ExStart
         //ExFor:Fonts.FontInfoSubstitutionRule
@@ -263,6 +366,276 @@ namespace ApiExamples
             Assert.AreEqual(FontSourceType.FontsFolder, folderFontSource.Type);
             Assert.AreEqual(1, folderFontSource.Priority);
             //ExEnd
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void SetFontsFolder(bool recursive)
+        {
+            //ExStart
+            //ExFor:FontSettings
+            //ExFor:FontSettings.SetFontsFolder(String, Boolean)
+            //ExSummary:Shows how to set a font source directory.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Arvo";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Amethysta";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            // Our font sources do not contain the font that we have used for text in this document.
+            // If we use these font settings while rendering this document,
+            // Aspose.Words will apply a fallback font to text which has a font that Aspose.Words cannot locate.
+            FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            Assert.AreEqual(1, originalFontSources.Length);
+            Assert.AreEqual(480, originalFontSources[0].GetAvailableFonts().Count);
+            Assert.True(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+
+            // The default font sources are missing the two fonts that we are using in this document.
+            Assert.False(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"));
+            Assert.False(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+
+            // Use the "SetFontsFolder" method to set a directory which will act as a new font source.
+            // Pass "false" as the "recursive" argument to include fonts from all the font files that are in the directory
+            // that we are passing in the first argument, but not include any fonts in any of that directory's subfolders.
+            // Pass "true" as the "recursive" argument to include all font files in the directory that we are passing
+            // in the first argument, as well as all the fonts in its subdirectories.
+            FontSettings.DefaultInstance.SetFontsFolder(FontsDir, recursive);
+
+            FontSourceBase[] newFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            Assert.AreEqual(1, newFontSources.Length);
+            Assert.False(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+            Assert.True(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"));
+
+            // The "Amethysta" font is in a subfolder of the font directory.
+            if (recursive)
+            {
+                Assert.AreEqual(22, newFontSources[0].GetAvailableFonts().Count);
+                Assert.True(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+            }
+            else
+            {
+                Assert.AreEqual(15, newFontSources[0].GetAvailableFonts().Count);
+                Assert.False(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+            }
+
+            doc.Save(ArtifactsDir + "FontSettings.SetFontsFolder.pdf");
+
+            // Restore the original font sources.
+            FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
+            //ExEnd
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void SetFontsFolders(bool recursive)
+        {
+            //ExStart
+            //ExFor:FontSettings
+            //ExFor:FontSettings.SetFontsFolders(String[], Boolean)
+            //ExSummary:Shows how to set multiple font source directories.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Amethysta";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+            builder.Font.Name = "Junction Light";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            // Our font sources do not contain the font that we have used for text in this document.
+            // If we use these font settings while rendering this document,
+            // Aspose.Words will apply a fallback font to text which has a font that Aspose.Words cannot locate.
+            FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            Assert.AreEqual(1, originalFontSources.Length);
+            Assert.AreEqual(480, originalFontSources[0].GetAvailableFonts().Count);
+            Assert.True(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+
+            // The default font sources are missing the two fonts that we are using in this document.
+            Assert.False(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+            Assert.False(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Junction Light"));
+
+            // Use the "SetFontsFolders" method to create a font source from each font directory that we pass as the first argument.
+            // Pass "false" as the "recursive" argument to include fonts from all the font files that are in the directories
+            // that we are passing in the first argument, but not include any fonts from any of the directories' subfolders.
+            // Pass "true" as the "recursive" argument to include all font files in the directories that we are passing
+            // in the first argument, as well as all the fonts in their subdirectories.
+            FontSettings.DefaultInstance.SetFontsFolders(new[] { FontsDir + "/Amethysta", FontsDir + "/Junction" }, recursive);
+
+            FontSourceBase[] newFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            Assert.AreEqual(2, newFontSources.Length);
+            Assert.False(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+            Assert.AreEqual(1, newFontSources[0].GetAvailableFonts().Count);
+            Assert.True(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+
+            // The "Junction" folder itself contains no font files, but has subfolders that do.
+            if (recursive)
+            {
+                Assert.AreEqual(6, newFontSources[1].GetAvailableFonts().Count);
+                Assert.True(newFontSources[1].GetAvailableFonts().Any(f => f.FullFontName == "Junction Light"));
+            }
+            else
+            {
+                Assert.AreEqual(0, newFontSources[1].GetAvailableFonts().Count);
+            }
+
+            doc.Save(ArtifactsDir + "FontSettings.SetFontsFolders.pdf");
+
+            // Restore the original font sources.
+            FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
+            //ExEnd
+        }
+
+        [Test]
+        public void AddFontSource()
+        {
+            //ExStart
+            //ExFor:FontSettings            
+            //ExFor:FontSettings.GetFontsSources()
+            //ExFor:FontSettings.SetFontsSources()
+            //ExSummary:Shows how to add a font source to our existing font sources.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Arial";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Amethysta";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+            builder.Font.Name = "Junction Light";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            Assert.AreEqual(1, originalFontSources.Length);
+
+            Assert.True(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+
+            // The default font source is missing two of the fonts that we are using in our document.
+            // When we save this document, Aspose.Words will apply fallback fonts to all text formatted with inaccessible fonts.
+            Assert.False(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+            Assert.False(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Junction Light"));
+
+            // Create a font source from a folder that contains fonts.
+            FolderFontSource folderFontSource = new FolderFontSource(FontsDir, true);
+
+            // Apply a new array of font sources that contains the original font sources, as well as our custom fonts.
+            FontSourceBase[] updatedFontSources = { originalFontSources[0], folderFontSource };
+            FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
+
+            // Verify that Aspose.Words has access to all required fonts before we render the document to PDF.
+            updatedFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            Assert.True(updatedFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+            Assert.True(updatedFontSources[1].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+            Assert.True(updatedFontSources[1].GetAvailableFonts().Any(f => f.FullFontName == "Junction Light"));
+
+            doc.Save(ArtifactsDir + "FontSettings.AddFontSource.pdf");
+
+            // Restore the original font sources.
+            FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
+            //ExEnd
+        }
+
+        [Test]
+        public void SetSpecifyFontFolder()
+        {
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SetFontsFolder(FontsDir, false);
+
+            // Using load options
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.FontSettings = fontSettings;
+
+            Document doc = new Document(MyDir + "Rendering.docx", loadOptions);
+
+            FolderFontSource folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[0]);
+
+            Assert.AreEqual(FontsDir, folderSource.FolderPath);
+            Assert.False(folderSource.ScanSubfolders);
+        }
+
+        [Test]
+        public void TableSubstitution()
+        {
+            //ExStart
+            //ExFor:Document.FontSettings
+            //ExFor:TableSubstitutionRule.SetSubstitutes(String, String[])
+            //ExSummary:Shows how set font substitution rules.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Arial";
+            builder.Writeln("Hello world!");
+            builder.Font.Name = "Amethysta";
+            builder.Writeln("The quick brown fox jumps over the lazy dog.");
+
+            FontSourceBase[] fontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            // The default font sources contain the first font that the document uses.
+            Assert.AreEqual(1, fontSources.Length);
+            Assert.True(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
+
+            // The second font, "Amethysta", is unavailable.
+            Assert.False(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
+
+            // We can configure a font substitution table which determines
+            // which fonts Aspose.Words will use as substitutes for unavailable fonts.
+            // Set two substitution fonts for "Amethysta": "Arvo", and "Courier New".
+            // If the first substitute is unavailable, Aspose.Words attempts to use the second substitute, and so on.
+            doc.FontSettings = new FontSettings();
+            doc.FontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes(
+                "Amethysta", new[] { "Arvo", "Courier New" });
+
+            // "Amethysta" is unavailable, and the substitution rule states that the first font to use as a substitute is "Arvo". 
+            Assert.False(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"));
+
+            // "Arvo" is also unavailable, but "Courier New" is. 
+            Assert.True(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Courier New"));
+
+            // The output document will display the text that uses the "Amethysta" font formatted with "Courier New".
+            doc.Save(ArtifactsDir + "FontSettings.TableSubstitution.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void SetSpecifyFontFolders()
+        {
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SetFontsFolders(new string[] { FontsDir, @"C:\Windows\Fonts\" }, true);
+
+            // Using load options
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.FontSettings = fontSettings;
+            Document doc = new Document(MyDir + "Rendering.docx", loadOptions);
+
+            FolderFontSource folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[0]);
+            Assert.AreEqual(FontsDir, folderSource.FolderPath);
+            Assert.True(folderSource.ScanSubfolders);
+
+            folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[1]);
+            Assert.AreEqual(@"C:\Windows\Fonts\", folderSource.FolderPath);
+            Assert.True(folderSource.ScanSubfolders);
+        }
+
+        [Test]
+        public void AddFontSubstitutes()
+        {
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes("Slab", new string[] { "Times New Roman", "Arial" });
+            fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Arvo", new string[] { "Open Sans", "Arial" });
+
+            Document doc = new Document(MyDir + "Rendering.docx");
+            doc.FontSettings = fontSettings;
+
+            string[] alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Slab").ToArray();
+            Assert.AreEqual(new string[] { "Times New Roman", "Arial" }, alternativeFonts);
+
+            alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Arvo").ToArray();
+            Assert.AreEqual(new string[] { "Open Sans", "Arial" }, alternativeFonts);
         }
 
         [Test]
