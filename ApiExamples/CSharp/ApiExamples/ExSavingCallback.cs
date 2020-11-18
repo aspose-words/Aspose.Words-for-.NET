@@ -87,7 +87,7 @@ namespace ApiExamples
         {
             public void PageSaving(PageSavingArgs args)
             {
-                string outFileName = $"{ArtifactsDir}SavingCallback.PageFileName.Page_{args.PageIndex}.html";
+                string outFileName = $"{ArtifactsDir}SavingCallback.PageFileNames.Page_{args.PageIndex}.html";
 
                 // Below are two ways of specifying where Aspose.Words will save each page of the document.
                 // 1 -  Set a filename for the output page file:
