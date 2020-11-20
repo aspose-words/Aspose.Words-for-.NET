@@ -404,47 +404,63 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SectionsDeleteHeaderFooter()
+        public void ClearHeadersFooters()
         {
             //ExStart
             //ExFor:Section.ClearHeadersFooters
-            //ExSummary:Clears content of all headers and footers in a section.
-            Document doc = new Document(MyDir + "Header and footer types.docx");
+            //ExSummary:Shows how to clear the contents of all headers and footers in a section.
+            Document doc = new Document();
 
-            Section section = doc.Sections[0];
+            Assert.AreEqual(0, doc.FirstSection.HeadersFooters.Count);
 
-            Assert.AreEqual(6, section.HeadersFooters.Count);
-            Assert.AreEqual("First header", section.HeadersFooters[HeaderFooterType.HeaderFirst].GetText().Trim());
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            section.ClearHeadersFooters();
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.Writeln("This is the primary header.");
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.Writeln("This is the primary footer.");
 
-            Assert.AreEqual(6, section.HeadersFooters.Count);
-            Assert.AreEqual(string.Empty, section.HeadersFooters[HeaderFooterType.HeaderFirst].GetText());
+            Assert.AreEqual(2, doc.FirstSection.HeadersFooters.Count);
+
+            Assert.AreEqual("This is the primary header.", doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim());
+            Assert.AreEqual("This is the primary footer.", doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Trim());
+
+            // Empty all the headers and footers in this section of all their contents.
+            // The headers and footers themselves will still be present, but will have nothing to display.
+            doc.FirstSection.ClearHeadersFooters();
+
+            Assert.AreEqual(2, doc.FirstSection.HeadersFooters.Count);
+
+            Assert.AreEqual(string.Empty, doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim());
+            Assert.AreEqual(string.Empty, doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Trim());
             //ExEnd
         }
 
         [Test]
-        public void SectionDeleteHeaderFooterShapes()
+        public void DeleteHeaderFooterShapes()
         {
             //ExStart
             //ExFor:Section.DeleteHeaderFooterShapes
-            //ExSummary:Removes all images and shapes from all headers footers in a section.
+            //ExSummary:Shows how to remove all shapes from all headers footers in a section.
             Document doc = new Document();
-            Section section = doc.Sections[0];
-            HeaderFooter firstHeader = new HeaderFooter(doc, HeaderFooterType.HeaderFirst);
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            section.HeadersFooters.Add(firstHeader);
+            // Create a primary header with a shape.
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.InsertShape(ShapeType.Rectangle, 100, 100);
 
-            firstHeader.AppendParagraph("This paragraph contains a shape: ");
+            // Create a primary footer with an image.
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.InsertImage(ImageDir + "Logo Icon.ico");
 
-            Shape shape = new Shape(doc, ShapeType.Arrow);
-            firstHeader.FirstParagraph.AppendChild(shape);
+            Assert.AreEqual(1, doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChildNodes(NodeType.Shape, true).Count);
+            Assert.AreEqual(1, doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetChildNodes(NodeType.Shape, true).Count);
 
-            Assert.AreEqual(1, firstHeader.GetChildNodes(NodeType.Shape, true).Count);
+            // Remove all shapes from the headers and footers in the first section.
+            doc.FirstSection.DeleteHeaderFooterShapes();
 
-            section.DeleteHeaderFooterShapes();
-
-            Assert.AreEqual(0, firstHeader.GetChildNodes(NodeType.Shape, true).Count);
+            Assert.AreEqual(0, doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChildNodes(NodeType.Shape, true).Count);
+            Assert.AreEqual(0, doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetChildNodes(NodeType.Shape, true).Count);
             //ExEnd
         }
 
