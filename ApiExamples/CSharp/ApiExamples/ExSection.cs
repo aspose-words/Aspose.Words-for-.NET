@@ -259,7 +259,7 @@ namespace ApiExamples
             section.AppendChild(body);
 
             // This body has no children, so we cannot add runs to it yet.
-            Assert.AreEqual(0, doc.FirstSection.Body.GetChildNodes(NodeType.Any, true));
+            Assert.AreEqual(0, doc.FirstSection.Body.GetChildNodes(NodeType.Any, true).Count);
             
             // Call the "EnsureMinimum" to make sure that this body contains at least one empty paragraph. 
             body.EnsureMinimum();
