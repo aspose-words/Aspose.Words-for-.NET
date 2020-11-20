@@ -240,34 +240,34 @@ namespace ApiExamples
             //ExFor:Section.Body
             //ExFor:Body.EnsureMinimum
             //ExSummary:Clears main text from all sections from the document leaving the sections themselves.
-            // Open a document
             Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Write("Section 1");
-            builder.InsertBreak(BreakType.SectionBreakNewPage);
-            builder.Write("Section 2");
+            // A blank document contains one section, one body and one paragraph.
+            // Call the "RemoveAllChildren" method to remove all those nodes,
+            // and end up with a document node with no children.
+            doc.RemoveAllChildren();
 
-            // This shows what is in the document originally
-            // The document has two sections
-            Assert.AreEqual($"Section 1{ControlChar.SectionBreak}Section 2{ControlChar.SectionBreak}", doc.GetText());
+            // This document now has no composite child nodes that we can add content to.
+            // If we wish to edit it, we will need to repopulate its node collection.
+            // First, create a new section, and then append it as a child to the root document node.
+            Section section = new Section(doc);
+            doc.AppendChild(section);
 
-            // Loop through all sections in the document
-            foreach (Section section in doc.Sections.OfType<Section>())
-            {
-                // Each section has a Body node that contains main story (main text) of the section
-                Body body = section.Body;
+            // A section needs a body, which will contain and display all of its contents
+            // on the page between the section's header and footer.
+            Body body = new Body(doc);
+            section.AppendChild(body);
 
-                // This clears all nodes from the body
-                body.RemoveAllChildren();
+            // This body has no children, so we cannot add runs to it yet.
+            Assert.AreEqual(0, doc.FirstSection.Body.GetChildNodes(NodeType.Any, true));
+            
+            // Call the "EnsureMinimum" to make sure that this body contains at least one empty paragraph. 
+            body.EnsureMinimum();
 
-                // Technically speaking, for the main story of a section to be valid, it needs to have
-                // at least one empty paragraph. That's what the EnsureMinimum method does
-                body.EnsureMinimum();
-            }
+            // Now, we can add runs to the body, and get the document to display them.
+            body.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
 
-            // Check how the content of the document looks now
-            Assert.AreEqual($"{ControlChar.SectionBreak}{ControlChar.SectionBreak}", doc.GetText());
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
             //ExEnd
         }
 
