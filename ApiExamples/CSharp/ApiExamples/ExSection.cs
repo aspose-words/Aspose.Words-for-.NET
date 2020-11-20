@@ -130,7 +130,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CreateFromScratch()
+        public void CreateManually()
         {
             //ExStart
             //ExFor:Node.GetText
@@ -196,12 +196,12 @@ namespace ApiExamples
 
             Assert.AreEqual("Hello World!", doc.GetText().Trim());
 
-            doc.Save(ArtifactsDir + "Section.CreateFromScratch.docx");
+            doc.Save(ArtifactsDir + "Section.CreateManually.docx");
             //ExEnd
         }
 
         [Test]
-        public void EnsureSectionMinimum()
+        public void EnsureMinimum()
         {
             //ExStart
             //ExFor:NodeCollection.Add
@@ -272,14 +272,13 @@ namespace ApiExamples
         }
 
         [Test]
-        public void BodyNodeType()
+        public void BodyChildNodes()
         {
             //ExStart
             //ExFor:Body.NodeType
             //ExFor:HeaderFooter.NodeType
             //ExFor:Document.FirstSection
-            //ExSummary:Shows how you can enumerate through children of a composite node and detect types of the children nodes.
-            // Open a document
+            //ExSummary:Shows how to iterate through the children of a composite node.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -289,40 +288,32 @@ namespace ApiExamples
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
             builder.Write("Primary footer");
 
-            // Get the first section in the document
             Section section = doc.FirstSection;
 
-            // A Section is a composite node and therefore can contain child nodes
-            // Section can contain only Body and HeaderFooter nodes
+            // A Section is a composite node and thus can contain child nodes,
+            // but only if those child nodes are of a "Body" or "HeaderFooter" node type.
             foreach (Node node in section)
             {
-                // Every node has the NodeType property
                 switch (node.NodeType)
                 {
                     case NodeType.Body:
                     {
-                        // If the node type is Body, we can cast the node to the Body class
-                        Body body = (Body) node;
+                        Body body = (Body)node;
 
-                        // Write the content of the main story of the section to the console
-                        Console.WriteLine("*** Body ***");
-                        Console.WriteLine(body.GetText());
+                        Console.WriteLine("Body:");
+                        Console.WriteLine($"\t\"{body.GetText().Trim()}\"");
                         break;
                     }
                     case NodeType.HeaderFooter:
                     {
-                        // If the node type is HeaderFooter, we can cast the node to the HeaderFooter class
-                        HeaderFooter headerFooter = (HeaderFooter) node;
+                        HeaderFooter headerFooter = (HeaderFooter)node;
 
-                        // Write the content of the header footer to the console
-                        Console.WriteLine("*** HeaderFooter ***");
-                        Console.WriteLine(headerFooter.HeaderFooterType);
-                        Console.WriteLine(headerFooter.GetText());
+                        Console.WriteLine($"HeaderFooter type: {headerFooter.HeaderFooterType}:");
+                        Console.WriteLine($"\t\"{headerFooter.GetText().Trim()}\"");
                         break;
                     }
                     default:
                     {
-                        // Other types of nodes never occur inside a Section node
                         throw new Exception("Unexpected node type in a section.");
                     }
                 }
@@ -331,32 +322,35 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SectionsDeleteAllSections()
+        public void Clear()
         {
             //ExStart
             //ExFor:NodeCollection.Clear
             //ExSummary:Shows how to remove all sections from a document.
             Document doc = new Document(MyDir + "Document.docx");
 
-            // All the document's content is stored in the child nodes of sections like this one
-            Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
+            // This document has one section, which has a few child nodes
+            // that contain and display all of the document's contents.
+            Assert.AreEqual(1, doc.Sections.Count);
             Assert.AreEqual(19, doc.Sections[0].GetChildNodes(NodeType.Any, true).Count);
+            Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
 
+            // Clear the collection of sections, which will remove all
+            // of their child nodes, and all of the document's content with them.
             doc.Sections.Clear();
             
-            // Clearing the section collection effectively empties the document
-            Assert.AreEqual(string.Empty, doc.GetText());
-            Assert.AreEqual(0, doc.Sections.Count);
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Any, true).Count);
+            Assert.AreEqual(string.Empty, doc.GetText().Trim());
             //ExEnd
         }
 
         [Test]
-        public void SectionsAppendSectionContent()
+        public void PrependAppendContent()
         {
             //ExStart
             //ExFor:Section.AppendContent
             //ExFor:Section.PrependContent
-            //ExSummary:Shows how to append content of an existing section. The number of sections in the document remains the same.
+            //ExSummary:Shows how to append the contents of a section to another section.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -366,38 +360,46 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.SectionBreakNewPage);
             builder.Write("Section 3");
 
-            // This is the section that we will append and prepend to
             Section section = doc.Sections[2];
 
-            // This copies content of the 1st section and inserts it at the beginning of the specified section
+            Assert.AreEqual("Section 3" + ControlChar.SectionBreak, section.GetText());
+
+            // Insert the contents of the first section to the beginning of the third section.
             Section sectionToPrepend = doc.Sections[0];
             section.PrependContent(sectionToPrepend);
 
-            // This copies content of the 2nd section and inserts it at the end of the specified section
+            // Insert the contents of the second section to the end of the third section.
             Section sectionToAppend = doc.Sections[1];
             section.AppendContent(sectionToAppend);
 
-            Assert.AreEqual("Section 1" + ControlChar.SectionBreak +
-                            "Section 2" + ControlChar.SectionBreak +
-                            "Section 1" + ControlChar.ParagraphBreak +
+            // The "PrependContent" and "AppendContent" methods did not create any new sections.
+            Assert.AreEqual(3, doc.Sections.Count);
+            Assert.AreEqual("Section 1" + ControlChar.ParagraphBreak +
                             "Section 3" + ControlChar.ParagraphBreak +
-                            "Section 2" + ControlChar.SectionBreak, doc.GetText());
+                            "Section 2" + ControlChar.SectionBreak, section.GetText());
             //ExEnd
         }
 
         [Test]
-        public void SectionsDeleteSectionContent()
+        public void ClearContent()
         {
             //ExStart
             //ExFor:Section.ClearContent
-            //ExSummary:Shows how to clear the content of a section.
-            Document doc = new Document(MyDir + "Document.docx");
+            //ExSummary:Shows how to clear the contents of a section.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
+            builder.Write("Hello world!");
 
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
+            Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
+
+            // Running the "ClearContent" method will remove all the contents of the section,
+            // but will leave a blank paragraph which we can add content again to.
             doc.FirstSection.ClearContent();
 
             Assert.AreEqual(string.Empty, doc.GetText().Trim());
+            Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
             //ExEnd
         }
 
