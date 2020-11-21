@@ -39,63 +39,137 @@ namespace ApiExamples
     {
 #if NET462 || JAVA
         [Test]
-        public void Insert()
+        public void AltText()
         {
             //ExStart
             //ExFor:ShapeBase.AlternativeText
             //ExFor:ShapeBase.Name
+            //ExSummary:Shows how to use a shape's alternative text.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Shape shape = builder.InsertShape(ShapeType.Cube, 150, 150);
+            shape.Name = "MyCube";
+
+            shape.AlternativeText = "Alt text for MyCube.";
+
+            // We can access the alternative text of a shape by right-clicking it, and then via "Format AutoShape" -> "Alt Text".
+            doc.Save(ArtifactsDir + "Shape.AltText.docx");
+
+            // Save the document to HTML, and then delete the linked image that belongs to our shape.
+            // The browser that is reading our HTML will display the alt text in place of the missing image.
+            doc.Save(ArtifactsDir + "Shape.AltText.html");
+            Assert.True(File.Exists(ArtifactsDir + "Shape.AltText.001.png")); //ExSkip
+            File.Delete(ArtifactsDir + "Shape.AltText.001.png");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.AltText.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Cube, "MyCube", 150.0d, 150.0d, 0, 0, shape);
+            Assert.AreEqual("Alt text for MyCube.", shape.AlternativeText);
+            Assert.AreEqual("Times New Roman", shape.Font.Name);
+
+            doc = new Document(ArtifactsDir + "Shape.AltText.html");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 153.0d, 153.0d, 0, 0, shape);
+            Assert.AreEqual("Alt text for MyCube.", shape.AlternativeText);
+
+            TestUtil.FileContainsString(
+                "<img src=\"Shape.AltText.001.png\" width=\"204\" height=\"204\" alt=\"Alt text for MyCube.\" " +
+                "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />", 
+                ArtifactsDir + "Shape.AltText.html");
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void Font(bool hideShape)
+        {
+            //ExStart
             //ExFor:ShapeBase.Font
-            //ExFor:ShapeBase.CanHaveImage
             //ExFor:ShapeBase.ParentParagraph
-            //ExFor:ShapeBase.Rotation
-            //ExSummary:Shows how to insert shapes.
+            //ExSummary:Shows how to insert a text box, and set the font of its contents.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a cube and set its name
-            Shape shape = builder.InsertShape(ShapeType.Cube, 150, 150);
-            shape.Name = "MyCube";
-            
-            // We can also set the alt text like this
-            // This text will be found in Format AutoShape > Alt Text
-            shape.AlternativeText = "Alt text for MyCube.";
-            
-            // Insert a text box
-            shape = builder.InsertShape(ShapeType.TextBox, 300, 50);
-            shape.Font.Name = "Times New Roman";
-            
-            // Move the builder into the text box and write text
+            builder.Writeln("Hello world!");
+
+            Shape shape = builder.InsertShape(ShapeType.TextBox, 300, 50);
             builder.MoveTo(shape.LastParagraph);
-            builder.Write("Hello world!");
+            builder.Write("This text is inside the text box.");
 
-            // Move the builder out of the text box back into the main document
-            builder.MoveTo(shape.ParentParagraph);         
+            // Set the "Hidden" property of the shape's "Font" object to "true" to hide the text box from sight,
+            // and collapse the space that it would normally occupy.
+            // Set the "Hidden" property of the shape's "Font" object to "false" to leave the text box visible.
+            shape.Font.Hidden = hideShape;
 
-            // Insert a shape with an image
-            shape = builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
+            // If the shape is visible, we will modify its appearance via the font object.
+            if (!hideShape)
+            {
+                shape.Font.HighlightColor = Color.LightGray;
+                shape.Font.Color = Color.Red;
+                shape.Font.Underline = Underline.Dash;
+            }
+            
+            // Move the builder out of the text box back into the main document.
+            builder.MoveTo(shape.ParentParagraph);
+
+            builder.Writeln("\nThis text is outside the text box.");
+
+            doc.Save(ArtifactsDir + "Shape.Font.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.Font.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(hideShape, shape.Font.Hidden);
+
+            if (hideShape)
+            {
+                Assert.AreEqual(Color.Empty.ToArgb(), shape.Font.HighlightColor.ToArgb());
+                Assert.AreEqual(Color.Empty.ToArgb(), shape.Font.Color.ToArgb());
+                Assert.AreEqual(Underline.None, shape.Font.Underline);
+            }
+            else
+            {
+                Assert.AreEqual(Color.Silver.ToArgb(), shape.Font.HighlightColor.ToArgb());
+                Assert.AreEqual(Color.Red.ToArgb(), shape.Font.Color.ToArgb());
+                Assert.AreEqual(Underline.Dash, shape.Font.Underline);
+            }
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 300.0d, 50.0d, 0, 0, shape);
+            Assert.AreEqual("This text is inside the text box.", shape.GetText().Trim());
+            Assert.AreEqual("Hello world!\rThis text is inside the text box.\r\rThis text is outside the text box.", doc.GetText().Trim());
+        }
+
+        [Test]
+        public void Rotate()
+        {
+            //ExStart
+            //ExFor:ShapeBase.CanHaveImage
+            //ExFor:ShapeBase.Rotation
+            //ExSummary:Shows how to insert and rotate an image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a shape with an image.
+            Shape shape = builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
             Assert.True(shape.CanHaveImage);
             Assert.True(shape.HasImage);
 
-            // Rotate the image
-            shape.Rotation = 45.0d;
+            // Rotate the image 45 degrees clockwise.
+            shape.Rotation = 45;
 
-            doc.Save(ArtifactsDir + "Shape.Insert.docx");
+            doc.Save(ArtifactsDir + "Shape.Rotate.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Shape.Insert.docx");
-            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
-            
-            TestUtil.VerifyShape(ShapeType.Cube, "MyCube", 150.0d, 150.0d, 0, 0, shapes[0]);
-            Assert.AreEqual("Alt text for MyCube.", shapes[0].AlternativeText);
-            Assert.AreEqual("Times New Roman", shapes[0].Font.Name);
+            doc = new Document(ArtifactsDir + "Shape.Rotate.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100004", 300.0d, 50.0d, 0, 0, shapes[1]);
-            Assert.AreEqual("Hello world!", shapes[1].LastParagraph.GetText().Trim());
-
-            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 300.0d, 300.0d, 0, 0, shapes[2]);
-            Assert.True(shapes[2].CanHaveImage);
-            Assert.True(shapes[2].HasImage);
-            Assert.AreEqual(45.0d, shapes[2].Rotation);
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 300.0d, 300.0d, 0, 0, shape);
+            Assert.True(shape.CanHaveImage);
+            Assert.True(shape.HasImage);
+            Assert.AreEqual(45.0d, shape.Rotation);
         }
 
         //ExStart
