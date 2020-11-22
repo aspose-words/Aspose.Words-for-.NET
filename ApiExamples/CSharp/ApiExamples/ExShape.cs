@@ -172,52 +172,6 @@ namespace ApiExamples
             Assert.AreEqual(45.0d, shape.Rotation);
         }
 
-        //ExStart
-        //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
-        //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
-        //ExFor:ShapeRenderer
-        //ExFor:ShapeRenderer.#ctor(ShapeBase)
-        //ExSummary:Shows how to render a shape with a Graphics object.
-        [Test, Category("IgnoreOnJenkins"), Category("SkipMono")] //ExSkip
-        public void DisplayShapeForm()
-        {
-            // Create a new ShapeForm instance and show it as a dialog box
-            ShapeForm shapeForm = new ShapeForm();
-            shapeForm.ShowDialog();
-        }
-
-        /// <summary>
-        /// Windows Form that renders and displays shapes from a document.
-        /// </summary>
-        private class ShapeForm : Form
-        {
-            protected override void OnPaint(PaintEventArgs e)
-            {
-                // Set the size of the Form canvas
-                Size = new Size(1000, 800);
-
-                // Open a document and get its first shape, which is a chart
-                Document doc = new Document(MyDir + "Various shapes.docx");
-                Shape shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
-
-                // Create a ShapeRenderer instance and a Graphics object
-                // The ShapeRenderer will render the shape that is passed during construction over the Graphics object
-                // Whatever is rendered on this Graphics object will be displayed on the screen inside this form
-                ShapeRenderer renderer = new ShapeRenderer(shape);
-                Graphics formGraphics = CreateGraphics();
-
-                // Call this method on the renderer to render the chart in the Graphics object,
-                // on a specified x/y coordinate and scale
-                renderer.RenderToScale(formGraphics, 0, 0, 1.5f);
-
-                // Get another shape from the document, and render it to a specific size instead of a linear scale
-                GroupShape groupShape = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
-                renderer = new ShapeRenderer(groupShape);
-                renderer.RenderToSize(formGraphics, 500, 400, 100, 200);
-            }
-        }
-        //ExEnd
-
         [Test]
         public void AspectRatioLockedDefaultValue()
         {
