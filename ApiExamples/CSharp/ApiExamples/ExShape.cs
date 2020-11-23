@@ -246,25 +246,23 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a rectangle and get the text to wrap tightly around its bounds
+            // Insert a rectangle and, get the text to wrap tightly around its bounds.
             Shape shape = builder.InsertShape(ShapeType.Rectangle, 150, 150);
             shape.WrapType = WrapType.Tight;
 
-            // Set the minimum distance between the shape and surrounding text
-            shape.DistanceTop = 40.0;
-            shape.DistanceBottom = 40.0;
-            shape.DistanceLeft = 40.0;
-            shape.DistanceRight = 40.0;
+            // Set the minimum distance between the shape and surrounding text to 40pt from all sides.
+            shape.DistanceTop = 40;
+            shape.DistanceBottom = 40;
+            shape.DistanceLeft = 40;
+            shape.DistanceRight = 40;
 
-            // Move the shape closer to the centre of the page
-            shape.Top = 75.0;
-            shape.Left = 150.0;
+            // Move the shape closer to the centre of the page, and then rotate the shape 60 degrees clockwise.
+            shape.Top = 75;
+            shape.Left = 150; 
+            shape.Rotation = 60;
 
-            // Rotate the shape
-            shape.Rotation = 60.0;
-
-            // Add text that will wrap around the shape
-            builder.Font.Size = 24.0d;
+            // Add text that will wrap around the shape.
+            builder.Font.Size = 24;
             builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
                           "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
 
@@ -297,43 +295,43 @@ namespace ApiExamples
 
             GroupShape group = new GroupShape(doc);
 
-            // Every GroupShape by default is a top level floating shape
+            // By default, every GroupShape is a top level floating shape.
             Assert.True(group.IsGroup);
             Assert.True(group.IsTopLevel);
             Assert.AreEqual(WrapType.None, group.WrapType);
 
-            // Top level shapes can have this property changed
+            // Set the "AnchorLocked" property to "True" to prevent the shape's anchor
+            // from moving when we move the shape in Microsoft Word.
             group.AnchorLocked = true;
 
-            // Set the XY coordinates of the shape group and the size of its containing block, as it appears on the page
+            // Set the x and y coordinates of the shape group and the size of its containing block.
             group.Bounds = new RectangleF(100, 50, 200, 100);
 
-            // Set the scale of the inner coordinates of the shape group
+            // Set the scale of the inner coordinates of the shape group.
             // These values mean that the bottom right corner of the 200x100 outer block we set before
-            // will be at x = 2000 and y = 1000, or 2000 units from the left and 1000 units from the top
+            // will be at x = 2000 and y = 1000 according to its internal coordinates.
             group.CoordSize = new Size(2000, 1000);
 
-            // The coordinate origin of a shape group is x = 0, y = 0 by default, which is the top left corner
+            // The coordinate origin of a shape group is x = 0, y = 0 by default, which is the top left corner.
             // If we insert a child shape and set its distance from the left to 2000 and the distance from the top to 1000,
-            // its origin will be at the bottom right corner of the shape group
-            // We can offset the coordinate origin by setting the CoordOrigin attribute
-            // In this instance, we move the origin to the center of the shape group
+            // its origin will be at the bottom right corner of the shape group.
+            // We can offset the coordinate origin by setting the CoordOrigin attribute.
+            // Place the coordinate origin at the center of the shape group.
             group.CoordOrigin = new Point(-1000, -500);
             
-            // Populate the shape group with child shapes
-            // First, insert a rectangle
+            // Create a rectangle, and set its size.
             Shape subShape = new Shape(doc, ShapeType.Rectangle);
             subShape.Width = 500;
             subShape.Height = 700;
 
-            // Place its top left corner at the parent group's coordinate origin, which is currently at its center
+            // Place its top left corner at the parent group's coordinate origin, which is currently at its center.
             subShape.Left = 0;
             subShape.Top = 0;
 
-            // Add the rectangle to the group
+            // Add the rectangle to the group.
             group.AppendChild(subShape);
 
-            // Insert a triangle
+            // Create a triangle.
             subShape = new Shape(doc, ShapeType.Triangle);
             subShape.Width = 400;
             subShape.Height = 400;
@@ -342,16 +340,17 @@ namespace ApiExamples
             subShape.Left = 1000;
             subShape.Top = 500;
 
-            // The offset between this child shape and parent group can be seen here
+            // Convert an x and y location of a child shape to its position on the parent shape's coordinate space.
             Assert.AreEqual(new PointF(1000, 500), subShape.LocalToParent(new PointF(0, 0)));
 
-            // Add the triangle to the group
+            // Add the triangle to the shape group.
             group.AppendChild(subShape);
 
-            // Child shapes of a group shape are not top level
+            // Child shapes of a group shape are not top level.
+            Assert.True(group.IsTopLevel);
             Assert.False(subShape.IsTopLevel);
 
-            // Finally, insert the group into the document and save
+            // Finally, insert the group into the document and save.
             builder.InsertNode(group);
             doc.Save(ArtifactsDir + "Shape.InsertGroupShape.docx");
             //ExEnd
