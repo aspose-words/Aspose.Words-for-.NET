@@ -284,7 +284,6 @@ namespace ApiExamples
         public void InsertGroupShape()
         {
             //ExStart
-            //ExFor:ShapeBase.AnchorLocked
             //ExFor:ShapeBase.IsTopLevel
             //ExFor:ShapeBase.CoordOrigin
             //ExFor:ShapeBase.CoordSize
@@ -295,16 +294,10 @@ namespace ApiExamples
 
             GroupShape group = new GroupShape(doc);
 
-            // By default, every GroupShape is a top level floating shape.
             Assert.True(group.IsGroup);
-            Assert.True(group.IsTopLevel);
             Assert.AreEqual(WrapType.None, group.WrapType);
 
-            // Set the "AnchorLocked" property to "True" to prevent the shape's anchor
-            // from moving when we move the shape in Microsoft Word.
-            group.AnchorLocked = true;
-
-            // Set the x and y coordinates of the shape group and the size of its containing block.
+            // Set the x and y coordinates of the shape group, and the size of its containing block.
             group.Bounds = new RectangleF(100, 50, 200, 100);
 
             // Set the scale of the inner coordinates of the shape group.
@@ -319,7 +312,7 @@ namespace ApiExamples
             // Place the coordinate origin at the center of the shape group.
             group.CoordOrigin = new Point(-1000, -500);
             
-            // Create a rectangle, and set its size.
+            // Create a rectangle, and set its size. This is the first shape that we will add to the group.
             Shape subShape = new Shape(doc, ShapeType.Rectangle);
             subShape.Width = 500;
             subShape.Height = 700;
@@ -331,7 +324,7 @@ namespace ApiExamples
             // Add the rectangle to the group.
             group.AppendChild(subShape);
 
-            // Create a triangle.
+            // Create a triangle. This is the second shape that we will add to the group.
             subShape = new Shape(doc, ShapeType.Triangle);
             subShape.Width = 400;
             subShape.Height = 400;
@@ -358,7 +351,6 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.InsertGroupShape.docx");
             group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
 
-            Assert.True(group.AnchorLocked);
             Assert.AreEqual(new RectangleF(100, 50, 200, 100), group.Bounds);
             Assert.AreEqual(new Size(2000, 1000), group.CoordSize);
             Assert.AreEqual(new Point(-1000, -500), group.CoordOrigin);
@@ -371,6 +363,42 @@ namespace ApiExamples
 
             TestUtil.VerifyShape(ShapeType.Triangle, string.Empty, 400.0d, 400.0d, 500.0d, 1000.0d, subShape);
             Assert.AreEqual(new PointF(1000, 500), subShape.LocalToParent(new PointF(0, 0)));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AnchorLocked(bool anchorLocked)
+        {
+            //ExStart
+            //ExFor:ShapeBase.AnchorLocked
+            //ExSummary:Shows how to lock or unlock a shape's paragraph anchor.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Hello world!");
+
+            builder.Write("Our shape will have an anchor attached to this paragraph.");
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 200, 160);
+            shape.WrapType = WrapType.None;
+            builder.InsertBreak(BreakType.ParagraphBreak);
+
+            builder.Writeln("Hello again!");
+
+            // Set the "AnchorLocked" property to "true" to prevent the shape's anchor
+            // from moving when we move the shape in Microsoft Word.
+            // Set the "AnchorLocked" property to "false" to allow any movement of the shape
+            // to also move its anchor to any other paragraph that the shape ends up close to.
+            shape.AnchorLocked = anchorLocked;
+            
+            // If the shape does not have a visible anchor symbol to its left,
+            // we will need to enable visible anchors via "Options" -> "Display" -> "Object Anchors".
+            doc.Save(ArtifactsDir + "Shape.AnchorLocked.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.AnchorLocked.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(anchorLocked, shape.AnchorLocked);
         }
 
         [Test]
