@@ -281,88 +281,198 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertGroupShape()
+        public void GroupShape()
+        {
+            //ExStart
+            //ExFor:ShapeBase.CoordOrigin
+            //ExFor:ShapeBase.CoordSize
+            //ExSummary:Shows how to create and populate a shape group.
+            Document doc = new Document();
+
+            // Create a shape group. A shape group can display a collection of child shape nodes.
+            // In Microsoft Word, clicking within the shape group's boundary or on one of the shape group's child shapes will
+            // select all the other child shapes within this group and allow us to scale and move all the shapes at once.
+            GroupShape group = new GroupShape(doc);
+
+            Assert.AreEqual(WrapType.None, group.WrapType);
+
+            // Create a 400pt x 400pt shape group, and place it at the document's floating shape coordinate origin.
+            group.Bounds = new RectangleF(0, 0, 400, 400);
+
+            // Set the group's internal coordinate plane size to 500 x 500pt. 
+            // The top left corner of the group will have an x and y coordinate of (0, 0),
+            // and the bottom right corner will have an x and y coordinate of (500, 500).
+            group.CoordSize = new Size(500, 500);
+
+            // Set the coordinates of the top left corner of the group to (-250, -250). 
+            // The center of the group will now have an x and y coordinate value of (0, 0),
+            // and the bottom right corner will be at (250, 250).
+            group.CoordOrigin = new Point(-250, -250);
+
+            // Create a rectangle that will display the boundary of this shape group, and add it to the group.
+            group.AppendChild(new Shape(doc, ShapeType.Rectangle)
+            {
+                Width = group.CoordSize.Width,
+                Height = group.CoordSize.Height,
+                Left = group.CoordOrigin.X,
+                Top = group.CoordOrigin.Y
+            });
+
+            // Once a shape is a part of a shape group, we can access it as a child node and then modify it.
+            ((Shape)group.GetChild(NodeType.Shape, 0, true)).Stroke.DashStyle = DashStyle.Dash;
+
+            // Create a small red star, and insert it into the group. Line up the shape with the coordinate origin
+            // of the shape group, which we have moved to the center.
+            group.AppendChild(new Shape(doc, ShapeType.Star)
+            {
+                Width = 20,
+                Height = 20,
+                Left = -10,
+                Top = -10,
+                FillColor = Color.Red
+            });
+
+            // Insert a rectangle, and then insert a slightly smaller rectangle in the same place with an image. 
+            // Newer shapes that we add to the group overlap older shapes. The light blue rectangle will partially overlap the red star,
+            // and then the shape with the image will overlap the light blue rectangle, using it as a frame.
+            // We cannot use the "ZOrder" properties of shapes to manipulate their arrangement within a group shape. 
+            group.AppendChild(new Shape(doc, ShapeType.Rectangle)
+            {
+                Width = 250,
+                Height = 250,
+                Left = -250,
+                Top = -250,
+                FillColor = Color.LightBlue
+            });
+
+            group.AppendChild(new Shape(doc, ShapeType.Image)
+            {
+                Width = 200,
+                Height = 200,
+                Left = -225,
+                Top = -225
+            });
+
+            ((Shape)group.GetChild(NodeType.Shape, 3, true)).ImageData.SetImage(ImageDir + "Logo.jpg");
+
+            // Insert a text box into the shape group. Set the "Left" property so that the right edge of the text box
+            // touches the right boundary of the shape group. Set the "Top" property so that the text box sits outside
+            // the boundary of the shape group, with its top size lined up along the shape group's bottom margin.
+            group.AppendChild(new Shape(doc, ShapeType.TextBox)
+            {
+                Width = 200,
+                Height = 50,
+                Left = group.CoordSize.Width + group.CoordOrigin.X - 200,
+                Top = group.CoordSize.Height + group.CoordOrigin.Y
+            });
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertNode(group);
+            builder.MoveTo(((Shape)group.GetChild(NodeType.Shape, 4, true)).AppendChild(new Paragraph(doc)));
+            builder.Write("Hello world!");
+
+            doc.Save(ArtifactsDir + "Shape.GroupShape.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.GroupShape.docx");
+            group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
+
+            Assert.AreEqual(new RectangleF(0, 0, 400, 400), group.Bounds);
+            Assert.AreEqual(new Size(500, 500), group.CoordSize);
+            Assert.AreEqual(new Point(-250, -250), group.CoordOrigin);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 500.0d, 500.0d, -250.0d, -250.0d, (Shape)group.GetChild(NodeType.Shape, 0, true));
+            TestUtil.VerifyShape(ShapeType.Star, string.Empty, 20.0d, 20.0d, -10.0d, -10.0d, (Shape)group.GetChild(NodeType.Shape, 1, true));
+            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 250.0d, 250.0d, -250.0d, -250.0d, (Shape)group.GetChild(NodeType.Shape, 2, true));
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 200.0d, 200.0d, -225.0d, -225.0d, (Shape)group.GetChild(NodeType.Shape, 3, true));
+            TestUtil.VerifyShape(ShapeType.TextBox, string.Empty, 200.0d, 50.0d, 250.0d, 50.0d, (Shape)group.GetChild(NodeType.Shape, 4, true));
+        }
+
+        [Test]
+        public void IsTopLevel()
         {
             //ExStart
             //ExFor:ShapeBase.IsTopLevel
+            //ExSummary:Shows how to tell whether a shape is a part of a shape group.
+            Document doc = new Document();
+
+            Shape shape = new Shape(doc, ShapeType.Rectangle);
+            shape.Width = 200;
+            shape.Height = 200;
+            shape.WrapType = WrapType.None;
+
+            // A shape by default is not part of any shape group, and therefore has the "IsTopLevel" property set to "true".
+            Assert.True(shape.IsTopLevel);
+
+            GroupShape group = new GroupShape(doc);
+            group.AppendChild(shape);
+
+            // Once we assimilate a shape into a shape group, the "IsTopLevel" property changes to "false".
+            Assert.False(shape.IsTopLevel);
+            //ExEnd
+        }
+
+        [Test]
+        public void LocalToParent()
+        {
+            //ExStart
             //ExFor:ShapeBase.CoordOrigin
             //ExFor:ShapeBase.CoordSize
             //ExFor:ShapeBase.LocalToParent(PointF)
-            //ExSummary:Shows how to create and work with a group of shapes.
+            //ExSummary:Shows how to translate the x and y coordinate location on a shape's coordinate plane to a location on the parent shape's coordinate plane.
             Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert a shape group, and place it 100 points below and to the right of
+            // the document's x and Y coordinate origin point.
             GroupShape group = new GroupShape(doc);
+            group.Bounds = new RectangleF(100, 100, 500, 500);
 
-            Assert.True(group.IsGroup);
-            Assert.AreEqual(WrapType.None, group.WrapType);
+            // Use the "LocalToParent" method to determine that (0, 0) on the group's internal x and y coordinates
+            // lies on (100, 100) of its parent shape's coordinate system. The shape group's parent is the document itself.
+            Assert.AreEqual(new PointF(100, 100), group.LocalToParent(new PointF(0, 0)));
 
-            // Set the x and y coordinates of the shape group, and the size of its containing block.
-            group.Bounds = new RectangleF(100, 50, 200, 100);
+            // A shape's internal coordinate plane will by default have the top left corner at (0, 0), and the bottom right corner at (1000, 1000).
+            // Our shape group, due to its size, covers an area of 500pt x 500pt in the document's plane. This means that a movement of 1pt
+            // on the document's coordinate plane will translate to a movement of 2pts on the shape group's coordinate plane.
+            Assert.AreEqual(new PointF(150, 150), group.LocalToParent(new PointF(100, 100)));
+            Assert.AreEqual(new PointF(200, 200), group.LocalToParent(new PointF(200, 200)));
+            Assert.AreEqual(new PointF(250, 250), group.LocalToParent(new PointF(300, 300)));
 
-            // Set the scale of the inner coordinates of the shape group.
-            // These values mean that the bottom right corner of the 200x100 outer block we set before
-            // will be at x = 2000 and y = 1000 according to its internal coordinates.
-            group.CoordSize = new Size(2000, 1000);
+            // Move the shape group's x and y axis origin from the top left corner to the center.
+            // This will offset the group's internal coordinates relative to the document's coordinates even further.
+            group.CoordOrigin = new Point(-250, -250);
 
-            // The coordinate origin of a shape group is x = 0, y = 0 by default, which is the top left corner.
-            // If we insert a child shape and set its distance from the left to 2000 and the distance from the top to 1000,
-            // its origin will be at the bottom right corner of the shape group.
-            // We can offset the coordinate origin by setting the CoordOrigin attribute.
-            // Place the coordinate origin at the center of the shape group.
-            group.CoordOrigin = new Point(-1000, -500);
-            
-            // Create a rectangle, and set its size. This is the first shape that we will add to the group.
-            Shape subShape = new Shape(doc, ShapeType.Rectangle);
-            subShape.Width = 500;
-            subShape.Height = 700;
+            Assert.AreEqual(new PointF(375, 375), group.LocalToParent(new PointF(300, 300)));
 
-            // Place its top left corner at the parent group's coordinate origin, which is currently at its center.
-            subShape.Left = 0;
-            subShape.Top = 0;
+            // Changing the scale of the coordinate plane will also affect relative locations.
+            group.CoordSize = new Size(500, 500);
 
-            // Add the rectangle to the group.
-            group.AppendChild(subShape);
+            Assert.AreEqual(new PointF(650, 650), group.LocalToParent(new PointF(300, 300)));
 
-            // Create a triangle. This is the second shape that we will add to the group.
-            subShape = new Shape(doc, ShapeType.Triangle);
-            subShape.Width = 400;
-            subShape.Height = 400;
+            // If we wish to add a shape to this group while defining its location based on a location in the document,
+            // we will need to first confirm a location in the shape group that will match the location in the document.
+            Assert.AreEqual(new PointF(700, 700), group.LocalToParent(new PointF(350, 350)));
 
-            // Place its origin at the bottom right corner of the group
-            subShape.Left = 1000;
-            subShape.Top = 500;
+            Shape shape = new Shape(doc, ShapeType.Rectangle)
+            {
+                Width = 100,
+                Height = 100,
+                Left = 700,
+                Top = 700
+            };
 
-            // Convert an x and y location of a child shape to its position on the parent shape's coordinate space.
-            Assert.AreEqual(new PointF(1000, 500), subShape.LocalToParent(new PointF(0, 0)));
+            group.AppendChild(shape);
+            doc.FirstSection.Body.FirstParagraph.AppendChild(group);
 
-            // Add the triangle to the shape group.
-            group.AppendChild(subShape);
-
-            // Child shapes of a group shape are not top level.
-            Assert.True(group.IsTopLevel);
-            Assert.False(subShape.IsTopLevel);
-
-            // Finally, insert the group into the document and save.
-            builder.InsertNode(group);
-            doc.Save(ArtifactsDir + "Shape.InsertGroupShape.docx");
+            doc.Save(ArtifactsDir + "Shape.LocalToParent.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Shape.InsertGroupShape.docx");
+            doc = new Document(ArtifactsDir + "Shape.LocalToParent.docx");
             group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
 
-            Assert.AreEqual(new RectangleF(100, 50, 200, 100), group.Bounds);
-            Assert.AreEqual(new Size(2000, 1000), group.CoordSize);
-            Assert.AreEqual(new Point(-1000, -500), group.CoordOrigin);
-
-            subShape = (Shape)group.GetChild(NodeType.Shape, 0, true);
-
-            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 500.0d, 700.0d, 0.0d, 0.0d, subShape);
-
-            subShape = (Shape)group.GetChild(NodeType.Shape, 1, true);
-
-            TestUtil.VerifyShape(ShapeType.Triangle, string.Empty, 400.0d, 400.0d, 500.0d, 1000.0d, subShape);
-            Assert.AreEqual(new PointF(1000, 500), subShape.LocalToParent(new PointF(0, 0)));
+            Assert.AreEqual(new RectangleF(100, 100, 500, 500), group.Bounds);
+            Assert.AreEqual(new Size(500, 500), group.CoordSize);
+            Assert.AreEqual(new Point(-250, -250), group.CoordOrigin);
         }
 
         [TestCase(false)]
