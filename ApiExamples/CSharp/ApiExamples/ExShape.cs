@@ -284,6 +284,7 @@ namespace ApiExamples
         public void GroupShape()
         {
             //ExStart
+            //ExFor:ShapeBase.Bounds
             //ExFor:ShapeBase.CoordOrigin
             //ExFor:ShapeBase.CoordSize
             //ExSummary:Shows how to create and populate a group shape.
@@ -613,61 +614,159 @@ namespace ApiExamples
         }
 
         [Test]
-        public void LineFlipOrientation()
+        public void Bounds()
         {
             //ExStart
             //ExFor:ShapeBase.Bounds
             //ExFor:ShapeBase.BoundsInPoints
-            //ExFor:ShapeBase.FlipOrientation
-            //ExFor:FlipOrientation
-            //ExSummary:Shows how to create line shapes, and set specific location and size.
+            //ExSummary:Shows how to verify shape containing block boundaries.
             Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            float pageWidth = (float) doc.FirstSection.PageSetup.PageWidth;
-            float pageHeight = (float) doc.FirstSection.PageSetup.PageHeight;
+            Shape shape = builder.InsertShape(ShapeType.Line, RelativeHorizontalPosition.LeftMargin, 50,
+                RelativeVerticalPosition.TopMargin, 50, 100, 100, WrapType.None);
+            shape.StrokeColor = Color.Orange;
 
-            // This line goes from top left to bottom right by default
-            Shape lineA = new Shape(doc, ShapeType.Line)
+            // Even though the line itself takes up very little space on the document page,
+            // it occupies a rectangular containing block, the size of which we can determine using the "Bounds" properties.
+            Assert.AreEqual(new RectangleF(50, 50, 100, 100), shape.Bounds);
+            Assert.AreEqual(new RectangleF(50, 50, 100, 100), shape.BoundsInPoints);
+
+            // Create a group shape, and then set the size of its containing block using the "Bounds" property.
+            GroupShape group = new GroupShape(doc);
+            group.Bounds = new RectangleF(0, 100, 250, 250);
+
+            Assert.AreEqual(new RectangleF(0, 100, 250, 250), group.BoundsInPoints);
+
+            // Create a rectangle, verify the size of its bounding block, and then add it to the group shape.
+            shape = new Shape(doc, ShapeType.Rectangle)
             {
-                Bounds = new RectangleF(0, 0, pageWidth, pageHeight),
-                RelativeHorizontalPosition = RelativeHorizontalPosition.Page,
-                RelativeVerticalPosition = RelativeVerticalPosition.Page
+                Width = 100,
+                Height = 100,
+                Left = 700,
+                Top = 700
             };
 
-            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineA.BoundsInPoints);
+            Assert.AreEqual(new RectangleF(700, 700, 100, 100), shape.BoundsInPoints);
 
-            // This line goes from bottom left to top right because we flipped it
-            Shape lineB = new Shape(doc, ShapeType.Line)
+            group.AppendChild(shape);
+
+            // The coordinate plane of the group shape has its origin on the top left hand side corner of its containing block,
+            // and the x and y coordinates of (1000, 1000) on the bottom right hand side corner. Our group shape is 250x250pt in size,
+            // so every 4pt on the group shape's coordinate plane translates to 1pt in the document body's coordinate plane.
+            // Every shape that we insert will also shrink in size by a factor of 4.
+            // The change in the shape's "BoundsInPoints" property will reflect this.
+            Assert.AreEqual(new RectangleF(175, 275, 25, 25), shape.BoundsInPoints);
+
+            doc.FirstSection.Body.FirstParagraph.AppendChild(group);
+
+            // Insert a shape, and place it outside of the bounds of the group shape's containing block.
+            shape = new Shape(doc, ShapeType.Rectangle)
             {
-                Bounds = new RectangleF(0, 0, pageWidth, pageHeight),
-                FlipOrientation = FlipOrientation.Horizontal,
-                RelativeHorizontalPosition = RelativeHorizontalPosition.Page,
-                RelativeVerticalPosition = RelativeVerticalPosition.Page
+                Width = 100,
+                Height = 100,
+                Left = 1000,
+                Top = 1000
             };
 
-            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineB.BoundsInPoints);
+            group.AppendChild(shape);
 
-            // Add lines to the document
-            doc.FirstSection.Body.FirstParagraph.AppendChild(lineA);
-            doc.FirstSection.Body.FirstParagraph.AppendChild(lineB);
+            // The group shape's footprint in the document body has increased, but the containing block remains the same.
+            Assert.AreEqual(new RectangleF(0, 100, 250, 250), group.BoundsInPoints);
+            Assert.AreEqual(new RectangleF(250, 350, 25, 25), shape.BoundsInPoints);
 
-            doc.Save(ArtifactsDir + "Shape.LineFlipOrientation.docx");
+            doc.Save(ArtifactsDir + "Shape.Bounds.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Shape.LineFlipOrientation.docx");
-            lineA = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            doc = new Document(ArtifactsDir + "Shape.Bounds.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineA.BoundsInPoints);
-            Assert.AreEqual(FlipOrientation.None, lineA.FlipOrientation);
-            Assert.AreEqual(RelativeHorizontalPosition.Page, lineA.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Page, lineA.RelativeVerticalPosition);
+            TestUtil.VerifyShape(ShapeType.Line, "Line 100002", 100, 100, 50, 50, shape);
+            Assert.AreEqual(Color.Orange.ToArgb(), shape.StrokeColor.ToArgb());
+            Assert.AreEqual(new RectangleF(50, 50, 100, 100), shape.BoundsInPoints);
 
-            lineB = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
 
-            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineB.BoundsInPoints);
-            Assert.AreEqual(FlipOrientation.None, lineB.FlipOrientation);
-            Assert.AreEqual(RelativeHorizontalPosition.Page, lineB.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Page, lineB.RelativeVerticalPosition);
+            Assert.AreEqual(new RectangleF(0, 100, 250, 250), group.Bounds);
+            Assert.AreEqual(new RectangleF(0, 100, 250, 250), group.BoundsInPoints);
+            Assert.AreEqual(new Size(1000, 1000), group.CoordSize);
+            Assert.AreEqual(new Point(0, 0), group.CoordOrigin);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 100, 100, 700, 700, shape);
+            Assert.AreEqual(new RectangleF(175, 275, 25, 25), shape.BoundsInPoints);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 100, 100, 1000, 1000, shape);
+            Assert.AreEqual(new RectangleF(250, 350, 25, 25), shape.BoundsInPoints);
+        }
+
+        [Test]
+        public void FlipShapeOrientation()
+        {
+            //ExStart
+            //ExFor:ShapeBase.FlipOrientation
+            //ExFor:FlipOrientation
+            //ExSummary:Shows how to flip a shape on an axis.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert an image shape, and leave its orientation in its default state.
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 100,
+                RelativeVerticalPosition.TopMargin, 100, 100, 100, WrapType.None);
+            shape.ImageData.SetImage(ImageDir + "Logo.jpg");
+
+            Assert.AreEqual(FlipOrientation.None, shape.FlipOrientation);
+
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 250,
+                RelativeVerticalPosition.TopMargin, 100, 100, 100, WrapType.None);
+            shape.ImageData.SetImage(ImageDir + "Logo.jpg");
+
+            // Set the "FlipOrientation" property to "FlipOrientation.Horizontal" to flip the second shape on the y-axis,
+            // making it into a horizontal mirror image of the first shape.
+            shape.FlipOrientation = FlipOrientation.Horizontal;
+
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 100,
+                RelativeVerticalPosition.TopMargin, 250, 100, 100, WrapType.None);
+            shape.ImageData.SetImage(ImageDir + "Logo.jpg");
+
+            // Set the "FlipOrientation" property to "FlipOrientation.Horizontal" to flip the third shape on the x-axis,
+            // making it into a vertical mirror image of the first shape.
+            shape.FlipOrientation = FlipOrientation.Vertical;
+
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 250,
+                RelativeVerticalPosition.TopMargin, 250, 100, 100, WrapType.None);
+            shape.ImageData.SetImage(ImageDir + "Logo.jpg");
+
+            // Set the "FlipOrientation" property to "FlipOrientation.Horizontal" to flip the fourth shape on both the x and y axes,
+            // making it into a horizontal and vertical mirror image of the first shape.
+            shape.FlipOrientation = FlipOrientation.Both;
+            
+            doc.Save(ArtifactsDir + "Shape.FlipShapeOrientation.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.FlipShapeOrientation.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100002", 100, 100, 100, 100, shape);
+            Assert.AreEqual(FlipOrientation.None, shape.FlipOrientation);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100004", 100, 100, 100, 250, shape);
+            Assert.AreEqual(FlipOrientation.Horizontal, shape.FlipOrientation);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100006", 100, 100, 250, 100, shape);
+            Assert.AreEqual(FlipOrientation.Vertical, shape.FlipOrientation);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 3, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100008", 100, 100, 250, 250, shape);
+            Assert.AreEqual(FlipOrientation.Both, shape.FlipOrientation);
         }
 
         [Test]
