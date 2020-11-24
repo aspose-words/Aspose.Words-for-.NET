@@ -680,7 +680,7 @@ namespace ApiExamples
 
             Assert.AreEqual(2, doc.Range.Fields.Count);
             
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(77, table.Rows.Count);
             Assert.AreEqual(10, table.Rows[0].Cells.Count);
@@ -2772,7 +2772,7 @@ namespace ApiExamples
             XmlDocument cdCollectionXslTransformation = new XmlDocument();
             cdCollectionXslTransformation.LoadXml(File.ReadAllText(MyDir + "CD collection XSL transformation.xsl"));
 
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             XmlNamespaceManager manager = new XmlNamespaceManager(cdCollectionXslTransformation.NameTable);
             manager.AddNamespace("xsl", "http://www.w3.org/1999/XSL/Transform");

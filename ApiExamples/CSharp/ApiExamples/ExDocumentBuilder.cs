@@ -919,7 +919,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTable.docx");
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual("Row 1, Col 1\a", table.Rows[0].Cells[0].GetText().Trim());
             Assert.AreEqual("Row 1, Col 2\a", table.Rows[0].Cells[1].GetText().Trim());
@@ -1073,7 +1073,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableSetHeadingRow.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             for (int i = 0; i < table.Rows.Count; i++)
                 Assert.AreEqual(i < 2, table.Rows[i].RowFormat.HeadingFormat);
@@ -1104,7 +1104,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableWithPreferredWidth.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(PreferredWidthType.Percent, table.PreferredWidth.Type);
             Assert.AreEqual(50, table.PreferredWidth.Value);
@@ -1160,7 +1160,7 @@ namespace ApiExamples
             Assert.AreEqual(100.0d, PreferredWidth.FromPoints(100).Value);
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertCellsWithPreferredWidths.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
             
             Assert.AreEqual(PreferredWidthType.Points, table.FirstRow.Cells[0].CellFormat.PreferredWidth.Type);
             Assert.AreEqual(40.0d, table.FirstRow.Cells[0].CellFormat.PreferredWidth.Value);
@@ -1260,7 +1260,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.CreateTable.docx");
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(4, table.GetChildNodes(NodeType.Cell, true).Count);
 
@@ -1336,7 +1336,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.CreateFormattedTable.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(20.0d, table.LeftIndent);
 
@@ -1410,7 +1410,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.TableBordersAndShading.docx");
-            table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             foreach (Cell c in table.FirstRow)
             {
@@ -1610,7 +1610,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.MoveToCell.docx");
 
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual("Column 2, cell 2.\a", table.Rows[1].Cells[1].GetText().Trim());
         }
@@ -1719,7 +1719,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.BuildTable.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(2, table.Rows.Count);
             Assert.AreEqual(2, table.Rows[0].Cells.Count);
@@ -1747,14 +1747,14 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rotated cell text.docx");
 
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
             Cell cell = table.FirstRow.FirstCell;
 
             Assert.AreEqual(TextOrientation.VerticalRotatedFarEast, cell.CellFormat.Orientation);
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
             cell = table.FirstRow.FirstCell;
 
             Assert.AreEqual(TextOrientation.VerticalRotatedFarEast, cell.CellFormat.Orientation);
@@ -2101,7 +2101,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.SetCellFormatting.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(159.3d, table.FirstRow.Cells[0].CellFormat.Width);
             Assert.AreEqual(5.4d, table.FirstRow.Cells[0].CellFormat.LeftPadding);
@@ -2155,7 +2155,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.SetRowFormatting.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(0.0d, table.Rows[0].RowFormat.Height);
             Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
@@ -3352,7 +3352,7 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "MarkdownDocumentTableContentAlignment.md", saveOptions);
 
             Document doc = new Document(ArtifactsDir + "MarkdownDocumentTableContentAlignment.md");
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             switch (tableContentAlignment)
             {

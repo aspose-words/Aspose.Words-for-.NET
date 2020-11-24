@@ -912,7 +912,7 @@ namespace ApiExamples
             Assert.AreEqual("Title\u0007Author\u0007\u0007" +
                             "Everyday Italian\u0007Giada De Laurentiis\u0007\u0007" +
                             "Harry Potter\u0007J. K. Rowling\u0007\u0007" +
-                            "Learning XML\u0007Erik T. Ray\u0007\u0007", doc.GetChild(NodeType.Table, 0, true).GetText().Trim());
+                            "Learning XML\u0007Erik T. Ray\u0007\u0007", doc.FirstSection.Body.Tables[0].GetText().Trim());
         }
 
         [Test]

@@ -256,7 +256,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Border.VerticalBorders.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             foreach (Row row in table.GetChildNodes(NodeType.Row, true))
             {
