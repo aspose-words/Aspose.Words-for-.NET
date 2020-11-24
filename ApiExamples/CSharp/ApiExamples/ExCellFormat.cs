@@ -54,7 +54,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "CellFormat.VerticalMerge.docx");
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(CellMerge.First, table.Rows[0].Cells[0].CellFormat.VerticalMerge);
             Assert.AreEqual(CellMerge.Previous, table.Rows[1].Cells[0].CellFormat.VerticalMerge);
@@ -97,7 +97,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "CellFormat.HorizontalMerge.docx");
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(1, table.Rows[0].Cells.Count);
             Assert.AreEqual(CellMerge.None, table.Rows[0].Cells[0].CellFormat.HorizontalMerge);
@@ -128,7 +128,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "CellFormat.Padding.docx");
 
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
             Cell cell = table.Rows[0].Cells[0];
 
             Assert.AreEqual(5, cell.CellFormat.LeftPadding);

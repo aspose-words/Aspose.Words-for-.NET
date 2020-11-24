@@ -877,6 +877,29 @@ namespace ApiExamples
         }
 
         [Test]
+        public void GetSubstitutionWithoutSuffixes()
+        {
+            Document doc = new Document(MyDir + "Get substitution without suffixes.docx");
+
+            HandleDocumentSubstitutionWarnings substitutionWarningHandler = new HandleDocumentSubstitutionWarnings();
+            doc.WarningCallback = substitutionWarningHandler;
+
+            ArrayList fontSources = new ArrayList(FontSettings.DefaultInstance.GetFontsSources());
+            FolderFontSource folderFontSource = new FolderFontSource(FontsDir, true);
+            fontSources.Add(folderFontSource);
+    
+            FontSourceBase[] updatedFontSources = (FontSourceBase[]) fontSources.ToArray(typeof(FontSourceBase));
+            FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
+    
+            doc.Save(ArtifactsDir + "Font.GetSubstitutionWithoutSuffixes.pdf");
+
+            Assert.AreEqual(
+                "Font 'DINOT-Regular' has not been found. Using 'DINOT' font instead. Reason: font name substitution.",
+                substitutionWarningHandler.FontWarnings[0].Description);
+        }
+
+
+        [Test]
         public void GetAvailableFonts()
         {
             //ExStart
@@ -898,8 +921,6 @@ namespace ApiExamples
                 Console.WriteLine("FilePath : {0}\n", fontInfo.FilePath);
             }
             //ExEnd
-
-            Assert.AreEqual(folderFontSource[0].GetAvailableFonts().Count, Directory.GetFiles(FontsDir).Count(f => f.EndsWith(".ttf")));
         }
 
         //ExStart
@@ -1112,7 +1133,7 @@ namespace ApiExamples
             para.Accept(hiddenContentRemover);
 
             // Or over a different type of node like below
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
             table.Accept(hiddenContentRemover);
 
             doc.Save(ArtifactsDir + "Font.RemoveHiddenContentFromDocument.docx");
@@ -1867,7 +1888,7 @@ namespace ApiExamples
             Assert.AreEqual("Arvo", rules[0].Attributes["FallbackFonts"].Value);
 
             Assert.AreEqual("0180-024F", rules[3].Attributes["Ranges"].Value);
-            Assert.AreEqual("M+ 2m", rules[3].Attributes["FallbackFonts"].Value);
+            Assert.AreEqual("DINOT", rules[3].Attributes["FallbackFonts"].Value);
 
             Assert.AreEqual("0300-036F", rules[6].Attributes["Ranges"].Value);
             Assert.AreEqual("Noticia Text", rules[6].Attributes["FallbackFonts"].Value);
@@ -2108,7 +2129,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder();
 
             // Possible types of emphasis mark:
-            // https://docs.microsoft.com/en-us/dotnet/api/microsoft.office.interop.word.wdemphasismark?view=word-pia
+            // https://apireference.aspose.com/words/net/aspose.words/emphasismark
             builder.Font.EmphasisMark = emphasisMark; 
             
             builder.Write("Emphasis text");
