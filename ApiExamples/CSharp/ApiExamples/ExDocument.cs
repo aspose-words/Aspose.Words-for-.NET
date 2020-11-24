@@ -1506,6 +1506,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FindReplaceOptions.UseSubstitutions
+            //ExFor:FindReplaceOptions.LegacyMode
             //ExSummary:Shows how to recognize and use substitutions within replacement patterns.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1518,6 +1519,9 @@ namespace ApiExamples
             // Replace text using substitutions
             FindReplaceOptions options = new FindReplaceOptions();
             options.UseSubstitutions = true;
+            // Using legacy mode does not support many advanced features, so we need to set it to 'false'.
+            options.LegacyMode = false;
+
             doc.Range.Replace(regex, @"$2 take money from $1", options);
             
             Assert.AreEqual(doc.GetText(), "Paul take money from Jason.\f");
