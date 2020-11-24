@@ -330,7 +330,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Image.CreateImageDirectly.docx", loadOptions);
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImageInShape(1600, 1600, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(533, 533, ImageType.Png, shape);
             //ExEnd
         }
 
