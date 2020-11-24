@@ -950,29 +950,6 @@ namespace ApiExamples
         }
         
         [Test]
-        public void GetSubstitutionWithoutSuffixes()
-        {
-            Document doc = new Document(MyDir + "Get substitution without suffixes.docx");
-
-            HandleDocumentSubstitutionWarnings substitutionWarningHandler = new HandleDocumentSubstitutionWarnings();
-            doc.WarningCallback = substitutionWarningHandler;
-
-            ArrayList fontSources = new ArrayList(FontSettings.DefaultInstance.GetFontsSources());
-            FolderFontSource folderFontSource = new FolderFontSource(FontsDir, true);
-            fontSources.Add(folderFontSource);
-    
-            FontSourceBase[] updatedFontSources = (FontSourceBase[]) fontSources.ToArray(typeof(FontSourceBase));
-            FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
-    
-            doc.Save(ArtifactsDir + "Font.GetSubstitutionWithoutSuffixes.pdf");
-
-            Assert.AreEqual(
-                "Font 'DINOT-Regular' has not been found. Using 'DINOT' font instead. Reason: font name substitution.",
-                substitutionWarningHandler.FontWarnings[0].Description);
-        }
-
-
-        [Test]
         public void GetAvailableFonts()
         {
             //ExStart
@@ -996,7 +973,7 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual(folderFontSource[0].GetAvailableFonts().Count, 
-                Directory.EnumerateFiles(FontsDir, "*.*", SearchOption.AllDirectories).Count(f => f.EndsWith(".ttf")));
+                Directory.EnumerateFiles(FontsDir, "*.*", SearchOption.AllDirectories).Count(f => f.EndsWith(".ttf") || f.EndsWith(".otf")));
         }
 
         [Test]

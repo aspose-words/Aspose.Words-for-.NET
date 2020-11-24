@@ -7,6 +7,7 @@
 
 #if NET462 || NETCOREAPP2_1 || JAVA
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -317,6 +318,32 @@ namespace ApiExamples
         }
 
         [Test]
+        public void GetSubstitutionWithoutSuffixes()
+        {
+            Document doc = new Document(MyDir + "Get substitution without suffixes.docx");
+
+            FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
+
+            HandleDocumentSubstitutionWarnings substitutionWarningHandler = new HandleDocumentSubstitutionWarnings();
+            doc.WarningCallback = substitutionWarningHandler;
+
+            ArrayList fontSources = new ArrayList(FontSettings.DefaultInstance.GetFontsSources());
+            FolderFontSource folderFontSource = new FolderFontSource(FontsDir, true);
+            fontSources.Add(folderFontSource);
+
+            FontSourceBase[] updatedFontSources = (FontSourceBase[])fontSources.ToArray(typeof(FontSourceBase));
+            FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
+
+            doc.Save(ArtifactsDir + "Font.GetSubstitutionWithoutSuffixes.pdf");
+
+            Assert.AreEqual(
+                "Font 'DINOT-Regular' has not been found. Using 'DINOT' font instead. Reason: font name substitution.",
+                substitutionWarningHandler.FontWarnings[0].Description);
+
+            FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
+        }
+
+        [Test]
         public void FontSourceFile()
         {
             //ExStart
@@ -413,12 +440,12 @@ namespace ApiExamples
             // The "Amethysta" font is in a subfolder of the font directory.
             if (recursive)
             {
-                Assert.AreEqual(22, newFontSources[0].GetAvailableFonts().Count);
+                Assert.AreEqual(24, newFontSources[0].GetAvailableFonts().Count);
                 Assert.True(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
             }
             else
             {
-                Assert.AreEqual(15, newFontSources[0].GetAvailableFonts().Count);
+                Assert.AreEqual(17, newFontSources[0].GetAvailableFonts().Count);
                 Assert.False(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
             }
 
@@ -1004,7 +1031,7 @@ namespace ApiExamples
             Assert.AreEqual("Arvo", rules[0].Attributes["FallbackFonts"].Value);
 
             Assert.AreEqual("0180-024F", rules[3].Attributes["Ranges"].Value);
-            Assert.AreEqual("M+ 2m", rules[3].Attributes["FallbackFonts"].Value);
+            Assert.AreEqual("DINOT", rules[3].Attributes["FallbackFonts"].Value);
 
             Assert.AreEqual("0300-036F", rules[6].Attributes["Ranges"].Value);
             Assert.AreEqual("Noticia Text", rules[6].Attributes["FallbackFonts"].Value);
