@@ -286,17 +286,17 @@ namespace ApiExamples
             //ExStart
             //ExFor:ShapeBase.CoordOrigin
             //ExFor:ShapeBase.CoordSize
-            //ExSummary:Shows how to create and populate a shape group.
+            //ExSummary:Shows how to create and populate a group shape.
             Document doc = new Document();
 
-            // Create a shape group. A shape group can display a collection of child shape nodes.
-            // In Microsoft Word, clicking within the shape group's boundary or on one of the shape group's child shapes will
+            // Create a group shape. A group shape can display a collection of child shape nodes.
+            // In Microsoft Word, clicking within the group shape's boundary or on one of the group shape's child shapes will
             // select all the other child shapes within this group and allow us to scale and move all the shapes at once.
             GroupShape group = new GroupShape(doc);
 
             Assert.AreEqual(WrapType.None, group.WrapType);
 
-            // Create a 400pt x 400pt shape group, and place it at the document's floating shape coordinate origin.
+            // Create a 400pt x 400pt group shape, and place it at the document's floating shape coordinate origin.
             group.Bounds = new RectangleF(0, 0, 400, 400);
 
             // Set the group's internal coordinate plane size to 500 x 500pt. 
@@ -309,7 +309,7 @@ namespace ApiExamples
             // and the bottom right corner will be at (250, 250).
             group.CoordOrigin = new Point(-250, -250);
 
-            // Create a rectangle that will display the boundary of this shape group, and add it to the group.
+            // Create a rectangle that will display the boundary of this group shape, and add it to the group.
             group.AppendChild(new Shape(doc, ShapeType.Rectangle)
             {
                 Width = group.CoordSize.Width,
@@ -318,11 +318,11 @@ namespace ApiExamples
                 Top = group.CoordOrigin.Y
             });
 
-            // Once a shape is a part of a shape group, we can access it as a child node and then modify it.
+            // Once a shape is a part of a group shape, we can access it as a child node and then modify it.
             ((Shape)group.GetChild(NodeType.Shape, 0, true)).Stroke.DashStyle = DashStyle.Dash;
 
             // Create a small red star, and insert it into the group. Line up the shape with the coordinate origin
-            // of the shape group, which we have moved to the center.
+            // of the group shape, which we have moved to the center.
             group.AppendChild(new Shape(doc, ShapeType.Star)
             {
                 Width = 20,
@@ -355,9 +355,9 @@ namespace ApiExamples
 
             ((Shape)group.GetChild(NodeType.Shape, 3, true)).ImageData.SetImage(ImageDir + "Logo.jpg");
 
-            // Insert a text box into the shape group. Set the "Left" property so that the right edge of the text box
-            // touches the right boundary of the shape group. Set the "Top" property so that the text box sits outside
-            // the boundary of the shape group, with its top size lined up along the shape group's bottom margin.
+            // Insert a text box into the group shape. Set the "Left" property so that the right edge of the text box
+            // touches the right boundary of the group shape. Set the "Top" property so that the text box sits outside
+            // the boundary of the group shape, with its top size lined up along the group shape's bottom margin.
             group.AppendChild(new Shape(doc, ShapeType.TextBox)
             {
                 Width = 200,
@@ -393,7 +393,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ShapeBase.IsTopLevel
-            //ExSummary:Shows how to tell whether a shape is a part of a shape group.
+            //ExSummary:Shows how to tell whether a shape is a part of a group shape.
             Document doc = new Document();
 
             Shape shape = new Shape(doc, ShapeType.Rectangle);
@@ -401,13 +401,13 @@ namespace ApiExamples
             shape.Height = 200;
             shape.WrapType = WrapType.None;
 
-            // A shape by default is not part of any shape group, and therefore has the "IsTopLevel" property set to "true".
+            // A shape by default is not part of any group shape, and therefore has the "IsTopLevel" property set to "true".
             Assert.True(shape.IsTopLevel);
 
             GroupShape group = new GroupShape(doc);
             group.AppendChild(shape);
 
-            // Once we assimilate a shape into a shape group, the "IsTopLevel" property changes to "false".
+            // Once we assimilate a shape into a group shape, the "IsTopLevel" property changes to "false".
             Assert.False(shape.IsTopLevel);
             //ExEnd
         }
@@ -422,23 +422,23 @@ namespace ApiExamples
             //ExSummary:Shows how to translate the x and y coordinate location on a shape's coordinate plane to a location on the parent shape's coordinate plane.
             Document doc = new Document();
 
-            // Insert a shape group, and place it 100 points below and to the right of
+            // Insert a group shape, and place it 100 points below and to the right of
             // the document's x and Y coordinate origin point.
             GroupShape group = new GroupShape(doc);
             group.Bounds = new RectangleF(100, 100, 500, 500);
 
             // Use the "LocalToParent" method to determine that (0, 0) on the group's internal x and y coordinates
-            // lies on (100, 100) of its parent shape's coordinate system. The shape group's parent is the document itself.
+            // lies on (100, 100) of its parent shape's coordinate system. The group shape's parent is the document itself.
             Assert.AreEqual(new PointF(100, 100), group.LocalToParent(new PointF(0, 0)));
 
             // A shape's internal coordinate plane will by default have the top left corner at (0, 0), and the bottom right corner at (1000, 1000).
-            // Our shape group, due to its size, covers an area of 500pt x 500pt in the document's plane. This means that a movement of 1pt
-            // on the document's coordinate plane will translate to a movement of 2pts on the shape group's coordinate plane.
+            // Our group shape, due to its size, covers an area of 500pt x 500pt in the document's plane. This means that a movement of 1pt
+            // on the document's coordinate plane will translate to a movement of 2pts on the group shape's coordinate plane.
             Assert.AreEqual(new PointF(150, 150), group.LocalToParent(new PointF(100, 100)));
             Assert.AreEqual(new PointF(200, 200), group.LocalToParent(new PointF(200, 200)));
             Assert.AreEqual(new PointF(250, 250), group.LocalToParent(new PointF(300, 300)));
 
-            // Move the shape group's x and y axis origin from the top left corner to the center.
+            // Move the group shape's x and y axis origin from the top left corner to the center.
             // This will offset the group's internal coordinates relative to the document's coordinates even further.
             group.CoordOrigin = new Point(-250, -250);
 
@@ -450,7 +450,7 @@ namespace ApiExamples
             Assert.AreEqual(new PointF(650, 650), group.LocalToParent(new PointF(300, 300)));
 
             // If we wish to add a shape to this group while defining its location based on a location in the document,
-            // we will need to first confirm a location in the shape group that will match the location in the document.
+            // we will need to first confirm a location in the group shape that will match the location in the document.
             Assert.AreEqual(new PointF(700, 700), group.LocalToParent(new PointF(350, 350)));
 
             Shape shape = new Shape(doc, ShapeType.Rectangle)
@@ -517,16 +517,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:Shape
             //ExSummary:Shows how to delete all shapes from a document.
-            // Here we get all shapes from the document node, but you can do this for any smaller
-            // node too, for example delete shapes from a single section or a paragraph
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert 2 shapes
+            // Insert two shapes, and also a group shape with another shape inside it.
             builder.InsertShape(ShapeType.Rectangle, 400, 200);
             builder.InsertShape(ShapeType.Star, 300, 300);
 
-            // Insert a GroupShape with an inner shape
             GroupShape group = new GroupShape(doc);
             group.Bounds = new RectangleF(100, 50, 200, 100);
             group.CoordOrigin = new Point(-1000, -500);
@@ -536,21 +533,22 @@ namespace ApiExamples
             subShape.Height = 700;
             subShape.Left = 0;
             subShape.Top = 0;
+
             group.AppendChild(subShape);
             builder.InsertNode(group);
 
             Assert.AreEqual(3, doc.GetChildNodes(NodeType.Shape, true).Count);
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.GroupShape, true).Count);
 
-            // Delete all Shape nodes
+            // Remove all Shape nodes from the document.
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             shapes.Clear();
 
-            // The GroupShape node is still present even though there are no sub Shapes
+            // All shapes are gone, but the group shape is still in the document.
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.GroupShape, true).Count);
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
 
-            // GroupShapes must also be deleted manually
+            // Remove all group shapes separately.
             NodeCollection groupShapes = doc.GetChildNodes(NodeType.GroupShape, true);
             groupShapes.Clear();
 
@@ -560,22 +558,58 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CheckShapeInline()
+        public void IsInline()
         {
             //ExStart
             //ExFor:ShapeBase.IsInline
-            //ExSummary:Shows how to test if a shape in the document is inline or floating.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to determine whether a shape is inline or floating.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
-            {
-                Console.WriteLine(shape.IsInline ? "Shape is inline." : "Shape is floating.");
-            }
+            // Below are two wrapping types that shapes may have.
+            // 1 -  Inline:
+            builder.Write("Hello world! ");
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 100, 100);
+            shape.FillColor = Color.LightBlue;
+            builder.Write(" Hello again.");
+
+            // An inline shape sits inside a paragraph among other paragraph elements, such as runs of text.
+            // In Microsoft Word, we may left click and drag the shape to any paragraph as if it is a character.
+            // If the shape is large, it will affect vertical paragraph spacing.
+            // We cannot move this shape to a place with no paragraph.
+            Assert.AreEqual(WrapType.Inline, shape.WrapType);
+            Assert.True(shape.IsInline);
+
+            // 2 -  Floating:
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin ,200, 
+                RelativeVerticalPosition.TopMargin ,200, 100, 100, WrapType.None);
+            shape.FillColor = Color.Orange;
+
+            // A floating shape belongs to the paragraph that we insert it into,
+            // which we can determine by an anchor symbol that appears when we click the shape.
+            // If the shape does not have a visible anchor symbol to its left,
+            // we will need to enable visible anchors via "Options" -> "Display" -> "Object Anchors".
+            // In Microsoft Word, we may left click and drag this shape freely to any location.
+            Assert.AreEqual(WrapType.None, shape.WrapType);
+            Assert.False(shape.IsInline);
+
+            doc.Save(ArtifactsDir + "Shape.IsInline.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "Shape.IsInline.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.False(((Shape)doc.GetChild(NodeType.Shape, 0, true)).IsInline);
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100002", 100, 100, 0, 0, shape);
+            Assert.AreEqual(Color.LightBlue.ToArgb(), shape.FillColor.ToArgb());
+            Assert.AreEqual(WrapType.Inline, shape.WrapType);
+            Assert.True(shape.IsInline);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100004", 100, 100, 200, 200, shape);
+            Assert.AreEqual(Color.Orange.ToArgb(), shape.FillColor.ToArgb());
+            Assert.AreEqual(WrapType.None, shape.WrapType);
+            Assert.False(shape.IsInline);
         }
 
         [Test]
@@ -586,10 +620,9 @@ namespace ApiExamples
             //ExFor:ShapeBase.BoundsInPoints
             //ExFor:ShapeBase.FlipOrientation
             //ExFor:FlipOrientation
-            //ExSummary:Shows how to create line shapes and set specific location and size.
+            //ExSummary:Shows how to create line shapes, and set specific location and size.
             Document doc = new Document();
 
-            // The lines will cross the whole page
             float pageWidth = (float) doc.FirstSection.PageSetup.PageWidth;
             float pageHeight = (float) doc.FirstSection.PageSetup.PageHeight;
 
