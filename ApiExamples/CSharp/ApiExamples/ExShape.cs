@@ -775,26 +775,33 @@ namespace ApiExamples
             //ExStart
             //ExFor:Shape.Fill
             //ExFor:Shape.FillColor
+            //ExFor:Shape.StrokeColor
             //ExFor:Fill
             //ExFor:Fill.Opacity
-            //ExSummary:Demonstrates how to create shapes with fill.
+            //ExSummary:Shows how to fill a shape with a solid color.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Writeln();
-            builder.Writeln();
-            builder.Writeln();
-            builder.Write("Some text under the shape.");
+            // Write some text, and then cover it with a floating shape.
+            builder.Font.Size = 32;
+            builder.Writeln("Hello world!");
 
-            // Create a red balloon, semitransparent
-            // The shape is floating, and its coordinates are (0,0) by default, relative to the current paragraph
-            Shape shape = new Shape(builder.Document, ShapeType.Balloon);
-            shape.FillColor = Color.Red;
+            Shape shape = builder.InsertShape(ShapeType.CloudCallout, RelativeHorizontalPosition.LeftMargin, 25,
+                RelativeVerticalPosition.TopMargin, 25, 250, 150, WrapType.None);
+
+            // Use the "StrokeColor" property to set the color of the outline of the shape.
+            shape.StrokeColor = Color.CadetBlue;
+
+            // Use the "FillColor" property to set the color of the inside area of the shape.
+            shape.FillColor = Color.LightBlue;
+
+            // The "Opacity" property determines how transparent the color is on a 0-1 scale,
+            // with 1 being fully opaque, and 0 being invisible.
+            // The shape fill by default is fully opaque, so we cannot see the text that this shape is on top of.
+            Assert.AreEqual(1.0d, shape.Fill.Opacity);
+
+            // Set the opacity of the shape fill color to a lower value so that we can see the text underneath it.
             shape.Fill.Opacity = 0.3;
-            shape.Width = 100;
-            shape.Height = 100;
-            shape.Top = -100;
-            builder.InsertNode(shape);
 
             doc.Save(ArtifactsDir + "Shape.Fill.docx");
             //ExEnd
@@ -802,8 +809,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.Fill.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyShape(ShapeType.Balloon, string.Empty, 100.0d, 100.0d, -100.0d, 0.0d, shape);
-            Assert.AreEqual(Color.Red.ToArgb(), shape.FillColor.ToArgb());
+            TestUtil.VerifyShape(ShapeType.CloudCallout, "CloudCallout 100002", 250.0d, 150.0d, 25.0d, 25.0d, shape);
+            Assert.AreEqual(Color.LightBlue.ToArgb(), shape.FillColor.ToArgb());
+            Assert.AreEqual(Color.CadetBlue.ToArgb(), shape.StrokeColor.ToArgb());
             Assert.AreEqual(0.3d, shape.Fill.Opacity, 0.01d);
         }
 
@@ -812,21 +820,28 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ShapeBase.Title
-            //ExSummary:Shows how to get or set title of shape object.
+            //ExSummary:Shows how to set the title of a shape.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create test shape
+            // Create a shape, give it a title, and then add it to the document.
             Shape shape = new Shape(doc, ShapeType.Cube);
             shape.Width = 200;
             shape.Height = 200;
             shape.Title = "My cube";
             
             builder.InsertNode(shape);
-            //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            // When we save a document with a shape that has a title,
+            // Aspose.Words will store that title in the shape's Alt Text.
+            doc.Save(ArtifactsDir + "Shape.Title.docx");
+
+            doc = new Document(ArtifactsDir + "Shape.Title.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(string.Empty, shape.Title);
+            Assert.AreEqual("Title: My cube", shape.AlternativeText);
+            //ExEnd
 
             TestUtil.VerifyShape(ShapeType.Cube, string.Empty, 200.0d, 200.0d, 0.0d, 0.0d, shape);
         }
