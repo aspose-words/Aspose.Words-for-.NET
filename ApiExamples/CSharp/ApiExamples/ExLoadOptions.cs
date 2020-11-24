@@ -11,6 +11,7 @@ using System.Drawing;
 using System.IO;
 using System.Text;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Fonts;
 using Aspose.Words.Loading;
 using Aspose.Words.Settings;
@@ -300,6 +301,49 @@ namespace ApiExamples
             doc = new Document(MyDir + "No default editing language.docx");
 
             Assert.AreEqual((int)EditingLanguage.EnglishUS, doc.Styles.DefaultFont.LocaleId);
+        }
+
+        [Test]
+        public void ConvertMetafilesToPng()
+        {
+            //ExStart
+            //ExFor:LoadOptions.ConvertMetafilesToPng
+            //ExSummary:Shows how to convert WMF/EMF to PNG during loading document.
+            Document doc = new Document();
+    
+            Shape shape = new Shape(doc, ShapeType.Image);
+            shape.ImageData.SetImage(ImageDir + "Windows MetaFile.wmf");
+            shape.Width = 100;
+            shape.Height = 100;
+
+            doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
+
+            doc.Save(ArtifactsDir + "Image.CreateImageDirectly.docx");
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
+
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.ConvertMetafilesToPng = true;
+
+            doc = new Document(ArtifactsDir + "Image.CreateImageDirectly.docx", loadOptions);
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyImageInShape(1600, 1600, ImageType.Png, shape);
+            //ExEnd
+        }
+
+        [Test]
+        public void OpenChmFile()
+        {
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "HTML help.chm");
+            Assert.AreEqual(info.LoadFormat, LoadFormat.Chm);
+
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.Encoding = Encoding.GetEncoding("windows-1251");
+
+            Document doc = new Document(MyDir + "HTML help.chm", loadOptions);
         }
     }
 }
