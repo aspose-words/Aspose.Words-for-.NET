@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using Aspose.Words;
@@ -119,6 +120,32 @@ namespace ApiExamples
 
             BookmarkCollection bookmarkAfterDeleteFormField = doc.Range.Bookmarks;
             Assert.AreEqual("MyBookmark", bookmarkAfterDeleteFormField[0].Name);
+        }
+
+        [Test]
+        public void FormFieldFontFormatting()
+        {
+            //ExStart
+            //ExFor:FormField
+            //ExSummary:Shows how to formatting the entire FormField, including the field value.
+            Document doc = new Document(MyDir + "Form fields.docx");
+
+            FormField formField = doc.Range.FormFields[0];
+            formField.Font.Bold = true;
+            formField.Font.Size = 24;
+            formField.Font.Color = Color.Red;
+
+            formField.Result = "Aspose.FormField";
+
+            doc = DocumentHelper.SaveOpen(doc);
+            
+            Run formFieldRun = doc.FirstSection.Body.FirstParagraph.Runs[1];
+
+            Assert.AreEqual("Aspose.FormField", formFieldRun.Text);
+            Assert.AreEqual(true, formFieldRun.Font.Bold);
+            Assert.AreEqual(24, formFieldRun.Font.Size);
+            Assert.AreEqual(Color.Red.ToArgb(), formFieldRun.Font.Color.ToArgb());
+            //ExEnd
         }
 
         //ExStart

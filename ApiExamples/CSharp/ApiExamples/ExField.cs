@@ -504,7 +504,7 @@ namespace ApiExamples
 
             Assert.AreEqual(2, doc.Range.Fields.Count);
             
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(77, table.Rows.Count);
             Assert.AreEqual(10, table.Rows[0].Cells.Count);
@@ -2703,7 +2703,7 @@ namespace ApiExamples
             XmlDocument cdCollectionXslTransformation = new XmlDocument();
             cdCollectionXslTransformation.LoadXml(File.ReadAllText(MyDir + "CD collection XSL transformation.xsl"));
 
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             XmlNamespaceManager manager = new XmlNamespaceManager(cdCollectionXslTransformation.NameTable);
             manager.AddNamespace("xsl", "http://www.w3.org/1999/XSL/Transform");
@@ -7262,6 +7262,28 @@ namespace ApiExamples
             // The third Shape is what was the EMBED field that contained the external spreadsheet.
             shape = (Shape)shapes[2];
             Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
+            //ExEnd
+        }
+
+        [Test]
+        public void SetFieldIndexFormat()
+        {
+            //ExStart
+            //ExFor:FieldOptions.FieldIndexFormat
+            //ExSummary:Shows how to formatting FieldIndex fields.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("A");
+            builder.InsertBreak(BreakType.LineBreak);
+            builder.InsertField("XE \"A\"");
+            builder.Write("B");
+
+            builder.InsertField(" INDEX \\e \" · \" \\h \"A\" \\c \"2\" \\z \"1033\"", null);
+
+            doc.FieldOptions.FieldIndexFormat = FieldIndexFormat.Fancy;
+            doc.UpdateFields();
+
+            doc.Save(ArtifactsDir + "Field.SetFieldIndexFormat.docx");
             //ExEnd
         }
     }
