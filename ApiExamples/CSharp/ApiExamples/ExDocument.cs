@@ -215,7 +215,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void InsertHtmlFromWebPage()
         {
             //ExStart
