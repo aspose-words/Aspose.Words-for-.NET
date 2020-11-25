@@ -904,7 +904,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Shape.#ctor(DocumentBase, ShapeType)
-            //ExFor:ShapeBase.ZOrder
             //ExFor:Story.FirstParagraph
             //ExFor:Shape.FirstParagraph
             //ExFor:ShapeBase.WrapType
@@ -916,9 +915,6 @@ namespace ApiExamples
             textBox.WrapType = WrapType.None;
             textBox.Height = 50;
             textBox.Width = 200;
-
-            // Set the textbox in front of other shapes with a lower ZOrder.
-            textBox.ZOrder = 2;
 
             // Set the horizontal, and vertical alignment of the text inside the shape.
             textBox.HorizontalAlignment = HorizontalAlignment.Center;
@@ -944,8 +940,48 @@ namespace ApiExamples
             Assert.AreEqual(WrapType.None, textBox.WrapType);
             Assert.AreEqual(HorizontalAlignment.Center, textBox.HorizontalAlignment);
             Assert.AreEqual(VerticalAlignment.Top, textBox.VerticalAlignment);
-            Assert.AreEqual(0, textBox.ZOrder);
             Assert.AreEqual("Hello world!", textBox.GetText().Trim());
+        }
+
+        [Test]
+        public void ZOrder()
+        {
+            //ExStart
+            //ExFor:ShapeBase.ZOrder
+            //ExSummary:Shows how to manipulate the order of shapes.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert three different colored rectangles that partially overlap each other.
+            // When we insert a shape that overlaps another shape, Aspose.Words places the newer shape on top of the old one.
+            // The light green rectangle will overlap the light blue rectangle and partially obscure it,
+            // and the light blue rectangle will in turn will obscure the orange rectangle.
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 100,
+                RelativeVerticalPosition.TopMargin, 100, 200, 200, WrapType.None);
+            shape.FillColor = Color.Orange;
+
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 150,
+                RelativeVerticalPosition.TopMargin, 150, 200, 200, WrapType.None);
+            shape.FillColor = Color.LightBlue;
+
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 200,
+                RelativeVerticalPosition.TopMargin, 200, 200, 200, WrapType.None);
+            shape.FillColor = Color.LightGreen;
+
+            Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
+
+            // The "ZOrder" property of a shape determines its stacking priority among other overlapping shapes.
+            // If two overlapping shapes have different "ZOrder" values,
+            // Microsoft Word will place the shape with the higher value over the shape with the lower value. 
+            // Set the "ZOrder" values of our shapes to place the first orange rectangle over the second light blue one,
+            // and the second light blue rectangle over the third light green rectangle.
+            // This will reverse their original stacking order.
+            shapes[0].ZOrder = 3;
+            shapes[1].ZOrder = 2;
+            shapes[2].ZOrder = 1;
+
+            doc.Save(ArtifactsDir + "Shape.ZOrder.docx");
+            //ExEnd
         }
 
         [Test]
