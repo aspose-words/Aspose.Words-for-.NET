@@ -8,7 +8,7 @@
 //ExStart
 //ExFor:NodeList
 //ExFor:FieldStart
-//ExSummary:Shows how to find all hyperlinks in a Word document and changes their URL and display name. //INSP: Please check comments for this example.
+//ExSummary:Shows how to find all hyperlinks in a Word document, and then change their URLs and display names.
 using System;
 using System.Linq;
 using System.Text;
@@ -27,21 +27,21 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Hyperlinks.docx");
 
-            // Hyperlinks in a Word documents are fields, select all field start nodes so we can find the hyperlinks
+            // Hyperlinks in a Word documents are fields. To begin looking for hyperlinks, we must first find all the fields.
+            // Use the "SelectNodes" method to find all the fields in the document via an XPath.
             NodeList fieldStarts = doc.SelectNodes("//FieldStart");
+
             foreach (FieldStart fieldStart in fieldStarts.OfType<FieldStart>())
             {
                 if (fieldStart.FieldType.Equals(FieldType.FieldHyperlink))
                 {
-                    // The field is a hyperlink field, use the "facade" class to help to deal with the field
                     Hyperlink hyperlink = new Hyperlink(fieldStart);
 
-                    // Some hyperlinks can be local (links to bookmarks inside the document), ignore these
+                    // Hyperlinks that link to bookmarks do not have URLs.
                     if (hyperlink.IsLocal)
                         continue;
 
-                    // The Hyperlink class allows to set the target URL and the display name 
-                    // of the link easily by setting the properties
+                    // Give each URL hyperlink a new URL and name.
                     hyperlink.Target = NewUrl;
                     hyperlink.Name = NewName;
                 }
@@ -55,20 +55,19 @@ namespace ApiExamples
     }
 
     /// <summary>
-    /// This "facade" class makes it easier to work with a hyperlink field in a Word document. 
-    /// 
-    /// A hyperlink is represented by a HYPERLINK field in a Word document. A field in Aspose.Words 
-    /// consists of several nodes and it might be difficult to work with all those nodes directly. 
-    /// Note this is a simple implementation and will work only if the hyperlink code and name 
-    /// each consist of one Run only.
+    /// HYPERLINK fields contain and display hyperlinks in the document body. A field in Aspose.Words 
+    /// consists of several nodes, and it might be difficult to work with all those nodes directly. 
+    /// This implementation will work only if the hyperlink code and name each consist of only one Run node.
+    ///
+    /// The node structure for fields is as follows:
     /// 
     /// [FieldStart][Run - field code][FieldSeparator][Run - field result][FieldEnd]
     /// 
-    /// The field code contains a String in one of these formats:
+    /// Below are two example field codes of HYPERLINK fields:
     /// HYPERLINK "url"
     /// HYPERLINK \l "bookmark name"
     /// 
-    /// The field result contains text that is displayed to the user.
+    /// A field's "Result" property contains text that the field displays in the document body to the user.
     /// </summary>
     internal class Hyperlink
     {
@@ -81,21 +80,23 @@ namespace ApiExamples
 
             mFieldStart = fieldStart;
 
-            // Find the field separator node
+            // Find the field separator node.
             mFieldSeparator = FindNextSibling(mFieldStart, NodeType.FieldSeparator);
             if (mFieldSeparator == null)
                 throw new InvalidOperationException("Cannot find field separator.");
 
-            // Find the field end node. Normally field end will always be found, but in the example document 
-            // there happens to be a paragraph break included in the hyperlink and this puts the field end 
+            // Normally, we can always find the field's end node, but the example document 
+            // contains a paragraph break inside a hyperlink, which puts the field end 
             // in the next paragraph. It will be much more complicated to handle fields which span several 
-            // paragraphs correctly, but in this case allowing field end to be null is enough for our purposes
+            // paragraphs correctly. In this case allowing field end to be null is enough.
             mFieldEnd = FindNextSibling(mFieldSeparator, NodeType.FieldEnd);
 
-            // Field code looks something like [ HYPERLINK "http:\\www.myurl.com" ], but it can consist of several runs
+            // Field code looks something like "HYPERLINK "http:\\www.myurl.com"", but it can consist of several runs.
             string fieldCode = GetTextSameParent(mFieldStart.NextSibling, mFieldSeparator);
             Match match = gRegex.Match(fieldCode.Trim());
-            mIsLocal = match.Groups[1].Length > 0; //The link is local if \l is present in the field code
+
+            // The hyperlink is local if \l is present in the field code.
+            mIsLocal = match.Groups[1].Length > 0; 
             mTarget = match.Groups[2].Value;
         }
 
@@ -104,15 +105,15 @@ namespace ApiExamples
         /// </summary>
         internal string Name
         {
-            get { return GetTextSameParent(mFieldSeparator, mFieldEnd); }
+            get => GetTextSameParent(mFieldSeparator, mFieldEnd); 
             set
             {
-                // Hyperlink display name is stored in the field result which is a Run 
-                // node between field separator and field end
+                // Hyperlink display name is stored in the field result, which is a Run 
+                // node between field separator and field end.
                 Run fieldResult = (Run) mFieldSeparator.NextSibling;
                 fieldResult.Text = value;
 
-                // But sometimes the field result can consist of more than one run, delete these runs
+                // If the field result consists of more than one run, delete these runs.
                 RemoveSameParent(fieldResult.NextSibling, mFieldEnd);
             }
         }
@@ -122,10 +123,7 @@ namespace ApiExamples
         /// </summary>
         internal string Target
         {
-            get
-            {
-                return mTarget;
-            }
+            get => mTarget;
             set
             {
                 mTarget = value;
@@ -138,7 +136,7 @@ namespace ApiExamples
         /// </summary>
         internal bool IsLocal
         {
-            get { return mIsLocal; }
+            get => mIsLocal; 
             set
             {
                 mIsLocal = value;
@@ -148,11 +146,11 @@ namespace ApiExamples
 
         private void UpdateFieldCode()
         {
-            // Field code is stored in a Run node between field start and field separator
+            // A field's field code is in a Run node between the field's start node and field separator.
             Run fieldCode = (Run) mFieldStart.NextSibling;
             fieldCode.Text = string.Format("HYPERLINK {0}\"{1}\"", ((mIsLocal) ? "\\l " : ""), mTarget);
 
-            // But sometimes the field code can consist of more than one run, delete these runs
+            // If the field code consists of more than one run, delete these runs.
             RemoveSameParent(fieldCode.NextSibling, mFieldSeparator);
         }
 
@@ -187,7 +185,7 @@ namespace ApiExamples
 
         /// <summary>
         /// Removes nodes from start up to but not including the end node.
-        /// Start and end are assumed to have the same parent.
+        /// Assumes that the start and end nodes have the same parent.
         /// </summary>
         private static void RemoveSameParent(Node startNode, Node endNode)
         {
@@ -210,13 +208,13 @@ namespace ApiExamples
         private string mTarget;
 
         private static readonly Regex gRegex = new Regex(
-            "\\S+" + // one or more non spaces HYPERLINK or other word in other languages
-            "\\s+" + // one or more spaces
-            "(?:\"\"\\s+)?" + // non capturing optional "" and one or more spaces, found in one of the customers files.
-            "(\\\\l\\s+)?" + // optional \l flag followed by one or more spaces
-            "\"" + // one apostrophe	
-            "([^\"]+)" + // one or more chars except apostrophe (hyperlink target)
-            "\"" // one closing apostrophe
+            "\\S+" + // One or more non spaces HYPERLINK or other word in other languages.
+            "\\s+" + // One or more spaces.
+            "(?:\"\"\\s+)?" + // Non-capturing optional "" and one or more spaces.
+            "(\\\\l\\s+)?" + // Optional \l flag followed by one or more spaces.
+            "\"" + // One apostrophe.	
+            "([^\"]+)" + // One or more characters, excluding the apostrophe (hyperlink target).
+            "\"" // One closing apostrophe.
         );
     }
 }
