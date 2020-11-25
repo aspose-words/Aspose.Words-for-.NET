@@ -8,7 +8,7 @@
 //ExStart
 //ExFor:NodeList
 //ExFor:FieldStart
-//ExSummary:Finds all hyperlinks in a Word document and changes their URL and display name.
+//ExSummary:Shows how to find all hyperlinks in a Word document and changes their URL and display name. //INSP: Please check comments for this example.
 using System;
 using System.Linq;
 using System.Text;
@@ -19,19 +19,12 @@ using NUnit.Framework;
 
 namespace ApiExamples
 {
-    /// <summary>
-    /// Shows how to replace hyperlinks in a Word document.
-    /// </summary>
     [TestFixture] //ExSkip
     public class ExReplaceHyperlinks : ApiExampleBase
     {
-        /// <summary>
-        /// Finds all hyperlinks in a Word document and changes their URL and display name.
-        /// </summary>
         [Test] //ExSkip
         public void Fields()
         {
-            // Specify your document name here
             Document doc = new Document(MyDir + "Hyperlinks.docx");
 
             // Hyperlinks in a Word documents are fields, select all field start nodes so we can find the hyperlinks

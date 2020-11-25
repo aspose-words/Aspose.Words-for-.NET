@@ -20,14 +20,13 @@ namespace ApiExamples
     public class ExPrinting : ApiExampleBase
     {
 #if NET462 || JAVA
-        [Ignore("Run only when the printer driver is installed")]
-        [Test]
+        [Test, Ignore("Run only when the printer driver is installed.")]
         public void CustomPrint()
         {
             //ExStart
             //ExFor:PageInfo.GetDotNetPaperSize
             //ExFor:PageInfo.Landscape
-            //ExSummary:Shows how to customize printing of Aspose.Words documents.
+            //ExSummary:Shows how to customize the printing of Aspose.Words documents.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             MyPrintDocument printDoc = new MyPrintDocument(doc);
@@ -84,7 +83,7 @@ namespace ApiExamples
                 e.PageSettings.PaperSize = pageInfo.GetDotNetPaperSize(PrinterSettings.PaperSizes);
 
                 // Microsoft Word stores the paper source (printer tray) for each section as a printer-specific value.
-                // To obtain the correct tray value you will need to use the RawKindValue, which your printer should return.
+                // To obtain the correct tray value, you will need to use the RawKindValue, which your printer should return.
                 e.PageSettings.PaperSource.RawKind = pageInfo.PaperTray;
                 e.PageSettings.Landscape = pageInfo.Landscape;
             }
@@ -96,7 +95,7 @@ namespace ApiExamples
             {
                 base.OnPrintPage(e);
 
-                // Aspose.Words rendering engine creates a page that is drawn from the origin (x = 0, y = 0) of the paper.
+                // Aspose.Words rendering engine creates a page drawn from the origin (x = 0, y = 0) of the paper.
                 // There will be a hard margin in the printer, which will render each page. We need to offset by that hard margin.
                 float hardOffsetX, hardOffsetY;
 
@@ -126,8 +125,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
-        [Ignore("Run only when the printer driver is installed")]
+        [Test, Ignore("Run only when the printer driver is installed.")]
         public void PrintPageInfo()
         {
             //ExStart
@@ -176,8 +174,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        [Ignore("Run only when the printer driver is installed")]
+        [Test, Ignore("Run only when the printer driver is installed.")]
         public void PrinterSettingsContainer()
         {
             //ExStart
@@ -199,10 +196,10 @@ namespace ApiExamples
                                   $"RawKind: {paperSource.RawKind} {(isDefault ? "(Default)" : "")}");
             }
 
-            // The "PaperSizes" property contains the list of paper sizes that we can instruct the printer to use.
+            // The "PaperSizes" property contains the list of paper sizes to instruct the printer to use.
             // Both the PrinterSource and PrinterSize contain a "RawKind" attribute,
             // which equates to a paper type listed on the PaperSourceKind enum.
-            // If there is a paper source with the same "RawKind" value as that of the page we are printing,
+            // If there is a paper source with the same "RawKind" value as that of the printing page,
             // the printer will print the page using the provided paper source and size.
             // Otherwise, the printer will default to the source designated by the "DefaultPageSettingsPaperSource" property.
             Console.WriteLine($"{container.PaperSizes.Count} paper sizes:");
@@ -213,8 +210,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Ignore("Run only when the printer driver is installed")]
-        [Test]
+        [Test, Ignore("Run only when the printer driver is installed.")]
         public void Print()
         {
             //ExStart
@@ -230,7 +226,7 @@ namespace ApiExamples
             doc.Print();
 
             // 2 -  Specify a printer that we wish to print the document with by name:
-            string myPrinter = System.Drawing.Printing.PrinterSettings.InstalledPrinters[4];
+            string myPrinter = PrinterSettings.InstalledPrinters[4];
 
             Assert.AreEqual("HPDAAB96 (HP ENVY 5000 series)", myPrinter);
 
@@ -238,8 +234,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Ignore("Run only when the printer driver is installed")]
-        [Test]
+        [Test, Ignore("Run only when the printer driver is installed.")]
         public void PrintRange()
         {
             //ExStart
@@ -248,11 +243,11 @@ namespace ApiExamples
             //ExSummary:Shows how to print a range of pages.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Create a "PrinterSettings" object to modify the way in which we print the document.
+            // Create a "PrinterSettings" object to modify how we print the document.
             PrinterSettings printerSettings = new PrinterSettings();
 
             // Set the "PrintRange" property to "PrintRange.SomePages" to
-            // tell the printer that we intend to print only some pages of the document.
+            // tell the printer that we intend to print only some document pages.
             printerSettings.PrintRange = System.Drawing.Printing.PrintRange.SomePages;
 
             // Set the "FromPage" property to "1", and the "ToPage" property to "3" to print pages 1 through to 3.
@@ -270,8 +265,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Ignore("Run only when the printer driver is installed")]
-        [Test]
+        [Test, Ignore("Run only when the printer driver is installed.")]
         public void PreviewAndPrint()
         {
             //ExStart
@@ -297,7 +291,7 @@ namespace ApiExamples
                 return;
 
             // Create the "Aspose.Words" implementation of the .NET print document,
-            // and then pass the printer settings from the dialog to it.
+            // and then pass the printer settings from the dialog.
             AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(doc);
             awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
 

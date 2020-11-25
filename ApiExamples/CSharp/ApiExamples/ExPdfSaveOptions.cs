@@ -62,8 +62,8 @@ namespace ApiExamples
 
             using (Stream stream = File.Create(ArtifactsDir + "PdfSaveOptions.OnePage.pdf"))
             {
-                // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-                // to modify the way in which that method converts the document to .PDF.
+                // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+                // to modify how that method converts the document to .PDF.
                 PdfSaveOptions options = new PdfSaveOptions();
 
                 // Set the "PageIndex" to "1" to render a portion of the document starting from the second page.
@@ -73,7 +73,7 @@ namespace ApiExamples
                 // starting from the page that the "PageIndex" property specified.
                 options.PageCount = 1;
 
-                // This document will contain one page starting from page two, which means it will only contain the second page.
+                // This document will contain one page starting from page two, which will only contain the second page.
                 doc.Save(stream, options);
             }
             //ExEnd
@@ -97,7 +97,7 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.IsHeading
             //ExFor:PdfSaveOptions.OutlineOptions
             //ExFor:PdfSaveOptions.SaveFormat
-            //ExSummary:Shows how to limit the level of headings that will appear in the outline of a saved PDF document.
+            //ExSummary:Shows how to limit the headings' level that will appear in the outline of a saved PDF document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -118,8 +118,8 @@ namespace ApiExamples
             builder.Writeln("Heading 1.2.1");
             builder.Writeln("Heading 1.2.2");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.SaveFormat = SaveFormat.Pdf;
 
@@ -149,7 +149,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:OutlineOptions.CreateMissingOutlineLevels
             //ExFor:PdfSaveOptions.OutlineOptions
-            //ExSummary:Shows how to work with outline levels that do not any corresponding headings when saving a document to PDF.
+            //ExSummary:Shows how to work with outline levels that do not contain any corresponding headings when saving a PDF document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -165,8 +165,8 @@ namespace ApiExamples
             builder.Writeln("Heading 1.1.1.1.1");
             builder.Writeln("Heading 1.1.1.1.2");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
             // The output PDF document will contain an outline, which is a table of contents that lists headings in the document body.
@@ -191,10 +191,7 @@ namespace ApiExamples
 
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
-            if (createMissingOutlineLevels)
-                Assert.AreEqual(6, bookmarks.Count);
-            else
-                Assert.AreEqual(3, bookmarks.Count);
+            Assert.AreEqual(createMissingOutlineLevels ? 6 : 3, bookmarks.Count);
 #endif
         }
 
@@ -223,14 +220,14 @@ namespace ApiExamples
             builder.Write("Jane Doe");
             builder.EndTable();
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
 
             // The output PDF document will contain an outline, which is a table of contents that lists headings in the document body.
             // Clicking on an entry in this outline will take us to the location of its respective heading.
             // Set the "HeadingsOutlineLevels" property to "1" to get the outline
-            // to only register headings that have heading levels that are no larger than 1.
+            // to only register headings with heading levels that are no larger than 1.
             pdfSaveOptions.OutlineOptions.HeadingsOutlineLevels = 1;
 
             // Set the "CreateOutlinesForHeadingsInTables" property to "false" to exclude all headings within tables,
@@ -269,7 +266,7 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions
             //ExFor:OutlineOptions.HeadingsOutlineLevels
             //ExFor:OutlineOptions.ExpandedOutlineLevels
-            //ExSummary:Converts a whole document to PDF with three levels in the document outline.
+            //ExSummary:Shows how to convert a whole document to PDF with three levels in the document outline.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -300,8 +297,8 @@ namespace ApiExamples
             builder.Writeln("Heading 1.2.2.2.1");
             builder.Writeln("Heading 1.2.2.2.2");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // The output PDF document will contain an outline, which is a table of contents that lists headings in the document body.
@@ -343,14 +340,15 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Hello World!");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "UpdateFields" property to "false" to not update all the fields in a document right before a save operation.
             // This is the preferable option if we know that all our fields will be up to date before saving.
-            // Set the "UpdateFields" property to "true" to iterate through all the fields in the document
-            // and update them before we save it as a PDF. This will make sure that all the fields will display the most accurate values in the PDF.
+            // Set the "UpdateFields" property to "true" to iterate through all the document
+            // fields and update them before we save it as a PDF. This will make sure that all the fields will display
+            // the most accurate values in the PDF.
             options.UpdateFields = updateFields;
             
             // We can clone PdfSaveOptions objects.
@@ -365,11 +363,8 @@ namespace ApiExamples
             TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
             pdfDocument.Pages.Accept(textFragmentAbsorber);
 
-            if (updateFields)
-                Assert.AreEqual("Page 1 of 2", textFragmentAbsorber.TextFragments[1].Text);
-            else
-                Assert.AreEqual("Page  of ", textFragmentAbsorber.TextFragments[1].Text);
-            #endif
+            Assert.AreEqual(updateFields ? "Page 1 of 2" : "Page  of ", textFragmentAbsorber.TextFragments[1].Text);
+#endif
         }
 
         [TestCase(false)]
@@ -379,7 +374,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.PreserveFormFields
             //ExSummary:Shows how to save a document to the PDF format using the Save method and the PdfSaveOptions class.
-            // Open the document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -388,13 +382,13 @@ namespace ApiExamples
             // Insert a combo box which will allow a user to choose an option from a collection of strings.
             builder.InsertComboBox("MyComboBox", new[] { "Apple", "Banana", "Cherry" }, 0);
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions pdfOptions = new PdfSaveOptions();
 
             // Set the "PreserveFormFields" property to "true" to save form fields as interactive objects in the output PDF.
             // Set the "PreserveFormFields" property to "false" to freeze all form fields in the document at
-            // their current values, and display them as plain text in the output PDF.
+            // their current values and display them as plain text in the output PDF.
             pdfOptions.PreserveFormFields = preserveFormFields;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreserveFormFields.pdf", pdfOptions);
@@ -439,12 +433,12 @@ namespace ApiExamples
             //ExSummary:Shows how to set the PDF standards compliance level of saved PDF documents.
             Document doc = new Document(MyDir + "Images.docx");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
             // Set the "Compliance" property to "PdfCompliance.PdfA1b" to comply with the "PDF/A-1b" standard,
-            // which aims to preserve the visual appearance of the document as Aspose.Words converts it to PDF.
+            // which aims to preserve the visual appearance of the document as Aspose.Words convert it to PDF.
             // Set the "Compliance" property to "PdfCompliance.Pdf17" to comply with the "1.7" standard.
             // Set the "Compliance" property to "PdfCompliance.PdfA1a" to comply with the "PDF/A-1a" standard,
             // which complies with "PDF/A-1b" as well as preserving the document structure of the original document.
@@ -491,8 +485,8 @@ namespace ApiExamples
                 builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
                                 "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "TextCompression" property to "PdfTextCompression.None" to not apply any
@@ -502,19 +496,23 @@ namespace ApiExamples
             options.TextCompression = pdfTextCompression;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf", options);
+            //ExEnd
 
             switch (pdfTextCompression)
             {
                 case PdfTextCompression.None:
-                    Assert.That(60000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf").Length));
-                    TestUtil.FileContainsString("5 0 obj\r\n<</Length 9 0 R>>stream", ArtifactsDir + "PdfSaveOptions.TextCompression.pdf"); //ExSkip
+                    Assert.That(60000,
+                        Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf").Length));
+                    TestUtil.FileContainsString("5 0 obj\r\n<</Length 9 0 R>>stream",
+                        ArtifactsDir + "PdfSaveOptions.TextCompression.pdf");
                     break;
                 case PdfTextCompression.Flate:
-                    Assert.That(30000, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf").Length));
-                    TestUtil.FileContainsString("5 0 obj\r\n<</Length 9 0 R/Filter /FlateDecode>>stream", ArtifactsDir + "PdfSaveOptions.TextCompression.pdf"); //ExSkip
+                    Assert.That(30000,
+                        Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf").Length));
+                    TestUtil.FileContainsString("5 0 obj\r\n<</Length 9 0 R/Filter /FlateDecode>>stream",
+                        ArtifactsDir + "PdfSaveOptions.TextCompression.pdf");
                     break;
             }
-            //ExEnd
         }
         
         [TestCase(PdfImageCompression.Auto)]
@@ -535,8 +533,8 @@ namespace ApiExamples
             builder.Writeln("Png image:");
             builder.InsertImage(ImageDir + "Transparent background logo.png");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
 
             // Set the "ImageCompression" property to "PdfImageCompression.Auto" to use the
@@ -567,15 +565,16 @@ namespace ApiExamples
                 switch (pdfImageCompression)
                 {
                     case PdfImageCompression.Auto:
-                        Assert.AreEqual(53700, new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length, TestUtil.FileInfoLengthDelta);
+                        Assert.AreEqual(53700,
+                            new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length,
+                            TestUtil.FileInfoLengthDelta);
 
-                        Assert.Throws<ArgumentException>(() =>
-                        {
-                            TestUtil.VerifyImage(400, 400, pdfDocImageStream);
-                        });
+                        Assert.Throws<ArgumentException>(() => { TestUtil.VerifyImage(400, 400, pdfDocImageStream); });
                         break;
                     case PdfImageCompression.Jpeg:
-                        Assert.AreEqual(40000, new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length, TestUtil.FileInfoLengthDelta);
+                        Assert.AreEqual(40000,
+                            new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length,
+                            TestUtil.FileInfoLengthDelta);
 
                         TestUtil.VerifyImage(400, 400, pdfDocImageStream);
                         break;
@@ -601,14 +600,16 @@ namespace ApiExamples
             builder.Writeln("Png image:");
             builder.InsertImage(ImageDir + "Transparent background logo.png");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
 
             // Set the "ImageColorSpaceExportMode" property to "PdfImageColorSpaceExportMode.Auto" to get Aspose.Words to
-            // automatically select the color space for images in the document that it converts to PDF. In most cases, the color space will be RGB.
-            // Set the "ImageColorSpaceExportMode" property to "PdfImageColorSpaceExportMode.SimpleCmyk" to use the CMYK color space for all images
-            // in the saved PDF. Aspose.Words will also apply Flate compression to all images and ignore the value of the "ImageCompression" property.
+            // automatically select the color space for images in the document that it converts to PDF.
+            // In most cases, the color space will be RGB.
+            // Set the "ImageColorSpaceExportMode" property to "PdfImageColorSpaceExportMode.SimpleCmyk"
+            // to use the CMYK color space for all images in the saved PDF.
+            // Aspose.Words will also apply Flate compression to all images and ignore the "ImageCompression" property's value.
             pdfSaveOptions.ImageColorSpaceExportMode = pdfImageColorSpaceExportMode;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.ImageColorSpaceExportMode.pdf", pdfSaveOptions);
@@ -662,11 +663,11 @@ namespace ApiExamples
             //ExSummary:Shows how to change the resolution of images in the PDF document.
             Document doc = new Document(MyDir + "Images.docx");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
-            // By default, Aspose.Words downsamples all images in a document that we save to PDF to 220 ppi.
+            // By default, Aspose.Words downsample all images in a document that we save to PDF to 220 ppi.
             Assert.True(options.DownsampleOptions.DownsampleImages);
             Assert.AreEqual(220, options.DownsampleOptions.Resolution);
             Assert.AreEqual(0, options.DownsampleOptions.ResolutionThreshold);
@@ -703,11 +704,11 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions
             //ExFor:ColorMode
             //ExFor:FixedPageSaveOptions.ColorMode
-            //ExSummary:Shows how change image color with save options property.
+            //ExSummary:Shows how to change image color with saving options property.
             Document doc = new Document(MyDir + "Images.docx");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             // Set the "ColorMode" property to "Grayscale" to render all images from the document in black and white.
             // The size of the output document may be larger with this setting.
             // Set the "ColorMode" property to "Normal" to render all images in color.
@@ -744,15 +745,15 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions.DisplayDocTitle
-            //ExSummary:Shows how to display title of the document as title bar.
+            //ExSummary:Shows how to display the title of the document as the title bar.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
             doc.BuiltInDocumentProperties.Title = "Windows bar pdf title";
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             // Set the "DisplayDocTitle" to "true" to get some PDF readers, such as Adobe Acrobat Pro,
             // to display the value of the document's "Title" built-in property in the tab that belongs to this document.
             // Set the "DisplayDocTitle" to "false" to get such readers to display the document's filename.
@@ -779,12 +780,12 @@ namespace ApiExamples
             //ExSummary:Shows an option to optimize memory consumption when rendering large documents to PDF.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
 
-            // Set the "MemoryOptimization" property to "true" to lower the memory footprint of save operations
-            // of large documents at the cost of increasing the duration of the operation.
+            // Set the "MemoryOptimization" property to "true" to lower the memory footprint of large documents' saving operations
+            // at the cost of increasing the duration of the operation.
             // Set the "MemoryOptimization" property to "false" to save the document as a PDF normally.
             saveOptions.MemoryOptimization = memoryOptimization;
 
@@ -805,22 +806,21 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertHyperlink("Testlink", uri, false);
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "EscapeUri" property to "true" if links in the document contain characters,
             // such as the blank space, that we need to replace with escape sequences, such as "%20".
-            // Set the "EscapeUri" property to "false" if we are sure that the links
-            // in this document no not need any such escape character substitution.
+            // Set the "EscapeUri" property to "false" if we are sure that this document's links
+            // do not need any such escape character substitution.
             options.EscapeUri = isEscaped;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf", options);
             //ExEnd
 
 #if NET462 || NETCOREAPP2_1 || JAVA
-            Aspose.Pdf.Document pdfDocument =
-                new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
             Page page = pdfDocument.Pages[1];
             LinkAnnotation linkAnnot = (LinkAnnotation)page.Annotations[1];
@@ -837,13 +837,13 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions.OpenHyperlinksInNewWindow
-            //ExSummary:Shows how to save hyperlinks in a document we convert to PDF in such a way that they open new pages when we click on them.
+            //ExSummary:Shows how to save hyperlinks in a document we convert to PDF so that they open new pages when we click on them.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertHyperlink("Testlink", @"https://www.google.com/search?q=%20aspose", false);
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "OpenHyperlinksInNewWindow" property to "true" to save all hyperlinks using Javascript code
@@ -855,12 +855,14 @@ namespace ApiExamples
             //ExEnd
 
             if (openHyperlinksInNewWindow)
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [70.84999847 707.35101318 110.17799377 721.15002441]/BS " +
-                                            "<</Type/Border/S/S/W 0>>/A<</Type /Action/S /JavaScript/JS(app.launchURL\\(\"https://www.google.com/search?q=%20aspose\", true\\);)>>>>",
+                TestUtil.FileContainsString(
+                    "<</Type /Annot/Subtype /Link/Rect [70.84999847 707.35101318 110.17799377 721.15002441]/BS " +
+                    "<</Type/Border/S/S/W 0>>/A<</Type /Action/S /JavaScript/JS(app.launchURL\\(\"https://www.google.com/search?q=%20aspose\", true\\);)>>>>",
                     ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf");
             else
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [70.84999847 707.35101318 110.17799377 721.15002441]/BS " +
-                                            "<</Type/Border/S/S/W 0>>/A<</Type /Action/S /URI/URI(https://www.google.com/search?q=%20aspose)>>>>", 
+                TestUtil.FileContainsString(
+                    "<</Type /Annot/Subtype /Link/Rect [70.84999847 707.35101318 110.17799377 721.15002441]/BS " +
+                    "<</Type/Border/S/S/W 0>>/A<</Type /Action/S /URI/URI(https://www.google.com/search?q=%20aspose)>>>>",
                     ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf");
 
 #if NET462 || NETCOREAPP2_1 || JAVA
@@ -868,12 +870,10 @@ namespace ApiExamples
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf");
 
             Page page = pdfDocument.Pages[1];
-            LinkAnnotation linkAnnot = (LinkAnnotation)page.Annotations[1];
+            LinkAnnotation linkAnnot = (LinkAnnotation) page.Annotations[1];
 
-            if (openHyperlinksInNewWindow)
-                Assert.AreEqual(typeof(JavascriptAction), linkAnnot.Action.GetType());
-            else
-                Assert.AreEqual(typeof(GoToURIAction), linkAnnot.Action.GetType());
+            Assert.AreEqual(openHyperlinksInNewWindow ? typeof(JavascriptAction) : typeof(GoToURIAction),
+                linkAnnot.Action.GetType());
 #endif
         }
 
@@ -884,7 +884,7 @@ namespace ApiExamples
         //ExFor:MetafileRenderingOptions.RenderingMode
         //ExFor:IWarningCallback
         //ExFor:FixedPageSaveOptions.MetafileRenderingOptions
-        //ExSummary:Shows added fallback to bitmap rendering and changing type of warnings about unsupported metafile records.
+        //ExSummary:Shows added a fallback to bitmap rendering and changing type of warnings about unsupported metafile records.
         [Test, Category("SkipMono")] //ExSkip
         public void HandleBinaryRasterWarnings()
         {
@@ -893,15 +893,15 @@ namespace ApiExamples
             MetafileRenderingOptions metafileRenderingOptions = new MetafileRenderingOptions();
 
             // Set the "EmulateRasterOperations" property to "false" to fall back to bitmap when
-            // it encounters a metafile which will require raster operations to render in the output PDF.
+            // it encounters a metafile, which will require raster operations to render in the output PDF.
             metafileRenderingOptions.EmulateRasterOperations = false;
 
             // Set the "RenderingMode" property to "VectorWithFallback" to try to render every metafile using vector graphics.
             metafileRenderingOptions.RenderingMode = MetafileRenderingMode.VectorWithFallback;
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF,
-            // and apply the configuration in our MetafileRenderingOptions object to the saving operation.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF and applies the configuration
+            // in our MetafileRenderingOptions object to the saving operation.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.MetafileRenderingOptions = metafileRenderingOptions;
 
@@ -948,13 +948,13 @@ namespace ApiExamples
             //ExSummary:Shows to process bookmarks in headers/footers in a document that we are rendering to PDF.
             Document doc = new Document(MyDir + "Bookmarks in headers and footers.docx");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
             // Set the "PageMode" property to "PdfPageMode.UseOutlines" to display the outline navigation pane in the output PDF.
             saveOptions.PageMode = PdfPageMode.UseOutlines;
-            
+
             // Set the "DefaultBookmarksOutlineLevel" property to "1" to display all
             // bookmarks at the first level of the outline in the output PDF.
             saveOptions.OutlineOptions.DefaultBookmarksOutlineLevel = 1;
@@ -962,16 +962,17 @@ namespace ApiExamples
             // Set the "HeaderFooterBookmarksExportMode" property to "HeaderFooterBookmarksExportMode.None" to
             // not export any bookmarks that are inside headers/footers.
             // Set the "HeaderFooterBookmarksExportMode" property to "HeaderFooterBookmarksExportMode.First" to
-            // only export bookmarks in header/footers of the first section.
+            // only export bookmarks in the first section's header/footers.
             // Set the "HeaderFooterBookmarksExportMode" property to "HeaderFooterBookmarksExportMode.All" to
             // export bookmarks that are in all headers/footers.
             saveOptions.HeaderFooterBookmarksExportMode = headerFooterBookmarksExportMode;
-            
+
             doc.Save(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf", saveOptions);
             //ExEnd
 
-            #if NET462 || NETCOREAPP2_1 || JAVA
-            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf");
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDoc =
+                new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf");
             string inputDocLocaleName = new CultureInfo(doc.Styles.DefaultFont.LocaleId).Name;
 
             TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
@@ -979,14 +980,15 @@ namespace ApiExamples
             switch (headerFooterBookmarksExportMode)
             {
                 case Aspose.Words.Saving.HeaderFooterBookmarksExportMode.None:
-                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/Lang({inputDocLocaleName})>>\r\n", 
+                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/Lang({inputDocLocaleName})>>\r\n",
                         ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf");
 
                     Assert.AreEqual(0, pdfDoc.Outlines.Count);
                     break;
                 case Aspose.Words.Saving.HeaderFooterBookmarksExportMode.First:
                 case Aspose.Words.Saving.HeaderFooterBookmarksExportMode.All:
-                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/Outlines 13 0 R/PageMode /UseOutlines/Lang({inputDocLocaleName})>>", 
+                    TestUtil.FileContainsString(
+                        $"<</Type /Catalog/Pages 3 0 R/Outlines 13 0 R/PageMode /UseOutlines/Lang({inputDocLocaleName})>>",
                         ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf");
 
                     OutlineCollection outlineItemCollection = pdfDoc.Outlines;
@@ -1005,7 +1007,7 @@ namespace ApiExamples
                     Assert.AreEqual("2 XYZ 85 48 0", outlineItemCollection[4].Destination.ToString());
                     break;
             }
-            #endif
+#endif
         }
 
         [Test]
@@ -1045,8 +1047,8 @@ namespace ApiExamples
             //ExSummary:Shows how to WMF fonts scaling according to metafile size on the page.
             Document doc = new Document(MyDir + "WMF with text.docx");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
             // Set the "ScaleWmfFontsToMetafileSize" property to "true" to scale fonts
@@ -1094,13 +1096,13 @@ namespace ApiExamples
             Assert.True(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
             Assert.True(fontSources[1].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"));
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Since our document contains a custom font, embedding in the output document may be desirable.
             // Set the "EmbedFullFonts" property to "true" to embed every glyph of every embedded font in the output PDF.
-            // The size of the document may become very large, but we will have full use of all fonts if we edit the PDF.
+            // The document's size may become very large, but we will have full use of all fonts if we edit the PDF.
             // Set the "EmbedFullFonts" property to "false" to apply subsetting to fonts, saving only the glyphs
             // that the document is using. The file will be considerably smaller,
             // but we may need access to any custom fonts if we edit the document.
@@ -1136,20 +1138,18 @@ namespace ApiExamples
             builder.Font.Name = "Courier New";
             builder.Writeln("The quick brown fox jumps over the lazy dog.");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "EmbedFullFonts" property to "true" to embed every glyph of every embedded font in the output PDF.
             options.EmbedFullFonts = true;
 
             // Set the "FontEmbeddingMode" property to "EmbedAll" to embed all fonts in the output PDF.
-            // Set the "FontEmbeddingMode" property to "EmbedNonstandard" to only allow the embedding of
-            // nonstandard fonts in the output PDF.
+            // Set the "FontEmbeddingMode" property to "EmbedNonstandard" to only allow nonstandard fonts' embedding in the output PDF.
             // Set the "FontEmbeddingMode" property to "EmbedNone" to not embed any fonts in the output PDF.
             options.FontEmbeddingMode = pdfFontEmbeddingMode;
 
-            // The output PDF will be saved without embedding standard windows fonts
             doc.Save(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf", options);
 
             switch (pdfFontEmbeddingMode)
@@ -1182,12 +1182,12 @@ namespace ApiExamples
             builder.Font.Name = "Courier New";
             builder.Writeln("The quick brown fox jumps over the lazy dog.");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "UseCoreFonts" property to "true" to replace some fonts,
-            // which include the two fonts in our document, with their PDF Type 1 equivalents.
+            // including the two fonts in our document, with their PDF Type 1 equivalents.
             // Set the "UseCoreFonts" property to "false" to not apply PDF Type 1 fonts.
             options.UseCoreFonts = useCoreFonts;
 
@@ -1209,13 +1209,13 @@ namespace ApiExamples
             //ExSummary:Show how to write additional text positioning operators.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.TextCompression = PdfTextCompression.None;
 
             // Set the "AdditionalTextPositioning" property to "true" to attempt to fix incorrect
-            // element positioning in the output PDF, should there be any, at the cost of an increased file size.
+            // element positioning in the output PDF, should there be any, at the cost of increased file size.
             // Set the "AdditionalTextPositioning" property to "false" to render the document as usual.
             saveOptions.AdditionalTextPositioning = applyAdditionalTextPositioning;
 
@@ -1223,21 +1223,29 @@ namespace ApiExamples
             //ExEnd
 
 #if NET462 || NETCOREAPP2_1 || JAVA
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf");
+            Aspose.Pdf.Document pdfDocument =
+                new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf");
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
 
             pdfDocument.Pages[1].Accept(textAbsorber);
 
-            SetGlyphsPositionShowText tjOperator = (SetGlyphsPositionShowText)textAbsorber.TextFragments[1].Page.Contents[96];
+            SetGlyphsPositionShowText tjOperator =
+                (SetGlyphsPositionShowText) textAbsorber.TextFragments[1].Page.Contents[96];
 
             if (applyAdditionalTextPositioning)
             {
-                Assert.AreEqual(397800, new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length, TestUtil.FileInfoLengthDelta);
-                Assert.AreEqual("[0 (s) 0 (e) 1 (g) 0 (m) 0 (e) 0 (n) 0 (t) 0 (s) 0 ( ) 1 (o) 0 (f) 0 ( ) 1 (t) 0 (e) 0 (x) 0 (t)] TJ", tjOperator.ToString());
+                Assert.AreEqual(397800,
+                    new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length,
+                    TestUtil.FileInfoLengthDelta);
+                Assert.AreEqual(
+                    "[0 (s) 0 (e) 1 (g) 0 (m) 0 (e) 0 (n) 0 (t) 0 (s) 0 ( ) 1 (o) 0 (f) 0 ( ) 1 (t) 0 (e) 0 (x) 0 (t)] TJ",
+                    tjOperator.ToString());
             }
             else
             {
-                Assert.AreEqual(381200, new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length, TestUtil.FileInfoLengthDelta);
+                Assert.AreEqual(381200,
+                    new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length,
+                    TestUtil.FileInfoLengthDelta);
                 Assert.AreEqual("[(se) 1 (gments ) 1 (of ) 1 (text)] TJ", tjOperator.ToString());
             }
 #endif
@@ -1252,8 +1260,8 @@ namespace ApiExamples
             //ExSummary:Shows how to save a document to the PDF format in the form of a book fold.
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "UseBookFoldPrintingSettings" property to "true" to arrange the contents
@@ -1319,8 +1327,8 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             // Set the "ZoomBehavior" property to "PdfZoomBehavior.ZoomFactor" to get a PDF reader to
             // apply a percentage-based zoom factor when we open the document with it.
             // Set the "ZoomFactor" property to "25" to give the zoom factor a value of 25%.
@@ -1357,19 +1365,19 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "PageMode" property to "PdfPageMode.FullScreen" to get the PDF reader to open the saved
-            // document in full screen mode, which takes over the monitor's display, and also with no controls visible.
-            // Set the "PageMode" property to "PdfPageMode.UseThumbs" to get the PDF reader to also display a separate panel
-            // which has a thumbnail for each page in the document.
-            // Set the "PageMode" property to "PdfPageMode.UseOC" to get the PDF reader to also display a separate panel
-            // which allows us to work with any layers that may be present in the document.
+            // document in full-screen mode, which takes over the monitor's display and has no controls visible.
+            // Set the "PageMode" property to "PdfPageMode.UseThumbs" to get the PDF reader to display a separate panel
+            // with a thumbnail for each page in the document.
+            // Set the "PageMode" property to "PdfPageMode.UseOC" to get the PDF reader to display a separate panel
+            // that allows us to work with any layers present in the document.
             // Set the "PageMode" property to "PdfPageMode.UseOutlines" to get the PDF reader
-            // to also display the outline, if possible.
-            // Set the "PageMode" property to "PdfPageMode.UseNone" to get the PDF reader to display just the document itself. 
+            // also to display the outline, if possible.
+            // Set the "PageMode" property to "PdfPageMode.UseNone" to get the PDF reader to display just the document itself.
             options.PageMode = pageMode;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PageMode.pdf", options);
@@ -1380,17 +1388,24 @@ namespace ApiExamples
             switch (pageMode)
             {
                 case PdfPageMode.FullScreen:
-                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/PageMode /FullScreen/Lang({docLocaleName})>>\r\n", ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
+                    TestUtil.FileContainsString(
+                        $"<</Type /Catalog/Pages 3 0 R/PageMode /FullScreen/Lang({docLocaleName})>>\r\n",
+                        ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
                     break;
                 case PdfPageMode.UseThumbs:
-                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/PageMode /UseThumbs/Lang({docLocaleName})>>", ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
+                    TestUtil.FileContainsString(
+                        $"<</Type /Catalog/Pages 3 0 R/PageMode /UseThumbs/Lang({docLocaleName})>>",
+                        ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
                     break;
                 case PdfPageMode.UseOC:
-                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/PageMode /UseOC/Lang({docLocaleName})>>\r\n", ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
+                    TestUtil.FileContainsString(
+                        $"<</Type /Catalog/Pages 3 0 R/PageMode /UseOC/Lang({docLocaleName})>>\r\n",
+                        ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
                     break;
                 case PdfPageMode.UseOutlines:
                 case PdfPageMode.UseNone:
-                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/Lang({docLocaleName})>>\r\n", ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
+                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/Lang({docLocaleName})>>\r\n",
+                        ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
                     break;
             }
         }
@@ -1402,16 +1417,15 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.CreateNoteHyperlinks
             //ExSummary:Shows how to make footnotes and endnotes function as hyperlinks.
-            // Open a document with footnotes/endnotes
             Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "CreateNoteHyperlinks" property to "true" to turn all footnote/endnote symbols
             // in the text act as links that, upon clicking, take us to their respective footnotes/endnotes.
-            // Set the "CreateNoteHyperlinks" property to "false" to not have footnote/endnote symbols link to anything.
+            // Set the "CreateNoteHyperlinks" property to "false" not to have footnote/endnote symbols link to anything.
             options.CreateNoteHyperlinks = createNoteHyperlinks;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf", options);
@@ -1419,27 +1433,37 @@ namespace ApiExamples
 
             if (createNoteHyperlinks)
             {
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [157.80099487 720.90106201 159.35600281 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 677 0]>>",
+                TestUtil.FileContainsString(
+                    "<</Type /Annot/Subtype /Link/Rect [157.80099487 720.90106201 159.35600281 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 677 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [202.16900635 720.90106201 206.06201172 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 79 0]>>",
+                TestUtil.FileContainsString(
+                    "<</Type /Annot/Subtype /Link/Rect [202.16900635 720.90106201 206.06201172 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 79 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [212.23199463 699.2510376 215.34199524 711.90002441]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 654 0]>>",
+                TestUtil.FileContainsString(
+                    "<</Type /Annot/Subtype /Link/Rect [212.23199463 699.2510376 215.34199524 711.90002441]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 654 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [258.15499878 699.2510376 262.04800415 711.90002441]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 68 0]>>",
+                TestUtil.FileContainsString(
+                    "<</Type /Annot/Subtype /Link/Rect [258.15499878 699.2510376 262.04800415 711.90002441]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 85 68 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 68.19905853 88.66500092 79.69805908]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 202 733 0]>>",
+                TestUtil.FileContainsString(
+                    "<</Type /Annot/Subtype /Link/Rect [85.05000305 68.19905853 88.66500092 79.69805908]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 202 733 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 56.70005798 88.66500092 68.19905853]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 258 711 0]>>",
+                TestUtil.FileContainsString(
+                    "<</Type /Annot/Subtype /Link/Rect [85.05000305 56.70005798 88.66500092 68.19905853]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 258 711 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 666.10205078 86.4940033 677.60107422]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 157 733 0]>>",
+                TestUtil.FileContainsString(
+                    "<</Type /Annot/Subtype /Link/Rect [85.05000305 666.10205078 86.4940033 677.60107422]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 157 733 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
-                TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect [85.05000305 643.10406494 87.93800354 654.60308838]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 212 711 0]>>",
+                TestUtil.FileContainsString(
+                    "<</Type /Annot/Subtype /Link/Rect [85.05000305 643.10406494 87.93800354 654.60308838]/BS <</Type/Border/S/S/W 0>>/Dest[4 0 R /XYZ 212 711 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
             }
             else
             {
                 if (!IsRunningOnMono())
-                    Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect", ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf"));
+                    Assert.Throws<AssertionException>(() =>
+                        TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect",
+                            ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf"));
             }
         }
 
@@ -1456,8 +1480,8 @@ namespace ApiExamples
 
             doc.CustomDocumentProperties.Add("Company", "My value");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "CustomPropertiesExport" property to "PdfCustomPropertiesExport.None" to discard
@@ -1476,20 +1500,25 @@ namespace ApiExamples
                 case PdfCustomPropertiesExport.None:
                     if (!IsRunningOnMono())
                     {
-                        Assert.Throws<AssertionException>(() => TestUtil.FileContainsString(doc.CustomDocumentProperties[0].Name,
+                        Assert.Throws<AssertionException>(() => TestUtil.FileContainsString(
+                            doc.CustomDocumentProperties[0].Name,
                             ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf"));
-                        Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("<</Type /Metadata/Subtype /XML/Length 8 0 R/Filter /FlateDecode>>",
+                        Assert.Throws<AssertionException>(() => TestUtil.FileContainsString(
+                            "<</Type /Metadata/Subtype /XML/Length 8 0 R/Filter /FlateDecode>>",
                             ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf"));
                     }
+
                     break;
                 case PdfCustomPropertiesExport.Standard:
-                    TestUtil.FileContainsString("<</Creator(þÿ\0A\0s\0p\0o\0s\0e\0.\0W\0o\0r\0d\0s)/Producer(þÿ\0A\0s\0p\0o\0s\0e\0.\0W\0o\0r\0d\0s\0 \0f\0o\0r\0", 
+                    TestUtil.FileContainsString(
+                        "<</Creator(þÿ\0A\0s\0p\0o\0s\0e\0.\0W\0o\0r\0d\0s)/Producer(þÿ\0A\0s\0p\0o\0s\0e\0.\0W\0o\0r\0d\0s\0 \0f\0o\0r\0",
                         ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
                     TestUtil.FileContainsString("/Company (þÿ\0M\0y\0 \0v\0a\0l\0u\0e)>>",
                         ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
                     break;
                 case PdfCustomPropertiesExport.Metadata:
-                    TestUtil.FileContainsString("<</Type /Metadata/Subtype /XML/Length 8 0 R/Filter /FlateDecode>>", ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
+                    TestUtil.FileContainsString("<</Type /Metadata/Subtype /XML/Length 8 0 R/Filter /FlateDecode>>",
+                        ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
                     break;
             }
         }
@@ -1505,18 +1534,18 @@ namespace ApiExamples
             //ExFor:PdfSaveOptions.DmlEffectsRenderingMode
             //ExFor:SaveOptions.DmlEffectsRenderingMode
             //ExFor:SaveOptions.DmlRenderingMode
-            //ExSummary:Shows how to configure rendering quality of DrawingML effects in a document as we save it to PDF.
+            //ExSummary:Shows how to configure the rendering quality of DrawingML effects in a document as we save it to PDF.
             Document doc = new Document(MyDir + "DrawingML shape effects.docx");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "DmlEffectsRenderingMode" property to "DmlEffectsRenderingMode.None" to discard all DrawingML effects.
             // Set the "DmlEffectsRenderingMode" property to "DmlEffectsRenderingMode.Simplified"
             // to render a simplified version of DrawingML effects.
             // Set the "DmlEffectsRenderingMode" property to "DmlEffectsRenderingMode.Fine" to
-            // render DrawingML effects with more accuracy, and also with more processing cost
+            // render DrawingML effects with more accuracy and also with more processing cost.
             options.DmlEffectsRenderingMode = effectsRenderingMode;
 
             Assert.AreEqual(DmlRenderingMode.DrawingML, options.DmlRenderingMode);
@@ -1524,8 +1553,9 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf", options);
             //ExEnd
 
-            #if NET462 || NETCOREAPP2_1 || JAVA
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument =
+                new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
 
             ImagePlacementAbsorber imb = new ImagePlacementAbsorber();
             imb.Visit(pdfDocument.Pages[1]);
@@ -1544,13 +1574,14 @@ namespace ApiExamples
                     Assert.AreEqual(28, ttb.TableList.Count);
                     break;
                 case DmlEffectsRenderingMode.Fine:
-                    TestUtil.FileContainsString("4 0 obj\r\n<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R>>/XObject<</X1 9 0 R/X2 10 0 R/X3 11 0 R/X4 12 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                    TestUtil.FileContainsString(
+                        "4 0 obj\r\n<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R>>/XObject<</X1 9 0 R/X2 10 0 R/X3 11 0 R/X4 12 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
                     Assert.AreEqual(21, imb.ImagePlacements.Count);
                     Assert.AreEqual(4, ttb.TableList.Count);
                     break;
             }
-            #endif
+#endif
         }
 
         [TestCase(DmlRenderingMode.Fallback)]
@@ -1563,8 +1594,8 @@ namespace ApiExamples
             //ExSummary:Shows how to render fallback shapes when saving to PDF.
             Document doc = new Document(MyDir + "DrawingML shape fallbacks.docx");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "DmlRenderingMode" property to "DmlRenderingMode.Fallback"
@@ -1579,11 +1610,13 @@ namespace ApiExamples
             switch (dmlRenderingMode)
             {
                 case DmlRenderingMode.DrawingML:
-                    TestUtil.FileContainsString("<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R/FAAABA 10 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                    TestUtil.FileContainsString(
+                        "<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R/FAAABA 10 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
                     break;
                 case DmlRenderingMode.Fallback:
-                    TestUtil.FileContainsString("4 0 obj\r\n<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R/FAAABC 12 0 R>>/ExtGState<</GS1 9 0 R/GS2 10 0 R>>>>/Group ",
+                    TestUtil.FileContainsString(
+                        "4 0 obj\r\n<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R/FAAABC 12 0 R>>/ExtGState<</GS1 9 0 R/GS2 10 0 R>>>>/Group ",
                         ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
                     break;
             }
@@ -1595,26 +1628,28 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PdfSaveOptions.ExportDocumentStructure
-            //ExSummary:Shows how to preserve document structure elements, which can assist in programmatically interpreting our document, while converting a document to PDF.
+            //ExSummary:Shows how to preserve document structure elements, which can assist in programmatically interpreting our document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
             builder.Writeln("Hello world!");
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
-            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+            builder.Write(
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
-            // Set the "ExportDocumentStructure" property to "true" to make the document structure, such a tags, available via the
+            // Set the "ExportDocumentStructure" property to "true" to make the document structure, such tags, available via the
             // "Content" navigation pane of Adobe Acrobat at the cost of increased file size.
             // Set the "ExportDocumentStructure" property to "false" to not export the document structure.
             options.ExportDocumentStructure = exportDocumentStructure;
 
-            // If we export document structure while saving this document, we can open it using Adobe Acrobat, and find tags for elements
-            // such as the heading, and the next paragraph via "View" -> "Show/Hide" -> "Navigation panes" -> "Tags".
+            // Suppose we export document structure while saving this document. In that case,
+            // we can open it using Adobe Acrobat and find tags for elements such as the heading
+            // and the next paragraph via "View" -> "Show/Hide" -> "Navigation panes" -> "Tags".
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExportDocumentStructure.pdf", options);
             //ExEnd
 
@@ -1646,8 +1681,8 @@ namespace ApiExamples
             Image img = Image.FromFile(ImageDir + "Transparent background logo.png");
             builder.InsertImage(img);
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "PreblendImages" property to "true" to preblend transparent images
@@ -1679,7 +1714,7 @@ namespace ApiExamples
         }
 
         [TestCase(false)]
-        [TestCase(true)] 
+        [TestCase(true)]
         public void InterpolateImages(bool interpolateImages)
         {
             //ExStart
@@ -1691,17 +1726,17 @@ namespace ApiExamples
             Image img = Image.FromFile(ImageDir + "Transparent background logo.png");
             builder.InsertImage(img);
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
-            // Set the "InterpolateImages" property to "true" to get the reader that opens this document
-            // to interpolate images, should their resolution be lower than that of the device that is displaying the document.
+            // Set the "InterpolateImages" property to "true" to get the reader that opens this document to interpolate images.
+            // Their resolution should be lower than that of the device that is displaying the document.
             // Set the "InterpolateImages" property to "false" to make it so that the reader does not apply any interpolation.
             saveOptions.InterpolateImages = interpolateImages;
-            
+
             // When we open this document with a reader such as Adobe Acrobat, we will need to zoom in on the image
-            // to see the interpolation effect, if we saved the document with it enabled.
+            // to see the interpolation effect if we saved the document with it enabled.
             doc.Save(ArtifactsDir + "PdfSaveOptions.InterpolateImages.pdf", saveOptions);
             //ExEnd
 
@@ -1760,7 +1795,8 @@ namespace ApiExamples
             /// </summary>
             public bool Contains(WarningSource source, WarningType type, string description)
             {
-                return mWarnings.Any(warning => warning.Source == source && warning.WarningType == type && warning.Description == description);
+                return mWarnings.Any(warning =>
+                    warning.Source == source && warning.WarningType == type && warning.Description == description);
             }
 
             private readonly List<WarningInfo> mWarnings = new List<WarningInfo>();
@@ -1780,8 +1816,8 @@ namespace ApiExamples
             using (Image image = Image.Decode(ImageDir + "Transparent background logo.png"))
                 builder.InsertImage(image);
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "PreblendImages" property to "true" to preblend transparent images
@@ -1825,17 +1861,17 @@ namespace ApiExamples
             using (Image image = Image.Decode(ImageDir + "Transparent background logo.png"))
                 builder.InsertImage(image);
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
-            // Set the "InterpolateImages" property to "true" to get the reader that opens this document
-            // to interpolate images, should their resolution be lower than that of the device that is displaying the document.
+            // Set the "InterpolateImages" property to "true" to get the reader that opens this document to interpolate images.
+            // Their resolution should be lower than that of the device that is displaying the document.
             // Set the "InterpolateImages" property to "false" to make it so that the reader does not apply any interpolation.
             saveOptions.InterpolateImages = interpolateImages;
 
             // When we open this document with a reader such as Adobe Acrobat, we will need to zoom in on the image
-            // to see the interpolation effect, if we saved the document with it enabled.
+            // to see the interpolation effect if we saved the document with it enabled.
             doc.Save(ArtifactsDir + "PdfSaveOptions.InterpolateImagesNetStandard2.pdf", saveOptions);
             //ExEnd
 
@@ -1867,21 +1903,21 @@ namespace ApiExamples
             //ExFor:PdfDigitalSignatureDetails.SignatureDate
             //ExFor:PdfDigitalSignatureHashAlgorithm
             //ExFor:PdfSaveOptions.DigitalSignatureDetails
-            //ExSummary:Shows how to sign a generated PDF document using Aspose.Words.
+            //ExSummary:Shows how to sign a generated PDF document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Contents of signed PDF.");
 
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Configure the "DigitalSignatureDetails" object of the "SaveOptions" object to
             // digitally sign the document as we render it with the "Save" method.
             DateTime signingTime = DateTime.Now;
-            options.DigitalSignatureDetails = 
+            options.DigitalSignatureDetails =
                 new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "My Office", signingTime);
             options.DigitalSignatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.Sha256;
 
@@ -1891,12 +1927,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf", options);
             //ExEnd
-            
+
             TestUtil.FileContainsString("6 0 obj\r\n" +
-                                        "<</Type /Annot/Subtype /Widget/FT /Sig/DR <<>>/F 132/Rect [0 0 0 0]/V 7 0 R/P 4 0 R/T(þÿ\0A\0s\0p\0o\0s\0e\0D\0i\0g\0i\0t\0a\0l\0S\0i\0g\0n\0a\0t\0u\0r\0e)/AP <</N 8 0 R>>>>", 
+                                        "<</Type /Annot/Subtype /Widget/FT /Sig/DR <<>>/F 132/Rect [0 0 0 0]/V 7 0 R/P 4 0 R/T(þÿ\0A\0s\0p\0o\0s\0e\0D\0i\0g\0i\0t\0a\0l\0S\0i\0g\0n\0a\0t\0u\0r\0e)/AP <</N 8 0 R>>>>",
                 ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf");
 
-            Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf").HasDigitalSignature);
+            Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf")
+                .HasDigitalSignature);
         }
 
         [Test]
@@ -1912,16 +1949,16 @@ namespace ApiExamples
             //ExFor:PdfDigitalSignatureTimestampSettings.ServerUrl
             //ExFor:PdfDigitalSignatureTimestampSettings.Timeout
             //ExFor:PdfDigitalSignatureTimestampSettings.UserName
-            //ExSummary:Shows how to digitally sign a saved PDF document, and timestamp it using Aspose.Words.
+            //ExSummary:Shows how to sign a saved PDF document digitally and timestamp it.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Signed PDF contents.");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
-            // Create a digital signature, and assign it to our SaveOptions object to sign the document with it when we save it to PDF. 
+            // Create a digital signature, and assign it to our SaveOptions object to sign the document when we save it to PDF. 
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
             options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
 
@@ -1932,7 +1969,7 @@ namespace ApiExamples
             // The default lifespan of the timestamp is 100 seconds.
             Assert.AreEqual(100.0d, options.DigitalSignatureDetails.TimestampSettings.Timeout.TotalSeconds);
 
-            // We can set our own timeout period via the constructor.
+            // We can set our timeout period via the constructor.
             options.DigitalSignatureDetails.TimestampSettings =
                 new PdfDigitalSignatureTimestampSettings("https://freetsa.org/tsr", "JohnDoe", "MyPassword", TimeSpan.FromMinutes(30));
 
@@ -1963,15 +2000,15 @@ namespace ApiExamples
             //ExSummary:Shows how to configure Enhanced Windows Metafile-related rendering options when saving to PDF.
             Document doc = new Document(MyDir + "EMF.docx");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
             // Set the "EmfPlusDualRenderingMode" property to "EmfPlusDualRenderingMode.Emf"
             // to only render the EMF part of an EMF+ dual metafile.
             // Set the "EmfPlusDualRenderingMode" property to "EmfPlusDualRenderingMode.EmfPlus" to
             // to render the EMF+ part of an EMF+ dual metafile.
-            // Set the "EmfPlusDualRenderingMode" property to "EmfPlusDualRenderingMode.EmfPlusWithFallback" to
+            // Set the "EmfPlusDualRenderingMode" property to "EmfPlusDualRenderingMode.EmfPlusWithFallback"
             // to render the EMF+ part of an EMF+ dual metafile if all of the EMF+ records are supported.
             // Otherwise, Aspose.Words will render the EMF part.
             saveOptions.MetafileRenderingOptions.EmfPlusDualRenderingMode = renderingMode;
@@ -1984,7 +2021,8 @@ namespace ApiExamples
             //ExEnd
 
 #if NET462 || NETCOREAPP2_1 || JAVA
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
+            Aspose.Pdf.Document pdfDocument =
+                new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
 
             switch (renderingMode)
             {
@@ -2033,14 +2071,14 @@ namespace ApiExamples
             // Extend permissions to allow the editing of annotations.
             encryptionDetails.Permissions = PdfPermissions.ModifyAnnotations | PdfPermissions.DocumentAssembly;
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
             // Enable encryption via the "EncryptionDetails" property.
             saveOptions.EncryptionDetails = encryptionDetails;
 
-            // When we open this document, we will need to provide the password before we can access its contents.
+            // When we open this document, we will need to provide the password before accessing its contents.
             doc.Save(ArtifactsDir + "PdfSaveOptions.EncryptionPermissions.pdf", saveOptions);
             //ExEnd
         }
@@ -2055,21 +2093,21 @@ namespace ApiExamples
             //ExStart
             //ExFor:FixedPageSaveOptions.NumeralFormat
             //ExFor:NumeralFormat
-            //ExSummary:Demonstrates how to set the numeral format used when saving to PDF.
+            //ExSummary:Shows how to set the numeral format used when saving to PDF.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Font.LocaleId = new CultureInfo("ar-AR").LCID;
             builder.Writeln("1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 50, 100");
 
-            // Create a "PdfSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .PDF.
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "NumeralFormat" property to "NumeralFormat.ArabicIndic" to
             // use glyphs from the U+0660 to U+0669 range as numbers.
             // Set the "NumeralFormat" property to "NumeralFormat.Context" to
-            // look up the locale to determine what number glyphs to use.
+            // look up the locale to determine what number of glyphs to use.
             // Set the "NumeralFormat" property to "NumeralFormat.EasternArabicIndic" to
             // use glyphs from the U+06F0 to U+06F9 range as numbers.
             // Set the "NumeralFormat" property to "NumeralFormat.European" to use european numerals.
@@ -2086,9 +2124,8 @@ namespace ApiExamples
             //ExFor:FixedPageSaveOptions.PageSet
             //ExSummary:Shows how to export Odd pages from the document.
             Document doc = new Document(MyDir + "Images.docx");
-    
-            PdfSaveOptions pdfOptions = new PdfSaveOptions();
-            pdfOptions.PageSet = PageSet.Odd;
+
+            PdfSaveOptions pdfOptions = new PdfSaveOptions { PageSet = PageSet.Odd };
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExportOddPages.pdf", pdfOptions);
             //ExEnd

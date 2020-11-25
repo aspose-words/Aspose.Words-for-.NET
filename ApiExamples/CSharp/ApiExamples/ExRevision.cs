@@ -57,7 +57,7 @@ namespace ApiExamples
             // If we open this document using Microsoft Word, it will not be tracking revisions.
             Assert.IsFalse(doc.TrackRevisions);
 
-            // We've added text using the document builder, so first revision is an insertion-type revision.
+            // We've added text using the document builder, so the first revision is an insertion-type revision.
             Revision revision = doc.Revisions[0];
             Assert.AreEqual("John Doe", revision.Author);
             Assert.AreEqual("This is revision #1. ", revision.ParentNode.GetText());
@@ -77,8 +77,8 @@ namespace ApiExamples
             // also linger in the document until we accept the revision.
             Assert.AreEqual("This does not count as a revision. This is revision #1.", doc.GetText().Trim());
 
-            // Accepting the delete revision will remove its parent node from the paragraph text,
-            // and then remove the revision itself from the collection.
+            // Accepting the delete revision will remove its parent node from the paragraph text
+            // and then remove the collection's revision itself.
             doc.Revisions[0].Accept();
 
             Assert.AreEqual(1, doc.Revisions.Count);
@@ -122,7 +122,7 @@ namespace ApiExamples
 
             // Each Run that a revision affects gets a corresponding Revision object.
             // The revisions' collection is considerably larger than the condensed form we printed above,
-            // depending on how many Runs we have segmented the document into during editing in Microsoft Word.
+            // depending on how many Runs we have segmented the document into during Microsoft Word editing.
             Assert.AreEqual(11, revisions.Count); //ExSkip
             Console.WriteLine($"\n{revisions.Count} revisions:");
 
@@ -163,7 +163,7 @@ namespace ApiExamples
             //ExFor:RevisionGroup.Text
             //ExFor:RevisionGroupCollection
             //ExFor:RevisionGroupCollection.Count
-            //ExSummary:Shows how to print info about a group of revisions in document.
+            //ExSummary:Shows how to print info about a group of revisions in a document.
             Document doc = new Document(MyDir + "Revisions.docx");
 
             Assert.AreEqual(7, doc.Revisions.Groups.Count);
@@ -182,7 +182,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:RevisionGroupCollection
             //ExFor:RevisionGroupCollection.Item(Int32)
-            //ExSummary:Shows how to get a group of revisions in document.
+            //ExSummary:Shows how to get a group of revisions in a document.
             Document doc = new Document(MyDir + "Revisions.docx");
 
             RevisionGroup revisionGroup = doc.Revisions.Groups[0];
@@ -198,11 +198,11 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:RevisionOptions.ShowInBalloons
-            //ExSummary:Shows how display revisions in balloons.
+            //ExSummary:Shows how to display revisions in balloons.
             Document doc = new Document(MyDir + "Revisions.docx");
 
             // By default, text that is a revision has a different color to differentiate it from the other non-revision text.
-            // Set a revision option to show more details about each revision in a balloon on the right margin of the page.
+            // Set a revision option to show more details about each revision in a balloon on the page's right margin.
             doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
             doc.Save(ArtifactsDir + "Revision.ShowRevisionBalloons.pdf");
             //ExEnd
@@ -243,7 +243,7 @@ namespace ApiExamples
             revisionOptions.DeletedTextColor = RevisionColor.Red;
             revisionOptions.DeletedTextEffect = RevisionTextEffect.Bold;
 
-            // In a movement revision, the same text will appear twice:
+            // The same text will appear twice in a movement revision:
             // once at the departure point and once at the arrival destination.
             // Render the text at the moved-from revision yellow with a double strike through
             // and double-underlined blue at the moved-to revision.
@@ -264,7 +264,7 @@ namespace ApiExamples
             revisionOptions.ShowOriginalRevision = true;
             revisionOptions.ShowRevisionMarks = true;
 
-            // Get movement, deletion, formatting revisions and comments to show up in green balloons
+            // Get movement, deletion, formatting revisions, and comments to show up in green balloons
             // on the right side of the page.
             revisionOptions.ShowInBalloons = ShowInBalloons.Format;
             revisionOptions.CommentColor = RevisionColor.BrightGreen;

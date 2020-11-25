@@ -44,7 +44,7 @@ namespace ApiExamples
             // Turn off write protection for the first section.
             doc.Sections[0].ProtectedForForms = false;
 
-            // In this output document, we will be able to freely edit the first section,
+            // In this output document, we will be able to edit the first section freely,
             // and we will only be able to edit the contents of the form field in the second section.
             doc.Save(ArtifactsDir + "Section.Protect.docx");
             //ExEnd
@@ -187,7 +187,7 @@ namespace ApiExamples
 
             body.AppendChild(para);
 
-            // Finally, add some content do the document by creating a run,
+            // Finally, add some content to do the document by creating a run,
             // setting its text contents and appearance, and appending it as a child to the paragraph.
             Run run = new Run(doc);
             run.Text = "Hello World!";
@@ -221,7 +221,7 @@ namespace ApiExamples
 
             Assert.AreEqual(0, doc.Sections[1].GetChildNodes(NodeType.Any, true).Count);
 
-            // Run the "EnsureMinumim" method to add a body and a paragraph to this section, so we can begin editing it.
+            // Run the "EnsureMinumim" method to add a body and a paragraph to this section to begin editing it.
             doc.LastSection.EnsureMinimum();
 
             Assert.AreEqual(NodeType.Body, doc.Sections[1].GetChild(NodeType.Any, 0, true).NodeType);
@@ -290,7 +290,7 @@ namespace ApiExamples
 
             Section section = doc.FirstSection;
 
-            // A Section is a composite node and thus can contain child nodes,
+            // A Section is a composite node and can contain child nodes,
             // but only if those child nodes are of a "Body" or "HeaderFooter" node type.
             foreach (Node node in section)
             {
@@ -329,14 +329,12 @@ namespace ApiExamples
             //ExSummary:Shows how to remove all sections from a document.
             Document doc = new Document(MyDir + "Document.docx");
 
-            // This document has one section, which has a few child nodes
-            // that contain and display all of the document's contents.
+            // This document has one section with a few child nodes containing and displaying all of the document's contents.
             Assert.AreEqual(1, doc.Sections.Count);
             Assert.AreEqual(19, doc.Sections[0].GetChildNodes(NodeType.Any, true).Count);
             Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
 
-            // Clear the collection of sections, which will remove all
-            // of their child nodes, and all of the document's content with them.
+            // Clear the collection of sections, which will remove all of their child nodes, and all of the document's content.
             doc.Sections.Clear();
             
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Any, true).Count);
@@ -394,8 +392,8 @@ namespace ApiExamples
             Assert.AreEqual("Hello world!", doc.GetText().Trim());
             Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
 
-            // Running the "ClearContent" method will remove all the contents of the section,
-            // but will leave a blank paragraph which we can add content again to.
+            // Running the "ClearContent" method will remove all the section contents
+            // but leave a blank paragraph to add content again.
             doc.FirstSection.ClearContent();
 
             Assert.AreEqual(string.Empty, doc.GetText().Trim());
@@ -503,8 +501,8 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.SectionBreakNewPage);
             builder.Write("Section 2");
 
-            // It is important to understand that a document can contain many sections and each
-            // section has its own page setup. In this case we want to modify them all
+            // It is important to understand that a document can contain many sections,
+            // and each section has its page setup. In this case, we want to modify them all.
             foreach (Section section in doc.OfType<Section>())
                 section.PageSetup.PaperSize = PaperSize.Letter;
 
@@ -518,7 +516,7 @@ namespace ApiExamples
 
             Document docEn = new Document();
 
-            // Assert that page defaults comply current culture info
+            // Assert that page defaults comply with current culture info.
             Section sectionEn = docEn.Sections[0];
             Assert.AreEqual(72.0, sectionEn.PageSetup.LeftMargin); // 2.54 cm         
             Assert.AreEqual(72.0, sectionEn.PageSetup.RightMargin); // 2.54 cm
@@ -528,7 +526,7 @@ namespace ApiExamples
             Assert.AreEqual(36.0, sectionEn.PageSetup.FooterDistance); // 1.27 cm
             Assert.AreEqual(36.0, sectionEn.PageSetup.TextColumns.Spacing); // 1.27 cm
 
-            // Change culture and assert that the page defaults are changed
+            // Change the culture and assert that the page defaults are changed.
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-de");
 
             Document docDe = new Document();
@@ -542,7 +540,7 @@ namespace ApiExamples
             Assert.AreEqual(35.4, sectionDe.PageSetup.FooterDistance); // 1.25 cm
             Assert.AreEqual(35.4, sectionDe.PageSetup.TextColumns.Spacing); // 1.25 cm
 
-            // Change page defaults
+            // Change page defaults.
             sectionDe.PageSetup.LeftMargin = 90; // 3.17 cm
             sectionDe.PageSetup.RightMargin = 90; // 3.17 cm
             sectionDe.PageSetup.TopMargin = 72; // 2.54 cm

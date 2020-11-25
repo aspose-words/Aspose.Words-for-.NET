@@ -64,8 +64,8 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Page 3.");
 
-            // Create an "HtmlFixedSaveOptions" object, which we can pass to the document's "Save" method to
-            // modify the way in which we convert the document to HTML.
+            // Create an "HtmlFixedSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we convert the document to HTML.
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
 
             // We will save each page in this document to a separate HTML file in the local file system.
@@ -116,15 +116,15 @@ namespace ApiExamples
         //ExFor:HtmlSaveOptions
         //ExFor:HtmlSaveOptions.DocumentPartSavingCallback
         //ExFor:HtmlSaveOptions.ImageSavingCallback
-        //ExSummary:Shows how split a document into parts and save them.
+        //ExSummary:Shows how to split a document into parts and save them.
         [Test] //ExSkip
         public void DocumentPartsFileNames()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
             string outFileName = "SavingCallback.DocumentPartsFileNames.html";
 
-            // Create an "HtmlFixedSaveOptions" object, which we can pass to the document's "Save" method to
-            // modify the way in which we convert the document to HTML.
+            // Create an "HtmlFixedSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we convert the document to HTML.
             HtmlSaveOptions options = new HtmlSaveOptions();
 
             // If we save the document normally, there will be one output HTML
@@ -136,9 +136,9 @@ namespace ApiExamples
             // Assign a custom callback to the "DocumentPartSavingCallback" property to alter the document part saving logic.
             options.DocumentPartSavingCallback = new SavedDocumentPartRename(outFileName, options.DocumentSplitCriteria);
 
-            // If we convert a document that contains images into html, we will end up with one html file which links to several images
-            // Each image will be in the form of a file in the local file system
-            // There is also a callback that can customize the name and file system location of each image
+            // If we convert a document that contains images into html, we will end up with one html file which links to several images.
+            // Each image will be in the form of a file in the local file system.
+            // There is also a callback that can customize the name and file system location of each image.
             options.ImageSavingCallback = new SavedImageRename(outFileName);
 
             doc.Save(ArtifactsDir + outFileName, options);
@@ -245,8 +245,8 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Create an "HtmlFixedSaveOptions" object, which we can pass to the document's "Save" method to
-            // modify the way in which we convert the document to HTML.
+            // Create an "HtmlFixedSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we convert the document to HTML.
             HtmlSaveOptions options = new HtmlSaveOptions();
 
             // Set the "CssStylesheetType" property to "CssStyleSheetType.External" to

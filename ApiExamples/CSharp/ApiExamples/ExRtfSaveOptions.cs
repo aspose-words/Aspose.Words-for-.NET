@@ -27,18 +27,17 @@ namespace ApiExamples
             //ExSummary:Shows how to save a document to .rtf with custom options.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Create an "RtfSaveOptions" object, which we can pass to the document's "Save" method
-            // to modify the way in which we save it to an RTF.
+            // Create an "RtfSaveOptions" object to pass to the document's "Save" method to modify how we save it to an RTF.
             RtfSaveOptions options = new RtfSaveOptions();
 
             Assert.AreEqual(SaveFormat.Rtf, options.SaveFormat);
 
             // Set the "ExportCompactSize" property to "true" to
-            // reduce the size of the saved document at the cost of right-to-left text compatibility.
+            // reduce the saved document's size at the cost of right-to-left text compatibility.
             options.ExportCompactSize = true;
 
-            // Set the "ExportImagesFotOldReaders" property to "true" to use extra keywords ensure that our document is
-            // compatible with pre-Microsoft Word 97 readers, and WordPad.
+            // Set the "ExportImagesFotOldReaders" property to "true" to use extra keywords to ensure that our document is
+            // compatible with pre-Microsoft Word 97 readers and WordPad.
             // Set the "ExportImagesFotOldReaders" property to "false" to reduce the size of the document,
             // but prevent old readers from being able to read any non-metafile or BMP images that the document may contain.
             options.ExportImagesForOldReaders = exportImagesForOldReaders;
@@ -55,12 +54,14 @@ namespace ApiExamples
             {
                 if (!IsRunningOnMono())
                 {
-                    Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("nonshppict", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
-                    Assert.Throws<AssertionException>(() => TestUtil.FileContainsString("shprslt", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
+                    Assert.Throws<AssertionException>(() =>
+                        TestUtil.FileContainsString("nonshppict", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
+                    Assert.Throws<AssertionException>(() =>
+                        TestUtil.FileContainsString("shprslt", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
                 }
             }
         }
-    
+
         [TestCase(false), Category("SkipMono")]
         [TestCase(true), Category("SkipMono")]
         public void SaveImagesAsWmf(bool saveImagesAsWmf)
@@ -82,8 +83,7 @@ namespace ApiExamples
 
             Assert.AreEqual(ImageType.Png, imageShape.ImageData.ImageType);
 
-            // Create an "RtfSaveOptions" object, which we can pass to the document's "Save" method
-            // to modify the way in which we save it to an RTF.
+            // Create an "RtfSaveOptions" object to pass to the document's "Save" method to modify how we save it to an RTF.
             RtfSaveOptions rtfSaveOptions = new RtfSaveOptions();
 
             // Set the "SaveImagesAsWmf" property to "true" to convert all images in the document to WMF as we save it to RTF.

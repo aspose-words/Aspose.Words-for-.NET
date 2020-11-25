@@ -31,7 +31,7 @@ namespace ApiExamples
         //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
         //ExFor:ShapeRenderer
         //ExFor:ShapeRenderer.#ctor(ShapeBase)
-        //ExSummary:Shows how to render a shape with a Graphics object, and display it using a Windows Form.
+        //ExSummary:Shows how to render a shape with a Graphics object and display it using a Windows Form.
         [Test, Category("IgnoreOnJenkins"), Category("SkipMono")] //ExSkip
         public void RenderShapesOnForm()
         {
@@ -40,7 +40,7 @@ namespace ApiExamples
 
             ShapeForm shapeForm = new ShapeForm(new Size(1017, 840));
 
-            // Below are two ways in which we can use the "ShapeRenderer" class to render a shape to a Graphics object. 
+            // Below are two ways to use the "ShapeRenderer" class to render a shape to a Graphics object.
             // 1 -  Create a shape with a chart, and render it to a specific scale.
             Chart chart = builder.InsertChart(ChartType.Pie, 500, 400).Chart;
             chart.Series.Clear();
@@ -98,21 +98,23 @@ namespace ApiExamples
 
             public void AddShapeToRenderToScale(ShapeBase shape, float x, float y, float scale)
             {
-                mShapesToRender.Add(new KeyValuePair<ShapeBase, float[]>(shape, new[] { x, y, scale }));
+                mShapesToRender.Add(new KeyValuePair<ShapeBase, float[]>(shape, new[] {x, y, scale}));
             }
 
             public void AddShapeToRenderToSize(ShapeBase shape, float x, float y, float width, float height)
             {
-                mShapesToRender.Add(new KeyValuePair<ShapeBase, float[]>(shape, new[] { x, y, width, height }));
+                mShapesToRender.Add(new KeyValuePair<ShapeBase, float[]>(shape, new[] {x, y, width, height}));
             }
 
             protected override void OnPaint(PaintEventArgs e)
             {
                 foreach (KeyValuePair<ShapeBase, float[]> renderingArgs in mShapesToRender)
                     if (renderingArgs.Value.Length == 3)
-                        RenderShapeToScale(renderingArgs.Key, renderingArgs.Value[0], renderingArgs.Value[1], renderingArgs.Value[2]);
+                        RenderShapeToScale(renderingArgs.Key, renderingArgs.Value[0], renderingArgs.Value[1],
+                            renderingArgs.Value[2]);
                     else if (renderingArgs.Value.Length == 4)
-                        RenderShapeToSize(renderingArgs.Key, renderingArgs.Value[0], renderingArgs.Value[1], renderingArgs.Value[2], renderingArgs.Value[3]);
+                        RenderShapeToSize(renderingArgs.Key, renderingArgs.Value[0], renderingArgs.Value[1],
+                            renderingArgs.Value[2], renderingArgs.Value[3]);
             }
 
             private void RenderShapeToScale(ShapeBase shape, float x, float y, float scale)
@@ -169,7 +171,7 @@ namespace ApiExamples
                     // The rectangle will frame the first page.
                     float returnedScale = doc.RenderToSize(0, gr, 0f, 0f, 3f, 3f);
 
-                    // This is the scaling factor that the RenderToSize method applied to the first page to fit the size we specified.
+                    // This is the scaling factor that the RenderToSize method applied to the first page to fit the specified size.
                     Assert.AreEqual(0.2566f, returnedScale, 0.0001f);
 
                     // Set the "PageUnit" property to "GraphicsUnit.Millimeter" to use millimeters as the
@@ -200,7 +202,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.RenderToScale
             //ExSummary:Shows how to the individual pages of a document to graphics to create one image with thumbnails of all pages.
-            // The user opens or builds a document
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // Calculate the number of rows and columns that we will fill with thumbnails.
@@ -210,7 +211,7 @@ namespace ApiExamples
             if (remainder > 0)
                 thumbRows++;
 
-            // Scale the thumbnails relative to the size of the first page. 
+            // Scale the thumbnails relative to the size of the first page.
             const float scale = 0.25f;
             Size thumbSize = doc.GetPageInfo(0).GetSizeInPixels(scale, 96);
 
@@ -276,7 +277,7 @@ namespace ApiExamples
                         StrokeWidth = 3f / 72f
                     });
 
-                    // Render the first page of the document to the same size as the above rectangle. 
+                    // Render the first page of the document to the same size as the above rectangle.
                     // The rectangle will frame this page.
                     float returnedScale = doc.RenderToSize(0, canvas, 0f, 0f, 3f, 3f);
 

@@ -31,9 +31,8 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln("Greetings, _FullName_!");
-            
-            // Perform a find-and-replace operation on the contents of our document,
-            // and verify the number of replacements that took place.
+
+            // Perform a find-and-replace operation on our document's contents and verify the number of replacements that took place.
             int replacementCount = doc.Range.Replace("_FullName_", "John Doe");
 
             Assert.AreEqual(1, replacementCount);
@@ -64,10 +63,8 @@ namespace ApiExamples
 
             doc.Range.Replace("Ruby", "Jade", options);
 
-            if (matchCase)
-                Assert.AreEqual("Jade bought a ruby necklace.", doc.GetText().Trim());
-            else
-                Assert.AreEqual("Jade bought a Jade necklace.", doc.GetText().Trim());
+            Assert.AreEqual(matchCase ? "Jade bought a ruby necklace." : "Jade bought a Jade necklace.",
+                doc.GetText().Trim());
             //ExEnd
         }
 
@@ -89,16 +86,15 @@ namespace ApiExamples
             FindReplaceOptions options = new FindReplaceOptions();
 
             // Set the "FindWholeWordsOnly" flag to "true" to replace the found text
-            // only as long as it is not a part of another word. 
-            // Set the "FindWholeWordsOnly" flag to "false" to disregard the surrounding text of the text we are replacing. 
+            // only as long as it is not a part of another word.
+            // Set the "FindWholeWordsOnly" flag to "false" to disregard the surrounding text of the text we are replacing.
             options.FindWholeWordsOnly = findWholeWordsOnly;
 
             doc.Range.Replace("Jackson", "Louis", options);
 
-            if (findWholeWordsOnly)
-                Assert.AreEqual("Louis will meet you in Jacksonville.", doc.GetText().Trim());
-            else
-                Assert.AreEqual("Louis will meet you in Louisville.", doc.GetText().Trim());
+            Assert.AreEqual(
+                findWholeWordsOnly ? "Louis will meet you in Jacksonville." : "Louis will meet you in Louisville.",
+                doc.GetText().Trim());
             //ExEnd
         }
 
@@ -108,7 +104,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FindReplaceOptions.IgnoreDeleted
-            //ExSummary:Shows how include or ignore text inside delete revisions during a find-and-replace operation.
+            //ExSummary:Shows how to include or ignore text inside delete revisions during a find-and-replace operation.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
  
@@ -134,10 +130,10 @@ namespace ApiExamples
             
             doc.Range.Replace("Hello", "Greetings", options);
 
-            if (ignoreTextInsideDeleteRevisions)
-                Assert.AreEqual("Greetings world!\rHello again!", doc.GetText().Trim());
-            else
-                Assert.AreEqual("Greetings world!\rGreetings again!", doc.GetText().Trim());
+            Assert.AreEqual(
+                ignoreTextInsideDeleteRevisions
+                    ? "Greetings world!\rHello again!"
+                    : "Greetings world!\rGreetings again!", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -147,7 +143,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FindReplaceOptions.IgnoreInserted
-            //ExSummary:Shows how include or ignore text inside insert revisions during a find-and-replace operation.
+            //ExSummary:Shows how to include or ignore text inside insert revisions during a find-and-replace operation.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -171,10 +167,10 @@ namespace ApiExamples
 
             doc.Range.Replace("Hello", "Greetings", options);
 
-            if (ignoreTextInsideInsertRevisions)
-                Assert.AreEqual("Greetings world!\rHello again!", doc.GetText().Trim());
-            else
-                Assert.AreEqual("Greetings world!\rGreetings again!", doc.GetText().Trim());
+            Assert.AreEqual(
+                ignoreTextInsideInsertRevisions
+                    ? "Greetings world!\rHello again!"
+                    : "Greetings world!\rGreetings again!", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -202,10 +198,10 @@ namespace ApiExamples
 
             doc.Range.Replace("Hello", "Greetings", options);
 
-            if (ignoreTextInsideFields)
-                Assert.AreEqual("Greetings world!\r\u0013QUOTE\u0014Hello again!\u0015", doc.GetText().Trim());
-            else
-                Assert.AreEqual("Greetings world!\r\u0013QUOTE\u0014Greetings again!\u0015", doc.GetText().Trim());
+            Assert.AreEqual(
+                ignoreTextInsideFields
+                    ? "Greetings world!\r\u0013QUOTE\u0014Hello again!\u0015"
+                    : "Greetings world!\r\u0013QUOTE\u0014Greetings again!\u0015", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -225,8 +221,7 @@ namespace ApiExamples
             // The above DOCPROPERTY fields will display the value of this built-in document property.
             doc.BuiltInDocumentProperties.Category = "MyCategory";
 
-            // If we update the value of a document property, we will then need to
-            // update all the DOCPROPERTY fields that are to display it.
+            // If we update the value of a document property, we will need to update all the DOCPROPERTY fields to display it.
             Assert.AreEqual(string.Empty, doc.Range.Fields[0].Result);
             Assert.AreEqual(string.Empty, doc.Range.Fields[1].Result);
 
@@ -264,6 +259,7 @@ namespace ApiExamples
             //ExSummary:Shows how to replace all occurrences of a regular expression pattern with other text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             builder.Writeln("I decided to get the curtains in gray, ideal for the grey-accented room.");
 
             doc.Range.Replace(new Regex("gr(a|e)y"), "lavender");
@@ -306,8 +302,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Maintains a log of every text replacement done by a find-and-replace operation,
-        /// and also notes the value of the original matched text.
+        /// Maintains a log of every text replacement done by a find-and-replace operation
+        /// and notes the original matched text's value.
         /// </summary>
         private class TextFindAndReplacementLogger : IReplacingCallback
         {
@@ -350,7 +346,7 @@ namespace ApiExamples
             // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
             FindReplaceOptions options = new FindReplaceOptions();
 
-            // Set the "HighlightColor" property to a background color that we want to apply to the resulting text of the operation.
+            // Set the "HighlightColor" property to a background color that we want to apply to the operation's resulting text.
             options.ApplyFont.HighlightColor = Color.LightGray;
             
             NumberHexer numberHexer = new NumberHexer();
@@ -368,7 +364,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Replaces numeric find-and-replacement matches with their hexadecimal equivalents,
+        /// Replaces numeric find-and-replacement matches with their hexadecimal equivalents
         /// and also logs every replacement.
         /// </summary>
         private class NumberHexer : IReplacingCallback
@@ -461,7 +457,7 @@ namespace ApiExamples
             Assert.AreEqual("Section 1. \fSection 2.", doc.GetText().Trim());
 
             // Remove the first section entirely by removing all of the nodes
-            // within its range, which includes the section itself.
+            // within its range, including the section itself.
             doc.Sections[0].Range.Delete();
 
             Assert.AreEqual(1, doc.Sections.Count);
@@ -511,7 +507,7 @@ namespace ApiExamples
             options.ReplacingCallback = callback;
 
             // If we set the "UseLegacyOrder" property to "true", the
-            // find-and-replace operation will go through all the runs that are outside of a text box
+            // find-and-replace operation will go through all the runs outside of a text box
             // before going through the ones inside a text box.
             // If we set the "UseLegacyOrder" property to "false", the
             // find-and-replace operation will go over all the runs in a range in sequential order.
@@ -545,7 +541,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FindReplaceOptions.UseSubstitutions
-            //ExSummary:Shows how to replace text with substitutions.
+            //ExSummary:Shows how to replace the text with substitutions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -563,10 +559,10 @@ namespace ApiExamples
             Regex regex = new Regex(@"([A-z]+) sold a ([A-z]+) to ([A-z]+)");
             doc.Range.Replace(regex, @"$3 bought a $2 from $1", options);
 
-            if (useSubstitutions)
-                Assert.AreEqual("Paul bought a car from John.\rJoe bought a house from Jane.", doc.GetText().Trim());
-            else
-                Assert.AreEqual("$3 bought a $2 from $1.\r$3 bought a $2 from $1.", doc.GetText().Trim());
+            Assert.AreEqual(
+                useSubstitutions
+                    ? "Paul bought a car from John.\rJoe bought a house from Jane."
+                    : "$3 bought a $2 from $1.\r$3 bought a $2 from $1.", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -577,7 +573,7 @@ namespace ApiExamples
         //ExFor:IReplacingCallback.Replacing
         //ExFor:ReplacingArgs
         //ExFor:ReplacingArgs.MatchNode
-        //ExSummary:Shows how to insert the contents of an entire document as replacement of a match in a find-and-replace operation.
+        //ExSummary:Shows how to insert an entire document's contents as a replacement of a match in a find-and-replace operation.
         [Test] //ExSkip
         public void InsertDocumentAtReplace()
         {
@@ -599,11 +595,11 @@ namespace ApiExamples
             {
                 Document subDoc = new Document(MyDir + "Document.docx");
 
-                // Insert a document after the paragraph, containing the match text
+                // Insert a document after the paragraph containing the matched text.
                 Paragraph para = (Paragraph)args.MatchNode.ParentNode;
                 InsertDocument(para, subDoc);
 
-                // Remove the paragraph with the match text
+                // Remove the paragraph with the matched text.
                 para.Remove();
 
                 return ReplaceAction.Skip;
@@ -613,7 +609,7 @@ namespace ApiExamples
         /// <summary>
         /// Inserts all the nodes of another document after a paragraph or table.
         /// </summary>
-        static void InsertDocument(Node insertionDestination, Document docToInsert)
+        private static void InsertDocument(Node insertionDestination, Document docToInsert)
         {
             if (insertionDestination.NodeType.Equals(NodeType.Paragraph) || insertionDestination.NodeType.Equals(NodeType.Table))
             {
@@ -625,7 +621,7 @@ namespace ApiExamples
                 foreach (Section srcSection in docToInsert.Sections.OfType<Section>())
                     foreach (Node srcNode in srcSection.Body)
                     {
-                        // Skip the node if it is a last empty paragraph in a section.
+                        // Skip the node if it is the last empty paragraph in a section.
                         if (srcNode.NodeType.Equals(NodeType.Paragraph))
                         {
                             Paragraph para = (Paragraph)srcNode;
@@ -647,7 +643,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestInsertDocumentAtReplace(Document doc)
+        private static void TestInsertDocumentAtReplace(Document doc)
         {
             Assert.AreEqual("1) At text that can be identified by regex:\rHello World!\r" +
                             "2) At a MERGEFIELD:\r\u0013 MERGEFIELD  Document_1  \\* MERGEFORMAT \u0014«Document_1»\u0015\r" +

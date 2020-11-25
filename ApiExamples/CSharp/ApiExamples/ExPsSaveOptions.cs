@@ -26,8 +26,8 @@ namespace ApiExamples
             //ExSummary:Shows how to save a document to the Postscript format in the form of a book fold.
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
-            // Create a "PsSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to PostScript.
+            // Create a "PsSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to PostScript.
             // Set the "UseBookFoldPrintingSettings" property to "true" to arrange the contents
             // in the output Postscript document in a way that helps us make a booklet out of it.
             // Set the "UseBookFoldPrintingSettings" property to "false" to save the document normally.

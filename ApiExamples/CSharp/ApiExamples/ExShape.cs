@@ -25,8 +25,6 @@ using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 using TextBox = Aspose.Words.Drawing.TextBox;
 #if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
-#elif NET462
-using System.Windows.Forms;
 #endif
 
 namespace ApiExamples
@@ -178,11 +176,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The best place for the watermark image is in the header or footer so it is shown on every page
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             Image image = Image.FromFile(ImageDir + "Transparent background logo.png");
 
-            // Insert a floating picture
             Shape shape = builder.InsertImage(image);
             shape.WrapType = WrapType.None;
             shape.BehindText = true;
@@ -190,7 +186,7 @@ namespace ApiExamples
             shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
             shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
 
-            // Calculate image left and top position so it appears in the center of the page
+            // Calculate image left and top position so it appears in the center of the page.
             shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
             shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
@@ -242,7 +238,7 @@ namespace ApiExamples
             //ExFor:ShapeBase.DistanceLeft
             //ExFor:ShapeBase.DistanceRight
             //ExFor:ShapeBase.DistanceTop
-            //ExSummary:Shows how to set the wrapping distance for text that surrounds a shape.
+            //ExSummary:Shows how to set the wrapping distance for a text that surrounds a shape.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -256,7 +252,7 @@ namespace ApiExamples
             shape.DistanceLeft = 40;
             shape.DistanceRight = 40;
 
-            // Move the shape closer to the centre of the page, and then rotate the shape 60 degrees clockwise.
+            // Move the shape closer to the center of the page, and then rotate the shape 60 degrees clockwise.
             shape.Top = 75;
             shape.Left = 150; 
             shape.Rotation = 60;
@@ -306,7 +302,7 @@ namespace ApiExamples
             group.CoordSize = new Size(500, 500);
 
             // Set the coordinates of the top left corner of the group to (-250, -250). 
-            // The center of the group will now have an x and y coordinate value of (0, 0),
+            // The group's center will now have an x and y coordinate value of (0, 0),
             // and the bottom right corner will be at (250, 250).
             group.CoordOrigin = new Point(-250, -250);
 
@@ -322,8 +318,8 @@ namespace ApiExamples
             // Once a shape is a part of a group shape, we can access it as a child node and then modify it.
             ((Shape)group.GetChild(NodeType.Shape, 0, true)).Stroke.DashStyle = DashStyle.Dash;
 
-            // Create a small red star, and insert it into the group. Line up the shape with the coordinate origin
-            // of the group shape, which we have moved to the center.
+            // Create a small red star, and insert it into the group.
+            // Line up the shape with the group's coordinate origin, which we have moved to the center.
             group.AppendChild(new Shape(doc, ShapeType.Star)
             {
                 Width = 20,
@@ -356,7 +352,7 @@ namespace ApiExamples
 
             ((Shape)group.GetChild(NodeType.Shape, 3, true)).ImageData.SetImage(ImageDir + "Logo.jpg");
 
-            // Insert a text box into the group shape. Set the "Left" property so that the right edge of the text box
+            // Insert a text box into the group shape. Set the "Left" property so that the text box's right edge
             // touches the right boundary of the group shape. Set the "Top" property so that the text box sits outside
             // the boundary of the group shape, with its top size lined up along the group shape's bottom margin.
             group.AppendChild(new Shape(doc, ShapeType.TextBox)
@@ -432,9 +428,10 @@ namespace ApiExamples
             // lies on (100, 100) of its parent shape's coordinate system. The group shape's parent is the document itself.
             Assert.AreEqual(new PointF(100, 100), group.LocalToParent(new PointF(0, 0)));
 
-            // A shape's internal coordinate plane will by default have the top left corner at (0, 0), and the bottom right corner at (1000, 1000).
-            // Our group shape, due to its size, covers an area of 500pt x 500pt in the document's plane. This means that a movement of 1pt
-            // on the document's coordinate plane will translate to a movement of 2pts on the group shape's coordinate plane.
+            // By default, a shape's internal coordinate plane has the top left corner at (0, 0),
+            // and the bottom right corner at (1000, 1000). Due to its size, our group shape covers an area of 500pt x 500pt
+            // in the document's plane. This means that a movement of 1pt on the document's coordinate plane will translate
+            // to a movement of 2pts on the group shape's coordinate plane.
             Assert.AreEqual(new PointF(150, 150), group.LocalToParent(new PointF(100, 100)));
             Assert.AreEqual(new PointF(200, 200), group.LocalToParent(new PointF(200, 200)));
             Assert.AreEqual(new PointF(250, 250), group.LocalToParent(new PointF(300, 300)));
@@ -451,7 +448,7 @@ namespace ApiExamples
             Assert.AreEqual(new PointF(650, 650), group.LocalToParent(new PointF(300, 300)));
 
             // If we wish to add a shape to this group while defining its location based on a location in the document,
-            // we will need to first confirm a location in the group shape that will match the location in the document.
+            // we will need to first confirm a location in the group shape that will match the document's location.
             Assert.AreEqual(new PointF(700, 700), group.LocalToParent(new PointF(350, 350)));
 
             Shape shape = new Shape(doc, ShapeType.Rectangle)
@@ -496,7 +493,7 @@ namespace ApiExamples
             builder.Writeln("Hello again!");
 
             // Set the "AnchorLocked" property to "true" to prevent the shape's anchor
-            // from moving when we move the shape in Microsoft Word.
+            // from moving when moving the shape in Microsoft Word.
             // Set the "AnchorLocked" property to "false" to allow any movement of the shape
             // to also move its anchor to any other paragraph that the shape ends up close to.
             shape.AnchorLocked = anchorLocked;
@@ -575,7 +572,7 @@ namespace ApiExamples
             builder.Write(" Hello again.");
 
             // An inline shape sits inside a paragraph among other paragraph elements, such as runs of text.
-            // In Microsoft Word, we may left click and drag the shape to any paragraph as if it is a character.
+            // In Microsoft Word, we may click and drag the shape to any paragraph as if it is a character.
             // If the shape is large, it will affect vertical paragraph spacing.
             // We cannot move this shape to a place with no paragraph.
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
@@ -651,9 +648,10 @@ namespace ApiExamples
 
             group.AppendChild(shape);
 
-            // The coordinate plane of the group shape has its origin on the top left hand side corner of its containing block,
-            // and the x and y coordinates of (1000, 1000) on the bottom right hand side corner. Our group shape is 250x250pt in size,
-            // so every 4pt on the group shape's coordinate plane translates to 1pt in the document body's coordinate plane.
+            // The group shape's coordinate plane has its origin on the top left-hand side corner of its containing block,
+            // and the x and y coordinates of (1000, 1000) on the bottom right-hand side corner.
+            // Our group shape is 250x250pt in size, so every 4pt on the group shape's coordinate plane
+            // translates to 1pt in the document body's coordinate plane.
             // Every shape that we insert will also shrink in size by a factor of 4.
             // The change in the shape's "BoundsInPoints" property will reflect this.
             Assert.AreEqual(new RectangleF(175, 275, 25, 25), shape.BoundsInPoints);
@@ -800,7 +798,7 @@ namespace ApiExamples
             // The shape fill by default is fully opaque, so we cannot see the text that this shape is on top of.
             Assert.AreEqual(1.0d, shape.Fill.Opacity);
 
-            // Set the opacity of the shape fill color to a lower value so that we can see the text underneath it.
+            // Set the shape fill color's opacity to a lower value so that we can see the text underneath it.
             shape.Fill.Opacity = 0.3;
 
             doc.Save(ArtifactsDir + "Shape.Fill.docx");
@@ -955,7 +953,7 @@ namespace ApiExamples
             // Insert three different colored rectangles that partially overlap each other.
             // When we insert a shape that overlaps another shape, Aspose.Words places the newer shape on top of the old one.
             // The light green rectangle will overlap the light blue rectangle and partially obscure it,
-            // and the light blue rectangle will in turn will obscure the orange rectangle.
+            // and the light blue rectangle will obscure the orange rectangle.
             Shape shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 100,
                 RelativeVerticalPosition.TopMargin, 100, 200, 200, WrapType.None);
             shape.FillColor = Color.Orange;

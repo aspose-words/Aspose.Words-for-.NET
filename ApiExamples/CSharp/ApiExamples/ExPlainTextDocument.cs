@@ -113,7 +113,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PlainTextDocument.BuiltInDocumentProperties
-            //ExSummary:Shows how to load the contents of a Microsoft Word document in plaintext, and then access the original document's built-in properties.
+            //ExSummary:Shows how to load the contents of a Microsoft Word document in plaintext and then access the original document's built-in properties.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -134,7 +134,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PlainTextDocument.CustomDocumentProperties
-            //ExSummary:Shows how to load the contents of a Microsoft Word document in plaintext, and then access the original document's custom properties.
+            //ExSummary:Shows how to load the contents of a Microsoft Word document in plaintext and then access the original document's custom properties.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
