@@ -855,44 +855,40 @@ namespace ApiExamples
             //ExFor:NodeCollection
             //ExFor:CompositeNode.InsertAfter(Node, Node)
             //ExFor:NodeCollection.ToArray
-            //ExSummary:Shows how to replace all textboxes with images.
+            //ExSummary:Shows how to replace all textbox shapes with image shapes.
             Document doc = new Document(MyDir + "Textboxes in drawing canvas.docx");
 
-            // This gets a live collection of all shape nodes in the document
-            NodeCollection shapeCollection = doc.GetChildNodes(NodeType.Shape, true);
+            Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
-            // Since we will be adding/removing nodes, it is better to copy all collection
-            // into a fixed size array, otherwise iterator will be invalidated
-            Node[] shapes = shapeCollection.ToArray();
+            Assert.AreEqual(3, shapes.Count(s => s.ShapeType == ShapeType.TextBox));
+            Assert.AreEqual(1, shapes.Count(s => s.ShapeType == ShapeType.Image));
 
-            foreach (Shape shape in shapes.OfType<Shape>())
+            foreach (Shape shape in shapes)
             {
-                // Filter out all shapes of a certain type
                 if (shape.ShapeType.Equals(ShapeType.TextBox))
                 {
-                    // Create a new shape that will replace the existing shape
-                    Shape image = new Shape(doc, ShapeType.Image);
+                    Shape replacementShape = new Shape(doc, ShapeType.Image);
+                    replacementShape.ImageData.SetImage(ImageDir + "Logo.jpg");
+                    replacementShape.Left = shape.Left;
+                    replacementShape.Top = shape.Top;
+                    replacementShape.Width = shape.Width;
+                    replacementShape.Height = shape.Height;
+                    replacementShape.RelativeHorizontalPosition = shape.RelativeHorizontalPosition;
+                    replacementShape.RelativeVerticalPosition = shape.RelativeVerticalPosition;
+                    replacementShape.HorizontalAlignment = shape.HorizontalAlignment;
+                    replacementShape.VerticalAlignment = shape.VerticalAlignment;
+                    replacementShape.WrapType = shape.WrapType;
+                    replacementShape.WrapSide = shape.WrapSide;
 
-                    // Load the image into the new shape
-                    image.ImageData.SetImage(ImageDir + "Windows MetaFile.wmf");
-
-                    // Make new shape's position to match the old shape
-                    image.Left = shape.Left;
-                    image.Top = shape.Top;
-                    image.Width = shape.Width;
-                    image.Height = shape.Height;
-                    image.RelativeHorizontalPosition = shape.RelativeHorizontalPosition;
-                    image.RelativeVerticalPosition = shape.RelativeVerticalPosition;
-                    image.HorizontalAlignment = shape.HorizontalAlignment;
-                    image.VerticalAlignment = shape.VerticalAlignment;
-                    image.WrapType = shape.WrapType;
-                    image.WrapSide = shape.WrapSide;
-
-                    // Insert new shape after the old shape and remove the old shape
-                    shape.ParentNode.InsertAfter(image, shape);
+                    shape.ParentNode.InsertAfter(replacementShape, shape);
                     shape.Remove();
                 }
             }
+
+            shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
+
+            Assert.AreEqual(0, shapes.Count(s => s.ShapeType == ShapeType.TextBox));
+            Assert.AreEqual(4, shapes.Count(s => s.ShapeType == ShapeType.Image));
 
             doc.Save(ArtifactsDir + "Shape.ReplaceTextboxesWithImages.docx");
             //ExEnd
@@ -912,38 +908,30 @@ namespace ApiExamples
             //ExFor:Story.FirstParagraph
             //ExFor:Shape.FirstParagraph
             //ExFor:ShapeBase.WrapType
-            //ExSummary:Shows how to create a textbox with some text and different formatting options in a new document.
+            //ExSummary:Shows how to create and format a text box.
             Document doc = new Document();
 
-            // Create a new shape of type TextBox
+            // Create a floating text box.
             Shape textBox = new Shape(doc, ShapeType.TextBox);
-
-            // Set some settings of the textbox itself
-            // Set the wrap of the textbox to inline
             textBox.WrapType = WrapType.None;
-            // Set the horizontal and vertical alignment of the text inside the shape
-            textBox.HorizontalAlignment = HorizontalAlignment.Center;
-            textBox.VerticalAlignment = VerticalAlignment.Top;
-
-            // Set the textbox height and width
             textBox.Height = 50;
             textBox.Width = 200;
 
-            // Set the textbox in front of other shapes with a lower ZOrder
+            // Set the textbox in front of other shapes with a lower ZOrder.
             textBox.ZOrder = 2;
 
-            // Create a new paragraph for the textbox manually and align it in the center
-            // Make sure we add the new nodes to the textbox as well
+            // Set the horizontal, and vertical alignment of the text inside the shape.
+            textBox.HorizontalAlignment = HorizontalAlignment.Center;
+            textBox.VerticalAlignment = VerticalAlignment.Top;
+            
+            // Add a paragraph to the text box, and add a run of text that the text box will display.
             textBox.AppendChild(new Paragraph(doc));
             Paragraph para = textBox.FirstParagraph;
             para.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-
-            // Add some text to the paragraph
             Run run = new Run(doc);
             run.Text = "Hello world!";
             para.AppendChild(run);
 
-            // Append the textbox to the first paragraph in the body
             doc.FirstSection.Body.FirstParagraph.AppendChild(textBox);
 
             doc.Save(ArtifactsDir + "Shape.CreateTextBox.docx");
@@ -974,16 +962,14 @@ namespace ApiExamples
             //ExFor:Forms2OleControl.Enabled
             //ExFor:Forms2OleControl.Type
             //ExFor:Forms2OleControl.ChildNodes
-            //ExSummary:Shows how to get ActiveX control and properties from the document.
+            //ExSummary:Shows how to verify the properties of an ActiveX control.
             Document doc = new Document(MyDir + "ActiveX controls.docx");
 
-            // Get ActiveX control from the document 
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             OleControl oleControl = shape.OleFormat.OleControl;
 
             Assert.AreEqual(null, oleControl.Name);
 
-            // Get ActiveX control properties
             if (oleControl.IsForms2OleControl)
             {
                 Forms2OleControl checkBox = (Forms2OleControl) oleControl;
@@ -1001,19 +987,18 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OleFormat.GetRawData
-            //ExSummary:Shows how to get access to OLE object raw data.
-            // Open a document that contains OLE objects
+            //ExSummary:Shows how to access the raw data of an embedded OLE object.
             Document doc = new Document(MyDir + "OLE objects.docx");
 
             foreach (Node shape in doc.GetChildNodes(NodeType.Shape, true))
             {
-                // Get access to OLE data
                 OleFormat oleFormat = ((Shape)shape).OleFormat;
                 if (oleFormat != null)
                 {
                     Console.WriteLine($"This is {(oleFormat.IsLink ? "a linked" : "an embedded")} object");
                     byte[] oleRawData = oleFormat.GetRawData();
-                    Assert.AreEqual(24576, oleRawData.Length); //ExSkip
+
+                    Assert.AreEqual(24576, oleRawData.Length);
                 }
             }
             //ExEnd
@@ -1032,28 +1017,28 @@ namespace ApiExamples
             //ExFor:OleFormat.SuggestedExtension
             //ExSummary:Shows how to extract embedded OLE objects into files.
             Document doc = new Document(MyDir + "OLE spreadsheet.docm");
-
-            // The first shape will contain an OLE object
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            // This object is a Microsoft Excel spreadsheet
+            // The OLE object in the first shape is a Microsoft Excel spreadsheet.
             OleFormat oleFormat = shape.OleFormat;
             Assert.AreEqual("Excel.Sheet.12", oleFormat.ProgId);
 
-            // Our object is neither auto updating nor locked from updates
+            // Our object is neither auto updating nor locked from updates.
             Assert.False(oleFormat.AutoUpdate);
             Assert.AreEqual(false, oleFormat.IsLocked);
 
-            // If we want to extract the OLE object by saving it into our local file system, this property can tell us the relevant file extension
+            // If we plan on saving the OLE object to a file in the local file system,
+            // we can use the "SuggestedExtension" property to determine which file extension to apply to the file.
             Assert.AreEqual(".xlsx", oleFormat.SuggestedExtension);
 
-            // We can save it via a stream
+            // Below are two ways of saving an OLE object to a file in the local file system.
+            // 1 -  Save it via a stream:
             using (FileStream fs = new FileStream(ArtifactsDir + "OLE spreadsheet extracted via stream" + oleFormat.SuggestedExtension, FileMode.Create))
             {
                 oleFormat.Save(fs);
             }
 
-            // We can also save it directly to a file
+            // 2 -  Save it directly to a filename:
             oleFormat.Save(ArtifactsDir + "OLE spreadsheet saved directly" + oleFormat.SuggestedExtension);
             //ExEnd
 
