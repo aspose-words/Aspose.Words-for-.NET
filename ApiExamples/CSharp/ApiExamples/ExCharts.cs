@@ -489,7 +489,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a bubble chart, and then clear its demo data series to start with a clean chart.
+            // Add a pie chart, and then clear its demo data series to start with a clean chart.
             Chart chart = builder.InsertChart(ChartType.Pie, 500, 300).Chart;
             chart.Series.Clear();
 

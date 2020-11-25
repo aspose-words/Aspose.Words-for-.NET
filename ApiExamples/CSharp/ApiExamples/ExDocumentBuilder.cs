@@ -317,7 +317,6 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:PageSetup.PageWidth
             //ExFor:PageSetup.PageHeight
-            //ExFor:DocumentBuilder.InsertImage(Image)
             //ExFor:WrapType
             //ExFor:RelativeHorizontalPosition
             //ExFor:RelativeVerticalPosition
@@ -410,7 +409,6 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:PageSetup.PageWidth
             //ExFor:PageSetup.PageHeight
-            //ExFor:DocumentBuilder.InsertImage(Image)
             //ExFor:WrapType
             //ExFor:RelativeHorizontalPosition
             //ExFor:RelativeVerticalPosition
@@ -1129,13 +1127,13 @@ namespace ApiExamples
             Table table = builder.StartTable();
 
             // There are two ways of applying the PreferredWidth class to table cells.
-            // 1 -  Set an absolute preferred width based on points.
+            // 1 -  Set an absolute preferred width based on points:
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPoints(40);
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightYellow;
             builder.Writeln($"Cell with a width of {builder.CellFormat.PreferredWidth}.");
 
-            // 2 -  Set a relative preferred width based on percent of the table's width.
+            // 2 -  Set a relative preferred width based on percent of the table's width:
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPercent(20);
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightBlue;
@@ -2499,7 +2497,6 @@ namespace ApiExamples
 
             // Insert two fields while passing a flag which determines whether to update them as the builder inserts them.
             // In some cases, updating fields could be computationally expensive, and it may be a good idea to defer the update.
-            // Not all field types require updating, exceptions include BARCODE and MERGEFIELD.
             doc.BuiltInDocumentProperties.Author = "John Doe";
             builder.Write("This document was written by ");
             builder.InsertField(FieldType.FieldAuthor, updateInsertedFieldsImmediately);
@@ -3477,10 +3474,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, shape.RelativeHorizontalPosition);
 
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
-
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
-
+            
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyImageInShape(320, 320, ImageType.Png, shape);
@@ -3493,6 +3487,8 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.RightMargin, shape.RelativeHorizontalPosition);
 
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
         }
 
