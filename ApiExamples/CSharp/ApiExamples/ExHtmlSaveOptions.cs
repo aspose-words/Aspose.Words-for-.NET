@@ -1719,14 +1719,14 @@ namespace ApiExamples
 
 #if NET462 || JAVA
         if (scaleImageToShapeSize)
-            Assert.AreEqual(2200, fileInfo.Length, 200);
+            Assert.That(3000, Is.AtLeast(fileInfo.Length));
         else
-            Assert.AreEqual(27400, fileInfo.Length, 200);
+            Assert.That(20000, Is.LessThan(fileInfo.Length));
 #elif NETCOREAPP2_1
         if (scaleImageToShapeSize)
-            Assert.AreEqual(5700, fileInfo.Length, 200);
+            Assert.That(10000, Is.AtLeast(fileInfo.Length));
         else
-            Assert.AreEqual(40300, fileInfo.Length, 200);
+            Assert.That(30000, Is.LessThan(fileInfo.Length));
 #endif
             //ExEnd
         }

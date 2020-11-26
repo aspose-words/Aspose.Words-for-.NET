@@ -670,10 +670,5 @@ namespace ApiExamples
             Assert.AreEqual(expectedEditorGroup, editableRange.EditorGroup);
 #endif
         }
-
-        /// <summary>
-        /// Margin of error, in bytes, for file size comparisons which take system-to-system variance of metadata size into account.
-        /// </summary>
-        internal static int FileInfoLengthDelta { get; } = 200;
     }
 }

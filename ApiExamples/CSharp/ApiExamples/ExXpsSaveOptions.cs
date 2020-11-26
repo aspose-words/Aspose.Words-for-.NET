@@ -114,10 +114,10 @@ namespace ApiExamples
             FileInfo outFileInfo = new FileInfo(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps");
 
             if (optimizeOutput)
-                Assert.True(outFileInfo.Length < 51000);
+                Assert.That(50000, Is.AtLeast(outFileInfo.Length));
             else
-                Assert.True(outFileInfo.Length > 60000);
-            
+                Assert.That(60000, Is.LessThan(outFileInfo.Length));
+
             TestUtil.DocPackageFileContainsString(
                 optimizeOutput
                     ? "Glyphs OriginX=\"34.294998169\" OriginY=\"10.31799984\" " +

@@ -156,12 +156,10 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Font.FontInfoCollection.docx");
 
-            FileInfo fileInfo = new FileInfo(ArtifactsDir + "Font.FontInfoCollection.docx");
-
             if (embedAllFonts)
-                Assert.True(fileInfo.Length > 26000);
+                Assert.That(25000, Is.LessThan(new FileInfo(ArtifactsDir + "Font.FontInfoCollection.docx").Length));
             else
-                Assert.True(fileInfo.Length < 15000);
+                Assert.That(15000, Is.AtLeast(new FileInfo(ArtifactsDir + "Font.FontInfoCollection.docx").Length));
             //ExEnd
         }
 
