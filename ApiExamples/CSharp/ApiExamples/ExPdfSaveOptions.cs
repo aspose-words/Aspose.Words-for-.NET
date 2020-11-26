@@ -690,8 +690,6 @@ namespace ApiExamples
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
             Assert.That(300000, Is.LessThan(pdfDocImage.ToStream().Length));
-            Assert.AreEqual(2467, pdfDocImage.Width);
-            Assert.AreEqual(1500, pdfDocImage.Height);
             Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
 #endif
         }
@@ -725,14 +723,10 @@ namespace ApiExamples
             {
                 case ColorMode.Normal:
                     Assert.That(300000, Is.LessThan(pdfDocImage.ToStream().Length));
-                    Assert.AreEqual(2467, pdfDocImage.Width);
-                    Assert.AreEqual(1500, pdfDocImage.Height);
                     Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
                     break;
                 case ColorMode.Grayscale:
                     Assert.That(1000000, Is.LessThan(pdfDocImage.ToStream().Length));
-                    Assert.AreEqual(1506, pdfDocImage.Width);
-                    Assert.AreEqual(918, pdfDocImage.Height);
                     Assert.AreEqual(ColorType.Grayscale, pdfDocImage.GetColorType());
                     break;
             }
