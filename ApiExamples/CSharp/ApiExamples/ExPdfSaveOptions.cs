@@ -567,7 +567,11 @@ namespace ApiExamples
                     case PdfImageCompression.Auto:
                         Assert.That(50000, 
                             Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length));
+#if NET462
                         Assert.Throws<ArgumentException>(() => { TestUtil.VerifyImage(400, 400, pdfDocImageStream); });
+#elif NETCOREAPP2_1
+                        Assert.Throws<NullReferenceException>(() => { TestUtil.VerifyImage(400, 400, pdfDocImageStream); });
+#endif
                         break;
                     case PdfImageCompression.Jpeg:
                         Assert.That(42000, 
@@ -577,7 +581,7 @@ namespace ApiExamples
                 }
             }
 #endif
-        }
+                }
 
         [TestCase(PdfImageColorSpaceExportMode.Auto)]
         [TestCase(PdfImageColorSpaceExportMode.SimpleCmyk)]
