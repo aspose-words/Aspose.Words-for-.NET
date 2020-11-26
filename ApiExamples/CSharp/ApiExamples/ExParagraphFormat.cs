@@ -194,7 +194,7 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.SpaceAfter
             //ExFor:ParagraphFormat.SpaceBefore
             //ExFor:ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle
-            //ExSummary:Shows how to set automatic paragraph spacing.
+            //ExSummary:Shows how to apply no spacing between paragraphs with the same style.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

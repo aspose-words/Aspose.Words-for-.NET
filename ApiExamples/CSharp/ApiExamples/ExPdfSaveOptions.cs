@@ -2115,6 +2115,7 @@ namespace ApiExamples
             options.NumeralFormat = numeralFormat;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.SetNumeralFormat.pdf", options);
+            //ExEnd
         }
 
         [Test]

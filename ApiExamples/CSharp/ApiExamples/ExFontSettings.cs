@@ -28,7 +28,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Fonts.FontSettings.DefaultInstance
-            //ExSummary:Shows how to 
+            //ExSummary:Shows how to configure the default font settings instance.
             // Configure the default font settings instance to use the "Courier New" font
             // as a backup substitute when we attempt to use an unknown font.
             FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Courier New";
