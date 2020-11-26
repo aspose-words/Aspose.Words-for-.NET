@@ -634,10 +634,10 @@ namespace ApiExamples
             switch (pdfImageColorSpaceExportMode)
             {
                 case PdfImageColorSpaceExportMode.Auto:
-                    Assert.That(19500, Is.AtLeast(pdfDocImage.ToStream().Length));
+                    Assert.That(25000, Is.AtLeast(pdfDocImage.ToStream().Length));
                     break;
                 case PdfImageColorSpaceExportMode.SimpleCmyk:
-                    Assert.That(19500, Is.LessThan(pdfDocImage.ToStream().Length));
+                    Assert.That(18000, Is.LessThan(pdfDocImage.ToStream().Length));
                     break;
             }
 
