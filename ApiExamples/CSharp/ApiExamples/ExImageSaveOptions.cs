@@ -656,7 +656,7 @@ namespace ApiExamples
             //ExFor:PageSet.#ctor(PageRange[])
             //ExFor:PageRange.#ctor(int, int)
             //ExFor:ImageSaveOptions.PageSet
-            //ExSummary:Shows how to 
+            //ExSummary:Shows how to extract pages based on exact page ranges.
             Document doc = new Document(MyDir + "Images.docx");
 
             ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Tiff);

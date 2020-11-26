@@ -36,6 +36,27 @@ namespace ApiExamples
         }
 
         [Test]
+        public void LoadFromStream()
+        {
+            //ExStart
+            //ExFor:PlainTextDocument.#ctor(Stream)
+            //ExSummary:Shows how to load the contents of a Microsoft Word document in plaintext using stream.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Hello world!");
+            doc.Save(ArtifactsDir + "PlainTextDocument.LoadFromStream.docx");
+
+            using (FileStream stream = new FileStream(ArtifactsDir + "PlainTextDocument.LoadFromStream.docx", FileMode.Open))
+            {
+                PlainTextDocument plaintext = new PlainTextDocument(stream);
+
+                Assert.AreEqual("Hello world!", plaintext.Text.Trim());
+            }
+            //ExEnd
+        }
+
+        [Test]
         public void LoadEncrypted()
         {
             //ExStart
@@ -60,32 +81,11 @@ namespace ApiExamples
         }
 
         [Test]
-        public void LoadFromStream()
-        {
-            //ExStart
-            //ExFor:PlainTextDocument.#ctor(Stream)
-            //ExSummary:Shows how to load the contents of a Microsoft Word document in plaintext.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Writeln("Hello world!");
-            doc.Save(ArtifactsDir + "PlainTextDocument.LoadFromStream.docx");
-
-            using (FileStream stream = new FileStream(ArtifactsDir + "PlainTextDocument.LoadFromStream.docx", FileMode.Open))
-            {
-                PlainTextDocument plaintext = new PlainTextDocument(stream);
-
-                Assert.AreEqual("Hello world!", plaintext.Text.Trim());
-            }
-            //ExEnd
-        }
-
-        [Test]
-        public void LoadFromStreamWithOptions()
+        public void LoadEncryptedUsingStream()
         {
             //ExStart
             //ExFor:PlainTextDocument.#ctor(Stream, LoadOptions)
-            //ExSummary:Shows how to load the contents of an encrypted Microsoft Word document in plaintext.
+            //ExSummary:Shows how to load the contents of an encrypted Microsoft Word document in plaintext using stream.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

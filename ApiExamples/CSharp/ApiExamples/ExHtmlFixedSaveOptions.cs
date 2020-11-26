@@ -263,7 +263,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlFixedSaveOptions.CssClassNamesPrefix
             //ExFor:HtmlFixedSaveOptions.SaveFontFaceCssSeparately
-            //ExSummary:Shows how to save a document to HTML, and add a prefix to all of its CSS class names.
+            //ExSummary:Shows how to place CSS into a separate file and add a prefix to all of its CSS class names.
             Document doc = new Document(MyDir + "Bookmarks.docx");
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
