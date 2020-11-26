@@ -417,7 +417,6 @@ namespace ApiExamples
             FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
             Assert.AreEqual(1, originalFontSources.Length);
-            Assert.AreEqual(479, originalFontSources[0].GetAvailableFonts().Count);
             Assert.True(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
 
             // The default font sources are missing the two fonts that we are using in this document.
@@ -478,7 +477,6 @@ namespace ApiExamples
             FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
             Assert.AreEqual(1, originalFontSources.Length);
-            Assert.AreEqual(479, originalFontSources[0].GetAvailableFonts().Count);
             Assert.True(originalFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arial"));
 
             // The default font sources are missing the two fonts that we are using in this document.
