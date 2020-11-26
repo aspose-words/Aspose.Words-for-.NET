@@ -84,12 +84,12 @@ namespace ApiExamples
             // The GDI+ renderer usually creates larger files.
             if (useGdiEmfRenderer)
 #if NET462 || JAVA
-                Assert.AreEqual(343600, new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length, 200);
+                Assert.That(300000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length));
 #elif NETCOREAPP2_1
-                Assert.AreEqual(21100, new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length, 200);
+	            Assert.That(30000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length));
 #endif
             else
-                Assert.AreEqual(21100, new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length, 200);
+                Assert.That(30000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length));
             //ExEnd
 
 #if NET462 || JAVA
@@ -259,7 +259,7 @@ namespace ApiExamples
             builder.Writeln("Hello world!");
             builder.InsertImage(ImageDir + "Logo.jpg");
 
-            Assert.AreEqual(20100, new FileInfo(ImageDir + "Logo.jpg").Length, 200);
+            Assert.That(20000, Is.LessThan(new FileInfo(ImageDir + "Logo.jpg").Length));
 
             // When we save the document as an image, we can pass a SaveOptions object to
             // select a color mode for the image that the saving operation will generate.
@@ -279,26 +279,26 @@ namespace ApiExamples
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
-                    Assert.AreEqual(174100, new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length, 200);
+                    Assert.That(150000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
                     break;
                 case ImageColorMode.Grayscale:
-                    Assert.AreEqual(89100, new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length, 200);
+                    Assert.That(80000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
                     break;
                 case ImageColorMode.BlackAndWhite:
-                    Assert.AreEqual(14800, new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length, 200);
+                    Assert.That(20000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
                     break;
             }
 #elif NETCOREAPP2_1
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
-                    Assert.AreEqual(131700, new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length, 200);
+                    Assert.That(120000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
                     break;
                 case ImageColorMode.Grayscale:
-                    Assert.AreEqual(89100, new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length, 200);
+                    Assert.That(80000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
                     break;
                 case ImageColorMode.BlackAndWhite:
-                    Assert.AreEqual(10900, new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length, 200);
+                    Assert.That(20000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
                     break;
             }
 #endif
@@ -362,7 +362,7 @@ namespace ApiExamples
             builder.Writeln("Hello world!");
             builder.InsertImage(ImageDir + "Logo.jpg");
 
-            Assert.AreEqual(20100, new FileInfo(ImageDir + "Logo.jpg").Length, 200);
+            Assert.That(20000, Is.LessThan(new FileInfo(ImageDir + "Logo.jpg").Length));
 
             // When we save the document as an image, we can pass a SaveOptions object to
             // select a pixel format for the image that the saving operation will generate.
@@ -379,40 +379,40 @@ namespace ApiExamples
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
-                    Assert.AreEqual(2300, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    Assert.That(10000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
                     break;
                 case ImagePixelFormat.Format16BppRgb555:
-                    Assert.AreEqual(87600, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    Assert.That(80000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
                     break;
                 case ImagePixelFormat.Format24BppRgb:
-                    Assert.AreEqual(158200, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    Assert.That(125000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
                     break;
                 case ImagePixelFormat.Format32BppRgb:
-                    Assert.AreEqual(174100, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    Assert.That(150000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
                     break;
                 case ImagePixelFormat.Format48BppRgb:
-                    Assert.AreEqual(211200, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    Assert.That(200000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
                     break;
             }
 #elif NETCOREAPP2_1
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
-                    Assert.AreEqual(5600, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    Assert.That(10000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
                     break;
                 case ImagePixelFormat.Format24BppRgb:
-                    Assert.AreEqual(76000, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    Assert.That(70000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
                     break;
                 case ImagePixelFormat.Format16BppRgb555:
                 case ImagePixelFormat.Format32BppRgb:
                 case ImagePixelFormat.Format48BppRgb:
-                    Assert.AreEqual(131700, new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length, 200);
+                    Assert.That(125000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
                     break;
             }
 #endif
             //ExEnd
         }
-        
+
         [Test, Category("SkipMono")]
         public void FloydSteinbergDithering()
         {

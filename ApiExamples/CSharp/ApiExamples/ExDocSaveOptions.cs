@@ -143,11 +143,12 @@ namespace ApiExamples
             saveOptions.AlwaysCompressMetafiles = compressAllMetafiles;
 
             doc.Save(ArtifactsDir + "DocSaveOptions.AlwaysCompressMetafiles.docx", saveOptions);
-            //ExEnd
+
             if (compressAllMetafiles)
-                Assert.AreEqual(13300, new FileInfo(ArtifactsDir + "DocSaveOptions.AlwaysCompressMetafiles.docx").Length, TestUtil.FileInfoLengthDelta);
+                Assert.That(10000, Is.LessThan(new FileInfo(ArtifactsDir + "DocSaveOptions.AlwaysCompressMetafiles.docx").Length));
             else
-                Assert.AreEqual(21500, new FileInfo(ArtifactsDir + "DocSaveOptions.AlwaysCompressMetafiles.docx").Length, TestUtil.FileInfoLengthDelta);
+                Assert.That(30000, Is.AtLeast(new FileInfo(ArtifactsDir + "DocSaveOptions.AlwaysCompressMetafiles.docx").Length));
+            //ExEnd
         }
     }
 }

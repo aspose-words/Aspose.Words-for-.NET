@@ -224,17 +224,17 @@ namespace ApiExamples
 
             switch (compressionLevel)
             {
-                case CompressionLevel.Normal:
-                    Assert.AreEqual(1157500, fileInfo.Length, 200);
-                    break;
                 case CompressionLevel.Maximum:
-                    Assert.AreEqual(1141900, fileInfo.Length, 200);
+                    Assert.That(1150000, Is.AtLeast(fileInfo.Length));
+                    break;
+                case CompressionLevel.Normal:
+                    Assert.That(1150000, Is.LessThan(fileInfo.Length));
                     break;
                 case CompressionLevel.Fast:
-                    Assert.AreEqual(1227500, fileInfo.Length, 200);
+                    Assert.That(1200000, Is.LessThan(fileInfo.Length));
                     break;
                 case CompressionLevel.SuperFast:
-                    Assert.AreEqual(1262800, fileInfo.Length, 200);
+                    Assert.That(1250000, Is.LessThan(fileInfo.Length));
                     break;
             }
         }
