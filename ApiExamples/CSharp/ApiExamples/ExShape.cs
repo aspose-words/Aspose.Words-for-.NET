@@ -1055,6 +1055,7 @@ namespace ApiExamples
 
             // The OLE object in the first shape is a Microsoft Excel spreadsheet.
             OleFormat oleFormat = shape.OleFormat;
+
             Assert.AreEqual("Excel.Sheet.12", oleFormat.ProgId);
 
             // Our object is neither auto updating nor locked from updates.
@@ -1094,23 +1095,27 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Embed a Microsoft Visio drawing as an OLE object into the document
+            // Embed a Microsoft Visio drawing into the document as an OLE object.
             builder.InsertOleObject(ImageDir + "Microsoft Visio drawing.vsd", "Package", false, false, null);
 
-            // Insert a link to the file in the local file system and display it as an icon
+            // Insert a link to the file in the local file system, and display it as an icon.
             builder.InsertOleObject(ImageDir + "Microsoft Visio drawing.vsd", "Package", true, true, null);
-            
-            // Both the OLE objects are stored within shapes
-            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(2, shapes.Count);
 
-            // If the shape is an OLE object, it will have a valid OleFormat property
-            // We can use it check if it is linked or displayed as an icon, among other things
+            // Both the OLE objects are stored within shapes
+            Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
+
+            Assert.AreEqual(2, shapes.Length);
+            Assert.AreEqual(2, shapes.Count(s => s.ShapeType == ShapeType.OleObject));
+
+            // If a shape contains an OLE object, it will have a valid "OleFormat" property,
+            // which we can use to verify some aspects of the shape.
             OleFormat oleFormat = shapes[0].OleFormat;
+
             Assert.AreEqual(false, oleFormat.IsLink);
             Assert.AreEqual(false, oleFormat.OleIcon);
 
             oleFormat = shapes[1].OleFormat;
+
             Assert.AreEqual(true, oleFormat.IsLink);
             Assert.AreEqual(true, oleFormat.OleIcon);
 
