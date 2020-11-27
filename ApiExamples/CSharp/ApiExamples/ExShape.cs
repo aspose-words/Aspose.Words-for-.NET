@@ -1101,7 +1101,7 @@ namespace ApiExamples
             // Insert a link to the file in the local file system, and display it as an icon.
             builder.InsertOleObject(ImageDir + "Microsoft Visio drawing.vsd", "Package", true, true, null);
 
-            // Both the OLE objects are stored within shapes
+            // Inserting OLE objects creates shapes that store these objects.
             Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
             Assert.AreEqual(2, shapes.Length);
@@ -1119,7 +1119,6 @@ namespace ApiExamples
             Assert.AreEqual(true, oleFormat.IsLink);
             Assert.AreEqual(true, oleFormat.OleIcon);
 
-            // Get the name or the source file and verify that the whole file is linked
             Assert.True(oleFormat.SourceFullName.EndsWith(@"Images" + Path.DirectorySeparatorChar + "Microsoft Visio drawing.vsd"));
             Assert.AreEqual("", oleFormat.SourceItem);
 
@@ -1127,7 +1126,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.OleLinks.docx");
 
-            // If the object has OLE data, we can access it in the form of a stream
+            // If the object contains OLE data, we can access it using a stream.
             using (MemoryStream stream = oleFormat.GetOleEntry("\x0001CompObj"))
             {
                 byte[] oleEntryBytes = stream.ToArray();
@@ -1145,20 +1144,18 @@ namespace ApiExamples
             //ExFor:Ole.Forms2OleControlCollection.Count
             //ExFor:Ole.Forms2OleControlCollection.Item(Int32)
             //ExSummary:Shows how to access an OLE control embedded in a document and its child controls.
-            // Open a document that contains a Microsoft Forms OLE control with child controls
             Document doc = new Document(MyDir + "OLE ActiveX controls.docm");
 
-            // Get the shape that contains the control
+            // Shapes store and display OLE objects in the document's body.
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             Assert.AreEqual("6e182020-f460-11ce-9bcd-00aa00608e01", shape.OleFormat.Clsid.ToString());
 
             Forms2OleControl oleControl = (Forms2OleControl)shape.OleFormat.OleControl;
 
-            // Some controls contain child controls
+            // Some OLE controls may contain child controls, such as the one in this document, which has 3 option buttons.
             Forms2OleControlCollection oleControlCollection = oleControl.ChildNodes;
 
-            // In this case, the child controls are 3 option buttons
             Assert.AreEqual(3, oleControlCollection.Count);
 
             Assert.AreEqual("C#", oleControlCollection[0].Caption);
@@ -1177,14 +1174,21 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OleFormat.SuggestedFileName
-            //ExSummary:Shows how to get suggested file name from the object.
+            //ExSummary:Shows how to get an OLE object's suggested file name.
             Document doc = new Document(MyDir + "OLE shape.rtf");
 
-            // Gets the file name suggested for the current embedded object if you want to save it into a file
             Shape oleShape = (Shape) doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true);
+
+            // OLE objects can provide a suggested filename and extension,
+            // which we can use when saving the contents of the object into a file in the local file system.
             string suggestedFileName = oleShape.OleFormat.SuggestedFileName;
 
             Assert.AreEqual("CSV.csv", suggestedFileName);
+
+            using (FileStream fileStream = new FileStream(ArtifactsDir + suggestedFileName, FileMode.Create))
+            {
+                oleShape.OleFormat.Save(fileStream);
+            }
             //ExEnd
         }
 
@@ -1207,23 +1211,31 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SaveShapeObjectAsImage()
+        public void RenderOfficeMath()
         {
             //ExStart
+            //ExFor:ImageSaveOptions.Scale
             //ExFor:OfficeMath.GetMathRenderer
             //ExFor:NodeRendererBase.Save(String, ImageSaveOptions)
-            //ExSummary:Shows how to convert specific object into image
+            //ExSummary:Shows how to render an Office Math object into an image file in the local file system.
             Document doc = new Document(MyDir + "Office math.docx");
 
-            // Get OfficeMath node from the document and render this as image (you can also do the same with the Shape node)
             OfficeMath math = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
-            math.GetMathRenderer().Save(ArtifactsDir + "Shape.SaveShapeObjectAsImage.png", new ImageSaveOptions(SaveFormat.Png));
+
+            // Create an "ImageSaveOptions" object that we can pass to the node renderer's "Save" method
+            // to modify how it renders the OfficeMath node into an image.
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png);
+
+            // Set the "Scale" property to 5 to render the object to five times its original size.
+            saveOptions.Scale = 5;
+
+            math.GetMathRenderer().Save(ArtifactsDir + "Shape.RenderOfficeMath.png", saveOptions);
             //ExEnd
 
             if (!IsRunningOnMono())
-                TestUtil.VerifyImage(159, 18, ArtifactsDir + "Shape.SaveShapeObjectAsImage.png");
+                TestUtil.VerifyImage(795, 87, ArtifactsDir + "Shape.RenderOfficeMath.png");
             else
-                TestUtil.VerifyImage(147, 26, ArtifactsDir + "Shape.SaveShapeObjectAsImage.png");
+                TestUtil.VerifyImage(735, 128, ArtifactsDir + "Shape.RenderOfficeMath.png");
         }
 
         [Test]
@@ -1266,16 +1278,16 @@ namespace ApiExamples
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
 
-            // OfficeMath nodes that are children of other OfficeMath nodes are always inline
-            // The node we are working with is a base node, so its location and display type can be changed
+            // OfficeMath nodes that are children of other OfficeMath nodes are always inline.
+            // The node we are working with is the base node, so we can change its location and display type.
             Assert.AreEqual(MathObjectType.OMathPara, officeMath.MathObjectType);
             Assert.AreEqual(NodeType.OfficeMath, officeMath.NodeType);
             Assert.AreEqual(officeMath.ParentNode, officeMath.ParentParagraph);
 
-            // Used by OOXML and WML formats
+            // OOXML and WML formats use the "EquationXmlEncoding" property.
             Assert.IsNull(officeMath.EquationXmlEncoding);
 
-            // We can change the location and display type of the OfficeMath node
+            // Change the location and display type of the OfficeMath node.
             officeMath.DisplayType = OfficeMathDisplayType.Display;
             officeMath.Justification = OfficeMathJustification.Left;
 
@@ -1334,44 +1346,48 @@ namespace ApiExamples
 
         [TestCase(true)]
         [TestCase(false)]
-        public void AspectRatioLocked(bool isLocked)
+        public void AspectRatio(bool lockAspectRatio)
         {
             //ExStart
             //ExFor:ShapeBase.AspectRatioLocked
-            //ExSummary:Shows how to set "AspectRatioLocked" for the shape object.
-            Document doc = new Document(MyDir + "ActiveX controls.docx");
+            //ExSummary:Shows how to lock/unlock a shape's aspect ratio.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Get shape object from the document and set AspectRatioLocked,
-            // which is affects only top level shapes, to mimic Microsoft Word behavior
-            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-            shape.AspectRatioLocked = isLocked;
+            // Insert a shape. If we open this document in Microsoft Word, we can left-click the shape to reveal
+            // eight sizing handles around its perimeter, which we can click and drag to change its size.
+            Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
+
+            // Set the "AspectRatioLocked" property to "true" to preserve the shape's aspect ratio
+            // when using any of the four diagonal sizing handles, which change both the height and width of the image.
+            // Using any of the orthogonal sizing handles that either change the height or width will still change the aspect ratio.
+            // Set the "AspectRatioLocked" property to "false" to allow us to
+            // freely change the image's aspect ratio with all sizing handles.
+            shape.AspectRatioLocked = lockAspectRatio;
+
+            doc.Save(ArtifactsDir + "Shape.AspectRatio.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "Shape.AspectRatio.docx");
             shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual(isLocked, shape.AspectRatioLocked);
+            Assert.AreEqual(lockAspectRatio, shape.AspectRatioLocked);
         }
 
         [Test]
-        public void MarkupLunguageByDefault()
+        public void MarkupLanguageByDefault()
         {
             //ExStart
             //ExFor:ShapeBase.MarkupLanguage
             //ExFor:ShapeBase.SizeInPoints
-            //ExSummary:Shows how get markup language for shape object in document.
+            //ExSummary:Shows how to verify a shape's size and markup language.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.InsertImage(ImageDir + "Transparent background logo.png");
 
-            // Loop through all single shapes inside document
-            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
-            {
-                Assert.AreEqual(ShapeMarkupLanguage.Dml, shape.MarkupLanguage); //ExSkip
+            Shape shape = builder.InsertImage(ImageDir + "Transparent background logo.png");
 
-                Console.WriteLine("Shape: " + shape.MarkupLanguage);
-                Console.WriteLine("ShapeSize: " + shape.SizeInPoints);
-            }
+            Assert.AreEqual(ShapeMarkupLanguage.Dml, shape.MarkupLanguage);
+            Assert.AreEqual(new SizeF(300, 300), shape.SizeInPoints);
             //ExEnd
         }
 
@@ -1399,7 +1415,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ChangeStrokeProperties()
+        public void Stroke()
         {
             //ExStart
             //ExFor:Stroke
@@ -1412,11 +1428,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a new shape of type Rectangle
-            Shape rectangle = new Shape(doc, ShapeType.Rectangle);
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 100,
+                RelativeVerticalPosition.TopMargin, 100, 200, 200, WrapType.None);
 
-            // Change stroke properties
-            Stroke stroke = rectangle.Stroke;
+            // Basic shapes such as the rectangle have two visible parts.
+            // 1 -  The fill, which applies to the area within the outline of the shape:
+            shape.Fill.Color = Color.White;
+
+            // 2 -  The stroke, which marks the outline of the shape:
+            // Modify various properties of this shape's stroke.
+            Stroke stroke = shape.Stroke;
             stroke.On = true;
             stroke.Weight = 5;
             stroke.Color = Color.Red;
@@ -1425,21 +1446,20 @@ namespace ApiExamples
             stroke.EndCap = EndCap.Square;
             stroke.LineStyle = ShapeLineStyle.Triple;
 
-            // Insert shape object
-            builder.InsertNode(rectangle);
+            doc.Save(ArtifactsDir + "Shape.Stroke.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
-            rectangle = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-            Stroke strokeAfter = rectangle.Stroke;
+            doc = new Document(ArtifactsDir + "Shape.Stroke.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            stroke = shape.Stroke;
 
-            Assert.AreEqual(true, strokeAfter.On);
-            Assert.AreEqual(5, strokeAfter.Weight);
-            Assert.AreEqual(Color.Red.ToArgb(), strokeAfter.Color.ToArgb());
-            Assert.AreEqual(DashStyle.ShortDashDotDot, strokeAfter.DashStyle);
-            Assert.AreEqual(JoinStyle.Miter, strokeAfter.JoinStyle);
-            Assert.AreEqual(EndCap.Square, strokeAfter.EndCap);
-            Assert.AreEqual(ShapeLineStyle.Triple, strokeAfter.LineStyle);
+            Assert.AreEqual(true, stroke.On);
+            Assert.AreEqual(5, stroke.Weight);
+            Assert.AreEqual(Color.Red.ToArgb(), stroke.Color.ToArgb());
+            Assert.AreEqual(DashStyle.ShortDashDotDot, stroke.DashStyle);
+            Assert.AreEqual(JoinStyle.Miter, stroke.JoinStyle);
+            Assert.AreEqual(EndCap.Square, stroke.EndCap);
+            Assert.AreEqual(ShapeLineStyle.Triple, stroke.LineStyle);
         }
 
         [Test, Description("WORDSNET-16067")]
