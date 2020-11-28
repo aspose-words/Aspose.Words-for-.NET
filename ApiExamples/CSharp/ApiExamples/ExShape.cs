@@ -1481,31 +1481,31 @@ namespace ApiExamples
             //ExFor:OleFormat.OlePackage
             //ExFor:OlePackage.FileName
             //ExFor:OlePackage.DisplayName
-            //ExSummary:Shows how insert ole object as ole package and set it file name and display name.
+            //ExSummary:Shows how insert an OLE object into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // OLE objects allow us to open other files the local file system using another installed application
+            // in our operating system by double-clicking on the shape that contains the OLE object in the document body.
+            // In this case, our external file will be a ZIP archive.
             byte[] zipFileBytes = File.ReadAllBytes(DatabaseDir + "cat001.zip");
 
             using (MemoryStream stream = new MemoryStream(zipFileBytes))
             {
                 Shape shape = builder.InsertOleObject(stream, "Package", true, null);
 
-                OlePackage setOlePackage = shape.OleFormat.OlePackage;
-                setOlePackage.FileName = "Cat FileName.zip";
-                setOlePackage.DisplayName = "Cat DisplayName.zip";
-
-                doc.Save(ArtifactsDir + "Shape.InsertOlePackage.docx");
+                shape.OleFormat.OlePackage.FileName = "Package file name.zip";
+                shape.OleFormat.OlePackage.DisplayName = "Package display name.zip";
             }
+            
+            doc.Save(ArtifactsDir + "Shape.InsertOlePackage.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Shape.InsertOlePackage.docx");
-
             Shape getShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            OlePackage getOlePackage = getShape.OleFormat.OlePackage;
 
-            Assert.AreEqual("Cat FileName.zip", getOlePackage.FileName);
-            Assert.AreEqual("Cat DisplayName.zip", getOlePackage.DisplayName);
+            Assert.AreEqual("Package file name.zip", getShape.OleFormat.OlePackage.FileName);
+            Assert.AreEqual("Package display name.zip", getShape.OleFormat.OlePackage.DisplayName);
         }
 
         [Test]
@@ -1543,7 +1543,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ShapeBase.IsLayoutInCell
             //ExFor:MsWordVersion
-            //ExSummary:Shows how to display the shape, inside a table or outside of it.
+            //ExSummary:Shows how to determine how to display a shape in a table cell.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1568,8 +1568,13 @@ namespace ApiExamples
                 Shape watermark = new Shape(doc, ShapeType.TextPlainText);
                 watermark.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
                 watermark.RelativeVerticalPosition = RelativeVerticalPosition.Page;
-                // False - display the shape outside of table cell, True - display the shape outside of table cell
-                watermark.IsLayoutInCell = true; 
+
+                // Set the "IsLayoutInCell" property to "true" to display the shape outside of the cell.
+                // Set the "IsLayoutInCell" property to "false" to display the shape inside the cell.
+                watermark.IsLayoutInCell = true;
+
+                // The "IsLayoutInCell" property will only take effect if the shape is not inline.
+                watermark.WrapType = WrapType.None;
 
                 watermark.Width = 30;
                 watermark.Height = 30;
@@ -1584,16 +1589,14 @@ namespace ApiExamples
                 watermark.TextPath.FontFamily = "Arial";
 
                 watermark.Name = $"Watermark_{num++}";
-                // Property will take effect only if the WrapType property is set to something other than WrapType.Inline
-                watermark.WrapType = WrapType.None; 
+
                 watermark.BehindText = true;
 
                 builder.MoveTo(run);
                 builder.InsertNode(watermark);
             }
 
-            // Behavior of Microsoft Word on working with shapes in table cells is changed in the last versions
-            // Adding the following line is needed to make the shape displayed in center of a page
+            // The "LayoutInCell" property only works on documents compatible with older Microsoft Word versions.
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
 
             doc.Save(ArtifactsDir + "Shape.LayoutInTableCell.docx");
@@ -1618,21 +1621,20 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            // There are two ways of shape insertion
-            // These methods allow inserting DML shape into the document model
-            // Document must be saved in the format, which supports DML shapes, otherwise, such nodes will be converted
-            // to VML shape, while document saving
-
-            // 1. Free-floating shape insertion
-            Shape freeFloatingShape = builder.InsertShape(ShapeType.TopCornersRounded, RelativeHorizontalPosition.Page, 100, RelativeVerticalPosition.Page, 100, 50, 50, WrapType.None);
+            // Below are two wrapping types that we can insert shapes into the document as.
+            // 1 -  Floating shape insertion:
+            Shape freeFloatingShape = 
+                builder.InsertShape(ShapeType.TopCornersRounded, RelativeHorizontalPosition.Page, 100, 
+                    RelativeVerticalPosition.Page, 100, 50, 50, WrapType.None);
             freeFloatingShape.Rotation = 30.0;
-            // 2. Inline shape insertion
+
+            // 2 -  Inline shape insertion:
             Shape inlineShape = builder.InsertShape(ShapeType.DiagonalCornersRounded, 50, 50);
             inlineShape.Rotation = 30.0;
 
-            // If you need to create "NonPrimitive" shapes, like SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
-            // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, DiagonalCornersRounded
-            // please save the document with "Strict" or "Transitional" compliance which allows saving shape as DML
+            // If you need to create "non-primitive" shapes, such as SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
+            // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, or DiagonalCornersRounded,
+            // then save the document with "Strict" or "Transitional" compliance which allows saving shape as DML.
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
             saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
             
