@@ -21,6 +21,7 @@ namespace ApiExamples
         //ExFor:CompatibilityOptions
         //ExFor:CompatibilityOptions.OptimizeFor(MsWordVersion)
         //ExFor:Document.CompatibilityOptions
+        //ExFor:MsWordVersion
         //ExSummary:Shows how to optimize the document for different versions of Microsoft Word.
         [Test] //ExSkip
         public void OptimizeFor()

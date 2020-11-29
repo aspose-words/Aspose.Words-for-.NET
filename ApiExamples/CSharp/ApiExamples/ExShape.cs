@@ -18,6 +18,7 @@ using Aspose.Words.Math;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
+using Aspose.Words.Tables;
 using NUnit.Framework;
 using Color = System.Drawing.Color;
 using DashStyle = Aspose.Words.Drawing.DashStyle;
@@ -1538,12 +1539,8 @@ namespace ApiExamples
         }
 
         [Test]
-        public void LayoutInTableCell()
+        public void Calendar()
         {
-            //ExStart
-            //ExFor:ShapeBase.IsLayoutInCell
-            //ExFor:MsWordVersion
-            //ExSummary:Shows how to determine how to display a shape in a table cell.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1569,13 +1566,6 @@ namespace ApiExamples
                 watermark.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
                 watermark.RelativeVerticalPosition = RelativeVerticalPosition.Page;
 
-                // Set the "IsLayoutInCell" property to "true" to display the shape outside of the cell.
-                // Set the "IsLayoutInCell" property to "false" to display the shape inside the cell.
-                watermark.IsLayoutInCell = true;
-
-                // The "IsLayoutInCell" property will only take effect if the shape is not inline.
-                watermark.WrapType = WrapType.None;
-
                 watermark.Width = 30;
                 watermark.Height = 30;
                 watermark.HorizontalAlignment = HorizontalAlignment.Center;
@@ -1596,11 +1586,7 @@ namespace ApiExamples
                 builder.InsertNode(watermark);
             }
 
-            // The "LayoutInCell" property only works on documents compatible with older Microsoft Word versions.
-            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2010);
-
             doc.Save(ArtifactsDir + "Shape.LayoutInTableCell.docx");
-            //ExEnd
 
             doc = new Document(ArtifactsDir + "Shape.LayoutInTableCell.docx");
             List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
@@ -1609,6 +1595,57 @@ namespace ApiExamples
 
             foreach (Shape shape in shapes)
                 TestUtil.VerifyShape(ShapeType.TextPlainText, $"Watermark_{shapes.IndexOf(shape) + 1}", 30.0d, 30.0d, 0.0d, 0.0d, shape);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void IsLayoutInCell(bool isLayoutInCell)
+        {
+            //ExStart
+            //ExFor:ShapeBase.IsLayoutInCell
+            //ExSummary:Shows how to determine how to display a shape in a table cell.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.InsertCell();
+            builder.EndTable();
+            
+            TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
+            tableStyle.BottomPadding = 20;
+            tableStyle.LeftPadding = 10;
+            tableStyle.RightPadding = 10;
+            tableStyle.TopPadding = 20;
+            tableStyle.Borders.Color = Color.Black;
+            tableStyle.Borders.LineStyle = LineStyle.Single;
+
+            table.Style = tableStyle;
+
+            builder.MoveTo(table.FirstRow.FirstCell.FirstParagraph);
+
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 50,
+                RelativeVerticalPosition.TopMargin, 100, 100, 100, WrapType.None);
+
+            // Set the "IsLayoutInCell" property to "true" to display the shape as an inline element inside the cell's paragraph.
+            // The coordinate origin that will determine the location of the shape will be the top left corner of the shape's cell.
+            // If we re-size the cell, the shape will move to maintain the same position starting from the top left of the cell.
+            // Set the "IsLayoutInCell" property to "false" to display the shape as an independent floating shape.
+            // The coordinate origin that will determine the location of the shape will be the top left corner of the page,
+            // and the shape will not respond to any re-sizing of its cell.
+            shape.IsLayoutInCell = isLayoutInCell;
+
+            // We can only apply the "IsLayoutInCell" property to floating shapes.
+            shape.WrapType = WrapType.None;
+
+            doc.Save(ArtifactsDir + "Shape.LayoutInTableCell.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.LayoutInTableCell.docx");
+            table = doc.FirstSection.Body.Tables[0];
+            shape = (Shape)table.FirstRow.FirstCell.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(isLayoutInCell, shape.IsLayoutInCell);
         }
 
         [Test]
