@@ -435,7 +435,7 @@ namespace ApiExamples
                 "Endnote text, will appear at the very end of the document.", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
         }
 
-        [Test]
+        [Test, Ignore("WORDSNET-21481")]
         public void AddComment()
         {
             //ExStart
@@ -453,6 +453,8 @@ namespace ApiExamples
             builder.CurrentParagraph.AppendChild(comment);
             builder.MoveTo(comment.AppendChild(new Paragraph(doc)));
             builder.Write("Comment text.");
+
+            Assert.AreEqual(DateTime.Today, comment.DateTime);
 
             // In Microsoft Word, we can right-click this comment in the document body to edit it, or reply to it. 
             doc.Save(ArtifactsDir + "InlineStory.AddComment.docx");
