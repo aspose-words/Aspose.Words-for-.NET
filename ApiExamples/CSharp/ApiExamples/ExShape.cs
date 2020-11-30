@@ -1887,38 +1887,72 @@ namespace ApiExamples
             Assert.False(signatureLine.IsValid);
         }
 
-        [Test]
-        public void TextBox()
+        [TestCase(LayoutFlow.Vertical)]
+        [TestCase(LayoutFlow.Horizontal)]
+        [TestCase(LayoutFlow.HorizontalIdeographic)]
+        [TestCase(LayoutFlow.BottomToTop)]
+        [TestCase(LayoutFlow.TopToBottom)]
+        [TestCase(LayoutFlow.TopToBottomIdeographic)]
+        public void TextBoxLayoutFlow(LayoutFlow layoutFlow)
         {
             //ExStart
             //ExFor:Shape.TextBox
             //ExFor:Shape.LastParagraph
             //ExFor:TextBox
-            //ExFor:TextBox.FitShapeToText
-            //ExFor:TextBox.InternalMarginBottom
-            //ExFor:TextBox.InternalMarginLeft
-            //ExFor:TextBox.InternalMarginRight
-            //ExFor:TextBox.InternalMarginTop
             //ExFor:TextBox.LayoutFlow
-            //ExFor:TextBox.TextBoxWrapMode
-            //ExFor:TextBoxWrapMode
-            //ExSummary:Shows how to insert text boxes, and arrange their contents.
+            //ExSummary:Shows how to set the orientation of text inside a text box.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
             Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 150, 100);
             TextBox textBox = textBoxShape.TextBox;
 
             // Move the document builder to inside the TextBox, and add text.
             builder.MoveTo(textBoxShape.LastParagraph);
-            builder.Write("Vertical text");
+            builder.Writeln("Hello world!");
+            builder.Write("Hello again!");
 
-            // Set the "LayoutFlow" property to "LayoutFlow.TopToBottomIdeographic" to display the text from top to bottom.
-            textBox.LayoutFlow = LayoutFlow.TopToBottomIdeographic;
+            // Set the "LayoutFlow" property to set an orientation for the text contents of this text box.
+            textBox.LayoutFlow = layoutFlow;
 
-            // Move the builder out of the shape and back into the main document body, and insert another text box.
-            builder.MoveTo(textBoxShape.ParentParagraph);
-            textBoxShape = builder.InsertShape(ShapeType.TextBox, 150, 100);
-            textBox = textBoxShape.TextBox;
+            doc.Save(ArtifactsDir + "Shape.TextBoxLayoutFlow.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.TextBoxLayoutFlow.docx");
+            textBoxShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 150.0d, 100.0d, 0.0d, 0.0d, textBoxShape);
+
+            LayoutFlow expectedLayoutFlow;
+
+            switch (layoutFlow)
+            {
+                case LayoutFlow.BottomToTop:
+                case LayoutFlow.Horizontal:
+                case LayoutFlow.TopToBottomIdeographic:
+                    expectedLayoutFlow = layoutFlow;
+                    break;
+                default:
+                    expectedLayoutFlow = LayoutFlow.Horizontal;
+                    break;
+            }
+
+            TestUtil.VerifyTextBox(expectedLayoutFlow, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, textBoxShape.TextBox);
+            Assert.AreEqual("Hello world!\rHello again!", textBoxShape.GetText().Trim());
+        }
+
+        [Test]
+        public void TextBoxFitShapeToText()
+        {
+            //ExStart
+            //ExFor:TextBox
+            //ExFor:TextBox.FitShapeToText
+            //ExSummary:Shows how to get a text box to resize itself to fit its contents tightly.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 150, 100);
+            TextBox textBox = textBoxShape.TextBox;
 
             // Apply these values to both these members to get the parent shape to fit tightly around
             // the TextBox's text, ignoring the dimensions we have set.
@@ -1926,37 +1960,87 @@ namespace ApiExamples
             textBox.TextBoxWrapMode = TextBoxWrapMode.None;
 
             builder.MoveTo(textBoxShape.LastParagraph);
-            builder.Write("Text fit tightly inside textbox");
+            builder.Write("Text fit tightly inside textbox.");
+
+            doc.Save(ArtifactsDir + "Shape.TextBoxFitShapeToText.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.TextBoxFitShapeToText.docx");
+            textBoxShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 150.0d, 100.0d, 0.0d, 0.0d, textBoxShape);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, true, TextBoxWrapMode.None, 3.6d, 3.6d, 7.2d, 7.2d, textBoxShape.TextBox);
+            Assert.AreEqual("Text fit tightly inside textbox.", textBoxShape.GetText().Trim());
+        }
+
+        [Test]
+        public void TextBoxMargins()
+        {
+            //ExStart
+            //ExFor:TextBox
+            //ExFor:TextBox.InternalMarginBottom
+            //ExFor:TextBox.InternalMarginLeft
+            //ExFor:TextBox.InternalMarginRight
+            //ExFor:TextBox.InternalMarginTop
+            //ExSummary:Shows how to set internal margins for a text box.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert another textbox, with specific margins.
-            builder.MoveTo(textBoxShape.ParentParagraph);
-            textBoxShape = builder.InsertShape(ShapeType.TextBox, 100, 100);
-            textBox = textBoxShape.TextBox;
+            Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 100, 100);
+            TextBox textBox = textBoxShape.TextBox;
             textBox.InternalMarginTop = 15;
             textBox.InternalMarginBottom = 15;
             textBox.InternalMarginLeft = 15;
             textBox.InternalMarginRight = 15;
 
             builder.MoveTo(textBoxShape.LastParagraph);
-            builder.Write("Text placed according to textbox margins");
+            builder.Write("Text placed according to textbox margins.");
 
-            doc.Save(ArtifactsDir + "Shape.TextBox.docx");
+            doc.Save(ArtifactsDir + "Shape.TextBoxMargins.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Shape.TextBox.docx");
-            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
+            doc = new Document(ArtifactsDir + "Shape.TextBoxMargins.docx");
+            textBoxShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 150.0d, 100.0d, 0.0d, 0.0d, shapes[0]);
-            TestUtil.VerifyTextBox(LayoutFlow.TopToBottomIdeographic, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[0].TextBox);
-            Assert.AreEqual("Vertical text", shapes[0].GetText().Trim());
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 100.0d, 100.0d, 0.0d, 0.0d, textBoxShape);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 15.0d, 15.0d, 15.0d, 15.0d, textBoxShape.TextBox);
+            Assert.AreEqual("Text placed according to textbox margins.", textBoxShape.GetText().Trim());
+        }
 
-            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100004", 150.0d, 100.0d, 0.0d, 0.0d, shapes[1]);
-            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, true, TextBoxWrapMode.None, 3.6d, 3.6d, 7.2d, 7.2d, shapes[1].TextBox);
-            Assert.AreEqual("Text fit tightly inside textbox", shapes[1].GetText().Trim());
+        [TestCase(TextBoxWrapMode.None)]
+        [TestCase(TextBoxWrapMode.Square)]
+        public void TextBoxContentsWrapMode(TextBoxWrapMode textBoxWrapMode)
+        {
+            //ExStart
+            //ExFor:TextBox.TextBoxWrapMode
+            //ExFor:TextBoxWrapMode
+            //ExSummary:Shows how to set a wrapping mode for the contents of a text box.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100006", 100.0d, 100.0d, 0.0d, 0.0d, shapes[2]);
-            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 15.0d, 15.0d, 15.0d, 15.0d, shapes[2].TextBox);
-            Assert.AreEqual("Text placed according to textbox margins", shapes[2].GetText().Trim());
+            Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 300, 300);
+            TextBox textBox = textBoxShape.TextBox;
+
+            // Set the "TextBoxWrapMode" property to "TextBoxWrapMode.None" to increase the width
+            // of the text box to accomodate text, should it be large enough.
+            // Set the "TextBoxWrapMode" property to "TextBoxWrapMode.Square" to
+            // wrap all text inside the text box, preserving its dimensions.
+            textBox.TextBoxWrapMode = textBoxWrapMode;
+            
+            builder.MoveTo(textBoxShape.LastParagraph);
+            builder.Font.Size = 32;
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            doc.Save(ArtifactsDir + "Shape.TextBoxContentsWrapMode.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.TextBoxContentsWrapMode.docx");
+            textBoxShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 300.0d, 300.0d, 0.0d, 0.0d, textBoxShape);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, textBoxWrapMode, 3.6d, 3.6d, 7.2d, 7.2d, textBoxShape.TextBox);
+            Assert.AreEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", textBoxShape.GetText().Trim());
         }
 
         [Test]
