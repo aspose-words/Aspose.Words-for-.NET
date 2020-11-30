@@ -1897,6 +1897,8 @@ namespace ApiExamples
         public void SignatureLineProviderId()
         {
             //ExStart
+            //ExFor:SignatureLine.IsSigned
+            //ExFor:SignatureLine.IsValid
             //ExFor:SignatureLine.ProviderId
             //ExFor:SignatureLineOptions.ShowDate
             //ExFor:SignatureLineOptions.Email
@@ -1922,7 +1924,10 @@ namespace ApiExamples
 
             SignatureLine signatureLine = builder.InsertSignatureLine(signatureLineOptions).SignatureLine;
             signatureLine.ProviderId = Guid.Parse("CF5A7BB4-8F3C-4756-9DF6-BEF7F13259A2");
-            
+
+            Assert.False(signatureLine.IsSigned);
+            Assert.False(signatureLine.IsValid);
+
             doc.Save(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.docx");
 
             SignOptions signOptions = new SignOptions
@@ -1937,11 +1942,16 @@ namespace ApiExamples
 
             DigitalSignatureUtil.Sign(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.docx", 
                 ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx", certHolder, signOptions);
-            //ExEnd
-            
+
+            // Re-open our saved document, and verify that the "IsSigned" and "IsValid" properties both equal "true",
+            // indicating that the signature line contains a signature.
             doc = new Document(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx");
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             signatureLine = shape.SignatureLine;
+
+            Assert.True(signatureLine.IsSigned);
+            Assert.True(signatureLine.IsValid);
+            //ExEnd
 
             Assert.AreEqual("vderyushev", signatureLine.Signer);
             Assert.AreEqual("QA", signatureLine.SignerTitle);

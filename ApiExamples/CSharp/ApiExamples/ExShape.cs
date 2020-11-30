@@ -1586,9 +1586,9 @@ namespace ApiExamples
                 builder.InsertNode(watermark);
             }
 
-            doc.Save(ArtifactsDir + "Shape.LayoutInTableCell.docx");
+            doc.Save(ArtifactsDir + "Shape.Calendar.docx");
 
-            doc = new Document(ArtifactsDir + "Shape.LayoutInTableCell.docx");
+            doc = new Document(ArtifactsDir + "Shape.Calendar.docx");
             List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
 
             Assert.AreEqual(31, shapes.Count);
@@ -1654,20 +1654,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBuilder.InsertShape(ShapeType, RelativeHorizontalPosition, double, RelativeVerticalPosition, double, double, double, WrapType)
             //ExFor:DocumentBuilder.InsertShape(ShapeType, double, double)
-            //ExSummary:Shows how to insert DML shapes into the document using a document builder.
+            //ExFor:OoxmlCompliance
+            //ExFor:OoxmlSaveOptions.Compliance
+            //ExSummary:Shows how to insert DML shapes into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
-            // Below are two wrapping types that we can insert shapes into the document as.
-            // 1 -  Floating shape insertion:
-            Shape freeFloatingShape = 
-                builder.InsertShape(ShapeType.TopCornersRounded, RelativeHorizontalPosition.Page, 100, 
-                    RelativeVerticalPosition.Page, 100, 50, 50, WrapType.None);
-            freeFloatingShape.Rotation = 30.0;
 
-            // 2 -  Inline shape insertion:
-            Shape inlineShape = builder.InsertShape(ShapeType.DiagonalCornersRounded, 50, 50);
-            inlineShape.Rotation = 30.0;
+            // Below are two wrapping types that shapes may have.
+            // 1 -  Floating:
+            builder.InsertShape(ShapeType.TopCornersRounded, RelativeHorizontalPosition.Page, 100, 
+                    RelativeVerticalPosition.Page, 100, 50, 50, WrapType.None);
+
+            // 2 -  Inline:
+            builder.InsertShape(ShapeType.DiagonalCornersRounded, 50, 50);
 
             // If you need to create "non-primitive" shapes, such as SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
             // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, or DiagonalCornersRounded,
@@ -1702,24 +1701,21 @@ namespace ApiExamples
         [Test] //ExSkip
         public void VisitShapes()
         {
-            // Open a document that contains shapes
             Document doc = new Document(MyDir + "Revision shape.docx");
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count); //ExSKip
 
-            // Create a ShapeVisitor and get the document to accept it
-            ShapeVisitor shapeVisitor = new ShapeVisitor();
-            doc.Accept(shapeVisitor);
+            ShapeAppearancePrinter visitor = new ShapeAppearancePrinter();
+            doc.Accept(visitor);
 
-            // Print all the information that the visitor has collected
-            Console.WriteLine(shapeVisitor.GetText());
+            Console.WriteLine(visitor.GetText());
         }
 
         /// <summary>
-        /// DocumentVisitor implementation that collects information about visited shapes into a StringBuilder, to be printed to the console.
+        /// Logs appearance-related information about visited shapes.
         /// </summary>
-        private class ShapeVisitor : DocumentVisitor
+        private class ShapeAppearancePrinter : DocumentVisitor
         {
-            public ShapeVisitor()
+            public ShapeAppearancePrinter()
             {
                 mShapesVisited = 0;
                 mTextIndentLevel = 0;
@@ -1745,7 +1741,7 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Called when the start of a Shape node is visited.
+            /// Called when this visitor visits the start of a Shape node.
             /// </summary>
             public override VisitorAction VisitShapeStart(Shape shape)
             {
@@ -1781,7 +1777,7 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Called when the end of a Shape node is visited.
+            /// Called when this visitor visits the end of a Shape node.
             /// </summary>
             public override VisitorAction VisitShapeEnd(Shape shape)
             {
@@ -1793,7 +1789,7 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Called when the start of a GroupShape node is visited.
+            /// Called when this visitor visits the start of a GroupShape node.
             /// </summary>
             public override VisitorAction VisitGroupShapeStart(GroupShape groupShape)
             {
@@ -1804,7 +1800,7 @@ namespace ApiExamples
             }
 
             /// <summary>
-            /// Called when the end of a GroupShape node is visited.
+            /// Called when this visitor visits the end of a GroupShape node.
             /// </summary>
             public override VisitorAction VisitGroupShapeEnd(GroupShape groupShape)
             {
@@ -1831,17 +1827,13 @@ namespace ApiExamples
             //ExFor:SignatureLine.DefaultInstructions
             //ExFor:SignatureLine.Email
             //ExFor:SignatureLine.Instructions
-            //ExFor:SignatureLine.IsSigned
-            //ExFor:SignatureLine.IsValid
             //ExFor:SignatureLine.ShowDate
             //ExFor:SignatureLine.Signer
             //ExFor:SignatureLine.SignerTitle
             //ExSummary:Shows how to create a line for a signature and insert it into a document.
-            // Create a blank document and its DocumentBuilder
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The SignatureLineOptions will contain all the data that the signature line will display
             SignatureLineOptions options = new SignatureLineOptions
             {
                 AllowComments = true,
@@ -1853,13 +1845,16 @@ namespace ApiExamples
                 SignerTitle = "Senior Manager"
             };
 
-            // Insert the signature line, applying our SignatureLineOptions
-            // We can control where the signature line will appear on the page using a combination of left/top indents and margin-relative positions
-            // Since we are placing the signature line at the bottom right of the page, we will need to use negative indents to move it into view 
-            Shape shape = builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, -170.0, RelativeVerticalPosition.BottomMargin, -60.0, WrapType.None);
+            // Insert a shape that will contain a signature line, whose appearance we will customize using the
+            // "SignatureLineOptions" object we've created above.
+            // If we are inserting a shape whose coordinates originate at the bottom right hand corner of the page,
+            // we will need to supply negative x and y coordinates to bring the shape into view.
+            Shape shape = builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, -170.0, 
+                    RelativeVerticalPosition.BottomMargin, -60.0, WrapType.None);
+
             Assert.True(shape.IsSignatureLine);
 
-            // The SignatureLine object is a member of the shape that contains it
+            // Verify properties of our signature line via its Shape object.
             SignatureLine signatureLine = shape.SignatureLine;
 
             Assert.AreEqual("john.doe@management.com", signatureLine.Email);
@@ -1869,13 +1864,7 @@ namespace ApiExamples
             Assert.True(signatureLine.ShowDate);
             Assert.True(signatureLine.AllowComments);
             Assert.True(signatureLine.DefaultInstructions);
-
-            // We will be prompted to sign it when we open the document
-            Assert.False(signatureLine.IsSigned);
-
-            // The object may be valid, but the signature itself isn't until it is signed
-            Assert.False(signatureLine.IsValid);
-
+            
             doc.Save(ArtifactsDir + "Shape.SignatureLine.docx");
             //ExEnd
 
@@ -1913,41 +1902,36 @@ namespace ApiExamples
             //ExFor:TextBox.LayoutFlow
             //ExFor:TextBox.TextBoxWrapMode
             //ExFor:TextBoxWrapMode
-            //ExSummary:Shows how to insert text boxes and arrange their text.
+            //ExSummary:Shows how to insert text boxes, and arrange their contents.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert a shape that contains a TextBox
             Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 150, 100);
             TextBox textBox = textBoxShape.TextBox;
 
-            // Move the document builder to inside the TextBox and write text
+            // Move the document builder to inside the TextBox, and add text.
             builder.MoveTo(textBoxShape.LastParagraph);
             builder.Write("Vertical text");
 
-            // Text is displayed vertically, written top to bottom
+            // Set the "LayoutFlow" property to "LayoutFlow.TopToBottomIdeographic" to display the text from top to bottom.
             textBox.LayoutFlow = LayoutFlow.TopToBottomIdeographic;
 
-            // Move the builder out of the shape and back into the main document body
+            // Move the builder out of the shape and back into the main document body, and insert another text box.
             builder.MoveTo(textBoxShape.ParentParagraph);
-
-            // Insert another TextBox
             textBoxShape = builder.InsertShape(ShapeType.TextBox, 150, 100);
             textBox = textBoxShape.TextBox;
 
-            // Apply these values to both these members to get the parent shape to defy the dimensions we set to fit tightly around the TextBox's text
+            // Apply these values to both these members to get the parent shape to fit tightly around
+            // the TextBox's text, ignoring the dimensions we have set.
             textBox.FitShapeToText = true;
             textBox.TextBoxWrapMode = TextBoxWrapMode.None;
 
             builder.MoveTo(textBoxShape.LastParagraph);
             builder.Write("Text fit tightly inside textbox");
 
+            // Insert another textbox, with specific margins.
             builder.MoveTo(textBoxShape.ParentParagraph);
-
             textBoxShape = builder.InsertShape(ShapeType.TextBox, 100, 100);
             textBox = textBoxShape.TextBox;
-
-            // Set margins for the textbox
             textBox.InternalMarginTop = 15;
             textBox.InternalMarginBottom = 15;
             textBox.InternalMarginLeft = 15;
@@ -2003,11 +1987,10 @@ namespace ApiExamples
             //ExFor:TextBox.Next
             //ExFor:TextBox.Previous
             //ExFor:TextBox.BreakForwardLink
-            //ExSummary:Shows how to work with textbox forward link
+            //ExSummary:Shows how to link text boxes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a few textboxes for example
             Shape textBoxShape1 = builder.InsertShape(ShapeType.TextBox, 100, 100);
             TextBox textBox1 = textBoxShape1.TextBox;
             builder.Writeln();
@@ -2023,19 +2006,20 @@ namespace ApiExamples
             Shape textBoxShape4 = builder.InsertShape(ShapeType.TextBox, 100, 100);
             TextBox textBox4 = textBoxShape4.TextBox;
             
-            // Create link between textboxes if possible
+            // Create links between some of the text boxes.
             if (textBox1.IsValidLinkTarget(textBox2))
                 textBox1.Next = textBox2;
 
             if (textBox2.IsValidLinkTarget(textBox3))
                 textBox2.Next = textBox3;
 
-            // You can only create a link on an empty textbox
-            builder.MoveTo(textBoxShape4.LastParagraph);
-            builder.Write("Vertical text");
+            // Only an empty text box may have a link.
+            Assert.True(textBox3.IsValidLinkTarget(textBox4));
 
-            // Thus, this textbox is not a valid link target
-            Assert.IsFalse(textBox3.IsValidLinkTarget(textBox4));
+            builder.MoveTo(textBoxShape4.LastParagraph);
+            builder.Write("Hello world!");
+            
+            Assert.False(textBox3.IsValidLinkTarget(textBox4));
             
             if (textBox1.Next != null && textBox1.Previous == null)
                 Console.WriteLine("This TextBox is the head of the sequence");
@@ -2047,9 +2031,10 @@ namespace ApiExamples
             {
                 Console.WriteLine("This TextBox is the tail of the sequence");
                 
-                // Break the forward link between textBox2 and textBox3
+                // Break the forward link between textBox2 and textBox3,
+                // and then verify that they are no longer linked.
                 textBox3.Previous.BreakForwardLink();
-                // Check that link was break successfully
+
                 Assert.IsTrue(textBox2.Next == null);
                 Assert.IsTrue(textBox3.Previous == null);
             }
@@ -2074,7 +2059,7 @@ namespace ApiExamples
 
             TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100008", 100.0d, 100.0d, 0.0d, 0.0d, shapes[3]);
             TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[3].TextBox);
-            Assert.AreEqual("Vertical text", shapes[3].GetText().Trim());
+            Assert.AreEqual("Hello world!", shapes[3].GetText().Trim());
         }
 
         [Test]
@@ -2083,7 +2068,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:TextBoxAnchor
             //ExFor:TextBox.VerticalAnchor
-            //ExSummary:Shows how to change text position inside textbox shape.
+            //ExSummary:Shows how to change the position of text inside a textbox.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
