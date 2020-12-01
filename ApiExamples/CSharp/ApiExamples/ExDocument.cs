@@ -284,14 +284,10 @@ namespace ApiExamples
                 using (MemoryStream stream = new MemoryStream(client.DownloadData(url)))
                 {
                     // The URL is used again as a baseUri to ensure that any relative image paths are retrieved correctly.
-                    LoadOptions options = new LoadOptions(LoadFormat.Html, "", url);
+                    LoadOptions options = new LoadOptions(LoadFormat.Html, string.Empty, url);
 
-                    // Load the HTML document from stream and pass the LoadOptions object.
+                    // Create a document from the contents of the stream, and then save it to the local file system.
                     Document doc = new Document(stream, options);
-
-                    // At this stage, we can read and edit the document's contents and then save it to the local file system.
-                    Assert.AreEqual("File Format APIs", doc.FirstSection.Body.Paragraphs[1].Runs[0].GetText().Trim());
-
                     doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
                 }
             }

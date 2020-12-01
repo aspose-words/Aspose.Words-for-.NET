@@ -2146,31 +2146,45 @@ namespace ApiExamples
             Assert.AreEqual("Hello world!", shapes[3].GetText().Trim());
         }
 
-        [Test]
-        public void GetTextBoxAndChangeTextAnchor()
+        [TestCase(TextBoxAnchor.Top)]
+        [TestCase(TextBoxAnchor.Middle)]
+        [TestCase(TextBoxAnchor.Bottom)]
+        public void VerticalAnchor(TextBoxAnchor verticalAnchor)
         {
             //ExStart
+            //ExFor:CompatibilityOptions
+            //ExFor:CompatibilityOptions.OptimizeFor(MsWordVersion)
             //ExFor:TextBoxAnchor
             //ExFor:TextBox.VerticalAnchor
-            //ExSummary:Shows how to change the position of text inside a textbox.
+            //ExSummary:Shows how to vertically align the text contents of a text box.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Shape textBox = builder.InsertShape(ShapeType.TextBox, 200, 200);
-            textBox.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
-            
-            builder.MoveTo(textBox.FirstParagraph);
-            builder.Write("Textbox contents");
+            Shape shape = builder.InsertShape(ShapeType.TextBox, 200, 200);
 
-            doc.Save(ArtifactsDir + "Shape.GetTextBoxAndChangeAnchor.docx");
+            // Set the "VerticalAnchor" property to "TextBoxAnchor.Top" to
+            // align the text in this text box with the top side of the shape.
+            // Set the "VerticalAnchor" property to "TextBoxAnchor.Middle" to
+            // align the text in this text box to the centre of the shape.
+            // Set the "VerticalAnchor" property to "TextBoxAnchor.Bottom" to
+            // align the text in this text box to the bottom of the shape.
+            shape.TextBox.VerticalAnchor = verticalAnchor;
+            
+            builder.MoveTo(shape.FirstParagraph);
+            builder.Write("Hello world!");
+
+            // The vertical aligning of text inside text boxes is available from Microsoft Word 2007 onwards.
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2007);
+            doc.Save(ArtifactsDir + "Shape.VerticalAnchor.docx");
             //ExEnd
             
-            doc = new Document(ArtifactsDir + "Shape.GetTextBoxAndChangeAnchor.docx");
-            textBox = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            doc = new Document(ArtifactsDir + "Shape.VerticalAnchor.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 200.0d, 200.0d, 0.0d, 0.0d, textBox);
-            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, textBox.TextBox);
-            Assert.AreEqual("Textbox contents", textBox.GetText().Trim());
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 200.0d, 200.0d, 0.0d, 0.0d, shape);
+            TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shape.TextBox);
+            Assert.AreEqual(verticalAnchor, shape.TextBox.VerticalAnchor);
+            Assert.AreEqual("Hello world!", shape.GetText().Trim());
         }
 
         //ExStart
@@ -2203,13 +2217,17 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
-            // Insert a WordArt object and capture the shape that contains it in a variable
-            Shape shape = AppendWordArt(doc, "Bold & Italic", "Arial", 240, 24, Color.White, Color.Black, ShapeType.TextPlainText);
+            // Insert a WordArt object to display text in the form of a shape that
+            // we can re-size an move by using the mouse in Microsoft Word.
+            // Provide a "ShapeType" as an argument to set a shape for the WordArt.
+            Shape shape = AppendWordArt(doc, "Hello World! This text is bold, and italic.", 
+                "Arial", 480, 24, Color.White, Color.Black, ShapeType.TextPlainText);
 
-            // View and verify various text formatting settings
+            // Apply the "Bold' and "Italic" formatting settings to the text by using the respective properties.
             shape.TextPath.Bold = true;
             shape.TextPath.Italic = true;
 
+            // Below are various other text formatting-related properties.
             Assert.False(shape.TextPath.Underline);
             Assert.False(shape.TextPath.Shadow);
             Assert.False(shape.TextPath.StrikeThrough);
@@ -2219,42 +2237,43 @@ namespace ApiExamples
             Assert.False(shape.TextPath.SmallCaps);
 
             Assert.AreEqual(36.0, shape.TextPath.Size);
-            Assert.AreEqual("Bold & Italic", shape.TextPath.Text);
+            Assert.AreEqual("Hello World! This text is bold, and italic.", shape.TextPath.Text);
             Assert.AreEqual(ShapeType.TextPlainText, shape.ShapeType);
 
-            // Toggle whether to display text
-            shape = AppendWordArt(doc, "On set to true", "Calibri", 150, 24, Color.Yellow, Color.Red, ShapeType.TextPlainText);
+            // Use the "On" property to show/hide the text.
+            shape = AppendWordArt(doc, "On set to \"true\"", "Calibri", 150, 24, Color.Yellow, Color.Red, ShapeType.TextPlainText);
             shape.TextPath.On = true;
 
-            shape = AppendWordArt(doc, "On set to false", "Calibri", 150, 24, Color.Yellow, Color.Purple, ShapeType.TextPlainText);
+            shape = AppendWordArt(doc, "On set to \"false\"", "Calibri", 150, 24, Color.Yellow, Color.Purple, ShapeType.TextPlainText);
             shape.TextPath.On = false;
 
-            // Apply kerning
+            // Use the "Kerning" property to enable/disable kerning spacing between certain characters.
             shape = AppendWordArt(doc, "Kerning: VAV", "Times New Roman", 90, 24, Color.Orange, Color.Red, ShapeType.TextPlainText);
             shape.TextPath.Kerning = true;
 
             shape = AppendWordArt(doc, "No kerning: VAV", "Times New Roman", 100, 24, Color.Orange, Color.Red, ShapeType.TextPlainText);
             shape.TextPath.Kerning = false;
 
-            // Apply custom spacing, on a scale from 0.0 (none) to 1.0 (default)
+            // Use the "Spacing" property to set custom spacing between characters, on a scale from 0.0 (none) to 1.0 (default).
             shape = AppendWordArt(doc, "Spacing set to 0.1", "Calibri", 120, 24, Color.BlueViolet, Color.Blue, ShapeType.TextCascadeDown);
             shape.TextPath.Spacing = 0.1;
 
-            // Rotate letters 90 degrees to the left, text is still laid out horizontally
+            // Set the "RotateLetters" property to "true" to rotate each character 90 degrees counterclockwise.
             shape = AppendWordArt(doc, "RotateLetters", "Calibri", 200, 36, Color.GreenYellow, Color.Green, ShapeType.TextWave);
             shape.TextPath.RotateLetters = true;
 
-            // Set the x-height to equal the cap height
+            // Set the "SameLetterHeights" property to "true" to get the x-height of each character to equal the cap height.
             shape = AppendWordArt(doc, "Same character height for lower and UPPER case", "Calibri", 300, 24, Color.DeepSkyBlue, Color.DodgerBlue, ShapeType.TextSlantUp);
             shape.TextPath.SameLetterHeights = true;
 
-            // By default, the size of the text will scale to always fit the size of the containing shape, overriding the text size setting
+            // By default, the size of the text will scale to always fit the size of the containing shape, overriding the text size setting.
             shape = AppendWordArt(doc, "FitShape on", "Calibri", 160, 24, Color.LightBlue, Color.Blue, ShapeType.TextPlainText);
             Assert.True(shape.TextPath.FitShape);
             shape.TextPath.Size = 24.0;
 
-            // If we set FitShape to false, the size of the text will defy the shape bounds and always keep the size value we set below
-            // We can also set TextPathAlignment to align the text
+            // If we set the "FitShape: property to "false", the text will keep the size
+            // which the "Size" property specifies regardless of the size of the shape.
+            // Use the "TextPathAlignment" property to also align the text to a side of the shape.
             shape = AppendWordArt(doc, "FitShape off", "Calibri", 160, 24, Color.LightBlue, Color.Blue, ShapeType.TextPlainText);
             shape.TextPath.FitShape = false;
             shape.TextPath.Size = 24.0;
@@ -2269,28 +2288,24 @@ namespace ApiExamples
         /// </summary>
         private static Shape AppendWordArt(Document doc, string text, string textFontFamily, double shapeWidth, double shapeHeight, Color wordArtFill, Color line, ShapeType wordArtShapeType)
         {
-            // Insert a new paragraph
-            Paragraph para = (Paragraph)doc.FirstSection.Body.AppendChild(new Paragraph(doc));
+            // Create an inline Shape, which will serve as a container for our WordArt.
+            // The shape can only be a valid WordArt shape if we assign a WordArt-designated ShapeType to it.
+            // These types will have "WordArt object" in the description,
+            // and their enumerator constant names will all start with "Text".
+            Shape shape = new Shape(doc, wordArtShapeType)
+            {
+                WrapType = WrapType.Inline,
+                Width = shapeWidth,
+                Height = shapeHeight,
+                FillColor = wordArtFill,
+                StrokeColor = line
+            };
 
-            // Create an inline Shape, which will serve as a container for our WordArt, and append it to the paragraph
-            // The shape can only be a valid WordArt shape if the ShapeType assigned here is a WordArt-designated ShapeType
-            // These types will have "WordArt object" in the description and their enumerator names will start with "Text..."
-            Shape shape = new Shape(doc, wordArtShapeType);
-            shape.WrapType = WrapType.Inline;
-            para.AppendChild(shape);
-
-            // Set the shape's width and height
-            shape.Width = shapeWidth;
-            shape.Height = shapeHeight;
-
-            // These color settings will apply to the letters of the displayed WordArt text
-            shape.FillColor = wordArtFill;
-            shape.StrokeColor = line;
-
-            // The WordArt object is accessed here, and we will set the text and font like this
             shape.TextPath.Text = text;
             shape.TextPath.FontFamily = textFontFamily;
-            
+
+            Paragraph para = (Paragraph)doc.FirstSection.Body.AppendChild(new Paragraph(doc));
+            para.AppendChild(shape);
             return shape;
         }
         //ExEnd
@@ -2300,7 +2315,7 @@ namespace ApiExamples
             Document doc = new Document(filename);
             List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
 
-            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 240, 24, 0.0d, 0.0d, shapes[0]);
+            TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 480, 24, 0.0d, 0.0d, shapes[0]);
             Assert.True(shapes[0].TextPath.Bold);
             Assert.True(shapes[0].TextPath.Italic);
 
@@ -2342,18 +2357,18 @@ namespace ApiExamples
             //ExFor:ShapeBase.IsDeleteRevision
             //ExFor:ShapeBase.IsInsertRevision
             //ExSummary:Shows how to work with revision shapes.
-            // Open a blank document
             Document doc = new Document();
 
-            // Insert an inline shape without tracking revisions
             Assert.False(doc.TrackRevisions);
+
+            // Insert an inline shape without tracking revisions, which will make this shape not a revision of any kind.
             Shape shape = new Shape(doc, ShapeType.Cube);
             shape.WrapType = WrapType.Inline;
             shape.Width = 100.0;
             shape.Height = 100.0;
             doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
 
-            // Start tracking revisions and then insert another shape
+            // Start tracking revisions and then insert another shape, which will be a revision.
             doc.StartTrackRevisions("John Doe");
 
             shape = new Shape(doc, ShapeType.Sun);
@@ -2362,18 +2377,23 @@ namespace ApiExamples
             shape.Height = 100.0;
             doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
 
-            // Get the document's shape collection which includes just the two shapes we added
-            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(2, shapes.Count);
+            Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
-            // Remove the first shape
+            Assert.AreEqual(2, shapes.Length);
+
             shapes[0].Remove();
 
-            // Because we removed that shape while changes were being tracked, the shape counts as a delete revision
+            // Since we removed that shape while we were tracking changes,
+            // the shape persists in the document, and counts as a delete revision.
+            // Accepting this revision will remove the shape permanently,
+            // and rejecting it will keep it in the document.
             Assert.AreEqual(ShapeType.Cube, shapes[0].ShapeType);
             Assert.True(shapes[0].IsDeleteRevision);
 
-            // And we inserted another shape while tracking changes, so that shape will count as an insert revision
+            // And we inserted another shape while tracking changes,
+            // so that shape will count as an insert revision.
+            // Accepting this revision will assimilate this shape into the document as a non-revision,
+            // and rejecting the revision will remove this shape permanently.
             Assert.AreEqual(ShapeType.Sun, shapes[1].ShapeType);
             Assert.True(shapes[1].IsInsertRevision);
             //ExEnd
@@ -2386,24 +2406,28 @@ namespace ApiExamples
             //ExFor:ShapeBase.IsMoveFromRevision
             //ExFor:ShapeBase.IsMoveToRevision
             //ExSummary:Shows how to identify move revision shapes.
-            // Open a document that contains a move revision
-            // A move revision is when we, while changes are tracked, cut(not copy)-and-paste or highlight and drag text from one place to another
-            // If inline shapes are caught up in the text movement, they will count as move revisions as well
-            // Moving a floating shape will not count as a move revision
+            // A move revision is when we move an element in the document body by cut-and-pasting it in Microsoft Word while
+            // tracking changes. If we involve an inline shape in such a text movement, that shape will also be a move revision.
+            // Copying-and-pasting, or moving floating shapes does not create move revisions.
             Document doc = new Document(MyDir + "Revision shape.docx");
 
-            // The document has one shape that was moved, but shape move revisions will have two instances of that shape
-            // One will be the shape at its arrival destination and the other will be the shape at its original location
-            List<Shape> nc = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(2, nc.Count);
+            // Move revisions consist of pairs of "Move from", and "Move to" revisions. There is one shape that we moved
+            // in this document, but, until we accept or reject the move revision, there will be two instances of that shape.
+            Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
-            // This is the move to revision, also the shape at its arrival destination
-            Assert.False(nc[0].IsMoveFromRevision);
-            Assert.True(nc[0].IsMoveToRevision);
+            Assert.AreEqual(2, shapes.Length);
 
-            // This is the move from revision, which is the shape at its original location
-            Assert.True(nc[1].IsMoveFromRevision);
-            Assert.False(nc[1].IsMoveToRevision);
+            // This is the "Move to" revision, which is the shape at its arrival destination.
+            // If we accept the revision, this "Move to" revision shape will disappear,
+            // and the "Move from" revision shape will remain.
+            Assert.False(shapes[0].IsMoveFromRevision);
+            Assert.True(shapes[0].IsMoveToRevision);
+
+            // This is the "Move from" revision, which is the shape at its original location.
+            // If we accept the revision, this "Move from" revision shape will disappear,
+            // and the "Move to" revision shape will remain.
+            Assert.True(shapes[1].IsMoveFromRevision);
+            Assert.False(shapes[1].IsMoveToRevision);
             //ExEnd
         }
 
