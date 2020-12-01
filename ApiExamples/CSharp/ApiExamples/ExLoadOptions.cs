@@ -142,7 +142,7 @@ namespace ApiExamples
             fontSettings.SetFontsFolder(FontsDir, false);
             fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Times New Roman", "Arvo");
 
-            // Set that FontSettings object as a member of a newly created LoadOptions object.
+            // Set that FontSettings object as a property of a newly created LoadOptions object.
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.FontSettings = fontSettings;
 
@@ -159,7 +159,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.MswVersion
             //ExSummary:Shows how to emulate the loading procedure of a specific Microsoft Word version during document loading.
-            // By default, Aspose.Words loads documents according to Microsoft Word 2019 specification.
+            // By default, Aspose.Words load documents according to Microsoft Word 2019 specification.
             LoadOptions loadOptions = new LoadOptions();
             
             Assert.AreEqual(MsWordVersion.Word2019, loadOptions.MswVersion);
@@ -185,7 +185,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.WarningCallback = new DocumentLoadingWarningCallback();
 
-            // Warnings that occur during the loading of the document will now be printed and stored.
+            // Our callback will print all warnings that come up during the load operation.
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
             List<WarningInfo> warnings = ((DocumentLoadingWarningCallback)loadOptions.WarningCallback).GetWarnings();
@@ -236,7 +236,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.TempFolder
             //ExSummary:Shows how to use the hard drive instead of memory when loading a document.
-            // When we load a document, various elements are temporarily stored in memory as the save operation is taking place.
+            // When we load a document, various elements are temporarily stored in memory as the save operation occurs.
             // We can use this option to use a temporary folder in the local file system instead,
             // which will reduce our application's memory overhead.
             LoadOptions options = new LoadOptions();
@@ -330,7 +330,11 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Image.CreateImageDirectly.docx", loadOptions);
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
+#if NET462
+            TestUtil.VerifyImageInShape(533, 533, ImageType.Png, shape);
+#elif NETCOREAPP2_1
             TestUtil.VerifyImageInShape(1600, 1600, ImageType.Png, shape);
+#endif
             //ExEnd
         }
 

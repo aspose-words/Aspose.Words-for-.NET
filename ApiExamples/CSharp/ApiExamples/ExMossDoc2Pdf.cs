@@ -26,12 +26,11 @@ namespace ApiExamples
         public static void MossDoc2Pdf(string[] args)
         {
             // Although SharePoint passes "-log <filename>" to us and we are
-            // supposed to log there, for the sake of simplicity, we will use 
-            // our own hard coded path to the log file.
+            // supposed to log there, we will use our hardcoded path to the log file for the sake of simplicity.
             // 
             // Make sure there are permissions to write into this folder.
             // The document converter will be called under the document 
-            // conversion account (not sure what name), so for testing purposes 
+            // conversion account (not sure what name), so for testing purposes, 
             // I would give the Users group write permissions into this folder.
             gLog = new StreamWriter(@"C:\Aspose2Pdf\log.txt", true);
 
@@ -48,7 +47,7 @@ namespace ApiExamples
                 // executable, alternatively you can add the license file as an 
                 // embedded resource to your project.
                 //
-                // // Set license for Aspose.Words.
+                // Set license for Aspose.Words.
                 // Aspose.Words.License wordsLicense = new Aspose.Words.License();
                 // wordsLicense.SetLicense("Aspose.Total.lic");
 

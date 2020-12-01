@@ -31,39 +31,35 @@ namespace ApiExamples
             //ExFor:Layout.LayoutCollector.GetNumPagesSpanned(Node)
             //ExFor:Layout.LayoutCollector.GetStartPageIndex(Node)
             //ExFor:Layout.LayoutEnumerator.Current
-            //ExSummary:Shows how to see the page spans of nodes.
-            // Open a blank document and create a DocumentBuilder
+            //ExSummary:Shows how to see the the ranges of pages that a node spans.
             Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Create a LayoutCollector object for our document that will have information about the nodes we placed
             LayoutCollector layoutCollector = new LayoutCollector(doc);
-
-            // The document itself is a node that contains everything, which currently spans 0 pages
+            
+            // Call the "GetNumPagesSpanned" method to count how many pages the content of our document spans.
+            // Since the document is empty, that number of pages is currently zero.
             Assert.AreEqual(doc, layoutCollector.Document);
             Assert.AreEqual(0, layoutCollector.GetNumPagesSpanned(doc));
 
-            // Populate the document with sections and page breaks
+            // Populate the document with 5 pages of content.
+            DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Write("Section 1");
             builder.InsertBreak(BreakType.PageBreak);
             builder.InsertBreak(BreakType.PageBreak);
-            doc.AppendChild(new Section(doc));
-            doc.LastSection.AppendChild(new Body(doc));
-            builder.MoveToDocumentEnd();
+            builder.InsertBreak(BreakType.SectionBreakEvenPage);
             builder.Write("Section 2");
             builder.InsertBreak(BreakType.PageBreak);
             builder.InsertBreak(BreakType.PageBreak);
 
-            // The collected layout data won't automatically keep up with the real document contents
+            // Before the layout collector, we need to call the "UpdatePageLayout" method to give us
+            // an accurate figure for any layout-related metric, such as the page count.
             Assert.AreEqual(0, layoutCollector.GetNumPagesSpanned(doc));
 
-            // After we clear the layout collection and update it, the layout entity collection will be populated with up-to-date information about our nodes
-            // The page span for the document now shows 5, which is what we would expect after placing 4 page breaks
             layoutCollector.Clear();
             doc.UpdatePageLayout();
+
             Assert.AreEqual(5, layoutCollector.GetNumPagesSpanned(doc));
 
-            // We can also see the start/end pages of any other node, and their overall page spans
+            // We can see the numbers of the start and end pages of any node and their overall page spans.
             NodeCollection nodes = doc.GetChildNodes(NodeType.Any, true);
             foreach (Node node in nodes)
             {
@@ -73,13 +69,15 @@ namespace ApiExamples
                     $" spanning {layoutCollector.GetNumPagesSpanned(node)} pages.");
             }
 
-            // We can iterate over the layout entities using a LayoutEnumerator
+            // We can iterate over the layout entities using a LayoutEnumerator.
             LayoutEnumerator layoutEnumerator = new LayoutEnumerator(doc);
+
             Assert.AreEqual(LayoutEntityType.Page, layoutEnumerator.Type);
 
-            // The LayoutEnumerator can traverse the collection of layout entities like a tree
-            // We can also point it to any node's corresponding layout entity like this
+            // The LayoutEnumerator can traverse the collection of layout entities like a tree.
+            // We can also apply it to any node's corresponding layout entity.
             layoutEnumerator.Current = layoutCollector.GetEntity(doc.GetChild(NodeType.Paragraph, 1, true));
+
             Assert.AreEqual(LayoutEntityType.Span, layoutEnumerator.Type);
             Assert.AreEqual("¶", layoutEnumerator.Text);
             //ExEnd
@@ -108,33 +106,39 @@ namespace ApiExamples
         [Test] //ExSkip
         public void LayoutEnumerator()
         {
-            // Open a document that contains a variety of layout entities
-            // Layout entities are pages, cells, rows, lines and other objects included in the LayoutEntityType enum
-            // They are defined visually by the rectangular space that they occupy in the document
+            // Open a document that contains a variety of layout entities.
+            // Layout entities are pages, cells, rows, lines and other objects included in the LayoutEntityType enum.
+            // Each layout entity has a rectangular space that it occupies in the document body.
             Document doc = new Document(MyDir + "Layout entities.docx");
 
-            // Create an enumerator that can traverse these entities like a tree
+            // Create an enumerator that can traverse these entities like a tree.
             LayoutEnumerator layoutEnumerator = new LayoutEnumerator(doc);
+
             Assert.AreEqual(doc, layoutEnumerator.Document);
 
             layoutEnumerator.MoveParent(LayoutEntityType.Page);
+
             Assert.AreEqual(LayoutEntityType.Page, layoutEnumerator.Type);
             Assert.Throws<InvalidOperationException>(() => Console.WriteLine(layoutEnumerator.Text));
 
-            // We can call this method to make sure that the enumerator points to the very first entity before we go through it forwards
+            // We can call this method to make sure that the enumerator will be at the first layout entity.
             layoutEnumerator.Reset();
 
-            // "Visual order" means when moving through an entity's children that are broken across pages,
-            // page layout takes precedence and we avoid elements in other pages and move to others on the same page
+            // There are two orders that determine how the layout enumerator continues traversing layout entities
+            // when it encounters entities that span across multiple pages.
+            // 1 -  In visual order:
+            // When moving through an entity's children that span multiple pages,
+            // page layout takes precedence, and we move to other child elements on this page and avoid the ones on the next.
             Console.WriteLine("Traversing from first to last, elements between pages separated:");
             TraverseLayoutForward(layoutEnumerator, 1);
 
-            // Our enumerator is conveniently at the end of the collection for us to go through the collection backwards
+            // Our enumerator is now at the end of the collection. We can traverse the layout entities backwards to go back to the beginning.
             Console.WriteLine("Traversing from last to first, elements between pages separated:");
             TraverseLayoutBackward(layoutEnumerator, 1);
 
-            // "Logical order" means when moving through an entity's children that are broken across pages, 
-            // node relationships take precedence
+            // 2 -  In logical order:
+            // When moving through an entity's children that span multiple pages,
+            // the enumerator will move between pages to traverse all the child entities.
             Console.WriteLine("Traversing from first to last, elements between pages mixed:");
             TraverseLayoutForwardLogical(layoutEnumerator, 1);
 
@@ -143,7 +147,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Enumerate through layoutEnumerator's layout entity collection front-to-back, in a DFS manner, and in a "Visual" order.
+        /// Enumerate through layoutEnumerator's layout entity collection front-to-back,
+        /// in a depth-first manner, and in the "Visual" order.
         /// </summary>
         private static void TraverseLayoutForward(LayoutEnumerator layoutEnumerator, int depth)
         {
@@ -160,7 +165,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Enumerate through layoutEnumerator's layout entity collection back-to-front, in a DFS manner, and in a "Visual" order.
+        /// Enumerate through layoutEnumerator's layout entity collection back-to-front,
+        /// in a depth-first manner, and in the "Visual" order.
         /// </summary>
         private static void TraverseLayoutBackward(LayoutEnumerator layoutEnumerator, int depth)
         {
@@ -177,7 +183,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Enumerate through layoutEnumerator's layout entity collection front-to-back, in a DFS manner, and in a "Logical" order.
+        /// Enumerate through layoutEnumerator's layout entity collection front-to-back,
+        /// in a depth-first manner, and in the "Logical" order.
         /// </summary>
         private static void TraverseLayoutForwardLogical(LayoutEnumerator layoutEnumerator, int depth)
         {
@@ -194,7 +201,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Enumerate through layoutEnumerator's layout entity collection back-to-front, in a DFS manner, and in a "Logical" order.
+        /// Enumerate through layoutEnumerator's layout entity collection back-to-front,
+        /// in a depth-first manner, and in the "Logical" order.
         /// </summary>
         private static void TraverseLayoutBackwardLogical(LayoutEnumerator layoutEnumerator, int depth)
         {
@@ -211,8 +219,9 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Print information about layoutEnumerator's current entity to the console, indented by a number of tab characters specified by indent.
-        /// The rectangle that we process at the end represents the area and location thereof that the element takes up in the document.
+        /// Print information about layoutEnumerator's current entity to the console, while indenting the text with tab characters
+        /// based on its depth relative to the root node that we provided in the constructor LayoutEnumerator instance.
+        /// The rectangle that we process at the end represents the area and location that the entity takes up in the document.
         /// </summary>
         private static void PrintCurrentEntity(LayoutEnumerator layoutEnumerator, int indent)
         {
@@ -222,7 +231,7 @@ namespace ApiExamples
                 ? $"{tabs}-> Entity type: {layoutEnumerator.Type}"
                 : $"{tabs}-> Entity type & kind: {layoutEnumerator.Type}, {layoutEnumerator.Kind}");
 
-            // Only spans can contain text
+            // Only spans can contain text.
             if (layoutEnumerator.Type == LayoutEntityType.Span)
                 Console.WriteLine($"{tabs}   Span contents: \"{layoutEnumerator.Text}\"");
 
@@ -239,16 +248,26 @@ namespace ApiExamples
         //ExFor:PageLayoutCallbackArgs.Document
         //ExFor:PageLayoutCallbackArgs.PageIndex
         //ExFor:PageLayoutEvent
-        //ExSummary:Shows how to track layout/rendering progress with layout callback.
+        //ExSummary:Shows how to track layout changes with a layout callback.
         [Test]
         public void PageLayoutCallback()
         {
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document();
+            doc.BuiltInDocumentProperties.Title = "My Document";
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
 
             doc.LayoutOptions.Callback = new RenderPageLayoutCallback();
             doc.UpdatePageLayout();
+
+            doc.Save(ArtifactsDir + "Layout.PageLayoutCallback.pdf");
         }
 
+        /// <summary>
+        /// Notifies us when we save the document to a fixed page format,
+        /// and also renders a page that we perform a page reflow on to an image in the local file system.
+        /// </summary>
         private class RenderPageLayoutCallback : IPageLayoutCallback
         {
             public void Notify(PageLayoutCallbackArgs a)
@@ -258,13 +277,21 @@ namespace ApiExamples
                     case PageLayoutEvent.PartReflowFinished:
                         NotifyPartFinished(a);
                         break;
+                    case PageLayoutEvent.ConversionFinished:
+                        NotifyConversionFinished(a);
+                        break;
                 }
             }
 
             private void NotifyPartFinished(PageLayoutCallbackArgs a)
             {
-                Console.WriteLine($"Part at page {a.PageIndex + 1} reflow");
+                Console.WriteLine($"Part at page {a.PageIndex + 1} reflow.");
                 RenderPage(a, a.PageIndex);
+            }
+
+            private void NotifyConversionFinished(PageLayoutCallbackArgs a)
+            {
+                Console.WriteLine($"Document \"{a.Document.BuiltInDocumentProperties.Title}\" converted to page format.");
             }
 
             private void RenderPage(PageLayoutCallbackArgs a, int pageIndex)

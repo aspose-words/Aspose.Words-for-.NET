@@ -24,6 +24,7 @@ using Image =
 System.Drawing.Image;
 using System.Collections.Generic;
 using System.Data.Odbc;
+using System.Drawing;
 #elif NETCOREAPP2_1 || __MOBILE__
 SkiaSharp.SKBitmap;
 using SkiaSharp;
@@ -62,34 +63,56 @@ namespace ApiExamples
         /// <param name="imageStream">Stream that contains the image.</param>
         internal static void VerifyImage(int expectedWidth, int expectedHeight, Stream imageStream)
         {
-            #if NET462 || JAVA
+#if NET462 || JAVA
             using (Image image = Image.FromStream(imageStream))
-            #elif NETCOREAPP2_1 || __MOBILE__
+#elif NETCOREAPP2_1 || __MOBILE__
             using (Image image = Image.Decode(imageStream))
-            #endif
+#endif
             {
-                #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
                 Assert.Multiple(() =>
                 {
                     Assert.AreEqual(expectedWidth, image.Width, 1);
                     Assert.AreEqual(expectedHeight, image.Height, 1);
                 });
-                #elif __MOBILE__
+#elif __MOBILE__
                 Assert.AreEqual(expectedWidth, image.Width);
                 Assert.AreEqual(expectedHeight, image.Height);
-                #endif
+#endif
             }
         }
 
-            /// <summary>
-            /// Checks whether an HTTP request sent to the specified address produces an expected web response. 
-            /// </summary>
-            /// <remarks>
-            /// Serves as a notification of any URLs used in code examples becoming unusable in the future.
-            /// </remarks>
-            /// <param name="expectedHttpStatusCode">Expected result status code of a request HTTP "HEAD" method performed on the web address.</param>
-            /// <param name="webAddress">URL where the request will be sent.</param>
-            internal static void VerifyWebResponseStatusCode(HttpStatusCode expectedHttpStatusCode, string webAddress)
+        /// <summary>
+        /// Checks whether an image from the local file system contains any transparency.
+        /// </summary>
+        /// <param name="filename">Local file system filename of the image file.</param>
+        internal static void ImageContainsTransparency(string filename)
+        {
+#if NET462 || JAVA
+            using (Bitmap bitmap = (Bitmap)Image.FromFile(filename))
+                for (int x = 0; x < bitmap.Width; x++)
+                    for (int y = 0; y < bitmap.Height; y++)
+                        if (bitmap.GetPixel(x, y).A != 255) return;
+
+            Assert.Fail($"The image from \"{filename}\" does not contain any transparency.");
+#elif NETCOREAPP2_1 || __MOBILE__
+            using (Image image = Image.Decode(filename))
+                foreach (SKColor pixelColor in image.Pixels)
+                    if (pixelColor.Alpha != 255) return;
+
+            Assert.Fail($"The image from \"{filename}\" does not contain any transparency.");
+#endif
+        }
+
+        /// <summary>
+        /// Checks whether an HTTP request sent to the specified address produces an expected web response. 
+        /// </summary>
+        /// <remarks>
+        /// Serves as a notification of any URLs used in code examples becoming unusable in the future.
+        /// </remarks>
+        /// <param name="expectedHttpStatusCode">Expected result status code of a request HTTP "HEAD" method performed on the web address.</param>
+        /// <param name="webAddress">URL where the request will be sent.</param>
+        internal static void VerifyWebResponseStatusCode(HttpStatusCode expectedHttpStatusCode, string webAddress)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(webAddress);
             request.Method = "HEAD";
@@ -106,7 +129,7 @@ namespace ApiExamples
         /// <param name="sqlQuery">Microsoft.Jet.OLEDB.4.0-compliant SQL query.</param>
         internal static void TableMatchesQueryResult(Table expectedResult, string dbFilename, string sqlQuery)
         {
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             using (OleDbConnection connection = new OleDbConnection())
             {
                 connection.ConnectionString = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={dbFilename};";
@@ -127,7 +150,7 @@ namespace ApiExamples
                         Assert.AreEqual(expectedResult.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, string.Empty),
                             myDataTable.Rows[i][j].ToString());
             }
-            #endif
+#endif
         }
 
         /// <summary>
@@ -158,7 +181,7 @@ namespace ApiExamples
         /// <param name="onePagePerRow">True if the mail merge produced a document with one page per row in the data source.</param>
         internal static void MailMergeMatchesQueryResult(string dbFilename, string sqlQuery, Document doc, bool onePagePerRow)
         {
-            #if NET462 || JAVA
+#if NET462 || JAVA
             List<string[]> expectedStrings = new List<string[]>(); 
             string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + dbFilename;
 
@@ -196,7 +219,7 @@ namespace ApiExamples
             }
 
             MailMergeMatchesArray(expectedStrings.ToArray(), doc, onePagePerRow);
-            #endif
+#endif
         }
 
         /// <summary>
@@ -341,18 +364,18 @@ namespace ApiExamples
         /// <param name="field">The field that's being tested.</param>
         internal static void VerifyField(FieldType expectedType, string expectedFieldCode, string expectedResult, Field field)
         {
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedType, field.Type);
                 Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
                 Assert.AreEqual(expectedResult, field.Result);
             });
-            #elif __MOBILE__
+#elif __MOBILE__
             Assert.AreEqual(expectedType, field.Type);
             Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
             Assert.AreEqual(expectedResult, field.Result);
-            #endif
+#endif
         }
 
         /// <summary>
@@ -369,7 +392,7 @@ namespace ApiExamples
         /// <param name="delta">Margin of error for expectedResult.</param>
         internal static void VerifyField(FieldType expectedType, string expectedFieldCode, DateTime expectedResult, Field field, TimeSpan delta)
         {
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedType, field.Type);
@@ -381,7 +404,7 @@ namespace ApiExamples
                 else
                     VerifyDate(expectedResult.Date, actual, delta);
             });
-            #elif __MOBILE__
+#elif __MOBILE__
             Assert.AreEqual(expectedType, field.Type);
             Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
             Assert.True(DateTime.TryParse(field.Result, out DateTime actual));
@@ -390,7 +413,7 @@ namespace ApiExamples
                 VerifyDate(expectedResult, actual, delta);
             else
                 VerifyDate(expectedResult.Date, actual, delta);
-            #endif
+#endif
         }
 
         /// <summary>
@@ -436,7 +459,7 @@ namespace ApiExamples
         /// <param name="imageShape">Shape that contains the image.</param>
         internal static void VerifyImageInShape(int expectedWidth, int expectedHeight, ImageType expectedImageType, Shape imageShape)
         {
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
                 Assert.True(imageShape.HasImage);
@@ -444,12 +467,12 @@ namespace ApiExamples
                 Assert.AreEqual(expectedWidth, imageShape.ImageData.ImageSize.WidthPixels);
                 Assert.AreEqual(expectedHeight, imageShape.ImageData.ImageSize.HeightPixels);
             });
-            #elif __MOBILE__
+#elif __MOBILE__
             Assert.True(imageShape.HasImage);
             Assert.AreEqual(expectedImageType, imageShape.ImageData.ImageType);
             Assert.AreEqual(expectedWidth, imageShape.ImageData.ImageSize.WidthPixels);
             Assert.AreEqual(expectedHeight, imageShape.ImageData.ImageSize.HeightPixels);
-            #endif
+#endif
         }
 
         /// <summary>
@@ -462,7 +485,7 @@ namespace ApiExamples
         /// <param name="footnote">Footnote node in question.</param>
         internal static void VerifyFootnote(FootnoteType expectedFootnoteType, bool expectedIsAuto, string expectedReferenceMark, string expectedContents, Footnote footnote)
         {
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedFootnoteType, footnote.FootnoteType);
@@ -470,12 +493,12 @@ namespace ApiExamples
                 Assert.AreEqual(expectedReferenceMark, footnote.ReferenceMark);
                 Assert.AreEqual(expectedContents, footnote.ToString(SaveFormat.Text).Trim());
             });
-            #elif __MOBILE__
+#elif __MOBILE__
             Assert.AreEqual(expectedFootnoteType, footnote.FootnoteType);
             Assert.AreEqual(expectedIsAuto, footnote.IsAuto);
             Assert.AreEqual(expectedReferenceMark, footnote.ReferenceMark);
             Assert.AreEqual(expectedContents, footnote.ToString(SaveFormat.Text).Trim());
-            #endif
+#endif
         }
 
         /// <summary>
@@ -490,18 +513,18 @@ namespace ApiExamples
         /// <param name="listLevel">List level in question.</param>
         internal static void VerifyListLevel(string expectedListFormat, double expectedNumberPosition, NumberStyle expectedNumberStyle, ListLevel listLevel)
         {
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedListFormat, listLevel.NumberFormat);
                 Assert.AreEqual(expectedNumberPosition, listLevel.NumberPosition);
                 Assert.AreEqual(expectedNumberStyle, listLevel.NumberStyle);
             });
-            #elif __MOBILE__
+#elif __MOBILE__
             Assert.AreEqual(expectedListFormat, listLevel.NumberFormat);
             Assert.AreEqual(expectedNumberPosition, listLevel.NumberPosition);
             Assert.AreEqual(expectedNumberStyle, listLevel.NumberStyle);
-            #endif
+#endif
         }
         
         /// <summary>
@@ -555,7 +578,7 @@ namespace ApiExamples
         /// <param name="tabStop">Tab stop that's being tested.</param>
         internal static void VerifyTabStop(double expectedPosition, TabAlignment expectedTabAlignment, TabLeader expectedTabLeader, bool isClear, TabStop tabStop)
         {
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedPosition, tabStop.Position);
@@ -563,12 +586,12 @@ namespace ApiExamples
                 Assert.AreEqual(expectedTabLeader, tabStop.Leader);
                 Assert.AreEqual(isClear, tabStop.IsClear);
             });
-            #elif __MOBILE__
+#elif __MOBILE__
             Assert.AreEqual(expectedPosition, tabStop.Position);
             Assert.AreEqual(expectedTabAlignment, tabStop.Alignment);
             Assert.AreEqual(expectedTabLeader, tabStop.Leader);
             Assert.AreEqual(isClear, tabStop.IsClear);
-            #endif
+#endif
         }
 
         /// <summary>
@@ -579,7 +602,7 @@ namespace ApiExamples
         /// </remarks>
         internal static void VerifyShape(ShapeType expectedShapeType, string expectedName, double expectedWidth, double expectedHeight, double expectedTop, double expectedLeft, Shape shape)
         {
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedShapeType, shape.ShapeType);
@@ -589,14 +612,14 @@ namespace ApiExamples
                 Assert.AreEqual(expectedTop, shape.Top);
                 Assert.AreEqual(expectedLeft, shape.Left);
             });
-            #elif __MOBILE__
+#elif __MOBILE__
             Assert.AreEqual(expectedShapeType, shape.ShapeType);
             Assert.AreEqual(expectedName, shape.Name);
             Assert.AreEqual(expectedWidth, shape.Width);
             Assert.AreEqual(expectedHeight, shape.Height);
             Assert.AreEqual(expectedTop, shape.Top);
             Assert.AreEqual(expectedLeft, shape.Left);
-            #endif
+#endif
         }
 
         /// <summary>
@@ -607,7 +630,7 @@ namespace ApiExamples
         /// </remarks>
         internal static void VerifyTextBox(LayoutFlow expectedLayoutFlow, bool expectedFitShapeToText, TextBoxWrapMode expectedTextBoxWrapMode, double marginTop, double marginBottom, double marginLeft, double marginRight, TextBox textBox)
         {
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedLayoutFlow, textBox.LayoutFlow);
@@ -618,7 +641,7 @@ namespace ApiExamples
                 Assert.AreEqual(marginLeft, textBox.InternalMarginLeft);
                 Assert.AreEqual(marginRight, textBox.InternalMarginRight);
             });
-            #elif __MOBILE__
+#elif __MOBILE__
             Assert.AreEqual(expectedLayoutFlow, textBox.LayoutFlow);
             Assert.AreEqual(expectedFitShapeToText, textBox.FitShapeToText);
             Assert.AreEqual(expectedTextBoxWrapMode, textBox.TextBoxWrapMode);
@@ -626,12 +649,26 @@ namespace ApiExamples
             Assert.AreEqual(marginBottom, textBox.InternalMarginBottom);
             Assert.AreEqual(marginLeft, textBox.InternalMarginLeft);
             Assert.AreEqual(marginRight, textBox.InternalMarginRight);
-            #endif
+#endif
         }
 
         /// <summary>
-        /// Margin of error, in bytes, for file size comparisons which take system-to-system variance of metadata size into account.
+        /// Checks whether values of attributes of an editable range are equal to their expected values.
         /// </summary>
-        internal static int FileInfoLengthDelta { get; } = 200;
+        internal static void VerifyEditableRange(int expectedId, string expectedEditorUser, EditorType expectedEditorGroup, EditableRange editableRange)
+        {
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual(expectedId, editableRange.Id);
+                Assert.AreEqual(expectedEditorUser, editableRange.SingleUser);
+                Assert.AreEqual(expectedEditorGroup, editableRange.EditorGroup);
+            });
+#elif __MOBILE__
+            Assert.AreEqual(expectedId, editableRange.Id);
+            Assert.AreEqual(expectedEditorUser, editableRange.SingleUser);
+            Assert.AreEqual(expectedEditorGroup, editableRange.EditorGroup);
+#endif
+        }
     }
 }
