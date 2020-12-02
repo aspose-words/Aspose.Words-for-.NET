@@ -16,7 +16,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExNodeImporter : ApiExampleBase
     {
-        [Ignore("WORDSNET-21485")]
         [TestCase(false)]
         [TestCase(true)]
         public void KeepSourceNumbering(bool keepSourceNumbering)
