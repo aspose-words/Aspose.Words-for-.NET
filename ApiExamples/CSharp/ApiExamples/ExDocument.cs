@@ -269,7 +269,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Category("IgnoreOnJenkins")]
+        [Test, Ignore("Need to rework.")]
         public void InsertHtmlFromWebPage()
         {
             //ExStart
@@ -290,7 +290,7 @@ namespace ApiExamples
                     Document doc = new Document(stream, options);
 
                     // At this stage, we can read and edit the document's contents and then save it to the local file system.
-                    Assert.AreEqual("File Format APIs", doc.FirstSection.Body.Paragraphs[1].Runs[0].GetText().Trim());
+                    Assert.AreEqual("File Format APIs", doc.FirstSection.Body.Paragraphs[1].Runs[0].GetText().Trim()); //ExSkip
 
                     doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
                 }
