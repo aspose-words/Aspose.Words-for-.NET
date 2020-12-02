@@ -2438,62 +2438,61 @@ namespace ApiExamples
             //ExFor:ShapeBase.AdjustWithEffects(RectangleF)
             //ExFor:ShapeBase.BoundsWithEffects
             //ExSummary:Shows how to check how a shape's bounds are affected by shape effects.
-            // Open a document that contains two shapes and get its shape collection
             Document doc = new Document(MyDir + "Shape shadow effect.docx");
-            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(2, shapes.Count);
 
-            // The two shapes are identical in terms of dimensions and shape type
+            Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
+
+            Assert.AreEqual(2, shapes.Length);
+
+            // The two shapes are identical in terms of dimensions and shape type.
             Assert.AreEqual(shapes[0].Width, shapes[1].Width);
             Assert.AreEqual(shapes[0].Height, shapes[1].Height);
             Assert.AreEqual(shapes[0].ShapeType, shapes[1].ShapeType);
 
-            // However, the first shape has no effects, while the second one has a shadow and thick outline
+            // The first shape has no effects, and the second one has a shadow and thick outline.
+            // These effects make the size of the second shape's silhouette bigger than that of the first.
+            // Even though the size of the rectangle that shows up when we click on these shapes in Microsoft Word is the same,
+            // the visible outer bounds of the second shape are affected by the shadow and outline, and thus are bigger.
+            // We can use the "AdjustWithEffects" method to see the true size of the shape.
             Assert.AreEqual(0.0, shapes[0].StrokeWeight);
             Assert.AreEqual(20.0, shapes[1].StrokeWeight);
             Assert.False(shapes[0].ShadowEnabled);
             Assert.True(shapes[1].ShadowEnabled);
 
-            // These effects make the size of the second shape's silhouette bigger than that of the first
-            // Even though the size of the rectangle that shows up when we click on these shapes in Microsoft Word is the same,
-            // the practical outer bounds of the second shape are affected by the shadow and outline and are bigger
-            // We can use the AdjustWithEffects method to see exactly how much bigger they are
-
-            // The first shape has no outline or effects
             Shape shape = shapes[0];
 
-            // Create a RectangleF object, which represents a rectangle, which we could potentially use as the coordinates and bounds for a shape
+            // Create a RectangleF object, which represents a rectangle,
+            // which we could potentially use as the coordinates and bounds for a shape.
             RectangleF rectangleF = new RectangleF(200, 200, 1000, 1000);
 
             // Run this method to get the size of the rectangle adjusted for all our shape's effects
             RectangleF rectangleFOut = shape.AdjustWithEffects(rectangleF);
 
-            // Since the shape has no border-changing effects, its boundary dimensions are unaffected
+            // Since the shape has no border-changing effects, its boundary dimensions are unaffected.
             Assert.AreEqual(200, rectangleFOut.X);
             Assert.AreEqual(200, rectangleFOut.Y);
             Assert.AreEqual(1000, rectangleFOut.Width);
             Assert.AreEqual(1000, rectangleFOut.Height);
 
-            // The final extent of the first shape, in points
+            // Verify the final extent of the first shape, in points.
             Assert.AreEqual(0, shape.BoundsWithEffects.X);
             Assert.AreEqual(0, shape.BoundsWithEffects.Y);
             Assert.AreEqual(147, shape.BoundsWithEffects.Width);
             Assert.AreEqual(147, shape.BoundsWithEffects.Height);
 
-            // Do the same with the second shape
             shape = shapes[1];
             rectangleF = new RectangleF(200, 200, 1000, 1000);
             rectangleFOut = shape.AdjustWithEffects(rectangleF);
             
-            // The shape's x/y coordinates (top left corner location) have been pushed back by the thick outline
+            // The shape effects have moved the apparent top left corner of the shape slightly.
             Assert.AreEqual(171.5, rectangleFOut.X);
             Assert.AreEqual(167, rectangleFOut.Y);
 
-            // The width and height were also affected by the outline and shadow
+            // The effects have also affected the visible dimensions of the shape.
             Assert.AreEqual(1045, rectangleFOut.Width);
             Assert.AreEqual(1132, rectangleFOut.Height);
 
-            // These values are also affected by effects
+            // The effects have also affected the visible bounds of the shape.
             Assert.AreEqual(-28.5, shape.BoundsWithEffects.X);
             Assert.AreEqual(-33, shape.BoundsWithEffects.Y);
             Assert.AreEqual(192, shape.BoundsWithEffects.Width);
@@ -2507,14 +2506,17 @@ namespace ApiExamples
             //ExStart
             //ExFor:ShapeBase.GetShapeRenderer
             //ExFor:NodeRendererBase.Save(Stream, ImageSaveOptions)
-            //ExSummary:Shows how to export shapes to files in the local file system using a shape renderer.
+            //ExSummary:Shows how to use a shape renderer to export shapes to files in the local file system.
             // Open a document that contains shapes and get its shape collection
             Document doc = new Document(MyDir + "Various shapes.docx");
-            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(7, shapes.Count);
+            Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
-            // There are 7 shapes in the document, with one group shape with 2 child shapes
-            // The child shapes will be rendered but their parent group shape will be skipped, so we will see 6 output files
+            Assert.AreEqual(7, shapes.Length);
+
+            // There are 7 shapes in the document, including one group shape with 2 child shapes.
+            // We will render every shape to an image file in the local file system
+            // while ignoring the group shapes, since they have no appearance.
+            // This will produce 6 image files.
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
             {
                 ShapeRenderer renderer = shape.GetShapeRenderer();
@@ -2529,15 +2531,14 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Shape.HasSmartArt
-            //ExSummary:Shows how to detect that Shape has a SmartArt object.
+            //ExSummary:Shows how to count the number of shapes in a document with SmartArt objects.
             Document doc = new Document(MyDir + "SmartArt.docx");
  
-            int count = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Count(shape => shape.HasSmartArt);
+            int numberOfSmartArtShapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Count(shape => shape.HasSmartArt);
 
-            Console.WriteLine("The document has {0} shapes with SmartArt.", count);
+            Assert.AreEqual(2, numberOfSmartArtShapes);
             //ExEnd
 
-            Assert.AreEqual(2, count);
         }
 
         [Test, Category("SkipMono")]
@@ -2557,40 +2558,41 @@ namespace ApiExamples
             //ExFor:OfficeMathRenderer
             //ExFor:OfficeMathRenderer.#ctor(Math.OfficeMath)
             //ExSummary:Shows how to measure and scale shapes.
-            // Open a document that contains an OfficeMath object
             Document doc = new Document(MyDir + "Office math.docx");
 
-            // Create a renderer for the OfficeMath object 
             OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
             OfficeMathRenderer renderer = new OfficeMathRenderer(officeMath);
 
-            // We can measure the size of the image that the OfficeMath object will create when we render it
+            // Verify the size of the image that the OfficeMath object will create when we render it.
             Assert.AreEqual(119.0f, renderer.SizeInPoints.Width, 0.2f);
             Assert.AreEqual(13.0f, renderer.SizeInPoints.Height, 0.1f);
 
             Assert.AreEqual(119.0f, renderer.BoundsInPoints.Width, 0.2f);
             Assert.AreEqual(13.0f, renderer.BoundsInPoints.Height, 0.1f);
 
-            // Shapes with transparent parts may return different values here
+            // Shapes with transparent parts may contain different values in the "OpaqueBoundsInPoints" properties.
             Assert.AreEqual(119.0f, renderer.OpaqueBoundsInPoints.Width, 0.2f);
             Assert.AreEqual(14.2f, renderer.OpaqueBoundsInPoints.Height, 0.1f);
 
-            // Get the shape size in pixels, with linear scaling to a specific DPI
+            // Get the shape size in pixels, with linear scaling to a specific DPI.
             Rectangle bounds = renderer.GetBoundsInPixels(1.0f, 96.0f);
+
             Assert.AreEqual(159, bounds.Width);
             Assert.AreEqual(18, bounds.Height);
 
-            // Get the shape size in pixels, but with a different DPI for the horizontal and vertical dimensions
+            // Get the shape size in pixels, but with a different DPI for the horizontal and vertical dimensions.
             bounds = renderer.GetBoundsInPixels(1.0f, 96.0f, 150.0f);
             Assert.AreEqual(159, bounds.Width);
             Assert.AreEqual(28, bounds.Height);
 
-            // The opaque bounds may vary here also
+            // The opaque bounds may vary here also.
             bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f);
+
             Assert.AreEqual(159, bounds.Width);
             Assert.AreEqual(18, bounds.Height);
 
             bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f, 150.0f);
+
             Assert.AreEqual(159, bounds.Width);
             Assert.AreEqual(30, bounds.Height);
             //ExEnd
