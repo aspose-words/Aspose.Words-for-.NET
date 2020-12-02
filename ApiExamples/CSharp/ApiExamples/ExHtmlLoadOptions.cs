@@ -160,6 +160,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlLoadOptions.#ctor(LoadFormat,String,String)
+            //ExFor:LoadOptions.#ctor(LoadFormat, String, String)
             //ExFor:LoadOptions.LoadFormat
             //ExFor:LoadFormat
             //ExSummary:Shows how to specify a base URI when opening an html document.

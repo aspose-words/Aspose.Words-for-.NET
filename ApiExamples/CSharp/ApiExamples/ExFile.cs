@@ -179,6 +179,7 @@ namespace ApiExamples
             //ExFor:FileFormatUtil.LoadFormatToSaveFormat(LoadFormat)
             //ExFor:Document.OriginalFileName
             //ExFor:FileFormatInfo.LoadFormat
+            //ExFor:LoadFormat
             //ExSummary:Shows how to use the FileFormatUtil methods to detect the format of a document.
             // Load a document from a file that is missing a file extension, and then detect its file format.
             using (FileStream docStream = File.OpenRead(MyDir + "Word document with missing file extension"))

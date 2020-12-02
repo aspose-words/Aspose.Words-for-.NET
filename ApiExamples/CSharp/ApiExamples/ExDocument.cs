@@ -269,33 +269,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Category("IgnoreOnJenkins")]
-        public void InsertHtmlFromWebPage()
-        {
-            //ExStart
-            //ExFor:Document.#ctor(Stream, LoadOptions)
-            //ExFor:LoadOptions.#ctor(LoadFormat, String, String)
-            //ExFor:LoadFormat
-            //ExSummary:Shows how save a web page as a .docx file.
-            const string url = "http://www.aspose.com/";
-
-            using (WebClient client = new WebClient()) 
-            { 
-                using (MemoryStream stream = new MemoryStream(client.DownloadData(url)))
-                {
-                    // The URL is used again as a baseUri to ensure that any relative image paths are retrieved correctly.
-                    LoadOptions options = new LoadOptions(LoadFormat.Html, string.Empty, url);
-
-                    // Create a document from the contents of the stream, and then save it to the local file system.
-                    Document doc = new Document(stream, options);
-                    doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
-                }
-            }
-            //ExEnd
-
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
-        }
-
         [Test]
         public void LoadEncrypted()
         {
