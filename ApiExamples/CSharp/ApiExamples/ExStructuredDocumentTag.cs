@@ -23,9 +23,6 @@ using Aspose.Pdf.Text;
 
 namespace ApiExamples
 {
-    /// <summary>
-    /// Tests that verify work with structured document tags in the document. 
-    /// </summary>
     [TestFixture]
     internal class ExStructuredDocumentTag : ApiExampleBase
     {
@@ -34,7 +31,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:StructuredDocumentTag.SdtType
-            //ExSummary:Shows how to get type of structured document tag.
+            //ExSummary:Shows how to get the type of a structured document tag.
             Document doc = new Document(MyDir + "Structured document tags.docx");
 
             List<StructuredDocumentTag> sdTags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true).OfType<StructuredDocumentTag>().ToList();
@@ -46,7 +43,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetSpecificStyleToSdt()
+        public void ApplyStyle()
         {
             //ExStart
             //ExFor:StructuredDocumentTag
@@ -59,20 +56,19 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Get specific style from the document to apply it to an SDT
+            // Below are two ways tp apply a style from the document to a structured document tag.
+            // 1 -  Apply a style object from the document's style collection:
             Style quoteStyle = doc.Styles[StyleIdentifier.Quote];
             StructuredDocumentTag sdtPlainText = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
             sdtPlainText.Style = quoteStyle;
 
+            // 2 -  Reference a style in the document by name:
             StructuredDocumentTag sdtRichText = new StructuredDocumentTag(doc, SdtType.RichText, MarkupLevel.Inline);
-            // Second method to apply specific style to an SDT control
             sdtRichText.StyleName = "Quote";
 
-            // Insert content controls into the document
             builder.InsertNode(sdtPlainText);
             builder.InsertNode(sdtRichText);
 
-            // We can get a collection of StructuredDocumentTags by looking for the document's child nodes of this NodeType
             Assert.AreEqual(NodeType.StructuredDocumentTag, sdtPlainText.NodeType);
 
             NodeCollection tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
@@ -80,7 +76,7 @@ namespace ApiExamples
             foreach (Node node in tags)
             {
                 StructuredDocumentTag sdt = (StructuredDocumentTag)node;
-                // If style was not defined before, style should be "Default Paragraph Font"
+
                 Assert.AreEqual(StyleIdentifier.Quote, sdt.Style.StyleIdentifier);
                 Assert.AreEqual("Quote", sdt.StyleName);
             }
@@ -93,24 +89,24 @@ namespace ApiExamples
             //ExStart
             //ExFor:StructuredDocumentTag.#ctor(DocumentBase, SdtType, MarkupLevel)
             //ExFor:StructuredDocumentTag.Checked
-            //ExSummary:Show how to create and insert checkbox structured document tag.
+            //ExSummary:Show how to create a structured document tag in the form of a check box.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             StructuredDocumentTag sdtCheckBox = new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline);
             sdtCheckBox.Checked = true;
 
-            // Insert content control into the document
             builder.InsertNode(sdtCheckBox);
+
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.CheckBox.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "StructuredDocumentTag.CheckBox.docx");
 
-            NodeCollection sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
+            StructuredDocumentTag[] sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true).OfType<StructuredDocumentTag>().ToArray();
 
-            StructuredDocumentTag sdt = (StructuredDocumentTag) sdts[0];
-            Assert.AreEqual(true, sdt.Checked);
-            Assert.That(sdt.XmlMapping.StoreItemId, Is.Empty); //Assert that this sdt has no StoreItemId
+            Assert.AreEqual(true, sdts[0].Checked);
+            Assert.That(sdts[0].XmlMapping.StoreItemId, Is.Empty);
         }
 
 #if NET462 || NETCOREAPP2_1 || JAVA // because of a Xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
@@ -124,36 +120,29 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTag.DateStorageFormat
             //ExFor:StructuredDocumentTag.FullDate
             //ExSummary:Shows how to prompt the user to enter a date with a StructuredDocumentTag.
-            // Create a new document
             Document doc = new Document();
 
-            // Insert a StructuredDocumentTag that prompts the user to enter a date
-            // In Microsoft Word, this element is known as a "Date picker content control"
+            // Insert a StructuredDocumentTag that prompts the user to enter a date.
+            // In Microsoft Word, this element is known as a "Date picker content control".
             // When we click on the arrow on the right end of this tag in Microsoft Word,
-            // we will see a pop up in the form of a clickable calendar
-            // We can use that popup to select a date that will be displayed by the tag 
+            // we will see a pop up in the form of a clickable calendar.
+            // We can use that popup to select a date that the tag will display.
             StructuredDocumentTag sdtDate = new StructuredDocumentTag(doc, SdtType.Date, MarkupLevel.Inline);
 
-            // This attribute sets the language that the calendar will be displayed in,
-            // which in this case will be Saudi Arabian Arabic
+            // Display the date according to the Saudi Arabian Arabic locale.
             sdtDate.DateDisplayLocale = CultureInfo.GetCultureInfo("ar-SA").LCID;
 
-            // We can set the format with which to display the date like this
-            // The locale we set above will be carried over to the displayed date
+            // Set the format with which to display the date.
             sdtDate.DateDisplayFormat = "dd MMMM, yyyy";
-
-            // Select how the data will be stored in the document
             sdtDate.DateStorageFormat = SdtDateStorageFormat.DateTime;
 
-            // Set the calendar type that will be used to select and display the date
+            // Display the date according to the Hijri calendar.
             sdtDate.CalendarType = SdtCalendarType.Hijri;
 
-            // Before a date is chosen, the tag will display the text "Click here to enter a date."
-            // We can set a default date to display by setting this variable
-            // We must convert the date to the appropriate calendar ourselves
+            // Before the user chooses a date in Microsoft Word, the tag will display the text "Click here to enter a date.".
+            // Set the "FullDate" property to get the tag to display a default date, according to the tag's calendar.
             sdtDate.FullDate = new DateTime(1440, 10, 20);
 
-            // Insert the StructuredDocumentTag into the document with a DocumentBuilder and save the document
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertNode(sdtDate);
 
@@ -175,46 +164,48 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTag.Tag
             //ExFor:StructuredDocumentTag.Title
             //ExFor:StructuredDocumentTag.RemoveSelfOnly
-            //ExSummary:Shows how to create a StructuredDocumentTag in the form of a plain text box and modify its appearance.
-            // Create a new document 
+            //ExSummary:Shows how to create a structured document tag in the form of a plain text box and modify its appearance.
             Document doc = new Document();
 
-            // Create a StructuredDocumentTag that will contain plain text
+            // Create a structured document tag that will contain plain text.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
-            // Set the title and color of the frame that appears when you mouse over it
+            // Set the title and color of the frame that appears when
+            // you mouse over the structured document tag in Microsoft Word.
             tag.Title = "My plain text";
             tag.Color = Color.Magenta;
 
-            // Set a programmatic tag for this StructuredDocumentTag
-            // Unlike the title, this value will not be visible in the document but will be programmatically obtainable
-            // as an XML element named "tag", with the string below in its "@val" attribute
+            // Set a tag for this structured document tag, which is obtainable
+            // as an XML element named "tag", with the string below in its "@val" attribute.
             tag.Tag = "MyPlainTextSDT";
 
-            // Every StructuredDocumentTag gets a random unique ID
+            // Every structured document tag has a random unique ID.
             Assert.That(tag.Id, Is.Positive);
 
-            // Set the font for the text inside the StructuredDocumentTag
+            // Set the font for the text inside the structured document tag.
             tag.ContentsFont.Name = "Arial";
 
-            // Set the font for the text at the end of the StructuredDocumentTag
-            // Any text that is typed in the document body after moving out of the tag with arrow keys will keep this font
+            // Set the font for the text at the end of the structured document tag.
+            // Any text that we type in the document body after moving out of the tag with arrow keys will use this font.
             tag.EndCharacterFont.Name = "Arial Black";
 
-            // By default, this is false and pressing enter while inside a StructuredDocumentTag does nothing
+            // By default, this is false and pressing enter while inside a structured document tag does nothing
             // When set to true, our StructuredDocumentTag can have multiple lines
+
+            // Set the "Multiline" property to "false" to only allow the contents
+            // of this structured document tag to span a single line.
+            // Set the "Multiline" property to "true" to allow the tag to contain multiple lines of content.
             tag.Multiline = true;
 
-            // Insert the StructuredDocumentTag into the document with a DocumentBuilder and save the document to a file
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertNode(tag);
 
-            // Insert a clone of our StructuredDocumentTag in a new paragraph
+            // Insert a clone of our structured document tag in a new paragraph.
             StructuredDocumentTag tagClone = (StructuredDocumentTag)tag.Clone(true);
             builder.InsertParagraph();
             builder.InsertNode(tagClone);
 
-            // We can remove the tag while keeping its contents where they were in the Paragraph by calling RemoveSelfOnly()
+            // Use the "RemoveSelfOnly" method to remove a structured document tag, while keeping its contents in the document.
             tagClone.RemoveSelfOnly();
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.PlainText.docx");
