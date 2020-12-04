@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Markup;
 using NUnit.Framework;
@@ -26,23 +27,31 @@ namespace ApiExamples
         public void Create()
         {
             Document doc = new Document();
-            SmartTag smartTag = new SmartTag(doc);
-            smartTag.Element = "date";
 
-            // Specify a date and set smart tag properties accordingly
+            // A smart tag appears in a document with Microsoft Word recognizes a part of its text as some form of data,
+            // such as a name, date, or address, and converts it to a hyperlink which displays a purple dotted underline.
+            SmartTag smartTag = new SmartTag(doc);
+
+            // Smart tags are composite nodes that contain their recognized text in its entirety.
+            // Add contents to this smart tag manually.
             smartTag.AppendChild(new Run(doc, "May 29, 2019"));
 
+            // Microsoft Word may recognize the above contents as being a date.
+            // Smart tags use the "Element" property to reflect the type of data they contain.
+            smartTag.Element = "date";
+
+            // Some smart tag types process their contents further into custom XML properties.
             smartTag.Properties.Add(new CustomXmlProperty("Day", string.Empty, "29"));
             smartTag.Properties.Add(new CustomXmlProperty("Month", string.Empty, "5"));
             smartTag.Properties.Add(new CustomXmlProperty("Year", string.Empty, "2019"));
 
-            // Set the smart tag's uri to the default
+            // Set the smart tag's uri to the default value.
             smartTag.Uri = "urn:schemas-microsoft-com:office:smarttags";
 
             doc.FirstSection.Body.FirstParagraph.AppendChild(smartTag);
             doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, " is a date. "));
 
-            // Create and add one more smart tag, this time for a financial symbol
+            // Create another smart tag for a stock ticker.
             smartTag = new SmartTag(doc);
             smartTag.Element = "stockticker";
             smartTag.Uri = "urn:schemas-microsoft-com:office:smarttags";
@@ -52,24 +61,25 @@ namespace ApiExamples
             doc.FirstSection.Body.FirstParagraph.AppendChild(smartTag);
             doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, " is a stock ticker."));
 
-            // Print all the smart tags in our document with a document visitor
-            doc.Accept(new SmartTagVisitor());
+            // Print all the smart tags in our document using a document visitor.
+            doc.Accept(new SmartTagPrinter());
 
-            // SmartTags are supported by older versions of microsoft Word
+            // Older versions of Microsoft Word support smart tags.
             doc.Save(ArtifactsDir + "SmartTag.Create.doc");
 
-            // We can strip a document of all its smart tags with RemoveSmartTags()
+            // Use the "RemoveSmartTags" method to remove all smart tags from a document.
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.SmartTag, true).Count);
-            doc.RemoveSmartTags();
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.SmartTag, true).Count);
 
+            doc.RemoveSmartTags();
+
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.SmartTag, true).Count);
             TestCreate(new Document(ArtifactsDir + "SmartTag.Create.doc")); //ExSkip
         }
 
         /// <summary>
-        /// DocumentVisitor implementation that prints smart tags and their contents
+        /// Prints visited smart tags and their contents.
         /// </summary>
-        private class SmartTagVisitor : DocumentVisitor
+        private class SmartTagPrinter : DocumentVisitor
         {
             /// <summary>
             /// Called when a SmartTag node is encountered in the document.
@@ -151,24 +161,21 @@ namespace ApiExamples
             //ExFor:CustomXmlPropertyCollection.Remove(String)
             //ExFor:CustomXmlPropertyCollection.RemoveAt(Int32)
             //ExSummary:Shows how to work with smart tag properties to get in depth information about smart tags.
-            // Open a document that contains smart tags and their collection
             Document doc = new Document(MyDir + "Smart tags.doc");
 
-            // Smart tags are an older Microsoft Word feature that can automatically detect and tag
-            // any parts of the text that it registers as commonly used information objects such as names, addresses, stock tickers, dates etc
-            // In Word 2003, smart tags can be turned on in Tools > AutoCorrect options... > SmartTags tab
-            // In our input document there are three objects that were registered as smart tags, but since they can be nested, we have 8 in this collection
-            NodeCollection smartTags = doc.GetChildNodes(NodeType.SmartTag, true);
-            Assert.AreEqual(8, smartTags.Count);
+            // A smart tag appears in a document with Microsoft Word recognizes a part of its text as some form of data,
+            // such as a name, date, or address, and converts it to a hyperlink which displays a purple dotted underline.
+            // In Word 2003, we can enable smart tags via "Tools" -> "AutoCorrect options..." -> "SmartTags".
+            // In our input document there are three objects that Microsoft Word registered as smart tags.
+            // Smart tags may be nested, so this collection contains more.
+            SmartTag[] smartTags = doc.GetChildNodes(NodeType.SmartTag, true).OfType<SmartTag>().ToArray();
 
-            // The last smart tag is of the "Date" type, which we will retrieve here
-            SmartTag smartTag = (SmartTag)smartTags[7];
+            Assert.AreEqual(8, smartTags.Length);
 
-            // The Properties attribute, for some smart tags, elaborates on the text object that Word picked up as a smart tag
-            // In the case of our "Date" smart tag, its properties will let us know the year, month and day within the smart tag
-            CustomXmlPropertyCollection properties = smartTag.Properties;
+            // The "Properties" member of a smart tag contains its metadata, which will be different for each type of smart tag.
+            // The properties of a "date"-type smart tag contain its year, month, and day. 
+            CustomXmlPropertyCollection properties = smartTags[7].Properties;
 
-            // We can enumerate over the collection and print the aforementioned properties to the console
             Assert.AreEqual(4, properties.Count);
 
             using (IEnumerator<CustomXmlProperty> enumerator = properties.GetEnumerator())
@@ -180,22 +187,27 @@ namespace ApiExamples
                 }
             }
 
-            // We can also access the elements in various ways, including as a key-value pair
+            // We can also access the properties in various ways, such as like a key-value pair.
             Assert.True(properties.Contains("Day"));
             Assert.AreEqual("22", properties["Day"].Value);
             Assert.AreEqual("2003", properties[2].Value);
             Assert.AreEqual(1, properties.IndexOfKey("Month"));
 
-            // We can also remove elements by name, index or clear the collection entirely
+            // Below are three ways of removing elements from the properties collection.
+            // 1 -  Remove by index:
             properties.RemoveAt(3);
+
+            Assert.AreEqual(3, properties.Count);
+
+            // 2 -  Remove by name:
             properties.Remove("Year");
-            Assert.AreEqual(2, (properties.Count));
 
+            Assert.AreEqual(2, properties.Count);
+
+            // 3 -  Clear the entire collection at once:
             properties.Clear();
-            Assert.AreEqual(0, (properties.Count));
 
-            // We can remove the entire smart tag like this
-            smartTag.Remove();
+            Assert.AreEqual(0, properties.Count);
             //ExEnd
         }
     }
