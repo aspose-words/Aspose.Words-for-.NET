@@ -269,6 +269,37 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test, Ignore("Need to rework.")]
+        public void InsertHtmlFromWebPage()
+        {
+            //ExStart
+            //ExFor:Document.#ctor(Stream, LoadOptions)
+            //ExFor:LoadOptions.#ctor(LoadFormat, String, String)
+            //ExFor:LoadFormat
+            //ExSummary:Shows how save a web page as a .docx file.
+            const string url = "http://www.aspose.com/";
+
+            using (WebClient client = new WebClient()) 
+            { 
+                using (MemoryStream stream = new MemoryStream(client.DownloadData(url)))
+                {
+                    // The URL is used again as a baseUri to ensure that any relative image paths are retrieved correctly.
+                    LoadOptions options = new LoadOptions(LoadFormat.Html, "", url);
+
+                    // Load the HTML document from stream and pass the LoadOptions object.
+                    Document doc = new Document(stream, options);
+
+                    // At this stage, we can read and edit the document's contents and then save it to the local file system.
+                    Assert.AreEqual("File Format APIs", doc.FirstSection.Body.Paragraphs[1].Runs[0].GetText().Trim()); //ExSkip
+
+                    doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
+                }
+            }
+            //ExEnd
+
+            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
+        }
+
         [Test]
         public void LoadEncrypted()
         {
