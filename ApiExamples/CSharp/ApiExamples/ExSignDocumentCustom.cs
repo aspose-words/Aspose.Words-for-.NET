@@ -8,7 +8,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ApiExamples.TestData.TestClasses;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
@@ -34,80 +33,66 @@ namespace ApiExamples
         //ExFor:SignOptions.SignatureLineId
         //ExFor:SignOptions.SignatureLineImage
         //ExFor:DigitalSignatureUtil.Sign(String, String, CertificateHolder, SignOptions)
-        //ExSummary:Demonstrates how to add new signature line to the document and sign it with personal signature using SignatureLineId.
+        //ExSummary:Shows how to add a signature line to a document, and then sign it using a digital certificate.
         [Test] //ExSkip
         [Description("WORDSNET-16868")]
         public static void Sign()
         {
-            string signPersonName = "Ron Williams";
+            string signeeName = "Ron Williams";
             string srcDocumentPath = MyDir + "Document.docx";
             string dstDocumentPath = ArtifactsDir + "SignDocumentCustom.Sign.docx";
             string certificatePath = MyDir + "morzal.pfx";
             string certificatePassword = "aw";
 
-            // We need to create simple list with test signers for this example
-            CreateSignPersonData();
-            Console.WriteLine("Test data successfully added!");
+            CreateSignees();
 
-            // Get sign person object by name of the person who must sign a document
-            // This an example, in real use case you would return an object from a database
-            SignPersonTestClass signPersonInfo =
-                (from c in gSignPersonList where c.Name == signPersonName select c).FirstOrDefault();
+            Signee signeeInfo =
+                (from c in mSignees where c.Name == signeeName select c).FirstOrDefault();
 
-            if (signPersonInfo != null)
-            {
-                SignDocument(srcDocumentPath, dstDocumentPath, signPersonInfo, certificatePath, certificatePassword);
-                Console.WriteLine("Document successfully signed!");
-            }
+            if (signeeInfo != null)
+                SignDocument(srcDocumentPath, dstDocumentPath, signeeInfo, certificatePath, certificatePassword);
             else
-            {
-                Console.WriteLine("Sign person does not exist, please check your parameters.");
-                Assert.Fail(); //ExSkip
-            }
-
-            // Now do something with a signed document, for example, save it to your database
-            // Use 'new Document(dstDocumentPath)' for loading a signed document
+                Assert.Fail("Signee does not exist.");
         }
 
         /// <summary>
-        /// Signs the document obtained at the source location and saves it to the specified destination.
+        /// Creates a copy of a source document signed using provided signee information and X509 certificate.
         /// </summary>
         private static void SignDocument(string srcDocumentPath, string dstDocumentPath,
-            SignPersonTestClass signPersonInfo, string certificatePath, string certificatePassword)
+            Signee signeeInfo, string certificatePath, string certificatePassword)
         {
-            // Create new document instance based on a test file that we need to sign
             Document document = new Document(srcDocumentPath);
             DocumentBuilder builder = new DocumentBuilder(document);
 
-            // Add info about responsible person who sign a document
-            SignatureLineOptions signatureLineOptions =
-                new SignatureLineOptions { Signer = signPersonInfo.Name, SignerTitle = signPersonInfo.Position };
-
-            // Add signature line for responsible person who sign a document
-            SignatureLine signatureLine = builder.InsertSignatureLine(signatureLineOptions).SignatureLine;
-            signatureLine.Id = signPersonInfo.PersonId;
-
-            // Save a document with line signatures into temporary file for future signing
-            builder.Document.Save(dstDocumentPath);
-
-            // Create holder of certificate instance based on your personal certificate
-            // This is the test certificate generated for this example
-            CertificateHolder certificateHolder = CertificateHolder.Create(certificatePath, certificatePassword);
-
-            // Link our signature line with personal signature
-            SignOptions signOptions = new SignOptions
+            // Configure and insert a signature line,
+            // which is an object in the document that will display a signature that we sign it with.
+            SignatureLineOptions signatureLineOptions = new SignatureLineOptions
             {
-                SignatureLineId = signPersonInfo.PersonId,
-                SignatureLineImage = signPersonInfo.Image
+                Signer = signeeInfo.Name, 
+                SignerTitle = signeeInfo.Position
             };
 
-            // Sign a document which contains signature line with personal certificate
+            SignatureLine signatureLine = builder.InsertSignatureLine(signatureLineOptions).SignatureLine;
+            signatureLine.Id = signeeInfo.PersonId;
+
+            // First, we will save an unsigned version of our document.
+            builder.Document.Save(dstDocumentPath);
+
+            CertificateHolder certificateHolder = CertificateHolder.Create(certificatePath, certificatePassword);
+            
+            SignOptions signOptions = new SignOptions
+            {
+                SignatureLineId = signeeInfo.PersonId,
+                SignatureLineImage = signeeInfo.Image
+            };
+
+            // Overwrite the unsigned document we saved above with a version signed using the certificate.
             DigitalSignatureUtil.Sign(dstDocumentPath, dstDocumentPath, certificateHolder, signOptions);
         }
 
-        #if NET462 || JAVA
+#if NET462 || JAVA
         /// <summary>
-        /// Converting image file to bytes array.
+        /// Converts an image to a byte array.
         /// </summary>
         private static byte[] ImageToByteArray(Image imageIn)
         {
@@ -117,34 +102,47 @@ namespace ApiExamples
                 return ms.ToArray();
             }
         }
-        #endif
+#endif
 
-        /// <summary>
-        /// Create test data that contains info about sing persons
-        /// </summary>
-        private static void CreateSignPersonData()
+        public class Signee
         {
-            gSignPersonList = new List<SignPersonTestClass>
+            public Guid PersonId { get; set; }
+            public string Name { get; set; }
+            public string Position { get; set; }
+            public byte[] Image { get; set; }
+
+            public Signee(Guid guid, string name, string position, byte[] image)
+            {
+                PersonId = guid;
+                Name = name;
+                Position = position;
+                Image = image;
+            }
+        }
+
+        private static void CreateSignees()
+        {
+            mSignees = new List<Signee>
             {
                 #if NET462 || JAVA
-                new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer",
+                new Signee(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer",
                     ImageToByteArray(Image.FromFile(ImageDir + "Logo.jpg"))),
                 #elif NETCOREAPP2_1 || __MOBILE__
-                new SignPersonTestClass(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", 
+                new Signee(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", 
                     SkiaSharp.SKBitmap.Decode(ImageDir + "Logo.jpg").Bytes),
                 #endif
                 
                 #if NET462 || JAVA
-                new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance",
+                new Signee(Guid.NewGuid(), "Stephen Morse", "Head of Compliance",
                     ImageToByteArray(Image.FromFile(ImageDir + "Logo.jpg")))
                 #elif NETCOREAPP2_1 || __MOBILE__
-                new SignPersonTestClass(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", 
+                new Signee(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", 
                     SkiaSharp.SKBitmap.Decode(ImageDir + "Logo.jpg").Bytes)
                 #endif
             };
         }
-
-        private static List<SignPersonTestClass> gSignPersonList;
+        
+        private static List<Signee> mSignees;
         //ExEnd
     }
 }

@@ -118,7 +118,6 @@
     <Content Include="TestData\TestClasses\ManagerTestClass.cs" />
     <Content Include="TestData\TestClasses\MessageTestClass.cs" />
     <Content Include="TestData\TestClasses\NumericTestClass.cs" />
-    <Content Include="TestData\TestClasses\SignPersonTestClass.cs" />
     <Content Include="TestUtil.cs" />
   </ItemGroup>
 
