@@ -223,33 +223,39 @@ namespace ApiExamples
             Assert.True(tag.Multiline);
         }
 
-        [Test]
-        public void IsTemporary()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void IsTemporary(bool isTemporary)
         {
             //ExStart
             //ExFor:StructuredDocumentTag.IsTemporary
-            //ExSummary:Demonstrates the effects of making a StructuredDocumentTag temporary.
+            //ExSummary:Shows how to make single-use controls.
             Document doc = new Document();
 
-            // Insert a plain text StructuredDocumentTag, which will prompt the user to enter text
-            // and allow them to edit it like a text box
+            // Insert a plain text StructuredDocumentTag,
+            // which will act as a plain text form that the user may enter text into.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
-            // If we set its Temporary attribute to true, as soon as we start typing,
-            // the tag will disappear, and its contents will be assimilated into the parent Paragraph
-            tag.IsTemporary = true;
+            // Set the "IsTemporary" property to "true" to make the structured document tag disappear and
+            // assimilate its contents into the document after the user edits it once in Microsoft Word.
+            // Set the "IsTemporary" property to "false" to allow the user to edit the contents
+            // of the structured document tag any number of times.
+            tag.IsTemporary = isTemporary;
 
-            // Insert the StructuredDocumentTag with a DocumentBuilder
             DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.Write("Temporary text box: ");
+            builder.Write("Please enter text: ");
             builder.InsertNode(tag);
 
-            // A StructuredDocumentTag in the form of a check box will let the user a square to check and uncheck
-            // Setting it to temporary will freeze its value after the first time it is clicked
+            // Insert another structured document tag in the form of a check box, and set its default state to "checked".
             tag = new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline);
-            tag.IsTemporary = true;
+            tag.Checked = true;
 
-            builder.Write("\nTemporary checkbox: ");
+            // Set the "IsTemporary" property to "true" to make the check box become a symbol
+            // once the user clicks on it in Microsoft Word.
+            // Set the "IsTemporary" property to "false" to allow the user to click on the check box any number of times.
+            tag.IsTemporary = isTemporary;
+
+            builder.Write("\nPlease click the check box: ");
             builder.InsertNode(tag);
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.IsTemporary.docx");
@@ -257,25 +263,27 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.IsTemporary.docx");
 
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.StructuredDocumentTag, true).Count(sdt => ((StructuredDocumentTag)sdt).IsTemporary));
+            Assert.AreEqual(2, 
+                doc.GetChildNodes(NodeType.StructuredDocumentTag, true).Count(sdt => ((StructuredDocumentTag)sdt).IsTemporary == isTemporary));
         }
 
-        [Test]
-        public void PlaceholderBuildingBlock()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void PlaceholderBuildingBlock(bool isShowingPlaceholderText)
         {
             //ExStart
             //ExFor:StructuredDocumentTag.IsShowingPlaceholderText
             //ExFor:StructuredDocumentTag.Placeholder
             //ExFor:StructuredDocumentTag.PlaceholderName
-            //ExSummary:Shows how to use the contents of a BuildingBlock as a custom placeholder text for a StructuredDocumentTag. 
+            //ExSummary:Shows how to use the contents of a building block as a custom placeholder text for a structured document tag. 
             Document doc = new Document();
 
-            // Insert a plain text StructuredDocumentTag of the PlainText type, which will function like a text box
-            // It contains a default "Click here to enter text." prompt, which we can click and replace with our own text
+            // Insert a plain text structured document tag of the "PlainText" type, which will function like a text box.
+            // The contents that it will display by default are a "Click here to enter text." prompt.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
-            // We can substitute that default placeholder with a custom phrase, which will be drawn from a BuildingBlock
-            // First, we will need to create the BuildingBlock, give it content and add it to the GlossaryDocument
+            // We can get the tag to display the contents of a building block instead of the default text.
+            // First, add a building block with contents to the glossary document.
             GlossaryDocument glossaryDoc = doc.GlossaryDocument;
 
             BuildingBlock substituteBlock = new BuildingBlock(glossaryDoc);
@@ -286,20 +294,21 @@ namespace ApiExamples
 
             glossaryDoc.AppendChild(substituteBlock);
 
-            // The substitute BuildingBlock we made can be referenced by name
+            // Then, use the structured document tag's "PlaceholderName" property to reference that building block by name.
             tag.PlaceholderName = "Custom Placeholder";
 
-            // If PlaceholderName refers to an existing block in the parent document's GlossaryDocument,
-            // the BuildingBlock will be automatically found and assigned to the Placeholder attribute
+            // If "PlaceholderName" refers to an existing block in the parent document's glossary document,
+            // we will be able to verify the building block via the "Placeholder" property.
             Assert.AreEqual(substituteBlock, tag.Placeholder);
 
-            // Setting this to true will register the text inside the StructuredDocumentTag as placeholder text
-            // This means that, in Microsoft Word, all the text contents of the StructuredDocumentTag will be highlighted with one click,
-            // so we can immediately replace the entire substitute text by typing
-            // If this is false, the text will behave like an ordinary Paragraph and a cursor will be placed with nothing highlighted
-            tag.IsShowingPlaceholderText = true;
+            // Set the "IsShowingPlaceholderText" property to "true" to treat the
+            // current contents of the structured document tag as placeholder text.
+            // This means that clicking on the text box in Microsoft Word will immediately highlight all of the tag's contents.
+            // Set the "IsShowingPlaceholderText" property to "false" to get the
+            // structured document tag to treat its contents as text that a user has already entered.
+            // Clicking on this text in Microsoft Word will place the blinking cursor at the clicked location.
+            tag.IsShowingPlaceholderText = isShowingPlaceholderText;
 
-            // Insert the StructuredDocumentTag into the document using a DocumentBuilder and save the document to a file
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertNode(tag);
 
@@ -311,7 +320,7 @@ namespace ApiExamples
             substituteBlock = (BuildingBlock)doc.GlossaryDocument.GetChild(NodeType.BuildingBlock, 0, true);
 
             Assert.AreEqual("Custom Placeholder", substituteBlock.Name);
-            Assert.True(tag.IsShowingPlaceholderText);
+            Assert.AreEqual(isShowingPlaceholderText, tag.IsShowingPlaceholderText);
             Assert.AreEqual(substituteBlock, tag.Placeholder);
             Assert.AreEqual(substituteBlock.Name, tag.PlaceholderName);
         }
