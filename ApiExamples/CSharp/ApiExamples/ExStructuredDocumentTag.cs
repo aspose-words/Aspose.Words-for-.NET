@@ -119,10 +119,10 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTag.DateDisplayLocale
             //ExFor:StructuredDocumentTag.DateStorageFormat
             //ExFor:StructuredDocumentTag.FullDate
-            //ExSummary:Shows how to prompt the user to enter a date with a StructuredDocumentTag.
+            //ExSummary:Shows how to prompt the user to enter a date with a structured document tag.
             Document doc = new Document();
 
-            // Insert a StructuredDocumentTag that prompts the user to enter a date.
+            // Insert a structured document tag that prompts the user to enter a date.
             // In Microsoft Word, this element is known as a "Date picker content control".
             // When we click on the arrow on the right end of this tag in Microsoft Word,
             // we will see a pop up in the form of a clickable calendar.
@@ -190,7 +190,7 @@ namespace ApiExamples
             tag.EndCharacterFont.Name = "Arial Black";
 
             // By default, this is false and pressing enter while inside a structured document tag does nothing
-            // When set to true, our StructuredDocumentTag can have multiple lines
+            // When set to true, our structured document tag can have multiple lines
 
             // Set the "Multiline" property to "false" to only allow the contents
             // of this structured document tag to span a single line.
@@ -232,7 +232,7 @@ namespace ApiExamples
             //ExSummary:Shows how to make single-use controls.
             Document doc = new Document();
 
-            // Insert a plain text StructuredDocumentTag,
+            // Insert a plain text structured document tag,
             // which will act as a plain text form that the user may enter text into.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
@@ -331,27 +331,26 @@ namespace ApiExamples
             //ExStart
             //ExFor:StructuredDocumentTag.LockContentControl
             //ExFor:StructuredDocumentTag.LockContents
-            //ExSummary:Shows how to restrict the editing of a StructuredDocumentTag.
+            //ExSummary:Shows how to apply editing restrictions to structured document tags.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a plain text StructuredDocumentTag of the PlainText type, which will function like a text box
-            // It contains a default "Click here to enter text." prompt, which we can click and replace with our own text
+            // Insert a plain text structured document tag, which acts as a text box that prompts the user to fill it in.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
-            // We can prohibit the users from editing the inner text in Microsoft Word by setting this to true
+            // Set the "LockContents" property to "true" to prohibit the user from editing the contents of this text box.
             tag.LockContents = true;
-            builder.Write("The contents of this StructuredDocumentTag cannot be edited: ");
+            builder.Write("The contents of this structured document tag cannot be edited: ");
             builder.InsertNode(tag);
 
             tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
-            // Setting this to true will disable the deletion of this StructuredDocumentTag
-            // by text editing operations in Microsoft Word
+            // Set the "LockContentControl" property to "true" to prohibit the user from
+            // deleting this structured document tag manually in Microsoft Word.
             tag.LockContentControl = true;
 
             builder.InsertParagraph();
-            builder.Write("This StructuredDocumentTag cannot be deleted but its contents can be edited: ");
+            builder.Write("This structured document tag cannot be deleted but its contents can be edited: ");
             builder.InsertNode(tag);
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.Lock.docx");
@@ -387,54 +386,53 @@ namespace ApiExamples
             //ExFor:SdtListItemCollection.RemoveAt(System.Int32)
             //ExFor:SdtListItemCollection.SelectedValue
             //ExFor:StructuredDocumentTag.ListItems
-            //ExSummary:Shows how to work with StructuredDocumentTag nodes of the DropDownList type.
-            // Create a blank document and insert a StructuredDocumentTag that will contain a drop-down list
+            //ExSummary:Shows how to work with drop down list structured document tags.
             Document doc = new Document();
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.DropDownList, MarkupLevel.Block);
             doc.FirstSection.Body.AppendChild(tag);
 
-            // A drop-down list needs elements, each of which will be a SdtListItem
+            // A drop-down list structured document tag is a form that allows the user to
+            // select an option from a list by left-clicking and opening the form in Microsoft Word.
+            // The "ListItems" property contains all list items, and each list item is an "SdtListItem".
             SdtListItemCollection listItems = tag.ListItems;
             listItems.Add(new SdtListItem("Value 1"));
 
-            // Each SdtListItem has text that will be displayed when the drop-down list is opened, and also a value
-            // When we initialize with one string, we are providing just the value
-            // Accordingly, value is passed as DisplayText and will consequently be displayed on the screen
             Assert.AreEqual(listItems[0].DisplayText, listItems[0].Value);
 
-            // Add 3 more SdtListItems with non-empty strings passed to DisplayText
+            // Add 3 more list items. Initialize these items using a different constructor to the first item
+            // to get them to display a string that's different to their value.
             listItems.Add(new SdtListItem("Item 2", "Value 2"));
             listItems.Add(new SdtListItem("Item 3", "Value 3"));
             listItems.Add(new SdtListItem("Item 4", "Value 4"));
 
-            // We can obtain a count of the SdtListItems and also set the drop-down list's SelectedValue attribute to
-            // automatically have one of them pre-selected when we open the document in Microsoft Word
             Assert.AreEqual(4, listItems.Count);
+
+            // The drop down list is displaying the first item. Assign a different list item to the "SelectedValue" to display it. 
             listItems.SelectedValue = listItems[3];
 
             Assert.AreEqual("Value 4", listItems.SelectedValue.Value);
 
-            // We can enumerate over the collection and print each element
+            // Enumerate over the collection and print each element.
             using (IEnumerator<SdtListItem> enumerator = listItems.GetEnumerator())
             {
                 while (enumerator.MoveNext())
-                {
                     if (enumerator.Current != null)
                         Console.WriteLine($"List item: {enumerator.Current.DisplayText}, value: {enumerator.Current.Value}");
-                }
             }
 
-            // We can also remove elements one at a time
+            // Remove the last list item. 
             listItems.RemoveAt(3);
+
             Assert.AreEqual(3, listItems.Count);
 
-            // Make sure to update the SelectedValue's index if it ever ends up out of bounds before saving the document
+            // Since our drop down control is set to display the removed item by default, give it an item to display which exists.
             listItems.SelectedValue = listItems[1];
            
             doc.Save(ArtifactsDir + "StructuredDocumentTag.ListItemCollection.docx");
 
-            // We can clear the whole collection at once too
+            // Use the "Clear" method to empty the entire drop down item collection at once.
             listItems.Clear();
+
             Assert.AreEqual(0, listItems.Count);
             //ExEnd
         }
@@ -464,32 +462,34 @@ namespace ApiExamples
             //ExSummary:Shows how to create structured document tag with a custom XML data.
             Document doc = new Document();
 
-            // Construct an XML part that contains data and add it to the document's collection
-            // Once the "Developer" tab in Microsoft Word is enabled,
-            // we can find elements from this collection as well as a couple defaults in the "XML Mapping Pane" 
+            // Construct an XML part that contains data and add it to the document's collection.
+            // If we enable the the "Developer" tab in Microsoft Word,
+            // we can find elements from this collection in the "XML Mapping Pane", along with a few default elements.
             string xmlPartId = Guid.NewGuid().ToString("B");
             string xmlPartContent = "<root><text>Hello world!</text></root>";
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
 
-            // The data we entered is stored in these attributes
             Assert.AreEqual(Encoding.ASCII.GetBytes(xmlPartContent), xmlPart.Data);
             Assert.AreEqual(xmlPartId, xmlPart.Id);
 
-            // XML parts can be referenced by collection index or GUID
+            // Below are two ways to refer to XML parts.
+            // 1 -  By an index in the custom XML part collection:
             Assert.AreEqual(xmlPart, doc.CustomXmlParts[0]);
+
+            // 2 -  By GUID:
             Assert.AreEqual(xmlPart, doc.CustomXmlParts.GetById(xmlPartId));
 
-            // Once the part is created, we can add XML schema associations like this
+            // Add an XML schema association.
             xmlPart.Schemas.Add("http://www.w3.org/2001/XMLSchema");
             
-            // We can also clone parts and insert them into the collection directly
+            // Clone a part, and then insert it into the collection.
             CustomXmlPart xmlPartClone = xmlPart.Clone();
             xmlPartClone.Id = Guid.NewGuid().ToString("B");
             doc.CustomXmlParts.Add(xmlPartClone);
 
             Assert.AreEqual(2, doc.CustomXmlParts.Count);
 
-            // Iterate through collection with an enumerator and print the contents of each part
+            // Iterate through collection and print the contents of each part.
             using (IEnumerator<CustomXmlPart> enumerator = doc.CustomXmlParts.GetEnumerator())
             {
                 int index = 0;
@@ -501,19 +501,16 @@ namespace ApiExamples
                 }
             }
 
-            // XML parts can be removed by index
+            // Use the "RemoveAt" method to remove the cloned part by index.
             doc.CustomXmlParts.RemoveAt(1);
 
             Assert.AreEqual(1, doc.CustomXmlParts.Count);
 
-            // The XML part collection itself can be cloned also
+            // Clone the XML parts collection, and then use the "Clear" method to remove all of its elements at once.
             CustomXmlPartCollection customXmlParts = doc.CustomXmlParts.Clone();
-
-            // And all elements can be cleared like this
             customXmlParts.Clear();
 
-            // Create a StructuredDocumentTag that will display the contents of our part,
-            // insert it into the document and save the document
+            // Create a structured document tag that will display the contents of our part, and insert it into the document body.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
             tag.XmlMapping.SetMapping(xmlPart, "/root[1]/text[1]", string.Empty);
 
@@ -547,21 +544,23 @@ namespace ApiExamples
             //ExFor:XmlMapping.IsMapped
             //ExFor:XmlMapping.PrefixMappings
             //ExFor:XmlMapping.XPath
-            //ExSummary:Shows how to set XML mappings for CustomXmlParts.
+            //ExSummary:Shows how to set XML mappings for custom XML parts.
             Document doc = new Document();
 
-            // Construct an XML part that contains data and add it to the document's CustomXmlPart collection
+            // Construct an XML part that contains text and add it to the document's CustomXmlPart collection.
             string xmlPartId = Guid.NewGuid().ToString("B");
             string xmlPartContent = "<root><text>Text element #1</text><text>Text element #2</text></root>";
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
-            Console.WriteLine(Encoding.UTF8.GetString(xmlPart.Data));
 
-            // Create a StructuredDocumentTag that will display the contents of our CustomXmlPart in the document
+            Assert.AreEqual("<root><text>Text element #1</text><text>Text element #2</text></root>", 
+                Encoding.UTF8.GetString(xmlPart.Data));
+
+            // Create a structured document tag that will display the contents of our CustomXmlPart.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
 
-            // If we set a mapping for our StructuredDocumentTag,
-            // it will only display a part of the CustomXmlPart that the XPath points to
-            // This XPath will point to the contents second "<text>" element of the first "<root>" element of our CustomXmlPart
+            // Set a mapping for our structured document tag. This mapping will instruct
+            // our structured document tag to display a portion of the XML part's text contents that the XPath points to.
+            // In this case, it will be contents of the the second "<text>" element of the first "<root>" element: "Text element #2".
             tag.XmlMapping.SetMapping(xmlPart, "/root[1]/text[2]", "xmlns:ns='http://www.w3.org/2001/XMLSchema'");
 
             Assert.True(tag.XmlMapping.IsMapped);
@@ -569,7 +568,7 @@ namespace ApiExamples
             Assert.AreEqual("/root[1]/text[2]", tag.XmlMapping.XPath);
             Assert.AreEqual("xmlns:ns='http://www.w3.org/2001/XMLSchema'", tag.XmlMapping.PrefixMappings);
 
-            // Add the StructuredDocumentTag to the document to display the content from our CustomXmlPart
+            // Add the structured document tag to the document to display the content from our custom part.
             doc.FirstSection.Body.AppendChild(tag);
             doc.Save(ArtifactsDir + "StructuredDocumentTag.XmlMapping.docx");
             //ExEnd
@@ -587,29 +586,40 @@ namespace ApiExamples
         }
 
         [Test]
-        public void XmlMappingForStructuredDocumentTagRangeStart()
+        public void StructuredDocumentTagRangeStartXmlMapping()
         {
             //ExStart
             //ExFor:StructuredDocumentTagRangeStart.XmlMapping
-            //ExSummary:Shows how to set XML mappings for StructuredDocumentTagRangeStart.
+            //ExSummary:Shows how to set XML mappings for the range start of a structured document tag.
             Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
 
-            // Construct an XML part that contains data and add it to the document's CustomXmlPart collection.
+            // Construct an XML part that contains text, and add it to the document's CustomXmlPart collection.
             string xmlPartId = Guid.NewGuid().ToString("B");
             string xmlPartContent = "<root><text>Text element #1</text><text>Text element #2</text></root>";
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
-            Console.WriteLine(Encoding.UTF8.GetString(xmlPart.Data));
 
-            // Create a StructuredDocumentTag that will display the contents of our CustomXmlPart in the document.
+            Assert.AreEqual("<root><text>Text element #1</text><text>Text element #2</text></root>",
+                Encoding.UTF8.GetString(xmlPart.Data));
+
+            // Create a structured document tag that will display the contents of our CustomXmlPart in the document.
             StructuredDocumentTagRangeStart sdtRangeStart = (StructuredDocumentTagRangeStart)doc.GetChild(NodeType.StructuredDocumentTagRangeStart, 0, true);
 
-            // If we set a mapping for our StructuredDocumentTag,
-            // it will only display a part of the CustomXmlPart that the XPath points to.
+            // If we set a mapping for our structured document tag,
+            // it will only display a portion of the CustomXmlPart that the XPath points to.
             // This XPath will point to the contents second "<text>" element of the first "<root>" element of our CustomXmlPart.
             sdtRangeStart.XmlMapping.SetMapping(xmlPart, "/root[1]/text[2]", null);
 
-            doc.Save(ArtifactsDir + "StructuredDocumentTag.XmlMappingForStructuredDocumentTagRangeStart.docx");
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.StructuredDocumentTagRangeStartXmlMapping.docx");
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "StructuredDocumentTag.StructuredDocumentTagRangeStartXmlMapping.docx");
+            xmlPart = doc.CustomXmlParts[0];
+
+            Assert.True(Guid.TryParse(xmlPart.Id, out Guid temp));
+            Assert.AreEqual("<root><text>Text element #1</text><text>Text element #2</text></root>", Encoding.UTF8.GetString(xmlPart.Data));
+
+            sdtRangeStart = (StructuredDocumentTagRangeStart)doc.GetChild(NodeType.StructuredDocumentTagRangeStart, 0, true);
+            Assert.AreEqual("/root[1]/text[2]", sdtRangeStart.XmlMapping.XPath);
         }
 
         [Test]
@@ -627,37 +637,39 @@ namespace ApiExamples
             //ExFor:CustomXmlSchemaCollection.Remove(System.String)
             //ExFor:CustomXmlSchemaCollection.RemoveAt(System.Int32)
             //ExSummary:Shows how to work with an XML schema collection.
-            // Create a document and add a custom XML part
             Document doc = new Document();
 
             string xmlPartId = Guid.NewGuid().ToString("B");
             string xmlPartContent = "<root><text>Hello, World!</text></root>";
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
 
-            // Once the part is created, we can add XML schema associations like this,
-            // and perform other collection-related operations on the list of schemas for this part
+            // Add an XML schema association.
             xmlPart.Schemas.Add("http://www.w3.org/2001/XMLSchema");
 
-            // Collections can be cloned, and elements can be added
+            // Clone the custom XML part's XML schema association collection,
+            // and then add a couple of new schemas to the clone.
             CustomXmlSchemaCollection schemas = xmlPart.Schemas.Clone();
             schemas.Add("http://www.w3.org/2001/XMLSchema-instance");
             schemas.Add("http://schemas.microsoft.com/office/2006/metadata/contentType");
             
             Assert.AreEqual(3, schemas.Count);
-            Assert.AreEqual(2, schemas.IndexOf(("http://schemas.microsoft.com/office/2006/metadata/contentType")));
+            Assert.AreEqual(2, schemas.IndexOf("http://schemas.microsoft.com/office/2006/metadata/contentType"));
 
-            // We can iterate over the collection with an enumerator
+            // Enumerate over the schemas and print each element.
             using (IEnumerator<string> enumerator = schemas.GetEnumerator())
             {
                 while (enumerator.MoveNext())
-                {
                     Console.WriteLine(enumerator.Current);
-                }
             }
 
-            // We can also remove elements by index, element, or we can clear the entire collection
+            // Below are three ways of removing schemas from the collection.
+            // 1 -  Remove a schema by index:
             schemas.RemoveAt(2);
+
+            // 2 -  Remove a schema by value:
             schemas.Remove("http://www.w3.org/2001/XMLSchema");
+
+            // 3 -  Use the "Clear" method to empty the collection at once.
             schemas.Clear();
 
             Assert.AreEqual(0, schemas.Count);
@@ -669,11 +681,12 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:XmlMapping.StoreItemId
-            //ExSummary:Shows how to get special id of your xml part.
+            //ExSummary:Shows how to get the custom XML data identifier of an XML part.
             Document doc = new Document(MyDir + "Custom XML part in structured document tag.docx");
 
-            // Structured document tags have IDs in the form of Guids
+            // Structured document tags have IDs in the form of GUIDs.
             StructuredDocumentTag tag = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
+
             Assert.AreEqual("{F3029283-4FF8-4DD2-9F31-395F19ACEE85}", tag.XmlMapping.StoreItemId);
             //ExEnd
         }
@@ -701,18 +714,18 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:StructuredDocumentTag.Clear
-            //ExSummary:Shows how to delete content of StructuredDocumentTag elements.
+            //ExSummary:Shows how to delete contents of structured document tag elements.
             Document doc = new Document();
 
-            // Create a plain text structured document tag and append it to the document
+            // Create a plain text structured document tag, and then append it to the document.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
             doc.FirstSection.Body.AppendChild(tag);
 
-            // This structured document tag, which is in the form of a text box, already displays placeholder text
+            // This structured document tag, which is in the form of a text box, already displays placeholder text.
             Assert.AreEqual("Click here to enter text.", tag.GetText().Trim());
             Assert.True(tag.IsShowingPlaceholderText);
 
-            // Create a building block that 
+            // Create a building block with text contents. 
             GlossaryDocument glossaryDoc = doc.GlossaryDocument;
             BuildingBlock substituteBlock = new BuildingBlock(glossaryDoc);
             substituteBlock.Name = "My placeholder";
@@ -721,22 +734,23 @@ namespace ApiExamples
             substituteBlock.FirstSection.Body.FirstParagraph.AppendChild(new Run(glossaryDoc, "Custom placeholder text."));
             glossaryDoc.AppendChild(substituteBlock);
 
-            // Set the tag's placeholder to the building block
+            // Set the structured document tag's "PlaceholderName" attribute to the name of our building block to
+            // get the structured document tag to display the contents of the building block in place of the original default text.
             tag.PlaceholderName = "My placeholder";
 
             Assert.AreEqual("Custom placeholder text.", tag.GetText().Trim());
             Assert.True(tag.IsShowingPlaceholderText);
 
-            // Edit the text of the structured document tag and disable showing of placeholder text
+            // Edit the text of the structured document tag, and hide the placeholder text.
             Run run = (Run)tag.GetChild(NodeType.Run, 0, true);
             run.Text = "New text.";
             tag.IsShowingPlaceholderText = false;
 
             Assert.AreEqual("New text.", tag.GetText().Trim());
 
+            // Use the "Clear" method to clear this structured document tag's contents, and display the placeholder again.
             tag.Clear();
 
-            // Clearing a PlainText tag reverts these changes
             Assert.True(tag.IsShowingPlaceholderText);
             Assert.AreEqual("Custom placeholder text.", tag.GetText().Trim());
             //ExEnd
@@ -773,7 +787,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:StructuredDocumentTag.BuildingBlockCategory
             //ExFor:StructuredDocumentTag.BuildingBlockGallery
-            //ExSummary:Shows how to insert a StructuredDocumentTag as a building block and set its category and gallery.
+            //ExSummary:Shows how to insert a structured document tag as a building block, and set its category and gallery.
             Document doc = new Document();
 
             StructuredDocumentTag buildingBlockSdt =
@@ -802,27 +816,29 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:SaveOptions.UpdateSdtContent
-            //ExSummary:Shows how structured document tags can be updated while saving to .pdf.
+            //ExSummary:Shows how to update structured document tags while saving a document to PDF.
             Document doc = new Document();
 
-            // Insert two StructuredDocumentTags; a date and a drop-down list 
-            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.Date, MarkupLevel.Block);
-            tag.FullDate = DateTime.Now;
-
-            doc.FirstSection.Body.AppendChild(tag);
-
-            tag = new StructuredDocumentTag(doc, SdtType.DropDownList, MarkupLevel.Block);
+            // Insert a drow-down list structured document tag.
+            StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.DropDownList, MarkupLevel.Block);
             tag.ListItems.Add(new SdtListItem("Value 1"));
             tag.ListItems.Add(new SdtListItem("Value 2"));
             tag.ListItems.Add(new SdtListItem("Value 3"));
+
+            // The drop down list currently displays "Choose an item" as the default text.
+            // Set the "SelectedValue" property to one of the list items to get the tag to
+            // display the value of that list item instead of the default text.
             tag.ListItems.SelectedValue = tag.ListItems[1];
 
             doc.FirstSection.Body.AppendChild(tag);
 
-            // We've selected default values for both tags
-            // We can save those values in the document without immediately updating the tags, leaving them in their default state
-            // by using a SaveOptions object with this flag set
+            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method saves the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
+
+            // Set the "UpdateSdtContent" property to "false" to not update the structured document tags
+            // while saving the document to PDF. They will display their default values as they were at the time of construction.
+            // Set the "UpdateSdtContent" property to "true" to make sure the tags display updated values in the PDF.
             options.UpdateSdtContent = updateSdtContent;
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf", options);
@@ -833,7 +849,7 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.AreEqual(updateSdtContent ? "Value 2" : $"Click here to enter a date.{Environment.NewLine}Choose an item.",
+            Assert.AreEqual(updateSdtContent ? "Value 2" : "Choose an item.",
                 textAbsorber.Text);
 #endif
         }
@@ -843,21 +859,27 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:SdtType
-            //ExSummary:Shows how to fill the table with data contained in the XML part.
+            //ExSummary:Shows how to fill a table with data from in an XML part.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
  
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add("Books",
                 "<books>" +
-                "<book><title>Everyday Italian</title>" +
-                "<author>Giada De Laurentiis</author></book>" +
-                "<book><title>Harry Potter</title>" +
-                "<author>J. K. Rowling</author></book>" +
-                "<book><title>Learning XML</title>" +
-                "<author>Erik T. Ray</author></book>" +
+                    "<book>" +
+                        "<title>Everyday Italian</title>" +
+                        "<author>Giada De Laurentiis</author>" +
+                    "</book>" +
+                    "<book>" +
+                        "<title>The C Programming Language</title>" +
+                        "<author>Brian W. Kernighan, Dennis M. Ritchie</author>" +
+                    "</book>" +
+                    "<book>" +
+                        "<title>Learning XML</title>" +
+                        "<author>Erik T. Ray</author>" +
+                    "</book>" +
                 "</books>");
  
-            // Create headers for data from xml content
+            // Create headers for data from the XML content.
             Table table = builder.StartTable();
             builder.InsertCell();
             builder.Write("Title");
@@ -866,13 +888,15 @@ namespace ApiExamples
             builder.EndRow();
             builder.EndTable();
  
-            // Create table with RepeatingSection inside
+            // Create table with a repeating section inside.
             StructuredDocumentTag repeatingSectionSdt =
                 new StructuredDocumentTag(doc, SdtType.RepeatingSection, MarkupLevel.Row);
             repeatingSectionSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book", string.Empty);
             table.AppendChild(repeatingSectionSdt);
- 
-            // Add RepeatingSectionItem inside RepeatingSection and mark it as a row
+
+            // Add repeating section item inside the repeating section, and mark it as a row.
+            // This table will have a row for each element that we can find in the XML document
+            // using the "/books[1]/book" XPath, of which there are three.
             StructuredDocumentTag repeatingSectionItemSdt =
                 new StructuredDocumentTag(doc, SdtType.RepeatingSectionItem, MarkupLevel.Row);
             repeatingSectionSdt.AppendChild(repeatingSectionItemSdt);
@@ -880,7 +904,7 @@ namespace ApiExamples
             Row row = new Row(doc);
             repeatingSectionItemSdt.AppendChild(row);
  
-            // Map xml data with created table cells for book title and author
+            // Map xml data with created table cells for the title and author of each book.
             StructuredDocumentTag titleSdt =
                 new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Cell);
             titleSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/title[1]", string.Empty);
@@ -911,38 +935,37 @@ namespace ApiExamples
 
             Assert.AreEqual("Title\u0007Author\u0007\u0007" +
                             "Everyday Italian\u0007Giada De Laurentiis\u0007\u0007" +
-                            "Harry Potter\u0007J. K. Rowling\u0007\u0007" +
+                            "The C Programming Language\u0007Brian W. Kernighan, Dennis M. Ritchie\u0007\u0007" +
                             "Learning XML\u0007Erik T. Ray\u0007\u0007", doc.FirstSection.Body.Tables[0].GetText().Trim());
         }
 
         [Test]
         public void CustomXmlPart()
         {
-            // Obtain an XML in the form of a string
-            string xmlString = "<?xml version=\"1.0\"?>" +
-                               "<Company>" +
-                               "<Employee id=\"1\">" +
-                               "<FirstName>John</FirstName>" +
-                               "<LastName>Doe</LastName>" +
-                               "</Employee>" +
-                               "<Employee id=\"2\">" +
-                               "<FirstName>Jane</FirstName>" +
-                               "<LastName>Doe</LastName>" +
-                               "</Employee>" +
-                               "</Company>";
+            string xmlString = 
+               "<?xml version=\"1.0\"?>" +
+               "<Company>" +
+                   "<Employee id=\"1\">" +
+                       "<FirstName>John</FirstName>" +
+                       "<LastName>Doe</LastName>" +
+                   "</Employee>" +
+                   "<Employee id=\"2\">" +
+                       "<FirstName>Jane</FirstName>" +
+                       "<LastName>Doe</LastName>" +
+                   "</Employee>" +
+               "</Company>";
 
             Document doc = new Document();
 
-            // Insert the full XML document as a custom document part
-            // The mapping for this part will be seen in the "XML Mapping Pane" in the "Developer" tab, if it is enabled
+            // Insert the full XML document as a custom document part.
+            // We can find the mapping for this part in Microsoft Word via "Developer" -> "XML Mapping Pane", if it is enabled.
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add(Guid.NewGuid().ToString("B"), xmlString);
 
-            // None of the XML is in the document body at this point
-            // Create a StructuredDocumentTag, which will refer to a single element from the XML with an XPath
+            // Create a structured document tag, which will use an XPath to refer to a single element from the XML.
             StructuredDocumentTag sdt = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
             sdt.XmlMapping.SetMapping(xmlPart, "Company//Employee[@id='2']/FirstName", "");
 
-            // Add the StructuredDocumentTag to the document to display the element in the text 
+            // Add the StructuredDocumentTag to the document to display the element in the text.
             doc.FirstSection.Body.AppendChild(sdt);
         }
 
@@ -965,7 +988,7 @@ namespace ApiExamples
             //ExSummary:Shows how to get multi-section structured document tags properties.
             Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
 
-            // Note that these nodes can be a child of NodeType.Body node only and all properties of these nodes are read-only.
+            // These nodes can be a children of a NodeType.Body node only, and all properties of these nodes are read-only.
             StructuredDocumentTagRangeStart rangeStartTag =
                 doc.GetChildNodes(NodeType.StructuredDocumentTagRangeStart, true)[0] as StructuredDocumentTagRangeStart;
             StructuredDocumentTagRangeEnd rangeEndTag =
