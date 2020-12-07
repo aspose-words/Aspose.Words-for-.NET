@@ -27,7 +27,7 @@ namespace ApiExamples
             //ExSummary:Shows how to mimic the properties of images when converting a .docx document to .svg.
             Document doc = new Document(MyDir + "Document.docx");
 
-            // Configure the SvgSaveOptions object to save with no page borders or selectable text
+            // Configure the SvgSaveOptions object to save with no page borders or selectable text.
             SvgSaveOptions options = new SvgSaveOptions
             {
                 FitToViewPort = true,
@@ -50,7 +50,6 @@ namespace ApiExamples
         [Test] //ExSkip
         public void SvgResourceFolder()
         {
-            // Open a document which contains images
             Document doc = new Document(MyDir + "Rendering.docx");
 
             SvgSaveOptions options = new SvgSaveOptions
@@ -76,7 +75,6 @@ namespace ApiExamples
         {
             void IResourceSavingCallback.ResourceSaving(ResourceSavingArgs args)
             {
-                // If we set a folder alias in the SaveOptions object, it will be printed here
                 Console.WriteLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
                 Console.WriteLine("\t" + args.ResourceFileUri);
             }
