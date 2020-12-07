@@ -435,7 +435,7 @@ namespace ApiExamples
                 "Endnote text, will appear at the very end of the document.", (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
         }
 
-        [Test, Ignore("WORDSNET-21481")]
+        [Test]
         public void AddComment()
         {
             //ExStart
