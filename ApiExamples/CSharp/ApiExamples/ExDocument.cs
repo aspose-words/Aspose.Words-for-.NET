@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -50,14 +51,14 @@ namespace ApiExamples
             //ExFor:Document.#ctor(String,LoadOptions)
             //ExSummary:Shows how to create and load documents.
             // There are two ways of creating a Document object using Aspose.Words.
-            // 1 -  Create a blank document.
+            // 1 -  Create a blank document:
             Document doc = new Document();
 
             // New Document objects by default come with a section, body, and paragraph;
             // the minimal set of nodes required to begin editing.
             doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
 
-            // 2 -  Load a document that exists in the local file system.
+            // 2 -  Load a document that exists in the local file system:
             doc = new Document(MyDir + "Document.docx");
 
             // Loaded documents will have contents that we can access and edit.
@@ -128,6 +129,59 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx");
             
             doc.Save(ArtifactsDir + "Document.ConvertToPdf.pdf");
+            //ExEnd
+        }
+
+        [Test]
+        public void SaveToImageStream()
+        {
+            //ExStart
+            //ExFor:Document.Save(Stream, SaveFormat)
+            //ExSummary:Shows how to save a document to an image via stream, and then read the image from that stream.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "Times New Roman";
+            builder.Font.Size = 24;
+            builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+#if NET462 || JAVA
+            using (MemoryStream stream = new MemoryStream())
+            {
+                doc.Save(stream, SaveFormat.Bmp);
+
+                stream.Position = 0;
+
+                // Read the stream back into an image.
+                using (Image image = Image.FromStream(stream))
+                {
+                    Assert.AreEqual(ImageFormat.Bmp, image.RawFormat);
+                    Assert.AreEqual(816, image.Width);
+                    Assert.AreEqual(1056, image.Height);
+                }
+            }
+#elif NETCOREAPP2_1 || __MOBILE__
+            using (MemoryStream stream = new MemoryStream())
+            {
+                doc.Save(stream, SaveFormat.Bmp);
+
+                stream.Position = 0;
+
+                SKCodec codec = SKCodec.Create(stream);
+
+                Assert.AreEqual(SKEncodedImageFormat.Bmp, codec.EncodedFormat);
+
+                stream.Position = 0;
+
+                using (SKBitmap image = SKBitmap.Decode(stream))
+                {
+                    Assert.AreEqual(816, image.Width);
+                    Assert.AreEqual(1056, image.Height);
+                }
+            }
+#endif
             //ExEnd
         }
 
@@ -215,7 +269,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Category("IgnoreOnJenkins")]
+        [Test, Ignore("Need to rework.")]
         public void InsertHtmlFromWebPage()
         {
             //ExStart
@@ -236,7 +290,7 @@ namespace ApiExamples
                     Document doc = new Document(stream, options);
 
                     // At this stage, we can read and edit the document's contents and then save it to the local file system.
-                    Assert.AreEqual("File Format APIs", doc.FirstSection.Body.Paragraphs[1].Runs[0].GetText().Trim());
+                    Assert.AreEqual("File Format APIs", doc.FirstSection.Body.Paragraphs[1].Runs[0].GetText().Trim()); //ExSkip
 
                     doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
                 }
@@ -264,11 +318,11 @@ namespace ApiExamples
             LoadOptions options = new LoadOptions("docPassword");
 
             // There are two ways of loading an encrypted document with a LoadOptions object.
-            // 1 -  Load the document from the local file system by filename.
+            // 1 -  Load the document from the local file system by filename:
             doc = new Document(MyDir + "Encrypted.docx", options);
             Assert.AreEqual("Test encrypted document.", doc.GetText().Trim()); //ExSkip
 
-            // 2 -  Load the document from a stream.
+            // 2 -  Load the document from a stream:
             using (Stream stream = File.OpenRead(MyDir + "Encrypted.docx"))
             {
                 doc = new Document(stream, options);
@@ -1146,6 +1200,27 @@ namespace ApiExamples
             return false;
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void IgnoreDmlUniqueId(bool isIgnoreDmlUniqueId)
+        {
+            //ExStart
+            //ExFor:CompareOptions.IgnoreDmlUniqueId
+            //ExSummary:Shows how to compare documents ignoring DML unique ID.
+            Document docA = new Document(MyDir + "DML unique ID original.docx");
+            Document docB = new Document(MyDir + "DML unique ID compare.docx");
+ 
+            // By default, Aspose.Words do not ignore DML's unique ID, and the revisions count was 2.
+            // If we are ignoring DML's unique ID, and revisions count were 0.
+            CompareOptions compareOptions = new CompareOptions();
+            compareOptions.IgnoreDmlUniqueId = isIgnoreDmlUniqueId;
+ 
+            docA.Compare(docB, "Aspose.Words", DateTime.Now, compareOptions);
+
+            Assert.AreEqual(isIgnoreDmlUniqueId ? 0 : 2, docA.Revisions.Count);
+            //ExEnd
+        }
+
         [Test]
         public void RemoveExternalSchemaReferences()
         {
@@ -1506,6 +1581,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FindReplaceOptions.UseSubstitutions
+            //ExFor:FindReplaceOptions.LegacyMode
             //ExSummary:Shows how to recognize and use substitutions within replacement patterns.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1518,6 +1594,9 @@ namespace ApiExamples
             // Replace text using substitutions
             FindReplaceOptions options = new FindReplaceOptions();
             options.UseSubstitutions = true;
+            // Using legacy mode does not support many advanced features, so we need to set it to 'false'.
+            options.LegacyMode = false;
+
             doc.Range.Replace(regex, @"$2 take money from $1", options);
             
             Assert.AreEqual(doc.GetText(), "Paul take money from Jason.\f");
@@ -1659,6 +1738,33 @@ namespace ApiExamples
                     $"Hello world!¶{Environment.NewLine}Hello again!¶{Environment.NewLine}¶" : 
                     $"Hello world!{Environment.NewLine}Hello again!", textAbsorber.Text);
 #endif
+        }
+
+        [Test]
+        public void UpdatePageLayout()
+        {
+            //ExStart
+            //ExFor:StyleCollection.Item(String)
+            //ExFor:SectionCollection.Item(Int32)
+            //ExFor:Document.UpdatePageLayout
+            //ExSummary:Shows when to recalculate the page layout of the document.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            // Saving a document to PDF, to an image, or printing for the first time will automatically
+            // cache the layout of the document within its pages.
+            doc.Save(ArtifactsDir + "Document.UpdatePageLayout.1.pdf");
+
+            // Modify the document in some way.
+            doc.Styles["Normal"].Font.Size = 6;
+            doc.Sections[0].PageSetup.Orientation = Aspose.Words.Orientation.Landscape;
+
+            // In the current version of Aspose.Words, modifying the document does not automatically rebuild 
+            // the cached page layout. If we wish for the cached layout
+            // to stay up-to-date, we will need to update it manually.
+            doc.UpdatePageLayout();
+
+            doc.Save(ArtifactsDir + "Document.UpdatePageLayout.2.pdf");
+            //ExEnd
         }
 
         [Test]
@@ -2369,6 +2475,37 @@ namespace ApiExamples
                 Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
                 Assert.AreEqual("\"", groups[4].Text);   
             }
+        }
+
+        [Test]
+        public void IgnorePrinterMetrics()
+        {
+            //ExStart
+            //ExFor:LayoutOptions.IgnorePrinterMetrics
+            //ExSummary:Shows how to ignore 'Use printer metrics to lay out document' option.
+            Document doc = new Document(MyDir + "Rendering.docx");
+    
+            doc.LayoutOptions.IgnorePrinterMetrics = false;
+
+            doc.Save(ArtifactsDir + "Document.IgnorePrinterMetrics.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ExtractPages()
+        {
+            //ExStart
+            //ExFor:Document.ExtractPages
+            //ExSummary:Shows how to get specified range of pages from the document.
+            Document doc = new Document(MyDir + "Layout entities.docx");
+
+            doc = doc.ExtractPages(0, 2);
+    
+            doc.Save(ArtifactsDir + "Document.ExtractPages.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Document.ExtractPages.docx");
+            Assert.AreEqual(doc.PageCount, 2);
         }
     }
 }

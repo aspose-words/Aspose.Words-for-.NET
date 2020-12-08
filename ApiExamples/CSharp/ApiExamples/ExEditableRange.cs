@@ -16,124 +16,192 @@ namespace ApiExamples
     class ExEditableRange : ApiExampleBase
     {
         [Test]
-        public void RemovesEditableRange()
+        public void CreateAndRemove()
         {
             //ExStart
+            //ExFor:DocumentBuilder.StartEditableRange
+            //ExFor:DocumentBuilder.EndEditableRange
+            //ExFor:EditableRange
+            //ExFor:EditableRange.EditableRangeEnd
+            //ExFor:EditableRange.EditableRangeStart
+            //ExFor:EditableRange.Id
             //ExFor:EditableRange.Remove
-            //ExSummary:Shows how to remove an editable range from a document.
-            Document doc = new Document(MyDir + "Document.docx");
+            //ExFor:EditableRangeEnd.EditableRangeStart
+            //ExFor:EditableRangeEnd.Id
+            //ExFor:EditableRangeEnd.NodeType
+            //ExFor:EditableRangeStart.EditableRange
+            //ExFor:EditableRangeStart.Id
+            //ExFor:EditableRangeStart.NodeType
+            //ExSummary:Shows how to work with an editable range.
+            Document doc = new Document();
+            doc.Protect(ProtectionType.ReadOnly, "MyPassword");
+
             DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world! Since we have set the document's protection level to read-only," +
+                            " we cannot edit this paragraph without the password.");
 
-            // Create an EditableRange so we can remove it. Does not have to be well-formed
-            EditableRangeStart edRange1Start = builder.StartEditableRange();
-            EditableRange editableRange1 = edRange1Start.EditableRange;
-            builder.Writeln("Paragraph inside editable range");
-            EditableRangeEnd edRange1End = builder.EndEditableRange();
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.EditableRangeStart, true).Count); //ExSkip
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.EditableRangeEnd, true).Count); //ExSkip
-            Assert.AreEqual(0, edRange1Start.EditableRange.Id); //ExSkip
-            Assert.AreEqual("", edRange1Start.EditableRange.SingleUser); //ExSkip
+            // Editable ranges allow us to leave parts of protected documents open for editing.
+            EditableRangeStart editableRangeStart = builder.StartEditableRange();
+            builder.Writeln("This paragraph is inside an editable range, and can be edited.");
+            EditableRangeEnd editableRangeEnd = builder.EndEditableRange();
 
-            // Remove the range that was just made
-            editableRange1.Remove();
+            // A well-formed editable range has a start node, and end node.
+            // These nodes have matching IDs and encompass editable nodes.
+            EditableRange editableRange = editableRangeStart.EditableRange;
+
+            Assert.AreEqual(editableRangeStart.Id, editableRange.Id);
+            Assert.AreEqual(editableRangeEnd.Id, editableRange.Id);
+            
+            // Different parts of the editable range link to each other.
+            Assert.AreEqual(editableRangeStart.Id, editableRange.EditableRangeStart.Id);
+            Assert.AreEqual(editableRangeStart.Id, editableRangeEnd.EditableRangeStart.Id);
+            Assert.AreEqual(editableRange.Id, editableRangeStart.EditableRange.Id);
+            Assert.AreEqual(editableRangeEnd.Id, editableRange.EditableRangeEnd.Id);
+
+            // We can access the node types of each part like this. The editable range itself is not a node,
+            // but an entity which consists of a start, an end, and their enclosed contents.
+            Assert.AreEqual(NodeType.EditableRangeStart, editableRangeStart.NodeType);
+            Assert.AreEqual(NodeType.EditableRangeEnd, editableRangeEnd.NodeType);
+
+            builder.Writeln("This paragraph is outside the editable range, and cannot be edited.");
+
+            doc.Save(ArtifactsDir + "EditableRange.CreateAndRemove.docx");
+
+            // Remove an editable range. All the nodes that were inside the range will remain intact.
+            editableRange.Remove();
             //ExEnd
 
+            Assert.AreEqual("Hello world! Since we have set the document's protection level to read-only, we cannot edit this paragraph without the password.\r" +
+                            "This paragraph is inside an editable range, and can be edited.\r" +
+                            "This paragraph is outside the editable range, and cannot be edited.", doc.GetText().Trim());
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.EditableRangeStart, true).Count);
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.EditableRangeEnd, true).Count);
+
+            doc = new Document(ArtifactsDir + "EditableRange.CreateAndRemove.docx");
+
+            Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType);
+            Assert.AreEqual("Hello world! Since we have set the document's protection level to read-only, we cannot edit this paragraph without the password.\r" +
+                            "This paragraph is inside an editable range, and can be edited.\r" +
+                            "This paragraph is outside the editable range, and cannot be edited.", doc.GetText().Trim());
+
+            editableRange = ((EditableRangeStart)doc.GetChild(NodeType.EditableRangeStart, 0, true)).EditableRange;
+
+            TestUtil.VerifyEditableRange(0, string.Empty, EditorType.Unspecified, editableRange);
+        }
+
+
+        [Test]
+        public void Nested()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.StartEditableRange
+            //ExFor:DocumentBuilder.EndEditableRange(EditableRangeStart)
+            //ExFor:EditableRange.EditorGroup
+            //ExSummary:Shows how to create nested editable ranges.
+            Document doc = new Document();
+            doc.Protect(ProtectionType.ReadOnly, "MyPassword");
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world! Since we have set the document's protection level to read-only, " +
+                            "we cannot edit this paragraph without the password.");
+             
+            // Create two nested editable ranges.
+            EditableRangeStart outerEditableRangeStart = builder.StartEditableRange();
+            builder.Writeln("This paragraph inside the outer editable range and can be edited.");
+
+            EditableRangeStart innerEditableRangeStart = builder.StartEditableRange();
+            builder.Writeln("This paragraph inside both the outer and inner editable ranges and can be edited.");
+
+            // Currently, the document builder's node insertion cursor is in more than one ongoing editable range.
+            // When we want to end an editable range in this situation,
+            // we need to specify which of the ranges we wish to end by passing its EditableRangeStart node.
+            builder.EndEditableRange(innerEditableRangeStart);
+
+            builder.Writeln("This paragraph inside the outer editable range and can be edited.");
+
+            builder.EndEditableRange(outerEditableRangeStart);
+
+            builder.Writeln("This paragraph is outside any editable ranges, and cannot be edited.");
+
+            // If a region of text has two overlapping editable ranges with specified groups,
+            // the combined group of users excluded by both groups are prevented from editing it.
+            outerEditableRangeStart.EditableRange.EditorGroup = EditorType.Everyone;
+            innerEditableRangeStart.EditableRange.EditorGroup = EditorType.Contributors;
+
+            doc.Save(ArtifactsDir + "EditableRange.Nested.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "EditableRange.Nested.docx");
+
+            Assert.AreEqual("Hello world! Since we have set the document's protection level to read-only, we cannot edit this paragraph without the password.\r" +
+                            "This paragraph inside the outer editable range and can be edited.\r" +
+                            "This paragraph inside both the outer and inner editable ranges and can be edited.\r" +
+                            "This paragraph inside the outer editable range and can be edited.\r" +
+                            "This paragraph is outside any editable ranges, and cannot be edited.", doc.GetText().Trim());
+
+            EditableRange editableRange = ((EditableRangeStart)doc.GetChild(NodeType.EditableRangeStart, 0, true)).EditableRange;
+
+            TestUtil.VerifyEditableRange(0, string.Empty, EditorType.Everyone, editableRange);
+
+            editableRange = ((EditableRangeStart)doc.GetChild(NodeType.EditableRangeStart, 1, true)).EditableRange;
+
+            TestUtil.VerifyEditableRange(1, string.Empty, EditorType.Contributors, editableRange);
         }
 
         //ExStart
-        //ExFor:DocumentBuilder.StartEditableRange
-        //ExFor:DocumentBuilder.EndEditableRange
-        //ExFor:DocumentBuilder.EndEditableRange(EditableRangeStart)
+
         //ExFor:EditableRange
-        //ExFor:EditableRange.EditableRangeEnd
-        //ExFor:EditableRange.EditableRangeStart
-        //ExFor:EditableRange.Id
+        //ExFor:EditableRange.EditorGroup
         //ExFor:EditableRange.SingleUser
         //ExFor:EditableRangeEnd
         //ExFor:EditableRangeEnd.Accept(DocumentVisitor)
-        //ExFor:EditableRangeEnd.EditableRangeStart
-        //ExFor:EditableRangeEnd.Id
-        //ExFor:EditableRangeEnd.NodeType
         //ExFor:EditableRangeStart
         //ExFor:EditableRangeStart.Accept(DocumentVisitor)
-        //ExFor:EditableRangeStart.EditableRange
-        //ExFor:EditableRangeStart.Id
-        //ExFor:EditableRangeStart.NodeType
-        //ExSummary:Shows how to start and end an editable range.
+        //ExFor:EditorType
+        //ExSummary:Shows how to limit the editing rights of editable ranges to a specific group/user.
         [Test] //ExSkip
-        public void CreateEditableRanges()
+        public void Visitor()
         {
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document();
+            doc.Protect(ProtectionType.ReadOnly, "MyPassword");
+
             DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world! Since we have set the document's protection level to read-only," +
+                            " we cannot edit this paragraph without the password.");
 
-            // Start an editable range
-            EditableRangeStart edRange1Start = builder.StartEditableRange();
+            // When we write-protect documents, editable ranges allow us to pick specific areas that users are allowed to edit.
+            // There are two mutually exclusive ways to narrow down the list of allowed editors.
+            // 1 -  Specify a user:
+            EditableRange editableRange = builder.StartEditableRange().EditableRange;
+            editableRange.SingleUser = "john.doe@myoffice.com";
+            builder.Writeln($"This paragraph is inside the first editable range, can only be edited by {editableRange.SingleUser}.");
+            builder.EndEditableRange();
 
-            // An EditableRange object is created for the EditableRangeStart that we just made
-            EditableRange editableRange1 = edRange1Start.EditableRange;
+            Assert.AreEqual(EditorType.Unspecified, editableRange.EditorGroup);
 
-            // Put something inside the editable range
-            builder.Writeln("Paragraph inside first editable range");
+            // 2 -  Specify a group that allowed users are associated with:
+            editableRange = builder.StartEditableRange().EditableRange;
+            editableRange.EditorGroup = EditorType.Administrators;
+            builder.Writeln($"This paragraph is inside the first editable range, can only be edited by {editableRange.EditorGroup}.");
+            builder.EndEditableRange();
 
-            // An editable range is well-formed if it has a start and an end
-            // Multiple editable ranges can be nested and overlapping 
-            EditableRangeEnd edRange1End = builder.EndEditableRange();
+            Assert.AreEqual(string.Empty, editableRange.SingleUser);
 
-            // Explicitly state which EditableRangeStart a new EditableRangeEnd should be paired with
-            EditableRangeStart edRange2Start = builder.StartEditableRange();
-            builder.Writeln("Paragraph inside second editable range");
-            EditableRange editableRange2 = edRange2Start.EditableRange;
-            EditableRangeEnd edRange2End = builder.EndEditableRange(edRange2Start);
+            builder.Writeln("This paragraph is outside the editable range, and cannot be edited by anybody.");
 
-            // Editable range starts and ends have their own respective node types
-            Assert.AreEqual(NodeType.EditableRangeStart, edRange1Start.NodeType);
-            Assert.AreEqual(NodeType.EditableRangeEnd, edRange1End.NodeType);
+            // Print details and contents of every editable range in the document.
+            EditableRangePrinter editableRangePrinter = new EditableRangePrinter();
 
-            // Editable range IDs are unique and set automatically
-            Assert.AreEqual(0, editableRange1.Id);
-            Assert.AreEqual(1, editableRange2.Id);
+            doc.Accept(editableRangePrinter);
 
-            // Editable range starts and ends always belong to a range
-            Assert.AreEqual(edRange1Start, editableRange1.EditableRangeStart);
-            Assert.AreEqual(edRange1End, editableRange1.EditableRangeEnd);
-
-            // They also inherit the ID of the entire editable range that they belong to
-            Assert.AreEqual(editableRange1.Id, edRange1Start.Id);
-            Assert.AreEqual(editableRange1.Id, edRange1End.Id);
-            Assert.AreEqual(editableRange2.Id, edRange2Start.EditableRange.Id);
-            Assert.AreEqual(editableRange2.Id, edRange2End.EditableRangeStart.EditableRange.Id);
-
-            // If the editable range was found in a document, it will probably have something in the single user property
-            // But if we make one programmatically, the property is empty by default
-            Assert.AreEqual(string.Empty, editableRange1.SingleUser);
-
-            // We have to set it ourselves if we want the ranges to belong to somebody
-            editableRange1.SingleUser = "john.doe@myoffice.com";
-            editableRange2.SingleUser = "jane.doe@myoffice.com";
-
-            // Initialize a custom visitor for editable ranges that will print their contents 
-            EditableRangeInfoPrinter editableRangeReader = new EditableRangeInfoPrinter();
-
-            // Both the start and end of an editable range can accept visitors, but not the editable range itself
-            edRange1Start.Accept(editableRangeReader);
-            edRange2End.Accept(editableRangeReader);
-
-            // Or, if we want to go over all the editable ranges in a document, we can get the document to accept the visitor
-            editableRangeReader.Reset();
-            doc.Accept(editableRangeReader);
-
-            Console.WriteLine(editableRangeReader.ToText());
-            TestCreateEditableRanges(doc, editableRangeReader); //ExSkip
+            Console.WriteLine(editableRangePrinter.ToText());
         }
 
         /// <summary>
-        /// Visitor implementation that prints attributes and contents of ranges.
+        /// Collects attributes and contents of visited editable ranges in a string.
         /// </summary>
-        public class EditableRangeInfoPrinter : DocumentVisitor
+        public class EditableRangePrinter : DocumentVisitor
         {
-            public EditableRangeInfoPrinter()
+            public EditableRangePrinter()
             {
                 mBuilder = new StringBuilder();
             }
@@ -155,13 +223,15 @@ namespace ApiExamples
             public override VisitorAction VisitEditableRangeStart(EditableRangeStart editableRangeStart)
             {
                 mBuilder.AppendLine(" -- Editable range found! -- ");
-                mBuilder.AppendLine("\tID: " + editableRangeStart.Id);
-                mBuilder.AppendLine("\tUser: " + editableRangeStart.EditableRange.SingleUser);
-                mBuilder.AppendLine("\tContents: ");
+                mBuilder.AppendLine("\tID:\t\t" + editableRangeStart.Id);
+                if (editableRangeStart.EditableRange.SingleUser == string.Empty)
+                    mBuilder.AppendLine("\tGroup:\t" + editableRangeStart.EditableRange.EditorGroup);
+                else
+                    mBuilder.AppendLine("\tUser:\t" + editableRangeStart.EditableRange.SingleUser);
+                mBuilder.AppendLine("\tContents:");
 
                 mInsideEditableRange = true;
 
-                // Let the visitor continue visiting other nodes
                 return VisitorAction.Continue;
             }
 
@@ -170,22 +240,20 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitEditableRangeEnd(EditableRangeEnd editableRangeEnd)
             {
-                mBuilder.AppendLine(" -- End of editable range -- ");
+                mBuilder.AppendLine(" -- End of editable range --\n");
 
                 mInsideEditableRange = false;
 
-                // Let the visitor continue visiting other nodes
                 return VisitorAction.Continue;
             }
 
             /// <summary>
-            /// Called when a Run node is encountered in the document. Only runs within editable ranges have their contents recorded.
+            /// Called when a Run node is encountered in the document. This visitor only records runs that are inside editable ranges.
             /// </summary>
             public override VisitorAction VisitRun(Run run)
             {
                 if (mInsideEditableRange) mBuilder.AppendLine("\t\"" + run.Text + "\"");
 
-                // Let the visitor continue visiting other nodes
                 return VisitorAction.Continue;
             }
 
@@ -194,31 +262,6 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestCreateEditableRanges(Document doc, EditableRangeInfoPrinter visitor)
-        {
-            NodeCollection editableRangeStarts = doc.GetChildNodes(NodeType.EditableRangeStart, true);
-
-            Assert.AreEqual(2, editableRangeStarts.Count);
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.EditableRangeEnd, true).Count);
-
-            EditableRange range = ((EditableRangeStart)editableRangeStarts[0]).EditableRange;
-
-            Assert.AreEqual(0, range.Id);
-            Assert.AreEqual("john.doe@myoffice.com", range.SingleUser);
-            Assert.AreEqual(EditorType.Unspecified, range.EditorGroup);
-
-            range = ((EditableRangeStart)editableRangeStarts[1]).EditableRange;
-
-            Assert.AreEqual(1, range.Id);
-            Assert.AreEqual("jane.doe@myoffice.com", range.SingleUser);
-            Assert.AreEqual(EditorType.Unspecified, range.EditorGroup);
-
-            string visitorText = visitor.ToText();
-
-            Assert.True(visitorText.Contains("Paragraph inside first editable range"));
-            Assert.True(visitorText.Contains("Paragraph inside second editable range"));
-        }
-
         [Test]
         public void IncorrectStructureException()
         {
@@ -226,7 +269,7 @@ namespace ApiExamples
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Checking that isn't valid structure for the current document
+            // Assert that isn't valid structure for the current document.
             Assert.That(() => builder.EndEditableRange(), Throws.TypeOf<InvalidOperationException>());
 
             builder.StartEditableRange();
@@ -238,22 +281,15 @@ namespace ApiExamples
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            //ExStart
-            //ExFor:EditableRange.EditorGroup
-            //ExFor:EditorType
-            //ExSummary:Shows how to add editing group for editable ranges
             EditableRangeStart startRange1 = builder.StartEditableRange();
 
             builder.Writeln("EditableRange_1_1");
             builder.Writeln("EditableRange_1_2");
 
-            // Sets the editor for editable range region
             startRange1.EditableRange.EditorGroup = EditorType.Everyone;
-            //ExEnd
-
             doc = DocumentHelper.SaveOpen(doc);
 
-            // Assert that it's not valid structure and editable ranges aren't added to the current document
+            // Assert that it's not valid structure and editable ranges aren't added to the current document.
             NodeCollection startNodes = doc.GetChildNodes(NodeType.EditableRangeStart, true);
             Assert.AreEqual(0, startNodes.Count);
 

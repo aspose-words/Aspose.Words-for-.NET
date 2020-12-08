@@ -317,7 +317,6 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:PageSetup.PageWidth
             //ExFor:PageSetup.PageHeight
-            //ExFor:DocumentBuilder.InsertImage(Image)
             //ExFor:WrapType
             //ExFor:RelativeHorizontalPosition
             //ExFor:RelativeVerticalPosition
@@ -410,7 +409,6 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.MoveToHeaderFooter
             //ExFor:PageSetup.PageWidth
             //ExFor:PageSetup.PageHeight
-            //ExFor:DocumentBuilder.InsertImage(Image)
             //ExFor:WrapType
             //ExFor:RelativeHorizontalPosition
             //ExFor:RelativeVerticalPosition
@@ -919,7 +917,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTable.docx");
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual("Row 1, Col 1\a", table.Rows[0].Cells[0].GetText().Trim());
             Assert.AreEqual("Row 1, Col 2\a", table.Rows[0].Cells[1].GetText().Trim());
@@ -1073,7 +1071,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableSetHeadingRow.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             for (int i = 0; i < table.Rows.Count; i++)
                 Assert.AreEqual(i < 2, table.Rows[i].RowFormat.HeadingFormat);
@@ -1104,7 +1102,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableWithPreferredWidth.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(PreferredWidthType.Percent, table.PreferredWidth.Type);
             Assert.AreEqual(50, table.PreferredWidth.Value);
@@ -1129,13 +1127,13 @@ namespace ApiExamples
             Table table = builder.StartTable();
 
             // There are two ways of applying the PreferredWidth class to table cells.
-            // 1 -  Set an absolute preferred width based on points.
+            // 1 -  Set an absolute preferred width based on points:
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPoints(40);
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightYellow;
             builder.Writeln($"Cell with a width of {builder.CellFormat.PreferredWidth}.");
 
-            // 2 -  Set a relative preferred width based on percent of the table's width.
+            // 2 -  Set a relative preferred width based on percent of the table's width:
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPercent(20);
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightBlue;
@@ -1160,7 +1158,7 @@ namespace ApiExamples
             Assert.AreEqual(100.0d, PreferredWidth.FromPoints(100).Value);
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertCellsWithPreferredWidths.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
             
             Assert.AreEqual(PreferredWidthType.Points, table.FirstRow.Cells[0].CellFormat.PreferredWidth.Type);
             Assert.AreEqual(40.0d, table.FirstRow.Cells[0].CellFormat.PreferredWidth.Value);
@@ -1260,7 +1258,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.CreateTable.docx");
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(4, table.GetChildNodes(NodeType.Cell, true).Count);
 
@@ -1336,7 +1334,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.CreateFormattedTable.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(20.0d, table.LeftIndent);
 
@@ -1410,7 +1408,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.TableBordersAndShading.docx");
-            table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             foreach (Cell c in table.FirstRow)
             {
@@ -1610,7 +1608,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.MoveToCell.docx");
 
-            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual("Column 2, cell 2.\a", table.Rows[1].Cells[1].GetText().Trim());
         }
@@ -1719,7 +1717,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.BuildTable.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(2, table.Rows.Count);
             Assert.AreEqual(2, table.Rows[0].Cells.Count);
@@ -1747,14 +1745,14 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rotated cell text.docx");
 
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
             Cell cell = table.FirstRow.FirstCell;
 
             Assert.AreEqual(TextOrientation.VerticalRotatedFarEast, cell.CellFormat.Orientation);
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
             cell = table.FirstRow.FirstCell;
 
             Assert.AreEqual(TextOrientation.VerticalRotatedFarEast, cell.CellFormat.Orientation);
@@ -2101,7 +2099,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.SetCellFormatting.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(159.3d, table.FirstRow.Cells[0].CellFormat.Width);
             Assert.AreEqual(5.4d, table.FirstRow.Cells[0].CellFormat.LeftPadding);
@@ -2155,7 +2153,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.SetRowFormatting.docx");
-            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(0.0d, table.Rows[0].RowFormat.Height);
             Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
@@ -2499,7 +2497,6 @@ namespace ApiExamples
 
             // Insert two fields while passing a flag which determines whether to update them as the builder inserts them.
             // In some cases, updating fields could be computationally expensive, and it may be a good idea to defer the update.
-            // Not all field types require updating, exceptions include BARCODE and MERGEFIELD.
             doc.BuiltInDocumentProperties.Author = "John Doe";
             builder.Write("This document was written by ");
             builder.InsertField(FieldType.FieldAuthor, updateInsertedFieldsImmediately);
@@ -3352,7 +3349,7 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "MarkdownDocumentTableContentAlignment.md", saveOptions);
 
             Document doc = new Document(ArtifactsDir + "MarkdownDocumentTableContentAlignment.md");
-            Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
+            Table table = doc.FirstSection.Body.Tables[0];
 
             switch (tableContentAlignment)
             {
@@ -3477,10 +3474,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, shape.RelativeHorizontalPosition);
 
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
-
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
-
+            
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyImageInShape(320, 320, ImageType.Png, shape);
@@ -3493,7 +3487,37 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.RightMargin, shape.RelativeHorizontalPosition);
 
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
+        }
+
+        [Test]
+        public void InsertOleObjectAsIcon()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertOleObjectAsIcon(String, String, Boolean, String, String)
+            //ExFor:DocumentBuilder.InsertOleObjectAsIcon(Stream, String, String, String)
+            //ExSummary:Shows how to insert an embedded or linked OLE object as icon into the document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertOleObjectAsIcon(MyDir + "Presentation.pptx", "Package", false, ImageDir + "Logo icon.ico", "My embedded file");
+
+            builder.InsertBreak(BreakType.LineBreak);
+
+            using (FileStream stream = new FileStream(MyDir + "Presentation.pptx", FileMode.Open))
+            {
+                Shape shape = builder.InsertOleObjectAsIcon(stream, "PowerPoint.Application", ImageDir + "Logo icon.ico",
+                    "My embedded file stream");
+
+                OlePackage setOlePackage = shape.OleFormat.OlePackage;
+                setOlePackage.FileName = "Presentation.pptx";
+                setOlePackage.DisplayName = "Presentation.pptx";
+            }
+
+            doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjectAsIcon.docx");
+            //ExEnd
         }
 #endif
     }

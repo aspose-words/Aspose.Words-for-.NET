@@ -16,22 +16,28 @@ namespace ApiExamples
     [TestFixture]
     public class ExNodeImporter : ApiExampleBase
     {
-        [Test]
-        public void KeepSourceNumbering()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void KeepSourceNumbering(bool keepSourceNumbering)
         {
             //ExStart
             //ExFor:ImportFormatOptions.KeepSourceNumbering
             //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode, ImportFormatOptions)
-            //ExSummary:Shows how the numbering will be imported when it clashes in source and destination documents.
-            // Open a document with a custom list numbering scheme and clone it
-            // Since both have the same numbering format, the formats will clash if we import one document into the other
+            //ExSummary:Shows how to resolve list numbering clashes in source and destination documents.
+            // Open a document with a custom list numbering scheme, and then clone it.
+            // Since both have the same numbering format, the formats will clash if we import one document into the other.
             Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
             Document dstDoc = srcDoc.Clone();
 
-            // Both documents have the same numbering in their lists, but if we set this flag to false and then import one document into the other
-            // the numbering of the imported source document will continue from where it ends in the destination document
+            // When we import the document's clone into the original and then append it,
+            // then the two lists with the same list format will join together.
+            // If we set the "KeepSourceNumbering" flag to "false", then the list from the document clone
+            // that we append to the original will carry on the numbering of the list we append it to.
+            // This will effectively merge the two lists into one.
+            // If we set the "KeepSourceNumbering" flag to "true", then the document clone
+            // list will preserve its original numbering, making the two lists appear as separate lists. 
             ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-            importFormatOptions.KeepSourceNumbering = false;
+            importFormatOptions.KeepSourceNumbering = keepSourceNumbering;
 
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepDifferentStyles, importFormatOptions);
             foreach (Paragraph paragraph in srcDoc.FirstSection.Body.Paragraphs)
@@ -41,7 +47,31 @@ namespace ApiExamples
             }
 
             dstDoc.UpdateListLabels();
-            dstDoc.Save(ArtifactsDir + "NodeImporter.KeepSourceNumbering.docx");
+
+            if (keepSourceNumbering)
+            {
+                Assert.AreEqual(
+                    "6. Item 1\r\n" +
+                    "7. Item 2 \r\n" +
+                    "8. Item 3\r\n" +
+                    "9. Item 4\r\n" +
+                    "6. Item 1\r\n" +
+                    "7. Item 2 \r\n" +
+                    "8. Item 3\r\n" +
+                    "9. Item 4", dstDoc.FirstSection.Body.ToString(SaveFormat.Text).Trim());
+            }
+            else
+            {
+                Assert.AreEqual(
+                    "6. Item 1\r\n" +
+                    "7. Item 2 \r\n" +
+                    "8. Item 3\r\n" +
+                    "9. Item 4\r\n" +
+                    "10. Item 1\r\n" +
+                    "11. Item 2 \r\n" +
+                    "12. Item 3\r\n" +
+                    "13. Item 4", dstDoc.FirstSection.Body.ToString(SaveFormat.Text).Trim());
+            }
             //ExEnd
         }
 
@@ -54,36 +84,44 @@ namespace ApiExamples
         [Test]
         public void InsertAtBookmark()
         {
-            Document mainDoc = new Document(MyDir + "Document insertion destination.docx");
-            Document docToInsert = new Document(MyDir + "Document.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Bookmark bookmark = mainDoc.Range.Bookmarks["insertionPlace"];
+            builder.StartBookmark("InsertionPoint");
+            builder.Write("We will insert a document here: ");
+            builder.EndBookmark("InsertionPoint");
+
+            Document docToInsert = new Document();
+            builder = new DocumentBuilder(docToInsert);
+
+            builder.Write("Hello world!");
+
+            docToInsert.Save(ArtifactsDir + "NodeImporter.InsertAtMergeField.docx");
+
+            Bookmark bookmark = doc.Range.Bookmarks["InsertionPoint"];
             InsertDocument(bookmark.BookmarkStart.ParentNode, docToInsert);
 
-            mainDoc.Save(ArtifactsDir + "NodeImporter.InsertAtBookmark.docx");
-            TestInsertAtBookmark(new Document(ArtifactsDir + "NodeImporter.InsertAtBookmark.docx")); //ExSkip
+            Assert.AreEqual("We will insert a document here: " +
+                            "\rHello world!", doc.GetText().Trim());
         }
 
         /// <summary>
-        /// Inserts content of the external document after the specified node.
+        /// Inserts the contents of a document after the specified node.
         /// </summary>
         static void InsertDocument(Node insertionDestination, Document docToInsert)
         {
-            // Make sure that the node is either a paragraph or table
             if (insertionDestination.NodeType.Equals(NodeType.Paragraph) || insertionDestination.NodeType.Equals(NodeType.Table))
             {
-                // We will be inserting into the parent of the destination paragraph
-                CompositeNode dstStory = insertionDestination.ParentNode;
+                CompositeNode destinationParent = insertionDestination.ParentNode;
 
-                // This object will be translating styles and lists during the import
                 NodeImporter importer =
                     new NodeImporter(docToInsert, insertionDestination.Document, ImportFormatMode.KeepSourceFormatting);
 
-                // Loop through all block level nodes in the body of the section
+                // Loop through all block-level nodes in the section's body,
+                // then clone and insert every node that is not the last empty paragraph of a section.
                 foreach (Section srcSection in docToInsert.Sections.OfType<Section>())
                     foreach (Node srcNode in srcSection.Body)
                     {
-                        // Skip the node if it is a last empty paragraph in a section
                         if (srcNode.NodeType.Equals(NodeType.Paragraph))
                         {
                             Paragraph para = (Paragraph)srcNode;
@@ -91,11 +129,9 @@ namespace ApiExamples
                                 continue;
                         }
 
-                        // This creates a clone of the node, suitable for insertion into the destination document
                         Node newNode = importer.ImportNode(srcNode, true);
 
-                        // Insert new node after the reference node
-                        dstStory.InsertAfter(newNode, insertionDestination);
+                        destinationParent.InsertAfter(newNode, insertionDestination);
                         insertionDestination = newNode;
                     }
             }
@@ -105,73 +141,62 @@ namespace ApiExamples
             }
         }
         //ExEnd
-        
-        private void TestInsertAtBookmark(Document doc)
-        {
-            Assert.AreEqual("1) At text that can be identified by regex:\r[MY_DOCUMENT]\r" +
-                            "2) At a MERGEFIELD:\r\u0013 MERGEFIELD  Document_1  \\* MERGEFORMAT \u0014«Document_1»\u0015\r" +
-                            "3) At a bookmark:\r\rHello World!", doc.FirstSection.Body.GetText().Trim());
-        }
 
         [Test]
-        public void InsertAtMailMerge()
+        public void InsertAtMergeField()
         {
-            // Open the main document
-            Document mainDoc = new Document(MyDir + "Document insertion destination.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Write("A document will appear here: ");
+            builder.InsertField(" MERGEFIELD Document_1 ");
 
-            // Add a handler to MergeField event
-            mainDoc.MailMerge.FieldMergingCallback = new InsertDocumentAtMailMergeHandler();
+            Document subDoc = new Document();
+            builder = new DocumentBuilder(subDoc);
+            builder.Write("Hello world!");
 
-            // The main document has a merge field in it called "Document_1"
-            // The corresponding data for this field contains fully qualified path to the document
-            // that should be inserted to this field
-            mainDoc.MailMerge.Execute(new string[] { "Document_1" }, new object[] { MyDir + "Document.docx" });
+            subDoc.Save(ArtifactsDir + "NodeImporter.InsertAtMergeField.docx");
 
-            mainDoc.Save(ArtifactsDir + "NodeImporter.InsertAtMailMerge.docx");
-            TestInsertAtMailMerge(new Document(ArtifactsDir + "NodeImporter.InsertAtMailMerge.docx")); //ExSkip
+            doc.MailMerge.FieldMergingCallback = new InsertDocumentAtMailMergeHandler();
+
+            // The main document has a merge field in it called "Document_1".
+            // Execute a mail merge using a data source that contains a local system filename
+            // of the document that we wish to insert into the MERGEFIELD.
+            doc.MailMerge.Execute(new string[] { "Document_1" },
+                new object[] { ArtifactsDir + "NodeImporter.InsertAtMergeField.docx" });
+
+            Assert.AreEqual("A document will appear here: \r" +
+                            "Hello world!", doc.GetText().Trim());
         }
 
+        /// <summary>
+        /// If the mail merge encounters a MERGEFIELD with a specified name,
+        /// this handler treats the current value of a mail merge data source as a local system filename of a document.
+        /// The handler will insert the document in its entirety into the MERGEFIELD instead of the current merge value.
+        /// </summary>
         private class InsertDocumentAtMailMergeHandler : IFieldMergingCallback
         {
-            /// <summary>
-            /// This handler makes special processing for the "Document_1" field.
-            /// The field value contains the path to load the document. 
-            /// We load the document and insert it into the current merge field.
-            /// </summary>
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
                 if (args.DocumentFieldName == "Document_1")
                 {
-                    // Use document builder to navigate to the merge field with the specified name
                     DocumentBuilder builder = new DocumentBuilder(args.Document);
                     builder.MoveToMergeField(args.DocumentFieldName);
 
-                    // The name of the document to load and insert is stored in the field value
                     Document subDoc = new Document((string)args.FieldValue);
 
-                    // Insert the document
                     InsertDocument(builder.CurrentParagraph, subDoc);
 
-                    // The paragraph that contained the merge field might be empty now and you probably want to delete it
                     if (!builder.CurrentParagraph.HasChildNodes)
                         builder.CurrentParagraph.Remove();
 
-                    // Indicate to the mail merge engine that we have inserted what we wanted
                     args.Text = null;
                 }
             }
 
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
-                // Do nothing
+                // Do nothing.
             }
-        }
-
-        private void TestInsertAtMailMerge(Document doc)
-        {
-            Assert.AreEqual("1) At text that can be identified by regex:\r[MY_DOCUMENT]\r" +
-                            "2) At a MERGEFIELD:\rHello World!\r" +
-                            "3) At a bookmark:", doc.FirstSection.Body.GetText().Trim());
         }
     }
 }

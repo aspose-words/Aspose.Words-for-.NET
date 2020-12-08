@@ -25,8 +25,6 @@ using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 using TextBox = Aspose.Words.Drawing.TextBox;
 #if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
-#elif NET462
-using System.Windows.Forms;
 #endif
 
 namespace ApiExamples
@@ -39,110 +37,138 @@ namespace ApiExamples
     {
 #if NET462 || JAVA
         [Test]
-        public void Insert()
+        public void AltText()
         {
             //ExStart
             //ExFor:ShapeBase.AlternativeText
             //ExFor:ShapeBase.Name
+            //ExSummary:Shows how to use a shape's alternative text.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            Shape shape = builder.InsertShape(ShapeType.Cube, 150, 150);
+            shape.Name = "MyCube";
+
+            shape.AlternativeText = "Alt text for MyCube.";
+
+            // We can access the alternative text of a shape by right-clicking it, and then via "Format AutoShape" -> "Alt Text".
+            doc.Save(ArtifactsDir + "Shape.AltText.docx");
+
+            // Save the document to HTML, and then delete the linked image that belongs to our shape.
+            // The browser that is reading our HTML will display the alt text in place of the missing image.
+            doc.Save(ArtifactsDir + "Shape.AltText.html");
+            Assert.True(File.Exists(ArtifactsDir + "Shape.AltText.001.png")); //ExSkip
+            File.Delete(ArtifactsDir + "Shape.AltText.001.png");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.AltText.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Cube, "MyCube", 150.0d, 150.0d, 0, 0, shape);
+            Assert.AreEqual("Alt text for MyCube.", shape.AlternativeText);
+            Assert.AreEqual("Times New Roman", shape.Font.Name);
+
+            doc = new Document(ArtifactsDir + "Shape.AltText.html");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 153.0d, 153.0d, 0, 0, shape);
+            Assert.AreEqual("Alt text for MyCube.", shape.AlternativeText);
+
+            TestUtil.FileContainsString(
+                "<img src=\"Shape.AltText.001.png\" width=\"204\" height=\"204\" alt=\"Alt text for MyCube.\" " +
+                "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />", 
+                ArtifactsDir + "Shape.AltText.html");
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void Font(bool hideShape)
+        {
+            //ExStart
             //ExFor:ShapeBase.Font
-            //ExFor:ShapeBase.CanHaveImage
             //ExFor:ShapeBase.ParentParagraph
-            //ExFor:ShapeBase.Rotation
-            //ExSummary:Shows how to insert shapes.
+            //ExSummary:Shows how to insert a text box, and set the font of its contents.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a cube and set its name
-            Shape shape = builder.InsertShape(ShapeType.Cube, 150, 150);
-            shape.Name = "MyCube";
-            
-            // We can also set the alt text like this
-            // This text will be found in Format AutoShape > Alt Text
-            shape.AlternativeText = "Alt text for MyCube.";
-            
-            // Insert a text box
-            shape = builder.InsertShape(ShapeType.TextBox, 300, 50);
-            shape.Font.Name = "Times New Roman";
-            
-            // Move the builder into the text box and write text
+            builder.Writeln("Hello world!");
+
+            Shape shape = builder.InsertShape(ShapeType.TextBox, 300, 50);
             builder.MoveTo(shape.LastParagraph);
-            builder.Write("Hello world!");
+            builder.Write("This text is inside the text box.");
 
-            // Move the builder out of the text box back into the main document
-            builder.MoveTo(shape.ParentParagraph);         
+            // Set the "Hidden" property of the shape's "Font" object to "true" to hide the text box from sight,
+            // and collapse the space that it would normally occupy.
+            // Set the "Hidden" property of the shape's "Font" object to "false" to leave the text box visible.
+            shape.Font.Hidden = hideShape;
 
-            // Insert a shape with an image
-            shape = builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
+            // If the shape is visible, we will modify its appearance via the font object.
+            if (!hideShape)
+            {
+                shape.Font.HighlightColor = Color.LightGray;
+                shape.Font.Color = Color.Red;
+                shape.Font.Underline = Underline.Dash;
+            }
+            
+            // Move the builder out of the text box back into the main document.
+            builder.MoveTo(shape.ParentParagraph);
+
+            builder.Writeln("\nThis text is outside the text box.");
+
+            doc.Save(ArtifactsDir + "Shape.Font.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.Font.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(hideShape, shape.Font.Hidden);
+
+            if (hideShape)
+            {
+                Assert.AreEqual(Color.Empty.ToArgb(), shape.Font.HighlightColor.ToArgb());
+                Assert.AreEqual(Color.Empty.ToArgb(), shape.Font.Color.ToArgb());
+                Assert.AreEqual(Underline.None, shape.Font.Underline);
+            }
+            else
+            {
+                Assert.AreEqual(Color.Silver.ToArgb(), shape.Font.HighlightColor.ToArgb());
+                Assert.AreEqual(Color.Red.ToArgb(), shape.Font.Color.ToArgb());
+                Assert.AreEqual(Underline.Dash, shape.Font.Underline);
+            }
+
+            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 300.0d, 50.0d, 0, 0, shape);
+            Assert.AreEqual("This text is inside the text box.", shape.GetText().Trim());
+            Assert.AreEqual("Hello world!\rThis text is inside the text box.\r\rThis text is outside the text box.", doc.GetText().Trim());
+        }
+
+        [Test]
+        public void Rotate()
+        {
+            //ExStart
+            //ExFor:ShapeBase.CanHaveImage
+            //ExFor:ShapeBase.Rotation
+            //ExSummary:Shows how to insert and rotate an image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a shape with an image.
+            Shape shape = builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
             Assert.True(shape.CanHaveImage);
             Assert.True(shape.HasImage);
 
-            // Rotate the image
-            shape.Rotation = 45.0d;
+            // Rotate the image 45 degrees clockwise.
+            shape.Rotation = 45;
 
-            doc.Save(ArtifactsDir + "Shape.Insert.docx");
+            doc.Save(ArtifactsDir + "Shape.Rotate.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Shape.Insert.docx");
-            List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
-            
-            TestUtil.VerifyShape(ShapeType.Cube, "MyCube", 150.0d, 150.0d, 0, 0, shapes[0]);
-            Assert.AreEqual("Alt text for MyCube.", shapes[0].AlternativeText);
-            Assert.AreEqual("Times New Roman", shapes[0].Font.Name);
+            doc = new Document(ArtifactsDir + "Shape.Rotate.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100004", 300.0d, 50.0d, 0, 0, shapes[1]);
-            Assert.AreEqual("Hello world!", shapes[1].LastParagraph.GetText().Trim());
-
-            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 300.0d, 300.0d, 0, 0, shapes[2]);
-            Assert.True(shapes[2].CanHaveImage);
-            Assert.True(shapes[2].HasImage);
-            Assert.AreEqual(45.0d, shapes[2].Rotation);
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 300.0d, 300.0d, 0, 0, shape);
+            Assert.True(shape.CanHaveImage);
+            Assert.True(shape.HasImage);
+            Assert.AreEqual(45.0d, shape.Rotation);
         }
-
-        //ExStart
-        //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
-        //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
-        //ExFor:ShapeRenderer
-        //ExFor:ShapeRenderer.#ctor(ShapeBase)
-        //ExSummary:Shows how to render a shape with a Graphics object.
-        [Test, Category("IgnoreOnJenkins"), Category("SkipMono")] //ExSkip
-        public void DisplayShapeForm()
-        {
-            // Create a new ShapeForm instance and show it as a dialog box
-            ShapeForm shapeForm = new ShapeForm();
-            shapeForm.ShowDialog();
-        }
-
-        /// <summary>
-        /// Windows Form that renders and displays shapes from a document.
-        /// </summary>
-        private class ShapeForm : Form
-        {
-            protected override void OnPaint(PaintEventArgs e)
-            {
-                // Set the size of the Form canvas
-                Size = new Size(1000, 800);
-
-                // Open a document and get its first shape, which is a chart
-                Document doc = new Document(MyDir + "Various shapes.docx");
-                Shape shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
-
-                // Create a ShapeRenderer instance and a Graphics object
-                // The ShapeRenderer will render the shape that is passed during construction over the Graphics object
-                // Whatever is rendered on this Graphics object will be displayed on the screen inside this form
-                ShapeRenderer renderer = new ShapeRenderer(shape);
-                Graphics formGraphics = CreateGraphics();
-
-                // Call this method on the renderer to render the chart in the Graphics object,
-                // on a specified x/y coordinate and scale
-                renderer.RenderToScale(formGraphics, 0, 0, 1.5f);
-
-                // Get another shape from the document, and render it to a specific size instead of a linear scale
-                GroupShape groupShape = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
-                renderer = new ShapeRenderer(groupShape);
-                renderer.RenderToSize(formGraphics, 500, 400, 100, 200);
-            }
-        }
-        //ExEnd
 
         [Test]
         public void AspectRatioLockedDefaultValue()
@@ -150,11 +176,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The best place for the watermark image is in the header or footer so it is shown on every page
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             Image image = Image.FromFile(ImageDir + "Transparent background logo.png");
 
-            // Insert a floating picture
             Shape shape = builder.InsertImage(image);
             shape.WrapType = WrapType.None;
             shape.BehindText = true;
@@ -162,7 +186,7 @@ namespace ApiExamples
             shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
             shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
 
-            // Calculate image left and top position so it appears in the center of the page
+            // Calculate image left and top position so it appears in the center of the page.
             shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
             shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
 
@@ -214,29 +238,27 @@ namespace ApiExamples
             //ExFor:ShapeBase.DistanceLeft
             //ExFor:ShapeBase.DistanceRight
             //ExFor:ShapeBase.DistanceTop
-            //ExSummary:Shows how to set the wrapping distance for text that surrounds a shape.
+            //ExSummary:Shows how to set the wrapping distance for a text that surrounds a shape.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a rectangle and get the text to wrap tightly around its bounds
+            // Insert a rectangle and, get the text to wrap tightly around its bounds.
             Shape shape = builder.InsertShape(ShapeType.Rectangle, 150, 150);
             shape.WrapType = WrapType.Tight;
 
-            // Set the minimum distance between the shape and surrounding text
-            shape.DistanceTop = 40.0;
-            shape.DistanceBottom = 40.0;
-            shape.DistanceLeft = 40.0;
-            shape.DistanceRight = 40.0;
+            // Set the minimum distance between the shape and surrounding text to 40pt from all sides.
+            shape.DistanceTop = 40;
+            shape.DistanceBottom = 40;
+            shape.DistanceLeft = 40;
+            shape.DistanceRight = 40;
 
-            // Move the shape closer to the centre of the page
-            shape.Top = 75.0;
-            shape.Left = 150.0;
+            // Move the shape closer to the center of the page, and then rotate the shape 60 degrees clockwise.
+            shape.Top = 75;
+            shape.Left = 150; 
+            shape.Rotation = 60;
 
-            // Rotate the shape
-            shape.Rotation = 60.0;
-
-            // Add text that will wrap around the shape
-            builder.Font.Size = 24.0d;
+            // Add text that will wrap around the shape.
+            builder.Font.Size = 24;
             builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
                           "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
 
@@ -255,95 +277,236 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertGroupShape()
+        public void GroupShape()
         {
             //ExStart
-            //ExFor:ShapeBase.AnchorLocked
+            //ExFor:ShapeBase.Bounds
+            //ExFor:ShapeBase.CoordOrigin
+            //ExFor:ShapeBase.CoordSize
+            //ExSummary:Shows how to create and populate a group shape.
+            Document doc = new Document();
+
+            // Create a group shape. A group shape can display a collection of child shape nodes.
+            // In Microsoft Word, clicking within the group shape's boundary or on one of the group shape's child shapes will
+            // select all the other child shapes within this group and allow us to scale and move all the shapes at once.
+            GroupShape group = new GroupShape(doc);
+
+            Assert.AreEqual(WrapType.None, group.WrapType);
+
+            // Create a 400pt x 400pt group shape, and place it at the document's floating shape coordinate origin.
+            group.Bounds = new RectangleF(0, 0, 400, 400);
+
+            // Set the group's internal coordinate plane size to 500 x 500pt. 
+            // The top left corner of the group will have an x and y coordinate of (0, 0),
+            // and the bottom right corner will have an x and y coordinate of (500, 500).
+            group.CoordSize = new Size(500, 500);
+
+            // Set the coordinates of the top left corner of the group to (-250, -250). 
+            // The group's center will now have an x and y coordinate value of (0, 0),
+            // and the bottom right corner will be at (250, 250).
+            group.CoordOrigin = new Point(-250, -250);
+
+            // Create a rectangle that will display the boundary of this group shape, and add it to the group.
+            group.AppendChild(new Shape(doc, ShapeType.Rectangle)
+            {
+                Width = group.CoordSize.Width,
+                Height = group.CoordSize.Height,
+                Left = group.CoordOrigin.X,
+                Top = group.CoordOrigin.Y
+            });
+
+            // Once a shape is a part of a group shape, we can access it as a child node and then modify it.
+            ((Shape)group.GetChild(NodeType.Shape, 0, true)).Stroke.DashStyle = DashStyle.Dash;
+
+            // Create a small red star, and insert it into the group.
+            // Line up the shape with the group's coordinate origin, which we have moved to the center.
+            group.AppendChild(new Shape(doc, ShapeType.Star)
+            {
+                Width = 20,
+                Height = 20,
+                Left = -10,
+                Top = -10,
+                FillColor = Color.Red
+            });
+
+            // Insert a rectangle, and then insert a slightly smaller rectangle in the same place with an image. 
+            // Newer shapes that we add to the group overlap older shapes. The light blue rectangle will partially overlap the red star,
+            // and then the shape with the image will overlap the light blue rectangle, using it as a frame.
+            // We cannot use the "ZOrder" properties of shapes to manipulate their arrangement within a group shape. 
+            group.AppendChild(new Shape(doc, ShapeType.Rectangle)
+            {
+                Width = 250,
+                Height = 250,
+                Left = -250,
+                Top = -250,
+                FillColor = Color.LightBlue
+            });
+
+            group.AppendChild(new Shape(doc, ShapeType.Image)
+            {
+                Width = 200,
+                Height = 200,
+                Left = -225,
+                Top = -225
+            });
+
+            ((Shape)group.GetChild(NodeType.Shape, 3, true)).ImageData.SetImage(ImageDir + "Logo.jpg");
+
+            // Insert a text box into the group shape. Set the "Left" property so that the text box's right edge
+            // touches the right boundary of the group shape. Set the "Top" property so that the text box sits outside
+            // the boundary of the group shape, with its top size lined up along the group shape's bottom margin.
+            group.AppendChild(new Shape(doc, ShapeType.TextBox)
+            {
+                Width = 200,
+                Height = 50,
+                Left = group.CoordSize.Width + group.CoordOrigin.X - 200,
+                Top = group.CoordSize.Height + group.CoordOrigin.Y
+            });
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertNode(group);
+            builder.MoveTo(((Shape)group.GetChild(NodeType.Shape, 4, true)).AppendChild(new Paragraph(doc)));
+            builder.Write("Hello world!");
+
+            doc.Save(ArtifactsDir + "Shape.GroupShape.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.GroupShape.docx");
+            group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
+
+            Assert.AreEqual(new RectangleF(0, 0, 400, 400), group.Bounds);
+            Assert.AreEqual(new Size(500, 500), group.CoordSize);
+            Assert.AreEqual(new Point(-250, -250), group.CoordOrigin);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 500.0d, 500.0d, -250.0d, -250.0d, (Shape)group.GetChild(NodeType.Shape, 0, true));
+            TestUtil.VerifyShape(ShapeType.Star, string.Empty, 20.0d, 20.0d, -10.0d, -10.0d, (Shape)group.GetChild(NodeType.Shape, 1, true));
+            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 250.0d, 250.0d, -250.0d, -250.0d, (Shape)group.GetChild(NodeType.Shape, 2, true));
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 200.0d, 200.0d, -225.0d, -225.0d, (Shape)group.GetChild(NodeType.Shape, 3, true));
+            TestUtil.VerifyShape(ShapeType.TextBox, string.Empty, 200.0d, 50.0d, 250.0d, 50.0d, (Shape)group.GetChild(NodeType.Shape, 4, true));
+        }
+
+        [Test]
+        public void IsTopLevel()
+        {
+            //ExStart
             //ExFor:ShapeBase.IsTopLevel
+            //ExSummary:Shows how to tell whether a shape is a part of a group shape.
+            Document doc = new Document();
+
+            Shape shape = new Shape(doc, ShapeType.Rectangle);
+            shape.Width = 200;
+            shape.Height = 200;
+            shape.WrapType = WrapType.None;
+
+            // A shape by default is not part of any group shape, and therefore has the "IsTopLevel" property set to "true".
+            Assert.True(shape.IsTopLevel);
+
+            GroupShape group = new GroupShape(doc);
+            group.AppendChild(shape);
+
+            // Once we assimilate a shape into a group shape, the "IsTopLevel" property changes to "false".
+            Assert.False(shape.IsTopLevel);
+            //ExEnd
+        }
+
+        [Test]
+        public void LocalToParent()
+        {
+            //ExStart
             //ExFor:ShapeBase.CoordOrigin
             //ExFor:ShapeBase.CoordSize
             //ExFor:ShapeBase.LocalToParent(PointF)
-            //ExSummary:Shows how to create and work with a group of shapes.
+            //ExSummary:Shows how to translate the x and y coordinate location on a shape's coordinate plane to a location on the parent shape's coordinate plane.
+            Document doc = new Document();
+
+            // Insert a group shape, and place it 100 points below and to the right of
+            // the document's x and Y coordinate origin point.
+            GroupShape group = new GroupShape(doc);
+            group.Bounds = new RectangleF(100, 100, 500, 500);
+
+            // Use the "LocalToParent" method to determine that (0, 0) on the group's internal x and y coordinates
+            // lies on (100, 100) of its parent shape's coordinate system. The group shape's parent is the document itself.
+            Assert.AreEqual(new PointF(100, 100), group.LocalToParent(new PointF(0, 0)));
+
+            // By default, a shape's internal coordinate plane has the top left corner at (0, 0),
+            // and the bottom right corner at (1000, 1000). Due to its size, our group shape covers an area of 500pt x 500pt
+            // in the document's plane. This means that a movement of 1pt on the document's coordinate plane will translate
+            // to a movement of 2pts on the group shape's coordinate plane.
+            Assert.AreEqual(new PointF(150, 150), group.LocalToParent(new PointF(100, 100)));
+            Assert.AreEqual(new PointF(200, 200), group.LocalToParent(new PointF(200, 200)));
+            Assert.AreEqual(new PointF(250, 250), group.LocalToParent(new PointF(300, 300)));
+
+            // Move the group shape's x and y axis origin from the top left corner to the center.
+            // This will offset the group's internal coordinates relative to the document's coordinates even further.
+            group.CoordOrigin = new Point(-250, -250);
+
+            Assert.AreEqual(new PointF(375, 375), group.LocalToParent(new PointF(300, 300)));
+
+            // Changing the scale of the coordinate plane will also affect relative locations.
+            group.CoordSize = new Size(500, 500);
+
+            Assert.AreEqual(new PointF(650, 650), group.LocalToParent(new PointF(300, 300)));
+
+            // If we wish to add a shape to this group while defining its location based on a location in the document,
+            // we will need to first confirm a location in the group shape that will match the document's location.
+            Assert.AreEqual(new PointF(700, 700), group.LocalToParent(new PointF(350, 350)));
+
+            Shape shape = new Shape(doc, ShapeType.Rectangle)
+            {
+                Width = 100,
+                Height = 100,
+                Left = 700,
+                Top = 700
+            };
+
+            group.AppendChild(shape);
+            doc.FirstSection.Body.FirstParagraph.AppendChild(group);
+
+            doc.Save(ArtifactsDir + "Shape.LocalToParent.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.LocalToParent.docx");
+            group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
+
+            Assert.AreEqual(new RectangleF(100, 100, 500, 500), group.Bounds);
+            Assert.AreEqual(new Size(500, 500), group.CoordSize);
+            Assert.AreEqual(new Point(-250, -250), group.CoordOrigin);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AnchorLocked(bool anchorLocked)
+        {
+            //ExStart
+            //ExFor:ShapeBase.AnchorLocked
+            //ExSummary:Shows how to lock or unlock a shape's paragraph anchor.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            GroupShape group = new GroupShape(doc);
+            builder.Writeln("Hello world!");
 
-            // Every GroupShape by default is a top level floating shape
-            Assert.True(group.IsGroup);
-            Assert.True(group.IsTopLevel);
-            Assert.AreEqual(WrapType.None, group.WrapType);
+            builder.Write("Our shape will have an anchor attached to this paragraph.");
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 200, 160);
+            shape.WrapType = WrapType.None;
+            builder.InsertBreak(BreakType.ParagraphBreak);
 
-            // Top level shapes can have this property changed
-            group.AnchorLocked = true;
+            builder.Writeln("Hello again!");
 
-            // Set the XY coordinates of the shape group and the size of its containing block, as it appears on the page
-            group.Bounds = new RectangleF(100, 50, 200, 100);
-
-            // Set the scale of the inner coordinates of the shape group
-            // These values mean that the bottom right corner of the 200x100 outer block we set before
-            // will be at x = 2000 and y = 1000, or 2000 units from the left and 1000 units from the top
-            group.CoordSize = new Size(2000, 1000);
-
-            // The coordinate origin of a shape group is x = 0, y = 0 by default, which is the top left corner
-            // If we insert a child shape and set its distance from the left to 2000 and the distance from the top to 1000,
-            // its origin will be at the bottom right corner of the shape group
-            // We can offset the coordinate origin by setting the CoordOrigin attribute
-            // In this instance, we move the origin to the center of the shape group
-            group.CoordOrigin = new Point(-1000, -500);
+            // Set the "AnchorLocked" property to "true" to prevent the shape's anchor
+            // from moving when moving the shape in Microsoft Word.
+            // Set the "AnchorLocked" property to "false" to allow any movement of the shape
+            // to also move its anchor to any other paragraph that the shape ends up close to.
+            shape.AnchorLocked = anchorLocked;
             
-            // Populate the shape group with child shapes
-            // First, insert a rectangle
-            Shape subShape = new Shape(doc, ShapeType.Rectangle);
-            subShape.Width = 500;
-            subShape.Height = 700;
-
-            // Place its top left corner at the parent group's coordinate origin, which is currently at its center
-            subShape.Left = 0;
-            subShape.Top = 0;
-
-            // Add the rectangle to the group
-            group.AppendChild(subShape);
-
-            // Insert a triangle
-            subShape = new Shape(doc, ShapeType.Triangle);
-            subShape.Width = 400;
-            subShape.Height = 400;
-
-            // Place its origin at the bottom right corner of the group
-            subShape.Left = 1000;
-            subShape.Top = 500;
-
-            // The offset between this child shape and parent group can be seen here
-            Assert.AreEqual(new PointF(1000, 500), subShape.LocalToParent(new PointF(0, 0)));
-
-            // Add the triangle to the group
-            group.AppendChild(subShape);
-
-            // Child shapes of a group shape are not top level
-            Assert.False(subShape.IsTopLevel);
-
-            // Finally, insert the group into the document and save
-            builder.InsertNode(group);
-            doc.Save(ArtifactsDir + "Shape.InsertGroupShape.docx");
+            // If the shape does not have a visible anchor symbol to its left,
+            // we will need to enable visible anchors via "Options" -> "Display" -> "Object Anchors".
+            doc.Save(ArtifactsDir + "Shape.AnchorLocked.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Shape.InsertGroupShape.docx");
-            group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
+            doc = new Document(ArtifactsDir + "Shape.AnchorLocked.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.True(group.AnchorLocked);
-            Assert.AreEqual(new RectangleF(100, 50, 200, 100), group.Bounds);
-            Assert.AreEqual(new Size(2000, 1000), group.CoordSize);
-            Assert.AreEqual(new Point(-1000, -500), group.CoordOrigin);
-
-            subShape = (Shape)group.GetChild(NodeType.Shape, 0, true);
-
-            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 500.0d, 700.0d, 0.0d, 0.0d, subShape);
-
-            subShape = (Shape)group.GetChild(NodeType.Shape, 1, true);
-
-            TestUtil.VerifyShape(ShapeType.Triangle, string.Empty, 400.0d, 400.0d, 500.0d, 1000.0d, subShape);
-            Assert.AreEqual(new PointF(1000, 500), subShape.LocalToParent(new PointF(0, 0)));
+            Assert.AreEqual(anchorLocked, shape.AnchorLocked);
         }
 
         [Test]
@@ -352,16 +515,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:Shape
             //ExSummary:Shows how to delete all shapes from a document.
-            // Here we get all shapes from the document node, but you can do this for any smaller
-            // node too, for example delete shapes from a single section or a paragraph
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert 2 shapes
+            // Insert two shapes, and also a group shape with another shape inside it.
             builder.InsertShape(ShapeType.Rectangle, 400, 200);
             builder.InsertShape(ShapeType.Star, 300, 300);
 
-            // Insert a GroupShape with an inner shape
             GroupShape group = new GroupShape(doc);
             group.Bounds = new RectangleF(100, 50, 200, 100);
             group.CoordOrigin = new Point(-1000, -500);
@@ -371,21 +531,22 @@ namespace ApiExamples
             subShape.Height = 700;
             subShape.Left = 0;
             subShape.Top = 0;
+
             group.AppendChild(subShape);
             builder.InsertNode(group);
 
             Assert.AreEqual(3, doc.GetChildNodes(NodeType.Shape, true).Count);
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.GroupShape, true).Count);
 
-            // Delete all Shape nodes
+            // Remove all Shape nodes from the document.
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             shapes.Clear();
 
-            // The GroupShape node is still present even though there are no sub Shapes
+            // All shapes are gone, but the group shape is still in the document.
             Assert.AreEqual(1, doc.GetChildNodes(NodeType.GroupShape, true).Count);
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
 
-            // GroupShapes must also be deleted manually
+            // Remove all group shapes separately.
             NodeCollection groupShapes = doc.GetChildNodes(NodeType.GroupShape, true);
             groupShapes.Clear();
 
@@ -395,81 +556,215 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CheckShapeInline()
+        public void IsInline()
         {
             //ExStart
             //ExFor:ShapeBase.IsInline
-            //ExSummary:Shows how to test if a shape in the document is inline or floating.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExSummary:Shows how to determine whether a shape is inline or floating.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
-            {
-                Console.WriteLine(shape.IsInline ? "Shape is inline." : "Shape is floating.");
-            }
+            // Below are two wrapping types that shapes may have.
+            // 1 -  Inline:
+            builder.Write("Hello world! ");
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 100, 100);
+            shape.FillColor = Color.LightBlue;
+            builder.Write(" Hello again.");
+
+            // An inline shape sits inside a paragraph among other paragraph elements, such as runs of text.
+            // In Microsoft Word, we may click and drag the shape to any paragraph as if it is a character.
+            // If the shape is large, it will affect vertical paragraph spacing.
+            // We cannot move this shape to a place with no paragraph.
+            Assert.AreEqual(WrapType.Inline, shape.WrapType);
+            Assert.True(shape.IsInline);
+
+            // 2 -  Floating:
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin ,200, 
+                RelativeVerticalPosition.TopMargin ,200, 100, 100, WrapType.None);
+            shape.FillColor = Color.Orange;
+
+            // A floating shape belongs to the paragraph that we insert it into,
+            // which we can determine by an anchor symbol that appears when we click the shape.
+            // If the shape does not have a visible anchor symbol to its left,
+            // we will need to enable visible anchors via "Options" -> "Display" -> "Object Anchors".
+            // In Microsoft Word, we may left click and drag this shape freely to any location.
+            Assert.AreEqual(WrapType.None, shape.WrapType);
+            Assert.False(shape.IsInline);
+
+            doc.Save(ArtifactsDir + "Shape.IsInline.docx");
             //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            doc = new Document(ArtifactsDir + "Shape.IsInline.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.False(((Shape)doc.GetChild(NodeType.Shape, 0, true)).IsInline);
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100002", 100, 100, 0, 0, shape);
+            Assert.AreEqual(Color.LightBlue.ToArgb(), shape.FillColor.ToArgb());
+            Assert.AreEqual(WrapType.Inline, shape.WrapType);
+            Assert.True(shape.IsInline);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100004", 100, 100, 200, 200, shape);
+            Assert.AreEqual(Color.Orange.ToArgb(), shape.FillColor.ToArgb());
+            Assert.AreEqual(WrapType.None, shape.WrapType);
+            Assert.False(shape.IsInline);
         }
 
         [Test]
-        public void LineFlipOrientation()
+        public void Bounds()
         {
             //ExStart
             //ExFor:ShapeBase.Bounds
             //ExFor:ShapeBase.BoundsInPoints
-            //ExFor:ShapeBase.FlipOrientation
-            //ExFor:FlipOrientation
-            //ExSummary:Shows how to create line shapes and set specific location and size.
+            //ExSummary:Shows how to verify shape containing block boundaries.
             Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The lines will cross the whole page
-            float pageWidth = (float) doc.FirstSection.PageSetup.PageWidth;
-            float pageHeight = (float) doc.FirstSection.PageSetup.PageHeight;
+            Shape shape = builder.InsertShape(ShapeType.Line, RelativeHorizontalPosition.LeftMargin, 50,
+                RelativeVerticalPosition.TopMargin, 50, 100, 100, WrapType.None);
+            shape.StrokeColor = Color.Orange;
 
-            // This line goes from top left to bottom right by default
-            Shape lineA = new Shape(doc, ShapeType.Line)
+            // Even though the line itself takes up very little space on the document page,
+            // it occupies a rectangular containing block, the size of which we can determine using the "Bounds" properties.
+            Assert.AreEqual(new RectangleF(50, 50, 100, 100), shape.Bounds);
+            Assert.AreEqual(new RectangleF(50, 50, 100, 100), shape.BoundsInPoints);
+
+            // Create a group shape, and then set the size of its containing block using the "Bounds" property.
+            GroupShape group = new GroupShape(doc);
+            group.Bounds = new RectangleF(0, 100, 250, 250);
+
+            Assert.AreEqual(new RectangleF(0, 100, 250, 250), group.BoundsInPoints);
+
+            // Create a rectangle, verify the size of its bounding block, and then add it to the group shape.
+            shape = new Shape(doc, ShapeType.Rectangle)
             {
-                Bounds = new RectangleF(0, 0, pageWidth, pageHeight),
-                RelativeHorizontalPosition = RelativeHorizontalPosition.Page,
-                RelativeVerticalPosition = RelativeVerticalPosition.Page
+                Width = 100,
+                Height = 100,
+                Left = 700,
+                Top = 700
             };
 
-            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineA.BoundsInPoints);
+            Assert.AreEqual(new RectangleF(700, 700, 100, 100), shape.BoundsInPoints);
 
-            // This line goes from bottom left to top right because we flipped it
-            Shape lineB = new Shape(doc, ShapeType.Line)
+            group.AppendChild(shape);
+
+            // The group shape's coordinate plane has its origin on the top left-hand side corner of its containing block,
+            // and the x and y coordinates of (1000, 1000) on the bottom right-hand side corner.
+            // Our group shape is 250x250pt in size, so every 4pt on the group shape's coordinate plane
+            // translates to 1pt in the document body's coordinate plane.
+            // Every shape that we insert will also shrink in size by a factor of 4.
+            // The change in the shape's "BoundsInPoints" property will reflect this.
+            Assert.AreEqual(new RectangleF(175, 275, 25, 25), shape.BoundsInPoints);
+
+            doc.FirstSection.Body.FirstParagraph.AppendChild(group);
+
+            // Insert a shape, and place it outside of the bounds of the group shape's containing block.
+            shape = new Shape(doc, ShapeType.Rectangle)
             {
-                Bounds = new RectangleF(0, 0, pageWidth, pageHeight),
-                FlipOrientation = FlipOrientation.Horizontal,
-                RelativeHorizontalPosition = RelativeHorizontalPosition.Page,
-                RelativeVerticalPosition = RelativeVerticalPosition.Page
+                Width = 100,
+                Height = 100,
+                Left = 1000,
+                Top = 1000
             };
 
-            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineB.BoundsInPoints);
+            group.AppendChild(shape);
 
-            // Add lines to the document
-            doc.FirstSection.Body.FirstParagraph.AppendChild(lineA);
-            doc.FirstSection.Body.FirstParagraph.AppendChild(lineB);
+            // The group shape's footprint in the document body has increased, but the containing block remains the same.
+            Assert.AreEqual(new RectangleF(0, 100, 250, 250), group.BoundsInPoints);
+            Assert.AreEqual(new RectangleF(250, 350, 25, 25), shape.BoundsInPoints);
 
-            doc.Save(ArtifactsDir + "Shape.LineFlipOrientation.docx");
+            doc.Save(ArtifactsDir + "Shape.Bounds.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Shape.LineFlipOrientation.docx");
-            lineA = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            doc = new Document(ArtifactsDir + "Shape.Bounds.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineA.BoundsInPoints);
-            Assert.AreEqual(FlipOrientation.None, lineA.FlipOrientation);
-            Assert.AreEqual(RelativeHorizontalPosition.Page, lineA.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Page, lineA.RelativeVerticalPosition);
+            TestUtil.VerifyShape(ShapeType.Line, "Line 100002", 100, 100, 50, 50, shape);
+            Assert.AreEqual(Color.Orange.ToArgb(), shape.StrokeColor.ToArgb());
+            Assert.AreEqual(new RectangleF(50, 50, 100, 100), shape.BoundsInPoints);
 
-            lineB = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
 
-            Assert.AreEqual(new RectangleF(0, 0, pageWidth, pageHeight), lineB.BoundsInPoints);
-            Assert.AreEqual(FlipOrientation.None, lineB.FlipOrientation);
-            Assert.AreEqual(RelativeHorizontalPosition.Page, lineB.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Page, lineB.RelativeVerticalPosition);
+            Assert.AreEqual(new RectangleF(0, 100, 250, 250), group.Bounds);
+            Assert.AreEqual(new RectangleF(0, 100, 250, 250), group.BoundsInPoints);
+            Assert.AreEqual(new Size(1000, 1000), group.CoordSize);
+            Assert.AreEqual(new Point(0, 0), group.CoordOrigin);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 100, 100, 700, 700, shape);
+            Assert.AreEqual(new RectangleF(175, 275, 25, 25), shape.BoundsInPoints);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 100, 100, 1000, 1000, shape);
+            Assert.AreEqual(new RectangleF(250, 350, 25, 25), shape.BoundsInPoints);
+        }
+
+        [Test]
+        public void FlipShapeOrientation()
+        {
+            //ExStart
+            //ExFor:ShapeBase.FlipOrientation
+            //ExFor:FlipOrientation
+            //ExSummary:Shows how to flip a shape on an axis.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert an image shape, and leave its orientation in its default state.
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 100,
+                RelativeVerticalPosition.TopMargin, 100, 100, 100, WrapType.None);
+            shape.ImageData.SetImage(ImageDir + "Logo.jpg");
+
+            Assert.AreEqual(FlipOrientation.None, shape.FlipOrientation);
+
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 250,
+                RelativeVerticalPosition.TopMargin, 100, 100, 100, WrapType.None);
+            shape.ImageData.SetImage(ImageDir + "Logo.jpg");
+
+            // Set the "FlipOrientation" property to "FlipOrientation.Horizontal" to flip the second shape on the y-axis,
+            // making it into a horizontal mirror image of the first shape.
+            shape.FlipOrientation = FlipOrientation.Horizontal;
+
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 100,
+                RelativeVerticalPosition.TopMargin, 250, 100, 100, WrapType.None);
+            shape.ImageData.SetImage(ImageDir + "Logo.jpg");
+
+            // Set the "FlipOrientation" property to "FlipOrientation.Horizontal" to flip the third shape on the x-axis,
+            // making it into a vertical mirror image of the first shape.
+            shape.FlipOrientation = FlipOrientation.Vertical;
+
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 250,
+                RelativeVerticalPosition.TopMargin, 250, 100, 100, WrapType.None);
+            shape.ImageData.SetImage(ImageDir + "Logo.jpg");
+
+            // Set the "FlipOrientation" property to "FlipOrientation.Horizontal" to flip the fourth shape on both the x and y axes,
+            // making it into a horizontal and vertical mirror image of the first shape.
+            shape.FlipOrientation = FlipOrientation.Both;
+            
+            doc.Save(ArtifactsDir + "Shape.FlipShapeOrientation.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.FlipShapeOrientation.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100002", 100, 100, 100, 100, shape);
+            Assert.AreEqual(FlipOrientation.None, shape.FlipOrientation);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100004", 100, 100, 100, 250, shape);
+            Assert.AreEqual(FlipOrientation.Horizontal, shape.FlipOrientation);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100006", 100, 100, 250, 100, shape);
+            Assert.AreEqual(FlipOrientation.Vertical, shape.FlipOrientation);
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 3, true);
+
+            TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100008", 100, 100, 250, 250, shape);
+            Assert.AreEqual(FlipOrientation.Both, shape.FlipOrientation);
         }
 
         [Test]
@@ -478,26 +773,33 @@ namespace ApiExamples
             //ExStart
             //ExFor:Shape.Fill
             //ExFor:Shape.FillColor
+            //ExFor:Shape.StrokeColor
             //ExFor:Fill
             //ExFor:Fill.Opacity
-            //ExSummary:Demonstrates how to create shapes with fill.
+            //ExSummary:Shows how to fill a shape with a solid color.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Writeln();
-            builder.Writeln();
-            builder.Writeln();
-            builder.Write("Some text under the shape.");
+            // Write some text, and then cover it with a floating shape.
+            builder.Font.Size = 32;
+            builder.Writeln("Hello world!");
 
-            // Create a red balloon, semitransparent
-            // The shape is floating, and its coordinates are (0,0) by default, relative to the current paragraph
-            Shape shape = new Shape(builder.Document, ShapeType.Balloon);
-            shape.FillColor = Color.Red;
+            Shape shape = builder.InsertShape(ShapeType.CloudCallout, RelativeHorizontalPosition.LeftMargin, 25,
+                RelativeVerticalPosition.TopMargin, 25, 250, 150, WrapType.None);
+
+            // Use the "StrokeColor" property to set the color of the outline of the shape.
+            shape.StrokeColor = Color.CadetBlue;
+
+            // Use the "FillColor" property to set the color of the inside area of the shape.
+            shape.FillColor = Color.LightBlue;
+
+            // The "Opacity" property determines how transparent the color is on a 0-1 scale,
+            // with 1 being fully opaque, and 0 being invisible.
+            // The shape fill by default is fully opaque, so we cannot see the text that this shape is on top of.
+            Assert.AreEqual(1.0d, shape.Fill.Opacity);
+
+            // Set the shape fill color's opacity to a lower value so that we can see the text underneath it.
             shape.Fill.Opacity = 0.3;
-            shape.Width = 100;
-            shape.Height = 100;
-            shape.Top = -100;
-            builder.InsertNode(shape);
 
             doc.Save(ArtifactsDir + "Shape.Fill.docx");
             //ExEnd
@@ -505,8 +807,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.Fill.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyShape(ShapeType.Balloon, string.Empty, 100.0d, 100.0d, -100.0d, 0.0d, shape);
-            Assert.AreEqual(Color.Red.ToArgb(), shape.FillColor.ToArgb());
+            TestUtil.VerifyShape(ShapeType.CloudCallout, "CloudCallout 100002", 250.0d, 150.0d, 25.0d, 25.0d, shape);
+            Assert.AreEqual(Color.LightBlue.ToArgb(), shape.FillColor.ToArgb());
+            Assert.AreEqual(Color.CadetBlue.ToArgb(), shape.StrokeColor.ToArgb());
             Assert.AreEqual(0.3d, shape.Fill.Opacity, 0.01d);
         }
 
@@ -515,21 +818,28 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ShapeBase.Title
-            //ExSummary:Shows how to get or set title of shape object.
+            //ExSummary:Shows how to set the title of a shape.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create test shape
+            // Create a shape, give it a title, and then add it to the document.
             Shape shape = new Shape(doc, ShapeType.Cube);
             shape.Width = 200;
             shape.Height = 200;
             shape.Title = "My cube";
             
             builder.InsertNode(shape);
-            //ExEnd
 
-            doc = DocumentHelper.SaveOpen(doc);
+            // When we save a document with a shape that has a title,
+            // Aspose.Words will store that title in the shape's Alt Text.
+            doc.Save(ArtifactsDir + "Shape.Title.docx");
+
+            doc = new Document(ArtifactsDir + "Shape.Title.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(string.Empty, shape.Title);
+            Assert.AreEqual("Title: My cube", shape.AlternativeText);
+            //ExEnd
 
             TestUtil.VerifyShape(ShapeType.Cube, string.Empty, 200.0d, 200.0d, 0.0d, 0.0d, shape);
         }
@@ -543,44 +853,40 @@ namespace ApiExamples
             //ExFor:NodeCollection
             //ExFor:CompositeNode.InsertAfter(Node, Node)
             //ExFor:NodeCollection.ToArray
-            //ExSummary:Shows how to replace all textboxes with images.
+            //ExSummary:Shows how to replace all textbox shapes with image shapes.
             Document doc = new Document(MyDir + "Textboxes in drawing canvas.docx");
 
-            // This gets a live collection of all shape nodes in the document
-            NodeCollection shapeCollection = doc.GetChildNodes(NodeType.Shape, true);
+            Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
-            // Since we will be adding/removing nodes, it is better to copy all collection
-            // into a fixed size array, otherwise iterator will be invalidated
-            Node[] shapes = shapeCollection.ToArray();
+            Assert.AreEqual(3, shapes.Count(s => s.ShapeType == ShapeType.TextBox));
+            Assert.AreEqual(1, shapes.Count(s => s.ShapeType == ShapeType.Image));
 
-            foreach (Shape shape in shapes.OfType<Shape>())
+            foreach (Shape shape in shapes)
             {
-                // Filter out all shapes of a certain type
                 if (shape.ShapeType.Equals(ShapeType.TextBox))
                 {
-                    // Create a new shape that will replace the existing shape
-                    Shape image = new Shape(doc, ShapeType.Image);
+                    Shape replacementShape = new Shape(doc, ShapeType.Image);
+                    replacementShape.ImageData.SetImage(ImageDir + "Logo.jpg");
+                    replacementShape.Left = shape.Left;
+                    replacementShape.Top = shape.Top;
+                    replacementShape.Width = shape.Width;
+                    replacementShape.Height = shape.Height;
+                    replacementShape.RelativeHorizontalPosition = shape.RelativeHorizontalPosition;
+                    replacementShape.RelativeVerticalPosition = shape.RelativeVerticalPosition;
+                    replacementShape.HorizontalAlignment = shape.HorizontalAlignment;
+                    replacementShape.VerticalAlignment = shape.VerticalAlignment;
+                    replacementShape.WrapType = shape.WrapType;
+                    replacementShape.WrapSide = shape.WrapSide;
 
-                    // Load the image into the new shape
-                    image.ImageData.SetImage(ImageDir + "Windows MetaFile.wmf");
-
-                    // Make new shape's position to match the old shape
-                    image.Left = shape.Left;
-                    image.Top = shape.Top;
-                    image.Width = shape.Width;
-                    image.Height = shape.Height;
-                    image.RelativeHorizontalPosition = shape.RelativeHorizontalPosition;
-                    image.RelativeVerticalPosition = shape.RelativeVerticalPosition;
-                    image.HorizontalAlignment = shape.HorizontalAlignment;
-                    image.VerticalAlignment = shape.VerticalAlignment;
-                    image.WrapType = shape.WrapType;
-                    image.WrapSide = shape.WrapSide;
-
-                    // Insert new shape after the old shape and remove the old shape
-                    shape.ParentNode.InsertAfter(image, shape);
+                    shape.ParentNode.InsertAfter(replacementShape, shape);
                     shape.Remove();
                 }
             }
+
+            shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
+
+            Assert.AreEqual(0, shapes.Count(s => s.ShapeType == ShapeType.TextBox));
+            Assert.AreEqual(4, shapes.Count(s => s.ShapeType == ShapeType.Image));
 
             doc.Save(ArtifactsDir + "Shape.ReplaceTextboxesWithImages.docx");
             //ExEnd
@@ -596,42 +902,30 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Shape.#ctor(DocumentBase, ShapeType)
-            //ExFor:ShapeBase.ZOrder
             //ExFor:Story.FirstParagraph
             //ExFor:Shape.FirstParagraph
             //ExFor:ShapeBase.WrapType
-            //ExSummary:Shows how to create a textbox with some text and different formatting options in a new document.
+            //ExSummary:Shows how to create and format a text box.
             Document doc = new Document();
 
-            // Create a new shape of type TextBox
+            // Create a floating text box.
             Shape textBox = new Shape(doc, ShapeType.TextBox);
-
-            // Set some settings of the textbox itself
-            // Set the wrap of the textbox to inline
             textBox.WrapType = WrapType.None;
-            // Set the horizontal and vertical alignment of the text inside the shape
-            textBox.HorizontalAlignment = HorizontalAlignment.Center;
-            textBox.VerticalAlignment = VerticalAlignment.Top;
-
-            // Set the textbox height and width
             textBox.Height = 50;
             textBox.Width = 200;
 
-            // Set the textbox in front of other shapes with a lower ZOrder
-            textBox.ZOrder = 2;
-
-            // Create a new paragraph for the textbox manually and align it in the center
-            // Make sure we add the new nodes to the textbox as well
+            // Set the horizontal, and vertical alignment of the text inside the shape.
+            textBox.HorizontalAlignment = HorizontalAlignment.Center;
+            textBox.VerticalAlignment = VerticalAlignment.Top;
+            
+            // Add a paragraph to the text box, and add a run of text that the text box will display.
             textBox.AppendChild(new Paragraph(doc));
             Paragraph para = textBox.FirstParagraph;
             para.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-
-            // Add some text to the paragraph
             Run run = new Run(doc);
             run.Text = "Hello world!";
             para.AppendChild(run);
 
-            // Append the textbox to the first paragraph in the body
             doc.FirstSection.Body.FirstParagraph.AppendChild(textBox);
 
             doc.Save(ArtifactsDir + "Shape.CreateTextBox.docx");
@@ -644,8 +938,48 @@ namespace ApiExamples
             Assert.AreEqual(WrapType.None, textBox.WrapType);
             Assert.AreEqual(HorizontalAlignment.Center, textBox.HorizontalAlignment);
             Assert.AreEqual(VerticalAlignment.Top, textBox.VerticalAlignment);
-            Assert.AreEqual(0, textBox.ZOrder);
             Assert.AreEqual("Hello world!", textBox.GetText().Trim());
+        }
+
+        [Test]
+        public void ZOrder()
+        {
+            //ExStart
+            //ExFor:ShapeBase.ZOrder
+            //ExSummary:Shows how to manipulate the order of shapes.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert three different colored rectangles that partially overlap each other.
+            // When we insert a shape that overlaps another shape, Aspose.Words places the newer shape on top of the old one.
+            // The light green rectangle will overlap the light blue rectangle and partially obscure it,
+            // and the light blue rectangle will obscure the orange rectangle.
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 100,
+                RelativeVerticalPosition.TopMargin, 100, 200, 200, WrapType.None);
+            shape.FillColor = Color.Orange;
+
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 150,
+                RelativeVerticalPosition.TopMargin, 150, 200, 200, WrapType.None);
+            shape.FillColor = Color.LightBlue;
+
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 200,
+                RelativeVerticalPosition.TopMargin, 200, 200, 200, WrapType.None);
+            shape.FillColor = Color.LightGreen;
+
+            Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
+
+            // The "ZOrder" property of a shape determines its stacking priority among other overlapping shapes.
+            // If two overlapping shapes have different "ZOrder" values,
+            // Microsoft Word will place the shape with the higher value over the shape with the lower value. 
+            // Set the "ZOrder" values of our shapes to place the first orange rectangle over the second light blue one,
+            // and the second light blue rectangle over the third light green rectangle.
+            // This will reverse their original stacking order.
+            shapes[0].ZOrder = 3;
+            shapes[1].ZOrder = 2;
+            shapes[2].ZOrder = 1;
+
+            doc.Save(ArtifactsDir + "Shape.ZOrder.docx");
+            //ExEnd
         }
 
         [Test]
@@ -662,16 +996,14 @@ namespace ApiExamples
             //ExFor:Forms2OleControl.Enabled
             //ExFor:Forms2OleControl.Type
             //ExFor:Forms2OleControl.ChildNodes
-            //ExSummary:Shows how to get ActiveX control and properties from the document.
+            //ExSummary:Shows how to verify the properties of an ActiveX control.
             Document doc = new Document(MyDir + "ActiveX controls.docx");
 
-            // Get ActiveX control from the document 
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             OleControl oleControl = shape.OleFormat.OleControl;
 
             Assert.AreEqual(null, oleControl.Name);
 
-            // Get ActiveX control properties
             if (oleControl.IsForms2OleControl)
             {
                 Forms2OleControl checkBox = (Forms2OleControl) oleControl;
@@ -689,19 +1021,18 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OleFormat.GetRawData
-            //ExSummary:Shows how to get access to OLE object raw data.
-            // Open a document that contains OLE objects
+            //ExSummary:Shows how to access the raw data of an embedded OLE object.
             Document doc = new Document(MyDir + "OLE objects.docx");
 
             foreach (Node shape in doc.GetChildNodes(NodeType.Shape, true))
             {
-                // Get access to OLE data
                 OleFormat oleFormat = ((Shape)shape).OleFormat;
                 if (oleFormat != null)
                 {
                     Console.WriteLine($"This is {(oleFormat.IsLink ? "a linked" : "an embedded")} object");
                     byte[] oleRawData = oleFormat.GetRawData();
-                    Assert.AreEqual(24576, oleRawData.Length); //ExSkip
+
+                    Assert.AreEqual(24576, oleRawData.Length);
                 }
             }
             //ExEnd
@@ -720,33 +1051,33 @@ namespace ApiExamples
             //ExFor:OleFormat.SuggestedExtension
             //ExSummary:Shows how to extract embedded OLE objects into files.
             Document doc = new Document(MyDir + "OLE spreadsheet.docm");
-
-            // The first shape will contain an OLE object
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            // This object is a Microsoft Excel spreadsheet
+            // The OLE object in the first shape is a Microsoft Excel spreadsheet.
             OleFormat oleFormat = shape.OleFormat;
             Assert.AreEqual("Excel.Sheet.12", oleFormat.ProgId);
 
-            // Our object is neither auto updating nor locked from updates
+            // Our object is neither auto updating nor locked from updates.
             Assert.False(oleFormat.AutoUpdate);
             Assert.AreEqual(false, oleFormat.IsLocked);
 
-            // If we want to extract the OLE object by saving it into our local file system, this property can tell us the relevant file extension
+            // If we plan on saving the OLE object to a file in the local file system,
+            // we can use the "SuggestedExtension" property to determine which file extension to apply to the file.
             Assert.AreEqual(".xlsx", oleFormat.SuggestedExtension);
 
-            // We can save it via a stream
+            // Below are two ways of saving an OLE object to a file in the local file system.
+            // 1 -  Save it via a stream:
             using (FileStream fs = new FileStream(ArtifactsDir + "OLE spreadsheet extracted via stream" + oleFormat.SuggestedExtension, FileMode.Create))
             {
                 oleFormat.Save(fs);
             }
 
-            // We can also save it directly to a file
+            // 2 -  Save it directly to a filename:
             oleFormat.Save(ArtifactsDir + "OLE spreadsheet saved directly" + oleFormat.SuggestedExtension);
             //ExEnd
 
-            Assert.AreEqual(8300, new FileInfo(ArtifactsDir + "OLE spreadsheet extracted via stream.xlsx").Length, TestUtil.FileInfoLengthDelta);
-            Assert.AreEqual(8300, new FileInfo(ArtifactsDir + "OLE spreadsheet saved directly.xlsx").Length, TestUtil.FileInfoLengthDelta);
+            Assert.That(8000, Is.LessThan(new FileInfo(ArtifactsDir + "OLE spreadsheet extracted via stream.xlsx").Length));
+            Assert.That(8000, Is.LessThan(new FileInfo(ArtifactsDir + "OLE spreadsheet saved directly.xlsx").Length));
         }
 
         [Test]

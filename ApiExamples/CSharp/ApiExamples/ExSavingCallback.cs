@@ -20,25 +20,25 @@ namespace ApiExamples
         public void CheckThatAllMethodsArePresent()
         {
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
-            htmlFixedSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
+            htmlFixedSaveOptions.PageSavingCallback = new CustomFileNamePageSavingCallback();
 
             ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
-            imageSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
+            imageSaveOptions.PageSavingCallback = new CustomFileNamePageSavingCallback();
 
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
-            pdfSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
+            pdfSaveOptions.PageSavingCallback = new CustomFileNamePageSavingCallback();
 
             PsSaveOptions psSaveOptions = new PsSaveOptions();
-            psSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
+            psSaveOptions.PageSavingCallback = new CustomFileNamePageSavingCallback();
 
             SvgSaveOptions svgSaveOptions = new SvgSaveOptions();
-            svgSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
+            svgSaveOptions.PageSavingCallback = new CustomFileNamePageSavingCallback();
 
             XamlFixedSaveOptions xamlFixedSaveOptions = new XamlFixedSaveOptions();
-            xamlFixedSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
+            xamlFixedSaveOptions.PageSavingCallback = new CustomFileNamePageSavingCallback();
 
             XpsSaveOptions xpsSaveOptions = new XpsSaveOptions();
-            xpsSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
+            xpsSaveOptions.PageSavingCallback = new CustomFileNamePageSavingCallback();
         }
 
         //ExStart
@@ -50,41 +50,52 @@ namespace ApiExamples
         //ExFor:PageSavingArgs.PageIndex
         //ExFor:PageSavingArgs.PageStream
         //ExFor:FixedPageSaveOptions.PageSavingCallback
-        //ExSummary:Shows how separate pages are saved when a document is exported to fixed page format.
+        //ExSummary:Shows how to use a callback to save a document to HTML page by page.
         [Test] //ExSkip
-        public void PageFileName()
+        public void PageFileNames()
         {
-            Document doc = new Document(MyDir + "Rendering.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            HtmlFixedSaveOptions htmlFixedSaveOptions =
-                new HtmlFixedSaveOptions { PageIndex = 0, PageCount = doc.PageCount };
-            htmlFixedSaveOptions.PageSavingCallback = new CustomPageFileNamePageSavingCallback();
+            builder.Writeln("Page 1.");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 2.");
+            builder.InsertImage(ImageDir + "Logo.jpg");
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.Writeln("Page 3.");
 
-            doc.Save($"{ArtifactsDir}SavingCallback.PageFileName.html", htmlFixedSaveOptions);
+            // Create an "HtmlFixedSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we convert the document to HTML.
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
 
-            string[] filePaths = Directory.GetFiles(ArtifactsDir).Where(s => s.StartsWith(ArtifactsDir + "SavingCallback.PageFileName.Page_")).OrderBy(s => s).ToArray();
+            // We will save each page in this document to a separate HTML file in the local file system.
+            // Set a callback that allows us to name each output HTML document.
+            htmlFixedSaveOptions.PageSavingCallback = new CustomFileNamePageSavingCallback();
 
-            for (int i = 0; i < doc.PageCount; i++)
-            {
-                string file = $"{ArtifactsDir}SavingCallback.PageFileName.Page_{i}.html";
-                Assert.AreEqual(file, filePaths[i]);//ExSkip
-            }
+            doc.Save(ArtifactsDir + "SavingCallback.PageFileNames.html", htmlFixedSaveOptions);
+
+            string[] filePaths = Directory.GetFiles(ArtifactsDir).Where(
+                s => s.StartsWith(ArtifactsDir + "SavingCallback.PageFileNames.Page_")).OrderBy(s => s).ToArray();
+
+            Assert.AreEqual(3, filePaths.Length);
         }
 
         /// <summary>
-        /// Custom PageFileName is specified.
+        /// Saves all pages to a file and directory specified within.
         /// </summary>
-        private class CustomPageFileNamePageSavingCallback : IPageSavingCallback
+        private class CustomFileNamePageSavingCallback : IPageSavingCallback
         {
             public void PageSaving(PageSavingArgs args)
             {
-                string outFileName = $"{ArtifactsDir}SavingCallback.PageFileName.Page_{args.PageIndex}.html";
+                string outFileName = $"{ArtifactsDir}SavingCallback.PageFileNames.Page_{args.PageIndex}.html";
 
-                // Specify name of the output file for the current page either in this 
+                // Below are two ways of specifying where Aspose.Words will save each page of the document.
+                // 1 -  Set a filename for the output page file:
                 args.PageFileName = outFileName;
 
-                // ..or by setting up a custom stream
+                // 2 -  Create a custom stream for the output page file:
                 args.PageStream = new FileStream(outFileName, FileMode.Create);
+
                 Assert.False(args.KeepPageStreamOpen);
             }
         }
@@ -105,35 +116,36 @@ namespace ApiExamples
         //ExFor:HtmlSaveOptions
         //ExFor:HtmlSaveOptions.DocumentPartSavingCallback
         //ExFor:HtmlSaveOptions.ImageSavingCallback
-        //ExSummary:Shows how split a document into parts and save them.
+        //ExSummary:Shows how to split a document into parts and save them.
         [Test] //ExSkip
-        public void DocumentParts()
+        public void DocumentPartsFileNames()
         {
-            // Open a document to be converted to html
             Document doc = new Document(MyDir + "Rendering.docx");
-            string outFileName = "SavingCallback.DocumentParts.Rendering.html";
+            string outFileName = "SavingCallback.DocumentPartsFileNames.html";
 
-            // We can use an appropriate SaveOptions subclass to customize the conversion process
+            // Create an "HtmlFixedSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we convert the document to HTML.
             HtmlSaveOptions options = new HtmlSaveOptions();
 
-            // We can use it to split a document into smaller parts, in this instance split by section breaks
-            // Each part will be saved into a separate file, creating many files during the conversion process instead of just one
+            // If we save the document normally, there will be one output HTML
+            // document with all of the source document's contents.
+            // Set the "DocumentSplitCriteria" property to "DocumentSplitCriteria.SectionBreak" to
+            // save our document to multiple HTML files: one for each section.
             options.DocumentSplitCriteria = DocumentSplitCriteria.SectionBreak;
 
-            // We can set a callback to name each document part file ourselves
+            // Assign a custom callback to the "DocumentPartSavingCallback" property to alter the document part saving logic.
             options.DocumentPartSavingCallback = new SavedDocumentPartRename(outFileName, options.DocumentSplitCriteria);
 
-            // If we convert a document that contains images into html, we will end up with one html file which links to several images
-            // Each image will be in the form of a file in the local file system
-            // There is also a callback that can customize the name and file system location of each image
+            // If we convert a document that contains images into html, we will end up with one html file which links to several images.
+            // Each image will be in the form of a file in the local file system.
+            // There is also a callback that can customize the name and file system location of each image.
             options.ImageSavingCallback = new SavedImageRename(outFileName);
 
-            // The DocumentPartSaving() and ImageSaving() methods of our callbacks will be run at this time
             doc.Save(ArtifactsDir + outFileName, options);
         }
 
         /// <summary>
-        /// Renames saved document parts that are produced when an HTML document is saved while being split according to a DocumentSplitCriteria.
+        /// Sets custom filenames for output documents that the saving operation splits a document into.
         /// </summary>
         private class SavedDocumentPartRename : IDocumentPartSavingCallback
         {
@@ -145,9 +157,10 @@ namespace ApiExamples
 
             void IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs args)
             {
+                // We can access the entire source document via the "Document" property.
                 Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
 
-                string partType = "";
+                string partType = string.Empty;
 
                 switch (mDocumentSplitCriteria)
                 {
@@ -167,11 +180,13 @@ namespace ApiExamples
 
                 string partFileName = $"{mOutFileName} part {++mCount}, of type {partType}{Path.GetExtension(args.DocumentPartFileName)}";
 
-                // We can designate the filename and location of each output file either by filename
+                // Below are two ways of specifying where Aspose.Words will save each part of the document.
+                // 1 -  Set a filename for the output part file:
                 args.DocumentPartFileName = partFileName;
 
-                // Or we can make a new stream and choose the location of the file at construction
+                // 2 -  Create a custom stream for the output part file:
                 args.DocumentPartStream = new FileStream(ArtifactsDir + partFileName, FileMode.Create);
+
                 Assert.True(args.DocumentPartStream.CanWrite);
                 Assert.False(args.KeepDocumentPartStreamOpen);
             }
@@ -182,7 +197,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Renames saved images that are produced when an HTML document is saved.
+        /// Sets custom filenames for image files that an HTML conversion creates.
         /// </summary>
         public class SavedImageRename : IImageSavingCallback
         {
@@ -193,12 +208,15 @@ namespace ApiExamples
 
             void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
             {
-                // Same filename and stream functions as above in IDocumentPartSavingCallback apply here
                 string imageFileName = $"{mOutFileName} shape {++mCount}, of type {args.CurrentShape.ShapeType}{Path.GetExtension(args.ImageFileName)}";
 
+                // Below are two ways of specifying where Aspose.Words will save each part of the document.
+                // 1 -  Set a filename for the output image file:
                 args.ImageFileName = imageFileName;
 
+                // 2 -  Create a custom stream for the output image file:
                 args.ImageStream = new FileStream(ArtifactsDir + imageFileName, FileMode.Create);
+
                 Assert.True(args.ImageStream.CanWrite);
                 Assert.True(args.IsImageAvailable);
                 Assert.False(args.KeepImageStreamOpen);
@@ -221,34 +239,33 @@ namespace ApiExamples
         //ExFor:HtmlSaveOptions.CssStyleSheetType
         //ExFor:ICssSavingCallback
         //ExFor:ICssSavingCallback.CssSaving(CssSavingArgs)
-        //ExSummary:Shows how to work with CSS stylesheets that may be created along with Html documents.
+        //ExSummary:Shows how to work with CSS stylesheets that an HTML conversion creates.
         [Test] //ExSkip
-        public void CssSavingCallback()
+        public void ExternalCssFilenames()
         {
-            // Open a document to be converted to html
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // If our output document will produce a CSS stylesheet, we can use an HtmlSaveOptions to control where it is saved
+            // Create an "HtmlFixedSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we convert the document to HTML.
             HtmlSaveOptions options = new HtmlSaveOptions();
 
-            // By default, a CSS stylesheet is stored inside its HTML document, but we can have it saved to a separate file
+            // Set the "CssStylesheetType" property to "CssStyleSheetType.External" to
+            // accompany a saved HTML document with an external CSS stylesheet file.
             options.CssStyleSheetType = CssStyleSheetType.External;
 
-            // We can designate a filename for our stylesheet like this
-            options.CssStyleSheetFileName = ArtifactsDir + "SavingCallback.CssSavingCallback.css";
+            // Below are two ways of specifying directories and filenames for output CSS stylesheets.
+            // 1 -  Use the "CssStyleSheetFileName" property to assign a filename to our stylesheet:
+            options.CssStyleSheetFileName = ArtifactsDir + "SavingCallback.ExternalCssFilenames.css";
 
-            // A custom ICssSavingCallback implementation can also control where that stylesheet will be saved and linked to by the Html document
-            // This callback will override the filename we specified above in options.CssStyleSheetFileName,
-            // but will give us more control over the saving process
+            // 2 -  Use a custom callback to name our stylesheet:
             options.CssSavingCallback =
-                new CustomCssSavingCallback(ArtifactsDir + "SavingCallback.CssSavingCallback.css", true, false);
+                new CustomCssSavingCallback(ArtifactsDir + "SavingCallback.ExternalCssFilenames.css", true, false);
 
-            // The CssSaving() method of our callback will be called at this stage
-            doc.Save(ArtifactsDir + "SavingCallback.CssSavingCallback.html", options);
+            doc.Save(ArtifactsDir + "SavingCallback.ExternalCssFilenames.html", options);
         }
 
         /// <summary>
-        /// Designates a filename and other parameters for the saving of a CSS stylesheet
+        /// Sets a custom filename, along with other parameters for an external CSS stylesheet.
         /// </summary>
         private class CustomCssSavingCallback : ICssSavingCallback
         {
@@ -261,14 +278,14 @@ namespace ApiExamples
 
             public void CssSaving(CssSavingArgs args)
             {
-                // Set up the stream that will create the CSS document         
+                // We can access the entire source document via the "Document" property.
+                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
+
                 args.CssStream = new FileStream(mCssTextFileName, FileMode.Create);
-                Assert.True(args.CssStream.CanWrite);
                 args.IsExportNeeded = mIsExportNeeded;
                 args.KeepCssStreamOpen = mKeepCssStreamOpen;
 
-                // We can also access the original document here like this
-                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
+                Assert.True(args.CssStream.CanWrite);
             }
 
             private readonly string mCssTextFileName;

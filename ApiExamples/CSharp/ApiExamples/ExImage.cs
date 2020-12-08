@@ -5,7 +5,6 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -27,18 +26,18 @@ namespace ApiExamples
     public class ExImage : ApiExampleBase
     {
         [Test]
-        public void CreateImageDirectly()
+        public void FromFile()
         {
             //ExStart
             //ExFor:Shape.#ctor(DocumentBase,ShapeType)
             //ExFor:ShapeType
-            //ExSummary:Shows how to add a shape with an image to a document.
+            //ExSummary:Shows how to insert a shape with an image from the local file system into a document.
             Document doc = new Document();
 
-            // Public constructor of "Shape" class creates shape with "ShapeMarkupLanguage.Vml" markup type
-            // If you need to create non-primitive shapes, such as SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
-            // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, DiagonalCornersRounded
-            // please use DocumentBuilder.InsertShape
+            // The "Shape" class's public constructor will create a shape with "ShapeMarkupLanguage.Vml" markup type.
+            // If you need to create a shape of a non-primitive type, such as SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
+            // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, or DiagonalCornersRounded,
+            // please use DocumentBuilder.InsertShape.
             Shape shape = new Shape(doc, ShapeType.Image);
             shape.ImageData.SetImage(ImageDir + "Windows MetaFile.wmf");
             shape.Width = 100;
@@ -46,10 +45,10 @@ namespace ApiExamples
 
             doc.FirstSection.Body.FirstParagraph.AppendChild(shape);
 
-            doc.Save(ArtifactsDir + "Image.CreateImageDirectly.docx");
+            doc.Save(ArtifactsDir + "Image.FromFile.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Image.CreateImageDirectly.docx");
+            doc = new Document(ArtifactsDir + "Image.FromFile.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
@@ -58,26 +57,30 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CreateFromUrl()
+        public void FromUrl()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(String)
-            //ExSummary:Shows how to inserts an image from a URL.
+            //ExSummary:Shows how to insert a shape with an image into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Below are two locations where the document builder's "InsertShape" method
+            // can source the image that the shape will display.
+            // 1 -  Pass a local file system filename of an image file:
             builder.Write("Image from local file: ");
             builder.InsertImage(ImageDir + "Logo.jpg");
             builder.Writeln();
 
+            // 2 -  Pass a URL which points to an image.
             builder.Write("Image from a URL: ");
             builder.InsertImage(AsposeLogoUrl);
             builder.Writeln();
 
-            doc.Save(ArtifactsDir + "Image.CreateFromUrl.docx");
+            doc.Save(ArtifactsDir + "Image.FromUrl.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Image.CreateFromUrl.docx");
+            doc = new Document(ArtifactsDir + "Image.FromUrl.docx");
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
             Assert.AreEqual(2, shapes.Count);
@@ -86,11 +89,11 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CreateFromStream()
+        public void FromStream()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertImage(Stream)
-            //ExSummary:Shows how to insert an image from a stream. 
+            //ExSummary:Shows how to insert a shape with an image from a stream into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -100,21 +103,20 @@ namespace ApiExamples
                 builder.InsertImage(stream);
             }
 
-            doc.Save(ArtifactsDir + "Image.CreateFromStream.docx");
+            doc.Save(ArtifactsDir + "Image.FromStream.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Image.CreateFromStream.docx");
+            doc = new Document(ArtifactsDir + "Image.FromStream.docx");
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, (Shape)doc.GetChildNodes(NodeType.Shape, true)[0]);
         }
 
         #if NET462 || JAVA
         [Test, Category("SkipMono")]
-        public void CreateFromImage()
+        public void FromImage()
         {
             DocumentBuilder builder = new DocumentBuilder();
 
-            // Insert a raster image
             using (Image rasterImage = Image.FromFile(ImageDir + "Logo.jpg"))
             {
                 builder.Write("Raster image: ");
@@ -122,7 +124,6 @@ namespace ApiExamples
                 builder.Writeln();
             }
 
-            // Aspose.Words allows to insert a metafile too
             using (Image metafile = Image.FromFile(ImageDir + "Windows MetaFile.wmf"))
             {
                 builder.Write("Metafile: ");
@@ -130,12 +131,12 @@ namespace ApiExamples
                 builder.Writeln();
             }
 
-            builder.Document.Save(ArtifactsDir + "Image.CreateFromImage.docx");
+            builder.Document.Save(ArtifactsDir + "Image.FromImage.docx");
         }
-        #elif NETCOREAPP2_1 || __MOBILE__
+#elif NETCOREAPP2_1 || __MOBILE__
         [Test]
         [Category("SkipMono")]
-        public void CreateFromImageNetStandard2()
+        public void FromImageNetStandard2()
         {
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -147,9 +148,9 @@ namespace ApiExamples
                 builder.Writeln();
             }
 
-            builder.Document.Save(ArtifactsDir + "Image.CreateFromImage.docx");
+            builder.Document.Save(ArtifactsDir + "Image.FromImage.docx");
         }
-        #endif
+#endif
 
         [Test]
         public void CreateFloatingPageCenter()
@@ -169,14 +170,12 @@ namespace ApiExamples
             //ExFor:RelativeVerticalPosition
             //ExFor:HorizontalAlignment
             //ExFor:VerticalAlignment
-            //ExSummary:Shows how to insert a floating image in the middle of a page.
+            //ExSummary:Shows how to insert a floating image to the center of a page.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // By default, the image is inline
+            // Insert a floating image that will appear behind the overlapping text and align it to the page's center.
             Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
-
-            // Make the image float, put it behind text and center on the page
             shape.WrapType = WrapType.None;
             shape.BehindText = true;
             shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
@@ -211,31 +210,30 @@ namespace ApiExamples
             //ExFor:ShapeBase.Height
             //ExFor:DocumentBuilder.CurrentSection
             //ExFor:PageSetup.PageWidth
-            //ExSummary:Shows how to insert a floating image and specify its position and size.
+            //ExSummary:Shows how to insert a floating image, and specify its position and size.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // By default, the image is inline
             Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
-
-            // Make the image float, put it behind text and center on the page
             shape.WrapType = WrapType.None;
 
-            // Make position relative to the page
+            // Configure the shape's "RelativeHorizontalPosition" property to treat the value of the "Left" property
+            // as the shape's horizontal distance, in points, from the left side of the page. 
             shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
-            shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
 
-            // Set the shape's coordinates, from the top left corner of the page
+            // Set the shape's horizontal distance from the left side of the page to 100.
             shape.Left = 100;
+
+            // Use the "RelativeVerticalPosition" property in a similar way to position the shape 80pt below the top of the page.
+            shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
             shape.Top = 80;
 
-            // Set the shape's height
-            shape.Height = 125.0;
+            // Set the shape's height, which will automatically scale the width to preserve dimensions.
+            shape.Height = 125;
 
-            // The width will be scaled to the height and the dimensions of the real image
-            Assert.AreEqual(125.0, shape.Width);
+            Assert.AreEqual(125.0d, shape.Width);
 
-            // The Bottom and Right members contain the locations of the bottom and right edges of the image
+            // The "Bottom" and "Right" properties contain the bottom and right edges of the image.
             Assert.AreEqual(shape.Top + shape.Height, shape.Bottom);
             Assert.AreEqual(shape.Left + shape.Width, shape.Right);
 
@@ -264,15 +262,17 @@ namespace ApiExamples
             //ExFor:ShapeBase.HRef
             //ExFor:ShapeBase.ScreenTip
             //ExFor:ShapeBase.Target
-            //ExSummary:Shows how to insert an image with a hyperlink.
+            //ExSummary:Shows how to insert a shape which contains an image, and is also a hyperlink.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Shape shape = builder.InsertImage(ImageDir + "Windows MetaFile.wmf");
+            Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
             shape.HRef = "https://forum.aspose.com/";
             shape.Target = "New Window";
             shape.ScreenTip = "Aspose.Words Support Forums";
 
+            // Ctrl + left-clicking the shape in Microsoft Word will open a new web browser window
+            // and take us to the hyperlink in the "HRef" property.
             doc.Save(ArtifactsDir + "Image.InsertImageWithHyperlink.docx");
             //ExEnd
             
@@ -280,7 +280,7 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
-            TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual("New Window", shape.Target);
             Assert.AreEqual("Aspose.Words Support Forums", shape.ScreenTip);
         }
@@ -300,56 +300,50 @@ namespace ApiExamples
 
             string imageFileName = ImageDir + "Windows MetaFile.wmf";
 
-            builder.Write("Image linked, not stored in the document: ");
-
+            // Below are two ways of applying an image to a shape so that it can display it.
+            // 1 -  Set the shape to contain the image.
             Shape shape = new Shape(builder.Document, ShapeType.Image);
             shape.WrapType = WrapType.Inline;
-            shape.ImageData.SourceFullName = imageFileName;
-
-            builder.InsertNode(shape);
-            builder.Writeln();
-
-            builder.Write("Image linked and stored in the document: ");
-
-            shape = new Shape(builder.Document, ShapeType.Image);
-            shape.WrapType = WrapType.Inline;
-            shape.ImageData.SourceFullName = imageFileName;
             shape.ImageData.SetImage(imageFileName);
 
             builder.InsertNode(shape);
-            builder.Writeln();
 
-            builder.Write("Image stored in the document, but not linked: ");
+            doc.Save(ArtifactsDir + "Image.CreateLinkedImage.Embedded.docx");
 
+            // Every image that we store in shape will increase the size of our document.
+            Assert.True(70000 < new FileInfo(ArtifactsDir + "Image.CreateLinkedImage.Embedded.docx").Length);
+
+            doc.FirstSection.Body.FirstParagraph.RemoveAllChildren();
+
+            // 2 -  Set the shape to link to an image file in the local file system.
             shape = new Shape(builder.Document, ShapeType.Image);
             shape.WrapType = WrapType.Inline;
-            shape.ImageData.SetImage(imageFileName);
+            shape.ImageData.SourceFullName = imageFileName;
 
             builder.InsertNode(shape);
-            builder.Writeln();
+            doc.Save(ArtifactsDir + "Image.CreateLinkedImage.Linked.docx");
 
-            doc.Save(ArtifactsDir + "Image.CreateLinkedImage.docx");
+            // Linking to images will save space and result in a smaller document.
+            // However, the document can only display the image correctly as long as
+            // the image file is present at the location that the shape's "SourceFullName" property points to.
+            Assert.True(10000 > new FileInfo(ArtifactsDir + "Image.CreateLinkedImage.Linked.docx").Length);
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Image.CreateLinkedImage.docx");
+            doc = new Document(ArtifactsDir + "Image.CreateLinkedImage.Embedded.docx");
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
+            Assert.AreEqual(WrapType.Inline, shape.WrapType);
+            Assert.AreEqual(string.Empty, shape.ImageData.SourceFullName.Replace("%20", " "));
+
+            doc = new Document(ArtifactsDir + "Image.CreateLinkedImage.Linked.docx");
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(0, 0, ImageType.Wmf, shape);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
             Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName.Replace("%20", " "));
-
-            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
-
-            TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
-            Assert.AreEqual(WrapType.Inline, shape.WrapType);
-            Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName.Replace("%20", " "));
-
-            shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
-
-            TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
-            Assert.AreEqual(WrapType.Inline, shape.WrapType);
-            Assert.AreEqual(string.Empty, shape.ImageData.SourceFullName.Replace("%20", " "));
         }
 
         [Test]
@@ -358,30 +352,17 @@ namespace ApiExamples
             //ExStart
             //ExFor:Shape.HasImage
             //ExFor:Node.Remove
-            //ExSummary:Shows how to delete all images from a document.
+            //ExSummary:Shows how to delete all shapes with images from a document.
             Document doc = new Document(MyDir + "Images.docx");
-            Assert.AreEqual(10, doc.GetChildNodes(NodeType.Shape, true).Count);
-
-            // Here we get all shapes from the document node, but you can do this for any smaller
-            // node too, for example delete shapes from a single section or a paragraph
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
-            // We cannot delete shape nodes while we enumerate through the collection
-            // One solution is to add nodes that we want to delete to a temporary array and delete afterwards
-            ArrayList shapesToDelete = new ArrayList();
+            Assert.AreEqual(9, shapes.OfType<Shape>().Count(s => s.HasImage));
 
-            // Several shape types can have an image including image shapes and OLE objects
             foreach (Shape shape in shapes.OfType<Shape>())
-                if (shape.HasImage)
-                    shapesToDelete.Add(shape);
+                if (shape.HasImage) 
+                    shape.Remove();
 
-            // Now we can delete shapes
-            foreach (Shape shape in shapesToDelete)
-                shape.Remove();
-
-            // The only remaining shape doesn't have an image
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            Assert.False(((Shape)doc.GetChild(NodeType.Shape, 0, true)).HasImage);
+            Assert.AreEqual(0, shapes.OfType<Shape>().Count(s => s.HasImage));
             //ExEnd
         }
 
@@ -391,9 +372,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:Node.NextPreOrder(Node)
             //ExFor:Node.PreviousPreOrder(Node)
-            //ExSummary:Shows how to delete all images from a document using pre-order tree traversal.
+            //ExSummary:Shows how to traverse the document's node tree using the pre-order traversal algorithm, and delete any encountered shape with an image.
             Document doc = new Document(MyDir + "Images.docx");
-            Assert.AreEqual(10, doc.GetChildNodes(NodeType.Shape, true).Count);
+
+            Assert.AreEqual(9, 
+                doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().Count(s => s.HasImage));
 
             Node curNode = doc;
             while (curNode != null)
@@ -403,16 +386,14 @@ namespace ApiExamples
                 if (curNode.PreviousPreOrder(doc) != null && nextNode != null)
                     Assert.AreEqual(curNode, nextNode.PreviousPreOrder(doc));
 
-                // Several shape types can have an image including image shapes and OLE objects
                 if (curNode.NodeType == NodeType.Shape && ((Shape)curNode).HasImage)
                     curNode.Remove();
                 
                 curNode = nextNode;
             }
 
-            // The only remaining shape doesn't have an image
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
-            Assert.False(((Shape)doc.GetChild(NodeType.Shape, 0, true)).HasImage);
+            Assert.AreEqual(0,
+                doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().Count(s => s.HasImage));
             //ExEnd
         }
 
@@ -427,23 +408,48 @@ namespace ApiExamples
             //ExFor:ShapeBase.Width
             //ExFor:ShapeBase.Height
             //ExSummary:Shows how to resize a shape with an image.
+#if NET462 || JAVA
+            Image image = Image.FromFile(ImageDir + "Logo.jpg");
+
+            Assert.AreEqual(400, image.Size.Width);
+            Assert.AreEqual(400, image.Size.Height);
+#elif NETCOREAPP2_1
+            SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg");
+
+            Assert.AreEqual(400, image.Width);
+            Assert.AreEqual(400, image.Height);
+#endif
+
+            // When we insert an image using the "InsertImage" method, the builder scales the shape that displays the image so that,
+            // when we view the document using 100% zoom in Microsoft Word, the shape displays the image in its actual size.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // By default, the image is inserted at 100% scale
             Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
 
-            // Reduce the overall size of the shape by 50%
-            shape.Width = shape.Width * 0.5;
-            shape.Height = shape.Height * 0.5;
-
-            Assert.AreEqual(75.0d, shape.Width);
-            Assert.AreEqual(75.0d, shape.Height);
-
-            // However, we can also go back to the original image size and scale from there, for example, to 110%
+            // A 400x400 image will create an ImageData object with an image size of 300x300pt.
             ImageSize imageSize = shape.ImageData.ImageSize;
+
+            Assert.AreEqual(300.0d, imageSize.WidthPoints);
+            Assert.AreEqual(300.0d, imageSize.HeightPoints);
+
+            // If a shape's dimensions match the image data's dimensions,
+            // then the shape is displaying the image in its original size.
+            Assert.AreEqual(300.0d, shape.Width);
+            Assert.AreEqual(300.0d, shape.Height);
+
+            // Reduce the overall size of the shape by 50%. 
+            shape.Width *= 0.5;
+
+            // Scaling factors apply to both the width and the height at the same time to preserve the shape's proportions. 
+            Assert.AreEqual(150.0d, shape.Width);
+            Assert.AreEqual(150.0d, shape.Height);
+
+            // When we resize the shape, the size of the image data remains the same.
+            Assert.AreEqual(300.0d, imageSize.WidthPoints);
+            Assert.AreEqual(300.0d, imageSize.HeightPoints);
+
+            // We can reference the image data dimensions to apply a scaling based on the size of the image.
             shape.Width = imageSize.WidthPoints * 1.1;
-            shape.Height = imageSize.HeightPoints * 1.1;
 
             Assert.AreEqual(330.0d, shape.Width);
             Assert.AreEqual(330.0d, shape.Height);

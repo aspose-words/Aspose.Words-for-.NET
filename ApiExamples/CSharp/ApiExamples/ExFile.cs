@@ -27,6 +27,8 @@ namespace ApiExamples
             //ExSummary:Shows how to catch a FileCorruptedException.
             try
             {
+                // If we get an "Unreadable content" error message when trying to open a document using Microsoft Word,
+                // chances are that we will get an exception thrown when trying to load that document using Aspose.Words.
                 Document doc = new Document(MyDir + "Corrupted document.docx");
             }
             catch (FileCorruptedException e)
@@ -43,16 +45,19 @@ namespace ApiExamples
             //ExFor:FileFormatInfo.Encoding
             //ExFor:FileFormatUtil
             //ExSummary:Shows how to detect encoding in an html file.
-            // 'DetectFileFormat' not working on a non-html files
-            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.docx");
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.html");
+
+            Assert.AreEqual(LoadFormat.Html, info.LoadFormat);
+
+            // The Encoding property is used only when we create a FileFormatInfo object for an html document.
+            Assert.AreEqual("Western European (Windows)", info.Encoding.EncodingName);
+            Assert.AreEqual(1252, info.Encoding.CodePage);
+            //ExEnd
+
+            info = FileFormatUtil.DetectFileFormat(MyDir + "Document.docx");
+
             Assert.AreEqual(LoadFormat.Docx, info.LoadFormat);
             Assert.IsNull(info.Encoding);
-
-            // This time the property will not be null
-            info = FileFormatUtil.DetectFileFormat(MyDir + "Document.html");
-            Assert.AreEqual(LoadFormat.Html, info.LoadFormat);
-            Assert.IsNotNull(info.Encoding);
-            //ExEnd
         }
 
         [Test]
@@ -61,24 +66,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:FileFormatUtil.ContentTypeToLoadFormat(String)
             //ExFor:FileFormatUtil.ContentTypeToSaveFormat(String)
-            //ExSummary:Shows how to find the corresponding Aspose load/save format from an IANA content type string.
-            // Trying to search for a SaveFormat with a simple string will not work
-            try
-            {
-                Assert.AreEqual(SaveFormat.Jpeg, FileFormatUtil.ContentTypeToSaveFormat("jpeg"));
-            }
-            catch (ArgumentException e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            //ExSummary:Shows how to find the corresponding Aspose load/save format from each media type string.
+            // The ContentTypeToSaveFormat/ContentTypeToLoadFormat methods only accept official IANA media type names, also known as MIME types. 
+            // All valid media types are listed here: https://www.iana.org/assignments/media-types/media-types.xhtml.
 
-            // The convertion methods only accept official IANA type names, which are all listed here:
-            //      https://www.iana.org/assignments/media-types/media-types.xhtml
-            // Note that if a corresponding SaveFormat or LoadFormat for a type from that list does not exist in the Aspose enums,
-            // converting will raise an exception just like in the code above 
+            // Trying to associate a SaveFormat with a partial media type string will not work.
+            Assert.Throws<ArgumentException>(() => FileFormatUtil.ContentTypeToSaveFormat("jpeg"));
 
-            // File types that can be saved to but not opened as documents will not have corresponding load formats
-            // Attempting to convert them to load formats will raise an exception
+            // If Aspose.Words does not have a corresponding save/load format for a content type, an exception will also be thrown.
+            Assert.Throws<ArgumentException>(() => FileFormatUtil.ContentTypeToSaveFormat("application/zip"));
+
+            // Files of the types listed below can be saved, but not loaded using Aspose.Words.
+            Assert.Throws<ArgumentException>(() => FileFormatUtil.ContentTypeToLoadFormat("image/jpeg"));
+
             Assert.AreEqual(SaveFormat.Jpeg, FileFormatUtil.ContentTypeToSaveFormat("image/jpeg"));
             Assert.AreEqual(SaveFormat.Png, FileFormatUtil.ContentTypeToSaveFormat("image/png"));
             Assert.AreEqual(SaveFormat.Tiff, FileFormatUtil.ContentTypeToSaveFormat("image/tiff"));
@@ -89,7 +89,7 @@ namespace ApiExamples
             Assert.AreEqual(SaveFormat.Svg, FileFormatUtil.ContentTypeToSaveFormat("image/svg+xml"));
             Assert.AreEqual(SaveFormat.Epub, FileFormatUtil.ContentTypeToSaveFormat("application/epub+zip"));
 
-            // File types that can both be loaded and saved have corresponding load and save formats
+            // For file types that can be saved and loaded, we can match a media type to both a load format and a save format.
             Assert.AreEqual(LoadFormat.Doc, FileFormatUtil.ContentTypeToLoadFormat("application/msword"));
             Assert.AreEqual(SaveFormat.Doc, FileFormatUtil.ContentTypeToSaveFormat("application/msword"));
 
@@ -124,17 +124,16 @@ namespace ApiExamples
             //ExFor:FileFormatInfo.IsEncrypted
             //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and encryption.
             Document doc = new Document();
-
-            // Save it as an encrypted .odt
+            
+            // Configure a SaveOptions object to encrypt the document with a password when we save it, and then save it.
             OdtSaveOptions saveOptions = new OdtSaveOptions(SaveFormat.Odt);
             saveOptions.Password = "MyPassword";
 
             doc.Save(ArtifactsDir + "File.DetectDocumentEncryption.odt", saveOptions);
-            
-            // Create a FileFormatInfo object for this document
+
+            // Verify the file type of our document, and its encryption status.
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(ArtifactsDir + "File.DetectDocumentEncryption.odt");
 
-            // Verify the file type of our document and its encryption status
             Assert.AreEqual(".odt", FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
             Assert.True(info.IsEncrypted);
             //ExEnd
@@ -149,23 +148,22 @@ namespace ApiExamples
             //ExFor:FileFormatInfo.LoadFormat
             //ExFor:FileFormatInfo.HasDigitalSignature
             //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and presence of digital signatures.
-            // Use a FileFormatInfo instance to verify that a document is not digitally signed
+            // Use a FileFormatInfo instance to verify that a document is not digitally signed.
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.docx");
 
             Assert.AreEqual(".docx", FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
             Assert.False(info.HasDigitalSignature);
 
-            // Sign the document
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
             DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "File.DetectDigitalSignatures.docx",
                 certificateHolder, new SignOptions() { SignTime = DateTime.Now });
 
-            // Use a new FileFormatInstance to confirm that it is signed
+            // Use a new FileFormatInstance to confirm that it is signed.
             info = FileFormatUtil.DetectFileFormat(ArtifactsDir + "File.DetectDigitalSignatures.docx");
 
             Assert.True(info.HasDigitalSignature);
 
-            // The signatures can then be accessed like this
+            // We can load and access the signatures of a signed document in a collection like this.
             Assert.AreEqual(1, DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "File.DetectDigitalSignatures.docx").Count);
             //ExEnd
         }
@@ -181,37 +179,31 @@ namespace ApiExamples
             //ExFor:FileFormatUtil.LoadFormatToSaveFormat(LoadFormat)
             //ExFor:Document.OriginalFileName
             //ExFor:FileFormatInfo.LoadFormat
-            //ExSummary:Shows how to use the FileFormatUtil methods to detect the format of a document without any extension and save it with the correct file extension.
-            // Load the document without a file extension into a stream and use the DetectFileFormat method to detect it's format
-            // These are both times where you might need extract the file format as it's not visible
-            // The file format of this document is actually ".doc"
-            FileStream docStream = File.OpenRead(MyDir + "Word document with missing file extension");
-            FileFormatInfo info = FileFormatUtil.DetectFileFormat(docStream);
+            //ExSummary:Shows how to use the FileFormatUtil methods to detect the format of a document.
+            // Load a document from a file that is missing a file extension, and then detect its file format.
+            using (FileStream docStream = File.OpenRead(MyDir + "Word document with missing file extension"))
+            {
+                FileFormatInfo info = FileFormatUtil.DetectFileFormat(docStream);
+                LoadFormat loadFormat = info.LoadFormat;
 
-            // Retrieve the LoadFormat of the document
-            LoadFormat loadFormat = info.LoadFormat;
+                Assert.AreEqual(LoadFormat.Doc, loadFormat);
 
-            // There are two methods of converting LoadFormat enumerations to SaveFormat enumerations
-            //
-            // Method #1
-            // Convert the LoadFormat to a String first for working with. The String will include the leading dot in front of the extension
-            string fileExtension = FileFormatUtil.LoadFormatToExtension(loadFormat);
-            // Now convert this extension into the corresponding SaveFormat enumeration
-            SaveFormat saveFormat = FileFormatUtil.ExtensionToSaveFormat(fileExtension);
+                // Below are two methods of converting a LoadFormat to its corresponding SaveFormat.
+                // 1 -  Get the file extension string for the LoadFormat, then get the corresponding SaveFormat from that string:
+                string fileExtension = FileFormatUtil.LoadFormatToExtension(loadFormat);
+                SaveFormat saveFormat = FileFormatUtil.ExtensionToSaveFormat(fileExtension);
 
-            // Method #2
-            // Convert the LoadFormat enumeration directly to the SaveFormat enumeration
-            saveFormat = FileFormatUtil.LoadFormatToSaveFormat(loadFormat);
+                // 2 -  Convert the LoadFormat directly to its SaveFormat:
+                saveFormat = FileFormatUtil.LoadFormatToSaveFormat(loadFormat);
 
-            // Load a document from the stream.
-            Document doc = new Document(docStream);
+                // Load a document from the stream, and then save it to the automatically detected file extension.
+                Document doc = new Document(docStream);
 
-            // Save the document with the original file name, " Out" and the document's file extension
-            doc.Save(
-                ArtifactsDir + "File.SaveToDetectedFileFormat" + FileFormatUtil.SaveFormatToExtension(saveFormat));
+                Assert.AreEqual(".doc", FileFormatUtil.SaveFormatToExtension(saveFormat));
+
+                doc.Save(ArtifactsDir + "File.SaveToDetectedFileFormat" + FileFormatUtil.SaveFormatToExtension(saveFormat));
+            }
             //ExEnd
-
-            Assert.AreEqual(".doc", FileFormatUtil.SaveFormatToExtension(saveFormat));
         }
 
         [Test]
@@ -219,21 +211,18 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FileFormatUtil.SaveFormatToLoadFormat(SaveFormat)
-            //ExSummary:Shows how to use the FileFormatUtil class and to convert a SaveFormat enumeration into the corresponding LoadFormat enumeration.
-            // Define the SaveFormat enumeration to convert
-            const SaveFormat saveFormat = SaveFormat.Html;
-            // Convert the SaveFormat enumeration to LoadFormat enumeration
-            LoadFormat loadFormat = FileFormatUtil.SaveFormatToLoadFormat(saveFormat);
-            Console.WriteLine("The converted LoadFormat is: " + FileFormatUtil.LoadFormatToExtension(loadFormat));
-            //ExEnd
+            //ExSummary:Shows how to convert a save format to its corresponding load format.
+            Assert.AreEqual(LoadFormat.Html, FileFormatUtil.SaveFormatToLoadFormat(SaveFormat.Html));
 
-            Assert.AreEqual(".html", FileFormatUtil.SaveFormatToExtension(saveFormat));
-            Assert.AreEqual(".html", FileFormatUtil.LoadFormatToExtension(loadFormat));
+            // Some file types can have documents saved to, but not loaded from using Aspose.Words.
+            // If we attempt to convert a save format of such a type to a load format, an exception will be thrown.
+            Assert.Throws<ArgumentException>(() => FileFormatUtil.SaveFormatToLoadFormat(SaveFormat.Jpeg));
+            //ExEnd
         }
 
 
         [Test]
-        public void ExtractImagesToFiles()
+        public void ExtractImages()
         {
             //ExStart
             //ExFor:Shape
@@ -244,10 +233,13 @@ namespace ApiExamples
             //ExFor:ImageData.ImageType
             //ExFor:ImageData.Save(String)
             //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
-            //ExSummary:Shows how to extract images from a document and save them as files.
+            //ExSummary:Shows how to extract images from a document, and save them to the local file system as individual files.
             Document doc = new Document(MyDir + "Images.docx");
-
+            
+            // Get the collection of shapes from the document,
+            // and save the image data of every shape with an image as a file to the local file system.
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+
             Assert.AreEqual(9, shapes.Count(s => ((Shape)s).HasImage));
 
             int imageIndex = 0;
@@ -255,8 +247,10 @@ namespace ApiExamples
             {
                 if (shape.HasImage)
                 {
+                    // The image data of shapes may contain images of many possible image formats. 
+                    // We can determine a file extension for each image automatically, based on its format.
                     string imageFileName =
-                        $"File.ExtractImagesToFiles.{imageIndex}{FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType)}";
+                        $"File.ExtractImages.{imageIndex}{FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType)}";
                     shape.ImageData.Save(ArtifactsDir + imageFileName);
                     imageIndex++;
                 }
@@ -264,7 +258,7 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual(9,Directory.GetFiles(ArtifactsDir).
-                Count(s => Regex.IsMatch(s, @"^.+\.(jpeg|png|emf|wmf)$") && s.StartsWith(ArtifactsDir + "File.ExtractImagesToFiles")));
+                Count(s => Regex.IsMatch(s, @"^.+\.(jpeg|png|emf|wmf)$") && s.StartsWith(ArtifactsDir + "File.ExtractImages")));
         }
     }
 }

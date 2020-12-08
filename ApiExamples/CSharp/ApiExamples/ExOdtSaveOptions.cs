@@ -16,37 +16,71 @@ namespace ApiExamples
     {
         [TestCase(false)]
         [TestCase(true)]
-        public void MeasureUnit(bool doExportToOdt11Specs)
+        public void Odt11Schema(bool exportToOdt11Specs)
         {
             //ExStart
             //ExFor:OdtSaveOptions
             //ExFor:OdtSaveOptions.#ctor
             //ExFor:OdtSaveOptions.IsStrictSchema11
-            //ExFor:OdtSaveOptions.MeasureUnit
-            //ExFor:OdtSaveMeasureUnit
-            //ExSummary:Shows how to work with units of measure of document content.
+            //ExSummary:Shows how to make a saved document conform to an older ODT schema.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            // Open Office uses centimeters, MS Office uses inches
             OdtSaveOptions saveOptions = new OdtSaveOptions
             {
                 MeasureUnit = OdtSaveMeasureUnit.Centimeters,
-                IsStrictSchema11 = doExportToOdt11Specs
+                IsStrictSchema11 = exportToOdt11Specs
             };
 
-            doc.Save(ArtifactsDir + "OdtSaveOptions.MeasureUnit.odt", saveOptions);
+            doc.Save(ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", saveOptions);
             //ExEnd
 
-            if (doExportToOdt11Specs)
+            if (exportToOdt11Specs)
                 TestUtil.DocPackageFileContainsString("<text:span text:style-name=\"T118_1\" >Combobox<text:s/></text:span>", 
-                    ArtifactsDir + "OdtSaveOptions.MeasureUnit.odt", "content.xml");
+                    ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", "content.xml");
             else
                 TestUtil.DocPackageFileContainsString("<text:span text:style-name=\"T118_1\" >Combobox<text:s/></text:span>" +
                                               "<text:span text:style-name=\"T118_2\" >" +
                                               "<text:drop-down><text:label text:value=\"Line 1\" ></text:label>" +
                                               "<text:label text:value=\"Line 2\" ></text:label>" +
                                               "<text:label text:value=\"Line 3\" ></text:label>Line 2</text:drop-down></text:span>", 
-                                              ArtifactsDir + "OdtSaveOptions.MeasureUnit.odt", "content.xml");
+                                              ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", "content.xml");
+        }
+
+        [TestCase(OdtSaveMeasureUnit.Centimeters)]
+        [TestCase(OdtSaveMeasureUnit.Inches)]
+        public void MeasurementUnits(OdtSaveMeasureUnit odtSaveMeasureUnit)
+        {
+            //ExStart
+            //ExFor:OdtSaveOptions
+            //ExFor:OdtSaveOptions.MeasureUnit
+            //ExFor:OdtSaveMeasureUnit
+            //ExSummary:Shows how to use different measurement units to define style parameters of a saved ODT document.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            // When we export the document to .odt, we can use an OdtSaveOptions object to modify how we save the document.
+            // We can set the "MeasureUnit" property to "OdtSaveMeasureUnit.Centimeters"
+            // to define content such as style parameters using the metric system, which Open Office uses. 
+            // We can set the "MeasureUnit" property to "OdtSaveMeasureUnit.Inches"
+            // to define content such as style parameters using the imperial system, which Microsoft Word uses.
+            OdtSaveOptions saveOptions = new OdtSaveOptions
+            {
+                MeasureUnit = odtSaveMeasureUnit
+            };
+
+            doc.Save(ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", saveOptions);
+            //ExEnd
+
+            switch (odtSaveMeasureUnit)
+            {
+                case OdtSaveMeasureUnit.Centimeters:
+                    TestUtil.DocPackageFileContainsString("<style:paragraph-properties fo:orphans=\"2\" fo:widows=\"2\" style:tab-stop-distance=\"1.27cm\" />",
+                        ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", "styles.xml");
+                    break;
+                case OdtSaveMeasureUnit.Inches:
+                    TestUtil.DocPackageFileContainsString("<style:paragraph-properties fo:orphans=\"2\" fo:widows=\"2\" style:tab-stop-distance=\"0.5in\" />",
+                        ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", "styles.xml");
+                    break;
+            }
         }
 
         [TestCase(SaveFormat.Odt)]
@@ -57,47 +91,33 @@ namespace ApiExamples
             //ExFor:OdtSaveOptions.#ctor(SaveFormat)
             //ExFor:OdtSaveOptions.Password
             //ExFor:OdtSaveOptions.SaveFormat
-            //ExSummary:Shows how to encrypted your odt/ott documents with a password.
-            Document doc = new Document(MyDir + "Document.docx");
+            //ExSummary:Shows how to encrypt a saved ODT/OTT document with a password, and then load it using Aspose.Words.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
 
+            // Create a new OdtSaveOptions, and pass either "SaveFormat.Odt",
+            // or "SaveFormat.Ott" as the format to save the document in. 
             OdtSaveOptions saveOptions = new OdtSaveOptions(saveFormat);
             saveOptions.Password = "@sposeEncrypted_1145";
 
-            // Saving document using password property of OdtSaveOptions
-            doc.Save(ArtifactsDir + "OdtSaveOptions.Encrypt" +
-                     FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
-            //ExEnd
+            string extensionString = FileFormatUtil.SaveFormatToExtension(saveFormat);
 
-            // Check that all documents are encrypted with a password
-            FileFormatInfo docInfo = 
-                FileFormatUtil.DetectFileFormat(ArtifactsDir + "OdtSaveOptions.Encrypt" + FileFormatUtil.SaveFormatToExtension(saveFormat));
+            // If we open this document with an appropriate editor,
+            // it will prompt us for the password we specified in the SaveOptions object.
+            doc.Save(ArtifactsDir + "OdtSaveOptions.Encrypt" + extensionString, saveOptions);
+
+            FileFormatInfo docInfo = FileFormatUtil.DetectFileFormat(ArtifactsDir + "OdtSaveOptions.Encrypt" + extensionString);
+
             Assert.IsTrue(docInfo.IsEncrypted);
-        }
 
-        [TestCase(SaveFormat.Odt)]
-        [TestCase(SaveFormat.Ott)]
-        public void WorkWithEncryptedDocument(SaveFormat saveFormat)
-        {
-            //ExStart
-            //ExFor:OdtSaveOptions.#ctor(String)
-            //ExSummary:Shows how to load and change odt/ott encrypted document.
-            Document doc = new Document(MyDir + "Encrypted" +
-                                        FileFormatUtil.SaveFormatToExtension(saveFormat),
+            // If we wish to open or edit this document again using Aspose.Words,
+            // we will have to provide a LoadOptions object with the correct password to the loading constructor.
+            doc = new Document(ArtifactsDir + "OdtSaveOptions.Encrypt" + extensionString,
                 new LoadOptions("@sposeEncrypted_1145"));
 
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.MoveToDocumentEnd();
-            builder.Writeln("Encrypted document after changes.");
-
-            // Saving document using new instance of OdtSaveOptions
-            doc.Save(ArtifactsDir + "OdtSaveOptions.WorkWithEncryptedDocument" +
-                     FileFormatUtil.SaveFormatToExtension(saveFormat), new OdtSaveOptions("@sposeEncrypted_1145"));
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
             //ExEnd
-
-            // Check that document is still encrypted with a password
-            FileFormatInfo docInfo = 
-                FileFormatUtil.DetectFileFormat(ArtifactsDir + "OdtSaveOptions.WorkWithEncryptedDocument" + FileFormatUtil.SaveFormatToExtension(saveFormat));
-            Assert.IsTrue(docInfo.IsEncrypted);
         }
     }
 }

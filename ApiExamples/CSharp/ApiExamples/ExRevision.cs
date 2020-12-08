@@ -38,7 +38,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Standard editing of the document does not count as a revision.
+            // Normal editing of the document does not count as a revision.
             builder.Write("This does not count as a revision. ");
 
             Assert.IsFalse(doc.HasRevisions);
@@ -51,11 +51,13 @@ namespace ApiExamples
             Assert.IsTrue(doc.HasRevisions);
             Assert.AreEqual(1, doc.Revisions.Count);
 
-            // This flag corresponds to the Review -> Tracking -> "Track Changes" option is turned on in Microsoft Word, 
-            // and it is independent of the programmatic revision tracking that is taking place here.
+            // This flag corresponds to the "Review" -> "Tracking" -> "Track Changes" option in Microsoft Word.
+            // The "StartTrackRevisions" method does not affect its value,
+            // and the document is tracking revisions programmatically in spite of it having a value of "false".
+            // If we open this document using Microsoft Word, it will not be tracking revisions.
             Assert.IsFalse(doc.TrackRevisions);
 
-            // Our first revision is an insertion-type revision since we added text with the document builder.
+            // We've added text using the document builder, so the first revision is an insertion-type revision.
             Revision revision = doc.Revisions[0];
             Assert.AreEqual("John Doe", revision.Author);
             Assert.AreEqual("This is revision #1. ", revision.ParentNode.GetText());
@@ -70,21 +72,19 @@ namespace ApiExamples
             Assert.AreEqual(RevisionType.Deletion, doc.Revisions[0].RevisionType);
             Assert.AreEqual(2, doc.Revisions.Count);
 
-            // Insert revisions are treated as document text by the GetText() method before they are accepted
-            // since they are still nodes with text and are in the body.
+            // Insert revisions show up in the document body even before we accept/reject the revision.
+            // Rejecting the revision will remove its nodes from the body. Conversely, nodes that make up delete revisions
+            // also linger in the document until we accept the revision.
             Assert.AreEqual("This does not count as a revision. This is revision #1.", doc.GetText().Trim());
 
-            // Accepting the delete revision will remove its parent node from the paragraph text,
-            // and then remove the revision itself from the collection.
+            // Accepting the delete revision will remove its parent node from the paragraph text
+            // and then remove the collection's revision itself.
             doc.Revisions[0].Accept();
 
             Assert.AreEqual(1, doc.Revisions.Count);
-
-            // Accepting a delete revision removes all the nodes that it concerns,
-            // so their contents will no longer be anywhere in the document.
             Assert.AreEqual("This is revision #1.", doc.GetText().Trim());
 
-            // The insertion-type revision is now at index 0, which we can reject to ignore and discard it.
+            // The insertion-type revision is now at index 0. Reject the revision to discard its contents.
             doc.Revisions[0].Reject();
 
             Assert.AreEqual(0, doc.Revisions.Count);
@@ -101,7 +101,7 @@ namespace ApiExamples
             //ExFor:RevisionCollection.Groups
             //ExFor:RevisionCollection.RejectAll
             //ExFor:RevisionGroupCollection.GetEnumerator
-            //ExSummary:Shows how to iterate through a document's revisions.
+            //ExSummary:Shows how to work with a document's collection of revisions.
             Document doc = new Document(MyDir + "Revisions.docx");
             RevisionCollection revisions = doc.Revisions;
 
@@ -120,9 +120,9 @@ namespace ApiExamples
                 }
             }
 
-            // Each Run affected by a revision gets its Revision object.
+            // Each Run that a revision affects gets a corresponding Revision object.
             // The revisions' collection is considerably larger than the condensed form we printed above,
-            // depending on how many Runs we have segmented the document into during editing in Microsoft Word.
+            // depending on how many Runs we have segmented the document into during Microsoft Word editing.
             Assert.AreEqual(11, revisions.Count); //ExSkip
             Console.WriteLine($"\n{revisions.Count} revisions:");
 
@@ -130,7 +130,7 @@ namespace ApiExamples
             {
                 while (e.MoveNext())
                 {
-                    // A StyleDefinitionChange strictly affects styles and not document nodes. This means the ParentStyle
+                    // A StyleDefinitionChange strictly affects styles and not document nodes. This means the "ParentStyle"
                     // attribute will always be in use, while the ParentNode will always be null.
                     // Since all other changes affect nodes, ParentNode will conversely be in use, and ParentStyle will be null.
                     if (e.Current.RevisionType == RevisionType.StyleDefinitionChange)
@@ -146,9 +146,7 @@ namespace ApiExamples
                 }
             }
 
-            // While the collection of revision groups provides a clearer overview of all revisions that took place in the document,
-            // the changes must be accepted/rejected by the revisions themselves, the RevisionCollection, or the document.
-            // In this case, we will reject all revisions via the collection, reverting the document to its original form.
+            // Reject all revisions via the collection, reverting the document to its original form.
             revisions.RejectAll();
 
             Assert.AreEqual(0, revisions.Count);
@@ -165,7 +163,7 @@ namespace ApiExamples
             //ExFor:RevisionGroup.Text
             //ExFor:RevisionGroupCollection
             //ExFor:RevisionGroupCollection.Count
-            //ExSummary:Shows how to get info about a group of revisions in document.
+            //ExSummary:Shows how to print info about a group of revisions in a document.
             Document doc = new Document(MyDir + "Revisions.docx");
 
             Assert.AreEqual(7, doc.Revisions.Groups.Count);
@@ -184,7 +182,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:RevisionGroupCollection
             //ExFor:RevisionGroupCollection.Item(Int32)
-            //ExSummary:Shows how to get a group of revisions in document.
+            //ExSummary:Shows how to get a group of revisions in a document.
             Document doc = new Document(MyDir + "Revisions.docx");
 
             RevisionGroup revisionGroup = doc.Revisions.Groups[0];
@@ -200,11 +198,11 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:RevisionOptions.ShowInBalloons
-            //ExSummary:Shows how display revisions in balloons.
+            //ExSummary:Shows how to display revisions in balloons.
             Document doc = new Document(MyDir + "Revisions.docx");
 
-            // By default, revisions are identifiable by different text colors.
-            // Set a revision option to show more details about each revision in a balloon on the right margin of the page.
+            // By default, text that is a revision has a different color to differentiate it from the other non-revision text.
+            // Set a revision option to show more details about each revision in a balloon on the page's right margin.
             doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
             doc.Save(ArtifactsDir + "Revision.ShowRevisionBalloons.pdf");
             //ExEnd
@@ -231,7 +229,7 @@ namespace ApiExamples
             //ExFor:RevisionOptions.ShowOriginalRevision
             //ExFor:RevisionOptions.ShowRevisionMarks
             //ExFor:RevisionTextEffect
-            //ExSummary:Shows how to edit appearance of revisions.
+            //ExSummary:Shows how to modify the appearance of revisions.
             Document doc = new Document(MyDir + "Revisions.docx");
 
             // Get the RevisionOptions object that controls the appearance of revisions.
@@ -245,7 +243,7 @@ namespace ApiExamples
             revisionOptions.DeletedTextColor = RevisionColor.Red;
             revisionOptions.DeletedTextEffect = RevisionTextEffect.Bold;
 
-            // In a movement revision, the same text will appear twice:
+            // The same text will appear twice in a movement revision:
             // once at the departure point and once at the arrival destination.
             // Render the text at the moved-from revision yellow with a double strike through
             // and double-underlined blue at the moved-to revision.
@@ -266,7 +264,7 @@ namespace ApiExamples
             revisionOptions.ShowOriginalRevision = true;
             revisionOptions.ShowRevisionMarks = true;
 
-            // Get movement, deletion, formatting revisions and comments to show up in green balloons
+            // Get movement, deletion, formatting revisions, and comments to show up in green balloons
             // on the right side of the page.
             revisionOptions.ShowInBalloons = ShowInBalloons.Format;
             revisionOptions.CommentColor = RevisionColor.BrightGreen;

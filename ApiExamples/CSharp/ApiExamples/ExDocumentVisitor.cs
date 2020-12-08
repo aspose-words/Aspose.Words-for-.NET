@@ -95,7 +95,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitSectionStart(Section section)
             {
-                // Get the index of our section within the document
+                // Get the index of our section within the document.
                 NodeCollection docSections = section.Document.GetChildNodes(NodeType.Section, false);
                 int sectionIndex = docSections.IndexOf(section);
 
@@ -197,7 +197,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestDocStructureToText(DocStructurePrinter visitor)
+        private static void TestDocStructureToText(DocStructurePrinter visitor)
         {
             string visitorText = visitor.GetText();
 
@@ -387,7 +387,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestTableToText(TableStructurePrinter visitor)
+        private static void TestTableToText(TableStructurePrinter visitor)
         {
             string visitorText = visitor.GetText();
 
@@ -519,7 +519,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestCommentsToText(CommentStructurePrinter visitor)
+        private static void TestCommentsToText(CommentStructurePrinter visitor)
         {
             string visitorText = visitor.GetText();
 
@@ -632,7 +632,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestFieldToText(FieldStructurePrinter visitor)
+        private static void TestFieldToText(FieldStructurePrinter visitor)
         {
             string visitorText = visitor.GetText();
 
@@ -737,7 +737,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestHeaderFooterToText(HeaderFooterStructurePrinter visitor)
+        private static void TestHeaderFooterToText(HeaderFooterStructurePrinter visitor)
         {
             string visitorText = visitor.GetText();
 
@@ -843,7 +843,7 @@ namespace ApiExamples
         }
         //ExEnd
         
-        private void TestEditableRangeToText(EditableRangeStructurePrinter visitor)
+        private static void TestEditableRangeToText(EditableRangeStructurePrinter visitor)
         {
             string visitorText = visitor.GetText();
 
@@ -943,7 +943,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestFootnoteToText(FootnoteStructurePrinter visitor)
+        private static void TestFootnoteToText(FootnoteStructurePrinter visitor)
         {
             string visitorText = visitor.GetText();
 
@@ -1045,7 +1045,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestOfficeMathToText(OfficeMathStructurePrinter visitor)
+        private static void TestOfficeMathToText(OfficeMathStructurePrinter visitor)
         {
             string visitorText = visitor.GetText();
 
@@ -1151,7 +1151,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestSmartTagToText(SmartTagStructurePrinter visitor)
+        private static void TestSmartTagToText(SmartTagStructurePrinter visitor)
         {
             string visitorText = visitor.GetText();
 
@@ -1256,7 +1256,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestStructuredDocumentTagToText(StructuredDocumentTagNodePrinter visitor)
+        private static void TestStructuredDocumentTagToText(StructuredDocumentTagNodePrinter visitor)
         {
             string visitorText = visitor.GetText();
 

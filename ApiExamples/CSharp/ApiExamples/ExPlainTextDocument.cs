@@ -22,39 +22,14 @@ namespace ApiExamples
             //ExFor:PlainTextDocument
             //ExFor:PlainTextDocument.#ctor(String)
             //ExFor:PlainTextDocument.Text
-            //ExSummary:Shows how to load a document in its plaintext state.
+            //ExSummary:Shows how to load the contents of a Microsoft Word document in plaintext.
             Document doc = new Document(); 
             DocumentBuilder builder = new DocumentBuilder(doc);
-
             builder.Writeln("Hello world!");
+
             doc.Save(ArtifactsDir + "PlainTextDocument.Load.docx");
 
             PlainTextDocument plaintext = new PlainTextDocument(ArtifactsDir + "PlainTextDocument.Load.docx");
-
-            Assert.AreEqual("Hello world!", plaintext.Text.Trim());
-            //ExEnd
-        }
-
-        [Test]
-        public void LoadWithOptions()
-        {
-            //ExStart
-            //ExFor:PlainTextDocument.#ctor(String, LoadOptions)
-            //ExSummary:Shows how to load an encrypted document in its plaintext state.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Writeln("Hello world!");
-
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
-            saveOptions.Password = "MyPassword";
-
-            doc.Save(ArtifactsDir + "PlainTextDocument.LoadWithOptions.docx", saveOptions);
-
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.Password = "MyPassword";
-
-            PlainTextDocument plaintext = new PlainTextDocument(ArtifactsDir + "PlainTextDocument.LoadWithOptions.docx", loadOptions);
 
             Assert.AreEqual("Hello world!", plaintext.Text.Trim());
             //ExEnd
@@ -65,7 +40,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PlainTextDocument.#ctor(Stream)
-            //ExSummary:Shows how to load a document from a stream in its plaintext state.
+            //ExSummary:Shows how to load the contents of a Microsoft Word document in plaintext using stream.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -82,11 +57,35 @@ namespace ApiExamples
         }
 
         [Test]
-        public void LoadFromStreamWithOptions()
+        public void LoadEncrypted()
+        {
+            //ExStart
+            //ExFor:PlainTextDocument.#ctor(String, LoadOptions)
+            //ExSummary:Shows how to load the contents of an encrypted Microsoft Word document in plaintext.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.Password = "MyPassword";
+
+            doc.Save(ArtifactsDir + "PlainTextDocument.LoadEncrypted.docx", saveOptions);
+
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.Password = "MyPassword";
+
+            PlainTextDocument plaintext = new PlainTextDocument(ArtifactsDir + "PlainTextDocument.LoadEncrypted.docx", loadOptions);
+
+            Assert.AreEqual("Hello world!", plaintext.Text.Trim());
+            //ExEnd
+        }
+
+        [Test]
+        public void LoadEncryptedUsingStream()
         {
             //ExStart
             //ExFor:PlainTextDocument.#ctor(Stream, LoadOptions)
-            //ExSummary:Shows how to load an encrypted document from a stream in its plaintext state.
+            //ExSummary:Shows how to load the contents of an encrypted Microsoft Word document in plaintext using stream.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -114,7 +113,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PlainTextDocument.BuiltInDocumentProperties
-            //ExSummary:Shows how to load a plaintext version of a document, and also access its built in properties.
+            //ExSummary:Shows how to load the contents of a Microsoft Word document in plaintext and then access the original document's built-in properties.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -135,7 +134,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PlainTextDocument.CustomDocumentProperties
-            //ExSummary:Shows how to load a plaintext version of a document, and also access its custom properties.
+            //ExSummary:Shows how to load the contents of a Microsoft Word document in plaintext and then access the original document's custom properties.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
