@@ -31,16 +31,15 @@ namespace ApiExamples
             //ExFor:Row
             //ExFor:Cell
             //ExFor:Table.#ctor(DocumentBase)
-            //ExSummary:Shows how to create a simple table.
+            //ExSummary:Shows how to create a table.
             Document doc = new Document();
-
-            // Tables are placed in the body of a document
             Table table = new Table(doc);
             doc.FirstSection.Body.AppendChild(table);
 
-            // Tables contain rows, which contain cells,
-            // which contain contents such as paragraphs, runs and even other tables
-            // Calling table.EnsureMinimum will also make sure that a table has at least one row, cell and paragraph
+            // Tables contain rows, which contain cells, which may contain paragraphs
+            // with typical elements such as runs, shapes, and even other tables.
+            // Calling the "EnsureMinimum" method on a table will ensure that
+            // the table has at least one row, cell and paragraph.
             Row firstRow = new Row(doc);
             table.AppendChild(firstRow);
 
@@ -50,6 +49,7 @@ namespace ApiExamples
             Paragraph paragraph = new Paragraph(doc);
             firstCell.AppendChild(paragraph);
 
+            // Add text to the first call in the first row of the table.
             Run run = new Run(doc, "Hello world!");
             paragraph.AppendChild(run);
 
@@ -84,7 +84,7 @@ namespace ApiExamples
             builder.EndTable();
             
             // For every cell in the table, set the distance between its contents, and each of its borders. 
-            // Text will be wrapped to maintain this minimum padding distance.
+            // This table will maintain the minimum padding distance by wrapping text.
             table.LeftPadding = 30;
             table.RightPadding = 60;
             table.TopPadding = 10;
@@ -112,7 +112,7 @@ namespace ApiExamples
             //ExFor:Cell.CellFormat
             //ExFor:CellFormat
             //ExFor:CellFormat.Shading
-            //ExSummary:Shows how to modify the format of rows and cells.
+            //ExSummary:Shows how to modify the format of rows and cells in a table.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -128,11 +128,14 @@ namespace ApiExamples
             builder.Write("U.K.");
             builder.EndTable();
 
-            // The appearance of rows and individual cells can be edited using the respective formatting objects
+            // Use the first row's "RowFormat" property to modify the formatting
+            // of the contents of all cells in this row.
             RowFormat rowFormat = table.FirstRow.RowFormat;
             rowFormat.Height = 25;
             rowFormat.Borders[BorderType.Bottom].Color = Color.Red;
 
+            // Use the "CellFormat" property of the first cell in the last row to
+            // modify the formatting of the contants of that cell.
             CellFormat cellFormat = table.LastRow.FirstCell.CellFormat;
             cellFormat.Width = 100;
             cellFormat.Shading.BackgroundPatternColor = Color.Orange;
