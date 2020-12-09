@@ -176,46 +176,35 @@ namespace ApiExamples
             //ExFor:Table.Rows
             //ExFor:TableCollection.Item(System.Int32)
             //ExFor:TableCollection.ToArray
-            //ExSummary:Shows how to iterate through all tables in the document and display the content from each cell.
+            //ExSummary:Shows how to iterate through all tables in the document, and print the contents of each cell.
             Document doc = new Document(MyDir + "Tables.docx");
-
-            // Here we get all tables from the Document node. You can do this for any other composite node
-            // which can contain block level nodes. For example, you can retrieve tables from header or from a cell
-            // containing another table (nested tables)
             TableCollection tables = doc.FirstSection.Body.Tables;
 
-            // We can make a new array to clone all the tables in the collection
             Assert.AreEqual(2, tables.ToArray().Length);
 
-            // Iterate through all tables in the document
             for (int i = 0; i < tables.Count; i++)
             {
-                // Get the index of the table node as contained in the parent node of the table
                 Console.WriteLine($"Start of Table {i}");
 
                 RowCollection rows = tables[i].Rows;
 
-                // RowCollections can be cloned into arrays
+                // We can use the "ToArray" method on a row collection to clone it into an array.
                 Assert.AreEqual(rows, rows.ToArray());
                 Assert.AreNotSame(rows, rows.ToArray());
 
-                // Iterate through all rows in the table
                 for (int j = 0; j < rows.Count; j++)
                 {
                     Console.WriteLine($"\tStart of Row {j}");
 
                     CellCollection cells = rows[j].Cells;
 
-                    // RowCollections can also be cloned into arrays 
+                    // We can use the "ToArray" method on a cell collection to clone it into an array.
                     Assert.AreEqual(cells, cells.ToArray());
                     Assert.AreNotSame(cells, cells.ToArray());
 
-                    // Iterate through all cells in the row
                     for (int k = 0; k < cells.Count; k++)
                     {
-                        // Get the plain text content of this cell
                         string cellText = cells[k].ToString(SaveFormat.Text).Trim();
-                        // Print the content of the cell
                         Console.WriteLine($"\t\tContents of Cell:{k} = \"{cellText}\"");
                     }
 
@@ -234,7 +223,7 @@ namespace ApiExamples
         //ExFor:Cell.Tables
         //ExFor:TableCollection
         //ExFor:NodeCollection.Count
-        //ExSummary:Shows how to find out if a table contains another table or if the table itself is nested inside another table.
+        //ExSummary:Shows how to find out if a tables are nested.
         [Test] //ExSkip
         public void CalculateDepthOfNestedTables()
         {
@@ -246,11 +235,11 @@ namespace ApiExamples
             {
                 Table table = (Table)tables[i];
 
-                // Find out if any cells in the table have tables themselves as children
+                // Find out if any cells in the table have other tables as children.
                 int count = GetChildTableCount(table);
                 Console.WriteLine("Table #{0} has {1} tables directly within its cells", i, count);
 
-                // We can also do the opposite; finding out if the table is nested inside another table and at what depth
+                // Find out if the table is nested inside another table, and, if so, at what depth.
                 int tableDepth = GetNestedDepthOfTable(table);
 
                 if (tableDepth > 0)
@@ -263,23 +252,17 @@ namespace ApiExamples
 
         /// <summary>
         /// Calculates what level a table is nested inside other tables.
-        /// <returns>
-        /// An integer containing the level the table is nested at.
-        /// 0 = Table is not nested inside any other table
-        /// 1 = Table is nested within one parent table
-        /// 2 = Table is nested within two parent tables etc..</returns>
         /// </summary>
+        /// <returns>
+        /// An integer indicating the nesting depth of the table (number of parent table nodes).
+        /// </returns>
         private static int GetNestedDepthOfTable(Table table)
         {
             int depth = 0;
-
-            // The parent of the table will be a Cell, instead attempt to find a grandparent that is of type Table
             Node parent = table.GetAncestor(table.NodeType);
 
             while (parent != null)
             {
-                // Every time we find a table a level up, we increase the depth counter and then try to find an
-                // ancestor of type table from the parent
                 depth++;
                 parent = parent.GetAncestor(typeof(Table));
             }
@@ -290,29 +273,27 @@ namespace ApiExamples
         /// <summary>
         /// Determines if a table contains any immediate child table within its cells.
         /// Does not recursively traverse through those tables to check for further tables.
-        /// <returns>Returns true if at least one child cell contains a table.
-        /// Returns false if no cells in the table contains a table.</returns>
         /// </summary>
+        /// <returns>
+        /// Returns true if at least one child cell contains a table.
+        /// Returns false if no cells in the table contains a table.
+        /// </returns>
         private static int GetChildTableCount(Table table)
         {
-            int tableCount = 0;
-            // Iterate through all child rows in the table
+            int childTableCount = 0;
+
             foreach (Row row in table.Rows.OfType<Row>())
             {
-                // Iterate through all child cells in the row
                 foreach (Cell Cell in row.Cells.OfType<Cell>())
                 {
-                    // Retrieve the collection of child tables of this cell
                     TableCollection childTables = Cell.Tables;
 
-                    // If this cell has a table as a child then return true
                     if (childTables.Count > 0)
-                        tableCount++;
+                        childTableCount++;
                 }
             }
 
-            // No cell contains a table
-            return tableCount;
+            return childTableCount;
         }
         //ExEnd
 
@@ -423,17 +404,19 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Table.EnsureMinimum
-            //ExSummary:Shows how to ensure a table node is valid.
+            //ExSummary:Shows how to ensure that a table node is valid.
             Document doc = new Document();
 
-            // Create a new table and add it to the document
             Table table = new Table(doc);
             doc.FirstSection.Body.AppendChild(table);
 
-            // Currently, the table does not contain any rows, cells or nodes that can have content added to them
+            // Tables contain rows, which contain cells, which may contain paragraphs
+            // with typical elements such as runs, shapes, and even other tables.
+            // Our brand new table has none of these nodes, and we cannot add contents to it until it does.
             Assert.AreEqual(0, table.GetChildNodes(NodeType.Any, true).Count);
 
-            // This method ensures that the table has one row, one cell and one paragraph; the minimal nodes required to begin editing
+            // Calling the "EnsureMinimum" method on a table will ensure that
+            // the table has at least one row, cell and paragraph.
             table.EnsureMinimum();
             table.FirstRow.FirstCell.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
             //ExEnd
