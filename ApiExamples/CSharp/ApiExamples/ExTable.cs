@@ -404,19 +404,18 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Table.EnsureMinimum
-            //ExSummary:Shows how to ensure that a table node is valid.
+            //ExSummary:Shows how to ensure that a table node contains the nodes we need to begin adding content to it.
             Document doc = new Document();
-
             Table table = new Table(doc);
             doc.FirstSection.Body.AppendChild(table);
 
             // Tables contain rows, which contain cells, which may contain paragraphs
             // with typical elements such as runs, shapes, and even other tables.
-            // Our brand new table has none of these nodes, and we cannot add contents to it until it does.
+            // Our new table has none of these nodes, and we cannot add contents to it until it does.
             Assert.AreEqual(0, table.GetChildNodes(NodeType.Any, true).Count);
 
             // Calling the "EnsureMinimum" method on a table will ensure that
-            // the table has at least one row, cell and paragraph.
+            // the table has at least one row, and one cell with an empty paragraph.
             table.EnsureMinimum();
             table.FirstRow.FirstCell.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
             //ExEnd
@@ -429,21 +428,20 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Row.EnsureMinimum
-            //ExSummary:Shows how to ensure a row node is valid.
+            //ExSummary:Shows how to ensure a row node contains the nodes we need to begin adding content to it.
             Document doc = new Document();
-
-            // Create a new table and add it to the document
             Table table = new Table(doc);
             doc.FirstSection.Body.AppendChild(table);
-
-            // Create a new row and add it to the table
             Row row = new Row(doc);
             table.AppendChild(row);
 
-            // Currently, the row does not contain any cells or nodes that can have content added to them
+            // Rows contain cells, which may contain paragraphs
+            // with typical elements such as runs, shapes, and even other tables.
+            // Our new row has none of these nodes, and we cannot add contents to it until it does.
             Assert.AreEqual(0, row.GetChildNodes(NodeType.Any, true).Count);
 
-            // Ensure the row has at least one cell with one paragraph that we can edit
+            // Calling the "EnsureMinimum" method on a table will ensure that
+            // the table has at least one cell with an empty paragraph.
             row.EnsureMinimum();
             row.FirstCell.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
             //ExEnd
@@ -456,24 +454,21 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Cell.EnsureMinimum
-            //ExSummary:Shows how to ensure a cell node is valid.
+            //ExSummary:Shows how to ensure a cell node contains the nodes we need to begin adding content to it.
             Document doc = new Document();
-
-            // Create a new table and add it to the document
             Table table = new Table(doc);
             doc.FirstSection.Body.AppendChild(table);
-
-            // Create a new row with a new cell and append it to the table
             Row row = new Row(doc);
             table.AppendChild(row);
-
             Cell cell = new Cell(doc);
             row.AppendChild(cell);
 
-            // Currently, the cell does not contain any cells or nodes that can have content added to them
+            // Cells may contain paragraphs with typical elements such as runs, shapes, and even other tables.
+            // Our new cell does not have any paragraphs, and we cannot add contents such as run and shape nodes to it until it does.
             Assert.AreEqual(0, cell.GetChildNodes(NodeType.Any, true).Count);
 
-            // Ensure the cell has at least one paragraph that we can edit
+            // Calling the "EnsureMinimum" method on a cell will ensure that
+            // the cell has at least one empty paragraph, which we can then add contents to.
             cell.EnsureMinimum();
             cell.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
             //ExEnd
@@ -492,24 +487,24 @@ namespace ApiExamples
             //ExFor:Table.SetBorder
             //ExFor:TextureIndex
             //ExFor:Table.SetShading
-            //ExSummary:Shows how to apply a outline border to a table.
+            //ExSummary:Shows how to apply an outline border to a table.
             Document doc = new Document(MyDir + "Tables.docx");
             Table table = doc.FirstSection.Body.Tables[0];
 
-            // Align the table to the center of the page
+            // Align the table to the center of the page.
             table.Alignment = TableAlignment.Center;
 
-            // Clear any existing borders and shading from the table
+            // Clear any existing borders and shading from the table.
             table.ClearBorders();
             table.ClearShading();
 
-            // Set a green border around the table but not inside
+            // Add green borders to the outline of the table.
             table.SetBorder(BorderType.Left, LineStyle.Single, 1.5, Color.Green, true);
             table.SetBorder(BorderType.Right, LineStyle.Single, 1.5, Color.Green, true);
             table.SetBorder(BorderType.Top, LineStyle.Single, 1.5, Color.Green, true);
             table.SetBorder(BorderType.Bottom, LineStyle.Single, 1.5, Color.Green, true);
 
-            // Fill the cells with a light green solid color
+            // Fill the cells with a light green solid color.
             table.SetShading(TextureIndex.TextureSolid, Color.LightGreen, Color.Empty);
 
             doc.Save(ArtifactsDir + "Table.SetOutlineBorders.docx");
@@ -532,24 +527,24 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetTableBorders()
+        public void SetBorders()
         {
             //ExStart
             //ExFor:Table.SetBorders
-            //ExSummary:Shows how to build a table with all borders enabled (grid).
+            //ExSummary:Shows how to format of all of a table's borders at once.
             Document doc = new Document(MyDir + "Tables.docx");
             Table table = doc.FirstSection.Body.Tables[0];
 
-            // Clear any existing borders from the table
+            // Clear all existing borders from the table.
             table.ClearBorders();
 
-            // Set a green border around and inside the table
+            // Set a single green line to serve as every outer and inner border of this table.
             table.SetBorders(LineStyle.Single, 1.5, Color.Green);
 
-            doc.Save(ArtifactsDir + "Table.SetAllBorders.docx");
+            doc.Save(ArtifactsDir + "Table.SetBorders.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Table.SetAllBorders.docx");
+            doc = new Document(ArtifactsDir + "Table.SetBorders.docx");
             table = doc.FirstSection.Body.Tables[0];
             
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Top.Color.ToArgb());
@@ -570,10 +565,9 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Tables.docx");
             Table table = doc.FirstSection.Body.Tables[0];
 
-            // Retrieve the first row in the table
+            // Use the first row's "RowFormat" property to set formatting
+            // that modifies the appearance of that entire row.
             Row firstRow = table.FirstRow;
-
-            // Modify some row level properties
             firstRow.RowFormat.Borders.LineStyle = LineStyle.None;
             firstRow.RowFormat.HeightRule = HeightRule.Auto;
             firstRow.RowFormat.AllowBreakAcrossPages = true;
@@ -598,12 +592,11 @@ namespace ApiExamples
             //ExSummary:Shows how to modify formatting of a table cell.
             Document doc = new Document(MyDir + "Tables.docx");
             Table table = doc.FirstSection.Body.Tables[0];
-
-            // Retrieve the first cell in the table
             Cell firstCell = table.FirstRow.FirstCell;
 
-            // Modify some row level properties
-            firstCell.CellFormat.Width = 30; // in points
+            // Use a cell's "CellFormat" property to set formatting
+            // that modifies the appearance of that cell.
+            firstCell.CellFormat.Width = 30;
             firstCell.CellFormat.Orientation = TextOrientation.Downward;
             firstCell.CellFormat.Shading.ForegroundPatternColor = Color.LightGreen;
 
@@ -647,13 +640,12 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a table
             Table table = builder.StartTable();
             builder.InsertCell();
             builder.Write("Hello world!");
             builder.EndTable();
 
-            // Set a color/thickness for the top border of the first row and verify the values
+            // Modify the color and thickness of the top border.
             Border topBorder = table.FirstRow.RowFormat.Borders[BorderType.Top];
             table.SetBorder(BorderType.Top, LineStyle.Double, 1.5, Color.Red, true);
 
@@ -661,11 +653,12 @@ namespace ApiExamples
             Assert.AreEqual(Color.Red.ToArgb(), topBorder.Color.ToArgb());
             Assert.AreEqual(LineStyle.Double, topBorder.LineStyle);
 
-            // Clear the borders all cells in the table
+            // Clear the borders all cells in the table, and then save the document.
             table.ClearBorders();
+            Assert.Throws<AssertionException>(() => Assert.AreEqual(Color.Empty.ToArgb(), topBorder.Color.ToArgb())); //ExSkip
             doc.Save(ArtifactsDir + "Table.ClearBorders.docx");
 
-            // Upon re-opening the saved document, the new border attributes can be verified
+            // Verify the values of the table's properties after re-opening the document.
             doc = new Document(ArtifactsDir + "Table.ClearBorders.docx");
             table = doc.FirstSection.Body.Tables[0];
             topBorder = table.FirstRow.RowFormat.Borders[BorderType.Top];
@@ -685,12 +678,11 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a table and give it conditional styling on border colors based on the row being the first or last
             Table table = builder.StartTable();
             builder.InsertCell();
             builder.Write("Carrots");
             builder.InsertCell();
-            builder.Write("30");
+            builder.Write("50");
             builder.EndRow();
             builder.InsertCell();
             builder.Write("Potatoes");
@@ -702,18 +694,15 @@ namespace ApiExamples
             options.MatchCase = true;
             options.FindWholeWordsOnly = true;
 
-            // Replace any instances of our String in the entire table
+            // Perform a find-and-replace operation on an entire table.
             table.Range.Replace("Carrots", "Eggs", options);
-            // Replace any instances of our String in the last cell of the table only
+
+            // Perform a find-and-replace operation on the last cell of the last row of the table.
             table.LastRow.LastCell.Range.Replace("50", "20", options);
 
-            doc.Save(ArtifactsDir + "Table.ReplaceCellText.docx");
+            Assert.AreEqual("Eggs\a50\a\a" +
+                            "Potatoes\a20\a\a", table.GetText().Trim());
             //ExEnd
-
-            doc = new Document(ArtifactsDir + "Table.ReplaceCellText.docx");
-            table = doc.FirstSection.Body.Tables[0];
-
-            Assert.AreEqual("Eggs\a30\a\aPotatoes\a20\a\a", table.GetText().Trim());
         }
 
         [Test]
@@ -773,29 +762,30 @@ namespace ApiExamples
             Assert.AreEqual(string.Empty, tableClone.ToString(SaveFormat.Text).Trim());
         }
 
-        [Test]
-        public void DisableBreakAcrossPages()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AllowBreakAcrossPages(bool allowBreakAcrossPages)
         {
             //ExStart
             //ExFor:RowFormat.AllowBreakAcrossPages
             //ExSummary:Shows how to disable rows breaking across pages for every row in a table.
-            // Disable breaking across pages for all rows in the table
             Document doc = new Document(MyDir + "Table spanning two pages.docx");
-
-            // Retrieve the first table in the document
             Table table = doc.FirstSection.Body.Tables[0];
 
+            // Set the "AllowBreakAcrossPages" property to "false" to keep the row
+            // in one piece if a table spans two pages, which break up along that row.
+            // If the row is too big to fit in one page, Microsoft Word will push it down to the next page.
+            // Set the "AllowBreakAcrossPages" property to "true" to allow the row to break up across two pages.
             foreach (Row row in table.OfType<Row>())
-                row.RowFormat.AllowBreakAcrossPages = false;
+                row.RowFormat.AllowBreakAcrossPages = allowBreakAcrossPages;
 
-            doc.Save(ArtifactsDir + "Table.DisableBreakAcrossPages.docx");
+            doc.Save(ArtifactsDir + "Table.AllowBreakAcrossPages.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Table.DisableBreakAcrossPages.docx");
+            doc = new Document(ArtifactsDir + "Table.AllowBreakAcrossPages.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.False(table.FirstRow.RowFormat.AllowBreakAcrossPages);
-            Assert.False(table.LastRow.RowFormat.AllowBreakAcrossPages);
+            Assert.AreEqual(3, table.Rows.Count(r => ((Row)r).RowFormat.AllowBreakAcrossPages == allowBreakAcrossPages));
         }
 
         [TestCase(false)]
@@ -804,23 +794,27 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Table.AllowAutoFit
-            //ExSummary:Shows how to set a table to shrink or grow each cell to accommodate its contents.
+            //ExSummary:Shows how to enable/disable automatic table cell resizing.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Table table = builder.StartTable();
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPoints(100);
-            builder.Write(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                          "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.Auto;
-            builder.Write(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                          "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
             builder.EndRow();
             builder.EndTable();
 
+            // Set the "AllowAutoFit" property to "false" to get the table to maintain the dimensions
+            // of all its rows and cells, and truncate contents if they get too large to fit.
+            // Set the "AllowAutoFit" property to "true" to allow the table to change the
+            // width and height of its cells to accomodate their contents.
             table.AllowAutoFit = allowAutoFit;
 
             doc.Save(ArtifactsDir + "Table.AllowAutoFitOnTable.html");
@@ -860,8 +854,8 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Table spanning two pages.docx");
             Table table = doc.FirstSection.Body.Tables[0];
 
-            // Enabling KeepWithNext for every paragraph in the table except for the last ones in the last row
-            // will prevent the table from being split across pages 
+            // Enabling KeepWithNext for every paragraph in the table except for the
+            // last ones in the last row will prevent the table from splitting across multiple pages. 
             foreach (Cell cell in table.GetChildNodes(NodeType.Cell, true).OfType<Cell>())
                 foreach (Paragraph para in cell.Paragraphs.OfType<Paragraph>())
                 {
@@ -972,7 +966,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:NodeCollection.IndexOf(Node)
-            //ExSummary:Shows how to get the indexes of nodes in the collections that contain them.
+            //ExSummary:Shows how to get the index of a node in a collection.
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = doc.FirstSection.Body.Tables[0];
@@ -997,15 +991,14 @@ namespace ApiExamples
             //ExFor:PreferredWidthType
             //ExFor:PreferredWidth.Type
             //ExFor:PreferredWidth.Value
-            //ExSummary:Shows how to verify the preferred width type of a table cell.
+            //ExSummary:Shows how to verify the preferred width type and value of a table cell.
             Document doc = new Document(MyDir + "Tables.docx");
 
-            // Find the first table in the document
             Table table = doc.FirstSection.Body.Tables[0];
             Cell firstCell = table.FirstRow.FirstCell;
 
             Assert.AreEqual(PreferredWidthType.Percent, firstCell.CellFormat.PreferredWidth.Type);
-            Assert.AreEqual(11.16, firstCell.CellFormat.PreferredWidth.Value);
+            Assert.AreEqual(11.16d, firstCell.CellFormat.PreferredWidth.Value);
             //ExEnd
         }
 
@@ -1032,11 +1025,20 @@ namespace ApiExamples
             builder.Write("Mammal");
             builder.EndTable();
 
-            // Set the size of padding space between cells, and the switch that enables/negates this setting
             table.CellSpacing = 3;
+
+            // Set the "AllowCellSpacing" property to "true" to enable spacing between cells
+            // with a magnitude equal to the value of the "CellSpacing" property, in points.
+            // Set the "AllowCellSpacing" property to "false" to disable cell spacing
+            // and ignore the value of the "CellSpacing" property.
             table.AllowCellSpacing = allowCellSpacing;
 
             doc.Save(ArtifactsDir + "Table.AllowCellSpacing.html");
+
+            // Adjusting the "CellSpacing" property will automatically enable cell spacing.
+            table.CellSpacing = 5;
+
+            Assert.True(table.AllowCellSpacing);
             //ExEnd
 
             TestUtil.FileContainsString(
@@ -1057,20 +1059,19 @@ namespace ApiExamples
         //ExFor:Row.#ctor(DocumentBase)
         //ExFor:Cell.#ctor(DocumentBase)
         //ExFor:Cell.FirstParagraph
-        //ExSummary:Shows how to build a nested table without using DocumentBuilder.
+        //ExSummary:Shows how to build a nested table without using a document builder.
         [Test] //ExSkip
         public void CreateNestedTable()
         {
             Document doc = new Document();
 
-            // Create the outer table with three rows and four columns
+            // Create the outer table with three rows and four columns, and then add it to the document.
             Table outerTable = CreateTable(doc, 3, 4, "Outer Table");
-            // Add it to the document body
             doc.FirstSection.Body.AppendChild(outerTable);
 
-            // Create another table with two rows and two columns
+            // Create another table with two rows and two columns,
+            // and then insert it into the first cell of the first table.
             Table innerTable = CreateTable(doc, 2, 2, "Inner Table");
-            // Add this table to the first cell of the outer table
             outerTable.FirstRow.FirstCell.AppendChild(innerTable);
 
             doc.Save(ArtifactsDir + "Table.CreateNestedTable.docx");
@@ -1084,28 +1085,25 @@ namespace ApiExamples
         {
             Table table = new Table(doc);
 
-            // Create the specified number of rows
             for (int rowId = 1; rowId <= rowCount; rowId++)
             {
                 Row row = new Row(doc);
                 table.AppendChild(row);
 
-                // Create the specified number of cells for each row
                 for (int cellId = 1; cellId <= cellCount; cellId++)
                 {
                     Cell cell = new Cell(doc);
-                    row.AppendChild(cell);
-                    // Add a blank paragraph to the cell
                     cell.AppendChild(new Paragraph(doc));
-
-                    // Add the text
                     cell.FirstParagraph.AppendChild(new Run(doc, cellText));
+
+                    row.AppendChild(cell);
                 }
             }
 
-            // You can add title and description to your table only when added at least one row to the table first
-            // This properties are meaningful for ISO / IEC 29500 compliant .docx documents(see the OoxmlCompliance class)
-            // When saved to pre-ISO/IEC 29500 formats, the properties are ignored
+            // You can use the "Title" and "Description" properties to respectively add a title and description
+            // to your table. The table must have at least one row before we can use these properties.
+            // These properties are meaningful for ISO / IEC 29500 compliant .docx documents (see the OoxmlCompliance class).
+            // If we save the document to to pre-ISO/IEC 29500 formats, Microsoft Word ignores these properties.
             table.Title = "Aspose table title";
             table.Description = "Aspose table description";
 
@@ -1135,14 +1133,11 @@ namespace ApiExamples
         public void CheckCellsMerged()
         {
             Document doc = new Document(MyDir + "Table with merged cells.docx");
-
-            // Retrieve the first table in the document
             Table table = doc.FirstSection.Body.Tables[0];
 
             foreach (Row row in table.Rows.OfType<Row>())
                 foreach (Cell cell in row.Cells.OfType<Cell>())
                     Console.WriteLine(PrintCellMergeType(cell));
-            
             Assert.AreEqual("The cell at R1, C1 is vertically merged", PrintCellMergeType(table.FirstRow.FirstCell)); //ExSkip
         }
 
@@ -1245,20 +1240,20 @@ namespace ApiExamples
             //ExFor:CellFormat.ClearFormatting
             //ExFor:CompositeNode.HasChildNodes
             //ExSummary:Shows how to combine the rows from two tables into one.
-            // Load the document
             Document doc = new Document(MyDir + "Tables.docx");
 
-            // Get the first and second table in the document
-            // The rows from the second table will be appended to the end of the first table
+            // Below are two ways of getting a table from a document.
+            // 1 -  From the "Tables" collection of a Body node:
             Table firstTable = doc.FirstSection.Body.Tables[0];
-            Table secondTable = (Table) doc.GetChild(NodeType.Table, 1, true);
 
-            // Append all rows from the current table to the next
-            // Due to the design of tables even tables with different cell count and widths can be joined into one table
+            // 2 -  Using the "GetChild" method:
+            Table secondTable = (Table)doc.GetChild(NodeType.Table, 1, true);
+
+            // Append all rows from the current table to the next.
             while (secondTable.HasChildNodes)
                 firstTable.Rows.Add(secondTable.FirstRow);
 
-            // Remove the empty table container
+            // Remove the empty table container.
             secondTable.Remove();
 
             doc.Save(ArtifactsDir + "Table.CombineTables.docx");
@@ -1322,7 +1317,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a table and a paragraph of text after it
             Table table = builder.StartTable();
             builder.InsertCell();
             builder.Write("Cell 1");
@@ -1334,7 +1328,8 @@ namespace ApiExamples
             builder.Font.Size = 16;
             builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 
-            // Set the table to wrap text around it and push it down into the paragraph below be setting the position
+            // Set the "TextWrapping" property to "TextWrapping.Around" to get the table to wrap text around it,
+            // and push it down into the paragraph below be setting the position.
             table.TextWrapping = TextWrapping.Around;
             table.AbsoluteHorizontalDistance = 100;
             table.AbsoluteVerticalDistance = 20;
@@ -1365,7 +1360,6 @@ namespace ApiExamples
 
             if (table.TextWrapping == TextWrapping.Around)
             {
-                Assert.AreEqual(TextWrapping.Around, table.TextWrapping);
                 Assert.AreEqual(RelativeHorizontalPosition.Margin, table.HorizontalAnchor);
                 Assert.AreEqual(RelativeVerticalPosition.Paragraph, table.VerticalAnchor);
                 Assert.AreEqual(false, table.AllowOverlap);
@@ -1373,12 +1367,10 @@ namespace ApiExamples
                 // Only Margin, Page, Column available in RelativeHorizontalPosition for HorizontalAnchor setter
                 // The ArgumentException will be thrown for any other values
                 table.HorizontalAnchor = RelativeHorizontalPosition.Column;
+
                 // Only Margin, Page, Paragraph available in RelativeVerticalPosition for VerticalAnchor setter
                 // The ArgumentException will be thrown for any other values
                 table.VerticalAnchor = RelativeVerticalPosition.Page;
-                
-                Assert.AreEqual(RelativeHorizontalPosition.Column, table.HorizontalAnchor); //ExSkip
-                Assert.AreEqual(RelativeVerticalPosition.Page, table.VerticalAnchor); //ExSkip
             }
             //ExEnd
         }
@@ -1395,14 +1387,13 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a table
             Table table = builder.StartTable();
             builder.InsertCell();
             builder.Write("Table 1, cell 1");
             builder.EndTable();
             table.PreferredWidth = PreferredWidth.FromPoints(300);
 
-            // We can set the table's location to a place on the page, such as the bottom right corner
+            // Set the table's location to a place on the page, such as, in this case, the bottom right corner.
             table.RelativeVerticalAlignment = VerticalAlignment.Bottom;
             table.RelativeHorizontalAlignment = HorizontalAlignment.Right;
 
@@ -1412,7 +1403,8 @@ namespace ApiExamples
             builder.EndTable();
             table.PreferredWidth = PreferredWidth.FromPoints(300);
 
-            // We can also set a horizontal and vertical offset from the location in the paragraph where the table was inserted 
+            // We can also set a horizontal and vertical offset, in points,
+            // from the location in the paragraph where we inserted the table. 
             table.AbsoluteVerticalDistance = 50;
             table.AbsoluteHorizontalDistance = 100;
 
@@ -1477,7 +1469,7 @@ namespace ApiExamples
 
             table.Style = tableStyle;
 
-            // Some Table attributes are linked to style variables
+            // Setting the style properties of a table may affect the properties of the table itself.
             Assert.True(table.Bidi);
             Assert.AreEqual(5.0d, table.CellSpacing);
             Assert.AreEqual("MyTableStyle1", table.StyleName);
@@ -1517,18 +1509,18 @@ namespace ApiExamples
             //ExStart
             //ExFor:TableStyle.Alignment
             //ExFor:TableStyle.LeftIndent
-            //ExSummary:Shows how to set table position.
+            //ExSummary:Shows how to set the position of a table.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // There are two ways of horizontally aligning a table using a custom table style
-            // One way is to align it to a location on the page, such as the center
+            // Below are two ways of aligning a table horizontally.
+            // 1 -  Use the "Alignment" property to align it to a location on the page, such as the center:
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
             tableStyle.Alignment = TableAlignment.Center;
             tableStyle.Borders.Color = Color.Blue;
             tableStyle.Borders.LineStyle = LineStyle.Single;
 
-            // Insert a table and apply the style we created to it
+            // Insert a table, and apply the style we created to it.
             Table table = builder.StartTable();
             builder.InsertCell();
             builder.Write("Aligned to the center of the page");
@@ -1537,7 +1529,7 @@ namespace ApiExamples
             
             table.Style = tableStyle;
 
-            // We can also set a specific left indent to the style, and apply it to the table
+            // 2 -  Use the "LeftIndent" to specify an indent from the left margin of the page:
             tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle2");
             tableStyle.LeftIndent = 55;
             tableStyle.Borders.Color = Color.Green;
@@ -1551,10 +1543,10 @@ namespace ApiExamples
 
             table.Style = tableStyle;
 
-            doc.Save(ArtifactsDir + "Table.TableStyleCreation.docx");
+            doc.Save(ArtifactsDir + "Table.SetTableAlignment.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Table.TableStyleCreation.docx");
+            doc = new Document(ArtifactsDir + "Table.SetTableAlignment.docx");
 
             tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];
 
@@ -1605,7 +1597,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a table
             Table table = builder.StartTable();
             builder.InsertCell();
             builder.Write("Cell 1");
@@ -1618,30 +1609,31 @@ namespace ApiExamples
             builder.Write("Cell 4");
             builder.EndTable();
 
-            // Create a custom table style
+            // Create a custom table style.
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
 
-            // Conditional styles are formatting changes that affect only some of the cells of the table based on a predicate,
-            // such as the cells being in the last row
-            // We can access these conditional styles by style type like this
+            // Conditional styles are formatting changes that affect only some of the cells
+            // of the table based on a predicate, such as the cells being in the last row.
+            // Below are three ways of accessing a table style's conditional styles from the "ConditionalStyles" collection.
+            // 1 -  By style type:
             tableStyle.ConditionalStyles[ConditionalStyleType.FirstRow].Shading.BackgroundPatternColor = Color.AliceBlue;
 
-            // The same conditional style can be accessed by index
+            // 2 -  By index:
             tableStyle.ConditionalStyles[0].Borders.Color = Color.Black;
             tableStyle.ConditionalStyles[0].Borders.LineStyle = LineStyle.DotDash;
             Assert.AreEqual(ConditionalStyleType.FirstRow, tableStyle.ConditionalStyles[0].Type);
 
-            // It can also be found in the ConditionalStyles collection as an attribute
+            // 3 -  As a property:
             tableStyle.ConditionalStyles.FirstRow.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
-            // Apply padding and text formatting to conditional styles 
+            // Apply padding, and text formatting to conditional styles .
             tableStyle.ConditionalStyles.LastRow.BottomPadding = 10;
             tableStyle.ConditionalStyles.LastRow.LeftPadding = 10;
             tableStyle.ConditionalStyles.LastRow.RightPadding = 10;
             tableStyle.ConditionalStyles.LastRow.TopPadding = 10;
             tableStyle.ConditionalStyles.LastColumn.Font.Bold = true;
 
-            // List all possible style conditions
+            // List all possible style conditions.
             using (IEnumerator<ConditionalStyle> enumerator = tableStyle.ConditionalStyles.GetEnumerator())
             {
                 while (enumerator.MoveNext())
@@ -1651,11 +1643,14 @@ namespace ApiExamples
                 }
             }
 
-            // Apply conditional style to the table
+            // Apply the custom style, which contains all conditional styles, to the table.
             table.Style = tableStyle;
 
-            // Changes to the first row are enabled by the table's style options be default,
-            // but need to be manually enabled for some other parts, such as the last column/row
+            // Our style applies some conditional styles by default.
+            Assert.AreEqual(TableStyleOptions.FirstRow | TableStyleOptions.FirstColumn | TableStyleOptions.RowBands, 
+                table.StyleOptions);
+
+            // We will need to enable all other styles ourselves via the "StyleOptions" property.
             table.StyleOptions = table.StyleOptions | TableStyleOptions.LastRow | TableStyleOptions.LastColumn;
 
             doc.Save(ArtifactsDir + "Table.ConditionalStyles.docx");
@@ -1693,8 +1688,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a table and give it conditional styling on border colors based on the row being the first or last
-            builder.StartTable();
+            Table table = builder.StartTable();
             builder.InsertCell();
             builder.Write("First row");
             builder.EndRow();
@@ -1703,16 +1697,24 @@ namespace ApiExamples
             builder.EndTable();
 
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
+            table.Style = tableStyle;
+
+            // Set the table style to color the borders of the first row of the table in red.
             tableStyle.ConditionalStyles.FirstRow.Borders.Color = Color.Red;
+
+            // Set the table style to color the borders of the last row of the table in blue.
             tableStyle.ConditionalStyles.LastRow.Borders.Color = Color.Blue;
 
-            // Conditional styles can be cleared for specific parts of the table 
+            // Below are two ways of using the "ClearFormatting" method to clear the conditional styles of a table.
+            // 1 -  Clear the conditional styles for a specific part of a table:
             tableStyle.ConditionalStyles[0].ClearFormatting();
+
             Assert.AreEqual(Color.Empty, tableStyle.ConditionalStyles.FirstRow.Borders.Color);
 
-            // Also, they can be cleared for the entire table
+            // 2 -  Clear the conditional styles for the entire table:
             tableStyle.ConditionalStyles.ClearFormatting();
-            Assert.AreEqual(Color.Empty, tableStyle.ConditionalStyles.LastRow.Borders.Color);
+
+            Assert.True(tableStyle.ConditionalStyles.All(s => s.Borders.Color == Color.Empty));
             //ExEnd
         }
 
@@ -1726,10 +1728,11 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The conditional style of a table can be configured to apply a different color to the row/column,
-            // based on whether the row/column is even or odd, creating an alternating color pattern
-            // We can also apply a number n to the row/column banding, meaning that the color alternates after every n rows/columns instead of one 
-            // Create a table where the columns will be banded by single columns and rows will banded in threes
+            // We can configure a conditional style of a table to apply a different color to the row/column,
+            // based on whether the row/column is even or odd, creating an alternating color pattern.
+            // We can also apply a number n to the row/column banding,
+            // meaning that the color alternates after every n rows/columns instead of one.
+            // Create a table where the columns will be banded by single columns and rows will banded in threes.
             Table table = builder.StartTable();
             for (int i = 0; i < 15; i++)
             {
@@ -1743,25 +1746,27 @@ namespace ApiExamples
             }
             builder.EndTable();
 
-            // Set a line style for all the borders of the table
+            // Apply a line style to all the borders of the table.
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
             tableStyle.Borders.Color = Color.Black;
             tableStyle.Borders.LineStyle = LineStyle.Double;
 
-            // Set the two colors which will alternate over every 3 rows
+            // Set the two colors which will alternate over every 3 rows.
             tableStyle.RowStripe = 3;
             tableStyle.ConditionalStyles[ConditionalStyleType.OddRowBanding].Shading.BackgroundPatternColor = Color.LightBlue;
             tableStyle.ConditionalStyles[ConditionalStyleType.EvenRowBanding].Shading.BackgroundPatternColor = Color.LightCyan;
 
-            // Set a color to apply to every even column, which will override any custom row coloring
+            // Set a color to apply to every even column, which will override any custom row coloring.
             tableStyle.ColumnStripe = 1;
             tableStyle.ConditionalStyles[ConditionalStyleType.EvenColumnBanding].Shading.BackgroundPatternColor = Color.LightSalmon;
 
-            // Apply the style to the table
             table.Style = tableStyle;
 
-            // Row bands are automatically enabled, but column banding needs to be enabled manually like this
-            // Row coloring will only be overridden if the column banding has been explicitly set a color
+            // Row banding is automatically enabled in the "StyleOptions" property.
+            Assert.AreEqual(TableStyleOptions.FirstRow | TableStyleOptions.FirstColumn | TableStyleOptions.RowBands,
+                table.StyleOptions);
+
+            // Use the "StyleOptions" property to also enable column banding.
             table.StyleOptions = table.StyleOptions | TableStyleOptions.ColumnBands;
 
             doc.Save(ArtifactsDir + "Table.AlternatingRowStyles.docx");
@@ -1791,17 +1796,21 @@ namespace ApiExamples
             //ExSummary:Shows how to convert cells horizontally merged by width to cells merged by CellFormat.HorizontalMerge.
             Document doc = new Document(MyDir + "Table with merged cells.docx");
 
-            // Microsoft Word does not write merge flags anymore; merged cells are defined by width instead.
-            // So Aspose.Words by default defines only 5 cells in a row, and none of them have the horizontal merge flag.
+            // Microsoft Word does not write merge flags anymore, defining merged cells by width instead.
+            // Aspose.Words by default defines only 5 cells in a row, and none of them have the horizontal merge flag,
+            // even though there were 7 cells in the row before the horizontal merging took place.
             Table table = doc.FirstSection.Body.Tables[0];
             Row row = table.Rows[0];
-            Assert.AreEqual(5, row.Cells.Count);
 
-            // There is a public method to convert cells which are horizontally merged
+            Assert.AreEqual(5, row.Cells.Count);
+            Assert.True(row.Cells.All(c => ((Cell)c).CellFormat.HorizontalMerge == CellMerge.None));
+
+            // Use the "ConvertToHorizontallyMergedCells" method to convert cells which are horizontally merged
             // by its width to the cell horizontally merged by flags.
-            // Thus, we have 7 cells and some of them have horizontal merge value
+            // Now, we have 7 cells, and some of them have horizontal merge value.
             table.ConvertToHorizontallyMergedCells();
             row = table.Rows[0];
+
             Assert.AreEqual(7, row.Cells.Count);
 
             Assert.AreEqual(CellMerge.None, row.Cells[0].CellFormat.HorizontalMerge);
