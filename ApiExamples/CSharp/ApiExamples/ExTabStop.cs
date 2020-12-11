@@ -20,26 +20,27 @@ namespace ApiExamples
             //ExStart
             //ExFor:TabStopCollection.Add(TabStop)
             //ExFor:TabStopCollection.Add(Double, TabAlignment, TabLeader)
-            //ExSummary:Shows how to add tab stops to a document and set their positions.
+            //ExSummary:Shows how to add custom tab stops to a document.
             Document doc = new Document();
             Paragraph paragraph = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
 
-            // Create a TabStop object and add it to the document
+            // Below are two ways of adding tab stops to a paragraph's collection of tab stops via the "ParagraphFormat" property.
+            // 1 -  Create a "TabStop" object, and then add it to the collection:
             TabStop tabStop = new TabStop(ConvertUtil.InchToPoint(3), TabAlignment.Left, TabLeader.Dashes);
             paragraph.ParagraphFormat.TabStops.Add(tabStop);
 
-            // Add a tab stop without explicitly creating new TabStop objects
+            // 2 -  Pass the values for properties of a new tab stop to the "Add" method:
             paragraph.ParagraphFormat.TabStops.Add(ConvertUtil.MillimeterToPoint(100), TabAlignment.Left,
                 TabLeader.Dashes);
 
-            // Add tab stops at 5 cm to all paragraphs
+            // Add tab stops at 5 cm to all paragraphs.
             foreach (Paragraph para in doc.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
             {
                 para.ParagraphFormat.TabStops.Add(ConvertUtil.MillimeterToPoint(50), TabAlignment.Left,
                     TabLeader.Dashes);
             }
 
-            // Insert text with tabs that demonstrate the tab stops
+            // Every "tab" character takes the builder's cursor to the location of the next tab stop.
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Start\tTab 1\tTab 2\tTab 3\tTab 4");
 
@@ -77,10 +78,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Access the collection of tab stops and add some tab stops to it
             TabStopCollection tabStops = builder.ParagraphFormat.TabStops;
 
-            // 72 points is one "inch" on the Microsoft Word tab stop ruler
+            // 72 points is one "inch" on the Microsoft Word tab stop ruler.
             tabStops.Add(new TabStop(72));
             tabStops.Add(new TabStop(432, TabAlignment.Right, TabLeader.Dashes));
 
@@ -88,22 +88,22 @@ namespace ApiExamples
             Assert.IsFalse(tabStops[0].IsClear);
             Assert.IsFalse(tabStops[0].Equals(tabStops[1]));
 
-            // Every "tab" character takes the builder's cursor to the next tab stop
+            // Every "tab" character takes the builder's cursor to the location of the next tab stop.
             builder.Writeln("Start\tTab 1\tTab 2");
 
-            // Get the collection of paragraphs that we have created
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
             Assert.AreEqual(2, paragraphs.Count);
 
-            // Each paragraph gets its own TabStopCollection which gets values from the DocumentBuilder's collection
+            // Each paragraph gets its own tab stop collection, which clones its values from the document builder's tab stop collection.
             Assert.AreEqual(paragraphs[0].ParagraphFormat.TabStops, paragraphs[1].ParagraphFormat.TabStops);
             Assert.AreNotSame(paragraphs[0].ParagraphFormat.TabStops, paragraphs[1].ParagraphFormat.TabStops);
 
-            // A TabStopCollection can point us to TabStops before and after certain positions
+            // A tab stop collection can point us to TabStops before and after certain positions.
             Assert.AreEqual(72.0, tabStops.Before(100.0).Position);
             Assert.AreEqual(432.0, tabStops.After(100.0).Position);
 
-            // We can clear a paragraph's TabStopCollection to revert to the default tabbing behaviour
+            // We can clear a paragraph's tab stop collection to revert to the default tabbing behaviour.
             paragraphs[1].ParagraphFormat.TabStops.Clear();
 
             Assert.AreEqual(0, paragraphs[1].ParagraphFormat.TabStops.Count);
@@ -137,7 +137,7 @@ namespace ApiExamples
 
             Assert.AreEqual(2, tabStops.Count);
 
-            // Tab stop placed at 30 mm is removed
+            // Remove the first tab stop.
             tabStops.RemoveByIndex(0);
 
             Assert.AreEqual(1, tabStops.Count);
@@ -155,14 +155,14 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:TabStopCollection.GetPositionByIndex
-            //ExSummary:Shows how to find a tab stop by it's index and get its position.
+            //ExSummary:Shows how to find a tab stop by it's index, and verify its position.
             Document doc = new Document();
             TabStopCollection tabStops = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.TabStops;
 
             tabStops.Add(ConvertUtil.MillimeterToPoint(30), TabAlignment.Left, TabLeader.Dashes);
             tabStops.Add(ConvertUtil.MillimeterToPoint(60), TabAlignment.Left, TabLeader.Dashes);
 
-            // Get the position of the second tab stop in the collection
+            // Verify the position of the second tab stop in the collection.
             Assert.AreEqual(ConvertUtil.MillimeterToPoint(60), tabStops.GetPositionByIndex(1), 0.1d);
             //ExEnd
         }
@@ -176,13 +176,15 @@ namespace ApiExamples
             Document doc = new Document();
             TabStopCollection tabStops = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.TabStops;
 
-            // Add a tab stop at a position of 30mm
+            // Add a tab stop at a position of 30mm.
             tabStops.Add(ConvertUtil.MillimeterToPoint(30), TabAlignment.Left, TabLeader.Dashes);
 
-            // "0" confirms that a tab stop at 30mm exists in this collection, and it is at index 0 
+            // A result of "0" returned by "GetIndexByPosition" confirms that a tab stop
+            // at 30mm exists in this collection, and it is at index 0.
             Assert.AreEqual(0, tabStops.GetIndexByPosition(ConvertUtil.MillimeterToPoint(30)));
 
-            // "-1" means that there is no tab stop in this collection with a position of 60mm
+            // A "-1" returned by "GetIndexByPosition" confirms that
+            // there is no tab stop in this collection with a position of 60mm.
             Assert.AreEqual(-1, tabStops.GetIndexByPosition(ConvertUtil.MillimeterToPoint(60)));
             //ExEnd
         }
