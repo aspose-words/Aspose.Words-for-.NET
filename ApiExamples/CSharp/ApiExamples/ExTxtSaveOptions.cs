@@ -22,7 +22,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:TxtSaveOptionsBase.ForcePageBreaks
-            //ExSummary:Shows how to specify whether the page breaks should be preserved during export.
+            //ExSummary:Shows how to specify whether to preserve page breaks when exporting a document to plaintext.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -32,13 +32,20 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Page 3");
 
-            // If ForcePageBreaks is set to true then the output document will have form feed characters in place of page breaks
-            // Otherwise, they will be line breaks
-            TxtSaveOptions saveOptions = new TxtSaveOptions { ForcePageBreaks = forcePageBreaks };
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
+            // method to modify the way in which we save the document to plaintext.
+            TxtSaveOptions saveOptions = new TxtSaveOptions();
+
+            // The Aspose.Words "Document" objects have page breaks, just like Microsoft Word documents.
+            // Save formats such as ".txt" are one continuous body of text without page breaks.
+            // Set the "ForcePageBreaks" property to "true" to preserve all page breaks in the form of '\f' characters.
+            // Set the "ForcePageBreaks" property to "false" to discard all page breaks.
+            saveOptions.ForcePageBreaks = forcePageBreaks;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.PageBreaks.txt", saveOptions);
             
-            // If we load the document using Aspose.Words again, the page breaks will be preserved/lost depending on ForcePageBreaks
+            // If we load a plaintext document with page breaks,
+            // the "Document" object will use them to split the body into pages.
             doc = new Document(ArtifactsDir + "TxtSaveOptions.PageBreaks.txt");
 
             Assert.AreEqual(forcePageBreaks ? 3 : 1, doc.PageCount);
@@ -64,7 +71,15 @@ namespace ApiExamples
             builder.Writeln("שלום עולם!");
             builder.Writeln("مرحبا بالعالم!");
 
-            TxtSaveOptions saveOptions = new TxtSaveOptions { AddBidiMarks = addBidiMarks, Encoding = System.Text.Encoding.Unicode};
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
+            // method to modify the way in which we save the document to plaintext.
+            TxtSaveOptions saveOptions = new TxtSaveOptions { Encoding = System.Text.Encoding.Unicode};
+
+            // Set the "AddBidiMarks" property to "true" to add marks before runs
+            // with right-to-left text to indicate the fact.
+            // Set the "AddBidiMarks" property to "false" to write all left-to-right
+            // and right-to-left runs equally with nothing to indicate which is which.
+            saveOptions.AddBidiMarks = addBidiMarks;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.AddBidiMarks.txt", saveOptions);
 
@@ -91,11 +106,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:TxtSaveOptionsBase.ExportHeadersFootersMode
             //ExFor:TxtExportHeadersFootersMode
-            //ExSummary:Shows how to specifies the way headers and footers are exported to plain text format.
+            //ExSummary:Shows how to specify how to export headers and footers to plain text format.
             Document doc = new Document();
 
-            // Insert even and primary headers/footers into the document
-            // The primary header/footers should override the even ones 
+            // Insert even and primary headers/footers into the document.
+            // The primary header/footers will override the even headers/footers.
             doc.FirstSection.HeadersFooters.Add(new HeaderFooter(doc, HeaderFooterType.HeaderEven));
             doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderEven].AppendParagraph("Even header");
             doc.FirstSection.HeadersFooters.Add(new HeaderFooter(doc, HeaderFooterType.FooterEven));
@@ -105,7 +120,7 @@ namespace ApiExamples
             doc.FirstSection.HeadersFooters.Add(new HeaderFooter(doc, HeaderFooterType.FooterPrimary));
             doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].AppendParagraph("Primary footer");
 
-            // Insert pages that would display these headers and footers
+            // Insert pages to display these headers and footers.
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Page 1");
             builder.InsertBreak(BreakType.PageBreak);
@@ -113,12 +128,18 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak); 
             builder.Write("Page 3");
 
-            // Three values are available in TxtExportHeadersFootersMode enum:
-            // "None" - No headers and footers are exported
-            // "AllAtEnd" - All headers and footers are placed after all section bodies at the very end of a document
-            // "PrimaryOnly" - Only primary headers and footers are exported at the beginning and end of each section (default value)
-            TxtSaveOptions saveOptions = new TxtSaveOptions { ExportHeadersFootersMode = txtExportHeadersFootersMode };
-            
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
+            // method to modify the way in which we save the document to plaintext.
+            TxtSaveOptions saveOptions = new TxtSaveOptions();
+
+            // Set the "ExportHeadersFootersMode" property to "TxtExportHeadersFootersMode.None"
+            // to not export any headers/footers.
+            // Set the "ExportHeadersFootersMode" property to "TxtExportHeadersFootersMode.PrimaryOnly"
+            // to only export primary headers/footers.
+            // Set the "ExportHeadersFootersMode" property to "TxtExportHeadersFootersMode.AllAtEnd"
+            // to place all headers and footers for all section bodies at the end of the document.
+            saveOptions.ExportHeadersFootersMode = txtExportHeadersFootersMode;
+
             doc.Save(ArtifactsDir + "TxtSaveOptions.ExportHeadersFooters.txt", saveOptions);
 
             string docText = File.ReadAllText(ArtifactsDir + "TxtSaveOptions.ExportHeadersFooters.txt");
