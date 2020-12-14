@@ -179,11 +179,11 @@ namespace ApiExamples
             //ExFor:TxtListIndentation.Count
             //ExFor:TxtListIndentation.Character
             //ExFor:TxtSaveOptions.ListIndentation
-            //ExSummary:Shows how to configure list indenting when converting to plaintext.
+            //ExSummary:Shows how to configure list indenting when saving a document to plaintext.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a list with three levels of indentation
+            // Create a list with three levels of indentation.
             builder.ListFormat.ApplyNumberDefault();
             builder.Writeln("Item 1");
             builder.ListFormat.ListIndent();
@@ -191,12 +191,17 @@ namespace ApiExamples
             builder.ListFormat.ListIndent(); 
             builder.Write("Item 3");
 
-            // Microsoft Word list objects get lost when converting to plaintext
-            // We can create a custom representation for list indentation using pure plaintext with a SaveOptions object
-            // In this case, each list item will be left-padded by 3 space characters times its list indent level
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
+            // method to modify the way in which we save the document to plaintext.
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
-            txtSaveOptions.ListIndentation.Count = 3;
+
+            // Set the "Character" property to assign a character to use
+            // for padding that simulates list indentation in plaintext.
             txtSaveOptions.ListIndentation.Character = ' ';
+
+            // Set the "Count" property to assign a number of times to
+            // place the padding character for each list indent level.
+            txtSaveOptions.ListIndentation.Count = 3;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.TxtListIndentation.txt", txtSaveOptions);
 
@@ -214,11 +219,11 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:TxtSaveOptions.SimplifyListLabels
-            //ExSummary:Shows how to change the appearance of lists when converting to plaintext.
+            //ExSummary:Shows how to change the appearance of lists when saving a document to plaintext.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a bulleted list with five levels of indentation
+            // Create a bulleted list with five levels of indentation.
             builder.ListFormat.ApplyBulletDefault();
             builder.Writeln("Item 1");
             builder.ListFormat.ListIndent();
@@ -230,9 +235,15 @@ namespace ApiExamples
             builder.ListFormat.ListIndent();
             builder.Write("Item 5");
 
-            // The SimplifyListLabels flag will convert some list symbols
-            // into ASCII characters such as *, o, +, > etc, depending on list level
-            TxtSaveOptions txtSaveOptions = new TxtSaveOptions { SimplifyListLabels = simplifyListLabels };
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
+            // method to modify the way in which we save the document to plaintext.
+            TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
+
+            // Set the "SimplifyListLabels" property to "true" to convert some list
+            // symbols into simpler ASCII characters, such as '*', 'o', '+', '>', etc.
+            // Set the "SimplifyListLabels" property to "false"  to
+            // preserve as many of the original list symbols as possible.
+            txtSaveOptions.SimplifyListLabels = simplifyListLabels;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.SimplifyListLabels.txt", txtSaveOptions);
 
@@ -262,7 +273,6 @@ namespace ApiExamples
             //ExFor:TxtSaveOptionsBase
             //ExFor:TxtSaveOptionsBase.ParagraphBreak
             //ExSummary:Shows how to save a .txt document with a custom paragraph break.
-            // Create a new document and add some paragraphs
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -270,9 +280,15 @@ namespace ApiExamples
             builder.Writeln("Paragraph 2.");
             builder.Write("Paragraph 3.");
 
-            // When saved to plain text, the paragraphs we created can be separated by a custom string
-            TxtSaveOptions txtSaveOptions = new TxtSaveOptions { SaveFormat = SaveFormat.Text, ParagraphBreak = " End of paragraph.\n\n\t" };
-            
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
+            // method to modify the way in which we save the document to plaintext.
+            TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
+
+            Assert.AreEqual(SaveFormat.Text, txtSaveOptions.SaveFormat);
+
+            // Set the "ParagraphBreak" to a custom value that we wish to put at the end of every paragraph.
+            txtSaveOptions.ParagraphBreak = " End of paragraph.\n\n\t";
+
             doc.Save(ArtifactsDir + "TxtSaveOptions.ParagraphBreak.txt", txtSaveOptions);
 
             string docText = File.ReadAllText(ArtifactsDir + "TxtSaveOptions.ParagraphBreak.txt");
@@ -289,20 +305,31 @@ namespace ApiExamples
             //ExStart
             //ExFor:TxtSaveOptionsBase.Encoding
             //ExSummary:Shows how to set encoding for a .txt output document.
-            // Create a new document and add some text from outside the ASCII character set
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Add some text with characters from outside the ASCII character set.
             builder.Write("À È Ì Ò Ù.");
 
-            // We can use a SaveOptions object to make sure the encoding we save the .txt document in supports our content
-            TxtSaveOptions txtSaveOptions = new TxtSaveOptions { Encoding = System.Text.Encoding.UTF8 };
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
+            // method to modify the way in which we save the document to plaintext.
+            TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
+            
+            // Verify that the "Encoding" property contains the appropriate encoding for our document's contents.
+            Assert.AreEqual(System.Text.Encoding.UTF8, txtSaveOptions.Encoding);
 
-            doc.Save(ArtifactsDir + "TxtSaveOptions.Encoding.txt", txtSaveOptions);
+            doc.Save(ArtifactsDir + "TxtSaveOptions.Encoding.UTF8.txt", txtSaveOptions);
 
-            string docText = System.Text.Encoding.UTF8.GetString(File.ReadAllBytes(ArtifactsDir + "TxtSaveOptions.Encoding.txt"));
+            string docText = System.Text.Encoding.UTF8.GetString(File.ReadAllBytes(ArtifactsDir + "TxtSaveOptions.Encoding.UTF8.txt"));
             
             Assert.AreEqual("\uFEFFÀ È Ì Ò Ù.\r\n", docText);
+
+            // Using an unsuitable encoding may result in a loss of document contents.
+            txtSaveOptions.Encoding = System.Text.Encoding.ASCII;
+            doc.Save(ArtifactsDir + "TxtSaveOptions.Encoding.ASCII.txt", txtSaveOptions);
+            docText = System.Text.Encoding.ASCII.GetString(File.ReadAllBytes(ArtifactsDir + "TxtSaveOptions.Encoding.ASCII.txt"));
+
+            Assert.AreEqual("? ? ? ? ?.\r\n", docText);
             //ExEnd
         }
 
@@ -316,7 +343,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a table
             builder.StartTable();
             builder.InsertCell();
             builder.Write("Row 1, cell 1");
@@ -329,9 +355,15 @@ namespace ApiExamples
             builder.Write("Row 2, cell 2");
             builder.EndTable();
 
-            // Tables, with their borders and widths do not translate to plaintext
-            // However, we can configure a SaveOptions object to arrange table contents to preserve some of the table's appearance
-            TxtSaveOptions txtSaveOptions = new TxtSaveOptions { PreserveTableLayout = preserveTableLayout };
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
+            // method to modify the way in which we save the document to plaintext.
+            TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
+
+            // Set the "PreserveTableLayout" property to "true" to apply whitespace padding to the contents
+            // of the output plaintext document to preserve as much of the table's layout as possible.
+            // Set the "PreserveTableLayout" property to "false" to save the contents of
+            // all tables as a continuous body of text, with just a new line for each row.
+            txtSaveOptions.PreserveTableLayout = preserveTableLayout;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.PreserveTableLayout.txt", txtSaveOptions);
 
@@ -366,7 +398,7 @@ namespace ApiExamples
             builder.Write("Cell 3");
             builder.EndTable();
 
-            // Create a SaveOptions object to prepare this document to be saved to .txt.
+            // Use a TxtSaveOptions object to preserve the table's layout when converting the document to plaintext.
             TxtSaveOptions options = new TxtSaveOptions();
             options.PreserveTableLayout = true;
 
