@@ -25,9 +25,12 @@ namespace Aspose.Words.Examples.CSharp.Rendering_and_Printing
             // ExEnd:SaveAsTIFF
             // ExStart:SaveAsTIFFUsingImageSaveOptions
             // Create an ImageSaveOptions object to pass to the Save method
+            // Export various page ranges to multipage TIFF image.
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff);
-            options.PageIndex = 0;
-            options.PageCount = 2;
+
+            PageSet pageSet = new PageSet(new PageRange(0, 2));
+
+            options.PageSet = pageSet;
             options.TiffCompression = TiffCompression.Ccitt4;
             options.Resolution = 160;
             dataDir = dataDir + "TestFileWithOptions_out.tiff";

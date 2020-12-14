@@ -22,18 +22,22 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_Replace
             // Open the template document, containing obsolete copyright information in the footer.
             Document doc = new Document(dataDir + "HeaderFooter.ReplaceText.doc");
 
+            // Access header of the Word document.
             HeaderFooterCollection headersFooters = doc.FirstSection.HeadersFooters;
-            HeaderFooter footer = headersFooters[HeaderFooterType.FooterPrimary];
+            HeaderFooter header = headersFooters[HeaderFooterType.HeaderPrimary];
 
+            // Set options.
             FindReplaceOptions options = new FindReplaceOptions
             {
                 MatchCase = false,
                 FindWholeWordsOnly = false
             };
 
-            footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", "Copyright (C) 2019 by Aspose Pty Ltd.", options);
+            // Replace text in the header of the Word document.
+            header.Range.Replace("Aspose.Words", "Remove", options);
 
-            doc.Save(dataDir + "HeaderFooter.ReplaceText.doc");
+            // Save the Word document.
+            doc.Save(dataDir + "HeaderReplace.docx");
             // ExEnd:ReplaceTextInFooter
         }
 
