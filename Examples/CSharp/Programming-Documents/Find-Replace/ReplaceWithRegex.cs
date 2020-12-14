@@ -5,6 +5,7 @@ using Aspose.Words;
 using Aspose.Words.Fields;
 using System;
 using Aspose.Words.Replacing;
+using NUnit.Framework;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
 {
@@ -22,16 +23,18 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
         public static void FindAndReplaceWithRegex(string dataDir)
         {
             // ExStart:ReplaceWithRegex
-            Document doc = new Document(dataDir + "Document.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("sad mad bad");
 
-            FindReplaceOptions options = new FindReplaceOptions();
+            Assert.AreEqual("sad mad bad", doc.GetText().Trim());
 
-            doc.Range.Replace(new Regex("[s|m]ad"), "bad", options);
+            // Replaces all occurrences of the words "sad" or "mad" to "bad".
+            doc.Range.Replace(new Regex("[s|m]ad"), "bad");
 
-            dataDir = dataDir + "ReplaceWithRegex_out.doc";
-            doc.Save(dataDir);
+            // Save the Word document.
+            doc.Save("Range.ReplaceWithRegex.docx");
             // ExEnd:ReplaceWithRegex
-            Console.WriteLine("\nText replaced with regex successfully.\nFile saved at " + dataDir);
         }
         public static void RecognizeAndSubstitutionsWithinReplacementPatterns(string dataDir)
         {

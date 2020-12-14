@@ -135,6 +135,7 @@
     <Compile Include="Loading-and-Saving\ConvertDocumentToHtml.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToMhtmlAndEmail.cs" />
     <Compile Include="Loading-and-Saving\ConvertDocumentToPCL.cs" />
+    <Compile Include="Loading-and-Saving\ConvertWordDocument.cs" />
     <Compile Include="Loading-and-Saving\DigitallySignedPdfUsingCertificateHolder.cs" />
     <Compile Include="Loading-and-Saving\ExportResourcesUsingHtmlSaveOptions.cs" />
     <Compile Include="Loading-and-Saving\LoadAndSaveHtmlFormFieldasContentControlinDOCX.cs" />

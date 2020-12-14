@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using NUnit.Framework;
 
 namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
 {
@@ -44,7 +45,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
         private static void IgnoreTextInsideDeleteRevisions()
         {
             // ExStart:IgnoreTextInsideDeleteRevisions
-            // Create new document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -53,22 +53,22 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
             builder.Write("Text");
 
             // Remove first paragraph with tracking revisions.
-            doc.StartTrackRevisions("author", DateTime.Now);
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
             doc.FirstSection.Body.FirstParagraph.Remove();
             doc.StopTrackRevisions();
 
             Regex regex = new Regex("e");
             FindReplaceOptions options = new FindReplaceOptions();
 
-            // Replace 'e' in document ignoring deleted text.
+            // Replace 'e' in document while ignoring deleted text.
             options.IgnoreDeleted = true;
             doc.Range.Replace(regex, "*", options);
-            Console.WriteLine(doc.GetText()); // The output is: Deleted\rT*xt\f
 
-            // Replace 'e' in document NOT ignoring deleted text.
+            Assert.AreEqual(doc.GetText().Trim(), "Deleted\rT*xt");
+
+            // Replace 'e' in document while not ignoring deleted text.
             options.IgnoreDeleted = false;
             doc.Range.Replace(regex, "*", options);
-            Console.WriteLine(doc.GetText()); // The output is: D*l*t*d\rT*xt\f
             // ExEnd:IgnoreTextInsideDeleteRevisions
         }
 
