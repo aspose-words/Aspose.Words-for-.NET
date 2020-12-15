@@ -57,7 +57,6 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
             // ExStart:ReplaceTextContaingMetaCharacters
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-
             builder.Font.Name = "Arial";
             builder.Writeln("First section");
             builder.Writeln("  1st paragraph");
@@ -74,11 +73,9 @@ namespace Aspose.Words.Examples.CSharp.Programming_Documents.Find_and_Replace
 
             // Insert section break instead of custom text tag.
             count = doc.Range.Replace("{insert-section}", "&b", options);
-
             dataDir = dataDir + "ReplaceTextContaingMetaCharacters_out.docx";
             doc.Save(dataDir);
             // ExEnd:ReplaceTextContaingMetaCharacters
-            Console.WriteLine("\nFind and Replace text using meta-characters has done successfully.\nFile saved at " + dataDir);
 
         }
     }
