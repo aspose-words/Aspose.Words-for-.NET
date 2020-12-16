@@ -155,8 +155,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ViewOptions.FormsDesign
-            //ExFor:WordML2003SaveOptions
-            //ExFor:WordML2003SaveOptions.SaveFormat
             //ExSummary:Shows how to save to a .wml document while applying save options.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -166,16 +164,7 @@ namespace ApiExamples
             // Set the "FormsDesign" property to "true" to enable forms design mode.
             doc.ViewOptions.FormsDesign = useFormsDesign;
 
-            // Create a "WordML2003SaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to the WordML save format.
-            WordML2003SaveOptions options = new WordML2003SaveOptions();
-
-            Assert.AreEqual(SaveFormat.WordML, options.SaveFormat);
-
-            options.PrettyFormat = true;
-            options.MemoryOptimization = true;
-
-            doc.Save(ArtifactsDir + "ViewOptions.FormsDesign.xml", options);
+            doc.Save(ArtifactsDir + "ViewOptions.FormsDesign.xml");
 
             Assert.AreEqual(useFormsDesign,
                 File.ReadAllText(ArtifactsDir + "ViewOptions.FormsDesign.xml").Contains("<w:formsDesign />"));
