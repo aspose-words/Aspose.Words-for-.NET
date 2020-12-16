@@ -18,43 +18,76 @@ namespace ApiExamples
     public class ExViewOptions : ApiExampleBase
     {
         [Test]
-        public void SetZoom()
+        public void SetZoomPercentage()
         {
             //ExStart
             //ExFor:Document.ViewOptions
             //ExFor:ViewOptions
             //ExFor:ViewOptions.ViewType
-            //ExFor:ViewOptions.ZoomType
             //ExFor:ViewOptions.ZoomPercent
+            //ExFor:ViewOptions.ZoomType
             //ExFor:ViewType
-            //ExSummary:Shows how to make sure the document is displayed at 50% zoom when opened in Microsoft Word.
-            Document doc = new Document(MyDir + "Document.docx");
+            //ExSummary:Shows how to set a custom zoom factor, which older versions of Microsoft Word will apply to a document upon loading.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
 
-            // We can set the zoom factor to a percentage
             doc.ViewOptions.ViewType = ViewType.PageLayout;
             doc.ViewOptions.ZoomPercent = 50;
 
-            // Or we can set the ZoomType to a different value to avoid using percentages 
+            Assert.AreEqual(ZoomType.Custom, doc.ViewOptions.ZoomType);
             Assert.AreEqual(ZoomType.None, doc.ViewOptions.ZoomType);
 
-            doc.Save(ArtifactsDir + "ViewOptions.SetZoom.docx");
+            doc.Save(ArtifactsDir + "ViewOptions.SetZoomPercentage.doc");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "ViewOptions.SetZoom.docx");
+            doc = new Document(ArtifactsDir + "ViewOptions.SetZoomPercentage.doc");
 
             Assert.AreEqual(ViewType.PageLayout, doc.ViewOptions.ViewType);
             Assert.AreEqual(50.0d, doc.ViewOptions.ZoomPercent);
             Assert.AreEqual(ZoomType.None, doc.ViewOptions.ZoomType);
         }
 
-        [Test]
-        public void DisplayBackgroundShape()
+        [TestCase(ZoomType.PageWidth)]
+        [TestCase(ZoomType.FullPage)]
+        [TestCase(ZoomType.TextFit)]
+        public void SetZoomType(ZoomType zoomType)
+        {
+            //ExStart
+            //ExFor:Document.ViewOptions
+            //ExFor:ViewOptions
+            //ExFor:ViewOptions.ZoomType
+            //ExSummary:Shows how to set a custom zoom type, which older versions of Microsoft Word will apply to a document upon loading.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+
+            // Set the "ZoomType" property to "ZoomType.PageWidth" to get Microsoft Word
+            // to automatically zoom the document to fit the width of the page.
+            // Set the "ZoomType" property to "ZoomType.FullPage" to get Microsoft Word
+            // to automatically zoom the document to make the entire first page visible.
+            // Set the "ZoomType" property to "ZoomType.TextFit" to to get Microsoft Word
+            // to automatically zoom the document to fit the inner text margins of the first page.
+            doc.ViewOptions.ZoomType = zoomType;
+
+            doc.Save(ArtifactsDir + "ViewOptions.SetZoomType.doc");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "ViewOptions.SetZoomType.doc");
+
+            Assert.AreEqual(zoomType, doc.ViewOptions.ZoomType);
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void DisplayBackgroundShape(bool displayBackgroundShape)
         {
             //ExStart
             //ExFor:ViewOptions.DisplayBackgroundShape
             //ExSummary:Shows how to hide/display document background images in view options.
-            // Create a new document from an html string with a flat background color
-            const string html = @"<html>
+            // Use an HTML string to create a new document with a flat background color.
+            const string html = 
+            @"<html>
                 <body style='background-color: blue'>
                     <p>Hello world!</p>
                 </body>
@@ -62,20 +95,26 @@ namespace ApiExamples
 
             Document doc = new Document(new MemoryStream(Encoding.Unicode.GetBytes(html)));
 
-            // The source for the document has a flat color background, the presence of which will turn on the DisplayBackgroundShape flag
-            // We can disable it like this
-            doc.ViewOptions.DisplayBackgroundShape = false;
+            // The source for the document has a flat color background,
+            // the presence of which will set the "DisplayBackgroundShape" flag to "true".
+            Assert.True(doc.ViewOptions.DisplayBackgroundShape);
+
+            // Keep the "DisplayBackgroundShape" as "true" to get the document to display the background color.
+            // This may affect some text colors to improve visibility.
+            // Set the "DisplayBackgroundShape" to "false" to not display the background color.
+            doc.ViewOptions.DisplayBackgroundShape = displayBackgroundShape;
 
             doc.Save(ArtifactsDir + "ViewOptions.DisplayBackgroundShape.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "ViewOptions.DisplayBackgroundShape.docx");
 
-            Assert.False(doc.ViewOptions.DisplayBackgroundShape);
+            Assert.AreEqual(displayBackgroundShape, doc.ViewOptions.DisplayBackgroundShape);
         }
 
-        [Test]
-        public void DisplayPageBoundaries()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void DisplayPageBoundaries(bool doNotDisplayPageBoundaries)
         {
             //ExStart
             //ExFor:ViewOptions.DoNotDisplayPageBoundaries
@@ -83,30 +122,31 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert content spanning 3 pages
-            builder.Writeln("Paragraph 1, Page 1");
+            // Insert content that spans across 3 pages.
+            builder.Writeln("Paragraph 1, Page 1.");
             builder.InsertBreak(BreakType.PageBreak);
-            builder.Writeln("Paragraph 2, Page 2");
+            builder.Writeln("Paragraph 2, Page 2.");
             builder.InsertBreak(BreakType.PageBreak);
-            builder.Writeln("Paragraph 3, Page 3");
+            builder.Writeln("Paragraph 3, Page 3.");
 
-            // Insert a header and a footer
+            // Insert a header and a footer.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            builder.Writeln("Header");
+            builder.Writeln("This is the header.");
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
-            builder.Writeln("Footer");
+            builder.Writeln("This is the footer.");
 
-            // In this case we have a lot of space taken up by quite a little amount of content
-            // In older versions of Microsoft Word, we can hide headers/footers and compact vertical whitespace of pages
-            // to give the document's main body content some flow by setting this flag
-            doc.ViewOptions.DoNotDisplayPageBoundaries = true;
+            // This document contains very little content that takes up a few full pages worth of space.
+            // Set the "DoNotDisplayPageBoundaries" flag to "true" to get older versions of Microsoft Word to omit headers,
+            // footers, and much of the vertical whitespace when displaying our document.
+            // Set the "DoNotDisplayPageBoundaries" flag to "false" to get older versions of Microsoft Word to display our document normally.
+            doc.ViewOptions.DoNotDisplayPageBoundaries = doNotDisplayPageBoundaries;
 
-            doc.Save(ArtifactsDir + "ViewOptions.DisplayPageBoundaries.docx");
+            doc.Save(ArtifactsDir + "ViewOptions.DisplayPageBoundaries.doc");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "ViewOptions.DisplayPageBoundaries.docx");
+            doc = new Document(ArtifactsDir + "ViewOptions.DisplayPageBoundaries.doc");
 
-            Assert.True(doc.ViewOptions.DoNotDisplayPageBoundaries);
+            Assert.AreEqual(doNotDisplayPageBoundaries, doc.ViewOptions.DoNotDisplayPageBoundaries);
         }
 
         [TestCase(false)]
@@ -118,17 +158,22 @@ namespace ApiExamples
             //ExFor:WordML2003SaveOptions
             //ExFor:WordML2003SaveOptions.SaveFormat
             //ExSummary:Shows how to save to a .wml document while applying save options.
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
 
-            WordML2003SaveOptions options = new WordML2003SaveOptions()
-            {
-                SaveFormat = SaveFormat.WordML,
-                MemoryOptimization = true,
-                PrettyFormat = true
-            };
-
-            // Enables forms design mode in WordML documents
+            // Set the "FormsDesign" property to "false" to keep forms design mode disabled.
+            // Set the "FormsDesign" property to "true" to enable forms design mode.
             doc.ViewOptions.FormsDesign = useFormsDesign;
+
+            // Create a "WordML2003SaveOptions" object, which we can pass to the document's "Save"
+            // method to modify the way in which we save the document to the WordML save format.
+            WordML2003SaveOptions options = new WordML2003SaveOptions();
+
+            Assert.AreEqual(SaveFormat.WordML, options.SaveFormat);
+
+            options.PrettyFormat = true;
+            options.MemoryOptimization = true;
 
             doc.Save(ArtifactsDir + "ViewOptions.FormsDesign.xml", options);
 
