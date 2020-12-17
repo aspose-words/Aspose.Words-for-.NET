@@ -622,12 +622,10 @@ namespace ApiExamples
         //ExFor:ChartDataPoint
         //ExFor:ChartDataPoint.Index
         //ExFor:ChartDataPointCollection
-        //ExFor:ChartDataPointCollection.Add(System.Int32)
-        //ExFor:ChartDataPointCollection.Clear
+        //ExFor:ChartDataPointCollection.ClearFormat
         //ExFor:ChartDataPointCollection.Count
         //ExFor:ChartDataPointCollection.GetEnumerator
         //ExFor:ChartDataPointCollection.Item(System.Int32)
-        //ExFor:ChartDataPointCollection.RemoveAt(System.Int32)
         //ExFor:ChartMarker
         //ExFor:ChartMarker.Size
         //ExFor:ChartMarker.Symbol
@@ -666,11 +664,11 @@ namespace ApiExamples
                 }
             }
 
-            // For a cleaner looking graph, we can remove data points individually.
-            chart.Series[1].DataPoints.RemoveAt(2);
+            // For a cleaner looking graph, we can clear format individually.
+            chart.Series[1].DataPoints[2].ClearFormat();
 
             // We can also strip an entire series of data points at once.
-            chart.Series[2].DataPoints.Clear();
+            chart.Series[2].DataPoints.ClearFormat();
 
             doc.Save(ArtifactsDir + "Charts.ChartDataPoint.docx");
         }
@@ -682,7 +680,7 @@ namespace ApiExamples
         {
             for (int i = 0; i < dataPointsCount; i++)
             {
-                ChartDataPoint point = series.DataPoints.Add(i);
+                ChartDataPoint point = series.DataPoints[i];
                 point.Marker.Symbol = markerSymbol;
                 point.Marker.Size = dataPointSize;
 
@@ -707,12 +705,13 @@ namespace ApiExamples
             Assert.AreEqual("Sales", chart.Series[0].Name);
 
             // "Slices" of a pie chart may be moved away from the center by a distance via the respective data point's Explosion attribute.
-            // Add a data point to the first portion of the pie chart and move it away from the center by 10 points. 
-            ChartDataPoint dataPoint = chart.Series[0].DataPoints.Add(0);
+            // Add a data point to the first portion of the pie chart and move it away from the center by 10 points.
+            // Aspose.Words create data points automatically if them does not exist.
+            ChartDataPoint dataPoint = chart.Series[0].DataPoints[0];
             dataPoint.Explosion = 10;
 
             // Displace the second portion by a greater distance.
-            dataPoint = chart.Series[0].DataPoints.Add(1);
+            dataPoint = chart.Series[0].DataPoints[1];
             dataPoint.Explosion = 40;
 
             doc.Save(ArtifactsDir + "Charts.PieChartExplosion.docx");
