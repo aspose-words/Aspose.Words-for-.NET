@@ -200,7 +200,7 @@ namespace ApiExamples
             //ExFor:OoxmlSaveOptions.CompressionLevel
             //ExFor:CompressionLevel
             //ExSummary:Shows how to specify the compression level to use while saving an OOXML document.
-            Document doc = new Document(MyDir + "Images.docx");
+            Document doc = new Document(MyDir + "Big document.docx");
 
             // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object
             // and then pass it to the document's saving method to modify how we save the document.
@@ -214,10 +214,10 @@ namespace ApiExamples
             saveOptions.CompressionLevel = compressionLevel;
             
             Stopwatch st = Stopwatch.StartNew();
-            doc.Save(ArtifactsDir + "OoxmlSaveOptions.docx", saveOptions);
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.DocumentCompression.docx", saveOptions);
             st.Stop();
 
-            FileInfo fileInfo = new FileInfo(ArtifactsDir + "OoxmlSaveOptions.docx");
+            FileInfo fileInfo = new FileInfo(ArtifactsDir + "OoxmlSaveOptions.DocumentCompression.docx");
 
             Console.WriteLine($"Saving operation done using the \"{compressionLevel}\" compression level:");
             Console.WriteLine($"\tDuration:\t{st.ElapsedMilliseconds} ms");
@@ -227,16 +227,16 @@ namespace ApiExamples
             switch (compressionLevel)
             {
                 case CompressionLevel.Maximum:
-                    Assert.That(1150000, Is.AtLeast(fileInfo.Length));
+                    Assert.That(1266000, Is.AtLeast(fileInfo.Length));
                     break;
                 case CompressionLevel.Normal:
-                    Assert.That(1150000, Is.LessThan(fileInfo.Length));
+                    Assert.That(1267000, Is.LessThan(fileInfo.Length));
                     break;
                 case CompressionLevel.Fast:
-                    Assert.That(1200000, Is.LessThan(fileInfo.Length));
+                    Assert.That(1269000, Is.LessThan(fileInfo.Length));
                     break;
                 case CompressionLevel.SuperFast:
-                    Assert.That(1250000, Is.LessThan(fileInfo.Length));
+                    Assert.That(1271000, Is.LessThan(fileInfo.Length));
                     break;
             }
         }
