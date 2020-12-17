@@ -1201,17 +1201,19 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.AdditionalTextPositioning
             //ExSummary:Show how to write additional text positioning operators.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            Document doc = new Document(MyDir + "Text positioning operators.docx");
 
             // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
             // to modify how that method converts the document to .PDF.
-            PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.TextCompression = PdfTextCompression.None;
+            PdfSaveOptions saveOptions = new PdfSaveOptions
+            {
+                TextCompression = PdfTextCompression.None,
 
-            // Set the "AdditionalTextPositioning" property to "true" to attempt to fix incorrect
-            // element positioning in the output PDF, should there be any, at the cost of increased file size.
-            // Set the "AdditionalTextPositioning" property to "false" to render the document as usual.
-            saveOptions.AdditionalTextPositioning = applyAdditionalTextPositioning;
+                // Set the "AdditionalTextPositioning" property to "true" to attempt to fix incorrect
+                // element positioning in the output PDF, should there be any, at the cost of increased file size.
+                // Set the "AdditionalTextPositioning" property to "false" to render the document as usual.
+                AdditionalTextPositioning = applyAdditionalTextPositioning
+            };
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf", saveOptions);
             //ExEnd
@@ -1224,19 +1226,21 @@ namespace ApiExamples
             pdfDocument.Pages[1].Accept(textAbsorber);
 
             SetGlyphsPositionShowText tjOperator =
-                (SetGlyphsPositionShowText) textAbsorber.TextFragments[1].Page.Contents[96];
+                (SetGlyphsPositionShowText) textAbsorber.TextFragments[1].Page.Contents[85];
 
             if (applyAdditionalTextPositioning)
             {
-                Assert.That(300000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length));
+                Assert.That(100000,
+                    Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length));
                 Assert.AreEqual(
-                    "[0 (s) 0 (e) 1 (g) 0 (m) 0 (e) 0 (n) 0 (t) 0 (s) 0 ( ) 1 (o) 0 (f) 0 ( ) 1 (t) 0 (e) 0 (x) 0 (t)] TJ",
+                    "[0 (S) 0 (a) 0 (m) 0 (s) 0 (t) 0 (a) -1 (g) 1 (,) 0 ( ) 0 (1) 0 (0) 0 (.) 0 ( ) 0 (N) 0 (o) 0 (v) 0 (e) 0 (m) 0 (b) 0 (e) 0 (r) -1 ( ) 1 (2) -1 (0) 0 (1) 0 (8)] TJ",
                     tjOperator.ToString());
             }
             else
             {
-                Assert.That(300000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length));
-                Assert.AreEqual("[(se) 1 (gments ) 1 (of ) 1 (text)] TJ", tjOperator.ToString());
+                Assert.That(97000,
+                    Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length));
+                Assert.AreEqual("[(Samsta) -1 (g) 1 (, 10. November) -1 ( ) 1 (2) -1 (018)] TJ", tjOperator.ToString());
             }
 #endif
         }
