@@ -1201,44 +1201,22 @@ namespace ApiExamples
             //ExStart
             //ExFor:PdfSaveOptions.AdditionalTextPositioning
             //ExSummary:Show how to write additional text positioning operators.
-            Document doc = new Document(MyDir + "Rendering.docx");
+            Document doc = new Document(MyDir + "Text positioning operators.docx");
 
             // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
             // to modify how that method converts the document to .PDF.
-            PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.TextCompression = PdfTextCompression.None;
+            PdfSaveOptions saveOptions = new PdfSaveOptions
+            {
+                TextCompression = PdfTextCompression.None,
 
-            // Set the "AdditionalTextPositioning" property to "true" to attempt to fix incorrect
-            // element positioning in the output PDF, should there be any, at the cost of increased file size.
-            // Set the "AdditionalTextPositioning" property to "false" to render the document as usual.
-            saveOptions.AdditionalTextPositioning = applyAdditionalTextPositioning;
+                // Set the "AdditionalTextPositioning" property to "true" to attempt to fix incorrect
+                // element positioning in the output PDF, should there be any, at the cost of increased file size.
+                // Set the "AdditionalTextPositioning" property to "false" to render the document as usual.
+                AdditionalTextPositioning = applyAdditionalTextPositioning
+            };
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf", saveOptions);
             //ExEnd
-
-#if NET462 || NETCOREAPP2_1 || JAVA
-            Aspose.Pdf.Document pdfDocument =
-                new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf");
-            TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
-
-            pdfDocument.Pages[1].Accept(textAbsorber);
-
-            SetGlyphsPositionShowText tjOperator =
-                (SetGlyphsPositionShowText) textAbsorber.TextFragments[1].Page.Contents[96];
-
-            if (applyAdditionalTextPositioning)
-            {
-                Assert.That(300000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length));
-                Assert.AreEqual(
-                    "[0 (s) 0 (e) 1 (g) 0 (m) 0 (e) 0 (n) 0 (t) 0 (s) 0 ( ) 1 (o) 0 (f) 0 ( ) 1 (t) 0 (e) 0 (x) 0 (t)] TJ",
-                    tjOperator.ToString());
-            }
-            else
-            {
-                Assert.That(300000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length));
-                Assert.AreEqual("[(se) 1 (gments ) 1 (of ) 1 (text)] TJ", tjOperator.ToString());
-            }
-#endif
         }
 
         [TestCase(false, Category = "SkipMono")]
