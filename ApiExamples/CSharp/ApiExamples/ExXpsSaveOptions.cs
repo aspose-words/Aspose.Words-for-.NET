@@ -5,8 +5,10 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.IO;
 using Aspose.Words;
+using Aspose.Words.Fields;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -89,7 +91,7 @@ namespace ApiExamples
                 }
 
             // Once we print this document, we can turn it into a booklet by stacking the pages
-            // in the order they come out of the printer and then folding down the middle
+            // in the order they come out of the printer, and then folding down the middle.
             doc.Save(ArtifactsDir + "XpsSaveOptions.BookFold.xps", xpsOptions);
             //ExEnd
         }
@@ -103,14 +105,19 @@ namespace ApiExamples
             //ExSummary:Shows how to optimize document objects while saving to xps.
             Document doc = new Document(MyDir + "Unoptimized document.docx");
 
-            // When saving to .xps, we can use SaveOptions to optimize the output in some cases
-            XpsSaveOptions saveOptions = new XpsSaveOptions { OptimizeOutput = optimizeOutput };
+            // Create an "XpsSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .XPS.
+            XpsSaveOptions saveOptions = new XpsSaveOptions();
+
+            // Set the "OptimizeOutput" property to "true" to take measures such as removing nested or empty canvases
+            // and concatenating adjacent runs with identical formatting to optimize the content of the output document.
+            // This may affect the appearance of the document.
+            // Set the "OptimizeOutput" property to "false" to save the document normally.
+            saveOptions.OptimizeOutput = optimizeOutput;
 
             doc.Save(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", saveOptions);
             //ExEnd
 
-            // The input document had adjacent runs with the same formatting, which, if output optimization was enabled,
-            // have been combined to save space
             FileInfo outFileInfo = new FileInfo(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps");
 
             if (optimizeOutput)
@@ -133,10 +140,23 @@ namespace ApiExamples
             //ExFor:FixedPageSaveOptions.PageSet
             //ExFor:PageSet.#ctor(int[])
             //ExSummary:Shows how to extract pages based on exact page indices.
-            Document doc = new Document(MyDir + "Images.docx");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Add five pages to the document.
+            for (int i = 1; i < 6; i++)
+            {
+                builder.Write("Page " + i);
+                builder.InsertBreak(BreakType.PageBreak);
+            }
+
+            // Create an "XpsSaveOptions" object which we can pass to the document's "Save" method
+            // to modify the way in which that method converts the document to .XPS.
             XpsSaveOptions xpsOptions = new XpsSaveOptions();
-            xpsOptions.PageSet = new PageSet(0, 1, 2, 4, 1, 3, 2, 3);
+
+            // Use the "PageSet" property to select a set of the document's pages to save to the output XPS.
+            // In this case, we will choose, via a zero-based index, only three pages: page 1, page 2, and page 4.
+            xpsOptions.PageSet = new PageSet(0, 1, 3);
 
             doc.Save(ArtifactsDir + "XpsSaveOptions.ExportExactPages.xps", xpsOptions);
             //ExEnd
