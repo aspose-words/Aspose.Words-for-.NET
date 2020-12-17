@@ -29,21 +29,28 @@ namespace ApiExamples
         [Test] //ExSkip
         public void ImageFolder()
         {
-            // Open a document which contains images
             Document doc = new Document(MyDir + "Rendering.docx");
 
             ImageUriPrinter callback = new ImageUriPrinter(ArtifactsDir + "XamlFlowImageFolderAlias");
 
-            XamlFlowSaveOptions options = new XamlFlowSaveOptions
-            {
-                SaveFormat = SaveFormat.XamlFlow,
-                ImagesFolder = ArtifactsDir + "XamlFlowImageFolder",
-                ImagesFolderAlias = ArtifactsDir + "XamlFlowImageFolderAlias",
-                ImageSavingCallback = callback
-            };
+            // Create a "XamlFlowSaveOptions" object, which we can pass to the document's "Save"
+            // method to modify the way in which we save the document to the XAML save format.
+            XamlFlowSaveOptions options = new XamlFlowSaveOptions();
 
-            // A folder specified by ImagesFolderAlias will contain the images instead of ImagesFolder
-            // We must ensure the folder exists before the streams can put their images into it
+            Assert.AreEqual(SaveFormat.XamlFlow, options.SaveFormat);
+
+            // Use the "ImagesFolder" property to assign a folder in the local file system into which
+            // Aspose.Words will save all of the document's linked images.
+            options.ImagesFolder = ArtifactsDir + "XamlFlowImageFolder";
+
+            // Use the "ImagesFolderAlias" property to use this folder
+            // when constructing image URIs instead of the name of the images folder.
+            options.ImagesFolderAlias = ArtifactsDir + "XamlFlowImageFolderAlias";
+
+            options.ImageSavingCallback = callback;
+
+            // A folder specified by "ImagesFolderAlias" will need to contain the resources instead of "ImagesFolder".
+            // We must ensure the folder exists before the callback's streams can put their resources into it.
             Directory.CreateDirectory(options.ImagesFolderAlias);
 
             doc.Save(ArtifactsDir + "XamlFlowSaveOptions.ImageFolder.xaml", options);
@@ -68,7 +75,8 @@ namespace ApiExamples
             {
                 Resources.Add(args.ImageFileName);
 
-                // If we specified a ImagesFolderAlias we will also need to redirect each stream to put its image in that folder
+                // If we specified an image folder alias, we will also need
+                // to redirect each stream to put its image in the alias folder.
                 args.ImageStream = new FileStream($"{ImagesFolderAlias}/{args.ImageFileName}", FileMode.Create);
                 args.KeepImageStreamOpen = false;
             }
