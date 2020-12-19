@@ -36,7 +36,7 @@ namespace ApiExamples
             Console.WriteLine("\nDefault optimization settings:");
             PrintCompatibilityOptions(options);
 
-            // These settings can be accessed in Microsoft Word via File -> Options -> Advanced -> Compatibility options for...
+            // We can access these settings in Microsoft Word via "File" -> "Options" -> "Advanced" -> "Compatibility options for...".
             doc.Save(ArtifactsDir + "CompatibilityOptions.OptimizeFor.DefaultSettings.docx");
 
             // We can use the OptimizeFor method to ensure optimal compatibility with a specific Microsoft Word version.

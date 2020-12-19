@@ -229,7 +229,7 @@ namespace ApiExamples
 
             builder.Write("For more information, please visit the ");
 
-            // Insert a hyperlink, and apply formatting to emphasize it.
+            // Insert a hyperlink and emphasize it with custom formatting.
             // The hyperlink will be a clickable piece of text which will take us to the location specified in the URL.
             builder.Font.Color = Color.Blue;
             builder.Font.Underline = Underline.Single;
@@ -279,7 +279,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.Blue.ToArgb(), builder.Font.Color.ToArgb());
             Assert.AreEqual(Underline.Single, builder.Font.Underline);
 
-            // Restore the font formatting that we saved earlier, and remove the element from the stack.
+            // Restore the font formatting that we saved earlier and remove the element from the stack.
             builder.PopFont();
 
             Assert.AreEqual(Color.Empty.ToArgb(), builder.Font.Color.ToArgb());

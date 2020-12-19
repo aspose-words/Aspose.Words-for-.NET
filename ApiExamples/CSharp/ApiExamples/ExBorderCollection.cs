@@ -69,7 +69,7 @@ namespace ApiExamples
             Assert.AreEqual(LineStyle.Single, firstParagraphBorders.LineStyle);
             Assert.AreEqual(3.0d, firstParagraphBorders.LineWidth);
 
-            // Apply the ClearFormatting method to each paragraph to remove all of its borders.
+            // Use the "ClearFormatting" method on each paragraph to remove all borders.
             foreach (Paragraph paragraph in doc.FirstSection.Body.Paragraphs)
             {
                 paragraph.ParagraphFormat.Borders.ClearFormatting();
