@@ -37,7 +37,7 @@ namespace ApiExamples
             Assert.AreEqual(SaveFormat.XamlFixed, options.SaveFormat);
 
             // Use the "ResourcesFolder" property to assign a folder in the local file system into which
-            // Aspose.Words will save all of the document's linked resources, such as images and fonts.
+            // Aspose.Words will save all the document's linked resources, such as images and fonts.
             options.ResourcesFolder = ArtifactsDir + "XamlFixedResourceFolder";
 
             // Use the "ResourcesFolderAlias" property to use this folder
@@ -71,7 +71,7 @@ namespace ApiExamples
             {
                 Resources.Add($"Resource \"{args.ResourceFileName}\"\n\t{args.ResourceFileUri}");
 
-                // If we specified a resource folder alias, we will also need
+                // If we specified a resource folder alias, we would also need
                 // to redirect each stream to put its resource in the alias folder.
                 args.ResourceStream = new FileStream(args.ResourceFileUri, FileMode.Create);
                 args.KeepResourceStreamOpen = false;

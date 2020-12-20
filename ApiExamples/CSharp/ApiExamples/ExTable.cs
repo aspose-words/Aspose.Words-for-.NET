@@ -39,7 +39,7 @@ namespace ApiExamples
             // Tables contain rows, which contain cells, which may contain paragraphs
             // with typical elements such as runs, shapes, and even other tables.
             // Calling the "EnsureMinimum" method on a table will ensure that
-            // the table has at least one row, cell and paragraph.
+            // the table has at least one row, cell, and paragraph.
             Row firstRow = new Row(doc);
             table.AppendChild(firstRow);
 
@@ -135,7 +135,7 @@ namespace ApiExamples
             rowFormat.Borders[BorderType.Bottom].Color = Color.Red;
 
             // Use the "CellFormat" property of the first cell in the last row to
-            // modify the formatting of the contants of that cell.
+            // modify the formatting of the contents of that cell.
             CellFormat cellFormat = table.LastRow.FirstCell.CellFormat;
             cellFormat.Width = 100;
             cellFormat.Shading.BackgroundPatternColor = Color.Orange;
@@ -814,7 +814,7 @@ namespace ApiExamples
             // Set the "AllowAutoFit" property to "false" to get the table to maintain the dimensions
             // of all its rows and cells, and truncate contents if they get too large to fit.
             // Set the "AllowAutoFit" property to "true" to allow the table to change the
-            // width and height of its cells to accomodate their contents.
+            // width and height of its cells to accommodate their contents.
             table.AllowAutoFit = allowAutoFit;
 
             doc.Save(ArtifactsDir + "Table.AllowAutoFitOnTable.html");
@@ -1103,7 +1103,7 @@ namespace ApiExamples
             // You can use the "Title" and "Description" properties to respectively add a title and description
             // to your table. The table must have at least one row before we can use these properties.
             // These properties are meaningful for ISO / IEC 29500 compliant .docx documents (see the OoxmlCompliance class).
-            // If we save the document to to pre-ISO/IEC 29500 formats, Microsoft Word ignores these properties.
+            // If we save the document to pre-ISO/IEC 29500 formats, Microsoft Word ignores these properties.
             table.Title = "Aspose table title";
             table.Description = "Aspose table description";
 
@@ -1520,7 +1520,7 @@ namespace ApiExamples
             tableStyle.Borders.Color = Color.Blue;
             tableStyle.Borders.LineStyle = LineStyle.Single;
 
-            // Insert a table, and apply the style we created to it.
+            // Insert a table and apply the style we created to it.
             Table table = builder.StartTable();
             builder.InsertCell();
             builder.Write("Aligned to the center of the page");
@@ -1626,7 +1626,7 @@ namespace ApiExamples
             // 3 -  As a property:
             tableStyle.ConditionalStyles.FirstRow.ParagraphFormat.Alignment = ParagraphAlignment.Center;
 
-            // Apply padding, and text formatting to conditional styles .
+            // Apply padding and text formatting to conditional styles.
             tableStyle.ConditionalStyles.LastRow.BottomPadding = 10;
             tableStyle.ConditionalStyles.LastRow.LeftPadding = 10;
             tableStyle.ConditionalStyles.LastRow.RightPadding = 10;

@@ -5,10 +5,8 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System;
 using System.IO;
 using Aspose.Words;
-using Aspose.Words.Fields;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -83,7 +81,7 @@ namespace ApiExamples
             xpsOptions.UseBookFoldPrintingSettings = renderTextAsBookFold;
 
             // If we are rendering the document as a booklet, we must set the "MultiplePages"
-            // properties of all page setup objects of all sections to "MultiplePagesType.BookFoldPrinting".
+            // properties of the page setup objects of all sections to "MultiplePagesType.BookFoldPrinting".
             if (renderTextAsBookFold)
                 foreach (Section s in doc.Sections)
                 {

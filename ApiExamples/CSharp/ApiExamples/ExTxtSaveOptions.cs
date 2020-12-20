@@ -199,7 +199,7 @@ namespace ApiExamples
             // for padding that simulates list indentation in plaintext.
             txtSaveOptions.ListIndentation.Character = ' ';
 
-            // Set the "Count" property to assign a number of times to
+            // Set the "Count" property to specify a number of times to
             // place the padding character for each list indent level.
             txtSaveOptions.ListIndentation.Count = 3;
 
@@ -241,7 +241,7 @@ namespace ApiExamples
 
             // Set the "SimplifyListLabels" property to "true" to convert some list
             // symbols into simpler ASCII characters, such as '*', 'o', '+', '>', etc.
-            // Set the "SimplifyListLabels" property to "false"  to
+            // Set the "SimplifyListLabels" property to "false" to
             // preserve as many of the original list symbols as possible.
             txtSaveOptions.SimplifyListLabels = simplifyListLabels;
 

@@ -714,7 +714,7 @@ namespace ApiExamples
             Assert.AreEqual(1, chart.Series.Count);
             Assert.AreEqual("Sales", chart.Series[0].Name);
 
-            // "Slices" of a pie chart may be moved away from the center by a distance via the respective data point's Explosion attribute.
+            // "Slices" of a pie chart may be moved away from the center by a distance via the respective data point's Explosion property.
             // Add a data point to the first portion of the pie chart and move it away from the center by 10 points. 
             ChartDataPoint dataPoint = chart.Series[0].DataPoints.Add(0);
             dataPoint.Explosion = 10;

@@ -125,7 +125,8 @@ namespace ApiExamples
             //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and encryption.
             Document doc = new Document();
             
-            // Configure a SaveOptions object to encrypt the document with a password when we save it, and then save it.
+            // Configure a SaveOptions object to encrypt the document
+            // with a password when we save it, and then save the document.
             OdtSaveOptions saveOptions = new OdtSaveOptions(SaveFormat.Odt);
             saveOptions.Password = "MyPassword";
 

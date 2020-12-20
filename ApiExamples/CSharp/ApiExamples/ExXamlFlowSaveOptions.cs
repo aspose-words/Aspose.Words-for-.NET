@@ -40,7 +40,7 @@ namespace ApiExamples
             Assert.AreEqual(SaveFormat.XamlFlow, options.SaveFormat);
 
             // Use the "ImagesFolder" property to assign a folder in the local file system into which
-            // Aspose.Words will save all of the document's linked images.
+            // Aspose.Words will save all the document's linked images.
             options.ImagesFolder = ArtifactsDir + "XamlFlowImageFolder";
 
             // Use the "ImagesFolderAlias" property to use this folder
@@ -75,7 +75,7 @@ namespace ApiExamples
             {
                 Resources.Add(args.ImageFileName);
 
-                // If we specified an image folder alias, we will also need
+                // If we specified an image folder alias, we would also need
                 // to redirect each stream to put its image in the alias folder.
                 args.ImageStream = new FileStream($"{ImagesFolderAlias}/{args.ImageFileName}", FileMode.Create);
                 args.KeepImageStreamOpen = false;

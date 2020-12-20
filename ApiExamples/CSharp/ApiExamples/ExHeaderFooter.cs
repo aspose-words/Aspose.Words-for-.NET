@@ -37,7 +37,7 @@ namespace ApiExamples
             //ExSummary:Shows how to create a header and a footer.
             Document doc = new Document();
             
-            // Create a header, and append a paragraph to it. The text in that paragraph
+            // Create a header and append a paragraph to it. The text in that paragraph
             // will appear at the top of every page of this section, above the main body text.
             HeaderFooter header = new HeaderFooter(doc, HeaderFooterType.HeaderPrimary);
             doc.FirstSection.HeadersFooters.Add(header);
@@ -47,7 +47,7 @@ namespace ApiExamples
             Assert.True(header.IsHeader);
             Assert.True(para.IsEndOfHeaderFooter);
 
-            // Create a footer, and append a paragraph to it. The text in that paragraph
+            // Create a footer and append a paragraph to it. The text in that paragraph
             // will appear at the bottom of every page of this section, below the main body text.
             HeaderFooter footer = new HeaderFooter(doc, HeaderFooterType.FooterPrimary);
             doc.FirstSection.HeadersFooters.Add(footer);
@@ -91,7 +91,7 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.SectionBreakNewPage);
             builder.Write("Section 3");
 
-            // Move to the first section, and create a header and a footer. By default,
+            // Move to the first section and create a header and a footer. By default,
             // the header and the footer will only appear on pages in the section that contains them.
             builder.MoveToSection(0);
 
@@ -105,8 +105,8 @@ namespace ApiExamples
             // to allow the linking section to display the linked section's headers/footers.
             doc.Sections[1].HeadersFooters.LinkToPrevious(true);
 
-            // Each section will still have its own header/footer objects. The linking section displays
-            // the linked section's header/footers while still keeping its own when we link sections.
+            // Each section will still have its own header/footer objects. When we link sections,
+            // the linking section will display the linked section's header/footers while keeping its own.
             Assert.AreNotEqual(doc.Sections[0].HeadersFooters[0], doc.Sections[1].HeadersFooters[0]);
             Assert.AreNotEqual(doc.Sections[0].HeadersFooters[0].ParentSection, doc.Sections[1].HeadersFooters[0].ParentSection);
 
@@ -123,11 +123,11 @@ namespace ApiExamples
             // The third section now will have the same footer as the second and first sections, but not the header.
             doc.Sections[2].HeadersFooters.LinkToPrevious(HeaderFooterType.FooterPrimary, true);
 
-            // The first section's header/footers can't link themselves to anything because there is no previous section.
+            // The first section's header/footers cannot link themselves to anything because there is no previous section.
             Assert.AreEqual(2, doc.Sections[0].HeadersFooters.Count);
             Assert.AreEqual(2, doc.Sections[0].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious));
             
-            // All of the second section's header/footers are linked to the first section's headers/footers.
+            // All the second section's header/footers are linked to the first section's headers/footers.
             Assert.AreEqual(6, doc.Sections[1].HeadersFooters.Count);
             Assert.AreEqual(6, doc.Sections[1].HeadersFooters.Count(hf => ((HeaderFooter)hf).IsLinkedToPrevious));
 
@@ -162,7 +162,7 @@ namespace ApiExamples
             //ExSummary:Shows how to delete all footers from a document.
             Document doc = new Document(MyDir + "Header and footer types.docx");
 
-            // Iterate through each section, and remove every kind of footer.
+            // Iterate through each section and remove footers of every kind.
             foreach (Section section in doc.OfType<Section>())
             {
                 // There are three kinds of footer and header types.

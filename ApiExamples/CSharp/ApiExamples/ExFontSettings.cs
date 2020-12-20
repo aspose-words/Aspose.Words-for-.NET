@@ -162,7 +162,7 @@ namespace ApiExamples
             // For testing purposes, we will set Aspose.Words to look for fonts only in a folder that does not exist.
             FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
 
-            // When rendering the document, the will be no place to find the "Times New Roman" font.
+            // When rendering the document, there will be no place to find the "Times New Roman" font.
             // This will cause a font substitution warning, which our callback will detect.
             doc.Save(ArtifactsDir + "FontSettings.SubstitutionWarning.pdf");
 
@@ -214,7 +214,7 @@ namespace ApiExamples
             HandleDocumentSubstitutionWarnings substitutionWarningHandler = new HandleDocumentSubstitutionWarnings();
             doc.WarningCallback = substitutionWarningHandler;
 
-            // Set a default font name, and enable font substitution.
+            // Set a default font name and enable font substitution.
             FontSettings fontSettings = new FontSettings();
             fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial"; ;
             fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
@@ -227,7 +227,7 @@ namespace ApiExamples
                 while (warnings.MoveNext())
                     Console.WriteLine(warnings.Current.Description);
 
-            // We can also verify warnings in the collection, and clear them.
+            // We can also verify warnings in the collection and clear them.
             Assert.AreEqual(WarningSource.Layout, substitutionWarningHandler.FontWarnings[0].Source);
             Assert.AreEqual("Font '28 Days Later' has not been found. Using 'Calibri' font instead. Reason: alternative name from document.",
                 substitutionWarningHandler.FontWarnings[0].Description);
@@ -725,7 +725,7 @@ namespace ApiExamples
                 Console.WriteLine(systemFontFolder);
             }
 
-            // Set a font that exists in the Windows Fonts directory as a substitute for one that doesn't.
+            // Set a font that exists in the Windows Fonts directory as a substitute for one that does not.
             doc.FontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
             doc.FontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Kreon-Regular", new[] { "Calibri" });
 
@@ -979,7 +979,7 @@ namespace ApiExamples
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
             fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
-            // Calling BuildAutomatic() will generate a fallback scheme that
+            // Calling the "BuildAutomatic" method will generate a fallback scheme that
             // distributes accessible fonts across as many Unicode character codes as possible.
             // In our case, it only has access to the handful of fonts inside the "MyFonts" folder.
             fontFallbackSettings.BuildAutomatic();
@@ -990,7 +990,7 @@ namespace ApiExamples
             // and the "M+ 2m" font in all other ranges that other fonts in the scheme do not cover.
             fontFallbackSettings.Load(MyDir + "Custom font fallback settings.xml");
 
-            // Create a document builder, and set its font to one that does not exist in any of our sources.
+            // Create a document builder and set its font to one that does not exist in any of our sources.
             // Our font settings will invoke the fallback scheme for characters that we type using the unavailable font.
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Font.Name = "Missing Font";
@@ -1052,7 +1052,7 @@ namespace ApiExamples
             FontSettings fontSettings = new FontSettings();
             doc.FontSettings = fontSettings;
 
-            // Create a new table substitution rule, and load the default Microsoft Windows font substitution table.
+            // Create a new table substitution rule and load the default Microsoft Windows font substitution table.
             TableSubstitutionRule tableSubstitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
             tableSubstitutionRule.LoadWindowsSettings();
 
@@ -1110,12 +1110,12 @@ namespace ApiExamples
             FontSettings fontSettings = new FontSettings();
             doc.FontSettings = fontSettings;
 
-            // Create a new table substitution rule, and load the default Windows font substitution table.
+            // Create a new table substitution rule and load the default Windows font substitution table.
             TableSubstitutionRule tableSubstitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
 
             // If we select fonts exclusively from our folder, we will need a custom substitution table.
             // We will no longer have access to the Microsoft Windows fonts,
-            // such as "Arial" or "Times New Roman", since they do not exist in our new font folder.
+            // such as "Arial" or "Times New Roman" since they do not exist in our new font folder.
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
             fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
@@ -1130,7 +1130,7 @@ namespace ApiExamples
             tableSubstitutionRule.Load(MyDir + "Font substitution rules.xml");
 
             // Since we no longer have access to "Arial", our font table will first try substitute it with "Nonexistent Font".
-            // We don't have this font so that it will move onto the next substitute, "Kreon", found in the "MyFonts" folder.
+            // We do not have this font so that it will move onto the next substitute, "Kreon", found in the "MyFonts" folder.
             Assert.AreEqual(new[] { "Missing Font", "Kreon" }, tableSubstitutionRule.GetSubstitutes("Arial").ToArray());
 
             // We can expand this table programmatically. We will add an entry that substitutes "Times New Roman" with "Arvo"

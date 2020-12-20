@@ -59,7 +59,7 @@ namespace ApiExamples
         [Test] //ExSkip
         public void WebRequestTimeout()
         {
-            // Create a new HtmlLoadOptions object, and verify its timeout threshold for a web request.
+            // Create a new HtmlLoadOptions object and verify its timeout threshold for a web request.
             HtmlLoadOptions options = new HtmlLoadOptions();
 
             // When loading an Html document with resources externally linked by a web address URL,
@@ -70,7 +70,7 @@ namespace ApiExamples
             ListDocumentWarnings warningCallback = new ListDocumentWarnings();
             options.WarningCallback = warningCallback;
 
-            // Load such a document, and verify that a shape with image data has been created.
+            // Load such a document and verify that a shape with image data has been created.
             // This linked image will require a web request to load, which will have to complete within our time limit.
             string html = $@"
                 <html>
@@ -84,7 +84,7 @@ namespace ApiExamples
             Assert.AreEqual(7498, imageShape.ImageData.ImageBytes.Length);
             Assert.AreEqual(0, warningCallback.Warnings().Count);
 
-            // Set an unreasonable timeout limit, and try load the document again.
+            // Set an unreasonable timeout limit and try load the document again.
             options.WebRequestTimeout = 0;
             doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), options);
 

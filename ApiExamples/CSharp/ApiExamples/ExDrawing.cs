@@ -201,7 +201,7 @@ namespace ApiExamples
             //ExSummary:Shows how to save all images from a document to the file system.
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
-            // Shapes with the "HasImage" flag set store and display all of the document's images.
+            // Shapes with the "HasImage" flag set store and display all the document's images.
             IEnumerable<Shape> shapesWithImages = 
                 imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Where(s => s.HasImage);
 
@@ -316,7 +316,7 @@ namespace ApiExamples
             Stroke stroke = shape.Stroke;
 
             // Strokes can have two colors, which are used to create a pattern defined by two-tone image data.
-            // Strokes with a single color do not use the Color2 attribute.
+            // Strokes with a single color do not use the Color2 property.
             Assert.AreEqual(Color.FromArgb(255, 128, 0, 0), stroke.Color);
             Assert.AreEqual(Color.FromArgb(255, 255, 255, 0), stroke.Color2);
 
@@ -535,11 +535,11 @@ namespace ApiExamples
 
             Document dstDoc = new Document();
 
-            // Import a shape from the source document, and append it to the first paragraph.
+            // Import a shape from the source document and append it to the first paragraph.
             Shape importedShape = (Shape)dstDoc.ImportNode(sourceShape, true);
             dstDoc.FirstSection.Body.FirstParagraph.AppendChild(importedShape);
 
-            // The imported shape contains an image. We can access the image's attributes and raw data via the ImageData object.
+            // The imported shape contains an image. We can access the image's properties and raw data via the ImageData object.
             ImageData imageData = importedShape.ImageData;
             imageData.Title = "Imported Image";
 
@@ -559,16 +559,16 @@ namespace ApiExamples
             imageData.Contrast = 1.0;
 
             // The above brightness and contrast values have created an image with a lot of white.
-            // We can select a color with the ChromaKey attribute to replace with transparency, such as white.
+            // We can select a color with the ChromaKey property to replace with transparency, such as white.
             imageData.ChromaKey = Color.White;
 
-            // Import the source shape again, and set the image to monochrome.
+            // Import the source shape again and set the image to monochrome.
             importedShape = (Shape)dstDoc.ImportNode(sourceShape, true);
             dstDoc.FirstSection.Body.FirstParagraph.AppendChild(importedShape);
 
             importedShape.ImageData.GrayScale = true;
 
-            // Import the source shape again to create a third image, and set it to BiLevel.
+            // Import the source shape again to create a third image and set it to BiLevel.
             // BiLevel sets every pixel to either black or white, whichever is closer to the original color.
             importedShape = (Shape)dstDoc.ImportNode(sourceShape, true);
             dstDoc.FirstSection.Body.FirstParagraph.AppendChild(importedShape);
@@ -617,7 +617,7 @@ namespace ApiExamples
             //ExFor:ImageSize.HorizontalResolution
             //ExFor:ImageSize.VerticalResolution
             //ExFor:ImageSize.WidthPixels
-            //ExSummary:Shows how to read the attributes of an image in a shape.
+            //ExSummary:Shows how to read the properties of an image in a shape.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

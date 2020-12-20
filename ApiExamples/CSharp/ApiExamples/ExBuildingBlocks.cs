@@ -56,7 +56,7 @@ namespace ApiExamples
 
             block.Guid = Guid.NewGuid();
 
-            // The following attributes categorize building blocks
+            // The following properties categorize building blocks
             // in the menu we can access in Microsoft Word via "Insert" -> "Quick Parts" -> "Building Blocks Organizer".
             Assert.AreEqual("(Empty Category)", block.Category);
             Assert.AreEqual(BuildingBlockType.None, block.Type);
@@ -101,7 +101,7 @@ namespace ApiExamples
 
             public override VisitorAction VisitBuildingBlockStart(BuildingBlock block)
             {
-                // Configure the building block as a quick part, and add attributes used by Building Blocks Organizer.
+                // Configure the building block as a quick part, and add properties used by Building Blocks Organizer.
                 block.Behavior = BuildingBlockBehavior.Paragraph;
                 block.Category = "My custom building blocks";
                 block.Description =

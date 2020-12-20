@@ -38,7 +38,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Prints the filenames of all external stylesheets, and substitutes all images of a loaded html document.
+        /// Prints the filenames of all external stylesheets and substitutes all images of a loaded html document.
         /// </summary>
         private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
         {

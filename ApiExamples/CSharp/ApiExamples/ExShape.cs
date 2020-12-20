@@ -97,7 +97,7 @@ namespace ApiExamples
             builder.MoveTo(shape.LastParagraph);
             builder.Write("This text is inside the text box.");
 
-            // Set the "Hidden" property of the shape's "Font" object to "true" to hide the text box from sight,
+            // Set the "Hidden" property of the shape's "Font" object to "true" to hide the text box from sight
             // and collapse the space that it would normally occupy.
             // Set the "Hidden" property of the shape's "Font" object to "false" to leave the text box visible.
             shape.Font.Hidden = hideShape;
@@ -294,7 +294,7 @@ namespace ApiExamples
 
             Assert.AreEqual(WrapType.None, group.WrapType);
 
-            // Create a 400pt x 400pt group shape, and place it at the document's floating shape coordinate origin.
+            // Create a 400pt x 400pt group shape and place it at the document's floating shape coordinate origin.
             group.Bounds = new RectangleF(0, 0, 400, 400);
 
             // Set the group's internal coordinate plane size to 500 x 500pt. 
@@ -307,7 +307,7 @@ namespace ApiExamples
             // and the bottom right corner will be at (250, 250).
             group.CoordOrigin = new Point(-250, -250);
 
-            // Create a rectangle that will display the boundary of this group shape, and add it to the group.
+            // Create a rectangle that will display the boundary of this group shape and add it to the group.
             group.AppendChild(new Shape(doc, ShapeType.Rectangle)
             {
                 Width = group.CoordSize.Width,
@@ -319,7 +319,7 @@ namespace ApiExamples
             // Once a shape is a part of a group shape, we can access it as a child node and then modify it.
             ((Shape)group.GetChild(NodeType.Shape, 0, true)).Stroke.DashStyle = DashStyle.Dash;
 
-            // Create a small red star, and insert it into the group.
+            // Create a small red star and insert it into the group.
             // Line up the shape with the group's coordinate origin, which we have moved to the center.
             group.AppendChild(new Shape(doc, ShapeType.Star)
             {
@@ -519,7 +519,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert two shapes, and also a group shape with another shape inside it.
+            // Insert two shapes along with a group shape with another shape inside it.
             builder.InsertShape(ShapeType.Rectangle, 400, 200);
             builder.InsertShape(ShapeType.Star, 300, 300);
 
@@ -625,7 +625,7 @@ namespace ApiExamples
                 RelativeVerticalPosition.TopMargin, 50, 100, 100, WrapType.None);
             shape.StrokeColor = Color.Orange;
 
-            // Even though the line itself takes up very little space on the document page,
+            // Even though the line itself takes up little space on the document page,
             // it occupies a rectangular containing block, the size of which we can determine using the "Bounds" properties.
             Assert.AreEqual(new RectangleF(50, 50, 100, 100), shape.Bounds);
             Assert.AreEqual(new RectangleF(50, 50, 100, 100), shape.BoundsInPoints);
@@ -659,7 +659,7 @@ namespace ApiExamples
 
             doc.FirstSection.Body.FirstParagraph.AppendChild(group);
 
-            // Insert a shape, and place it outside of the bounds of the group shape's containing block.
+            // Insert a shape and place it outside of the bounds of the group shape's containing block.
             shape = new Shape(doc, ShapeType.Rectangle)
             {
                 Width = 100,
@@ -712,7 +712,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert an image shape, and leave its orientation in its default state.
+            // Insert an image shape and leave its orientation in its default state.
             Shape shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 100,
                 RelativeVerticalPosition.TopMargin, 100, 100, 100, WrapType.None);
             shape.ImageData.SetImage(ImageDir + "Logo.jpg");
@@ -919,7 +919,7 @@ namespace ApiExamples
             textBox.HorizontalAlignment = HorizontalAlignment.Center;
             textBox.VerticalAlignment = VerticalAlignment.Top;
             
-            // Add a paragraph to the text box, and add a run of text that the text box will display.
+            // Add a paragraph to the text box and add a run of text that the text box will display.
             textBox.AppendChild(new Paragraph(doc));
             Paragraph para = textBox.FirstParagraph;
             para.ParagraphFormat.Alignment = ParagraphAlignment.Center;
@@ -1099,7 +1099,7 @@ namespace ApiExamples
             // Embed a Microsoft Visio drawing into the document as an OLE object.
             builder.InsertOleObject(ImageDir + "Microsoft Visio drawing.vsd", "Package", false, false, null);
 
-            // Insert a link to the file in the local file system, and display it as an icon.
+            // Insert a link to the file in the local file system and display it as an icon.
             builder.InsertOleObject(ImageDir + "Microsoft Visio drawing.vsd", "Package", true, true, null);
 
             // Inserting OLE objects creates shapes that store these objects.
@@ -1355,7 +1355,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a shape. If we open this document in Microsoft Word, we can left-click the shape to reveal
+            // Insert a shape. If we open this document in Microsoft Word, we can left click the shape to reveal
             // eight sizing handles around its perimeter, which we can click and drag to change its size.
             Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
 
@@ -1845,8 +1845,8 @@ namespace ApiExamples
                 SignerTitle = "Senior Manager"
             };
 
-            // Insert a shape that will contain a signature line, whose appearance we will customize using the
-            // "SignatureLineOptions" object we've created above.
+            // Insert a shape that will contain a signature line, whose appearance we will
+            // customize using the "SignatureLineOptions" object we have created above.
             // If we are inserting a shape whose coordinates originate at the bottom right hand corner of the page,
             // we will need to supply negative x and y coordinates to bring the shape into view.
             Shape shape = builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, -170.0, 
@@ -1907,7 +1907,7 @@ namespace ApiExamples
             Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 150, 100);
             TextBox textBox = textBoxShape.TextBox;
 
-            // Move the document builder to inside the TextBox, and add text.
+            // Move the document builder to inside the TextBox and add text.
             builder.MoveTo(textBoxShape.LastParagraph);
             builder.Writeln("Hello world!");
             builder.Write("Hello again!");
@@ -1954,8 +1954,8 @@ namespace ApiExamples
             Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 150, 100);
             TextBox textBox = textBoxShape.TextBox;
 
-            // Apply these values to both these members to get the parent shape to fit tightly around
-            // the TextBox's text, ignoring the dimensions we have set.
+            // Apply these values to both these members to get the parent shape to fit
+            // tightly around the text contents, ignoring the dimensions we have set.
             textBox.FitShapeToText = true;
             textBox.TextBoxWrapMode = TextBoxWrapMode.None;
 
@@ -2384,7 +2384,7 @@ namespace ApiExamples
             shapes[0].Remove();
 
             // Since we removed that shape while we were tracking changes,
-            // the shape persists in the document, and counts as a delete revision.
+            // the shape persists in the document and counts as a delete revision.
             // Accepting this revision will remove the shape permanently,
             // and rejecting it will keep it in the document.
             Assert.AreEqual(ShapeType.Cube, shapes[0].ShapeType);
@@ -2408,7 +2408,7 @@ namespace ApiExamples
             //ExSummary:Shows how to identify move revision shapes.
             // A move revision is when we move an element in the document body by cut-and-pasting it in Microsoft Word while
             // tracking changes. If we involve an inline shape in such a text movement, that shape will also be a move revision.
-            // Copying-and-pasting, or moving floating shapes does not create move revisions.
+            // Copying-and-pasting or moving floating shapes does not create move revisions.
             Document doc = new Document(MyDir + "Revision shape.docx");
 
             // Move revisions consist of pairs of "Move from", and "Move to" revisions. There is one shape that we moved

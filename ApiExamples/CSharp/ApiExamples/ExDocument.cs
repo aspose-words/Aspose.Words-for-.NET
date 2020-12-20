@@ -954,7 +954,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompositeNode.GetChild
             //ExFor:Document.ExpandTableStylesToDirectFormatting
-            //ExSummary:Shows how to apply attributes of a table's style directly to the table's elements.
+            //ExSummary:Shows how to apply the properties of a table's style directly to the table's elements.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -972,7 +972,7 @@ namespace ApiExamples
 
             table.Style = tableStyle;
 
-            // This method concerns table style attributes such as the ones we set above.
+            // This method concerns table style properties such as the ones we set above.
             doc.ExpandTableStylesToDirectFormatting();
 
             doc.Save(ArtifactsDir + "Document.TableStyleToDirectFormatting.docx");
@@ -1655,14 +1655,14 @@ namespace ApiExamples
             fieldText.Text = "PAGE";
 
             // Changing the field code has changed this field to one of a different type,
-            // but the field's type attributes still display the old type.
+            // but the field's type properties still display the old type.
             Assert.AreEqual("PAGE", field.GetFieldCode());
             Assert.AreEqual(FieldType.FieldDate, field.Type);
             Assert.AreEqual(FieldType.FieldDate, field.Start.FieldType);
             Assert.AreEqual(FieldType.FieldDate, field.Separator.FieldType);
             Assert.AreEqual(FieldType.FieldDate, field.End.FieldType);
 
-            // Update those attributes with this method to display current value.
+            // Update those properties with this method to display current value.
             doc.NormalizeFieldTypes();
 
             Assert.AreEqual(FieldType.FieldPage, field.Type);

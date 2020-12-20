@@ -34,7 +34,7 @@ namespace ApiExamples
             project.Name = "Aspose.Project";
             doc.VbaProject = project;
 
-            // Create a new module, and specify a macro source code.
+            // Create a new module and specify a macro source code.
             VbaModule module = new VbaModule();
             module.Name = "Aspose.Module";
             module.Type = VbaModuleType.ProceduralModule;

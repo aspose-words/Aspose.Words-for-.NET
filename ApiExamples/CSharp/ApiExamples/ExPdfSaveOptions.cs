@@ -307,10 +307,10 @@ namespace ApiExamples
             options.OutlineOptions.HeadingsOutlineLevels = 4;
 
             // If an outline entry has subsequent entries of a higher level inbetween itself and the next entry of the same or lower level,
-            // an arrow will appear to the left of the entry. This entry is the "owner" of a number of such "sub-entries".
+            // an arrow will appear to the left of the entry. This entry is the "owner" of several such "sub-entries".
             // In our document, the outline entries from the 5th heading level are sub-entries of the second 4th level outline entry,
             // the 4th and 5th heading level entries are sub-entries of the second 3rd level entry, and so on. 
-            // In the outline, we can click on the arrow of the "owner" entry to collapse/expand all of its sub-entries.
+            // In the outline, we can click on the arrow of the "owner" entry to collapse/expand all its sub-entries.
             // Set the "ExpandedOutlineLevels" property to "2" to automatically expand all heading level 2 and lower outline entries
             // and collapse all level and 3 and higher entries when we open the document. 
             options.OutlineOptions.ExpandedOutlineLevels = 2;
@@ -442,7 +442,7 @@ namespace ApiExamples
             // Set the "Compliance" property to "PdfCompliance.Pdf17" to comply with the "1.7" standard.
             // Set the "Compliance" property to "PdfCompliance.PdfA1a" to comply with the "PDF/A-1a" standard,
             // which complies with "PDF/A-1b" as well as preserving the document structure of the original document.
-            // This helps with making documents searchable, but may significantly increase the size of already large documents.
+            // This helps with making documents searchable but may significantly increase the size of already large documents.
             saveOptions.Compliance = pdfCompliance;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.Compliance.pdf", saveOptions);
@@ -1264,7 +1264,7 @@ namespace ApiExamples
             options.UseBookFoldPrintingSettings = renderTextAsBookfold;
 
             // If we are rendering the document as a booklet, we must set the "MultiplePages"
-            // properties of all page setup objects of all sections to "MultiplePagesType.BookFoldPrinting".
+            // properties of the page setup objects of all sections to "MultiplePagesType.BookFoldPrinting".
             if (renderTextAsBookfold)
                 foreach (Section s in doc.Sections)
                 {
@@ -1952,7 +1952,7 @@ namespace ApiExamples
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
-            // Create a digital signature, and assign it to our SaveOptions object to sign the document when we save it to PDF. 
+            // Create a digital signature and assign it to our SaveOptions object to sign the document when we save it to PDF. 
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
             options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
 

@@ -171,7 +171,7 @@ namespace ApiExamples
             builder.Writeln($"This Text is {pageSetup.TopMargin} points/{ConvertUtil.PointToPixel(pageSetup.TopMargin, myDpi)} " +
                             $"pixels (at a DPI of {myDpi}) from the top of the page.");
 
-            // Set a new DPI, and adjust the top margin value accordingly.
+            // Set a new DPI and adjust the top margin value accordingly.
             double newDpi = 300;
             pageSetup.TopMargin = ConvertUtil.PixelToNewDpi(pageSetup.TopMargin, myDpi, newDpi);
             Assert.AreEqual(59.0d, pageSetup.TopMargin, 0.01d);

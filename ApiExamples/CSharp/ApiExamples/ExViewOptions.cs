@@ -66,7 +66,7 @@ namespace ApiExamples
             // to automatically zoom the document to fit the width of the page.
             // Set the "ZoomType" property to "ZoomType.FullPage" to get Microsoft Word
             // to automatically zoom the document to make the entire first page visible.
-            // Set the "ZoomType" property to "ZoomType.TextFit" to to get Microsoft Word
+            // Set the "ZoomType" property to "ZoomType.TextFit" to get Microsoft Word
             // to automatically zoom the document to fit the inner text margins of the first page.
             doc.ViewOptions.ZoomType = zoomType;
 
@@ -135,7 +135,7 @@ namespace ApiExamples
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
             builder.Writeln("This is the footer.");
 
-            // This document contains very little content that takes up a few full pages worth of space.
+            // This document contains a small amount of content that takes up a few full pages worth of space.
             // Set the "DoNotDisplayPageBoundaries" flag to "true" to get older versions of Microsoft Word to omit headers,
             // footers, and much of the vertical whitespace when displaying our document.
             // Set the "DoNotDisplayPageBoundaries" flag to "false" to get older versions of Microsoft Word to display our document normally.

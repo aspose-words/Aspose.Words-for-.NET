@@ -84,7 +84,7 @@ namespace ApiExamples
 
             firstParagraphStyle = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Style;
 
-            // Any text that used a removed style reverts back to the default formatting.
+            // Any text that used a removed style reverts to the default formatting.
             Assert.False(doc.Styles.Any(s => s.Name == "MyStyle"));
             Assert.AreEqual("Times New Roman", firstParagraphStyle.Font.Name);
             Assert.AreEqual(12.0d, firstParagraphStyle.Font.Size);
@@ -275,7 +275,7 @@ namespace ApiExamples
             builder.ParagraphFormat.Style = style;
             builder.Writeln("Hello World: MyStyle1, bulleted list.");
 
-            // Change the document builder's style to one that has no list formatting, and write another paragraph.
+            // Change the document builder's style to one that has no list formatting and write another paragraph.
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
             builder.Writeln("Hello World: Normal.");
 
@@ -305,7 +305,7 @@ namespace ApiExamples
 
             // This document contains a style named "MyStyle,MyStyle Alias 1,MyStyle Alias 2".
             // If a style's name has multiple values separated by commas,
-            // each clause is considered to be a separate alias for the style.
+            // each clause is a separate alias for the style.
             Style style = doc.Styles["MyStyle"];
             Assert.AreEqual(new [] { "MyStyle Alias 1", "MyStyle Alias 2" }, style.Aliases);
             Assert.AreEqual("Title", style.BaseStyleName);

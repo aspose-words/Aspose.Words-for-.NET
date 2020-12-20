@@ -45,7 +45,7 @@ namespace ApiExamples
             smartTag.Properties.Add(new CustomXmlProperty("Month", string.Empty, "5"));
             smartTag.Properties.Add(new CustomXmlProperty("Year", string.Empty, "2019"));
 
-            // Set the smart tag's uri to the default value.
+            // Set the smart tag's URI to the default value.
             smartTag.Uri = "urn:schemas-microsoft-com:office:smarttags";
 
             doc.FirstSection.Body.FirstParagraph.AppendChild(smartTag);
