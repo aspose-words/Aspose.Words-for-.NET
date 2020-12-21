@@ -51,6 +51,8 @@ namespace ApiExamples
         public void Iso29500Strict()
         {
             //ExStart
+            //ExFor:CompatibilityOptions
+            //ExFor:CompatibilityOptions.OptimizeFor(MsWordVersion)
             //ExFor:OoxmlSaveOptions
             //ExFor:OoxmlSaveOptions.#ctor
             //ExFor:OoxmlSaveOptions.SaveFormat

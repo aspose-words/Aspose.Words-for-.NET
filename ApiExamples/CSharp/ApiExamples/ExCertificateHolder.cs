@@ -22,16 +22,17 @@ namespace ApiExamples
             //ExFor:CertificateHolder.Create(Byte[], String)
             //ExFor:CertificateHolder.Create(String, String, String)
             //ExSummary:Shows how to create CertificateHolder objects.
-            // Load a PKCS #12 file into a byte array and apply its password to create the CertificateHolder
+            // Below are four ways of creating CertificateHolder objects.
+            // 1 -  Load a PKCS #12 file into a byte array and apply its password:
             byte[] certBytes = File.ReadAllBytes(MyDir + "morzal.pfx");
             CertificateHolder.Create(certBytes, "aw");
 
-            // Pass a SecureString which contains the password instead of a normal string
+            // 2 -  Load a PKCS #12 file into a byte array, and apply a secure password:
             SecureString password = new NetworkCredential("", "aw").SecurePassword;
             CertificateHolder.Create(certBytes, password);
 
-            // If the certificate has private keys corresponding to aliases, we can use the aliases to fetch their respective keys
-            // First, we will check for valid aliases like this
+            // If the certificate has private keys corresponding to aliases,
+            // we can use the aliases to fetch their respective keys. First, we will check for valid aliases.
             using (FileStream certStream = new FileStream(MyDir + "morzal.pfx", FileMode.Open))
             {
                 Pkcs12Store pkcs12Store = new Pkcs12Store(certStream, "aw".ToCharArray());
@@ -50,10 +51,10 @@ namespace ApiExamples
                 }
             }
 
-            // For this file, we will use an alias found above
+            // 3 -  Use a valid alias:
             CertificateHolder.Create(MyDir + "morzal.pfx", "aw", "c20be521-11ea-4976-81ed-865fbbfc9f24");
 
-            // If we leave the alias null, then the first possible alias that retrieves a private key will be used
+            // 4 -  Pass "null" as the alias in order to use the first available alias that returns a private key:
             CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
             //ExEnd
         }

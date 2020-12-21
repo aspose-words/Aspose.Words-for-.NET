@@ -186,7 +186,7 @@ namespace ApiExamples
                     gr.ScaleTransform(0.5f, 0.5f);
                     gr.PageScale = 2f;
 
-                    // Create another rectangle, and use it to frame another page from the document.
+                    // Create another rectangle and use it to frame another page from the document.
                     gr.DrawRectangle(new Pen(Color.Black, 1), 90, 10, 50, 100);
                     doc.RenderToSize(1, gr, 90, 10, 50, 100);
 

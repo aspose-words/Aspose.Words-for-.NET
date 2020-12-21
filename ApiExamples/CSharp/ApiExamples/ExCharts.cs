@@ -36,12 +36,14 @@ namespace ApiExamples
             Shape chartShape = builder.InsertChart(ChartType.Bar, 400, 300);
             Chart chart = chartShape.Chart;
 
-            // Set the title text, which appears at the top center of the chart area.
+            // Use the "Title" property to give our chart a title, which appears at the top center of the chart area.
             ChartTitle title = chart.Title;
             title.Text = "My Chart";
 
-            // Set the title to be visible, and give other chart elements room by allowing them to overlap the title.
+            // Set the "Show" property to "true" to make the title visible. 
             title.Show = true;
+
+            // Set the "Overlay" property to "true" Give other chart elements more room by allowing them to overlap the title
             title.Overlay = true;
 
             doc.Save(ArtifactsDir + "Charts.ChartTitle.docx");
@@ -173,9 +175,10 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a column chart, and then clear its demo data series to start with a clean chart.
             Shape shape = builder.InsertChart(ChartType.Column, 500, 300);
             Chart chart = shape.Chart;
+
+            // Clear the chart's demo data series to start with a clean chart.
             chart.Series.Clear();
 
             // Insert a chart series with categories for the X-axis and respective numeric values for the Y-axis.
@@ -257,9 +260,10 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a line chart, and clear its demo data series to start with a clean chart.
             Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
+
+            // Clear the chart's demo data series to start with a clean chart.
             chart.Series.Clear();
 
             // Add a custom series containing date/time values for the X-axis, and respective decimal values for the Y-axis.
@@ -324,9 +328,10 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a line chart, and then clear its demo data series to start with a clean chart.
             Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
             Chart chart = shape.Chart;
+
+            // Clear the chart's demo data series to start with a clean chart.
             chart.Series.Clear();
 
             // Add a custom series with categories for the X-axis, and respective decimal values for the Y-axis.
@@ -360,9 +365,10 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a column chart, and then clear its demo data series to start with a clean chart.
             Shape shape = builder.InsertChart(ChartType.Column, 500, 300);
             Chart chart = shape.Chart;
+
+            // Clear the chart's demo data series to start with a clean chart.
             chart.Series.Clear();
 
             // Add a custom series to the chart with categories for the X-axis,
@@ -446,8 +452,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a bubble chart, and then clear its demo data series to start with a clean chart.
             Chart chart = builder.InsertChart(ChartType.Bubble, 500, 300).Chart;
+
+            // Clear the chart's demo data series to start with a clean chart.
             chart.Series.Clear();
 
             // Add a custom series with X/Y coordinates and diameter of each of the bubbles. 
@@ -489,8 +496,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a pie chart, and then clear its demo data series to start with a clean chart.
             Chart chart = builder.InsertChart(ChartType.Pie, 500, 300).Chart;
+
+            // Clear the chart's demo data series to start with a clean chart.
             chart.Series.Clear();
 
             // Insert a custom chart series with a category name for each of the sectors, and their frequency table.
@@ -588,7 +596,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Apply data labels with custom number format and separator to a number of data points in a series.
+        /// Apply data labels with custom number format and separator to several data points in a series.
         /// </summary>
         private static void ApplyDataLabels(ChartSeries series, int labelsCount, string numberFormat, string separator)
         {
@@ -676,7 +684,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Applies a number of data points to a series.
+        /// Applies several data points to a series.
         /// </summary>
         private static void ApplyDataPoints(ChartSeries series, int dataPointsCount, MarkerSymbol markerSymbol, int dataPointSize)
         {
@@ -706,7 +714,7 @@ namespace ApiExamples
             Assert.AreEqual(1, chart.Series.Count);
             Assert.AreEqual("Sales", chart.Series[0].Name);
 
-            // "Slices" of a pie chart may be moved away from the center by a distance via the respective data point's Explosion attribute.
+            // "Slices" of a pie chart may be moved away from the center by a distance via the respective data point's Explosion property.
             // Add a data point to the first portion of the pie chart and move it away from the center by 10 points. 
             ChartDataPoint dataPoint = chart.Series[0].DataPoints.Add(0);
             dataPoint.Explosion = 10;
@@ -873,7 +881,7 @@ namespace ApiExamples
             Shape chartShape = builder.InsertChart(ChartType.Column, 400, 300);
             Chart chart = chartShape.Chart;
 
-            // Each series has four decimal values; one for each of the four categories.
+            // Each series has four decimal values: one for each of the four categories.
             // Four clusters of three columns will represent this data.
             ChartSeriesCollection chartData = chart.Series;
 
@@ -905,7 +913,7 @@ namespace ApiExamples
             Assert.AreEqual(3, chartData.Count); //ExSkip
             Assert.AreEqual("Series 4", chartData[2].Name); //ExSkip
 
-            // We can also clear all of the chart's data at once with this method.
+            // We can also clear all the chart's data at once with this method.
             // When creating a new chart, this is the way to wipe all the demo data
             // before we can begin working on a blank chart.
             chartData.Clear();
@@ -925,9 +933,10 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a scatter chart, and then clear its demo data series to start with a clean chart.
             Shape chartShape = builder.InsertChart(ChartType.Scatter, 450, 300);
             Chart chart = chartShape.Chart;
+
+            // Clear the chart's demo data series to start with a clean chart.
             chart.Series.Clear();
 
             // Insert a series with X/Y coordinates for five points.
@@ -967,9 +976,10 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Add a scatter chart, and then clear its demo data series to start with a clean chart.
             Shape chartShape = builder.InsertChart(ChartType.Scatter, 450, 300);
             Chart chart = chartShape.Chart;
+
+            // Clear the chart's demo data series to start with a clean chart.
             chart.Series.Clear();
 
             // Add a series with two decimal arrays. The first array contains the X-values,
@@ -1152,12 +1162,14 @@ namespace ApiExamples
             axis.Scaling.Maximum = new AxisBound(20);
 
             // For the X-axis, set the major tick marks at every 10 units,
-            // every minor tick mark at 2.5 units, and configure them to both be inside the graph plot area.
+            // every minor tick mark at 2.5 units.
             axis = chart.AxisX;
-            axis.MajorTickMark = AxisTickMark.Inside;
-            axis.MinorTickMark = AxisTickMark.Inside;
             axis.MajorUnit = 10;
             axis.MinorUnit = 2.5;
+
+            // Configure both types of tick marks to appear inside the graph plot area.
+            axis.MajorTickMark = AxisTickMark.Inside;
+            axis.MinorTickMark = AxisTickMark.Inside;
 
             // Set the X-axis bounds so that the X-axis spans 5 major tick marks and 12 minor tick marks.
             axis.Scaling.Minimum = new AxisBound(-10);

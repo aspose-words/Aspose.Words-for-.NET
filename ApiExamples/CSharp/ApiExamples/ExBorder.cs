@@ -98,7 +98,7 @@ namespace ApiExamples
             Assert.True(borders[0].IsVisible);
 
             // We can remove a border at once by running the ClearFormatting method. 
-            // Running this method on every border of a paragraph will remove all of its borders.
+            // Running this method on every border of a paragraph will remove all its borders.
             foreach (Border border in borders)
                 border.ClearFormatting();
 
@@ -137,8 +137,8 @@ namespace ApiExamples
             builder.Writeln("Paragraph 1.");
             builder.Write("Paragraph 2.");
 
-            // Since both paragraphs were created with the same border configuration,
-            // the border collections of the two paragraphs share the same elements.
+            // Since we used the same border configuration while creating
+            // these paragraphs, their border collections share the same elements.
             BorderCollection firstParagraphBorders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
             BorderCollection secondParagraphBorders = builder.CurrentParagraph.ParagraphFormat.Borders;
             Assert.AreEqual(6, firstParagraphBorders.Count); //ExSkip
@@ -245,7 +245,7 @@ namespace ApiExamples
                 borders.Vertical.LineWidth = 2.0d;
             }
 
-            // A row format's border settings are separate from those of the cell paragraph.
+            // A row format, and a cell's inner paragraph use different border settings.
             Border border = table.FirstRow.FirstCell.LastParagraph.ParagraphFormat.Borders.Vertical;
 
             Assert.AreEqual(Color.Empty.ToArgb(), border.Color.ToArgb());

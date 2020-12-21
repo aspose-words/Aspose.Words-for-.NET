@@ -24,19 +24,20 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The distance between text and page boundaries is defined in Page Setup, in points
-            // We can also use ConvertUtil to use a more familiar measurement unit like inches to points when defining boundaries
+            // A section's "Page Setup" defines the size of the page margins in points.
+            // We can also use the "ConvertUtil" class to use a more familiar measurement unit,
+            // such as inches when defining boundaries.
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.TopMargin = ConvertUtil.InchToPoint(1.0);
             pageSetup.BottomMargin = ConvertUtil.InchToPoint(2.0);
             pageSetup.LeftMargin = ConvertUtil.InchToPoint(2.5);
             pageSetup.RightMargin = ConvertUtil.InchToPoint(1.5);
 
-            // An inch is 72 points
+            // An inch is 72 points.
             Assert.AreEqual(72.0d, ConvertUtil.InchToPoint(1));
             Assert.AreEqual(1.0d, ConvertUtil.PointToInch(72));
 
-            // Add content to demonstrate these changes
+            // Add content to demonstrate the new margins.
             builder.Writeln($"This Text is {pageSetup.LeftMargin} points/{ConvertUtil.PointToInch(pageSetup.LeftMargin)} inches from the left, " +
                             $"{pageSetup.RightMargin} points/{ConvertUtil.PointToInch(pageSetup.RightMargin)} inches from the right, " +
                             $"{pageSetup.TopMargin} points/{ConvertUtil.PointToInch(pageSetup.TopMargin)} inches from the top, " +
@@ -67,18 +68,19 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The distance between text and page boundaries is defined in Page Setup, in points
-            // We can also use ConvertUtil to use a more familiar measurement unit like millimeters to points when defining boundaries
+            // A section's "Page Setup" defines the size of the page margins in points.
+            // We can also use the "ConvertUtil" class to use a more familiar measurement unit,
+            // such as millimeters when defining boundaries.
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.TopMargin = ConvertUtil.MillimeterToPoint(30);
             pageSetup.BottomMargin = ConvertUtil.MillimeterToPoint(50);
             pageSetup.LeftMargin = ConvertUtil.MillimeterToPoint(80);
             pageSetup.RightMargin = ConvertUtil.MillimeterToPoint(40);
 
-            // A centimeter is approximately 28.3 points
+            // A centimeter is approximately 28.3 points.
             Assert.AreEqual(28.34d, ConvertUtil.MillimeterToPoint(10), 0.01d);
 
-            // Add content to demonstrate these changes
+            // Add content to demonstrate the new margins.
             builder.Writeln($"This Text is {pageSetup.LeftMargin} points from the left, " +
                             $"{pageSetup.RightMargin} points from the right, " +
                             $"{pageSetup.TopMargin} points from the top, " +
@@ -106,22 +108,23 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // The distance between text and page boundaries is defined in Page Setup, in points
-            // We can also use ConvertUtil to use pixels when defining boundaries
+            // A section's "Page Setup" defines the size of the page margins in points.
+            // We can also use the "ConvertUtil" class to use a different measurement unit,
+            // such as pixels when defining boundaries.
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.TopMargin = ConvertUtil.PixelToPoint(100);
             pageSetup.BottomMargin = ConvertUtil.PixelToPoint(200);
             pageSetup.LeftMargin = ConvertUtil.PixelToPoint(225);
             pageSetup.RightMargin = ConvertUtil.PixelToPoint(125);
 
-            // A pixel is 0.75 points
+            // A pixel is 0.75 points.
             Assert.AreEqual(0.75d, ConvertUtil.PixelToPoint(1));
             Assert.AreEqual(1.0d, ConvertUtil.PointToPixel(0.75));
 
-            // The default DPI value used is 96
+            // The default DPI value used is 96.
             Assert.AreEqual(0.75d, ConvertUtil.PixelToPoint(1, 96));
 
-            // Add content to demonstrate these changes
+            // Add content to demonstrate the new margins.
             builder.Writeln($"This Text is {pageSetup.LeftMargin} points/{ConvertUtil.PointToPixel(pageSetup.LeftMargin)} pixels from the left, " +
                             $"{pageSetup.RightMargin} points/{ConvertUtil.PointToPixel(pageSetup.RightMargin)} pixels from the right, " +
                             $"{pageSetup.TopMargin} points/{ConvertUtil.PointToPixel(pageSetup.TopMargin)} pixels from the top, " +
@@ -154,21 +157,22 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Define a custom pixel resolution
-            double myDpi = 192;
+            // Define the size of the top margin of this section in pixels, according to a custom DPI.
+            const double myDpi = 192;
 
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.TopMargin = ConvertUtil.PixelToPoint(100, myDpi);
+
             Assert.AreEqual(37.5d, pageSetup.TopMargin, 0.01d);
 
-            // At the default DPI of 96, a pixel is 0.75 points
+            // At the default DPI of 96, a pixel is 0.75 points.
             Assert.AreEqual(0.75d, ConvertUtil.PixelToPoint(1));
 
             builder.Writeln($"This Text is {pageSetup.TopMargin} points/{ConvertUtil.PointToPixel(pageSetup.TopMargin, myDpi)} " +
                             $"pixels (at a DPI of {myDpi}) from the top of the page.");
 
-            // Set a new DPI and adjust the top margin value accordingly
-            double newDpi = 300;
+            // Set a new DPI and adjust the top margin value accordingly.
+            const double newDpi = 300;
             pageSetup.TopMargin = ConvertUtil.PixelToNewDpi(pageSetup.TopMargin, myDpi, newDpi);
             Assert.AreEqual(59.0d, pageSetup.TopMargin, 0.01d);
 

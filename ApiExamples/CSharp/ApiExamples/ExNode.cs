@@ -660,7 +660,7 @@ namespace ApiExamples
             builder.Write("Run 1. ");
             builder.Write("Run 2. ");
 
-            // Every invocation of the "Write()" method creates a new Run,
+            // Every invocation of the "Write" method creates a new Run,
             // which then appears in the parent Paragraph's RunCollection.
             RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
 
