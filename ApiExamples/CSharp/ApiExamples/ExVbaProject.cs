@@ -77,7 +77,7 @@ namespace ApiExamples
             destDoc.VbaProject = copyVbaProject;
 
             // In the destination document, we already have a module named "Module1"
-            // because it was cloned with the project. We will need to remove the module. //INSP: "it was cloned" passive voice
+            // because we cloned it along with the project. We will need to remove the module.
             VbaModule oldVbaModule = destDoc.VbaProject.Modules["Module1"];
             VbaModule copyVbaModule = doc.VbaProject.Modules["Module1"].Clone();
             destDoc.VbaProject.Modules.Remove(oldVbaModule);

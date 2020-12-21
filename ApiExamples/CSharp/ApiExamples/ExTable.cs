@@ -1556,7 +1556,7 @@ namespace ApiExamples
 
             table.Style = tableStyle;
 
-            // Row banding is automatically enabled in the "StyleOptions" property. //INSP: "is automatically enabled" passive voice
+            // The "StyleOptions" property enables row banding by default.
             Assert.AreEqual(TableStyleOptions.FirstRow | TableStyleOptions.FirstColumn | TableStyleOptions.RowBands,
                 table.StyleOptions);
 
