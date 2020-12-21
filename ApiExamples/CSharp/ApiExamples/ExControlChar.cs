@@ -79,7 +79,7 @@ namespace ApiExamples
             builder.Write("Before space." + ControlChar.SpaceChar + "After space.");
 
             // Add an NBSP, which is a non-breaking space.
-            // Unlike the regular space, this space can't have an automatic line break at its position.
+            // Unlike the regular space, this space cannot have an automatic line break at its position.
             builder.Write("Before space." + ControlChar.NonBreakingSpace + "After space.");
 
             // Add a tab character.

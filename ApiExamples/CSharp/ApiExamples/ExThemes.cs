@@ -41,25 +41,28 @@ namespace ApiExamples
             //ExFor:Themes.ThemeFonts.ComplexScript
             //ExFor:Themes.ThemeFonts.EastAsian
             //ExFor:Themes.ThemeFonts.Latin
-            //ExSummary:Shows how to set custom theme colors and fonts.
+            //ExSummary:Shows how to set custom colors and fonts for themes.
             Document doc = new Document(MyDir + "Theme colors.docx");
 
-            // This object gives us access to the document theme, which is a source of default fonts and colors
+            // The "Theme" object gives us access to the document theme, a source of default fonts and colors.
             Theme theme = doc.Theme;
 
-            // These fonts will be inherited by some styles like "Heading 1" and "Subtitle"
+            // Some styles, such as "Heading 1" and "Subtitle", will inherit these fonts.
             theme.MajorFonts.Latin = "Courier New";
             theme.MinorFonts.Latin = "Agency FB";
 
+            // Other languages may also have their custom fonts in this theme.
             Assert.AreEqual(string.Empty, theme.MajorFonts.ComplexScript);
             Assert.AreEqual(string.Empty, theme.MajorFonts.EastAsian);
             Assert.AreEqual(string.Empty, theme.MinorFonts.ComplexScript);
             Assert.AreEqual(string.Empty, theme.MinorFonts.EastAsian);
 
-            // This collection of colors corresponds to the color palette from Microsoft Word which appears when changing shading or font color 
+            // The "Colors" property contains the color palette from Microsoft Word,
+            // which appears when changing shading or font color.
+            // Apply custom colors to the color palette so we have easy access to them in Microsoft Word
+            // when we, for example, change the font color via "Home" -> "Font" -> "Font Color",
+            // or insert a shape, and then set a color for it via "Shape Format" -> "Shape Styles".
             ThemeColors colors = theme.Colors;
-
-            // We will set the color of each color palette column going from left to right like this
             colors.Dark1 = Color.MidnightBlue;
             colors.Light1 = Color.PaleGreen;
             colors.Dark2 = Color.Indigo;
@@ -72,7 +75,7 @@ namespace ApiExamples
             colors.Accent5 = Color.BlueViolet;
             colors.Accent6 = Color.DarkViolet;
 
-            // We can also set colors for hyperlinks like this
+            // Apply custom colors to hyperlinks in their clicked and un-clicked states.
             colors.Hyperlink = Color.Black;
             colors.FollowedHyperlink = Color.Gray;
 

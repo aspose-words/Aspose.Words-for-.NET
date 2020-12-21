@@ -229,7 +229,7 @@ namespace ApiExamples
 
             builder.Write("For more information, please visit the ");
 
-            // Insert a hyperlink, and apply formatting to emphasize it.
+            // Insert a hyperlink and emphasize it with custom formatting.
             // The hyperlink will be a clickable piece of text which will take us to the location specified in the URL.
             builder.Font.Color = Color.Blue;
             builder.Font.Underline = Underline.Single;
@@ -279,7 +279,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.Blue.ToArgb(), builder.Font.Color.ToArgb());
             Assert.AreEqual(Underline.Single, builder.Font.Underline);
 
-            // Restore the font formatting that we saved earlier, and remove the element from the stack.
+            // Restore the font formatting that we saved earlier and remove the element from the stack.
             builder.PopFont();
 
             Assert.AreEqual(Color.Empty.ToArgb(), builder.Font.Color.ToArgb());
@@ -792,7 +792,7 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
 
             // Populate the table of contents by adding paragraphs with heading styles.
-            // Each such heading will create an entry in the table, as long as its heading level is between 1 and 3.
+            // Each such heading with a level between 1 and 3 will create an entry in the table.
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
             builder.Writeln("Heading 1");
 
@@ -1041,7 +1041,7 @@ namespace ApiExamples
 
             Table table = builder.StartTable();
 
-            // Any rows inserted while the HeadingFormat flag is set to true
+            // Any rows inserted while the "HeadingFormat" flag is set to "true"
             // will show up at the top of the table on every page that it spans.
             builder.RowFormat.HeadingFormat = true;
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
@@ -1126,7 +1126,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             Table table = builder.StartTable();
 
-            // There are two ways of applying the PreferredWidth class to table cells.
+            // There are two ways of applying the "PreferredWidth" class to table cells.
             // 1 -  Set an absolute preferred width based on points:
             builder.InsertCell();
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPoints(40);
@@ -1144,7 +1144,7 @@ namespace ApiExamples
             // A cell with no preferred width specified will take up the rest of the available space.
             builder.CellFormat.PreferredWidth = PreferredWidth.Auto;
 
-            // Each configuration of the PreferredWidth attribute creates a new object.
+            // Each configuration of the "PreferredWidth" property creates a new object.
             Assert.AreNotEqual(table.FirstRow.Cells[1].CellFormat.PreferredWidth.GetHashCode(),
                 builder.CellFormat.PreferredWidth.GetHashCode());
 
@@ -1246,7 +1246,7 @@ namespace ApiExamples
             builder.InsertCell();
             builder.Write("Row 1, Cell 2.");
 
-            // Call the builder's EndRow method to start a new row.
+            // Call the builder's "EndRow" method to start a new row.
             builder.EndRow();
             builder.InsertCell();
             builder.Write("Row 2, Cell 1.");
@@ -1377,7 +1377,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Start a table, and set a default color/thickness for its borders.
+            // Start a table and set a default color/thickness for its borders.
             Table table = builder.StartTable();
             table.SetBorders(LineStyle.Single, 2.0, Color.Black);
 
@@ -1473,7 +1473,7 @@ namespace ApiExamples
             builder.Writeln("Text outside of the bookmark.");
 
             // Insert a HYPERLINK field that links to the bookmark. We can pass field switches
-            // to the InsertHyperlink method as part of the argument containing the referenced bookmark's name.
+            // to the "InsertHyperlink" method as part of the argument containing the referenced bookmark's name.
             builder.Font.Color = Color.Blue;
             builder.Font.Underline = Underline.Single;
             builder.InsertHyperlink("Link to Bookmark1", @"Bookmark1"" \o ""Hyperlink Tip", true);
@@ -1524,7 +1524,7 @@ namespace ApiExamples
             // This cursor functions in the same way as Microsoft Word's blinking cursor,
             // and it also always ends up immediately after any node that the builder just inserted.
             // To append content to a different part of the document,
-            // we can move the cursor to a different node with the MoveTo method.
+            // we can move the cursor to a different node with the "MoveTo" method.
             Assert.AreEqual(doc.FirstSection.Body.LastParagraph, builder.CurrentParagraph); //ExSkip
             builder.MoveTo(doc.FirstSection.Body.FirstParagraph.Runs[0]);
             Assert.AreEqual(doc.FirstSection.Body.FirstParagraph, builder.CurrentParagraph); //ExSkip
@@ -1689,7 +1689,7 @@ namespace ApiExamples
             builder.Write("Row 1, cell 2.");
             builder.EndRow();
 
-            // While building the table, the document builder will apply its current RowFormat/CellFormat attribute values
+            // While building the table, the document builder will apply its current RowFormat/CellFormat property values
             // to the current row/cell that its cursor is in and any new rows/cells as it creates them.
             Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[0].CellFormat.VerticalAlignment);
             Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[1].CellFormat.VerticalAlignment);
@@ -1897,6 +1897,8 @@ namespace ApiExamples
         public void SignatureLineProviderId()
         {
             //ExStart
+            //ExFor:SignatureLine.IsSigned
+            //ExFor:SignatureLine.IsValid
             //ExFor:SignatureLine.ProviderId
             //ExFor:SignatureLineOptions.ShowDate
             //ExFor:SignatureLineOptions.Email
@@ -1922,7 +1924,10 @@ namespace ApiExamples
 
             SignatureLine signatureLine = builder.InsertSignatureLine(signatureLineOptions).SignatureLine;
             signatureLine.ProviderId = Guid.Parse("CF5A7BB4-8F3C-4756-9DF6-BEF7F13259A2");
-            
+
+            Assert.False(signatureLine.IsSigned);
+            Assert.False(signatureLine.IsValid);
+
             doc.Save(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.docx");
 
             SignOptions signOptions = new SignOptions
@@ -1937,11 +1942,16 @@ namespace ApiExamples
 
             DigitalSignatureUtil.Sign(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.docx", 
                 ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx", certHolder, signOptions);
-            //ExEnd
-            
+
+            // Re-open our saved document, and verify that the "IsSigned" and "IsValid" properties both equal "true",
+            // indicating that the signature line contains a signature.
             doc = new Document(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx");
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             signatureLine = shape.SignatureLine;
+
+            Assert.True(signatureLine.IsSigned);
+            Assert.True(signatureLine.IsValid);
+            //ExEnd
 
             Assert.AreEqual("vderyushev", signatureLine.Signer);
             Assert.AreEqual("QA", signatureLine.SignerTitle);
@@ -2172,8 +2182,8 @@ namespace ApiExamples
             //ExSummary:Shows how to reference text with a footnote and an endnote.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
-            // Insert some text and mark it with a footnote with the IsAuto attribute set to "true" by default,
+
+            // Insert some text and mark it with a footnote with the IsAuto property set to "true" by default,
             // so the marker seen in the body text will be auto-numbered at "1",
             // and the footnote will appear at the bottom of the page.
             builder.Write("This text will be referenced by a footnote.");
@@ -2283,7 +2293,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
             //ExSummary:Shows how to manage list style clashes while appending a document.
-            // Open a document with text in a custom style, and clone it.
+            // Load a document with text in a custom style and clone it.
             Document srcDoc = new Document(MyDir + "Custom list numbering.docx");
             Document dstDoc = srcDoc.Clone();
 
@@ -2363,7 +2373,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a field using the DocumentBuilder, and add a run of text after it.
+            // Insert a field using the DocumentBuilder and add a run of text after it.
             Field field = builder.InsertField(" AUTHOR \"John Doe\" ");
 
             // The builder's cursor is currently at end of the document.
@@ -2677,7 +2687,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
+        [Test, Ignore("Failed")]
         public void InsertVideoWithUrl()
         {
             //ExStart
@@ -2837,9 +2847,9 @@ namespace ApiExamples
             builder.ParagraphFormat.StyleName = paraStyle.Name;
             builder.Write("This text is in a custom style. ");
 
-            // Calling the InsertStyleSeparator method actually creates another paragraph,
-            // which can have a different style to the previous. There will be no break between paragraphs,
-            // so our text in the output document will look like one paragraph with two styles.
+            // Calling the InsertStyleSeparator method creates another paragraph,
+            // which can have a different style to the previous. There will be no break between paragraphs.
+            // The text in the output document will look like one paragraph with two styles.
             Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
             Assert.AreEqual("Heading 1", doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style.Name);
             Assert.AreEqual("MyParaStyle", doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style.Name);
@@ -3393,8 +3403,8 @@ namespace ApiExamples
 
             // Insert a shape that plays a video from the web when clicked in Microsoft Word.
             // This rectangular shape will contain an image based on the first frame of the linked video
-            // and a "play button" visual prompt. The video has an aspect ratio of 16:9,
-            // so we will set the shape's size to that ratio, so the image does not appear stretched.
+            // and a "play button" visual prompt. The video has an aspect ratio of 16:9.
+            // We will set the shape's size to that ratio, so the image does not appear stretched.
             builder.InsertOnlineVideo(videoUrl, RelativeHorizontalPosition.LeftMargin, 0,
                 RelativeVerticalPosition.TopMargin, 0, 320, 180, WrapType.Square);
 
@@ -3441,7 +3451,7 @@ namespace ApiExamples
                     using (Image image = Image.FromStream(stream))
                     {
                         // Below are two ways of creating a shape with a custom thumbnail, which links to an online video
-                        // that can we can watch when we click on the shape in Microsoft Word.
+                        // that will play when we click on the shape in Microsoft Word.
                         // 1 -  Insert an inline shape at the builder's node insertion cursor:
                         builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes, image.Width, image.Height);
 

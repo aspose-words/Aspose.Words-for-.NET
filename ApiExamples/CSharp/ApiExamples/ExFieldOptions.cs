@@ -336,7 +336,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Provides a CultureInfo object that should be used during the update of a particular field.
+        /// Provides a CultureInfo object that should be used during the update of a field.
         /// </summary>
         private class FieldUpdateCultureProvider : IFieldUpdateCultureProvider
         {

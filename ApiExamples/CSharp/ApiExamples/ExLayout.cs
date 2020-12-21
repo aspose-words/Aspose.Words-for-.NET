@@ -107,7 +107,7 @@ namespace ApiExamples
         public void LayoutEnumerator()
         {
             // Open a document that contains a variety of layout entities.
-            // Layout entities are pages, cells, rows, lines and other objects included in the LayoutEntityType enum.
+            // Layout entities are pages, cells, rows, lines, and other objects included in the LayoutEntityType enum.
             // Each layout entity has a rectangular space that it occupies in the document body.
             Document doc = new Document(MyDir + "Layout entities.docx");
 
@@ -246,7 +246,7 @@ namespace ApiExamples
         //ExFor:IPageLayoutCallback.Notify(PageLayoutCallbackArgs)
         //ExFor:PageLayoutCallbackArgs.Event
         //ExFor:PageLayoutCallbackArgs.Document
-        //ExFor:PageLayoutCallbackArgs.PageIndex
+        //ExFor:PageLayoutCallbackArgs.PageSet
         //ExFor:PageLayoutEvent
         //ExSummary:Shows how to track layout changes with a layout callback.
         [Test]
@@ -265,8 +265,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Notifies us when we save the document to a fixed page format,
-        /// and also renders a page that we perform a page reflow on to an image in the local file system.
+        /// Notifies us when we save the document to a fixed page format
+        /// and renders a page that we perform a page reflow on to an image in the local file system.
         /// </summary>
         private class RenderPageLayoutCallback : IPageLayoutCallback
         {
@@ -296,9 +296,7 @@ namespace ApiExamples
 
             private void RenderPage(PageLayoutCallbackArgs a, int pageIndex)
             {
-                ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png);
-                saveOptions.PageIndex = pageIndex;
-                saveOptions.PageCount = 1;
+                ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png) { PageSet = new PageSet(pageIndex) };
 
                 using (FileStream stream =
                     new FileStream(ArtifactsDir + $@"PageLayoutCallback.page-{pageIndex + 1} {++mNum}.png",

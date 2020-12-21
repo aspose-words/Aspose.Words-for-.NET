@@ -38,7 +38,7 @@ namespace ApiExamples
             };
 
             // If we are rendering the document as a booklet, we must set the "MultiplePages"
-            // properties of all page setup objects of all sections to "MultiplePagesType.BookFoldPrinting".
+            // properties of the page setup objects of all sections to "MultiplePagesType.BookFoldPrinting".
             foreach (Section s in doc.Sections)
             {
                 s.PageSetup.MultiplePages = MultiplePagesType.BookFoldPrinting;

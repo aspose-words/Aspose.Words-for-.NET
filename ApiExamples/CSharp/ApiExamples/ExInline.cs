@@ -35,7 +35,7 @@ namespace ApiExamples
             // When we edit the document while the "Track Changes" option, found in via Review -> Tracking,
             // is turned on in Microsoft Word, the changes we apply count as revisions.
             // When editing a document using Aspose.Words, we can begin tracking revisions by
-            // invoking the document's "StartTrackRevisions" method, and stop tracking by using the "StopTrackRevisions" method.
+            // invoking the document's "StartTrackRevisions" method and stop tracking by using the "StopTrackRevisions" method.
             // We can either accept revisions to assimilate them into the document
             // or reject them to change the proposed change effectively.
             Assert.AreEqual(6, doc.Revisions.Count);

@@ -106,7 +106,7 @@ namespace ApiExamples
                 // This will run the command and store the data in the reader.
                 OdbcDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection);
 
-                // Take the data from the reader, and use it in the mail merge.
+                // Take the data from the reader and use it in the mail merge.
                 doc.MailMerge.Execute(reader);
             }
 
@@ -143,7 +143,7 @@ namespace ApiExamples
             ADODB.Recordset recordset = new ADODB.Recordset();
             recordset.Open(command, connection);
 
-            // Execute the mail merge, and save the document.
+            // Execute the mail merge and save the document.
             doc.MailMerge.ExecuteADO(recordset);
             doc.Save(ArtifactsDir + "MailMerge.ExecuteADO.docx");
             TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.mdb", command, doc, true); //ExSkip
@@ -196,13 +196,13 @@ namespace ApiExamples
             // Run a mail merge on just the first region, filling its MERGEFIELDS with data from the record set.
             doc.MailMerge.ExecuteWithRegionsADO(recordset, "MergeRegion1");
 
-            // Close the record set, and reopen it with data from another SQL query.
+            // Close the record set and reopen it with data from another SQL query.
             command = "SELECT * FROM Customers";
 
             recordset.Close();
             recordset.Open(command, connection);
 
-            // Run a second mail merge on the second region, and save the document.
+            // Run a second mail merge on the second region and save the document.
             doc.MailMerge.ExecuteWithRegionsADO(recordset, "MergeRegion2");
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteWithRegionsADO.docx");
@@ -616,16 +616,12 @@ namespace ApiExamples
             Document doc = CreateSourceDocWithAlternativeMergeFields();
             DataTable dataTable = CreateSourceTablePreserveUnusedTags();
 
-            // By default, alternative merge tags that cannot receive data because the data source has no columns with their name
-            // are converted to and left on display as MERGEFIELDs after the mail merge.
-            // We can preserve their original appearance setting this attribute to true.
-
             // By default, a mail merge places data from each row of a table into MERGEFIELDs, which name columns in that table. 
             // Our document has no such fields, but it does have plaintext tags enclosed by curly braces.
             // If we set the "PreserveUnusedTags" flag to "true", we could treat these tags as MERGEFIELDs
             // to allow our mail merge to insert data from the data source at those tags.
             // If we set the "PreserveUnusedTags" flag to "false",
-            // the mail merge will convert these tags to MERGEFIELDs, and leave them unfilled.
+            // the mail merge will convert these tags to MERGEFIELDs and leave them unfilled.
             doc.MailMerge.PreserveUnusedTags = preserveUnusedTags;
             doc.MailMerge.Execute(dataTable);
 
@@ -643,7 +639,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Create a document and add two plaintext tags that can may act as MERGEFIELDs during a mail merge.
+        /// Create a document and add two plaintext tags that may act as MERGEFIELDs during a mail merge.
         /// </summary>
         private static Document CreateSourceDocWithAlternativeMergeFields()
         {
@@ -1016,7 +1012,7 @@ namespace ApiExamples
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyParagraphs;
 
             // Setting the "CleanupParagraphsWithPunctuationMarks" property to "true" will also count paragraphs
-            // with punctuation marks as empty, and will get the mail merge operation to remove them as well.
+            // with punctuation marks as empty and will get the mail merge operation to remove them as well.
             // Setting the "CleanupParagraphsWithPunctuationMarks" property to "false"
             // will remove empty paragraphs, but not ones with punctuation marks.
             // This is a list of punctuation marks that this property concerns: "!", ",", ".", ":", ";", "?", "¡", "¿".
@@ -1709,14 +1705,15 @@ namespace ApiExamples
                 }
             }
 
-            // We can clone the elements in this collection.
+            // Clone the elements in this collection.
             Assert.AreNotEqual(dataCollection[0], dataCollection[0].Clone());
 
-            // We can also remove elements individually, or clear the entire collection at once.
+            // Use the "RemoveAt" method elements individually by index.
             dataCollection.RemoveAt(0);
 
             Assert.AreEqual(29, dataCollection.Count);
 
+            // Use the "Clear" method to clear the entire collection at once.
             dataCollection.Clear();
 
             Assert.AreEqual(0, dataCollection.Count);
