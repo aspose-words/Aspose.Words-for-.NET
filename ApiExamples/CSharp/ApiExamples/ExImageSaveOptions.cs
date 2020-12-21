@@ -30,7 +30,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Save(String, SaveOptions)
             //ExFor:FixedPageSaveOptions
-            //ExFor:ImageSaveOptions.PageIndex
+            //ExFor:ImageSaveOptions.PageSet
             //ExSummary:Shows how to render one page from a document to a JPEG image.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -46,9 +46,9 @@ namespace ApiExamples
             // to modify the way in which that method renders the document into an image.
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
 
-            // Set the "PageIndex" to "1" to select the second page via
+            // Set the "PageSet" to "1" to select the second page via
             // the zero-based index to start rendering the document from.
-            options.PageIndex = 1;
+            options.PageSet = new PageSet(1);
 
             // When we save the document to the JPEG format, Aspose.Words only renders one page.
             // This image will contain one page starting from page two,
@@ -98,10 +98,10 @@ namespace ApiExamples
         }
 
         [Test]
-        public void PageIndex()
+        public void PageSet()
         {
             //ExStart
-            //ExFor:ImageSaveOptions.PageIndex
+            //ExFor:ImageSaveOptions.PageSet
             //ExSummary:Shows how to specify which page in a document to render as an image.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -122,7 +122,7 @@ namespace ApiExamples
             // Render every page of the document to a separate image file.
             for (int i = 1; i <= doc.PageCount; i++)
             {
-                saveOptions.PageIndex = 1;
+                saveOptions.PageSet = new PageSet(1);
 
                 doc.Save(ArtifactsDir + $"ImageSaveOptions.PageIndex.Page {i}.gif", saveOptions);
             }
@@ -202,8 +202,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.Save(String, SaveOptions)
             //ExFor:FixedPageSaveOptions
-            //ExFor:ImageSaveOptions.PageIndex
-            //ExFor:ImageSaveOptions.PageCount
+            //ExFor:ImageSaveOptions.PageSet
             //ExSummary:Shows how to render every page of a document to a separate TIFF image.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -219,15 +218,11 @@ namespace ApiExamples
             // to modify the way in which that method renders the document into an image.
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff);
 
-            // Set the "PageCount" property to "1" to render only one page of the document.
-            // Many other image formats only render one page at a time, and do not use this property.
-            options.PageCount = 1;
-
             for (int i = 0; i < doc.PageCount; i++)
             {
-                // Set the "PageIndex" property to the number of the first page from
+                // Set the "PageSet" property to the number of the first page from
                 // which to start rendering the document from.
-                options.PageIndex = i;
+                options.PageSet = new PageSet(i);
 
                 doc.Save(ArtifactsDir + $"ImageSaveOptions.PageByPage.{i + 1}.tiff", options);
             }

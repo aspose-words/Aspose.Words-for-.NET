@@ -246,7 +246,7 @@ namespace ApiExamples
         //ExFor:IPageLayoutCallback.Notify(PageLayoutCallbackArgs)
         //ExFor:PageLayoutCallbackArgs.Event
         //ExFor:PageLayoutCallbackArgs.Document
-        //ExFor:PageLayoutCallbackArgs.PageIndex
+        //ExFor:PageLayoutCallbackArgs.PageSet
         //ExFor:PageLayoutEvent
         //ExSummary:Shows how to track layout changes with a layout callback.
         [Test]
@@ -296,9 +296,7 @@ namespace ApiExamples
 
             private void RenderPage(PageLayoutCallbackArgs a, int pageIndex)
             {
-                ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png);
-                saveOptions.PageIndex = pageIndex;
-                saveOptions.PageCount = 1;
+                ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png) { PageSet = new PageSet(pageIndex) };
 
                 using (FileStream stream =
                     new FileStream(ArtifactsDir + $@"PageLayoutCallback.page-{pageIndex + 1} {++mNum}.png",

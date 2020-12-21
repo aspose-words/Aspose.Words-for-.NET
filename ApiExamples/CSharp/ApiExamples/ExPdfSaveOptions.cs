@@ -47,8 +47,7 @@ namespace ApiExamples
         public void OnePage()
         {
             //ExStart
-            //ExFor:FixedPageSaveOptions.PageIndex
-            //ExFor:FixedPageSaveOptions.PageCount
+            //ExFor:FixedPageSaveOptions.PageSet
             //ExFor:Document.Save(Stream, SaveOptions)
             //ExSummary:Shows how to convert only some of the pages in a document to PDF.
             Document doc = new Document();
@@ -67,11 +66,7 @@ namespace ApiExamples
                 PdfSaveOptions options = new PdfSaveOptions();
 
                 // Set the "PageIndex" to "1" to render a portion of the document starting from the second page.
-                options.PageIndex = 1;
-
-                // Set the "PageCount" to "1" to render only one page of the document,
-                // starting from the page that the "PageIndex" property specified.
-                options.PageCount = 1;
+                options.PageSet = new PageSet(1);
 
                 // This document will contain one page starting from page two, which will only contain the second page.
                 doc.Save(stream, options);
