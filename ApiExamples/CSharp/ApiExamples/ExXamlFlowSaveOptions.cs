@@ -25,7 +25,7 @@ namespace ApiExamples
         //ExFor:XamlFlowSaveOptions.ImagesFolder
         //ExFor:XamlFlowSaveOptions.ImagesFolderAlias
         //ExFor:XamlFlowSaveOptions.SaveFormat
-        //ExSummary:Shows how to print the filenames of linked images created during conversion of a document to flow-form .xaml.
+        //ExSummary:Shows how to print the filenames of linked images created while converting a document to flow-form .xaml.
         [Test] //ExSkip
         public void ImageFolder()
         {
@@ -33,8 +33,8 @@ namespace ApiExamples
 
             ImageUriPrinter callback = new ImageUriPrinter(ArtifactsDir + "XamlFlowImageFolderAlias");
 
-            // Create a "XamlFlowSaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to the XAML save format.
+            // Create a "XamlFlowSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to the XAML save format.
             XamlFlowSaveOptions options = new XamlFlowSaveOptions();
 
             Assert.AreEqual(SaveFormat.XamlFlow, options.SaveFormat);
@@ -44,7 +44,7 @@ namespace ApiExamples
             options.ImagesFolder = ArtifactsDir + "XamlFlowImageFolder";
 
             // Use the "ImagesFolderAlias" property to use this folder
-            // when constructing image URIs instead of the name of the images folder.
+            // when constructing image URIs instead of the images folder's name.
             options.ImagesFolderAlias = ArtifactsDir + "XamlFlowImageFolderAlias";
 
             options.ImageSavingCallback = callback;

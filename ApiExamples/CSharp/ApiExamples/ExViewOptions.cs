@@ -138,7 +138,8 @@ namespace ApiExamples
             // This document contains a small amount of content that takes up a few full pages worth of space.
             // Set the "DoNotDisplayPageBoundaries" flag to "true" to get older versions of Microsoft Word to omit headers,
             // footers, and much of the vertical whitespace when displaying our document.
-            // Set the "DoNotDisplayPageBoundaries" flag to "false" to get older versions of Microsoft Word to display our document normally.
+            // Set the "DoNotDisplayPageBoundaries" flag to "false" to get older versions of Microsoft Word
+            // to normally display our document.
             doc.ViewOptions.DoNotDisplayPageBoundaries = doNotDisplayPageBoundaries;
 
             doc.Save(ArtifactsDir + "ViewOptions.DisplayPageBoundaries.doc");
@@ -155,7 +156,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ViewOptions.FormsDesign
-            //ExSummary:Shows how to save to a .wml document while applying save options.
+            //ExSummary:Shows how to save to a .wml document while applying to save options.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");

@@ -60,7 +60,7 @@ namespace ApiExamples
 
             Assert.AreEqual("456 Queen St.", field.Result);
 
-            // Verify that document variables with a certain name or value exist.
+            // Verify that the document variables with a certain name or value exist.
             Assert.True(variables.Contains("City"));
             Assert.True(variables.Any(v => v.Value == "London"));
 

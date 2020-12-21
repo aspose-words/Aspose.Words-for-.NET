@@ -24,9 +24,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A section's "Page Setup" defines the size of the page margins, in points.
-            // We can also use the "ConvertUtil" class to be able to use a more familiar
-            // measurement unit, such as inches, when defining boundaries.
+            // A section's "Page Setup" defines the size of the page margins in points.
+            // We can also use the "ConvertUtil" class to use a more familiar measurement unit,
+            // such as inches when defining boundaries.
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.TopMargin = ConvertUtil.InchToPoint(1.0);
             pageSetup.BottomMargin = ConvertUtil.InchToPoint(2.0);
@@ -68,9 +68,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A section's "Page Setup" defines the size of the page margins, in points.
-            // We can also use the "ConvertUtil" class to be able to use a more familiar
-            // measurement unit, such as millimeters, when defining boundaries.
+            // A section's "Page Setup" defines the size of the page margins in points.
+            // We can also use the "ConvertUtil" class to use a more familiar measurement unit,
+            // such as millimeters when defining boundaries.
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.TopMargin = ConvertUtil.MillimeterToPoint(30);
             pageSetup.BottomMargin = ConvertUtil.MillimeterToPoint(50);
@@ -108,9 +108,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // A section's "Page Setup" defines the size of the page margins, in points.
-            // We can also use the "ConvertUtil" class to be able to use a different
-            // measurement unit, such as pixels, when defining boundaries.
+            // A section's "Page Setup" defines the size of the page margins in points.
+            // We can also use the "ConvertUtil" class to use a different measurement unit,
+            // such as pixels when defining boundaries.
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.TopMargin = ConvertUtil.PixelToPoint(100);
             pageSetup.BottomMargin = ConvertUtil.PixelToPoint(200);
@@ -158,7 +158,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Define the size of the top margin of this section in pixels, according to a custom DPI.
-            double myDpi = 192;
+            const double myDpi = 192;
 
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.TopMargin = ConvertUtil.PixelToPoint(100, myDpi);
@@ -172,7 +172,7 @@ namespace ApiExamples
                             $"pixels (at a DPI of {myDpi}) from the top of the page.");
 
             // Set a new DPI and adjust the top margin value accordingly.
-            double newDpi = 300;
+            const double newDpi = 300;
             pageSetup.TopMargin = ConvertUtil.PixelToNewDpi(pageSetup.TopMargin, myDpi, newDpi);
             Assert.AreEqual(59.0d, pageSetup.TopMargin, 0.01d);
 

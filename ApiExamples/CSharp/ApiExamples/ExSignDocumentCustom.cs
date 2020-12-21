@@ -19,9 +19,6 @@ using System.IO;
 
 namespace ApiExamples
 {
-    /// <summary>
-    /// This example demonstrates how to add new signature line to the document and sign it with your personal signature <see cref="SignDocument"/>.
-    /// </summary>
     [TestFixture]
     public class ExSignDocumentCustom : ApiExampleBase
     {
@@ -64,8 +61,7 @@ namespace ApiExamples
             Document document = new Document(srcDocumentPath);
             DocumentBuilder builder = new DocumentBuilder(document);
 
-            // Configure and insert a signature line,
-            // which is an object in the document that will display a signature that we sign it with.
+            // Configure and insert a signature line, an object in the document that will display a signature that we sign it with.
             SignatureLineOptions signatureLineOptions = new SignatureLineOptions
             {
                 Signer = signeeInfo.Name, 

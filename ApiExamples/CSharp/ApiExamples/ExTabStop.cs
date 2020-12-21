@@ -95,7 +95,7 @@ namespace ApiExamples
 
             Assert.AreEqual(2, paragraphs.Count);
 
-            // Each paragraph gets its own tab stop collection, which clones its values from the document builder's tab stop collection.
+            // Each paragraph gets its tab stop collection, which clones its values from the document builder's tab stop collection.
             Assert.AreEqual(paragraphs[0].ParagraphFormat.TabStops, paragraphs[1].ParagraphFormat.TabStops);
             Assert.AreNotSame(paragraphs[0].ParagraphFormat.TabStops, paragraphs[1].ParagraphFormat.TabStops);
 
@@ -103,7 +103,7 @@ namespace ApiExamples
             Assert.AreEqual(72.0, tabStops.Before(100.0).Position);
             Assert.AreEqual(432.0, tabStops.After(100.0).Position);
 
-            // We can clear a paragraph's tab stop collection to revert to the default tabbing behaviour.
+            // We can clear a paragraph's tab stop collection to revert to the default tabbing behavior.
             paragraphs[1].ParagraphFormat.TabStops.Clear();
 
             Assert.AreEqual(0, paragraphs[1].ParagraphFormat.TabStops.Count);
@@ -155,7 +155,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:TabStopCollection.GetPositionByIndex
-            //ExSummary:Shows how to find a tab stop by it's index, and verify its position.
+            //ExSummary:Shows how to find a tab, stop by its index and verify its position.
             Document doc = new Document();
             TabStopCollection tabStops = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.TabStops;
 
@@ -172,7 +172,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:TabStopCollection.GetIndexByPosition
-            //ExSummary:Shows how to look up a position to see if a tab stop exists there, and if so, obtain its index.
+            //ExSummary:Shows how to look up a position to see if a tab stop exists there and obtain its index.
             Document doc = new Document();
             TabStopCollection tabStops = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.TabStops;
 

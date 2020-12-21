@@ -33,7 +33,7 @@ namespace ApiExamples
             builder.Writeln("Page 3");
 
             // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to plaintext.
+            // method to modify how we save the document to plaintext.
             TxtSaveOptions saveOptions = new TxtSaveOptions();
 
             // The Aspose.Words "Document" objects have page breaks, just like Microsoft Word documents.
@@ -71,14 +71,14 @@ namespace ApiExamples
             builder.Writeln("שלום עולם!");
             builder.Writeln("مرحبا بالعالم!");
 
-            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to plaintext.
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
             TxtSaveOptions saveOptions = new TxtSaveOptions { Encoding = System.Text.Encoding.Unicode};
 
             // Set the "AddBidiMarks" property to "true" to add marks before runs
             // with right-to-left text to indicate the fact.
             // Set the "AddBidiMarks" property to "false" to write all left-to-right
-            // and right-to-left runs equally with nothing to indicate which is which.
+            // and right-to-left run equally with nothing to indicate which is which.
             saveOptions.AddBidiMarks = addBidiMarks;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.AddBidiMarks.txt", saveOptions);
@@ -128,8 +128,8 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak); 
             builder.Write("Page 3");
 
-            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to plaintext.
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
             TxtSaveOptions saveOptions = new TxtSaveOptions();
 
             // Set the "ExportHeadersFootersMode" property to "TxtExportHeadersFootersMode.None"
@@ -191,16 +191,16 @@ namespace ApiExamples
             builder.ListFormat.ListIndent(); 
             builder.Write("Item 3");
 
-            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to plaintext.
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
 
             // Set the "Character" property to assign a character to use
             // for padding that simulates list indentation in plaintext.
             txtSaveOptions.ListIndentation.Character = ' ';
 
-            // Set the "Count" property to specify a number of times to
-            // place the padding character for each list indent level.
+            // Set the "Count" property to specify the number of times
+            // to place the padding character for each list indent level.
             txtSaveOptions.ListIndentation.Count = 3;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.TxtListIndentation.txt", txtSaveOptions);
@@ -235,14 +235,13 @@ namespace ApiExamples
             builder.ListFormat.ListIndent();
             builder.Write("Item 5");
 
-            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to plaintext.
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
 
             // Set the "SimplifyListLabels" property to "true" to convert some list
             // symbols into simpler ASCII characters, such as '*', 'o', '+', '>', etc.
-            // Set the "SimplifyListLabels" property to "false" to
-            // preserve as many of the original list symbols as possible.
+            // Set the "SimplifyListLabels" property to "false" to preserve as many original list symbols as possible.
             txtSaveOptions.SimplifyListLabels = simplifyListLabels;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.SimplifyListLabels.txt", txtSaveOptions);
@@ -280,8 +279,8 @@ namespace ApiExamples
             builder.Writeln("Paragraph 2.");
             builder.Write("Paragraph 3.");
 
-            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to plaintext.
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
 
             Assert.AreEqual(SaveFormat.Text, txtSaveOptions.SaveFormat);
@@ -311,8 +310,8 @@ namespace ApiExamples
             // Add some text with characters from outside the ASCII character set.
             builder.Write("À È Ì Ò Ù.");
 
-            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to plaintext.
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
             
             // Verify that the "Encoding" property contains the appropriate encoding for our document's contents.
@@ -355,14 +354,14 @@ namespace ApiExamples
             builder.Write("Row 2, cell 2");
             builder.EndTable();
 
-            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to plaintext.
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
 
             // Set the "PreserveTableLayout" property to "true" to apply whitespace padding to the contents
             // of the output plaintext document to preserve as much of the table's layout as possible.
-            // Set the "PreserveTableLayout" property to "false" to save the contents of
-            // all tables as a continuous body of text, with just a new line for each row.
+            // Set the "PreserveTableLayout" property to "false" to save all tables' contents
+            // as a continuous body of text, with just a new line for each row.
             txtSaveOptions.PreserveTableLayout = preserveTableLayout;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.PreserveTableLayout.txt", txtSaveOptions);

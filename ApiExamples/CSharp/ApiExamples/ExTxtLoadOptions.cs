@@ -23,29 +23,29 @@ namespace ApiExamples
             //ExStart
             //ExFor:TxtLoadOptions.DetectNumberingWithWhitespaces
             //ExSummary:Shows how to detect lists when loading plaintext documents.
-            // Create a plaintext document in the form of a string with four separate parts that we may interpret as lists,
+            // Create a plaintext document in a string with four separate parts that we may interpret as lists,
             // with different delimiters. Upon loading the plaintext document into a "Document" object,
-            // Aspose.Words will always detect the first three lists,
-            // and will add a "List" object for each to the document's "Lists" property.
-            string textDoc = "Full stop delimiters:\n" +
-                             "1. First list item 1\n" +
-                             "2. First list item 2\n" +
-                             "3. First list item 3\n\n" +
-                             "Right bracket delimiters:\n" +
-                             "1) Second list item 1\n" +
-                             "2) Second list item 2\n" +
-                             "3) Second list item 3\n\n" +
-                             "Bullet delimiters:\n" +
-                             "• Third list item 1\n" +
-                             "• Third list item 2\n" +
-                             "• Third list item 3\n\n" +
-                             "Whitespace delimiters:\n" +
-                             "1 Fourth list item 1\n" +
-                             "2 Fourth list item 2\n" +
-                             "3 Fourth list item 3";
+            // Aspose.Words will always detect the first three lists and will add a "List" object
+            // for each to the document's "Lists" property.
+            const string textDoc = "Full stop delimiters:\n" +
+                                   "1. First list item 1\n" +
+                                   "2. First list item 2\n" +
+                                   "3. First list item 3\n\n" +
+                                   "Right bracket delimiters:\n" +
+                                   "1) Second list item 1\n" +
+                                   "2) Second list item 2\n" +
+                                   "3) Second list item 3\n\n" +
+                                   "Bullet delimiters:\n" +
+                                   "• Third list item 1\n" +
+                                   "• Third list item 2\n" +
+                                   "• Third list item 3\n\n" +
+                                   "Whitespace delimiters:\n" +
+                                   "1 Fourth list item 1\n" +
+                                   "2 Fourth list item 2\n" +
+                                   "3 Fourth list item 3";
 
             // Create a "TxtLoadOptions" object, which we can pass to a document's constructor
-            // to modify the way in which we load a plaintext document.
+            // to modify how we load a plaintext document.
             TxtLoadOptions loadOptions = new TxtLoadOptions();
 
             // Set the "DetectNumberingWithWhitespaces" property to "true" to detect numbered items
@@ -86,7 +86,7 @@ namespace ApiExamples
                              " Line 3       ";
 
             // Create a "TxtLoadOptions" object, which we can pass to a document's constructor
-            // to modify the way in which we load a plaintext document.
+            // to modify how we load a plaintext document.
             TxtLoadOptions loadOptions = new TxtLoadOptions();
 
             // Set the "LeadingSpacesOptions" property to "TxtLeadingSpacesOptions.Preserve"
@@ -95,7 +95,7 @@ namespace ApiExamples
             // to remove all whitespace characters from the start of every line,
             // and then apply a left first line indent to the paragraph to simulate the effect of the whitespaces.
             // Set the "LeadingSpacesOptions" property to "TxtLeadingSpacesOptions.Trim"
-            // to remove all whitespace characters from the start of every line.
+            // to remove all whitespace characters from every line's start.
             loadOptions.LeadingSpacesOptions = txtLeadingSpacesOptions;
 
             // Set the "TrailingSpacesOptions" property to "TxtTrailingSpacesOptions.Preserve"
@@ -158,10 +158,10 @@ namespace ApiExamples
             //ExFor:ParagraphFormat.Bidi
             //ExSummary:Shows how to detect plaintext document text direction.
             // Create a "TxtLoadOptions" object, which we can pass to a document's constructor
-            // to modify the way in which we load a plaintext document.
+            // to modify how we load a plaintext document.
             TxtLoadOptions loadOptions = new TxtLoadOptions();
 
-            // Set the "DocumentDirection" property to "DocumentDirection.Auto" automatically detect
+            // Set the "DocumentDirection" property to "DocumentDirection.Auto" automatically detects
             // the direction of every paragraph of text that Aspose.Words loads from plaintext.
             // Each paragraph's "Bidi" property will store its direction.
             loadOptions.DocumentDirection = DocumentDirection.Auto;

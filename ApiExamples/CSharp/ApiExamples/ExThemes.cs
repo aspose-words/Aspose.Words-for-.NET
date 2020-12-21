@@ -44,14 +44,14 @@ namespace ApiExamples
             //ExSummary:Shows how to set custom colors and fonts for themes.
             Document doc = new Document(MyDir + "Theme colors.docx");
 
-            // The "Theme" object gives us access to the document theme, which is a source of default fonts and colors.
+            // The "Theme" object gives us access to the document theme, a source of default fonts and colors.
             Theme theme = doc.Theme;
 
             // Some styles, such as "Heading 1" and "Subtitle", will inherit these fonts.
             theme.MajorFonts.Latin = "Courier New";
             theme.MinorFonts.Latin = "Agency FB";
 
-            // Other languages may also have their own custom fonts in this theme.
+            // Other languages may also have their custom fonts in this theme.
             Assert.AreEqual(string.Empty, theme.MajorFonts.ComplexScript);
             Assert.AreEqual(string.Empty, theme.MajorFonts.EastAsian);
             Assert.AreEqual(string.Empty, theme.MinorFonts.ComplexScript);

@@ -23,15 +23,15 @@ namespace ApiExamples
         //ExFor:XamlFixedSaveOptions.ResourcesFolder
         //ExFor:XamlFixedSaveOptions.ResourcesFolderAlias
         //ExFor:XamlFixedSaveOptions.SaveFormat
-        //ExSummary:Shows how to print the URIs of linked resources created during conversion of a document to fixed-form .xaml.
+        //ExSummary:Shows how to print the URIs of linked resources created while converting a document to fixed-form .xaml.
         [Test] //ExSkip
         public void ResourceFolder()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
             ResourceUriPrinter callback = new ResourceUriPrinter();
 
-            // Create a "XamlFixedSaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to the XAML save format.
+            // Create a "XamlFixedSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to the XAML save format.
             XamlFixedSaveOptions options = new XamlFixedSaveOptions();
 
             Assert.AreEqual(SaveFormat.XamlFixed, options.SaveFormat);
@@ -41,7 +41,7 @@ namespace ApiExamples
             options.ResourcesFolder = ArtifactsDir + "XamlFixedResourceFolder";
 
             // Use the "ResourcesFolderAlias" property to use this folder
-            // when constructing image URIs instead of the name of the resources folder.
+            // when constructing image URIs instead of the resources folder's name.
             options.ResourcesFolderAlias = ArtifactsDir + "XamlFixedFolderAlias";
 
             options.ResourceSavingCallback = callback;

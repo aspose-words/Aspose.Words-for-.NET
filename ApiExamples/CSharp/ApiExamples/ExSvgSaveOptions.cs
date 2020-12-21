@@ -46,7 +46,7 @@ namespace ApiExamples
         //ExFor:SvgSaveOptions.ResourcesFolder
         //ExFor:SvgSaveOptions.ResourcesFolderAlias
         //ExFor:SvgSaveOptions.SaveFormat
-        //ExSummary:Shows how to manipulate and print the URIs of linked resources created during conversion of a document to .svg.
+        //ExSummary:Shows how to manipulate and print the URIs of linked resources created while converting a document to .svg.
         [Test] //ExSkip
         public void SvgResourceFolder()
         {

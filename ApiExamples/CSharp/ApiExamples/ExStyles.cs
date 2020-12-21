@@ -122,15 +122,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void ChangeStyleOfTocLevel()
-        {
-            Document doc = new Document();
-            
-            // Retrieve the style used for the first level of the TOC and change the formatting of the style
-            doc.Styles[StyleIdentifier.Toc1].Font.Bold = true;
-        }
-
-        [Test]
         public void ChangeTocsTabStops()
         {
             //ExStart
@@ -152,7 +143,7 @@ namespace ApiExamples
                     // Get the first tab used in this paragraph, this should be the tab used to align the page numbers.
                     TabStop tab = para.ParagraphFormat.TabStops[0];
 
-                    // Replace the first default tab stop with a custom tab stop.
+                    // Replace the first default tab, stop with a custom tab stop.
                     para.ParagraphFormat.TabStops.RemoveByPosition(tab.Position);
                     para.ParagraphFormat.TabStops.Add(tab.Position - 50, tab.Alignment, tab.Leader);
                 }
@@ -190,7 +181,7 @@ namespace ApiExamples
             newStyle.Name = "My Heading 1";
 
             // Our document now has two identical looking styles with different names.
-            // Changing settings of one of the styles does not affect the other.
+            // Changing settings of one of the styles do not affect the other.
             newStyle.Font.Color = Color.Red;
 
             Assert.AreEqual("My Heading 1", newStyle.Name);
@@ -230,7 +221,6 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
-            // Add document-wide defaults parameters
             doc.Styles.DefaultFont.Name = "PMingLiU";
             doc.Styles.DefaultFont.Bold = true;
 
@@ -304,8 +294,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Style with alias.docx");
 
             // This document contains a style named "MyStyle,MyStyle Alias 1,MyStyle Alias 2".
-            // If a style's name has multiple values separated by commas,
-            // each clause is a separate alias for the style.
+            // If a style's name has multiple values separated by commas, each clause is a separate alias.
             Style style = doc.Styles["MyStyle"];
             Assert.AreEqual(new [] { "MyStyle Alias 1", "MyStyle Alias 2" }, style.Aliases);
             Assert.AreEqual("Title", style.BaseStyleName);

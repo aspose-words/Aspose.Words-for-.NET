@@ -22,20 +22,20 @@ namespace ApiExamples
             //ExStart
             //ExFor:WordML2003SaveOptions
             //ExFor:WordML2003SaveOptions.SaveFormat
-            //ExSummary:Shows how to save to a .wml document while applying save options.
+            //ExSummary:Shows how to save to a .wml document while applying to save options.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
-            // Create a "WordML2003SaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to the WordML save format.
+            // Create a "WordML2003SaveOptions" object to pass to the document's "Save" method
+            // to modify how we save the document to the WordML save format.
             WordML2003SaveOptions options = new WordML2003SaveOptions();
 
             Assert.AreEqual(SaveFormat.WordML, options.SaveFormat);
 
             // Set the "PrettyFormat" property to "true" to apply tab character indentation and
-            // newlines to make the raw content of the output document easier to read.
-            // Set the "PrettyFormat" property to "false" to save the raw content of the document in one continuous body of text.
+            // newlines to make the output document's raw content easier to read.
+            // Set the "PrettyFormat" property to "false" to save the document's raw content in one continuous body of the text.
             options.PrettyFormat = prettyFormat;
 
             doc.Save(ArtifactsDir + "WordML2003SaveOptions.PrettyFormat.xml", options);
@@ -69,18 +69,18 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:WordML2003SaveOptions
-            //ExSummary:Shows how to save to a .wml document while applying save options.
+            //ExSummary:Shows how to save to a .wml document while applying to save options.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
-            // Create a "WordML2003SaveOptions" object, which we can pass to the document's "Save"
-            // method to modify the way in which we save the document to the WordML save format.
+            // Create a "WordML2003SaveOptions" object to pass to the document's "Save" method
+            // to modify how we save the document to the WordML save format.
             WordML2003SaveOptions options = new WordML2003SaveOptions();
 
             // Set the "MemoryOptimization" flag to "true" to decrease memory consumption
             // during the document's saving operation at the cost of a longer saving time.
-            // Set the "MemoryOptimization" flag to "false" to save the document normally. 
+            // Set the "MemoryOptimization" flag to "false" to save the document normally.
             options.MemoryOptimization = memoryOptimization;
 
             doc.Save(ArtifactsDir + "WordML2003SaveOptions.MemoryOptimization.xml", options);

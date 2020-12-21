@@ -24,7 +24,7 @@ namespace ApiExamples
             //ExFor:XpsSaveOptions.#ctor
             //ExFor:XpsSaveOptions.OutlineOptions
             //ExFor:XpsSaveOptions.SaveFormat
-            //ExSummary:Shows how to limit the level of headings that will appear in the outline of a saved XPS document.
+            //ExSummary:Shows how to limit the headings' level that will appear in the outline of a saved XPS document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -45,13 +45,13 @@ namespace ApiExamples
             builder.Writeln("Heading 1.2.1");
             builder.Writeln("Heading 1.2.2");
 
-            // Create an "XpsSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .XPS.
+            // Create an "XpsSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .XPS.
             XpsSaveOptions saveOptions = new XpsSaveOptions();
 
             Assert.AreEqual(SaveFormat.Xps, saveOptions.SaveFormat);
 
-            // The output XPS document will contain an outline, which is a table of contents that lists headings in the document body.
+            // The output XPS document will contain an outline, a table of contents that lists headings in the document body.
             // Clicking on an entry in this outline will take us to the location of its respective heading.
             // Set the "HeadingsOutlineLevels" property to "2" to exclude all headings whose levels are above 2 from the outline.
             // The last two headings we have inserted above will not appear.
@@ -71,8 +71,8 @@ namespace ApiExamples
             //ExSummary:Shows how to save a document to the XPS format in the form of a book fold.
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
-            // Create an "XpsSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .XPS.
+            // Create an "XpsSaveOptions" object that we can pass to the document's "Save" method
+            // to modify how that method converts the document to .XPS.
             XpsSaveOptions xpsOptions = new XpsSaveOptions(SaveFormat.Xps);
 
             // Set the "UseBookFoldPrintingSettings" property to "true" to arrange the contents
@@ -89,7 +89,7 @@ namespace ApiExamples
                 }
 
             // Once we print this document, we can turn it into a booklet by stacking the pages
-            // in the order they come out of the printer, and then folding down the middle.
+            // to come out of the printer and folding down the middle.
             doc.Save(ArtifactsDir + "XpsSaveOptions.BookFold.xps", xpsOptions);
             //ExEnd
         }
@@ -103,12 +103,12 @@ namespace ApiExamples
             //ExSummary:Shows how to optimize document objects while saving to xps.
             Document doc = new Document(MyDir + "Unoptimized document.docx");
 
-            // Create an "XpsSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .XPS.
+            // Create an "XpsSaveOptions" object to pass to the document's "Save" method
+            // to modify how that method converts the document to .XPS.
             XpsSaveOptions saveOptions = new XpsSaveOptions();
 
             // Set the "OptimizeOutput" property to "true" to take measures such as removing nested or empty canvases
-            // and concatenating adjacent runs with identical formatting to optimize the content of the output document.
+            // and concatenating adjacent runs with identical formatting to optimize the output document's content.
             // This may affect the appearance of the document.
             // Set the "OptimizeOutput" property to "false" to save the document normally.
             saveOptions.OptimizeOutput = optimizeOutput;
@@ -148,11 +148,11 @@ namespace ApiExamples
                 builder.InsertBreak(BreakType.PageBreak);
             }
 
-            // Create an "XpsSaveOptions" object which we can pass to the document's "Save" method
-            // to modify the way in which that method converts the document to .XPS.
+            // Create an "XpsSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how that method converts the document to .XPS.
             XpsSaveOptions xpsOptions = new XpsSaveOptions();
 
-            // Use the "PageSet" property to select a set of the document's pages to save to the output XPS.
+            // Use the "PageSet" property to select a set of the document's pages to save to output XPS.
             // In this case, we will choose, via a zero-based index, only three pages: page 1, page 2, and page 4.
             xpsOptions.PageSet = new PageSet(0, 1, 3);
 

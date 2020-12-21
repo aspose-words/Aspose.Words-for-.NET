@@ -971,8 +971,8 @@ namespace ApiExamples
 
             // The "ZOrder" property of a shape determines its stacking priority among other overlapping shapes.
             // If two overlapping shapes have different "ZOrder" values,
-            // Microsoft Word will place the shape with the higher value over the shape with the lower value. 
-            // Set the "ZOrder" values of our shapes to place the first orange rectangle over the second light blue one,
+            // Microsoft Word will place the shape with a higher value over the shape with the lower value. 
+            // Set the "ZOrder" values of our shapes to place the first orange rectangle over the second light blue one
             // and the second light blue rectangle over the third light green rectangle.
             // This will reverse their original stacking order.
             shapes[0].ZOrder = 3;
@@ -1154,7 +1154,7 @@ namespace ApiExamples
 
             Forms2OleControl oleControl = (Forms2OleControl)shape.OleFormat.OleControl;
 
-            // Some OLE controls may contain child controls, such as the one in this document, which has 3 option buttons.
+            // Some OLE controls may contain child controls, such as the one in this document with three options buttons.
             Forms2OleControlCollection oleControlCollection = oleControl.ChildNodes;
 
             Assert.AreEqual(3, oleControlCollection.Count);
@@ -1181,7 +1181,7 @@ namespace ApiExamples
             Shape oleShape = (Shape) doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true);
 
             // OLE objects can provide a suggested filename and extension,
-            // which we can use when saving the contents of the object into a file in the local file system.
+            // which we can use when saving the object's contents into a file in the local file system.
             string suggestedFileName = oleShape.OleFormat.SuggestedFileName;
 
             Assert.AreEqual("CSV.csv", suggestedFileName);
@@ -1223,8 +1223,8 @@ namespace ApiExamples
 
             OfficeMath math = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
 
-            // Create an "ImageSaveOptions" object that we can pass to the node renderer's "Save" method
-            // to modify how it renders the OfficeMath node into an image.
+            // Create an "ImageSaveOptions" object to pass to the node renderer's "Save" method to modify
+            // how it renders the OfficeMath node into an image.
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png);
 
             // Set the "Scale" property to 5 to render the object to five times its original size.
@@ -1280,7 +1280,7 @@ namespace ApiExamples
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
 
             // OfficeMath nodes that are children of other OfficeMath nodes are always inline.
-            // The node we are working with is the base node, so we can change its location and display type.
+            // The node we are working with is the base node to change its location and display type.
             Assert.AreEqual(MathObjectType.OMathPara, officeMath.MathObjectType);
             Assert.AreEqual(NodeType.OfficeMath, officeMath.NodeType);
             Assert.AreEqual(officeMath.ParentNode, officeMath.ParentParagraph);
@@ -1327,7 +1327,6 @@ namespace ApiExamples
 
             OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
 
-            // Always inline
             Assert.AreEqual(OfficeMathDisplayType.Display, officeMath.DisplayType);
             Assert.AreEqual(OfficeMathJustification.Center, officeMath.Justification);
         }
@@ -1360,8 +1359,8 @@ namespace ApiExamples
             Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
 
             // Set the "AspectRatioLocked" property to "true" to preserve the shape's aspect ratio
-            // when using any of the four diagonal sizing handles, which change both the height and width of the image.
-            // Using any of the orthogonal sizing handles that either change the height or width will still change the aspect ratio.
+            // when using any of the four diagonal sizing handles, which change both the image's height and width.
+            // Using any orthogonal sizing handles that either change the height or width will still change the aspect ratio.
             // Set the "AspectRatioLocked" property to "false" to allow us to
             // freely change the image's aspect ratio with all sizing handles.
             shape.AspectRatioLocked = lockAspectRatio;
@@ -1408,7 +1407,6 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertImage(ImageDir + "Transparent background logo.png");
 
-            // Loop through all single shapes inside document
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
             {
                 Assert.AreEqual(shapeMarkupLanguage, shape.MarkupLanguage);
@@ -1432,7 +1430,7 @@ namespace ApiExamples
             Shape shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 100,
                 RelativeVerticalPosition.TopMargin, 100, 200, 200, WrapType.None);
 
-            // Basic shapes such as the rectangle have two visible parts.
+            // Basic shapes, such as the rectangle, have two visible parts.
             // 1 -  The fill, which applies to the area within the outline of the shape:
             shape.Fill.Color = Color.White;
 
@@ -1486,7 +1484,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // OLE objects allow us to open other files the local file system using another installed application
+            // OLE objects allow us to open other files in the local file system using another installed application
             // in our operating system by double-clicking on the shape that contains the OLE object in the document body.
             // In this case, our external file will be a ZIP archive.
             byte[] zipFileBytes = File.ReadAllBytes(DatabaseDir + "cat001.zip");
@@ -1530,7 +1528,6 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Shape shape = builder.InsertShape(ShapeType.Rectangle, 200, 300);
-            // Change shape size and rotation
             shape.Height = 300;
             shape.Width = 500;
             shape.Rotation = 30;
@@ -1562,16 +1559,18 @@ namespace ApiExamples
 
             foreach (Run run in runs.OfType<Run>())
             {
-                Shape watermark = new Shape(doc, ShapeType.TextPlainText);
-                watermark.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
-                watermark.RelativeVerticalPosition = RelativeVerticalPosition.Page;
+                Shape watermark = new Shape(doc, ShapeType.TextPlainText)
+                {
+                    RelativeHorizontalPosition = RelativeHorizontalPosition.Page,
+                    RelativeVerticalPosition = RelativeVerticalPosition.Page,
+                    Width = 30,
+                    Height = 30,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Rotation = -40
+                };
 
-                watermark.Width = 30;
-                watermark.Height = 30;
-                watermark.HorizontalAlignment = HorizontalAlignment.Center;
-                watermark.VerticalAlignment = VerticalAlignment.Center;
 
-                watermark.Rotation = -40;
                 watermark.Fill.Color = Color.Gainsboro;
                 watermark.StrokeColor = Color.Gainsboro;
 
@@ -1594,7 +1593,8 @@ namespace ApiExamples
             Assert.AreEqual(31, shapes.Count);
 
             foreach (Shape shape in shapes)
-                TestUtil.VerifyShape(ShapeType.TextPlainText, $"Watermark_{shapes.IndexOf(shape) + 1}", 30.0d, 30.0d, 0.0d, 0.0d, shape);
+                TestUtil.VerifyShape(ShapeType.TextPlainText, $"Watermark_{shapes.IndexOf(shape) + 1}",
+                    30.0d, 30.0d, 0.0d, 0.0d, shape);
         }
 
         [TestCase(false)]
@@ -1628,10 +1628,10 @@ namespace ApiExamples
                 RelativeVerticalPosition.TopMargin, 100, 100, 100, WrapType.None);
 
             // Set the "IsLayoutInCell" property to "true" to display the shape as an inline element inside the cell's paragraph.
-            // The coordinate origin that will determine the location of the shape will be the top left corner of the shape's cell.
-            // If we re-size the cell, the shape will move to maintain the same position starting from the top left of the cell.
+            // The coordinate origin that will determine the shape's location will be the top left corner of the shape's cell.
+            // If we re-size the cell, the shape will move to maintain the same position starting from the cell's top left.
             // Set the "IsLayoutInCell" property to "false" to display the shape as an independent floating shape.
-            // The coordinate origin that will determine the location of the shape will be the top left corner of the page,
+            // The coordinate origin that will determine the shape's location will be the top left corner of the page,
             // and the shape will not respond to any re-sizing of its cell.
             shape.IsLayoutInCell = isLayoutInCell;
 
@@ -1670,7 +1670,7 @@ namespace ApiExamples
 
             // If you need to create "non-primitive" shapes, such as SingleCornerSnipped, TopCornersSnipped, DiagonalCornersSnipped,
             // TopCornersOneRoundedOneSnipped, SingleCornerRounded, TopCornersRounded, or DiagonalCornersRounded,
-            // then save the document with "Strict" or "Transitional" compliance which allows saving shape as DML.
+            // then save the document with "Strict" or "Transitional" compliance, which allows saving shape as DML.
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
             saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
             
@@ -1847,14 +1847,14 @@ namespace ApiExamples
 
             // Insert a shape that will contain a signature line, whose appearance we will
             // customize using the "SignatureLineOptions" object we have created above.
-            // If we are inserting a shape whose coordinates originate at the bottom right hand corner of the page,
+            // If we insert a shape whose coordinates originate at the bottom right hand corner of the page,
             // we will need to supply negative x and y coordinates to bring the shape into view.
             Shape shape = builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, -170.0, 
                     RelativeVerticalPosition.BottomMargin, -60.0, WrapType.None);
 
             Assert.True(shape.IsSignatureLine);
 
-            // Verify properties of our signature line via its Shape object.
+            // Verify the properties of our signature line via its Shape object.
             SignatureLine signatureLine = shape.SignatureLine;
 
             Assert.AreEqual("john.doe@management.com", signatureLine.Email);
@@ -1986,7 +1986,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert another textbox, with specific margins.
+            // Insert another textbox with specific margins.
             Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 100, 100);
             TextBox textBox = textBoxShape.TextBox;
             textBox.InternalMarginTop = 15;
@@ -2022,8 +2022,8 @@ namespace ApiExamples
             Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 300, 300);
             TextBox textBox = textBoxShape.TextBox;
 
-            // Set the "TextBoxWrapMode" property to "TextBoxWrapMode.None" to increase the width
-            // of the text box to accomodate text, should it be large enough.
+            // Set the "TextBoxWrapMode" property to "TextBoxWrapMode.None" to increase the text box's width
+            // to accommodate text, should it be large enough.
             // Set the "TextBoxWrapMode" property to "TextBoxWrapMode.Square" to
             // wrap all text inside the text box, preserving its dimensions.
             textBox.TextBoxWrapMode = textBoxWrapMode;
@@ -2049,12 +2049,12 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Set compatibility options to correctly using of VerticalAnchor property
+            // Set compatibility options to correctly using of VerticalAnchor property.
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2016);
 
             Shape textBoxShape = builder.InsertShape(ShapeType.TextBox, 100, 100);
-            // Not all formats are compatible with this one
-            // For most of incompatible formats AW generated a warnings on save, so use doc.WarningCallback to check it
+            // Not all formats are compatible with this one.
+            // For most of the incompatible formats, AW generated warnings on save, so use doc.WarningCallback to check it.
             textBoxShape.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
             
             builder.MoveTo(textBoxShape.LastParagraph);
@@ -2115,8 +2115,7 @@ namespace ApiExamples
             {
                 Console.WriteLine("This TextBox is the tail of the sequence");
                 
-                // Break the forward link between textBox2 and textBox3,
-                // and then verify that they are no longer linked.
+                // Break the forward link between textBox2 and textBox3, and then verify that they are no longer linked.
                 textBox3.Previous.BreakForwardLink();
 
                 Assert.IsTrue(textBox2.Next == null);
@@ -2165,7 +2164,7 @@ namespace ApiExamples
             // Set the "VerticalAnchor" property to "TextBoxAnchor.Top" to
             // align the text in this text box with the top side of the shape.
             // Set the "VerticalAnchor" property to "TextBoxAnchor.Middle" to
-            // align the text in this text box to the centre of the shape.
+            // align the text in this text box to the center of the shape.
             // Set the "VerticalAnchor" property to "TextBoxAnchor.Bottom" to
             // align the text in this text box to the bottom of the shape.
             shape.TextBox.VerticalAnchor = verticalAnchor;
@@ -2217,13 +2216,12 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
-            // Insert a WordArt object to display text in the form of a shape that
-            // we can re-size an move by using the mouse in Microsoft Word.
+            // Insert a WordArt object to display text in a shape that we can re-size and move by using the mouse in Microsoft Word.
             // Provide a "ShapeType" as an argument to set a shape for the WordArt.
             Shape shape = AppendWordArt(doc, "Hello World! This text is bold, and italic.", 
                 "Arial", 480, 24, Color.White, Color.Black, ShapeType.TextPlainText);
 
-            // Apply the "Bold' and "Italic" formatting settings to the text by using the respective properties.
+            // Apply the "Bold' and "Italic" formatting settings to the text using the respective properties.
             shape.TextPath.Bold = true;
             shape.TextPath.Italic = true;
 
@@ -2254,7 +2252,7 @@ namespace ApiExamples
             shape = AppendWordArt(doc, "No kerning: VAV", "Times New Roman", 100, 24, Color.Orange, Color.Red, ShapeType.TextPlainText);
             shape.TextPath.Kerning = false;
 
-            // Use the "Spacing" property to set custom spacing between characters, on a scale from 0.0 (none) to 1.0 (default).
+            // Use the "Spacing" property to set the custom spacing between characters on a scale from 0.0 (none) to 1.0 (default).
             shape = AppendWordArt(doc, "Spacing set to 0.1", "Calibri", 120, 24, Color.BlueViolet, Color.Blue, ShapeType.TextCascadeDown);
             shape.TextPath.Spacing = 0.1;
 
@@ -2266,14 +2264,14 @@ namespace ApiExamples
             shape = AppendWordArt(doc, "Same character height for lower and UPPER case", "Calibri", 300, 24, Color.DeepSkyBlue, Color.DodgerBlue, ShapeType.TextSlantUp);
             shape.TextPath.SameLetterHeights = true;
 
-            // By default, the size of the text will scale to always fit the size of the containing shape, overriding the text size setting.
+            // By default, the text's size will always scale to fit the containing shape's size, overriding the text size setting.
             shape = AppendWordArt(doc, "FitShape on", "Calibri", 160, 24, Color.LightBlue, Color.Blue, ShapeType.TextPlainText);
             Assert.True(shape.TextPath.FitShape);
             shape.TextPath.Size = 24.0;
 
             // If we set the "FitShape: property to "false", the text will keep the size
             // which the "Size" property specifies regardless of the size of the shape.
-            // Use the "TextPathAlignment" property to also align the text to a side of the shape.
+            // Use the "TextPathAlignment" property also to align the text to a side of the shape.
             shape = AppendWordArt(doc, "FitShape off", "Calibri", 160, 24, Color.LightBlue, Color.Blue, ShapeType.TextPlainText);
             shape.TextPath.FitShape = false;
             shape.TextPath.Size = 24.0;
@@ -2385,13 +2383,11 @@ namespace ApiExamples
 
             // Since we removed that shape while we were tracking changes,
             // the shape persists in the document and counts as a delete revision.
-            // Accepting this revision will remove the shape permanently,
-            // and rejecting it will keep it in the document.
+            // Accepting this revision will remove the shape permanently, and rejecting it will keep it in the document.
             Assert.AreEqual(ShapeType.Cube, shapes[0].ShapeType);
             Assert.True(shapes[0].IsDeleteRevision);
 
-            // And we inserted another shape while tracking changes,
-            // so that shape will count as an insert revision.
+            // And we inserted another shape while tracking changes, so that shape will count as an insert revision.
             // Accepting this revision will assimilate this shape into the document as a non-revision,
             // and rejecting the revision will remove this shape permanently.
             Assert.AreEqual(ShapeType.Sun, shapes[1].ShapeType);
@@ -2407,12 +2403,12 @@ namespace ApiExamples
             //ExFor:ShapeBase.IsMoveToRevision
             //ExSummary:Shows how to identify move revision shapes.
             // A move revision is when we move an element in the document body by cut-and-pasting it in Microsoft Word while
-            // tracking changes. If we involve an inline shape in such a text movement, that shape will also be a move revision.
-            // Copying-and-pasting or moving floating shapes does not create move revisions.
+            // tracking changes. If we involve an inline shape in such a text movement, that shape will also be a revision.
+            // Copying-and-pasting or moving floating shapes do not create move revisions.
             Document doc = new Document(MyDir + "Revision shape.docx");
 
-            // Move revisions consist of pairs of "Move from", and "Move to" revisions. There is one shape that we moved
-            // in this document, but, until we accept or reject the move revision, there will be two instances of that shape.
+            // Move revisions consist of pairs of "Move from", and "Move to" revisions. We moved in this document in one shape,
+            // but until we accept or reject the move revision, there will be two instances of that shape.
             Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
             Assert.AreEqual(2, shapes.Length);
@@ -2451,8 +2447,8 @@ namespace ApiExamples
 
             // The first shape has no effects, and the second one has a shadow and thick outline.
             // These effects make the size of the second shape's silhouette bigger than that of the first.
-            // Even though the size of the rectangle that shows up when we click on these shapes in Microsoft Word is the same,
-            // the visible outer bounds of the second shape are affected by the shadow and outline, and thus are bigger.
+            // Even though the rectangle's size shows up when we click on these shapes in Microsoft Word,
+            // the visible outer bounds of the second shape are affected by the shadow and outline and thus are bigger.
             // We can use the "AdjustWithEffects" method to see the true size of the shape.
             Assert.AreEqual(0.0, shapes[0].StrokeWeight);
             Assert.AreEqual(20.0, shapes[1].StrokeWeight);
@@ -2461,11 +2457,11 @@ namespace ApiExamples
 
             Shape shape = shapes[0];
 
-            // Create a RectangleF object, which represents a rectangle,
+            // Create a RectangleF object, representing a rectangle,
             // which we could potentially use as the coordinates and bounds for a shape.
             RectangleF rectangleF = new RectangleF(200, 200, 1000, 1000);
 
-            // Run this method to get the size of the rectangle adjusted for all our shape's effects
+            // Run this method to get the size of the rectangle adjusted for all our shape effects.
             RectangleF rectangleFOut = shape.AdjustWithEffects(rectangleF);
 
             // Since the shape has no border-changing effects, its boundary dimensions are unaffected.
@@ -2507,7 +2503,6 @@ namespace ApiExamples
             //ExFor:ShapeBase.GetShapeRenderer
             //ExFor:NodeRendererBase.Save(Stream, ImageSaveOptions)
             //ExSummary:Shows how to use a shape renderer to export shapes to files in the local file system.
-            // Open a document that contains shapes and get its shape collection
             Document doc = new Document(MyDir + "Various shapes.docx");
             Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
@@ -2515,7 +2510,7 @@ namespace ApiExamples
 
             // There are 7 shapes in the document, including one group shape with 2 child shapes.
             // We will render every shape to an image file in the local file system
-            // while ignoring the group shapes, since they have no appearance.
+            // while ignoring the group shapes since they have no appearance.
             // This will produce 6 image files.
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
             {

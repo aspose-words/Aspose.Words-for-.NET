@@ -129,7 +129,7 @@ namespace ApiExamples
             // We can use that popup to select a date that the tag will display.
             StructuredDocumentTag sdtDate = new StructuredDocumentTag(doc, SdtType.Date, MarkupLevel.Inline);
 
-            // Display the date according to the Saudi Arabian Arabic locale.
+            // Display the date, according to the Saudi Arabian Arabic locale.
             sdtDate.DateDisplayLocale = CultureInfo.GetCultureInfo("ar-SA").LCID;
 
             // Set the format with which to display the date.
@@ -140,7 +140,7 @@ namespace ApiExamples
             sdtDate.CalendarType = SdtCalendarType.Hijri;
 
             // Before the user chooses a date in Microsoft Word, the tag will display the text "Click here to enter a date.".
-            // Set the "FullDate" property to get the tag to display a default date, according to the tag's calendar.
+            // According to the tag's calendar, set the "FullDate" property to get the tag to display a default date.
             sdtDate.FullDate = new DateTime(1440, 10, 20);
 
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -164,14 +164,13 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTag.Tag
             //ExFor:StructuredDocumentTag.Title
             //ExFor:StructuredDocumentTag.RemoveSelfOnly
-            //ExSummary:Shows how to create a structured document tag in the form of a plain text box and modify its appearance.
+            //ExSummary:Shows how to create a structured document tag in a plain text box and modify its appearance.
             Document doc = new Document();
 
             // Create a structured document tag that will contain plain text.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
-            // Set the title and color of the frame that appears when
-            // you mouse over the structured document tag in Microsoft Word.
+            // Set the title and color of the frame that appears when you mouse over the structured document tag in Microsoft Word.
             tag.Title = "My plain text";
             tag.Color = Color.Magenta;
 
@@ -189,8 +188,8 @@ namespace ApiExamples
             // Any text that we type in the document body after moving out of the tag with arrow keys will use this font.
             tag.EndCharacterFont.Name = "Arial Black";
 
-            // By default, this is false and pressing enter while inside a structured document tag does nothing
-            // When set to true, our structured document tag can have multiple lines
+            // By default, this is false and pressing enter while inside a structured document tag does nothing.
+            // When set to true, our structured document tag can have multiple lines.
 
             // Set the "Multiline" property to "false" to only allow the contents
             // of this structured document tag to span a single line.
@@ -275,10 +274,10 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTag.IsShowingPlaceholderText
             //ExFor:StructuredDocumentTag.Placeholder
             //ExFor:StructuredDocumentTag.PlaceholderName
-            //ExSummary:Shows how to use the contents of a building block as a custom placeholder text for a structured document tag. 
+            //ExSummary:Shows how to use a building block's contents as a custom placeholder text for a structured document tag. 
             Document doc = new Document();
 
-            // Insert a plain text structured document tag of the "PlainText" type, which will function like a text box.
+            // Insert a plain text structured document tag of the "PlainText" type, which will function as a text box.
             // The contents that it will display by default are a "Click here to enter text." prompt.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
@@ -302,7 +301,7 @@ namespace ApiExamples
             Assert.AreEqual(substituteBlock, tag.Placeholder);
 
             // Set the "IsShowingPlaceholderText" property to "true" to treat the
-            // current contents of the structured document tag as placeholder text.
+            // structured document tag's current contents as placeholder text.
             // This means that clicking on the text box in Microsoft Word will immediately highlight all the tag's contents.
             // Set the "IsShowingPlaceholderText" property to "false" to get the
             // structured document tag to treat its contents as text that a user has already entered.
@@ -338,7 +337,7 @@ namespace ApiExamples
             // Insert a plain text structured document tag, which acts as a text box that prompts the user to fill it in.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
 
-            // Set the "LockContents" property to "true" to prohibit the user from editing the contents of this text box.
+            // Set the "LockContents" property to "true" to prohibit the user from editing this text box's contents.
             tag.LockContents = true;
             builder.Write("The contents of this structured document tag cannot be edited: ");
             builder.InsertNode(tag);
@@ -392,7 +391,7 @@ namespace ApiExamples
             doc.FirstSection.Body.AppendChild(tag);
 
             // A drop-down list structured document tag is a form that allows the user to
-            // select an option from a list by left clicking and opening the form in Microsoft Word.
+            // select an option from a list by left-clicking and opening the form in Microsoft Word.
             // The "ListItems" property contains all list items, and each list item is an "SdtListItem".
             SdtListItemCollection listItems = tag.ListItems;
             listItems.Add(new SdtListItem("Value 1"));
@@ -400,14 +399,14 @@ namespace ApiExamples
             Assert.AreEqual(listItems[0].DisplayText, listItems[0].Value);
 
             // Add 3 more list items. Initialize these items using a different constructor to the first item
-            // to get them to display strings that are different to their values.
+            // to display strings that are different from their values.
             listItems.Add(new SdtListItem("Item 2", "Value 2"));
             listItems.Add(new SdtListItem("Item 3", "Value 3"));
             listItems.Add(new SdtListItem("Item 4", "Value 4"));
 
             Assert.AreEqual(4, listItems.Count);
 
-            // The drop-down list is displaying the first item. Assign a different list item to the "SelectedValue" to display it. 
+            // The drop-down list is displaying the first item. Assign a different list item to the "SelectedValue" to display it.
             listItems.SelectedValue = listItems[3];
 
             Assert.AreEqual("Value 4", listItems.SelectedValue.Value);
@@ -459,7 +458,7 @@ namespace ApiExamples
             //ExFor:Document.CustomXmlParts
             //ExFor:StructuredDocumentTag.XmlMapping
             //ExFor:XmlMapping.SetMapping(CustomXmlPart, String, String)
-            //ExSummary:Shows how to create structured document tag with a custom XML data.
+            //ExSummary:Shows how to create a structured document tag with custom XML data.
             Document doc = new Document();
 
             // Construct an XML part that contains data and add it to the document's collection.
@@ -489,7 +488,7 @@ namespace ApiExamples
 
             Assert.AreEqual(2, doc.CustomXmlParts.Count);
 
-            // Iterate through collection and print the contents of each part.
+            // Iterate through the collection and print the contents of each part.
             using (IEnumerator<CustomXmlPart> enumerator = doc.CustomXmlParts.GetEnumerator())
             {
                 int index = 0;
@@ -510,7 +509,7 @@ namespace ApiExamples
             CustomXmlPartCollection customXmlParts = doc.CustomXmlParts.Clone();
             customXmlParts.Clear();
 
-            // Create a structured document tag that will display the contents of our part and insert it into the document body.
+            // Create a structured document tag that will display our part's contents and insert it into the document body.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
             tag.XmlMapping.SetMapping(xmlPart, "/root[1]/text[1]", string.Empty);
 
@@ -655,7 +654,7 @@ namespace ApiExamples
             Assert.AreEqual(3, schemas.Count);
             Assert.AreEqual(2, schemas.IndexOf("http://schemas.microsoft.com/office/2006/metadata/contentType"));
 
-            // Enumerate over the schemas and print each element.
+            // Enumerate the schemas and print each element.
             using (IEnumerator<string> enumerator = schemas.GetEnumerator())
             {
                 while (enumerator.MoveNext())
@@ -697,10 +696,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            StructuredDocumentTag sdtCheckBox = new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline);
-            sdtCheckBox.Checked = true;
+            StructuredDocumentTag sdtCheckBox = 
+                new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline) {Checked = true};
 
-            // Insert content control into the document
             builder.InsertNode(sdtCheckBox);
 
             doc = DocumentHelper.SaveOpen(doc);
@@ -725,7 +723,7 @@ namespace ApiExamples
             Assert.AreEqual("Click here to enter text.", tag.GetText().Trim());
             Assert.True(tag.IsShowingPlaceholderText);
 
-            // Create a building block with text contents. 
+            // Create a building block with text contents.
             GlossaryDocument glossaryDoc = doc.GlossaryDocument;
             BuildingBlock substituteBlock = new BuildingBlock(glossaryDoc);
             substituteBlock.Name = "My placeholder";
@@ -734,8 +732,8 @@ namespace ApiExamples
             substituteBlock.FirstSection.Body.FirstParagraph.AppendChild(new Run(glossaryDoc, "Custom placeholder text."));
             glossaryDoc.AppendChild(substituteBlock);
 
-            // Set the structured document tag's "PlaceholderName" property to the name of our building block to
-            // get the structured document tag to display the contents of the building block in place of the original default text.
+            // Set the structured document tag's "PlaceholderName" property to our building block's name to get
+            // the structured document tag to display the contents of the building block in place of the original default text.
             tag.PlaceholderName = "My placeholder";
 
             Assert.AreEqual("Custom placeholder text.", tag.GetText().Trim());
@@ -819,7 +817,7 @@ namespace ApiExamples
             //ExSummary:Shows how to update structured document tags while saving a document to PDF.
             Document doc = new Document();
 
-            // Insert a drow-down list structured document tag.
+            // Insert a drop-down list structured document tag.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.DropDownList, MarkupLevel.Block);
             tag.ListItems.Add(new SdtListItem("Value 1"));
             tag.ListItems.Add(new SdtListItem("Value 2"));
@@ -827,16 +825,16 @@ namespace ApiExamples
 
             // The drop-down list currently displays "Choose an item" as the default text.
             // Set the "SelectedValue" property to one of the list items to get the tag to
-            // display the value of that list item instead of the default text.
+            // display that list item's value instead of the default text.
             tag.ListItems.SelectedValue = tag.ListItems[1];
 
             doc.FirstSection.Body.AppendChild(tag);
 
-            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
+            // Create a "PdfSaveOptions" object to pass to the document's "Save" method
             // to modify how that method saves the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
-            // Set the "UpdateSdtContent" property to "false" to not update the structured document tags
+            // Set the "UpdateSdtContent" property to "false" not to update the structured document tags
             // while saving the document to PDF. They will display their default values as they were at the time of construction.
             // Set the "UpdateSdtContent" property to "true" to make sure the tags display updated values in the PDF.
             options.UpdateSdtContent = updateSdtContent;
@@ -887,8 +885,8 @@ namespace ApiExamples
             builder.Write("Author");
             builder.EndRow();
             builder.EndTable();
- 
-            // Create table with a repeating section inside.
+
+            // Create a table with a repeating section inside.
             StructuredDocumentTag repeatingSectionSdt =
                 new StructuredDocumentTag(doc, SdtType.RepeatingSection, MarkupLevel.Row);
             repeatingSectionSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book", string.Empty);
@@ -903,8 +901,8 @@ namespace ApiExamples
  
             Row row = new Row(doc);
             repeatingSectionItemSdt.AppendChild(row);
- 
-            // Map xml data with created table cells for the title and author of each book.
+
+            // Map XML data with created table cells for the title and author of each book.
             StructuredDocumentTag titleSdt =
                 new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Cell);
             titleSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/title[1]", string.Empty);
