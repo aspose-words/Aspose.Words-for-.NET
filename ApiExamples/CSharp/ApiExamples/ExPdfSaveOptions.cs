@@ -317,6 +317,22 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExpandedOutlineLevels.pdf", options);
             //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ExpandedOutlineLevels.pdf");
+
+            Assert.AreEqual(1, pdfDocument.Outlines.Count);
+            Assert.AreEqual(5, pdfDocument.Outlines.VisibleCount);
+
+            Assert.True(pdfDocument.Outlines[1].Open);
+            Assert.AreEqual(1, pdfDocument.Outlines[1].Level);
+
+            Assert.False(pdfDocument.Outlines[1][1].Open);
+            Assert.AreEqual(2, pdfDocument.Outlines[1][1].Level);
+
+            Assert.True(pdfDocument.Outlines[1][2].Open);
+            Assert.AreEqual(2, pdfDocument.Outlines[1][2].Level);
+#endif
         }
 
         [TestCase(false)]
