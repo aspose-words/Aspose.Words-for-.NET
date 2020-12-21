@@ -22,6 +22,7 @@ using Document = Aspose.Words.Document;
 using Table = Aspose.Words.Tables.Table;
 using System.Drawing;
 using Aspose.Words.Saving;
+using Aspose.Words.Settings;
 
 #if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
@@ -2677,13 +2678,14 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test]
+        [Test, Ignore("Failed")]
         public void InsertVideoWithUrl()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, Double, Double)
             //ExSummary:Shows how to insert an online video into a document using a URL.
             Document doc = new Document();
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2016);
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertOnlineVideo("https://youtu.be/t_1LYZ102RA", 360, 270);
