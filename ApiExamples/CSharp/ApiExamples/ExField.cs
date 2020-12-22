@@ -7286,5 +7286,186 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.SetFieldIndexFormat.docx");
             //ExEnd
         }
+
+        //ExStart
+        //ExFor:ComparisonEvaluationResult.#ctor(bool)
+        //ExFor:ComparisonEvaluationResult.#ctor(string)
+        //ExFor:ComparisonEvaluationResult
+        //ExFor:ComparisonExpression
+        //ExFor:ComparisonExpression.LeftExpression
+        //ExFor:ComparisonExpression.ComparisonOperator
+        //ExFor:ComparisonExpression.RightExpression
+        //ExFor:FieldOptions.ComparisonExpressionEvaluator
+        //ExSummary:Shows how to implement custom evaluation for the IF and COMPARE fields.
+        [TestCase(" IF {0} {1} {2} \"true argument\" \"false argument\" ", 1, null, "true argument")] //ExSkip
+        [TestCase(" IF {0} {1} {2} \"true argument\" \"false argument\" ", 0, null, "false argument")] //ExSkip
+        [TestCase(" IF {0} {1} {2} \"true argument\" \"false argument\" ", -1, "Custom Error", "Custom Error")] //ExSkip
+        [TestCase(" IF {0} {1} {2} \"true argument\" \"false argument\" ", -1, null, "true argument")] //ExSkip
+        [TestCase(" COMPARE {0} {1} {2} ", 1, null, "1")] //ExSkip
+        [TestCase(" COMPARE {0} {1} {2} ", 0, null, "0")] //ExSkip
+        [TestCase(" COMPARE {0} {1} {2} ", -1, "Custom Error", "Custom Error")] //ExSkip
+        [TestCase(" COMPARE {0} {1} {2} ", -1, null, "1")] //ExSkip
+        public void ConditionEvaluationExtensionPoint(string fieldCode, sbyte comparisonResult, string comparisonError,
+            string expectedResult)
+        {
+            const string left = "\"left expression\"";
+            const string @operator = "<>";
+            const string right = "\"right expression\"";
+
+            DocumentBuilder builder = new DocumentBuilder();
+
+            // Field codes that we use in this example:
+            // 1.   " IF {0} {1} {2} \"true argument\" \"false argument\" ".
+            // 2.   " COMPARE {0} {1} {2} ".
+            Field field = builder.InsertField(string.Format(fieldCode, left, @operator, right), null);
+
+            // If the "comparisonResult" is undefined, we create "ComparisonEvaluationResult" with string, instead of bool.
+            ComparisonEvaluationResult result = comparisonResult != -1
+                ? new ComparisonEvaluationResult(comparisonResult == 1)
+                : comparisonError != null ? new ComparisonEvaluationResult(comparisonError) : null;
+
+            ComparisonExpressionEvaluator evaluator = new ComparisonExpressionEvaluator(result);
+            builder.Document.FieldOptions.ComparisonExpressionEvaluator = evaluator;
+
+            builder.Document.UpdateFields();
+
+            Assert.AreEqual(expectedResult, field.Result);
+            evaluator.AssertInvocationsCount(1).AssertInvocationArguments(0, left, @operator, right);
+        }
+
+        /// <summary>
+        /// Comparison expressions evaluation for the FieldIf and FieldCompare.
+        /// </summary>
+        private class ComparisonExpressionEvaluator : IComparisonExpressionEvaluator
+        {
+            public ComparisonExpressionEvaluator(ComparisonEvaluationResult result)
+            {
+                mResult = result;
+            }
+
+            public ComparisonEvaluationResult Evaluate(Field field, ComparisonExpression expression)
+            {
+                mInvocations.Add(new[]
+                {
+                    expression.LeftExpression,
+                    expression.ComparisonOperator,
+                    expression.RightExpression
+                });
+
+                return mResult;
+            }
+
+            public ComparisonExpressionEvaluator AssertInvocationsCount(int expected)
+            {
+                Assert.AreEqual(expected, mInvocations.Count);
+                return this;
+            }
+
+            public ComparisonExpressionEvaluator AssertInvocationArguments(
+                int invocationIndex,
+                string expectedLeftExpression,
+                string expectedComparisonOperator,
+                string expectedRightExpression)
+            {
+                string[] arguments = mInvocations[invocationIndex];
+
+                Assert.AreEqual(expectedLeftExpression, arguments[0]);
+                Assert.AreEqual(expectedComparisonOperator, arguments[1]);
+                Assert.AreEqual(expectedRightExpression, arguments[2]);
+
+                return this;
+            }
+
+            private readonly ComparisonEvaluationResult mResult;
+            private readonly List<string[]> mInvocations = new List<string[]>();
+        } 
+        //ExEnd
+
+        [Test]
+        public void ComparisonExpressionEvaluatorNestedFields()
+        {
+            Document document = new Document();
+
+            new FieldBuilder(FieldType.FieldIf)
+                .AddArgument(
+                    new FieldBuilder(FieldType.FieldIf)
+                        .AddArgument(123)
+                        .AddArgument(">")
+                        .AddArgument(666)
+                        .AddArgument("left greater than right")
+                        .AddArgument("left less than right"))
+                .AddArgument("<>")
+                .AddArgument(new FieldBuilder(FieldType.FieldIf)
+                    .AddArgument("left expression")
+                    .AddArgument("=")
+                    .AddArgument("right expression")
+                    .AddArgument("expression are equal")
+                    .AddArgument("expression are not equal"))
+                .AddArgument(new FieldBuilder(FieldType.FieldIf)
+                        .AddArgument(new FieldArgumentBuilder()
+                            .AddText("#")
+                            .AddField(new FieldBuilder(FieldType.FieldPage)))
+                        .AddArgument("=")
+                        .AddArgument(new FieldArgumentBuilder()
+                            .AddText("#")
+                            .AddField(new FieldBuilder(FieldType.FieldNumPages)))
+                        .AddArgument("the last page")
+                        .AddArgument("not the last page"))
+                .AddArgument(new FieldBuilder(FieldType.FieldIf)
+                        .AddArgument("unexpected")
+                        .AddArgument("=")
+                        .AddArgument("unexpected")
+                        .AddArgument("unexpected")
+                        .AddArgument("unexpected"))
+                .BuildAndInsert(document.FirstSection.Body.FirstParagraph);
+
+            ComparisonExpressionEvaluator evaluator = new ComparisonExpressionEvaluator(null);
+            document.FieldOptions.ComparisonExpressionEvaluator = evaluator;
+
+            document.UpdateFields();
+
+            evaluator
+                .AssertInvocationsCount(4)
+                .AssertInvocationArguments(0, "123", ">", "666")
+                .AssertInvocationArguments(1, "\"left expression\"", "=", "\"right expression\"")
+                .AssertInvocationArguments(2, "left less than right", "<>", "expression are not equal")
+                .AssertInvocationArguments(3, "\"#1\"", "=", "\"#1\"");
+        }
+
+        [Test]
+        public void ComparisonExpressionEvaluatorHeaderFooterFields()
+        {
+            Document document = new Document();
+            DocumentBuilder builder = new DocumentBuilder(document);
+
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.InsertBreak(BreakType.PageBreak);
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+
+            new FieldBuilder(FieldType.FieldIf)
+                .AddArgument(new FieldBuilder(FieldType.FieldPage))
+                .AddArgument("=")
+                .AddArgument(new FieldBuilder(FieldType.FieldNumPages))
+                .AddArgument(new FieldArgumentBuilder()
+                    .AddField(new FieldBuilder(FieldType.FieldPage))
+                    .AddText(" / ")
+                    .AddField(new FieldBuilder(FieldType.FieldNumPages)))
+                .AddArgument(new FieldArgumentBuilder()
+                    .AddField(new FieldBuilder(FieldType.FieldPage))
+                    .AddText(" / ")
+                    .AddField(new FieldBuilder(FieldType.FieldNumPages)))
+                .BuildAndInsert(builder.CurrentParagraph);
+
+            ComparisonExpressionEvaluator evaluator = new ComparisonExpressionEvaluator(null);
+            document.FieldOptions.ComparisonExpressionEvaluator = evaluator;
+
+            document.UpdateFields();
+
+            evaluator
+                .AssertInvocationsCount(3)
+                .AssertInvocationArguments(0, "1", "=", "3")
+                .AssertInvocationArguments(1, "2", "=", "3")
+                .AssertInvocationArguments(2, "3", "=", "3");
+        }
     }
 }

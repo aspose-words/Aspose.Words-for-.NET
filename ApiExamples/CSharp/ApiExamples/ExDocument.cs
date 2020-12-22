@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
 using Aspose.Words.Markup;
 using Aspose.Words.Rendering;
@@ -27,6 +28,7 @@ using Aspose.Words.Tables;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
+using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Pdf.Text;
 using Aspose.Words.Shaping.HarfBuzz;
@@ -2506,6 +2508,35 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.ExtractPages.docx");
             Assert.AreEqual(doc.PageCount, 2);
+        }
+
+        [Test]
+        public void AllowEmbeddingPostScriptFonts()
+        {
+            //ExStart:
+            //ExFor:SaveOptions.AllowEmbeddingPostScriptFonts
+            //ExSummary:Shows how to save the document with PostScript font.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "PostScriptFont";
+            builder.Writeln("Some text with PostScript font.");
+
+            // Load the font with PostScript to use in the document.
+            MemoryFontSource otf = new MemoryFontSource(File.ReadAllBytes(FontsDir + "AllegroOpen.otf"));
+            doc.FontSettings = new FontSettings();
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] { otf });
+
+            // Embed TrueType fonts.
+            doc.FontInfos.EmbedTrueTypeFonts = true;
+
+            // Allow embedding PostScript fonts while embedding TrueType fonts.
+            // Microsoft Word does not embed PostScript fonts, but can open documents with embedded fonts of this type.
+            SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Docx);
+            saveOptions.AllowEmbeddingPostScriptFonts = true;
+
+            doc.Save(ArtifactsDir + "Document.AllowEmbeddingPostScriptFonts.docx", saveOptions);
+            //ExEnd
         }
     }
 }
