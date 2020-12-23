@@ -156,7 +156,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ViewOptions.FormsDesign
-            //ExSummary:Shows how to save to a .wml document while applying to save options.
+            //ExSummary:Shows how to enable/disable forms design mode.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
