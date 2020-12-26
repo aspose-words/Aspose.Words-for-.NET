@@ -525,7 +525,7 @@ namespace ApiExamples
                     break;
             }
         }
-        
+
         [TestCase(PdfImageCompression.Auto)]
         [TestCase(PdfImageCompression.Jpeg)]
         public void ImageCompression(PdfImageCompression pdfImageCompression)
@@ -1123,6 +1123,18 @@ namespace ApiExamples
             // Restore the original font sources.
             FontSettings.DefaultInstance.SetFontsSources(originalFontsSources);
             //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf");
+
+            Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
+
+            Assert.AreEqual("ArialMT", pdfDocFonts[0].FontName);
+            Assert.AreNotEqual(embedFullFonts, pdfDocFonts[0].IsSubset);
+
+            Assert.AreEqual("Arvo", pdfDocFonts[1].FontName);
+            Assert.AreNotEqual(embedFullFonts, pdfDocFonts[1].IsSubset);
+#endif
         }
 
         [TestCase(PdfFontEmbeddingMode.EmbedAll)]
