@@ -1229,6 +1229,26 @@ namespace ApiExamples
             else
                 Assert.That(30000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf").Length));
             //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf");
+
+            Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
+
+            if (useCoreFonts)
+            {
+                Assert.AreEqual("Helvetica", pdfDocFonts[0].FontName);
+                Assert.AreEqual("Courier", pdfDocFonts[1].FontName);
+            }
+            else
+            {
+                Assert.AreEqual("ArialMT", pdfDocFonts[0].FontName);
+                Assert.AreEqual("CourierNewPSMT", pdfDocFonts[1].FontName);
+            }
+
+            Assert.AreNotEqual(useCoreFonts, pdfDocFonts[0].IsEmbedded);
+            Assert.AreNotEqual(useCoreFonts, pdfDocFonts[1].IsEmbedded);
+#endif
         }
 
         [TestCase(false)]
