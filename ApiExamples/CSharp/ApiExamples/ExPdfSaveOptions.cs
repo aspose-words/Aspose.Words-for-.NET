@@ -1182,6 +1182,20 @@ namespace ApiExamples
                     break;
             }
             //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf");
+
+            Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
+
+            Assert.AreEqual("ArialMT", pdfDocFonts[0].FontName);
+            Assert.AreEqual(pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedAll, 
+                pdfDocFonts[0].IsEmbedded);
+
+            Assert.AreEqual("CourierNewPSMT", pdfDocFonts[1].FontName);
+            Assert.AreEqual(pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedAll || pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedNonstandard, 
+                pdfDocFonts[1].IsEmbedded);
+#endif
         }
 
         [TestCase(false)]
