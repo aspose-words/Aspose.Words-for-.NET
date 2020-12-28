@@ -1393,12 +1393,12 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf", options);
             //ExEnd
 
-            #if NET462 || NETCOREAPP2_1 || JAVA
+#if NET462 || NETCOREAPP2_1 || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf");
             GoToAction action = (GoToAction)pdfDocument.OpenAction;
 
             Assert.AreEqual(0.25d, (action.Destination as XYZExplicitDestination).Zoom);
-            #endif
+#endif
         }
 
         [TestCase(PdfPageMode.FullScreen)]
@@ -1459,6 +1459,27 @@ namespace ApiExamples
                         ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
                     break;
             }
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
+
+            switch (pageMode)
+            {
+                case PdfPageMode.UseNone:
+                case PdfPageMode.UseOutlines:
+                    Assert.AreEqual(Aspose.Pdf.PageMode.UseNone, pdfDocument.PageMode);
+                    break;
+                case PdfPageMode.UseThumbs:
+                    Assert.AreEqual(Aspose.Pdf.PageMode.UseThumbs, pdfDocument.PageMode);
+                    break;
+                case PdfPageMode.FullScreen:
+                    Assert.AreEqual(Aspose.Pdf.PageMode.FullScreen, pdfDocument.PageMode);
+                    break;
+                case PdfPageMode.UseOC:
+                    Assert.AreEqual(Aspose.Pdf.PageMode.UseOC, pdfDocument.PageMode);
+                    break;
+            }
+#endif
         }
 
         [TestCase(false)]
