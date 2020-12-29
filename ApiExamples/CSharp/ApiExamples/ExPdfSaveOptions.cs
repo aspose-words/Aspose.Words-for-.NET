@@ -1537,6 +1537,34 @@ namespace ApiExamples
                         TestUtil.FileContainsString("<</Type /Annot/Subtype /Link/Rect",
                             ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf"));
             }
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
+            Page page = pdfDocument.Pages[1];
+            AnnotationSelector annotationSelector = new AnnotationSelector(new LinkAnnotation(page, Rectangle.Trivial));
+
+            page.Accept(annotationSelector);
+
+            List<LinkAnnotation> linkAnnotations = annotationSelector.Selected.Cast<LinkAnnotation>().ToList();
+
+            if (createNoteHyperlinks)
+            {
+                Assert.AreEqual(8, linkAnnotations.Count(a => a.AnnotationType == AnnotationType.Link));
+
+                Assert.AreEqual("1 XYZ 85 677 0", linkAnnotations[0].Destination.ToString());
+                Assert.AreEqual("1 XYZ 85 79 0", linkAnnotations[1].Destination.ToString());
+                Assert.AreEqual("1 XYZ 85 654 0", linkAnnotations[2].Destination.ToString());
+                Assert.AreEqual("1 XYZ 85 68 0", linkAnnotations[3].Destination.ToString());
+                Assert.AreEqual("1 XYZ 202 733 0", linkAnnotations[4].Destination.ToString());
+                Assert.AreEqual("1 XYZ 258 711 0", linkAnnotations[5].Destination.ToString());
+                Assert.AreEqual("1 XYZ 157 733 0", linkAnnotations[6].Destination.ToString());
+                Assert.AreEqual("1 XYZ 212 711 0", linkAnnotations[7].Destination.ToString());
+            }
+            else
+            {
+                Assert.AreEqual(0, annotationSelector.Selected.Count);
+            }
+#endif
         }
 
         [TestCase(PdfCustomPropertiesExport.None)]
