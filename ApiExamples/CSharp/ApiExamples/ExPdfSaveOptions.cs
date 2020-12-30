@@ -1621,6 +1621,34 @@ namespace ApiExamples
                         ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
                     break;
             }
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
+
+            Assert.AreEqual("Aspose.Words", pdfDocument.Info.Creator);
+            Assert.True(pdfDocument.Info.Producer.StartsWith("Aspose.Words"));
+            
+            switch (pdfCustomPropertiesExportMode)
+            {
+                case PdfCustomPropertiesExport.None:
+                    Assert.AreEqual(2, pdfDocument.Info.Count);
+                    Assert.AreEqual(0, pdfDocument.Metadata.Count);
+                    break;
+                case PdfCustomPropertiesExport.Metadata:
+                    Assert.AreEqual(2, pdfDocument.Info.Count);
+                    Assert.AreEqual(2, pdfDocument.Metadata.Count);
+
+                    Assert.AreEqual("Aspose.Words", pdfDocument.Metadata["xmp:CreatorTool"].ToString());
+                    Assert.AreEqual("Company", pdfDocument.Metadata["custprops:Property1"].ToString());
+                    break;
+                case PdfCustomPropertiesExport.Standard:
+                    Assert.AreEqual(3, pdfDocument.Info.Count);
+                    Assert.AreEqual(0, pdfDocument.Metadata.Count);
+
+                    Assert.AreEqual("My value", pdfDocument.Info["Company"]);
+                    break;
+            }
+#endif
         }
 
         [TestCase(DmlEffectsRenderingMode.None)]
