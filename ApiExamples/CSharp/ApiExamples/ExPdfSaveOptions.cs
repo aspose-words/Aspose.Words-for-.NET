@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using Aspose.Words;
 using Aspose.Words.Fonts;
 using Aspose.Words.Saving;
@@ -34,6 +35,7 @@ using SkiaSharp;
 using Aspose.Pdf;
 using Aspose.Pdf.Annotations;
 using Aspose.Pdf.Facades;
+using Aspose.Pdf.Forms;
 using Aspose.Pdf.Operators;
 using Aspose.Pdf.Text;
 #endif
@@ -2062,8 +2064,24 @@ namespace ApiExamples
 
             Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf")
                 .HasDigitalSignature);
-        }
 
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf");
+
+            Assert.False(pdfDocument.Form.SignaturesExist);
+
+            SignatureField signatureField = (SignatureField)pdfDocument.Form[1];
+
+            Assert.AreEqual("AsposeDigitalSignature", signatureField.FullName);
+            Assert.AreEqual("AsposeDigitalSignature", signatureField.PartialName);
+            Assert.AreEqual(typeof(Aspose.Pdf.Forms.PKCS7), signatureField.Signature.GetType());
+            Assert.AreEqual(DateTime.Today, signatureField.Signature.Date.Date);
+            Assert.AreEqual("þÿ\0M\0o\0r\0z\0a\0l\0.\0M\0e", signatureField.Signature.Authority);
+            Assert.AreEqual("þÿ\0M\0y\0 \0O\0f\0f\0i\0c\0e", signatureField.Signature.Location);
+            Assert.AreEqual("þÿ\0T\0e\0s\0t\0 \0S\0i\0g\0n\0i\0n\0g", signatureField.Signature.Reason);
+#endif
+        }
+        
         [Test]
         public void PdfDigitalSignatureTimestamp()
         {
