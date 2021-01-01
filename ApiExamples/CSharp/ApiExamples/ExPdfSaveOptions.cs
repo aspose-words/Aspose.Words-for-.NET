@@ -2131,6 +2131,23 @@ namespace ApiExamples
             TestUtil.FileContainsString("6 0 obj\r\n" +
                                         "<</Type /Annot/Subtype /Widget/FT /Sig/DR <<>>/F 132/Rect [0 0 0 0]/V 7 0 R/P 4 0 R/T(þÿ\0A\0s\0p\0o\0s\0e\0D\0i\0g\0i\0t\0a\0l\0S\0i\0g\0n\0a\0t\0u\0r\0e)/AP <</N 8 0 R>>>>", 
             ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
+
+            Assert.False(pdfDocument.Form.SignaturesExist);
+
+            SignatureField signatureField = (SignatureField)pdfDocument.Form[1];
+
+            Assert.AreEqual("AsposeDigitalSignature", signatureField.FullName);
+            Assert.AreEqual("AsposeDigitalSignature", signatureField.PartialName);
+            Assert.AreEqual(typeof(Aspose.Pdf.Forms.PKCS7), signatureField.Signature.GetType());
+            Assert.AreEqual(new DateTime(1, 1, 1, 0, 0, 0), signatureField.Signature.Date);
+            Assert.AreEqual("þÿ\0M\0o\0r\0z\0a\0l\0.\0M\0e", signatureField.Signature.Authority);
+            Assert.AreEqual("þÿ\0A\0s\0p\0o\0s\0e\0 \0O\0f\0f\0i\0c\0e", signatureField.Signature.Location);
+            Assert.AreEqual("þÿ\0T\0e\0s\0t\0 \0S\0i\0g\0n\0i\0n\0g", signatureField.Signature.Reason);
+            Assert.Null(signatureField.Signature.TimestampSettings);
+#endif
         }
 
         [TestCase(EmfPlusDualRenderingMode.Emf)]
