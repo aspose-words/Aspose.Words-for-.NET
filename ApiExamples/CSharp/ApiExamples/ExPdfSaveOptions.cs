@@ -2292,6 +2292,26 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.SetNumeralFormat.pdf", options);
             //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.SetNumeralFormat.pdf");
+            TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
+
+            pdfDocument.Pages[1].Accept(textAbsorber);
+
+            switch (numeralFormat)
+            {
+                case NumeralFormat.European:
+                    Assert.AreEqual("1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 50, 100", textAbsorber.Text);
+                    break;
+                case NumeralFormat.ArabicIndic:
+                    Assert.AreEqual(", ٢, ٣, ٤, ٥, ٦, ٧, ٨, ٩, ١٠, ٥٠, ١١٠٠", textAbsorber.Text);
+                    break;
+                case NumeralFormat.EasternArabicIndic:
+                    Assert.AreEqual("۱۰۰ ,۵۰ ,۱۰ ,۹ ,۸ ,۷ ,۶ ,۵ ,۴ ,۳ ,۲ ,۱", textAbsorber.Text);
+                    break;
+            }
+#endif
         }
 
         [Test]
