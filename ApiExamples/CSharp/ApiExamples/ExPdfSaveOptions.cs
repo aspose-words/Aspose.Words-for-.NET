@@ -2243,6 +2243,20 @@ namespace ApiExamples
             // When we open this document, we will need to provide the password before accessing its contents.
             doc.Save(ArtifactsDir + "PdfSaveOptions.EncryptionPermissions.pdf", saveOptions);
             //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument;
+
+            Assert.Throws<InvalidPasswordException>(() => 
+                pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EncryptionPermissions.pdf"));
+
+            pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EncryptionPermissions.pdf", "password");
+            TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
+
+            pdfDocument.Pages[1].Accept(textAbsorber);
+            
+            Assert.AreEqual("Hello world!", textAbsorber.Text);
+#endif
         }
 
         [TestCase(NumeralFormat.ArabicIndic)]
