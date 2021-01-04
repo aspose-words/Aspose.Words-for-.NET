@@ -421,6 +421,15 @@ namespace ApiExamples
                                             "<</Type /Annot/Subtype /Widget/P 4 0 R/FT /Ch/F 4/Rect [168.39199829 707.35101318 217.87442017 722.64007568]/Ff 131072/T(þÿ\0M\0y\0C\0o\0m\0b\0o\0B\0o\0x)/Opt " +
                                             "[(þÿ\0A\0p\0p\0l\0e) (þÿ\0B\0a\0n\0a\0n\0a) (þÿ\0C\0h\0e\0r\0r\0y) ]/V(þÿ\0A\0p\0p\0l\0e)/DA(0 g /FAAABC 12 Tf )/AP<</N 11 0 R>>>>",
                     ArtifactsDir + "PdfSaveOptions.PreserveFormFields.pdf");
+
+                Aspose.Pdf.Forms.Form form = pdfDocument.Form;
+                Assert.AreEqual(1, pdfDocument.Form.Count);
+
+                ComboBoxField field = (ComboBoxField)form.Fields[0];
+                
+                Assert.AreEqual("MyComboBox", field.FullName);
+                Assert.AreEqual(3, field.Options.Count);
+                Assert.AreEqual("Apple", field.Value);
             }
             else
             {
@@ -430,6 +439,8 @@ namespace ApiExamples
                     TestUtil.FileContainsString("/Widget",
                         ArtifactsDir + "PdfSaveOptions.PreserveFormFields.pdf");
                 });
+
+                Assert.AreEqual(0, pdfDocument.Form.Count);
             }
 #endif
         }
