@@ -1697,11 +1697,11 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
 
-            ImagePlacementAbsorber imb = new ImagePlacementAbsorber();
-            imb.Visit(pdfDocument.Pages[1]);
+            ImagePlacementAbsorber imagePlacementAbsorber = new ImagePlacementAbsorber();
+            imagePlacementAbsorber.Visit(pdfDocument.Pages[1]);
 
-            TableAbsorber ttb = new TableAbsorber();
-            ttb.Visit(pdfDocument.Pages[1]);
+            TableAbsorber tableAbsorber = new TableAbsorber();
+            tableAbsorber.Visit(pdfDocument.Pages[1]);
 
             switch (effectsRenderingMode)
             {
@@ -1710,15 +1710,15 @@ namespace ApiExamples
                     TestUtil.FileContainsString("4 0 obj\r\n" +
                                                 "<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
-                    Assert.AreEqual(0, imb.ImagePlacements.Count);
-                    Assert.AreEqual(28, ttb.TableList.Count);
+                    Assert.AreEqual(0, imagePlacementAbsorber.ImagePlacements.Count);
+                    Assert.AreEqual(28, tableAbsorber.TableList.Count);
                     break;
                 case DmlEffectsRenderingMode.Fine:
                     TestUtil.FileContainsString(
                         "4 0 obj\r\n<</Type /Page/Parent 3 0 R/Contents 5 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAH 7 0 R>>/XObject<</X1 9 0 R/X2 10 0 R/X3 11 0 R/X4 12 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
-                    Assert.AreEqual(21, imb.ImagePlacements.Count);
-                    Assert.AreEqual(4, ttb.TableList.Count);
+                    Assert.AreEqual(21, imagePlacementAbsorber.ImagePlacements.Count);
+                    Assert.AreEqual(4, tableAbsorber.TableList.Count);
                     break;
             }
 #endif
@@ -1760,6 +1760,27 @@ namespace ApiExamples
                         ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
                     break;
             }
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument =
+                new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
+
+            ImagePlacementAbsorber imagePlacementAbsorber = new ImagePlacementAbsorber();
+            imagePlacementAbsorber.Visit(pdfDocument.Pages[1]);
+
+            TableAbsorber tableAbsorber = new TableAbsorber();
+            tableAbsorber.Visit(pdfDocument.Pages[1]);
+
+            switch (dmlRenderingMode)
+            {
+                case DmlRenderingMode.DrawingML:
+                    Assert.AreEqual(6, tableAbsorber.TableList.Count);
+                    break;
+                case DmlRenderingMode.Fallback:
+                    Assert.AreEqual(15, tableAbsorber.TableList.Count);
+                    break;
+            }
+#endif
         }
 
         [TestCase(false)]
