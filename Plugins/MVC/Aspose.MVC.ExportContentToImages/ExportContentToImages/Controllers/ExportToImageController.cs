@@ -58,25 +58,25 @@ namespace ExportContentToImages.Controllers
 
                 if (Format.Contains("png"))
                 {
-                     options = new ImageSaveOptions(SaveFormat.Png);
-                    options.PageCount = 1;
+                    options = new ImageSaveOptions(SaveFormat.Png);
+                    options.PageSet = new PageSet(0);
                 }
                 else if (Format.Contains("JPEG"))
                 {
-                     options = new ImageSaveOptions(SaveFormat.Jpeg);
-                    options.PageCount = 1;
-                    
+                    options = new ImageSaveOptions(SaveFormat.Jpeg);
+                    options.PageSet = new PageSet(0);
+
                 }
                 else if (Format.Contains("TIFF"))
                 {
-                     options = new ImageSaveOptions(SaveFormat.Tiff);
-                    options.PageCount = 1;
+                    options = new ImageSaveOptions(SaveFormat.Tiff);
+                    options.PageSet = new PageSet(0);
                 }
 
                 else if (Format.Contains("bmp"))
                 {
-                     options = new ImageSaveOptions(SaveFormat.Bmp);
-                    options.PageCount = 1;
+                    options = new ImageSaveOptions(SaveFormat.Bmp);
+                    options.PageSet = new PageSet(0);
                 }
 
 
@@ -93,14 +93,14 @@ namespace ExportContentToImages.Controllers
                 {
                     if (Format.Contains("TIFF"))
                     {
-                        options.PageCount = doc.PageCount;
+                        options.PageSet = PageSet.All;
                         fileName = i + "_" + System.Guid.NewGuid().ToString() + "." + Format;
                         doc.Save(Server.MapPath("~/Images/Zip/") + fileName, options);
                         break;
                     }
                     else
                     {
-                        options.PageIndex = i;
+                        options.PageSet = new PageSet(i);
                         if (doc.PageCount > 1)
                         {
                             fileName = i + "_" + System.Guid.NewGuid().ToString() + "." + Format;
