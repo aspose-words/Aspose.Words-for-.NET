@@ -22,18 +22,14 @@ namespace Aspose.Plugins.AsposeVSOpenXML
             // Replace header in target document with header of source document.
             using (WordprocessingDocument document = WordprocessingDocument.Open(documentPath, true))
             {
-                // Get the main document part
                 MainDocumentPart mainDocumentPart = document.MainDocumentPart;
 
-                // Delete the existing header and footer parts
                 mainDocumentPart.DeleteParts(mainDocumentPart.HeaderParts);
                 mainDocumentPart.DeleteParts(mainDocumentPart.FooterParts);
 
-                // Create a new header and footer part
                 HeaderPart headerPart = mainDocumentPart.AddNewPart<HeaderPart>();
                 FooterPart footerPart = mainDocumentPart.AddNewPart<FooterPart>();
 
-                // Get Id of the headerPart and footer parts
                 string headerPartId = mainDocumentPart.GetIdOfPart(headerPart);
                 string footerPartId = mainDocumentPart.GetIdOfPart(footerPart);
 
@@ -41,16 +37,14 @@ namespace Aspose.Plugins.AsposeVSOpenXML
 
                 GenerateFooterPartContent(footerPart);
 
-                // Get SectionProperties and Replace HeaderReference and FooterRefernce with new Id
+                // Give the HeaderReference and FooterRefernce of each section property the new Id.
                 IEnumerable<SectionProperties> sections = mainDocumentPart.Document.Body.Elements<SectionProperties>();
 
                 foreach (var section in sections)
                 {
-                    // Delete existing references to headers and footers
                     section.RemoveAllChildren<HeaderReference>();
                     section.RemoveAllChildren<FooterReference>();
 
-                    // Create the new header and footer reference node
                     section.PrependChild<HeaderReference>(new HeaderReference() { Id = headerPartId });
                     section.PrependChild<FooterReference>(new FooterReference() { Id = footerPartId });
                 }

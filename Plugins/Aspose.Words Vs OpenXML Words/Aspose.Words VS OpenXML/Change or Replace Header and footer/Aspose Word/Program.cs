@@ -19,8 +19,8 @@ namespace Aspose.Plugins.AsposeVSOpenXML
 
             string path = FilePath + "Change or Replace Header and footer - Aspose.docx";
             ChangeHeader(path);
-
         }
+
         public static void ChangeHeader(string documentPath)
         {
             Document doc = new Document(documentPath);
