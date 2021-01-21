@@ -11,17 +11,17 @@ namespace Aspose.Plugins.AsposeVSOpenXML
     {
         static void Main(string[] args)
         {
-            string FilePath = @"..\..\..\..\Sample Files\";
-            string File = FilePath + "Create and add a paragraph style - OpenXML.docx";
+            string filepath = @"..\..\..\..\Sample Files\";
+            string fullFilename = filepath + "Create and add a paragraph style - OpenXML.docx";
 
             using (WordprocessingDocument doc =
-                WordprocessingDocument.Open(File, true))
+                WordprocessingDocument.Open(fullFilename, true))
             {
                 // Get the Styles part for this document.
                 StyleDefinitionsPart part =
                     doc.MainDocumentPart.StyleDefinitionsPart;
 
-                // If the Styles part does not exist, add it and then add the style.
+                // If the Styles part does not exist: add the styles part, and then add the style.
                 if (part == null)
                 {
                     part = AddStylesPartToPackage(doc);
@@ -31,7 +31,7 @@ namespace Aspose.Plugins.AsposeVSOpenXML
                 string parastyleid = "OverdueAmountPara";
 
                 // Create and add a paragraph style to the specified styles part 
-                // with the specified style ID, style name and aliases.
+                // with the specified style ID, style name, and aliases.
                 CreateAndAddParagraphStyle(part,
                     parastyleid,
                     "Overdue Amount Para",
@@ -46,7 +46,7 @@ namespace Aspose.Plugins.AsposeVSOpenXML
                 // Add the paragraph as a child element of the w:body element.
                 doc.MainDocumentPart.Document.Body.AppendChild(p);
 
-                // If the paragraph has no ParagraphProperties object, create one.
+                // If the paragraph has no ParagraphProperties object, then create one.
                 if (p.Elements<ParagraphProperties>().Count() == 0)
                 {
                     p.PrependChild<ParagraphProperties>(new ParagraphProperties());
@@ -55,16 +55,16 @@ namespace Aspose.Plugins.AsposeVSOpenXML
                 // Get a reference to the ParagraphProperties object.
                 ParagraphProperties pPr = p.ParagraphProperties;
 
-                // If a ParagraphStyleId object doesn't exist, create one.
+                // If a ParagraphStyleId object doesn't exist, then create one.
                 if (pPr.ParagraphStyleId == null)
                     pPr.ParagraphStyleId = new ParagraphStyleId();
 
-                // Set the style of the paragraph.
                 pPr.ParagraphStyleId.Val = parastyleid;
             }
         }
-        // Create a new paragraph style with the specified style ID, primary style name, and aliases and 
-        // add it to the specified style definitions part.
+
+        // Create a new paragraph style with the specified style ID, primary style name, and aliases.
+        // Add it to the specified style definitions part.
         public static void CreateAndAddParagraphStyle(StyleDefinitionsPart styleDefinitionsPart,
             string styleid, string stylename, string aliases = "")
         {
@@ -118,6 +118,7 @@ namespace Aspose.Plugins.AsposeVSOpenXML
             Color color1 = new Color() { ThemeColor = ThemeColorValues.Accent2 };
             RunFonts font1 = new RunFonts() { Ascii = "Lucida Console" };
             Italic italic1 = new Italic();
+
             // Specify a 12 point size.
             FontSize fontSize1 = new FontSize() { Val = "24" };
             styleRunProperties1.Append(bold1);
@@ -133,7 +134,7 @@ namespace Aspose.Plugins.AsposeVSOpenXML
             styles.Append(style);
         }
 
-        // Add a StylesDefinitionsPart to the document.  Returns a reference to it.
+        // Add a StylesDefinitionsPart to the document.
         public static StyleDefinitionsPart AddStylesPartToPackage(WordprocessingDocument doc)
         {
             StyleDefinitionsPart part;

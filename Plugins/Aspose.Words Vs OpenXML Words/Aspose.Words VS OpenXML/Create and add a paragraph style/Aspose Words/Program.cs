@@ -10,31 +10,28 @@ namespace Aspose.Plugins.AsposeVSOpenXML
     {
         static void Main(string[] args)
         {
-            string FilePath = @"..\..\..\..\Sample Files\";
-            string File = FilePath + "Create and add a paragraph style - Aspose.docx";
+            string filepath = @"..\..\..\..\Sample Files\";
+            string fullFilename = filepath + "Create and add a paragraph style - Aspose.docx";
             
-            // Open the new document.
             Document doc = new Document();
-
             DocumentBuilder builder = new DocumentBuilder(doc);
-            // Set font formatting properties
+            
+            Style style = doc.Styles.Add(StyleType.Paragraph, "MyStyle");
             Aspose.Words.Font font = builder.Font;
             font.Bold = true;
-            font.Color = System.Drawing.Color.Red;
+            font.Color = System.Drawing.Color.Blue;
             font.Italic = true;
             font.Name = "Arial";
             font.Size = 24;
             font.Spacing = 5;
             font.Underline = Underline.Double;
 
-            // Output formatted text
+            builder.ParagraphFormat.Style = doc.Styles["MyStyle"];
+
             builder.MoveToDocumentEnd();
-            builder.Writeln("I'm a very nice formatted string.");
+            builder.Writeln("This string is formatted using the new style.");
 
-            string txt = builder.CurrentParagraph.GetText();
-
-            doc.Save(File);
+            doc.Save(fullFilename);
         }
-
     }
 }

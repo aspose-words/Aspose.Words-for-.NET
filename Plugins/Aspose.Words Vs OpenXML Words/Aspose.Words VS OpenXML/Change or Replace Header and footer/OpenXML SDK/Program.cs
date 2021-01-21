@@ -19,7 +19,7 @@ namespace Aspose.Plugins.AsposeVSOpenXML
 
         public static void ChangeHeader(String documentPath)
         {
-            // Replace header in target document with header of source document.
+            // Replace a header in the target document with a header from the source document.
             using (WordprocessingDocument document = WordprocessingDocument.Open(documentPath, true))
             {
                 MainDocumentPart mainDocumentPart = document.MainDocumentPart;
@@ -50,8 +50,7 @@ namespace Aspose.Plugins.AsposeVSOpenXML
                 }
             }
         }
-
-
+        
         public static void GenerateHeaderPartContent(HeaderPart part)
         {
             Header header1 = new Header() { MCAttributes = new MarkupCompatibilityAttributes() { Ignorable = "w14 wp14" } };

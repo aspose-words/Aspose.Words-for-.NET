@@ -11,15 +11,15 @@ namespace Aspose.Plugins.AsposeVSOpenXML
     {
         static void Main(string[] args)
         {
-            string FilePath = @"..\..\..\..\Sample Files\";
-            string File = FilePath + "Create a Document - Aspose.docx";
+            string filepath = @"..\..\..\..\Sample Files\";
+            string fullFilename = filepath + "Create a Document - Aspose.docx";
             
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln("Hello World!");
 
-            doc.Save(File);
+            doc.Save(fullFilename);
         }
     }
 }

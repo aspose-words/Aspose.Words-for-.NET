@@ -10,10 +10,10 @@ namespace Aspose.Plugins.AsposeVSOpenXML
     {
         static void Main(string[] args)
         {
-            string FilePath = @"..\..\..\..\Sample Files\";
-            string File = FilePath + "Create a Document - OpenXML.docx";
+            string filepath = @"..\..\..\..\Sample Files\";
+            string fullFilename = filepath + "Create a Document - OpenXML.docx";
 
-            CreateWordprocessingDocument(File);
+            CreateWordprocessingDocument(fullFilename);
         }
         public static void CreateWordprocessingDocument(string filepath)
         {
@@ -21,7 +21,6 @@ namespace Aspose.Plugins.AsposeVSOpenXML
             using (WordprocessingDocument wordDocument =
                 WordprocessingDocument.Create(filepath, WordprocessingDocumentType.Document))
             {
-                // Add a main document part. 
                 MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
 
                 // Create the document structure and add some text.

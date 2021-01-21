@@ -13,8 +13,9 @@ namespace Aspose.Plugins.AsposeVSOpenXML
             string NewFile = FilePath + "ConvertFromDOCMtoDOCX - OpenXML - Output.docx";
             ConvertDOCMtoDOCX(File, NewFile);
         }
-        // Given a .docm file (with macro storage), remove the VBA 
-        // project, reset the document type, and save the document with a new name.
+
+        // Given a .docm file (with macro storage): remove the VBA 
+        // project, reset the document type, and then save the document in the local file system under a new filename.
         public static void ConvertDOCMtoDOCX(string oldfileName, string newfileName)
         {
             bool fileChanged = false;
@@ -22,7 +23,6 @@ namespace Aspose.Plugins.AsposeVSOpenXML
             using (WordprocessingDocument document =
                 WordprocessingDocument.Open(oldfileName, true))
             {
-                // Access the main document part.
                 var docPart = document.MainDocumentPart;
 
                 // Look for the vbaProject part. If it is there, delete it.
@@ -33,12 +33,10 @@ namespace Aspose.Plugins.AsposeVSOpenXML
                     docPart.DeletePart(vbaPart);
                     docPart.Document.Save();
 
-                    // Change the document type to
-                    // not macro-enabled.
+                    // Change the document type to not macro-enabled.
                     document.ChangeDocumentType(
                         WordprocessingDocumentType.Document);
 
-                    // Track that the document has been changed.
                     fileChanged = true;
                 }
             }
@@ -47,15 +45,9 @@ namespace Aspose.Plugins.AsposeVSOpenXML
             // the code will raise an exception back to the caller.
             if (fileChanged)
             {
-                // Create the new .docx filename.
-
-                // If it already exists, it will be deleted!
                 if (File.Exists(newfileName))
-                {
                     File.Delete(newfileName);
-                }
 
-                // Rename the file.
                 File.Move(oldfileName, newfileName);
             }
         }
