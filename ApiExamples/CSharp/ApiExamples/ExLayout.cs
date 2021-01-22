@@ -246,7 +246,7 @@ namespace ApiExamples
         //ExFor:IPageLayoutCallback.Notify(PageLayoutCallbackArgs)
         //ExFor:PageLayoutCallbackArgs.Event
         //ExFor:PageLayoutCallbackArgs.Document
-        //ExFor:PageLayoutCallbackArgs.PageSet
+        //ExFor:PageLayoutCallbackArgs.PageIndex
         //ExFor:PageLayoutEvent
         //ExSummary:Shows how to track layout changes with a layout callback.
         [Test]

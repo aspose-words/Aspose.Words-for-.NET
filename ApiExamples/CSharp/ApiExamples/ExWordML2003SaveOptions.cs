@@ -22,7 +22,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:WordML2003SaveOptions
             //ExFor:WordML2003SaveOptions.SaveFormat
-            //ExSummary:Shows how to save to a .wml document while applying to save options.
+            //ExSummary:Shows how to manage output document's raw content.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
@@ -69,7 +69,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:WordML2003SaveOptions
-            //ExSummary:Shows how to save to a .wml document while applying to save options.
+            //ExSummary:Shows how to manage memory optimization.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
