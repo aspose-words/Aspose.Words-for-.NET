@@ -1,4 +1,6 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+
+using DocumentFormat.OpenXml.Packaging;
 using System.Collections.Generic;
 using System.Drawing;
 namespace Aspose.Plugins.AsposeVSOpenXML

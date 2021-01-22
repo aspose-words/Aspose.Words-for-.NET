@@ -1,4 +1,6 @@
-﻿using DocumentFormat.OpenXml;
+﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using System.IO;
 

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Aspose 2002-2014. All Rights Reserved.
+﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
 
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -38,14 +38,12 @@ namespace Aspose.Plugins.AsposeVSOpenXML
                     comments =
                         document.MainDocumentPart.WordprocessingCommentsPart.Comments;
                     if (comments.HasChildren)
-                    {
                         // Obtain an unused ID.
                         id = comments.Descendants<Comment>().Select(e => e.Id.Value).Max();
-                    }
                 }
                 else
                 {
-                    // No WordprocessingCommentsPart part exists, so add one to the package.
+                    // No "WordprocessingCommentsPart" part exists, so add one to the package.
                     WordprocessingCommentsPart commentPart =
                         document.MainDocumentPart.AddNewPart<WordprocessingCommentsPart>();
                     commentPart.Comments = new Comments();
@@ -78,5 +76,4 @@ namespace Aspose.Plugins.AsposeVSOpenXML
             }
         }
     }
-
 }

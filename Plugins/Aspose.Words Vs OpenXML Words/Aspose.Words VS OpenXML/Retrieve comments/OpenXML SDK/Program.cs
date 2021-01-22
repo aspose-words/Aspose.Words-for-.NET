@@ -1,4 +1,4 @@
-﻿// Copyright (c) Aspose 2002-2014. All Rights Reserved.
+﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
 
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -15,21 +15,16 @@ namespace Aspose.Plugins.AsposeVSOpenXML
             
             GetCommentsFromDocument(fileName);
         }
+
         public static void GetCommentsFromDocument(string fileName)
         {
-            using (WordprocessingDocument wordDoc =
-                WordprocessingDocument.Open(fileName, false))
+            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(fileName, false))
             {
-                WordprocessingCommentsPart commentsPart =
-                    wordDoc.MainDocumentPart.WordprocessingCommentsPart;
+                WordprocessingCommentsPart commentsPart = wordDoc.MainDocumentPart.WordprocessingCommentsPart;
 
                 if (commentsPart != null && commentsPart.Comments != null)
-                {
                     foreach (Comment comment in commentsPart.Comments.Elements<Comment>())
-                    {
                         Console.WriteLine(comment.InnerText);
-                    }
-                }
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,27 +16,19 @@ namespace Aspose.Plugins.AsposeVSOpenXML
 
             RemovePageBreaks(fileName);
         }
+
         static void RemovePageBreaks(string filename)
         {
-
             using (WordprocessingDocument myDoc = WordprocessingDocument.Open(filename, true))
             {
-
                 MainDocumentPart mainPart = myDoc.MainDocumentPart;
-
                 List<Break> breaks = mainPart.Document.Descendants<Break>().ToList();
 
                 foreach (Break b in breaks)
-                {
-
                     b.Remove();
 
-                }
-
                 mainPart.Document.Save();
-
             }
-
         }
     }
 }

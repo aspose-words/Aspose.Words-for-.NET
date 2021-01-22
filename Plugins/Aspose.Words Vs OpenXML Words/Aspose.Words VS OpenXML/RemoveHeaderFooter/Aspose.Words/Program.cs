@@ -1,8 +1,18 @@
-﻿using Aspose.Words;
+﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
 
 /*
-This project uses Automatic Package Restore feature of NuGet to resolve Aspose.Words for .NET API reference when the project is build. Please check https://docs.nuget.org/consume/nuget-faq for more information. If you do not wish to use NuGet, you can manually download Aspose.Words for .NET API from http://www.aspose.com/downloads, install it and then add its reference to this project. For any issues, questions or suggestions please feel free to contact us using http://www.aspose.com/community/forums/default.aspx
+    This project uses NuGet's Automatic Package Restore feature to 
+    resolve the Aspose.Words for .NET API reference when the project is built. 
+    Please visit https://docs.nuget.org/consume/nuget-faq for more information. 
+
+    If you do not wish to use NuGet, you can manually download Aspose.Words for .NET API 
+    from http://www.aspose.com/downloads, install it, and then add a reference to it to this project. 
+
+    For any issues, questions or suggestions, please visit the Aspose Forums: https://forum.aspose.com/
 */
+
+using Aspose.Words;
+
 namespace Aspose.Plugins.AsposeVSOpenXML
 {
     class Program
@@ -15,11 +25,11 @@ namespace Aspose.Plugins.AsposeVSOpenXML
             Document doc = new Document(fileName);
             foreach (Section section in doc)
             {
-
                 section.HeadersFooters.RemoveAt(0);
-                HeaderFooter footer;
-                // Primary footer is the footer used for odd pages.
-                footer = section.HeadersFooters[HeaderFooterType.FooterPrimary];
+
+                // Odd pages use the primary footer.
+                HeaderFooter footer = section.HeadersFooters[HeaderFooterType.FooterPrimary];
+
                 if (footer != null)
                     footer.Remove();
             }

@@ -1,4 +1,6 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace Aspose.Plugins.AsposeVSOpenXML
@@ -25,8 +27,8 @@ namespace Aspose.Plugins.AsposeVSOpenXML
                 Run run = para.AppendChild(new Run());
                 run.AppendChild(new Text("Append text in body, but text is not saved - OpenWordprocessingDocumentReadonly"));
 
-                // Call Save to generate an exception and show that access is read-only.
-                // wordDocument.MainDocumentPart.Document.Save();
+                // Call the "Save" method to generate an exception and show that access is read-only.
+                wordDocument.MainDocumentPart.Document.Save();
             }
         }
     }

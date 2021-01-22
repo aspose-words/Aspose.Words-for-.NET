@@ -1,4 +1,6 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+
+using DocumentFormat.OpenXml.Packaging;
 using System.IO;
 using System.Text.RegularExpressions;
 
@@ -13,12 +15,14 @@ namespace Aspose.Plugins.AsposeVSOpenXML
             
             SearchAndReplace(fileName);
         }
+
         // To search and replace content in a document part.
         public static void SearchAndReplace(string document)
         {
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(document, true))
             {
-                string docText = null;
+                string docText;
+
                 using (StreamReader sr = new StreamReader(wordDoc.MainDocumentPart.GetStream()))
                 {
                     docText = sr.ReadToEnd();

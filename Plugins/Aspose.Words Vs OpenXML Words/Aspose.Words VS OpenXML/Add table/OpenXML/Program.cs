@@ -1,4 +1,4 @@
-﻿// Copyright (c) Aspose 2002-2014. All Rights Reserved.
+﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
 
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
