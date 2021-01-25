@@ -162,25 +162,26 @@ namespace Aspose.AutoMerge
                                     break;
                             }
                             byte[] byteData = UpdateDoc.ToArray();
+
                             // Encode the data using base64.
                             string encodedData = System.Convert.ToBase64String(byteData);
 
                             if (Logging)
                                 Log("Creating Attachment", LogFilePath);
                             Entity NewNote = new Entity("annotation");
-                            // Im going to add Note to entity
+
                             if (savePrimary)
                                 NewNote.Attributes.Add("objectid", new EntityReference(PrimaryEntityName, PrimaryEntityId));
                             NewNote.Attributes.Add("subject", FileName != "" ? FileName : "Aspose .NET AutoMerge Created Document." + saveAs);
 
-                            // Set EncodedData to Document Body
+                            // Set EncodedData to Document Body.
                             NewNote.Attributes.Add("documentbody", encodedData);
 
-                            // Set the type of attachment
+                            // Set the type of attachment.
                             NewNote.Attributes.Add("mimetype", @"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
                             NewNote.Attributes.Add("notetext", "Document Created using template");
 
-                            // Set the File Name
+                            // Set the File Name.
                             NewNote.Attributes.Add("filename", FileName != "" ? FileName : "Aspose .NET AutoMerge Created Document." + saveAs);
                             Guid NewNoteId = service.Create(NewNote);
                             OutputAttachmentId.Set(executionContext, new EntityReference("annotation", NewNoteId));

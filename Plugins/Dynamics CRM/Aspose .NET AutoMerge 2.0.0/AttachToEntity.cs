@@ -31,7 +31,6 @@ namespace Aspose.AutoMerge
         [Input("Record ID")]
         public InArgument<string> RecordId { get; set; }
 
-
         protected override void Execute(CodeActivityContext executionContext)
         {
             Boolean Logging = EnableLogging.Get(executionContext);
@@ -75,6 +74,7 @@ namespace Aspose.AutoMerge
             string recordId = RecordId.Get(executionContext);
             return true;
         }
+
         private void Log(string Message, string LogFilePath)
         {
             try

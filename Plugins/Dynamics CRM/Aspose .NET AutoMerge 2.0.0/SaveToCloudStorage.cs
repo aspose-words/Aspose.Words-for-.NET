@@ -115,19 +115,6 @@ namespace Aspose.AutoMerge
             }
         }
 
-        //private void test(CloudAppConfig Config)
-        //{
-        //    string FileName = "aspose-logo-50.png";
-        //    string URIRequest = Config.ProductUri + "/storage/file/" + FileName;
-        //    Log(URIRequest, "");
-
-        //    string URISigned = Sign(URIRequest, Config.AppSID, Config.AppKey);
-        //    Log(URISigned, "");
-        //    Stream responseStream = ProcessCommand(URISigned, "GET");
-        //    Log("Successfully:" + responseStream.Length.ToString(), "");
-
-
-        //}
         public Stream ProcessCommand(string strURI, string strHttpCommand)
         {
             try
@@ -150,6 +137,7 @@ namespace Aspose.AutoMerge
                 throw new Exception(Ex.Message);
             }
         }
+
         public string Sign(string URIRequest, string AppSIDValue, string AppKeyValue)
         {
             try
@@ -160,24 +148,27 @@ namespace Aspose.AutoMerge
                     builder.Query = builder.Query.Substring(1) + "&appSID=" + AppSIDValue;
                 else
                     builder.Query = "appSID=" + AppSIDValue;
+
                 // Remove final slash here as it can be added automatically.
                 builder.Path = builder.Path.TrimEnd('/');
-                // Compute the hash.
 
                 byte[] privateKey = System.Text.Encoding.UTF8.GetBytes(AppKeyValue);
 
                 System.Security.Cryptography.HMACSHA1 algorithm = new System.Security.Cryptography.HMACSHA1(privateKey);
-                //System.Text.ASCIIEncoding
+
                 byte[] sequence = System.Text.ASCIIEncoding.ASCII.GetBytes(builder.Uri.AbsoluteUri);
                 byte[] hash = algorithm.ComputeHash(sequence);
                 string signature = Convert.ToBase64String(hash);
+
                 // Remove invalid symbols.
                 signature = signature.TrimEnd('=');
+
                 //signature = System.Web.HttpUtility.UrlEncode(signature);
                 signature = System.Uri.EscapeDataString(signature);
+
                 // Convert codes to upper case as they can be updated automatically.
                 signature = System.Text.RegularExpressions.Regex.Replace(signature, "%[0-9a-f]{2}", e => e.Value.ToUpper());
-                //signature = System.Text.RegularExpressions.Regex.Replace(signature, "%[0-9a-f]{2}", delegate(string e){ e.Value.ToUpper()});
+
                 // Add the signature to query string.
                 return string.Format("{0}&signature={1}", builder.Uri.AbsoluteUri, signature);
             }

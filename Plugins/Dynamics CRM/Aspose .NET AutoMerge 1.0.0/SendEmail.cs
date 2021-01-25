@@ -55,8 +55,6 @@ namespace Aspose.AutoMerge
                 File.AppendAllText("C:\\Aspose Logs\\Aspose.AutoMerge.SendEmail.log", Environment.NewLine + DateTime.Now.ToString() + ":- " + Message);
             else
                 File.AppendAllText(LogFilePath + "\\Aspose.AutoMerge.SendEmail.log", Environment.NewLine + DateTime.Now.ToString() + ":- " + Message);
-
         }
-
     }
 }

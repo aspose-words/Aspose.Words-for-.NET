@@ -29,7 +29,6 @@ namespace Aspose.AutoMerge
         [ReferenceTarget("annotation")]
         public OutArgument<EntityReference> OutputAttachmentId { get; set; }
 
-
         protected override void Execute(CodeActivityContext executionContext)
         {
             EntityReference Template = DocumentTemplateId.Get(executionContext);
@@ -119,24 +118,26 @@ namespace Aspose.AutoMerge
                                 Log("Saving Document", LogFilePath);
                             doc.Save(UpdateDoc, SaveFormat.Docx);
                             byte[] byteData = UpdateDoc.ToArray();
+
                             // Encode the data using base64.
                             string encodedData = System.Convert.ToBase64String(byteData);
 
                             if (Logging)
                                 Log("Creating Attachment", LogFilePath);
                             Entity NewNote = new Entity("annotation");
-                            // Im going to add Note to entity
+
+                            // Im going to add Note to entity.
                             NewNote.Attributes.Add("objectid", new EntityReference(PrimaryEntityName, PrimaryEntityId));
                             NewNote.Attributes.Add("subject", FileName);
 
-                            // Set EncodedData to Document Body
+                            // Set EncodedData to Document Body.
                             NewNote.Attributes.Add("documentbody", encodedData);
 
-                            // Set the type of attachment
+                            // Set the type of attachment.
                             NewNote.Attributes.Add("mimetype", @"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
                             NewNote.Attributes.Add("notetext", "Document Created using template");
 
-                            // Set the File Name
+                            // Set the File Name.
                             NewNote.Attributes.Add("filename", FileName);
                             Guid NewNoteId = service.Create(NewNote);
                             OutputAttachmentId.Set(executionContext, new EntityReference("annotation", NewNoteId));
@@ -161,7 +162,6 @@ namespace Aspose.AutoMerge
                 File.AppendAllText("C:\\Aspose Logs\\Aspose.AutoMerge.CreateDocument.log", Environment.NewLine + DateTime.Now.ToString() + ":- " + Message);
             else
                 File.AppendAllText(LogFilePath + "\\Aspose.AutoMerge.CreateDocument.log", Environment.NewLine + DateTime.Now.ToString() + ":- " + Message);
-
         }
     }
 }

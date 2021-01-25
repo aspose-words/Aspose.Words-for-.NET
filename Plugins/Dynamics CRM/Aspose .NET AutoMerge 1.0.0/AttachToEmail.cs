@@ -35,19 +35,22 @@ namespace Aspose.AutoMerge
             {
                 if (Logging)
                     Log("Workflow Execution Start", LogFilePath);
-               // Create CRM Service in Workflow
+
+                // Create CRM Service in Workflow.
                 IWorkflowContext context = executionContext.GetExtension<IWorkflowContext>();
                 IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
                 IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
                 if (Logging)
                     Log("Retrieving Attahment", LogFilePath);
-                // Retrieve the Attachment from the given template
+
+                // Retrieve the Attachment from the given template.
                 Entity TempAttachment = service.Retrieve("annotation", Attachment.Id, new ColumnSet(true));
                 if (TempAttachment != null)
                 {
                     if (Logging)
                         Log("Creating New Attachment", LogFilePath);
-                    // Create new Attachment under Email Activity
+
+                    // Create new Attachment under Email Activity.
                     Entity NewAttachment = new Entity("activitymimeattachment");
                     if (TempAttachment.Contains("subject"))
                         NewAttachment.Attributes.Add("subject", TempAttachment["subject"]);

@@ -48,7 +48,8 @@ namespace Aspose.AutoMerge
                 {
                     if (Logging)
                         Log("Creating New Attachment", LogFilePath);
-                    // Create new Attachment under Email Activity
+
+                    // Create new Attachment under Email Activity.
                     Entity NewAttachment = new Entity("annotation");
                     if (ExistingAttachment.Contains("subject"))
                         NewAttachment.Attributes.Add("subject", ExistingAttachment["subject"]);
