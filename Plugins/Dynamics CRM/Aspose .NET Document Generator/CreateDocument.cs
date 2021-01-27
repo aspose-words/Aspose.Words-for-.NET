@@ -32,19 +32,26 @@ namespace Aspose.DocumentGenerator.CreateDocumentFromTemplate
                 EntityReference Contact = ContactId.Get(executionContext);
                 Boolean Logging = EnableLogging.Get(executionContext);
                 string LicenseFilePath = LicenseFile.Get(executionContext);
+
                 if (Logging)
                     Log("Workflow Executed");
+
                 IWorkflowContext context = executionContext.GetExtension<IWorkflowContext>();
                 IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
                 IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
+
                 QueryExpression RetrieveNoteQuery = new QueryExpression("annotation");
                 RetrieveNoteQuery.ColumnSet = new ColumnSet(new string[] { "subject", "documentbody" });
                 RetrieveNoteQuery.Criteria.AddCondition(new ConditionExpression("objectid", ConditionOperator.Equal, Template.Id));
+
                 if (Logging)
                     Log("Executing Query to retrieve Template Attachment");
+
                 EntityCollection Notes = service.RetrieveMultiple(RetrieveNoteQuery);
+
                 if (Logging)
                     Log("Attachment Retrieved Successfully");
+
                 if (Notes.Entities.Count > 0)
                 {
                     Entity Note = Notes[0];
@@ -73,15 +80,21 @@ namespace Aspose.DocumentGenerator.CreateDocumentFromTemplate
                         {
                             Log("Error while applying license: " + ex.Message);
                         }
+
                         if (Logging)
                             Log("Reading Document in Aspose.Words");
+
                         Document doc = new Document(fileStream);
                         string[] fields = doc.MailMerge.GetFieldNames();
+
                         if (Logging)
                             Log("Getting list of fields");
+
                         Entity contact = service.Retrieve("contact", Contact.Id, new ColumnSet(fields));
+
                         if (Logging)
                             Log("Retrieved Contact entity");
+
                         if (contact != null)
                         {
                             string[] values = new string[fields.Length];
@@ -103,8 +116,10 @@ namespace Aspose.DocumentGenerator.CreateDocumentFromTemplate
                                 Log("Executing Mail Merge");
                             doc.MailMerge.Execute(fields, values);
                             MemoryStream UpdateDoc = new MemoryStream();
+
                             if (Logging)
                                 Log("Saving Document");
+
                             doc.Save(UpdateDoc, SaveFormat.Docx);
                             byte[] byteData = UpdateDoc.ToArray();
 
@@ -113,21 +128,23 @@ namespace Aspose.DocumentGenerator.CreateDocumentFromTemplate
 
                             if (Logging)
                                 Log("Creating Attachment");
+
                             Entity NewNote = new Entity("annotation");
-                            // Im going to add Note to entity
+                            // Im going to add Note to entity.
                             NewNote.Attributes.Add("objectid", new EntityReference("contact", Contact.Id));
                             NewNote.Attributes.Add("subject", FileName);
 
-                            // Set EncodedData to Document Body
+                            // Set EncodedData to Document Body.
                             NewNote.Attributes.Add("documentbody", encodedData);
 
-                            // Set the type of attachment
+                            // Set the type of attachment.
                             NewNote.Attributes.Add("mimetype", @"application\ms-word");
                             NewNote.Attributes.Add("notetext", "Document Created using template");
 
-                            // Set the File Name
+                            // Set the File Name.
                             NewNote.Attributes.Add("filename", FileName);
                             service.Create(NewNote);
+
                             if (Logging)
                                 Log("Successfull");
                         }

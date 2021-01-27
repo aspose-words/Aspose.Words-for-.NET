@@ -50,10 +50,12 @@ namespace Aspose.DuplicateDocument
             {
                 if (Logging)
                     Log("Enable Licensing", LogFilePath);
+
                 if (LicenseFilePath != "" && File.Exists(LicenseFilePath))
                 {
                     License Lic = new License();
                     Lic.SetLicense(LicenseFilePath);
+
                     if (Logging)
                         Log("License Set", LogFilePath);
                 }
@@ -63,19 +65,23 @@ namespace Aspose.DuplicateDocument
                 Log("Error while applying license: " + ex.Message, LogFilePath);
             }
 
-            if (detectIn == 0) // under this record
+            if (detectIn == 0) // Under this record.
             {
                 Guid ThisRecordId = context.PrimaryEntityId;
                 string RecordType = context.PrimaryEntityName;
                 Document Result = new Document();
                 DocumentBuilder ResultWriter = new DocumentBuilder(Result);
+
                 if (Logging)
                     Log("Working under all attachments under this record", LogFilePath);
+
                 QueryExpression RetrieveNoteQuery = new QueryExpression("annotation");
                 RetrieveNoteQuery.ColumnSet = new ColumnSet(new string[] { "filename", "subject", "documentbody" });
                 RetrieveNoteQuery.Criteria.AddCondition(new ConditionExpression("objectid", ConditionOperator.Equal, ThisRecordId));
+
                 if (Logging)
                     Log("Executing Query to retrieve All Notes within this record", LogFilePath);
+
                 EntityCollection Notes = service.RetrieveMultiple(RetrieveNoteQuery);
 
                 foreach (Entity Note in Notes.Entities)
@@ -148,14 +154,14 @@ namespace Aspose.DuplicateDocument
                 NewNote.Attributes.Add("objectid", new EntityReference(RecordType, ThisRecordId));
                 NewNote.Attributes.Add("subject", "Duplicate detection report");
 
-                // Set EncodedData to Document Body
+                // Set EncodedData to Document Body.
                 NewNote.Attributes.Add("documentbody", encodedData);
 
-                // Set the type of attachment
+                // Set the type of attachment.
                 NewNote.Attributes.Add("mimetype", @"application\ms-word");
                 NewNote.Attributes.Add("notetext", "Duplicate detection report");
 
-                // Set the File Name
+                // Set the File Name.
                 NewNote.Attributes.Add("filename", "Duplicate detection report");
 
                 Guid NewNoteId = service.Create(NewNote);
@@ -165,7 +171,7 @@ namespace Aspose.DuplicateDocument
                     Log("Attachment Created Successfully", LogFilePath);
 
             }
-            else if (detectIn == 1) //under this entity
+            else if (detectIn == 1) // Under this entity.
             {
                 Guid ThisRecordId = context.PrimaryEntityId;
                 string RecordType = context.PrimaryEntityName;
@@ -174,10 +180,13 @@ namespace Aspose.DuplicateDocument
 
                 if (Logging)
                     Log("Working under all attachments under this Entity", LogFilePath);
+
                 QueryExpression RetrieveNoteQuery = new QueryExpression("annotation");
                 RetrieveNoteQuery.ColumnSet = new ColumnSet(new string[] { "filename", "subject", "documentbody", "objectid" });
+
                 if (Logging)
                     Log("Executing Query to retrieve All Notes within this Entity", LogFilePath);
+
                 EntityCollection Notes = service.RetrieveMultiple(RetrieveNoteQuery);
 
                 foreach (Entity Note in Notes.Entities)
@@ -248,18 +257,19 @@ namespace Aspose.DuplicateDocument
                     Log("Creating Attachment for result", LogFilePath);
 
                 Entity NewNote = new Entity("annotation");
-                // add Note to entity
+
+                // add Note to entity.
                 NewNote.Attributes.Add("objectid", new EntityReference(RecordType, ThisRecordId));
                 NewNote.Attributes.Add("subject", "Duplicate detection report");
 
-                // Set EncodedData to Document Body
+                // Set EncodedData to Document Body.
                 NewNote.Attributes.Add("documentbody", encodedData);
 
-                // Set the type of attachment
+                // Set the type of attachment.
                 NewNote.Attributes.Add("mimetype", @"application\ms-word");
                 NewNote.Attributes.Add("notetext", "Duplicate detection report");
 
-                // Set the File Name
+                // Set the File Name.
                 NewNote.Attributes.Add("filename", "Duplicate detection report");
 
                 Guid NewNoteId = service.Create(NewNote);
@@ -269,7 +279,7 @@ namespace Aspose.DuplicateDocument
                     Log("Attachment Created Successfully", LogFilePath);
 
             }
-            else if (detectIn == 2)//under whole organization
+            else if (detectIn == 2) // Under whole organization.
             {
                 Guid ThisRecordId = context.PrimaryEntityId;
                 string RecordType = context.PrimaryEntityName;
@@ -278,9 +288,12 @@ namespace Aspose.DuplicateDocument
 
                 if (Logging)
                     Log("Working under all attachments under this Entity", LogFilePath);
+
                 QueryExpression RetrieveNoteQuery = new QueryExpression("annotation");
+
                 if (Logging)
                     Log("Executing Query to retrieve All Notes within this Entity", LogFilePath);
+
                 EntityCollection Notes = service.RetrieveMultiple(RetrieveNoteQuery);
 
                 foreach (Entity Note in Notes.Entities)
@@ -349,18 +362,19 @@ namespace Aspose.DuplicateDocument
                     Log("Creating Attachment for result", LogFilePath);
 
                 Entity NewNote = new Entity("annotation");
-                // add Note to entity
+
+                // add Note to entity.
                 NewNote.Attributes.Add("objectid", new EntityReference(RecordType, ThisRecordId));
                 NewNote.Attributes.Add("subject", "Duplicate detection report");
 
-                // Set EncodedData to Document Body
+                // Set EncodedData to Document Body.
                 NewNote.Attributes.Add("documentbody", encodedData);
 
-                // Set the type of attachment
+                // Set the type of attachment.
                 NewNote.Attributes.Add("mimetype", @"application\ms-word");
                 NewNote.Attributes.Add("notetext", "Duplicate detection report");
 
-                // Set the File Name
+                // Set the File Name.
                 NewNote.Attributes.Add("filename", "Duplicate detection report");
 
                 Guid NewNoteId = service.Create(NewNote);
@@ -368,9 +382,7 @@ namespace Aspose.DuplicateDocument
 
                 if (Logging)
                     Log("Attachment Created Successfully", LogFilePath);
-
             }
-
         }
         private void Log(string Message, string LogFilePath)
         {
