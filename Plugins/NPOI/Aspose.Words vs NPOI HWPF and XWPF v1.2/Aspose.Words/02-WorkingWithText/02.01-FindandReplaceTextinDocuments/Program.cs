@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
 using Aspose.Words;
+using Aspose.Words.Replacing;
 
 namespace _02._01_FindandReplaceTextinDocuments
 {
@@ -23,13 +22,18 @@ namespace _02._01_FindandReplaceTextinDocuments
 
             Document doc = new Document("../../data/document.doc");
 
-            // Replaces all 'sad' and 'mad' occurrences with 'bad'
-            doc.Range.Replace("document", "document replaced", false, true);
+            FindReplaceOptions options = new FindReplaceOptions
+            {
+                MatchCase = false, FindWholeWordsOnly = true
+            };
 
-            // Replaces all 'sad' and 'mad' occurrences with 'bad'
+            // Replace all occurrences of 'sad' and 'mad' with 'bad'.
+            doc.Range.Replace("document", "document replaced", options);
+
+            // Replace all occurrences of 'sad' and 'mad' found using a regex pattern with 'bad'.
             doc.Range.Replace(new Regex("[s|m]ad"), "bad");
 
-            doc.Save("replacedDocument.doc");
+            doc.Save("FindandReplaceTextinDocuments.docx");
         }
     }
 }

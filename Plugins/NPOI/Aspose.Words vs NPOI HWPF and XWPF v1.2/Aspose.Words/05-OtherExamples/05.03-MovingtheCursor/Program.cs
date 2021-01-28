@@ -34,7 +34,7 @@ namespace _05._03_MovingtheCursor
             builder.MoveToDocumentStart();
             builder.Writeln("This is the beginning of the document.");
 
-            doc.Save("outputDocument.doc");
+            doc.Save("MovingTheCursor.docx");
         }
     }
 }

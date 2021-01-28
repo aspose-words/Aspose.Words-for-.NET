@@ -23,7 +23,7 @@ namespace _05._01_InsertPictureinWordDocument
 
             builder.InsertImage("../../data/HumpbackWhale.jpg");
 
-            doc.Save("insertedImage.docx");
+            doc.Save("InsertPictureinWordDocument.docx");
         }
     }
 }

@@ -19,20 +19,17 @@ namespace Convert_Doc_to_Png
 				license.SetLicense("Aspose.Words.lic");
             }
 
-			// define document file location
             string fileDir = "../../data/";
-
-            // load the document.
             Document doc = new Document(fileDir + "document.doc");
 
-            //Create an ImageSaveOptions object to pass to the Save method
+            //Create an ImageSaveOptions object to pass to the Save method.
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
 
-            // Save each page of the document as Png in data folder
+            // Save each page of the document as Png in data folder.
             for (int i = 0; i < doc.PageCount; i++)
             {
-                options.PageIndex = i;
-                doc.Save(string.Format(i + "WordDocumentAsPNG out.Png", i), options);
+                options.PageSet = new PageSet(i);
+                doc.Save($"Convert_Doc_to_Png.Page {i}.Png", options);
             }
         }
     }

@@ -20,14 +20,8 @@ namespace _01._03_ProtectDocuments
 
             Document doc = new Document("../../data/document.doc");
             doc.Protect(ProtectionType.ReadOnly);
-
-            // Following other Protection types are also available
-            // ProtectionType.NoProtection
-            // ProtectionType.AllowOnlyRevisions
-            // ProtectionType.AllowOnlyComments
-            // ProtectionType.AllowOnlyFormFields
-
-            doc.Save("AsposeProtect.doc", SaveFormat.Doc);
+            
+            doc.Save("ProtectDocuments.docx");
         }
     }
 }

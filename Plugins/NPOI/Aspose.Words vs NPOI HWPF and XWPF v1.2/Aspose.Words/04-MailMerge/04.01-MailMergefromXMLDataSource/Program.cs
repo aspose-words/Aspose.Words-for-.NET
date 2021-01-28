@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text; using Aspose.Words;
+using Aspose.Words;
 using System.IO;
 using System.Data;
-using System.Reflection;
 
 namespace _04._01_MailMergefromXMLDataSource
 {
@@ -32,7 +30,7 @@ namespace _04._01_MailMergefromXMLDataSource
             doc.MailMerge.Execute(customersDs.Tables["Customer"]);
 
             // Save the output document.
-            doc.Save("TestFile XML Out.doc");
+            doc.Save("MailMergefromXMLDataSource.docx");
         }
     }
 }

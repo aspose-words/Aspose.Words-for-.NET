@@ -1,5 +1,6 @@
 ﻿using Aspose.Words;
 using System;
+using Aspose.Words.Replacing;
 
 namespace _05._05_FindAndReplace
 {
@@ -12,7 +13,13 @@ namespace _05._05_FindAndReplace
 
             builder.Write("Hello World");
 
-            doc.Range.Replace("Hello", "Hallow", false, true);
+            FindReplaceOptions options = new FindReplaceOptions
+            {
+                MatchCase = false,
+                FindWholeWordsOnly = true
+            };
+
+            doc.Range.Replace("Hello", "Hallow", options);
 
             String text = doc.Range.Text;
 

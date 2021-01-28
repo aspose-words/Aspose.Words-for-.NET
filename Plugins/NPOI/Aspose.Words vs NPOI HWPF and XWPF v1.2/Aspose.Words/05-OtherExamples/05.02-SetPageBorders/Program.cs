@@ -59,7 +59,7 @@ namespace _05._02_SetPageBorders
             builder.CellFormat.ClearFormatting();
             builder.Writeln("Cell #4");
 
-            doc.Save("Table.SetBordersAndShading Out.doc");
+            doc.Save("SetPageBorders.docx");
         }
     }
 }

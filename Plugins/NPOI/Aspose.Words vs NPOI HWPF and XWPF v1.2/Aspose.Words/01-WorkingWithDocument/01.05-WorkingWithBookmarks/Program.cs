@@ -21,21 +21,19 @@ namespace _01._05_WorkingWithBookmarks
             Document doc = new Document("../../data/document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // ----- Set Bookmark
-
+            // Use the document builder to insert a bookmark which encases text.
             builder.StartBookmark("AsposeBookmark");
             builder.Writeln("Text inside a bookmark.");
             builder.EndBookmark("AsposeBookmark");
 
-            // ----- Get Bookmark
-            
-            // By index.
+            // Below are two ways of accessing a bookmark in a document.
+            // 1 -  By index:
             Bookmark bookmark1 = doc.Range.Bookmarks[0];
 
-            // By name.
+            // 2 -  By name:
             Bookmark bookmark2 = doc.Range.Bookmarks["AsposeBookmark"];
 
-            doc.Save("AsposeBookmarks.doc");
+            doc.Save("WorkingWithBookmarks.docx");
 
         }
     }

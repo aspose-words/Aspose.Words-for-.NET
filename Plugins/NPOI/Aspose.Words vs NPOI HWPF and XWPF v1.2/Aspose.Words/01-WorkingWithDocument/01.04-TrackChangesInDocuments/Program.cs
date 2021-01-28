@@ -21,7 +21,7 @@ namespace _01._04_TrackChangesInDocuments
             Document doc = new Document("../../data/document.doc");
             doc.AcceptAllRevisions();
 
-            doc.Save("AsposeAcceptChanges.doc", SaveFormat.Doc);
+            doc.Save("TrackChangesInDocuments.docx");
         }
     }
 }

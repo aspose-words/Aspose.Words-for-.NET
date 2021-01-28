@@ -28,14 +28,15 @@ namespace Insert_Hyperlink_in_document
             // Specify font formatting for the hyperlink.
             builder.Font.Color = Color.Blue;
             builder.Font.Underline = Underline.Single;
+
             // Insert the link.
             builder.InsertHyperlink("Aspose Website", "http://www.aspose.com", false);
 
-            // Revert to default formatting.
+            // Revert to default formatting, and carry on writing.
             builder.Font.ClearFormatting();
-
             builder.Write(" for more information.");
-            doc.Save("Insert_Hyperlink_In_Document.doc");
+
+            doc.Save("Insert_Hyperlink_In_Document.docx");
 
         }
     }

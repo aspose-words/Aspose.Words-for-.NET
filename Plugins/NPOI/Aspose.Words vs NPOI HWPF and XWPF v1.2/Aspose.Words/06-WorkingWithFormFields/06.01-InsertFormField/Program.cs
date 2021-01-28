@@ -1,9 +1,6 @@
 ﻿using Aspose.Words;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace _06._01_InsertFormField
 {
@@ -24,7 +21,7 @@ namespace _06._01_InsertFormField
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a Form Field
+            // Insert a drop down form field with three options.
             string[] items = { "One", "Two", "Three" };
             builder.InsertComboBox("DropDown", items, 0);
 

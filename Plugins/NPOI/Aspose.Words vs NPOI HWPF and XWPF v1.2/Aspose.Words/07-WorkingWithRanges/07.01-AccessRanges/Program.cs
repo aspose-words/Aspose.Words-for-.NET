@@ -1,9 +1,6 @@
 ﻿using Aspose.Words;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace _07._01_AccessRanges
 {
@@ -25,19 +22,19 @@ namespace _07._01_AccessRanges
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Start building a the table.
+            // Start building the table.
             builder.StartTable();
             builder.InsertCell();
             builder.Write("Row 1, Cell 1 Content");
 
-            // Build the second cell
+            // Build the second cell.
             builder.InsertCell();
             builder.Write("Row 1, Cell 2 Content");
 
-            // End previous row and start new
+            // End previous row and start new.
             builder.EndRow();
 
-            // Build the first cell of 2nd row
+            // Build the first cell of 2nd row.
             builder.InsertCell();
             builder.Write("Row 2, Cell 1 Content");
 
@@ -46,7 +43,7 @@ namespace _07._01_AccessRanges
 
             builder.EndRow();
 
-            // End the table
+            // End the table.
             builder.EndTable();
 
             Range range = doc.Range;

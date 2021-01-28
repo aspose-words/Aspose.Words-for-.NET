@@ -21,9 +21,9 @@ namespace Convert_WordPage_Document_to_MultipageTIFF
             string fileDir = "../../data/";
             // open the document 
             Document doc = new Document(fileDir + "document.doc");
-            // Save the document as multipage TIFF.
-            doc.Save("OutputTiff.tiff");
 
+            // Save the document as multipage TIFF.
+            doc.Save("Convert_WordPage_Document_to_MultipageTIFF.tiff");
         }
     }
 }

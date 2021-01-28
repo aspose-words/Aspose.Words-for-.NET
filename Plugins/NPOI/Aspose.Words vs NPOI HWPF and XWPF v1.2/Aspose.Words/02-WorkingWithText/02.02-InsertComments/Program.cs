@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text; using Aspose.Words;
+using Aspose.Words;
 
 namespace _02._02_InsertComments
 {
@@ -28,7 +27,7 @@ namespace _02._02_InsertComments
             comment.Paragraphs.Add(new Paragraph(doc));
             comment.FirstParagraph.Runs.Add(new Run(doc, "Comment text."));
 
-            doc.Save("insertedComments.doc");
+            doc.Save("InsertComments.docx");
         }
     }
 }

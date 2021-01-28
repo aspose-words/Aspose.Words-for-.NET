@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text; using Aspose.Words;
+using Aspose.Words;
 
 namespace _01._09_LoadTextFile
 {

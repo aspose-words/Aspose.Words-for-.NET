@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text; using Aspose.Words;
+using Aspose.Words;
 using Aspose.Words.Tables;
 
 namespace _03._03_AutofitSettingtoTables
@@ -29,7 +28,7 @@ namespace _03._03_AutofitSettingtoTables
             table.AutoFit(AutoFitBehavior.AutoFitToWindow);
 
             // Save the document to disk.
-            doc.Save("TestFile.AutoFitToWindow Out.doc");
+            doc.Save("AutofitSettingtoTables.docx");
         }
     }
 }

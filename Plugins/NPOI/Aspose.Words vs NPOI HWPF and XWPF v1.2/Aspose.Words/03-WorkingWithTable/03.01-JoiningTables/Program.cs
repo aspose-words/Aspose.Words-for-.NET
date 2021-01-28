@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text; using Aspose.Words;
+using Aspose.Words;
 using Aspose.Words.Tables;
 
 namespace _03._01_JoiningTables
@@ -36,7 +35,7 @@ namespace _03._01_JoiningTables
             // Remove the empty table container.
             secondTable.Remove();
 
-            doc.Save("Table.CombineTables Out.doc");
+            doc.Save("JoiningTables.docx");
         }
     }
 }

@@ -24,19 +24,19 @@ namespace _07._02_DeleteRange
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Start building a the table.
+            // Start building the table.
             builder.StartTable();
             builder.InsertCell();
             builder.Write("Row 1, Cell 1 Content");
 
-            // Build the second cell
+            // Build the second cell.
             builder.InsertCell();
             builder.Write("Row 1, Cell 2 Content");
 
-            // End previous row and start new
+            // End previous row and start new.
             builder.EndRow();
 
-            // Build the first cell of 2nd row
+            // Build the first cell of 2nd row.
             builder.InsertCell();
             builder.Write("Row 2, Cell 1 Content");
 
@@ -45,7 +45,7 @@ namespace _07._02_DeleteRange
 
             builder.EndRow();
 
-            // End the table
+            // End the table.
             builder.EndTable();
 
             Range range = doc.Sections[0].Range;
