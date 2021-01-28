@@ -1,6 +1,7 @@
 ﻿using System;
-using Aspose.Words;
 using System.IO;
+using NPOI.XWPF.UserModel;
+using Document = Aspose.Words.Document;
 
 namespace CreateEmptyDocument
 {
@@ -8,23 +9,23 @@ namespace CreateEmptyDocument
     {
         static void Main(string[] args)
         {
-            //----------------------------------------------------
-            //  NPOI
-            //----------------------------------------------------            
-            //XWPFDocument doc = new XWPFDocument();
-            //doc.CreateParagraph();
-            //using (FileStream sw = File.Create("blank.docx"))
-            //{
-            //    doc.Write(sw);
-            //}
+            CreateEmptyDocumentNPOI();
+            CreateEmptyDocumentAspose();
+        }
 
+        private static void CreateEmptyDocumentNPOI()
+        {
+            XWPFDocument doc = new XWPFDocument();
+            doc.CreateParagraph();
 
+            using (FileStream sw = File.Create("CreateEmptyDocumentNPOI.docx"))
+            {
+                doc.Write(sw);
+            }
+        }
 
-            //----------------------------------------------------
-            //  Aspose.Words
-            //----------------------------------------------------
-
-            // Check for license and apply if exists
+        private static void CreateEmptyDocumentAspose()
+        {
             string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
             if (File.Exists(licenseFile))
             {
@@ -35,7 +36,7 @@ namespace CreateEmptyDocument
             }
 
             Document doc = new Document();
-            doc.Save("blank.docx");
+            doc.Save("CreateEmptyDocumentAspose.docx");
         }
     }
 }

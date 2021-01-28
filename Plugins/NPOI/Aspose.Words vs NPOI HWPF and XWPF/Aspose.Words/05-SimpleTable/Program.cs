@@ -1,6 +1,9 @@
 ﻿using System;
 using Aspose.Words;
 using System.IO;
+using NPOI.XWPF.UserModel;
+using BreakType = Aspose.Words.BreakType;
+using Document = Aspose.Words.Document;
 
 namespace SimpleTable
 {
@@ -8,54 +11,53 @@ namespace SimpleTable
     {
         static void Main(string[] args)
         {
-            //----------------------------------------------------
-            //  NPOI
-            //----------------------------------------------------            
-            //XWPFDocument doc = new XWPFDocument();
-            //XWPFParagraph para = doc.CreateParagraph();
-            //XWPFRun r0 = para.CreateRun();
-            //r0.SetText("Title1");
-            //para.BorderTop = Borders.THICK;
-            //para.FillBackgroundColor = "EEEEEE";
-            //para.FillPattern = NPOI.OpenXmlFormats.Wordprocessing.ST_Shd.diagStripe;
+            SimpleTableNPOI();
+            SimpleTableAspose();
+        }
 
-            //XWPFTable table = doc.CreateTable(3, 3);
+        private static void SimpleTableNPOI()
+        {
+            XWPFDocument doc = new XWPFDocument();
+            XWPFParagraph para = doc.CreateParagraph();
+            XWPFRun r0 = para.CreateRun();
+            r0.SetText("Title1");
+            para.BorderTop = Borders.Thick;
+            para.FillBackgroundColor = "EEEEEE";
+            para.FillPattern = NPOI.OpenXmlFormats.Wordprocessing.ST_Shd.diagStripe;
 
-            //table.GetRow(1).GetCell(1).SetText("EXAMPLE OF TABLE");
+            XWPFTable table = doc.CreateTable(3, 3);
 
-            //XWPFTableCell c1 = table.GetRow(0).GetCell(0);
-            //XWPFParagraph p1 = c1.AddParagraph();   //don't use doc.CreateParagraph
-            //XWPFRun r1 = p1.CreateRun();
-            //r1.SetText("The quick brown fox");
-            //r1.SetBold(true);
+            table.GetRow(1).GetCell(1).SetText("EXAMPLE OF TABLE");
 
-            //r1.FontFamily = "Courier";
-            //r1.SetUnderline(UnderlinePatterns.DotDotDash);
-            //r1.SetTextPosition(100);
-            //c1.SetColor("FF0000");
+            XWPFTableCell c1 = table.GetRow(0).GetCell(0);
+            XWPFParagraph p1 = c1.AddParagraph();   // Use this instead of doc.CreateParagraph.
+            XWPFRun r1 = p1.CreateRun();
+            r1.SetText("The quick brown fox");
+            r1.IsBold = true;
 
+            r1.FontFamily = "Courier";
+            r1.SetUnderline(UnderlinePatterns.DotDotDash);
+            r1.TextPosition = 100;
+            c1.SetColor("FF0000");
 
-            //table.GetRow(2).GetCell(2).SetText("only text");
+            table.GetRow(2).GetCell(2).SetText("only text");
 
-            //FileStream out1 = new FileStream("simpleTable.docx", FileMode.Create);
-            //doc.Write(out1);
-            //out1.Close();
+            FileStream out1 = new FileStream("SimpleTableNPOI.docx", FileMode.Create);
+            doc.Write(out1);
+            out1.Close();
+        }
 
-
-            //----------------------------------------------------
-            //  Aspose.Words
-            //----------------------------------------------------
-
-            // Check for license and apply if exists
+        private static void SimpleTableAspose()
+        {
+            // Check for license, and apply if it exists.
             string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
             if (File.Exists(licenseFile))
             {
-                // Apply Aspose.Words API License
+                // Apply Aspose.Words API License.
                 Aspose.Words.License license = new Aspose.Words.License();
-                // Place license file in Bin/Debug/ Folder
+                // Place license file in Bin/Debug/ Folder.
                 license.SetLicense("Aspose.Words.lic");
             }
-
 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -64,11 +66,11 @@ namespace SimpleTable
             builder.ParagraphFormat.Shading.BackgroundPatternColor = System.Drawing.ColorTranslator.FromHtml("#EEEEEE");
             builder.ParagraphFormat.Shading.Texture = TextureIndex.TextureDarkDiagonalUp;
             builder.Writeln("Title1");
-            
-            builder.ParagraphFormat.ClearFormatting();            
+
+            builder.ParagraphFormat.ClearFormatting();
             builder.InsertBreak(BreakType.ParagraphBreak);
 
-            // We call this method to start building the table.
+            // Call this method to start building the table.
             builder.StartTable();
             builder.InsertCell();
 
@@ -89,7 +91,7 @@ namespace SimpleTable
             builder.InsertCell();
             builder.InsertCell();
             builder.Write("EXAMPLE OF TABLE");
-            builder.InsertCell(); 
+            builder.InsertCell();
             builder.EndRow();
 
             builder.InsertCell();
@@ -101,8 +103,7 @@ namespace SimpleTable
             // Signal that we have finished building the table.
             builder.EndTable();
 
-            doc.Save("simpleTable.docx");
-
+            doc.Save("SimpleTableAspose.docx");
         }
     }
 }

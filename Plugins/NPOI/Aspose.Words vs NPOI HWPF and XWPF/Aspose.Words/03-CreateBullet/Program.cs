@@ -1,6 +1,9 @@
 ﻿using System;
 using Aspose.Words;
 using System.IO;
+using NPOI.XWPF.UserModel;
+using BreakType = Aspose.Words.BreakType;
+using Document = Aspose.Words.Document;
 
 namespace CreateBullet
 {
@@ -8,109 +11,112 @@ namespace CreateBullet
     {
         static void Main(string[] args)
         {
-            //----------------------------------------------------
-            //  NPOI
-            //----------------------------------------------------  
-            //XWPFDocument doc = new XWPFDocument();
-            ////simple bullet
-            //XWPFNumbering numbering = doc.CreateNumbering();
-            
-            //string abstractNumId = numbering.AddAbstractNum();
-            //string numId = numbering.AddNum(abstractNumId);
+            CreateBulletNPOI();
+            CreateBulletAspose();
+        }
 
-            //XWPFParagraph p0 = doc.CreateParagraph();
-            //XWPFRun r0 = p0.CreateRun();
-            //r0.SetText("simple bullet");
-            //r0.SetBold(true);
-            //r0.FontFamily = "Courier";
-            //r0.FontSize = 12;
+        private static void CreateBulletNPOI()
+        {
+            XWPFDocument doc = new XWPFDocument();
+            //simple bullet
+            XWPFNumbering numbering = doc.CreateNumbering();
 
-            //XWPFParagraph p1 = doc.CreateParagraph();
-            //XWPFRun r1 = p1.CreateRun();
-            //r1.SetText("first, create paragraph and run, set text");
-            //p1.SetNumID(numId);
+            string abstractNumId = numbering.AddAbstractNum();
+            string numId = numbering.AddNum(abstractNumId);
 
-            //XWPFParagraph p2 = doc.CreateParagraph();
-            //XWPFRun r2 = p2.CreateRun();
-            //r2.SetText("second, call XWPFDocument.CreateNumbering() to create numbering");
-            //p2.SetNumID(numId);
+            XWPFParagraph p0 = doc.CreateParagraph();
+            XWPFRun r0 = p0.CreateRun();
+            r0.SetText("simple bullet");
+            r0.IsBold = true;
+            r0.FontFamily = "Courier";
+            r0.FontSize = 12;
 
-            //XWPFParagraph p3 = doc.CreateParagraph();
-            //XWPFRun r3 = p3.CreateRun();
-            //r3.SetText("third, add AbstractNum[numbering.AddAbstractNum()] and Num(numbering.AddNum(abstractNumId))");
-            //p3.SetNumID(numId);
+            XWPFParagraph p1 = doc.CreateParagraph();
+            XWPFRun r1 = p1.CreateRun();
+            r1.SetText("first, create paragraph and run, set text");
+            p1.SetNumID(numId);
 
-            //XWPFParagraph p4 = doc.CreateParagraph();
-            //XWPFRun r4 = p4.CreateRun();
-            //r4.SetText("next, call XWPFParagraph.SetNumID(numId) to set paragraph property, CT_P.pPr.numPr");
-            //p4.SetNumID(numId);
+            XWPFParagraph p2 = doc.CreateParagraph();
+            XWPFRun r2 = p2.CreateRun();
+            r2.SetText("second, call XWPFDocument.CreateNumbering() to create numbering");
+            p2.SetNumID(numId);
 
-            ////multi level
-            //abstractNumId = numbering.AddAbstractNum();
-            //numId = numbering.AddNum(abstractNumId);
-            //doc.CreateParagraph();
-            //doc.CreateParagraph();
+            XWPFParagraph p3 = doc.CreateParagraph();
+            XWPFRun r3 = p3.CreateRun();
+            r3.SetText("third, add AbstractNum[numbering.AddAbstractNum()] and Num(numbering.AddNum(abstractNumId))");
+            p3.SetNumID(numId);
 
-            //p1 = doc.CreateParagraph();
-            //r1 = p1.CreateRun();
-            //r1.SetText("multi level bullet");
-            //r1.SetBold(true);
-            //r1.FontFamily = "Courier";
-            //r1.FontSize =12 ;
+            XWPFParagraph p4 = doc.CreateParagraph();
+            XWPFRun r4 = p4.CreateRun();
+            r4.SetText("next, call XWPFParagraph.SetNumID(numId) to set paragraph property, CT_P.pPr.numPr");
+            p4.SetNumID(numId);
 
-            //p1 = doc.CreateParagraph();
-            //r1 = p1.CreateRun();
-            //r1.SetText("first");
-            //p1.SetNumID(numId, "0");
-            //p1 = doc.CreateParagraph();
-            //r1 = p1.CreateRun();
-            //r1.SetText("first-first");
-            //p1.SetNumID(numId, "1");
-            //p1 = doc.CreateParagraph();
-            //r1 = p1.CreateRun();
-            //r1.SetText("first-second");
-            //p1.SetNumID(numId, "1");
-            //p1 = doc.CreateParagraph();
-            //r1 = p1.CreateRun();
-            //r1.SetText("first-third");
-            //p1.SetNumID(numId, "1");
-            //p1 = doc.CreateParagraph();
-            //r1 = p1.CreateRun();
-            //r1.SetText("second");
-            //p1.SetNumID(numId, "0");
-            //p1 = doc.CreateParagraph();
-            //r1 = p1.CreateRun();
-            //r1.SetText("second-first");
-            //p1.SetNumID(numId, "1");
-            //p1 = doc.CreateParagraph();
-            //r1 = p1.CreateRun();
-            //r1.SetText("second-second");
-            //p1.SetNumID(numId, "1");
-            //p1 = doc.CreateParagraph();
-            //r1 = p1.CreateRun();
-            //r1.SetText("second-third");
-            //p1.SetNumID(numId, "1");
-            //p1 = doc.CreateParagraph();
-            //r1 = p1.CreateRun();
-            //r1.SetText("second-third-first");
-            //p1.SetNumID(numId, "2");
-            //p1 = doc.CreateParagraph();
-            //r1 = p1.CreateRun();
-            //r1.SetText("second-third-second");
-            //p1.SetNumID(numId, "2");
-            //p1 = doc.CreateParagraph();
-            //r1 = p1.CreateRun();
-            //r1.SetText("third");
-            //p1.SetNumID(numId, "0");
+            //multi level
+            abstractNumId = numbering.AddAbstractNum();
+            numId = numbering.AddNum(abstractNumId);
+            doc.CreateParagraph();
+            doc.CreateParagraph();
 
-            //FileStream sw = new FileStream("bullet-sample.docx", FileMode.Create);
-            //doc.Write(sw);
-            //sw.Close();
+            p1 = doc.CreateParagraph();
+            r1 = p1.CreateRun();
+            r1.SetText("multi level bullet");
+            r1.IsBold = true;
+            r1.FontFamily = "Courier";
+            r1.FontSize = 12;
 
-            //----------------------------------------------------
-            //  Aspose.Words
-            //----------------------------------------------------
+            p1 = doc.CreateParagraph();
+            r1 = p1.CreateRun();
+            r1.SetText("first");
+            p1.SetNumID(numId, "0");
+            p1 = doc.CreateParagraph();
+            r1 = p1.CreateRun();
+            r1.SetText("first-first");
+            p1.SetNumID(numId, "1");
+            p1 = doc.CreateParagraph();
+            r1 = p1.CreateRun();
+            r1.SetText("first-second");
+            p1.SetNumID(numId, "1");
+            p1 = doc.CreateParagraph();
+            r1 = p1.CreateRun();
+            r1.SetText("first-third");
+            p1.SetNumID(numId, "1");
+            p1 = doc.CreateParagraph();
+            r1 = p1.CreateRun();
+            r1.SetText("second");
+            p1.SetNumID(numId, "0");
+            p1 = doc.CreateParagraph();
+            r1 = p1.CreateRun();
+            r1.SetText("second-first");
+            p1.SetNumID(numId, "1");
+            p1 = doc.CreateParagraph();
+            r1 = p1.CreateRun();
+            r1.SetText("second-second");
+            p1.SetNumID(numId, "1");
+            p1 = doc.CreateParagraph();
+            r1 = p1.CreateRun();
+            r1.SetText("second-third");
+            p1.SetNumID(numId, "1");
+            p1 = doc.CreateParagraph();
+            r1 = p1.CreateRun();
+            r1.SetText("second-third-first");
+            p1.SetNumID(numId, "2");
+            p1 = doc.CreateParagraph();
+            r1 = p1.CreateRun();
+            r1.SetText("second-third-second");
+            p1.SetNumID(numId, "2");
+            p1 = doc.CreateParagraph();
+            r1 = p1.CreateRun();
+            r1.SetText("third");
+            p1.SetNumID(numId, "0");
 
+            using (FileStream sw = new FileStream("CreateBulletNPOI.docx", FileMode.Create))
+            {
+                doc.Write(sw);
+            }
+        }
+
+        private static void CreateBulletAspose()
+        {
             // Check for license and apply if exists
             string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
             if (File.Exists(licenseFile))
@@ -123,7 +129,7 @@ namespace CreateBullet
 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.Font.Bold = true;
             builder.Font.Name = "Courier";
             builder.Font.Size = 12;
@@ -149,7 +155,7 @@ namespace CreateBullet
             builder.Writeln("first-first");
             builder.Writeln("first-second");
             builder.Writeln("first-third");
-            builder.ListFormat.List = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.BulletSquare);            
+            builder.ListFormat.List = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.BulletSquare);
             builder.ListFormat.ListLevelNumber = 0;
             builder.Writeln("second");
             builder.ListFormat.ListLevelNumber = 1;
@@ -160,13 +166,11 @@ namespace CreateBullet
             builder.Writeln("second-third-first");
             builder.Writeln("second-third-second");
             builder.ListFormat.List = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.BulletSquare);
-            builder.ListFormat.ListLevelNumber = 0;            
+            builder.ListFormat.ListLevelNumber = 0;
             builder.Writeln("third");
-            builder.ListFormat.RemoveNumbers();                      
+            builder.ListFormat.RemoveNumbers();
 
-            doc.Save("bullet-sample.docx");
-
+            doc.Save("CreateBulletAspose.docx");
         }
-
     }
 }
