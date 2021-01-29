@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Aspose.Words;
+﻿using Aspose.Words;
 using Aspose.Words.Tables;
 using System.Drawing;
 
@@ -37,8 +34,8 @@ namespace _05._02_SetPageBorders
             // Create the second row.
             builder.InsertCell();
 
-            // Create larger borders for the first cell of this row. This will be different
-            // compared to the borders set for the table.
+            // Create larger borders for the first cell of this row.
+            // This will be different compared to the borders set for the table.
             builder.CellFormat.Borders.Left.LineWidth = 4.0;
             builder.CellFormat.Borders.Right.LineWidth = 4.0;
             builder.CellFormat.Borders.Top.LineWidth = 4.0;
@@ -50,7 +47,7 @@ namespace _05._02_SetPageBorders
             builder.CellFormat.ClearFormatting();
             builder.Writeln("Cell #4");
 
-            doc.Save("Table.SetBordersAndShading Out.doc");
+            doc.Save("SetPageBorder.docx");
         }
     }
 }

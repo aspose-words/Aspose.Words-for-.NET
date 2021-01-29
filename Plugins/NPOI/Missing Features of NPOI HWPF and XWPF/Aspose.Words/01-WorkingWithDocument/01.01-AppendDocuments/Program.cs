@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text; using Aspose.Words;
+﻿using Aspose.Words;
 
 namespace _01._01_AppendDocuments
 {
@@ -13,7 +11,7 @@ namespace _01._01_AppendDocuments
 
             Document doc3 = doc1.Clone();
             doc3.AppendDocument(doc2, ImportFormatMode.KeepSourceFormatting);
-            doc3.Save("appendedDocument.doc");
+            doc3.Save("AppendDocuments.docx");
         }
     }
 }

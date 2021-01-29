@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text; using Aspose.Words;
+﻿using Aspose.Words;
 
 namespace _01._04_TrackChangesInDocuments
 {
@@ -11,7 +9,7 @@ namespace _01._04_TrackChangesInDocuments
             Document doc = new Document("../../data/document.doc");
             doc.AcceptAllRevisions();
 
-            doc.Save("AsposeAcceptChanges.doc", SaveFormat.Doc);
+            doc.Save("TrackChangesInDocuments.docx");
         }
     }
 }

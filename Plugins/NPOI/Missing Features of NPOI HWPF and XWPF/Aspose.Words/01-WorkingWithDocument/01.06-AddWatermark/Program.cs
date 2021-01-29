@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Aspose.Words;
+﻿using Aspose.Words;
 using Aspose.Words.Drawing;
 
 namespace _01._06_AddWatermark
@@ -27,9 +24,9 @@ namespace _01._06_AddWatermark
             // Text will be directed from the bottom-left to the top-right corner.
             watermark.Rotation = -40;
 
-            // Remove the following two lines if you need a solid black text.
-            watermark.Fill.Color = System.Drawing.Color.Gray; // Try LightGray to get more Word-style watermark
-            watermark.StrokeColor = System.Drawing.Color.Gray; // Try LightGray to get more Word-style watermark
+            // Set the color of the watermark to light grey to create a similar watermark to Microsoft Word.
+            watermark.Fill.Color = System.Drawing.Color.Gray; 
+            watermark.StrokeColor = System.Drawing.Color.Gray; 
 
             // Place the watermark in the page center.
             watermark.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
@@ -52,7 +49,7 @@ namespace _01._06_AddWatermark
                 insertWatermarkIntoHeader(watermarkPara, sect, HeaderFooterType.HeaderEven);
             }
 
-            doc.Save("waterMarks.doc");
+            doc.Save("AddWatermark.docx");
         }
 
         static void insertWatermarkIntoHeader(Paragraph watermarkPara, Section sect, HeaderFooterType headerType)

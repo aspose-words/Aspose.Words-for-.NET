@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text; using Aspose.Words;
+﻿using Aspose.Words;
 
 namespace _01._02_CloneDocuments
 {
@@ -11,7 +9,7 @@ namespace _01._02_CloneDocuments
             Document doc = new Document("../../data/document.doc");
             Document clone = doc.Clone();
 
-            clone.Save("AsposeClone.doc", SaveFormat.Doc);
+            clone.Save("CloneDocuments.docx");
         }
     }
 }

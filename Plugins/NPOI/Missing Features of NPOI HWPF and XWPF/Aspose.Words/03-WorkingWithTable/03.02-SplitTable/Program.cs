@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text; using Aspose.Words;
+﻿using Aspose.Words;
 using Aspose.Words.Tables;
 
 namespace _03._02_SplitTable
@@ -36,7 +34,7 @@ namespace _03._02_SplitTable
             }
             while (currentRow != row);
 
-            doc.Save("Table.SplitTable Out.doc");
+            doc.Save("SplitTable.docx");
         }
     }
 }

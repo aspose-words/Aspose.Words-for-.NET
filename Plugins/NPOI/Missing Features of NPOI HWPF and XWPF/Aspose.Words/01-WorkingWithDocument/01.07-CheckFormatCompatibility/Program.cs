@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Aspose.Words;
 using System.IO;
 
@@ -47,9 +45,6 @@ namespace _01._07_CheckFormatCompatibility
                     case LoadFormat.Dotm:
                         Console.WriteLine("\tOffice Open XML WordprocessingML Macro-Enabled Template.");
                         break;
-                    case LoadFormat.FlatOpc:
-                        Console.WriteLine("\tFlat OPC document.");
-                        break;
                     case LoadFormat.Rtf:
                         Console.WriteLine("\tRTF format.");
                         break;
@@ -68,10 +63,29 @@ namespace _01._07_CheckFormatCompatibility
                     case LoadFormat.Ott:
                         Console.WriteLine("\tOpenDocument Text Template.");
                         break;
-                    case LoadFormat.DocPreWord97:
-                        Console.WriteLine("\tMS Word 6 or Word 95 format.");
+                    case LoadFormat.DocPreWord60:
+                        Console.WriteLine("\tPre-Microsoft Word 95 format.");
                         break;
-                    case LoadFormat.Unknown:
+                    case LoadFormat.Chm:
+                        break;
+                    case LoadFormat.FlatOpc:
+                    case LoadFormat.FlatOpcMacroEnabled:
+                    case LoadFormat.FlatOpcTemplate:
+                    case LoadFormat.FlatOpcTemplateMacroEnabled:
+                        Console.WriteLine("\tOffice Open XML WordprocessingML.");
+                        break;
+                    case LoadFormat.Markdown:
+                        Console.WriteLine("\tMarkdown text.");
+                        break;
+                    case LoadFormat.Mobi:
+                        Console.WriteLine("\tMOBI eBook.");
+                        break;
+                    case LoadFormat.Text:
+                        Console.WriteLine("\tPlaintext.");
+                        break;
+                    case LoadFormat.Pdf:
+                        Console.WriteLine("\tPDF.");
+                        break;
                     default:
                         Console.WriteLine("\tUnknown format.");
                         break;

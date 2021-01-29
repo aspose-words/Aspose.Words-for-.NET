@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text; using Aspose.Words;
+﻿using Aspose.Words;
 
 namespace _05._03_MovingtheCursor
 {
@@ -25,7 +23,7 @@ namespace _05._03_MovingtheCursor
             builder.MoveToDocumentStart();
             builder.Writeln("This is the beginning of the document.");
 
-            doc.Save("outputDocument.doc");
+            doc.Save("MovingtheCursor.docx");
         }
     }
 }
