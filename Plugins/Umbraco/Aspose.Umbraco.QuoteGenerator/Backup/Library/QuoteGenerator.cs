@@ -1,8 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.IO;
 using Aspose.Words;
+using Aspose.Words.Tables;
+using Aspose.Words.Drawing;
+using System.Collections;
+using Aspose.Words.Layout;
+using Aspose.Words.Saving;
 
 namespace Aspose.UmbracoQuoteGenerator
 {
@@ -20,35 +29,34 @@ namespace Aspose.UmbracoQuoteGenerator
             }
         }
 
-        // Populate the VAT dropdown list.
+        // populate vat dropdown list
         public static void PopulateVATDropdownList(ref DropDownList ddlVAT, System.Web.SessionState.HttpSessionState currentSession)
         {
             try
             {
-                // If session already contains the list items, then we do not need to execute loop and items.
+                // if session already contains the list items then no need to execute loop and items
                 if (currentSession["VATListItems"] != null)
                 {
-                    // Extract items from session.
+                    // extract items from session
                     ddlVAT.Items.AddRange(((ListItemCollection)currentSession["VATListItems"]).Cast<System.Web.UI.WebControls.ListItem>().ToArray());
                 }
                 else
                 {
-                    // Creating items for VAT %age from 1 to 20 with decimal places 1 to 9,
-                    // in this way we will have items like (e.g 1%, 1.1%, 1.2%.........19.9%, 20%).
-                    // Outer loop for 1 to 20 items.
+                    // creating items for VAT %age from 1 to 20 with decimal places 1 to 9, in this way we will have items like (e.g 1%, 1.1%, 1.2%.........19.9%, 20%)
+                    // outer look for 1 to 20 items
                     for (int i = 0; i < 20; i++)
                     {
-                        // Inner loop to create decimal items 1 to 9 for each outer loop value.
+                        // inner loop to create decimal items 1 to 9 for each outer loop value
                         for (int j = 0; j < 10; j++)
                         {
-                            // NOTE: (j == 0 ? "" : "." + j.ToString()) skip and allow to add start value.
+                            // NOTE: (j == 0 ? "" : "." + j.ToString()) skip and allow to add start value
                             ddlVAT.Items.Add(new ListItem(i.ToString() + (j == 0 ? "" : "." + j.ToString()) + "%", i.ToString() + (j == 0 ? "" : "." + j.ToString())));
                         }
                     }
-                    // Adding last item as loops created max 19.9% item.
+                    // adding last item as loops created max 19.9% item
                     ddlVAT.Items.Add(new ListItem("20%", "20"));
 
-                    // Adding list items to session, caching it to re-use.
+                    // adding list items to session, caching it to re-use
                     currentSession["VATListItems"] = ddlVAT.Items;
                 }
             }
@@ -58,15 +66,15 @@ namespace Aspose.UmbracoQuoteGenerator
             }
         }
 
-        // Populate the VAT dropdown list.
+        // populate vat dropdown list
         public static DataSet GetDataSetForGridView(System.Web.SessionState.HttpSessionState currentSession)
         {
             try
             {
-                // If session already contains the list items, then we do not need to execute loop and items.
+                // if session already contains the list items then no need to execute loop and items
                 if (currentSession["ProductTable"] != null)
                 {
-                    // Extract items from session.
+                    // extract from session
                     return (DataSet)currentSession["ProductTable"];
                 }
                 else
@@ -85,10 +93,10 @@ namespace Aspose.UmbracoQuoteGenerator
                     productTable.Columns.Add("VATAmount");
                     productTable.Columns.Add("TotalAmount");
 
-                    // Include the tables in the DataSet.
+                    // Include the tables in the DataSet
                     data.Tables.Add(productTable);
 
-                    // Add dataset to session, caching it to re-use.
+                    // adding dataset to session, caching it to re-use
                     currentSession["ProductTable"] = data;
 
                     return data;
@@ -100,30 +108,30 @@ namespace Aspose.UmbracoQuoteGenerator
             }
         }
 
-        // Populate the VAT dropdown list.
+        // populate vat dropdown list
         public static Document GetUnmergedTemplateObject(string templatePath, System.Web.SessionState.HttpSessionState currentSession)
         {
             try
             {
                 Document doc = new Document(templatePath);
                 return doc;
-                // If session already contains the list items, then we do not need to execute loop and items.
+                // if session already contains the list items then no need to execute loop and items
                 if (currentSession["TemplateObject"] != null)
                 {
-                    // Extract items from session.
+                    // extract from session
                     doc = (Document)currentSession["TemplateObject"];
 
-                    // If there are multiple templates and need to cache and use then must verify what session exactly have in.
+                    // if there are multiple templates and need to cache and use then must varify what session exactly have in.
                     if (templatePath.Contains(doc.OriginalFileName))
                     {
                         return doc;
                     }
                     else
                     {
-                        // Create a new document object with un-merged template file, caching it to re-use.
+                        // Create a new document object with un-merged template file, caching it to re-use
                         doc = new Document(templatePath);
 
-                        // Add template object to session.
+                        // adding template object to session
                         currentSession["TemplateObject"] = doc;
 
                         return doc;
@@ -131,10 +139,10 @@ namespace Aspose.UmbracoQuoteGenerator
                 }
                 else
                 {
-                    // Create a new document object with un-merged template file, caching it to re-use.
+                    // Create a new document object with un-merged template file, caching it to re-use
                     doc = new Document(templatePath);
 
-                    // Add template object to session.
+                    // adding template object to session
                     currentSession["TemplateObject"] = doc;
 
                     return doc;
@@ -146,14 +154,12 @@ namespace Aspose.UmbracoQuoteGenerator
             }
         }
 
-        // Get file export types/extenssions.
+        // get file export types/extenssions 
         public static string GetSaveFormat(string format)
         {
             try
             {
                 string saveOption = SaveFormat.Pdf.ToString();
-
-                // There are many document formats supported, check the "SaveFormat" property for more.
                 switch (format)
                 {
                     case "Pdf":
@@ -173,6 +179,7 @@ namespace Aspose.UmbracoQuoteGenerator
                     case "Jpeg":
                         saveOption = SaveFormat.Jpeg.ToString(); break;
 
+                    // there are many document formats supported, check SaveFormat property for more
                 }
 
                 return saveOption;
