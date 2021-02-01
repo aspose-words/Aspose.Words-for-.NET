@@ -174,7 +174,7 @@ namespace ApiExamples
             section.PageSetup.SectionStart = SectionStart.NewPage;
             section.PageSetup.PaperSize = PaperSize.Letter;
             
-            // A section needs a body, which will contain and display all of its contents
+            // A section needs a body, which will contain and display all its contents
             // on the page between the section's header and footer.
             Body body = new Body(doc);
             section.AppendChild(body);
@@ -187,8 +187,8 @@ namespace ApiExamples
 
             body.AppendChild(para);
 
-            // Finally, add some content to do the document by creating a run,
-            // setting its text contents and appearance, and appending it as a child to the paragraph.
+            // Finally, add some content to do the document. Create a run,
+            // set its appearance and contents, and then append it as a child to the paragraph.
             Run run = new Run(doc);
             run.Text = "Hello World!";
             run.Font.Color = Color.Red;
@@ -221,7 +221,7 @@ namespace ApiExamples
 
             Assert.AreEqual(0, doc.Sections[1].GetChildNodes(NodeType.Any, true).Count);
 
-            // Run the "EnsureMinumim" method to add a body and a paragraph to this section to begin editing it.
+            // Run the "EnsureMinimum" method to add a body and a paragraph to this section to begin editing it.
             doc.LastSection.EnsureMinimum();
 
             Assert.AreEqual(NodeType.Body, doc.Sections[1].GetChild(NodeType.Any, 0, true).NodeType);
@@ -253,7 +253,7 @@ namespace ApiExamples
             Section section = new Section(doc);
             doc.AppendChild(section);
 
-            // A section needs a body, which will contain and display all of its contents
+            // A section needs a body, which will contain and display all its contents
             // on the page between the section's header and footer.
             Body body = new Body(doc);
             section.AppendChild(body);
@@ -329,12 +329,12 @@ namespace ApiExamples
             //ExSummary:Shows how to remove all sections from a document.
             Document doc = new Document(MyDir + "Document.docx");
 
-            // This document has one section with a few child nodes containing and displaying all of the document's contents.
+            // This document has one section with a few child nodes containing and displaying all the document's contents.
             Assert.AreEqual(1, doc.Sections.Count);
             Assert.AreEqual(19, doc.Sections[0].GetChildNodes(NodeType.Any, true).Count);
             Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
 
-            // Clear the collection of sections, which will remove all of their child nodes, and all of the document's content.
+            // Clear the collection of sections, which will remove all of the document's children.
             doc.Sections.Clear();
             
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Any, true).Count);
@@ -424,7 +424,7 @@ namespace ApiExamples
             Assert.AreEqual("This is the primary footer.", doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Trim());
 
             // Empty all the headers and footers in this section of all their contents.
-            // The headers and footers themselves will still be present, but will have nothing to display.
+            // The headers and footers themselves will still be present but will have nothing to display.
             doc.FirstSection.ClearHeadersFooters();
 
             Assert.AreEqual(2, doc.FirstSection.HeadersFooters.Count);

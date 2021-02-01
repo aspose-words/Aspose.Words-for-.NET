@@ -116,7 +116,7 @@ namespace ApiExamples
             FieldAuthor fieldAuthor = (FieldAuthor)builder.InsertField(FieldType.FieldAuthor, true);
             fieldAuthor.AuthorName = "John Doe";
 
-            // We can use the DisplayResult attribute to verify what exact text
+            // We can use the DisplayResult property to verify what exact text
             // a field would display in its place in the document.
             Assert.AreEqual(string.Empty, fieldAuthor.DisplayResult);
 
@@ -218,7 +218,7 @@ namespace ApiExamples
             // Insert a field that does not denote an objective field type in its field code.
             Field field = builder.InsertField(" NOTAREALFIELD //a");
 
-            // Fields like that can be created and read, and are assigned a special "FieldNone" type.
+            // The "FieldNone" field type is reserved for fields such as these.
             Assert.AreEqual(FieldType.FieldNone, field.Type);
 
             // We can also still work with these fields and assign them as instances of the FieldUnknown class.
@@ -303,7 +303,7 @@ namespace ApiExamples
             Assert.AreEqual(FieldUpdateCultureSource.CurrentThread, doc.FieldOptions.FieldUpdateCultureSource); //ExSkip
 
             // Changing the culture of our thread will impact the result of the DATE field.
-            // Another way to get the DATE field to display a date in a different culture is to use its LocaleId attribute.
+            // Another way to get the DATE field to display a date in a different culture is to use its LocaleId property.
             // This way allows us to avoid changing the thread's culture to get this effect.
             doc.FieldOptions.FieldUpdateCultureSource = FieldUpdateCultureSource.FieldCode;
             CultureInfo de = new CultureInfo("de-DE");
@@ -479,12 +479,12 @@ namespace ApiExamples
                 "GROUP BY[Products].ProductName " +
                 "ORDER BY SUM([Order Details].UnitPrice* (1 - [Order Details].Discount) * [Order Details].Quantity) DESC";
 
-            // These attributes have the same function as LIMIT and TOP clauses.
+            // These properties have the same function as LIMIT and TOP clauses.
             // Configure them to display only rows 1 to 10 of the query result in the field's table.
             field.FirstRecord = "1";
             field.LastRecord = "10";
 
-            // This attribute is the index of the format we want to use for our table. The list of table formats is in the "Table AutoFormat..." menu
+            // This property is the index of the format we want to use for our table. The list of table formats is in the "Table AutoFormat..." menu
             // that shows up when we create a DATABASE field in Microsoft Word. Index #10 corresponds to the "Colorful 3" format.
             field.TableFormat = "10";
 
@@ -609,7 +609,7 @@ namespace ApiExamples
             Assert.AreEqual("= 2 + 3", field.GetFieldCode());
             Assert.AreEqual("5", field.Result);
 
-            // We can apply a format to a field's result using the field's attributes.
+            // We can apply a format to a field's result using the field's properties.
             // Below are three types of formats that we can apply to a field's result.
             // 1 -  Numeric format:
             FieldFormat format = field.Format;
@@ -961,7 +961,7 @@ namespace ApiExamples
             Assert.AreEqual(" ADDRESSBLOCK ", field.GetFieldCode());
 
             // Setting this to "2" will include all countries and regions,
-            // unless it is the one specified in the ExcludedCountryOrRegionName attribute.
+            // unless it is the one specified in the ExcludedCountryOrRegionName property.
             field.IncludeCountryOrRegionName = "2";
             field.FormatAddressOnCountryOrRegion = true;
             field.ExcludedCountryOrRegionName = "United States";
@@ -1019,7 +1019,6 @@ namespace ApiExamples
             builder.InsertField(" QUOTE \"Hello world!\" ");
             doc.UpdateFields();
 
-            // This collection stores all of a document's fields.
             FieldCollection fields = doc.Range.Fields;
 
             Assert.AreEqual(6, fields.Count);
@@ -1137,7 +1136,6 @@ namespace ApiExamples
             builder.InsertField(" QUOTE \"Hello world!\" ");
             doc.UpdateFields();
 
-            // This collection stores all of a document's fields.
             FieldCollection fields = doc.Range.Fields;
 
             Assert.AreEqual(6, fields.Count);
@@ -1240,8 +1238,8 @@ namespace ApiExamples
             field.ComparisonOperator = "=";
             field.RightExpression = "1";
 
-            // The IF field will display a string from either its "TrueText" attribute,
-            // or its "FalseText" attribute, depending on the truth of the statement that we have constructed.
+            // The IF field will display a string from either its "TrueText" property,
+            // or its "FalseText" property, depending on the truth of the statement that we have constructed.
             field.TrueText = "True";
             field.FalseText = "False";
             field.Update();
@@ -1299,8 +1297,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // AUTONUM fields display a number of increments at each AUTONUM field,
-            // allowing us to automatically number items similar to a numbered list.
+            // Each AUTONUM field displays the current value of a running count of AUTONUM fields,
+            // allowing us to automatically number items like a numbered list.
             // This field will display a number "1.".
             FieldAutoNum field = (FieldAutoNum)builder.InsertField(FieldType.FieldAutoNum, true);
             builder.Writeln("\tParagraph 1.");
@@ -1311,10 +1309,10 @@ namespace ApiExamples
             builder.Writeln("\tParagraph 2.");
 
             // The separator character, which appears in the field result immediately after the number,is a full stop by default.
-            // If we leave this attribute null, our second AUTONUM field will display "2." in the document.
+            // If we leave this property null, our second AUTONUM field will display "2." in the document.
             Assert.IsNull(field.SeparatorCharacter);
 
-            // We can set this attribute to apply the first character of its string as the new separator character.
+            // We can set this property to apply the first character of its string as the new separator character.
             // In this case, our AUTONUM field will now display "2:".
             field.SeparatorCharacter = ":";
 
@@ -1372,11 +1370,11 @@ namespace ApiExamples
             foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal))
             {
                 // The separator character, which appears in the field result immediately after the number,
-                // is a full stop by default. If we leave this attribute null,
+                // is a full stop by default. If we leave this property null,
                 // our last AUTONUMLGL field will display "2.2.1." in the document.
                 Assert.IsNull(field.SeparatorCharacter);
 
-                // Setting a custom separater character and removing the trailing period
+                // Setting a custom separator character and removing the trailing period
                 // will change that field's appearance from "2.2.1." to "2:2:1".
                 // We will apply this to all the fields that we have created.
                 field.SeparatorCharacter = ":";
@@ -1429,7 +1427,7 @@ namespace ApiExamples
             // AUTONUMOUT fields display a number that increments at each AUTONUMOUT field.
             // Unlike AUTONUM fields, AUTONUMOUT fields use the outline numbering scheme,
             // which we can define in Microsoft Word via Format -> Bullets & Numbering -> "Outline Numbered".
-            // This allows us to automatically number items similar to a numbered list.
+            // This allows us to automatically number items like a numbered list.
             // LISTNUM fields are a newer alternative to AUTONUMOUT fields.
             // This field will display "1.".
             builder.InsertField(FieldType.FieldAutoNumOutline, true);
@@ -1463,7 +1461,7 @@ namespace ApiExamples
             //ExSummary:Shows how to display a building block with AUTOTEXT and GLOSSARY fields. 
             Document doc = new Document();
 
-            // Create a glossary document, and add an AutoText building block to it.
+            // Create a glossary document and add an AutoText building block to it.
             doc.GlossaryDocument = new GlossaryDocument();
             BuildingBlock buildingBlock = new BuildingBlock(doc.GlossaryDocument);
             buildingBlock.Name = "MyBlock";
@@ -1473,7 +1471,7 @@ namespace ApiExamples
             buildingBlock.Behavior = BuildingBlockBehavior.Paragraph;
             doc.GlossaryDocument.AppendChild(buildingBlock);
 
-            // Create a source, and add it as text to our building block.
+            // Create a source and add it as text to our building block.
             Document buildingBlockSource = new Document();
             DocumentBuilder buildingBlockSourceBuilder = new DocumentBuilder(buildingBlockSource);
             buildingBlockSourceBuilder.Writeln("Hello World!");
@@ -1529,7 +1527,7 @@ namespace ApiExamples
         {
             Document doc = new Document();
 
-            // Create a glossary document, and populate it with auto text entries.
+            // Create a glossary document and populate it with auto text entries.
             doc.GlossaryDocument = new GlossaryDocument();
             AppendAutoTextEntry(doc.GlossaryDocument, "AutoText 1", "Contents of AutoText 1");
             AppendAutoTextEntry(doc.GlossaryDocument, "AutoText 2", "Contents of AutoText 2");
@@ -1537,7 +1535,7 @@ namespace ApiExamples
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create an AUTOTEXTLIST field, and set the text that the field will display in Microsoft Word.
+            // Create an AUTOTEXTLIST field and set the text that the field will display in Microsoft Word.
             // Set the text to prompt the user to right-click this field to select an AutoText building block,
             // whose contents the field will display.
             FieldAutoTextList field = (FieldAutoTextList)builder.InsertField(FieldType.FieldAutoTextList, true);
@@ -1554,7 +1552,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Create an AutoText-type building block, and add it to a glossary document.
+        /// Create an AutoText-type building block and add it to a glossary document.
         /// </summary>
         private static void AppendAutoTextEntry(GlossaryDocument glossaryDoc, string name, string contents)
         {
@@ -1685,13 +1683,13 @@ namespace ApiExamples
             // LISTNUM fields maintain separate counts for each list level. 
             // Inserting a LISTNUM field in the same paragraph as another LISTNUM field
             // increases the list level instead of the count.
-            // The next field will continue the count we started above and have a value of 1 at list level 1.
+            // The next field will continue the count we started above and display a value of "1" at list level 1.
             builder.InsertField(FieldType.FieldListNum, true);
 
-            // This field will start a count at list level 2, and will display a value of 1.
+            // This field will start a count at list level 2. It will display a value of "1".
             builder.InsertField(FieldType.FieldListNum, true);
 
-            // This field will start a count at list level 3, and will display a value of 1.
+            // This field will start a count at list level 3. It will display a value of "1".
             // Different list levels have different formatting,
             // so these fields combined will display a value of "1)a)i)".
             builder.InsertField(FieldType.FieldListNum, true);
@@ -1699,7 +1697,7 @@ namespace ApiExamples
 
             // The next LISTNUM field that we insert will continue the count at the list level
             // that the previous LISTNUM field was on.
-            // We can use the "ListLevel" attribute to jump to a different list level.
+            // We can use the "ListLevel" property to jump to a different list level.
             // If this LISTNUM field stayed on list level 3, it would display "ii)",
             // but, since we have moved it to list level 2, it carries on the count at that level and displays "b)".
             field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
@@ -1708,7 +1706,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" LISTNUM  \\l 2", field.GetFieldCode());
 
-            // We can set the ListName attribute to get the field to emulate a different AUTONUM field type.
+            // We can set the ListName property to get the field to emulate a different AUTONUM field type.
             // "NumberDefault" emulates AUTONUM, "OutlineDefault" emulates AUTONUMOUT,
             // and "LegalDefault" emulates AUTONUMLGL fields.
             // The "OutlineDefault" list name with 1 as the starting number will result in displaying "I.".
@@ -1721,7 +1719,7 @@ namespace ApiExamples
             Assert.AreEqual(" LISTNUM  OutlineDefault \\s 1", field.GetFieldCode());
 
             // The ListName does not carry over from the previous field, so we will need to set it for each new field.
-            // This field continues the count with the different list name, and displays "II.".
+            // This field continues the count with the different list name and displays "II.".
             field = (FieldListNum)builder.InsertField(FieldType.FieldListNum, true);
             field.ListName = "OutlineDefault";
             builder.Writeln("Paragraph 5");
@@ -1793,7 +1791,7 @@ namespace ApiExamples
             table.Rows.Add("Mr.", "John", "Doe");
             table.Rows.Add("Mrs.", "Jane", "Cardholder");
 
-            // Insert a MERGEFIELD with a FieldName attribute set to the name of a column in the data source.
+            // Insert a MERGEFIELD with a FieldName property set to the name of a column in the data source.
             FieldMergeField fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
             fieldMergeField.FieldName = "Courtesy Title";
             fieldMergeField.IsMapped = true;
@@ -1847,16 +1845,16 @@ namespace ApiExamples
             // and the page the heading appears on to the right.
             FieldToc field = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
 
-            // Use the BookmarkName attribute to only list headings
+            // Use the BookmarkName property to only list headings
             // that appear within the bounds of a bookmark with the "MyBookmark" name.
             field.BookmarkName = "MyBookmark";
 
             // Text with a built-in heading style, such as "Heading 1", applied to it will count as a heading.
-            // We can name additional styles to be picked up as headings by the TOC in this attribute and their TOC levels.
+            // We can name additional styles to be picked up as headings by the TOC in this property and their TOC levels.
             field.CustomStyles = "Quote; 6; Intense Quote; 7";
 
-            // By default, Styles/TOC levels are separated in the CustomStyles attribute by a comma,
-            // but we can set a custom delimiter in this attribute.
+            // By default, Styles/TOC levels are separated in the CustomStyles property by a comma,
+            // but we can set a custom delimiter in this property.
             doc.FieldOptions.CustomTocStyleSeparator = ";";
 
             // Configure the field to exclude any headings that have TOC levels outside of this range.
@@ -1883,13 +1881,13 @@ namespace ApiExamples
             InsertNewPageWithHeading(builder, "Fifth entry", "Heading 2");
             InsertNewPageWithHeading(builder, "Sixth entry", "Heading 3");
 
-            // This entry not appear because "Heading 4" is outside of the "1-3" range that we have set earlier.
+            // This entry does not appear because "Heading 4" is outside of the "1-3" range that we have set earlier.
             InsertNewPageWithHeading(builder, "Seventh entry", "Heading 4");
 
             builder.EndBookmark("MyBookmark");
             builder.Writeln("Paragraph text.");
 
-            // This entry not appear because it is outside the bookmark specified by the TOC.
+            // This entry does not appear because it is outside the bookmark specified by the TOC.
             InsertNewPageWithHeading(builder, "Eighth entry", "Heading 1");
 
             Assert.AreEqual(" TOC  \\b MyBookmark \\t \"Quote; 6; Intense Quote; 7\" \\o 1-3 \\n 2-5 \\p - \\h \\x \\w", field.GetFieldCode());
@@ -2055,12 +2053,12 @@ namespace ApiExamples
 
             // SEQ fields display a count that increments at each SEQ field.
             // These fields also maintain separate counts for each unique named sequence
-            // identified by the SEQ field's "SequenceIdentifier" attribute.
-            // Use the "TableOfFiguresLabel" attribute to name a main sequence for the TOC.
+            // identified by the SEQ field's "SequenceIdentifier" property.
+            // Use the "TableOfFiguresLabel" property to name a main sequence for the TOC.
             // Now, this TOC will only create entries out of SEQ fields with their "SequenceIdentifier" set to "MySequence".
             fieldToc.TableOfFiguresLabel = "MySequence";
 
-            // We can name another SEQ field sequence in the "PrefixedSequenceIdentifier" attribute.
+            // We can name another SEQ field sequence in the "PrefixedSequenceIdentifier" property.
             // SEQ fields from this prefix sequence will not create TOC entries. 
             // Every TOC entry created from a main sequence SEQ field will now also display the count that
             // the prefix sequence is currently on at the primary sequence SEQ field that made the entry.
@@ -2079,7 +2077,7 @@ namespace ApiExamples
             // 1 -  Inserting a SEQ field that belongs to the TOC's prefix sequence:
             // This field will increment the SEQ sequence count for the "PrefixSequence" by 1.
             // Since this field does not belong to the main sequence identified
-            // by the "TableOfFiguresLabel" attribute of the TOC, it will not appear as an entry.
+            // by the "TableOfFiguresLabel" property of the TOC, it will not appear as an entry.
             FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "PrefixSequence";
             builder.InsertParagraph();
@@ -2090,7 +2088,7 @@ namespace ApiExamples
             // This SEQ field will create an entry in the TOC.
             // The TOC entry will contain the paragraph that the SEQ field is in and the number of the page that it appears on.
             // This entry will also display the count that the prefix sequence is currently at,
-            // separated from the page number by the value in the TOC's SeqenceSeparator attribute.
+            // separated from the page number by the value in the TOC's SeqenceSeparator property.
             // The "PrefixSequence" count is at 1, this main sequence SEQ field is on page 2,
             // and the separator is ">", so entry will display "1>2".
             builder.Write("First TOC entry, MySequence #");
@@ -2187,9 +2185,9 @@ namespace ApiExamples
 
             // SEQ fields display a count that increments at each SEQ field.
             // These fields also maintain separate counts for each unique named sequence
-            // identified by the SEQ field's "SequenceIdentifier" attribute.
+            // identified by the SEQ field's "SequenceIdentifier" property.
             // Insert a SEQ field that will display the current count value of "MySequence",
-            // after using the "ResetNumber" attribute to set it to 100.
+            // after using the "ResetNumber" property to set it to 100.
             builder.Write("#");
             FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
@@ -2213,7 +2211,7 @@ namespace ApiExamples
             builder.Writeln("This level 1 heading will reset MySequence to 1");
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
 
-            // Insert another SEQ field from the same sequence, and configure it to reset the count at every heading with 1.
+            // Insert another SEQ field from the same sequence and configure it to reset the count at every heading with 1.
             builder.Write("\n#");
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
@@ -2279,9 +2277,11 @@ namespace ApiExamples
             // and the number of the page that the field appears on.
             FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
 
-            // Configure this TOC field to only pick up SEQ fields that are within the bounds of a bookmark
-            // named "TOCBookmark", and also have a SequenceIdentifier attribute with a value of "MySequence".
+            // Configure this TOC field to have a SequenceIdentifier property with a value of "MySequence".
             fieldToc.TableOfFiguresLabel = "MySequence";
+
+            // Configure this TOC field to only pick up SEQ fields that are within the bounds of a bookmark
+            // named "TOCBookmark".
             fieldToc.BookmarkName = "TOCBookmark";
             builder.InsertBreak(BreakType.PageBreak);
 
@@ -2289,9 +2289,9 @@ namespace ApiExamples
 
             // SEQ fields display a count that increments at each SEQ field.
             // These fields also maintain separate counts for each unique named sequence
-            // identified by the SEQ field's "SequenceIdentifier" attribute.
+            // identified by the SEQ field's "SequenceIdentifier" property.
             // Insert a SEQ field that has a sequence identifier that matches the TOC's
-            // TableOfFiguresLabel attribute. This field will not create an entry in the TOC since it is outside
+            // TableOfFiguresLabel property. This field will not create an entry in the TOC since it is outside
             // the bookmark's bounds designated by "BookmarkName".
             builder.Write("MySequence #");
             FieldSeq fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
@@ -2300,21 +2300,21 @@ namespace ApiExamples
 
             builder.StartBookmark("TOCBookmark");
 
-            // This SEQ field's sequence matches the TOC's "TableOfFiguresLabel" attribute and is within the bookmark's bounds.
+            // This SEQ field's sequence matches the TOC's "TableOfFiguresLabel" property and is within the bookmark's bounds.
             // The paragraph that contains this field will show up in the TOC as an entry.
             builder.Write("MySequence #");
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "MySequence";
             builder.Writeln(", will show up in the TOC next to the entry for the above caption.");
 
-            // This SEQ field's sequence does not match the TOC's "TableOfFiguresLabel" attribute,
+            // This SEQ field's sequence does not match the TOC's "TableOfFiguresLabel" property,
             // and is within the bounds of the bookmark. Its paragraph will not show up in the TOC as an entry.
             builder.Write("MySequence #");
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             fieldSeq.SequenceIdentifier = "OtherSequence";
             builder.Writeln(", will not show up in the TOC because it's from a different sequence identifier.");
 
-            // This SEQ field's sequence matches the TOC's "TableOfFiguresLabel" attribute, and is within the bounds of the bookmark.
+            // This SEQ field's sequence matches the TOC's "TableOfFiguresLabel" property and is within the bounds of the bookmark.
             // This field also references another bookmark. The contents of that bookmark will appear in the TOC entry for this SEQ field.
             // The SEQ field itself will not display the contents of that bookmark.
             fieldSeq = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
@@ -2773,7 +2773,7 @@ namespace ApiExamples
             FieldHyperlink field = (FieldHyperlink)builder.InsertField(FieldType.FieldHyperlink, true);
 
             // When we click this HYPERLINK field in Microsoft Word,
-            // it will open the linked document, and also place the cursor at the specified bookmark.
+            // it will open the linked document and then place the cursor at the specified bookmark.
             field.Address = MyDir + "Bookmarks.docx";
             field.SubAddress = "MyBookmark3";
             field.ScreenTip = "Open " + field.Address + " on bookmark " + field.SubAddress + " in a new window";
@@ -3024,22 +3024,22 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create an INDEX field which will display an entry for each XE field found in the document.
-            // Each entry will display the XE field's Text attribute value on the left side
+            // Each entry will display the XE field's Text property value on the left side
             // and the page containing the XE field on the right.
             // If the XE fields have the same value in their "Text" property,
             // the INDEX field will group them into one entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
             // Configure the INDEX field only to display XE fields that are within the bounds
-            // of a bookmark named "MainBookmark", and whose "EntryType" attributes have a value of "A".
-            // For both INDEX and XE fields, the "EntryType" attribute only uses the first character of its string value.
+            // of a bookmark named "MainBookmark", and whose "EntryType" properties have a value of "A".
+            // For both INDEX and XE fields, the "EntryType" property only uses the first character of its string value.
             index.BookmarkName = "MainBookmark";
             index.EntryType = "A";
 
             Assert.AreEqual(" INDEX  \\b MainBookmark \\f A", index.GetFieldCode());
 
             // On a new page, start the bookmark with a name that matches the value
-            // of the INDEX field's "BookmarkName" attribute.
+            // of the INDEX field's "BookmarkName" property.
             builder.InsertBreak(BreakType.PageBreak);
             builder.StartBookmark("MainBookmark");
 
@@ -3115,14 +3115,14 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create an INDEX field which will display an entry for each XE field found in the document.
-            // Each entry will display the XE field's Text attribute value on the left side,
+            // Each entry will display the XE field's Text property value on the left side,
             // and the number of the page that contains the XE field on the right.
             // If the XE fields have the same value in their "Text" property,
             // the INDEX field will group them into one entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
             index.LanguageId = "1033";
 
-            // Setting this attribute's value to "A" will group all the entries by their first letter,
+            // Setting this property's value to "A" will group all the entries by their first letter,
             // and place that letter in uppercase above each group.
             index.Heading = "A";
 
@@ -3165,7 +3165,7 @@ namespace ApiExamples
             indexEntry.Text = "Avocado";
 
             // This entry will not appear because it starts with the letter "D",
-            // which is outside the "a-c" character range that the INDEX field's LetterRange attribute defines.
+            // which is outside the "a-c" character range that the INDEX field's LetterRange property defines.
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Durian";
@@ -3247,13 +3247,13 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create an INDEX field which will display an entry for each XE field found in the document.
-            // Each entry will display the XE field's Text attribute value on the left side,
+            // Each entry will display the XE field's Text property value on the left side,
             // and the number of the page that contains the XE field on the right.
             // If the XE fields have the same value in their "Text" property,
             // the INDEX field will group them into one entry.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
-            // In the SequenceName attribute, name a SEQ field sequence. Each entry of this INDEX field will now also display
+            // In the SequenceName property, name a SEQ field sequence. Each entry of this INDEX field will now also display
             // the number that the sequence count is on at the XE field location that created this entry.
             index.SequenceName = "MySequence";
 
@@ -3268,7 +3268,7 @@ namespace ApiExamples
 
             // SEQ fields display a count that increments at each SEQ field.
             // These fields also maintain separate counts for each unique named sequence
-            // identified by the SEQ field's "SequenceIdentifier" attribute.
+            // identified by the SEQ field's "SequenceIdentifier" property.
             // Insert a SEQ field which moves the "MySequence" sequence to 1.
             // This field no different from normal document text. It will not appear on an INDEX field's table of contents.
             builder.InsertBreak(BreakType.PageBreak);
@@ -3285,22 +3285,22 @@ namespace ApiExamples
 
             Assert.AreEqual(" XE  Cat", indexEntry.GetFieldCode());
 
-            // Insert a page break, and use SEQ fields to advance "MySequence" to 3.
+            // Insert a page break and use SEQ fields to advance "MySequence" to 3.
             builder.InsertBreak(BreakType.PageBreak);
             sequenceField = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             sequenceField.SequenceIdentifier = "MySequence";
             sequenceField = (FieldSeq)builder.InsertField(FieldType.FieldSequence, true);
             sequenceField.SequenceIdentifier = "MySequence";
 
-            // Insert an XE field with the same Text attribute as the one above.
-            // The INDEX entry will group XE fields with matching valeus in the "Text" property
+            // Insert an XE field with the same Text property as the one above.
+            // The INDEX entry will group XE fields with matching values in the "Text" property
             // into one entry as opposed to making an entry for each XE field.
             // Since we are on page 2 with "MySequence" at 3, ", 3 on page 3" will be appended to the same INDEX entry as above.
             // The page number portion of that INDEX entry will now display "MySequence at 1 on page 2, 3 on page 3".
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Cat";
 
-            // Insert an XE field with a new and unique Text attribute value.
+            // Insert an XE field with a new and unique Text property value.
             // This will add a new entry, with MySequence at 3 on page 4.
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
@@ -3337,9 +3337,9 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create an INDEX field which will display an entry for each XE field found in the document.
-            // Each entry will display the XE field's Text attribute value on the left side,
+            // Each entry will display the XE field's Text property value on the left side,
             // and the number of the page that contains the XE field on the right.
-            // The INDEX entry will group XE fields with matching valeus in the "Text" property
+            // The INDEX entry will group XE fields with matching values in the "Text" property
             // into one entry as opposed to making an entry for each XE field.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
@@ -3393,9 +3393,9 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create an INDEX field which will display an entry for each XE field found in the document.
-            // Each entry will display the XE field's Text attribute value on the left side,
+            // Each entry will display the XE field's Text property value on the left side,
             // and the number of the page that contains the XE field on the right.
-            // The INDEX entry will collect all XE fields with matching valeus in the "Text" property
+            // The INDEX entry will collect all XE fields with matching values in the "Text" property
             // into one entry as opposed to making an entry for each XE field.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
@@ -3410,7 +3410,7 @@ namespace ApiExamples
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "My entry";
 
-            // If an XE field names a bookmark using the PageRangeBookmarkName attribute,
+            // If an XE field names a bookmark using the PageRangeBookmarkName property,
             // its INDEX entry will show the range of pages that the bookmark spans
             // instead of the number of the page that contains the XE field.
             indexEntry.PageRangeBookmarkName = "MyBookmark";
@@ -3418,7 +3418,7 @@ namespace ApiExamples
             Assert.AreEqual(" XE  \"My entry\" \\r MyBookmark", indexEntry.GetFieldCode());
             Assert.True(indexEntry.HasPageRangeBookmarkName);
 
-            // Insert a bookmark that starts on page 3, and ends on page 5.
+            // Insert a bookmark that starts on page 3 and ends on page 5.
             // The INDEX entry for the XE field that references this bookmark will display this page range.
             // In our table, the INDEX entry will display "My entry, on page(s) 3 to 5".
             builder.InsertBreak(BreakType.PageBreak);
@@ -3460,15 +3460,15 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create an INDEX field which will display an entry for each XE field found in the document.
-            // Each entry will display the XE field's Text attribute value on the left side,
+            // Each entry will display the XE field's Text property value on the left side,
             // and the number of the page that contains the XE field on the right.
-            // The INDEX entry will collect all XE fields with matching valeus in the "Text" property
+            // The INDEX entry will collect all XE fields with matching values in the "Text" property
             // into one entry as opposed to making an entry for each XE field.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
             // We can configure an XE field to get its INDEX entry to display a string instead of a page number.
             // First, for entries that substitute a page number with a string,
-            // specify a custom separator between the XE field's Text attribute value and the string.
+            // specify a custom separator between the XE field's Text property value and the string.
             index.CrossReferenceSeparator = ", see: ";
 
             Assert.AreEqual(" INDEX  \\k \", see: \"", index.GetFieldCode());
@@ -3482,7 +3482,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" XE  Apple", indexEntry.GetFieldCode());
 
-            // Insert another XE field on page 3, and set a value for the PageNumberReplacement attribute.
+            // Insert another XE field on page 3 and set a value for the PageNumberReplacement property.
             // This value will show up instead of the number of the page that this field is on,
             // and the INDEX field's CrossReferenceSeparator value will appear in front of it.
             // The entry for this XE field will display "Banana, see: Tropical fruit".
@@ -3530,21 +3530,21 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create an INDEX field which will display an entry for each XE field found in the document.
-            // Each entry will display the XE field's Text attribute value on the left side,
+            // Each entry will display the XE field's Text property value on the left side,
             // and the number of the page that contains the XE field on the right.
-            // The INDEX entry will collect all XE fields with matching valeus in the "Text" property
+            // The INDEX entry will collect all XE fields with matching values in the "Text" property
             // into one entry as opposed to making an entry for each XE field.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
             index.PageNumberSeparator = ", see page ";
             index.Heading = "A";
 
-            // XE fields that have a Text attribute whose value becomes the heading of the INDEX entry.
+            // XE fields that have a Text property whose value becomes the heading of the INDEX entry.
             // If this value contains two string segments split by a colon (the INDEX entry will treat :) delimiter,
             // the first segment is heading, and the second segment will become the subheading.
             // The INDEX field first groups entries alphabetically, then, if there are multiple XE fields with the same
             // headings, the INDEX field will further subgroup them by the values of these headings.
             // There can be multiple subgrouping layers, depending on how many times
-            // the Text attributes of XE fields get segmented like this.
+            // the Text properties of XE fields get segmented like this.
             // By default, an INDEX field entry group will create a new line for every subheading within this group. 
             // We can set the RunSubentriesOnSameLine flag to true to keep the heading,
             // and every subheading for the group on one line instead, which will make the INDEX field more compact.
@@ -3557,7 +3557,7 @@ namespace ApiExamples
 
             // Insert two XE fields, each on a new page, and with the same heading named "Heading 1",
             // which the INDEX field will use to group them.
-            // If RunSubentriesOnSameLine is false, then the INDEX table will create three lines;
+            // If RunSubentriesOnSameLine is false, then the INDEX table will create three lines:
             // one line for the grouping heading "Heading 1", and one more line for each subheading.
             // If RunSubentriesOnSameLine is true, then the INDEX table will create a one-line
             // entry that encompasses the heading and every subheading.
@@ -3619,13 +3619,13 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create an INDEX field which will display an entry for each XE field found in the document.
-            // Each entry will display the XE field's Text attribute value on the left side,
+            // Each entry will display the XE field's Text property value on the left side,
             // and the number of the page that contains the XE field on the right.
-            // The INDEX entry will collect all XE fields with matching valeus in the "Text" property
+            // The INDEX entry will collect all XE fields with matching values in the "Text" property
             // into one entry as opposed to making an entry for each XE field.
             FieldIndex index = (FieldIndex)builder.InsertField(FieldType.FieldIndex, true);
 
-            // The INDEX table automatically sorts its entries by the values of their Text attributes in alphabetic order.
+            // The INDEX table automatically sorts its entries by the values of their Text properties in alphabetic order.
             // Set the INDEX table to sort entries phonetically using Hiragana instead.
             index.UseYomi = sortEntriesUsingYomi;
 
@@ -3635,10 +3635,10 @@ namespace ApiExamples
                 Assert.AreEqual(" INDEX ", index.GetFieldCode());
 
             // Insert 4 XE fields, which would show up as entries in the INDEX field's table of contents.
-            // The "Text" attribute may contain a word's spelling in Kanji, whose pronunciation may be ambiguous,
+            // The "Text" property may contain a word's spelling in Kanji, whose pronunciation may be ambiguous,
             // while the "Yomi" version of the word will spell exactly how it is pronounced using Hiragana.
             // If we set our INDEX field to use Yomi, it will sort these entries
-            // by the value of their Yomi attributes, instead of their Text values.
+            // by the value of their Yomi properties, instead of their Text values.
             builder.InsertBreak(BreakType.PageBreak);
             FieldXE indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "愛子";
@@ -3728,7 +3728,7 @@ namespace ApiExamples
             builder.Writeln();
 
             // Below are two ways of using BARCODE fields to display custom values as barcodes.
-            // 1 -  Store the value that the bardcode will display in the PostalAddress attribute:
+            // 1 -  Store the value that the barcode will display in the PostalAddress property:
             FieldBarcode field = (FieldBarcode)builder.InsertField(FieldType.FieldBarcode, true);
 
             // This value needs to be a valid ZIP code.
@@ -3747,7 +3747,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" BARCODE  BarcodeBookmark \\b", field.GetFieldCode());
 
-            // The bookmark that the BARCODE field references in its PostalAddress attribute
+            // The bookmark that the BARCODE field references in its PostalAddress property
             // need to contain nothing besides the valid ZIP code.
             builder.InsertBreak(BreakType.PageBreak);
             builder.StartBookmark("BarcodeBookmark");
@@ -4110,7 +4110,7 @@ namespace ApiExamples
 
             // Create a DataTable with a column with the same name as our MERGEBARCODE field's BarcodeValue.
             // The mail merge will create a new page for each row. Each page will contain a DISPLAYBARCODE field,
-            // which will display a ITF14 barcode with the value from the merged row.
+            // which will display an ITF14 barcode with the value from the merged row.
             DataTable table = new DataTable("Barcodes");
             table.Columns.Add("MyITF14Barcode");
             table.Rows.Add(new[] { "09312345678907" });
@@ -4241,7 +4241,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Use a document builder to insert a LINK field, and set its properties according to parameters.
+        /// Use a document builder to insert a LINK field and set its properties according to parameters.
         /// </summary>
         private static void InsertFieldLink(DocumentBuilder builder, InsertLinkedObjectAs insertLinkedObjectAs,
             string progId, string sourceFullName, string sourceItem, bool shouldAutoUpdate)
@@ -4375,7 +4375,7 @@ namespace ApiExamples
             //ExSummary:Shows how to use the USERADDRESS field.
             Document doc = new Document();
 
-            // Create a UserInformation object, and set it as the source of user information for any fields that we create.
+            // Create a UserInformation object and set it as the source of user information for any fields that we create.
             UserInformation userInformation = new UserInformation();
             userInformation.Address = "123 Main Street";
             doc.FieldOptions.CurrentUser = userInformation;
@@ -4389,7 +4389,7 @@ namespace ApiExamples
             Assert.AreEqual(" USERADDRESS ", fieldUserAddress.GetFieldCode());
             Assert.AreEqual("123 Main Street", fieldUserAddress.Result);
 
-            // We can set this attribute to get our field to override the value currently stored in the UserInformation object. 
+            // We can set this property to get our field to override the value currently stored in the UserInformation object. 
             fieldUserAddress.UserAddress = "456 North Road";
             fieldUserAddress.Update();
 
@@ -4420,7 +4420,7 @@ namespace ApiExamples
             //ExSummary:Shows how to use the USERINITIALS field.
             Document doc = new Document();
 
-            // Create a UserInformation object, and set it as the source of user information for any fields that we create.
+            // Create a UserInformation object and set it as the source of user information for any fields that we create.
             UserInformation userInformation = new UserInformation();
             userInformation.Initials = "J. D.";
             doc.FieldOptions.CurrentUser = userInformation;
@@ -4434,7 +4434,7 @@ namespace ApiExamples
             Assert.AreEqual(" USERINITIALS ", fieldUserInitials.GetFieldCode());
             Assert.AreEqual("J. D.", fieldUserInitials.Result);
 
-            // We can set this attribute to get our field to override the value currently stored in the UserInformation object. 
+            // We can set this property to get our field to override the value currently stored in the UserInformation object. 
             fieldUserInitials.UserInitials = "J. C.";
             fieldUserInitials.Update();
 
@@ -4465,7 +4465,7 @@ namespace ApiExamples
             //ExSummary:Shows how to use the USERNAME field.
             Document doc = new Document();
 
-            // Create a UserInformation object, and set it as the source of user information for any fields that we create.
+            // Create a UserInformation object and set it as the source of user information for any fields that we create.
             UserInformation userInformation = new UserInformation();
             userInformation.Name = "John Doe";
             doc.FieldOptions.CurrentUser = userInformation;
@@ -4480,7 +4480,7 @@ namespace ApiExamples
             Assert.AreEqual(" USERNAME ", fieldUserName.GetFieldCode());
             Assert.AreEqual("John Doe", fieldUserName.Result);
 
-            // We can set this attribute to get our field to override the value currently stored in the UserInformation object. 
+            // We can set this property to get our field to override the value currently stored in the UserInformation object. 
             fieldUserName.UserName = "Jane Doe";
             fieldUserName.Update();
 
@@ -4527,7 +4527,7 @@ namespace ApiExamples
             list.ListLevels[0].NumberFormat = "\x0000.";
             list.ListLevels[1].NumberFormat = "\x0001 )";
 
-            // Add text, and apply paragraph styles that STYLEREF fields will reference.
+            // Add text and apply paragraph styles that STYLEREF fields will reference.
             builder.ListFormat.List = list;
             builder.ListFormat.ListIndent();
             builder.ParagraphFormat.Style = doc.Styles["List Paragraph"];
@@ -4651,7 +4651,7 @@ namespace ApiExamples
             Assert.AreEqual(" DATE  \\s", field.GetFieldCode());
             builder.Writeln();
 
-            // Insert a DATE field, and set its calendar type to the one last used by the host application.
+            // Insert a DATE field and set its calendar type to the one last used by the host application.
             // In Microsoft Word, the type will be the most recently used in the Insert -> Text -> Date and Time dialog box.
             field = (FieldDate)builder.InsertField(FieldType.FieldDate, true);
             field.UseLastFormat = true;
@@ -4900,7 +4900,7 @@ namespace ApiExamples
             falseOutput.AddNode(new Run(doc, " does not equal "));
             falseOutput.AddField(rightExpression);
 
-            // Finally, we will create one more field builder for the IF field, and put all of its pieces together. 
+            // Finally, we will create one more field builder for the IF field and combine all of the expressions. 
             builder = new FieldBuilder(FieldType.FieldIf);
             builder.AddArgument(leftExpression);
             builder.AddArgument("=");
@@ -4995,8 +4995,8 @@ namespace ApiExamples
             Assert.AreEqual(" AUTHOR ", field.GetFieldCode());
             Assert.AreEqual("John Doe", field.Result);
             
-            // If we give an AUTHOR field a different name again and then update it,
-            // the field will apply it to the built-in property.
+            // If we update an AUTHOR field after changing its "Name" property,
+            // then the field will display the new name and apply the new name to the built-in property.
             field.AuthorName = "Jane Doe";
             field.Update();
 
@@ -5549,7 +5549,7 @@ namespace ApiExamples
             field.PostScriptGroup = "para";
 
             // When we use a printer that supports PostScript to print our document,
-            // this command will turn the entire area that we specified in field.PostScriptGroup white.
+            // this command will turn the entire area that we specified in "field.PostScriptGroup" white.
             field.PrinterInstructions = "erasepage";
 
             Assert.AreEqual(" PRINT  erasepage \\p para", field.GetFieldCode());
@@ -5628,7 +5628,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" QUOTE  \"\\\"Quoted text\\\"\"", field.GetFieldCode());
 
-            // Insert a QUOTE field, and insert a DATE field inside it.
+            // Insert a QUOTE field and nest a DATE field inside it.
             // DATE fields update their value to the current date every time we open the document using Microsoft Word.
             // Nesting the DATE field inside the QUOTE field like this will freeze its value
             // to the date when we created the document.
@@ -5684,7 +5684,7 @@ namespace ApiExamples
             // If we have multiple merge fields with the same FieldName,
             // they will receive data from the same row of the data source and display the same value after the merge.
             // A NEXT field tells the mail merge instantly to move down one row,
-            // so any MERGEFIELDs after the NEXT will receive from the next row.
+            // which means any MERGEFIELDs that follow the NEXT field will receive data from the next row.
             // Make sure never to try to skip to the next row while already on the last row.
             FieldNext fieldNext = (FieldNext)builder.InsertField(FieldType.FieldNext, true);
 
@@ -5767,7 +5767,7 @@ namespace ApiExamples
             InsertBookmarkWithFootnote(builder, "MyBookmark1", "Contents of MyBookmark1", "Footnote from MyBookmark1");
 
             // This NOTEREF field will display the number of the footnote inside the referenced bookmark.
-            // Setting the InsertHyperlink attribute lets us jump to the bookmark by Ctrl + clicking the field in Microsoft Word.
+            // Setting the InsertHyperlink property lets us jump to the bookmark by Ctrl + clicking the field in Microsoft Word.
             Assert.AreEqual(" NOTEREF  MyBookmark2 \\h",
                 InsertFieldNoteRef(builder, "MyBookmark2", true, false, false, "Hyperlink to Bookmark2, with footnote number ").GetFieldCode());
 
@@ -5931,7 +5931,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Uses a document builder to insert a PAGEREF field and sets its attributes.
+        /// Uses a document builder to insert a PAGEREF field and sets its properties.
         /// </summary>
         private static FieldPageRef InsertFieldPageRef(DocumentBuilder builder, string bookmarkName, bool insertHyperlink, bool insertRelativePosition, string textBefore)
         {
@@ -6162,7 +6162,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" RD  ReferencedDocument.docx \\f", field.GetFieldCode());
 
-            // Create the document that the RD field is referencing, and insert a heading. 
+            // Create the document that the RD field is referencing and insert a heading. 
             // This heading will show up as an entry in the TOC field in our first document.
             Document referencedDoc = new Document();
             DocumentBuilder refDocBuilder = new DocumentBuilder(referencedDoc);
@@ -6268,7 +6268,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" SET  MyBookmark \"Hello world!\"", fieldSet.GetFieldCode());
 
-            // Refer to the bookmark by name in a REF field, and display its contents.
+            // Refer to the bookmark by name in a REF field and display its contents.
             FieldRef fieldRef = (FieldRef)builder.InsertField(FieldType.FieldRef, true);
             fieldRef.BookmarkName = "MyBookmark";
             fieldRef.Update();
@@ -6518,7 +6518,7 @@ namespace ApiExamples
             fieldToa.PageNumberListSeparator = " & p. ";
 
             // We can set this to true to get our table to display the word "passim"
-            // if there are 5 or more page numbers in one row.
+            // if there are five or more page numbers in one row.
             fieldToa.UsePassim = true;
 
             // One TA field can refer to a range of pages.
@@ -6591,10 +6591,6 @@ namespace ApiExamples
             TestFieldTOA(new Document(ArtifactsDir + "Field.TOA.TA.docx")); //ExSKip
         }
 
-        /// <summary>
-        /// Get a builder to insert a TA field, specifying its long citation and category,
-        /// insert a page break, and return the field we created.
-        /// </summary>
         private static FieldTA InsertToaEntry(DocumentBuilder builder, string entryCategory, string longCitation)
         {
             FieldTA field = (FieldTA)builder.InsertField(FieldType.FieldTOAEntry, false);
@@ -6930,8 +6926,8 @@ namespace ApiExamples
 
             Assert.AreEqual(" MERGEREC ", fieldMergeRec.GetFieldCode());
 
-            // A MERGESEQ field will count the number of successful merges, and print the current value on each respective page.
-            // If a mail merge skips no rows and invokes no SKIP/SKIPIF/NEXT/NEXTIF fields, then all of its merges are successful.
+            // A MERGESEQ field will count the number of successful merges and print the current value on each respective page.
+            // If a mail merge skips no rows and invokes no SKIP/SKIPIF/NEXT/NEXTIF fields, then all merges are successful.
             // The MERGESEQ and MERGEREC fields will display the same results of their mail merge was successful.
             builder.Write("\nSuccessful merge number: ");
             FieldMergeSeq fieldMergeSeq = (FieldMergeSeq)builder.InsertField(FieldType.FieldMergeSeq, true);
@@ -7089,8 +7085,8 @@ namespace ApiExamples
 
             Assert.AreEqual(" SECTIONPAGES ", fieldSectionPages.GetFieldCode());
 
-            // Move out of the header back into the main document, and insert two pages.
-            // All of these pages will be in the first section. Our fields, which appear once every header,
+            // Move out of the header back into the main document and insert two pages.
+            // All these pages will be in the first section. Our fields, which appear once every header,
             // will number the current/total pages of this section.
             builder.MoveToDocumentEnd();
             builder.InsertBreak(BreakType.PageBreak);
@@ -7238,7 +7234,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Legacy fields.doc");
 
             // If we open the Word document and press Alt+F9, we will see a SHAPE and an EMBED field.
-            // A SHAPE field is the anchor/canvas for an autoshape object with the "In line with text" wrapping style enabled.
+            // A SHAPE field is the anchor/canvas for an AutoShape object with the "In line with text" wrapping style enabled.
             // An EMBED field has the same function, but for an embedded object,
             // such as a spreadsheet from an external Excel document.
             // However, these fields will not appear in the document's Fields collection.
