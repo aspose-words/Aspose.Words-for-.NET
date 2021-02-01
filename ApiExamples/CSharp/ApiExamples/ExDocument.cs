@@ -2561,6 +2561,7 @@ namespace ApiExamples
             doc.GrammarChecked = checkSpellingGrammar;
 
             doc.Save(ArtifactsDir + "Document.SpellingOrGrammar.docx");
+            //ExEnd
         }
 
         [Test]
