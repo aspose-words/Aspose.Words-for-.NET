@@ -334,9 +334,9 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertDocumentDynamically()
+        public void InsertDocumentDynamicallyWithStyles()
         {
-            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document]>>");
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document] -sourceStyles>>");
 
             DocumentTestClass doc = new DocumentTestBuilder()
                 .WithDocument(new Document(MyDir + "Reporting engine template - Data table.docx")).Build();
