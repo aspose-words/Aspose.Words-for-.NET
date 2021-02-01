@@ -95,7 +95,7 @@ namespace ApiExamples
             // paragraph's "LineSpacingRule" property to configure spacing between paragraphs.
             // 1 -  Set a minimum amount of spacing.
             // This will give vertical padding to lines of text of any size
-            // that's too small to maintain the minimum line-height.
+            // that is too small to maintain the minimum line-height.
             builder.ParagraphFormat.LineSpacingRule = LineSpacingRule.AtLeast;
             builder.ParagraphFormat.LineSpacing = 20;
 
@@ -158,7 +158,7 @@ namespace ApiExamples
             builder.ParagraphFormat.SpaceAfter = 24;
 
             // Set these flags to "true" to apply automatic spacing,
-            // effectively ignoring the spacing in the attributes we set above.
+            // effectively ignoring the spacing in the properties we set above.
             // Leave them as "false" will apply our custom paragraph spacing.
             builder.ParagraphFormat.SpaceAfterAuto = autoSpacing;
             builder.ParagraphFormat.SpaceBeforeAuto = autoSpacing;
@@ -202,9 +202,10 @@ namespace ApiExamples
             builder.ParagraphFormat.SpaceBefore = 24;
             builder.ParagraphFormat.SpaceAfter = 24;
 
-            // Set this flag to "true" to apply no spacing between paragraphs with the same style,
-            // which will group similar paragraphs.
-            // Leave ths flag as "false" to evenly apply spacing to every paragraph.
+            // Set the "NoSpaceBetweenParagraphsOfSameStyle" flag to "true" to apply
+            // no spacing between paragraphs with the same style, which will group similar paragraphs.
+            // Leave the "NoSpaceBetweenParagraphsOfSameStyle" flag as "false"
+            // to evenly apply spacing to every paragraph.
             builder.ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle = noSpaceBetweenParagraphsOfSameStyle;
 
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
@@ -243,13 +244,13 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Each paragraph has an OutlineLevel, which could be any number from 1 to 9, or at the default "BodyText" value.
-            // Setting the attribute to one of the numbered values will show an arrow to the left
+            // Setting the property to one of the numbered values will show an arrow to the left
             // of the beginning of the paragraph.
             builder.ParagraphFormat.OutlineLevel = OutlineLevel.Level1;
             builder.Writeln("Paragraph outline level 1.");
 
             // Level 1 is the topmost level. If there is a paragraph with a lower level below a paragraph with a higher level,
-            // collapsing the higher level paragraph will collapse the lower level paragraph.
+            // collapsing the higher-level paragraph will collapse the lower level paragraph.
             builder.ParagraphFormat.OutlineLevel = OutlineLevel.Level2;
             builder.Writeln("Paragraph outline level 2.");
 
@@ -397,7 +398,7 @@ namespace ApiExamples
             Assert.True(Hyphenation.IsDictionaryRegistered("de-CH"));
 
             // Open a document containing text with a locale matching that of our dictionary.
-            // When we save this document to a fixed-page save format, its text will have hyphenation.
+            // When we save this document to a fixed page save format, its text will have hyphenation.
             Document doc = new Document(MyDir + "German text.docx");
 
             // We can set the "SuppressAutoHyphens" property to "true" to disable hyphenation

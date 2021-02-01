@@ -259,8 +259,7 @@ namespace ApiExamples
             // When we save the document as an image, we can pass a SaveOptions object to
             // select a color mode for the image that the saving operation will generate.
             // If we set the "ImageColorMode" property to "ImageColorMode.BlackAndWhite",
-            // the saving operation will apply grayscale color reduction while rendering the document,
-            // so it only consists of black and white.
+            // the saving operation will apply grayscale color reduction while rendering the document.
             // If we set the "ImageColorMode" property to "ImageColorMode.Grayscale", 
             // the saving operation will render the document into a monochrome image.
             // If we set the "ImageColorMode" property to "None", the saving operation will apply the default method
@@ -513,7 +512,7 @@ namespace ApiExamples
             Assert.That(20000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg").Length));
 
             // Set the "JpegQuality" property to "100" to use weaker compression when rending the document.
-            // This will improve the quality of the image, but will also increase the file size.
+            // This will improve the quality of the image at the cost of an increased file size.
             imageOptions.JpegQuality = 100;
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg", imageOptions);

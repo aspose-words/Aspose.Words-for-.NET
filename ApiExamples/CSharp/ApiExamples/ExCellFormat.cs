@@ -43,7 +43,7 @@ namespace ApiExamples
             builder.InsertCell();
             builder.CellFormat.VerticalMerge = CellMerge.Previous;
 
-            // Insert another independent cell in the second column of the second row, and end the table.
+            // Insert another independent cell in the second column of the second row.
             builder.InsertCell();
             builder.CellFormat.VerticalMerge = CellMerge.None;
             builder.Write("Text in unmerged cell.");
@@ -79,7 +79,7 @@ namespace ApiExamples
             builder.Write("Text in merged cells.");
 
             // Insert a cell into the second column of the first row. Instead of adding text contents,
-            // we will merge this cell with the first cell that we added directly to the left, and end the row afterward.
+            // we will merge this cell with the first cell that we added directly to the left.
             builder.InsertCell();
             builder.CellFormat.HorizontalMerge = CellMerge.Previous;
             builder.EndRow();
@@ -117,7 +117,7 @@ namespace ApiExamples
             // of each table cell we create with the document builder. 
             builder.CellFormat.SetPaddings(5, 10, 40, 50);
 
-            // Create a table with a cell, and add contents which will be padded by whitespace.
+            // Create a table with one cell whose contents will have whitespace padding.
             builder.StartTable();
             builder.InsertCell();
             builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
