@@ -439,12 +439,12 @@ namespace ApiExamples
             // The "Amethysta" font is in a subfolder of the font directory.
             if (recursive)
             {
-                Assert.AreEqual(24, newFontSources[0].GetAvailableFonts().Count);
+                Assert.AreEqual(25, newFontSources[0].GetAvailableFonts().Count);
                 Assert.True(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
             }
             else
             {
-                Assert.AreEqual(17, newFontSources[0].GetAvailableFonts().Count);
+                Assert.AreEqual(18, newFontSources[0].GetAvailableFonts().Count);
                 Assert.False(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
             }
 
@@ -986,7 +986,7 @@ namespace ApiExamples
             fontFallbackSettings.Save(ArtifactsDir + "FontSettings.FallbackSettingsCustom.BuildAutomatic.xml");
 
             // We can also load a custom substitution scheme from a file like this.
-            // This scheme applies the "Arvo" font across the "0000-00ff" Unicode blocks, the "Squarish Sans CT" font across "0100-024f",
+            // This scheme applies the "AllegroOpen" font across the "0000-00ff" Unicode blocks, the "AllegroOpen" font across "0100-024f",
             // and the "M+ 2m" font in all other ranges that other fonts in the scheme do not cover.
             fontFallbackSettings.Load(MyDir + "Custom font fallback settings.xml");
 
@@ -1002,10 +1002,10 @@ namespace ApiExamples
                 switch (i)
                 {
                     case 0x0021:
-                        builder.Writeln("\n\n0x0021 - 0x00FF: \nBasic Latin/Latin-1 Supplement Unicode blocks in \"Arvo\" font:");
+                        builder.Writeln("\n\n0x0021 - 0x00FF: \nBasic Latin/Latin-1 Supplement Unicode blocks in \"AllegroOpen\" font:");
                         break;
                     case 0x0100:
-                        builder.Writeln("\n\n0x0100 - 0x024F: \nLatin Extended A/B blocks, mostly in \"Squarish Sans CT\" font:");
+                        builder.Writeln("\n\n0x0100 - 0x024F: \nLatin Extended A/B blocks, mostly in \"AllegroOpen\" font:");
                         break;
                     case 0x0250:
                         builder.Writeln("\n\n0x0250 - 0x052F: \nIPA/Greek/Cyrillic blocks in \"M+ 2m\" font:");
@@ -1026,16 +1026,16 @@ namespace ApiExamples
             XmlNodeList rules = fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
 
             Assert.AreEqual("0000-007F", rules[0].Attributes["Ranges"].Value);
-            Assert.AreEqual("Arvo", rules[0].Attributes["FallbackFonts"].Value);
+            Assert.AreEqual("AllegroOpen", rules[0].Attributes["FallbackFonts"].Value);
+            
+            Assert.AreEqual("0100-017F", rules[2].Attributes["Ranges"].Value);
+            Assert.AreEqual("AllegroOpen", rules[2].Attributes["FallbackFonts"].Value);
 
-            Assert.AreEqual("0180-024F", rules[3].Attributes["Ranges"].Value);
-            Assert.AreEqual("DINOT", rules[3].Attributes["FallbackFonts"].Value);
+            Assert.AreEqual("0250-02AF", rules[4].Attributes["Ranges"].Value);
+            Assert.AreEqual("M+ 2m", rules[4].Attributes["FallbackFonts"].Value);
 
-            Assert.AreEqual("0300-036F", rules[6].Attributes["Ranges"].Value);
-            Assert.AreEqual("Noticia Text", rules[6].Attributes["FallbackFonts"].Value);
-
-            Assert.AreEqual("0590-05FF", rules[10].Attributes["Ranges"].Value);
-            Assert.AreEqual("Squarish Sans CT", rules[10].Attributes["FallbackFonts"].Value);
+            Assert.AreEqual("0370-03FF", rules[7].Attributes["Ranges"].Value);
+            Assert.AreEqual("Arvo", rules[7].Attributes["FallbackFonts"].Value);
         }
 
         [Test]
