@@ -2557,6 +2557,7 @@ namespace ApiExamples
 
             // Spelling/Grammar check start if we set properties to false. 
             // We can see all errors in Microsoft Word via Review -> Spelling & Grammar.
+            // Note that Microsoft Word does not start grammar/spell check automatically for DOC and RTF document format.
             doc.SpellingChecked = checkSpellingGrammar;
             doc.GrammarChecked = checkSpellingGrammar;
 
