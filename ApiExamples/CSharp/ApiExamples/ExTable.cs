@@ -1277,10 +1277,10 @@ namespace ApiExamples
             Assert.True(table.Bidi);
             Assert.AreEqual(5.0d, table.CellSpacing);
             Assert.AreEqual("MyTableStyle1", table.StyleName);
-            Assert.AreEqual(0.0d, table.BottomPadding);
-            Assert.AreEqual(0.0d, table.LeftPadding);
-            Assert.AreEqual(0.0d, table.RightPadding);
-            Assert.AreEqual(0.0d, table.TopPadding);
+            Assert.AreEqual(20.0d, tableStyle.BottomPadding);
+            Assert.AreEqual(5.0d, tableStyle.LeftPadding);
+            Assert.AreEqual(10.0d, tableStyle.RightPadding);
+            Assert.AreEqual(20.0d, tableStyle.TopPadding);
             Assert.AreEqual(6, table.FirstRow.RowFormat.Borders.Count(b => b.Color.ToArgb() == Color.Blue.ToArgb()));
 
             tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];

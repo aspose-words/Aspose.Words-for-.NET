@@ -1123,7 +1123,7 @@ namespace ApiExamples
             Assert.True(oleFormat.SourceFullName.EndsWith(@"Images" + Path.DirectorySeparatorChar + "Microsoft Visio drawing.vsd"));
             Assert.AreEqual("", oleFormat.SourceItem);
 
-            Assert.AreEqual("Packager", oleFormat.IconCaption);
+            Assert.AreEqual("Microsoft Visio drawing.vsd", oleFormat.IconCaption);
 
             doc.Save(ArtifactsDir + "Shape.OleLinks.docx");
 
