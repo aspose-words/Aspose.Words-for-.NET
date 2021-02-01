@@ -2539,5 +2539,27 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Document.ExtractPages.docx");
             Assert.AreEqual(doc.PageCount, 2);
         }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void SpellingOrGrammar(bool checkSpellingGrammar)
+        {
+            //ExStart
+            //ExFor:Document.SpellingChecked
+            //ExFor:Document.GrammarChecked
+            //ExSummary:Shows how to set spelling or grammar verifying.
+            Document doc = new Document();
+
+            // The string with spelling errors.
+            doc.FirstSection.Body.FirstParagraph.Runs.Add(new Run(doc, "The speeling in this documentz is all broked."));
+
+            // Spelling/Grammar check start if we set properties to false. 
+            // We can see all errors in Microsoft Word via Review -> Spelling & Grammar.
+            doc.SpellingChecked = checkSpellingGrammar;
+            doc.GrammarChecked = checkSpellingGrammar;
+
+            doc.Save(ArtifactsDir + "Document.SpellingOrGrammar.docx");
+            //ExEnd
+        }
     }
 }

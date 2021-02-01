@@ -630,12 +630,10 @@ namespace ApiExamples
         //ExFor:ChartDataPoint
         //ExFor:ChartDataPoint.Index
         //ExFor:ChartDataPointCollection
-        //ExFor:ChartDataPointCollection.Add(System.Int32)
-        //ExFor:ChartDataPointCollection.Clear
+        //ExFor:ChartDataPointCollection.ClearFormat
         //ExFor:ChartDataPointCollection.Count
         //ExFor:ChartDataPointCollection.GetEnumerator
         //ExFor:ChartDataPointCollection.Item(System.Int32)
-        //ExFor:ChartDataPointCollection.RemoveAt(System.Int32)
         //ExFor:ChartMarker
         //ExFor:ChartMarker.Size
         //ExFor:ChartMarker.Symbol
@@ -674,7 +672,7 @@ namespace ApiExamples
                 }
             }
 
-            // For a cleaner looking graph, we can remove data points individually.
+            // For a cleaner looking graph, we can clear format individually.
             chart.Series[1].DataPoints[2].ClearFormat();
 
             // We can also strip an entire series of data points at once.
@@ -684,7 +682,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Applies several data points to a series.
+        /// Applies a number of data points to a series.
         /// </summary>
         private static void ApplyDataPoints(ChartSeries series, int dataPointsCount, MarkerSymbol markerSymbol, int dataPointSize)
         {
@@ -714,8 +712,9 @@ namespace ApiExamples
             Assert.AreEqual(1, chart.Series.Count);
             Assert.AreEqual("Sales", chart.Series[0].Name);
 
-            // "Slices" of a pie chart may be moved away from the center by a distance via the respective data point's Explosion property.
-            // Add a data point to the first portion of the pie chart and move it away from the center by 10 points. 
+            // "Slices" of a pie chart may be moved away from the center by a distance via the respective data point's Explosion attribute.
+            // Add a data point to the first portion of the pie chart and move it away from the center by 10 points.
+            // Aspose.Words create data points automatically if them does not exist.
             ChartDataPoint dataPoint = chart.Series[0].DataPoints[0];
             dataPoint.Explosion = 10;
 
