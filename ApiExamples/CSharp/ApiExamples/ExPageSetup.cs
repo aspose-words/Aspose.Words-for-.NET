@@ -38,7 +38,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Modify the page setup properties for the builder's current section, and add text.
+            // Modify the page setup properties for the builder's current section and add text.
             builder.PageSetup.Orientation = Orientation.Landscape;
             builder.PageSetup.VerticalAlignment = PageVerticalAlignment.Center;
             builder.Writeln("This is the first section, which landscape oriented with vertically centered text.");
@@ -307,7 +307,7 @@ namespace ApiExamples
             // You can define a specific printer using the "PrinterName" property of the PrinterSettings object.
             PrinterSettings settings = new PrinterSettings();
             
-            // The paper tray value stored in documents is printer-specific.
+            // The paper tray value stored in documents is printer specific.
             // This means the code below resets all page tray values to use the current printers default tray.
             // You can enumerate PrinterSettings.PaperSources to find the other valid paper tray values of the selected printer.
             foreach (Section section in doc.Sections.OfType<Section>())
@@ -609,7 +609,7 @@ namespace ApiExamples
             // This is the same behavior as a List object,
             // but it covers the entire section and does not modify the text in any way.
             // Our section will restart the numbering on each new page from 1 and display the number,
-            // if it is a multiple of 3, at a distance of 50pt to the left of the line.
+            // if it is a multiple of 3, at 50pt to the left of the line.
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.LineStartingNumber = 1;
             pageSetup.LineNumberCountBy = 3;

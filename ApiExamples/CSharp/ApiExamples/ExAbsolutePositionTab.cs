@@ -41,7 +41,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Collects the text contents of all runs in the visited document, and represents all absolute tab characters as ordinary tabs.
+        /// Collects the text contents of all runs in the visited document. Replaces all absolute tab characters with ordinary tabs.
         /// </summary>
         public class DocTextExtractor : DocumentVisitor
         {

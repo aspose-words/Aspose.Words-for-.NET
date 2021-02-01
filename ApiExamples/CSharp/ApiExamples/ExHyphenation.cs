@@ -31,7 +31,7 @@ namespace ApiExamples
             // When a document contains lines of text in which a word could be split up and continued on the next line,
             // hyphenation will look through the dictionary's list of strings for that word's substrings.
             // If the dictionary contains a substring, then hyphenation will split the word across two lines
-            // by the substring, and add a hyphen to the first half.
+            // by the substring and add a hyphen to the first half.
             // Register a dictionary file from the local file system to the "de-CH" locale.
             Hyphenation.RegisterDictionary("de-CH", MyDir + "hyph_de_CH.dic");
 

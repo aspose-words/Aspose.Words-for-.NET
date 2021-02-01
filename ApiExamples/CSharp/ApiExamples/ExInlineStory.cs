@@ -42,7 +42,7 @@ namespace ApiExamples
             builder.Write("Hello world!");
             builder.InsertFootnote(FootnoteType.Footnote, "Footnote contents.");
 
-            // We can use the "Position" property to determine where the document will place all of its footnotes.
+            // We can use the "Position" property to determine where the document will place all its footnotes.
             // If we set the value of the "Position" property to "FootnotePosition.BottomOfPage",
             // every footnote will show up at the bottom of the page that contains its reference mark. This is the default value.
             // If we set the value of the "Position" property to "FootnotePosition.BeneathText",
@@ -85,7 +85,7 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.SectionBreakNewPage);
             builder.Write("This is the second section.");
 
-            // We can use the "Position" property to determine where the document will place all of its endnotes.
+            // We can use the "Position" property to determine where the document will place all its endnotes.
             // If we set the value of the "Position" property to "EndnotePosition.EndOfDocument",
             // every footnote will show up in a collection at the end of the document. This is the default value.
             // If we set the value of the "Position" property to "EndnotePosition.EndOfSection",
@@ -142,8 +142,8 @@ namespace ApiExamples
             builder.InsertFootnote(FootnoteType.Endnote, "Endnote 3.", "Custom endnote reference mark");
 
             // By default, the reference symbol for each footnote and endnote is its index
-            // among all of the document's footnotes/endnotes. Each document maintains separate counts
-            // for footnotes and for endnotes. By default, footnotes display their numbers in arabic,
+            // among all the document's footnotes/endnotes. Each document maintains separate counts
+            // for footnotes and for endnotes. By default, footnotes display their numbers using Arabic numerals,
             // and endnotes display their numbers in lowercase Roman numerals.
             Assert.AreEqual(NumberStyle.Arabic, doc.FootnoteOptions.NumberStyle);
             Assert.AreEqual(NumberStyle.LowercaseRoman, doc.EndnoteOptions.NumberStyle);
@@ -221,7 +221,7 @@ namespace ApiExamples
             builder.InsertFootnote(FootnoteType.Endnote, "Endnote 4.");
 
             // By default, the reference symbol for each footnote and endnote is its index
-            // among all of the document's footnotes/endnotes. Each document maintains separate counts
+            // among all the document's footnotes/endnotes. Each document maintains separate counts
             // for footnotes and endnotes and does not restart these counts at any point.
             Assert.AreEqual(doc.FootnoteOptions.RestartRule, FootnoteNumberingRule.Default);
             Assert.AreEqual(FootnoteNumberingRule.Default, FootnoteNumberingRule.Continuous);
@@ -297,7 +297,7 @@ namespace ApiExamples
             builder.InsertFootnote(FootnoteType.Endnote, "Endnote 3.");
 
             // By default, the reference symbol for each footnote and endnote is its index
-            // among all of the document's footnotes/endnotes. Each document maintains separate counts
+            // among all the document's footnotes/endnotes. Each document maintains separate counts
             // for footnotes and for endnotes, which both begin at 1.
             Assert.AreEqual(1, doc.FootnoteOptions.StartNumber);
             Assert.AreEqual(1, doc.EndnoteOptions.StartNumber);
@@ -355,7 +355,7 @@ namespace ApiExamples
             Footnote footnote = builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.");
 
             // If this property is set to "true", then our footnote's reference mark
-            // will be its index among all of the section's footnotes.
+            // will be its index among all the section's footnotes.
             // This is the first footnote, so the reference mark will be "1".
             Assert.True(footnote.IsAuto);
 
@@ -483,7 +483,7 @@ namespace ApiExamples
             // When we edit the document while the "Track Changes" option, found in via Review -> Tracking,
             // is turned on in Microsoft Word, the changes we apply count as revisions.
             // When editing a document using Aspose.Words, we can begin tracking revisions by
-            // invoking the document's "StartTrackRevisions" method, and stop tracking by using the "StopTrackRevisions" method.
+            // invoking the document's "StartTrackRevisions" method and stop tracking by using the "StopTrackRevisions" method.
             // We can either accept revisions to assimilate them into the document
             // or reject them to undo and discard the proposed change.
             Assert.IsTrue(doc.HasRevisions);
@@ -568,7 +568,7 @@ namespace ApiExamples
 
             // However, the last paragraph is the one from the comment text contents,
             // which will be outside the main document body in a speech bubble.
-            // A comment won't have any child nodes by default,
+            // A comment will not have any child nodes by default,
             // so we can apply the EnsureMinimum() method to place a paragraph here as well.
             Assert.Null(comment.LastParagraph);
             comment.EnsureMinimum();
