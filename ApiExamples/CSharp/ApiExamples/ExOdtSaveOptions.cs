@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using Aspose.Words;
+using Aspose.Words.Fields;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 
@@ -33,17 +34,24 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", saveOptions);
             //ExEnd
+            
+            doc = new Document(ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt");
+
+            Assert.AreEqual(Aspose.Words.MeasurementUnits.Centimeters, doc.LayoutOptions.RevisionOptions.MeasurementUnit);
 
             if (exportToOdt11Specs)
-                TestUtil.DocPackageFileContainsString("<text:span text:style-name=\"T118_1\" >Combobox<text:s/></text:span>", 
-                    ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", "content.xml");
+            {
+                Assert.AreEqual(2, doc.Range.FormFields.Count);
+                Assert.AreEqual(FieldType.FieldFormTextInput, doc.Range.FormFields[0].Type);
+                Assert.AreEqual(FieldType.FieldFormCheckBox, doc.Range.FormFields[1].Type);
+            }
             else
-                TestUtil.DocPackageFileContainsString("<text:span text:style-name=\"T118_1\" >Combobox<text:s/></text:span>" +
-                                              "<text:span text:style-name=\"T118_2\" >" +
-                                              "<text:drop-down><text:label text:value=\"Line 1\" ></text:label>" +
-                                              "<text:label text:value=\"Line 2\" ></text:label>" +
-                                              "<text:label text:value=\"Line 3\" ></text:label>Line 2</text:drop-down></text:span>", 
-                                              ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", "content.xml");
+            {
+                Assert.AreEqual(3, doc.Range.FormFields.Count);
+                Assert.AreEqual(FieldType.FieldFormTextInput, doc.Range.FormFields[0].Type);
+                Assert.AreEqual(FieldType.FieldFormCheckBox, doc.Range.FormFields[1].Type);
+                Assert.AreEqual(FieldType.FieldFormDropDown, doc.Range.FormFields[2].Type);
+            }
         }
 
         [TestCase(OdtSaveMeasureUnit.Centimeters)]

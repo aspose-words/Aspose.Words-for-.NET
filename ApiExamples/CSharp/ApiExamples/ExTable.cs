@@ -844,6 +844,16 @@ namespace ApiExamples
             Assert.True(table.AllowCellSpacing);
             //ExEnd
 
+            doc = new Document(ArtifactsDir + "Table.AllowCellSpacing.html");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(allowCellSpacing, table.AllowCellSpacing);
+
+            if (allowCellSpacing)
+                Assert.AreEqual(3.0d, table.CellSpacing);
+            else
+                Assert.AreEqual(0.0d, table.CellSpacing);
+
             TestUtil.FileContainsString(
                 allowCellSpacing
                     ? "<td style=\"border-style:solid; border-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border:0.5pt single\">"
