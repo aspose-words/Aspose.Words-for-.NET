@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -1123,7 +1123,7 @@ namespace ApiExamples
             Assert.True(oleFormat.SourceFullName.EndsWith(@"Images" + Path.DirectorySeparatorChar + "Microsoft Visio drawing.vsd"));
             Assert.AreEqual("", oleFormat.SourceItem);
 
-            Assert.AreEqual("Packager", oleFormat.IconCaption);
+            Assert.AreEqual("Microsoft Visio drawing.vsd", oleFormat.IconCaption);
 
             doc.Save(ArtifactsDir + "Shape.OleLinks.docx");
 

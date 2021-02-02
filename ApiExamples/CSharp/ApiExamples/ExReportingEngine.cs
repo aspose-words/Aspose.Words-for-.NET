@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -334,9 +334,9 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertDocumentDynamically()
+        public void InsertDocumentDynamicallyWithStyles()
         {
-            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document]>>");
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document] -sourceStyles>>");
 
             DocumentTestClass doc = new DocumentTestBuilder()
                 .WithDocument(new Document(MyDir + "Reporting engine template - Data table.docx")).Build();

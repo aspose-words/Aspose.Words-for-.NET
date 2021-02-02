@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
 using Aspose.Words.Markup;
 using Aspose.Words.Rendering;
@@ -27,6 +28,7 @@ using Aspose.Words.Tables;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
+using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Pdf.Text;
 using Aspose.Words.Shaping.HarfBuzz;
@@ -2538,6 +2540,58 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.ExtractPages.docx");
             Assert.AreEqual(doc.PageCount, 2);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void SpellingOrGrammar(bool checkSpellingGrammar)
+        {
+            //ExStart
+            //ExFor:Document.SpellingChecked
+            //ExFor:Document.GrammarChecked
+            //ExSummary:Shows how to set spelling or grammar verifying.
+            Document doc = new Document();
+
+            // The string with spelling errors.
+            doc.FirstSection.Body.FirstParagraph.Runs.Add(new Run(doc, "The speeling in this documentz is all broked."));
+
+            // Spelling/Grammar check start if we set properties to false. 
+            // We can see all errors in Microsoft Word via Review -> Spelling & Grammar.
+            // Note that Microsoft Word does not start grammar/spell check automatically for DOC and RTF document format.
+            doc.SpellingChecked = checkSpellingGrammar;
+            doc.GrammarChecked = checkSpellingGrammar;
+
+            doc.Save(ArtifactsDir + "Document.SpellingOrGrammar.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void AllowEmbeddingPostScriptFonts()
+        {
+            //ExStart
+            //ExFor:SaveOptions.AllowEmbeddingPostScriptFonts
+            //ExSummary:Shows how to save the document with PostScript font.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "PostScriptFont";
+            builder.Writeln("Some text with PostScript font.");
+
+            // Load the font with PostScript to use in the document.
+            MemoryFontSource otf = new MemoryFontSource(File.ReadAllBytes(FontsDir + "AllegroOpen.otf"));
+            doc.FontSettings = new FontSettings();
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] { otf });
+
+            // Embed TrueType fonts.
+            doc.FontInfos.EmbedTrueTypeFonts = true;
+
+            // Allow embedding PostScript fonts while embedding TrueType fonts.
+            // Microsoft Word does not embed PostScript fonts, but can open documents with embedded fonts of this type.
+            SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Docx);
+            saveOptions.AllowEmbeddingPostScriptFonts = true;
+
+            doc.Save(ArtifactsDir + "Document.AllowEmbeddingPostScriptFonts.docx", saveOptions);
+            //ExEnd
         }
     }
 }

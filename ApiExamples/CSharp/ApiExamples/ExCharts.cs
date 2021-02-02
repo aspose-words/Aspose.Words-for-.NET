@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -630,12 +630,10 @@ namespace ApiExamples
         //ExFor:ChartDataPoint
         //ExFor:ChartDataPoint.Index
         //ExFor:ChartDataPointCollection
-        //ExFor:ChartDataPointCollection.Add(System.Int32)
-        //ExFor:ChartDataPointCollection.Clear
+        //ExFor:ChartDataPointCollection.ClearFormat
         //ExFor:ChartDataPointCollection.Count
         //ExFor:ChartDataPointCollection.GetEnumerator
         //ExFor:ChartDataPointCollection.Item(System.Int32)
-        //ExFor:ChartDataPointCollection.RemoveAt(System.Int32)
         //ExFor:ChartMarker
         //ExFor:ChartMarker.Size
         //ExFor:ChartMarker.Symbol
@@ -674,23 +672,23 @@ namespace ApiExamples
                 }
             }
 
-            // For a cleaner looking graph, we can remove data points individually.
-            chart.Series[1].DataPoints.RemoveAt(2);
+            // For a cleaner looking graph, we can clear format individually.
+            chart.Series[1].DataPoints[2].ClearFormat();
 
             // We can also strip an entire series of data points at once.
-            chart.Series[2].DataPoints.Clear();
+            chart.Series[2].DataPoints.ClearFormat();
 
             doc.Save(ArtifactsDir + "Charts.ChartDataPoint.docx");
         }
 
         /// <summary>
-        /// Applies several data points to a series.
+        /// Applies a number of data points to a series.
         /// </summary>
         private static void ApplyDataPoints(ChartSeries series, int dataPointsCount, MarkerSymbol markerSymbol, int dataPointSize)
         {
             for (int i = 0; i < dataPointsCount; i++)
             {
-                ChartDataPoint point = series.DataPoints.Add(i);
+                ChartDataPoint point = series.DataPoints[i];
                 point.Marker.Symbol = markerSymbol;
                 point.Marker.Size = dataPointSize;
 
@@ -714,13 +712,14 @@ namespace ApiExamples
             Assert.AreEqual(1, chart.Series.Count);
             Assert.AreEqual("Sales", chart.Series[0].Name);
 
-            // "Slices" of a pie chart may be moved away from the center by a distance via the respective data point's Explosion property.
-            // Add a data point to the first portion of the pie chart and move it away from the center by 10 points. 
-            ChartDataPoint dataPoint = chart.Series[0].DataPoints.Add(0);
+            // "Slices" of a pie chart may be moved away from the center by a distance via the respective data point's Explosion attribute.
+            // Add a data point to the first portion of the pie chart and move it away from the center by 10 points.
+            // Aspose.Words create data points automatically if them does not exist.
+            ChartDataPoint dataPoint = chart.Series[0].DataPoints[0];
             dataPoint.Explosion = 10;
 
             // Displace the second portion by a greater distance.
-            dataPoint = chart.Series[0].DataPoints.Add(1);
+            dataPoint = chart.Series[0].DataPoints[1];
             dataPoint.Explosion = 40;
 
             doc.Save(ArtifactsDir + "Charts.PieChartExplosion.docx");

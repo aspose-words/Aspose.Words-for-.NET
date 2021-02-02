@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -844,6 +844,16 @@ namespace ApiExamples
             Assert.True(table.AllowCellSpacing);
             //ExEnd
 
+            doc = new Document(ArtifactsDir + "Table.AllowCellSpacing.html");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(allowCellSpacing, table.AllowCellSpacing);
+
+            if (allowCellSpacing)
+                Assert.AreEqual(3.0d, table.CellSpacing);
+            else
+                Assert.AreEqual(0.0d, table.CellSpacing);
+
             TestUtil.FileContainsString(
                 allowCellSpacing
                     ? "<td style=\"border-style:solid; border-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border:0.5pt single\">"
@@ -1277,10 +1287,10 @@ namespace ApiExamples
             Assert.True(table.Bidi);
             Assert.AreEqual(5.0d, table.CellSpacing);
             Assert.AreEqual("MyTableStyle1", table.StyleName);
-            Assert.AreEqual(0.0d, table.BottomPadding);
-            Assert.AreEqual(0.0d, table.LeftPadding);
-            Assert.AreEqual(0.0d, table.RightPadding);
-            Assert.AreEqual(0.0d, table.TopPadding);
+            Assert.AreEqual(20.0d, tableStyle.BottomPadding);
+            Assert.AreEqual(5.0d, tableStyle.LeftPadding);
+            Assert.AreEqual(10.0d, tableStyle.RightPadding);
+            Assert.AreEqual(20.0d, tableStyle.TopPadding);
             Assert.AreEqual(6, table.FirstRow.RowFormat.Borders.Count(b => b.Color.ToArgb() == Color.Blue.ToArgb()));
 
             tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];
