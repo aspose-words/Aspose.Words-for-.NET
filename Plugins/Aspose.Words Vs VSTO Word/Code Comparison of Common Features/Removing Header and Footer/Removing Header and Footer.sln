@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSTO Words", "VSTO Words\VSTO Words.csproj", "{0FCAB7F8-2BFD-4497-9E9D-F414786A4899}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose Words", "Aspose Words\Aspose Words.csproj", "{FB214874-5AF7-455B-9B44-64F795A283E5}"
@@ -22,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {22E8F3AC-F05A-45F6-AEEE-3E7F7531010E}
 	EndGlobalSection
 EndGlobal

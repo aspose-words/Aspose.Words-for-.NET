@@ -1,9 +1,4 @@
 ﻿using Aspose.Words;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aspose_Words
 {
@@ -19,7 +14,6 @@ namespace Aspose_Words
             builder.Writeln("Text inside a bookmark.");
             builder.EndBookmark("MyBookmark");
             doc.Save(mypath + "Adding Bookmark.doc");
- 
         }
     }
 }
