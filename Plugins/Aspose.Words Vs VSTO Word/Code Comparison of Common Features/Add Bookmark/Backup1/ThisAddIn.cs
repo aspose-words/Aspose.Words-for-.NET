@@ -1,4 +1,10 @@
-﻿using Word = Microsoft.Office.Interop.Word;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Xml.Linq;
+using Word = Microsoft.Office.Interop.Word;
+using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Word;
 
 namespace VSTO_Words
@@ -7,11 +13,12 @@ namespace VSTO_Words
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            string mypath = "";
             Word.Application wordApp = Application;
-
-            wordApp.Documents.Open("Add Bookmark.doc");
-
+            wordApp.Documents.Open(mypath + "Add Bookmark.doc");
             Document extendedDocument = Globals.Factory.GetVstoObject(this.Application.ActiveDocument);
+
+
             Bookmark firstParagraph = extendedDocument.Controls.AddBookmark(
                 extendedDocument.Paragraphs[1].Range, "FirstParagraph"); 
         }
