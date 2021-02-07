@@ -1,4 +1,5 @@
 ﻿using Aspose.Words;
+using Aspose.Words.Replacing;
 
 namespace Aspose_Words
 {
@@ -6,11 +7,20 @@ namespace Aspose_Words
     {
         static void Main(string[] args)
         {
-            string mypath = "";
-            Document doc = new Document(mypath + "Search and Replace.doc");
-            doc.Range.Replace("find me", "found", false, true);
-            doc.Save(mypath + "Search and Replace.doc");
- 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("find me");
+
+            FindReplaceOptions options = new FindReplaceOptions
+            {
+                MatchCase = false,
+                FindWholeWordsOnly = true
+            };
+            
+            doc.Range.Replace("find me", "found", options);
+
+            doc.Save("Search for and Replace text.docx");
         }
     }
 }
