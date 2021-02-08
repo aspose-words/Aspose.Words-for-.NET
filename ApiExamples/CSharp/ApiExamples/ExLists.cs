@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -87,8 +87,8 @@ namespace ApiExamples
             builder.Writeln("Processing documents");
             builder.Writeln("Saving documents in different formats:");
 
-            // If we increase the list level to one we have added items to previously,
-            // the nested list will be independent of the previous, and its numbering will start again. 
+            // If we increase the list level to a level that we have added items to previously,
+            // the nested list will be separate from the previous, and its numbering will start from the beginning. 
             // These list items will have symbols of "a.", "b.", "c.", "d.", and "e".
             builder.ListFormat.ListIndent();
             builder.Writeln("DOC");
@@ -296,7 +296,7 @@ namespace ApiExamples
             listLevel.TrailingCharacter = ListTrailingCharacter.Space;
             listLevel.NumberPosition = 144;
 
-            // Create paragraphs, and apply both list levels of our custom list formatting to them.
+            // Create paragraphs and apply both list levels of our custom list formatting to them.
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.ListFormat.List = list;
@@ -830,7 +830,7 @@ namespace ApiExamples
             // Each paragraph that we add between a list's start and the end will become an item in the list.
             List list = doc.Lists.Add(ListTemplate.NumberDefault);
 
-            // Level 1 labels will be formatted according to the "Heading 1" paragraph style, and will have a prefix.
+            // Level 1 labels will be formatted according to the "Heading 1" paragraph style and will have a prefix.
             // These will look like "Appendix A", "Appendix B"...
             list.ListLevels[0].NumberFormat = "Appendix \x0000";
             list.ListLevels[0].NumberStyle = NumberStyle.UppercaseLetter;

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -63,7 +63,7 @@ namespace ApiExamples
 
         /// <summary>
         /// If the mail merge encounters a MERGEFIELD whose name starts with the "html_" prefix,
-        /// this callback parses its merge data as HTML content, and adds the result to the document location of the MERGEFIELD.
+        /// this callback parses its merge data as HTML content and adds the result to the document location of the MERGEFIELD.
         /// </summary>
         private class HandleMergeFieldInsertHtml : IFieldMergingCallback
         {
@@ -119,7 +119,7 @@ namespace ApiExamples
 
         /// <summary>
         /// Edits the values that MERGEFIELDs receive during a mail merge.
-        /// The name of a MERGEFIELD must have a prefix in order for this callback to take effect on its value.
+        /// The name of a MERGEFIELD must have a prefix for this callback to take effect on its value.
         /// </summary>
         private class FieldValueMergingCallback : IFieldMergingCallback
         {
@@ -154,7 +154,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Use MERGEFIELDs with "TableStart"/"TableEnd" tags to define a mail merge region
-            // which belongs to a data source named "StudentCourse", and has a MERGEFIELD which accepts data from a column named "CourseName".
+            // which belongs to a data source named "StudentCourse" and has a MERGEFIELD which accepts data from a column named "CourseName".
             builder.StartTable();
             builder.InsertCell();
             builder.InsertField(" MERGEFIELD  TableStart:StudentCourse ");
@@ -282,7 +282,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Function needed for VB autoporting that returns the parity of the passed number.
+        /// Function needed for Visual Basic autoporting that returns the parity of the passed number.
         /// </summary>
         private static bool IsOdd(int value)
         {

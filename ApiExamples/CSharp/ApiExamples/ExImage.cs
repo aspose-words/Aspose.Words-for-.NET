@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -324,7 +324,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Image.CreateLinkedImage.Linked.docx");
 
             // Linking to images will save space and result in a smaller document.
-            // However, the document can only display the image correctly as long as
+            // However, the document can only display the image correctly while
             // the image file is present at the location that the shape's "SourceFullName" property points to.
             Assert.True(10000 > new FileInfo(ArtifactsDir + "Image.CreateLinkedImage.Linked.docx").Length);
             //ExEnd

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -27,7 +27,7 @@ namespace ApiExamples
             //ExSummary:Shows how to mimic the properties of images when converting a .docx document to .svg.
             Document doc = new Document(MyDir + "Document.docx");
 
-            // Configure the SvgSaveOptions object to save with no page borders or selectable text
+            // Configure the SvgSaveOptions object to save with no page borders or selectable text.
             SvgSaveOptions options = new SvgSaveOptions
             {
                 FitToViewPort = true,
@@ -46,11 +46,10 @@ namespace ApiExamples
         //ExFor:SvgSaveOptions.ResourcesFolder
         //ExFor:SvgSaveOptions.ResourcesFolderAlias
         //ExFor:SvgSaveOptions.SaveFormat
-        //ExSummary:Shows how to manipulate and print the URIs of linked resources created during conversion of a document to .svg.
+        //ExSummary:Shows how to manipulate and print the URIs of linked resources created while converting a document to .svg.
         [Test] //ExSkip
         public void SvgResourceFolder()
         {
-            // Open a document which contains images
             Document doc = new Document(MyDir + "Rendering.docx");
 
             SvgSaveOptions options = new SvgSaveOptions
@@ -76,7 +75,6 @@ namespace ApiExamples
         {
             void IResourceSavingCallback.ResourceSaving(ResourceSavingArgs args)
             {
-                // If we set a folder alias in the SaveOptions object, it will be printed here
                 Console.WriteLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
                 Console.WriteLine("\t" + args.ResourceFileUri);
             }

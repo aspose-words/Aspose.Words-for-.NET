@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -32,7 +32,7 @@ namespace ApiExamples
             
             // Place the comment at a node in the document's body.
             // This comment will show up at the location of its paragraph,
-            // outside the right side margin of the page, and with a dotted line connecting it to its paragraph.
+            // outside the right-side margin of the page, and with a dotted line connecting it to its paragraph.
             builder.CurrentParagraph.AppendChild(comment);
 
             // Add a reply, which will show up under its parent comment.
@@ -41,7 +41,7 @@ namespace ApiExamples
             // Comments and replies are both Comment nodes.
             Assert.AreEqual(2, doc.GetChildNodes(NodeType.Comment, true).Count);
 
-            // Comments that do not reply to other comments are "top-level", and have no ancestor.
+            // Comments that do not reply to other comments are "top-level". They have no ancestor comments.
             Assert.Null(comment.Ancestor);
 
             // Replies have an ancestor top-level comment.
@@ -75,7 +75,7 @@ namespace ApiExamples
             Assert.AreEqual(12, comments.Count); //ExSkip
 
             // If a comment has no ancestor, it is a "top-level" comment as opposed to a reply-type comment.
-            // Print all top-level comments along with their replies, if there are any.
+            // Print all top-level comments along with any replies they may have.
             foreach (Comment comment in comments.OfType<Comment>().Where(c => c.Ancestor == null))
             {
                 Console.WriteLine("Top-level comment:");
@@ -110,12 +110,13 @@ namespace ApiExamples
 
             Assert.AreEqual(2, comment.Replies.Count()); 
 
-            // We can remove replies from a comment individually.
+            // Below are two ways of removing replies from a comment.
+            // 1 -  Use the "RemoveReply" method to remove replies from a comment individually:
             comment.RemoveReply(comment.Replies[0]);
 
             Assert.AreEqual(1, comment.Replies.Count());
 
-            // We can also remove all of a comment's replies at once with this method.
+            // 2 -  Use the "RemoveAllReplies" method to remove all replies from a comment at once:
             comment.RemoveAllReplies();
 
             Assert.AreEqual(0, comment.Replies.Count()); 
@@ -138,9 +139,9 @@ namespace ApiExamples
             comment.SetText("Fix the spelling error!");
             doc.FirstSection.Body.FirstParagraph.AppendChild(comment);
 
-            // Comments have a "Done" flag, which by default, is false. 
-            // If a comment suggests that a we make a change within the document,
-            // we can apply the change, and then also use that flag to indicate the correction.
+            // Comments have a "Done" flag, which is set to "false" by default. 
+            // If a comment suggests that we make a change within the document,
+            // we can apply the change, and then also set the "Done" flag afterwards to indicate the correction.
             Assert.False(comment.Done);
 
             doc.FirstSection.Body.FirstParagraph.Runs[0].Text = "Hello world!";
@@ -214,7 +215,7 @@ namespace ApiExamples
         {
             CommentInfoPrinter commentVisitor = new CommentInfoPrinter();
 
-            // Iterate over all top level comments. Unlike reply-type comments, top-level comments have no ancestor.
+            // Iterate over all top-level comments. Unlike reply-type comments, top-level comments have no ancestor.
             foreach (Comment comment in comments.Where(c => ((Comment)c).Ancestor == null))
             {
                 // First, visit the start of the comment range.

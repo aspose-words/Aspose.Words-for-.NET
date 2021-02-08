@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -83,7 +83,7 @@ namespace ApiExamples
                 e.PageSettings.PaperSize = pageInfo.GetDotNetPaperSize(PrinterSettings.PaperSizes);
 
                 // Microsoft Word stores the paper source (printer tray) for each section as a printer-specific value.
-                // To obtain the correct tray value, you will need to use the RawKindValue, which your printer should return.
+                // To obtain the correct tray value, you will need to use the "RawKind" property, which your printer should return.
                 e.PageSettings.PaperSource.RawKind = pageInfo.PaperTray;
                 e.PageSettings.Landscape = pageInfo.Landscape;
             }
@@ -197,7 +197,7 @@ namespace ApiExamples
             }
 
             // The "PaperSizes" property contains the list of paper sizes to instruct the printer to use.
-            // Both the PrinterSource and PrinterSize contain a "RawKind" attribute,
+            // Both the PrinterSource and PrinterSize contain a "RawKind" property,
             // which equates to a paper type listed on the PaperSourceKind enum.
             // If there is a paper source with the same "RawKind" value as that of the printing page,
             // the printer will print the page using the provided paper source and size.
@@ -295,7 +295,7 @@ namespace ApiExamples
             AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(doc);
             awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
 
-            // Use the "CachePrinterSettings" method to reduce time of first call of Print() method.
+            // Use the "CachePrinterSettings" method to reduce time of the first call of the "Print" method.
             awPrintDoc.CachePrinterSettings();
 
             // Call the "Hide", and then the "InvalidatePreview" methods to get the print preview to show on top.

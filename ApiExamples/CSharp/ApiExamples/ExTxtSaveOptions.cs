@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -22,7 +22,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:TxtSaveOptionsBase.ForcePageBreaks
-            //ExSummary:Shows how to specify whether the page breaks should be preserved during export.
+            //ExSummary:Shows how to specify whether to preserve page breaks when exporting a document to plaintext.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -32,13 +32,20 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Page 3");
 
-            // If ForcePageBreaks is set to true then the output document will have form feed characters in place of page breaks
-            // Otherwise, they will be line breaks
-            TxtSaveOptions saveOptions = new TxtSaveOptions { ForcePageBreaks = forcePageBreaks };
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save"
+            // method to modify how we save the document to plaintext.
+            TxtSaveOptions saveOptions = new TxtSaveOptions();
+
+            // The Aspose.Words "Document" objects have page breaks, just like Microsoft Word documents.
+            // Save formats such as ".txt" are one continuous body of text without page breaks.
+            // Set the "ForcePageBreaks" property to "true" to preserve all page breaks in the form of '\f' characters.
+            // Set the "ForcePageBreaks" property to "false" to discard all page breaks.
+            saveOptions.ForcePageBreaks = forcePageBreaks;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.PageBreaks.txt", saveOptions);
             
-            // If we load the document using Aspose.Words again, the page breaks will be preserved/lost depending on ForcePageBreaks
+            // If we load a plaintext document with page breaks,
+            // the "Document" object will use them to split the body into pages.
             doc = new Document(ArtifactsDir + "TxtSaveOptions.PageBreaks.txt");
 
             Assert.AreEqual(forcePageBreaks ? 3 : 1, doc.PageCount);
@@ -64,7 +71,15 @@ namespace ApiExamples
             builder.Writeln("שלום עולם!");
             builder.Writeln("مرحبا بالعالم!");
 
-            TxtSaveOptions saveOptions = new TxtSaveOptions { AddBidiMarks = addBidiMarks, Encoding = System.Text.Encoding.Unicode};
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
+            TxtSaveOptions saveOptions = new TxtSaveOptions { Encoding = System.Text.Encoding.Unicode};
+
+            // Set the "AddBidiMarks" property to "true" to add marks before runs
+            // with right-to-left text to indicate the fact.
+            // Set the "AddBidiMarks" property to "false" to write all left-to-right
+            // and right-to-left run equally with nothing to indicate which is which.
+            saveOptions.AddBidiMarks = addBidiMarks;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.AddBidiMarks.txt", saveOptions);
 
@@ -91,11 +106,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:TxtSaveOptionsBase.ExportHeadersFootersMode
             //ExFor:TxtExportHeadersFootersMode
-            //ExSummary:Shows how to specifies the way headers and footers are exported to plain text format.
+            //ExSummary:Shows how to specify how to export headers and footers to plain text format.
             Document doc = new Document();
 
-            // Insert even and primary headers/footers into the document
-            // The primary header/footers should override the even ones 
+            // Insert even and primary headers/footers into the document.
+            // The primary header/footers will override the even headers/footers.
             doc.FirstSection.HeadersFooters.Add(new HeaderFooter(doc, HeaderFooterType.HeaderEven));
             doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderEven].AppendParagraph("Even header");
             doc.FirstSection.HeadersFooters.Add(new HeaderFooter(doc, HeaderFooterType.FooterEven));
@@ -105,7 +120,7 @@ namespace ApiExamples
             doc.FirstSection.HeadersFooters.Add(new HeaderFooter(doc, HeaderFooterType.FooterPrimary));
             doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].AppendParagraph("Primary footer");
 
-            // Insert pages that would display these headers and footers
+            // Insert pages to display these headers and footers.
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Page 1");
             builder.InsertBreak(BreakType.PageBreak);
@@ -113,12 +128,18 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak); 
             builder.Write("Page 3");
 
-            // Three values are available in TxtExportHeadersFootersMode enum:
-            // "None" - No headers and footers are exported
-            // "AllAtEnd" - All headers and footers are placed after all section bodies at the very end of a document
-            // "PrimaryOnly" - Only primary headers and footers are exported at the beginning and end of each section (default value)
-            TxtSaveOptions saveOptions = new TxtSaveOptions { ExportHeadersFootersMode = txtExportHeadersFootersMode };
-            
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
+            TxtSaveOptions saveOptions = new TxtSaveOptions();
+
+            // Set the "ExportHeadersFootersMode" property to "TxtExportHeadersFootersMode.None"
+            // to not export any headers/footers.
+            // Set the "ExportHeadersFootersMode" property to "TxtExportHeadersFootersMode.PrimaryOnly"
+            // to only export primary headers/footers.
+            // Set the "ExportHeadersFootersMode" property to "TxtExportHeadersFootersMode.AllAtEnd"
+            // to place all headers and footers for all section bodies at the end of the document.
+            saveOptions.ExportHeadersFootersMode = txtExportHeadersFootersMode;
+
             doc.Save(ArtifactsDir + "TxtSaveOptions.ExportHeadersFooters.txt", saveOptions);
 
             string docText = File.ReadAllText(ArtifactsDir + "TxtSaveOptions.ExportHeadersFooters.txt");
@@ -158,11 +179,11 @@ namespace ApiExamples
             //ExFor:TxtListIndentation.Count
             //ExFor:TxtListIndentation.Character
             //ExFor:TxtSaveOptions.ListIndentation
-            //ExSummary:Shows how to configure list indenting when converting to plaintext.
+            //ExSummary:Shows how to configure list indenting when saving a document to plaintext.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a list with three levels of indentation
+            // Create a list with three levels of indentation.
             builder.ListFormat.ApplyNumberDefault();
             builder.Writeln("Item 1");
             builder.ListFormat.ListIndent();
@@ -170,12 +191,17 @@ namespace ApiExamples
             builder.ListFormat.ListIndent(); 
             builder.Write("Item 3");
 
-            // Microsoft Word list objects get lost when converting to plaintext
-            // We can create a custom representation for list indentation using pure plaintext with a SaveOptions object
-            // In this case, each list item will be left-padded by 3 space characters times its list indent level
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
-            txtSaveOptions.ListIndentation.Count = 3;
+
+            // Set the "Character" property to assign a character to use
+            // for padding that simulates list indentation in plaintext.
             txtSaveOptions.ListIndentation.Character = ' ';
+
+            // Set the "Count" property to specify the number of times
+            // to place the padding character for each list indent level.
+            txtSaveOptions.ListIndentation.Count = 3;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.TxtListIndentation.txt", txtSaveOptions);
 
@@ -193,11 +219,11 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:TxtSaveOptions.SimplifyListLabels
-            //ExSummary:Shows how to change the appearance of lists when converting to plaintext.
+            //ExSummary:Shows how to change the appearance of lists when saving a document to plaintext.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Create a bulleted list with five levels of indentation
+            // Create a bulleted list with five levels of indentation.
             builder.ListFormat.ApplyBulletDefault();
             builder.Writeln("Item 1");
             builder.ListFormat.ListIndent();
@@ -209,9 +235,14 @@ namespace ApiExamples
             builder.ListFormat.ListIndent();
             builder.Write("Item 5");
 
-            // The SimplifyListLabels flag will convert some list symbols
-            // into ASCII characters such as *, o, +, > etc, depending on list level
-            TxtSaveOptions txtSaveOptions = new TxtSaveOptions { SimplifyListLabels = simplifyListLabels };
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
+            TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
+
+            // Set the "SimplifyListLabels" property to "true" to convert some list
+            // symbols into simpler ASCII characters, such as '*', 'o', '+', '>', etc.
+            // Set the "SimplifyListLabels" property to "false" to preserve as many original list symbols as possible.
+            txtSaveOptions.SimplifyListLabels = simplifyListLabels;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.SimplifyListLabels.txt", txtSaveOptions);
 
@@ -241,7 +272,6 @@ namespace ApiExamples
             //ExFor:TxtSaveOptionsBase
             //ExFor:TxtSaveOptionsBase.ParagraphBreak
             //ExSummary:Shows how to save a .txt document with a custom paragraph break.
-            // Create a new document and add some paragraphs
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -249,9 +279,15 @@ namespace ApiExamples
             builder.Writeln("Paragraph 2.");
             builder.Write("Paragraph 3.");
 
-            // When saved to plain text, the paragraphs we created can be separated by a custom string
-            TxtSaveOptions txtSaveOptions = new TxtSaveOptions { SaveFormat = SaveFormat.Text, ParagraphBreak = " End of paragraph.\n\n\t" };
-            
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
+            TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
+
+            Assert.AreEqual(SaveFormat.Text, txtSaveOptions.SaveFormat);
+
+            // Set the "ParagraphBreak" to a custom value that we wish to put at the end of every paragraph.
+            txtSaveOptions.ParagraphBreak = " End of paragraph.\n\n\t";
+
             doc.Save(ArtifactsDir + "TxtSaveOptions.ParagraphBreak.txt", txtSaveOptions);
 
             string docText = File.ReadAllText(ArtifactsDir + "TxtSaveOptions.ParagraphBreak.txt");
@@ -268,20 +304,31 @@ namespace ApiExamples
             //ExStart
             //ExFor:TxtSaveOptionsBase.Encoding
             //ExSummary:Shows how to set encoding for a .txt output document.
-            // Create a new document and add some text from outside the ASCII character set
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Add some text with characters from outside the ASCII character set.
             builder.Write("À È Ì Ò Ù.");
 
-            // We can use a SaveOptions object to make sure the encoding we save the .txt document in supports our content
-            TxtSaveOptions txtSaveOptions = new TxtSaveOptions { Encoding = System.Text.Encoding.UTF8 };
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
+            TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
+            
+            // Verify that the "Encoding" property contains the appropriate encoding for our document's contents.
+            Assert.AreEqual(System.Text.Encoding.UTF8, txtSaveOptions.Encoding);
 
-            doc.Save(ArtifactsDir + "TxtSaveOptions.Encoding.txt", txtSaveOptions);
+            doc.Save(ArtifactsDir + "TxtSaveOptions.Encoding.UTF8.txt", txtSaveOptions);
 
-            string docText = System.Text.Encoding.UTF8.GetString(File.ReadAllBytes(ArtifactsDir + "TxtSaveOptions.Encoding.txt"));
+            string docText = System.Text.Encoding.UTF8.GetString(File.ReadAllBytes(ArtifactsDir + "TxtSaveOptions.Encoding.UTF8.txt"));
             
             Assert.AreEqual("\uFEFFÀ È Ì Ò Ù.\r\n", docText);
+
+            // Using an unsuitable encoding may result in a loss of document contents.
+            txtSaveOptions.Encoding = System.Text.Encoding.ASCII;
+            doc.Save(ArtifactsDir + "TxtSaveOptions.Encoding.ASCII.txt", txtSaveOptions);
+            docText = System.Text.Encoding.ASCII.GetString(File.ReadAllBytes(ArtifactsDir + "TxtSaveOptions.Encoding.ASCII.txt"));
+
+            Assert.AreEqual("? ? ? ? ?.\r\n", docText);
             //ExEnd
         }
 
@@ -295,7 +342,6 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a table
             builder.StartTable();
             builder.InsertCell();
             builder.Write("Row 1, cell 1");
@@ -308,9 +354,15 @@ namespace ApiExamples
             builder.Write("Row 2, cell 2");
             builder.EndTable();
 
-            // Tables, with their borders and widths do not translate to plaintext
-            // However, we can configure a SaveOptions object to arrange table contents to preserve some of the table's appearance
-            TxtSaveOptions txtSaveOptions = new TxtSaveOptions { PreserveTableLayout = preserveTableLayout };
+            // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
+            // to modify how we save the document to plaintext.
+            TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
+
+            // Set the "PreserveTableLayout" property to "true" to apply whitespace padding to the contents
+            // of the output plaintext document to preserve as much of the table's layout as possible.
+            // Set the "PreserveTableLayout" property to "false" to save all tables' contents
+            // as a continuous body of text, with just a new line for each row.
+            txtSaveOptions.PreserveTableLayout = preserveTableLayout;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.PreserveTableLayout.txt", txtSaveOptions);
 
@@ -324,40 +376,6 @@ namespace ApiExamples
                                 "Row 1, cell 2\r\n" +
                                 "Row 2, cell 1\r\n" +
                                 "Row 2, cell 2\r\n\r\n", docText);
-            //ExEnd
-        }
-
-        [Test]
-        public void UpdateTableLayout()
-        {
-            //ExStart
-            //ExFor:Document.UpdateTableLayout
-            //ExSummary:Shows how to preserve a table's layout when saving to .txt.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Table table = builder.StartTable();
-            builder.InsertCell();
-            builder.Write("Cell 1");
-            builder.InsertCell();
-            builder.Write("Cell 2");
-            builder.InsertCell();
-            builder.Write("Cell 3");
-            builder.EndTable();
-
-            // Create a SaveOptions object to prepare this document to be saved to .txt.
-            TxtSaveOptions options = new TxtSaveOptions();
-            options.PreserveTableLayout = true;
-
-            // Previewing the appearance of the document in .txt form shows that the table will not be represented accurately.
-            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.Width);
-            Assert.AreEqual("CCC\r\neee\r\nlll\r\nlll\r\n   \r\n123\r\n\r\n", doc.ToString(options));
-
-            // We can call UpdateTableLayout() to fix some of these issues.
-            doc.UpdateTableLayout();
-
-            Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
-            Assert.AreEqual(155.0d, table.FirstRow.Cells[0].CellFormat.Width, 2f);
             //ExEnd
         }
     }

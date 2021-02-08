@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -53,11 +53,11 @@ namespace ApiExamples
 
             // This flag corresponds to the "Review" -> "Tracking" -> "Track Changes" option in Microsoft Word.
             // The "StartTrackRevisions" method does not affect its value,
-            // and the document is tracking revisions programmatically in spite of it having a value of "false".
+            // and the document is tracking revisions programmatically despite it having a value of "false".
             // If we open this document using Microsoft Word, it will not be tracking revisions.
             Assert.IsFalse(doc.TrackRevisions);
 
-            // We've added text using the document builder, so the first revision is an insertion-type revision.
+            // We have added text using the document builder, so the first revision is an insertion-type revision.
             Revision revision = doc.Revisions[0];
             Assert.AreEqual("John Doe", revision.Author);
             Assert.AreEqual("This is revision #1. ", revision.ParentNode.GetText());
@@ -131,7 +131,7 @@ namespace ApiExamples
                 while (e.MoveNext())
                 {
                     // A StyleDefinitionChange strictly affects styles and not document nodes. This means the "ParentStyle"
-                    // attribute will always be in use, while the ParentNode will always be null.
+                    // property will always be in use, while the ParentNode will always be null.
                     // Since all other changes affect nodes, ParentNode will conversely be in use, and ParentStyle will be null.
                     if (e.Current.RevisionType == RevisionType.StyleDefinitionChange)
                     {

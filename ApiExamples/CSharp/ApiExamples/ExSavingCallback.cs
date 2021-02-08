@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -128,7 +128,7 @@ namespace ApiExamples
             HtmlSaveOptions options = new HtmlSaveOptions();
 
             // If we save the document normally, there will be one output HTML
-            // document with all of the source document's contents.
+            // document with all the source document's contents.
             // Set the "DocumentSplitCriteria" property to "DocumentSplitCriteria.SectionBreak" to
             // save our document to multiple HTML files: one for each section.
             options.DocumentSplitCriteria = DocumentSplitCriteria.SectionBreak;

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -660,7 +660,7 @@ namespace ApiExamples
             builder.Write("Run 1. ");
             builder.Write("Run 2. ");
 
-            // Every invocation of the "Write()" method creates a new Run,
+            // Every invocation of the "Write" method creates a new Run,
             // which then appears in the parent Paragraph's RunCollection.
             RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
 

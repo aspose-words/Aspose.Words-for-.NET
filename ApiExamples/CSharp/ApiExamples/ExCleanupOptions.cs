@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -72,7 +72,7 @@ namespace ApiExamples
             //ExSummary:Shows how to remove duplicated styles from the document.
             Document doc = new Document();
 
-            // Add two styles to the document with identical attributes,
+            // Add two styles to the document with identical properties,
             // but different names. The second style is considered a duplicate of the first.
             Style myStyle = doc.Styles.Add(StyleType.Paragraph, "MyStyle1");
             myStyle.Font.Size = 14;

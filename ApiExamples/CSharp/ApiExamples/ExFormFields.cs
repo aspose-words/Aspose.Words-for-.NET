@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -220,7 +220,7 @@ namespace ApiExamples
             Assert.AreEqual(TextFormFieldType.Regular, textInput.TextInputType);
             Assert.AreEqual(50, textInput.MaxLength);
 
-            // This collection contains all of our form fields.
+            // This collection contains all our form fields.
             FormFieldCollection formFields = doc.Range.FormFields;
             Assert.AreEqual(3, formFields.Count);
 
@@ -270,8 +270,8 @@ namespace ApiExamples
                 switch (formField.Type)
                 {
                     case FieldType.FieldFormDropDown:
-                        AppendLine("\tDrop down items count: " + formField.DropDownItems.Count + ", default selected item index: " + formField.DropDownSelectedIndex);
-                        AppendLine("\tDrop down items: " + string.Join(", ", formField.DropDownItems.ToArray()));
+                        AppendLine("\tDrop-down items count: " + formField.DropDownItems.Count + ", default selected item index: " + formField.DropDownSelectedIndex);
+                        AppendLine("\tDrop-down items: " + string.Join(", ", formField.DropDownItems.ToArray()));
                         break;
                     case FieldType.FieldFormCheckBox:
                         AppendLine("\tCheckbox size: " + formField.CheckBoxSize);
@@ -367,7 +367,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a combo box, and then verify its collection of drop down items.
+            // Insert a combo box, and then verify its collection of drop-down items.
             // In Microsoft Word, the user will click the combo box,
             // and then choose one of the items of text in the collection to display.
             string[] items = { "One", "Two", "Three" };
@@ -379,7 +379,7 @@ namespace ApiExamples
             Assert.AreEqual(1, dropDownItems.IndexOf("Two"));
             Assert.IsTrue(dropDownItems.Contains("Three"));
 
-            // There are two ways of adding a new item to an existing collection of drop down box items.
+            // There are two ways of adding a new item to an existing collection of drop-down box items.
             // 1 -  Append an item to the end of the collection:
             dropDownItems.Add("Four");
 
@@ -393,7 +393,7 @@ namespace ApiExamples
                 while (dropDownCollectionEnumerator.MoveNext())
                     Console.WriteLine(dropDownCollectionEnumerator.Current);
 
-            // There are two ways of removing elements from a collection of drop down items.
+            // There are two ways of removing elements from a collection of drop-down items.
             // 1 -  Remove an item with contents equal to the passed string:
             dropDownItems.Remove("Four");
 
@@ -406,7 +406,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "FormFields.DropDownItemCollection.html");
 
-            // Empty the whole collection of drop down items.
+            // Empty the whole collection of drop-down items.
             dropDownItems.Clear();
             //ExEnd
 

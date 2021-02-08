@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -42,7 +42,7 @@ namespace ApiExamples
             DocStructurePrinter visitor = new DocStructurePrinter();
 
             // When we get a composite node to accept a document visitor, the visitor visits the accepting node,
-            // and then traverses all of the node's children in a depth-first manner.
+            // and then traverses all the node's children in a depth-first manner.
             // The visitor can read and modify each visited node.
             doc.Accept(visitor);
 
@@ -51,7 +51,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Traverses a node's tree of child nodes, and creates a map of this tree in the form of a string.
+        /// Traverses a node's tree of child nodes.
+        /// Creates a map of this tree in the form of a string.
         /// </summary>
         public class DocStructurePrinter : DocumentVisitor
         {
@@ -237,7 +238,7 @@ namespace ApiExamples
             TableStructurePrinter visitor = new TableStructurePrinter();
 
             // When we get a composite node to accept a document visitor, the visitor visits the accepting node,
-            // and then traverses all of the node's children in a depth-first manner.
+            // and then traverses all the node's children in a depth-first manner.
             // The visitor can read and modify each visited node.
             doc.Accept(visitor);
 
@@ -413,7 +414,7 @@ namespace ApiExamples
             CommentStructurePrinter visitor = new CommentStructurePrinter();
 
             // When we get a composite node to accept a document visitor, the visitor visits the accepting node,
-            // and then traverses all of the node's children in a depth-first manner.
+            // and then traverses all the node's children in a depth-first manner.
             // The visitor can read and modify each visited node.
             doc.Accept(visitor);
 
@@ -542,7 +543,7 @@ namespace ApiExamples
             FieldStructurePrinter visitor = new FieldStructurePrinter();
 
             // When we get a composite node to accept a document visitor, the visitor visits the accepting node,
-            // and then traverses all of the node's children in a depth-first manner.
+            // and then traverses all the node's children in a depth-first manner.
             // The visitor can read and modify each visited node.
             doc.Accept(visitor);
 
@@ -657,7 +658,7 @@ namespace ApiExamples
             HeaderFooterStructurePrinter visitor = new HeaderFooterStructurePrinter();
 
             // When we get a composite node to accept a document visitor, the visitor visits the accepting node,
-            // and then traverses all of the node's children in a depth-first manner.
+            // and then traverses all the node's children in a depth-first manner.
             // The visitor can read and modify each visited node.
             doc.Accept(visitor);
 
@@ -762,7 +763,7 @@ namespace ApiExamples
             EditableRangeStructurePrinter visitor = new EditableRangeStructurePrinter();
 
             // When we get a composite node to accept a document visitor, the visitor visits the accepting node,
-            // and then traverses all of the node's children in a depth-first manner.
+            // and then traverses all the node's children in a depth-first manner.
             // The visitor can read and modify each visited node.
             doc.Accept(visitor);
 
@@ -864,7 +865,7 @@ namespace ApiExamples
             FootnoteStructurePrinter visitor = new FootnoteStructurePrinter();
 
             // When we get a composite node to accept a document visitor, the visitor visits the accepting node,
-            // and then traverses all of the node's children in a depth-first manner.
+            // and then traverses all the node's children in a depth-first manner.
             // The visitor can read and modify each visited node.
             doc.Accept(visitor);
 
@@ -966,7 +967,7 @@ namespace ApiExamples
             OfficeMathStructurePrinter visitor = new OfficeMathStructurePrinter();
 
             // When we get a composite node to accept a document visitor, the visitor visits the accepting node,
-            // and then traverses all of the node's children in a depth-first manner.
+            // and then traverses all the node's children in a depth-first manner.
             // The visitor can read and modify each visited node.
             doc.Accept(visitor);
 
@@ -1072,7 +1073,7 @@ namespace ApiExamples
             SmartTagStructurePrinter visitor = new SmartTagStructurePrinter();
 
             // When we get a composite node to accept a document visitor, the visitor visits the accepting node,
-            // and then traverses all of the node's children in a depth-first manner.
+            // and then traverses all the node's children in a depth-first manner.
             // The visitor can read and modify each visited node.
             doc.Accept(visitor);
 
@@ -1179,7 +1180,7 @@ namespace ApiExamples
             StructuredDocumentTagNodePrinter visitor = new StructuredDocumentTagNodePrinter();
 
             // When we get a composite node to accept a document visitor, the visitor visits the accepting node,
-            // and then traverses all of the node's children in a depth-first manner.
+            // and then traverses all the node's children in a depth-first manner.
             // The visitor can read and modify each visited node.
             doc.Accept(visitor);
 

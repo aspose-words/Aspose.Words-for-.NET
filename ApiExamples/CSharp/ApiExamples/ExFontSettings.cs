@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -162,7 +162,7 @@ namespace ApiExamples
             // For testing purposes, we will set Aspose.Words to look for fonts only in a folder that does not exist.
             FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
 
-            // When rendering the document, the will be no place to find the "Times New Roman" font.
+            // When rendering the document, there will be no place to find the "Times New Roman" font.
             // This will cause a font substitution warning, which our callback will detect.
             doc.Save(ArtifactsDir + "FontSettings.SubstitutionWarning.pdf");
 
@@ -214,7 +214,7 @@ namespace ApiExamples
             HandleDocumentSubstitutionWarnings substitutionWarningHandler = new HandleDocumentSubstitutionWarnings();
             doc.WarningCallback = substitutionWarningHandler;
 
-            // Set a default font name, and enable font substitution.
+            // Set a default font name and enable font substitution.
             FontSettings fontSettings = new FontSettings();
             fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial"; ;
             fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
@@ -227,7 +227,7 @@ namespace ApiExamples
                 while (warnings.MoveNext())
                     Console.WriteLine(warnings.Current.Description);
 
-            // We can also verify warnings in the collection, and clear them.
+            // We can also verify warnings in the collection and clear them.
             Assert.AreEqual(WarningSource.Layout, substitutionWarningHandler.FontWarnings[0].Source);
             Assert.AreEqual("Font '28 Days Later' has not been found. Using 'Calibri' font instead. Reason: alternative name from document.",
                 substitutionWarningHandler.FontWarnings[0].Description);
@@ -439,12 +439,12 @@ namespace ApiExamples
             // The "Amethysta" font is in a subfolder of the font directory.
             if (recursive)
             {
-                Assert.AreEqual(24, newFontSources[0].GetAvailableFonts().Count);
+                Assert.AreEqual(25, newFontSources[0].GetAvailableFonts().Count);
                 Assert.True(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
             }
             else
             {
-                Assert.AreEqual(17, newFontSources[0].GetAvailableFonts().Count);
+                Assert.AreEqual(18, newFontSources[0].GetAvailableFonts().Count);
                 Assert.False(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"));
             }
 
@@ -725,7 +725,7 @@ namespace ApiExamples
                 Console.WriteLine(systemFontFolder);
             }
 
-            // Set a font that exists in the Windows Fonts directory as a substitute for one that doesn't.
+            // Set a font that exists in the Windows Fonts directory as a substitute for one that does not.
             doc.FontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
             doc.FontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Kreon-Regular", new[] { "Calibri" });
 
@@ -979,18 +979,18 @@ namespace ApiExamples
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
             fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
-            // Calling BuildAutomatic() will generate a fallback scheme that
+            // Calling the "BuildAutomatic" method will generate a fallback scheme that
             // distributes accessible fonts across as many Unicode character codes as possible.
             // In our case, it only has access to the handful of fonts inside the "MyFonts" folder.
             fontFallbackSettings.BuildAutomatic();
             fontFallbackSettings.Save(ArtifactsDir + "FontSettings.FallbackSettingsCustom.BuildAutomatic.xml");
 
             // We can also load a custom substitution scheme from a file like this.
-            // This scheme applies the "Arvo" font across the "0000-00ff" Unicode blocks, the "Squarish Sans CT" font across "0100-024f",
+            // This scheme applies the "AllegroOpen" font across the "0000-00ff" Unicode blocks, the "AllegroOpen" font across "0100-024f",
             // and the "M+ 2m" font in all other ranges that other fonts in the scheme do not cover.
             fontFallbackSettings.Load(MyDir + "Custom font fallback settings.xml");
 
-            // Create a document builder, and set its font to one that does not exist in any of our sources.
+            // Create a document builder and set its font to one that does not exist in any of our sources.
             // Our font settings will invoke the fallback scheme for characters that we type using the unavailable font.
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Font.Name = "Missing Font";
@@ -1002,10 +1002,10 @@ namespace ApiExamples
                 switch (i)
                 {
                     case 0x0021:
-                        builder.Writeln("\n\n0x0021 - 0x00FF: \nBasic Latin/Latin-1 Supplement Unicode blocks in \"Arvo\" font:");
+                        builder.Writeln("\n\n0x0021 - 0x00FF: \nBasic Latin/Latin-1 Supplement Unicode blocks in \"AllegroOpen\" font:");
                         break;
                     case 0x0100:
-                        builder.Writeln("\n\n0x0100 - 0x024F: \nLatin Extended A/B blocks, mostly in \"Squarish Sans CT\" font:");
+                        builder.Writeln("\n\n0x0100 - 0x024F: \nLatin Extended A/B blocks, mostly in \"AllegroOpen\" font:");
                         break;
                     case 0x0250:
                         builder.Writeln("\n\n0x0250 - 0x052F: \nIPA/Greek/Cyrillic blocks in \"M+ 2m\" font:");
@@ -1026,16 +1026,16 @@ namespace ApiExamples
             XmlNodeList rules = fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
 
             Assert.AreEqual("0000-007F", rules[0].Attributes["Ranges"].Value);
-            Assert.AreEqual("Arvo", rules[0].Attributes["FallbackFonts"].Value);
+            Assert.AreEqual("AllegroOpen", rules[0].Attributes["FallbackFonts"].Value);
+            
+            Assert.AreEqual("0100-017F", rules[2].Attributes["Ranges"].Value);
+            Assert.AreEqual("AllegroOpen", rules[2].Attributes["FallbackFonts"].Value);
 
-            Assert.AreEqual("0180-024F", rules[3].Attributes["Ranges"].Value);
-            Assert.AreEqual("DINOT", rules[3].Attributes["FallbackFonts"].Value);
+            Assert.AreEqual("0250-02AF", rules[4].Attributes["Ranges"].Value);
+            Assert.AreEqual("M+ 2m", rules[4].Attributes["FallbackFonts"].Value);
 
-            Assert.AreEqual("0300-036F", rules[6].Attributes["Ranges"].Value);
-            Assert.AreEqual("Noticia Text", rules[6].Attributes["FallbackFonts"].Value);
-
-            Assert.AreEqual("0590-05FF", rules[10].Attributes["Ranges"].Value);
-            Assert.AreEqual("Squarish Sans CT", rules[10].Attributes["FallbackFonts"].Value);
+            Assert.AreEqual("0370-03FF", rules[7].Attributes["Ranges"].Value);
+            Assert.AreEqual("Arvo", rules[7].Attributes["FallbackFonts"].Value);
         }
 
         [Test]
@@ -1052,7 +1052,7 @@ namespace ApiExamples
             FontSettings fontSettings = new FontSettings();
             doc.FontSettings = fontSettings;
 
-            // Create a new table substitution rule, and load the default Microsoft Windows font substitution table.
+            // Create a new table substitution rule and load the default Microsoft Windows font substitution table.
             TableSubstitutionRule tableSubstitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
             tableSubstitutionRule.LoadWindowsSettings();
 
@@ -1110,12 +1110,12 @@ namespace ApiExamples
             FontSettings fontSettings = new FontSettings();
             doc.FontSettings = fontSettings;
 
-            // Create a new table substitution rule, and load the default Windows font substitution table.
+            // Create a new table substitution rule and load the default Windows font substitution table.
             TableSubstitutionRule tableSubstitutionRule = fontSettings.SubstitutionSettings.TableSubstitution;
 
             // If we select fonts exclusively from our folder, we will need a custom substitution table.
             // We will no longer have access to the Microsoft Windows fonts,
-            // such as "Arial" or "Times New Roman", since they do not exist in our new font folder.
+            // such as "Arial" or "Times New Roman" since they do not exist in our new font folder.
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
             fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
 
@@ -1130,7 +1130,7 @@ namespace ApiExamples
             tableSubstitutionRule.Load(MyDir + "Font substitution rules.xml");
 
             // Since we no longer have access to "Arial", our font table will first try substitute it with "Nonexistent Font".
-            // We don't have this font so that it will move onto the next substitute, "Kreon", found in the "MyFonts" folder.
+            // We do not have this font so that it will move onto the next substitute, "Kreon", found in the "MyFonts" folder.
             Assert.AreEqual(new[] { "Missing Font", "Kreon" }, tableSubstitutionRule.GetSubstitutes("Arial").ToArray());
 
             // We can expand this table programmatically. We will add an entry that substitutes "Times New Roman" with "Arvo"

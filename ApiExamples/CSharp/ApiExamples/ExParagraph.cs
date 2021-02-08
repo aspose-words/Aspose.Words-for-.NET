@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -602,7 +602,7 @@ namespace ApiExamples
             builder.Write("Run 4. ");
 
             // If we open this document in Microsoft Word, the paragraph will look like one seamless text body.
-            // In reality, it will consist of four separate runs with the same formatting. Fragmented paragraphs like this
+            // However, it will consist of four separate runs with the same formatting. Fragmented paragraphs like this
             // may occur when we manually edit parts of one paragraph many times in Microsoft Word.
             Paragraph para = builder.CurrentParagraph;
 

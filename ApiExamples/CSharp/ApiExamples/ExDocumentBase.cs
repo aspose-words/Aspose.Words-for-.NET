@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -108,7 +108,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:DocumentBase.ImportNode(Node, System.Boolean, ImportFormatMode)
             //ExSummary:Shows how to import node from source document to destination document with specific options.
-            // Create two documents, and add a character style to each document.
+            // Create two documents and add a character style to each document.
             // Configure the styles to have the same name, but different text formatting.
             Document srcDoc = new Document();
             Style srcStyle = srcDoc.Styles.Add(StyleType.Character, "My style");

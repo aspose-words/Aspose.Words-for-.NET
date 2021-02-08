@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -38,7 +38,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Prints the filenames of all external stylesheets, and substitutes all images of a loaded html document.
+        /// Prints the filenames of all external stylesheets and substitutes all images of a loaded html document.
         /// </summary>
         private class HtmlLinkedResourceLoadingCallback : IResourceLoadingCallback
         {
@@ -331,7 +331,7 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
 #if NET462
-            TestUtil.VerifyImageInShape(533, 533, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(1666, 1666, ImageType.Png, shape);
 #elif NETCOREAPP2_1
             TestUtil.VerifyImageInShape(1600, 1600, ImageType.Png, shape);
 #endif

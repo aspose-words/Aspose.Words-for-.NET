@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -8,6 +8,7 @@
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Settings;
 using NUnit.Framework;
 #if NET462 || JAVA
 using System.Drawing;
@@ -177,6 +178,31 @@ namespace ApiExamples
             TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, imageShape);
             Assert.AreEqual(400.0d, imageShape.ImageData.ImageSize.HeightPoints);
             Assert.AreEqual(400.0d, imageShape.ImageData.ImageSize.WidthPoints);
+        }
+
+        [Test]
+        public void InsertSvgImage()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertImage(String)
+            //ExSummary:Shows how to determine which image will be inserted.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertImage(ImageDir + "Scalable Vector Graphics.svg");
+
+            // Aspose.Words insert SVG image to the document as PNG with svgBlip extension
+            // that contains the original vector SVG image representation.
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertSvgImage.SvgWithSvgBlip.docx");
+
+            // Aspose.Words insert SVG image to the document as PNG, just like Microsoft Word does for old format.
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertSvgImage.Svg.doc");
+
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2003);
+
+            // Aspose.Words insert SVG image to the document as EMF metafile to keep the image in vector representation.
+            doc.Save(ArtifactsDir + "DocumentBuilderImages.InsertSvgImage.Emf.docx");
+            //ExEnd
         }
 
 #if NET462 || JAVA

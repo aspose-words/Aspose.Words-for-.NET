@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -26,21 +26,21 @@ namespace ApiExamples
             //ExFor:VbaModule.SourceCode
             //ExFor:VbaModuleCollection.Add(VbaModule)
             //ExFor:VbaModuleType
-            //ExSummary:Shows how to create a VbaProject from a scratch for using macros.
+            //ExSummary:Shows how to create a VBA project using macros.
             Document doc = new Document();
 
-            // Create a new VBA project
+            // Create a new VBA project.
             VbaProject project = new VbaProject();
             project.Name = "Aspose.Project";
             doc.VbaProject = project;
 
-            // Create a new module and specify a macro source code
+            // Create a new module and specify a macro source code.
             VbaModule module = new VbaModule();
             module.Name = "Aspose.Module";
             module.Type = VbaModuleType.ProceduralModule;
             module.SourceCode = "New source code";
 
-            // Add module to the VBA project
+            // Add the module to the VBA project.
             doc.VbaProject.Modules.Add(module);
 
             doc.Save(ArtifactsDir + "VbaProject.CreateVBAMacros.docm");
@@ -69,16 +69,15 @@ namespace ApiExamples
             //ExStart
             //ExFor:VbaProject.Clone
             //ExFor:VbaModule.Clone
-            //ExSummary:Shows how to deep clone VbaProject and VbaModule.
+            //ExSummary:Shows how to deep clone a VBA project and module.
             Document doc = new Document(MyDir + "VBA project.docm");
             Document destDoc = new Document();
 
-            // Clone VbaProject to the document
             VbaProject copyVbaProject = doc.VbaProject.Clone();
             destDoc.VbaProject = copyVbaProject;
 
-            // In destination document we already have "Module1", because it was cloned with VbaProject
-            // We will need to remove it before cloning
+            // In the destination document, we already have a module named "Module1"
+            // because we cloned it along with the project. We will need to remove the module.
             VbaModule oldVbaModule = destDoc.VbaProject.Modules["Module1"];
             VbaModule copyVbaModule = doc.VbaProject.Modules["Module1"].Clone();
             destDoc.VbaProject.Modules.Remove(oldVbaModule);
@@ -110,7 +109,7 @@ namespace ApiExamples
         //ExFor:VbaReferenceCollection.RemoveAt(int)
         //ExFor:VbaReferenceCollection.Remove(VbaReference)
         //ExFor:VbaReferenceType
-        //ExSummary:Shows how to get/remove element from the VbaReference collection.
+        //ExSummary:Shows how to get/remove an element from the VBA reference collection.
         [Test]
         public void RemoveVbaReference()
         {

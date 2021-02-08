@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
 using Aspose.Words.Markup;
 using Aspose.Words.Rendering;
@@ -27,6 +28,7 @@ using Aspose.Words.Tables;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
+using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Pdf.Text;
 using Aspose.Words.Shaping.HarfBuzz;
@@ -54,8 +56,8 @@ namespace ApiExamples
             // 1 -  Create a blank document:
             Document doc = new Document();
 
-            // New Document objects by default come with a section, body, and paragraph;
-            // the minimal set of nodes required to begin editing.
+            // New Document objects by default come with the minimal set of nodes
+            // required to begin adding content such as text and shapes: a Section, a Body, and a Paragraph.
             doc.FirstSection.Body.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
 
             // 2 -  Load a document that exists in the local file system:
@@ -433,8 +435,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Logs the date and time of each node insertion and removal,
-        /// and also set a custom font name/size for the text contents of Run nodes.
+        /// Logs the date and time of each node insertion and removal.
+        /// Sets a custom font name/size for the text contents of Run nodes.
         /// </summary>
         public class HandleNodeChangingFontChanger : INodeChangingCallback
         {
@@ -606,13 +608,13 @@ namespace ApiExamples
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
 
             // There are two ways of saving a signed copy of a document to the local file system:
-            // 1 - Designate a document by a local system filename, and save a signed copy at a location specified by another filename.
+            // 1 - Designate a document by a local system filename and save a signed copy at a location specified by another filename.
             DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "Document.DigitalSignature.docx", 
                 certificateHolder, new SignOptions() { SignTime = DateTime.Now } );
 
             Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
 
-            // 2 - Take a document from a stream, and save a signed copy to another stream.
+            // 2 - Take a document from a stream and save a signed copy to another stream.
             using (FileStream inDoc = new FileStream(MyDir + "Document.docx", FileMode.Open))
             {
                 using (FileStream outDoc = new FileStream(ArtifactsDir + "Document.DigitalSignature.docx", FileMode.Create))
@@ -623,7 +625,7 @@ namespace ApiExamples
 
             Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
 
-            // Please verify that all of the document's digital signatures are valid, and check their details.
+            // Please verify that all of the document's digital signatures are valid and check their details.
             Document signedDoc = new Document(ArtifactsDir + "Document.DigitalSignature.docx");
             DigitalSignatureCollection digitalSignatureCollection = signedDoc.DigitalSignatures;
 
@@ -685,7 +687,7 @@ namespace ApiExamples
             // then the document may be simplified.
             Assert.AreEqual(317, doc.GetChildNodes(NodeType.Run, true).Count);
 
-            // Combine such runs with this method, and verify the number of run joins that will take place.
+            // Combine such runs with this method and verify the number of run joins that will take place.
             Assert.AreEqual(121, doc.JoinRunsWithSameFormatting());
 
             // The number of joins and the number of runs we have after the join
@@ -850,8 +852,7 @@ namespace ApiExamples
 
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Any, true).Count);
 
-            // Call this method to make sure that the document has at least those three nodes,
-            // so we can edit the document again.
+            // Call this method to make sure that the document has at least those three nodes so we can edit it again.
             doc.EnsureMinimum();
 
             Assert.AreEqual(NodeType.Section, nodes[0].NodeType);
@@ -875,7 +876,7 @@ namespace ApiExamples
             Assert.IsTrue(doc.HasMacros);
             Assert.AreEqual("Project", doc.VbaProject.Name);
 
-            // Remove the document's VBA project, along with all of its macros.
+            // Remove the document's VBA project, along with all its macros.
             doc.RemoveMacros();
 
             Assert.IsFalse(doc.HasMacros);
@@ -902,7 +903,7 @@ namespace ApiExamples
             Assert.AreEqual(3, doc.PageCount);
 
             // Getting the PageCount property invoked the document's page layout to calculate the value.
-            // This operation will not need to be re-done when rendering the document to a fixed-page save format,
+            // This operation will not need to be re-done when rendering the document to a fixed page save format,
             // such as .pdf. So you can save some time, especially with more complex documents.
             doc.Save(ArtifactsDir + "Document.GetPageCount.pdf");
             //ExEnd
@@ -955,7 +956,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompositeNode.GetChild
             //ExFor:Document.ExpandTableStylesToDirectFormatting
-            //ExSummary:Shows how to apply attributes of a table's style directly to the table's elements.
+            //ExSummary:Shows how to apply the properties of a table's style directly to the table's elements.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -973,7 +974,7 @@ namespace ApiExamples
 
             table.Style = tableStyle;
 
-            // This method concerns table style attributes such as the ones we set above.
+            // This method concerns table style properties such as the ones we set above.
             doc.ExpandTableStylesToDirectFormatting();
 
             doc.Save(ArtifactsDir + "Document.TableStyleToDirectFormatting.docx");
@@ -985,6 +986,40 @@ namespace ApiExamples
                 ArtifactsDir + "Document.TableStyleToDirectFormatting.docx", "document.xml");
             TestUtil.DocPackageFileContainsString("<w:tblBorders><w:top w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:left w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:bottom w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:right w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:insideH w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:insideV w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /></w:tblBorders>",
                 ArtifactsDir + "Document.TableStyleToDirectFormatting.docx", "document.xml");
+        }
+
+        [Test]
+        public void UpdateTableLayout()
+        {
+            //ExStart
+            //ExFor:Document.UpdateTableLayout
+            //ExSummary:Shows how to preserve a table's layout when saving to .txt.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Table table = builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Cell 1");
+            builder.InsertCell();
+            builder.Write("Cell 2");
+            builder.InsertCell();
+            builder.Write("Cell 3");
+            builder.EndTable();
+
+            // Use a TxtSaveOptions object to preserve the table's layout when converting the document to plaintext.
+            TxtSaveOptions options = new TxtSaveOptions();
+            options.PreserveTableLayout = true;
+
+            // Previewing the appearance of the document in .txt form shows that the table will not be represented accurately.
+            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.Width);
+            Assert.AreEqual("CCC\r\neee\r\nlll\r\nlll\r\n   \r\n123\r\n\r\n", doc.ToString(options));
+
+            // We can call UpdateTableLayout() to fix some of these issues.
+            doc.UpdateTableLayout();
+
+            Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
+            Assert.AreEqual(155.0d, table.FirstRow.Cells[0].CellFormat.Width, 2f);
+            //ExEnd
         }
 
         [Test]
@@ -1041,7 +1076,7 @@ namespace ApiExamples
                 docOriginal.Compare(docEdited, "authorName", DateTime.Now);
 
             // After the comparison, the original document will gain a new revision
-            // for every element that's different in the edited document.
+            // for every element that is different in the edited document.
             Assert.AreEqual(2, docOriginal.Revisions.Count); //ExSkip
             foreach (Revision r in docOriginal.Revisions)
             {
@@ -1093,7 +1128,7 @@ namespace ApiExamples
             //ExFor:ComparisonTargetType
             //ExFor:Document.Compare(Document, String, DateTime, CompareOptions)
             //ExSummary:Shows how to filter specific types of document elements when making a comparison.
-            // Create the original document, and populate it with various kinds of elements.
+            // Create the original document and populate it with various kinds of elements.
             Document docOriginal = new Document();
             DocumentBuilder builder = new DocumentBuilder(docOriginal);
 
@@ -1127,7 +1162,7 @@ namespace ApiExamples
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.Writeln("Original header contents.");
 
-            // Create a clone of our document, and perform a quick edit on each of the cloned document's elements.
+            // Create a clone of our document and perform a quick edit on each of the cloned document's elements.
             Document docEdited = (Document)docOriginal.Clone(true);
             Paragraph firstParagraph = docEdited.FirstSection.Body.FirstParagraph;
 
@@ -1277,7 +1312,7 @@ namespace ApiExamples
             
             // We can accept/reject these revisions programmatically
             // by calling methods such as Document.AcceptAllRevisions, or each revision's Accept method.
-            // In Microsoft Word, they can be processed via Review -> Changes.
+            // In Microsoft Word, we can process them manually via "Review" -> "Changes".
             doc.Save(ArtifactsDir + "Document.StartTrackRevisions.docx");
             //ExEnd
         }
@@ -1586,20 +1621,19 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
              
-            // Write some text
-            builder.Write("Jason give money to Paul.");
+            builder.Write("Jason gave money to Paul.");
              
-            Regex regex = new Regex(@"([A-z]+) give money to ([A-z]+)");
+            Regex regex = new Regex(@"([A-z]+) gave money to ([A-z]+)");
              
-            // Replace text using substitutions
             FindReplaceOptions options = new FindReplaceOptions();
             options.UseSubstitutions = true;
+
             // Using legacy mode does not support many advanced features, so we need to set it to 'false'.
             options.LegacyMode = false;
 
-            doc.Range.Replace(regex, @"$2 take money from $1", options);
+            doc.Range.Replace(regex, @"$2 took money from $1", options);
             
-            Assert.AreEqual(doc.GetText(), "Paul take money from Jason.\f");
+            Assert.AreEqual(doc.GetText(), "Paul took money from Jason.\f");
             //ExEnd
         }
 
@@ -1623,14 +1657,14 @@ namespace ApiExamples
             fieldText.Text = "PAGE";
 
             // Changing the field code has changed this field to one of a different type,
-            // but the field's type attributes still display the old type.
+            // but the field's type properties still display the old type.
             Assert.AreEqual("PAGE", field.GetFieldCode());
             Assert.AreEqual(FieldType.FieldDate, field.Type);
             Assert.AreEqual(FieldType.FieldDate, field.Start.FieldType);
             Assert.AreEqual(FieldType.FieldDate, field.Separator.FieldType);
             Assert.AreEqual(FieldType.FieldDate, field.End.FieldType);
 
-            // Update those attributes with this method to display current value.
+            // Update those properties with this method to display current value.
             doc.NormalizeFieldTypes();
 
             Assert.AreEqual(FieldType.FieldPage, field.Type);
@@ -1655,8 +1689,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a revision, then change the color of all revisions to green,
-            // and also remove the bar that appears to the left of every revised line.
+            // Insert a revision, then change the color of all revisions to green.
             builder.Writeln("This is not a revision.");
             doc.StartTrackRevisions("John Doe", DateTime.Now);
             Assert.AreEqual(RevisionColor.ByAuthor, doc.LayoutOptions.RevisionOptions.InsertedTextColor); //ExSkip
@@ -1665,6 +1698,7 @@ namespace ApiExamples
             doc.StopTrackRevisions();
             builder.Writeln("This is not a revision.");
 
+            // Remove the bar that appears to the left of every revised line.
             doc.LayoutOptions.RevisionOptions.InsertedTextColor = RevisionColor.BrightGreen;
             doc.LayoutOptions.RevisionOptions.ShowRevisionBars = false;
 
@@ -1760,7 +1794,7 @@ namespace ApiExamples
 
             // In the current version of Aspose.Words, modifying the document does not automatically rebuild 
             // the cached page layout. If we wish for the cached layout
-            // to stay up-to-date, we will need to update it manually.
+            // to stay up to date, we will need to update it manually.
             doc.UpdatePageLayout();
 
             doc.Save(ArtifactsDir + "Document.UpdatePageLayout.2.pdf");
@@ -2042,7 +2076,7 @@ namespace ApiExamples
             // Create a document which we will copy the styles to.
             Document target = new Document();
 
-            // Create a style with the same name as a style from the template document, and add it to the target document.
+            // Create a style with the same name as a style from the template document and add it to the target document.
             style = target.Styles.Add(StyleType.Paragraph, "TemplateStyle3");
             style.Font.Name = "Calibri";
             style.Font.Color = Color.Orange;
@@ -2506,6 +2540,58 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.ExtractPages.docx");
             Assert.AreEqual(doc.PageCount, 2);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void SpellingOrGrammar(bool checkSpellingGrammar)
+        {
+            //ExStart
+            //ExFor:Document.SpellingChecked
+            //ExFor:Document.GrammarChecked
+            //ExSummary:Shows how to set spelling or grammar verifying.
+            Document doc = new Document();
+
+            // The string with spelling errors.
+            doc.FirstSection.Body.FirstParagraph.Runs.Add(new Run(doc, "The speeling in this documentz is all broked."));
+
+            // Spelling/Grammar check start if we set properties to false. 
+            // We can see all errors in Microsoft Word via Review -> Spelling & Grammar.
+            // Note that Microsoft Word does not start grammar/spell check automatically for DOC and RTF document format.
+            doc.SpellingChecked = checkSpellingGrammar;
+            doc.GrammarChecked = checkSpellingGrammar;
+
+            doc.Save(ArtifactsDir + "Document.SpellingOrGrammar.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void AllowEmbeddingPostScriptFonts()
+        {
+            //ExStart
+            //ExFor:SaveOptions.AllowEmbeddingPostScriptFonts
+            //ExSummary:Shows how to save the document with PostScript font.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Font.Name = "PostScriptFont";
+            builder.Writeln("Some text with PostScript font.");
+
+            // Load the font with PostScript to use in the document.
+            MemoryFontSource otf = new MemoryFontSource(File.ReadAllBytes(FontsDir + "AllegroOpen.otf"));
+            doc.FontSettings = new FontSettings();
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] { otf });
+
+            // Embed TrueType fonts.
+            doc.FontInfos.EmbedTrueTypeFonts = true;
+
+            // Allow embedding PostScript fonts while embedding TrueType fonts.
+            // Microsoft Word does not embed PostScript fonts, but can open documents with embedded fonts of this type.
+            SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Docx);
+            saveOptions.AllowEmbeddingPostScriptFonts = true;
+
+            doc.Save(ArtifactsDir + "Document.AllowEmbeddingPostScriptFonts.docx", saveOptions);
+            //ExEnd
         }
     }
 }

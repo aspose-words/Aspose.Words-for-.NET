@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -85,9 +85,8 @@ namespace ApiExamples
             // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
             FindReplaceOptions options = new FindReplaceOptions();
 
-            // Set the "FindWholeWordsOnly" flag to "true" to replace the found text
-            // only as long as it is not a part of another word.
-            // Set the "FindWholeWordsOnly" flag to "false" to disregard the surrounding text of the text we are replacing.
+            // Set the "FindWholeWordsOnly" flag to "true" to replace the found text if it is not a part of another word.
+            // Set the "FindWholeWordsOnly" flag to "false" to replace all text regardless of its surroundings.
             options.FindWholeWordsOnly = findWholeWordsOnly;
 
             doc.Range.Replace("Jackson", "Louis", options);
@@ -364,8 +363,8 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Replaces numeric find-and-replacement matches with their hexadecimal equivalents
-        /// and also logs every replacement.
+        /// Replaces numeric find-and-replacement matches with their hexadecimal equivalents.
+        /// Maintains a log of every replacement.
         /// </summary>
         private class NumberHexer : IReplacingCallback
         {
@@ -426,7 +425,7 @@ namespace ApiExamples
             // that contains a match that the find-and-replace operation finds.
             options.ApplyParagraphFormat.Alignment = ParagraphAlignment.Right;
 
-            // Replace every full stop that's right before a paragraph break with an exclamation point.
+            // Replace every full stop that is right before a paragraph break with an exclamation point.
             int count = doc.Range.Replace(".&p", "!&p", options);
 
             Assert.AreEqual(2, count);
@@ -456,7 +455,7 @@ namespace ApiExamples
 
             Assert.AreEqual("Section 1. \fSection 2.", doc.GetText().Trim());
 
-            // Remove the first section entirely by removing all of the nodes
+            // Remove the first section entirely by removing all the nodes
             // within its range, including the section itself.
             doc.Sections[0].Range.Delete();
 
@@ -521,7 +520,7 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Records the order of all matches occuring during a find-and-replace operation.
+        /// Records the order of all matches that occur during a find-and-replace operation.
         /// </summary>
         private class TextReplacementTracker : IReplacingCallback
         {
@@ -629,7 +628,6 @@ namespace ApiExamples
                                 continue;
                         }
 
-                        // Clone the node, and insert it into the destination document.
                         Node newNode = importer.ImportNode(srcNode, true);
 
                         dstStory.InsertAfter(newNode, insertionDestination);
