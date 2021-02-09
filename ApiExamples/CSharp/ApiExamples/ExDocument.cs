@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -2557,10 +2557,12 @@ namespace ApiExamples
 
             // Spelling/Grammar check start if we set properties to false. 
             // We can see all errors in Microsoft Word via Review -> Spelling & Grammar.
+            // Note that Microsoft Word does not start grammar/spell check automatically for DOC and RTF document format.
             doc.SpellingChecked = checkSpellingGrammar;
             doc.GrammarChecked = checkSpellingGrammar;
 
             doc.Save(ArtifactsDir + "Document.SpellingOrGrammar.docx");
+            //ExEnd
         }
 
         [Test]

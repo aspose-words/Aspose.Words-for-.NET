@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2020 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -843,6 +843,16 @@ namespace ApiExamples
 
             Assert.True(table.AllowCellSpacing);
             //ExEnd
+
+            doc = new Document(ArtifactsDir + "Table.AllowCellSpacing.html");
+            table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(allowCellSpacing, table.AllowCellSpacing);
+
+            if (allowCellSpacing)
+                Assert.AreEqual(3.0d, table.CellSpacing);
+            else
+                Assert.AreEqual(0.0d, table.CellSpacing);
 
             TestUtil.FileContainsString(
                 allowCellSpacing
