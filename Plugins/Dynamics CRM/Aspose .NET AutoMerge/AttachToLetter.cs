@@ -9,18 +9,22 @@ namespace Aspose.AutoMerge
 {
     public class AttachToLetter : CodeActivity
     {
+        [RequiredArgument]
         [Input("Enable Logging")]
         [Default("False")]
         public InArgument<bool> EnableLogging { get; set; }
 
+        [RequiredArgument]
         [Input("Log File Directory")]
         [Default("C:\\Aspose Logs")]
         public InArgument<string> LogFile { get; set; }
 
+        [RequiredArgument]
         [Input("Letter")]
         [ReferenceTarget("letter")]
         public InArgument<EntityReference> LetterId { get; set; }
 
+        [RequiredArgument]
         [Input("Attachment")]
         [ReferenceTarget("annotation")]
         public InArgument<EntityReference> AttachmentId { get; set; }
@@ -35,16 +39,22 @@ namespace Aspose.AutoMerge
             {
                 if (Logging)
                     Log("Workflow Execution Start", LogFilePath);
+
+                // Create a CRM Service in Workflow.
                 IWorkflowContext context = executionContext.GetExtension<IWorkflowContext>();
                 IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
                 IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
+
                 if (Logging)
-                    Log("Retrieving Attahment", LogFilePath);
+                    Log("Retrieving Attachment", LogFilePath);
+
                 Entity TempAttachment = service.Retrieve("annotation", Attachment.Id, new ColumnSet(true));
                 if (TempAttachment != null)
                 {
                     if (Logging)
                         Log("Creating New Attachment", LogFilePath);
+
+                    // Create an attachment.
                     Entity NewAttachment = new Entity("annotation");
                     if (TempAttachment.Contains("subject"))
                         NewAttachment.Attributes.Add("subject", TempAttachment["subject"]);
@@ -58,13 +68,14 @@ namespace Aspose.AutoMerge
                         NewAttachment.Attributes.Add("documentbody", TempAttachment["documentbody"]);
                     NewAttachment.Attributes.Add("objectid", new EntityReference(Letter.LogicalName, Letter.Id));
                     service.Create(NewAttachment);
+
                     if (Logging)
                         Log("New Attachment Added To Letter", LogFilePath);
                 }
                 else
                 {
                     if (Logging)
-                        Log("Temp Attachment doesnot exist", LogFilePath);
+                        Log("Temp Attachment does not exist", LogFilePath);
                 }
                 if (Logging)
                     Log("Workflow Executed Successfully", LogFilePath);
@@ -77,11 +88,14 @@ namespace Aspose.AutoMerge
 
         private void Log(string Message, string LogFilePath)
         {
-            if (LogFilePath == "")
-                File.AppendAllText("C:\\Aspose Logs\\Aspose.AutoMerge.AttachToLetter.log", Environment.NewLine + DateTime.Now.ToString() + ":- " + Message);
-            else
-                File.AppendAllText(LogFilePath + "\\Aspose.AutoMerge.AttachToLetter.log", Environment.NewLine + DateTime.Now.ToString() + ":- " + Message);
-
+            try
+            {
+                if (LogFilePath == "")
+                    File.AppendAllText("C:\\Aspose Logs\\Aspose.AutoMerge.AttachToLetter.log", Environment.NewLine + DateTime.Now.ToString() + ":- " + Message);
+                else
+                    File.AppendAllText(LogFilePath + "\\Aspose.AutoMerge.AttachToLetter.log", Environment.NewLine + DateTime.Now.ToString() + ":- " + Message);
+            }
+            catch { }
         }
     }
 }

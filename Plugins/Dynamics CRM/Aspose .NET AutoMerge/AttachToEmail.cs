@@ -9,22 +9,26 @@ namespace Aspose.AutoMerge
 {
     public class AttachToEmail : CodeActivity
     {
+        [RequiredArgument]
         [Input("Enable Logging")]
         [Default("False")]
         public InArgument<bool> EnableLogging { get; set; }
 
+        [RequiredArgument]
         [Input("Log File Directory")]
         [Default("C:\\Aspose Logs")]
         public InArgument<string> LogFile { get; set; }
 
+        [RequiredArgument]
         [Input("Email")]
         [ReferenceTarget("email")]
         public InArgument<EntityReference> EmailId { get; set; }
 
+        [RequiredArgument]
         [Input("Attachment")]
         [ReferenceTarget("annotation")]
         public InArgument<EntityReference> AttachmentId { get; set; }
-        
+
         protected override void Execute(CodeActivityContext executionContext)
         {
             Boolean Logging = EnableLogging.Get(executionContext);
@@ -36,10 +40,11 @@ namespace Aspose.AutoMerge
                 if (Logging)
                     Log("Workflow Execution Start", LogFilePath);
 
-                // Create CRM Service in Workflow.
+                // Create a CRM Service in Workflow.
                 IWorkflowContext context = executionContext.GetExtension<IWorkflowContext>();
                 IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
                 IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
+
                 if (Logging)
                     Log("Retrieving Attahment", LogFilePath);
 
@@ -64,13 +69,14 @@ namespace Aspose.AutoMerge
                     NewAttachment.Attributes.Add("objecttypecode", "email");
                     NewAttachment.Attributes.Add("attachmentnumber", 1);
                     service.Create(NewAttachment);
+
                     if (Logging)
                         Log("New Attachment Added To Email", LogFilePath);
                 }
                 else
                 {
                     if (Logging)
-                        Log("Temp Attachment doesnot exist", LogFilePath);
+                        Log("Temp Attachment does not exist", LogFilePath);
                 }
                 if (Logging)
                     Log("Workflow Executed Successfully", LogFilePath);
@@ -83,11 +89,14 @@ namespace Aspose.AutoMerge
 
         private void Log(string Message, string LogFilePath)
         {
-            if (LogFilePath == "")
-                File.AppendAllText("C:\\Aspose Logs\\Aspose.AutoMerge.AttachToEmail.log", Environment.NewLine + DateTime.Now.ToString() + ":- " + Message);
-            else
-                File.AppendAllText(LogFilePath + "\\Aspose.AutoMerge.AttachToEmail.log", Environment.NewLine + DateTime.Now.ToString() + ":- " + Message);
-
+            try
+            {
+                if (LogFilePath == "")
+                    File.AppendAllText("C:\\Aspose Logs\\Aspose.AutoMerge.AttachToEmail.log", Environment.NewLine + DateTime.Now.ToString() + ":- " + Message);
+                else
+                    File.AppendAllText(LogFilePath + "\\Aspose.AutoMerge.ProtectDocument.log", Environment.NewLine + DateTime.Now.ToString() + ":- " + Message);
+            }
+            catch { }
         }
     }
 }

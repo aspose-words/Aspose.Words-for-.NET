@@ -44,17 +44,23 @@ namespace Aspose.AutoMerge
                     Log("Workflow Execution Start", LogFilePath);
                 if (ValidateParameters(executionContext))
                 {
+                    // Create a CRM Service in Workflow.
                     IWorkflowContext context = executionContext.GetExtension<IWorkflowContext>();
                     IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
                     IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
+
                     if (Logging)
                         Log("Attaching Attachment", LogFilePath);
+
+                    // Create an attachment.
                     Entity UpdatedAttachment = new Entity("annotation");
                     UpdatedAttachment.Id = Attachment.Id;
                     UpdatedAttachment.Attributes.Add("objectid", new EntityReference(entityName, new Guid(recordId)));
                     service.Update(UpdatedAttachment);
+
                     if (Logging)
                         Log("Attachment linked successfully", LogFilePath);
+
                     if (Logging)
                         Log("Workflow Executed Successfully", LogFilePath);
                 }
