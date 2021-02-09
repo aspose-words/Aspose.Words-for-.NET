@@ -1,5 +1,7 @@
-# Aspose.Words for .NET
-[Aspose.Words for .NET](http://www.aspose.com/products/words/net) is an advanced Word document processing API that enables you to perform a wide range of document processing tasks directly within your .NET applications. Aspose.Words for .NET supports DOC, OOXML, RTF, HTML, OpenDocument, PDF, XPS, EPUB and other formats. With Aspose.Words you can view, generate, modify, convert, render and print documents without using Microsoft Word.
+![Nuget](https://img.shields.io/nuget/v/Aspose.Words) ![Nuget](https://img.shields.io/nuget/dt/Aspose.Words) ![GitHub](https://img.shields.io/github/license/aspose-words/Aspose.Words-for-.NET)
+# Word Processing API for .NET
+
+[Aspose.Words for .NET](https://products.aspose.com/words/net) is a powerful on-premise class library that can be used for numerous document processing tasks. It enables developers to enhance their own applications with features such as generating, modifying, converting, rendering, and printing documents, without relying on third-party applications, for example, Microsoft Word, or Office Automation.
 
 <p align="center">
 
