@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{C0F58D69-7E31-49F5-AD50-815D26199328}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Examples</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ApiExampleBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DocumentHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExAbsolutePositionTab.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExBookmarks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExBookmarksOutlineLevelCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExBorder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExBorderCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExBuildingBlocks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExBuildVersion.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExCellFormat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExCharts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExComment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExCompatibilityOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExControlChar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExDigitalSignatureCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExDigitalSignatureUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExDocSaveOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExDocument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExDocumentBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExDocumentBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExDocumentBuilderImages.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExDocumentVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExDrawing.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExEditableRange.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExFieldOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExFile.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExFormFields.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExHeaderFooter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExHyphenation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExImage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExInline.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExInlineStory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExLists.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExMetered.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExNodeImporter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExPageSetup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExParagraph.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExParagraphFormat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExProperties.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExRange.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExRenameMergeFields.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExRendering.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExReplaceHyperlinks.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExReportingEngine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExSection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExShape.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExSmartTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExStructuredDocumentTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExStyles.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExTable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExTableColumn.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExTabStop.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExThemes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExUtilityClasses.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExVariableCollection.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExViewOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestUtil.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\Common.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestClasses\ManagerTestClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestClasses\DocumentTestClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestClasses\NumericTestClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestClasses\ImageTestClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestClasses\MessageTestClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestClasses\ColorItemTestClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestClasses\ContractTestClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestClasses\ClientTestClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestClasses\SignPersonTestClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestBuilders\DocumentTestBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestBuilders\ColorItemTestBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestBuilders\NumericTestBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TestData\TestBuilders\ImageTestBuilder.cs" />
+  </ItemGroup>
+</Project>
