@@ -42,6 +42,7 @@ namespace Aspose.DuplicateDocument
             if (Logging)
                 Log("Execution Started", LogFilePath);
 
+            // Create a CRM Service in Workflow.
             IWorkflowContext context = executionContext.GetExtension<IWorkflowContext>();
             IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
             IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
@@ -149,8 +150,8 @@ namespace Aspose.DuplicateDocument
                 if (Logging)
                     Log("Creating Attachment for result", LogFilePath);
 
+                // Add a Node to the entity.
                 Entity NewNote = new Entity("annotation");
-                // add Note to entity
                 NewNote.Attributes.Add("objectid", new EntityReference(RecordType, ThisRecordId));
                 NewNote.Attributes.Add("subject", "Duplicate detection report");
 
@@ -161,7 +162,7 @@ namespace Aspose.DuplicateDocument
                 NewNote.Attributes.Add("mimetype", @"application\ms-word");
                 NewNote.Attributes.Add("notetext", "Duplicate detection report");
 
-                // Set the File Name.
+                // Set the filename.
                 NewNote.Attributes.Add("filename", "Duplicate detection report");
 
                 Guid NewNoteId = service.Create(NewNote);
@@ -256,9 +257,8 @@ namespace Aspose.DuplicateDocument
                 if (Logging)
                     Log("Creating Attachment for result", LogFilePath);
 
+                // Add a Note do the endity.
                 Entity NewNote = new Entity("annotation");
-
-                // add Note to entity.
                 NewNote.Attributes.Add("objectid", new EntityReference(RecordType, ThisRecordId));
                 NewNote.Attributes.Add("subject", "Duplicate detection report");
 
@@ -269,7 +269,7 @@ namespace Aspose.DuplicateDocument
                 NewNote.Attributes.Add("mimetype", @"application\ms-word");
                 NewNote.Attributes.Add("notetext", "Duplicate detection report");
 
-                // Set the File Name.
+                // Set the filename.
                 NewNote.Attributes.Add("filename", "Duplicate detection report");
 
                 Guid NewNoteId = service.Create(NewNote);
@@ -361,9 +361,8 @@ namespace Aspose.DuplicateDocument
                 if (Logging)
                     Log("Creating Attachment for result", LogFilePath);
 
+                // Add a Node to the entity.
                 Entity NewNote = new Entity("annotation");
-
-                // add Note to entity.
                 NewNote.Attributes.Add("objectid", new EntityReference(RecordType, ThisRecordId));
                 NewNote.Attributes.Add("subject", "Duplicate detection report");
 
@@ -374,7 +373,7 @@ namespace Aspose.DuplicateDocument
                 NewNote.Attributes.Add("mimetype", @"application\ms-word");
                 NewNote.Attributes.Add("notetext", "Duplicate detection report");
 
-                // Set the File Name.
+                // Set the filename.
                 NewNote.Attributes.Add("filename", "Duplicate detection report");
 
                 Guid NewNoteId = service.Create(NewNote);

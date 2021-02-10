@@ -36,6 +36,7 @@ namespace Aspose.DocumentGenerator.CreateDocumentFromTemplate
                 if (Logging)
                     Log("Workflow Executed");
 
+                // Create a CRM Service in Workflow.
                 IWorkflowContext context = executionContext.GetExtension<IWorkflowContext>();
                 IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
                 IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
@@ -112,8 +113,10 @@ namespace Aspose.DocumentGenerator.CreateDocumentFromTemplate
                                 else
                                     values[i] = "";
                             }
+
                             if (Logging)
                                 Log("Executing Mail Merge");
+
                             doc.MailMerge.Execute(fields, values);
                             MemoryStream UpdateDoc = new MemoryStream();
 

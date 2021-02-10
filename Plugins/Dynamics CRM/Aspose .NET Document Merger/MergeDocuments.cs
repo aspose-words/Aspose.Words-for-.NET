@@ -45,6 +45,7 @@ namespace Aspose.DocumentMerger.MergeDocumentsInEntity
                 if (Logging)
                     Log("Workflow Executed");
 
+                // Create a CRM Service in Workflow.
                 IWorkflowContext context = executionContext.GetExtension<IWorkflowContext>();
                 IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
                 IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
@@ -124,13 +125,14 @@ namespace Aspose.DocumentMerger.MergeDocumentsInEntity
                     Log("Creating Attachment");
 
                 Entity NewNote = new Entity("annotation");
-                // Im going to add Note to entity
+
+                // Add a note to the entity.
                 NewNote.Attributes.Add("objectid", new EntityReference("contact", Contact.Id));
                 
-                // Set EncodedData to Document Body
+                // Set EncodedData to Document Body.
                 NewNote.Attributes.Add("documentbody", encodedData);
 
-                // Set the type of attachment
+                // Set the type of attachment.
                 NewNote.Attributes.Add("mimetype", @"application\ms-word");
                 NewNote.Attributes.Add("notetext", "Document Created using template");
 

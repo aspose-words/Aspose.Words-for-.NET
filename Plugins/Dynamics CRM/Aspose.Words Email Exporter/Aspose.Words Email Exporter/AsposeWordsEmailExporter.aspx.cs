@@ -6,11 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.ServiceModel.Description;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Aspose.Words_Email_Exporter
 {
@@ -34,7 +30,8 @@ namespace Aspose.Words_Email_Exporter
                     try
                     {
                         string LicenseFilePath = ConfigurationManager.AppSettings["LicenseFilePath"];
-                        // Check for license and apply if exists
+
+                        // Check for license and apply if exists.
                         if (File.Exists(LicenseFilePath))
                         {
                             License license = new License();
@@ -144,21 +141,23 @@ namespace Aspose.Words_Email_Exporter
                         {
                             Entity NewNote = new Entity("activitymimeattachment");
                             byte[] byteData = UpdateDoc.ToArray();
+
                             // Encode the data using base64.
                             string encodedData = System.Convert.ToBase64String(byteData);
-                            // Im going to add Note to entity
+
+                            // Add a Note to the entity.
                             NewNote.Attributes.Add("objectid", new EntityReference("email", EntityId));
                             NewNote.Attributes.Add("objecttypecode", "email");
                             NewNote.Attributes.Add("subject", FileName + "." + Format);
 
-                            // Set EncodedData to Document Body
+                            // Set EncodedData to Document Body.
                             NewNote.Attributes.Add("body", encodedData);
 
-                            // Set the type of attachment
+                            // Set the type of attachment.
                             NewNote.Attributes.Add("mimetype", @"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
                             //NewNote.Attributes.Add("notetext", FileName);
 
-                            // Set the File Name
+                            // Set the filename.
                             NewNote.Attributes.Add("filename", FileName + "." + Format);
                             Guid NewNoteId = Service.Create(NewNote);
                         }
@@ -248,6 +247,7 @@ namespace Aspose.Words_Email_Exporter
 
             return true;
         }
+
         private OrganizationServiceProxy CreateService(string serverName, string OrganizationName, string Login, string Password, string Domain)
         {
             try
