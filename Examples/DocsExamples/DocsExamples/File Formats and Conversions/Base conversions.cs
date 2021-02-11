@@ -145,6 +145,16 @@ namespace DocsExamples.File_Formats_and_Conversions
             //ExEnd:TxtToDocx
         }
 
+        [Test]
+        public void PdfToJpeg()
+        {
+            //ExStart:PdfToJpeg
+            Document doc = new Document(MyDir + "Pdf Document.pdf");
+
+            doc.Save(ArtifactsDir + "BaseConversions.PdfToJpeg.jpeg");
+            //ExEnd:PdfToJpeg
+        }
+
 #if NET462
         [Test]
         public void ImagesToPdf()

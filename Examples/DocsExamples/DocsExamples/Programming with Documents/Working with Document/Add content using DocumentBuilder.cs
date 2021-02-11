@@ -381,11 +381,38 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void MoveToNode()
         {
             //ExStart:MoveToNode
+            //ExStart:MoveToBookmark
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.MoveTo(doc.FirstSection.Body.LastParagraph);
-            // ExEnd:MoveToNode
+            // Start a bookmark and add content to it using a DocumentBuilder.
+            builder.StartBookmark("MyBookmark");
+            builder.Writeln("Bookmark contents.");
+            builder.EndBookmark("MyBookmark");
+
+            // The node that the DocumentBuilder is currently at is past the boundaries of the bookmark.
+            Assert.AreEqual(doc.Range.Bookmarks[0].BookmarkEnd, builder.CurrentParagraph.FirstChild);
+
+            // If we wish to revise the content of our bookmark with the DocumentBuilder, we can move back to it like this.
+            builder.MoveToBookmark("MyBookmark");
+
+            // Now we're located between the bookmark's BookmarkStart and BookmarkEnd nodes, so any text the builder adds will be within it.
+            Assert.AreEqual(doc.Range.Bookmarks[0].BookmarkStart, builder.CurrentParagraph.FirstChild);
+
+            // We can move the builder to an individual node,
+            // which in this case will be the first node of the first paragraph, like this.
+            builder.MoveTo(doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Any, false)[0]);
+            //ExEnd:MoveToBookmark
+
+            Assert.AreEqual(NodeType.BookmarkStart, builder.CurrentNode.NodeType);
+            Assert.IsTrue(builder.IsAtStartOfParagraph);
+
+            // A shorter way of moving the very start/end of a document is with these methods.
+            builder.MoveToDocumentEnd();
+            Assert.IsTrue(builder.IsAtEndOfParagraph);
+            builder.MoveToDocumentStart();
+            Assert.IsTrue(builder.IsAtStartOfParagraph);
+            //ExEnd:MoveToNode
         }
 
         [Test]
@@ -395,9 +422,11 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Move the cursor position to the beginning of your document.
             builder.MoveToDocumentStart();
             Console.WriteLine("\nThis is the beginning of the document.");
-            
+
+            // Move the cursor position to the end of your document.
             builder.MoveToDocumentEnd();
             Console.WriteLine("\nThis is the end of the document.");
             //ExEnd:MoveToDocumentStartEnd            
@@ -410,39 +439,56 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Document doc = new Document();
             doc.AppendChild(new Section(doc));
 
+            // Move a DocumentBuilder to the second section and add text.
             DocumentBuilder builder = new DocumentBuilder(doc);
-
             builder.MoveToSection(1);
-            builder.Writeln("This is the 2rd section.");
+            builder.Writeln("Text added to the 2nd section.");
+
+            // Create document with paragraphs.
+            doc = new Document(MyDir + "Paragraphs.docx");
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+            Assert.AreEqual(22, paragraphs.Count);
+
+            // When we create a DocumentBuilder for a document, its cursor is at the very beginning of the document by default,
+            // and any content added by the DocumentBuilder will just be prepended to the document.
+            builder = new DocumentBuilder(doc);
+            Assert.AreEqual(0, paragraphs.IndexOf(builder.CurrentParagraph));
+
+            // You can move the cursor to any position in a paragraph.
+            builder.MoveToParagraph(0, 14);
+            Assert.AreEqual(2, paragraphs.IndexOf(builder.CurrentParagraph));
+            builder.Writeln("This is a new third paragraph. ");
+            Assert.AreEqual(3, paragraphs.IndexOf(builder.CurrentParagraph));
             //ExEnd:MoveToSection               
         }
 
         [Test]
-        public void HeadersAndFooters()
+        public void MoveToHeadersFooters()
         {
-            //ExStart:HeadersAndFooters
+            //ExStart:MoveToHeadersFooters
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Specify that we want headers and footers different for first, even and odd pages.
             builder.PageSetup.DifferentFirstPageHeaderFooter = true;
             builder.PageSetup.OddAndEvenPagesHeaderFooter = true;
 
+            // Create the headers.
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderFirst);
-            builder.Write("Header First");
+            builder.Write("Header for the first page");
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderEven);
-            builder.Write("Header Even");
+            builder.Write("Header for even pages");
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            builder.Write("Header Odd");
+            builder.Write("Header for all other pages");
 
+            // Create two pages in the document.
             builder.MoveToSection(0);
             builder.Writeln("Page1");
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("Page2");
-            builder.InsertBreak(BreakType.PageBreak);
-            builder.Writeln("Page3");
 
-            doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.HeadersAndFooters.doc");
-            //ExEnd:HeadersAndFooters
+            doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.MoveToHeadersFooters.docx");
+            //ExEnd:MoveToHeadersFooters
         }
 
         [Test]
@@ -466,20 +512,12 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             // Move the builder to row 3, cell 4 of the first table.
             builder.MoveToCell(0, 2, 3, 0);
-            builder.Writeln("Hello World!");
+            builder.Write("\nCell contents added by DocumentBuilder");
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            Assert.AreEqual(table.Rows[2].Cells[3], builder.CurrentNode.ParentNode.ParentNode);
+            Assert.AreEqual("Cell contents added by DocumentBuilderCell 3 contents\a", table.Rows[2].Cells[3].GetText().Trim());
             //ExEnd:MoveToTableCell               
-        }
-
-        [Test]
-        public void MoveToBookmark()
-        {
-            //ExStart:MoveToBookmark
-            Document doc = new Document(MyDir + "Bookmarks.docx");
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.MoveToBookmark("MyBookmark1");
-            builder.Writeln("This is a bookmark.");
-            //ExEnd:MoveToBookmark               
         }
 
         [Test]
@@ -501,11 +539,20 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertField(@"MERGEFIELD MyMergeField1 \* MERGEFORMAT");
-            builder.InsertField(@"MERGEFIELD MyMergeField2 \* MERGEFORMAT");
+            // Insert a field using the DocumentBuilder and add a run of text after it.
+            Field field = builder.InsertField("MERGEFIELD field");
+            builder.Write(" Text after the field.");
 
-            builder.MoveToMergeField("MyMergeField1");
-            builder.Writeln("This is a merge field.");
+            // The builder's cursor is currently at end of the document.
+            Assert.Null(builder.CurrentNode);
+            // We can move the builder to a field like this, placing the cursor at immediately after the field.
+            builder.MoveToField(field, true);
+
+            // Note that the cursor is at a place past the FieldEnd node of the field, meaning that we are not actually inside the field.
+            // If we wish to move the DocumentBuilder to inside a field,
+            // we will need to move it to a field's FieldStart or FieldSeparator node using the DocumentBuilder.MoveTo() method.
+            Assert.AreEqual(field.End, builder.CurrentNode.PreviousSibling);
+            builder.Write(" Text immediately after the field.");
             //ExEnd:MoveToMergeField              
         }        
     }

@@ -1,4 +1,5 @@
-﻿using Aspose.Words;
+﻿using System;
+using Aspose.Words;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
 
@@ -29,6 +30,18 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             doc.Save(ArtifactsDir + "WorkingWithWebExtension.UsingWebExtensionTaskPanes.docx");
             //ExEnd:UsingWebExtensionTaskPanes
+            
+            //ExStart:GetListOfAddins
+            doc = new Document(ArtifactsDir + "WorkingWithWebExtension.UsingWebExtensionTaskPanes.docx");
+            
+            Console.WriteLine("Task panes sources:\n");
+
+            foreach (TaskPane taskPaneInfo in doc.WebExtensionTaskPanes)
+            {
+                WebExtensionReference reference = taskPaneInfo.WebExtension.Reference;
+                Console.WriteLine($"Provider: \"{reference.Store}\", version: \"{reference.Version}\", catalog identifier: \"{reference.Id}\";");
+            }
+            //ExEnd:GetListOfAddins
         }
     }
 }
