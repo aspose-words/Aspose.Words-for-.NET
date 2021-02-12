@@ -1245,6 +1245,7 @@ namespace ApiExamples
             //ExFor:TableStyle.TopPadding
             //ExFor:TableStyle.Shading
             //ExFor:TableStyle.Borders
+            //ExFor:TableStyle.VerticalAlignment
             //ExSummary:Shows how to create custom style settings for the table.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1270,6 +1271,7 @@ namespace ApiExamples
             tableStyle.Shading.BackgroundPatternColor = Color.AntiqueWhite;
             tableStyle.Borders.Color = Color.Blue;
             tableStyle.Borders.LineStyle = LineStyle.DotDash;
+            tableStyle.VerticalAlignment = CellVerticalAlignment.Center;
 
             table.Style = tableStyle;
 
@@ -1292,6 +1294,7 @@ namespace ApiExamples
             Assert.AreEqual(10.0d, tableStyle.RightPadding);
             Assert.AreEqual(20.0d, tableStyle.TopPadding);
             Assert.AreEqual(6, table.FirstRow.RowFormat.Borders.Count(b => b.Color.ToArgb() == Color.Blue.ToArgb()));
+            Assert.AreEqual(CellVerticalAlignment.Center, tableStyle.VerticalAlignment);
 
             tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];
 
@@ -1305,6 +1308,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.AntiqueWhite.ToArgb(), tableStyle.Shading.BackgroundPatternColor.ToArgb());
             Assert.AreEqual(Color.Blue.ToArgb(), tableStyle.Borders.Color.ToArgb());
             Assert.AreEqual(LineStyle.DotDash, tableStyle.Borders.LineStyle);
+            Assert.AreEqual(CellVerticalAlignment.Center, tableStyle.VerticalAlignment);
         }
 
         [Test]
