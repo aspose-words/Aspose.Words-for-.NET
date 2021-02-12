@@ -158,7 +158,7 @@ namespace Aspose.UmbracoQuoteGenerator
                 {
                     case "Pdf":
                         saveOption = SaveFormat.Pdf.ToString(); break;
-                     case "Doc":
+                    case "Doc":
                         saveOption = SaveFormat.Doc.ToString(); break;
                     case "Docx":
                         saveOption = SaveFormat.Docx.ToString(); break;
@@ -182,6 +182,5 @@ namespace Aspose.UmbracoQuoteGenerator
                 throw exc;
             }
         }
-
     }
 }
