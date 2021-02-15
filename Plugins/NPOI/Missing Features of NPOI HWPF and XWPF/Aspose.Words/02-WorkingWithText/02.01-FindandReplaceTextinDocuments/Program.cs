@@ -10,28 +10,33 @@ namespace _02._01_FindandReplaceTextinDocuments
     {
         static void Main(string[] args)
         {
-            // Check for license and apply if exists
+            // Check for an Aspose.Words license file in the local file system and apply it, if it exists.
             string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
             if (File.Exists(licenseFile))
             {
-                // Apply Aspose.Words API License
                 Aspose.Words.License license = new Aspose.Words.License();
-                // Place license file in Bin/Debug/ Folder
+
+                // Use the license from the bin/debug/ Folder.
                 license.SetLicense("Aspose.Words.lic");
             }
 
-            Document doc = new Document("../../data/document.doc");
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             FindReplaceOptions options = new FindReplaceOptions
             {
                 MatchCase = false, FindWholeWordsOnly = true
             };
 
-            // Replace all occurrences of 'sad' and 'mad' with 'bad'.
-            doc.Range.Replace("document", "document replaced", options);
+            builder.Writeln("This document will be saved as a .doc file.");
+
+            // Replace all occurences of ".doc" with ".docx".
+            doc.Sections[0].Range.Replace(".doc", ".docx", options);
+
+            builder.Writeln("Sad, mad.");
 
             // Replace all occurrences of 'sad' and 'mad' found using a regex pattern with 'bad'.
-            doc.Range.Replace(new Regex("[s|m]ad"), "bad");
+            doc.Sections[1].Range.Replace(new Regex("[s|m]ad"), "bad");
 
             doc.Save("FindandReplaceTextinDocuments.docx");
         }

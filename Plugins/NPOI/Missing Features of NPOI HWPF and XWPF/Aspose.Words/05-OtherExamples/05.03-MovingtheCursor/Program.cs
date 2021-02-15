@@ -8,26 +8,27 @@ namespace _05._03_MovingtheCursor
     {
         static void Main(string[] args)
         {
-            // Check for license and apply if exists
+            // Check for an Aspose.Words license file in the local file system and apply it, if it exists.
             string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
             if (File.Exists(licenseFile))
             {
-                // Apply Aspose.Words API License
                 Aspose.Words.License license = new Aspose.Words.License();
-                // Place license file in Bin/Debug/ Folder
+
+                // Use the license from the bin/debug/ Folder.
                 license.SetLicense("Aspose.Words.lic");
             }
+
             Document doc = new Document("../../data/document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            //Shows how to access the current node in a document builder.
+            // Access the current node in a document builder.
             Node curNode = builder.CurrentNode;
             Paragraph curParagraph = builder.CurrentParagraph;
 
-            // Shows how to move a cursor position to a specified node.
+            // Move the builder's cursor position to a specified node.
             builder.MoveTo(doc.FirstSection.Body.LastParagraph);
 
-            // Shows how to move a cursor position to the beginning or end of a document.
+            // Move the builder's cursor position to the beginning or end of a document.
             builder.MoveToDocumentEnd();
             builder.Writeln("This is the end of the document.");
 

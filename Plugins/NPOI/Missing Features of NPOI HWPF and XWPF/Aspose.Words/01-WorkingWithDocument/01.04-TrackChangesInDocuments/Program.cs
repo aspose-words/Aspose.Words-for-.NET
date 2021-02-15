@@ -8,18 +8,39 @@ namespace _01._04_TrackChangesInDocuments
     {
         static void Main(string[] args)
         {
-            // Check for license and apply if exists
+            // Check for an Aspose.Words license file in the local file system and apply it, if it exists.
             string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
             if (File.Exists(licenseFile))
             {
-                // Apply Aspose.Words API License
                 Aspose.Words.License license = new Aspose.Words.License();
-                // Place license file in Bin/Debug/ Folder
+
+                // Use the license from the bin/debug/ Folder.
                 license.SetLicense("Aspose.Words.lic");
             }
+            
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Document doc = new Document("../../data/document.doc");
-            doc.AcceptAllRevisions();
+            // Normal editing of the document does not count as a revision.
+            builder.Write("This does not count as a revision. ");
+            
+            // To register our edits as revisions, we need to declare an author, and then start tracking them.
+            doc.StartTrackRevisions("John Doe", DateTime.Now);
+
+            builder.Write("This is an insert revision. ");
+
+            // Accept the revision to assimilate its contents into the document's body.
+            doc.Revisions[0].Accept();
+
+            builder.Write("This is another insert revision. ");
+
+            // Reject an insert revision to leave it out of the document's body and discard its contents.
+            doc.Revisions[0].Reject();
+
+            // Stop tracking revisions to continue editing the document as normal.
+            doc.StopTrackRevisions(); 
+
+            builder.Write("This does not count as a revision.");
 
             doc.Save("TrackChangesInDocuments.docx");
         }

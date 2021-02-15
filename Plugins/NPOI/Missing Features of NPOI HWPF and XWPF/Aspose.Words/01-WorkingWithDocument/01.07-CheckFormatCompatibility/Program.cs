@@ -8,16 +8,15 @@ namespace _01._07_CheckFormatCompatibility
     {
         static void Main(string[] args)
         {
-            // Check for license and apply if exists
+            // Check for an Aspose.Words license file in the local file system and apply it, if it exists.
             string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
             if (File.Exists(licenseFile))
             {
-                // Apply Aspose.Words API License
                 Aspose.Words.License license = new Aspose.Words.License();
-                // Place license file in Bin/Debug/ Folder
+
+                // Use the license from the bin/debug/ Folder.
                 license.SetLicense("Aspose.Words.lic");
             }
-
 
             string dataPath = "../../data/";
             string[] fileList = Directory.GetFiles(dataPath);
@@ -81,8 +80,10 @@ namespace _01._07_CheckFormatCompatibility
                         Console.WriteLine("\tMS Word 6 or Word 95 format.");
                         break;
                     case LoadFormat.Unknown:
-                    default:
                         Console.WriteLine("\tUnknown format.");
+                        break;
+                    default:
+                        Console.WriteLine("\tOther format.");
                         break;
                 }
             }

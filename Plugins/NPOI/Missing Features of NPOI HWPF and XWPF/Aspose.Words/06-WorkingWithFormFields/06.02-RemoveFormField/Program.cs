@@ -9,25 +9,26 @@ namespace _06._02_RemoveFormField
     {
         static void Main(string[] args)
         {
-            // Check for license and apply if exists
+            // Check for an Aspose.Words license file in the local file system and apply it, if it exists.
             string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
             if (File.Exists(licenseFile))
             {
-                // Apply Aspose.Words API License
                 Aspose.Words.License license = new Aspose.Words.License();
-                // Place license file in Bin/Debug/ Folder
+
+                // Use the license from the bin/debug/ Folder.
                 license.SetLicense("Aspose.Words.lic");
             }
 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Insert a field that displays the current page number.
             Field field = builder.InsertField("PAGE");
 
-            // Calling this method completely removes the field from the document.
+            // Remove the field from the document.
             field.Remove();
 
-            doc.Save("FormFieldTest.docx");
+            doc.Save("RemoveFormField.docx");
         }
     }
 }

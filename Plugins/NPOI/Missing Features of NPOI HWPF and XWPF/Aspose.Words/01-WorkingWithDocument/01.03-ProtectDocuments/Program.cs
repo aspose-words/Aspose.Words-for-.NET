@@ -8,19 +8,23 @@ namespace _01._03_ProtectDocuments
     {
         static void Main(string[] args)
         {
-            // Check for license and apply if exists
+            // Check for an Aspose.Words license file in the local file system and apply it, if it exists.
             string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
             if (File.Exists(licenseFile))
             {
-                // Apply Aspose.Words API License
                 Aspose.Words.License license = new Aspose.Words.License();
-                // Place license file in Bin/Debug/ Folder
+
+                // Use the license from the bin/debug/ Folder.
                 license.SetLicense("Aspose.Words.lic");
             }
 
+            // Load a document from the local file system.
             Document doc = new Document("../../data/document.doc");
+
+            // Apply read-only protection to this document.
             doc.Protect(ProtectionType.ReadOnly);
             
+            // Users that open this document will only be able to read its contents.
             doc.Save("ProtectDocuments.docx");
         }
     }
