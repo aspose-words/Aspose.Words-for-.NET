@@ -1,4 +1,6 @@
-﻿using Aspose.Words;
+﻿using System;
+using System.IO;
+using Aspose.Words;
 using Aspose.Words.Drawing;
 
 namespace _01._06_AddWatermark
@@ -7,6 +9,16 @@ namespace _01._06_AddWatermark
     {
         static void Main(string[] args)
         {
+            // Check for license and apply if exists
+            string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
+            if (File.Exists(licenseFile))
+            {
+                // Apply Aspose.Words API License
+                Aspose.Words.License license = new Aspose.Words.License();
+                // Place license file in Bin/Debug/ Folder
+                license.SetLicense("Aspose.Words.lic");
+            }
+            
             Document doc = new Document("../../data/document.doc");
 
             string watermarkText = "Aspose.Words for .NET";
@@ -24,9 +36,9 @@ namespace _01._06_AddWatermark
             // Text will be directed from the bottom-left to the top-right corner.
             watermark.Rotation = -40;
 
-            // Set the color of the watermark to light grey to create a similar watermark to Microsoft Word.
-            watermark.Fill.Color = System.Drawing.Color.Gray; 
-            watermark.StrokeColor = System.Drawing.Color.Gray; 
+            // Remove the following two lines if you need a solid black text.
+            watermark.Fill.Color = System.Drawing.Color.Gray; // Try LightGray to get more Word-style watermark
+            watermark.StrokeColor = System.Drawing.Color.Gray; // Try LightGray to get more Word-style watermark
 
             // Place the watermark in the page center.
             watermark.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;

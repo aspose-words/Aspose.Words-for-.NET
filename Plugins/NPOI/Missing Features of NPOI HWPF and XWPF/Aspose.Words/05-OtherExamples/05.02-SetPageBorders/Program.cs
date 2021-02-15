@@ -1,6 +1,8 @@
-﻿using Aspose.Words;
+﻿using System;
+using Aspose.Words;
 using Aspose.Words.Tables;
 using System.Drawing;
+using System.IO;
 
 namespace _05._02_SetPageBorders
 {
@@ -8,6 +10,16 @@ namespace _05._02_SetPageBorders
     {
         static void Main(string[] args)
         {
+            // Check for license and apply if exists
+            string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
+            if (File.Exists(licenseFile))
+            {
+                // Apply Aspose.Words API License
+                Aspose.Words.License license = new Aspose.Words.License();
+                // Place license file in Bin/Debug/ Folder
+                license.SetLicense("Aspose.Words.lic");
+            }
+
             Document doc = new Document("../../data/document.doc");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -34,8 +46,8 @@ namespace _05._02_SetPageBorders
             // Create the second row.
             builder.InsertCell();
 
-            // Create larger borders for the first cell of this row.
-            // This will be different compared to the borders set for the table.
+            // Create larger borders for the first cell of this row. This will be different
+            // compared to the borders set for the table.
             builder.CellFormat.Borders.Left.LineWidth = 4.0;
             builder.CellFormat.Borders.Right.LineWidth = 4.0;
             builder.CellFormat.Borders.Top.LineWidth = 4.0;
@@ -47,7 +59,7 @@ namespace _05._02_SetPageBorders
             builder.CellFormat.ClearFormatting();
             builder.Writeln("Cell #4");
 
-            doc.Save("SetPageBorder.docx");
+            doc.Save("SetPageBorders.docx");
         }
     }
 }
