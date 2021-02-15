@@ -84,11 +84,30 @@ namespace ApiExamples
             Assert.AreEqual(1, doc.Revisions.Count);
             Assert.AreEqual("This is revision #1.", doc.GetText().Trim());
 
-            // The insertion-type revision is now at index 0. Reject the revision to discard its contents.
-            doc.Revisions[0].Reject();
+            builder.Writeln("");
+            builder.Write("This is revision #2.");
 
-            Assert.AreEqual(0, doc.Revisions.Count);
-            Assert.AreEqual("", doc.GetText().Trim());
+            // Now move the node to create a moving revision type.
+            Node node = doc.FirstSection.Body.Paragraphs[1];
+            Node endNode = doc.FirstSection.Body.Paragraphs[1].NextSibling;
+            Node referenceNode = doc.FirstSection.Body.Paragraphs[0];
+
+            while (node != endNode)
+            {
+                Node nextNode = node.NextSibling;
+                doc.FirstSection.Body.InsertBefore(node, referenceNode);
+                node = nextNode;
+            }
+
+            Assert.AreEqual(RevisionType.Moving, doc.Revisions[0].RevisionType);
+            Assert.AreEqual(8, doc.Revisions.Count);
+            Assert.AreEqual("This is revision #2.\rThis is revision #1. \rThis is revision #2.", doc.GetText().Trim());
+
+            // The moving revision is now at index 1. Reject the revision to discard its contents.
+            doc.Revisions[1].Reject();
+
+            Assert.AreEqual(6, doc.Revisions.Count);
+            Assert.AreEqual("This is revision #1. \rThis is revision #2.", doc.GetText().Trim());
             //ExEnd
         }
 

@@ -369,12 +369,18 @@ namespace ApiExamples
             // 1 -  Image taken from the local file system:
             using (FileStream imageStream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open))
             {
+                // If 'presentation' is omitted and 'asIcon' is set, this overloaded method selects
+                // the icon according to the file extension and uses the filename for the icon caption.
                 builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, imageStream); 
             }
-            
+
+            // If 'presentation' is omitted and 'asIcon' is set, this overloaded method selects
+            // the icon according to 'progId' and uses the filename for the icon caption.
             // 2 -  Icon based on the application that will open the object:
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
 
+            // If 'iconFile' and 'iconCaption' are omitted, this overloaded method selects
+            // the icon according to 'progId' and uses the predefined icon caption.
             // 3 -  Image icon that's 32 x 32 pixels or smaller from the local file system, with a custom caption:
             builder.InsertOleObjectAsIcon(MyDir + "Presentation.pptx", false, ImageDir + "Logo icon.ico",
                 "Double click to view presentation!");
@@ -2834,6 +2840,8 @@ namespace ApiExamples
             using (Stream spreadsheetStream = File.Open(MyDir + "Spreadsheet.xlsx", FileMode.Open))
             {
                 builder.Writeln("Spreadsheet Ole object:");
+                // If 'presentation' is omitted and 'asIcon' is set, this overloaded method selects
+                // the icon according to 'progId' and uses the predefined icon caption.
                 builder.InsertOleObject(spreadsheetStream, "OleObject.xlsx", false, null);
             }
 
@@ -3404,9 +3412,9 @@ namespace ApiExamples
             MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
             saveOptions.TableContentAlignment = tableContentAlignment;
 
-            builder.Document.Save(ArtifactsDir + "MarkdownDocumentTableContentAlignment.md", saveOptions);
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocumentTableContentAlignment.md", saveOptions);
 
-            Document doc = new Document(ArtifactsDir + "MarkdownDocumentTableContentAlignment.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocumentTableContentAlignment.md");
             Table table = doc.FirstSection.Body.Tables[0];
 
             switch (tableContentAlignment)
@@ -3437,6 +3445,62 @@ namespace ApiExamples
                     break;
             }
         }
+
+        //ExStart
+        //ExFor:MarkdownSaveOptions.ImageSavingCallback
+        //ExFor:IImageSavingCallback
+        //ExSummary:Shows how to rename the image name during saving into Markdown document.
+        [Test] //ExSkip
+        public void RenameImages()
+        {
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            MarkdownSaveOptions options = new MarkdownSaveOptions();
+
+            // If we convert a document that contains images into Markdown, we will end up with one Markdown file which links to several images.
+            // Each image will be in the form of a file in the local file system.
+            // There is also a callback that can customize the name and file system location of each image.
+            options.ImageSavingCallback = new SavedImageRename("DocumentBuilder.HandleDocument.md");
+
+            // The ImageSaving() method of our callback will be run at this time.
+            doc.Save(ArtifactsDir + "DocumentBuilder.HandleDocument.md", options);
+
+            Assert.AreEqual(1,
+                Directory.GetFiles(ArtifactsDir)
+                    .Where(s => s.StartsWith(ArtifactsDir + "DocumentBuilder.HandleDocument.md shape"))
+                    .Count(f => f.EndsWith(".jpeg")));
+            Assert.AreEqual(8,
+                Directory.GetFiles(ArtifactsDir)
+                    .Where(s => s.StartsWith(ArtifactsDir + "DocumentBuilder.HandleDocument.md shape"))
+                    .Count(f => f.EndsWith(".png")));
+        }
+
+        /// <summary>
+        /// Renames saved images that are produced when an Markdown document is saved.
+        /// </summary>
+        public class SavedImageRename : IImageSavingCallback
+        {
+            public SavedImageRename(string outFileName)
+            {
+                mOutFileName = outFileName;
+            }
+
+            void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
+            {
+                string imageFileName = $"{mOutFileName} shape {++mCount}, of type {args.CurrentShape.ShapeType}{Path.GetExtension(args.ImageFileName)}";
+
+                args.ImageFileName = imageFileName;
+                args.ImageStream = new FileStream(ArtifactsDir + imageFileName, FileMode.Create);
+
+                Assert.True(args.ImageStream.CanWrite);
+                Assert.True(args.IsImageAvailable);
+                Assert.False(args.KeepImageStreamOpen);
+            }
+
+            private int mCount;
+            private readonly string mOutFileName;
+        }
+        //ExEnd
 
         [Test]
         public void InsertOnlineVideo()
@@ -3560,12 +3624,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // If 'iconFile' and 'iconCaption' are omitted, this overloaded method selects
+            // the icon according to 'progId' and uses the filename for the icon caption.
             builder.InsertOleObjectAsIcon(MyDir + "Presentation.pptx", "Package", false, ImageDir + "Logo icon.ico", "My embedded file");
 
             builder.InsertBreak(BreakType.LineBreak);
 
             using (FileStream stream = new FileStream(MyDir + "Presentation.pptx", FileMode.Open))
             {
+                // If 'iconFile' and 'iconCaption' are omitted, this overloaded method selects
+                // the icon according to the file extension and uses the filename for the icon caption.
                 Shape shape = builder.InsertOleObjectAsIcon(stream, "PowerPoint.Application", ImageDir + "Logo icon.ico",
                     "My embedded file stream");
 
