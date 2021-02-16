@@ -155,19 +155,19 @@ namespace Aspose.Modules.AsposeDotNetNukeContentExport
                         if (exportType.Equals("Jpeg"))
                         {
                             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
-                            saveOptions.PageIndex = i;
+                            saveOptions.PageSet = new PageSet(i);
                             doc.Save(Server.MapPath("~/App_Data/Zip/") + fileName + "/" + (i + 1).ToString() + "." + exportType, saveOptions);
                         }
                         else
                         {
                             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png);
-                            saveOptions.PageIndex = i;
+                            saveOptions.PageSet = new PageSet(i);
                             doc.Save(Server.MapPath("~/App_Data/Zip/") + fileName + "/" + (i + 1).ToString() + "." + exportType, saveOptions);
                         }
                     }
                     string filepath = Server.MapPath("~/App_Data/Zip/" + fileName + "/");
                     string downloadDirectory = Server.MapPath("~/App_Data/");
-                    ZipFile.CreateFromDirectory(filepath, downloadDirectory + fileName + ".zip", CompressionLevel.Optimal, false);
+                    ZipFile.CreateFromDirectory(filepath, downloadDirectory + fileName + ".zip", System.IO.Compression.CompressionLevel.Optimal, false);
                     Directory.Delete(Server.MapPath("~/App_Data/Zip/" + fileName), true);
                     System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
                     response.ClearContent();
@@ -197,7 +197,6 @@ namespace Aspose.Modules.AsposeDotNetNukeContentExport
             ExportContent(GetSaveFormat(ExportTypeDropDown.SelectedValue));
         }
 
-        // get file export types/extenssions 
         public static string GetSaveFormat(string format)
         {
             try
@@ -222,7 +221,7 @@ namespace Aspose.Modules.AsposeDotNetNukeContentExport
                     case "Jpeg":
                         saveOption = SaveFormat.Jpeg.ToString(); break;
 
-                    // there are many document formats supported, check SaveFormat property for more
+                    // The "SaveFormat" enum contains many more supported formats.
                 }
 
                 return saveOption;
