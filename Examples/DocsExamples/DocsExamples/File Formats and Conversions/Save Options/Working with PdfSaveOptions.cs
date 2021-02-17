@@ -321,7 +321,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //ExStart:UpdateIfLastPrinted
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { UpdateLastPrintedProperty = false };
+            PdfSaveOptions saveOptions = new PdfSaveOptions { UpdateLastPrintedProperty = true };
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.UpdateIfLastPrinted.pdf", saveOptions);
             //ExEnd:UpdateIfLastPrinted
