@@ -248,16 +248,18 @@ namespace DocsExamples.Programming_with_Documents
 
             // The document has one shape that was moved, but shape move revisions will have two instances of that shape.
             // One will be the shape at its arrival destination and the other will be the shape at its original location.
-            List<Shape> nc = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(2, nc.Count);
+            doc = new Document(MyDir + "Revision shape.docx");
+            
+            shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
+            Assert.AreEqual(4, shapes.Count);
 
             // This is the move to revision, also the shape at its arrival destination.
-            Assert.False(nc[0].IsMoveFromRevision);
-            Assert.True(nc[0].IsMoveToRevision);
+            Assert.False(shapes[0].IsMoveFromRevision);
+            Assert.True(shapes[0].IsMoveToRevision);
 
             // This is the move from revision, which is the shape at its original location.
-            Assert.True(nc[1].IsMoveFromRevision);
-            Assert.False(nc[1].IsMoveToRevision);
+            Assert.True(shapes[1].IsMoveFromRevision);
+            Assert.False(shapes[1].IsMoveToRevision);
             //ExEnd:ShapeRevision
         }
     }
