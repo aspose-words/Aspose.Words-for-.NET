@@ -21,6 +21,7 @@ using Color = System.Drawing.Color;
 using Document = Aspose.Words.Document;
 using Table = Aspose.Words.Tables.Table;
 using System.Drawing;
+using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Saving;
 
 #if NETCOREAPP2_1 || __MOBILE__
