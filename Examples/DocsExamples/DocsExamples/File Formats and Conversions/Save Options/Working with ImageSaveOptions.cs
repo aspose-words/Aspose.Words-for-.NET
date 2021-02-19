@@ -64,20 +64,25 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         [Test]
         public void GetJpegPageRange()
         {
-            // ExStart:GetJpegPageRange
+            //ExStart:GetJpegPageRange
             Document doc = new Document(MyDir + "Rendering.docx");
-            doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.JpegDefaultOptions.jpg");
-            
-            // Render the third page only and set the JPEG quality to 80%.
-            // In this case we need to pass the desired SaveFormat to the ImageSaveOptions constructor
-            // to signal what type of image to save as.
-            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg)
-            {
-                PageSet = new PageSet(2), JpegQuality = 80
-            };
 
-            doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.GetJpegPageRange.jpg", saveOptions);
-            // ExEnd:GetJpegPageRange
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
+
+            // Set the "PageSet" to "0" to convert only the first page of a document.
+            options.PageSet = new PageSet(0);
+
+            // Change the image's brightness and contrast.
+            // Both are on a 0-1 scale and are at 0.5 by default.
+            options.ImageBrightness = 0.3f;
+            options.ImageContrast = 0.7f;
+
+            // Change the horizontal resolution.
+            // The default value for these properties is 96.0, for a resolution of 96dpi.
+            options.HorizontalResolution = 72f;
+
+            doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.GetJpegPageRange.jpeg", options);
+            //ExEnd:GetJpegPageRange
         }
     }
 }
