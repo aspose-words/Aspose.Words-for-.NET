@@ -3,9 +3,11 @@ using System.Web;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.IO;
+using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.MailMerging;
+using ImageFormat = System.Drawing.Imaging.ImageFormat;
 
 namespace Aspose.UmbracoQuoteGenerator
 {
@@ -70,30 +72,18 @@ namespace Aspose.UmbracoQuoteGenerator
                         lblMessage.Text = "Please choose only .jpg, .png and .gif image types";
                         return;
                     }
-                    else
+
+                    if (imgSize > 1048576)
                     {
-                        if (imgSize > 1048576)
-                        {
-                            lblMessage.Text = "Maximum image file size 1 MB";
-                            return;
-                        }
+                        lblMessage.Text = "Maximum image file size 1 MB";
+                        return;
                     }
 
                     // Verify and secure your upload that only allow image files and no security risks attached.
                     System.Drawing.Image image = System.Drawing.Image.FromStream(fuCompanyLogo.FileContent);
-                    string FormetType = string.Empty;
-                    if (image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Gif.Guid)
-                        FormetType = "GIF";
-                    else if (image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Jpeg.Guid)
-                        FormetType = "JPG";
-                    else if (image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Bmp.Guid)
-                        FormetType = "BMP";
-                    else if (image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Png.Guid)
-                        FormetType = "PNG";
-                    else if (image.RawFormat.Guid == System.Drawing.Imaging.ImageFormat.Icon.Guid)
-                        FormetType = "ICO";
-                    else
-                        throw new System.ArgumentException("Invalid File Type");
+
+                    if (!new[] { ImageFormat.Gif.Guid, ImageFormat.Jpeg.Guid, ImageFormat.Bmp.Guid, ImageFormat.Png.Guid, ImageFormat.Icon.Guid }.Contains(image.RawFormat.Guid))
+                        throw new ArgumentException("Invalid image file type");
 
                     // Base directory path to upload image.
                     TargetPathFileSave = Server.MapPath(GetDataDir_LogoImages());
@@ -215,9 +205,6 @@ namespace Aspose.UmbracoQuoteGenerator
                     DataSet data = QuoteGenerator.GetDataSetForGridView(Session);
                     if (data != null)
                     {
-                        decimal itemtotalBeforeVAT = 0;
-                        decimal itemtotalVATAmount = 0;
-                        decimal itemtotalAmount = 0;
                         decimal grandTotalAllItemsAmount = 0;
 
                         if (grdInvoiceProducts.Rows.Count > 0)
@@ -244,17 +231,17 @@ namespace Aspose.UmbracoQuoteGenerator
                                     if (txtProductDescription.Text.Trim() != "" && txtProductPrice.Text.Trim() != "" && txtProductQuantity.Text.Trim() != "" && ddlProductVAT.Items.Count > 0)
                                     {
                                         // Actual amount = price * quantity.
-                                        itemtotalBeforeVAT = (decimal.Parse(txtProductPrice.Text.Trim()) * decimal.Parse(txtProductQuantity.Text.Trim()));
+                                        decimal itemTotalBeforeVat = decimal.Parse(txtProductPrice.Text.Trim()) * decimal.Parse(txtProductQuantity.Text.Trim());
 
                                         // VAT amount = (actual amount * VAT) / 100 .
-                                        itemtotalVATAmount = ((itemtotalBeforeVAT * decimal.Parse(ddlProductVAT.SelectedItem.Value.Trim())) / 100);
+                                        decimal itemTotalVatAmount = (itemTotalBeforeVat * decimal.Parse(ddlProductVAT.SelectedItem.Value.Trim())) / 100;
 
                                         // Total amount including VAT.
-                                        itemtotalAmount = itemtotalBeforeVAT + itemtotalVATAmount;
-                                        grandTotalAllItemsAmount += itemtotalAmount;
+                                        decimal itemTotalAmount = itemTotalBeforeVat + itemTotalVatAmount;
+                                        grandTotalAllItemsAmount += itemTotalAmount;
 
                                         // Add the temp data row to the tables for each row.
-                                        data.Tables[0].Rows.Add(gr.Cells[0].Text, txtProductDescription.Text.Trim(), decimal.Parse(txtProductPrice.Text.Trim()), decimal.Parse(txtProductQuantity.Text.Trim()), itemtotalBeforeVAT, decimal.Parse(ddlProductVAT.SelectedItem.Value), itemtotalVATAmount, itemtotalAmount);
+                                        data.Tables[0].Rows.Add(gr.Cells[0].Text, txtProductDescription.Text.Trim(), decimal.Parse(txtProductPrice.Text.Trim()), decimal.Parse(txtProductQuantity.Text.Trim()), itemTotalBeforeVat, decimal.Parse(ddlProductVAT.SelectedItem.Value), itemTotalVatAmount, itemTotalAmount);
                                     }
                                 }
                             }
