@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using Outlook = Microsoft.Office.Interop.Outlook;
-using Office = Microsoft.Office.Core;
 using System.IO;
 using System.Windows.Forms;
 using Aspose.Words;
@@ -20,7 +15,7 @@ namespace Aspose.Words_Metadata_Cleaner
             EnableAsposeWordsMetadata = true;
             try
             {
-                // Apply the Aspose license if it exists.
+                // Apply the Aspose license from a file in the local file system, if it exists.
                 string LicenceFilePath = String.IsNullOrEmpty(Properties.Settings.Default.AsposeLicense) ? "" : Properties.Settings.Default.AsposeLicense;
                 try
                 {
@@ -65,13 +60,13 @@ namespace Aspose.Words_Metadata_Cleaner
                     {
                         Outlook.Attachment attachment = thisEmail.Attachments[i];
 
-                        // save attachment in temp location
+                        // Save the attachment in the temp location.
                         int attachmentIndex = attachment.Index;
                         string tempPath = Path.GetTempPath();
                         string tempFileName = tempPath + attachment.FileName;
                         attachment.SaveAsFile(tempFileName);
 
-                        // Check the file format for word documents
+                        // Check the file format for Microsoft Word documents.
                         FileFormatInfo info = FileFormatUtil.DetectFileFormat(tempFileName);
                         bool wordAttachment = false;
 
@@ -95,7 +90,7 @@ namespace Aspose.Words_Metadata_Cleaner
                                 break;
                         }
 
-                        // If word Attachment is found
+                        // If a Word Attachment is found:
                         if (wordAttachment)
                         {
                             try
@@ -131,7 +126,6 @@ namespace Aspose.Words_Metadata_Cleaner
                                 throw ex;
                             }
                         }
-                        // Delete file from temp folder.
                         if (File.Exists(tempFileName))
                             File.Delete(tempFileName);
                     }
