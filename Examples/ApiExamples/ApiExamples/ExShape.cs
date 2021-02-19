@@ -772,7 +772,7 @@ namespace ApiExamples
         public void Fill()
         {
             //ExStart
-            //ExFor:Shape.Fill
+            //ExFor:ShapeBase.Fill
             //ExFor:Shape.FillColor
             //ExFor:Shape.StrokeColor
             //ExFor:Fill
