@@ -2288,8 +2288,9 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void AppendDocumentAndResolveStyles()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AppendDocumentAndResolveStyles(bool keepSourceNumbering)
         {
             //ExStart
             //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
@@ -2303,8 +2304,11 @@ namespace ApiExamples
             dstDoc.Styles["CustomStyle"].Font.Color = Color.DarkRed;
 
             // If there is a clash of list styles, apply the list format of the source document.
+            // Set the "KeepSourceNumbering" property to "false" to not import any list numbers into the destination document.
+            // Set the "KeepSourceNumbering" property to "true" import all clashing
+            // list style numbering with the same appearance that it had in the source document.
             ImportFormatOptions options = new ImportFormatOptions();
-            options.KeepSourceNumbering = true;
+            options.KeepSourceNumbering = keepSourceNumbering;
 
             // Joining two documents that have different styles that share the same name causes a style clash.
             // We can specify an import format mode while appending documents to resolve this clash.
