@@ -22,7 +22,9 @@ using Document = Aspose.Words.Document;
 using Table = Aspose.Words.Tables.Table;
 using System.Drawing;
 using Aspose.Words.DigitalSignatures;
+using Aspose.Words.Lists;
 using Aspose.Words.Saving;
+using List = NUnit.Framework.List;
 
 #if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
@@ -2316,6 +2318,41 @@ namespace ApiExamples
             dstDoc.UpdateListLabels();
 
             dstDoc.Save(ArtifactsDir + "DocumentBuilder.AppendDocumentAndResolveStyles.docx");
+            //ExEnd
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void InsertDocumentAndResolveStyles(bool keepSourceNumbering)
+        {
+            //ExStart
+            //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
+            //ExSummary:Shows how to manage list style clashes while inserting a document.
+            Document dstDoc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(dstDoc);
+            builder.InsertBreak(BreakType.ParagraphBreak);
+
+            dstDoc.Lists.Add(ListTemplate.NumberDefault);
+            Aspose.Words.Lists.List list = dstDoc.Lists[0];
+
+            builder.ListFormat.List = list;
+
+            for (int i = 1; i <= 15; i++)
+                builder.Write($"List Item {i}\n");
+
+            Document attachDoc = (Document)dstDoc.Clone(true);
+
+            // If there is a clash of list styles, apply the list format of the source document.
+            // Set the "KeepSourceNumbering" property to "false" to not import any list numbers into the destination document.
+            // Set the "KeepSourceNumbering" property to "true" import all clashing
+            // list style numbering with the same appearance that it had in the source document.
+            ImportFormatOptions importOptions = new ImportFormatOptions();
+            importOptions.KeepSourceNumbering = keepSourceNumbering;
+
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.InsertDocument(attachDoc, ImportFormatMode.KeepSourceFormatting, importOptions);
+
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.InsertDocumentAndResolveStyles.docx");
             //ExEnd
         }
 
