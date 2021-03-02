@@ -7,7 +7,6 @@
 
 using System.Drawing;
 using System.Globalization;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Aspose.Words;
@@ -413,8 +412,6 @@ namespace ApiExamples
 
             // We can use a custom IBarcodeGenerator implementation to generate barcodes,
             // and then insert them into the document as images.
-            // We can find the source code for the barcode generator here:
-            // https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/ApiExamples/CSharp/ApiExamples/CustomBarcodeGenerator.cs
             doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
 
             // Below are four examples of different barcode types that we can create using our generator.
@@ -488,9 +485,6 @@ namespace ApiExamples
             Shape barcode = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             Assert.True(barcode.HasImage);
-
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK,
-                "https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/ApiExamples/CSharp/ApiExamples/CustomBarcodeGenerator.cs");
         }
 #endif
     }

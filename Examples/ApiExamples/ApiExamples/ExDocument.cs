@@ -38,9 +38,6 @@ using Aspose.Words.Shaping.HarfBuzz;
 #if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
 #endif
-#if NET462 || MAC || JAVA
-using Aspose.Words.Loading;
-#endif
 
 namespace ApiExamples
 {

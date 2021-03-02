@@ -15,7 +15,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Xml;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
@@ -27,7 +26,6 @@ using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 using LoadOptions = Aspose.Words.LoadOptions;
-using Aspose.Words.Fonts;
 #if NET462 || JAVA
 using Aspose.BarCode.BarCodeRecognition;
 #elif NETCOREAPP2_1
