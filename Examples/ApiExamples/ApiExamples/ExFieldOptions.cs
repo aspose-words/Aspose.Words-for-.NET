@@ -476,10 +476,10 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.docx");
             //ExEnd
 
-            TestUtil.VerifyImage(378, 378, ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
-            TestUtil.VerifyImage(220, 78, ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
-            TestUtil.VerifyImage(414, 65, ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
-            TestUtil.VerifyImage(300, 65, ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");
+            TestUtil.VerifyImage(223, 223, ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
+            TestUtil.VerifyImage(117, 108, ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
+            TestUtil.VerifyImage(397, 70, ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
+            TestUtil.VerifyImage(633, 134, ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");
 
             doc = new Document(ArtifactsDir + "FieldOptions.BarcodeGenerator.docx");
             Shape barcode = (Shape)doc.GetChild(NodeType.Shape, 0, true);

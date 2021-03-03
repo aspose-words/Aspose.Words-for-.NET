@@ -406,8 +406,10 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Field.BarCodeWord2Pdf.pdf");
 
-            BarCodeReader barCode = BarCodeReaderPdf(ArtifactsDir + "Field.BarCodeWord2Pdf.pdf");
-            Assert.AreEqual("QR", barCode.GetCodeType().ToString());
+            using (BarCodeReader barCodeReader = BarCodeReaderPdf(ArtifactsDir + "Field.BarCodeWord2Pdf.pdf"))
+            {
+                Assert.AreEqual("QR", barCodeReader.FoundBarCodes[0].CodeTypeName);
+            }
         }
 
         private BarCodeReader BarCodeReaderPdf(string filename)
@@ -431,10 +433,9 @@ namespace ApiExamples
 
             // Recognize the barcode from the image stream above.
             BarCodeReader barcodeReader = new BarCodeReader(imageStream, DecodeType.QR);
-            while (barcodeReader.Read())
-                Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " + barcodeReader.GetCodeType());
 
-            barcodeReader.Close();
+            foreach (BarCodeResult result in barcodeReader.ReadBarCodes())
+                Console.WriteLine("Codetext found: " + result.CodeText + ", Symbology: " + result.CodeTypeName);
 
             return barcodeReader;
         }
