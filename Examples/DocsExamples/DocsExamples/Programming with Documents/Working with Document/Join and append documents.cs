@@ -239,8 +239,11 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Document dstDoc = new Document(MyDir + "Northwind traders.docx");
 
             // Set the source document to continue straight after the end of the destination document.
-            // If some page setup settings are different, this may not work, and the source document will appear on a new page.
             srcDoc.FirstSection.PageSetup.SectionStart = SectionStart.Continuous;
+
+            // Restart the page numbering on the start of the source document.
+            srcDoc.FirstSection.PageSetup.RestartPageNumbering = true;
+            srcDoc.FirstSection.PageSetup.PageStartingNumber = 1;
 
             // To ensure this does not happen when the source document has different page setup settings, make sure the
             // settings are identical between the last section of the destination document.
@@ -249,6 +252,12 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             srcDoc.FirstSection.PageSetup.PageWidth = dstDoc.LastSection.PageSetup.PageWidth;
             srcDoc.FirstSection.PageSetup.PageHeight = dstDoc.LastSection.PageSetup.PageHeight;
             srcDoc.FirstSection.PageSetup.Orientation = dstDoc.LastSection.PageSetup.Orientation;
+
+            // Iterate through all sections in the source document.
+            foreach (Paragraph para in srcDoc.GetChildNodes(NodeType.Paragraph, true))
+            {
+                para.ParagraphFormat.KeepWithNext = true;
+            }
 
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
             
@@ -292,10 +301,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void KeepSourceFormatting()
         {
             //ExStart:KeepSourceFormatting
-            Document srcDoc = new Document(MyDir + "Document source.docx");
-            Document dstDoc = new Document(MyDir + "Northwind traders.docx");
+            Document dstDoc = new Document();
+            dstDoc.FirstSection.Body.AppendParagraph("Destination document text. ");
 
-            // Keep the formatting from the source document when appending it to the destination document.
+            Document srcDoc = new Document();
+            srcDoc.FirstSection.Body.AppendParagraph("Source document text. ");
+
+            // Append the source document to the destination document.
+            // Pass format mode to retain the original formatting of the source document when importing it.
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
 
             dstDoc.Save(ArtifactsDir + "JoinAndAppendDocuments.KeepSourceFormatting.docx");
@@ -455,7 +468,24 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             ImportFormatOptions options = new ImportFormatOptions { SmartStyleBehavior = true };
 
             builder.InsertDocument(srcDoc, ImportFormatMode.UseDestinationStyles, options);
+            builder.Document.Save(ArtifactsDir + "JoinAndAppendDocuments.SmartStyleBehavior.docx");
             //ExEnd:SmartStyleBehavior
+        }
+
+        [Test]
+        public void InsertDocumentWithBuilder()
+        {
+            //ExStart:InsertDocumentWithBuilder
+            Document srcDoc = new Document(MyDir + "Document source.docx");
+            Document dstDoc = new Document(MyDir + "Northwind traders.docx");
+            DocumentBuilder builder = new DocumentBuilder(dstDoc);
+
+            builder.MoveToDocumentEnd();
+            builder.InsertBreak(BreakType.PageBreak);
+
+            builder.InsertDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
+            builder.Document.Save(ArtifactsDir + "JoinAndAppendDocuments.InsertDocumentWithBuilder.docx");
+            //ExEnd:InsertDocumentWithBuilder
         }
 
         [Test]

@@ -16,6 +16,7 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using Aspose.Words;
+using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
@@ -25,6 +26,7 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
+using Aspose.Words.Vba;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
 using CompareOptions = Aspose.Words.CompareOptions;
@@ -35,9 +37,6 @@ using Aspose.Words.Shaping.HarfBuzz;
 #endif
 #if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
-#endif
-#if NET462 || MAC || JAVA
-using Aspose.Words.Loading;
 #endif
 
 namespace ApiExamples

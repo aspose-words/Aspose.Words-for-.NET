@@ -11,6 +11,7 @@ using System.Linq;
 using System.Globalization;
 using System.IO;
 using Aspose.Words;
+using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Fonts;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
