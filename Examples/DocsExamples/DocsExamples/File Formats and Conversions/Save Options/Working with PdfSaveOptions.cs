@@ -1,5 +1,6 @@
 ﻿using System;
 using Aspose.Words;
+using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 

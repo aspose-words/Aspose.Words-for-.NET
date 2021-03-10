@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Aspose.Words;
+using Aspose.Words.Vba;
 using NUnit.Framework;
 
 namespace DocsExamples.Programming_with_Documents
