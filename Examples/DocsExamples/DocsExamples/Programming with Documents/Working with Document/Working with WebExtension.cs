@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Aspose.Words;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;

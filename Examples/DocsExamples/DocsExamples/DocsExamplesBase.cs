@@ -62,7 +62,7 @@ namespace DocsExamples
         /// <summary>
         /// Gets the path to the documents used by the code examples.
         /// </summary>
-        internal static string MyDir { get; }
+        public static string MyDir { get; }
 
         /// <summary>
         /// Gets the path to the images used by the code examples.

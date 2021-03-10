@@ -7,6 +7,7 @@
 
 using System;
 using Aspose.Words;
+using Aspose.Words.Vba;
 using NUnit.Framework;
 
 namespace ApiExamples
