@@ -2356,6 +2356,32 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public void LoadDocumentWithListNumbering(bool keepSourceNumbering)
+        {
+            //ExStart
+            //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
+            //ExSummary:Shows how to manage list style clashes while appending a clone of a document to itself.
+            Document srcDoc = new Document(MyDir + "List item.docx");
+            Document dstDoc = new Document(MyDir + "List item.docx");
+
+            // If there is a clash of list styles, apply the list format of the source document.
+            // Set the "KeepSourceNumbering" property to "false" to not import any list numbers into the destination document.
+            // Set the "KeepSourceNumbering" property to "true" import all clashing
+            // list style numbering with the same appearance that it had in the source document.
+            DocumentBuilder builder = new DocumentBuilder(dstDoc);
+            builder.MoveToDocumentEnd();
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+
+            ImportFormatOptions options = new ImportFormatOptions();
+            options.KeepSourceNumbering = keepSourceNumbering;
+            builder.InsertDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
+
+            dstDoc.UpdateListLabels();
+            //ExEnd
+        }
+
         [TestCase(true)]
         [TestCase(false)]
         public void IgnoreTextBoxes(bool ignoreTextBoxes)
