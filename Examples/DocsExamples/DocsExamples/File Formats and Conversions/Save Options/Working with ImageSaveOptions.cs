@@ -84,5 +84,29 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.GetJpegPageRange.jpeg", options);
             //ExEnd:GetJpegPageRange
         }
+
+        [Test]
+        //ExStart:PageSavingCallback
+        public static void PageSavingCallback()
+        {
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png)
+            {
+                PageSet = new PageSet(new PageRange(0, doc.PageCount - 1)),
+                PageSavingCallback = new HandlePageSavingCallback()
+            };
+
+            doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.PageSavingCallback.png", imageSaveOptions);
+        }
+
+        private class HandlePageSavingCallback : IPageSavingCallback
+        {
+            public void PageSaving(PageSavingArgs args)
+            {
+                args.PageFileName = string.Format(ArtifactsDir + "Page_{0}.png", args.PageIndex);
+            }
+        }
+        //ExEnd:PageSavingCallback
     }
 }
