@@ -7,10 +7,10 @@ using Aspose.Pdf.Text;
 
 namespace ApiExamples
 {
-#if NET462 || NETCOREAPP2_1 || JAVA
     [TestFixture]
     public class ExPdf2Word : ApiExampleBase
     {
+#if NET462 || NETCOREAPP2_1 || JAVA
         [Test]
         public void LoadPdf()
         {
@@ -26,19 +26,40 @@ namespace ApiExamples
 
             // Below are two ways of loading PDF documents using Aspose products.
             // 1 -  Load as an Aspose.Words document:
-            Aspose.Words.Document loadedPdfAw = new Aspose.Words.Document(ArtifactsDir + "PDF2Word.LoadPdf.pdf");
+            Aspose.Words.Document asposeWordsDoc = new Aspose.Words.Document(ArtifactsDir + "PDF2Word.LoadPdf.pdf");
 
-            Assert.AreEqual("Hello world!", loadedPdfAw.GetText().Trim());
+            Assert.AreEqual("Hello world!", asposeWordsDoc.GetText().Trim());
 
             // 2 -  Load as an Aspose.Pdf document:
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PDF2Word.LoadPdf.pdf");
+            Aspose.Pdf.Document asposePdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "PDF2Word.LoadPdf.pdf");
 
             TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
-            pdfDocument.Pages.Accept(textFragmentAbsorber);
+            asposePdfDoc.Pages.Accept(textFragmentAbsorber);
 
             Assert.AreEqual("Hello world!", textFragmentAbsorber.Text.Trim());
             //ExEnd
         }
-    }
 #endif
+
+        [Test]
+        public static void ConvertPdfToDocx()
+        {
+            //ExStart
+            //ExFor:Document.#ctor(String)
+            //ExFor:Document.Save(String)
+            //ExSummary:Shows how to convert a PDF to a .docx.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Hello world!");
+
+            doc.Save(ArtifactsDir + "PDF2Word.ConvertPdfToDocx.pdf");
+
+            // Load the PDF document that we just saved, and convert it to .docx.
+            Document pdfDoc = new Document(ArtifactsDir + "PDF2Word.ConvertPdfToDocx.pdf");
+
+            pdfDoc.Save(ArtifactsDir + "PDF2Word.ConvertPdfToDocx.docx");
+            //ExEnd
+        }
+    }
 }
