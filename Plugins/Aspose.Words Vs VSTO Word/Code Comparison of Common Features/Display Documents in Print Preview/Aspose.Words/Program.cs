@@ -8,8 +8,10 @@ namespace Aspose.Words
     {
         static void Main(string[] args)
         {
-            string FileName = "YourFileName.docx";
-            Document doc = new Document(FileName);
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Hello world!");
 
             ActivePrintPreviewDialog previewDlg = new ActivePrintPreviewDialog();
 

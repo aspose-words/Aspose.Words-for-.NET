@@ -16,10 +16,10 @@ namespace ConversionToAndFromODTandOTT
         /// </summary>
         public static void ConvertingFromOdt()
         {
-            string MyDir = @"Files\";
-            Document doc = new Document(MyDir + "OpenOfficeWord.odt");
+            string MyDir = @"..\..\..\..\..\Sample Files\";
+            Document doc = new Document(MyDir + "MyDocument.odt");
 
-            doc.Save(MyDir+"ConvertedOdtFromDoc.docx", SaveFormat.Docx);
+            doc.Save(MyDir+ "ConvertingFromOdt.docx", SaveFormat.Docx);
         }
 
         /// <summary>
@@ -27,10 +27,10 @@ namespace ConversionToAndFromODTandOTT
         /// </summary>
         public static void ConvertingFromOtt()
         {
-            string MyDir = @"Files\";
-            Document doc = new Document(MyDir + "Sample.ott");
+            string MyDir = @"..\..\..\..\..\Sample Files\";
+            Document doc = new Document(MyDir + "MyDocument.ott");
 
-            doc.Save(MyDir + "ConvertedFromOttFromDoc.docx", SaveFormat.Docx);
+            doc.Save(MyDir + "ConvertingFromOtt.docx", SaveFormat.Docx);
         }
 
         /// <summary>
@@ -38,10 +38,10 @@ namespace ConversionToAndFromODTandOTT
         /// </summary>
         public static void ConvertingToOdt()
         {
-            string MyDir = @"Files\";
-            Document doc = new Document(MyDir + "ConvertedOdtFromDoc.docx");
+            string MyDir = @"..\..\..\..\..\Sample Files\";
+            Document doc = new Document(MyDir + "MyDocument.docx");
 
-            doc.Save(MyDir + "ConvertedToODT.odt", SaveFormat.Odt);
+            doc.Save(MyDir + "ConvertingToOdt.odt", SaveFormat.Odt);
         }
     }
 }
