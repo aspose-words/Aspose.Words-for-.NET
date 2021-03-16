@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using Aspose.Words;
-
+using Aspose.Words.Saving;
+using FieldType = Aspose.Words.Fields.FieldType;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Pdf.Text;
 #endif
@@ -59,6 +60,31 @@ namespace ApiExamples
             Document pdfDoc = new Document(ArtifactsDir + "PDF2Word.ConvertPdfToDocx.pdf");
 
             pdfDoc.Save(ArtifactsDir + "PDF2Word.ConvertPdfToDocx.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public static void ConvertPdfToDocxCustom()
+        {
+            //ExStart
+            //ExFor:Document.Save(String, SaveOptions)
+            //ExSummary:Shows how to convert a PDF to a .docx and customize the saving process with a SaveOptions object.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Hello world!");
+
+            doc.Save(ArtifactsDir + "PDF2Word.ConvertPdfToDocxCustom.pdf");
+
+            // Load the PDF document that we just saved, and convert it to .docx.
+            Document pdfDoc = new Document(ArtifactsDir + "PDF2Word.ConvertPdfToDocxCustom.pdf");
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
+
+            // Set the "Password" property to encrypt the saved document with a password.
+            saveOptions.Password = "MyPassword";
+
+            pdfDoc.Save(ArtifactsDir + "PDF2Word.ConvertPdfToDocxCustom.docx", saveOptions);
             //ExEnd
         }
     }
