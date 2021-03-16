@@ -545,6 +545,36 @@ namespace ApiExamples
             }
         }
 
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ImportList(bool isKeepSourceNumbering)
+        {
+            //ExStart
+            //ExFor:ImportFormatOptions.KeepSourceNumbering
+            //ExSummary:Shows how to import a document with numbered lists.
+            Document srcDoc = new Document(MyDir + "List source.docx");
+            Document dstDoc = new Document(MyDir + "List destination.docx");
+
+            Assert.AreEqual(2, dstDoc.Lists.Count);
+
+            ImportFormatOptions options = new ImportFormatOptions();
+
+            // If there is a clash of list styles, apply the list format of the source document.
+            // Set the "KeepSourceNumbering" property to "false" to not import any list numbers into the destination document.
+            // Set the "KeepSourceNumbering" property to "true" import all clashing
+            // list style numbering with the same appearance that it had in the source document.
+            options.KeepSourceNumbering = isKeepSourceNumbering;
+
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
+            dstDoc.UpdateListLabels();
+
+            if (isKeepSourceNumbering)
+                Assert.AreEqual(3, dstDoc.Lists.Count);
+            else
+                Assert.AreEqual(2, dstDoc.Lists.Count);
+            //ExEnd
+        }
+
         [Test]
         public void ValidateIndividualDocumentSignatures()
         {
