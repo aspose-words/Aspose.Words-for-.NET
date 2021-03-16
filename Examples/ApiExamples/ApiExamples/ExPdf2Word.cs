@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
+﻿using System.IO;
+using NUnit.Framework;
 using Aspose.Words;
 using Aspose.Words.Saving;
-using FieldType = Aspose.Words.Fields.FieldType;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Pdf.Text;
 #endif
@@ -85,6 +85,80 @@ namespace ApiExamples
             saveOptions.Password = "MyPassword";
 
             pdfDoc.Save(ArtifactsDir + "PDF2Word.ConvertPdfToDocxCustom.docx", saveOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public static void LoadPdfUsingPlugin()
+        {
+            //ExStart
+            //ExFor:Pdf2Word
+            //ExFor:Pdf2Word.Read(Stream, LoadOptions, Document)
+            //ExSummary:Shows how to load a PDF document using the Aspose.Words Pdf2Word plugin.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Hello world!");
+
+            doc.Save(ArtifactsDir + "PDF2Word.LoadPdfUsingPlugin.pdf");
+
+            // Use the Pdf2Word plugin to open load a PDF document as an Aspose.Words document.
+            Document pdfDoc = new Document();
+
+            Aspose.Words.Pdf2Word.PdfDocumentReaderPlugin pdf2Word = new Aspose.Words.Pdf2Word.PdfDocumentReaderPlugin();
+            using (FileStream stream =
+                new FileStream(ArtifactsDir + "PDF2Word.LoadPdfUsingPlugin.pdf", FileMode.Open))
+            {
+                pdf2Word.Read(stream, new LoadOptions(), pdfDoc);
+            }
+
+            builder = new DocumentBuilder(pdfDoc);
+
+            builder.Writeln(" We are editing a PDF document that was loaded into Aspose.Words!");
+
+            Assert.AreEqual("Hello world! We are editing a PDF document that was loaded into Aspose.Words!", 
+                pdfDoc.GetText().Trim());
+            //ExEnd
+        }
+
+        [Test]
+        public static void LoadPdfUsingPluginCustom()
+        {
+            //ExStart
+            //ExFor:Pdf2Word
+            //ExFor:Pdf2Word.Read(Stream, LoadOptions, Document)
+            //ExSummary:Shows how to load a PDF document using the Aspose.Words Pdf2Word plugin.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Hello world! This is an encrypted PDF document.");
+
+            // Configure a SaveOptions object to encrypt this PDF document while saving it to the local file system.
+            PdfEncryptionDetails encryptionDetails =
+                new PdfEncryptionDetails("MyPassword", string.Empty, PdfEncryptionAlgorithm.RC4_128);
+
+            Assert.AreEqual(PdfPermissions.DisallowAll, encryptionDetails.Permissions);
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.EncryptionDetails = encryptionDetails;
+
+            doc.Save(ArtifactsDir + "PDF2Word.LoadPdfUsingPluginCustom.pdf", saveOptions);
+
+            Document pdfDoc = new Document();
+
+            // To load a password encrypted document, we need to pass a LoadOptions object
+            // with the correct password stored in its "Password" property.
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.Password = "MyPassword";
+
+            Aspose.Words.Pdf2Word.PdfDocumentReaderPlugin pdf2Word = new Aspose.Words.Pdf2Word.PdfDocumentReaderPlugin();
+            using (FileStream stream =
+                new FileStream(ArtifactsDir + "PDF2Word.LoadPdfUsingPluginCustom.pdf", FileMode.Open))
+            {
+                // Pass the LoadOptions object into the Pdf2Word plugin's "Read" method
+                // the same way we would pass it into a document's "Load" method.
+                pdf2Word.Read(stream, new LoadOptions("MyPassword"), pdfDoc);
+            }
             //ExEnd
         }
     }
