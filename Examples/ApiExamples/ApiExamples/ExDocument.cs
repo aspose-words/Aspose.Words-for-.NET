@@ -576,6 +576,32 @@ namespace ApiExamples
         }
 
         [Test]
+        public void KeepSourceNumberingSameListIds()
+        {
+            //ExStart
+            //ExFor:ImportFormatOptions.KeepSourceNumbering
+            //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode, ImportFormatOptions)
+            //ExSummary:Shows how resolve a clash when importing documents that have lists with the same list definition identifier.
+            Document srcDoc = new Document(MyDir + "List with the same definition identifier - source.docx");
+            Document dstDoc = new Document(MyDir + "List with the same definition identifier - destination.docx");
+
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
+
+            // Set the "KeepSourceNumbering" property to "true" to apply a different list definition ID
+            // to identical styles as Aspose.Words imports them into destination documents.
+            importFormatOptions.KeepSourceNumbering = true;
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles, importFormatOptions);
+
+            dstDoc.UpdateListLabels();
+            //ExEnd
+
+            string paraText = dstDoc.Sections[1].Body.LastParagraph.GetText();
+
+            Assert.IsTrue(paraText.StartsWith("13->13"), paraText);
+            Assert.AreEqual("1.", dstDoc.Sections[1].Body.LastParagraph.ListLabel.LabelString);
+        }
+
+        [Test]
         public void ValidateIndividualDocumentSignatures()
         {
             //ExStart
