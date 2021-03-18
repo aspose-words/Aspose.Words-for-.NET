@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Word = Microsoft.Office.Interop.Word;
-using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Word;
+﻿using Word = Microsoft.Office.Interop.Word;
 
 namespace VSTO_Words
 {
@@ -13,15 +6,17 @@ namespace VSTO_Words
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            string mypath = "Document.docx";
+            string filePath = @"..\..\..\..\..\Sample Files\";
             Word.Application wordApp = Application;
-            wordApp.Documents.Open(mypath);
+
+            wordApp.Documents.Open(filePath + "MyDocument.docx");
+
             int recordCount = 2;
             int i = 0;
             for (i = 0; i <= recordCount; i++)
                 wordApp.Selection.WholeStory();
             wordApp.Selection.EndOf();
-            wordApp.Selection.InsertFile("DetailsList.docx");
+            wordApp.Selection.InsertFile(filePath + "MyDocument.docx");
 
             if (i < recordCount)
             {
@@ -29,10 +24,8 @@ namespace VSTO_Words
             }
             if (i > 1)
             {
-
                 //wordApp.ActiveDocument.Sections(i).Headers(1).LinkToPrevious = false;
             }
-
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

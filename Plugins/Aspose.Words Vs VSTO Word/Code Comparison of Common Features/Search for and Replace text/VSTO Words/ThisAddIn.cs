@@ -6,16 +6,18 @@ namespace VSTO_Words
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            string mypath = "";
+            string filePath = @"..\..\..\..\..\Sample Files\";
             Word.Application wordApp = Application;
-            wordApp.Documents.Open(mypath + "Search and Replace.doc");
+
+            wordApp.Documents.Open(filePath + "MyDocument.docx");
+
             object replaceAll = Word.WdReplace.wdReplaceAll;
 
             this.Application.Selection.Find.ClearFormatting();
-            this.Application.Selection.Find.Text = "find me";
+            this.Application.Selection.Find.Text = "Hello world!";
 
             this.Application.Selection.Find.Replacement.ClearFormatting();
-            this.Application.Selection.Find.Replacement.Text = "Found";
+            this.Application.Selection.Find.Replacement.Text = "Greetings planet!";
 
             this.Application.Selection.Find.Execute(
                 ref missing, ref missing, ref missing, ref missing, ref missing,

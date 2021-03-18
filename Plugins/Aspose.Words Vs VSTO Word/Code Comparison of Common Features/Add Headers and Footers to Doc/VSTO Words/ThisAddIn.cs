@@ -6,11 +6,13 @@ namespace VSTO_Words
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            string mypath = "";
             Word.Application wordApp = Application;
-            wordApp.Documents.Open(mypath + "Add Headers and Footers.doc");
 
-            //Add Header
+            string filePath = @"..\..\..\..\..\Sample Files\";
+
+            wordApp.Documents.Open(filePath + "MyDocument.docx");
+
+            // Add a header.
             foreach (Word.Section section in this.Application.ActiveDocument.Sections)
             {
                 Word.Range headerRange = section.Headers[Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
@@ -18,7 +20,7 @@ namespace VSTO_Words
                 headerRange.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphRight;
             }
 
-            //Add Footer
+            // Add a footer.
             foreach (Word.Section wordSection in this.Application.ActiveDocument.Sections)
             {
                 Word.Range footerRange = wordSection.Footers[Word.WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;

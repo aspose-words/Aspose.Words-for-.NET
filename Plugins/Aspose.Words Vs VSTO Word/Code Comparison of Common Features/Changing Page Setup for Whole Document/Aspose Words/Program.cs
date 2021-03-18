@@ -19,9 +19,9 @@ namespace Aspose_Words
 
             // If we wish to apply page setup changes to an entire document, we will need to iterate over every section.
             foreach (Section section in doc)
-                section.PageSetup.PaperSize = PaperSize.Letter;
+                section.PageSetup.PaperSize = PaperSize.EnvelopeDL;
 
-            doc.Save("Section.ModifyPageSetupInAllSections.docx");
+            doc.Save("Changing Page Setup for Whole Document.docx");
         }
     }
 }

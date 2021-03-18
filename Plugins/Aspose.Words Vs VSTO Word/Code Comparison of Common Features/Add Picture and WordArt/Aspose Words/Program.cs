@@ -12,23 +12,25 @@ namespace Aspose_Words
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Insert a shape which contains and displays an image taken from a file in the local file system.
-            builder.InsertImage("download.jpg");
+            string filePath = @"..\..\..\..\..\Sample Files\";
+
+            // Insert a shape into the document with an image taken from a file in the local file system.
+            builder.InsertImage(filePath + "Logo.jpg");
 
             // Insert a shape which contains WordArt with customized text.
-            Shape shape = new Shape(doc, ShapeType.TextPlainText)
-            {
-                WrapType = WrapType.Inline,
-                Width = 480,
-                Height = 24,
-                FillColor = Color.Orange,
-                StrokeColor = Color.Red
-            };
+            Shape wordArtShape = new Shape(doc, ShapeType.TextCurve);
+            wordArtShape.Width = 480;
+            wordArtShape.Height = 24;
+            wordArtShape.FillColor = Color.Orange;
+            wordArtShape.StrokeColor = Color.Red;
+            wordArtShape.WrapType = WrapType.Inline;
 
-            shape.TextPath.FontFamily = "Arial";
-            shape.TextPath.Bold = true;
-            shape.TextPath.Italic = true;
-            shape.TextPath.Text = "Hello World! This text is bold, and italic.";
+            wordArtShape.TextPath.FontFamily = "Arial";
+            wordArtShape.TextPath.Bold = true;
+            wordArtShape.TextPath.Italic = true;
+            wordArtShape.TextPath.Text = "Hello World! This text is bold, and italic.";
+
+            doc.FirstSection.Body.LastParagraph.AppendChild(wordArtShape);
 
             doc.Save("Add Picture and WordArt.docx");
         }

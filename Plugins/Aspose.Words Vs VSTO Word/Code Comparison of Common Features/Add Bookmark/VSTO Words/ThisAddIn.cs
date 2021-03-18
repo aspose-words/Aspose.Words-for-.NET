@@ -9,7 +9,9 @@ namespace VSTO_Words
         {
             Word.Application wordApp = Application;
 
-            wordApp.Documents.Open("Add Bookmark.doc");
+            string filePath = @"..\..\..\..\..\Sample Files\";
+
+            wordApp.Documents.Open(filePath + "MyDocument.docx");
 
             Document extendedDocument = Globals.Factory.GetVstoObject(this.Application.ActiveDocument);
             Bookmark firstParagraph = extendedDocument.Controls.AddBookmark(

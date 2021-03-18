@@ -10,7 +10,7 @@ namespace Aspose_Words
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Writeln("find me");
+            builder.Writeln("Hello world!");
 
             FindReplaceOptions options = new FindReplaceOptions
             {
@@ -18,7 +18,7 @@ namespace Aspose_Words
                 FindWholeWordsOnly = true
             };
             
-            doc.Range.Replace("find me", "found", options);
+            doc.Range.Replace("Hello world!", "Greetings planet!", options);
 
             doc.Save("Search for and Replace text.docx");
         }

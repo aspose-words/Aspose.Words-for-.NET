@@ -30,6 +30,8 @@ namespace Aspose_Words
             {
                 table.PreferredWidth = PreferredWidth.FromPercent(100);
             }
+
+            doc.Save("Fitting all Tables to the Page Width.docx");
         }
     }
 }

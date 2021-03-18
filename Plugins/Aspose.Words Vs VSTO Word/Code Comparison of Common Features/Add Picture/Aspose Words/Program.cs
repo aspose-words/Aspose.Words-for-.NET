@@ -10,8 +10,10 @@ namespace Aspose_Words
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            string filePath = @"..\..\..\..\..\Sample Files\";
+
             // Insert a shape into the document with an image taken from a file in the local file system.
-            builder.InsertImage("download.jpg");
+            builder.InsertImage(filePath + "Logo.jpg");
             
             doc.Save("Add Picture.docx");
         }

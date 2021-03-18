@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Word = Microsoft.Office.Interop.Word;
+﻿using Word = Microsoft.Office.Interop.Word;
 using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Word;
 
 namespace VSTO_Words
 {
@@ -13,25 +7,24 @@ namespace VSTO_Words
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            string mypath = "";
-            Word.Application wordApp = Application;
-            wordApp.Documents.Open(mypath+"Add Picture and WordArt.doc");
-            //Add picture to Doc
-            this.Application.Selection.InlineShapes.AddPicture(mypath+"download.jpg");
+            string filePath = @"..\..\..\..\..\Sample Files\";
 
-            //Add WordArt
-            //Get the left and top position of the current cursor location.
+            Word.Application wordApp = Application;
+            wordApp.Documents.Open(filePath + "MyDocument.docx");
+            //Add picture to Doc
+            this.Application.Selection.InlineShapes.AddPicture(filePath + "Logo.jpg");
+
+            // Add WordArt.
+            // Get the left and top position of the current cursor location.
             float leftPosition = (float)this.Application.Selection.Information[
             Word.WdInformation.wdHorizontalPositionRelativeToPage];
 
             float topPosition = (float)this.Application.Selection.Information[
             Word.WdInformation.wdVerticalPositionRelativeToPage];
 
-            //Call the AddTextEffect method of the Shapes object of the active document (or a different document that you specify).
-
+            // Call the AddTextEffect method of the Shapes object of the active document (or a different document that you specify).
             this.Application.ActiveDocument.Shapes.AddTextEffect(Office.MsoPresetTextEffect.msoTextEffect29, "test","Arial Black", 24, Office.MsoTriState.msoFalse,
             Office.MsoTriState.msoFalse, leftPosition, topPosition);
-
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
