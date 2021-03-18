@@ -1687,7 +1687,6 @@ namespace ApiExamples
         //ExStart
         //ExFor:Shape.Accept(DocumentVisitor)
         //ExFor:Shape.Chart
-        //ExFor:Shape.Clone(Boolean, INodeCloningListener)
         //ExFor:Shape.ExtrusionEnabled
         //ExFor:Shape.Filled
         //ExFor:Shape.HasChart

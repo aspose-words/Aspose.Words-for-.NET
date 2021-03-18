@@ -334,7 +334,6 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitGroupShapeStart(GroupShape)
         //ExFor:Drawing.GroupShape
         //ExFor:Drawing.GroupShape.#ctor(DocumentBase)
-        //ExFor:Drawing.GroupShape.#ctor(DocumentBase,Drawing.ShapeMarkupLanguage)
         //ExFor:Drawing.GroupShape.Accept(DocumentVisitor)
         //ExFor:ShapeBase.IsGroup
         //ExFor:ShapeBase.ShapeType

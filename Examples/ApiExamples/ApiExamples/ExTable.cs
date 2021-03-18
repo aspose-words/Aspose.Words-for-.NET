@@ -1389,7 +1389,6 @@ namespace ApiExamples
             //ExFor:ConditionalStyleCollection.EvenRowBanding
             //ExFor:ConditionalStyleCollection.FirstColumn
             //ExFor:ConditionalStyleCollection.Item(ConditionalStyleType)
-            //ExFor:ConditionalStyleCollection.Item(TableStyleOverrideType)
             //ExFor:ConditionalStyleCollection.Item(Int32)
             //ExFor:ConditionalStyleCollection.OddColumnBanding
             //ExFor:ConditionalStyleCollection.OddRowBanding
