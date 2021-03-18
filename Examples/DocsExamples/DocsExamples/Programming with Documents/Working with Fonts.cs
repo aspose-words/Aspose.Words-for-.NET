@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -203,8 +204,8 @@ namespace DocsExamples.Programming_with_Documents
             FontSettings fontSettings = new FontSettings();
             // Retrieve the array of environment-dependent font sources that are searched by default.
             // For example this will contain a "Windows\Fonts\" source on a Windows machines.
-            // We add this array to a new ArrayList to make adding or removing font entries much easier.
-            ArrayList fontSources = new ArrayList(fontSettings.GetFontsSources());
+            // We add this array to a new List to make adding or removing font entries much easier.
+            List<FontSourceBase> fontSources = new List<FontSourceBase>(fontSettings.GetFontsSources());
 
             // Add a new folder source which will instruct Aspose.Words to search the following folder for fonts.
             FolderFontSource folderFontSource = new FolderFontSource("C:\\MyFonts\\", true);
@@ -212,7 +213,7 @@ namespace DocsExamples.Programming_with_Documents
             // Add the custom folder which contains our fonts to the list of existing font sources.
             fontSources.Add(folderFontSource);
 
-            FontSourceBase[] updatedFontSources = (FontSourceBase[]) fontSources.ToArray(typeof(FontSourceBase));
+            FontSourceBase[] updatedFontSources = fontSources.ToArray();
             fontSettings.SetFontsSources(updatedFontSources);
             
             doc.FontSettings = fontSettings;
@@ -336,14 +337,14 @@ namespace DocsExamples.Programming_with_Documents
         {
             //ExStart:GetListOfAvailableFonts
             FontSettings fontSettings = new FontSettings();
-            ArrayList fontSources = new ArrayList(fontSettings.GetFontsSources());
+            List<FontSourceBase> fontSources = new List<FontSourceBase>(fontSettings.GetFontsSources());
 
             // Add a new folder source which will instruct Aspose.Words to search the following folder for fonts.
             FolderFontSource folderFontSource = new FolderFontSource(MyDir, true);
             // Add the custom folder which contains our fonts to the list of existing font sources.
             fontSources.Add(folderFontSource);
 
-            FontSourceBase[] updatedFontSources = (FontSourceBase[]) fontSources.ToArray(typeof(FontSourceBase));
+            FontSourceBase[] updatedFontSources = fontSources.ToArray();
 
             foreach (PhysicalFontInfo fontInfo in updatedFontSources[0].GetAvailableFonts())
             {
@@ -447,12 +448,12 @@ namespace DocsExamples.Programming_with_Documents
             DocumentSubstitutionWarnings substitutionWarningHandler = new DocumentSubstitutionWarnings();
             doc.WarningCallback = substitutionWarningHandler;
 
-            ArrayList fontSources = new ArrayList(FontSettings.DefaultInstance.GetFontsSources());
+            List<FontSourceBase> fontSources = new List<FontSourceBase>(FontSettings.DefaultInstance.GetFontsSources());
 
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, true);
             fontSources.Add(folderFontSource);
 
-            FontSourceBase[] updatedFontSources = (FontSourceBase[])fontSources.ToArray(typeof(FontSourceBase));
+            FontSourceBase[] updatedFontSources = fontSources.ToArray();
             FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
 
             doc.Save(ArtifactsDir + "WorkingWithFonts.GetSubstitutionWithoutSuffixes.pdf");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -109,9 +110,9 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         //ExStart:ExtractComments
-        ArrayList ExtractComments(Document doc)
+        List<string> ExtractComments(Document doc)
         {
-            ArrayList collectedComments = new ArrayList();
+            List<string> collectedComments = new List<string>();
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
 
             foreach (Comment comment in comments)
@@ -125,9 +126,9 @@ namespace DocsExamples.Programming_with_Documents
         //ExEnd:ExtractComments
 
         //ExStart:ExtractCommentsByAuthor
-        ArrayList ExtractComments(Document doc, string authorName)
+        List<string> ExtractComments(Document doc, string authorName)
         {
-            ArrayList collectedComments = new ArrayList();
+            List<string> collectedComments = new List<string>();
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
 
             foreach (Comment comment in comments)
