@@ -610,7 +610,7 @@ namespace ApiExamples
         /// </summary>
         private static void InsertDocument(Node insertionDestination, Document docToInsert)
         {
-            if (insertionDestination.NodeType.Equals(NodeType.Paragraph) || insertionDestination.NodeType.Equals(NodeType.Table))
+            if (insertionDestination.NodeType == NodeType.Paragraph || insertionDestination.NodeType == NodeType.Table)
             {
                 CompositeNode dstStory = insertionDestination.ParentNode;
 
@@ -621,7 +621,7 @@ namespace ApiExamples
                     foreach (Node srcNode in srcSection.Body)
                     {
                         // Skip the node if it is the last empty paragraph in a section.
-                        if (srcNode.NodeType.Equals(NodeType.Paragraph))
+                        if (srcNode.NodeType == NodeType.Paragraph)
                         {
                             Paragraph para = (Paragraph)srcNode;
                             if (para.IsEndOfSection && !para.HasChildNodes)

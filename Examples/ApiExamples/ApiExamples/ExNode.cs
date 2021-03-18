@@ -254,7 +254,7 @@ namespace ApiExamples
 
                 // A section body can contain Paragraph and Table nodes.
                 // If the node is a Table, remove it from the parent.
-                if (curNode.NodeType.Equals(NodeType.Table))
+                if (curNode.NodeType == NodeType.Table)
                     curNode.Remove();
 
                 curNode = nextNode;

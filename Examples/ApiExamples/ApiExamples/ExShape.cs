@@ -864,7 +864,7 @@ namespace ApiExamples
 
             foreach (Shape shape in shapes)
             {
-                if (shape.ShapeType.Equals(ShapeType.TextBox))
+                if (shape.ShapeType == ShapeType.TextBox)
                 {
                     Shape replacementShape = new Shape(doc, ShapeType.Image);
                     replacementShape.ImageData.SetImage(ImageDir + "Logo.jpg");

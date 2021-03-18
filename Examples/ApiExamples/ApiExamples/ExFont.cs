@@ -859,10 +859,10 @@ namespace ApiExamples
             // using the above methods to reference old and new styles.
             foreach (Run run in doc.GetChildNodes(NodeType.Run, true).OfType<Run>())
             {
-                if (run.Font.StyleName.Equals("Emphasis"))
+                if (run.Font.StyleName == "Emphasis")
                     run.Font.StyleName = "Strong";
 
-                if (run.Font.StyleIdentifier.Equals(StyleIdentifier.IntenseEmphasis))
+                if (run.Font.StyleIdentifier == StyleIdentifier.IntenseEmphasis)
                     run.Font.StyleIdentifier = StyleIdentifier.Strong;
             }
 

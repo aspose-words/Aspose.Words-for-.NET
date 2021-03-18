@@ -183,7 +183,7 @@ namespace ApiExamples
             /// </summary>
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
-                if (args.DocumentFieldName.Equals("CourseName"))
+                if (args.DocumentFieldName == "CourseName")
                 {
                     Assert.AreEqual("StudentCourse", args.TableName);
 
@@ -258,7 +258,7 @@ namespace ApiExamples
                     mBuilder = new DocumentBuilder(args.Document);
 
                 // This is true of we are on the first column, which means we have moved to a new row.
-                if (args.FieldName.Equals("CompanyName"))
+                if (args.FieldName == "CompanyName")
                 {
                     Color rowColor = IsOdd(mRowIdx) ? Color.FromArgb(213, 227, 235) : Color.FromArgb(242, 242, 242);
 
