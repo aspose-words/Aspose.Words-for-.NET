@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2C74F767-73E2-4CB7-821B-359FEAFD597C}</ProjectGuid>
+    <ProjectGuid>{D771EA4E-74F0-40DB-BF0B-0E5EAAE7F0E2}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Aspose_Words</RootNamespace>
