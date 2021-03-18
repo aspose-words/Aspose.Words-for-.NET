@@ -480,11 +480,11 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
         //ExStart
         //ExFor:FindReplaceOptions.UseLegacyOrder
         //ExSummary:Shows how to change the searching order of nodes when performing a find-and-replace text operation.
+        [TestCase(true)] // ExSkip
+        [TestCase(false)] // ExSkip
         public void UseLegacyOrder(bool useLegacyOrder)
         {
             Document doc = new Document();
