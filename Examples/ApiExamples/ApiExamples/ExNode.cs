@@ -380,7 +380,7 @@ namespace ApiExamples
         [Test]
         public void TestNodeIsInsideField()
         {
-            //ExStart:
+            //ExStart
             //ExFor:CompositeNode.SelectNodes
             //ExSummary:Shows how to use an XPath expression to test whether a node is inside a field.
             Document doc = new Document(MyDir + "Mail merge destination - Northwind employees.docx");

@@ -131,11 +131,11 @@ namespace ApiExamples
                 if (info.WarningType == WarningType.FontSubstitution)
                 {
                     Console.WriteLine("Font substitution: " + info.Description);
-                    FontWarnings.Warning(info); //ExSkip
+                    FontWarnings.Warning(info);
                 }
             }
 
-            public WarningInfoCollection FontWarnings = new WarningInfoCollection(); //ExSkip
+            public WarningInfoCollection FontWarnings = new WarningInfoCollection();
         }
 
         //ExStart
