@@ -96,7 +96,7 @@ namespace ApiExamples
         public void StyleCollection()
         {
             //ExStart
-            //ExFor:StyleCollection.Add(Style)
+            //ExFor:StyleCollection.Add(StyleType,String)
             //ExFor:StyleCollection.Count
             //ExFor:StyleCollection.DefaultFont
             //ExFor:StyleCollection.DefaultParagraphFormat
