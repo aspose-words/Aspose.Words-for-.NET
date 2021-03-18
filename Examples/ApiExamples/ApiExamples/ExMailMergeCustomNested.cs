@@ -78,12 +78,12 @@ namespace ApiExamples
             {
                 FullName = aFullName;
                 Address = anAddress;
-                Orders = new OrderList();
+                Orders = new List<Order>();
             }
 
             public string FullName { get; set; }
             public string Address { get; set; }
-            public OrderList Orders { get; set; }
+            public List<Order> Orders { get; set; }
         }
 
         /// <summary>
@@ -111,18 +111,6 @@ namespace ApiExamples
 
             public string Name { get; set; }
             public int Quantity { get; set; }
-        }
-
-        /// <summary>
-        /// An example of a typed collection that contains your "data" objects.
-        /// </summary>
-        public class OrderList : ArrayList
-        {
-            public new Order this[int index]
-            {
-                get { return (Order) base[index]; }
-                set { base[index] = value; }
-            }
         }
 
         /// <summary>
@@ -205,7 +193,7 @@ namespace ApiExamples
 
         public class OrderMailMergeDataSource : IMailMergeDataSource
         {
-            public OrderMailMergeDataSource(OrderList orders)
+            public OrderMailMergeDataSource(List<Order> orders)
             {
                 mOrders = orders;
 
@@ -266,7 +254,7 @@ namespace ApiExamples
                 get { return (mRecordIndex >= mOrders.Count); }
             }
 
-            private readonly OrderList mOrders;
+            private readonly List<Order> mOrders;
             private int mRecordIndex;
         }
         //ExEnd
