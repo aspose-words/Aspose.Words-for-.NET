@@ -91,10 +91,6 @@ namespace ApiExamples
         [Test]
         public static void LoadPdfUsingPlugin()
         {
-            //ExStart
-            //ExFor:Pdf2Word
-            //ExFor:Pdf2Word.Read(Stream, LoadOptions, Document)
-            //ExSummary:Shows how to load a PDF document using the Aspose.Words Pdf2Word plugin.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -118,16 +114,11 @@ namespace ApiExamples
 
             Assert.AreEqual("Hello world! We are editing a PDF document that was loaded into Aspose.Words!", 
                 pdfDoc.GetText().Trim());
-            //ExEnd
         }
 
         [Test]
-        public static void LoadPdfUsingPluginCustom()
+        public static void LoadEncryptedPdfUsingPlugin()
         {
-            //ExStart
-            //ExFor:Pdf2Word
-            //ExFor:Pdf2Word.Read(Stream, LoadOptions, Document)
-            //ExSummary:Shows how to load a PDF document using the Aspose.Words Pdf2Word plugin.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -159,7 +150,6 @@ namespace ApiExamples
                 // the same way we would pass it into a document's "Load" method.
                 pdf2Word.Read(stream, new LoadOptions("MyPassword"), pdfDoc);
             }
-            //ExEnd
         }
     }
 }
