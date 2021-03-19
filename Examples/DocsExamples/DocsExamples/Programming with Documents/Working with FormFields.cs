@@ -26,7 +26,7 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document(MyDir + "Form fields.docx");
             FormField formField = doc.Range.FormFields[3];
 
-            if (formField.Type.Equals(FieldType.FieldFormTextInput))
+            if (formField.Type == FieldType.FieldFormTextInput)
                 formField.Result = "My name is " + formField.Name;
             //ExEnd:FormFieldsWorkWithProperties            
         }

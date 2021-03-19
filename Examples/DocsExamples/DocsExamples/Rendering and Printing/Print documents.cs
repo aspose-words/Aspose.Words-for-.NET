@@ -56,7 +56,7 @@ namespace DocsExamples.Rendering_and_Printing
             //ExEnd:PrintDialog
 
             //ExStart:ShowDialog
-            if (!printDlg.ShowDialog().Equals(DialogResult.OK))
+            if (printDlg.ShowDialog() != DialogResult.OK)
                 return;
             //ExEnd:ShowDialog
 
@@ -103,7 +103,7 @@ namespace DocsExamples.Rendering_and_Printing
 
             // Check if the user accepted the print settings and proceed to preview.
             //ExStart:CheckPrintSettings
-            if (!printDlg.ShowDialog().Equals(DialogResult.OK))
+            if (printDlg.ShowDialog() != DialogResult.OK)
                 return;
             //ExEnd:CheckPrintSettings
 

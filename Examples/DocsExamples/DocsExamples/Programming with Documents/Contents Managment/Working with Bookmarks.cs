@@ -203,7 +203,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             while (currentNode != null && flag)
             {
                 if (currentNode.NodeType == NodeType.Run)
-                    if (currentNode.ToString(SaveFormat.Text).Trim().Equals("\""))
+                    if (currentNode.ToString(SaveFormat.Text).Trim() == "\"")
                         flag = false;
 
                 Node nextNode = currentNode.NextSibling;

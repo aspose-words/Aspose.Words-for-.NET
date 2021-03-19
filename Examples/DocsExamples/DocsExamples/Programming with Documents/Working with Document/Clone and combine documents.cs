@@ -81,7 +81,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         //ExStart:InsertDocument
         private static void InsertDocument(Node insertionDestination, Document docToInsert)
         {
-            if (insertionDestination.NodeType.Equals(NodeType.Paragraph) || insertionDestination.NodeType.Equals(NodeType.Table))
+            if (insertionDestination.NodeType == NodeType.Paragraph || insertionDestination.NodeType == NodeType.Table)
             {
                 CompositeNode destinationParent = insertionDestination.ParentNode;
 
@@ -93,7 +93,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
                 foreach (Section srcSection in docToInsert.Sections.OfType<Section>())
                 foreach (Node srcNode in srcSection.Body)
                 {
-                    if (srcNode.NodeType.Equals(NodeType.Paragraph))
+                    if (srcNode.NodeType == NodeType.Paragraph)
                     {
                         Paragraph para = (Paragraph)srcNode;
                         if (para.IsEndOfSection && !para.HasChildNodes)
@@ -122,8 +122,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         /// <param name="srcDoc">The document to insert.</param>
         void InsertDocumentWithSectionFormatting(Node insertAfterNode, Document srcDoc)
         {
-            if (!insertAfterNode.NodeType.Equals(NodeType.Paragraph) &
-                !insertAfterNode.NodeType.Equals(NodeType.Table))
+            if (insertAfterNode.NodeType != NodeType.Paragraph &&
+                insertAfterNode.NodeType != NodeType.Table)
                 throw new ArgumentException("The destination node should be either a paragraph or table.");
 
             Document dstDoc = (Document) insertAfterNode.Document;

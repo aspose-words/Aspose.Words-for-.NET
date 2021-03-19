@@ -326,7 +326,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
                 if (mBuilder == null)
                     mBuilder = new DocumentBuilder(e.Document);
 
-                if (e.FieldName.Equals("CompanyName"))
+                if (e.FieldName == "CompanyName")
                 {
                     // Select the color depending on whether the row number is even or odd.
                     Color rowColor = IsOdd(mRowIdx) 
@@ -358,7 +358,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         /// </summary>
         private static bool IsOdd(int value)
         {
-            return (value / 2 * 2).Equals(value);
+            return (value / 2 * 2) == value;
         }
 
         /// <summary>

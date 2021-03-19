@@ -324,7 +324,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
 
             foreach (Field field in doc.Range.Fields)
             {
-                if (field.Type.Equals(FieldType.FieldHyperlink))
+                if (field.Type == FieldType.FieldHyperlink)
                 {
                     FieldHyperlink hyperlink = (FieldHyperlink) field;
                     if (hyperlink.SubAddress != null && hyperlink.SubAddress.StartsWith("_Toc"))

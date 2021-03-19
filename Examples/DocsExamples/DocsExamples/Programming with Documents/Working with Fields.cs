@@ -87,7 +87,7 @@ namespace DocsExamples.Programming_with_Documents
             NodeCollection fieldStarts = doc.GetChildNodes(NodeType.FieldStart, true);
             foreach (FieldStart fieldStart in fieldStarts)
             {
-                if (fieldStart.FieldType.Equals(FieldType.FieldMergeField))
+                if (fieldStart.FieldType == FieldType.FieldMergeField)
                 {
                     MergeField mergeField = new MergeField(fieldStart);
                     mergeField.Name += "_Renamed";
@@ -106,9 +106,9 @@ namespace DocsExamples.Programming_with_Documents
         {
             internal MergeField(FieldStart fieldStart)
             {
-                if (fieldStart.Equals(null))
+                if (fieldStart == null)
                     throw new ArgumentNullException(nameof(fieldStart));
-                if (!fieldStart.FieldType.Equals(FieldType.FieldMergeField))
+                if (fieldStart.FieldType != FieldType.FieldMergeField)
                     throw new ArgumentException("Field start type must be FieldMergeField.");
 
                 mFieldStart = fieldStart;
