@@ -540,7 +540,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         [Test]
         public void IgnoreHeaderFooter()
         {
-            // ExStart:IgnoreHeaderFooter
+            //ExStart:IgnoreHeaderFooter
             Document srcDocument = new Document(MyDir + "Document source.docx");
             Document dstDocument = new Document(MyDir + "Northwind traders.docx");
 
@@ -549,7 +549,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             dstDocument.AppendDocument(srcDocument, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
             
             dstDocument.Save(ArtifactsDir + "JoinAndAppendDocuments.IgnoreHeaderFooter.docx");
-            // ExEnd:IgnoreHeaderFooter
+            //ExEnd:IgnoreHeaderFooter
         }
 
         [Test]

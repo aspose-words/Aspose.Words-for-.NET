@@ -83,7 +83,7 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void ProcessComments()
         {
-            // ExStart:ProcessComments
+            //ExStart:ProcessComments
             Document doc = new Document(MyDir + "Comments.docx");
 
             // Extract the information about the comments of all the authors.

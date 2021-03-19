@@ -28,7 +28,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
             doc.MailMerge.ExecuteWithRegions(data);
 
             // Regions without data and not merged will remain in the document.
-            Document mergedDoc = doc.Clone(); // ExSkip
+            Document mergedDoc = doc.Clone(); //ExSkip
             
             // Apply logic to each unused region left in the document.
             ExecuteCustomLogicOnEmptyRegions(doc, new EmptyRegionsHandler());

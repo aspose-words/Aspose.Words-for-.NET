@@ -237,7 +237,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
         [Test]
         public void IgnoreTextInsideInsertRevisions()
         {
-            // ExStart:IgnoreTextInsideInsertRevisions
+            //ExStart:IgnoreTextInsideInsertRevisions
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -260,7 +260,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             doc.Range.Replace(regex, "*", options);
             
             Console.WriteLine(doc.GetText());
-            // ExEnd:IgnoreTextInsideInsertRevisions
+            //ExEnd:IgnoreTextInsideInsertRevisions
         }
 
         [Test]
@@ -352,7 +352,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
 
             private readonly StringBuilder mTextBuilder = new StringBuilder();
         }
-        // ExEnd:ShowChangesForHeaderAndFooterOrders
+        //ExEnd:ShowChangesForHeaderAndFooterOrders
 
         [Test]
         public void ReplaceTextWithField()
@@ -496,7 +496,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
         //ExEnd:MyReplaceEvaluator
 
         [Test]
-        // ExStart:ReplaceWithHtml
+        //ExStart:ReplaceWithHtml
         public void ReplaceWithHtml()
         {
             Document doc = new Document();

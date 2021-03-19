@@ -195,7 +195,7 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void InsertTOAFieldWithoutDocumentBuilder()
         {
-            // ExStart:InsertTOAFieldWithoutDocumentBuilder
+            //ExStart:InsertTOAFieldWithoutDocumentBuilder
             Document doc = new Document();
             Paragraph para = new Paragraph(doc);
 
@@ -224,7 +224,7 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void InsertNestedFields()
         {
-            // ExStart:InsertNestedFields
+            //ExStart:InsertNestedFields
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -375,7 +375,7 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void InsertAuthorField()
         {
-            // ExStart:InsertAuthorField
+            //ExStart:InsertAuthorField
             Document doc = new Document();
 
             Paragraph para = (Paragraph) doc.GetChildNodes(NodeType.Paragraph, true)[0];

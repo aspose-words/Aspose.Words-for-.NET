@@ -53,7 +53,7 @@ namespace DocsExamples.Rendering_and_Printing
                     MinimumPage = 1, MaximumPage = doc.PageCount, FromPage = 1, ToPage = doc.PageCount
                 }
             };
-            // ExEnd:PrintDialog
+            //ExEnd:PrintDialog
 
             //ExStart:ShowDialog
             if (!printDlg.ShowDialog().Equals(DialogResult.OK))

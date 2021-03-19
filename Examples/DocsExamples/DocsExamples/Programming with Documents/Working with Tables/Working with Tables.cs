@@ -185,7 +185,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         [Test]
         public void AutoFitTableToPageWidth()
         {
-            // ExStart:AutoFitTableToPageWidth
+            //ExStart:AutoFitTableToPageWidth
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -1120,7 +1120,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         [Test]
         public void SetRelativeHorizontalOrVerticalPosition()
         {
-            // ExStart:SetRelativeHorizontalOrVerticalPosition
+            //ExStart:SetRelativeHorizontalOrVerticalPosition
             Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
             Table table = doc.FirstSection.Body.Tables[0];
@@ -1128,7 +1128,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             table.VerticalAnchor = RelativeVerticalPosition.Page;
 
             doc.Save(ArtifactsDir + "WorkingWithTables.SetFloatingTablePosition.docx");
-            // ExEnd:SetRelativeHorizontalOrVerticalPosition
+            //ExEnd:SetRelativeHorizontalOrVerticalPosition
         }
     }
 }

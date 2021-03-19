@@ -12,9 +12,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
         [Test]
         public void RemovePageBreaks()
         {
-            // ExStart:OpenFromFile
+            //ExStart:OpenFromFile
             Document doc = new Document(MyDir + "Document.docx");
-            // ExEnd:OpenFromFile
+            //ExEnd:OpenFromFile
 
             // In Aspose.Words section breaks are represented as separate Section nodes in the document.
             // To remove these separate sections, the sections are combined.
