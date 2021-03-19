@@ -39,6 +39,7 @@
             this.CB_EnableAsposeWordsMetadataCleaner = this.Factory.CreateRibbonCheckBox();
             this.AsposeTab.SuspendLayout();
             this.AsposeWords.SuspendLayout();
+            this.SuspendLayout();
             // 
             // AsposeTab
             // 
@@ -69,6 +70,7 @@
             this.AsposeTab.PerformLayout();
             this.AsposeWords.ResumeLayout(false);
             this.AsposeWords.PerformLayout();
+            this.ResumeLayout(false);
 
         }
 
