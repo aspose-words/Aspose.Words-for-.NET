@@ -110,6 +110,7 @@ namespace ApiExamples
 
             builder = new DocumentBuilder(pdfDoc);
 
+            builder.MoveToDocumentEnd();
             builder.Writeln(" We are editing a PDF document that was loaded into Aspose.Words!");
 
             Assert.AreEqual("Hello world! We are editing a PDF document that was loaded into Aspose.Words!", 
@@ -133,7 +134,7 @@ namespace ApiExamples
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.EncryptionDetails = encryptionDetails;
 
-            doc.Save(ArtifactsDir + "PDF2Word.LoadPdfUsingPluginCustom.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "PDF2Word.LoadEncryptedPdfUsingPlugin.pdf", saveOptions);
 
             Document pdfDoc = new Document();
 
@@ -144,12 +145,15 @@ namespace ApiExamples
 
             Aspose.Words.Pdf2Word.PdfDocumentReaderPlugin pdf2Word = new Aspose.Words.Pdf2Word.PdfDocumentReaderPlugin();
             using (FileStream stream =
-                new FileStream(ArtifactsDir + "PDF2Word.LoadPdfUsingPluginCustom.pdf", FileMode.Open))
+                new FileStream(ArtifactsDir + "PDF2Word.LoadEncryptedPdfUsingPlugin.pdf", FileMode.Open))
             {
                 // Pass the LoadOptions object into the Pdf2Word plugin's "Read" method
                 // the same way we would pass it into a document's "Load" method.
                 pdf2Word.Read(stream, new LoadOptions("MyPassword"), pdfDoc);
             }
+
+            Assert.AreEqual("Hello world! This is an encrypted PDF document.",
+                pdfDoc.GetText().Trim());
         }
     }
 }
