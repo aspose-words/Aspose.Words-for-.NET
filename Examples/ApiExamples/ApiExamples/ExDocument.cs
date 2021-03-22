@@ -48,7 +48,7 @@ namespace ApiExamples
         public void Constructor()
         {
             //ExStart
-            //ExFor:Document.#ctor(Boolean)
+            //ExFor:Document.#ctor()
             //ExFor:Document.#ctor(String,LoadOptions)
             //ExSummary:Shows how to create and load documents.
             // There are two ways of creating a Document object using Aspose.Words.
@@ -1488,7 +1488,7 @@ namespace ApiExamples
         public void ImageSaveOptions()
         {
             //ExStart
-            //ExFor:Document.Save(Stream, String, Saving.SaveOptions)
+            //ExFor:Document.Save(String, Saving.SaveOptions)
             //ExFor:SaveOptions.UseAntiAliasing
             //ExFor:SaveOptions.UseHighQualityRendering
             //ExSummary:Shows how to improve the quality of a rendered document with SaveOptions.

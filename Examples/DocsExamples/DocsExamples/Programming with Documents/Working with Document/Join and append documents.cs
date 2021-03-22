@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using Aspose.Words;
 using Aspose.Words.Fields;
@@ -363,7 +364,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             srcDoc.FirstSection.PageSetup.SectionStart = SectionStart.Continuous;
 
             // Keep track of the lists that are created.
-            Hashtable newLists = new Hashtable();
+            Dictionary<int, Aspose.Words.Lists.List> newLists = new Dictionary<int, Aspose.Words.Lists.List>();
 
             foreach (Paragraph para in srcDoc.GetChildNodes(NodeType.Paragraph, true))
             {
@@ -378,9 +379,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
                         Aspose.Words.Lists.List currentList;
                         // A newly copied list already exists for this ID, retrieve the stored list,
                         // and use it on the current paragraph.
-                        if (newLists.Contains(listId))
+                        if (newLists.ContainsKey(listId))
                         {
-                            currentList = (Aspose.Words.Lists.List) newLists[listId];
+                            currentList = newLists[listId];
                         }
                         else
                         {
@@ -539,7 +540,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         [Test]
         public void IgnoreHeaderFooter()
         {
-            // ExStart:IgnoreHeaderFooter
+            //ExStart:IgnoreHeaderFooter
             Document srcDocument = new Document(MyDir + "Document source.docx");
             Document dstDocument = new Document(MyDir + "Northwind traders.docx");
 
@@ -548,7 +549,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             dstDocument.AppendDocument(srcDocument, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
             
             dstDocument.Save(ArtifactsDir + "JoinAndAppendDocuments.IgnoreHeaderFooter.docx");
-            // ExEnd:IgnoreHeaderFooter
+            //ExEnd:IgnoreHeaderFooter
         }
 
         [Test]

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
@@ -27,7 +28,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
             doc.MailMerge.ExecuteWithRegions(data);
 
             // Regions without data and not merged will remain in the document.
-            Document mergedDoc = doc.Clone(); // ExSkip
+            Document mergedDoc = doc.Clone(); //ExSkip
             
             // Apply logic to each unused region left in the document.
             ExecuteCustomLogicOnEmptyRegions(doc, new EmptyRegionsHandler());
@@ -45,7 +46,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
             doc = mergedDoc.Clone();
             
             //ExStart:ContactDetails 
-            ArrayList regions = new ArrayList();
+            List<string> regions = new List<string>();
             regions.Add("ContactDetails");
 
             // Only handle the ContactDetails region in our handler.
@@ -58,10 +59,10 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
         //ExStart:CreateDataSourceFromDocumentRegions
         /// <summary>
         /// Returns a DataSet object containing a DataTable for the unmerged regions in the specified document.
-        /// If regionsList is null all regions found within the document are included. If an ArrayList instance is present,
+        /// If regionsList is null all regions found within the document are included. If an List instance is present,
         /// the only regions specified in the list found in the document are added.
         /// </summary>
-        private DataSet CreateDataSourceFromDocumentRegions(Document doc, ArrayList regionsList)
+        private DataSet CreateDataSourceFromDocumentRegions(Document doc, List<string> regionsList)
         {
             const string tableStartMarker = "TableStart:";
             DataSet dataSet = new DataSet();
@@ -122,7 +123,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
         /// <param name="regionsList">A list of strings corresponding to the region names that are to be handled
         /// by the supplied handler class. Other regions encountered will not be handled and are removed automatically.</param>
         public void ExecuteCustomLogicOnEmptyRegions(Document doc, IFieldMergingCallback handler,
-            ArrayList regionsList)
+            List<string> regionsList)
         {
             // Certain regions can be skipped from applying logic to by not adding
             // the table name inside the CreateEmptyDataSource method. Enable this cleanup option, so any regions

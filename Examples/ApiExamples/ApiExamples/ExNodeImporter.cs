@@ -110,7 +110,7 @@ namespace ApiExamples
         /// </summary>
         static void InsertDocument(Node insertionDestination, Document docToInsert)
         {
-            if (insertionDestination.NodeType.Equals(NodeType.Paragraph) || insertionDestination.NodeType.Equals(NodeType.Table))
+            if (insertionDestination.NodeType == NodeType.Paragraph || insertionDestination.NodeType == NodeType.Table)
             {
                 CompositeNode destinationParent = insertionDestination.ParentNode;
 
@@ -122,7 +122,7 @@ namespace ApiExamples
                 foreach (Section srcSection in docToInsert.Sections.OfType<Section>())
                     foreach (Node srcNode in srcSection.Body)
                     {
-                        if (srcNode.NodeType.Equals(NodeType.Paragraph))
+                        if (srcNode.NodeType == NodeType.Paragraph)
                         {
                             Paragraph para = (Paragraph)srcNode;
                             if (para.IsEndOfSection && !para.HasChildNodes)

@@ -864,7 +864,7 @@ namespace ApiExamples
 
             foreach (Shape shape in shapes)
             {
-                if (shape.ShapeType.Equals(ShapeType.TextBox))
+                if (shape.ShapeType == ShapeType.TextBox)
                 {
                     Shape replacementShape = new Shape(doc, ShapeType.Image);
                     replacementShape.ImageData.SetImage(ImageDir + "Logo.jpg");
@@ -1687,7 +1687,6 @@ namespace ApiExamples
         //ExStart
         //ExFor:Shape.Accept(DocumentVisitor)
         //ExFor:Shape.Chart
-        //ExFor:Shape.Clone(Boolean, INodeCloningListener)
         //ExFor:Shape.ExtrusionEnabled
         //ExFor:Shape.Filled
         //ExFor:Shape.HasChart

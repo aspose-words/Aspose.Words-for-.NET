@@ -17,10 +17,10 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         [Test]
         public void Unprotect()
         {
-            // ExStart:UnprotectDocument
+            //ExStart:UnprotectDocument
             Document doc = new Document(MyDir + "Document.docx");
             doc.Unprotect();
-            // ExEnd:UnprotectDocument
+            //ExEnd:UnprotectDocument
         }
 
         [Test]

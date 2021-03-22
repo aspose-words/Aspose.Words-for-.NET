@@ -215,7 +215,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
 
             // Ignore metafiles, they are vector drawings, and we don't want to resample them.
             ImageType imageType = imageData.ImageType;
-            if (imageType.Equals(ImageType.Wmf) || imageType.Equals(ImageType.Emf))
+            if (imageType == ImageType.Wmf || imageType == ImageType.Emf)
                 return false;
 
             try

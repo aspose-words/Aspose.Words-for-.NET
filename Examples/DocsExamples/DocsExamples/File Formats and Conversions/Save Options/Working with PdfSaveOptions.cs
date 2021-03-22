@@ -121,14 +121,14 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         [Test]
         public void DisableEmbedWindowsFonts()
         {
-            // ExStart:DisableEmbedWindowsFonts
+            //ExStart:DisableEmbedWindowsFonts
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // The output PDF will be saved without embedding standard windows fonts.
             PdfSaveOptions saveOptions = new PdfSaveOptions { FontEmbeddingMode = PdfFontEmbeddingMode.EmbedNone };
             
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.DisableEmbedWindowsFonts.pdf", saveOptions);
-            // ExEnd:DisableEmbedWindowsFonts
+            //ExEnd:DisableEmbedWindowsFonts
         }
 
         [Test]
@@ -260,7 +260,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             saveOptions.OutlineOptions.ExpandedOutlineLevels = 1;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.SetOutlineOptions.pdf", saveOptions);
-            // ExEnd:SetOutlineOptions
+            //ExEnd:SetOutlineOptions
         }
 
         [Test]

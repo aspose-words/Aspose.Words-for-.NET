@@ -44,8 +44,7 @@ namespace ApiExamples
 
             CreateSignees();
 
-            Signee signeeInfo =
-                (from c in mSignees where c.Name == signeeName select c).FirstOrDefault();
+            Signee signeeInfo = mSignees.Find(c => c.Name == signeeName);
 
             if (signeeInfo != null)
                 SignDocument(srcDocumentPath, dstDocumentPath, signeeInfo, certificatePath, certificatePassword);

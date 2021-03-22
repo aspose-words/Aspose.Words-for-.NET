@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -67,7 +68,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
                     currentNode = SplitRun((Run) currentNode, e.MatchOffset);
 
                 // This array is used to store all nodes of the match for further highlighting.
-                ArrayList runs = new ArrayList();
+                List<Run> runs = new List<Run>();
 
                 // Find all runs that contain parts of the match string.
                 int remainingLength = e.Match.Value.Length;
@@ -76,7 +77,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
                     currentNode != null &&
                     currentNode.GetText().Length <= remainingLength)
                 {
-                    runs.Add(currentNode);
+                    runs.Add((Run) currentNode);
                     remainingLength -= currentNode.GetText().Length;
 
                     // Select the next Run node.
@@ -91,7 +92,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
                 if (currentNode != null && remainingLength > 0)
                 {
                     SplitRun((Run) currentNode, remainingLength);
-                    runs.Add(currentNode);
+                    runs.Add((Run) currentNode);
                 }
 
                 // Now highlight all runs in the sequence.
@@ -236,7 +237,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
         [Test]
         public void IgnoreTextInsideInsertRevisions()
         {
-            // ExStart:IgnoreTextInsideInsertRevisions
+            //ExStart:IgnoreTextInsideInsertRevisions
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -259,7 +260,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             doc.Range.Replace(regex, "*", options);
             
             Console.WriteLine(doc.GetText());
-            // ExEnd:IgnoreTextInsideInsertRevisions
+            //ExEnd:IgnoreTextInsideInsertRevisions
         }
 
         [Test]
@@ -351,7 +352,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
 
             private readonly StringBuilder mTextBuilder = new StringBuilder();
         }
-        // ExEnd:ShowChangesForHeaderAndFooterOrders
+        //ExEnd:ShowChangesForHeaderAndFooterOrders
 
         [Test]
         public void ReplaceTextWithField()
@@ -378,10 +379,10 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
 
             public ReplaceAction Replacing(ReplacingArgs args)
             {
-                ArrayList runs = FindAndSplitMatchRuns(args);
+                List<Run> runs = FindAndSplitMatchRuns(args);
 
                 DocumentBuilder builder = new DocumentBuilder((Document) args.MatchNode.Document);
-                builder.MoveTo((Run) runs[runs.Count - 1]);
+                builder.MoveTo(runs[runs.Count - 1]);
 
                 // Calculate the field's name from the FieldType enumeration by removing
                 // the first instance of "Field" from the text. This works for almost all of the field types.
@@ -398,9 +399,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             }
 
             /// <summary>
-            /// Finds and splits the match runs and returns them in an ArrayList.
+            /// Finds and splits the match runs and returns them in an List.
             /// </summary>
-            public ArrayList FindAndSplitMatchRuns(ReplacingArgs args)
+            public List<Run> FindAndSplitMatchRuns(ReplacingArgs args)
             {
                 // This is a Run node that contains either the beginning or the complete match.
                 Node currentNode = args.MatchNode;
@@ -411,7 +412,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
                     currentNode = SplitRun((Run) currentNode, args.MatchOffset);
 
                 // This array is used to store all nodes of the match for further removing.
-                ArrayList runs = new ArrayList();
+                List<Run> runs = new List<Run>();
 
                 // Find all runs that contain parts of the match string.
                 int remainingLength = args.Match.Value.Length;
@@ -420,7 +421,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
                     currentNode != null &&
                     currentNode.GetText().Length <= remainingLength)
                 {
-                    runs.Add(currentNode);
+                    runs.Add((Run) currentNode);
                     remainingLength -= currentNode.GetText().Length;
 
                     do
@@ -433,7 +434,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
                 if (currentNode != null && remainingLength > 0)
                 {
                     SplitRun((Run) currentNode, remainingLength);
-                    runs.Add(currentNode);
+                    runs.Add((Run) currentNode);
                 }
 
                 return runs;
@@ -495,7 +496,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
         //ExEnd:MyReplaceEvaluator
 
         [Test]
-        // ExStart:ReplaceWithHtml
+        //ExStart:ReplaceWithHtml
         public void ReplaceWithHtml()
         {
             Document doc = new Document();

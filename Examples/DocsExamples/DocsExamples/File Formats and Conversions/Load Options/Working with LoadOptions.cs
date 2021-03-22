@@ -183,11 +183,11 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         [Test]
         public void LoadChm()
         {
-            // ExStart:LoadCHM
+            //ExStart:LoadCHM
             LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.GetEncoding("windows-1251") };
 
             Document doc = new Document(MyDir + "HTML help.chm", loadOptions);
-            // ExEnd:LoadCHM
+            //ExEnd:LoadCHM
         }
     }
 }
