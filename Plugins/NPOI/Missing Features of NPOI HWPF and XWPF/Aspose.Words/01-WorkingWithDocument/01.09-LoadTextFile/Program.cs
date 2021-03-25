@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text; using Aspose.Words;
+using System.IO;
+using Aspose.Words;
 
 namespace _01._09_LoadTextFile
 {
@@ -8,11 +8,20 @@ namespace _01._09_LoadTextFile
     {
         static void Main(string[] args)
         {
-            // The encoding of the text file is automatically detected.
-            
+            // Check for an Aspose.Words license file in the local file system and apply it, if it exists.
+            string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
+            if (File.Exists(licenseFile))
+            {
+                Aspose.Words.License license = new Aspose.Words.License();
+
+                // Use the license from the bin/debug/ Folder.
+                license.SetLicense("Aspose.Words.lic");
+            }
+
+            // Load a plaintext file. Aspose.Words will determine its encoding automatically.
             Document doc = new Document("../../data/LoadTxt.txt");
 
-            // Save as any Aspose.Words supported format, such as DOCX.
+            // Save the document to the DOCX format.
             doc.Save("AsposeLoadTxt_Out.docx");
         }
     }

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text; using Aspose.Words;
+using Aspose.Words;
 using System.IO;
 using System.Data;
-using System.Reflection;
 
 namespace _04._01_MailMergefromXMLDataSource
 {
@@ -11,6 +9,16 @@ namespace _04._01_MailMergefromXMLDataSource
     {
         static void Main(string[] args)
         {
+            // Check for an Aspose.Words license file in the local file system and apply it, if it exists.
+            string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
+            if (File.Exists(licenseFile))
+            {
+                Aspose.Words.License license = new Aspose.Words.License();
+
+                // Use the license from the bin/debug/ Folder.
+                license.SetLicense("Aspose.Words.lic");
+            }
+
             // Create the Dataset and read the XML.
             DataSet customersDs = new DataSet();
             customersDs.ReadXml("../../data/Customers.xml");
@@ -22,7 +30,7 @@ namespace _04._01_MailMergefromXMLDataSource
             doc.MailMerge.Execute(customersDs.Tables["Customer"]);
 
             // Save the output document.
-            doc.Save("TestFile XML Out.doc");
+            doc.Save("MailMergefromXMLDataSource.docx");
         }
     }
 }

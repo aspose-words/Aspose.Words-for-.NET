@@ -20,6 +20,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -80,7 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Aspose.Words.GridViewExport\Aspose.Words.GridViewExport.csproj">
-      <Project>{B093B244-E5B8-4008-984A-A3EE59F56DF6}</Project>
+      <Project>{b093b244-e5b8-4008-984a-a3ee59f56df6}</Project>
       <Name>Aspose.Words.GridViewExport</Name>
     </ProjectReference>
   </ItemGroup>

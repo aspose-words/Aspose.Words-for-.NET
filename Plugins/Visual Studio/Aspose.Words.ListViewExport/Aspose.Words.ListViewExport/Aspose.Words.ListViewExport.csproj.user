@@ -5,6 +5,7 @@
     <StartProgram>
     </StartProgram>
     <StartArguments>/rootsuffix Exp</StartArguments>
+    <DeployTargetInstanceId />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <StartAction>Program</StartAction>

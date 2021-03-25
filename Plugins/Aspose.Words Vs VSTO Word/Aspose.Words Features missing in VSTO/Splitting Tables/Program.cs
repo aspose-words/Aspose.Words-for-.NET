@@ -1,10 +1,5 @@
 ﻿using Aspose.Words;
 using Aspose.Words.Tables;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Splitting_Tables
 {
@@ -12,10 +7,10 @@ namespace Splitting_Tables
     {
         static void Main(string[] args)
         {
-            string MyDir = @"E:\Aspose\Aspose Vs VSTO\Aspose.Words Features missing in VSTO 1.1\Sample Files\";
-            
-            // Load the document.
-            Document doc = new Document(MyDir + "Splitting_Tables.doc");
+            string filePath = @"..\..\..\..\Sample Files\";
+
+            // Load a document that contains tables from the local file system.
+            Document doc = new Document(filePath + "Tables.docx");
 
             // Get the first table in the document.
             Table firstTable = (Table)doc.GetChild(NodeType.Table, 0, true);
@@ -41,7 +36,7 @@ namespace Splitting_Tables
             }
             while (currentRow != row);
 
-            doc.Save(MyDir + "Splitting_Tables_Out.doc");
+            doc.Save(filePath + "Tables Split.docx");
         }
     }
 }
