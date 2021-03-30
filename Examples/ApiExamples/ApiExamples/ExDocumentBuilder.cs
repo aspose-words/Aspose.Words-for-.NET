@@ -23,6 +23,7 @@ using Table = Aspose.Words.Tables.Table;
 using System.Drawing;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Lists;
+using Aspose.Words.Notes;
 using Aspose.Words.Saving;
 using List = NUnit.Framework.List;
 

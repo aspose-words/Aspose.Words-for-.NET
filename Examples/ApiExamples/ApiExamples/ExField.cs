@@ -21,11 +21,12 @@ using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
+using Aspose.Words.Notes;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
-using LoadOptions = Aspose.Words.LoadOptions;
+using LoadOptions = Aspose.Words.Loading.LoadOptions;
 #if NET462 || JAVA
 using Aspose.BarCode.BarCodeRecognition;
 #elif NETCOREAPP2_1

@@ -13,6 +13,7 @@ using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Loading;
 using Aspose.Words.Markup;
 using NUnit.Framework;
 
