@@ -102,7 +102,7 @@ namespace ApiExamples
 
             using (WebClient webClient = new WebClient())
             {
-                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
+                byte[] imageBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
 
                 using (MemoryStream stream = new MemoryStream(imageBytes))
                 {
@@ -177,7 +177,7 @@ namespace ApiExamples
 
             using (WebClient webClient = new WebClient())
             {
-                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
+                byte[] imageBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
 
                 using (MemoryStream stream = new MemoryStream(imageBytes))
                 {
@@ -185,7 +185,7 @@ namespace ApiExamples
 
                     // The image in the URL is a .gif. Inserting it into a document converts it into a .png.
                     Shape imgShape = builder.InsertImage(image);
-                    Assert.AreEqual(ImageType.Png, imgShape.ImageData.ImageType);
+                    Assert.AreEqual(ImageType.Jpeg, imgShape.ImageData.ImageType);
                 }
             }
             //ExEnd
