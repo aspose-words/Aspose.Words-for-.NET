@@ -33,7 +33,7 @@ namespace ApiExamples
             builder.Write("Hello world!");
 
             DocSaveOptions options = new DocSaveOptions(SaveFormat.Doc);
-
+            
             // Set a password which will protect the loading of the document by Microsoft Word or Aspose.Words.
             // Note that this does not encrypt the contents of the document in any way.
             options.Password = "MyPassword";
@@ -109,6 +109,7 @@ namespace ApiExamples
             //ExFor:SaveOptions.UpdateLastPrintedProperty
             //ExSummary:Shows how to update a document's "Last printed" property when saving.
             Document doc = new Document();
+            doc.BuiltInDocumentProperties.LastPrinted = new DateTime(2019, 12, 20);
 
             // This flag determines whether the last printed date, which is a built-in property, is updated.
             // If so, then the date of the document's most recent save operation
@@ -123,7 +124,32 @@ namespace ApiExamples
             // Open the saved document, then verify the value of the property.
             doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.doc");
 
-            Assert.AreNotEqual(isUpdateLastPrintedProperty, (DateTime.MinValue.Date == doc.BuiltInDocumentProperties.LastPrinted));
+            Assert.AreNotEqual(isUpdateLastPrintedProperty, new DateTime(2019, 12, 20) == doc.BuiltInDocumentProperties.LastPrinted);
+            //ExEnd
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void UpdateCreatedTimeProperty(bool isUpdateCreatedTimeProperty)
+        {
+            //ExStart
+            //ExFor:SaveOptions.UpdateLastPrintedProperty
+            //ExSummary:Shows how to update a document's "CreatedTime" property when saving.
+            Document doc = new Document();
+            doc.BuiltInDocumentProperties.CreatedTime = new DateTime(2019, 12, 20);
+
+            // This flag determines whether the created time, which is a built-in property, is updated.
+            // If so, then the date of the document's most recent save operation
+            // with this SaveOptions object passed as a parameter is used as the created time.
+            DocSaveOptions saveOptions = new DocSaveOptions();
+            saveOptions.UpdateCreatedTimeProperty = isUpdateCreatedTimeProperty;
+
+            doc.Save(ArtifactsDir + "DocSaveOptions.UpdateCreatedTimeProperty.docx", saveOptions);
+
+            // Open the saved document, then verify the value of the property.
+            doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateCreatedTimeProperty.docx");
+
+            Assert.AreNotEqual(isUpdateCreatedTimeProperty, new DateTime(2019, 12, 20) == doc.BuiltInDocumentProperties.CreatedTime);
             //ExEnd
         }
 
