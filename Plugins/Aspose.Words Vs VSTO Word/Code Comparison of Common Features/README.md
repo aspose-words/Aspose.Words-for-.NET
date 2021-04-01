@@ -1,6 +1,6 @@
 ## Code Comparison of Features between Aspose.Words and VSTO Word
 
-This section contains the following Examples
+This solution contains the following projects:
 * [Add Bookmark](https://docs.aspose.com/display/wordsnet/Add+Bookmark)
 * [Add Headers and Footers to Doc](https://docs.aspose.com/display/wordsnet/Add+Headers+and+Footers)
 * [Add Picture](https://docs.aspose.com/display/wordsnet/Add+Picture)

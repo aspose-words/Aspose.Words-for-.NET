@@ -3,7 +3,7 @@ using System.Collections;
 using System.IO;
 using System.Net;
 using System.Security;
-using Aspose.Words;
+using Aspose.Words.DigitalSignatures;
 using NUnit.Framework;
 #if NET462 || MAC || JAVA
 using Org.BouncyCastle.Pkcs;

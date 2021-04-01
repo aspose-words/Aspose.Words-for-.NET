@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.UI.HtmlControls;
 using System.Web;
 using System.ComponentModel;
-using System.Collections.Generic;
-using System.Collections;
 using System.IO;
-using System.Configuration;
-using Aspose.Words;
 using System.Text;
 using System.Drawing;
 

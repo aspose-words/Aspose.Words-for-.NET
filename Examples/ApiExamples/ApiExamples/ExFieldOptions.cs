@@ -7,12 +7,12 @@
 
 using System.Drawing;
 using System.Globalization;
-using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Loading;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -413,8 +413,6 @@ namespace ApiExamples
 
             // We can use a custom IBarcodeGenerator implementation to generate barcodes,
             // and then insert them into the document as images.
-            // We can find the source code for the barcode generator here:
-            // https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/ApiExamples/CSharp/ApiExamples/CustomBarcodeGenerator.cs
             doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
 
             // Below are four examples of different barcode types that we can create using our generator.
@@ -479,18 +477,15 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.docx");
             //ExEnd
 
-            TestUtil.VerifyImage(378, 378, ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
-            TestUtil.VerifyImage(220, 78, ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
-            TestUtil.VerifyImage(414, 65, ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
-            TestUtil.VerifyImage(300, 65, ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");
+            TestUtil.VerifyImage(223, 223, ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
+            TestUtil.VerifyImage(117, 108, ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
+            TestUtil.VerifyImage(397, 70, ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
+            TestUtil.VerifyImage(633, 134, ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");
 
             doc = new Document(ArtifactsDir + "FieldOptions.BarcodeGenerator.docx");
             Shape barcode = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             Assert.True(barcode.HasImage);
-
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK,
-                "https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/ApiExamples/CSharp/ApiExamples/CustomBarcodeGenerator.cs");
         }
 #endif
     }

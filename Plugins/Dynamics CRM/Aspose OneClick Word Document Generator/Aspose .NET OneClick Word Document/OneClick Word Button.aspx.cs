@@ -46,7 +46,8 @@ namespace Aspose.NET_OneClick_Word_Document
                     try
                     {
                         string LicenseFilePath = ConfigurationManager.AppSettings["LicenseFilePath"];
-                        // Check for license and apply if exists
+
+                        // Check for license and apply if exists.
                         if (File.Exists(LicenseFilePath))
                         {
                             License license = new License();

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Aspose.Words;
+using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
 #if NET462 || JAVA

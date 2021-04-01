@@ -772,7 +772,7 @@ namespace ApiExamples
         public void Fill()
         {
             //ExStart
-            //ExFor:Shape.Fill
+            //ExFor:ShapeBase.Fill
             //ExFor:Shape.FillColor
             //ExFor:Shape.StrokeColor
             //ExFor:Fill
@@ -1432,7 +1432,7 @@ namespace ApiExamples
 
             // Basic shapes, such as the rectangle, have two visible parts.
             // 1 -  The fill, which applies to the area within the outline of the shape:
-            shape.Fill.Color = Color.White;
+            shape.Fill.ForeColor = Color.White;
 
             // 2 -  The stroke, which marks the outline of the shape:
             // Modify various properties of this shape's stroke.
@@ -1571,7 +1571,7 @@ namespace ApiExamples
                 };
 
 
-                watermark.Fill.Color = Color.Gainsboro;
+                watermark.Fill.ForeColor = Color.Gainsboro;
                 watermark.StrokeColor = Color.Gainsboro;
 
                 watermark.TextPath.Text = string.Format("{0}", num);

@@ -11,8 +11,10 @@ using System.IO;
 using System.Text;
 using Aspose.Pdf.Text;
 using Aspose.Words;
+using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Loading;
 using Aspose.Words.Markup;
 using NUnit.Framework;
 

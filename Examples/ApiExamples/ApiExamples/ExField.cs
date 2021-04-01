@@ -15,19 +15,18 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Xml;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.MailMerging;
+using Aspose.Words.Notes;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
-using LoadOptions = Aspose.Words.LoadOptions;
-using Aspose.Words.Fonts;
+using LoadOptions = Aspose.Words.Loading.LoadOptions;
 #if NET462 || JAVA
 using Aspose.BarCode.BarCodeRecognition;
 #elif NETCOREAPP2_1
@@ -408,8 +407,10 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Field.BarCodeWord2Pdf.pdf");
 
-            BarCodeReader barCode = BarCodeReaderPdf(ArtifactsDir + "Field.BarCodeWord2Pdf.pdf");
-            Assert.AreEqual("QR", barCode.GetCodeType().ToString());
+            using (BarCodeReader barCodeReader = BarCodeReaderPdf(ArtifactsDir + "Field.BarCodeWord2Pdf.pdf"))
+            {
+                Assert.AreEqual("QR", barCodeReader.FoundBarCodes[0].CodeTypeName);
+            }
         }
 
         private BarCodeReader BarCodeReaderPdf(string filename)
@@ -433,10 +434,9 @@ namespace ApiExamples
 
             // Recognize the barcode from the image stream above.
             BarCodeReader barcodeReader = new BarCodeReader(imageStream, DecodeType.QR);
-            while (barcodeReader.Read())
-                Console.WriteLine("Codetext found: " + barcodeReader.GetCodeText() + ", Symbology: " + barcodeReader.GetCodeType());
 
-            barcodeReader.Close();
+            foreach (BarCodeResult result in barcodeReader.ReadBarCodes())
+                Console.WriteLine("Codetext found: " + result.CodeText + ", Symbology: " + result.CodeTypeName);
 
             return barcodeReader;
         }

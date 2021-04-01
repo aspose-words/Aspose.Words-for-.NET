@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using Aspose.Words;
 using Aspose.Words.Fonts;
+using Aspose.Words.Loading;
 using NUnit.Framework;
 
 namespace ApiExamples

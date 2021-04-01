@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Notes;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 
