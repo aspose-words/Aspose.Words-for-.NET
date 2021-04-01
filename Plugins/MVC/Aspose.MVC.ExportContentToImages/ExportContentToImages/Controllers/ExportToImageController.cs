@@ -11,174 +11,124 @@ namespace ExportContentToImages.Controllers
 {
     public class ExportToImageController : Controller
     {
-        //
         // GET: /ExportToImage/
-
-
         public ActionResult Index(string Format="png")
         {
-            string baseURL = Request.Url.Authority;
-
-            if (Request.ServerVariables["HTTPS"] == "on")
-            {
-                baseURL = "https://" + baseURL;
-            }
-            else
-            {
-                baseURL = "http://" + baseURL;
-            }
-
-            // Check for license and apply if exists
+            // License this component using an Aspose.Words license file,
+            // if one exists at this location in the local file system.
             string licenseFile = Server.MapPath("~/App_Data/Aspose.Words.lic");
+
             if (System.IO.File.Exists(licenseFile))
             {
                 License license = new License();
                 license.SetLicense(licenseFile);
             }
 
-            //Null value Check  
-            if (Request.UrlReferrer != null)
+            if (Request.UrlReferrer == null) 
+                return RedirectToAction("index", "Home");
+
+            string refUrl = Request.UrlReferrer.AbsoluteUri;
+            string html = new WebClient().DownloadString(refUrl);
+
+            Document doc;
+
+            using (MemoryStream memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(html)))
             {
-                string refUrl = Request.UrlReferrer.AbsoluteUri;
+                doc = new Document(memoryStream);
+            }
 
-                string html = new WebClient().DownloadString(refUrl);
+            string imageFileName = "";
 
-                var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(html));
+            if (doc.PageCount > 1)
+                Directory.CreateDirectory(Server.MapPath("~/Images/" + "Zip"));
 
-                Document doc = new Document(memoryStream);
-              
-                string fileName = "";
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
 
-                if (doc.PageCount>1)
+            if (Format.Contains("png"))
+            {
+                options = new ImageSaveOptions(SaveFormat.Png);
+                options.PageSet = new PageSet(0);
+            }
+            else if (Format.Contains("JPEG"))
+            {
+                options = new ImageSaveOptions(SaveFormat.Jpeg);
+                options.PageSet = new PageSet(0);
+            }
+            else if (Format.Contains("TIFF"))
+            {
+                options = new ImageSaveOptions(SaveFormat.Tiff);
+                options.PageSet = new PageSet(0);
+            }
+            else if (Format.Contains("bmp"))
+            {
+                options = new ImageSaveOptions(SaveFormat.Bmp);
+                options.PageSet = new PageSet(0);
+            }
+
+            // Create an "Images" folder, and populate it with images that we will render the document into.
+            string imageFolderPath = Server.MapPath("~/Images");
+
+            if (!Directory.Exists(imageFolderPath))
+                Directory.CreateDirectory(imageFolderPath);
+
+
+            for (int i = 0; i < doc.PageCount; i++)
+            {
+                imageFileName = $"{i}_{Guid.NewGuid()}.{Format}";;
+
+                if (Format.Contains("TIFF"))
                 {
-                    Directory.CreateDirectory(Server.MapPath("~/Images/" + "Zip"));
-                }
-
-                ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
-
-                if (Format.Contains("png"))
-                {
-                     options = new ImageSaveOptions(SaveFormat.Png);
-                    options.PageCount = 1;
-                }
-                else if (Format.Contains("JPEG"))
-                {
-                     options = new ImageSaveOptions(SaveFormat.Jpeg);
-                    options.PageCount = 1;
-                    
-                }
-                else if (Format.Contains("TIFF"))
-                {
-                     options = new ImageSaveOptions(SaveFormat.Tiff);
-                    options.PageCount = 1;
-                }
-
-                else if (Format.Contains("bmp"))
-                {
-                     options = new ImageSaveOptions(SaveFormat.Bmp);
-                    options.PageCount = 1;
-                }
-
-
-                // Check for Images folder 
-                string path = Server.MapPath("~/Images");
-                if (!Directory.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
-
-
-                // Convert the html , get page count and save PNG's in Images folder
-                for (int i = 0; i < doc.PageCount; i++)
-                {
-                    if (Format.Contains("TIFF"))
-                    {
-                        options.PageCount = doc.PageCount;
-                        fileName = i + "_" + System.Guid.NewGuid().ToString() + "." + Format;
-                        doc.Save(Server.MapPath("~/Images/Zip/") + fileName, options);
-                        break;
-                    }
-                    else
-                    {
-                        options.PageIndex = i;
-                        if (doc.PageCount > 1)
-                        {
-                            fileName = i + "_" + System.Guid.NewGuid().ToString() + "." + Format;
-                            doc.Save(Server.MapPath("~/Images/Zip/") + fileName, options);
-                        }
-                        else
-                        {
-                            // webpage count is 1 
-                            fileName = i + "_" + System.Guid.NewGuid().ToString() + "." + Format;
-                            doc.Save(Server.MapPath("~/Images/Zip/") + fileName, options);
-                        }
-                    }
-                }
-
-                /* if webpage count is more then one download images as a Zip but if image type if TIFF                
-                  dont download as a zip because Tiff already have all content in one Image 
-                 */
-                if (doc.PageCount > 1 && !Format.Contains("TIFF"))
-                {
-                    try
-                    {
-                        string ImagePath = Server.MapPath("~/Images/Zip/");
-                        string downloadDirectory = Server.MapPath("~/Images/");
-                        ZipFile.CreateFromDirectory(ImagePath, downloadDirectory + "OutputImages.zip");
-                        // Prompts user to save file
-                        System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
-                        response.ClearContent();
-                        response.Clear();
-                        response.ContentType = "application/zip";
-                        response.AddHeader("Content-Disposition", "attachment; filename=OutputImages.zip" + ";");
-                        response.TransmitFile(downloadDirectory + "OutputImages.zip");
-                        response.End();
-                        Directory.Delete(ImagePath, true);
-                        System.IO.File.Delete(downloadDirectory + "OutputImages.zip");
-                    }
-                    catch (Exception Ex)
-                    {
-
-                    }
+                    options.PageSet = PageSet.All;
+                    doc.Save(Server.MapPath("~/Images/Zip/") + imageFileName, options);
                 }
                 else
                 {
-                    string filepath = Server.MapPath("~/Images/Zip/") + fileName;
-                    string downloadDirectory = Server.MapPath("~/Images/Zip/");
-                    System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
-                    response.ClearContent();
-                    response.Clear();
-                    response.ContentType = "image/"+Format;
-                    response.AddHeader("Content-Disposition", "attachment; filename="+fileName + ";");
-                    response.TransmitFile(filepath);
-                    response.End();
-                    Directory.Delete(downloadDirectory, true);
+                    options.PageSet = new PageSet(i);
+
+                    if (doc.PageCount > 1)
+                        doc.Save(Server.MapPath("~/Images/Zip/") + imageFileName, options);
+                    else
+                        doc.Save(Server.MapPath("~/Images/Zip/") + imageFileName, options);
                 }
             }
-            //set the view to your default View (in my case its home index view)
+
+            // If a webpage is large enough for multiple images, and the output image type is not "Tiff",
+            // then download them all in one Zip. A single Tiff file will contain
+            // all the images, so we do not need a Zip archive in this case.
+            if (doc.PageCount > 1 && !Format.Contains("TIFF"))
+            {
+                string ImagePath = Server.MapPath("~/Images/Zip/");
+                string downloadDirectory = Server.MapPath("~/Images/");
+                ZipFile.CreateFromDirectory(ImagePath, downloadDirectory + "OutputImages.zip");
+
+                System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
+                response.ClearContent();
+                response.Clear();
+                response.ContentType = "application/zip";
+                response.AddHeader("Content-Disposition", "attachment; filename=OutputImages.zip" + ";");
+                response.TransmitFile(downloadDirectory + "OutputImages.zip");
+                response.End();
+
+                Directory.Delete(ImagePath, true);
+                System.IO.File.Delete(downloadDirectory + "OutputImages.zip");
+            }
+            else
+            {
+                string filepath = Server.MapPath("~/Images/Zip/") + imageFileName;
+                string downloadDirectory = Server.MapPath("~/Images/Zip/");
+                System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
+
+                response.ClearContent();
+                response.Clear();
+                response.ContentType = "image/"+Format;
+                response.AddHeader("Content-Disposition", "attachment; filename="+imageFileName + ";");
+                response.TransmitFile(filepath);
+                response.End();
+
+                Directory.Delete(downloadDirectory, true);
+            }
+
             return RedirectToAction("index", "Home");
         }
-
-
-
-        public void jpg()
-        {
-            Index("jpeg");
-        }
-
-        public void png()
-        {
-            Index("png");
-        }
-
-        public void bmp()
-        {
-            Index("bmp");
-        }
-         public void tiff()
-        {
-            Index("tiff");
-        }
-
     }
 }

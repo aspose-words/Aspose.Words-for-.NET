@@ -16,6 +16,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
+using Aspose.Words.Notes;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;

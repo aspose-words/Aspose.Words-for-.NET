@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 
@@ -10,7 +9,17 @@ namespace _01._06_AddWatermark
     {
         static void Main(string[] args)
         {
-            Document doc = new Document("../../data/document.doc");
+            // Check for an Aspose.Words license file in the local file system and apply it, if it exists.
+            string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
+            if (File.Exists(licenseFile))
+            {
+                Aspose.Words.License license = new Aspose.Words.License();
+
+                // Use the license from the bin/debug/ Folder.
+                license.SetLicense("Aspose.Words.lic");
+            }
+
+            Document doc = new Document();
 
             string watermarkText = "Aspose.Words for .NET";
 
@@ -52,7 +61,7 @@ namespace _01._06_AddWatermark
                 insertWatermarkIntoHeader(watermarkPara, sect, HeaderFooterType.HeaderEven);
             }
 
-            doc.Save("waterMarks.doc");
+            doc.Save("AddWatermark.docx");
         }
 
         static void insertWatermarkIntoHeader(Paragraph watermarkPara, Section sect, HeaderFooterType headerType)

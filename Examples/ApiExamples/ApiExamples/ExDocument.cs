@@ -16,18 +16,23 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using Aspose.Words;
+using Aspose.Words.Comparing;
+using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
+using Aspose.Words.Loading;
 using Aspose.Words.Markup;
+using Aspose.Words.Notes;
 using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
+using Aspose.Words.Vba;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
-using CompareOptions = Aspose.Words.CompareOptions;
+using CompareOptions = System.Globalization.CompareOptions;
 using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Pdf.Text;
@@ -35,9 +40,6 @@ using Aspose.Words.Shaping.HarfBuzz;
 #endif
 #if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
-#endif
-#if NET462 || MAC || JAVA
-using Aspose.Words.Loading;
 #endif
 
 namespace ApiExamples
@@ -544,6 +546,62 @@ namespace ApiExamples
                     Assert.That(() => doc.Sections[i].HeadersFooters.LinkToPrevious(false),
                         Throws.TypeOf<NullReferenceException>());
             }
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void ImportList(bool isKeepSourceNumbering)
+        {
+            //ExStart
+            //ExFor:ImportFormatOptions.KeepSourceNumbering
+            //ExSummary:Shows how to import a document with numbered lists.
+            Document srcDoc = new Document(MyDir + "List source.docx");
+            Document dstDoc = new Document(MyDir + "List destination.docx");
+
+            Assert.AreEqual(2, dstDoc.Lists.Count);
+
+            ImportFormatOptions options = new ImportFormatOptions();
+
+            // If there is a clash of list styles, apply the list format of the source document.
+            // Set the "KeepSourceNumbering" property to "false" to not import any list numbers into the destination document.
+            // Set the "KeepSourceNumbering" property to "true" import all clashing
+            // list style numbering with the same appearance that it had in the source document.
+            options.KeepSourceNumbering = isKeepSourceNumbering;
+
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
+            dstDoc.UpdateListLabels();
+
+            if (isKeepSourceNumbering)
+                Assert.AreEqual(3, dstDoc.Lists.Count);
+            else
+                Assert.AreEqual(2, dstDoc.Lists.Count);
+            //ExEnd
+        }
+
+        [Test]
+        public void KeepSourceNumberingSameListIds()
+        {
+            //ExStart
+            //ExFor:ImportFormatOptions.KeepSourceNumbering
+            //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode, ImportFormatOptions)
+            //ExSummary:Shows how resolve a clash when importing documents that have lists with the same list definition identifier.
+            Document srcDoc = new Document(MyDir + "List with the same definition identifier - source.docx");
+            Document dstDoc = new Document(MyDir + "List with the same definition identifier - destination.docx");
+
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
+
+            // Set the "KeepSourceNumbering" property to "true" to apply a different list definition ID
+            // to identical styles as Aspose.Words imports them into destination documents.
+            importFormatOptions.KeepSourceNumbering = true;
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles, importFormatOptions);
+
+            dstDoc.UpdateListLabels();
+            //ExEnd
+
+            string paraText = dstDoc.Sections[1].Body.LastParagraph.GetText();
+
+            Assert.IsTrue(paraText.StartsWith("13->13"), paraText);
+            Assert.AreEqual("1.", dstDoc.Sections[1].Body.LastParagraph.ListLabel.LabelString);
         }
 
         [Test]
@@ -1179,7 +1237,7 @@ namespace ApiExamples
             // Comparing documents creates a revision for every edit in the edited document.
             // A CompareOptions object has a series of flags that can suppress revisions
             // on each respective type of element, effectively ignoring their change.
-            CompareOptions compareOptions = new CompareOptions();
+            Aspose.Words.Comparing.CompareOptions compareOptions = new Aspose.Words.Comparing.CompareOptions();
             compareOptions.IgnoreFormatting = false;
             compareOptions.IgnoreCaseChanges = false;
             compareOptions.IgnoreComments = false;
@@ -1244,10 +1302,10 @@ namespace ApiExamples
             //ExSummary:Shows how to compare documents ignoring DML unique ID.
             Document docA = new Document(MyDir + "DML unique ID original.docx");
             Document docB = new Document(MyDir + "DML unique ID compare.docx");
- 
+
             // By default, Aspose.Words do not ignore DML's unique ID, and the revisions count was 2.
             // If we are ignoring DML's unique ID, and revisions count were 0.
-            CompareOptions compareOptions = new CompareOptions();
+            Aspose.Words.Comparing.CompareOptions compareOptions = new Aspose.Words.Comparing.CompareOptions();
             compareOptions.IgnoreDmlUniqueId = isIgnoreDmlUniqueId;
  
             docA.Compare(docB, "Aspose.Words", DateTime.Now, compareOptions);
@@ -2462,10 +2520,10 @@ namespace ApiExamples
             Document docB = new Document();
             DocumentBuilder builderB = new DocumentBuilder(docB);
             builderB.Writeln("Lorems ipsum dolor sit amet consectetur - \"adipiscing\" elit");
- 
+
             // Specify whether changes are tracking
             // by character ('Granularity.CharLevel'), or by word ('Granularity.WordLevel').
-            CompareOptions compareOptions = new CompareOptions();
+            Aspose.Words.Comparing.CompareOptions compareOptions = new Aspose.Words.Comparing.CompareOptions();
             compareOptions.Granularity = granularity;
  
             docA.Compare(docB, "author", DateTime.Now, compareOptions);

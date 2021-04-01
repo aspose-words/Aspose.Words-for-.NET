@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Word = Microsoft.Office.Interop.Word;
-using Office = Microsoft.Office.Core;
-using Microsoft.Office.Tools.Word;
+﻿using Word = Microsoft.Office.Interop.Word;
 using Microsoft.Office.Interop.Word;
 
 namespace VSTO_Words
@@ -14,9 +7,10 @@ namespace VSTO_Words
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            string mypath = "Document.docx";
+            string filePath = @"..\..\..\..\..\Sample Files\";
             Word.Application wordApp = Application;
-            wordApp.Documents.Open(mypath);
+
+            wordApp.Documents.Open(filePath + "MyDocument.docx");
 
             foreach (Table table in this.Application.ActiveDocument.Tables)
             {

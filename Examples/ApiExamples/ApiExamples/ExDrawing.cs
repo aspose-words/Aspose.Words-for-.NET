@@ -35,9 +35,9 @@ namespace ApiExamples
             //ExFor:Drawing.ArrowWidth
             //ExFor:Drawing.DashStyle
             //ExFor:Drawing.EndCap
-            //ExFor:Drawing.Fill.Color
+            //ExFor:Drawing.Fill.ForeColor
             //ExFor:Drawing.Fill.ImageBytes
-            //ExFor:Drawing.Fill.On
+            //ExFor:Drawing.Fill.Visible
             //ExFor:Drawing.JoinStyle
             //ExFor:Shape.Stroke
             //ExFor:Stroke.Color
@@ -88,8 +88,8 @@ namespace ApiExamples
             filledInArrow.Width = 200;
             filledInArrow.Height = 40;
             filledInArrow.Top = 100;
-            filledInArrow.Fill.Color = Color.Green;
-            filledInArrow.Fill.On = true;
+            filledInArrow.Fill.ForeColor = Color.Green;
+            filledInArrow.Fill.Visible = true;
 
             builder.InsertNode(filledInArrow);
 
@@ -102,7 +102,7 @@ namespace ApiExamples
 
             using (WebClient webClient = new WebClient())
             {
-                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
+                byte[] imageBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
 
                 using (MemoryStream stream = new MemoryStream(imageBytes))
                 {
@@ -154,8 +154,8 @@ namespace ApiExamples
             Assert.AreEqual(200.0d, filledInArrow.Width);
             Assert.AreEqual(40.0d, filledInArrow.Height);
             Assert.AreEqual(100.0d, filledInArrow.Top);
-            Assert.AreEqual(Color.Green.ToArgb(), filledInArrow.Fill.Color.ToArgb());
-            Assert.True(filledInArrow.Fill.On);
+            Assert.AreEqual(Color.Green.ToArgb(), filledInArrow.Fill.ForeColor.ToArgb());
+            Assert.True(filledInArrow.Fill.Visible);
 
             filledInArrowImg = (Shape)doc.GetChild(NodeType.Shape, 3, true);
 
@@ -177,7 +177,7 @@ namespace ApiExamples
 
             using (WebClient webClient = new WebClient())
             {
-                byte[] imageBytes = webClient.DownloadData(AsposeLogoUrl);
+                byte[] imageBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
 
                 using (MemoryStream stream = new MemoryStream(imageBytes))
                 {
@@ -185,7 +185,7 @@ namespace ApiExamples
 
                     // The image in the URL is a .gif. Inserting it into a document converts it into a .png.
                     Shape imgShape = builder.InsertImage(image);
-                    Assert.AreEqual(ImageType.Png, imgShape.ImageData.ImageType);
+                    Assert.AreEqual(ImageType.Jpeg, imgShape.ImageData.ImageType);
                 }
             }
             //ExEnd
@@ -410,7 +410,7 @@ namespace ApiExamples
                 mBuilder.AppendLine("\t\tWidth: " + shape.Width);
                 mBuilder.AppendLine("\t\tHeight: " + shape.Height);
                 mBuilder.AppendLine("\t\tStroke color: " + shape.Stroke.Color);
-                mBuilder.AppendLine("\t\tFill color: " + shape.Fill.Color);
+                mBuilder.AppendLine("\t\tFill color: " + shape.Fill.ForeColor);
                 return VisitorAction.Continue;
             }
 

@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Aspose.Words;
+using Aspose.Words.Loading;
 using NUnit.Framework;
 
 namespace ApiExamples

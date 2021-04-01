@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Aspose.Words;
 using Aspose.Words.Tables;
 using System.Drawing;
+using System.IO;
 
 namespace _05._02_SetPageBorders
 {
@@ -11,7 +10,17 @@ namespace _05._02_SetPageBorders
     {
         static void Main(string[] args)
         {
-            Document doc = new Document("../../data/document.doc");
+            // Check for an Aspose.Words license file in the local file system and apply it, if it exists.
+            string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
+            if (File.Exists(licenseFile))
+            {
+                Aspose.Words.License license = new Aspose.Words.License();
+
+                // Use the license from the bin/debug/ Folder.
+                license.SetLicense("Aspose.Words.lic");
+            }
+
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Table table = builder.StartTable();
@@ -19,6 +28,7 @@ namespace _05._02_SetPageBorders
 
             // Set the borders for the entire table.
             table.SetBorders(LineStyle.Single, 2.0, Color.Black);
+
             // Set the cell shading for this cell.
             builder.CellFormat.Shading.BackgroundPatternColor = Color.Red;
             builder.Writeln("Cell #1");
@@ -46,11 +56,12 @@ namespace _05._02_SetPageBorders
             builder.Writeln("Cell #3");
 
             builder.InsertCell();
+
             // Clear the cell formatting from the previous cell.
             builder.CellFormat.ClearFormatting();
             builder.Writeln("Cell #4");
 
-            doc.Save("Table.SetBordersAndShading Out.doc");
+            doc.Save("SetPageBorders.docx");
         }
     }
 }

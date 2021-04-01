@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
@@ -27,10 +28,15 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             //ExStart:InsertDocumentAtReplace
             Document mainDoc = new Document(MyDir + "Document insertion 1.docx");
 
-            FindReplaceOptions options = new FindReplaceOptions { ReplacingCallback = new InsertDocumentAtReplaceHandler() };
+            // Set find and replace options.
+            FindReplaceOptions options = new FindReplaceOptions
+            {
+                Direction = FindReplaceDirection.Backward, 
+                ReplacingCallback = new InsertDocumentAtReplaceHandler()
+            };
 
+            // Call the replace method.
             mainDoc.Range.Replace(new Regex("\\[MY_DOCUMENT\\]"), "", options);
-
             mainDoc.Save(ArtifactsDir + "CloneAndCombineDocuments.InsertDocumentAtReplace.docx");
             //ExEnd:InsertDocumentAtReplace
         }
@@ -65,44 +71,44 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             //ExEnd:InsertDocumentAtMailMerge
         }
 
-        //ExStart:InsertDocument
         /// <summary>
         /// Inserts content of the external document after the specified node.
         /// Section breaks and section formatting of the inserted document are ignored.
         /// </summary>
-        /// <param name="insertAfterNode">Node in the destination document after which the content
+        /// <param name="insertionDestination">Node in the destination document after which the content
         /// Should be inserted. This node should be a block level node (paragraph or table).</param>
-        /// <param name="srcDoc">The document to insert.</param>
-        private static void InsertDocument(Node insertAfterNode, Document srcDoc)
+        /// <param name="docToInsert">The document to insert.</param>
+        //ExStart:InsertDocument
+        private static void InsertDocument(Node insertionDestination, Document docToInsert)
         {
-            if (!insertAfterNode.NodeType.Equals(NodeType.Paragraph) &
-                !insertAfterNode.NodeType.Equals(NodeType.Table))
-                throw new ArgumentException("The destination node should be either a paragraph or table.");
-
-            CompositeNode dstStory = insertAfterNode.ParentNode;
-
-            NodeImporter importer =
-                new NodeImporter(srcDoc, insertAfterNode.Document, ImportFormatMode.KeepSourceFormatting);
-
-            foreach (Section srcSection in srcDoc.Sections)
+            if (insertionDestination.NodeType.Equals(NodeType.Paragraph) || insertionDestination.NodeType.Equals(NodeType.Table))
             {
+                CompositeNode destinationParent = insertionDestination.ParentNode;
+
+                NodeImporter importer =
+                    new NodeImporter(docToInsert, insertionDestination.Document, ImportFormatMode.KeepSourceFormatting);
+
+                // Loop through all block-level nodes in the section's body,
+                // then clone and insert every node that is not the last empty paragraph of a section.
+                foreach (Section srcSection in docToInsert.Sections.OfType<Section>())
                 foreach (Node srcNode in srcSection.Body)
                 {
-                    // Let's skip the node if it is the last empty paragraph in a section.
                     if (srcNode.NodeType.Equals(NodeType.Paragraph))
                     {
-                        Paragraph para = (Paragraph) srcNode;
+                        Paragraph para = (Paragraph)srcNode;
                         if (para.IsEndOfSection && !para.HasChildNodes)
                             continue;
                     }
 
-                    // This creates a clone of the node, suitable for insertion into the destination document.
                     Node newNode = importer.ImportNode(srcNode, true);
 
-                    // Insert a new node after the reference node.
-                    dstStory.InsertAfter(newNode, insertAfterNode);
-                    insertAfterNode = newNode;
+                    destinationParent.InsertAfter(newNode, insertionDestination);
+                    insertionDestination = newNode;
                 }
+            }
+            else
+            {
+                throw new ArgumentException("The destination node should be either a paragraph or table.");
             }
         }
         //ExEnd:InsertDocument
@@ -160,19 +166,19 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         //ExStart:InsertDocumentAtMailMergeHandler
         private class InsertDocumentAtMailMergeHandler : IFieldMergingCallback
         {
-            /// <summary>
-            /// This handler makes special processing for the "Document_1" field.
-            /// The field value contains the path to load the document. 
-            /// We load the document and insert it into the current merge field.
-            /// </summary>
-            void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
+            // This handler makes special processing for the "Document_1" field.
+            // The field value contains the path to load the document. 
+            // We load the document and insert it into the current merge field.
+            void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
             {
-                if (e.DocumentFieldName == "Document_1")
+                if (args.DocumentFieldName == "Document_1")
                 {
-                    DocumentBuilder builder = new DocumentBuilder(e.Document);
-                    builder.MoveToMergeField(e.DocumentFieldName);
+                    // Use document builder to navigate to the merge field with the specified name.
+                    DocumentBuilder builder = new DocumentBuilder(args.Document);
+                    builder.MoveToMergeField(args.DocumentFieldName);
 
-                    Document subDoc = new Document((string) e.FieldValue);
+                    // The name of the document to load and insert is stored in the field value.
+                    Document subDoc = new Document((string)args.FieldValue);
                     
                     InsertDocument(builder.CurrentParagraph, subDoc);
 
@@ -180,13 +186,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
                     if (!builder.CurrentParagraph.HasChildNodes)
                         builder.CurrentParagraph.Remove();
 
-                    e.Text = null;
+                    // Indicate to the mail merge engine that we have inserted what we wanted.
+                    args.Text = null;
                 }
             }
 
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
-                // Do nothing
+                // Do nothing.
             }
         }
         //ExEnd:InsertDocumentAtMailMergeHandler
@@ -229,15 +236,16 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         //ExStart:InsertDocumentAtReplaceHandler
         private class InsertDocumentAtReplaceHandler : IReplacingCallback
         {
-            ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
+            ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)
             {
                 Document subDoc = new Document(MyDir + "Document insertion 2.docx");
 
-                Paragraph para = (Paragraph) e.MatchNode.ParentNode;
+                // Insert a document after the paragraph, containing the match text.
+                Paragraph para = (Paragraph)args.MatchNode.ParentNode;
                 InsertDocument(para, subDoc);
-
+                
+                // Remove the paragraph with the match text.
                 para.Remove();
-
                 return ReplaceAction.Skip;
             }
         }

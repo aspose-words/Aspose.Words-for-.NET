@@ -1,9 +1,4 @@
 ﻿using Aspose.Words;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aspose_Words
 {
@@ -11,14 +6,22 @@ namespace Aspose_Words
     {
         static void Main(string[] args)
         {
-            Document doc = new Document("Section.ModifyPageSetupInAllSections.doc");
+            // Create a blank document, and a document builder which we will use to populate the document with content.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // It is important to understand that a document can contain many sections and each
-            // section has its own page setup. In this case we want to modify them all.
+            builder.Writeln("Hello world! This is the first section.");
+
+            // Use the document builder to start a new section on a fresh page.
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+
+            builder.Writeln("Hello again! This is the second section.");
+
+            // If we wish to apply page setup changes to an entire document, we will need to iterate over every section.
             foreach (Section section in doc)
-                section.PageSetup.PaperSize = PaperSize.Letter;
+                section.PageSetup.PaperSize = PaperSize.EnvelopeDL;
 
-            doc.Save("Section.ModifyPageSetupInAllSections Out.doc");
+            doc.Save("Changing Page Setup for Whole Document.docx");
         }
     }
 }

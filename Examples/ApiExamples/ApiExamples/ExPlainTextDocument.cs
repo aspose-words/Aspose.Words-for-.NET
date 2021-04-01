@@ -7,6 +7,7 @@
 
 using System.IO;
 using Aspose.Words;
+using Aspose.Words.Loading;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 

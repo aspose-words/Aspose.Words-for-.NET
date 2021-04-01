@@ -1,0 +1,225 @@
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : Friday, February 19, 2021 4:59:43 PM
+   Source : X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\
+     Dest : X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\App_Data\NuGetBackup\20210219-165943\bin\
+
+    Files : *.*
+	    
+  Options : *.* /S /E /DCOPY:DA /COPY:DAT /R:1000000 /W:30 
+
+------------------------------------------------------------------------------
+
+	                  67	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\
+	    New File  		   1.1 m	AngleSharp.dll  0%   21%   42%   63%   85%  100%  
+	    New File  		   11776	Aspose.UmbracoMemberExportToWord.dll  0%  100%  
+	    New File  		  10.7 m	Aspose.Words.dll  0.0%  9.2% 18.5% 27.8% 37.1% 46.4% 55.7% 65.0% 74.3% 83.6% 92.9%100%  
+	    New File  		  229888	CSharpTest.Net.Collections.dll  0%   57%  100%  
+	    New File  		   40960	HtmlSanitizer.dll  0%  100%  
+	    New File  		    8704	LightInject.Annotation.dll  0%  100%  
+	    New File  		  113664	LightInject.dll  0%  100%  
+	    New File  		    7168	LightInject.Mvc.dll  0%  100%  
+	    New File  		    6144	LightInject.Web.dll  0%  100%  
+	    New File  		    7680	LightInject.WebApi.dll  0%  100%  
+	    New File  		   50176	Markdown.dll  0%  100%  
+	    New File  		  166032	Microsoft.AspNet.Identity.Core.dll  0%   78%  100%  
+	    New File  		   63112	Microsoft.AspNet.Identity.Owin.dll  0%  100%  
+	    New File  		  354032	Microsoft.AspNet.SignalR.Core.dll  0%   37%   74%  100%  
+	    New File  		   4.6 m	Microsoft.CodeAnalysis.CSharp.dll  0%   10%   21%   32%   42%   53%   64%   75%   85%   96%  100%  
+	    New File  		  708664	Microsoft.CodeAnalysis.CSharp.Workspaces.dll  0%   36%   73%  100%  
+	    New File  		   2.5 m	Microsoft.CodeAnalysis.dll  0%   19%   38%   57%   77%   96%  100%  
+	    New File  		  144232	Microsoft.CodeAnalysis.Workspaces.Desktop.dll  0%   90%  100%  
+	    New File  		   2.6 m	Microsoft.CodeAnalysis.Workspaces.dll  0%   18%   37%   56%   75%   94%  100%  
+	    New File  		   40168	Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll  0%  100%  
+	    New File  		   36360	Microsoft.Extensions.DependencyInjection.Abstractions.dll  0%  100%  
+	    New File  		   41328	Microsoft.IO.RecyclableMemoryStream.dll  0%  100%  
+	    New File  		  100456	Microsoft.Owin.dll  0%  100%  
+	    New File  		  134760	Microsoft.Owin.Host.SystemWeb.dll  0%   97%  100%  
+	    New File  		   36968	Microsoft.Owin.Security.Cookies.dll  0%  100%  
+	    New File  		   53872	Microsoft.Owin.Security.dll  0%  100%  
+	    New File  		   73840	Microsoft.Owin.Security.OAuth.dll  0%  100%  
+	    New File  		  262144	MiniProfiler.Shared.dll  0%   50%  100%  
+	    New File  		  345600	NPoco.dll  0%   37%   75%  100%  
+	    New File  		    4608	Owin.dll  0%  100%  
+	    New File  		    9728	Semver.dll  0%  100%  
+	    New File  		  119808	Serilog.dll  0%  100%  
+	    New File  		    5632	Serilog.Enrichers.Process.dll  0%  100%  
+	    New File  		    5120	Serilog.Enrichers.Thread.dll  0%  100%  
+	    New File  		   76288	Serilog.Filters.Expressions.dll  0%  100%  
+	    New File  		    8192	Serilog.Formatting.Compact.dll  0%  100%  
+	    New File  		   12800	Serilog.Formatting.Compact.Reader.dll  0%  100%  
+	    New File  		    9216	Serilog.Settings.AppSettings.dll  0%  100%  
+	    New File  		    8704	Serilog.Sinks.Async.dll  0%  100%  
+	    New File  		   26112	Serilog.Sinks.File.dll  0%  100%  
+	    New File  		   11776	Serilog.Sinks.Map.dll  0%  100%  
+	    New File  		    5120	SQLitePCLRaw.batteries_green.dll  0%  100%  
+	    New File  		    5120	SQLitePCLRaw.batteries_v2.dll  0%  100%  
+	    New File  		   36352	SQLitePCLRaw.core.dll  0%  100%  
+	    New File  		   38912	SQLitePCLRaw.provider.e_sqlite3.dll  0%  100%  
+	    New File  		   72192	Superpower.dll  0%  100%  
+	    New File  		  302216	System.Collections.Immutable.dll  0%   43%   86%  100%  
+	    New File  		   24840	System.Composition.AttributedModel.dll  0%  100%  
+	    New File  		   59128	System.Composition.Convention.dll  0%  100%  
+	    New File  		   62184	System.Composition.Hosting.dll  0%  100%  
+	    New File  		   29928	System.Composition.Runtime.dll  0%  100%  
+	    New File  		   64760	System.Composition.TypedParts.dll  0%  100%  
+	    New File  		   55728	System.Diagnostics.DiagnosticSource.dll  0%  100%  
+	    New File  		  576144	System.Reflection.Metadata.dll  0%   45%   90%  100%  
+	    New File  		  766872	System.Text.Encoding.CodePages.dll  0%   34%   68%  100%  
+	    New File  		  173200	System.Threading.Tasks.Dataflow.dll  0%   75%  100%  
+	    New File  		   25864	System.Threading.Tasks.Extensions.dll  0%  100%  
+	    New File  		   25232	System.ValueTuple.dll  0%  100%  
+	    New File  		  137144	System.Web.Helpers.dll  0%   95%  100%  
+	    New File  		   2.1 m	Umbraco.Core.xml  0%   22%   45%   68%   91%  100%  
+	    New File  		   47104	Umbraco.Examine.dll  0%  100%  
+	    New File  		   29124	Umbraco.Examine.xml  0%  100%  
+	    New File  		   83968	Umbraco.ModelsBuilder.Embedded.dll  0%  100%  
+	    New File  		   29120	Umbraco.ModelsBuilder.Embedded.xml  0%  100%  
+	    New File  		   1.8 m	Umbraco.Web.dll  0%   13%   26%   39%   53%   66%   79%   93%  100%  
+	    New File  		     473	Umbraco.Web.UI.xml  0%  100%  
+	    New File  		   1.1 m	Umbraco.Web.xml  0%   21%   43%   65%   86%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\cs\
+	    New File  		  271208	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   48%   96%  100%  
+	    New File  		   14904	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   33128	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   32616	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\de\
+	    New File  		  288104	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   45%   90%  100%  
+	    New File  		   14904	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   34152	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   33640	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\es\
+	    New File  		  281448	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   46%   93%  100%  
+	    New File  		   14936	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   34152	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   33640	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\fr\
+	    New File  		  287592	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   45%   91%  100%  
+	    New File  		   14904	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   34152	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   34152	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\it\
+	    New File  		  286056	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   45%   91%  100%  
+	    New File  		   14936	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   34152	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   33640	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\ja\
+	    New File  		  316776	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   41%   82%  100%  
+	    New File  		   14904	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   36712	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   35688	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\ko\
+	    New File  		  291176	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   45%   90%  100%  
+	    New File  		   14912	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   34664	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   34152	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\pl\
+	    New File  		  290152	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   45%   90%  100%  
+	    New File  		   14904	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   34664	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   34152	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\pt-BR\
+	    New File  		  277864	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   47%   94%  100%  
+	    New File  		   14936	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   33640	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   33640	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+	  New Dir         49	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\roslyn\
+	    New File  		   49584	csc.exe  0%  100%  
+	    New File  		    7880	csc.exe.config  0%  100%  
+	    New File  		    1496	csc.rsp  0%  100%  
+	    New File  		   15272	csi.exe  0%  100%  
+	    New File  		    8476	csi.exe.config  0%  100%  
+	    New File  		     279	csi.rsp  0%  100%  
+	    New File  		  122288	Microsoft.Build.Tasks.CodeAnalysis.dll  0%  100%  
+	    New File  		   4.6 m	Microsoft.CodeAnalysis.CSharp.dll  0%   10%   21%   32%   42%   53%   64%   74%   85%   96%  100%  
+	    New File  		   28592	Microsoft.CodeAnalysis.CSharp.Scripting.dll  0%  100%  
+	    New File  		   2.5 m	Microsoft.CodeAnalysis.dll  0%   19%   38%   57%   77%   96%  100%  
+	    New File  		  127920	Microsoft.CodeAnalysis.Scripting.dll  0%  100%  
+	    New File  		   5.1 m	Microsoft.CodeAnalysis.VisualBasic.dll  0%    9%   19%   28%   38%   48%   57%   67%   77%   86%   96%  100%  
+	    New File  		    6818	Microsoft.CSharp.Core.targets  0%  100%  
+	    New File  		   1.4 m	Microsoft.DiaSymReader.Native.amd64.dll  0%   17%   35%   52%   70%   87%  100%  
+	    New File  		   1.1 m	Microsoft.DiaSymReader.Native.x86.dll  0%   22%   44%   66%   88%  100%  
+	    New File  		    7517	Microsoft.Managed.Core.targets  0%  100%  
+	    New File  		    6236	Microsoft.VisualBasic.Core.targets  0%  100%  
+	    New File  		   22768	Microsoft.Win32.Primitives.dll  0%  100%  
+	    New File  		   20168	System.AppContext.dll  0%  100%  
+	    New File  		  358536	System.Collections.Immutable.dll  0%   36%   73%  100%  
+	    New File  		   34496	System.Console.dll  0%  100%  
+	    New File  		   35760	System.Diagnostics.DiagnosticSource.dll  0%  100%  
+	    New File  		   23464	System.Diagnostics.FileVersionInfo.dll  0%  100%  
+	    New File  		   23288	System.Diagnostics.StackTrace.dll  0%  100%  
+	    New File  		   23296	System.Globalization.Calendars.dll  0%  100%  
+	    New File  		  111984	System.IO.Compression.dll  0%  100%  
+	    New File  		   24824	System.IO.Compression.ZipFile.dll  0%  100%  
+	    New File  		   22736	System.IO.FileSystem.dll  0%  100%  
+	    New File  		   22784	System.IO.FileSystem.Primitives.dll  0%  100%  
+	    New File  		  265048	System.Net.Http.dll  0%   49%   98%  100%  
+	    New File  		   46280	System.Net.Sockets.dll  0%  100%  
+	    New File  		  584848	System.Reflection.Metadata.dll  0%   44%   89%  100%  
+	    New File  		   33256	System.Runtime.InteropServices.RuntimeInformation.dll  0%  100%  
+	    New File  		   39872	System.Security.Cryptography.Algorithms.dll  0%  100%  
+	    New File  		   23480	System.Security.Cryptography.Encoding.dll  0%  100%  
+	    New File  		   22816	System.Security.Cryptography.Primitives.dll  0%  100%  
+	    New File  		   38872	System.Security.Cryptography.X509Certificates.dll  0%  100%  
+	    New File  		  766872	System.Text.Encoding.CodePages.dll  0%   34%   68%  100%  
+	    New File  		   25864	System.Threading.Tasks.Extensions.dll  0%  100%  
+	    New File  		   77672	System.ValueTuple.dll  0%  100%  
+	    New File  		   23264	System.Xml.ReaderWriter.dll  0%  100%  
+	    New File  		   23256	System.Xml.XmlDocument.dll  0%  100%  
+	    New File  		   22720	System.Xml.XPath.dll  0%  100%  
+	    New File  		   25320	System.Xml.XPath.XDocument.dll  0%  100%  
+	    New File  		   49584	vbc.exe  0%  100%  
+	    New File  		    7880	vbc.exe.config  0%  100%  
+	    New File  		    1634	vbc.rsp  0%  100%  
+	    New File  		   87472	VBCSCompiler.exe  0%  100%  
+	    New File  		    8097	VBCSCompiler.exe.config  0%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\ru\
+	    New File  		  379752	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   34%   69%  100%  
+	    New File  		   15416	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   40296	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   37736	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\tr\
+	    New File  		  273976	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   47%   95%  100%  
+	    New File  		   14904	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   33640	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   33128	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\zh-Hans\
+	    New File  		  245096	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   53%  100%  
+	    New File  		   14904	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   31584	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   31592	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+	  New Dir          5	X:\Code Examples\Aspose.Words-for-.NET\Plugins\Umbraco\Aspose.UmbracoMemberExportToWord\bin\zh-Hant\
+	    New File  		  245608	Microsoft.CodeAnalysis.CSharp.resources.dll  0%   53%  100%  
+	    New File  		   14912	Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll  0%  100%  
+	    New File  		   31592	Microsoft.CodeAnalysis.resources.dll  0%  100%  
+	    New File  		   13672	Microsoft.CodeAnalysis.Workspaces.Desktop.resources.dll  0%  100%  
+	    New File  		   31592	Microsoft.CodeAnalysis.Workspaces.resources.dll  0%  100%  
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :        15        14         1         0         0         0
+   Files :       181       181         0         0         0         0
+   Bytes :   55.64 m   55.64 m         0         0         0         0
+   Times :   0:00:00   0:00:00                       0:00:00   0:00:00
+
+
+   Speed :           438709676 Bytes/sec.
+   Speed :           25103.169 MegaBytes/min.
+   Ended : Friday, February 19, 2021 4:59:43 PM
+

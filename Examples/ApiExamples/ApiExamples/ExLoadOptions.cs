@@ -333,7 +333,7 @@ namespace ApiExamples
 #if NET462
             TestUtil.VerifyImageInShape(1666, 1666, ImageType.Png, shape);
 #elif NETCOREAPP2_1
-            TestUtil.VerifyImageInShape(1600, 1600, ImageType.Png, shape);
+            TestUtil.VerifyImageInShape(1666, 1666, ImageType.Png, shape);
 #endif
             //ExEnd
         }

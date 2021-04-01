@@ -32,12 +32,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aspose.Email">
-      <HintPath>C:\Program Files (x86)\Aspose\Aspose.Email for .NET\Bin\net3.5_ClientProfile\Aspose.Email.dll</HintPath>
+    <Reference Include="Aspose.Email, Version=20.12.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Email.20.12.0\lib\net40\Aspose.Email.dll</HintPath>
     </Reference>
-    <Reference Include="Aspose.Words, Version=15.3.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files (x86)\Aspose\Aspose.Words for .NET\bin\net3.5_ClientProfile\Aspose.Words.dll</HintPath>
+    <Reference Include="Aspose.Words, Version=21.1.0.0, Culture=neutral, PublicKeyToken=716fcc553a201e56, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aspose.Words.21.1.0\lib\net40\Aspose.Words.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

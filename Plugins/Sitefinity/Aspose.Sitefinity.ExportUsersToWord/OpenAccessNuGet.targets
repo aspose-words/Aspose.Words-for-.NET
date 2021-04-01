@@ -1,0 +1,158 @@
+﻿<!--
+*************************************************************************************************
+This file is added by the Telerik.DataAccess.Fluent NuGet package.
+
+Telerik Data Access uses post compile steps achieved by build extensions providing the change
+tracking and lazy loading runtime functionalities. Using this approach less code is written, the
+domain model is cleaner and the data access classes are more simple reducing the development and
+testing time.
+
+For detailed information about the file, the used project settings, how their default values are 
+chosen, when they need to be customized and where is the proper place for this customization,
+please visit the following documentation section:
+http://documentation.telerik.com/openaccess-orm/targets-files
+
+Copyright (C) 2007-2015 Telerik AD. All rights reserved.
+*************************************************************************************************
+-->
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Default values of the Project Settings used in the enhancement process -->
+  <PropertyGroup>
+    <UseXmlMapping Condition="'$(UseXmlMapping)'==''">false</UseXmlMapping>
+    <UseAttributeMapping Condition="'$(UseAttributeMapping)'==''">false</UseAttributeMapping>
+    <UseFluentMapping Condition="'$(UseFluentMapping)'==''">true</UseFluentMapping>
+    <EnhancerAssembly Condition="'$(EnhancerAssembly)'==''">enhancer.exe</EnhancerAssembly>
+    <EnhancerVerboseMode Condition="'$(EnhancerVerboseMode)'==''">3</EnhancerVerboseMode>
+    <Use64BitEnhancer Condition="'$(Use64BitEnhancer)'=='' And '$(PlatformTarget)'=='x64'">true</Use64BitEnhancer>
+    <ValidateMapping Condition="'$(ValidateMapping)'==''">false</ValidateMapping>
+    <EnhancerDoNotCheckVersionOfReferencedAssemblies Condition="'$(EnhancerDoNotCheckVersionOfReferencedAssemblies)'==''">false</EnhancerDoNotCheckVersionOfReferencedAssemblies>
+  </PropertyGroup>
+
+  <!-- Register the enhancement tasks from the enhancer assembly -->
+  <UsingTask TaskName="OpenAccessDeploy" AssemblyFile="$(EnhancerAssembly)" Condition="'$(UseXmlMapping)'=='true'"/>
+  <UsingTask TaskName="OpenAccessClean" AssemblyFile="$(EnhancerAssembly)"  Condition="Exists('$(EnhancerAssembly)')" />
+  <UsingTask TaskName="OpenAccessEnhancer" AssemblyFile="$(EnhancerAssembly)" Condition="'$(Use64BitEnhancer)'!='true'"/>
+  <UsingTask TaskName="OpenAccessValidateMapping" AssemblyFile="$(EnhancerAssembly)"  Condition="'$(ValidateMapping)'=='true'"/>
+
+  <ItemGroup>
+    <!-- Include a flag for checking if enhancement is needed -->
+    <EnhancementFlagFile Include="$(IntermediateOutputPath)$(TargetName).oa" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(UseXmlMapping)'=='true'">
+    <!-- Ensure "OpenAccessDeploy" is available in the Visual Studio Build Action dropdown -->
+    <AvailableItemName Include="OpenAccessDeploy" />
+  </ItemGroup>
+
+  <!-- Include the OpenAccess ORM tasks in the build process -->
+  <PropertyGroup>
+    <OpenAccessDeployDependsOn>
+      OpenAccessEnhancerCheck;
+    </OpenAccessDeployDependsOn>
+    <BuildDependsOn Condition="'$(UseXmlMapping)'=='true'">
+      OpenAccessDeploy;
+      $(BuildDependsOn)
+    </BuildDependsOn>
+
+    <OpenAccessCleanDependsOn>
+      OpenAccessEnhancerCheck;
+    </OpenAccessCleanDependsOn>
+    <CleanDependsOn>
+      $(CleanDependsOn);
+      DeleteEnhancementFlag;
+    </CleanDependsOn>
+    <CleanDependsOn Condition="Exists('$(EnhancerAssembly)')">
+      $(CleanDependsOn);
+      OpenAccessClean;
+    </CleanDependsOn>
+
+    <OpenAccessEnhancerDependsOn>
+      OpenAccessEnhancerCheck;
+    </OpenAccessEnhancerDependsOn>
+    <CompileDependsOn>
+      $(CompileDependsOn);
+      OpenAccessEnhancer;
+    </CompileDependsOn>
+
+    <OpenAccessValidateMappingDependsOn>
+      ValidateMappingCheck;
+    </OpenAccessValidateMappingDependsOn>
+    <CompileDependsOn Condition="'$(ValidateMapping)'=='true'">
+      $(CompileDependsOn);
+      OpenAccessValidateMapping;
+    </CompileDependsOn>
+  </PropertyGroup>
+
+  <!-- The OpenAccessDeploy task prepares the RLINQ files (if any) from the current project for the enhancement process -->
+  <Target Name="OpenAccessDeploy" DependsOnTargets="$(OpenAccessDeployDependsOn)">
+    <OpenAccessDeploy Sources="@(OpenAccessDeploy)" OutputPath="$(OutputPath)">
+      <Output TaskParameter="OpenAccessEmbeddedResources" ItemName="OpenAccessEmbeddedResource" />
+      <Output TaskParameter="OpenAccessEmbeddedResources" ItemName="EmbeddedResource" />
+    </OpenAccessDeploy>
+  </Target>
+
+  <!-- The command line arguments of the enhancer.exe used for enhancing 64 bit assemblies -->
+  <PropertyGroup Condition="'$(Use64BitEnhancer)'=='true'">
+    <XmlMappingResourcesArg Condition="'$(UseXmlMapping)'=='true'"> -xmlMapping:"@(OpenAccessEmbeddedResource,'" -xmlMapping:"')"</XmlMappingResourcesArg>
+    <AttributesMappingArg Condition="'$(UseAttributeMapping)'=='true'"> -attributeMapping</AttributesMappingArg>
+    <FluentMappingArg Condition="'$(UseFluentMapping)'=='true'"> -fluentMapping</FluentMappingArg>
+    <EnhancerMappingArgs Condition="'$(EnhancerMappingArgs)'==''">$(XmlMappingResourcesArg)$(AttributesMappingArg)$(FluentMappingArg)</EnhancerMappingArgs>
+    <KeyFileArg Condition="'$(AssemblyOriginatorKeyFile)'!=''"> -keyFile:"$(AssemblyOriginatorKeyFile)"</KeyFileArg>
+    <KeyContainerArg Condition="'$(KeyContainerName)'!=''"> -keyContainer:"$(KeyContainerName)"</KeyContainerArg>
+    <ReferencesArgs Condition="'$(ReferencesArgs)'==''"> -reference:"@(ReferencePath,'" -reference:"')"</ReferencesArgs>
+    <DoNotCheckVersionOfReferencedAssembliesArgs Condition="'$(EnhancerDoNotCheckVersionOfReferencedAssembliesArgs)'=='true'"> -DoNotCheckVersionOfReferencedAssembliesArgs+</DoNotCheckVersionOfReferencedAssembliesArgs>
+    <AdditionalEnhancerArgs Condition="'$(AdditionalEnhancerArgs)'==''">$(EnhancerMappingArgs)$(KeyFileArg)$(KeyContainerArg)$(ReferencesArgs)$(DoNotCheckVersionOfReferencedAssembliesArgs)</AdditionalEnhancerArgs>
+  </PropertyGroup>
+
+  <!-- The OpenAccessEnhancer task enhances the project assembly with the OpenAccess ORM specific code -->
+  <Target Name="OpenAccessEnhancer" DependsOnTargets="$(OpenAccessEnhancerDependsOn)" Inputs="@(IntermediateAssembly-&gt;'%(FullPath)')" Outputs="@(EnhancementFlagFile)">
+    <Exec Condition="'$(Use64BitEnhancer)'=='true'" IgnoreExitCode="false"
+      Command="&quot;$(EnhancerAssembly)&quot; -verboseMode:$(EnhancerVerboseMode) -assembly:&quot;@(IntermediateAssembly-&gt;'%(FullPath)')&quot;$(AdditionalEnhancerArgs)" />
+    <OpenAccessEnhancer Condition="'$(Use64BitEnhancer)'!='true'"
+        VerboseMode="$(EnhancerVerboseMode)"
+        Assembly="@(IntermediateAssembly-&gt;'%(FullPath)')"
+        XmlMapping="@(OpenAccessEmbeddedResource)"
+        AttributeMapping="$(UseAttributeMapping)"
+        FluentMapping="$(UseFluentMapping)"
+        KeyFile="$(AssemblyOriginatorKeyFile)"
+        KeyContainer="$(KeyContainerName)"
+        References="@(ReferencePath)"
+        TargetFramework="$(TargetFrameworkVersion)"
+        DoNotCheckVersionOfReferencedAssemblies="$(EnhancerDoNotCheckVersionOfReferencedAssemblies)">
+      <Output TaskParameter="Version" ItemName="EnhancerVersion" />
+    </OpenAccessEnhancer>
+    <Touch AlwaysCreate="true" Files="@(EnhancementFlagFile)" Time="%(IntermediateAssembly.ModifiedTime)" />
+    <Message Text="The project was successfully enhanced by Telerik OpenAccess ORM Enhancer @(EnhancerVersion)" />
+  </Target>
+
+  <!-- The OpenAccessClean task deletes OpenAccess related files if any -->
+  <Target Name="OpenAccessClean" DependsOnTargets="$(OpenAccessCleanDependsOn)">
+    <OpenAccessClean Sources="@(OpenAccessDeploy)" OutputPath="$(OutputPath)" />
+  </Target>
+  
+  <!-- Deletes the enhancement flag file if exists -->
+  <Target Name="DeleteEnhancementFlag">
+    <Delete Condition="Exists(@(EnhancementFlagFile))" Files="@(EnhancementFlagFile)" />
+  </Target>
+
+  <!-- The OpenAccessValidateMapping task executes a compile time validation of the mapping of your model -->
+  <Target Name="OpenAccessValidateMapping" DependsOnTargets="$(OpenAccessValidateMappingDependsOn)">
+    <OpenAccessValidateMapping
+       Assembly="@(IntermediateAssembly->'%(FullPath)')"
+       References="@(ReferencePath)"/>
+  </Target>
+
+  <!-- Check if the OpenAccessValidateMapping task can be executed. -->
+  <Target Name="ValidateMappingCheck">
+    <Message Text="Validating if the OpenAccessValidateMapping task can be executed." Importance="normal" />
+    <Error Text="The OpenAccessValidateMapping task cannot be executed because the OpenAccess ORM model is in 64 bit assembly. Please change the platform target of the assembly or disable the ValidateMapping property located top in your '$(MSBuildProjectFullPath)' project file and restart Visual Studio."
+           Condition="'$(ValidateMapping)'=='true' And '$(Use64BitEnhancer)'=='true'" />
+  </Target>
+
+  <!-- Check if the OpenAccess ORM enhancer assembly can be found at the specified location -->
+  <Target Name="OpenAccessEnhancerCheck">
+    <Message Text="Validating the existence of the OpenAccess ORM enhancer assembly." Importance="normal" />
+    <Error Text="OpenAccessNuget.targets file points to a wrong enhancer location ($(EnhancerAssembly)). Please set a proper value of the 'EnhancerAssembly' property located top in your '$(MSBuildProjectFullPath)' project file and restart Visual Studio."
+           Condition="!Exists('$(EnhancerAssembly)') AND !Exists('$(MSBuildThisFileDirectory)\$(EnhancerAssembly)') AND '$(MSBuildThisFileDirectory)' != ''" />
+  </Target>
+</Project>
