@@ -16,6 +16,7 @@ using ApiExamples.TestData.TestBuilders;
 using ApiExamples.TestData.TestClasses;
 using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Markup;
 using Aspose.Words.Reporting;
 using NUnit.Framework;
 #if NETCOREAPP2_1 || __MOBILE__
@@ -1026,6 +1027,56 @@ namespace ApiExamples
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataStream.docx",
                 GoldsDir + "ReportingEngine.CsvData Gold.docx"));
+        }
+
+        [TestCase(SdtType.ComboBox)]
+        [TestCase(SdtType.DropDownList)]
+        public void InsertComboboxDropdownListItemsDynamically(SdtType sdtType)
+        {
+            const string template =
+                "<<item[\"three\"] [\"3\"]>><<if [false]>><<item [\"four\"] [null]>><</if>><<item[\"five\"] [\"5\"]>>";
+
+            SdtListItem[] staticItems =
+            {
+                new SdtListItem("1", "one"),
+                new SdtListItem("2", "two")
+            };
+
+            Document doc = new Document();
+
+            StructuredDocumentTag sdt = new StructuredDocumentTag(doc, sdtType, MarkupLevel.Block) { Title = template };
+
+            foreach (SdtListItem item in staticItems)
+            {
+                sdt.ListItems.Add(item);
+            }
+
+            doc.FirstSection.Body.AppendChild(sdt);
+
+            BuildReport(doc, new object(), "");
+
+            doc.Save(ArtifactsDir + $"ReportingEngine.InsertComboboxDropdownListItemsDynamically_{sdtType}.docx");
+
+            doc = new Document(ArtifactsDir +
+                               $"ReportingEngine.InsertComboboxDropdownListItemsDynamically_{sdtType}.docx");
+
+            sdt = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
+
+            SdtListItem[] expectedItems =
+            {
+                new SdtListItem("1", "one"),
+                new SdtListItem("2", "two"),
+                new SdtListItem("3", "three"),
+                new SdtListItem("5", "five")
+            };
+
+            Assert.AreEqual(expectedItems.Length, sdt.ListItems.Count);
+
+            for (int i = 0; i < expectedItems.Length; i++)
+            {
+                Assert.AreEqual(expectedItems[i].Value, sdt.ListItems[i].Value);
+                Assert.AreEqual(expectedItems[i].DisplayText, sdt.ListItems[i].DisplayText);
+            }
         }
 
         private static void BuildReport(Document document, object dataSource, string dataSourceName,
