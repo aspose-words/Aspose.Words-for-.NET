@@ -11,6 +11,7 @@ using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Lists;
+using Aspose.Words.Loading;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;

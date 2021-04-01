@@ -250,10 +250,7 @@ namespace ApiExamples
                             return ResourceLoadingAction.UserProvided;
 
                         case "Aspose logo":
-                            using (WebClient webClient = new WebClient())
-                            {
-                                args.SetData(webClient.DownloadData(AsposeLogoUrl));
-                            }
+                            args.SetData(File.ReadAllBytes(ImageDir + "Logo.jpg"));
 
                             return ResourceLoadingAction.UserProvided;
 
@@ -277,7 +274,6 @@ namespace ApiExamples
             }
 
             TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "http://www.google.com/images/logos/ps_logo2.png");
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, AsposeLogoUrl);
         }
 #endif
     }

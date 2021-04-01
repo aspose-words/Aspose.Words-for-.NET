@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using Aspose.Words;
+using Aspose.Words.Loading;
 using NUnit.Framework;
 
 namespace ApiExamples

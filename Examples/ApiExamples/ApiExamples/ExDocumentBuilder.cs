@@ -23,6 +23,7 @@ using Table = Aspose.Words.Tables.Table;
 using System.Drawing;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Lists;
+using Aspose.Words.Notes;
 using Aspose.Words.Saving;
 using List = NUnit.Framework.List;
 
@@ -236,7 +237,7 @@ namespace ApiExamples
             // The hyperlink will be a clickable piece of text which will take us to the location specified in the URL.
             builder.Font.Color = Color.Blue;
             builder.Font.Underline = Underline.Single;
-            builder.InsertHyperlink("Aspose website", "http://www.aspose.com", false);
+            builder.InsertHyperlink("Google website", "https://www.google.com", false);
             builder.Font.ClearFormatting();
             builder.Writeln(".");
 
@@ -253,7 +254,7 @@ namespace ApiExamples
 
             Assert.AreEqual(Color.Blue.ToArgb(), fieldContents.Font.Color.ToArgb());
             Assert.AreEqual(Underline.Single, fieldContents.Font.Underline);
-            Assert.AreEqual("HYPERLINK \"http://www.aspose.com\"", fieldContents.GetText().Trim());
+            Assert.AreEqual("HYPERLINK \"https://www.google.com\"", fieldContents.GetText().Trim());
         }
 
         [Test]
@@ -2863,7 +2864,7 @@ namespace ApiExamples
             {
                 using (WebClient webClient = new WebClient())
                 {
-                    byte[] imgBytes = webClient.DownloadData(AsposeLogoUrl);
+                    byte[] imgBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
 
                     using (MemoryStream imageStream = new MemoryStream(imgBytes))
                     {
@@ -3507,32 +3508,30 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             string videoUrl = "https://vimeo.com/52477838";
-            string videoEmbedCode = "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" " +
-                                    "title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+            string videoEmbedCode =
+                "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" " +
+                "title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
 
-            using (WebClient webClient = new WebClient())
+            byte[] thumbnailImageBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
+
+            using (MemoryStream stream = new MemoryStream(thumbnailImageBytes))
             {
-                byte[] thumbnailImageBytes = webClient.DownloadData(AsposeLogoUrl);
-
-                using (MemoryStream stream = new MemoryStream(thumbnailImageBytes))
+                using (Image image = Image.FromStream(stream))
                 {
-                    using (Image image = Image.FromStream(stream))
-                    {
-                        // Below are two ways of creating a shape with a custom thumbnail, which links to an online video
-                        // that will play when we click on the shape in Microsoft Word.
-                        // 1 -  Insert an inline shape at the builder's node insertion cursor:
-                        builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes, image.Width, image.Height);
+                    // Below are two ways of creating a shape with a custom thumbnail, which links to an online video
+                    // that will play when we click on the shape in Microsoft Word.
+                    // 1 -  Insert an inline shape at the builder's node insertion cursor:
+                    builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes, image.Width, image.Height);
 
-                        builder.InsertBreak(BreakType.PageBreak);
+                    builder.InsertBreak(BreakType.PageBreak);
 
-                        // 2 -  Insert a floating shape:
-                        double left = builder.PageSetup.RightMargin - image.Width;
-                        double top = builder.PageSetup.BottomMargin - image.Height;
+                    // 2 -  Insert a floating shape:
+                    double left = builder.PageSetup.RightMargin - image.Width;
+                    double top = builder.PageSetup.BottomMargin - image.Height;
 
-                        builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes,
-                            RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
-                            image.Width, image.Height, WrapType.Square);
-                    }
+                    builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes,
+                        RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
+                        image.Width, image.Height, WrapType.Square);
                 }
             }
 
@@ -3540,11 +3539,11 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOnlineVideoCustomThumbnail.docx");
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            
-            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, shape);
-            Assert.AreEqual(320.0d, shape.Width);
-            Assert.AreEqual(320.0d, shape.Height);
+            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
+            Assert.AreEqual(400.0d, shape.Width);
+            Assert.AreEqual(400.0d, shape.Height);
             Assert.AreEqual(0.0d, shape.Left);
             Assert.AreEqual(0.0d, shape.Top);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
@@ -3552,14 +3551,14 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, shape.RelativeHorizontalPosition);
 
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
-            
-            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, shape);
-            Assert.AreEqual(320.0d, shape.Width);
-            Assert.AreEqual(320.0d, shape.Height);
-            Assert.AreEqual(-249.15d, shape.Left);
-            Assert.AreEqual(-249.15d, shape.Top);
+            shape = (Shape) doc.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
+            Assert.AreEqual(400.0d, shape.Width);
+            Assert.AreEqual(400.0d, shape.Height);
+            Assert.AreEqual(-329.15d, shape.Left);
+            Assert.AreEqual(-329.15d, shape.Top);
             Assert.AreEqual(WrapType.Square, shape.WrapType);
             Assert.AreEqual(RelativeVerticalPosition.BottomMargin, shape.RelativeVerticalPosition);
             Assert.AreEqual(RelativeHorizontalPosition.RightMargin, shape.RelativeHorizontalPosition);

@@ -16,12 +16,15 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using Aspose.Words;
+using Aspose.Words.Comparing;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
+using Aspose.Words.Loading;
 using Aspose.Words.Markup;
+using Aspose.Words.Notes;
 using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
@@ -29,7 +32,7 @@ using Aspose.Words.Tables;
 using Aspose.Words.Vba;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
-using CompareOptions = Aspose.Words.CompareOptions;
+using CompareOptions = System.Globalization.CompareOptions;
 using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Pdf.Text;
@@ -1234,7 +1237,7 @@ namespace ApiExamples
             // Comparing documents creates a revision for every edit in the edited document.
             // A CompareOptions object has a series of flags that can suppress revisions
             // on each respective type of element, effectively ignoring their change.
-            CompareOptions compareOptions = new CompareOptions();
+            Aspose.Words.Comparing.CompareOptions compareOptions = new Aspose.Words.Comparing.CompareOptions();
             compareOptions.IgnoreFormatting = false;
             compareOptions.IgnoreCaseChanges = false;
             compareOptions.IgnoreComments = false;
@@ -1299,10 +1302,10 @@ namespace ApiExamples
             //ExSummary:Shows how to compare documents ignoring DML unique ID.
             Document docA = new Document(MyDir + "DML unique ID original.docx");
             Document docB = new Document(MyDir + "DML unique ID compare.docx");
- 
+
             // By default, Aspose.Words do not ignore DML's unique ID, and the revisions count was 2.
             // If we are ignoring DML's unique ID, and revisions count were 0.
-            CompareOptions compareOptions = new CompareOptions();
+            Aspose.Words.Comparing.CompareOptions compareOptions = new Aspose.Words.Comparing.CompareOptions();
             compareOptions.IgnoreDmlUniqueId = isIgnoreDmlUniqueId;
  
             docA.Compare(docB, "Aspose.Words", DateTime.Now, compareOptions);
@@ -2517,10 +2520,10 @@ namespace ApiExamples
             Document docB = new Document();
             DocumentBuilder builderB = new DocumentBuilder(docB);
             builderB.Writeln("Lorems ipsum dolor sit amet consectetur - \"adipiscing\" elit");
- 
+
             // Specify whether changes are tracking
             // by character ('Granularity.CharLevel'), or by word ('Granularity.WordLevel').
-            CompareOptions compareOptions = new CompareOptions();
+            Aspose.Words.Comparing.CompareOptions compareOptions = new Aspose.Words.Comparing.CompareOptions();
             compareOptions.Granularity = granularity;
  
             docA.Compare(docB, "author", DateTime.Now, compareOptions);
