@@ -122,6 +122,21 @@ namespace ApiExamples
         }
 
         [Test]
+        public void RemoveStylesFromStyleGallery()
+        {
+            //ExStart
+            //ExFor:StyleCollection.ClearQuickStyleGallery
+            //ExSummary:Shows how to remove styles from Style Gallery panel.
+            Document doc = new Document();
+
+            // Note that remove styles work only with DOCX format for now.
+            doc.Styles.ClearQuickStyleGallery();
+
+            doc.Save(ArtifactsDir + "Styles.RemoveStylesFromStyleGallery.docx");
+            //ExEnd
+        }
+
+        [Test]
         public void ChangeTocsTabStops()
         {
             //ExStart
