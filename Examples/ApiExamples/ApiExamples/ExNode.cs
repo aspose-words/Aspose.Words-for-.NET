@@ -132,6 +132,7 @@ namespace ApiExamples
             Shape shape = new Shape(doc, ShapeType.Rectangle);
             shape.Width = 200;
             shape.Height = 200;
+            // Note that the 'CustomNodeId' is not saved to an output file and exists only during the node lifetime.
             shape.CustomNodeId = 100;
             shape.WrapType = WrapType.Inline;
             paragraph.AppendChild(shape);
