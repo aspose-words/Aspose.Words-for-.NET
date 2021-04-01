@@ -9,6 +9,8 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Security;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -26,7 +28,13 @@ namespace ApiExamples
         public void OneTimeSetUp()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            
+
+            ServicePointManager.ServerCertificateValidationCallback = new
+                RemoteCertificateValidationCallback
+                (
+                    delegate { return true; }
+                );
+
             SetUnlimitedLicense();
 
             if (!Directory.Exists(ArtifactsDir))
@@ -47,6 +55,12 @@ namespace ApiExamples
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
+            ServicePointManager.ServerCertificateValidationCallback = new
+                RemoteCertificateValidationCallback
+                (
+                    delegate { return false; }
+                );
+
             if (Directory.Exists(ArtifactsDir))
                 Directory.Delete(ArtifactsDir, true);
         }

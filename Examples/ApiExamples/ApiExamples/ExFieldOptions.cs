@@ -12,6 +12,7 @@ using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Loading;
 using NUnit.Framework;
 
 namespace ApiExamples

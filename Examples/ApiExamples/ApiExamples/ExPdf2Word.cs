@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using NUnit.Framework;
 using Aspose.Words;
+using Aspose.Words.Loading;
 using Aspose.Words.Saving;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Pdf.Text;
