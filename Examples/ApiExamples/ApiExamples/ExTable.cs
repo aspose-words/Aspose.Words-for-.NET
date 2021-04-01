@@ -620,7 +620,7 @@ namespace ApiExamples
             FindReplaceOptions options = new FindReplaceOptions();
             // When the following option is set to 'true', Aspose.Words will remove paragraph's text
             // completely with its paragraph mark. Otherwise, Aspose.Words will mimic Word and remove
-            // only paragraph's text and leaves the paragraph mark intact.
+            // only paragraph's text and leaves the paragraph mark intact (when a table follows the text).
             options.SmartParagraphBreakReplacement = isSmartParagraphBreakReplacement;
             doc.Range.Replace(new Regex(@"TEXT1&p"), "", options);
 
