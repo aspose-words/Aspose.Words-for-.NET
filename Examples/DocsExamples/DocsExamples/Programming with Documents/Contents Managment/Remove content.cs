@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using Aspose.Words;
 using Aspose.Words.Fields;
 using NUnit.Framework;
@@ -11,9 +12,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
         [Test]
         public void RemovePageBreaks()
         {
-            // ExStart:OpenFromFile
+            //ExStart:OpenFromFile
             Document doc = new Document(MyDir + "Document.docx");
-            // ExEnd:OpenFromFile
+            //ExEnd:OpenFromFile
 
             // In Aspose.Words section breaks are represented as separate Section nodes in the document.
             // To remove these separate sections, the sections are combined.
@@ -103,9 +104,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
         public void RemoveTableOfContents(Document doc, int index)
         {
             // Store the FieldStart nodes of TOC fields in the document for quick access.
-            ArrayList fieldStarts = new ArrayList();
+            List<FieldStart> fieldStarts = new List<FieldStart>();
             // This is a list to store the nodes found inside the specified TOC. They will be removed at the end of this method.
-            ArrayList nodeList = new ArrayList();
+            List<Node> nodeList = new List<Node>();
 
             foreach (FieldStart start in doc.GetChildNodes(NodeType.FieldStart, true))
             {
@@ -121,7 +122,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
 
             bool isRemoving = true;
             
-            Node currentNode = (Node) fieldStarts[index];
+            Node currentNode = fieldStarts[index];
             while (isRemoving)
             {
                 // It is safer to store these nodes and delete them all at once later.

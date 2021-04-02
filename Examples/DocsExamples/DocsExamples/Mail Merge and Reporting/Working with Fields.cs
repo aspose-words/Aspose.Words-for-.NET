@@ -96,7 +96,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         [Test]
         public void MailMergeImageField()
         {
-            // ExStart:MailMergeImageField       
+            //ExStart:MailMergeImageField       
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -116,10 +116,10 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             doc.MailMerge.ExecuteWithRegions(new DataSourceRoot());
 
             doc.Save(ArtifactsDir + "WorkingWithFields.MailMergeImageField.docx");
-            // ExEnd:MailMergeImageField
+            //ExEnd:MailMergeImageField
         }
 
-        // ExStart:ImageFieldMergingHandler
+        //ExStart:ImageFieldMergingHandler
         private class ImageFieldMergingHandler : IFieldMergingCallback
         {
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
@@ -139,9 +139,9 @@ namespace DocsExamples.Mail_Merge_and_Reporting
                 args.Shape = shape;
             }
         }
-        // ExEnd:ImageFieldMergingHandler
+        //ExEnd:ImageFieldMergingHandler
 
-        // ExStart:DataSourceRoot
+        //ExStart:DataSourceRoot
         public class DataSourceRoot : IMailMergeDataSourceRoot
         {
             public IMailMergeDataSource GetDataSource(string s)
@@ -179,7 +179,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
                 }
             }
         }
-        // ExEnd:DataSourceRoot
+        //ExEnd:DataSourceRoot
 
         [Test]
         public void MailMergeAndConditionalField()
@@ -326,7 +326,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
                 if (mBuilder == null)
                     mBuilder = new DocumentBuilder(e.Document);
 
-                if (e.FieldName.Equals("CompanyName"))
+                if (e.FieldName == "CompanyName")
                 {
                     // Select the color depending on whether the row number is even or odd.
                     Color rowColor = IsOdd(mRowIdx) 
@@ -358,7 +358,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         /// </summary>
         private static bool IsOdd(int value)
         {
-            return (value / 2 * 2).Equals(value);
+            return (value / 2 * 2) == value;
         }
 
         /// <summary>

@@ -8,13 +8,13 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
     internal class ExtractContentHelper
     {
         //ExStart:CommonExtractContent
-        public static ArrayList ExtractContent(Node startNode, Node endNode, bool isInclusive)
+        public static List<Node> ExtractContent(Node startNode, Node endNode, bool isInclusive)
         {
             // First, check that the nodes passed to this method are valid for use.
             VerifyParameterNodes(startNode, endNode);
 
             // Create a list to store the extracted nodes.
-            ArrayList nodes = new ArrayList();
+            List<Node> nodes = new List<Node>();
 
             // If either marker is part of a comment, including the comment itself, we need to move the pointer
             // forward to the Comment Node found after the CommentRangeEnd node.
@@ -97,10 +97,10 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
         }
         //ExEnd:CommonExtractContent
 
-        public static ArrayList ParagraphsByStyleName(Document doc, string styleName)
+        public static List<Paragraph> ParagraphsByStyleName(Document doc, string styleName)
         {
             // Create an array to collect paragraphs of the specified style.
-            ArrayList paragraphsWithStyle = new ArrayList();
+            List<Paragraph> paragraphsWithStyle = new List<Paragraph>();
             
             NodeCollection paragraphs = doc.GetChildNodes(NodeType.Paragraph, true);
             
@@ -115,7 +115,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
         }
 
         //ExStart:CommonGenerateDocument
-        public static Document GenerateDocument(Document srcDoc, ArrayList nodes)
+        public static Document GenerateDocument(Document srcDoc, List<Node> nodes)
         {
             Document dstDoc = new Document();
             // Remove the first paragraph from the empty document.
@@ -191,7 +191,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
                     !(node.NodeType == NodeType.Paragraph || node.NodeType == NodeType.Table));
         }
 
-        private static void ProcessMarker(Node cloneNode, ArrayList nodes, Node node, Node blockLevelAncestor,
+        private static void ProcessMarker(Node cloneNode, List<Node> nodes, Node node, Node blockLevelAncestor,
             bool isInclusive, bool isStartMarker, bool canAdd, bool forceAdd)
         {
             // If we are dealing with a block-level node, see if it should be included and add it to the list.
@@ -286,7 +286,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             return list;
         }
 
-        private static void IncludeNextParagraph(Node node, ArrayList nodes)
+        private static void IncludeNextParagraph(Node node, List<Node> nodes)
         {
             Paragraph paragraph = (Paragraph) FindNextNode(NodeType.Paragraph, node.NextSibling);
             if (paragraph != null)

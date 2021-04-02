@@ -294,7 +294,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             chart.AxisY.Scaling.Maximum = new AxisBound(6);
 
             doc.Save(ArtifactsDir + "WorkingWithCharts.BoundsOfAxis.docx");
-            // ExEnd:SetboundsOfAxis
+            //ExEnd:SetboundsOfAxis
         }
 
         [Test]

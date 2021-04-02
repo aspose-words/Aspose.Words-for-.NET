@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -21,7 +22,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             Table endTable = (Table) doc.LastSection.GetChild(NodeType.Table, 0, true);
 
             // Extract the content between these nodes in the document. Include these markers in the extraction.
-            ArrayList extractedNodes = ExtractContentHelper.ExtractContent(startPara, endTable, true);
+            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startPara, endTable, true);
 
             // Let's reverse the array to make inserting the content back into the document easier.
             extractedNodes.Reverse();
@@ -54,13 +55,13 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             BookmarkEnd bookmarkEnd = bookmark.BookmarkEnd;
 
             // Firstly, extract the content between these nodes, including the bookmark.
-            ArrayList extractedNodesInclusive = ExtractContentHelper.ExtractContent(bookmarkStart, bookmarkEnd, true);
+            List<Node> extractedNodesInclusive = ExtractContentHelper.ExtractContent(bookmarkStart, bookmarkEnd, true);
             
             Document dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodesInclusive);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenBookmark.IncludingBookmark.docx");
 
             // Secondly, extract the content between these nodes this time without including the bookmark.
-            ArrayList extractedNodesExclusive = ExtractContentHelper.ExtractContent(bookmarkStart, bookmarkEnd, false);
+            List<Node> extractedNodesExclusive = ExtractContentHelper.ExtractContent(bookmarkStart, bookmarkEnd, false);
             
             dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodesExclusive);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenBookmark.WithoutBookmark.docx");
@@ -79,13 +80,13 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             CommentRangeEnd commentEnd = (CommentRangeEnd) doc.GetChild(NodeType.CommentRangeEnd, 0, true);
 
             // Firstly, extract the content between these nodes including the comment as well.
-            ArrayList extractedNodesInclusive = ExtractContentHelper.ExtractContent(commentStart, commentEnd, true);
+            List<Node> extractedNodesInclusive = ExtractContentHelper.ExtractContent(commentStart, commentEnd, true);
             
             Document dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodesInclusive);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenCommentRange.IncludingComment.docx");
 
             // Secondly, extract the content between these nodes without the comment.
-            ArrayList extractedNodesExclusive = ExtractContentHelper.ExtractContent(commentStart, commentEnd, false);
+            List<Node> extractedNodesExclusive = ExtractContentHelper.ExtractContent(commentStart, commentEnd, false);
             
             dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodesExclusive);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenCommentRange.WithoutComment.docx");
@@ -100,9 +101,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
 
             Paragraph startPara = (Paragraph) doc.FirstSection.Body.GetChild(NodeType.Paragraph, 6, true);
             Paragraph endPara = (Paragraph) doc.FirstSection.Body.GetChild(NodeType.Paragraph, 10, true);
-            
+
             // Extract the content between these nodes in the document. Include these markers in the extraction.
-            ArrayList extractedNodes = ExtractContentHelper.ExtractContent(startPara, endPara, true);
+            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startPara, endPara, true);
 
             Document dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodes);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenParagraphs.docx");
@@ -116,15 +117,15 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             Document doc = new Document(MyDir + "Extract content.docx");
 
             // Gather a list of the paragraphs using the respective heading styles.
-            ArrayList parasStyleHeading1 = ExtractContentHelper.ParagraphsByStyleName(doc, "Heading 1");
-            ArrayList parasStyleHeading3 = ExtractContentHelper.ParagraphsByStyleName(doc, "Heading 3");
+            List<Paragraph> parasStyleHeading1 = ExtractContentHelper.ParagraphsByStyleName(doc, "Heading 1");
+            List<Paragraph> parasStyleHeading3 = ExtractContentHelper.ParagraphsByStyleName(doc, "Heading 3");
 
             // Use the first instance of the paragraphs with those styles.
-            Node startPara1 = (Node) parasStyleHeading1[0];
-            Node endPara1 = (Node) parasStyleHeading3[0];
+            Node startPara1 = parasStyleHeading1[0];
+            Node endPara1 = parasStyleHeading3[0];
 
             // Extract the content between these nodes in the document. Don't include these markers in the extraction.
-            ArrayList extractedNodes = ExtractContentHelper.ExtractContent(startPara1, endPara1, false);
+            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startPara1, endPara1, false);
 
             Document dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodes);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenParagraphStyles.docx");
@@ -143,7 +144,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             Run endRun = para.Runs[4];
 
             // Extract the content between these nodes in the document. Include these markers in the extraction.
-            ArrayList extractedNodes = ExtractContentHelper.ExtractContent(startRun, endRun, true);
+            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startRun, endRun, true);
 
             Node node = (Node) extractedNodes[0];
             Console.WriteLine(node.ToString(SaveFormat.Text));
@@ -309,7 +310,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             Paragraph endPara = (Paragraph) doc.FirstSection.GetChild(NodeType.Paragraph, 5, true);
 
             // Extract the content between these nodes in the document. Don't include these markers in the extraction.
-            ArrayList extractedNodes = ExtractContentHelper.ExtractContent(startField, endPara, false);
+            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startField, endPara, false);
 
             Document dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodes);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentUsingField.docx");
@@ -323,7 +324,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
 
             foreach (Field field in doc.Range.Fields)
             {
-                if (field.Type.Equals(FieldType.FieldHyperlink))
+                if (field.Type == FieldType.FieldHyperlink)
                 {
                     FieldHyperlink hyperlink = (FieldHyperlink) field;
                     if (hyperlink.SubAddress != null && hyperlink.SubAddress.StartsWith("_Toc"))
@@ -369,13 +370,13 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             const string paraStyle = "Heading 1";
             const string runStyle = "Intense Emphasis";
 
-            ArrayList paragraphs = ParagraphsByStyleName(doc, paraStyle);
+            List<Paragraph> paragraphs = ParagraphsByStyleName(doc, paraStyle);
             Console.WriteLine($"Paragraphs with \"{paraStyle}\" styles ({paragraphs.Count}):");
             
             foreach (Paragraph paragraph in paragraphs)
                 Console.Write(paragraph.ToString(SaveFormat.Text));
 
-            ArrayList runs = RunsByStyleName(doc, runStyle);
+            List<Run> runs = RunsByStyleName(doc, runStyle);
             Console.WriteLine($"\nRuns with \"{runStyle}\" styles ({runs.Count}):");
             
             foreach (Run run in runs)
@@ -384,9 +385,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
         }
 
         //ExStart:ParagraphsByStyleName
-        public ArrayList ParagraphsByStyleName(Document doc, string styleName)
+        public List<Paragraph> ParagraphsByStyleName(Document doc, string styleName)
         {
-            ArrayList paragraphsWithStyle = new ArrayList();
+            List<Paragraph> paragraphsWithStyle = new List<Paragraph>();
             NodeCollection paragraphs = doc.GetChildNodes(NodeType.Paragraph, true);
             
             foreach (Paragraph paragraph in paragraphs)
@@ -400,9 +401,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
         //ExEnd:ParagraphsByStyleName
         
         //ExStart:RunsByStyleName
-        public ArrayList RunsByStyleName(Document doc, string styleName)
+        public List<Run> RunsByStyleName(Document doc, string styleName)
         {
-            ArrayList runsWithStyle = new ArrayList();
+            List<Run> runsWithStyle = new List<Run>();
             NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
             
             foreach (Run run in runs)

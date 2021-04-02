@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Aspose.Words;
@@ -42,7 +43,7 @@ namespace ApiExamples
             /// </summary>
             public Cell[] Cells
             {
-                get { return (Cell[]) GetColumnCells().ToArray(typeof(Cell)); }
+                get { return GetColumnCells().ToArray(); }
             }
 
             /// <summary>
@@ -104,9 +105,9 @@ namespace ApiExamples
             /// <summary>
             /// Provides an up-to-date collection of cells which make up the column represented by this facade.
             /// </summary>
-            private ArrayList GetColumnCells()
+            private List<Cell> GetColumnCells()
             {
-                ArrayList columnCells = new ArrayList();
+                List<Cell> columnCells = new List<Cell>();
 
                 foreach (Row row in mTable.Rows.OfType<Row>())
                 {

@@ -74,7 +74,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             /// <summary>
             /// Returns the cells which make up the column.
             /// </summary>
-            public Cell[] Cells => (Cell[]) GetColumnCells().ToArray(typeof(Cell));
+            public Cell[] Cells => GetColumnCells().ToArray();
 
             /// <summary>
             /// Returns the index of the given cell in the column.
@@ -136,9 +136,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             /// <summary>
             /// Provides an up-to-date collection of cells which make up the column represented by this facade.
             /// </summary>
-            private ArrayList GetColumnCells()
+            private List<Cell> GetColumnCells()
             {
-                ArrayList columnCells = new ArrayList();
+                List<Cell> columnCells = new List<Cell>();
 
                 foreach (Row row in mTable.Rows)
                 {
@@ -185,7 +185,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         [Test]
         public void AutoFitTableToPageWidth()
         {
-            // ExStart:AutoFitTableToPageWidth
+            //ExStart:AutoFitTableToPageWidth
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -1120,7 +1120,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         [Test]
         public void SetRelativeHorizontalOrVerticalPosition()
         {
-            // ExStart:SetRelativeHorizontalOrVerticalPosition
+            //ExStart:SetRelativeHorizontalOrVerticalPosition
             Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
             Table table = doc.FirstSection.Body.Tables[0];
@@ -1128,7 +1128,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             table.VerticalAnchor = RelativeVerticalPosition.Page;
 
             doc.Save(ArtifactsDir + "WorkingWithTables.SetFloatingTablePosition.docx");
-            // ExEnd:SetRelativeHorizontalOrVerticalPosition
+            //ExEnd:SetRelativeHorizontalOrVerticalPosition
         }
     }
 }

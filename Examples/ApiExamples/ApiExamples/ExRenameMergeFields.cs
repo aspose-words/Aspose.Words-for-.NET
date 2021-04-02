@@ -41,7 +41,7 @@ namespace ApiExamples
             NodeCollection fieldStarts = doc.GetChildNodes(NodeType.FieldStart, true);
             foreach (FieldStart fieldStart in fieldStarts.OfType<FieldStart>())
             {
-                if (fieldStart.FieldType.Equals(FieldType.FieldMergeField))
+                if (fieldStart.FieldType == FieldType.FieldMergeField)
                 {
                     MergeField mergeField = new MergeField(fieldStart);
                     mergeField.Name = mergeField.Name + "_Renamed";
@@ -59,7 +59,7 @@ namespace ApiExamples
     {
         internal MergeField(FieldStart fieldStart)
         {
-            if (!fieldStart.FieldType.Equals(FieldType.FieldMergeField))
+            if (fieldStart.FieldType != FieldType.FieldMergeField)
                 throw new ArgumentException("Field start type must be FieldMergeField.");
 
             mFieldStart = fieldStart;
@@ -116,7 +116,7 @@ namespace ApiExamples
         {
             for (Node node = startNode; node != null; node = node.NextSibling)
             {
-                if (node.NodeType.Equals(nodeType))
+                if (node.NodeType == nodeType)
                     return node;
             }
 

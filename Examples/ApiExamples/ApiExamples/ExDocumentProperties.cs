@@ -45,9 +45,9 @@ namespace ApiExamples
                 Console.WriteLine($"\tType:\t{docProperty.Type}");
 
                 // Some properties may store multiple values.
-                if (docProperty.Value is Array)
+                if (docProperty.Value is ICollection<object>)
                 {
-                    foreach (object value in docProperty.Value as Array)
+                    foreach (object value in docProperty.Value as ICollection<object>)
                         Console.WriteLine($"\tValue:\t\"{value}\"");
                 }
                 else

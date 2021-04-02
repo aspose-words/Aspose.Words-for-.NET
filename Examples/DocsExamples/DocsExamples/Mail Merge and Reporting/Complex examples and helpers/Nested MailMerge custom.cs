@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
@@ -33,7 +34,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
 
             builder.InsertField(" MERGEFIELD TableEnd:Customer");
 
-            CustomerList customers = new CustomerList
+            List<Customer> customers = new List<Customer>
             {
                 new Customer("Thomas Hardy", "120 Hanover Sq., London"),
                 new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino")
@@ -62,24 +63,12 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
             {
                 FullName = aFullName;
                 Address = anAddress;
-                Orders = new OrderList();
+                Orders = new List<Order>();
             }
 
             public string FullName { get; set; }
             public string Address { get; set; }
-            public OrderList Orders { get; set; }
-        }
-
-        /// <summary>
-        /// An example of a typed collection that contains your "data" objects.
-        /// </summary>
-        public class CustomerList : ArrayList
-        {
-            public new Customer this[int index]
-            {
-                get => (Customer) base[index];
-                set => base[index] = value;
-            }
+            public List<Order> Orders { get; set; }
         }
 
         /// <summary>
@@ -98,24 +87,12 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
         }
 
         /// <summary>
-        /// An example of a typed collection that contains your "data" objects.
-        /// </summary>
-        public class OrderList : ArrayList
-        {
-            public new Order this[int index]
-            {
-                get => (Order) base[index];
-                set => base[index] = value;
-            }
-        }
-
-        /// <summary>
         /// A custom mail merge data source that you implement to allow Aspose.Words
         /// to mail merge data from your Customer objects into Microsoft Word documents.
         /// </summary>
         public class CustomerMailMergeDataSource : IMailMergeDataSource
         {
-            public CustomerMailMergeDataSource(CustomerList customers)
+            public CustomerMailMergeDataSource(List<Customer> customers)
             {
                 mCustomers = customers;
 
@@ -177,13 +154,13 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
 
             private bool IsEof => (mRecordIndex >= mCustomers.Count);
 
-            private readonly CustomerList mCustomers;
+            private readonly List<Customer> mCustomers;
             private int mRecordIndex;
         }
 
         public class OrderMailMergeDataSource : IMailMergeDataSource
         {
-            public OrderMailMergeDataSource(OrderList orders)
+            public OrderMailMergeDataSource(List<Order> orders)
             {
                 mOrders = orders;
 
@@ -234,7 +211,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
 
             private bool IsEof => mRecordIndex >= mOrders.Count;
 
-            private readonly OrderList mOrders;
+            private readonly List<Order> mOrders;
             private int mRecordIndex;
         }
     }

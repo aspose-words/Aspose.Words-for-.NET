@@ -87,7 +87,7 @@ namespace DocsExamples.Programming_with_Documents
             NodeCollection fieldStarts = doc.GetChildNodes(NodeType.FieldStart, true);
             foreach (FieldStart fieldStart in fieldStarts)
             {
-                if (fieldStart.FieldType.Equals(FieldType.FieldMergeField))
+                if (fieldStart.FieldType == FieldType.FieldMergeField)
                 {
                     MergeField mergeField = new MergeField(fieldStart);
                     mergeField.Name += "_Renamed";
@@ -106,9 +106,9 @@ namespace DocsExamples.Programming_with_Documents
         {
             internal MergeField(FieldStart fieldStart)
             {
-                if (fieldStart.Equals(null))
+                if (fieldStart == null)
                     throw new ArgumentNullException(nameof(fieldStart));
-                if (!fieldStart.FieldType.Equals(FieldType.FieldMergeField))
+                if (fieldStart.FieldType != FieldType.FieldMergeField)
                     throw new ArgumentException("Field start type must be FieldMergeField.");
 
                 mFieldStart = fieldStart;
@@ -195,7 +195,7 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void InsertTOAFieldWithoutDocumentBuilder()
         {
-            // ExStart:InsertTOAFieldWithoutDocumentBuilder
+            //ExStart:InsertTOAFieldWithoutDocumentBuilder
             Document doc = new Document();
             Paragraph para = new Paragraph(doc);
 
@@ -224,7 +224,7 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void InsertNestedFields()
         {
-            // ExStart:InsertNestedFields
+            //ExStart:InsertNestedFields
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -375,7 +375,7 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void InsertAuthorField()
         {
-            // ExStart:InsertAuthorField
+            //ExStart:InsertAuthorField
             Document doc = new Document();
 
             Paragraph para = (Paragraph) doc.GetChildNodes(NodeType.Paragraph, true)[0];

@@ -228,20 +228,20 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
         [Test]
         public void MultiSection()
         {
-            // ExStart:MultiSectionSDT
+            //ExStart:MultiSectionSDT
             Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
 
             NodeCollection tags = doc.GetChildNodes(NodeType.StructuredDocumentTagRangeStart, true);
 
             foreach (StructuredDocumentTagRangeStart tag in tags)
                 Console.WriteLine(tag.Title);
-            // ExEnd:MultiSectionSDT
+            //ExEnd:MultiSectionSDT
         }
 
         [Test]
         public void StructuredDocumentTagRangeStartXmlMapping()
         {
-            // ExStart:StructuredDocumentTagRangeStartXmlMapping
+            //ExStart:StructuredDocumentTagRangeStartXmlMapping
             Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
 
             // Construct an XML part that contains data and add it to the document's CustomXmlPart collection.
@@ -259,7 +259,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Managment
             sdtRangeStart.XmlMapping.SetMapping(xmlPart, "/root[1]/text[2]", null);
 
             doc.Save(ArtifactsDir + "WorkingWithSdt.StructuredDocumentTagRangeStartXmlMapping.docx");
-            // ExEnd:StructuredDocumentTagRangeStartXmlMapping
+            //ExEnd:StructuredDocumentTagRangeStartXmlMapping
         }
     }
 }
