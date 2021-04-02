@@ -66,7 +66,7 @@ namespace ApiExamples
                 // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
                 // to modify how that method converts the document to .PDF.
                 PdfSaveOptions options = new PdfSaveOptions();
-
+                
                 // Set the "PageIndex" to "1" to render a portion of the document starting from the second page.
                 options.PageSet = new PageSet(1);
 
@@ -811,31 +811,15 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [TestCase(@"https://www.google.com/search?q= aspose", "https://www.google.com/search?q=%20aspose", true)]
-        [TestCase(@"https://www.google.com/search?q=%20aspose", "https://www.google.com/search?q=%20aspose", true)]
-        [TestCase(@"https://www.google.com/search?q= aspose", "https://www.google.com/search?q= aspose", false)]
-        [TestCase(@"https://www.google.com/search?q=%20aspose", "https://www.google.com/search?q=%20aspose", false)]
-        public void EscapeUri(string uri, string result, bool isEscaped)
+        [TestCase(@"https://www.google.com/search?q= aspose", "https://www.google.com/search?q=%20aspose")]
+        [TestCase(@"https://www.google.com/search?q=%20aspose", "https://www.google.com/search?q=%20aspose")]
+        public void EscapeUri(string uri, string result)
         {
-            //ExStart
-            //ExFor:PdfSaveOptions.EscapeUri
-            //ExSummary:Shows how to escape hyperlinks in the document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertHyperlink("Testlink", uri, false);
 
-            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
-            // to modify how that method converts the document to .PDF.
-            PdfSaveOptions options = new PdfSaveOptions();
-
-            // Set the "EscapeUri" property to "true" if links in the document contain characters,
-            // such as the blank space, that we need to replace with escape sequences, such as "%20".
-            // Set the "EscapeUri" property to "false" if we are sure that this document's links
-            // do not need any such escape character substitution.
-            options.EscapeUri = isEscaped;
-
-            doc.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf", options);
-            //ExEnd
+            doc.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
 #if NET462 || NETCOREAPP2_1 || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");

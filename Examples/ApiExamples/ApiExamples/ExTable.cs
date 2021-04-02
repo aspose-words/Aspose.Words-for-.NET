@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Replacing;
@@ -594,6 +595,42 @@ namespace ApiExamples
             Assert.AreEqual("Eggs\a50\a\a" +
                             "Potatoes\a20\a\a", table.GetText().Trim());
             //ExEnd
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void RemoveParagraphTextAndMark(bool isSmartParagraphBreakReplacement)
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.SmartParagraphBreakReplacement
+            //ExSummary:Shows how to remove paragraph from a table cell with a nested table.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Create table with paragraph and inner table in first cell.
+            builder.StartTable();
+            builder.InsertCell();
+            builder.Write("TEXT1");
+            builder.StartTable();
+            builder.InsertCell();
+            builder.EndTable();
+            builder.EndTable();
+            builder.Writeln();
+
+            FindReplaceOptions options = new FindReplaceOptions();
+            // When the following option is set to 'true', Aspose.Words will remove paragraph's text
+            // completely with its paragraph mark. Otherwise, Aspose.Words will mimic Word and remove
+            // only paragraph's text and leaves the paragraph mark intact (when a table follows the text).
+            options.SmartParagraphBreakReplacement = isSmartParagraphBreakReplacement;
+            doc.Range.Replace(new Regex(@"TEXT1&p"), "", options);
+
+            doc.Save(ArtifactsDir + "Table.RemoveParagraphTextAndMark.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Table.RemoveParagraphTextAndMark.docx");
+
+            Assert.AreEqual(isSmartParagraphBreakReplacement ? 1 : 2,
+                doc.FirstSection.Body.Tables[0].Rows[0].Cells[0].Paragraphs.Count);
         }
 
         [Test]
@@ -1245,6 +1282,7 @@ namespace ApiExamples
             //ExFor:TableStyle.TopPadding
             //ExFor:TableStyle.Shading
             //ExFor:TableStyle.Borders
+            //ExFor:TableStyle.VerticalAlignment
             //ExSummary:Shows how to create custom style settings for the table.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1270,6 +1308,7 @@ namespace ApiExamples
             tableStyle.Shading.BackgroundPatternColor = Color.AntiqueWhite;
             tableStyle.Borders.Color = Color.Blue;
             tableStyle.Borders.LineStyle = LineStyle.DotDash;
+            tableStyle.VerticalAlignment = CellVerticalAlignment.Center;
 
             table.Style = tableStyle;
 
@@ -1292,6 +1331,7 @@ namespace ApiExamples
             Assert.AreEqual(10.0d, tableStyle.RightPadding);
             Assert.AreEqual(20.0d, tableStyle.TopPadding);
             Assert.AreEqual(6, table.FirstRow.RowFormat.Borders.Count(b => b.Color.ToArgb() == Color.Blue.ToArgb()));
+            Assert.AreEqual(CellVerticalAlignment.Center, tableStyle.VerticalAlignment);
 
             tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];
 
@@ -1305,6 +1345,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.AntiqueWhite.ToArgb(), tableStyle.Shading.BackgroundPatternColor.ToArgb());
             Assert.AreEqual(Color.Blue.ToArgb(), tableStyle.Borders.Color.ToArgb());
             Assert.AreEqual(LineStyle.DotDash, tableStyle.Borders.LineStyle);
+            Assert.AreEqual(CellVerticalAlignment.Center, tableStyle.VerticalAlignment);
         }
 
         [Test]

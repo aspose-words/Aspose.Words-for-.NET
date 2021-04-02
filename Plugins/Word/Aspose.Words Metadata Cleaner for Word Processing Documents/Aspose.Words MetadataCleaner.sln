@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aspose.Words MetadataCleaner", "Aspose.Words MetadataCleaner.csproj", "{B5AF01DB-5632-4385-90C0-438509AC30D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5AF01DB-5632-4385-90C0-438509AC30D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5AF01DB-5632-4385-90C0-438509AC30D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5AF01DB-5632-4385-90C0-438509AC30D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5AF01DB-5632-4385-90C0-438509AC30D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {041B9623-01B0-46A3-8513-FF2089FC9700}
+	EndGlobalSection
+EndGlobal

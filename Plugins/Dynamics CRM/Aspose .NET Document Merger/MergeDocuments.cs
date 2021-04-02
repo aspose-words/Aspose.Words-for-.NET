@@ -41,21 +41,30 @@ namespace Aspose.DocumentMerger.MergeDocumentsInEntity
                 string Option = OutputOption.Get(executionContext);
                 Boolean Logging = EnableLogging.Get(executionContext);
                 string LicenseFilePath = LicenseFile.Get(executionContext);
+
                 if (Logging)
                     Log("Workflow Executed");
+
+                // Create a CRM Service in Workflow.
                 IWorkflowContext context = executionContext.GetExtension<IWorkflowContext>();
                 IOrganizationServiceFactory serviceFactory = executionContext.GetExtension<IOrganizationServiceFactory>();
                 IOrganizationService service = serviceFactory.CreateOrganizationService(context.UserId);
+
                 if (Logging)
                     Log("Executing Query to retrieve First Attachment");
+
                 Entity FirstNote = service.Retrieve("annotation", FirstAttachment.Id, new ColumnSet(new string[] { "subject", "documentbody" }));
+
                 if (Logging)
                     Log("First Attachment Retrieved Successfully");
                 if (Logging)
                     Log("Executing Query to retrieve Second Attachment");
+
                 Entity SecondNote = service.Retrieve("annotation", SecondAttachment.Id, new ColumnSet(new string[] { "subject", "documentbody" }));
+
                 if (Logging)
                     Log("Second Attachment Retrieved Successfully");
+
                 MemoryStream fileStream1 = null, fileStream2 = null;
                 string FileName1 = "";
                 string FileName2 = "";
@@ -77,6 +86,7 @@ namespace Aspose.DocumentMerger.MergeDocumentsInEntity
                 {
                     if (Logging)
                         Log("Enable Licensing");
+
                     if (LicenseFilePath != "" && File.Exists(LicenseFilePath))
                     {
                         Aspose.Words.License Lic = new License();
@@ -89,31 +99,40 @@ namespace Aspose.DocumentMerger.MergeDocumentsInEntity
                 {
                     Log("Error while applying license: " + ex.Message);
                 }
+
                 if (Logging)
                     Log("Merging Documents");
+
                 Document doc1 = new Document(fileStream1);
                 Document doc2 = new Document(fileStream2);
                 doc1.AppendDocument(doc2, ImportFormatMode.KeepSourceFormatting);
+
                 if (Logging)
                     Log("Merging Complete");
+
                 MemoryStream UpdateDoc = new MemoryStream();
+
                 if (Logging)
                     Log("Saving Document");
+
                 doc1.Save(UpdateDoc, SaveFormat.Docx);
                 byte[] byteData = UpdateDoc.ToArray();
 
                 // Encode the data using base64.
                 string encodedData = System.Convert.ToBase64String(byteData);
+
                 if (Logging)
                     Log("Creating Attachment");
+
                 Entity NewNote = new Entity("annotation");
-                // Im going to add Note to entity
+
+                // Add a note to the entity.
                 NewNote.Attributes.Add("objectid", new EntityReference("contact", Contact.Id));
                 
-                // Set EncodedData to Document Body
+                // Set EncodedData to Document Body.
                 NewNote.Attributes.Add("documentbody", encodedData);
 
-                // Set the type of attachment
+                // Set the type of attachment.
                 NewNote.Attributes.Add("mimetype", @"application\ms-word");
                 NewNote.Attributes.Add("notetext", "Document Created using template");
 
@@ -144,7 +163,6 @@ namespace Aspose.DocumentMerger.MergeDocumentsInEntity
             {
                 Log(ex.Message);
             }
-
         }
 
         private void Log(string Message)

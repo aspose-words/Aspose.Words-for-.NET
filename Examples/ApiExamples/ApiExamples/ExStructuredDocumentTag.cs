@@ -1012,5 +1012,26 @@ namespace ApiExamples
             Console.WriteLine($"\t|NodeType: {rangeEndTag.NodeType}");
             //ExEnd
         }
+
+        [Test]
+        public void SdtChildNodes()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTagRangeStart.ChildNodes
+            //ExFor:StructuredDocumentTagRangeStart.GetChildNodes(NodeType, bool)
+            //ExSummary:Shows how to get child nodes of StructuredDocumentTagRangeStart.
+            Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
+            StructuredDocumentTagRangeStart tag = doc.GetChildNodes(NodeType.StructuredDocumentTagRangeStart, true)[0] as StructuredDocumentTagRangeStart;
+
+            Console.WriteLine("StructuredDocumentTagRangeStart values:");
+            Console.WriteLine($"\t|Child nodes count: {tag.ChildNodes.Count}\n");
+
+            foreach (Node node in tag.ChildNodes)
+                Console.WriteLine($"\t|Child node type: {node.NodeType}");
+
+            foreach (Node node in tag.GetChildNodes(NodeType.Run, true))
+                Console.WriteLine($"\t|Child node text: {node.GetText()}");
+            //ExEnd
+        }
     }
 }

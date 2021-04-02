@@ -114,6 +114,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Node
+            //ExFor:Node.CustomNodeId
             //ExFor:NodeType
             //ExFor:CompositeNode
             //ExFor:CompositeNode.GetChild
@@ -131,6 +132,8 @@ namespace ApiExamples
             Shape shape = new Shape(doc, ShapeType.Rectangle);
             shape.Width = 200;
             shape.Height = 200;
+            // Note that the 'CustomNodeId' is not saved to an output file and exists only during the node lifetime.
+            shape.CustomNodeId = 100;
             shape.WrapType = WrapType.Inline;
             paragraph.AppendChild(shape);
 
@@ -153,6 +156,7 @@ namespace ApiExamples
                         Shape childShape = (Shape)child;
                         Console.WriteLine("Shape:");
                         Console.WriteLine($"\t{childShape.ShapeType}, {childShape.Width}x{childShape.Height}");
+                        Assert.AreEqual(100, shape.CustomNodeId); //ExSkip
                         break;
                 }
             //ExEnd

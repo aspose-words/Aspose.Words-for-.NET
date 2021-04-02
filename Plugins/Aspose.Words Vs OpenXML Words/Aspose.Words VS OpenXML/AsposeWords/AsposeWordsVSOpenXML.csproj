@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5181D152-E178-4066-B8FC-A5E42B67C35A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AsposeWordsVSOpenXML</RootNamespace>
+    <AssemblyName>AsposeWordsVSOpenXML</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AsposeWords features\Add table.cs" />
+    <Compile Include="AsposeWords features\Change or replace header and footer.cs" />
+    <Compile Include="AsposeWords features\Change text in a table.cs" />
+    <Compile Include="AsposeWords features\Convert from docm to docx.cs" />
+    <Compile Include="AsposeWords features\Create a document.cs" />
+    <Compile Include="AsposeWords features\Create and add a paragraph style.cs" />
+    <Compile Include="AsposeWords features\Remove comments.cs" />
+    <Compile Include="AsposeWords features\Extract image from word document.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\All field update.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Convert document to EPUB.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Convert to byte array.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Convert to Mhtml email.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Convert to Rtf.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Converting document to Pdf.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Execute simple mail merge.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Find and replace.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Insert table of content.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Inserting form fields.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Joining multiple documents.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Joining tables.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Keeping the content from split.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Mail merge from xml using DataSet.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Nested mail merge regions.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Obtaining form fields.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Print document via Xps Api.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Render shapes.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Save doc as png.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Save as multipage tiff.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Splitting tables.cs" />
+    <Compile Include="AsposeWords features\Features missing in OpenXML\Xps print helper.cs" />
+    <Compile Include="AsposeWords features\Get and set bookmark text.cs" />
+    <Compile Include="AsposeWords features\Insert a comment.cs" />
+    <Compile Include="AsposeWords features\Insert picture in word document.cs" />
+    <Compile Include="AsposeWords features\Open and add text to word document.cs" />
+    <Compile Include="AsposeWords features\Open document from stream.cs" />
+    <Compile Include="AsposeWords features\Open read only access.cs" />
+    <Compile Include="OpenXML features\Add table.cs" />
+    <Compile Include="OpenXML features\Change or replace header and footer.cs" />
+    <Compile Include="OpenXML features\Change text in a table.cs" />
+    <Compile Include="OpenXML features\Convert from docm to docx.cs" />
+    <Compile Include="OpenXML features\Create a document.cs" />
+    <Compile Include="OpenXML features\Create and add a paragraph style.cs" />
+    <Compile Include="OpenXML features\Extract image from word document.cs" />
+    <Compile Include="OpenXML features\Get and set bookmark text.cs" />
+    <Compile Include="OpenXML features\Insert a comment.cs" />
+    <Compile Include="OpenXML features\Insert picture in word document.cs" />
+    <Compile Include="OpenXML features\Open and add text to word document.cs" />
+    <Compile Include="OpenXML features\Open document from stream.cs" />
+    <Compile Include="OpenXML features\Open read only access.cs" />
+    <Compile Include="OpenXML features\Remove comments.cs" />
+    <Compile Include="OpenXML features\Remove header footer.cs" />
+    <Compile Include="OpenXML features\Remove hidden text.cs" />
+    <Compile Include="OpenXML features\Remove page breaks.cs" />
+    <Compile Include="OpenXML features\Remove section breaks.cs" />
+    <Compile Include="OpenXML features\Retrieve comments.cs" />
+    <Compile Include="OpenXML features\Search and replace text.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AsposeWords features\Remove header footer.cs" />
+    <Compile Include="AsposeWords features\Remove hidden text.cs" />
+    <Compile Include="AsposeWords features\Remove page breaks.cs" />
+    <Compile Include="AsposeWords features\Remove section breaks.cs" />
+    <Compile Include="AsposeWords features\Retrieve comments.cs" />
+    <Compile Include="AsposeWords features\Search and replace text.cs" />
+    <Compile Include="TestUtil.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <PackageReference Include="Aspose.Email">
+      <Version>21.1.1</Version>
+    </PackageReference>
+    <PackageReference Include="Aspose.Words">
+      <Version>21.2.0</Version>
+    </PackageReference>
+    <PackageReference Include="DocumentFormat.OpenXml">
+      <Version>2.12.3</Version>
+    </PackageReference>
+    <PackageReference Include="NUnit">
+      <Version>3.13.1</Version>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

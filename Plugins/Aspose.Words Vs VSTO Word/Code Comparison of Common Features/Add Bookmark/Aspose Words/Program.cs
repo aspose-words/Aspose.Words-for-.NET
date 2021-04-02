@@ -1,9 +1,4 @@
 ﻿using Aspose.Words;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aspose_Words
 {
@@ -11,15 +6,18 @@ namespace Aspose_Words
     {
         static void Main(string[] args)
         {
-            string mypath = "";
+            // Create a blank document, and then a document builder which we will use to populate the document with content.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // A bookmark consists of a "BookmarkStart" node and a "BookmarkEnd" node
+            // with matching names, as well as contents that these nodes enclose.
             builder.StartBookmark("MyBookmark");
-            builder.Writeln("Text inside a bookmark.");
+            builder.Writeln("Hello world!");
             builder.EndBookmark("MyBookmark");
-            doc.Save(mypath + "Adding Bookmark.doc");
- 
+
+            // Save the document to the local file system.
+            doc.Save("Adding Bookmark.docx");
         }
     }
 }

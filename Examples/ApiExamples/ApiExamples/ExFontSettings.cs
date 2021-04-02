@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using Aspose.Words;
 using Aspose.Words.Fonts;
+using Aspose.Words.Loading;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -158,7 +159,7 @@ namespace ApiExamples
             // Store the current collection of font sources, which will be the default font source for every document
             // for which we do not specify a different font source.
             FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
-
+            
             // For testing purposes, we will set Aspose.Words to look for fonts only in a folder that does not exist.
             FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
 
@@ -186,6 +187,40 @@ namespace ApiExamples
             }
 
             public WarningInfoCollection FontSubstitutionWarnings = new WarningInfoCollection();
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:FontSourceBase.WarningCallback
+        //ExSummary:Shows how to call warning callback when the font sources working with.
+        [Test]
+        public void FontSourceWarning()
+        {
+            FontSettings settings = new FontSettings();
+            settings.SetFontsFolder("bad folder?", false);
+
+            FontSourceBase source = settings.GetFontsSources()[0];
+            FontSourceWarningCollector callback = new FontSourceWarningCollector();
+            source.WarningCallback = callback;
+
+            // Get the list of fonts to call warning callback.
+            IList<PhysicalFontInfo> fontInfos = source.GetAvailableFonts();
+
+            Assert.AreEqual("Error loading font from the folder \"bad folder?\": Illegal characters in path.",
+                callback.FontSubstitutionWarnings[0].Description);
+        }
+
+        private class FontSourceWarningCollector : IWarningCallback
+        {
+            /// <summary>
+            /// Called every time a warning occurs during processing of font source.
+            /// </summary>
+            public void Warning(WarningInfo info)
+            {
+                FontSubstitutionWarnings.Warning(info);
+            }
+
+            public readonly WarningInfoCollection FontSubstitutionWarnings = new WarningInfoCollection();
         }
         //ExEnd
 

@@ -1,4 +1,5 @@
 ﻿using Aspose.Words;
+using Aspose.Words.Notes;
 using NUnit.Framework;
 
 namespace DocsExamples.Programming_with_Documents

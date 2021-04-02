@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using Aspose.Words;
 using Aspose.Words.Fonts;
+using Aspose.Words.Loading;
 using NUnit.Framework;
 using Font = Aspose.Words.Font;
 

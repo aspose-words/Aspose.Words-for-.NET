@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Aspose.Words;
 using System.IO;
 
@@ -10,6 +8,16 @@ namespace _01._07_CheckFormatCompatibility
     {
         static void Main(string[] args)
         {
+            // Check for an Aspose.Words license file in the local file system and apply it, if it exists.
+            string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
+            if (File.Exists(licenseFile))
+            {
+                Aspose.Words.License license = new Aspose.Words.License();
+
+                // Use the license from the bin/debug/ Folder.
+                license.SetLicense("Aspose.Words.lic");
+            }
+
             string dataPath = "../../data/";
             string[] fileList = Directory.GetFiles(dataPath);
 
@@ -68,12 +76,14 @@ namespace _01._07_CheckFormatCompatibility
                     case LoadFormat.Ott:
                         Console.WriteLine("\tOpenDocument Text Template.");
                         break;
-                    case LoadFormat.DocPreWord97:
+                    case LoadFormat.DocPreWord60:
                         Console.WriteLine("\tMS Word 6 or Word 95 format.");
                         break;
                     case LoadFormat.Unknown:
-                    default:
                         Console.WriteLine("\tUnknown format.");
+                        break;
+                    default:
+                        Console.WriteLine("\tOther format.");
                         break;
                 }
             }

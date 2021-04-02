@@ -1,9 +1,4 @@
 ﻿using Aspose.Words;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConversionToAndFromODTandOTT
 {
@@ -15,23 +10,38 @@ namespace ConversionToAndFromODTandOTT
             ConvertingFromOtt();
             ConvertingToOdt();
         }
+
+        /// <summary>
+        /// Loads an ODT document from the local file system and saves it to the DOCX format in a different file.  
+        /// </summary>
         public static void ConvertingFromOdt()
         {
-            string MyDir = @"Files\";
-            Document doc = new Document(MyDir+"OpenOfficeWord.odt");
-            doc.Save(MyDir+"ConvertedOdtFromDoc.docx",SaveFormat.Docx);
+            string MyDir = @"..\..\..\..\..\Sample Files\";
+            Document doc = new Document(MyDir + "MyDocument.odt");
+
+            doc.Save(MyDir+ "ConvertingFromOdt.docx", SaveFormat.Docx);
         }
+
+        /// <summary>
+        /// Loads an OTT document from the local file system and saves it to the DOCX format in a different file.  
+        /// </summary>
         public static void ConvertingFromOtt()
         {
-            string MyDir = @"Files\";
-            Document doc = new Document(MyDir + "Sample.ott");
-            doc.Save(MyDir + "ConvertedFromOttFromDoc.docx", SaveFormat.Docx);
+            string MyDir = @"..\..\..\..\..\Sample Files\";
+            Document doc = new Document(MyDir + "MyDocument.ott");
+
+            doc.Save(MyDir + "ConvertingFromOtt.docx", SaveFormat.Docx);
         }
+
+        /// <summary>
+        /// Loads a DOCX document from the local file system and saves it to the ODT format in a different file.  
+        /// </summary>
         public static void ConvertingToOdt()
         {
-            string MyDir = @"Files\";
-            Document doc = new Document(MyDir + "ConvertedOdtFromDoc.docx");
-            doc.Save(MyDir + "ConvertedToODT.odt", SaveFormat.Odt);
+            string MyDir = @"..\..\..\..\..\Sample Files\";
+            Document doc = new Document(MyDir + "MyDocument.docx");
+
+            doc.Save(MyDir + "ConvertingToOdt.odt", SaveFormat.Odt);
         }
     }
 }

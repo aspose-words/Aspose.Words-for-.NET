@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text; using Aspose.Words;
+using System.IO;
+using Aspose.Words;
 using Aspose.Words.Tables;
 
 namespace _03._01_JoiningTables
@@ -9,7 +9,17 @@ namespace _03._01_JoiningTables
     {
         static void Main(string[] args)
         {
-            // Load the document.
+            // Check for an Aspose.Words license file in the local file system and apply it, if it exists.
+            string licenseFile = AppDomain.CurrentDomain.BaseDirectory + "Aspose.Words.lic";
+            if (File.Exists(licenseFile))
+            {
+                Aspose.Words.License license = new Aspose.Words.License();
+
+                // Use the license from the bin/debug/ Folder.
+                license.SetLicense("Aspose.Words.lic");
+            }
+
+            // Load a document that contains tables.
             Document doc = new Document("../../data/document.doc");
 
             // Get the first and second table in the document.
@@ -25,7 +35,7 @@ namespace _03._01_JoiningTables
             // Remove the empty table container.
             secondTable.Remove();
 
-            doc.Save("Table.CombineTables Out.doc");
+            doc.Save("JoiningTables.docx");
         }
     }
 }

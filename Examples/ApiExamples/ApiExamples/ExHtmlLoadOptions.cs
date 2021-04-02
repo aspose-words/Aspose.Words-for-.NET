@@ -9,10 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
+using Aspose.Words.Loading;
 using Aspose.Words.Markup;
 using NUnit.Framework;
 
@@ -237,6 +239,41 @@ namespace ApiExamples
 
             FormField formField = (FormField) nodes[0];
             Assert.AreEqual("Input value text", formField.Result);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IgnoreNoscriptElements(bool ignoreNoscriptElements)
+        {
+            //ExStart
+            //ExFor:HtmlLoadOptions.IgnoreNoscriptElements
+            //ExSummary:Shows how to ignore <noscript> HTML elements.
+            const string html = @"
+                <html>
+                  <head>
+                    <title>NOSCRIPT</title>
+                      <meta http-equiv=""Content-Type"" content=""text/html; charset=utf-8"">
+                      <script type=""text/javascript"">
+                        alert(""Hello, world!"");
+                      </script>
+                  </head>
+                <body>
+                  <noscript><p>Your browser does not support JavaScript!</p></noscript>
+                </body>
+                </html>";
+
+            HtmlLoadOptions htmlLoadOptions = new HtmlLoadOptions();
+            htmlLoadOptions.IgnoreNoscriptElements = ignoreNoscriptElements;
+
+            Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), htmlLoadOptions);
+            doc.Save(ArtifactsDir + "HtmlLoadOptions.IgnoreNoscriptElements.pdf");
+            //ExEnd
+
+            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "HtmlLoadOptions.IgnoreNoscriptElements.pdf");
+            TextAbsorber textAbsorber = new TextAbsorber();
+            textAbsorber.Visit(pdfDoc);
+
+            Assert.AreEqual(ignoreNoscriptElements ? "" : "Your browser does not support JavaScript!", textAbsorber.Text);
         }
     }
 }

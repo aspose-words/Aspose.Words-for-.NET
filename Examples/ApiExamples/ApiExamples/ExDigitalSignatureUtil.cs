@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
+using Aspose.Words.Loading;
 using NUnit.Framework;
 
 namespace ApiExamples

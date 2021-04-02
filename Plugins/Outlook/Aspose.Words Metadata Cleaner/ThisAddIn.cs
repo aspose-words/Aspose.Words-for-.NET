@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
 using Outlook = Microsoft.Office.Interop.Outlook;
-using Office = Microsoft.Office.Core;
 using System.IO;
 using System.Windows.Forms;
 using Aspose.Words;
@@ -16,11 +11,11 @@ namespace Aspose.Words_Metadata_Cleaner
         public bool EnableAsposeWordsMetadata;
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            // Enable the Add-in on start of Outlook
+            // Enable the Add-in on start of Outlook.
             EnableAsposeWordsMetadata = true;
             try
             {
-                // Apply License to Aspose if it exist
+                // Apply the Aspose license from a file in the local file system, if it exists.
                 string LicenceFilePath = String.IsNullOrEmpty(Properties.Settings.Default.AsposeLicense) ? "" : Properties.Settings.Default.AsposeLicense;
                 try
                 {
@@ -42,7 +37,7 @@ namespace Aspose.Words_Metadata_Cleaner
                     MessageBox.Show("Not able to set license. Application will run in demo mode. Error: " + ex.Message);
                 }
 
-                // Start a plugin on email sent
+                // Start a plugin on email sent.
                 Application.ItemSend += new
             Outlook.ApplicationEvents_11_ItemSendEventHandler(Application_ItemSend);
             }
@@ -51,7 +46,8 @@ namespace Aspose.Words_Metadata_Cleaner
                 MessageBox.Show("Error: " + ex.Message, "Error");
             }
         }
-        // This method will be executed everytime an email is sent
+
+        // This method is called every time an email is sent.
         private void Application_ItemSend(object Item, ref bool Cancel)
         {
             if (EnableAsposeWordsMetadata)
@@ -64,15 +60,15 @@ namespace Aspose.Words_Metadata_Cleaner
                     {
                         Outlook.Attachment attachment = thisEmail.Attachments[i];
 
-                        // save attachment in temp location
+                        // Save the attachment in the temp location.
                         int attachmentIndex = attachment.Index;
                         string tempPath = Path.GetTempPath();
                         string tempFileName = tempPath + attachment.FileName;
                         attachment.SaveAsFile(tempFileName);
 
-                        // Check the file format for word documents
+                        // Check the file format for Microsoft Word documents.
                         FileFormatInfo info = FileFormatUtil.DetectFileFormat(tempFileName);
-                        bool WordAttachment = false;
+                        bool wordAttachment = false;
 
                         switch (info.LoadFormat)
                         {
@@ -89,27 +85,24 @@ namespace Aspose.Words_Metadata_Cleaner
                             case LoadFormat.Mhtml:
                             case LoadFormat.Odt:
                             case LoadFormat.Ott:
-                            case LoadFormat.DocPreWord97:
-                                WordAttachment = true;
-                                break;
-                            default:
-                                WordAttachment = false;
+                            case LoadFormat.DocPreWord60:
+                                wordAttachment = true;
                                 break;
                         }
 
-                        // If word Attachment is found
-                        if (WordAttachment)
+                        // If a Word Attachment is found:
+                        if (wordAttachment)
                         {
                             try
                             {
                                 Aspose.Words.Document doc = new Words.Document(tempFileName);
 
-                                // Remove if there is any protection on the document
+                                // Remove if there is any protection on the document.
                                 ProtectionType protection = doc.ProtectionType;
                                 if (protection != ProtectionType.NoProtection)
                                     doc.Unprotect();
 
-                                // Remove all built-in and Custom Properties
+                                // Remove all built-in and Custom Properties.
                                 doc.CustomDocumentProperties.Clear();
                                 doc.BuiltInDocumentProperties.Clear();
 
@@ -117,10 +110,10 @@ namespace Aspose.Words_Metadata_Cleaner
                                 if (protection != ProtectionType.NoProtection)
                                     doc.Protect(protection);
 
-                                // Save the file back to temp location
+                                // Save the file back to temp location.
                                 doc.Save(tempFileName);
 
-                                // Replace the original attachment
+                                // Replace the original attachment.
                                 thisEmail.Attachments.Remove(attachmentIndex);
                                 thisEmail.Attachments.Add(tempFileName, missing, attachmentIndex, missing);
                             }
@@ -133,7 +126,6 @@ namespace Aspose.Words_Metadata_Cleaner
                                 throw ex;
                             }
                         }
-                        // Delete file from temp folder
                         if (File.Exists(tempFileName))
                             File.Delete(tempFileName);
                     }

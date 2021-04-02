@@ -22,7 +22,10 @@ using Document = Aspose.Words.Document;
 using Table = Aspose.Words.Tables.Table;
 using System.Drawing;
 using Aspose.Words.DigitalSignatures;
+using Aspose.Words.Lists;
+using Aspose.Words.Notes;
 using Aspose.Words.Saving;
+using List = NUnit.Framework.List;
 
 #if NETCOREAPP2_1 || __MOBILE__
 using SkiaSharp;
@@ -234,7 +237,7 @@ namespace ApiExamples
             // The hyperlink will be a clickable piece of text which will take us to the location specified in the URL.
             builder.Font.Color = Color.Blue;
             builder.Font.Underline = Underline.Single;
-            builder.InsertHyperlink("Aspose website", "http://www.aspose.com", false);
+            builder.InsertHyperlink("Google website", "https://www.google.com", false);
             builder.Font.ClearFormatting();
             builder.Writeln(".");
 
@@ -251,7 +254,7 @@ namespace ApiExamples
 
             Assert.AreEqual(Color.Blue.ToArgb(), fieldContents.Font.Color.ToArgb());
             Assert.AreEqual(Underline.Single, fieldContents.Font.Underline);
-            Assert.AreEqual("HYPERLINK \"http://www.aspose.com\"", fieldContents.GetText().Trim());
+            Assert.AreEqual("HYPERLINK \"https://www.google.com\"", fieldContents.GetText().Trim());
         }
 
         [Test]
@@ -370,12 +373,18 @@ namespace ApiExamples
             // 1 -  Image taken from the local file system:
             using (FileStream imageStream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open))
             {
+                // If 'presentation' is omitted and 'asIcon' is set, this overloaded method selects
+                // the icon according to the file extension and uses the filename for the icon caption.
                 builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, imageStream); 
             }
-            
+
+            // If 'presentation' is omitted and 'asIcon' is set, this overloaded method selects
+            // the icon according to 'progId' and uses the filename for the icon caption.
             // 2 -  Icon based on the application that will open the object:
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
 
+            // If 'iconFile' and 'iconCaption' are omitted, this overloaded method selects
+            // the icon according to 'progId' and uses the predefined icon caption.
             // 3 -  Image icon that's 32 x 32 pixels or smaller from the local file system, with a custom caption:
             builder.InsertOleObjectAsIcon(MyDir + "Presentation.pptx", false, ImageDir + "Logo icon.ico",
                 "Double click to view presentation!");
@@ -555,6 +564,54 @@ namespace ApiExamples
             Assert.AreEqual(1, doc.Range.Bookmarks.Count);
             Assert.AreEqual("MyBookmark", doc.Range.Bookmarks[0].Name);
             Assert.AreEqual("Hello world!", doc.Range.Bookmarks[0].Text.Trim());
+            //ExEnd
+        }
+
+        [Test]
+        public void CreateColumnBookmark()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.StartColumnBookmark
+            //ExFor:DocumentBuilder.EndColumnBookmark
+            //ExSummary:Shows how to create a column bookmark.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.StartTable();
+
+            builder.InsertCell();
+            // Cells 1,2,4,5 will be bookmarked.
+            builder.StartColumnBookmark("MyBookmark_1");
+            // Badly formed bookmarks or bookmarks with duplicate names will be ignored when the document is saved.
+            builder.StartColumnBookmark("MyBookmark_1");
+            builder.StartColumnBookmark("BadStartBookmark");
+            builder.Write("Cell 1");
+
+            builder.InsertCell();
+            builder.Write("Cell 2");
+
+            builder.InsertCell();
+            builder.Write("Cell 3");
+
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.Write("Cell 4");
+
+            builder.InsertCell();
+            builder.Write("Cell 5");
+            builder.EndColumnBookmark("MyBookmark_1");
+            builder.EndColumnBookmark("MyBookmark_1");
+
+            Assert.Throws(typeof(InvalidOperationException), () => builder.EndColumnBookmark("BadEndBookmark")); //ExSkip
+
+            builder.InsertCell();
+            builder.Write("Cell 6");
+
+            builder.EndRow();
+            builder.EndTable();
+
+            doc.Save(ArtifactsDir + "Bookmarks.CreateColumnBookmark.docx");
             //ExEnd
         }
 
@@ -2288,8 +2345,9 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]
-        public void AppendDocumentAndResolveStyles()
+        [TestCase(false)]
+        [TestCase(true)]
+        public void AppendDocumentAndResolveStyles(bool keepSourceNumbering)
         {
             //ExStart
             //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
@@ -2303,8 +2361,11 @@ namespace ApiExamples
             dstDoc.Styles["CustomStyle"].Font.Color = Color.DarkRed;
 
             // If there is a clash of list styles, apply the list format of the source document.
+            // Set the "KeepSourceNumbering" property to "false" to not import any list numbers into the destination document.
+            // Set the "KeepSourceNumbering" property to "true" import all clashing
+            // list style numbering with the same appearance that it had in the source document.
             ImportFormatOptions options = new ImportFormatOptions();
-            options.KeepSourceNumbering = true;
+            options.KeepSourceNumbering = keepSourceNumbering;
 
             // Joining two documents that have different styles that share the same name causes a style clash.
             // We can specify an import format mode while appending documents to resolve this clash.
@@ -2312,6 +2373,67 @@ namespace ApiExamples
             dstDoc.UpdateListLabels();
 
             dstDoc.Save(ArtifactsDir + "DocumentBuilder.AppendDocumentAndResolveStyles.docx");
+            //ExEnd
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void InsertDocumentAndResolveStyles(bool keepSourceNumbering)
+        {
+            //ExStart
+            //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
+            //ExSummary:Shows how to manage list style clashes while inserting a document.
+            Document dstDoc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(dstDoc);
+            builder.InsertBreak(BreakType.ParagraphBreak);
+
+            dstDoc.Lists.Add(ListTemplate.NumberDefault);
+            Aspose.Words.Lists.List list = dstDoc.Lists[0];
+
+            builder.ListFormat.List = list;
+
+            for (int i = 1; i <= 15; i++)
+                builder.Write($"List Item {i}\n");
+
+            Document attachDoc = (Document)dstDoc.Clone(true);
+
+            // If there is a clash of list styles, apply the list format of the source document.
+            // Set the "KeepSourceNumbering" property to "false" to not import any list numbers into the destination document.
+            // Set the "KeepSourceNumbering" property to "true" import all clashing
+            // list style numbering with the same appearance that it had in the source document.
+            ImportFormatOptions importOptions = new ImportFormatOptions();
+            importOptions.KeepSourceNumbering = keepSourceNumbering;
+
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.InsertDocument(attachDoc, ImportFormatMode.KeepSourceFormatting, importOptions);
+
+            dstDoc.Save(ArtifactsDir + "DocumentBuilder.InsertDocumentAndResolveStyles.docx");
+            //ExEnd
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public void LoadDocumentWithListNumbering(bool keepSourceNumbering)
+        {
+            //ExStart
+            //ExFor:Document.AppendDocument(Document, ImportFormatMode, ImportFormatOptions)
+            //ExSummary:Shows how to manage list style clashes while appending a clone of a document to itself.
+            Document srcDoc = new Document(MyDir + "List item.docx");
+            Document dstDoc = new Document(MyDir + "List item.docx");
+
+            // If there is a clash of list styles, apply the list format of the source document.
+            // Set the "KeepSourceNumbering" property to "false" to not import any list numbers into the destination document.
+            // Set the "KeepSourceNumbering" property to "true" import all clashing
+            // list style numbering with the same appearance that it had in the source document.
+            DocumentBuilder builder = new DocumentBuilder(dstDoc);
+            builder.MoveToDocumentEnd();
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+
+            ImportFormatOptions options = new ImportFormatOptions();
+            options.KeepSourceNumbering = keepSourceNumbering;
+            builder.InsertDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
+
+            dstDoc.UpdateListLabels();
             //ExEnd
         }
 
@@ -2787,6 +2909,8 @@ namespace ApiExamples
             using (Stream spreadsheetStream = File.Open(MyDir + "Spreadsheet.xlsx", FileMode.Open))
             {
                 builder.Writeln("Spreadsheet Ole object:");
+                // If 'presentation' is omitted and 'asIcon' is set, this overloaded method selects
+                // the icon according to 'progId' and uses the predefined icon caption.
                 builder.InsertOleObject(spreadsheetStream, "OleObject.xlsx", false, null);
             }
 
@@ -2796,7 +2920,7 @@ namespace ApiExamples
             {
                 using (WebClient webClient = new WebClient())
                 {
-                    byte[] imgBytes = webClient.DownloadData(AsposeLogoUrl);
+                    byte[] imgBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
 
                     using (MemoryStream imageStream = new MemoryStream(imgBytes))
                     {
@@ -3357,9 +3481,9 @@ namespace ApiExamples
             MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
             saveOptions.TableContentAlignment = tableContentAlignment;
 
-            builder.Document.Save(ArtifactsDir + "MarkdownDocumentTableContentAlignment.md", saveOptions);
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocumentTableContentAlignment.md", saveOptions);
 
-            Document doc = new Document(ArtifactsDir + "MarkdownDocumentTableContentAlignment.md");
+            Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocumentTableContentAlignment.md");
             Table table = doc.FirstSection.Body.Tables[0];
 
             switch (tableContentAlignment)
@@ -3390,6 +3514,62 @@ namespace ApiExamples
                     break;
             }
         }
+
+        //ExStart
+        //ExFor:MarkdownSaveOptions.ImageSavingCallback
+        //ExFor:IImageSavingCallback
+        //ExSummary:Shows how to rename the image name during saving into Markdown document.
+        [Test] //ExSkip
+        public void RenameImages()
+        {
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            MarkdownSaveOptions options = new MarkdownSaveOptions();
+
+            // If we convert a document that contains images into Markdown, we will end up with one Markdown file which links to several images.
+            // Each image will be in the form of a file in the local file system.
+            // There is also a callback that can customize the name and file system location of each image.
+            options.ImageSavingCallback = new SavedImageRename("DocumentBuilder.HandleDocument.md");
+
+            // The ImageSaving() method of our callback will be run at this time.
+            doc.Save(ArtifactsDir + "DocumentBuilder.HandleDocument.md", options);
+
+            Assert.AreEqual(1,
+                Directory.GetFiles(ArtifactsDir)
+                    .Where(s => s.StartsWith(ArtifactsDir + "DocumentBuilder.HandleDocument.md shape"))
+                    .Count(f => f.EndsWith(".jpeg")));
+            Assert.AreEqual(8,
+                Directory.GetFiles(ArtifactsDir)
+                    .Where(s => s.StartsWith(ArtifactsDir + "DocumentBuilder.HandleDocument.md shape"))
+                    .Count(f => f.EndsWith(".png")));
+        }
+
+        /// <summary>
+        /// Renames saved images that are produced when an Markdown document is saved.
+        /// </summary>
+        public class SavedImageRename : IImageSavingCallback
+        {
+            public SavedImageRename(string outFileName)
+            {
+                mOutFileName = outFileName;
+            }
+
+            void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
+            {
+                string imageFileName = $"{mOutFileName} shape {++mCount}, of type {args.CurrentShape.ShapeType}{Path.GetExtension(args.ImageFileName)}";
+
+                args.ImageFileName = imageFileName;
+                args.ImageStream = new FileStream(ArtifactsDir + imageFileName, FileMode.Create);
+
+                Assert.True(args.ImageStream.CanWrite);
+                Assert.True(args.IsImageAvailable);
+                Assert.False(args.KeepImageStreamOpen);
+            }
+
+            private int mCount;
+            private readonly string mOutFileName;
+        }
+        //ExEnd
 
         [Test]
         public void InsertOnlineVideo()
@@ -3440,32 +3620,30 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             string videoUrl = "https://vimeo.com/52477838";
-            string videoEmbedCode = "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" " +
-                                    "title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+            string videoEmbedCode =
+                "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" " +
+                "title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
 
-            using (WebClient webClient = new WebClient())
+            byte[] thumbnailImageBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
+
+            using (MemoryStream stream = new MemoryStream(thumbnailImageBytes))
             {
-                byte[] thumbnailImageBytes = webClient.DownloadData(AsposeLogoUrl);
-
-                using (MemoryStream stream = new MemoryStream(thumbnailImageBytes))
+                using (Image image = Image.FromStream(stream))
                 {
-                    using (Image image = Image.FromStream(stream))
-                    {
-                        // Below are two ways of creating a shape with a custom thumbnail, which links to an online video
-                        // that will play when we click on the shape in Microsoft Word.
-                        // 1 -  Insert an inline shape at the builder's node insertion cursor:
-                        builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes, image.Width, image.Height);
+                    // Below are two ways of creating a shape with a custom thumbnail, which links to an online video
+                    // that will play when we click on the shape in Microsoft Word.
+                    // 1 -  Insert an inline shape at the builder's node insertion cursor:
+                    builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes, image.Width, image.Height);
 
-                        builder.InsertBreak(BreakType.PageBreak);
+                    builder.InsertBreak(BreakType.PageBreak);
 
-                        // 2 -  Insert a floating shape:
-                        double left = builder.PageSetup.RightMargin - image.Width;
-                        double top = builder.PageSetup.BottomMargin - image.Height;
+                    // 2 -  Insert a floating shape:
+                    double left = builder.PageSetup.RightMargin - image.Width;
+                    double top = builder.PageSetup.BottomMargin - image.Height;
 
-                        builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes,
-                            RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
-                            image.Width, image.Height, WrapType.Square);
-                    }
+                    builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes,
+                        RelativeHorizontalPosition.RightMargin, left, RelativeVerticalPosition.BottomMargin, top,
+                        image.Width, image.Height, WrapType.Square);
                 }
             }
 
@@ -3473,11 +3651,11 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOnlineVideoCustomThumbnail.docx");
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            
-            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, shape);
-            Assert.AreEqual(320.0d, shape.Width);
-            Assert.AreEqual(320.0d, shape.Height);
+            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
+            Assert.AreEqual(400.0d, shape.Width);
+            Assert.AreEqual(400.0d, shape.Height);
             Assert.AreEqual(0.0d, shape.Left);
             Assert.AreEqual(0.0d, shape.Top);
             Assert.AreEqual(WrapType.Inline, shape.WrapType);
@@ -3485,14 +3663,14 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.Column, shape.RelativeHorizontalPosition);
 
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
-            
-            shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, shape);
-            Assert.AreEqual(320.0d, shape.Width);
-            Assert.AreEqual(320.0d, shape.Height);
-            Assert.AreEqual(-249.15d, shape.Left);
-            Assert.AreEqual(-249.15d, shape.Top);
+            shape = (Shape) doc.GetChild(NodeType.Shape, 1, true);
+
+            TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
+            Assert.AreEqual(400.0d, shape.Width);
+            Assert.AreEqual(400.0d, shape.Height);
+            Assert.AreEqual(-329.15d, shape.Left);
+            Assert.AreEqual(-329.15d, shape.Top);
             Assert.AreEqual(WrapType.Square, shape.WrapType);
             Assert.AreEqual(RelativeVerticalPosition.BottomMargin, shape.RelativeVerticalPosition);
             Assert.AreEqual(RelativeHorizontalPosition.RightMargin, shape.RelativeHorizontalPosition);
@@ -3513,12 +3691,16 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // If 'iconFile' and 'iconCaption' are omitted, this overloaded method selects
+            // the icon according to 'progId' and uses the filename for the icon caption.
             builder.InsertOleObjectAsIcon(MyDir + "Presentation.pptx", "Package", false, ImageDir + "Logo icon.ico", "My embedded file");
 
             builder.InsertBreak(BreakType.LineBreak);
 
             using (FileStream stream = new FileStream(MyDir + "Presentation.pptx", FileMode.Open))
             {
+                // If 'iconFile' and 'iconCaption' are omitted, this overloaded method selects
+                // the icon according to the file extension and uses the filename for the icon caption.
                 Shape shape = builder.InsertOleObjectAsIcon(stream, "PowerPoint.Application", ImageDir + "Logo icon.ico",
                     "My embedded file stream");
 

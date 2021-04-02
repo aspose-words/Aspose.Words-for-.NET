@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Aspose.Words;
 using Aspose.Words.Layout;
+using Aspose.Words.Notes;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 

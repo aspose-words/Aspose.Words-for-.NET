@@ -17,8 +17,11 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
+using Aspose.Words.Notes;
 using Aspose.Words.Tables;
+using Aspose.Words.Themes;
 using NUnit.Framework;
+using Font = Aspose.Words.Font;
 
 namespace ApiExamples
 {
@@ -57,7 +60,6 @@ namespace ApiExamples
             Assert.AreEqual("Courier New", run.Font.Name);
             Assert.AreEqual(36, run.Font.Size);
             Assert.AreEqual(Color.Yellow.ToArgb(), run.Font.HighlightColor.ToArgb());
-
         }
 
         [Test]
@@ -1452,6 +1454,144 @@ namespace ApiExamples
  
             builder.Document.Save(ArtifactsDir + "Fonts.SetEmphasisMark.docx");
             //ExEnd
+        }
+
+        [Test]
+        public void ThemeFontsColors()
+        {
+            //ExStart
+            //ExFor:Font.ThemeFont
+            //ExFor:Font.ThemeFontAscii
+            //ExFor:Font.ThemeFontBi
+            //ExFor:Font.ThemeFontFarEast
+            //ExFor:Font.ThemeFontOther
+            //ExFor:Font.ThemeColor
+            //ExFor:ThemeFont
+            //ExFor:ThemeColor
+            //ExSummary:Shows how to work with theme fonts and colors.
+            Document doc = new Document();
+            
+            // Define fonts for languages uses by default.
+            doc.Theme.MinorFonts.Latin = "Algerian";
+            doc.Theme.MinorFonts.EastAsian = "Aharoni";
+            doc.Theme.MinorFonts.ComplexScript = "Andalus";
+
+            Font font = doc.Styles["Normal"].Font;
+            Console.WriteLine("Originally the Normal style theme color is: {0} and RGB color is: {1}\n", font.ThemeColor, font.Color);
+
+            // We can use theme font and color instead of default values.
+            font.ThemeFont = ThemeFont.Minor;
+            font.ThemeColor = ThemeColor.Accent2;
+            
+            Assert.AreEqual(ThemeFont.Minor, font.ThemeFont);
+            Assert.AreEqual("Algerian", font.Name);
+            
+            Assert.AreEqual(ThemeFont.Minor, font.ThemeFontAscii);
+            Assert.AreEqual("Algerian", font.NameAscii);
+
+            Assert.AreEqual(ThemeFont.Minor, font.ThemeFontBi);
+            Assert.AreEqual("Andalus", font.NameBi);
+
+            Assert.AreEqual(ThemeFont.Minor, font.ThemeFontFarEast);
+            Assert.AreEqual("Aharoni", font.NameFarEast);
+
+            Assert.AreEqual(ThemeFont.Minor, font.ThemeFontOther);
+            Assert.AreEqual("Algerian", font.NameOther);
+
+            Assert.AreEqual(ThemeColor.Accent2, font.ThemeColor);
+            Assert.AreEqual(Color.Empty, font.Color);
+
+            // There are several ways of reset them font and color.
+            // 1 -  By setting ThemeFont.None/ThemeColor.None:
+            font.ThemeFont = ThemeFont.None;
+            font.ThemeColor = ThemeColor.None;
+
+            Assert.AreEqual(ThemeFont.None, font.ThemeFont);
+            Assert.AreEqual("Algerian", font.Name);
+
+            Assert.AreEqual(ThemeFont.None, font.ThemeFontAscii);
+            Assert.AreEqual("Algerian", font.NameAscii);
+
+            Assert.AreEqual(ThemeFont.None, font.ThemeFontBi);
+            Assert.AreEqual("Andalus", font.NameBi);
+
+            Assert.AreEqual(ThemeFont.None, font.ThemeFontFarEast);
+            Assert.AreEqual("Aharoni", font.NameFarEast);
+
+            Assert.AreEqual(ThemeFont.None, font.ThemeFontOther);
+            Assert.AreEqual("Algerian", font.NameOther);
+
+            Assert.AreEqual(ThemeColor.None, font.ThemeColor);
+            Assert.AreEqual(Color.Empty, font.Color);
+
+            // 2 -  By setting non-theme font/color names:
+            font.Name = "Arial";
+            font.Color = Color.Blue;
+
+            Assert.AreEqual(ThemeFont.None, font.ThemeFont);
+            Assert.AreEqual("Arial", font.Name);
+
+            Assert.AreEqual(ThemeFont.None, font.ThemeFontAscii);
+            Assert.AreEqual("Arial", font.NameAscii);
+
+            Assert.AreEqual(ThemeFont.None, font.ThemeFontBi);
+            Assert.AreEqual("Arial", font.NameBi);
+
+            Assert.AreEqual(ThemeFont.None, font.ThemeFontFarEast);
+            Assert.AreEqual("Arial", font.NameFarEast);
+
+            Assert.AreEqual(ThemeFont.None, font.ThemeFontOther);
+            Assert.AreEqual("Arial", font.NameOther);
+
+            Assert.AreEqual(ThemeColor.None, font.ThemeColor);
+            Assert.AreEqual(Color.Blue.ToArgb(), font.Color.ToArgb());
+            //ExEnd
+        }
+
+        [Test]
+        public void CreateThemedStyle()
+        {
+            //ExStart
+            //ExFor:Font.ThemeFont
+            //ExFor:Font.ThemeColor
+            //ExFor:Font.TintAndShade
+            //ExFor:ThemeFont
+            //ExFor:ThemeColor
+            //ExSummary:Shows how to create and use themed style.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            builder.Writeln();
+
+            // Create some style with theme font properties.
+            Style style = doc.Styles.Add(StyleType.Paragraph, "ThemedStyle");
+            style.Font.ThemeFont = ThemeFont.Major;
+            style.Font.ThemeColor = ThemeColor.Accent5;
+            style.Font.TintAndShade = 0.3;
+
+            builder.ParagraphFormat.StyleName = "ThemedStyle";
+            builder.Writeln("Text with themed style");
+            //ExEnd
+            
+            Run run = (Run)((Paragraph)builder.CurrentParagraph.PreviousSibling).FirstChild;
+
+            Assert.AreEqual(ThemeFont.Major, run.Font.ThemeFont);
+            Assert.AreEqual("Times New Roman", run.Font.Name);
+
+            Assert.AreEqual(ThemeFont.Major, run.Font.ThemeFontAscii);
+            Assert.AreEqual("Times New Roman", run.Font.NameAscii);
+
+            Assert.AreEqual(ThemeFont.Major, run.Font.ThemeFontBi);
+            Assert.AreEqual("Times New Roman", run.Font.NameBi);
+
+            Assert.AreEqual(ThemeFont.Major, run.Font.ThemeFontFarEast);
+            Assert.AreEqual("Times New Roman", run.Font.NameFarEast);
+
+            Assert.AreEqual(ThemeFont.Major, run.Font.ThemeFontOther);
+            Assert.AreEqual("Times New Roman", run.Font.NameOther);
+
+            Assert.AreEqual(ThemeColor.Accent5, run.Font.ThemeColor);
+            Assert.AreEqual(Color.Empty, run.Font.Color);
         }
     }
 }

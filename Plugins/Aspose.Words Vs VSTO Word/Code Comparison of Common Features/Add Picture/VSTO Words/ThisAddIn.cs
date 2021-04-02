@@ -6,13 +6,13 @@ namespace VSTO_Words
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
-            string mypath = "";
+            string filePath = @"..\..\..\..\..\Sample Files\";
             Word.Application wordApp = Application;
-            wordApp.Documents.Open(mypath+"Add Picture.doc");
-            //Add picture to Doc
-            this.Application.Selection.InlineShapes.AddPicture(mypath+"download.jpg");
 
-
+            wordApp.Documents.Open(filePath + "MyDocument.docx");
+            
+            // Insert an image into the document.
+            this.Application.Selection.InlineShapes.AddPicture(filePath + "Logo.jpg");
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
