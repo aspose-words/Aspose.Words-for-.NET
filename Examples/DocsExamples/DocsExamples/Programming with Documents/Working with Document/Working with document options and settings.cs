@@ -1,5 +1,6 @@
 ﻿using System;
 using Aspose.Words;
+using Aspose.Words.Loading;
 using Aspose.Words.Settings;
 using NUnit.Framework;
 

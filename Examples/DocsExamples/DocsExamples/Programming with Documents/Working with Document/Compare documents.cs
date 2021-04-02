@@ -1,5 +1,6 @@
 ﻿using System;
 using Aspose.Words;
+using Aspose.Words.Comparing;
 using NUnit.Framework;
 
 namespace DocsExamples.Programming_with_Documents.Working_with_Document

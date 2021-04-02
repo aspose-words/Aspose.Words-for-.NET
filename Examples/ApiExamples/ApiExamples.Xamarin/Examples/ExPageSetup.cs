@@ -7,6 +7,7 @@
 
 using System.Drawing;
 using Aspose.Words;
+using Aspose.Words.Notes;
 using Aspose.Words.Settings;
 using NUnit.Framework;
 using PaperSize = Aspose.Words.PaperSize;

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using Aspose.Words;
+using Aspose.Words.Loading;
 using NUnit.Framework;
 
 namespace DocsExamples.File_Formats_and_Conversions.Load_Options

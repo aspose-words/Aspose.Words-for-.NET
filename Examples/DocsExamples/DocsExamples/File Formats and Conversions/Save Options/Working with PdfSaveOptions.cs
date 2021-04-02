@@ -169,9 +169,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             builder.InsertHyperlink("https://www.google.com/search?q=%2Fthe%20test", 
                 "https://www.google.com/search?q=%2Fthe%20test", false);
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { EscapeUri = false };
-
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EscapeUri.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EscapeUri.pdf");
             //ExEnd:EscapeUri
         }
 
