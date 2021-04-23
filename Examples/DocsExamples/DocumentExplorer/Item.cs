@@ -53,11 +53,14 @@ namespace DocumentExplorer
                 // E.g. [!PageBreak!], [!ParagraphBreak!], etc.
                 foreach (char c in mNode.GetText())
                 {
-                    string controlCharDisplay = gControlCharacters[c];
-                    if (controlCharDisplay == null)
-                        result.Append(c);
-                    else 
+                    if (gControlCharacters.TryGetValue(c, out string controlCharDisplay))
+                    {
                         result.Append(controlCharDisplay);
+                    }
+                    else
+                    {
+                        result.Append(c);
+                    }
                 }
 
                 return result.ToString();
