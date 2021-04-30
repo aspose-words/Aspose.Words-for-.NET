@@ -2075,7 +2075,7 @@ namespace ApiExamples
             //ExEnd
 
             TestUtil.FileContainsString("6 0 obj\r\n" +
-                                        "<</Type /Annot/Subtype /Widget/FT /Sig/DR <<>>/F 132/Rect [0 0 0 0]/V 7 0 R/P 4 0 R/T(þÿ\0A\0s\0p\0o\0s\0e\0D\0i\0g\0i\0t\0a\0l\0S\0i\0g\0n\0a\0t\0u\0r\0e)/AP <</N 8 0 R>>>>",
+                                        "<</Type /Annot/Subtype /Widget/Rect [0 0 0 0]/FT /Sig/DR <<>>/F 132/V 7 0 R/P 4 0 R/T(þÿ\0A\0s\0p\0o\0s\0e\0D\0i\0g\0i\0t\0a\0l\0S\0i\0g\0n\0a\0t\0u\0r\0e)/AP <</N 8 0 R>>>>",
                 ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf");
 
             Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf")
@@ -2146,7 +2146,7 @@ namespace ApiExamples
 
             Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf").HasDigitalSignature);
             TestUtil.FileContainsString("6 0 obj\r\n" +
-                                        "<</Type /Annot/Subtype /Widget/FT /Sig/DR <<>>/F 132/Rect [0 0 0 0]/V 7 0 R/P 4 0 R/T(þÿ\0A\0s\0p\0o\0s\0e\0D\0i\0g\0i\0t\0a\0l\0S\0i\0g\0n\0a\0t\0u\0r\0e)/AP <</N 8 0 R>>>>", 
+                                        "<</Type /Annot/Subtype /Widget/Rect [0 0 0 0]/FT /Sig/DR <<>>/F 132/V 7 0 R/P 4 0 R/T(þÿ\0A\0s\0p\0o\0s\0e\0D\0i\0g\0i\0t\0a\0l\0S\0i\0g\0n\0a\0t\0u\0r\0e)/AP <</N 8 0 R>>>>", 
             ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
 
 #if NET462 || NETCOREAPP2_1 || JAVA
