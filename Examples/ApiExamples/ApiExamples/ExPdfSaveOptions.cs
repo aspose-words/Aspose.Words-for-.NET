@@ -2069,7 +2069,7 @@ namespace ApiExamples
 
             Assert.AreEqual("Test Signing", options.DigitalSignatureDetails.Reason);
             Assert.AreEqual("My Office", options.DigitalSignatureDetails.Location);
-            Assert.AreEqual(signingTime.ToUniversalTime(), options.DigitalSignatureDetails.SignatureDate);
+            Assert.AreEqual(signingTime.ToUniversalTime(), options.DigitalSignatureDetails.SignatureDate.ToUniversalTime());
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf", options);
             //ExEnd
