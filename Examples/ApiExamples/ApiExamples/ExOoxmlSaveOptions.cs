@@ -231,7 +231,7 @@ namespace ApiExamples
                     Assert.That(1266000, Is.AtLeast(fileInfo.Length));
                     break;
                 case CompressionLevel.Normal:
-                    Assert.That(1267000, Is.LessThan(fileInfo.Length));
+                    Assert.That(1266900, Is.LessThan(fileInfo.Length));
                     break;
                 case CompressionLevel.Fast:
                     Assert.That(1269000, Is.LessThan(fileInfo.Length));

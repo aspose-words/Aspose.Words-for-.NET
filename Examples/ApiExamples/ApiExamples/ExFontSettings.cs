@@ -206,8 +206,7 @@ namespace ApiExamples
             // Get the list of fonts to call warning callback.
             IList<PhysicalFontInfo> fontInfos = source.GetAvailableFonts();
 
-            Assert.AreEqual("Error loading font from the folder \"bad folder?\": Illegal characters in path.",
-                callback.FontSubstitutionWarnings[0].Description);
+            Assert.True(callback.FontSubstitutionWarnings[0].Description.Contains("Error loading font from the folder \"bad folder?\""));
         }
 
         private class FontSourceWarningCollector : IWarningCallback
