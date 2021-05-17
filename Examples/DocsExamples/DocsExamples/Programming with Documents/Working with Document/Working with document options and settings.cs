@@ -1,5 +1,6 @@
 ﻿using System;
 using Aspose.Words;
+using Aspose.Words.Loading;
 using Aspose.Words.Settings;
 using NUnit.Framework;
 
@@ -22,20 +23,20 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         [Test]
         public void ShowGrammaticalAndSpellingErrors()
         {
-            // ExStart:ShowGrammaticalAndSpellingErrors
+            //ExStart:ShowGrammaticalAndSpellingErrors
             Document doc = new Document(MyDir + "Document.docx");
 
             doc.ShowGrammaticalErrors = true;
             doc.ShowSpellingErrors = true;
 
             doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.ShowGrammaticalAndSpellingErrors.docx");
-            // ExEnd:ShowGrammaticalAndSpellingErrors
+            //ExEnd:ShowGrammaticalAndSpellingErrors
         }
 
         [Test]
         public void CleanupUnusedStylesAndLists()
         {
-            // ExStart:CleanupUnusedStylesandLists
+            //ExStart:CleanupUnusedStylesandLists
             Document doc = new Document(MyDir + "Document.docx");
 
             CleanupOptions cleanupOptions = new CleanupOptions { UnusedLists = false, UnusedStyles = true };
@@ -44,13 +45,13 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             doc.Cleanup(cleanupOptions);
 
             doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.CleanupUnusedStylesAndLists.docx");
-            // ExEnd:CleanupUnusedStylesandLists
+            //ExEnd:CleanupUnusedStylesandLists
         }
 
         [Test]
         public void CleanupDuplicateStyle()
         {
-            // ExStart:CleanupDuplicateStyle
+            //ExStart:CleanupDuplicateStyle
             Document doc = new Document(MyDir + "Document.docx");
 
             CleanupOptions options = new CleanupOptions { DuplicateStyle = true };
@@ -59,7 +60,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             doc.Cleanup(options);
 
             doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.CleanupDuplicateStyle.docx");
-            // ExEnd:CleanupDuplicateStyle
+            //ExEnd:CleanupDuplicateStyle
         }
 
         [Test]

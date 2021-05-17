@@ -33,7 +33,7 @@ namespace ApiExamples
 
             foreach (FieldStart fieldStart in fieldStarts.OfType<FieldStart>())
             {
-                if (fieldStart.FieldType.Equals(FieldType.FieldHyperlink))
+                if (fieldStart.FieldType == FieldType.FieldHyperlink)
                 {
                     Hyperlink hyperlink = new Hyperlink(fieldStart);
 
@@ -75,7 +75,7 @@ namespace ApiExamples
         {
             if (fieldStart == null)
                 throw new ArgumentNullException("fieldStart");
-            if (!fieldStart.FieldType.Equals(FieldType.FieldHyperlink))
+            if (fieldStart.FieldType != FieldType.FieldHyperlink)
                 throw new ArgumentException("Field start type must be FieldHyperlink.");
 
             mFieldStart = fieldStart;
@@ -161,7 +161,7 @@ namespace ApiExamples
         {
             for (Node node = startNode; node != null; node = node.NextSibling)
             {
-                if (node.NodeType.Equals(nodeType))
+                if (node.NodeType == nodeType)
                     return node;
             }
 

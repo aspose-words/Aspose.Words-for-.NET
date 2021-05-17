@@ -34,7 +34,7 @@ namespace ApiExamples
             builder.InsertParagraph();
             builder.InsertField(" MERGEFIELD Address ");
 
-            CustomerList customers = new CustomerList();
+            List<Customer> customers = new List<Customer>();
             customers.Add(new Customer("Thomas Hardy", "120 Hanover Sq., London"));
             customers.Add(new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino"));
 
@@ -63,24 +63,12 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// An example of a typed collection that contains your "data" objects.
-        /// </summary>
-        public class CustomerList : ArrayList
-        {
-            public new Customer this[int index]
-            {
-                get { return (Customer) base[index]; }
-                set { base[index] = value; }
-            }
-        }
-
-        /// <summary>
         /// A custom mail merge data source that you implement to allow Aspose.Words 
         /// to mail merge data from your Customer objects into Microsoft Word documents.
         /// </summary>
         public class CustomerMailMergeDataSource : IMailMergeDataSource
         {
-            public CustomerMailMergeDataSource(CustomerList customers)
+            public CustomerMailMergeDataSource(List<Customer> customers)
             {
                 mCustomers = customers;
 
@@ -138,12 +126,12 @@ namespace ApiExamples
                 get { return (mRecordIndex >= mCustomers.Count); }
             }
 
-            private readonly CustomerList mCustomers;
+            private readonly List<Customer> mCustomers;
             private int mRecordIndex;
         }
         //ExEnd
 
-        private void TestCustomDataSource(CustomerList customerList, Document doc)
+        private void TestCustomDataSource(List<Customer> customerList, Document doc)
         {
             string[][] mergeData = new string[customerList.Count][];
 

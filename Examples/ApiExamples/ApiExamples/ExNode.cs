@@ -258,7 +258,7 @@ namespace ApiExamples
 
                 // A section body can contain Paragraph and Table nodes.
                 // If the node is a Table, remove it from the parent.
-                if (curNode.NodeType.Equals(NodeType.Table))
+                if (curNode.NodeType == NodeType.Table)
                     curNode.Remove();
 
                 curNode = nextNode;
@@ -384,7 +384,7 @@ namespace ApiExamples
         [Test]
         public void TestNodeIsInsideField()
         {
-            //ExStart:
+            //ExStart
             //ExFor:CompositeNode.SelectNodes
             //ExSummary:Shows how to use an XPath expression to test whether a node is inside a field.
             Document doc = new Document(MyDir + "Mail merge destination - Northwind employees.docx");

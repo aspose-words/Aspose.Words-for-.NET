@@ -81,8 +81,8 @@ namespace ApiExamples
             TabStopCollection tabStops = builder.ParagraphFormat.TabStops;
 
             // 72 points is one "inch" on the Microsoft Word tab stop ruler.
-            tabStops.Add(new TabStop(72));
-            tabStops.Add(new TabStop(432, TabAlignment.Right, TabLeader.Dashes));
+            tabStops.Add(new TabStop(72.0));
+            tabStops.Add(new TabStop(432.0, TabAlignment.Right, TabLeader.Dashes));
 
             Assert.AreEqual(2, tabStops.Count);
             Assert.IsFalse(tabStops[0].IsClear);

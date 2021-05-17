@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
 using Aspose.Words;
 using Aspose.Words.Fonts;
+using Aspose.Words.Loading;
 using NUnit.Framework;
 using Font = Aspose.Words.Font;
 
@@ -90,7 +92,7 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void SetFontEmphasisMark()
         {
-            // ExStart:SetFontEmphasisMark
+            //ExStart:SetFontEmphasisMark
             Document document = new Document();
             DocumentBuilder builder = new DocumentBuilder(document);
 
@@ -102,13 +104,13 @@ namespace DocsExamples.Programming_with_Documents
             builder.Write("Simple text");
 
             document.Save(ArtifactsDir + "WorkingWithFonts.SetFontEmphasisMark.docx");
-            // ExEnd:SetFontEmphasisMark
+            //ExEnd:SetFontEmphasisMark
         }
 
         [Test]
         public void SetFontsFolders()
         {
-            // ExStart:SetFontsFolders
+            //ExStart:SetFontsFolders
             FontSettings.DefaultInstance.SetFontsSources(new FontSourceBase[]
             {
                 new SystemFontSource(), new FolderFontSource("C:\\MyFonts\\", true)
@@ -116,7 +118,7 @@ namespace DocsExamples.Programming_with_Documents
 
             Document doc = new Document(MyDir + "Rendering.docx");
             doc.Save(ArtifactsDir + "WorkingWithFonts.SetFontsFolders.pdf");
-            // ExEnd:SetFontsFolders           
+            //ExEnd:SetFontsFolders           
         }
 
         [Test]
@@ -168,9 +170,9 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void SetFontsFoldersDefaultInstance()
         {
-            // ExStart:SetFontsFoldersDefaultInstance
+            //ExStart:SetFontsFoldersDefaultInstance
             FontSettings.DefaultInstance.SetFontsFolder("C:\\MyFonts\\", true);
-            // ExEnd:SetFontsFoldersDefaultInstance           
+            //ExEnd:SetFontsFoldersDefaultInstance           
 
             Document doc = new Document(MyDir + "Rendering.docx");
             doc.Save(ArtifactsDir + "WorkingWithFonts.SetFontsFoldersDefaultInstance.pdf");
@@ -203,8 +205,8 @@ namespace DocsExamples.Programming_with_Documents
             FontSettings fontSettings = new FontSettings();
             // Retrieve the array of environment-dependent font sources that are searched by default.
             // For example this will contain a "Windows\Fonts\" source on a Windows machines.
-            // We add this array to a new ArrayList to make adding or removing font entries much easier.
-            ArrayList fontSources = new ArrayList(fontSettings.GetFontsSources());
+            // We add this array to a new List to make adding or removing font entries much easier.
+            List<FontSourceBase> fontSources = new List<FontSourceBase>(fontSettings.GetFontsSources());
 
             // Add a new folder source which will instruct Aspose.Words to search the following folder for fonts.
             FolderFontSource folderFontSource = new FolderFontSource("C:\\MyFonts\\", true);
@@ -212,7 +214,7 @@ namespace DocsExamples.Programming_with_Documents
             // Add the custom folder which contains our fonts to the list of existing font sources.
             fontSources.Add(folderFontSource);
 
-            FontSourceBase[] updatedFontSources = (FontSourceBase[]) fontSources.ToArray(typeof(FontSourceBase));
+            FontSourceBase[] updatedFontSources = fontSources.ToArray();
             fontSettings.SetFontsSources(updatedFontSources);
             
             doc.FontSettings = fontSettings;
@@ -224,12 +226,12 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void SetFontsFoldersWithPriority()
         {
-            // ExStart:SetFontsFoldersWithPriority
+            //ExStart:SetFontsFoldersWithPriority
             FontSettings.DefaultInstance.SetFontsSources(new FontSourceBase[]
             {
                 new SystemFontSource(), new FolderFontSource("C:\\MyFonts\\", true,1)
             });
-            // ExEnd:SetFontsFoldersWithPriority           
+            //ExEnd:SetFontsFoldersWithPriority           
 
             Document doc = new Document(MyDir + "Rendering.docx");
             doc.Save(ArtifactsDir + "WorkingWithFonts.SetFontsFoldersWithPriority.pdf");
@@ -304,27 +306,27 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void FontSettingsWithLoadOption()
         {
-            // ExStart:FontSettingsWithLoadOption
+            //ExStart:FontSettingsWithLoadOption
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.FontSettings = new FontSettings();
 
             Document doc = new Document(MyDir + "Rendering.docx", loadOptions);
-            // ExEnd:FontSettingsWithLoadOption   
+            //ExEnd:FontSettingsWithLoadOption   
         }
 
         [Test]
         public void FontSettingsDefaultInstance()
         {
-            // ExStart:FontSettingsFontSource
-            // ExStart:FontSettingsDefaultInstance
+            //ExStart:FontSettingsFontSource
+            //ExStart:FontSettingsDefaultInstance
             FontSettings fontSettings = FontSettings.DefaultInstance;
-            // ExEnd:FontSettingsDefaultInstance   
+            //ExEnd:FontSettingsDefaultInstance   
             fontSettings.SetFontsSources(new FontSourceBase[]
             {
                 new SystemFontSource(),
                 new FolderFontSource("C:\\MyFonts\\", true)
             });
-            // ExEnd:FontSettingsFontSource
+            //ExEnd:FontSettingsFontSource
 
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.FontSettings = fontSettings;
@@ -336,14 +338,14 @@ namespace DocsExamples.Programming_with_Documents
         {
             //ExStart:GetListOfAvailableFonts
             FontSettings fontSettings = new FontSettings();
-            ArrayList fontSources = new ArrayList(fontSettings.GetFontsSources());
+            List<FontSourceBase> fontSources = new List<FontSourceBase>(fontSettings.GetFontsSources());
 
             // Add a new folder source which will instruct Aspose.Words to search the following folder for fonts.
             FolderFontSource folderFontSource = new FolderFontSource(MyDir, true);
             // Add the custom folder which contains our fonts to the list of existing font sources.
             fontSources.Add(folderFontSource);
 
-            FontSourceBase[] updatedFontSources = (FontSourceBase[]) fontSources.ToArray(typeof(FontSourceBase));
+            FontSourceBase[] updatedFontSources = fontSources.ToArray();
 
             foreach (PhysicalFontInfo fontInfo in updatedFontSources[0].GetAvailableFonts())
             {
@@ -417,7 +419,7 @@ namespace DocsExamples.Programming_with_Documents
         }
         //ExEnd:HandleDocumentWarnings
 
-        // ExStart:ResourceSteamFontSourceExample
+        //ExStart:ResourceSteamFontSourceExample
         [Test]
         public void ResourceSteamFontSourceExample()
         {
@@ -436,7 +438,7 @@ namespace DocsExamples.Programming_with_Documents
                 return Assembly.GetExecutingAssembly().GetManifestResourceStream("resourceName");
             }
         }
-        // ExEnd:ResourceSteamFontSourceExample
+        //ExEnd:ResourceSteamFontSourceExample
 
         //ExStart:GetSubstitutionWithoutSuffixes
         [Test]
@@ -447,12 +449,12 @@ namespace DocsExamples.Programming_with_Documents
             DocumentSubstitutionWarnings substitutionWarningHandler = new DocumentSubstitutionWarnings();
             doc.WarningCallback = substitutionWarningHandler;
 
-            ArrayList fontSources = new ArrayList(FontSettings.DefaultInstance.GetFontsSources());
+            List<FontSourceBase> fontSources = new List<FontSourceBase>(FontSettings.DefaultInstance.GetFontsSources());
 
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, true);
             fontSources.Add(folderFontSource);
 
-            FontSourceBase[] updatedFontSources = (FontSourceBase[])fontSources.ToArray(typeof(FontSourceBase));
+            FontSourceBase[] updatedFontSources = fontSources.ToArray();
             FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
 
             doc.Save(ArtifactsDir + "WorkingWithFonts.GetSubstitutionWithoutSuffixes.pdf");

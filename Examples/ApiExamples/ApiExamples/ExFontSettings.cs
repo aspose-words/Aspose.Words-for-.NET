@@ -132,11 +132,11 @@ namespace ApiExamples
                 if (info.WarningType == WarningType.FontSubstitution)
                 {
                     Console.WriteLine("Font substitution: " + info.Description);
-                    FontWarnings.Warning(info); //ExSkip
+                    FontWarnings.Warning(info);
                 }
             }
 
-            public WarningInfoCollection FontWarnings = new WarningInfoCollection(); //ExSkip
+            public WarningInfoCollection FontWarnings = new WarningInfoCollection();
         }
 
         //ExStart
@@ -206,8 +206,7 @@ namespace ApiExamples
             // Get the list of fonts to call warning callback.
             IList<PhysicalFontInfo> fontInfos = source.GetAvailableFonts();
 
-            Assert.AreEqual("Error loading font from the folder \"bad folder?\": Illegal characters in path.",
-                callback.FontSubstitutionWarnings[0].Description);
+            Assert.True(callback.FontSubstitutionWarnings[0].Description.Contains("Error loading font from the folder \"bad folder?\""));
         }
 
         private class FontSourceWarningCollector : IWarningCallback
@@ -362,11 +361,11 @@ namespace ApiExamples
             HandleDocumentSubstitutionWarnings substitutionWarningHandler = new HandleDocumentSubstitutionWarnings();
             doc.WarningCallback = substitutionWarningHandler;
 
-            ArrayList fontSources = new ArrayList(FontSettings.DefaultInstance.GetFontsSources());
+            List<FontSourceBase> fontSources = new List<FontSourceBase>(FontSettings.DefaultInstance.GetFontsSources());
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, true);
             fontSources.Add(folderFontSource);
 
-            FontSourceBase[] updatedFontSources = (FontSourceBase[])fontSources.ToArray(typeof(FontSourceBase));
+            FontSourceBase[] updatedFontSources = fontSources.ToArray();
             FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
 
             doc.Save(ArtifactsDir + "Font.GetSubstitutionWithoutSuffixes.pdf");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -52,11 +53,14 @@ namespace DocumentExplorer
                 // E.g. [!PageBreak!], [!ParagraphBreak!], etc.
                 foreach (char c in mNode.GetText())
                 {
-                    string controlCharDisplay = (string)gControlCharacters[c];
-                    if (controlCharDisplay == null)
-                        result.Append(c);
-                    else 
+                    if (gControlCharacters.TryGetValue(c, out string controlCharDisplay))
+                    {
                         result.Append(controlCharDisplay);
+                    }
+                    else
+                    {
+                        result.Append(c);
+                    }
                 }
 
                 return result.ToString();
@@ -208,7 +212,6 @@ namespace DocumentExplorer
         static Item()
         {
             // Fill set of typenames of Item inheritors for Item class fabric.
-            gItemSet = new ArrayList();
             foreach (Type type in Assembly.GetExecutingAssembly().GetTypes()) 
             {
                 if (type.IsSubclassOf(typeof(Item)) && !type.IsAbstract) 
@@ -250,11 +253,11 @@ namespace DocumentExplorer
         private static ImageList mImageList;
         private Icon mIcon;
 
-        private static readonly ArrayList gItemSet;
-        private static readonly ArrayList gIconNames = new ArrayList();
+        private static readonly List<string> gItemSet = new List<string>();
+        private static readonly List<string> gIconNames = new List<string>();
         /// <summary>
         /// Map of character to string that we use to display control MS Word control characters.
         /// </summary>
-        private static readonly Hashtable gControlCharacters = new Hashtable();
+        private static readonly Dictionary<char, string> gControlCharacters = new Dictionary<char, string>();
     }
 }

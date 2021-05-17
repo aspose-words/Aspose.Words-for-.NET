@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Aspose.Words;
@@ -39,9 +40,9 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
             mTocTemplate = tocTemplate;
             mDstDir = dstDir;
 
-            ArrayList topicStartParas = SelectTopicStarts();
+            List<Paragraph> topicStartParas = SelectTopicStarts();
             InsertSectionBreaks(topicStartParas);
-            ArrayList topics = SaveHtmlTopics();
+            List<Topic> topics = SaveHtmlTopics();
             SaveTableOfContents(topics);
         }
 
@@ -49,10 +50,10 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         /// Selects heading paragraphs that must become topic starts.
         /// We can't modify them in this loop, so we need to remember them in an array first.
         /// </summary>
-        private ArrayList SelectTopicStarts()
+        private List<Paragraph> SelectTopicStarts()
         {
             NodeCollection paras = mDoc.GetChildNodes(NodeType.Paragraph, true);
-            ArrayList topicStartParas = new ArrayList();
+            List<Paragraph> topicStartParas = new List<Paragraph>();
 
             foreach (Paragraph para in paras)
             {
@@ -67,7 +68,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         /// <summary>
         /// Insert section breaks before the specified paragraphs.
         /// </summary>
-        private void InsertSectionBreaks(ArrayList topicStartParas)
+        private void InsertSectionBreaks(List<Paragraph> topicStartParas)
         {
             DocumentBuilder builder = new DocumentBuilder(mDoc);
             foreach (Paragraph para in topicStartParas)
@@ -91,9 +92,9 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         /// Splits the current document into one topic per section and saves each topic
         /// as an HTML file. Returns a collection of Topic objects.
         /// </summary>
-        private ArrayList SaveHtmlTopics()
+        private List<Topic> SaveHtmlTopics()
         {
-            ArrayList topics = new ArrayList();
+            List<Topic> topics = new List<Topic>();
             for (int sectionIdx = 0; sectionIdx < mDoc.Sections.Count; sectionIdx++)
             {
                 Section section = mDoc.Sections[sectionIdx];
@@ -172,7 +173,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         /// <summary>
         /// Generates a table of contents for the topics and saves to contents .html.
         /// </summary>
-        private void SaveTableOfContents(ArrayList topics)
+        private void SaveTableOfContents(List<Topic> topics)
         {
             Document tocDoc = new Document(mTocTemplate);
 
@@ -229,7 +230,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
 
     internal class TocMailMergeDataSource : IMailMergeDataSource
     {
-        internal TocMailMergeDataSource(ArrayList topics)
+        internal TocMailMergeDataSource(List<Topic> topics)
         {
             mTopics = topics;
             mIndex = -1;
@@ -266,7 +267,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
             return null;
         }
 
-        private readonly ArrayList mTopics;
+        private readonly List<Topic> mTopics;
         private int mIndex;
     }
 }

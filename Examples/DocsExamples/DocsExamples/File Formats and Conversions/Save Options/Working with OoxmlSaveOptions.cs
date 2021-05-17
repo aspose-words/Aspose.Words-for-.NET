@@ -60,13 +60,13 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         [Test]
         public void SetCompressionLevel()
         {
-            // ExStart:SetCompressionLevel
+            //ExStart:SetCompressionLevel
             Document doc = new Document(MyDir + "Document.docx");
 
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { CompressionLevel = CompressionLevel.SuperFast };
 
             doc.Save(ArtifactsDir + "WorkingWithOoxmlSaveOptions.SetCompressionLevel.docx", saveOptions);
-            // ExEnd:SetCompressionLevel
+            //ExEnd:SetCompressionLevel
         }
     }
 }

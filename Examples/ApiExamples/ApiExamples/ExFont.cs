@@ -8,6 +8,7 @@
 #if NET462 || NETCOREAPP2_1 || JAVA
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -861,10 +862,10 @@ namespace ApiExamples
             // using the above methods to reference old and new styles.
             foreach (Run run in doc.GetChildNodes(NodeType.Run, true).OfType<Run>())
             {
-                if (run.Font.StyleName.Equals("Emphasis"))
+                if (run.Font.StyleName == "Emphasis")
                     run.Font.StyleName = "Strong";
 
-                if (run.Font.StyleIdentifier.Equals(StyleIdentifier.IntenseEmphasis))
+                if (run.Font.StyleIdentifier == StyleIdentifier.IntenseEmphasis)
                     run.Font.StyleIdentifier = StyleIdentifier.Strong;
             }
 
@@ -1348,10 +1349,10 @@ namespace ApiExamples
             //ExSummary:Shows how to access and print details of each font in a document.
             Document doc = new Document(MyDir + "Document.docx");
             
-            IEnumerator fontCollectionEnumerator = doc.FontInfos.GetEnumerator();
+            IEnumerator<FontInfo> fontCollectionEnumerator = doc.FontInfos.GetEnumerator();
             while (fontCollectionEnumerator.MoveNext())
             {
-                FontInfo fontInfo = (FontInfo)fontCollectionEnumerator.Current;
+                FontInfo fontInfo = fontCollectionEnumerator.Current;
                 if (fontInfo != null)
                 {
                     Console.WriteLine("Font name: " + fontInfo.Name);

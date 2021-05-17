@@ -1079,7 +1079,7 @@ namespace ApiExamples
             doc.Accept(visitor);
 
             Console.WriteLine(visitor.GetText());
-            TestSmartTagToText(visitor); //ExEnd
+            TestSmartTagToText(visitor); //ExSkip
         }
 
         /// <summary>

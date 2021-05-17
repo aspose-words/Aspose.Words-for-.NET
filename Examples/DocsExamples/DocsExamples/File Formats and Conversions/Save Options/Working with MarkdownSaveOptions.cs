@@ -43,14 +43,14 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         [Test]
         public void SetImagesFolder()
         {
-            // ExStart:SetImagesFolder
+            //ExStart:SetImagesFolder
             Document doc = new Document(MyDir + "Image bullet points.docx");
 
             MarkdownSaveOptions saveOptions = new MarkdownSaveOptions { ImagesFolder = ArtifactsDir + "Images" };
 
             using (MemoryStream stream = new MemoryStream())
                 doc.Save(stream, saveOptions);
-            // ExEnd:SetImagesFolder
+            //ExEnd:SetImagesFolder
         }
     }
 }

@@ -287,7 +287,7 @@ namespace ApiExamples
             printDlg.PrinterSettings.FromPage = 1;
             printDlg.PrinterSettings.ToPage = doc.PageCount;
 
-            if (!printDlg.ShowDialog().Equals(DialogResult.OK))
+            if (printDlg.ShowDialog() != DialogResult.OK)
                 return;
 
             // Create the "Aspose.Words" implementation of the .NET print document,

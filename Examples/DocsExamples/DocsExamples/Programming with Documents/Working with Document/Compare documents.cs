@@ -1,5 +1,6 @@
 ﻿using System;
 using Aspose.Words;
+using Aspose.Words.Comparing;
 using NUnit.Framework;
 
 namespace DocsExamples.Programming_with_Documents.Working_with_Document
@@ -62,7 +63,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         [Test]
         public void ComparisonGranularity()
         {
-            // ExStart:ComparisonGranularity
+            //ExStart:ComparisonGranularity
             DocumentBuilder builderA = new DocumentBuilder(new Document());
             DocumentBuilder builderB = new DocumentBuilder(new Document());
 
@@ -72,7 +73,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             CompareOptions compareOptions = new CompareOptions { Granularity = Granularity.CharLevel };
 
             builderA.Document.Compare(builderB.Document, "author", DateTime.Now, compareOptions);
-            // ExEnd:ComparisonGranularity      
+            //ExEnd:ComparisonGranularity      
         }
     }
 }

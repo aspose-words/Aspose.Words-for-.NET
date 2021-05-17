@@ -17,6 +17,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Lists;
+using Aspose.Words.Notes;
 using NUnit.Framework;
 using Table = Aspose.Words.Tables.Table;
 using Image =

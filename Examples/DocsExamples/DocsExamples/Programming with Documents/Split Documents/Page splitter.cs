@@ -698,7 +698,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         public void RemovePageBreakFromParagraph(Paragraph paragraph)
         {
             Run run = (Run) paragraph.FirstChild;
-            if (run.Text.Equals(PageBreakStr))
+            if (run.Text == PageBreakStr)
             {
                 paragraph.RemoveChild(run);
             }
@@ -720,7 +720,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         {
             Paragraph paragraph = run.ParentParagraph;
             
-            if (run.Text.Equals(PageBreakStr))
+            if (run.Text == PageBreakStr)
             {
                 paragraph.RemoveChild(run);
             }

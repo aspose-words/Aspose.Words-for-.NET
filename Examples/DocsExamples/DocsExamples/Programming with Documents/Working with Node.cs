@@ -69,7 +69,7 @@ namespace DocsExamples.Programming_with_Documents
             foreach (Node child in children)
             {
                 // A paragraph may contain children of various types such as runs, shapes, and others.
-                if (child.NodeType.Equals(NodeType.Run))
+                if (child.NodeType == NodeType.Run)
                 {
                     Run run = (Run) child;
                     Console.WriteLine(run.Text);
