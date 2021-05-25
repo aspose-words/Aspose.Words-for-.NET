@@ -17,7 +17,6 @@ using NUnit.Framework;
 using Shape = Aspose.Words.Drawing.Shape;
 #if NET462 || JAVA
 using System.Drawing.Imaging;
-using System.Net;
 #endif
 
 namespace ApiExamples
@@ -100,22 +99,19 @@ namespace ApiExamples
             filledInArrowImg.Top = 160;
             filledInArrowImg.FlipOrientation = FlipOrientation.Both;
 
-            using (WebClient webClient = new WebClient())
+            byte[] imageBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
+
+            using (MemoryStream stream = new MemoryStream(imageBytes))
             {
-                byte[] imageBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
+                Image image = Image.FromStream(stream);
+                // When we flip the orientation of our arrow, we also flip the image that the arrow contains.
+                // Flip the image the other way to cancel this out before getting the shape to display it.
+                image.RotateFlip(RotateFlipType.RotateNoneFlipXY);
 
-                using (MemoryStream stream = new MemoryStream(imageBytes))
-                {
-                    Image image = Image.FromStream(stream);
-                    // When we flip the orientation of our arrow, we also flip the image that the arrow contains.
-                    // Flip the image the other way to cancel this out before getting the shape to display it.
-                    image.RotateFlip(RotateFlipType.RotateNoneFlipXY);
+                filledInArrowImg.ImageData.SetImage(image);
+                filledInArrowImg.Stroke.JoinStyle = JoinStyle.Round;
 
-                    filledInArrowImg.ImageData.SetImage(image);
-                    filledInArrowImg.Stroke.JoinStyle = JoinStyle.Round;
-
-                    builder.InsertNode(filledInArrowImg);
-                }
+                builder.InsertNode(filledInArrowImg);
             }
 
             doc.Save(ArtifactsDir + "Drawing.VariousShapes.docx");
@@ -125,7 +121,7 @@ namespace ApiExamples
 
             Assert.AreEqual(4, doc.GetChildNodes(NodeType.Shape, true).Count);
 
-            arrow = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            arrow = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
             Assert.AreEqual(ShapeType.Line, arrow.ShapeType);
             Assert.AreEqual(200.0d, arrow.Width);
@@ -139,7 +135,7 @@ namespace ApiExamples
             Assert.AreEqual(DashStyle.Dash, arrow.Stroke.DashStyle);
             Assert.AreEqual(0.5d, arrow.Stroke.Opacity);
 
-            line = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+            line = (Shape) doc.GetChild(NodeType.Shape, 1, true);
 
             Assert.AreEqual(ShapeType.Line, line.ShapeType);
             Assert.AreEqual(40.0d, line.Top);
@@ -148,7 +144,7 @@ namespace ApiExamples
             Assert.AreEqual(5.0d, line.StrokeWeight);
             Assert.AreEqual(EndCap.Round, line.Stroke.EndCap);
 
-            filledInArrow = (Shape)doc.GetChild(NodeType.Shape, 2, true);
+            filledInArrow = (Shape) doc.GetChild(NodeType.Shape, 2, true);
 
             Assert.AreEqual(ShapeType.Arrow, filledInArrow.ShapeType);
             Assert.AreEqual(200.0d, filledInArrow.Width);
@@ -157,7 +153,7 @@ namespace ApiExamples
             Assert.AreEqual(Color.Green.ToArgb(), filledInArrow.Fill.ForeColor.ToArgb());
             Assert.True(filledInArrow.Fill.Visible);
 
-            filledInArrowImg = (Shape)doc.GetChild(NodeType.Shape, 3, true);
+            filledInArrowImg = (Shape) doc.GetChild(NodeType.Shape, 3, true);
 
             Assert.AreEqual(ShapeType.Arrow, filledInArrowImg.ShapeType);
             Assert.AreEqual(200.0d, filledInArrowImg.Width);
@@ -174,21 +170,43 @@ namespace ApiExamples
             //ExSummary:Shows how to add an image to a shape and check its type.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            byte[] imageBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
 
-            using (WebClient webClient = new WebClient())
+            using (MemoryStream stream = new MemoryStream(imageBytes))
             {
-                byte[] imageBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
+                Image image = Image.FromStream(stream);
 
-                using (MemoryStream stream = new MemoryStream(imageBytes))
-                {
-                    Image image = Image.FromStream(stream);
-
-                    // The image in the URL is a .gif. Inserting it into a document converts it into a .png.
-                    Shape imgShape = builder.InsertImage(image);
-                    Assert.AreEqual(ImageType.Jpeg, imgShape.ImageData.ImageType);
-                }
+                // The image in the URL is a .gif. Inserting it into a document converts it into a .png.
+                Shape imgShape = builder.InsertImage(image);
+                Assert.AreEqual(ImageType.Jpeg, imgShape.ImageData.ImageType);
             }
+
             //ExEnd
+        }
+
+        [Test] //ToDO: Add document with gradient text
+        public void FillSolid()
+        {
+            // Open some document with text effects.
+            Document doc = new Document(MyDir + "TextTwoColorGradient.docx");
+
+            // Get Fill object for Font of the first Run.
+            Fill fill = doc.FirstSection.Body.Paragraphs[0].Runs[0].Font.Fill;
+
+            // Check Fill properties of the Font.
+            Console.WriteLine("The type of the fill is: {0}", fill.FillType);
+            Console.WriteLine("The foreground color of the fill is: {0}", fill.ForeColor);
+            Console.WriteLine("The fill is transparent at {0}%", fill.Transparency * 100);
+
+            // Change type of the fill to Solid with uniform green color.
+            fill.Solid(Color.Green);
+            Console.WriteLine("\nThe fill is changed:");
+            Console.WriteLine("The type of the fill is: {0}", fill.FillType);
+            Console.WriteLine("The foreground color of the fill is: {0}", fill.ForeColor);
+            Console.WriteLine("The fill transparency is {0}%", fill.Transparency * 100);
+
+            doc.Save(ArtifactsDir + "Drawing.FillSolid.docx");
         }
 
         [Test]
@@ -491,7 +509,7 @@ namespace ApiExamples
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
             Assert.AreEqual(10, imgSourceDoc.GetChildNodes(NodeType.Shape, true).Count); //ExSkip
 
-            Shape imgShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 0, true);
+            Shape imgShape = (Shape) imgSourceDoc.GetChild(NodeType.Shape, 0, true);
 
             Assert.True(imgShape.HasImage);
 
@@ -501,7 +519,8 @@ namespace ApiExamples
             // Save the shape's image data to an image file in the local file system.
             using (Stream imgStream = imgShape.ImageData.ToStream())
             {
-                using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png", FileMode.Create, FileAccess.ReadWrite))
+                using (FileStream outStream = new FileStream(ArtifactsDir + "Drawing.GetDataFromImage.png",
+                    FileMode.Create, FileAccess.ReadWrite))
                 {
                     imgStream.CopyTo(outStream);
                 }

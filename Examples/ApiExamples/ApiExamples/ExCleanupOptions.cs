@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace ApiExamples
 {
     [TestFixture]
-    class ExCleanupOptions : ApiExampleBase
+    public class ExCleanupOptions : ApiExampleBase
     {
         [Test]
         public void RemoveUnusedResources()
@@ -22,6 +22,7 @@ namespace ApiExamples
             //ExFor:CleanupOptions
             //ExFor:CleanupOptions.UnusedLists
             //ExFor:CleanupOptions.UnusedStyles
+            //ExFor:CleanupOptions.UnusedBuiltinStyles
             //ExSummary:Shows how to remove all unused custom styles from a document. 
             Document doc = new Document();
 
@@ -47,13 +48,14 @@ namespace ApiExamples
 
             // Now, there is one unused character style and one unused list style.
             // The Cleanup() method, when configured with a CleanupOptions object, can target unused styles and remove them.
-            CleanupOptions cleanupOptions = new CleanupOptions();
-            cleanupOptions.UnusedLists = true;
-            cleanupOptions.UnusedStyles = true;
+            CleanupOptions cleanupOptions = new CleanupOptions
+            {
+                UnusedLists = true, UnusedStyles = true, UnusedBuiltinStyles = true
+            };
 
             doc.Cleanup(cleanupOptions);
 
-            Assert.AreEqual(6, doc.Styles.Count);
+            Assert.AreEqual(4, doc.Styles.Count);
 
             // Removing every node that a custom style is applied to marks it as "unused" again. 
             // Rerun the Cleanup method to remove them.
@@ -101,8 +103,7 @@ namespace ApiExamples
 
             // Configure a CleanOptions object, then call the Cleanup method to substitute all duplicate styles
             // with the original and remove the duplicates from the document.
-            CleanupOptions cleanupOptions = new CleanupOptions();
-            cleanupOptions.DuplicateStyle = true;
+            CleanupOptions cleanupOptions = new CleanupOptions { DuplicateStyle = true };
 
             doc.Cleanup(cleanupOptions);
 
