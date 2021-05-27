@@ -62,7 +62,7 @@ namespace ApiExamples
             doc.FirstSection.Body.RemoveAllChildren();
             doc.Cleanup(cleanupOptions);
 
-            Assert.AreEqual(4, doc.Styles.Count);
+            Assert.AreEqual(2, doc.Styles.Count);
             //ExEnd
         }
 

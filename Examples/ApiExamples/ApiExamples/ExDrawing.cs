@@ -185,11 +185,14 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test] //ToDO: Add document with gradient text
+        [Test]
         public void FillSolid()
         {
-            // Open some document with text effects.
-            Document doc = new Document(MyDir + "TextTwoColorGradient.docx");
+            //ExStart
+            //ExFor:Fill.Color()
+            //ExFor:Fill.Color(Color)
+            //ExSummary:Shows how to convert any of the fills back to solid fill.
+            Document doc = new Document(MyDir + "Two color gradient.docx");
 
             // Get Fill object for Font of the first Run.
             Fill fill = doc.FirstSection.Body.Paragraphs[0].Runs[0].Font.Fill;
@@ -207,6 +210,7 @@ namespace ApiExamples
             Console.WriteLine("The fill transparency is {0}%", fill.Transparency * 100);
 
             doc.Save(ArtifactsDir + "Drawing.FillSolid.docx");
+            //ExEnd
         }
 
         [Test]

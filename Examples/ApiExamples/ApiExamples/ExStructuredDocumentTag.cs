@@ -1046,7 +1046,7 @@ namespace ApiExamples
         //ExFor:StructuredDocumentTagRangeEnd.#ctor(DocumentBase, int)
         //ExFor:StructuredDocumentTagRangeStart.RemoveSelfOnly
         //ExFor:StructuredDocumentTagRangeStart.RemoveAllChildren
-        //ExSummary:Shows how to create and remove StructuredDocumentTag and its content.
+        //ExSummary:Shows how to create/remove structured document tag and its content.
         [Test] //ExSkip
         public void SdtRangeExtendedMethods()
         {
@@ -1057,6 +1057,7 @@ namespace ApiExamples
 
             InsertStructuredDocumentTagRanges(doc, out StructuredDocumentTagRangeStart rangeStart);
 
+            // Removes ranged structured document tag, but keeps content inside.
             rangeStart.RemoveSelfOnly();
 
             rangeStart = (StructuredDocumentTagRangeStart)doc.GetChild(
@@ -1074,6 +1075,7 @@ namespace ApiExamples
             Node paragraphNode = rangeStart.LastOrDefault();
             Assert.AreEqual("StructuredDocumentTag element", paragraphNode?.GetText().Trim());
 
+            // Removes ranged structured document tag and content inside.
             rangeStart.RemoveAllChildren();
             
             paragraphNode = rangeStart.LastOrDefault();
