@@ -95,7 +95,7 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document(MyDir + "Revisions.docx");
 
             // Do not render the comments in PDF.
-            doc.LayoutOptions.ShowComments = false;
+            doc.LayoutOptions.CommentDisplayMode = CommentDisplayMode.Hide;
 
             doc.Save(ArtifactsDir + "WorkingWithRevisions.RemoveCommentsInPdf.pdf");
             //ExEnd:RemoveCommentsInPDF
