@@ -68,11 +68,11 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
 
             int pageCount = doc.PageCount;
 
-            for (int i = 0; i < pageCount; i++)
+            for (int page = 0; page < pageCount; page++)
             {
                 // Save each page as a separate document.
-                Document extractedPage = doc.ExtractPages(i, 1);
-                extractedPage.Save(ArtifactsDir + $"SplitDocument.PageByPage_{i + 1}.docx");
+                Document extractedPage = doc.ExtractPages(page, 1);
+                extractedPage.Save(ArtifactsDir + $"SplitDocument.PageByPage_{page + 1}.docx");
             }
             //ExEnd:SplitDocumentPageByPage
 
