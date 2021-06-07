@@ -66,14 +66,13 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
             //ExStart:SplitDocumentPageByPage
             Document doc = new Document(MyDir + "Big document.docx");
 
-            // Split nodes in the document into separate pages.
-            DocumentPageSplitter splitter = new DocumentPageSplitter(doc);
+            int pageCount = doc.PageCount;
 
-            // Save each page as a separate document.
-            for (int page = 1; page <= doc.PageCount; page++)
+            for (int i = 0; i < pageCount; i++)
             {
-                Document pageDoc = splitter.GetDocumentOfPage(page);
-                pageDoc.Save(ArtifactsDir + $"SplitDocument.PageByPage_{page}.docx");
+                // Save each page as a separate document.
+                Document extractedPage = doc.ExtractPages(i, 1);
+                extractedPage.Save(ArtifactsDir + $"SplitDocument.PageByPage_{i + 1}.docx");
             }
             //ExEnd:SplitDocumentPageByPage
 
@@ -116,13 +115,10 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         {
             //ExStart:SplitDocumentByPageRange
             Document doc = new Document(MyDir + "Big document.docx");
- 
-            // Split nodes in the document into separate pages.
-            DocumentPageSplitter splitter = new DocumentPageSplitter(doc);
- 
+            
             // Get part of the document.
-            Document pageDoc = splitter.GetDocumentOfPageRange(3,6);
-            pageDoc.Save(ArtifactsDir + "SplitDocument.ByPageRange.docx");
+            Document extractedPages = doc.ExtractPages(3, 6);
+            extractedPages.Save(ArtifactsDir + "SplitDocument.ByPageRange.docx");
             //ExEnd:SplitDocumentByPageRange
         }
     }
