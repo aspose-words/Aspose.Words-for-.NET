@@ -588,16 +588,16 @@ namespace ApiExamples
             if (allowNegativeIndent)
             {
                 Assert.True(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:-41.65pt; border:0.75pt solid #000000; -aw-border:0.5pt single; border-collapse:collapse\">"));
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:-41.65pt; border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
                 Assert.True(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single; border-collapse:collapse\">"));
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
             }
             else
             {
                 Assert.True(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"border:0.75pt solid #000000; -aw-border:0.5pt single; border-collapse:collapse\">"));
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
                 Assert.True(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single; border-collapse:collapse\">"));
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
             }
             //ExEnd
         }
@@ -734,12 +734,12 @@ namespace ApiExamples
                 case HtmlVersion.Html5:
                     Assert.True(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"));
                     Assert.True(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"));
-                    Assert.True(outDocContents.Contains("<table style=\"border-collapse:collapse\">"));
+                    Assert.True(outDocContents.Contains("<table style=\"-aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
                     break;
                 case HtmlVersion.Xhtml:
                     Assert.True(outDocContents.Contains("<a name=\"_Toc76372689\"></a>"));
                     Assert.True(outDocContents.Contains("<ul type=\"disc\" style=\"margin:0pt; padding-left:0pt\">"));
-                    Assert.True(outDocContents.Contains("<table cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse\">"));
+                    Assert.True(outDocContents.Contains("<table cellspacing=\"0\" cellpadding=\"0\" style=\"-aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\""));
                     break;
             }
             //ExEnd
@@ -1654,8 +1654,8 @@ namespace ApiExamples
                         "</p>").Success);
                     break;
                 case HtmlOfficeMathOutputMode.MathML:
-                    Assert.True(Regex.Match(outDocContents, 
-                        "<p style=\"margin-top:0pt; margin-bottom:10pt\">" +
+                    Assert.True(Regex.Match(outDocContents,
+                        "<p style=\"margin-top:0pt; margin-bottom:10pt; text-align:center\">" +
                             "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">" +
                                 "<mi>i</mi>" +
                                 "<mo>[+]</mo>" +
@@ -1669,7 +1669,7 @@ namespace ApiExamples
                     break;
                 case HtmlOfficeMathOutputMode.Text:
                     Assert.True(Regex.Match(outDocContents,
-                        @"<p style=\""margin-top:0pt; margin-bottom:10pt\"">" +
+                        @"<p style=\""margin-top:0pt; margin-bottom:10pt; text-align:center\"">" +
                             @"<span style=\""font-family:'Cambria Math'\"">i[+]b-c≥iM[+]bM-cM </span>" +
                         "</p>").Success);
                     break;

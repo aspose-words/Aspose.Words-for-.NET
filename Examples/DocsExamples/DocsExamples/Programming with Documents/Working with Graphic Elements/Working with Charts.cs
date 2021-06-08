@@ -430,8 +430,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             ChartSeries series1 = chart.Series[1];
 
             ChartDataPointCollection dataPointCollection = series0.DataPoints;
-            ChartDataPoint dataPoint00 = dataPointCollection.Add(0);
-            ChartDataPoint dataPoint01 = dataPointCollection.Add(1);
+            ChartDataPoint dataPoint00 = dataPointCollection[0];
+            ChartDataPoint dataPoint01 = dataPointCollection[1];
 
             dataPoint00.Explosion = 50;
             dataPoint00.Marker.Symbol = MarkerSymbol.Circle;
@@ -440,7 +440,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             dataPoint01.Marker.Symbol = MarkerSymbol.Diamond;
             dataPoint01.Marker.Size = 20;
 
-            ChartDataPoint dataPoint12 = series1.DataPoints.Add(2);
+            ChartDataPoint dataPoint12 = series1.DataPoints[2];
             dataPoint12.InvertIfNegative = true;
             dataPoint12.Marker.Symbol = MarkerSymbol.Star;
             dataPoint12.Marker.Size = 20;
