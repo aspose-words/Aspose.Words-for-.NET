@@ -95,7 +95,7 @@ namespace ApiExamples
 
             StructuredDocumentTag sdtCheckBox = new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline);
             sdtCheckBox.Checked = true;
-
+            
             builder.InsertNode(sdtCheckBox);
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.CheckBox.docx");
@@ -445,6 +445,7 @@ namespace ApiExamples
             //ExFor:CustomXmlPart.Data
             //ExFor:CustomXmlPart.Id
             //ExFor:CustomXmlPart.Schemas
+            //ExFor:CustomXmlPart.DataChecksum
             //ExFor:CustomXmlPartCollection
             //ExFor:CustomXmlPartCollection.Add(CustomXmlPart)
             //ExFor:CustomXmlPartCollection.Add(String, String)
@@ -467,6 +468,9 @@ namespace ApiExamples
             string xmlPartId = Guid.NewGuid().ToString("B");
             string xmlPartContent = "<root><text>Hello world!</text></root>";
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
+
+            // The checksum is computed using the data of the corresponding custom XML data part.
+            Console.WriteLine(xmlPart.DataChecksum);
 
             Assert.AreEqual(Encoding.ASCII.GetBytes(xmlPartContent), xmlPart.Data);
             Assert.AreEqual(xmlPartId, xmlPart.Id);
@@ -512,6 +516,8 @@ namespace ApiExamples
             // Create a structured document tag that will display our part's contents and insert it into the document body.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
             tag.XmlMapping.SetMapping(xmlPart, "/root[1]/text[1]", string.Empty);
+            
+            Assert.AreEqual(xmlPart.DataChecksum, tag.XmlMapping.CustomXmlPart.DataChecksum);
 
             doc.FirstSection.Body.AppendChild(tag);
 
@@ -531,6 +537,7 @@ namespace ApiExamples
             Assert.AreEqual("Hello world!", tag.GetText().Trim());
             Assert.AreEqual("/root[1]/text[1]", tag.XmlMapping.XPath);
             Assert.AreEqual(string.Empty, tag.XmlMapping.PrefixMappings);
+            Assert.AreEqual(xmlPart.DataChecksum, tag.XmlMapping.CustomXmlPart.DataChecksum);
         }
 
         [Test]

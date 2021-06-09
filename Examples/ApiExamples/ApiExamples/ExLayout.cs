@@ -307,5 +307,28 @@ namespace ApiExamples
             private int mNum;
         }
         //ExEnd
+
+        [Test]
+        public void RestartPageNumberingInContinuousSection()
+        {
+            //ExStart
+            //ExFor:LayoutOptions.ContinuousSectionPageNumberingRestart
+            //ExFor:ContinuosSectionRestart
+            //ExSummary:Shows how to control page numbering in a continuous section.
+            Document doc = new Document(MyDir + "Continuous section page numbering.docx");
+
+            // By default 
+            doc.LayoutOptions.ContinuousSectionPageNumberingRestart = ContinuosSectionRestart.Always;
+            doc.UpdatePageLayout();
+
+            doc.Save(ArtifactsDir + "Layout.RestartPageNumberingInContinuousSection_always.pdf");
+
+            // MsWord2016
+            doc.LayoutOptions.ContinuousSectionPageNumberingRestart = ContinuosSectionRestart.FromNewPageOnly;
+            doc.UpdatePageLayout();
+
+            doc.Save(ArtifactsDir + "Layout.RestartPageNumberingInContinuousSection_notalways.pdf");
+            //ExEnd
+        }
     }
 }
