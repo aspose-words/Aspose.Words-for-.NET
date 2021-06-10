@@ -644,6 +644,7 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [Test]
         public void ExportVariousPageRanges()
         {
             //ExStart
@@ -654,10 +655,32 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Images.docx");
 
             ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Tiff);
-            PageSet pageSet = new PageSet(new PageRange(1, 1), new PageRange(2, 3), new PageRange(1, 3), new PageRange(2, 4), new PageRange(1, 1));
+            PageSet pageSet = new PageSet(new PageRange(1, 1), new PageRange(2, 3), new PageRange(1, 3),
+                new PageRange(2, 4), new PageRange(1, 1));
 
             imageOptions.PageSet = pageSet;
             doc.Save(ArtifactsDir + "ImageSaveOptions.ExportVariousPageRanges.tiff", imageOptions);
+            //ExEnd
+        }
+
+        [Test]
+        public void RenderInkObject()
+        {
+            //ExStart
+            //ExFor:SaveOptions.ImlRenderingMode
+            //ExFor:ImlRenderingMode
+            //ExSummary:Shows how to render Ink object.
+            Document doc = new Document(MyDir + "Ink object.docx");
+
+            // Set 'ImlRenderingMode.InkML' ignores fall-back shape of ink (InkML) object and renders InkML itself.
+            // If the rendering result is unsatisfactory,
+            // please use 'ImlRenderingMode.Fallback' to get a result similar to previous versions.
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg)
+            {
+                ImlRenderingMode = ImlRenderingMode.InkML
+            };
+
+            doc.Save(ArtifactsDir + "ImageSaveOptions.RenderInkObject.jpeg", saveOptions);
             //ExEnd
         }
     }

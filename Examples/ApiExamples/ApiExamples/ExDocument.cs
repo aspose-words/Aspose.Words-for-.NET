@@ -558,7 +558,7 @@ namespace ApiExamples
             Document srcDoc = new Document(MyDir + "List source.docx");
             Document dstDoc = new Document(MyDir + "List destination.docx");
 
-            Assert.AreEqual(2, dstDoc.Lists.Count);
+            Assert.AreEqual(4, dstDoc.Lists.Count);
 
             ImportFormatOptions options = new ImportFormatOptions();
 
@@ -571,10 +571,7 @@ namespace ApiExamples
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
             dstDoc.UpdateListLabels();
 
-            if (isKeepSourceNumbering)
-                Assert.AreEqual(3, dstDoc.Lists.Count);
-            else
-                Assert.AreEqual(2, dstDoc.Lists.Count);
+            Assert.AreEqual(isKeepSourceNumbering ? 5 : 4, dstDoc.Lists.Count);
             //ExEnd
         }
 
@@ -588,13 +585,11 @@ namespace ApiExamples
             Document srcDoc = new Document(MyDir + "List with the same definition identifier - source.docx");
             Document dstDoc = new Document(MyDir + "List with the same definition identifier - destination.docx");
 
-            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
-
             // Set the "KeepSourceNumbering" property to "true" to apply a different list definition ID
             // to identical styles as Aspose.Words imports them into destination documents.
-            importFormatOptions.KeepSourceNumbering = true;
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions { KeepSourceNumbering = true };
+            
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles, importFormatOptions);
-
             dstDoc.UpdateListLabels();
             //ExEnd
 
@@ -602,6 +597,23 @@ namespace ApiExamples
 
             Assert.IsTrue(paraText.StartsWith("13->13"), paraText);
             Assert.AreEqual("1.", dstDoc.Sections[1].Body.LastParagraph.ListLabel.LabelString);
+        }
+
+        [Test]
+        public void MergePastedLists()
+        {
+            //ExStart
+            //ExFor:ImportFormatOptions.MergePastedLists
+            //ExSummary:Shows how to merge lists from a documents.
+            Document srcDoc = new Document(MyDir + "List item.docx");
+            Document dstDoc = new Document(MyDir + "List destination.docx");
+
+            ImportFormatOptions options = new ImportFormatOptions { MergePastedLists = true };
+
+            // Set the "MergePastedLists" property to "true" pasted lists will be merged with surrounding lists.
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles, options);
+
+            dstDoc.Save(ArtifactsDir + "Document.MergePastedLists.docx");
         }
 
         [Test]
