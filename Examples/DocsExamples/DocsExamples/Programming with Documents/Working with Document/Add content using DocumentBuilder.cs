@@ -447,7 +447,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             // Create document with paragraphs.
             doc = new Document(MyDir + "Paragraphs.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-            Assert.AreEqual(23, paragraphs.Count);
+            Assert.AreEqual(22, paragraphs.Count);
 
             // When we create a DocumentBuilder for a document, its cursor is at the very beginning of the document by default,
             // and any content added by the DocumentBuilder will just be prepended to the document.
@@ -455,7 +455,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Assert.AreEqual(0, paragraphs.IndexOf(builder.CurrentParagraph));
 
             // You can move the cursor to any position in a paragraph.
-            builder.MoveToParagraph(2, 14);
+            builder.MoveToParagraph(2, 10);
             Assert.AreEqual(2, paragraphs.IndexOf(builder.CurrentParagraph));
             builder.Writeln("This is a new third paragraph. ");
             Assert.AreEqual(3, paragraphs.IndexOf(builder.CurrentParagraph));
