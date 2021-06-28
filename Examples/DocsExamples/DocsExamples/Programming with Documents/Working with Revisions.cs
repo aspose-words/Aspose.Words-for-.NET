@@ -109,16 +109,12 @@ namespace DocsExamples.Programming_with_Documents
             //ExStart:SetRevisionBarsPosition
             Document doc = new Document(MyDir + "Revisions.docx");
 
-            // Renders insert and delete revisions inline, format revisions in balloons.
-            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.Format;
+            // Renders insert revisions inline, delete and format revisions in balloons.
+            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
             doc.LayoutOptions.RevisionOptions.MeasurementUnit = MeasurementUnits.Inches;
-            
             // Renders revision bars on the right side of a page.
             doc.LayoutOptions.RevisionOptions.RevisionBarsPosition = HorizontalAlignment.Right;
-
-            // Renders insert revisions inline, delete and format revisions in balloons.
-            //doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
-
+            
             doc.Save(ArtifactsDir + "WorkingWithRevisions.ShowRevisionsInBalloons.pdf");
             //ExEnd:SetRevisionBarsPosition
             //ExEnd:SetMeasurementUnit

@@ -33,8 +33,8 @@ namespace DocsExamples.Programming_with_Documents
             //ExEnd:LoadHyphenationDictionaryForLanguage
         }
 
+        [Test] 
         //ExStart:CustomHyphenation
-        [Test] //ExSkip
         public void HyphenationCallback()
         {
             try
