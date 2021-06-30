@@ -2100,10 +2100,10 @@ namespace ApiExamples
             Document target = new Document(MyDir + "Document.docx");
 
             Assert.AreEqual(18, template.Styles.Count); //ExSkip
-            Assert.AreEqual(8, target.Styles.Count); //ExSkip
+            Assert.AreEqual(12, target.Styles.Count); //ExSkip
 
             target.CopyStylesFromTemplate(template);
-            Assert.AreEqual(18, target.Styles.Count); //ExSkip
+            Assert.AreEqual(22, target.Styles.Count); //ExSkip
             //ExEnd
         }
 

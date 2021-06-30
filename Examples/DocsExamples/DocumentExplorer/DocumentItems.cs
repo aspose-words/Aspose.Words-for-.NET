@@ -1,4 +1,3 @@
-using System;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
@@ -7,19 +6,15 @@ namespace DocumentExplorer
 {
 	// Classes inherited from the Item class provide specialized representation of particular 
 	// Document nodes by overriding virtual methods and properties of the base class.
-
+    
 	public class DocumentItem : Item
 	{
 		public DocumentItem(Node node) : base(node)
 		{			
 		}
 
-		public override bool IsRemovable
-		{
-			get { return false; }
-		}
-
-	}
+		public override bool IsRemovable => false;
+    }
 
 	public class SectionItem : Item
 	{
@@ -34,25 +29,10 @@ namespace DocumentExplorer
 		{			
 		}
 
-		protected override string IconName
-		{
-			get
-			{
-				if (((HeaderFooter)Node).IsHeader)
-					return "Header";
-				else
-					return "Footer";
-			}
-		}
+		protected override string IconName => ((HeaderFooter)Node).IsHeader ? "Header" : "Footer";
 
-		public override string Name
-		{
-			get
-			{
-				return String.Format("{0} - {1}", base.Name, ((HeaderFooter)Node).HeaderFooterType.ToString());
-			}
-		}
-	}
+        public override string Name => $"{base.Name} - {((HeaderFooter) Node).HeaderFooterType.ToString()}";
+    }
 
 	public class BodyItem : Item
 	{
@@ -132,11 +112,8 @@ namespace DocumentExplorer
 		{			
 		}
 
-		public override string Name
-		{
-			get { return String.Format("{0} - \"{1}\"", base.Name, ((BookmarkStart)Node).Name); }
-		}
-	}
+		public override string Name => $"{base.Name} - \"{((BookmarkStart) Node).Name}\"";
+    }
 
 	public class BookmarkEndItem : Item
 	{
@@ -144,11 +121,8 @@ namespace DocumentExplorer
 		{			
 		}
 
-		public override string Name
-		{
-			get { return String.Format("{0} - \"{1}\"", base.Name, ((BookmarkEnd)Node).Name); }
-		}
-	}
+		public override string Name => $"{base.Name} - \"{((BookmarkEnd) Node).Name}\"";
+    }
 
     public class CommentRangeStartItem : Item
     {
@@ -156,10 +130,7 @@ namespace DocumentExplorer
         {
         }
 
-        public override string Name
-        {
-            get { return String.Format("{0} - (Id = {1})", base.Name, ((CommentRangeStart)Node).Id); }
-        }
+        public override string Name => $"{base.Name} - (Id = {((CommentRangeStart) Node).Id})";
     }
 
     public class CommentRangeEndItem : Item
@@ -168,10 +139,7 @@ namespace DocumentExplorer
         {
         }
 
-        public override string Name
-        {
-            get { return String.Format("{0} - (Id = {1})", base.Name, ((CommentRangeEnd)Node).Id); }
-        }
+        public override string Name => $"{base.Name} - (Id = {((CommentRangeEnd) Node).Id})";
     }
 
     public class CommentItem : Item
@@ -180,10 +148,7 @@ namespace DocumentExplorer
         {
         }
 
-        public override string Name
-        {
-            get { return String.Format("{0} - (Id = {1})", base.Name, ((Comment)Node).Id); }
-        }
+        public override string Name => $"{base.Name} - (Id = {((Comment) Node).Id})";
     }
 	public class FootnoteItem : Item
 	{
@@ -285,12 +250,9 @@ namespace DocumentExplorer
 		{			
 		}
 		
-		public override string Name
-		{
-			get { return String.Format("{0} - \"{1}\"", base.Name, ((FormField)Node).Name); }
-		}
+		public override string Name => $"{base.Name} - \"{((FormField) Node).Name}\"";
 
-		protected override string IconName
+        protected override string IconName
 		{
 			get
 			{

@@ -29,13 +29,14 @@ namespace DocumentExplorer
 	        PrintPreviewDialog previewDlg = new PrintPreviewDialog();
 
             // Initialize the Print Dialog with the number of pages in the document.
-            PrintDialog printDlg = new PrintDialog();
-            printDlg.AllowSomePages = true;
-            printDlg.PrinterSettings = new PrinterSettings();
-            printDlg.PrinterSettings.MinimumPage = 1;
-            printDlg.PrinterSettings.MaximumPage = document.PageCount;
-            printDlg.PrinterSettings.FromPage = 1;
-            printDlg.PrinterSettings.ToPage = document.PageCount;
+            PrintDialog printDlg = new PrintDialog
+            {
+                AllowSomePages = true,
+                PrinterSettings = new PrinterSettings
+                {
+                    MinimumPage = 1, MaximumPage = document.PageCount, FromPage = 1, ToPage = document.PageCount
+                }
+            };
 
             // Restore cursor.
             Cursor.Current = cursor;
@@ -47,8 +48,10 @@ namespace DocumentExplorer
 
             // Create the Aspose.Words' implementation of the .NET print document 
             // And pass the printer settings from the dialog to the print document.
-            AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(document);
-            awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
+            AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(document)
+            {
+                PrinterSettings = printDlg.PrinterSettings
+            };
 
             // Pass the Aspose.Words' print document to the .NET Print Preview dialog.
             previewDlg.Document = awPrintDoc;
