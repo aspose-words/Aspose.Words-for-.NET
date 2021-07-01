@@ -289,7 +289,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         }
 
         [Test]
-        public void PdfImageComppression()
+        public void ImageCompression()
         {
             //ExStart:PdfImageComppression
             Document doc = new Document(MyDir + "Rendering.docx");
@@ -301,16 +301,15 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.PdfImageCompression.pdf", saveOptions);
 
-            PdfSaveOptions saveOptionsA1B = new PdfSaveOptions
+            PdfSaveOptions saveOptionsA2U = new PdfSaveOptions
             {
-                Compliance = PdfCompliance.PdfA1b,
+                Compliance = PdfCompliance.PdfA2u,
                 ImageCompression = PdfImageCompression.Jpeg,
                 JpegQuality = 100, // Use JPEG compression at 50% quality to reduce file size.
-                ImageColorSpaceExportMode = PdfImageColorSpaceExportMode.SimpleCmyk
             };
             
 
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.PdfImageCompression.Pdf_A1b.pdf", saveOptionsA1B);
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.PdfImageCompression_A2u.pdf", saveOptionsA2U);
             //ExEnd:PdfImageComppression
         }
 
