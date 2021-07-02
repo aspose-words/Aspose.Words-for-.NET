@@ -3,7 +3,7 @@ using System.Drawing;
 using Aspose.Words;
 using NUnit.Framework;
 
-namespace DocsExamples.Programming_with_Documents.Contents_Managment
+namespace DocsExamples.Programming_with_Documents.Contents_Management
 {
     internal class WorkingWithStylesAndThemes : DocsExamplesBase
     {

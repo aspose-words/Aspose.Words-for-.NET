@@ -110,7 +110,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
                 Rotation = -40
             };
 
-            watermark.Fill.Color = Color.Gray;
+            watermark.FillColor = Color.Gray;
             watermark.StrokeColor = Color.Gray;
 
             watermark.TextPath.Text = "watermarkText";

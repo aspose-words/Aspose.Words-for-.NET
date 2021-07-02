@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -27,18 +26,12 @@ namespace DocumentExplorer
         /// <summary>
         /// Document node that this Item represents.
         /// </summary>
-        public Node Node
-        {
-            get { return mNode; }
-        }
+        public Node Node => mNode;
 
         /// <summary>
         ///  DisplayName for this Item. Can be customized by overriding in inheriting classes.
         /// </summary>
-        public virtual string Name
-        {
-            get { return mNode.NodeType.ToString(); }
-        }
+        public virtual string Name => mNode.NodeType.ToString();
 
         /// <summary>
         /// Text contained by the corresponding document node.
@@ -95,45 +88,20 @@ namespace DocumentExplorer
             }
         }
 
-        public static ImageList ImageList 
-        {
-            get 
-            {
-                if (mImageList == null) 
-                {
-                    mImageList = new ImageList();
-                    mImageList.ColorDepth = ColorDepth.Depth32Bit;
-                    mImageList.ImageSize = new Size(16, 16);
-                }
-                return mImageList;
-            }
-        }
+        public static ImageList ImageList =>
+            mImageList ?? (mImageList = new ImageList
+                {ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(16, 16)});
 
         /// <summary>
         /// Icon to display in the Document Explorer TreeView control.
         /// </summary>
-        public Icon Icon 
-        {
-            get 
-            {
-                if (mIcon == null) 
-                {
-                    mIcon = LoadIcon(IconName);
-                    if (mIcon == null)
-                        mIcon = LoadIcon("Node");
-                }
-                return mIcon;
-            }
-        }
+        public Icon Icon => mIcon ?? (mIcon = LoadIcon(IconName) ?? LoadIcon("Node"));
 
         /// <summary>
         /// Icon for this node can be customized by overriding this property in the inheriting classes.
         /// The name represents name of .ico file without extension located in the Icons folder of the project.
         /// </summary>
-        protected virtual string IconName 
-        {
-            get { return GetType().Name.Replace("Item", ""); }
-        }
+        protected virtual string IconName => GetType().Name.Replace("Item", "");
 
         /// <summary>
         /// Provides lazy on-expand loading of underlying tree nodes.
@@ -161,10 +129,7 @@ namespace DocumentExplorer
             string resourceName = "DocumentExplorer.Icons." + anIconName + ".ico";
             Stream iconStream = FetchResourceStream(resourceName);
 
-            if (iconStream != null)
-                return new Icon(iconStream);
-            else
-                return null;
+            return iconStream != null ? new Icon(iconStream) : null;
         }
 
         /// <summary>
@@ -201,10 +166,7 @@ namespace DocumentExplorer
             }
         }
 
-        public virtual bool IsRemovable
-        {
-            get { return true; }
-        }
+        public virtual bool IsRemovable => true;
 
         /// <summary>
         /// Static ctor.
