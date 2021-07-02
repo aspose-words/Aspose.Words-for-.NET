@@ -2591,5 +2591,42 @@ namespace ApiExamples
             Assert.AreEqual(30, bounds.Height);
             //ExEnd
         }
+
+        [Test]
+        public void ShapeTypes()
+        {
+            //ExStart
+            //ExFor:ShapeType
+            //ExSummary:Shows how Aspose.Words identify shapes.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertShape(ShapeType.Heptagon, RelativeHorizontalPosition.RightMargin, 0,
+                RelativeVerticalPosition.Page, 0, 0, 0, WrapType.None);
+            
+            builder.InsertShape(ShapeType.Cloud, RelativeHorizontalPosition.RightMargin, 0,
+                RelativeVerticalPosition.Page, 0, 0, 0, WrapType.None);
+            
+            builder.InsertShape(ShapeType.MathPlus, RelativeHorizontalPosition.RightMargin, 0,
+                RelativeVerticalPosition.Page, 0, 0, 0, WrapType.None);
+
+            // To correct identify shape types you need to work with shapes as DML.
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx)
+            {
+                // "Strict" or "Transitional" compliance allows to save shape as DML.
+                Compliance = OoxmlCompliance.Iso29500_2008_Transitional
+            };
+            
+            doc.Save(ArtifactsDir + "ShapeTypes.docx", saveOptions);
+            doc = new Document(ArtifactsDir + "ShapeTypes.docx");
+
+            Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
+
+            foreach (Shape shape in shapes)
+            {
+                Console.WriteLine(shape.ShapeType);
+            }
+            //ExEnd
+        }
     }
 }
