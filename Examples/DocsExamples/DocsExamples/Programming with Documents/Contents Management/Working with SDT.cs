@@ -7,7 +7,7 @@ using Aspose.Words.Markup;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 
-namespace DocsExamples.Programming_with_Documents.Contents_Managment
+namespace DocsExamples.Programming_with_Documents.Contents_Management
 {
     internal class WorkingWithSdt : DocsExamplesBase
     {

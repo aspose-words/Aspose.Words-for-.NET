@@ -37,12 +37,20 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void CleanupUnusedStylesAndLists()
         {
             //ExStart:CleanupUnusedStylesandLists
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document(MyDir + "Unused styles.docx");
 
-            CleanupOptions cleanupOptions = new CleanupOptions { UnusedLists = false, UnusedStyles = true };
+            // Combined with the built-in styles, the document now has eight styles.
+            // A custom style is marked as "used" while there is any text within the document
+            // formatted in that style. This means that the 4 styles we added are currently unused.
+            Console.WriteLine($"Count of styles before Cleanup: {doc.Styles.Count}\n" +
+                              $"Count of lists before Cleanup: {doc.Lists.Count}");
 
             // Cleans unused styles and lists from the document depending on given CleanupOptions. 
+            CleanupOptions cleanupOptions = new CleanupOptions { UnusedLists = false, UnusedStyles = true };
             doc.Cleanup(cleanupOptions);
+
+            Console.WriteLine($"Count of styles after Cleanup was decreased: {doc.Styles.Count}\n" +
+                              $"Count of lists after Cleanup is the same: {doc.Lists.Count}");
 
             doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.CleanupUnusedStylesAndLists.docx");
             //ExEnd:CleanupUnusedStylesandLists
@@ -54,10 +62,15 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             //ExStart:CleanupDuplicateStyle
             Document doc = new Document(MyDir + "Document.docx");
 
-            CleanupOptions options = new CleanupOptions { DuplicateStyle = true };
+            // Count of styles before Cleanup.
+            Console.WriteLine(doc.Styles.Count);
 
             // Cleans duplicate styles from the document.
+            CleanupOptions options = new CleanupOptions { DuplicateStyle = true };
             doc.Cleanup(options);
+
+            // Count of styles after Cleanup was decreased.
+            Console.WriteLine(doc.Styles.Count);
 
             doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.CleanupDuplicateStyle.docx");
             //ExEnd:CleanupDuplicateStyle

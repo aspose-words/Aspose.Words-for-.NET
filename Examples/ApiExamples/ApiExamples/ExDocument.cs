@@ -1075,7 +1075,7 @@ namespace ApiExamples
             // We can call UpdateTableLayout() to fix some of these issues.
             doc.UpdateTableLayout();
 
-            Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
+            Assert.AreEqual("Cell 1                                       Cell 2                                       Cell 3\r\n\r\n", doc.ToString(options));
             Assert.AreEqual(155.0d, table.FirstRow.Cells[0].CellFormat.Width, 2f);
             //ExEnd
         }
@@ -2100,10 +2100,10 @@ namespace ApiExamples
             Document target = new Document(MyDir + "Document.docx");
 
             Assert.AreEqual(18, template.Styles.Count); //ExSkip
-            Assert.AreEqual(8, target.Styles.Count); //ExSkip
+            Assert.AreEqual(12, target.Styles.Count); //ExSkip
 
             target.CopyStylesFromTemplate(template);
-            Assert.AreEqual(18, target.Styles.Count); //ExSkip
+            Assert.AreEqual(22, target.Styles.Count); //ExSkip
             //ExEnd
         }
 
