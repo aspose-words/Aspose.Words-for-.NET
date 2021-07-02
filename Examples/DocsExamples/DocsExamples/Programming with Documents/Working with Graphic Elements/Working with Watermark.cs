@@ -110,7 +110,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             watermark.Rotation = -40;
 
             // Remove the following two lines if you need a solid black text.
-            watermark.Fill.Color = Color.Gray; 
+            watermark.FillColor = Color.Gray; 
             watermark.StrokeColor = Color.Gray;
 
             // Place the watermark in the page center.

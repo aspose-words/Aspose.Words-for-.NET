@@ -136,10 +136,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="21.4.0" />
-    <PackageReference Include="Aspose.PDF" Version="21.4.0" />
-    <PackageReference Include="Aspose.Words" Version="21.5.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="21.5.0" />
+    <PackageReference Include="Aspose.BarCode" Version="21.5.0" />
+    <PackageReference Include="Aspose.PDF" Version="21.5.0" />
+    <PackageReference Include="Aspose.Words" Version="21.7.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="21.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0">

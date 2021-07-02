@@ -95,7 +95,7 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document(MyDir + "Revisions.docx");
 
             // Do not render the comments in PDF.
-            doc.LayoutOptions.ShowComments = false;
+            doc.LayoutOptions.CommentDisplayMode = CommentDisplayMode.Hide;
 
             doc.Save(ArtifactsDir + "WorkingWithRevisions.RemoveCommentsInPdf.pdf");
             //ExEnd:RemoveCommentsInPDF
@@ -109,16 +109,12 @@ namespace DocsExamples.Programming_with_Documents
             //ExStart:SetRevisionBarsPosition
             Document doc = new Document(MyDir + "Revisions.docx");
 
-            // Renders insert and delete revisions inline, format revisions in balloons.
-            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.Format;
+            // Renders insert revisions inline, delete and format revisions in balloons.
+            doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
             doc.LayoutOptions.RevisionOptions.MeasurementUnit = MeasurementUnits.Inches;
-            
             // Renders revision bars on the right side of a page.
             doc.LayoutOptions.RevisionOptions.RevisionBarsPosition = HorizontalAlignment.Right;
-
-            // Renders insert revisions inline, delete and format revisions in balloons.
-            //doc.LayoutOptions.RevisionOptions.ShowInBalloons = ShowInBalloons.FormatAndDelete;
-
+            
             doc.Save(ArtifactsDir + "WorkingWithRevisions.ShowRevisionsInBalloons.pdf");
             //ExEnd:SetRevisionBarsPosition
             //ExEnd:SetMeasurementUnit
@@ -251,7 +247,7 @@ namespace DocsExamples.Programming_with_Documents
             doc = new Document(MyDir + "Revision shape.docx");
             
             shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(4, shapes.Count);
+            Assert.AreEqual(2, shapes.Count);
 
             // This is the move to revision, also the shape at its arrival destination.
             Assert.False(shapes[0].IsMoveFromRevision);
