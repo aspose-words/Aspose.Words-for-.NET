@@ -34,7 +34,8 @@ namespace ApiExamples
             //ExSummary:Shows how to get the type of a structured document tag.
             Document doc = new Document(MyDir + "Structured document tags.docx");
 
-            List<StructuredDocumentTag> sdTags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true).OfType<StructuredDocumentTag>().ToList();
+            List<StructuredDocumentTag> sdTags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true)
+                .OfType<StructuredDocumentTag>().ToList();
 
             Assert.AreEqual(SdtType.RepeatingSection, sdTags[0].SdtType);
             Assert.AreEqual(SdtType.RepeatingSectionItem, sdTags[1].SdtType);
@@ -59,12 +60,12 @@ namespace ApiExamples
             // Below are two ways to apply a style from the document to a structured document tag.
             // 1 -  Apply a style object from the document's style collection:
             Style quoteStyle = doc.Styles[StyleIdentifier.Quote];
-            StructuredDocumentTag sdtPlainText = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline);
-            sdtPlainText.Style = quoteStyle;
+            StructuredDocumentTag sdtPlainText =
+                new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Inline) { Style = quoteStyle };
 
             // 2 -  Reference a style in the document by name:
-            StructuredDocumentTag sdtRichText = new StructuredDocumentTag(doc, SdtType.RichText, MarkupLevel.Inline);
-            sdtRichText.StyleName = "Quote";
+            StructuredDocumentTag sdtRichText =
+                new StructuredDocumentTag(doc, SdtType.RichText, MarkupLevel.Inline) { StyleName = "Quote" };
 
             builder.InsertNode(sdtPlainText);
             builder.InsertNode(sdtRichText);
@@ -89,12 +90,18 @@ namespace ApiExamples
             //ExStart
             //ExFor:StructuredDocumentTag.#ctor(DocumentBase, SdtType, MarkupLevel)
             //ExFor:StructuredDocumentTag.Checked
+            //ExFor:StructuredDocumentTag.SetCheckedSymbol(System.Int32, System.String)
+            //ExFor:StructuredDocumentTag.SetUncheckedSymbol(System.Int32, System.String)
             //ExSummary:Show how to create a structured document tag in the form of a check box.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            StructuredDocumentTag sdtCheckBox = new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline);
-            sdtCheckBox.Checked = true;
+            StructuredDocumentTag sdtCheckBox =
+                new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline) {Checked = true};
+
+            // We can set the symbols used to represent the checked/unchecked state of a checkbox content control.
+            sdtCheckBox.SetCheckedSymbol(0x00A9, "Times New Roman");
+            sdtCheckBox.SetUncheckedSymbol(0x00AE, "Times New Roman");
             
             builder.InsertNode(sdtCheckBox);
 
@@ -103,10 +110,11 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.CheckBox.docx");
 
-            StructuredDocumentTag[] sdts = doc.GetChildNodes(NodeType.StructuredDocumentTag, true).OfType<StructuredDocumentTag>().ToArray();
+            StructuredDocumentTag[] tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true)
+                .OfType<StructuredDocumentTag>().ToArray();
 
-            Assert.AreEqual(true, sdts[0].Checked);
-            Assert.That(sdts[0].XmlMapping.StoreItemId, Is.Empty);
+            Assert.AreEqual(true, tags[0].Checked);
+            Assert.That(tags[0].XmlMapping.StoreItemId, Is.Empty);
         }
 
 #if NET462 || NETCOREAPP2_1 || JAVA // because of a Xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
@@ -981,11 +989,13 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTagRangeStart
             //ExFor:StructuredDocumentTagRangeStart.Id
             //ExFor:StructuredDocumentTagRangeStart.Title
+            //ExFor:StructuredDocumentTagRangeStart.PlaceholderName
             //ExFor:StructuredDocumentTagRangeStart.IsShowingPlaceholderText
             //ExFor:StructuredDocumentTagRangeStart.LockContentControl
             //ExFor:StructuredDocumentTagRangeStart.LockContents
             //ExFor:StructuredDocumentTagRangeStart.Level
             //ExFor:StructuredDocumentTagRangeStart.RangeEnd
+            //ExFor:StructuredDocumentTagRangeStart.Color
             //ExFor:StructuredDocumentTagRangeStart.SdtType
             //ExFor:StructuredDocumentTagRangeStart.Tag
             //ExFor:StructuredDocumentTagRangeEnd
@@ -1005,12 +1015,14 @@ namespace ApiExamples
             Console.WriteLine("StructuredDocumentTagRangeStart values:");
             Console.WriteLine($"\t|Id: {rangeStartTag.Id}");
             Console.WriteLine($"\t|Title: {rangeStartTag.Title}");
+            Console.WriteLine($"\t|PlaceholderName: {rangeStartTag.PlaceholderName}");
             Console.WriteLine($"\t|IsShowingPlaceholderText: {rangeStartTag.IsShowingPlaceholderText}");
             Console.WriteLine($"\t|LockContentControl: {rangeStartTag.LockContentControl}");
             Console.WriteLine($"\t|LockContents: {rangeStartTag.LockContents}");
             Console.WriteLine($"\t|Level: {rangeStartTag.Level}");
             Console.WriteLine($"\t|NodeType: {rangeStartTag.NodeType}");
             Console.WriteLine($"\t|RangeEnd: {rangeStartTag.RangeEnd}");
+            Console.WriteLine($"\t|Color: {rangeStartTag.Color.ToArgb()}");
             Console.WriteLine($"\t|SdtType: {rangeStartTag.SdtType}");
             Console.WriteLine($"\t|Tag: {rangeStartTag.Tag}\n");
 
@@ -1028,7 +1040,8 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTagRangeStart.GetChildNodes(NodeType, bool)
             //ExSummary:Shows how to get child nodes of StructuredDocumentTagRangeStart.
             Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
-            StructuredDocumentTagRangeStart tag = doc.GetChildNodes(NodeType.StructuredDocumentTagRangeStart, true)[0] as StructuredDocumentTagRangeStart;
+            StructuredDocumentTagRangeStart tag =
+                doc.GetChildNodes(NodeType.StructuredDocumentTagRangeStart, true)[0] as StructuredDocumentTagRangeStart;
 
             Console.WriteLine("StructuredDocumentTagRangeStart values:");
             Console.WriteLine($"\t|Child nodes count: {tag.ChildNodes.Count}\n");
@@ -1040,5 +1053,56 @@ namespace ApiExamples
                 Console.WriteLine($"\t|Child node text: {node.GetText()}");
             //ExEnd
         }
+
+        //ExStart
+        //ExFor:StructuredDocumentTagRangeStart.#ctor(DocumentBase, SdtType)
+        //ExFor:StructuredDocumentTagRangeEnd.#ctor(DocumentBase, int)
+        //ExFor:StructuredDocumentTagRangeStart.RemoveSelfOnly
+        //ExFor:StructuredDocumentTagRangeStart.RemoveAllChildren
+        //ExSummary:Shows how to create/remove structured document tag and its content.
+        [Test] //ExSkip
+        public void SdtRangeExtendedMethods()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("StructuredDocumentTag element");
+
+            InsertStructuredDocumentTagRanges(doc, out StructuredDocumentTagRangeStart rangeStart);
+
+            // Removes ranged structured document tag, but keeps content inside.
+            rangeStart.RemoveSelfOnly();
+
+            rangeStart = (StructuredDocumentTagRangeStart)doc.GetChild(
+                NodeType.StructuredDocumentTagRangeStart, 0, false);
+            Assert.AreEqual(null, rangeStart);
+            
+            StructuredDocumentTagRangeEnd rangeEnd = (StructuredDocumentTagRangeEnd)doc.GetChild(
+                NodeType.StructuredDocumentTagRangeEnd, 0, false);
+            
+            Assert.AreEqual(null, rangeEnd);
+            Assert.AreEqual("StructuredDocumentTag element", doc.GetText().Trim());
+
+            InsertStructuredDocumentTagRanges(doc, out rangeStart);
+
+            Node paragraphNode = rangeStart.LastOrDefault();
+            Assert.AreEqual("StructuredDocumentTag element", paragraphNode?.GetText().Trim());
+
+            // Removes ranged structured document tag and content inside.
+            rangeStart.RemoveAllChildren();
+            
+            paragraphNode = rangeStart.LastOrDefault();
+            Assert.AreEqual(null, paragraphNode?.GetText());
+        }
+
+        public void InsertStructuredDocumentTagRanges(Document doc, out StructuredDocumentTagRangeStart rangeStart)
+        {
+            rangeStart = new StructuredDocumentTagRangeStart(doc, SdtType.PlainText);
+            StructuredDocumentTagRangeEnd rangeEnd = new StructuredDocumentTagRangeEnd(doc, rangeStart.Id);
+
+            doc.FirstSection.Body.InsertBefore(rangeStart, doc.FirstSection.Body.FirstParagraph);
+            doc.LastSection.Body.InsertAfter(rangeEnd, doc.FirstSection.Body.FirstParagraph);
+        }
+        //ExEnd
     }
 }

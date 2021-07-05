@@ -98,5 +98,5 @@ Document doc = new Document(dir + "input.pdf");
 doc.Save(dir + "output.docx");
 ```
 
-[Product Page](https://products.aspose.com/words/net) | [Docs](https://docs.aspose.com/display/wordsnet/Home) | [Demos](https://products.aspose.app/words/family) | [API Reference](https://apireference.aspose.com/words/net) | [Examples](https://github.com/aspose-words/Aspose.Words-for-.NET) | [Blog](https://blog.aspose.com/category/words/) | [Free Support](https://forum.aspose.com/c/words) | [Temporary License](https://purchase.aspose.com/temporary-license)
+[Product Page](https://products.aspose.com/words/net) | [Docs](https://docs.aspose.com/display/wordsnet/Home) | [Demos](https://products.aspose.app/words/family) | [API Reference](https://apireference.aspose.com/words/net) | [Examples](https://github.com/aspose-words/Aspose.Words-for-.NET) | [Blog](https://blog.aspose.com/category/words/) | [Search](https://search.aspose.com/) | [Free Support](https://forum.aspose.com/c/words) | [Temporary License](https://purchase.aspose.com/temporary-license)
 

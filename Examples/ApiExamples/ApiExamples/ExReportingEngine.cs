@@ -932,8 +932,10 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Reporting engine template - JSON data destination.docx");
 
-            JsonDataLoadOptions options = new JsonDataLoadOptions();
-            options.ExactDateTimeParseFormat = "MM/dd/yyyy";
+            JsonDataLoadOptions options = new JsonDataLoadOptions
+            {
+                ExactDateTimeParseFormats = new List<string> {"MM/dd/yyyy"}
+            };
 
             JsonDataSource dataSource = new JsonDataSource(MyDir + "List of people.json", options);
             BuildReport(doc, dataSource, "persons");
@@ -960,10 +962,12 @@ namespace ApiExamples
         public void JsonDataStream()
         {
             Document doc = new Document(MyDir + "Reporting engine template - JSON data destination.docx");
-            
-            JsonDataLoadOptions options = new JsonDataLoadOptions();
-            options.ExactDateTimeParseFormat = "MM/dd/yyyy";
-            
+
+            JsonDataLoadOptions options = new JsonDataLoadOptions
+            {
+                ExactDateTimeParseFormats = new List<string> {"MM/dd/yyyy"}
+            };
+
             using (FileStream stream = File.OpenRead(MyDir + "List of people.json"))
             {
                 JsonDataSource dataSource = new JsonDataSource(stream, options);

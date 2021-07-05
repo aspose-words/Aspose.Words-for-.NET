@@ -138,7 +138,7 @@ namespace ApiExamples
             //ExSummary:Shows how to determine whether to preserve the document's "Last saved time" property when saving.
             Document doc = new Document(MyDir + "Document.docx");
 
-            Assert.AreEqual(new DateTime(2020, 7, 30, 5, 27, 0), 
+            Assert.AreEqual(new DateTime(2021, 5, 11, 6, 32, 0), 
                 doc.BuiltInDocumentProperties.LastSavedTime);
 
             // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object
@@ -158,7 +158,7 @@ namespace ApiExamples
             if (updateLastSavedTimeProperty)
                 Assert.That(DateTime.Now, Is.EqualTo(lastSavedTimeNew).Within(1).Days);
             else
-                Assert.AreEqual(new DateTime(2020, 7, 30, 5, 27, 0), 
+                Assert.AreEqual(new DateTime(2021, 5, 11, 6, 32, 0), 
                     lastSavedTimeNew);
             //ExEnd
         }

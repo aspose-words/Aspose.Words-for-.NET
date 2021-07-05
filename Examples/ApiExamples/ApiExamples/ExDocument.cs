@@ -1087,7 +1087,7 @@ namespace ApiExamples
             // We can call UpdateTableLayout() to fix some of these issues.
             doc.UpdateTableLayout();
 
-            Assert.AreEqual("Cell 1             Cell 2             Cell 3\r\n\r\n", doc.ToString(options));
+            Assert.AreEqual("Cell 1                                       Cell 2                                       Cell 3\r\n\r\n", doc.ToString(options));
             Assert.AreEqual(155.0d, table.FirstRow.Cells[0].CellFormat.Width, 2f);
             //ExEnd
         }
@@ -2069,13 +2069,13 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public void ShowComments(bool showComments)
+        [Test]
+        public void ShowComments()
         {
             //ExStart
-            //ExFor:LayoutOptions.ShowComments
-            //ExSummary:Shows how to show/hide comments when saving a document to a rendered format.
+            //ExFor:LayoutOptions.CommentDisplayMode
+            //ExFor:CommentDisplayMode
+            //ExSummary:Shows how to show comments when saving a document to a rendered format.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2085,20 +2085,29 @@ namespace ApiExamples
             comment.SetText("My comment.");
             builder.CurrentParagraph.AppendChild(comment);
 
-            doc.LayoutOptions.ShowComments = showComments;
+            // ShowInAnnotations is only available in Pdf1.7 and Pdf1.5 formats.
+            // In other formats, it will work similarly to Hide.
+            doc.LayoutOptions.CommentDisplayMode = CommentDisplayMode.ShowInAnnotations;
 
-            doc.Save(ArtifactsDir + "Document.ShowComments.pdf");
+            doc.Save(ArtifactsDir + "Document.ShowCommentsInAnnotations.pdf");
+
+            // Note that it's required to rebuild the document page layout (via Document.UpdatePageLayout() method)
+            // after changing the Document.LayoutOptions values.
+            doc.LayoutOptions.CommentDisplayMode = CommentDisplayMode.ShowInBalloons;
+            doc.UpdatePageLayout();
+
+            doc.Save(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
             //ExEnd
 
 #if NET462 || NETCOREAPP2_1 || JAVA
-            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.ShowComments.pdf");
+            Aspose.Pdf.Document pdfDoc =
+                new Aspose.Pdf.Document(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
             Assert.AreEqual(
-                showComments
-                    ? "Hello world!                                                                    Commented [J.D.1]:  My comment."
-                    : "Hello world!", textAbsorber.Text);
+                "Hello world!                                                                    Commented [J.D.1]:  My comment.",
+                textAbsorber.Text);
 #endif
         }
 
@@ -2112,10 +2121,10 @@ namespace ApiExamples
             Document target = new Document(MyDir + "Document.docx");
 
             Assert.AreEqual(18, template.Styles.Count); //ExSkip
-            Assert.AreEqual(8, target.Styles.Count); //ExSkip
+            Assert.AreEqual(12, target.Styles.Count); //ExSkip
 
             target.CopyStylesFromTemplate(template);
-            Assert.AreEqual(18, target.Styles.Count); //ExSkip
+            Assert.AreEqual(22, target.Styles.Count); //ExSkip
             //ExEnd
         }
 

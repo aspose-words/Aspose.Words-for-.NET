@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading;
 using Aspose.Words.Fields;
 using Aspose.Words;
+using Aspose.Words.Lists;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -1806,6 +1807,21 @@ namespace ApiExamples
 
             // Restore the thread's original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
+            //ExEnd
+        }
+
+        [Test]
+        public void RestartListsAtEachSection()
+        {
+            //ExStart
+            //ExFor:MailMerge.RestartListsAtEachSection
+            //ExSummary:Shows how to control whether or not list numbering is restarted at each section when mail merge is performed.
+            Document doc = new Document(MyDir + "Section breaks with numbering.docx");
+            
+            doc.MailMerge.RestartListsAtEachSection = false;
+            doc.MailMerge.Execute(new string[0], new object[0]);
+
+            doc.Save(ArtifactsDir + "MailMerge.RestartListsAtEachSection.pdf");
             //ExEnd
         }
     }

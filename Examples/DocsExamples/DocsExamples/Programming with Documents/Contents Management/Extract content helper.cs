@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Aspose.Words;
 
-namespace DocsExamples.Programming_with_Documents.Contents_Managment
+namespace DocsExamples.Programming_with_Documents.Contents_Management
 {
     internal class ExtractContentHelper
     {
