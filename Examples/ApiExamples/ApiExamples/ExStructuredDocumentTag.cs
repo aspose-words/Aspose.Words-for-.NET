@@ -520,7 +520,7 @@ namespace ApiExamples
             // Create a structured document tag that will display our part's contents and insert it into the document body.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
             tag.XmlMapping.SetMapping(xmlPart, "/root[1]/text[1]", string.Empty);
-
+            
             doc.FirstSection.Body.AppendChild(tag);
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.CustomXml.docx");
@@ -539,6 +539,36 @@ namespace ApiExamples
             Assert.AreEqual("Hello world!", tag.GetText().Trim());
             Assert.AreEqual("/root[1]/text[1]", tag.XmlMapping.XPath);
             Assert.AreEqual(string.Empty, tag.XmlMapping.PrefixMappings);
+            Assert.AreEqual(xmlPart.DataChecksum, tag.XmlMapping.CustomXmlPart.DataChecksum);
+        }
+
+        [Test]
+        public void DataChecksum()
+        {
+            //ExStart
+            //ExFor:CustomXmlPart.DataChecksum
+            //ExSummary:Shows how the checksum is calculated in a runtime.
+            Document doc = new Document();
+
+            StructuredDocumentTag richText = new StructuredDocumentTag(doc, SdtType.RichText, MarkupLevel.Block);
+            doc.FirstSection.Body.AppendChild(richText);
+
+            // The checksum is read-only and computed using the data of the corresponding custom XML data part.
+            richText.XmlMapping.SetMapping(doc.CustomXmlParts.Add(Guid.NewGuid().ToString(),
+                "<root><text>ContentControl</text></root>"), "/root/text", "");
+
+            long checksum = richText.XmlMapping.CustomXmlPart.DataChecksum;
+            Console.WriteLine(checksum);
+
+            richText.XmlMapping.SetMapping(doc.CustomXmlParts.Add(Guid.NewGuid().ToString(),
+                "<root><text>Updated ContentControl</text></root>"), "/root/text", "");
+
+            long updatedChecksum = richText.XmlMapping.CustomXmlPart.DataChecksum;
+            Console.WriteLine(updatedChecksum);
+
+            // We changed the XmlPart of the tag, and the checksum was updated at runtime.
+            Assert.AreNotEqual(checksum, updatedChecksum);
+            //ExEnd
         }
 
         [Test]
