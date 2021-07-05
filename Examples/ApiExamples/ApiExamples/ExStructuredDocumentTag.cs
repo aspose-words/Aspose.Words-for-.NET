@@ -453,7 +453,6 @@ namespace ApiExamples
             //ExFor:CustomXmlPart.Data
             //ExFor:CustomXmlPart.Id
             //ExFor:CustomXmlPart.Schemas
-            //ExFor:CustomXmlPart.DataChecksum
             //ExFor:CustomXmlPartCollection
             //ExFor:CustomXmlPartCollection.Add(CustomXmlPart)
             //ExFor:CustomXmlPartCollection.Add(String, String)
@@ -476,9 +475,6 @@ namespace ApiExamples
             string xmlPartId = Guid.NewGuid().ToString("B");
             string xmlPartContent = "<root><text>Hello world!</text></root>";
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
-
-            // The checksum is computed using the data of the corresponding custom XML data part.
-            Console.WriteLine(xmlPart.DataChecksum);
 
             Assert.AreEqual(Encoding.ASCII.GetBytes(xmlPartContent), xmlPart.Data);
             Assert.AreEqual(xmlPartId, xmlPart.Id);
@@ -525,8 +521,6 @@ namespace ApiExamples
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
             tag.XmlMapping.SetMapping(xmlPart, "/root[1]/text[1]", string.Empty);
             
-            Assert.AreEqual(xmlPart.DataChecksum, tag.XmlMapping.CustomXmlPart.DataChecksum);
-
             doc.FirstSection.Body.AppendChild(tag);
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.CustomXml.docx");
@@ -546,6 +540,35 @@ namespace ApiExamples
             Assert.AreEqual("/root[1]/text[1]", tag.XmlMapping.XPath);
             Assert.AreEqual(string.Empty, tag.XmlMapping.PrefixMappings);
             Assert.AreEqual(xmlPart.DataChecksum, tag.XmlMapping.CustomXmlPart.DataChecksum);
+        }
+
+        [Test]
+        public void DataChecksum()
+        {
+            //ExStart
+            //ExFor:CustomXmlPart.DataChecksum
+            //ExSummary:Shows how the checksum is calculated in a runtime.
+            Document doc = new Document();
+
+            StructuredDocumentTag richText = new StructuredDocumentTag(doc, SdtType.RichText, MarkupLevel.Block);
+            doc.FirstSection.Body.AppendChild(richText);
+
+            // The checksum is read-only and computed using the data of the corresponding custom XML data part.
+            richText.XmlMapping.SetMapping(doc.CustomXmlParts.Add(Guid.NewGuid().ToString(),
+                "<root><text>ContentControl</text></root>"), "/root/text", "");
+
+            long checksum = richText.XmlMapping.CustomXmlPart.DataChecksum;
+            Console.WriteLine(checksum);
+
+            richText.XmlMapping.SetMapping(doc.CustomXmlParts.Add(Guid.NewGuid().ToString(),
+                "<root><text>Updated ContentControl</text></root>"), "/root/text", "");
+
+            long updatedChecksum = richText.XmlMapping.CustomXmlPart.DataChecksum;
+            Console.WriteLine(updatedChecksum);
+
+            // We changed the XmlPart of the tag, and the checksum was updated at runtime.
+            Assert.AreNotEqual(checksum, updatedChecksum);
+            //ExEnd
         }
 
         [Test]

@@ -313,18 +313,18 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:LayoutOptions.ContinuousSectionPageNumberingRestart
-            //ExFor:ContinuosSectionRestart
+            //ExFor:ContinuousSectionRestart
             //ExSummary:Shows how to control page numbering in a continuous section.
             Document doc = new Document(MyDir + "Continuous section page numbering.docx");
 
             // By default Aspose.Words behavior matches the Microsoft Word 2019.
-            // If you need old Aspose.Words behavior, repetitive Microsoft Word 2016, use 'ContinuosSectionRestart.FromNewPageOnly'.
+            // If you need old Aspose.Words behavior, repetitive Microsoft Word 2016, use 'ContinuousSectionRestart.FromNewPageOnly'.
             // Page numbering restarts only if there is no other content before the section on the page where the section starts,
             // because of that the numbering will reset to 2 from the second page.
-            doc.LayoutOptions.ContinuousSectionPageNumberingRestart = ContinuosSectionRestart.FromNewPageOnly;
+            doc.LayoutOptions.ContinuousSectionPageNumberingRestart = ContinuousSectionRestart.FromNewPageOnly;
             doc.UpdatePageLayout();
 
-            doc.Save(ArtifactsDir + "Layout.RestartPageNumberingInContinuousSection_notalways.pdf");
+            doc.Save(ArtifactsDir + "Layout.RestartPageNumberingInContinuousSection.pdf");
             //ExEnd
         }
     }
