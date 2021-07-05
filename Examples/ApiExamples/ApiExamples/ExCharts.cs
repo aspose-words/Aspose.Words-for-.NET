@@ -7,6 +7,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -1214,6 +1215,115 @@ namespace ApiExamples
             Assert.AreEqual(1.0d, axis.MinorUnit);
             Assert.AreEqual(-10.0d, axis.Scaling.Minimum.Value);
             Assert.AreEqual(20.0d, axis.Scaling.Maximum.Value);
+        }
+
+        [Test]
+        public void MarkerFormatting()
+        {
+            //ExStart
+            //ExFor:ChartMarker.Format
+            //ExFor:ChartFormat.Fill
+            //ExFor:ChartFormat.Stroke
+            //ExFor:Stroke.ForeColor
+            //ExFor:Stroke.BackColor
+            //ExFor:Stroke.Visible
+            //ExFor:Stroke.Transparency
+            //ExFor:Fill.PresetTextured(PresetTexture)
+            //ExSummary:Show how to set marker formatting.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Scatter, 432, 252);
+            Chart chart = shape.Chart;
+            
+            // Delete default generated series.
+            chart.Series.Clear();
+            ChartSeries series = chart.Series.Add("AW Series 1", new[] { 0.7, 1.8, 2.6, 3.9 },
+                new[] { 2.7, 3.2, 0.8, 1.7 });
+
+            // Set marker formatting.
+            series.Marker.Size = 40;
+            series.Marker.Symbol = MarkerSymbol.Square;
+            ChartDataPointCollection dataPoints = series.DataPoints;
+            dataPoints[0].Marker.Format.Fill.PresetTextured(PresetTexture.Denim);
+            dataPoints[0].Marker.Format.Stroke.ForeColor = Color.Yellow;
+            dataPoints[0].Marker.Format.Stroke.BackColor = Color.Red;
+            dataPoints[1].Marker.Format.Fill.PresetTextured(PresetTexture.WaterDroplets);
+            dataPoints[1].Marker.Format.Stroke.ForeColor = Color.Yellow;
+            dataPoints[1].Marker.Format.Stroke.Visible = false;
+            dataPoints[2].Marker.Format.Fill.PresetTextured(PresetTexture.GreenMarble);
+            dataPoints[2].Marker.Format.Stroke.ForeColor = Color.Yellow;
+            dataPoints[3].Marker.Format.Fill.PresetTextured(PresetTexture.Oak);
+            dataPoints[3].Marker.Format.Stroke.ForeColor = Color.Yellow;
+            dataPoints[3].Marker.Format.Stroke.Transparency = 0.5;
+
+            doc.Save(ArtifactsDir + "Charts.MarkerFormatting.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void SeriesColor()
+        {
+            //ExStart
+            //ExFor:ChartSeries.Format
+            //ExSummary:Sows how to set series color.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+
+            Chart chart = shape.Chart;
+            ChartSeriesCollection seriesColl = chart.Series;
+
+            // Delete default generated series.
+            seriesColl.Clear();
+
+            // Create category names array.
+            string[] categories = new[] { "Category 1", "Category 2" };
+
+            // Adding new series. Value and category arrays must be the same size.
+            ChartSeries series1 = seriesColl.Add("Series 1", categories, new double[] { 1, 2 });
+            ChartSeries series2 = seriesColl.Add("Series 2", categories, new double[] { 3, 4 });
+            ChartSeries series3 = seriesColl.Add("Series 3", categories, new double[] { 5, 6 });
+
+            // Set series color.
+            series1.Format.Fill.ForeColor = Color.Red;
+            series2.Format.Fill.ForeColor = Color.Yellow;
+            series3.Format.Fill.ForeColor = Color.Blue;
+
+            doc.Save(ArtifactsDir + "Charts.SeriesColor.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void DataPointsFormatting()
+        {
+            //ExStart
+            //ExFor:ChartDataPoint.Format
+            //ExSummary:Shows how to set individual formatting for categories of a column chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Delete default generated series.
+            chart.Series.Clear();
+
+            // Adding new series.
+            ChartSeries series = chart.Series.Add("Series 1",
+                new[] { "Category 1", "Category 2", "Category 3", "Category 4" },
+                new double[] { 1, 2, 3, 4 });
+
+            // Set column formatting.
+            ChartDataPointCollection dataPoints = series.DataPoints;
+            dataPoints[0].Format.Fill.PresetTextured(PresetTexture.Denim);
+            dataPoints[1].Format.Fill.ForeColor = Color.Red;
+            dataPoints[2].Format.Fill.ForeColor = Color.Yellow;
+            dataPoints[3].Format.Fill.ForeColor = Color.Blue;
+
+            doc.Save(ArtifactsDir + "Charts.DataPointsFormatting.docx");
+            //ExEnd
         }
     }
 }
