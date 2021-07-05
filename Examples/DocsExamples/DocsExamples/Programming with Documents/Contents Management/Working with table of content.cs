@@ -1,7 +1,7 @@
 ﻿using Aspose.Words;
 using NUnit.Framework;
 
-namespace DocsExamples.Programming_with_Documents.Contents_Managment
+namespace DocsExamples.Programming_with_Documents.Contents_Management
 {
     class WorkingWithTableOfContent : DocsExamplesBase
     {

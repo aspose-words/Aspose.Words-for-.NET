@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Managers>
    <Manager>
-       <Name>John Smith</Name>
        <Contract>
            <Client>
                <Name>A Company</Name>
