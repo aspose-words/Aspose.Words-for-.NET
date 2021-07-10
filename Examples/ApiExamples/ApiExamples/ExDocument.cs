@@ -614,6 +614,7 @@ namespace ApiExamples
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles, options);
 
             dstDoc.Save(ArtifactsDir + "Document.MergePastedLists.docx");
+            //ExEnd
         }
 
         [Test]
