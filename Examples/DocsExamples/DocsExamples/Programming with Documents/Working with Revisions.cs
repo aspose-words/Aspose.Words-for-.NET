@@ -247,7 +247,7 @@ namespace DocsExamples.Programming_with_Documents
             doc = new Document(MyDir + "Revision shape.docx");
             
             shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(2, shapes.Count);
+            Assert.AreEqual(4, shapes.Count);
 
             // This is the move to revision, also the shape at its arrival destination.
             Assert.False(shapes[0].IsMoveFromRevision);
