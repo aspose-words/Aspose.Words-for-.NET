@@ -301,16 +301,17 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.PdfImageCompression.pdf", saveOptions);
 
-            PdfSaveOptions saveOptions17 = new PdfSaveOptions
+            PdfSaveOptions saveOptionsA2U = new PdfSaveOptions
             {
-                Compliance = PdfCompliance.Pdf17,
+                Compliance = PdfCompliance.PdfA2u,
                 ImageCompression = PdfImageCompression.Jpeg,
                 JpegQuality = 100, // Use JPEG compression at 50% quality to reduce file size.
-                ImageColorSpaceExportMode = PdfImageColorSpaceExportMode.SimpleCmyk
             };
 
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.PdfImageCompression_17.pdf", saveOptions17);
-            //ExEnd:PdfImageCompression
+            
+
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.PdfImageCompression_A2u.pdf", saveOptionsA2U);
+            //ExEnd:PdfImageComppression
         }
 
         [Test]
