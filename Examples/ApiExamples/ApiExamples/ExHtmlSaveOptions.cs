@@ -902,14 +902,14 @@ namespace ApiExamples
                 Assert.True(outDocContents.Contains("Content-ID: <document.html>"));
                 Assert.True(outDocContents.Contains("<link href=3D\"cid:styles.css\" type=3D\"text/css\" rel=3D\"stylesheet\" />"));
                 Assert.True(outDocContents.Contains("@font-face { font-family:'Arial Black'; src:url('cid:ariblk.ttf') }"));
-                Assert.True(outDocContents.Contains("<img src=3D\"cid:image.003.jpeg\" width=3D\"351\" height=3D\"180\" alt=3D\"\" />"));
+                Assert.True(outDocContents.Contains("<img src=3D\"cid:image.003.jpeg\" width=3D\"350\" height=3D\"180\" alt=3D\"\" />"));
             }
             else
             {
                 Assert.True(outDocContents.Contains("Content-Location: document.html"));
                 Assert.True(outDocContents.Contains("<link href=3D\"styles.css\" type=3D\"text/css\" rel=3D\"stylesheet\" />"));
                 Assert.True(outDocContents.Contains("@font-face { font-family:'Arial Black'; src:url('ariblk.ttf') }"));
-                Assert.True(outDocContents.Contains("<img src=3D\"image.003.jpeg\" width=3D\"351\" height=3D\"180\" alt=3D\"\" />"));
+                Assert.True(outDocContents.Contains("<img src=3D\"image.003.jpeg\" width=3D\"350\" height=3D\"180\" alt=3D\"\" />"));
             }
             //ExEnd
         }
@@ -1411,7 +1411,7 @@ namespace ApiExamples
                     "<li style=\"margin-left:30.2pt; padding-left:5.8pt; -aw-font-family:'Courier New'; -aw-font-weight:normal; -aw-number-format:'o'\">"));
                 
                 Assert.True(outDocContents.Contains(
-                    "<img src=\"HtmlSaveOptions.RoundTripInformation.003.jpeg\" width=\"351\" height=\"180\" alt=\"\" " +
+                    "<img src=\"HtmlSaveOptions.RoundTripInformation.003.jpeg\" width=\"350\" height=\"180\" alt=\"\" " +
                     "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />"));
 
 
@@ -1438,7 +1438,7 @@ namespace ApiExamples
                     "<li style=\"margin-left:30.2pt; padding-left:5.8pt\">"));
                 
                 Assert.True(outDocContents.Contains(
-                    "<img src=\"HtmlSaveOptions.RoundTripInformation.003.jpeg\" width=\"351\" height=\"180\" alt=\"\" />"));
+                    "<img src=\"HtmlSaveOptions.RoundTripInformation.003.jpeg\" width=\"350\" height=\"180\" alt=\"\" />"));
 
                 Assert.True(outDocContents.Contains(
                     "<span>Page number 1</span>"));

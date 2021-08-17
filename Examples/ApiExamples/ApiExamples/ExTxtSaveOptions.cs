@@ -371,10 +371,29 @@ namespace ApiExamples
                 Assert.AreEqual("Row 1, cell 1                                            Row 1, cell 2\r\n" +
                                 "Row 2, cell 1                                            Row 2, cell 2\r\n\r\n", docText);
             else
-                Assert.AreEqual("Row 1, cell 1\r\n" +
-                                "Row 1, cell 2\r\n" +
-                                "Row 2, cell 1\r\n" +
-                                "Row 2, cell 2\r\n\r\n", docText);
+                Assert.AreEqual("Row 1, cell 1\r" +
+                                "Row 1, cell 2\r" +
+                                "Row 2, cell 1\r" +
+                                "Row 2, cell 2\r\r\n", docText);
+            //ExEnd
+        }
+
+        [Test]
+        public void MaxCharactersPerLine()
+        {
+            //ExStart
+            //ExFor:TxtSaveOptions.MaxCharactersPerLine
+            //ExSummary:Shows how to set maximum number of characters per line.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
+                          "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
+
+            // Set 30 characters as maximum allowed per one line.
+            TxtSaveOptions saveOptions = new TxtSaveOptions { MaxCharactersPerLine = 30 };
+
+            doc.Save(ArtifactsDir + "TxtSaveOptions.MaxCharactersPerLine.txt", saveOptions);
             //ExEnd
         }
 

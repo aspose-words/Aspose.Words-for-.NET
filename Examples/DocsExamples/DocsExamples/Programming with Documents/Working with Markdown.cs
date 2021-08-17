@@ -1,5 +1,6 @@
 ﻿using System;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using NUnit.Framework;
 
 namespace DocsExamples.Programming_with_Documents
@@ -7,74 +8,277 @@ namespace DocsExamples.Programming_with_Documents
     internal class WorkingWithMarkdown : DocsExamplesBase
     {
         [Test]
-        public void CreateMarkdownDocument()
+        public void BoldText()
         {
-            //ExStart:CreateMarkdownDocument
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
+            //ExStart:BoldText
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
 
-            // Specify the "Heading 1" style for the paragraph.
-            builder.ParagraphFormat.StyleName = "Heading 1";
-            builder.Writeln("Heading 1");
+            // Make the text Bold.
+            builder.Font.Bold = true;
+            builder.Writeln("This text will be Bold");
+            //ExEnd:BoldText
+        }
 
-            // Reset styles from the previous paragraph to not combine styles between paragraphs.
-            builder.ParagraphFormat.StyleName = "Normal";
+        [Test]
+        public void ItalicText()
+        {
+            //ExStart:ItalicText
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            // Make the text Italic.
+            builder.Font.Italic = true;
+            builder.Writeln("This text will be Italic");
+            //ExEnd:ItalicText
+        }
+
+        [Test]
+        public void Strikethrough()
+        {
+            //ExStart:Strikethrough
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            // Make the text Strikethrough.
+            builder.Font.StrikeThrough = true;
+            builder.Writeln("This text will be StrikeThrough");
+            //ExEnd:Strikethrough
+        }
+
+        [Test]
+        public void InlineCode()
+        {
+            //ExStart:InlineCode
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            // Number of backticks is missed, one backtick will be used by default.
+            Style inlineCode1BackTicks = builder.Document.Styles.Add(StyleType.Character, "InlineCode");
+            builder.Font.Style = inlineCode1BackTicks;
+            builder.Writeln("Text with InlineCode style with 1 backtick");
+
+            // There will be 3 backticks.
+            Style inlineCode3BackTicks = builder.Document.Styles.Add(StyleType.Character, "InlineCode.3");
+            builder.Font.Style = inlineCode3BackTicks;
+            builder.Writeln("Text with InlineCode style with 3 backtick");
+            //ExEnd:InlineCode
+        }
+
+        [Test]
+        public void Autolink()
+        {
+            //ExStart:Autolink
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            // Insert hyperlink.
+            builder.InsertHyperlink("https://www.aspose.com", "https://www.aspose.com", false);
+            builder.InsertHyperlink("email@aspose.com", "mailto:email@aspose.com", false);
+            //ExEnd:Autolink
+        }
+
+        [Test]
+        public void Link()
+        {
+            //ExStart:Link
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            // Insert hyperlink.
+            builder.InsertHyperlink("Aspose", "https://www.aspose.com", false);
+            //ExEnd:Link
+        }
+
+        [Test]
+        public void Image()
+        {
+            //ExStart:Image
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            // Insert image.
+            Shape shape = new Shape(builder.Document, ShapeType.Image);
+            shape.WrapType = WrapType.Inline;
+            shape.ImageData.SourceFullName = "/attachment/1456/pic001.png";
+            shape.ImageData.Title = "title";
+            builder.InsertNode(shape);
+            //ExEnd:Image
+        }
+
+        [Test]
+        public void HorizontalRule()
+        {
+            //ExStart:HorizontalRule
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
 
             // Insert horizontal rule.
             builder.InsertHorizontalRule();
+            //ExEnd:HorizontalRule
+        }
 
-            // Specify the ordered list.
-            builder.InsertParagraph();
-            builder.ListFormat.ApplyNumberDefault();
+        [Test]
+        public void Heading()
+        {
+            //ExStart:Heading
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
 
-            // Specify the Italic emphasis for the text.
-            builder.Font.Italic = true;
-            builder.Writeln("Italic Text");
+            // By default Heading styles in Word may have Bold and Italic formatting.
+            //If we do not want to be emphasized, set these properties explicitly to false.
+            builder.Font.Bold = false;
             builder.Font.Italic = false;
 
-            // Specify the Bold emphasis for the text.
-            builder.Font.Bold = true;
-            builder.Writeln("Bold Text");
+            builder.ParagraphFormat.StyleName = "Heading 1";
+            builder.Writeln("This is an H1 tag");
+            //ExEnd:Heading
+        }
+
+        [Test]
+        public void SetextHeading()
+        {
+            //ExStart:SetextHeading
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            builder.ParagraphFormat.StyleName = "Heading 1";
+            builder.Writeln("This is an H1 tag");
+
+            // Reset styles from the previous paragraph to not combine styles between paragraphs.
             builder.Font.Bold = false;
+            builder.Font.Italic = false;
 
-            // Specify the StrikeThrough emphasis for the text.
-            builder.Font.StrikeThrough = true;
-            builder.Writeln("StrikeThrough Text");
-            builder.Font.StrikeThrough = false;
+            Style setexHeading1 = builder.Document.Styles.Add(StyleType.Paragraph, "SetexHeading1");
+            builder.ParagraphFormat.Style = setexHeading1;
+            builder.Document.Styles["SetexHeading1"].BaseStyleName = "Heading 1";
+            builder.Writeln("Setex Heading level 1");
 
-            // Stop paragraphs numbering.
-            builder.ListFormat.RemoveNumbers();
+            builder.ParagraphFormat.Style = builder.Document.Styles["Heading 3"];
+            builder.Writeln("This is an H3 tag");
 
-            // Specify the "Quote" style for the paragraph.
+            // Reset styles from the previous paragraph to not combine styles between paragraphs.
+            builder.Font.Bold = false;
+            builder.Font.Italic = false;
+
+            Style setexHeading2 = builder.Document.Styles.Add(StyleType.Paragraph, "SetexHeading2");
+            builder.ParagraphFormat.Style = setexHeading2;
+            builder.Document.Styles["SetexHeading2"].BaseStyleName = "Heading 3";
+
+            // Setex heading level will be reset to 2 if the base paragraph has a Heading level greater than 2.
+            builder.Writeln("Setex Heading level 2");
+            //ExEnd:SetextHeading
+        }
+
+        [Test]
+        public void IndentedCode()
+        {
+            //ExStart:IndentedCode
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            Style indentedCode = builder.Document.Styles.Add(StyleType.Paragraph, "IndentedCode");
+            builder.ParagraphFormat.Style = indentedCode;
+            builder.Writeln("This is an indented code");
+            //ExEnd:IndentedCode
+        }
+
+        [Test]
+        public void FencedCode()
+        {
+            //ExStart:FencedCode
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            Style fencedCode = builder.Document.Styles.Add(StyleType.Paragraph, "FencedCode");
+            builder.ParagraphFormat.Style = fencedCode;
+            builder.Writeln("This is an fenced code");
+
+            Style fencedCodeWithInfo = builder.Document.Styles.Add(StyleType.Paragraph, "FencedCode.C#");
+            builder.ParagraphFormat.Style = fencedCodeWithInfo;
+            builder.Writeln("This is a fenced code with info string");
+            //ExEnd:FencedCode
+        }
+
+        [Test]
+        public void Quote()
+        {
+            //ExStart:Quote
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            // By default a document stores blockquote style for the first level.
             builder.ParagraphFormat.StyleName = "Quote";
-            builder.Writeln("A Quote block");
+            builder.Writeln("Blockquote");
 
-            // Specify nesting Quote.
-            Style nestedQuote = doc.Styles.Add(StyleType.Paragraph, "Quote1");
-            nestedQuote.BaseStyleName = "Quote";
-            builder.ParagraphFormat.StyleName = "Quote1";
-            builder.Writeln("A nested Quote block");
+            // Create styles for nested levels through style inheritance.
+            Style quoteLevel2 = builder.Document.Styles.Add(StyleType.Paragraph, "Quote1");
+            builder.ParagraphFormat.Style = quoteLevel2;
+            builder.Document.Styles["Quote1"].BaseStyleName = "Quote";
+            builder.Writeln("1. Nested blockquote");
+            //ExEnd:Quote
+        }
 
-            // Reset paragraph style to Normal to stop Quote blocks. 
-            builder.ParagraphFormat.StyleName = "Normal";
+        [Test]
+        public void BulletedList()
+        {
+            //ExStart:BulletedList
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
 
-            // Specify a Hyperlink for the desired text.
-            builder.Font.Bold = true;
-            // Note, the text of hyperlink can be emphasized.
-            builder.InsertHyperlink("Aspose", "https://www.aspose.com", false);
-            builder.Font.Bold = false;
+            builder.ListFormat.ApplyBulletDefault();
+            builder.ListFormat.List.ListLevels[0].NumberFormat = "-";
 
-            // Insert a simple table.
-            builder.StartTable();
+            builder.Writeln("Item 1");
+            builder.Writeln("Item 2");
+
+            builder.ListFormat.ListIndent();
+
+            builder.Writeln("Item 2a");
+            builder.Writeln("Item 2b");
+            //ExEnd:BulletedList
+        }
+
+        [Test]
+        public void OrderedList()
+        {
+            //ExStart:OrderedList
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.ListFormat.ApplyBulletDefault();
+            builder.ListFormat.List.ListLevels[0].NumberFormat = $"{(char) 0}.";
+            builder.ListFormat.List.ListLevels[1].NumberFormat = $"{(char) 1}.";
+
+            builder.Writeln("Item 1");
+            builder.Writeln("Item 2");
+
+            builder.ListFormat.ListIndent();
+
+            builder.Writeln("Item 2a");
+            builder.Writeln("Item 2b");
+            //ExEnd:OrderedList
+        }
+
+        [Test]
+        public void Table()
+        {
+            //ExStart:Table
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            // Add the first row.
             builder.InsertCell();
-            builder.Write("Cell1");
+            builder.Writeln("a");
             builder.InsertCell();
-            builder.Write("Cell2");
-            builder.EndTable();
+            builder.Writeln("b");
 
-            // Save your document as a Markdown file.
-            doc.Save(ArtifactsDir + "WorkingWithMarkdown.CreateMarkdownDocument.md");
-            //ExEnd:CreateMarkdownDocument
+            // Add the second row.
+            builder.InsertCell();
+            builder.Writeln("c");
+            builder.InsertCell();
+            builder.Writeln("d");
+            //ExEnd:Table
         }
 
         [Test]
@@ -125,90 +329,6 @@ namespace DocsExamples.Programming_with_Documents
 
             builder.Document.Save(ArtifactsDir + "WorkingWithMarkdown.Emphases.md");
             //ExEnd:Emphases
-        }
-
-        [Test]
-        public void Headings()
-        {
-            //ExStart:Headings
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // By default Heading styles in Word may have bold and italic formatting.
-            // If we do not want the text to be emphasized, set these properties explicitly to false.
-            builder.Font.Bold = false;
-            builder.Font.Italic = false;
-
-            builder.Writeln("The following produces headings:");
-            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
-            builder.Writeln("Heading1");
-            builder.ParagraphFormat.Style = doc.Styles["Heading 2"];
-            builder.Writeln("Heading2");
-            builder.ParagraphFormat.Style = doc.Styles["Heading 3"];
-            builder.Writeln("Heading3");
-            builder.ParagraphFormat.Style = doc.Styles["Heading 4"];
-            builder.Writeln("Heading4");
-            builder.ParagraphFormat.Style = doc.Styles["Heading 5"];
-            builder.Writeln("Heading5");
-            builder.ParagraphFormat.Style = doc.Styles["Heading 6"];
-            builder.Writeln("Heading6");
-
-            // Note that the emphases are also allowed inside Headings.
-            builder.Font.Bold = true;
-            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
-            builder.Writeln("Bold Heading1");
-
-            doc.Save(ArtifactsDir + "WorkingWithMarkdown.Headings.md");
-            //ExEnd:Headings
-        }
-
-        [Test]
-        public void BlockQuotes()
-        {
-            //ExStart:BlockQuotes
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Writeln("We support blockquotes in Markdown:");
-            
-            builder.ParagraphFormat.Style = doc.Styles["Quote"];
-            builder.Writeln("Lorem");
-            builder.Writeln("ipsum");
-            
-            builder.ParagraphFormat.Style = doc.Styles["Normal"];
-            builder.Writeln("The quotes can be of any level and can be nested:");
-            
-            Style quoteLevel3 = doc.Styles.Add(StyleType.Paragraph, "Quote2");
-            builder.ParagraphFormat.Style = quoteLevel3;
-            builder.Writeln("Quote level 3");
-            
-            Style quoteLevel4 = doc.Styles.Add(StyleType.Paragraph, "Quote3");
-            builder.ParagraphFormat.Style = quoteLevel4;
-            builder.Writeln("Nested quote level 4");
-            
-            builder.ParagraphFormat.Style = doc.Styles["Quote"];
-            builder.Writeln();
-            builder.Writeln("Back to first level");
-            
-            Style quoteLevel1WithHeading = doc.Styles.Add(StyleType.Paragraph, "Quote Heading 3");
-            builder.ParagraphFormat.Style = quoteLevel1WithHeading;
-            builder.Write("Headings are allowed inside Quotes");
-
-            doc.Save(ArtifactsDir + "WorkingWithMarkdown.BlockQuotes.md");
-            //ExEnd:BlockQuotes
-        }
-
-        [Test]
-        public void HorizontalRule()
-        {
-            //ExStart:HorizontalRule
-            DocumentBuilder builder = new DocumentBuilder(new Document());
-
-            builder.Writeln("We support Horizontal rules (Thematic breaks) in Markdown:");
-            builder.InsertHorizontalRule();
-
-            builder.Document.Save(ArtifactsDir + "WorkingWithMarkdown.HorizontalRuleExample.md");
-            //ExEnd:HorizontalRule
         }
 
         [Test]
