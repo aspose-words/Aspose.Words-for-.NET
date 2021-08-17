@@ -171,7 +171,7 @@ namespace ApiExamples
             Column column = Column.FromIndex(table, 0);
             Console.WriteLine(column.ToTxt());
 
-            Assert.AreEqual("\r\nRow 1\r\nRow 2\r\nRow 3\r\n", column.ToTxt());
+            Assert.AreEqual("\rRow 1\rRow 2\rRow 3\r", column.ToTxt());
         }
     }
 }
