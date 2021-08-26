@@ -889,7 +889,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
                 xmlDoc.Load(htmlStream);
 
                 // Get collection of tables in the HTML document.
-                XmlNodeList tables = xmlDoc.DocumentElement.SelectNodes("// Table");
+                XmlNodeList tables = xmlDoc.DocumentElement.GetElementsByTagName("table");
 
                 foreach (XmlNode table in tables)
                 {

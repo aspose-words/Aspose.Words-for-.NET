@@ -291,7 +291,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         [Test]
         public void ImageCompression()
         {
-            //ExStart:PdfImageComppression
+            //ExStart:PdfImageCompression
             Document doc = new Document(MyDir + "Rendering.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions
@@ -307,6 +307,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
                 ImageCompression = PdfImageCompression.Jpeg,
                 JpegQuality = 100, // Use JPEG compression at 50% quality to reduce file size.
             };
+
             
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.PdfImageCompression_A2u.pdf", saveOptionsA2U);

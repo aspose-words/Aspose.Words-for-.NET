@@ -1913,7 +1913,7 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
 
-            Assert.AreEqual(43, warningCallback.Count);
+            Assert.AreEqual(38, warningCallback.Count);
         }
 
         public class RenderCallback : IWarningCallback
