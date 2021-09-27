@@ -539,5 +539,21 @@ namespace ApiExamples
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
         }
 #endif
+
+        [Test]
+        public void InsertGif()
+        {
+            DocumentBuilder builder = new DocumentBuilder();
+            Shape image = builder.InsertImage(ImageDir + "Graphics Interchange Format.gif");
+
+            //byte[] bytes = image.ImageData.ImageBytes; // When we get access to bytes of image, they converted to gif
+            //Shape newBytes = builder.InsertImage(bytes);
+            Shape newBytes1 = builder.InsertImage(File.ReadAllBytes(ImageDir + "Graphics Interchange Format.gif"));
+            
+            //Assert.AreEqual(ImageType.Png, newBytes.ImageData.ImageType);
+            Assert.AreEqual(ImageType.Png, newBytes1.ImageData.ImageType);
+
+            builder.Document.Save(ArtifactsDir + "InsertGif.docx");
+        }
     }
 }

@@ -119,7 +119,7 @@ namespace ApiExamples
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.SaveFormat = SaveFormat.Pdf;
-
+            
             // The output PDF document will contain an outline, which is a table of contents that lists headings in the document body.
             // Clicking on an entry in this outline will take us to the location of its respective heading.
             // Set the "HeadingsOutlineLevels" property to "2" to exclude all headings whose levels are above 2 from the outline.
@@ -2395,6 +2395,22 @@ namespace ApiExamples
                             "Page 4 (even)\r\n" +
                             "Page 5 (odd)", textAbsorber.Text);
 #endif
+        }
+
+        [Test]
+        public void ExportLanguageToSpanTag()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello world!");
+            builder.Writeln("Hola mundo!");
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions
+            {
+                ExportDocumentStructure = true, ExportLanguageToSpanTag = false
+            };
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ExportLanguageToSpanTag.pdf", saveOptions);
         }
     }
 }
