@@ -13,6 +13,7 @@ using System.IO;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Fonts;
+using Aspose.Words.Markup;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -2411,6 +2412,18 @@ namespace ApiExamples
             };
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExportLanguageToSpanTag.pdf", saveOptions);
+        }
+
+        [Test]
+        public void FlatOpcXmlMappingOnly()
+        {
+            Document doc = new Document(MyDir + "Structured document tag with HTML content.docx");
+
+            // If true - SDT will contain raw HTML text.
+            // If false - mapped HTML will parsed and resulting document will be inserted into SDT content.
+            PdfSaveOptions saveOptions = new PdfSaveOptions { FlatOpcXmlMappingOnly = true };
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.FlatOpcXmlMappingOnly.pdf", saveOptions);
         }
     }
 }

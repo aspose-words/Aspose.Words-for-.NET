@@ -7462,5 +7462,50 @@ namespace ApiExamples
                 .AssertInvocationArguments(1, "2", "=", "3")
                 .AssertInvocationArguments(2, "3", "=", "3");
         }
+
+        [Test]
+        public void FieldUpdatingCallbackTest()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField(" DATE \\@ \"dddd, d MMMM yyyy\" ");
+            builder.InsertField(" TIME ");
+            builder.InsertField(" REVNUM ");
+            builder.InsertField(" AUTHOR  \"John Doe\" ");
+            builder.InsertField(" SUBJECT \"My Subject\" ");
+            builder.InsertField(" QUOTE \"Hello world!\" ");
+
+            FieldUpdatingCallback callback = new FieldUpdatingCallback();
+            doc.FieldOptions.FieldUpdatingCallback = callback;
+
+            doc.UpdateFields();
+
+            Assert.True(callback.FieldUpdatedCalls.Contains("Updating John Doe"));
+        }
+
+        public class FieldUpdatingCallback : IFieldUpdatingCallback
+        {
+            public FieldUpdatingCallback()
+            {
+                FieldUpdatedCalls = new List<string>();
+            }
+
+            void IFieldUpdatingCallback.FieldUpdating(Field field)
+            {
+                if (field.Type == FieldType.FieldAuthor)
+                {
+                    FieldAuthor fieldAuthor = (FieldAuthor) field;
+                    fieldAuthor.AuthorName = "Updating John Doe";
+                }
+            }
+
+            void IFieldUpdatingCallback.FieldUpdated(Field field)
+            {
+                FieldUpdatedCalls.Add(field.Result);
+            }
+
+            public IList<string> FieldUpdatedCalls { get; }
+        }
     }
 }
