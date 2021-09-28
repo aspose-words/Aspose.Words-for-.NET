@@ -967,5 +967,26 @@ namespace ApiExamples
 
             Assert.IsTrue(doc.Lists[0].ListLevels[0].ImageData.HasImage);
         }
+
+        [Test]
+        public void CustomNumberStyleFormat()
+        {
+            // Rename document or create list with AW?
+            // Check two lists
+            Document doc = new Document(MyDir + "lz1.docx");
+
+            ListLevel listLevel = doc.FirstSection.Body.Paragraphs[0].ListFormat.ListLevel;
+
+            string customNumberStyleFormat = string.Empty;
+
+            if (listLevel.NumberStyle == NumberStyle.Custom)
+                customNumberStyleFormat = listLevel.CustomNumberStyleFormat;
+
+            Console.WriteLine(customNumberStyleFormat);
+
+            // Learn more?
+            Assert.AreEqual("iv", ListLevel.GetEffectiveValue(4, NumberStyle.LowercaseRoman, null));
+            Assert.AreEqual("005", ListLevel.GetEffectiveValue(5, NumberStyle.Custom, customNumberStyleFormat));
+        }
     }
 }
