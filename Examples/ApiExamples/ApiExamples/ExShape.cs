@@ -823,17 +823,16 @@ namespace ApiExamples
             //ExSummary:Shows how to set pattern for a shape.
             Document doc = new Document(MyDir + "Shape stroke pattern border.docx");
 
-            // Get Fill object for the first shape.
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Fill fill = shape.Fill;
 
-            // Check Fill Pattern value.
             Console.WriteLine("Pattern value is: {0}", fill.Pattern);
 
-            // Apply DiagonalBrick pattern to the shape fill.
+            // There are several ways specified fill to a pattern.
+            // 1 -  Apply pattern to the shape fill:
             fill.Patterned(PatternType.DiagonalBrick);
 
-            // You can also ...
+            // 2 -  Apply pattern with foreground and background colors to the shape fill:
             fill.Patterned(PatternType.DiagonalBrick, Color.Aqua, Color.Bisque);
 
             doc.Save(ArtifactsDir + "Shape.FillPattern.docx");
@@ -2658,20 +2657,28 @@ namespace ApiExamples
         [Test]
         public void IsDecorative()
         {
+            //ExStart
+            //ExFor:ShapeBase.IsDecorative
+            //ExSummary:Shows how to set that the shape is decorative.
             Document doc = new Document(MyDir + "Decorative shapes.docx");
 
             Shape shape = (Shape) doc.GetChildNodes(NodeType.Shape, true)[0];
-            Console.WriteLine(shape.IsDecorative);
-            shape.AlternativeText = "This is masss!";
-            Console.WriteLine(shape.IsDecorative); // After text was changed, IsDecorative also changed
+            Assert.True(shape.IsDecorative);
+            
+            // If "AlternativeText" is not empty, the shape cannot be decorative.
+            // That's why our value has changed to 'false'.
+            shape.AlternativeText = "Alternative text.";
+            Assert.False(shape.IsDecorative);
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToDocumentEnd();
+            // Create a new shape as decorative.
             shape = builder.InsertShape(ShapeType.Rectangle, 100, 100);
             shape.IsDecorative = true;
 
             doc.Save(ArtifactsDir + "Shape.IsDecorative.docx");
+            //ExEnd
         }
     }
 }
