@@ -971,9 +971,11 @@ namespace ApiExamples
         [Test]
         public void CustomNumberStyleFormat()
         {
-            // Rename document or create list with AW?
-            // Check two lists
-            Document doc = new Document(MyDir + "lz1.docx");
+            //ExStart
+            //ExFor:ListLevel.CustomNumberStyleFormat
+            //ExFor:ListLevel.GetEffectiveValue(Int32, NumberStyle, String)
+            //ExSummary:Shows how to get the format for a list with the custom number style.
+            Document doc = new Document(MyDir + "List with leading zero.docx");
 
             ListLevel listLevel = doc.FirstSection.Body.Paragraphs[0].ListFormat.ListLevel;
 
@@ -982,11 +984,19 @@ namespace ApiExamples
             if (listLevel.NumberStyle == NumberStyle.Custom)
                 customNumberStyleFormat = listLevel.CustomNumberStyleFormat;
 
-            Console.WriteLine(customNumberStyleFormat);
+            Assert.AreEqual("001, 002, 003, ...", customNumberStyleFormat);
 
-            // Learn more?
+            // We can get value for the specified index of the list item.
             Assert.AreEqual("iv", ListLevel.GetEffectiveValue(4, NumberStyle.LowercaseRoman, null));
             Assert.AreEqual("005", ListLevel.GetEffectiveValue(5, NumberStyle.Custom, customNumberStyleFormat));
+            //ExEnd
+
+            Assert.That(() => ListLevel.GetEffectiveValue(5, NumberStyle.LowercaseRoman, customNumberStyleFormat),
+                Throws.TypeOf<ArgumentException>());
+            Assert.That(() => ListLevel.GetEffectiveValue(5, NumberStyle.Custom, null),
+                Throws.TypeOf<ArgumentException>());
+            Assert.That(() => ListLevel.GetEffectiveValue(5, NumberStyle.Custom, "...."),
+                Throws.TypeOf<ArgumentException>());
         }
     }
 }
