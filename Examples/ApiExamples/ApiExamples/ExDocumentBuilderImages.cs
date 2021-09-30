@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -543,17 +544,20 @@ namespace ApiExamples
         [Test]
         public void InsertGif()
         {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertImage(String)
+            //ExSummary:Shows how to insert gif image to the document.
             DocumentBuilder builder = new DocumentBuilder();
-            Shape image = builder.InsertImage(ImageDir + "Graphics Interchange Format.gif");
 
-            //byte[] bytes = image.ImageData.ImageBytes; // When we get access to bytes of image, they converted to gif
-            //Shape newBytes = builder.InsertImage(bytes);
-            Shape newBytes1 = builder.InsertImage(File.ReadAllBytes(ImageDir + "Graphics Interchange Format.gif"));
+            // We can insert gif image using path or bytes array.
+            // It works only if DocumentBuilder optimized to Word version 2010 or higher.
+            // Note, that access to the image bytes causes conversion Gif to Png.
+            Shape gifImage = builder.InsertImage(ImageDir + "Graphics Interchange Format.gif");
+
+            gifImage = builder.InsertImage(File.ReadAllBytes(ImageDir + "Graphics Interchange Format.gif"));
             
-            //Assert.AreEqual(ImageType.Png, newBytes.ImageData.ImageType);
-            Assert.AreEqual(ImageType.Png, newBytes1.ImageData.ImageType);
-
             builder.Document.Save(ArtifactsDir + "InsertGif.docx");
+            //ExEnd
         }
     }
 }

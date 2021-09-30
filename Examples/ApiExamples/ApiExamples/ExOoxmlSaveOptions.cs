@@ -297,10 +297,10 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OoxmlSaveOptions.ExportGeneratorName
-            //ExSummary:Shows how to disable adding name and version of Aspose.Words.
+            //ExSummary:Shows how to disable adding name and version of Aspose.Words into produced files.
             Document doc = new Document();
             
-            // Use https://docs.aspose.com/words/net/generator-or-producer-name-included-in-output-documents/ to check the result
+            // Use https://docs.aspose.com/words/net/generator-or-producer-name-included-in-output-documents/ to know how to check the result.
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { ExportGeneratorName = false };
             
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.ExportGeneratorName.docx", saveOptions);

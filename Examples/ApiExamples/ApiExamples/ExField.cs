@@ -7463,7 +7463,12 @@ namespace ApiExamples
                 .AssertInvocationArguments(2, "3", "=", "3");
         }
 
-        [Test]
+        //ExStart
+        //ExFor:IFieldUpdatingCallback
+        //ExFor:IFieldUpdatingCallback.FieldUpdating(Field)
+        //ExFor:IFieldUpdatingCallback.FieldUpdated(Field)
+        //ExSummary:Shows how to use callback methods during a field update.
+        [Test] //ExSkip
         public void FieldUpdatingCallbackTest()
         {
             Document doc = new Document();
@@ -7483,7 +7488,10 @@ namespace ApiExamples
 
             Assert.True(callback.FieldUpdatedCalls.Contains("Updating John Doe"));
         }
-
+        
+        /// <summary>
+        /// Implement this interface if you want to have your own custom methods called during a field update.
+        /// </summary>
         public class FieldUpdatingCallback : IFieldUpdatingCallback
         {
             public FieldUpdatingCallback()
@@ -7491,6 +7499,9 @@ namespace ApiExamples
                 FieldUpdatedCalls = new List<string>();
             }
 
+            /// <summary>
+            /// A user defined method that is called just before a field is updated.
+            /// </summary>
             void IFieldUpdatingCallback.FieldUpdating(Field field)
             {
                 if (field.Type == FieldType.FieldAuthor)
@@ -7500,6 +7511,9 @@ namespace ApiExamples
                 }
             }
 
+            /// <summary>
+            /// A user defined method that is called just after a field is updated.
+            /// </summary>
             void IFieldUpdatingCallback.FieldUpdated(Field field)
             {
                 FieldUpdatedCalls.Add(field.Result);
@@ -7507,5 +7521,6 @@ namespace ApiExamples
 
             public IList<string> FieldUpdatedCalls { get; }
         }
+        //ExEnd
     }
 }
