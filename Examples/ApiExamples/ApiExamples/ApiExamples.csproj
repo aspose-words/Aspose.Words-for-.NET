@@ -136,8 +136,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="21.8.0" />
-    <PackageReference Include="Aspose.PDF" Version="21.8.0" />
+    <PackageReference Include="Aspose.BarCode" Version="21.9.0" />
+    <PackageReference Include="Aspose.PDF" Version="21.9.0" />
     <PackageReference Include="Aspose.Words" Version="21.10.0" />
     <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="21.10.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
