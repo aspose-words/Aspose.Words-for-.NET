@@ -14,6 +14,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fonts;
 using Aspose.Words.Loading;
+using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
 
@@ -348,6 +349,18 @@ namespace ApiExamples
             loadOptions.Encoding = Encoding.GetEncoding("windows-1251");
 
             Document doc = new Document(MyDir + "HTML help.chm", loadOptions);
+        }
+
+        [Test] // Think about other html content!!!
+        public void FlatOpc()
+        {
+            LoadOptions loadOptions = new LoadOptions { FlatOpcXmlMappingOnly = false };
+            Document doc = new Document(MyDir + "Test22608.docx", loadOptions);
+
+            SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
+            saveOptions.FlatOpcXmlMappingOnly = false;
+
+            doc.Save(ArtifactsDir + "LoadOptions.FlatOpc.pdf", saveOptions);
         }
     }
 }
