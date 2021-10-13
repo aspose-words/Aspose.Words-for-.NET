@@ -2091,6 +2091,7 @@ namespace ApiExamples
 
             target.CopyStylesFromTemplate(template);
             Assert.AreEqual(22, target.Styles.Count); //ExSkip
+
             //ExEnd
         }
 

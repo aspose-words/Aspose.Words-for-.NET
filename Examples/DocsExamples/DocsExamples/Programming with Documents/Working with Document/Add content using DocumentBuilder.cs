@@ -14,6 +14,20 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
     internal class AddContentUsingDocumentBuilder : DocsExamplesBase
     {
         [Test]
+        public void CreateNewDocument()
+        {
+            //ExStart:CreateNewDocument
+            Document doc = new Document();
+
+            // Use a document builder to add content to the document.
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Hello World!");
+
+            doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.CreateNewDocument.docx");
+            //ExEnd:CreateNewDocument
+        }
+
+        [Test]
         public void DocumentBuilderInsertBookmark()
         {
             //ExStart:DocumentBuilderInsertBookmark
@@ -24,7 +38,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             builder.Writeln("This is just a fine bookmark.");
             builder.EndBookmark("FineBookmark");
 
-            doc.Save(ArtifactsDir + "WorkingWithBookmarks.DocumentBuilderInsertBookmark.docx");
+            doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.DocumentBuilderInsertBookmark.docx");
             //ExEnd:DocumentBuilderInsertBookmark
         }
 

@@ -1175,7 +1175,7 @@ namespace ApiExamples
                     Assert.That(480000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
                     break;
                 case PdfFontEmbeddingMode.EmbedNone:
-                    Assert.That(4209, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
+                    Assert.That(4212, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
                     break;
             }
             //ExEnd

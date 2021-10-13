@@ -444,7 +444,7 @@ namespace DocumentExplorer
                 return;
             }
 
-            licenseFile = Path.Combine(Application.StartupPath, "Aspose.Words.lic");
+            licenseFile = Path.Combine(Application.StartupPath, "Aspose.Words.NET.lic");
             if (File.Exists(licenseFile))
                 LicenseAsposeWords(licenseFile);
 
