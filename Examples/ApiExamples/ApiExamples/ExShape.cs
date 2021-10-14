@@ -777,8 +777,6 @@ namespace ApiExamples
             //ExFor:Shape.StrokeColor
             //ExFor:Fill
             //ExFor:Fill.Opacity
-            //ExFor:Fill.TextureAlignment
-            //ExFor:TextureAlignment
             //ExSummary:Shows how to fill a shape with a solid color.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -821,6 +819,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Fill.TextureAlignment
+            //ExFor:TextureAlignment
             //ExSummary:Shows how to fill and tiling the texture inside the shape.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
