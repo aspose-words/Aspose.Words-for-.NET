@@ -172,6 +172,7 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTag.Tag
             //ExFor:StructuredDocumentTag.Title
             //ExFor:StructuredDocumentTag.RemoveSelfOnly
+            //ExFor:StructuredDocumentTag.Appearance
             //ExSummary:Shows how to create a structured document tag in a plain text box and modify its appearance.
             Document doc = new Document();
 
@@ -204,6 +205,10 @@ namespace ApiExamples
             // Set the "Multiline" property to "true" to allow the tag to contain multiple lines of content.
             tag.Multiline = true;
 
+            // Set the "Appearance" property to "SdtAppearance.Tags" to show tags around content.
+            // By default structured document tag shows as BoundingBox. 
+            tag.Appearance = SdtAppearance.Tags;
+
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertNode(tag);
 
@@ -228,6 +233,7 @@ namespace ApiExamples
             Assert.AreEqual("Arial", tag.ContentsFont.Name);
             Assert.AreEqual("Arial Black", tag.EndCharacterFont.Name);
             Assert.True(tag.Multiline);
+            Assert.AreEqual(SdtAppearance.Tags, tag.Appearance);
         }
 
         [TestCase(false)]
