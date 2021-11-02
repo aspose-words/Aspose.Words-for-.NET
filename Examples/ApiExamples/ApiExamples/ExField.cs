@@ -6293,15 +6293,19 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-18137")]
         public void FieldTemplate()
         {
             //ExStart
             //ExFor:FieldTemplate
             //ExFor:FieldTemplate.IncludeFullPath
+            //ExFor:FieldOptions.TemplateName
             //ExSummary:Shows how to use a TEMPLATE field to display the local file system location of a document's template.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // We can set a template name using by the fields. This property is used when the "doc.AttachedTemplate" is empty.
+            // If this property is empty the default template file name "Normal.dotm" is used.
+            doc.FieldOptions.TemplateName = string.Empty;
 
             FieldTemplate field = (FieldTemplate)builder.InsertField(FieldType.FieldTemplate, false);
             Assert.AreEqual(" TEMPLATE ", field.GetFieldCode());
@@ -6324,8 +6328,7 @@ namespace ApiExamples
 
             field = (FieldTemplate)doc.Range.Fields[1];
             Assert.AreEqual(" TEMPLATE  \\p", field.GetFieldCode());
-            Assert.True(field.Result.EndsWith("\\Microsoft\\Templates\\Normal.dotm"));
-
+            Assert.AreEqual("Normal.dotm", field.Result);
         }
 
         [Test]

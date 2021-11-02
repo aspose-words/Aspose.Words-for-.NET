@@ -1824,5 +1824,34 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.RestartListsAtEachSection.pdf");
             //ExEnd
         }
+
+        [Test]
+        public void RemoveLastEmptyParagraph()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertHtml(String, HtmlInsertOptions)
+            //ExSummary:Shows how to use options while inserting html.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField(" MERGEFIELD Name ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD EMAIL ");
+            builder.InsertParagraph();
+
+            // By default "DocumentBuilder.InsertHtml" inserts a HTML fragment that ends with a block-level HTML element,
+            // it normally closes that block-level element and inserts a paragraph break.
+            // As a result, a new empty paragraph appears after inserted document.
+            // If we specify "HtmlInsertOptions.RemoveLastEmptyParagraph", those extra empty paragraphs will be removed.
+            builder.MoveToMergeField("NAME");
+            builder.InsertHtml("<p>John Smith</p>", HtmlInsertOptions.UseBuilderFormatting | HtmlInsertOptions.RemoveLastEmptyParagraph);
+            builder.MoveToMergeField("EMAIL");
+            builder.InsertHtml("<p>jsmith@example.com</p>", HtmlInsertOptions.UseBuilderFormatting);
+
+            doc.Save(ArtifactsDir + "MailMerge.RemoveLastEmptyParagraph.docx");
+            //ExEnd
+
+            Assert.AreEqual(4, doc.FirstSection.Body.Paragraphs.Count);
+        }
     }
 }
