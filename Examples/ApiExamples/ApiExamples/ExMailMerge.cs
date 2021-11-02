@@ -492,6 +492,7 @@ namespace ApiExamples
             //ExFor:MailMerge.GetRegionsByName(System.String)
             //ExFor:MailMerge.RegionEndTag
             //ExFor:MailMerge.RegionStartTag
+            //ExFor:MailMergeRegionInfo.ParentRegion
             //ExSummary:Shows how to create, list, and read mail merge regions.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -520,11 +521,11 @@ namespace ApiExamples
             Assert.AreEqual("Column1", mergeFieldNames[0]);
             Assert.AreEqual("Column2", mergeFieldNames[1]);
 
-            // Insert a region with the same name as an existing region, which will make it a duplicate.
-            // Multiple mail merge regions cannot share a single row/paragraph.
-            builder.InsertParagraph(); 
+            // Insert a region with the same name inside the existing region, which will make it a parent.
+            // Now a "Column2" field will be inside a new region.
+            builder.MoveToField(regions[0].Fields[1], false); 
             builder.InsertField(" MERGEFIELD TableStart:MailMergeRegion1");
-            builder.InsertField(" MERGEFIELD Column3");
+            builder.MoveToField(regions[0].Fields[1], true);
             builder.InsertField(" MERGEFIELD TableEnd:MailMergeRegion1");
 
             // If we look up the name of duplicate regions using the "GetRegionsByName" method,
@@ -532,10 +533,12 @@ namespace ApiExamples
             regions = doc.MailMerge.GetRegionsByName("MailMergeRegion1");
 
             Assert.AreEqual(2, regions.Count);
+            // Check that the second region now has a parent region.
+            Assert.AreEqual("MailMergeRegion1", regions[1].ParentRegion.Name);
 
             mergeFieldNames = doc.MailMerge.GetFieldNamesForRegion("MailMergeRegion1", 1);
 
-            Assert.AreEqual("Column3", mergeFieldNames[0]);
+            Assert.AreEqual("Column2", mergeFieldNames[0]);
             //ExEnd
         }
 
@@ -1823,6 +1826,35 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMerge.RestartListsAtEachSection.pdf");
             //ExEnd
+        }
+
+        [Test]
+        public void RemoveLastEmptyParagraph()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.InsertHtml(String, HtmlInsertOptions)
+            //ExSummary:Shows how to use options while inserting html.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField(" MERGEFIELD Name ");
+            builder.InsertParagraph();
+            builder.InsertField(" MERGEFIELD EMAIL ");
+            builder.InsertParagraph();
+
+            // By default "DocumentBuilder.InsertHtml" inserts a HTML fragment that ends with a block-level HTML element,
+            // it normally closes that block-level element and inserts a paragraph break.
+            // As a result, a new empty paragraph appears after inserted document.
+            // If we specify "HtmlInsertOptions.RemoveLastEmptyParagraph", those extra empty paragraphs will be removed.
+            builder.MoveToMergeField("NAME");
+            builder.InsertHtml("<p>John Smith</p>", HtmlInsertOptions.UseBuilderFormatting | HtmlInsertOptions.RemoveLastEmptyParagraph);
+            builder.MoveToMergeField("EMAIL");
+            builder.InsertHtml("<p>jsmith@example.com</p>", HtmlInsertOptions.UseBuilderFormatting);
+
+            doc.Save(ArtifactsDir + "MailMerge.RemoveLastEmptyParagraph.docx");
+            //ExEnd
+
+            Assert.AreEqual(4, doc.FirstSection.Body.Paragraphs.Count);
         }
     }
 }

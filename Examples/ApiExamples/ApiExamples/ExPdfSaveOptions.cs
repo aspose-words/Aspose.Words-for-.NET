@@ -10,9 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using System.IO;
+using Aspose.Pdf.Tagged;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Fonts;
+using Aspose.Words.Markup;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -119,7 +121,7 @@ namespace ApiExamples
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.SaveFormat = SaveFormat.Pdf;
-
+            
             // The output PDF document will contain an outline, which is a table of contents that lists headings in the document body.
             // Clicking on an entry in this outline will take us to the location of its respective heading.
             // Set the "HeadingsOutlineLevels" property to "2" to exclude all headings whose levels are above 2 from the outline.
@@ -2395,6 +2397,28 @@ namespace ApiExamples
                             "Page 4 (even)\r\n" +
                             "Page 5 (odd)", textAbsorber.Text);
 #endif
+        }
+
+        [Test]
+        public void ExportLanguageToSpanTag()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.ExportLanguageToSpanTag
+            //ExSummary:Shows how to create a "Span" tag in the document structure to export the text language.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Hello world!");
+            builder.Writeln("Hola mundo!");
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions
+            {
+                // Note, when "ExportDocumentStructure" is false, "ExportLanguageToSpanTag" is ignored.
+                ExportDocumentStructure = true, ExportLanguageToSpanTag = true
+            };
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ExportLanguageToSpanTag.pdf", saveOptions);
+            //ExEnd
         }
     }
 }

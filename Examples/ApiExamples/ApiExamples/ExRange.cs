@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Notes;
 using Aspose.Words.Replacing;
 using NUnit.Framework;
 
@@ -202,6 +203,52 @@ namespace ApiExamples
                     ? "Greetings world!\r\u0013QUOTE\u0014Hello again!\u0015"
                     : "Greetings world!\r\u0013QUOTE\u0014Greetings again!\u0015", doc.GetText().Trim());
             //ExEnd
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IgnoreFootnote(bool isIgnoreFootnotes)
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.IgnoreFootnotes
+            //ExSummary:Shows how to ignore footnotes during a find-and-replace operation.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            builder.InsertFootnote(FootnoteType.Footnote, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+
+            builder.InsertParagraph();
+
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            builder.InsertFootnote(FootnoteType.Endnote, "Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+
+            // Set the "IgnoreFootnotes" flag to "true" to get the find-and-replace
+            // operation to ignore text inside footnotes.
+            // Set the "IgnoreFootnotes" flag to "false" to get the find-and-replace
+            // operation to also search for text inside footnotes.
+            FindReplaceOptions options = new FindReplaceOptions { IgnoreFootnotes = isIgnoreFootnotes };
+            doc.Range.Replace("Lorem ipsum", "Replaced Lorem ipsum", options);
+            //ExEnd
+
+            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
+
+            foreach (Paragraph para in paragraphs)
+            {
+                Assert.AreEqual("Replaced Lorem ipsum", para.Runs[0].Text);
+            }
+
+            List<Footnote> footnotes = doc.GetChildNodes(NodeType.Footnote, true).Cast<Footnote>().ToList();
+            Assert.AreEqual(
+                isIgnoreFootnotes
+                    ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    : "Replaced Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                footnotes[0].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual(
+                isIgnoreFootnotes
+                    ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+                    : "Replaced Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                footnotes[1].ToString(SaveFormat.Text).Trim());
         }
 
         [Test]
