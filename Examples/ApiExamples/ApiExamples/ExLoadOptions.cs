@@ -10,10 +10,12 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text;
+using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fonts;
 using Aspose.Words.Loading;
+using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
 
@@ -348,6 +350,42 @@ namespace ApiExamples
             loadOptions.Encoding = Encoding.GetEncoding("windows-1251");
 
             Document doc = new Document(MyDir + "HTML help.chm", loadOptions);
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void FlatOpcXmlMappingOnly(bool isFlatOpcXmlMappingOnly)
+        {
+            //ExStart
+            //ExFor:SaveOptions.FlatOpcXmlMappingOnly
+            //ExSummary:Shows how to binding structured document tags to any format.
+            // If true - SDT will contain raw HTML text.
+            // If false - mapped HTML will parsed and resulting document will be inserted into SDT content.
+            LoadOptions loadOptions = new LoadOptions {FlatOpcXmlMappingOnly = isFlatOpcXmlMappingOnly};
+            Document doc = new Document(MyDir + "Structured document tag with HTML content.docx", loadOptions);
+
+            SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
+            saveOptions.FlatOpcXmlMappingOnly = isFlatOpcXmlMappingOnly;
+
+            doc.Save(ArtifactsDir + "LoadOptions.FlatOpcXmlMappingOnly.pdf", saveOptions);
+            //ExEnd
+
+#if NET462 || NETCOREAPP2_1 || JAVA
+            Aspose.Pdf.Document pdfDocument =
+                new Aspose.Pdf.Document(ArtifactsDir + "LoadOptions.FlatOpcXmlMappingOnly.pdf");
+            TextAbsorber textAbsorber = new TextAbsorber();
+            pdfDocument.Pages.Accept(textAbsorber);
+
+            Assert.True(isFlatOpcXmlMappingOnly
+                ? textAbsorber.Text.Contains(
+                    "TCSVerify vData1: <!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first \r\nparagraph.</p></body></html>\r\n\r\n" +
+                    "TCSVerify vData2: <html><body><b>This is BOLD</b><i>This is Italics</i></body></html>\r\n\r\n" +
+                    "TCSVerify vData3: <!DOCTYPE HTML PUBLIC")
+                : textAbsorber.Text.Contains(
+                    "TCSVerify vData1: \r\nMy First Heading\r\n\r\nMy first paragraph.\r\n\r\n\r\n" +
+                    "TCSVerify vData2: This is BOLDThis is Italics\r\n\r\n" +
+                    "TCSVerify vData3: \r\n\r\nDepression Program\r\n\r\nDepression Abuse"));
+#endif
         }
     }
 }
