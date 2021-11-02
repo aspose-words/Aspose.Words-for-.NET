@@ -2647,8 +2647,7 @@ namespace ApiExamples
             //ExFor:Frameset
             //ExFor:Frameset.FrameDefaultUrl
             //ExFor:Frameset.IsFrameLinkToFile
-            //ExFor:Frameset.IsFrameLinkToFile
-            //ExFor:FramesetCollection.ChildFramesets
+            //ExFor:Frameset.ChildFramesets
             //ExSummary:Shows how to access frames on-page.
             // Document contains several frames with links to other documents.
             Document doc = new Document(MyDir + "Frameset.docx");

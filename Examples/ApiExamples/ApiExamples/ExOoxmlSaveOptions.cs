@@ -296,7 +296,7 @@ namespace ApiExamples
         public void ExportGeneratorName()
         {
             //ExStart
-            //ExFor:OoxmlSaveOptions.ExportGeneratorName
+            //ExFor:SaveOptions.ExportGeneratorName
             //ExSummary:Shows how to disable adding name and version of Aspose.Words into produced files.
             Document doc = new Document();
             
