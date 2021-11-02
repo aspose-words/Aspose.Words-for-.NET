@@ -100,11 +100,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Aspose.Words">
-      <Version>21.8.0</Version>
-    </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Icons\Body.ico" />
     <EmbeddedResource Include="Icons\BookmarkEnd.ico" />
     <EmbeddedResource Include="Icons\BookmarkStart.ico" />
@@ -143,6 +138,11 @@
     <EmbeddedResource Include="Icons\SpecialChar.ico" />
     <EmbeddedResource Include="Icons\StructuredDocumentTag.ico" />
     <EmbeddedResource Include="Icons\Table.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Aspose.Words">
+      <Version>21.10.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

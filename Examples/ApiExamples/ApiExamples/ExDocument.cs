@@ -1268,41 +1268,6 @@ namespace ApiExamples
 
             TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
                 "OriginalEdited endnote text.", (Footnote)docOriginal.GetChild(NodeType.Footnote, 0, true));
-
-            // If we set compareOptions to ignore certain types of changes,
-            // then revisions done on those types of nodes will not appear in the output document.
-            // We can tell what kind of node a revision was done by looking at the NodeType of the revision's parent nodes.
-            Assert.AreNotEqual(compareOptions.IgnoreFormatting,
-                docOriginal.Revisions.Any(rev => rev.RevisionType == RevisionType.FormatChange));
-            Assert.AreNotEqual(compareOptions.IgnoreCaseChanges,
-                docOriginal.Revisions.Any(s => s.ParentNode.GetText().Contains("hello")));
-            Assert.AreNotEqual(compareOptions.IgnoreComments,
-                docOriginal.Revisions.Any(rev => HasParentOfType(rev, NodeType.Comment)));
-            Assert.AreNotEqual(compareOptions.IgnoreTables,
-                docOriginal.Revisions.Any(rev => HasParentOfType(rev, NodeType.Table)));
-            Assert.AreNotEqual(compareOptions.IgnoreFields,
-                docOriginal.Revisions.Any(rev => HasParentOfType(rev, NodeType.FieldStart)));
-            Assert.AreNotEqual(compareOptions.IgnoreFootnotes,
-                docOriginal.Revisions.Any(rev => HasParentOfType(rev, NodeType.Footnote)));
-            Assert.AreNotEqual(compareOptions.IgnoreTextboxes,
-                docOriginal.Revisions.Any(rev => HasParentOfType(rev, NodeType.Shape)));
-            Assert.AreNotEqual(compareOptions.IgnoreHeadersAndFooters,
-                docOriginal.Revisions.Any(rev => HasParentOfType(rev, NodeType.HeaderFooter)));
-        }
-
-        /// <summary>
-        /// Returns true if the passed revision has a parent node with the type specified by parentType.
-        /// </summary>
-        private static bool HasParentOfType(Revision revision, NodeType parentType)
-        {
-            Node n = revision.ParentNode;
-            while (n.ParentNode != null)
-            {
-                if (n.NodeType == parentType) return true;
-                n = n.ParentNode;
-            }
-
-            return false;
         }
 
         [TestCase(false)]
@@ -2125,6 +2090,7 @@ namespace ApiExamples
 
             target.CopyStylesFromTemplate(template);
             Assert.AreEqual(22, target.Styles.Count); //ExSkip
+
             //ExEnd
         }
 
