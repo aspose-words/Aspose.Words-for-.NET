@@ -965,7 +965,7 @@ namespace ApiExamples
 
             JsonDataLoadOptions options = new JsonDataLoadOptions
             {
-                ExactDateTimeParseFormats = new List<string> {"MM/dd/yyyy"}
+                ExactDateTimeParseFormats = new List<string> {"MM/dd/yyyy", "MM.d.yy"}
             };
 
             using (FileStream stream = File.OpenRead(MyDir + "List of people.json"))

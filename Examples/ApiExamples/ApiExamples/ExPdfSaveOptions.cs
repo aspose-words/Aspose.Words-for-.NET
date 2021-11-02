@@ -2420,35 +2420,5 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExportLanguageToSpanTag.pdf", saveOptions);
             //ExEnd
         }
-
-        [TestCase(true)]
-        [TestCase(false)]
-        public void FlatOpcXmlMappingOnly(bool isFlatOpcXmlMappingOnly)
-        {
-            //ExStart
-            //ExFor:SaveOptions.FlatOpcXmlMappingOnly
-            //ExSummary:Shows how to binding structured document tags to any format.
-            Document doc = new Document(MyDir + "Structured document tag with HTML content.docx");
-
-            // Set the "FlatOpcXmlMappingOnly" to "true" to not update SDT content and it will contain raw HTML text.
-            // Set the "FlatOpcXmlMappingOnly" to "false" and mapped HTML will parsed and resulting document will be inserted into SDT content.
-            PdfSaveOptions saveOptions = new PdfSaveOptions {FlatOpcXmlMappingOnly = isFlatOpcXmlMappingOnly};
-
-            doc.Save(ArtifactsDir + "PdfSaveOptions.FlatOpcXmlMappingOnly.pdf", saveOptions);
-            //ExEnd
-
-#if NET462 || NETCOREAPP2_1 || JAVA
-            Aspose.Pdf.Document pdfDocument =
-                new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.FlatOpcXmlMappingOnly.pdf");
-            TextAbsorber textAbsorber = new TextAbsorber();
-            pdfDocument.Pages.Accept(textAbsorber);
-
-            Assert.AreEqual(
-                isFlatOpcXmlMappingOnly
-                    ? "TCSVerify vData1: This is a test page\r\n\r\nTCSVerify vData2: <html>   <body>       <b>This is BOLD</b><i>This is Italics</i>\r\n      </body></html>"
-                    : "TCSVerify vData1: This is a test page\r\n\r\nTCSVerify vData2: This is BOLD This is Italics",
-                textAbsorber.Text);
-#endif
-        }
     }
 }
