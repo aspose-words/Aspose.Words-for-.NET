@@ -32,7 +32,6 @@ using Aspose.Words.Tables;
 using Aspose.Words.Vba;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
-using CompareOptions = System.Globalization.CompareOptions;
 using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
 #if NET462 || NETCOREAPP2_1 || JAVA
 using Aspose.Pdf.Text;
@@ -2091,6 +2090,7 @@ namespace ApiExamples
 
             target.CopyStylesFromTemplate(template);
             Assert.AreEqual(22, target.Styles.Count); //ExSkip
+
             //ExEnd
         }
 
@@ -2637,6 +2637,42 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Document.AllowEmbeddingPostScriptFonts.docx", saveOptions);
             //ExEnd
+        }
+
+        [Test]
+        public void Frameset()
+        {
+            //ExStart
+            //ExFor:Document.Frameset
+            //ExFor:Frameset
+            //ExFor:Frameset.FrameDefaultUrl
+            //ExFor:Frameset.IsFrameLinkToFile
+            //ExFor:Frameset.IsFrameLinkToFile
+            //ExFor:FramesetCollection.ChildFramesets
+            //ExSummary:Shows how to access frames on-page.
+            // Document contains several frames with links to other documents.
+            Document doc = new Document(MyDir + "Frameset.docx");
+
+            // We can check the default URL (a web page URL or local document) or if the frame is an external resource.
+            Assert.AreEqual("https://file-examples-com.github.io/uploads/2017/02/file-sample_100kB.docx",
+                doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl);
+            Assert.True(doc.Frameset.ChildFramesets[0].ChildFramesets[0].IsFrameLinkToFile);
+
+            Assert.AreEqual("Document.docx", doc.Frameset.ChildFramesets[1].FrameDefaultUrl);
+            Assert.False(doc.Frameset.ChildFramesets[1].IsFrameLinkToFile);
+
+            // Change properties for one of our frames.
+            doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl =
+                "https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/Examples/Data/Absolute%20position%20tab.docx";
+            doc.Frameset.ChildFramesets[0].ChildFramesets[0].IsFrameLinkToFile = false;
+            //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.AreEqual(
+                "https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/Examples/Data/Absolute%20position%20tab.docx",
+                doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl);
+            Assert.False(doc.Frameset.ChildFramesets[0].ChildFramesets[0].IsFrameLinkToFile);
         }
     }
 }

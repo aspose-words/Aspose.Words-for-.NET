@@ -6293,15 +6293,19 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-18137")]
         public void FieldTemplate()
         {
             //ExStart
             //ExFor:FieldTemplate
             //ExFor:FieldTemplate.IncludeFullPath
+            //ExFor:FieldOptions.TemplateName
             //ExSummary:Shows how to use a TEMPLATE field to display the local file system location of a document's template.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // We can set a template name using by the fields. This property is used when the "doc.AttachedTemplate" is empty.
+            // If this property is empty the default template file name "Normal.dotm" is used.
+            doc.FieldOptions.TemplateName = string.Empty;
 
             FieldTemplate field = (FieldTemplate)builder.InsertField(FieldType.FieldTemplate, false);
             Assert.AreEqual(" TEMPLATE ", field.GetFieldCode());
@@ -6324,8 +6328,7 @@ namespace ApiExamples
 
             field = (FieldTemplate)doc.Range.Fields[1];
             Assert.AreEqual(" TEMPLATE  \\p", field.GetFieldCode());
-            Assert.True(field.Result.EndsWith("\\Microsoft\\Templates\\Normal.dotm"));
-
+            Assert.AreEqual("Normal.dotm", field.Result);
         }
 
         [Test]
@@ -7462,5 +7465,65 @@ namespace ApiExamples
                 .AssertInvocationArguments(1, "2", "=", "3")
                 .AssertInvocationArguments(2, "3", "=", "3");
         }
+
+        //ExStart
+        //ExFor:IFieldUpdatingCallback
+        //ExFor:IFieldUpdatingCallback.FieldUpdating(Field)
+        //ExFor:IFieldUpdatingCallback.FieldUpdated(Field)
+        //ExSummary:Shows how to use callback methods during a field update.
+        [Test] //ExSkip
+        public void FieldUpdatingCallbackTest()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField(" DATE \\@ \"dddd, d MMMM yyyy\" ");
+            builder.InsertField(" TIME ");
+            builder.InsertField(" REVNUM ");
+            builder.InsertField(" AUTHOR  \"John Doe\" ");
+            builder.InsertField(" SUBJECT \"My Subject\" ");
+            builder.InsertField(" QUOTE \"Hello world!\" ");
+
+            FieldUpdatingCallback callback = new FieldUpdatingCallback();
+            doc.FieldOptions.FieldUpdatingCallback = callback;
+
+            doc.UpdateFields();
+
+            Assert.True(callback.FieldUpdatedCalls.Contains("Updating John Doe"));
+        }
+        
+        /// <summary>
+        /// Implement this interface if you want to have your own custom methods called during a field update.
+        /// </summary>
+        public class FieldUpdatingCallback : IFieldUpdatingCallback
+        {
+            public FieldUpdatingCallback()
+            {
+                FieldUpdatedCalls = new List<string>();
+            }
+
+            /// <summary>
+            /// A user defined method that is called just before a field is updated.
+            /// </summary>
+            void IFieldUpdatingCallback.FieldUpdating(Field field)
+            {
+                if (field.Type == FieldType.FieldAuthor)
+                {
+                    FieldAuthor fieldAuthor = (FieldAuthor) field;
+                    fieldAuthor.AuthorName = "Updating John Doe";
+                }
+            }
+
+            /// <summary>
+            /// A user defined method that is called just after a field is updated.
+            /// </summary>
+            void IFieldUpdatingCallback.FieldUpdated(Field field)
+            {
+                FieldUpdatedCalls.Add(field.Result);
+            }
+
+            public IList<string> FieldUpdatedCalls { get; }
+        }
+        //ExEnd
     }
 }

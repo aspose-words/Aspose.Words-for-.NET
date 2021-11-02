@@ -815,6 +815,31 @@ namespace ApiExamples
         }
 
         [Test]
+        public void FillPattern()
+        {
+            //ExStart
+            //ExFor:Fill.Patterned(PatternType)
+            //ExFor:Fill.Patterned(PatternType, Color, Color)
+            //ExSummary:Shows how to set pattern for a shape.
+            Document doc = new Document(MyDir + "Shape stroke pattern border.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Fill fill = shape.Fill;
+
+            Console.WriteLine("Pattern value is: {0}", fill.Pattern);
+
+            // There are several ways specified fill to a pattern.
+            // 1 -  Apply pattern to the shape fill:
+            fill.Patterned(PatternType.DiagonalBrick);
+
+            // 2 -  Apply pattern with foreground and background colors to the shape fill:
+            fill.Patterned(PatternType.DiagonalBrick, Color.Aqua, Color.Bisque);
+
+            doc.Save(ArtifactsDir + "Shape.FillPattern.docx");
+            //ExEnd
+        }
+
+        [Test]
         public void Title()
         {
             //ExStart
@@ -2601,7 +2626,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertShape(ShapeType.Heptagon, RelativeHorizontalPosition.RightMargin, 0,
+            builder.InsertShape(ShapeType.Heptagon, RelativeHorizontalPosition.Page, 0,
                 RelativeVerticalPosition.Page, 0, 0, 0, WrapType.None);
             
             builder.InsertShape(ShapeType.Cloud, RelativeHorizontalPosition.RightMargin, 0,
@@ -2617,8 +2642,8 @@ namespace ApiExamples
                 Compliance = OoxmlCompliance.Iso29500_2008_Transitional
             };
             
-            doc.Save(ArtifactsDir + "ShapeTypes.docx", saveOptions);
-            doc = new Document(ArtifactsDir + "ShapeTypes.docx");
+            doc.Save(ArtifactsDir + "Shape.ShapeTypes.docx", saveOptions);
+            doc = new Document(ArtifactsDir + "Shape.ShapeTypes.docx");
 
             Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
@@ -2626,6 +2651,33 @@ namespace ApiExamples
             {
                 Console.WriteLine(shape.ShapeType);
             }
+            //ExEnd
+        }
+
+        [Test]
+        public void IsDecorative()
+        {
+            //ExStart
+            //ExFor:ShapeBase.IsDecorative
+            //ExSummary:Shows how to set that the shape is decorative.
+            Document doc = new Document(MyDir + "Decorative shapes.docx");
+
+            Shape shape = (Shape) doc.GetChildNodes(NodeType.Shape, true)[0];
+            Assert.True(shape.IsDecorative);
+            
+            // If "AlternativeText" is not empty, the shape cannot be decorative.
+            // That's why our value has changed to 'false'.
+            shape.AlternativeText = "Alternative text.";
+            Assert.False(shape.IsDecorative);
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.MoveToDocumentEnd();
+            // Create a new shape as decorative.
+            shape = builder.InsertShape(ShapeType.Rectangle, 100, 100);
+            shape.IsDecorative = true;
+
+            doc.Save(ArtifactsDir + "Shape.IsDecorative.docx");
             //ExEnd
         }
     }

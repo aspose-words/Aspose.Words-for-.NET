@@ -18,6 +18,7 @@ using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
 using Aspose.Words.Layout;
 using Aspose.Words.Lists;
+using Aspose.Words.Loading;
 using NUnit.Framework;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
@@ -1573,6 +1574,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:HtmlMetafileFormat
             //ExFor:HtmlSaveOptions.MetafileFormat
+            //ExFor:HtmlLoadOptions.ConvertSvgToEmf
             //ExSummary:Shows how to convert SVG objects to a different format when saving HTML documents.
             string html = 
                 @"<html>
@@ -1581,7 +1583,13 @@ namespace ApiExamples
                     </svg>
                 </html>";
 
-            Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)));
+            // Use 'ConvertSvgToEmf' to turn back the legacy behavior
+            // where all SVG images loaded from an HTML document were converted to EMF.
+            // Now SVG images are loaded without conversion
+            // if the MS Word version specified in load options supports SVG images natively.
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions { ConvertSvgToEmf = true };
+
+            Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), loadOptions);
 
             // This document contains a <svg> element in the form of text.
             // When we save the document to HTML, we can pass a SaveOptions object
