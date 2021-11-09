@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>net48;net5.0</TargetFrameworks>
-    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
