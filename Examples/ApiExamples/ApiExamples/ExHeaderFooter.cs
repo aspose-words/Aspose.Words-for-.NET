@@ -270,7 +270,7 @@ namespace ApiExamples
             firstPageSection.PageSetup.DifferentFirstPageHeaderFooter = differentFirstPageHeaderFooter;
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
 
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
             if (differentFirstPageHeaderFooter)
                 Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\nThird footer\n", 
                     logger.Text.Replace("\r", ""));

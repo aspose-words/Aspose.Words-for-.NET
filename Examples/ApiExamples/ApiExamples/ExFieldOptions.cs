@@ -379,7 +379,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-#if NET462 || JAVA
+#if NET48 || JAVA
         [Test]
         public void BarcodeGenerator()
         {

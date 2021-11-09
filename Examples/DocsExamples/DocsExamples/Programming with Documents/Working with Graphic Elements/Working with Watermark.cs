@@ -28,7 +28,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             //ExEnd:AddTextWatermarkWithSpecificOptions
         }
 
-#if NET462
+#if NET48
         [Test]
         public void AddImageWatermarkWithSpecificOptions()
         {

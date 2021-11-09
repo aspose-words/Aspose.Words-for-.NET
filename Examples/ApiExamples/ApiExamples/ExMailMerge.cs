@@ -18,7 +18,7 @@ using Aspose.Words.Lists;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-#if NET462 || JAVA
+#if NET48 || JAVA
 using System.Web;
 using System.Data.Odbc;
 #endif
@@ -28,7 +28,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExMailMerge : ApiExampleBase
     {
-#if NET462 || JAVA
+#if NET48 || JAVA
         [Test]
         public void ExecuteArray()
         {

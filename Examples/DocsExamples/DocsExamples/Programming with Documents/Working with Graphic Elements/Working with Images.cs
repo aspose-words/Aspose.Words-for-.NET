@@ -1,4 +1,4 @@
-﻿#if NET462
+﻿#if NET48
 using System;
 using System.Collections;
 using System.Diagnostics;

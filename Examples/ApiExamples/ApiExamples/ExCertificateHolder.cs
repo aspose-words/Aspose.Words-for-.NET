@@ -5,7 +5,7 @@ using System.Net;
 using System.Security;
 using Aspose.Words.DigitalSignatures;
 using NUnit.Framework;
-#if NET462 || MAC || JAVA
+#if NET48 || MAC || JAVA
 using Org.BouncyCastle.Pkcs;
 #endif
 namespace ApiExamples
@@ -13,7 +13,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExCertificateHolder : ApiExampleBase
     {
-#if NET462 || MAC || JAVA
+#if NET48 || MAC || JAVA
         [Test]
         public void Create()
         {

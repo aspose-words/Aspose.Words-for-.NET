@@ -11,9 +11,9 @@ using System.Net;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NET462 || JAVA
+#if NET48 || JAVA
 using System.Drawing;
-#elif NETCOREAPP2_1 || __MOBILE__
+#elif NET5_0 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -111,7 +111,7 @@ namespace ApiExamples
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, (Shape)doc.GetChildNodes(NodeType.Shape, true)[0]);
         }
 
-        #if NET462 || JAVA
+        #if NET48 || JAVA
         [Test, Category("SkipMono")]
         public void FromImage()
         {
@@ -133,7 +133,7 @@ namespace ApiExamples
 
             builder.Document.Save(ArtifactsDir + "Image.FromImage.docx");
         }
-#elif NETCOREAPP2_1 || __MOBILE__
+#elif NET5_0 || __MOBILE__
         [Test]
         [Category("SkipMono")]
         public void FromImageNetStandard2()
@@ -408,12 +408,12 @@ namespace ApiExamples
             //ExFor:ShapeBase.Width
             //ExFor:ShapeBase.Height
             //ExSummary:Shows how to resize a shape with an image.
-#if NET462 || JAVA
+#if NET48 || JAVA
             Image image = Image.FromFile(ImageDir + "Logo.jpg");
 
             Assert.AreEqual(400, image.Size.Width);
             Assert.AreEqual(400, image.Size.Height);
-#elif NETCOREAPP2_1
+#elif NET5_0
             SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg");
 
             Assert.AreEqual(400, image.Width);

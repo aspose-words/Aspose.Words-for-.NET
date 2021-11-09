@@ -410,7 +410,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ParagraphFormat.SuppressHyphens.pdf");
             //ExEnd
 
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "ParagraphFormat.SuppressHyphens.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);

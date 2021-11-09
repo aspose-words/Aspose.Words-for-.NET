@@ -346,7 +346,7 @@ namespace ApiExamples
             TestUtil.VerifyImageInShape(320, 320, ImageType.Png, imageShape);
         }
 
-#if NET462 || JAVA
+#if NET48 || JAVA
         //ExStart
         //ExFor:MailMerge.FieldMergingCallback
         //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)

@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Aspose.Words;
 using Aspose.Words.Loading;
 using Aspose.Words.Saving;
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
 using Aspose.Pdf.Text;
 #endif
 
@@ -12,7 +12,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExPdf2Word : ApiExampleBase
     {
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
         [Test]
         public void LoadPdf()
         {

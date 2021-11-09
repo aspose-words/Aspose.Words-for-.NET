@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using ApiExamples.TestData.TestClasses;
-#if NET462 || JAVA
+#if NET48 || JAVA
 using System.Drawing;
-#elif NETCOREAPP2_1 || __MOBILE__
+#elif NET5_0 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -10,9 +10,9 @@ namespace ApiExamples.TestData.TestBuilders
 {
     public class ImageTestBuilder : ApiExampleBase
     {
-#if NET462 || JAVA
+#if NET48 || JAVA
         private Image mImage;
-#elif NETCOREAPP2_1 || __MOBILE__
+#elif NET5_0 || __MOBILE__
         private SKBitmap mImage;
 #endif
         private Stream mImageStream;
@@ -21,9 +21,9 @@ namespace ApiExamples.TestData.TestBuilders
 
         public ImageTestBuilder()
         {
-#if NET462 || JAVA
+#if NET48 || JAVA
             mImage = Image.FromFile(ImageDir + "Transparent background logo.png");            
-#elif NETCOREAPP2_1 || __MOBILE__
+#elif NET5_0 || __MOBILE__
         this.mImage = SKBitmap.Decode(ImageDir + "Transparent background logo.png");
 #endif
             mImageStream = Stream.Null;
@@ -31,13 +31,13 @@ namespace ApiExamples.TestData.TestBuilders
             mImageString = string.Empty;
         }
 
-#if NET462 || JAVA
+#if NET48 || JAVA
         public ImageTestBuilder WithImage(Image image)
         {
             mImage = image;
             return this;
         }
-#elif NETCOREAPP2_1 || __MOBILE__
+#elif NET5_0 || __MOBILE__
         public ImageTestBuilder WithImage(SKBitmap image)
         {
             this.mImage = image;

@@ -1,4 +1,4 @@
-﻿#if NET462
+﻿#if NET48
 using System.Drawing;
 using System.Drawing.Imaging;
 using Aspose.Words;

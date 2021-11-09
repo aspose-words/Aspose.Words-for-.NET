@@ -11,10 +11,10 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-#if NET462 || JAVA
+#if NET48 || JAVA
 using System.Drawing;
 using System.Drawing.Imaging;
-#elif NETCOREAPP2_1 || __MOBILE__
+#elif NET5_0 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -206,7 +206,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NET462 || JAVA
+#if NET48 || JAVA
         [Test]
         public void InsertImageFromImageObject()
         {
@@ -370,7 +370,7 @@ namespace ApiExamples
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
         }
-#elif NETCOREAPP2_1 || __MOBILE__
+#elif NET5_0 || __MOBILE__
         [Test]
         public void InsertImageFromImageObjectNetStandard2()
         {

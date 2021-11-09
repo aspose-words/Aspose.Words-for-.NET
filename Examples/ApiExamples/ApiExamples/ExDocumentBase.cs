@@ -13,12 +13,12 @@ using NUnit.Framework;
 using Document = Aspose.Words.Document;
 using IResourceLoadingCallback = Aspose.Words.Loading.IResourceLoadingCallback;
 using SaveFormat = Aspose.Words.SaveFormat;
-#if NET462 || JAVA
+#if NET48 || JAVA
 using System.IO;
 using Aspose.Words.Loading;
 using System.Net;
 #endif
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
 using Aspose.Pdf;
 #endif
 
@@ -186,7 +186,7 @@ namespace ApiExamples
                 doc.BackgroundShape = new Shape(doc, ShapeType.Triangle);
             });
 
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "DocumentBase.BackgroundShape.Image.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
@@ -196,7 +196,7 @@ namespace ApiExamples
 #endif
         }
 
-#if NET462 || JAVA
+#if NET48 || JAVA
         //ExStart
         //ExFor:DocumentBase.ResourceLoadingCallback
         //ExFor:IResourceLoadingCallback
