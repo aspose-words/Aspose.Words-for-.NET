@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;netcoreapp2.1</TargetFrameworks>
-    <LangVersion>7.3</LangVersion>
+    <TargetFrameworks>net48;net5.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
@@ -117,17 +116,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="21.9.0" />
-    <PackageReference Include="Aspose.Email" Version="21.9.0" />
-    <PackageReference Include="Aspose.Words" Version="21.10.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="21.10.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="Aspose.BarCode" Version="21.10.0" />
+    <PackageReference Include="Aspose.Email" Version="21.10.0" />
+    <PackageReference Include="Aspose.Words" Version="21.11.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="21.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="NUnit" Version="3.13.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
-    <PackageReference Include="System.Data.OleDb" Version="5.0.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.1.0" />
+    <PackageReference Include="System.Data.OleDb" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Interop.ADODB">
+      <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" Condition="'$(TargetFramework)' == 'net462'" />
   </ItemGroup>
 

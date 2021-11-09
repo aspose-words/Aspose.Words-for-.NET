@@ -23,9 +23,10 @@ namespace DocumentExplorer
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // PictureBox1
+            // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -37,7 +38,7 @@ namespace DocumentExplorer
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // Label1
+            // label1
             // 
             this.label1.Font = new System.Drawing.Font("Times New Roman", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label1.ForeColor = System.Drawing.Color.Black;
@@ -48,7 +49,7 @@ namespace DocumentExplorer
             this.label1.Text = "Document Explorer Demo for Aspose.Words ";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // Label2
+            // label2
             // 
             this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -57,10 +58,11 @@ namespace DocumentExplorer
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(364, 20);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Copyright © 2002-2010 Aspose Pty Ltd. All Rights Reserved. ";
+            this.label2.Text = "Copyright © 2002-2021 Aspose Pty Ltd. All Rights Reserved. ";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
-            // TextBox1
+            // textBox1
             // 
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Location = new System.Drawing.Point(144, 40);
@@ -72,7 +74,7 @@ namespace DocumentExplorer
             this.textBox1.TabStop = false;
             this.textBox1.Text = resources.GetString("textBox1.Text");
             // 
-            // Button1
+            // button1
             // 
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -100,6 +102,7 @@ namespace DocumentExplorer
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.TopMost = true;
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -116,5 +119,10 @@ namespace DocumentExplorer
 		{
 			InitializeComponent();
 		}
-	}
+
+        private void label2_Click(object sender, System.EventArgs e)
+        {
+
+        }
+    }
 }

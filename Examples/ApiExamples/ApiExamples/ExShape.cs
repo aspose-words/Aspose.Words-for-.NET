@@ -24,7 +24,7 @@ using Color = System.Drawing.Color;
 using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 using TextBox = Aspose.Words.Drawing.TextBox;
-#if NETCOREAPP2_1 || __MOBILE__
+#if NET5_0 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -36,7 +36,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExShape : ApiExampleBase
     {
-#if NET462 || JAVA
+#if NET48 || JAVA
         [Test]
         public void AltText()
         {
@@ -196,7 +196,7 @@ namespace ApiExamples
             shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(true, shape.AspectRatioLocked);            
         }
-#elif NETCOREAPP2_1 || __MOBILE__
+#elif NET5_0 || __MOBILE__
         [Test]
         public void AspectRatioLockedDefaultValueNetStandard2()
         {
@@ -801,7 +801,7 @@ namespace ApiExamples
 
             // Set the shape fill color's opacity to a lower value so that we can see the text underneath it.
             shape.Fill.Opacity = 0.3;
-
+            
             doc.Save(ArtifactsDir + "Shape.Fill.docx");
             //ExEnd
 
@@ -812,6 +812,203 @@ namespace ApiExamples
             Assert.AreEqual(Color.LightBlue.ToArgb(), shape.FillColor.ToArgb());
             Assert.AreEqual(Color.CadetBlue.ToArgb(), shape.StrokeColor.ToArgb());
             Assert.AreEqual(0.3d, shape.Fill.Opacity, 0.01d);
+        }
+
+        [Test]
+        public void TextureFill()
+        {
+            //ExStart
+            //ExFor:Fill.TextureAlignment
+            //ExFor:TextureAlignment
+            //ExSummary:Shows how to fill and tiling the texture inside the shape.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 80, 80);
+
+            // Apply texture alignment to the shape fill.
+            shape.Fill.PresetTextured(PresetTexture.Canvas);
+            shape.Fill.TextureAlignment = TextureAlignment.TopRight;
+
+            // Use the compliance option to define the shape using DML if you want to get "TextureAlignment"
+            // property after the document saves.
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Compliance = OoxmlCompliance.Iso29500_2008_Strict };
+
+            doc.Save(ArtifactsDir + "Shape.TextureFill.docx", saveOptions);
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.TextureFill.docx");
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(TextureAlignment.TopRight, shape.Fill.TextureAlignment);
+        }
+
+        [Test]
+        public void GradientFill()
+        {
+            //ExStart
+            //ExFor:Fill.OneColorGradient(Color, GradientStyle, GradientVariant, Double)
+            //ExFor:Fill.OneColorGradient(GradientStyle, GradientVariant, Double)
+            //ExFor:Fill.TwoColorGradient(Color, Color, GradientStyle, GradientVariant)
+            //ExFor:Fill.TwoColorGradient(GradientStyle, GradientVariant)
+            //ExFor:Fill.GradientStyle
+            //ExFor:Fill.GradientVariant
+            //ExFor:Fill.GradientAngle
+            //ExFor:GradientStyle
+            //ExFor:GradientVariant
+            //ExSummary:Shows how to fill a shape with a gradients.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 80, 80);
+            // Apply One-color gradient fill to the shape with ForeColor of gradient fill.
+            shape.Fill.OneColorGradient(Color.Red, GradientStyle.Horizontal, GradientVariant.Variant2, 0.1);
+
+            Assert.AreEqual(Color.Red.ToArgb(), shape.Fill.ForeColor.ToArgb());
+            Assert.AreEqual(GradientStyle.Horizontal, shape.Fill.GradientStyle);
+            Assert.AreEqual(GradientVariant.Variant2, shape.Fill.GradientVariant);
+            Assert.AreEqual(270, shape.Fill.GradientAngle);
+
+            shape = builder.InsertShape(ShapeType.Rectangle, 80, 80);
+            // Apply Two-color gradient fill to the shape.
+            shape.Fill.TwoColorGradient(GradientStyle.FromCorner, GradientVariant.Variant4);
+            // Change BackColor of gradient fill.
+            shape.Fill.BackColor = Color.Yellow;
+            // Note that changes "GradientAngle" for "GradientStyle.FromCorner/GradientStyle.FromCenter"
+            // gradient fill don't get any effect, it will work only for linear gradient.
+            shape.Fill.GradientAngle = 15;
+
+            Assert.AreEqual(Color.Yellow.ToArgb(), shape.Fill.BackColor.ToArgb());
+            Assert.AreEqual(GradientStyle.FromCorner, shape.Fill.GradientStyle);
+            Assert.AreEqual(GradientVariant.Variant4, shape.Fill.GradientVariant);
+            Assert.AreEqual(0, shape.Fill.GradientAngle);
+
+            // Use the compliance option to define the shape using DML if you want to get "GradientStyle",
+            // "GradientVariant" and "GradientAngle" properties after the document saves.
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Compliance = OoxmlCompliance.Iso29500_2008_Strict };
+
+            doc.Save(ArtifactsDir + "Shape.GradientFill.docx", saveOptions);
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.GradientFill.docx");
+            Shape firstShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(Color.Red.ToArgb(), firstShape.Fill.ForeColor.ToArgb());
+            Assert.AreEqual(GradientStyle.Horizontal, firstShape.Fill.GradientStyle);
+            Assert.AreEqual(GradientVariant.Variant2, firstShape.Fill.GradientVariant);
+            Assert.AreEqual(270, firstShape.Fill.GradientAngle);
+
+            Shape secondShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+
+            Assert.AreEqual(Color.Yellow.ToArgb(), secondShape.Fill.BackColor.ToArgb());
+            Assert.AreEqual(GradientStyle.FromCorner, secondShape.Fill.GradientStyle);
+            Assert.AreEqual(GradientVariant.Variant4, secondShape.Fill.GradientVariant);
+            Assert.AreEqual(0, secondShape.Fill.GradientAngle);
+        }
+
+        [Test]
+        public void GradientStops()
+        {
+            //ExStart
+            //ExFor:Fill.GradientStops
+            //ExFor:GradientStopCollection
+            //ExFor:GradientStopCollection.Insert(System.Int32, GradientStop)
+            //ExFor:GradientStopCollection.Add(GradientStop)
+            //ExFor:GradientStopCollection.RemoveAt(System.Int32)
+            //ExFor:GradientStopCollection.Remove(GradientStop)
+            //ExFor:GradientStopCollection.Item(System.Int32)
+            //ExFor:GradientStopCollection.Count
+            //ExFor:GradientStop.#ctor(Color, Double)
+            //ExFor:GradientStop.#ctor(Color, Double, Double)
+            //ExFor:GradientStop.Color
+            //ExFor:GradientStop.Position
+            //ExFor:GradientStop.Transparency
+            //ExFor:GradientStop.Remove
+            //ExSummary:Shows how to add gradient stops to the gradient fill.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 80, 80);
+            shape.Fill.TwoColorGradient(Color.Green, Color.Red, GradientStyle.Horizontal, GradientVariant.Variant2);
+
+            // Get gradient stops collection.
+            GradientStopCollection gradientStops = shape.Fill.GradientStops;
+
+            // Change first gradient stop.
+            gradientStops[0].Color = Color.Aqua;
+            gradientStops[0].Position = 0.1;
+            gradientStops[0].Transparency = 0.25;
+
+            // Add new gradient stop to the end of collection.
+            GradientStop gradientStop = new GradientStop(Color.Brown, 0.5);
+            gradientStops.Add(gradientStop);
+
+            // Remove gradient stop at index 1.
+            gradientStops.RemoveAt(1);
+            // And insert new gradient stop at the same index 1.
+            gradientStops.Insert(1, new GradientStop(Color.Chocolate, 0.75, 0.3));
+
+            // Remove last gradient stop in the collection.
+            gradientStop = gradientStops[2];
+            gradientStops.Remove(gradientStop);
+
+            Assert.AreEqual(2, gradientStops.Count);
+
+            Assert.AreEqual(Color.Aqua.ToArgb(), gradientStops[0].Color.ToArgb());
+            Assert.AreEqual(0.1d, gradientStops[0].Position, 0.01d);
+            Assert.AreEqual(0.25d, gradientStops[0].Transparency, 0.01d);
+
+            Assert.AreEqual(Color.Chocolate.ToArgb(), gradientStops[1].Color.ToArgb());
+            Assert.AreEqual(0.75d, gradientStops[1].Position, 0.01d);
+            Assert.AreEqual(0.3d, gradientStops[1].Transparency, 0.01d);
+
+            // Use the compliance option to define the shape using DML
+            // if you want to get "GradientStops" property after the document saves.
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Compliance = OoxmlCompliance.Iso29500_2008_Strict };
+
+            doc.Save(ArtifactsDir + "Shape.GradientStops.docx", saveOptions);
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.GradientStops.docx");
+
+            shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+            gradientStops = shape.Fill.GradientStops;
+
+            Assert.AreEqual(2, gradientStops.Count);
+
+            Assert.AreEqual(Color.Aqua.ToArgb(), gradientStops[0].Color.ToArgb());
+            Assert.AreEqual(0.1d, gradientStops[0].Position, 0.01d);
+            Assert.AreEqual(0.25d, gradientStops[0].Transparency, 0.01d);
+
+            Assert.AreEqual(Color.Chocolate.ToArgb(), gradientStops[1].Color.ToArgb());
+            Assert.AreEqual(0.75d, gradientStops[1].Position, 0.01d);
+            Assert.AreEqual(0.3d, gradientStops[1].Transparency, 0.01d);
+        }
+            
+		[Test]
+        public void FillPattern()
+        {
+            //ExStart
+            //ExFor:Fill.Patterned(PatternType)
+            //ExFor:Fill.Patterned(PatternType, Color, Color)
+            //ExSummary:Shows how to set pattern for a shape.
+            Document doc = new Document(MyDir + "Shape stroke pattern border.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Fill fill = shape.Fill;
+
+            Console.WriteLine("Pattern value is: {0}", fill.Pattern);
+
+            // There are several ways specified fill to a pattern.
+            // 1 -  Apply pattern to the shape fill:
+            fill.Patterned(PatternType.DiagonalBrick);
+
+            // 2 -  Apply pattern with foreground and background colors to the shape fill:
+            fill.Patterned(PatternType.DiagonalBrick, Color.Aqua, Color.Bisque);
+
+            doc.Save(ArtifactsDir + "Shape.FillPattern.docx");
+            //ExEnd
         }
 
         [Test]
@@ -2601,7 +2798,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertShape(ShapeType.Heptagon, RelativeHorizontalPosition.RightMargin, 0,
+            builder.InsertShape(ShapeType.Heptagon, RelativeHorizontalPosition.Page, 0,
                 RelativeVerticalPosition.Page, 0, 0, 0, WrapType.None);
             
             builder.InsertShape(ShapeType.Cloud, RelativeHorizontalPosition.RightMargin, 0,
@@ -2617,8 +2814,8 @@ namespace ApiExamples
                 Compliance = OoxmlCompliance.Iso29500_2008_Transitional
             };
             
-            doc.Save(ArtifactsDir + "ShapeTypes.docx", saveOptions);
-            doc = new Document(ArtifactsDir + "ShapeTypes.docx");
+            doc.Save(ArtifactsDir + "Shape.ShapeTypes.docx", saveOptions);
+            doc = new Document(ArtifactsDir + "Shape.ShapeTypes.docx");
 
             Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
@@ -2626,6 +2823,33 @@ namespace ApiExamples
             {
                 Console.WriteLine(shape.ShapeType);
             }
+            //ExEnd
+        }
+
+        [Test]
+        public void IsDecorative()
+        {
+            //ExStart
+            //ExFor:ShapeBase.IsDecorative
+            //ExSummary:Shows how to set that the shape is decorative.
+            Document doc = new Document(MyDir + "Decorative shapes.docx");
+
+            Shape shape = (Shape) doc.GetChildNodes(NodeType.Shape, true)[0];
+            Assert.True(shape.IsDecorative);
+            
+            // If "AlternativeText" is not empty, the shape cannot be decorative.
+            // That's why our value has changed to 'false'.
+            shape.AlternativeText = "Alternative text.";
+            Assert.False(shape.IsDecorative);
+
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.MoveToDocumentEnd();
+            // Create a new shape as decorative.
+            shape = builder.InsertShape(ShapeType.Rectangle, 100, 100);
+            shape.IsDecorative = true;
+
+            doc.Save(ArtifactsDir + "Shape.IsDecorative.docx");
             //ExEnd
         }
     }

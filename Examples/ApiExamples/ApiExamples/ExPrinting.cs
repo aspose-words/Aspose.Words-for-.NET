@@ -7,7 +7,7 @@
 
 using System;
 using NUnit.Framework;
-#if NET462 || JAVA
+#if NET48 || JAVA
 using System.Drawing.Printing;
 using System.Windows.Forms;
 using Aspose.Words;
@@ -19,7 +19,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExPrinting : ApiExampleBase
     {
-#if NET462 || JAVA
+#if NET48 || JAVA
         [Test, Ignore("Run only when the printer driver is installed.")]
         public void CustomPrint()
         {

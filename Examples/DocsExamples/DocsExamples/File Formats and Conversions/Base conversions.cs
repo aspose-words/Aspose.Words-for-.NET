@@ -165,7 +165,7 @@ namespace DocsExamples.File_Formats_and_Conversions
             //ExEnd:PdfToDocx
         }
 
-#if NET462
+#if NET48
         [Test]
         public void ImagesToPdf()
         {

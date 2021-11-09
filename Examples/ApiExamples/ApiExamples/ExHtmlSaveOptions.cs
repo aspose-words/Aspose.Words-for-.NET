@@ -22,7 +22,7 @@ using Aspose.Words.Loading;
 using NUnit.Framework;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
-#if NETCOREAPP2_1 || __MOBILE__
+#if NET5_0 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -233,7 +233,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.Html5Support.html", saveOptions);
         }
 
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
         [TestCase(false)]
         [TestCase(true)]
         public void ExportFonts(bool exportAsBase64)
@@ -1696,12 +1696,12 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a shape which contains an image, and then make that shape considerably smaller than the image.
-#if NET462 || JAVA
+#if NET48 || JAVA
             Image image = Image.FromFile(ImageDir + "Transparent background logo.png");
 
             Assert.AreEqual(400, image.Size.Width);
             Assert.AreEqual(400, image.Size.Height);
-#elif NETCOREAPP2_1
+#elif NET5_0
             SKBitmap image = SKBitmap.Decode(ImageDir + "Transparent background logo.png");
 
             Assert.AreEqual(400, image.Width);
@@ -1726,12 +1726,12 @@ namespace ApiExamples
 
             FileInfo fileInfo = new FileInfo(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.001.png");
 
-#if NET462 || JAVA
+#if NET48 || JAVA
         if (scaleImageToShapeSize)
             Assert.That(3000, Is.AtLeast(fileInfo.Length));
         else
             Assert.That(20000, Is.LessThan(fileInfo.Length));
-#elif NETCOREAPP2_1
+#elif NET5_0
         if (scaleImageToShapeSize)
             Assert.That(10000, Is.AtLeast(fileInfo.Length));
         else

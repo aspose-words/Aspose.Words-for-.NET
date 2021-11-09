@@ -8,7 +8,7 @@
 using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
 using Aspose.Pdf.Facades;
 #endif
 
@@ -83,7 +83,7 @@ namespace ApiExamples
             outlineLevels.Clear();
             //ExEnd
 
-            #if NET462 || NETCOREAPP2_1 || JAVA
+            #if NET48 || NET5_0 || JAVA
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "BookmarksOutlineLevelCollection.BookmarkLevels.pdf");
 

@@ -32,13 +32,12 @@ using Aspose.Words.Tables;
 using Aspose.Words.Vba;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
-using CompareOptions = System.Globalization.CompareOptions;
 using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
 using Aspose.Pdf.Text;
 using Aspose.Words.Shaping.HarfBuzz;
 #endif
-#if NETCOREAPP2_1 || __MOBILE__
+#if NET5_0 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -151,7 +150,7 @@ namespace ApiExamples
 
             builder.InsertImage(ImageDir + "Logo.jpg");
 
-#if NET462 || JAVA
+#if NET48 || JAVA
             using (MemoryStream stream = new MemoryStream())
             {
                 doc.Save(stream, SaveFormat.Bmp);
@@ -166,7 +165,7 @@ namespace ApiExamples
                     Assert.AreEqual(1056, image.Height);
                 }
             }
-#elif NETCOREAPP2_1 || __MOBILE__
+#elif NET5_0 || __MOBILE__
             using (MemoryStream stream = new MemoryStream())
             {
                 doc.Save(stream, SaveFormat.Bmp);
@@ -189,7 +188,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
         [Test, Category("IgnoreOnJenkins"), Category("SkipMono")]
         public void OpenType()
         {
@@ -1765,7 +1764,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.LayoutOptionsHiddenText.pdf");
             //ExEnd
 
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.LayoutOptionsHiddenText.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
@@ -1799,7 +1798,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.LayoutOptionsParagraphMarks.pdf");
             //ExEnd
 
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.LayoutOptionsParagraphMarks.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
@@ -2065,7 +2064,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
             //ExEnd
 
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
             Aspose.Pdf.Document pdfDoc =
                 new Aspose.Pdf.Document(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
@@ -2091,6 +2090,7 @@ namespace ApiExamples
 
             target.CopyStylesFromTemplate(template);
             Assert.AreEqual(22, target.Styles.Count); //ExSkip
+
             //ExEnd
         }
 
@@ -2445,9 +2445,9 @@ namespace ApiExamples
             imageWatermarkOptions.Scale = 5;
             imageWatermarkOptions.IsWashout = false;
 
-#if NET462 || JAVA
+#if NET48 || JAVA
             doc.Watermark.SetImage(Image.FromFile(ImageDir + "Logo.jpg"), imageWatermarkOptions);
-#elif NETCOREAPP2_1 || __MOBILE__
+#elif NET5_0 || __MOBILE__
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {
                 doc.Watermark.SetImage(image, imageWatermarkOptions);
@@ -2637,6 +2637,41 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Document.AllowEmbeddingPostScriptFonts.docx", saveOptions);
             //ExEnd
+        }
+
+        [Test]
+        public void Frameset()
+        {
+            //ExStart
+            //ExFor:Document.Frameset
+            //ExFor:Frameset
+            //ExFor:Frameset.FrameDefaultUrl
+            //ExFor:Frameset.IsFrameLinkToFile
+            //ExFor:Frameset.ChildFramesets
+            //ExSummary:Shows how to access frames on-page.
+            // Document contains several frames with links to other documents.
+            Document doc = new Document(MyDir + "Frameset.docx");
+
+            // We can check the default URL (a web page URL or local document) or if the frame is an external resource.
+            Assert.AreEqual("https://file-examples-com.github.io/uploads/2017/02/file-sample_100kB.docx",
+                doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl);
+            Assert.True(doc.Frameset.ChildFramesets[0].ChildFramesets[0].IsFrameLinkToFile);
+
+            Assert.AreEqual("Document.docx", doc.Frameset.ChildFramesets[1].FrameDefaultUrl);
+            Assert.False(doc.Frameset.ChildFramesets[1].IsFrameLinkToFile);
+
+            // Change properties for one of our frames.
+            doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl =
+                "https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/Examples/Data/Absolute%20position%20tab.docx";
+            doc.Frameset.ChildFramesets[0].ChildFramesets[0].IsFrameLinkToFile = false;
+            //ExEnd
+
+            doc = DocumentHelper.SaveOpen(doc);
+
+            Assert.AreEqual(
+                "https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/Examples/Data/Absolute%20position%20tab.docx",
+                doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl);
+            Assert.False(doc.Frameset.ChildFramesets[0].ChildFramesets[0].IsFrameLinkToFile);
         }
     }
 }
