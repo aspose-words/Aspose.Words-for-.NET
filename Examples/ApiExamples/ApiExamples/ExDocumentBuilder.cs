@@ -1599,6 +1599,7 @@ namespace ApiExamples
 
             Assert.AreEqual("Run 2. \rRun 1. \rRun 3.", doc.GetText().Trim());
             Assert.AreEqual(doc.FirstSection.Body.LastParagraph, builder.CurrentParagraph); //ExSkip
+
             //ExEnd
         }
 
