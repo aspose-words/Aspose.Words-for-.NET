@@ -12,7 +12,7 @@ using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NET462 || JAVA
+#if NET48 || JAVA
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -86,7 +86,7 @@ namespace ApiExamples
             DigitalSignatureUtil.Sign(dstDocumentPath, dstDocumentPath, certificateHolder, signOptions);
         }
 
-#if NET462 || JAVA
+#if NET48 || JAVA
         /// <summary>
         /// Converts an image to a byte array.
         /// </summary>
@@ -120,18 +120,18 @@ namespace ApiExamples
         {
             mSignees = new List<Signee>
             {
-                #if NET462 || JAVA
+                #if NET48 || JAVA
                 new Signee(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer",
                     ImageToByteArray(Image.FromFile(ImageDir + "Logo.jpg"))),
-                #elif NETCOREAPP2_1 || __MOBILE__
+                #elif NET5_0 || __MOBILE__
                 new Signee(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", 
                     SkiaSharp.SKBitmap.Decode(ImageDir + "Logo.jpg").Bytes),
                 #endif
                 
-                #if NET462 || JAVA
+                #if NET48 || JAVA
                 new Signee(Guid.NewGuid(), "Stephen Morse", "Head of Compliance",
                     ImageToByteArray(Image.FromFile(ImageDir + "Logo.jpg")))
-                #elif NETCOREAPP2_1 || __MOBILE__
+                #elif NET5_0 || __MOBILE__
                 new Signee(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", 
                     SkiaSharp.SKBitmap.Decode(ImageDir + "Logo.jpg").Bytes)
                 #endif

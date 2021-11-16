@@ -93,7 +93,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         }
         //ExEnd:DocumentLoadingWarningCallback
         
-#if NET462
+#if NET48
         [Test]
         public void ResourceLoadingCallback()
         {

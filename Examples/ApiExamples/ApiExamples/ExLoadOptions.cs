@@ -24,7 +24,7 @@ namespace ApiExamples
     [TestFixture]
     class ExLoadOptions : ApiExampleBase
     {
-#if NET462 || MAC || JAVA
+#if NET48 || MAC || JAVA
         //ExStart
         //ExFor:LoadOptions.ResourceLoadingCallback
         //ExSummary:Shows how to handle external resources when loading Html documents.
@@ -332,9 +332,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Image.CreateImageDirectly.docx", loadOptions);
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-#if NET462
+#if NET48
             TestUtil.VerifyImageInShape(1666, 1666, ImageType.Png, shape);
-#elif NETCOREAPP2_1
+#elif NET5_0
             TestUtil.VerifyImageInShape(1666, 1666, ImageType.Png, shape);
 #endif
             //ExEnd
@@ -370,7 +370,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "LoadOptions.FlatOpcXmlMappingOnly.pdf", saveOptions);
             //ExEnd
 
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "LoadOptions.FlatOpcXmlMappingOnly.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();

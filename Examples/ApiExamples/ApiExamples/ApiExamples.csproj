@@ -1,14 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net462;netcoreapp2.1</TargetFrameworks>
+    <TargetFrameworks>net48;net5.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|x86'">
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
@@ -17,7 +25,16 @@
     <Optimize>false</Optimize>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net462|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|x86'">
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
 
@@ -136,17 +153,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="21.9.0" />
-    <PackageReference Include="Aspose.PDF" Version="21.9.0" />
-    <PackageReference Include="Aspose.Words" Version="21.10.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="21.10.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="Aspose.BarCode" Version="21.10.0" />
+    <PackageReference Include="Aspose.PDF" Version="21.10.1" />
+    <PackageReference Include="Aspose.Words" Version="21.11.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="21.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="NUnit" Version="3.13.2" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.0.0">
+    <PackageReference Include="NUnit3TestAdapter" Version="4.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Data.OleDb" Version="5.0.0" />
+    <PackageReference Include="System.Data.OleDb" Version="6.0.0" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
 
@@ -155,6 +172,7 @@
       <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression" Condition="'$(TargetFramework)' == 'net462'" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation">
       <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.1.0\ref\netcoreapp2.1\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
     </Reference>

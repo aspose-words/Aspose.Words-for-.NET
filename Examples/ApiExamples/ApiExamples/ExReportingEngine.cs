@@ -19,7 +19,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Markup;
 using Aspose.Words.Reporting;
 using NUnit.Framework;
-#if NETCOREAPP2_1 || __MOBILE__
+#if NET5_0 || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -410,9 +410,9 @@ namespace ApiExamples
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Image]>>", ShapeType.TextBox);
             
-            #if NET462 || JAVA
+            #if NET48 || JAVA
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
-            #elif NETCOREAPP2_1 || __MOBILE__
+            #elif NET5_0 || __MOBILE__
             ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
             #endif
             
@@ -492,9 +492,9 @@ namespace ApiExamples
         {
             Document template = new Document(MyDir + "Reporting engine template - Dynamic stretching.docx");
             
-#if NET462 || JAVA
+#if NET48 || JAVA
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
-#elif NETCOREAPP2_1 || __MOBILE__
+#elif NET5_0 || __MOBILE__
             ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
 #endif
             BuildReport(template, image, "src", ReportBuildOptions.None);
@@ -934,7 +934,7 @@ namespace ApiExamples
 
             JsonDataLoadOptions options = new JsonDataLoadOptions
             {
-                ExactDateTimeParseFormats = new List<string> {"MM/dd/yyyy", "MM.d.yy"}
+                ExactDateTimeParseFormats = new List<string> {"MM/dd/yyyy", "MM.d.yy", "MM d yy"}
             };
 
             JsonDataSource dataSource = new JsonDataSource(MyDir + "List of people.json", options);
@@ -965,7 +965,7 @@ namespace ApiExamples
 
             JsonDataLoadOptions options = new JsonDataLoadOptions
             {
-                ExactDateTimeParseFormats = new List<string> {"MM/dd/yyyy", "MM.d.yy"}
+                ExactDateTimeParseFormats = new List<string> {"MM/dd/yyyy", "MM.d.yy", "MM d yy"}
             };
 
             using (FileStream stream = File.OpenRead(MyDir + "List of people.json"))

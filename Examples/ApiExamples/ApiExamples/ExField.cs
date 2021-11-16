@@ -27,9 +27,9 @@ using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 using LoadOptions = Aspose.Words.Loading.LoadOptions;
-#if NET462 || JAVA
+#if NET48 || JAVA
 using Aspose.BarCode.BarCodeRecognition;
-#elif NETCOREAPP2_1
+#elif NET5_0
 using SkiaSharp;
 #endif
 
@@ -397,7 +397,7 @@ namespace ApiExamples
                     .AddArgument(10).AddArgument(20.0).BuildAndInsert(run), Throws.TypeOf<ArgumentException>());
         }
 
-#if NET462 || JAVA
+#if NET48 || JAVA
         [Test]
         public void BarCodeWord2Pdf()
         {
@@ -2972,9 +2972,9 @@ namespace ApiExamples
             {
                 if (mImageFilenames.ContainsKey(args.FieldValue.ToString()))
                 {
-                    #if NET462 || JAVA
+                    #if NET48 || JAVA
                     args.Image = Image.FromFile(mImageFilenames[args.FieldValue.ToString()]);
-                    #elif NETCOREAPP2_1
+                    #elif NET5_0
                     args.Image = SKBitmap.Decode(mImageFilenames[args.FieldValue.ToString()]);
                     args.ImageFileName = mImageFilenames[args.FieldValue.ToString()];
                     #endif
@@ -4616,7 +4616,7 @@ namespace ApiExamples
             Assert.True(field.SuppressNonDelimiters);
         }
 
-#if NET462 || NETCOREAPP2_1 || JAVA
+#if NET48 || NET5_0 || JAVA
         [Test]
         public void FieldDate()
         {
