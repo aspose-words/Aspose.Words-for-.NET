@@ -207,6 +207,31 @@ namespace ApiExamples
 
         [TestCase(true)]
         [TestCase(false)]
+        public void IgnoreFieldCodes(bool ignoreFieldCodes)
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.IgnoreFieldCodes
+            //ExSummary:Shows how to ignore text inside field codes.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertField("INCLUDETEXT", "Test IT!");
+
+            FindReplaceOptions options = new FindReplaceOptions {IgnoreFieldCodes = ignoreFieldCodes};
+
+            // Replace 'T' in document ignoring text inside field code or not.
+            doc.Range.Replace(new Regex("T"), "*", options);
+            Console.WriteLine(doc.GetText());
+
+            Assert.AreEqual(
+                ignoreFieldCodes
+                    ? "\u0013INCLUDETEXT\u0014*est I*!\u0015"
+                    : "\u0013INCLUDE*EX*\u0014*est I*!\u0015", doc.GetText().Trim());
+            //ExEnd
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
         public void IgnoreFootnote(bool isIgnoreFootnotes)
         {
             //ExStart

@@ -1405,6 +1405,7 @@ namespace ApiExamples
         [TestCase(PdfPageMode.UseOC)]
         [TestCase(PdfPageMode.UseOutlines)]
         [TestCase(PdfPageMode.UseNone)]
+        [TestCase(PdfPageMode.UseAttachments)]
         public void PageMode(PdfPageMode pageMode)
         {
             //ExStart
@@ -1428,6 +1429,7 @@ namespace ApiExamples
             // Set the "PageMode" property to "PdfPageMode.UseOutlines" to get the PDF reader
             // also to display the outline, if possible.
             // Set the "PageMode" property to "PdfPageMode.UseNone" to get the PDF reader to display just the document itself.
+            // Set the "PageMode" property to "PdfPageMode.UseAttachments" to make visible attachments panel.
             options.PageMode = pageMode;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PageMode.pdf", options);
@@ -1457,6 +1459,11 @@ namespace ApiExamples
                     TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/Lang({docLocaleName})/Metadata 4 0 R>>\r\n",
                         ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
                     break;
+                case PdfPageMode.UseAttachments:
+                    TestUtil.FileContainsString(
+                        $"<</Type /Catalog/Pages 3 0 R/PageMode /UseAttachments/Lang({docLocaleName})/Metadata 4 0 R>>\r\n",
+                        ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
+                    break;
             }
 
 #if NET48 || NET5_0 || JAVA
@@ -1476,6 +1483,9 @@ namespace ApiExamples
                     break;
                 case PdfPageMode.UseOC:
                     Assert.AreEqual(Aspose.Pdf.PageMode.UseOC, pdfDocument.PageMode);
+                    break;
+                case PdfPageMode.UseAttachments:
+                    Assert.AreEqual(Aspose.Pdf.PageMode.UseAttachments, pdfDocument.PageMode);
                     break;
             }
 #endif
