@@ -361,22 +361,17 @@ namespace ApiExamples
         public void OptimizeGraphicsOutput(bool optimizeOutput)
         {
             //ExStart
-            //ExFor:FixedPageSaveOptions.OptimizeOutput
             //ExFor:HtmlFixedSaveOptions.OptimizeOutput
             //ExSummary:Shows how to simplify a document when saving it to HTML by removing various redundant objects.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = optimizeOutput };
-
+            
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
 
             // The size of the optimized version of the document is almost a third of the size of the unoptimized document.
-            if (optimizeOutput)
-                Assert.AreEqual(57220, 
-                    new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length, 200);
-            else
-                Assert.AreEqual(160535, 
-                    new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length, 200);
+            Assert.AreEqual(optimizeOutput ? 57220 : 160535,
+                new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length, 200);
             //ExEnd
         }
 
