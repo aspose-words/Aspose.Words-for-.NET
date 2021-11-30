@@ -3,9 +3,9 @@ using NUnit.Framework;
 
 namespace DocsExamples.Programming_with_Documents
 {
-    internal class WorkingWithHarfBuzz : DocsExamplesBase
+    internal class EnableOpenTypeFeatures : DocsExamplesBase
     {
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void OpenTypeFeatures()
         {
             //ExStart:OpenTypeFeatures

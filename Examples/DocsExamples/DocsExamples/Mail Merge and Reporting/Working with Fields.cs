@@ -210,6 +210,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             //ExEnd:MailMergeAndConditionalField
         }
 
+#if NET48 || JAVA
         [Test]
         public void MailMergeImageFromBlob()
         {
@@ -254,6 +255,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             }
         }
         //ExEnd:HandleMergeImageFieldFromBlob
+#endif
 
         [Test]
         public void HandleMailMergeSwitches()

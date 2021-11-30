@@ -70,6 +70,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             //ExEnd:MustacheSyntaxUsingDataTable
         }
 
+#if NET48 || JAVA
         [Test]
         public void ExecuteWithRegionsDataTable()
         {
@@ -165,6 +166,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             }
             //ExEnd:ProduceMultipleDocuments
         }
+#endif
 
         //ExStart:MailMergeWithRegions
         [Test]
