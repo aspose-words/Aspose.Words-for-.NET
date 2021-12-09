@@ -189,7 +189,7 @@ namespace ApiExamples
         }
 
 #if NET48 || NET5_0 || JAVA
-        [Test, Category("IgnoreOnJenkins"), Category("SkipMono")]
+        [Test, Category("SkipMono")]
         public void OpenType()
         {
             //ExStart

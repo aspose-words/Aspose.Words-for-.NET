@@ -5,7 +5,7 @@ namespace DocsExamples.Programming_with_Documents
 {
     internal class EnableOpenTypeFeatures : DocsExamplesBase
     {
-        [Test, Category("IgnoreOnJenkins")]
+        [Test]
         public void OpenTypeFeatures()
         {
             //ExStart:OpenTypeFeatures
