@@ -1,4 +1,4 @@
-﻿#if NET48
+﻿#if NET48 || JAVA
 using System;
 using System.ComponentModel;
 using System.Drawing;

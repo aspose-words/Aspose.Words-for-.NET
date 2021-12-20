@@ -1,4 +1,4 @@
-﻿#if NET48
+﻿#if NET48 || JAVA
 using System.Drawing;
 using System.Drawing.Imaging;
 using Aspose.Words;
@@ -157,7 +157,8 @@ namespace DocsExamples.Rendering_and_Printing
             {
                 using (Graphics graphics = Graphics.FromImage(image))
                 {
-                    // Render shape onto the graphics object using the RenderToScale or RenderToSize methods of ShapeRenderer class.
+                    // Render shape onto the graphics object using the RenderToScale
+                    // or RenderToSize methods of ShapeRenderer class.
                 }
             }
             //ExEnd:FindShapeSizes
