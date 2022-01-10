@@ -2077,7 +2077,7 @@ namespace ApiExamples
             //ExEnd
 
             TestUtil.FileContainsString("7 0 obj\r\n" +
-                                        "<</Type /Annot/Subtype /Widget/Rect [0 0 0 0]/FT /Sig/DR <<>>/F 132/V 8 0 R/P 5 0 R/T(þÿ\0A\0s\0p\0o\0s\0e\0D\0i\0g\0i\0t\0a\0l\0S\0i\0g\0n\0a\0t\0u\0r\0e)/AP <</N 9 0 R>>>>",
+                                        "<</Type /Annot/Subtype /Widget/Rect [0 0 0 0]/FT /Sig/T",
                 ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf");
 
             Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf")
@@ -2086,7 +2086,7 @@ namespace ApiExamples
 #if NET48 || NET5_0 || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf");
 
-            Assert.False(pdfDocument.Form.SignaturesExist);
+            Assert.True(pdfDocument.Form.SignaturesExist);
 
             SignatureField signatureField = (SignatureField)pdfDocument.Form[1];
 
@@ -2148,13 +2148,13 @@ namespace ApiExamples
 
             Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf").HasDigitalSignature);
             TestUtil.FileContainsString("7 0 obj\r\n" +
-                                        "<</Type /Annot/Subtype /Widget/Rect [0 0 0 0]/FT /Sig/DR <<>>/F 132/V 8 0 R/P 5 0 R/T(þÿ\0A\0s\0p\0o\0s\0e\0D\0i\0g\0i\0t\0a\0l\0S\0i\0g\0n\0a\0t\0u\0r\0e)/AP <</N 9 0 R>>>>", 
+                                        "<</Type /Annot/Subtype /Widget/Rect [0 0 0 0]/FT /Sig/T", 
             ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
 
 #if NET48 || NET5_0 || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
 
-            Assert.False(pdfDocument.Form.SignaturesExist);
+            Assert.True(pdfDocument.Form.SignaturesExist);
 
             SignatureField signatureField = (SignatureField)pdfDocument.Form[1];
 
