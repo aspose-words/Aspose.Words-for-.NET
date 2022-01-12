@@ -2540,13 +2540,13 @@ namespace ApiExamples
             else
             {
                 Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
-                Assert.AreEqual("Alpha Lorem ", groups[0].Text);
+                Assert.AreEqual("Alpha Lorem", groups[0].Text);
 
                 Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
                 Assert.AreEqual(",", groups[1].Text);
 
                 Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
-                Assert.AreEqual("Lorems ", groups[2].Text);
+                Assert.AreEqual("Lorems", groups[2].Text);
 
                 Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
                 Assert.AreEqual("- \"", groups[3].Text);
