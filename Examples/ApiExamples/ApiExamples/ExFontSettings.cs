@@ -159,7 +159,7 @@ namespace ApiExamples
             // Store the current collection of font sources, which will be the default font source for every document
             // for which we do not specify a different font source.
             FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
-            
+
             // For testing purposes, we will set Aspose.Words to look for fonts only in a folder that does not exist.
             FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
 
@@ -172,7 +172,8 @@ namespace ApiExamples
             Assert.AreEqual(1, callback.FontSubstitutionWarnings.Count); //ExSkip
             Assert.True(callback.FontSubstitutionWarnings[0].WarningType == WarningType.FontSubstitution);
             Assert.True(callback.FontSubstitutionWarnings[0].Description
-                .Equals("Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
+                .Equals(
+                    "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
         }
 
         private class FontSubstitutionWarningCollector : IWarningCallback
@@ -206,7 +207,8 @@ namespace ApiExamples
             // Get the list of fonts to call warning callback.
             IList<PhysicalFontInfo> fontInfos = source.GetAvailableFonts();
 
-            Assert.True(callback.FontSubstitutionWarnings[0].Description.Contains("Error loading font from the folder \"bad folder?\""));
+            Assert.True(callback.FontSubstitutionWarnings[0].Description
+                .Contains("Error loading font from the folder \"bad folder?\""));
         }
 
         private class FontSourceWarningCollector : IWarningCallback
@@ -250,7 +252,8 @@ namespace ApiExamples
 
             // Set a default font name and enable font substitution.
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial"; ;
+            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
+            ;
             fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
 
             // We will get a font substitution warning if we save a document with a missing font.
@@ -263,7 +266,8 @@ namespace ApiExamples
 
             // We can also verify warnings in the collection and clear them.
             Assert.AreEqual(WarningSource.Layout, substitutionWarningHandler.FontWarnings[0].Source);
-            Assert.AreEqual("Font '28 Days Later' has not been found. Using 'Calibri' font instead. Reason: alternative name from document.",
+            Assert.AreEqual(
+                "Font '28 Days Later' has not been found. Using 'Calibri' font instead. Reason: alternative name from document.",
                 substitutionWarningHandler.FontWarnings[0].Description);
 
             substitutionWarningHandler.FontWarnings.Clear();
@@ -297,7 +301,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "FontSettings.SubstitutionWarningsClosestMatch.pdf");
 
             Assert.True(callback.FontWarnings[0].Description
-                .Equals("Font \'SymbolPS\' has not been found. Using \'Wingdings\' font instead. Reason: font info substitution."));
+                .Equals(
+                    "Font \'SymbolPS\' has not been found. Using \'Wingdings\' font instead. Reason: font info substitution."));
         }
 
         [Test]
@@ -315,7 +320,8 @@ namespace ApiExamples
             doc.FontSettings = fontSettings;
             doc.Save(ArtifactsDir + "FontSettings.DisableFontSubstitution.pdf");
 
-            Regex reg = new Regex("Font '28 Days Later' has not been found. Using (.*) font instead. Reason: default font setting.");
+            Regex reg = new Regex(
+                "Font '28 Days Later' has not been found. Using (.*) font instead. Reason: default font setting.");
 
             foreach (WarningInfo fontWarning in callback.FontWarnings)
             {
@@ -345,9 +351,11 @@ namespace ApiExamples
             doc.FontSettings = fontSettings;
             doc.Save(ArtifactsDir + "FontSettings.SubstitutionWarnings.pdf");
 
-            Assert.AreEqual("Font \'Arial\' has not been found. Using \'Arvo\' font instead. Reason: table substitution.",
+            Assert.AreEqual(
+                "Font \'Arial\' has not been found. Using \'Arvo\' font instead. Reason: table substitution.",
                 callback.FontWarnings[0].Description);
-            Assert.AreEqual("Font \'Times New Roman\' has not been found. Using \'M+ 2m\' font instead. Reason: font info substitution.",
+            Assert.AreEqual(
+                "Font \'Times New Roman\' has not been found. Using \'M+ 2m\' font instead. Reason: font info substitution.",
                 callback.FontWarnings[1].Description);
         }
 
@@ -395,7 +403,7 @@ namespace ApiExamples
 
             Document doc = new Document();
             doc.FontSettings = new FontSettings();
-            doc.FontSettings.SetFontsSources(new FontSourceBase[] { fileFontSource });
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] {fileFontSource});
 
             Assert.AreEqual(MyDir + "Alte DIN 1451 Mittelschrift.ttf", fileFontSource.FilePath);
             Assert.AreEqual(FontSourceType.FontFile, fileFontSource.Type);
@@ -420,7 +428,7 @@ namespace ApiExamples
 
             Document doc = new Document();
             doc.FontSettings = new FontSettings();
-            doc.FontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] {folderFontSource});
 
             Assert.AreEqual(FontsDir, folderFontSource.FolderPath);
             Assert.AreEqual(false, folderFontSource.ScanSubfolders);
@@ -522,7 +530,8 @@ namespace ApiExamples
             // that we are passing in the first argument, but not include any fonts from any of the directories' subfolders.
             // Pass "true" as the "recursive" argument to include all font files in the directories that we are passing
             // in the first argument, as well as all the fonts in their subdirectories.
-            FontSettings.DefaultInstance.SetFontsFolders(new[] { FontsDir + "/Amethysta", FontsDir + "/Junction" }, recursive);
+            FontSettings.DefaultInstance.SetFontsFolders(new[] {FontsDir + "/Amethysta", FontsDir + "/Junction"},
+                recursive);
 
             FontSourceBase[] newFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
@@ -582,7 +591,7 @@ namespace ApiExamples
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, true);
 
             // Apply a new array of font sources that contains the original font sources, as well as our custom fonts.
-            FontSourceBase[] updatedFontSources = { originalFontSources[0], folderFontSource };
+            FontSourceBase[] updatedFontSources = {originalFontSources[0], folderFontSource};
             FontSettings.DefaultInstance.SetFontsSources(updatedFontSources);
 
             // Verify that Aspose.Words has access to all required fonts before we render the document to PDF.
@@ -611,7 +620,7 @@ namespace ApiExamples
 
             Document doc = new Document(MyDir + "Rendering.docx", loadOptions);
 
-            FolderFontSource folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[0]);
+            FolderFontSource folderSource = ((FolderFontSource) doc.FontSettings.GetFontsSources()[0]);
 
             Assert.AreEqual(FontsDir, folderSource.FolderPath);
             Assert.False(folderSource.ScanSubfolders);
@@ -647,7 +656,7 @@ namespace ApiExamples
             // If the first substitute is unavailable, Aspose.Words attempts to use the second substitute, and so on.
             doc.FontSettings = new FontSettings();
             doc.FontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes(
-                "Amethysta", new[] { "Arvo", "Courier New" });
+                "Amethysta", new[] {"Arvo", "Courier New"});
 
             // "Amethysta" is unavailable, and the substitution rule states that the first font to use as a substitute is "Arvo". 
             Assert.False(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"));
@@ -664,18 +673,18 @@ namespace ApiExamples
         public void SetSpecifyFontFolders()
         {
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SetFontsFolders(new string[] { FontsDir, @"C:\Windows\Fonts\" }, true);
+            fontSettings.SetFontsFolders(new string[] {FontsDir, @"C:\Windows\Fonts\"}, true);
 
             // Using load options
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.FontSettings = fontSettings;
             Document doc = new Document(MyDir + "Rendering.docx", loadOptions);
 
-            FolderFontSource folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[0]);
+            FolderFontSource folderSource = ((FolderFontSource) doc.FontSettings.GetFontsSources()[0]);
             Assert.AreEqual(FontsDir, folderSource.FolderPath);
             Assert.True(folderSource.ScanSubfolders);
 
-            folderSource = ((FolderFontSource)doc.FontSettings.GetFontsSources()[1]);
+            folderSource = ((FolderFontSource) doc.FontSettings.GetFontsSources()[1]);
             Assert.AreEqual(@"C:\Windows\Fonts\", folderSource.FolderPath);
             Assert.True(folderSource.ScanSubfolders);
         }
@@ -684,17 +693,20 @@ namespace ApiExamples
         public void AddFontSubstitutes()
         {
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes("Slab", new string[] { "Times New Roman", "Arial" });
-            fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Arvo", new string[] { "Open Sans", "Arial" });
+            fontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes("Slab",
+                new string[] {"Times New Roman", "Arial"});
+            fontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Arvo",
+                new string[] {"Open Sans", "Arial"});
 
             Document doc = new Document(MyDir + "Rendering.docx");
             doc.FontSettings = fontSettings;
 
-            string[] alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Slab").ToArray();
-            Assert.AreEqual(new string[] { "Times New Roman", "Arial" }, alternativeFonts);
+            string[] alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Slab")
+                .ToArray();
+            Assert.AreEqual(new string[] {"Times New Roman", "Arial"}, alternativeFonts);
 
             alternativeFonts = doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Arvo").ToArray();
-            Assert.AreEqual(new string[] { "Open Sans", "Arial" }, alternativeFonts);
+            Assert.AreEqual(new string[] {"Open Sans", "Arial"}, alternativeFonts);
         }
 
         [Test]
@@ -713,7 +725,7 @@ namespace ApiExamples
 
             Document doc = new Document();
             doc.FontSettings = new FontSettings();
-            doc.FontSettings.SetFontsSources(new FontSourceBase[] { memoryFontSource });
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] {memoryFontSource});
 
             Assert.AreEqual(FontSourceType.MemoryFont, memoryFontSource.Type);
             Assert.AreEqual(0, memoryFontSource.Priority);
@@ -742,16 +754,18 @@ namespace ApiExamples
             // By default, a blank document always contains a system font source.
             Assert.AreEqual(1, doc.FontSettings.GetFontsSources().Length);
 
-            SystemFontSource systemFontSource = (SystemFontSource)doc.FontSettings.GetFontsSources()[0];
+            SystemFontSource systemFontSource = (SystemFontSource) doc.FontSettings.GetFontsSources()[0];
             Assert.AreEqual(FontSourceType.SystemFonts, systemFontSource.Type);
             Assert.AreEqual(0, systemFontSource.Priority);
 
             PlatformID pid = Environment.OSVersion.Platform;
-            bool isWindows = (pid == PlatformID.Win32NT) || (pid == PlatformID.Win32S) || (pid == PlatformID.Win32Windows) || (pid == PlatformID.WinCE);
+            bool isWindows = (pid == PlatformID.Win32NT) || (pid == PlatformID.Win32S) ||
+                             (pid == PlatformID.Win32Windows) || (pid == PlatformID.WinCE);
             if (isWindows)
             {
                 const string fontsPath = @"C:\WINDOWS\Fonts";
-                Assert.AreEqual(fontsPath.ToLower(), SystemFontSource.GetSystemFontFolders().FirstOrDefault()?.ToLower());
+                Assert.AreEqual(fontsPath.ToLower(),
+                    SystemFontSource.GetSystemFontFolders().FirstOrDefault()?.ToLower());
             }
 
             foreach (string systemFontFolder in SystemFontSource.GetSystemFontFolders())
@@ -761,14 +775,16 @@ namespace ApiExamples
 
             // Set a font that exists in the Windows Fonts directory as a substitute for one that does not.
             doc.FontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
-            doc.FontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Kreon-Regular", new[] { "Calibri" });
+            doc.FontSettings.SubstitutionSettings.TableSubstitution.AddSubstitutes("Kreon-Regular", new[] {"Calibri"});
 
-            Assert.AreEqual(1, doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").Count());
-            Assert.Contains("Calibri", doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").ToArray());
+            Assert.AreEqual(1,
+                doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").Count());
+            Assert.Contains("Calibri",
+                doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").ToArray());
 
             // Alternatively, we could add a folder font source in which the corresponding folder contains the font.
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
-            doc.FontSettings.SetFontsSources(new FontSourceBase[] { systemFontSource, folderFontSource });
+            doc.FontSettings.SetFontsSources(new FontSourceBase[] {systemFontSource, folderFontSource});
             Assert.AreEqual(2, doc.FontSettings.GetFontsSources().Length);
 
             // Resetting the font sources still leaves us with the system font source as well as our substitutes.
@@ -776,7 +792,8 @@ namespace ApiExamples
 
             Assert.AreEqual(1, doc.FontSettings.GetFontsSources().Length);
             Assert.AreEqual(FontSourceType.SystemFonts, doc.FontSettings.GetFontsSources()[0].Type);
-            Assert.AreEqual(1, doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").Count());
+            Assert.AreEqual(1,
+                doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").Count());
             //ExEnd
         }
 
@@ -834,7 +851,8 @@ namespace ApiExamples
             XmlNamespaceManager manager = new XmlNamespaceManager(fallbackSettingsDoc.NameTable);
             manager.AddNamespace("aw", "Aspose.Words");
 
-            XmlNodeList rules = fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
+            XmlNodeList rules =
+                fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
 
             Assert.AreEqual("0B80-0BFF", rules[0].Attributes["Ranges"].Value);
             Assert.AreEqual("Vijaya", rules[0].Attributes["FallbackFonts"].Value);
@@ -896,7 +914,8 @@ namespace ApiExamples
 
             // Get the default substitution rule within FontSettings.
             // This rule will substitute all missing fonts with "Times New Roman".
-            DefaultFontSubstitutionRule defaultFontSubstitutionRule = fontSettings.SubstitutionSettings.DefaultFontSubstitution;
+            DefaultFontSubstitutionRule defaultFontSubstitutionRule =
+                fontSettings.SubstitutionSettings.DefaultFontSubstitution;
             Assert.True(defaultFontSubstitutionRule.Enabled);
             Assert.AreEqual("Times New Roman", defaultFontSubstitutionRule.DefaultFontName);
 
@@ -929,9 +948,10 @@ namespace ApiExamples
             //ExFor:Fonts.FontSubstitutionSettings.FontConfigSubstitution
             //ExSummary:Shows operating system-dependent font config substitution.
             FontSettings fontSettings = new FontSettings();
-            FontConfigSubstitutionRule fontConfigSubstitution = fontSettings.SubstitutionSettings.FontConfigSubstitution;
+            FontConfigSubstitutionRule fontConfigSubstitution =
+                fontSettings.SubstitutionSettings.FontConfigSubstitution;
 
-            bool isWindows = new[] { PlatformID.Win32NT, PlatformID.Win32S, PlatformID.Win32Windows, PlatformID.WinCE }
+            bool isWindows = new[] {PlatformID.Win32NT, PlatformID.Win32S, PlatformID.Win32Windows, PlatformID.WinCE}
                 .Any(p => Environment.OSVersion.Platform == p);
 
             // The FontConfigSubstitutionRule object works differently on Windows/non-Windows platforms.
@@ -942,7 +962,8 @@ namespace ApiExamples
                 Assert.False(fontConfigSubstitution.IsFontConfigAvailable());
             }
 
-            bool isLinuxOrMac = new[] { PlatformID.Unix, PlatformID.MacOSX }.Any(p => Environment.OSVersion.Platform == p);
+            bool isLinuxOrMac =
+                new[] {PlatformID.Unix, PlatformID.MacOSX}.Any(p => Environment.OSVersion.Platform == p);
 
             // On Linux/Mac, we will have access to it, and will be able to perform operations.
             if (isLinuxOrMac)
@@ -952,6 +973,7 @@ namespace ApiExamples
 
                 fontConfigSubstitution.ResetCache();
             }
+
             //ExEnd
         }
 
@@ -989,7 +1011,8 @@ namespace ApiExamples
             XmlNamespaceManager manager = new XmlNamespaceManager(fallbackSettingsDoc.NameTable);
             manager.AddNamespace("aw", "Aspose.Words");
 
-            XmlNodeList rules = fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
+            XmlNodeList rules =
+                fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
 
             Assert.AreEqual("0C00-0C7F", rules[8].Attributes["Ranges"].Value);
             Assert.AreEqual("Vani", rules[8].Attributes["FallbackFonts"].Value);
@@ -1011,7 +1034,7 @@ namespace ApiExamples
 
             // Configure our font settings to source fonts only from the "MyFonts" folder.
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
-            fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
+            fontSettings.SetFontsSources(new FontSourceBase[] {folderFontSource});
 
             // Calling the "BuildAutomatic" method will generate a fallback scheme that
             // distributes accessible fonts across as many Unicode character codes as possible.
@@ -1036,10 +1059,12 @@ namespace ApiExamples
                 switch (i)
                 {
                     case 0x0021:
-                        builder.Writeln("\n\n0x0021 - 0x00FF: \nBasic Latin/Latin-1 Supplement Unicode blocks in \"AllegroOpen\" font:");
+                        builder.Writeln(
+                            "\n\n0x0021 - 0x00FF: \nBasic Latin/Latin-1 Supplement Unicode blocks in \"AllegroOpen\" font:");
                         break;
                     case 0x0100:
-                        builder.Writeln("\n\n0x0100 - 0x024F: \nLatin Extended A/B blocks, mostly in \"AllegroOpen\" font:");
+                        builder.Writeln(
+                            "\n\n0x0100 - 0x024F: \nLatin Extended A/B blocks, mostly in \"AllegroOpen\" font:");
                         break;
                     case 0x0250:
                         builder.Writeln("\n\n0x0250 - 0x052F: \nIPA/Greek/Cyrillic blocks in \"M+ 2m\" font:");
@@ -1053,15 +1078,17 @@ namespace ApiExamples
             //ExEnd
 
             XmlDocument fallbackSettingsDoc = new XmlDocument();
-            fallbackSettingsDoc.LoadXml(File.ReadAllText(ArtifactsDir + "FontSettings.FallbackSettingsCustom.BuildAutomatic.xml"));
+            fallbackSettingsDoc.LoadXml(
+                File.ReadAllText(ArtifactsDir + "FontSettings.FallbackSettingsCustom.BuildAutomatic.xml"));
             XmlNamespaceManager manager = new XmlNamespaceManager(fallbackSettingsDoc.NameTable);
             manager.AddNamespace("aw", "Aspose.Words");
 
-            XmlNodeList rules = fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
+            XmlNodeList rules =
+                fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
 
             Assert.AreEqual("0000-007F", rules[0].Attributes["Ranges"].Value);
             Assert.AreEqual("AllegroOpen", rules[0].Attributes["FallbackFonts"].Value);
-            
+
             Assert.AreEqual("0100-017F", rules[2].Attributes["Ranges"].Value);
             Assert.AreEqual("AllegroOpen", rules[2].Attributes["FallbackFonts"].Value);
 
@@ -1091,7 +1118,7 @@ namespace ApiExamples
             tableSubstitutionRule.LoadWindowsSettings();
 
             // In Windows, the default substitute for the "Times New Roman CE" font is "Times New Roman".
-            Assert.AreEqual(new[] { "Times New Roman" },
+            Assert.AreEqual(new[] {"Times New Roman"},
                 tableSubstitutionRule.GetSubstitutes("Times New Roman CE").ToArray());
 
             // We can save the table in the form of an XML document.
@@ -1102,28 +1129,33 @@ namespace ApiExamples
             // If the first substitute, "FreeSerif" is also unavailable,
             // this rule will cycle through the others in the array until it finds an available one.
             tableSubstitutionRule.LoadLinuxSettings();
-            Assert.AreEqual(new[] { "FreeSerif", "Liberation Serif", "DejaVu Serif" },
+            Assert.AreEqual(new[] {"FreeSerif", "Liberation Serif", "DejaVu Serif"},
                 tableSubstitutionRule.GetSubstitutes("Times New Roman CE").ToArray());
 
             // Save the Linux substitution table in the form of an XML document using a stream.
-            using (FileStream fileStream = new FileStream(ArtifactsDir + "FontSettings.TableSubstitutionRule.Linux.xml", FileMode.Create))
+            using (FileStream fileStream = new FileStream(ArtifactsDir + "FontSettings.TableSubstitutionRule.Linux.xml",
+                FileMode.Create))
             {
                 tableSubstitutionRule.Save(fileStream);
             }
             //ExEnd
 
             XmlDocument fallbackSettingsDoc = new XmlDocument();
-            fallbackSettingsDoc.LoadXml(File.ReadAllText(ArtifactsDir + "FontSettings.TableSubstitutionRule.Windows.xml"));
+            fallbackSettingsDoc.LoadXml(
+                File.ReadAllText(ArtifactsDir + "FontSettings.TableSubstitutionRule.Windows.xml"));
             XmlNamespaceManager manager = new XmlNamespaceManager(fallbackSettingsDoc.NameTable);
             manager.AddNamespace("aw", "Aspose.Words");
 
-            XmlNodeList rules = fallbackSettingsDoc.SelectNodes("//aw:TableSubstitutionSettings/aw:SubstitutesTable/aw:Item", manager);
+            XmlNodeList rules =
+                fallbackSettingsDoc.SelectNodes("//aw:TableSubstitutionSettings/aw:SubstitutesTable/aw:Item", manager);
 
             Assert.AreEqual("Times New Roman CE", rules[16].Attributes["OriginalFont"].Value);
             Assert.AreEqual("Times New Roman", rules[16].Attributes["SubstituteFonts"].Value);
 
-            fallbackSettingsDoc.LoadXml(File.ReadAllText(ArtifactsDir + "FontSettings.TableSubstitutionRule.Linux.xml"));
-            rules = fallbackSettingsDoc.SelectNodes("//aw:TableSubstitutionSettings/aw:SubstitutesTable/aw:Item", manager);
+            fallbackSettingsDoc.LoadXml(
+                File.ReadAllText(ArtifactsDir + "FontSettings.TableSubstitutionRule.Linux.xml"));
+            rules = fallbackSettingsDoc.SelectNodes("//aw:TableSubstitutionSettings/aw:SubstitutesTable/aw:Item",
+                manager);
 
             Assert.AreEqual("Times New Roman CE", rules[31].Attributes["OriginalFont"].Value);
             Assert.AreEqual("FreeSerif, Liberation Serif, DejaVu Serif", rules[31].Attributes["SubstituteFonts"].Value);
@@ -1151,7 +1183,7 @@ namespace ApiExamples
             // We will no longer have access to the Microsoft Windows fonts,
             // such as "Arial" or "Times New Roman" since they do not exist in our new font folder.
             FolderFontSource folderFontSource = new FolderFontSource(FontsDir, false);
-            fontSettings.SetFontsSources(new FontSourceBase[] { folderFontSource });
+            fontSettings.SetFontsSources(new FontSourceBase[] {folderFontSource});
 
             // Below are two ways of loading a substitution table from a file in the local file system.
             // 1 -  From a stream:
@@ -1165,21 +1197,22 @@ namespace ApiExamples
 
             // Since we no longer have access to "Arial", our font table will first try substitute it with "Nonexistent Font".
             // We do not have this font so that it will move onto the next substitute, "Kreon", found in the "MyFonts" folder.
-            Assert.AreEqual(new[] { "Missing Font", "Kreon" }, tableSubstitutionRule.GetSubstitutes("Arial").ToArray());
+            Assert.AreEqual(new[] {"Missing Font", "Kreon"}, tableSubstitutionRule.GetSubstitutes("Arial").ToArray());
 
             // We can expand this table programmatically. We will add an entry that substitutes "Times New Roman" with "Arvo"
             Assert.Null(tableSubstitutionRule.GetSubstitutes("Times New Roman"));
             tableSubstitutionRule.AddSubstitutes("Times New Roman", "Arvo");
-            Assert.AreEqual(new[] { "Arvo" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
+            Assert.AreEqual(new[] {"Arvo"}, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
 
             // We can add a secondary fallback substitute for an existing font entry with AddSubstitutes().
             // In case "Arvo" is unavailable, our table will look for "M+ 2m" as a second substitute option.
             tableSubstitutionRule.AddSubstitutes("Times New Roman", "M+ 2m");
-            Assert.AreEqual(new[] { "Arvo", "M+ 2m" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
+            Assert.AreEqual(new[] {"Arvo", "M+ 2m"}, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
 
             // SetSubstitutes() can set a new list of substitute fonts for a font.
-            tableSubstitutionRule.SetSubstitutes("Times New Roman", new[] { "Squarish Sans CT", "M+ 2m" });
-            Assert.AreEqual(new[] { "Squarish Sans CT", "M+ 2m" }, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
+            tableSubstitutionRule.SetSubstitutes("Times New Roman", new[] {"Squarish Sans CT", "M+ 2m"});
+            Assert.AreEqual(new[] {"Squarish Sans CT", "M+ 2m"},
+                tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
 
             // Writing text in fonts that we do not have access to will invoke our substitution rules.
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1207,7 +1240,7 @@ namespace ApiExamples
             // this rule will substitute the unavailable font with one that does exist.
             // In this case, all uses of the "MissingFont" will convert to "Comic Sans MS".
             TableSubstitutionRule substitutionRule = loadOptions.FontSettings.SubstitutionSettings.TableSubstitution;
-            substitutionRule.AddSubstitutes("MissingFont", new[] { "Comic Sans MS" });
+            substitutionRule.AddSubstitutes("MissingFont", new[] {"Comic Sans MS"});
 
             Document doc = new Document(MyDir + "Missing font.html", loadOptions);
 
@@ -1227,7 +1260,7 @@ namespace ApiExamples
         public void StreamFontSourceFileRendering()
         {
             FontSettings fontSettings = new FontSettings();
-            fontSettings.SetFontsSources(new FontSourceBase[] { new StreamFontSourceFile() });
+            fontSettings.SetFontsSources(new FontSourceBase[] {new StreamFontSourceFile()});
 
             DocumentBuilder builder = new DocumentBuilder();
             builder.Document.FontSettings = fontSettings;
@@ -1238,13 +1271,65 @@ namespace ApiExamples
         }
 
         /// <summary>
-        /// Load the font data only when required instead of storing it in the memory for the entire lifetime of the "FontSettings" object.
+        /// Load the font data only when required instead of storing it in the memory
+        /// for the entire lifetime of the "FontSettings" object.
         /// </summary>
         private class StreamFontSourceFile : StreamFontSource
         {
             public override Stream OpenFontDataStream()
             {
                 return File.OpenRead(FontsDir + "Kreon-Regular.ttf");
+            }
+        }
+        //ExEnd
+
+        //ExStart
+        //ExFor:FileFontSource(String, Int32, String)
+        //ExFor:MemoryFontSource(byte[], Int32, String)
+        //ExFor:StreamFontSource(Int32, String)
+        //ExFor:FontSettings.SaveSearchCache(Stream)
+        //ExFor:FontSettings.SetFontsSources(FontSourceBase[], Stream)
+        //ExSummary:Shows how to speed up the font cache initialization process.
+        [Test]
+        public void LoadFontSearchCache()
+        {
+            const string cacheKey1 = "Arvo";
+            const string cacheKey2 = "Arvo-Bold";
+            FontSettings parsedFonts = new FontSettings();
+            FontSettings loadedCache = new FontSettings();
+
+            parsedFonts.SetFontsSources(new FontSourceBase[]
+            {
+                new FileFontSource(FontsDir + "Arvo-Regular.ttf", 0, cacheKey1),
+                new FileFontSource(FontsDir + "Arvo-Bold.ttf", 0, cacheKey2)
+            });
+            
+            using (MemoryStream cacheStream = new MemoryStream())
+            {
+                parsedFonts.SaveSearchCache(cacheStream);
+                loadedCache.SetFontsSources(new FontSourceBase[]
+                {
+                    new SearchCacheStream(cacheKey1),
+                    new MemoryFontSource(File.ReadAllBytes(FontsDir + "Arvo-Bold.ttf"), 0, cacheKey2)
+                }, cacheStream);
+            }
+
+            Assert.AreEqual(parsedFonts.GetFontsSources().Length, loadedCache.GetFontsSources().Length);
+        }
+
+        /// <summary>
+        /// Load the font data only when required instead of storing it in the memory
+        /// for the entire lifetime of the "FontSettings" object.
+        /// </summary>
+        private class SearchCacheStream : StreamFontSource
+        {
+            public SearchCacheStream(string cacheKey):base(0, cacheKey)
+            {
+            }
+
+            public override Stream OpenFontDataStream()
+            {
+                return File.OpenRead(FontsDir + "Arvo-Regular.ttf");
             }
         }
         //ExEnd

@@ -303,6 +303,18 @@ namespace ApiExamples
         }
 
         [Test]
+        public void HeaderVariable()
+        {
+            Document doc = new Document(MyDir + "Reporting engine template - Header variable.docx");
+
+            BuildReport(doc, new DataSet(), "", ReportBuildOptions.UseLegacyHeaderFooterVisiting);
+
+            doc.Save(ArtifactsDir + "ReportingEngine.HeaderVariable.docx");
+
+            Assert.AreEqual("Value of myHeaderVariable is: I am header variable", doc.FirstSection.Body.FirstParagraph.GetText().Trim());
+        }
+
+        [Test]
         public void ContextualObjectMemberAccess()
         {
             Document doc = new Document(MyDir + "Reporting engine template - Contextual object member access.docx");
