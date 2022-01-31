@@ -174,7 +174,7 @@ namespace ApiExamples
                 footer = section.HeadersFooters[HeaderFooterType.FooterPrimary];
                 footer?.Remove();
 
-                // 3 -  The "Even" header/footer, which appears on odd even pages. 
+                // 3 -  The "Even" header/footer, which appears on even pages. 
                 footer = section.HeadersFooters[HeaderFooterType.FooterEven];
                 footer?.Remove();
 
