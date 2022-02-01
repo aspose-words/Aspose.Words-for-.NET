@@ -1832,7 +1832,7 @@ namespace ApiExamples
                 RelativeVerticalPosition.Margin, 0, 200, 200, WrapType.Square);
 
             // 2 -  From a URL:
-            builder.InsertImage(AsposeLogoUrl, RelativeHorizontalPosition.Margin, 100,
+            builder.InsertImage(ImageUrl, RelativeHorizontalPosition.Margin, 100,
                 RelativeVerticalPosition.Margin, 250, 200, 200, WrapType.Square);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertFloatingImage.docx");
@@ -1852,7 +1852,7 @@ namespace ApiExamples
 
             image = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, image);
+            TestUtil.VerifyImageInShape(5184, 3456, ImageType.Jpeg, image);
             Assert.AreEqual(100.0d, image.Left);
             Assert.AreEqual(250.0d, image.Top);
             Assert.AreEqual(200.0d, image.Width);
