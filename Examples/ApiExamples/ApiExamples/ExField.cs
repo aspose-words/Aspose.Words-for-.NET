@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2022 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -3385,7 +3385,6 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldIndex.PageRangeSeparator
-            //ExFor:FieldXE.HasPageRangeBookmarkName
             //ExFor:FieldXE.PageRangeBookmarkName
             //ExSummary:Shows how to specify a bookmark's spanned pages as a page range for an INDEX field entry.
             Document doc = new Document();
@@ -3415,7 +3414,7 @@ namespace ApiExamples
             indexEntry.PageRangeBookmarkName = "MyBookmark";
 
             Assert.AreEqual(" XE  \"My entry\" \\r MyBookmark", indexEntry.GetFieldCode());
-            Assert.True(indexEntry.HasPageRangeBookmarkName);
+            Assert.AreEqual("MyBookmark", indexEntry.PageRangeBookmarkName);
 
             // Insert a bookmark that starts on page 3 and ends on page 5.
             // The INDEX entry for the XE field that references this bookmark will display this page range.
@@ -3444,7 +3443,6 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldIndexEntry, " XE  \"My entry\" \\r MyBookmark", string.Empty, indexEntry);
             Assert.AreEqual("My entry", indexEntry.Text);
             Assert.AreEqual("MyBookmark", indexEntry.PageRangeBookmarkName);
-            Assert.True(indexEntry.HasPageRangeBookmarkName);
         }
 
         [Test]
