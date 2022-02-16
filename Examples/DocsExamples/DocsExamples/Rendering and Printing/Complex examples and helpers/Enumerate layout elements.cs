@@ -25,7 +25,6 @@ namespace DocsExamples.Complex_examples_and_helpers
             OutlineLayoutEntitiesRenderer.Run(doc, layoutEnumerator, ArtifactsDir);
         }
     }
-
     internal class LayoutInfoWriter
     {
         public static void Run(LayoutEnumerator layoutEnumerator)

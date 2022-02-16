@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2022 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -77,14 +77,14 @@ namespace ApiExamples
             // This linked image will require a web request to load, which will have to complete within our time limit.
             string html = $@"
                 <html>
-                    <img src=""{AsposeLogoUrl}"" alt=""Aspose logo"" style=""width:400px;height:400px;"">
+                    <img src=""{ImageUrl}"" alt=""Aspose logo"" style=""width:400px;height:400px;"">
                 </html>
             ";
 
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), options);
             Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual(7498, imageShape.ImageData.ImageBytes.Length);
+            Assert.AreEqual(1109843, imageShape.ImageData.ImageBytes.Length);
             Assert.AreEqual(0, warningCallback.Warnings().Count);
 
             // Set an unreasonable timeout limit and try load the document again.
@@ -99,7 +99,7 @@ namespace ApiExamples
             // We can also configure a custom callback to pick up any warnings from timed out web requests.
             Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[0].Source);
             Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[0].WarningType);
-            Assert.AreEqual($"Couldn't load a resource from \'{AsposeLogoUrl}\'.", warningCallback.Warnings()[0].Description);
+            Assert.AreEqual($"Couldn't load a resource from \'{ImageUrl}\'.", warningCallback.Warnings()[0].Description);
 
             Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[1].Source);
             Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[1].WarningType);
