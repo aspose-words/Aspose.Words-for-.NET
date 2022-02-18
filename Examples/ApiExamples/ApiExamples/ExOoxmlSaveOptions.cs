@@ -318,17 +318,11 @@ namespace ApiExamples
         [TestCase(SaveFormat.Docm, "docm")]
         [TestCase(SaveFormat.Dotm, "dotm")]
         [TestCase(SaveFormat.Dotx, "dotx")]
-        [TestCase(SaveFormat.Html, "html")]
-        [TestCase(SaveFormat.Mhtml, "mhtml")]
-        [TestCase(SaveFormat.Epub, "epub")]
-        [TestCase(SaveFormat.XamlFlow, "xamlflow")]
-        [TestCase(SaveFormat.XamlFlowPack, "xamlflowpack")]
         public void ProgressCallback(SaveFormat saveFormat, string ext)
         {
             Document doc = new Document(MyDir + "Big document.docx");
 
-            // Following formats are supported:
-            // Docx, FlatOpc, Docm, Dotm, Dotx, Html, Mhtml, Epub, XamlFlow, XamlFlowPack.
+            // Following formats are supported: Docx, FlatOpc, Docm, Dotm, Dotx.
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(saveFormat)
             {
                 ProgressCallback = new SavingProgressCallback()
@@ -336,7 +330,7 @@ namespace ApiExamples
 
             var exception = Assert.Throws<OperationCanceledException>(() =>
                 doc.Save(ArtifactsDir + $"OoxmlSaveOptions.ProgressCallback.{ext}", saveOptions));
-            Assert.True(exception?.Message.Contains("EstimatedProgress = 30.41;"));
+            Assert.True(exception?.Message.Contains("EstimatedProgress"));
         }
 
         /// <summary>
@@ -372,7 +366,7 @@ namespace ApiExamples
             /// <summary>
             /// Maximum allowed duration in sec.
             /// </summary>
-            private const double MaxDuration = 0.1d;
+            private const double MaxDuration = 0.01d;
         }
         //ExEnd
     }
