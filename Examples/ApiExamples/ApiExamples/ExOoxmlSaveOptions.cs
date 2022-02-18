@@ -313,19 +313,29 @@ namespace ApiExamples
         //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
         //ExFor:DocumentSavingArgs.EstimatedProgress
         //ExSummary:Shows how to have a custom method called while saving a document.
-        [Test]
-        public void ProgressCallback()
+        [TestCase(SaveFormat.Docx, "docx")]
+        [TestCase(SaveFormat.FlatOpc, "flatopc")]
+        [TestCase(SaveFormat.Docm, "docm")]
+        [TestCase(SaveFormat.Dotm, "dotm")]
+        [TestCase(SaveFormat.Dotx, "dotx")]
+        [TestCase(SaveFormat.Html, "html")]
+        [TestCase(SaveFormat.Mhtml, "mhtml")]
+        [TestCase(SaveFormat.Epub, "epub")]
+        [TestCase(SaveFormat.XamlFlow, "xamlflow")]
+        [TestCase(SaveFormat.XamlFlowPack, "xamlflowpack")]
+        public void ProgressCallback(SaveFormat saveFormat, string ext)
         {
             Document doc = new Document(MyDir + "Big document.docx");
 
-            // Following formats are supported: Docx, Docm, Dotm, Dotx, FlatOpc.
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx)
+            // Following formats are supported:
+            // Docx, FlatOpc, Docm, Dotm, Dotx, Html, Mhtml, Epub, XamlFlow, XamlFlowPack.
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(saveFormat)
             {
                 ProgressCallback = new SavingProgressCallback()
             };
 
             var exception = Assert.Throws<OperationCanceledException>(() =>
-                doc.Save(ArtifactsDir + "OoxmlSaveOptions.ProgressCallback.docx", saveOptions));
+                doc.Save(ArtifactsDir + $"OoxmlSaveOptions.ProgressCallback.{ext}", saveOptions));
             Assert.True(exception?.Message.Contains("EstimatedProgress = 30.41;"));
         }
 
@@ -362,7 +372,7 @@ namespace ApiExamples
             /// <summary>
             /// Maximum allowed duration in sec.
             /// </summary>
-            private const double MaxDuration = 0.2d;
+            private const double MaxDuration = 0.1d;
         }
         //ExEnd
     }
