@@ -307,17 +307,17 @@ namespace ApiExamples
             //ExEnd
         }
 
+        [TestCase(SaveFormat.Docx, "docx")]
+        [TestCase(SaveFormat.FlatOpc, "flatopc")]
+        [TestCase(SaveFormat.Docm, "docm")]
+        [TestCase(SaveFormat.Dotm, "dotm")]
+        [TestCase(SaveFormat.Dotx, "dotx")]
         //ExStart
         //ExFor:SaveOptions.ProgressCallback
         //ExFor:IDocumentSavingCallback
         //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
         //ExFor:DocumentSavingArgs.EstimatedProgress
         //ExSummary:Shows how to have a custom method called while saving a document.
-        [TestCase(SaveFormat.Docx, "docx")]
-        [TestCase(SaveFormat.FlatOpc, "flatopc")]
-        [TestCase(SaveFormat.Docm, "docm")]
-        [TestCase(SaveFormat.Dotm, "dotm")]
-        [TestCase(SaveFormat.Dotx, "dotx")]
         public void ProgressCallback(SaveFormat saveFormat, string ext)
         {
             Document doc = new Document(MyDir + "Big document.docx");
