@@ -1330,11 +1330,11 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        public void ExportTextBox(bool exportTextBoxAsSvg)
+        public void ExportShape(bool exportShapesAsSvg)
         {
             //ExStart
-            //ExFor:HtmlSaveOptions.ExportTextBoxAsSvg
-            //ExSummary:Shows how to export text boxes as scalable vector graphics.
+            //ExFor:HtmlSaveOptions.exportShapesAsSvg
+            //ExSummary:Shows how to export shape as scalable vector graphics.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1348,13 +1348,13 @@ namespace ApiExamples
             // the save operation will convert shapes with text into SVG objects.
             // If we set the "ExportTextBoxAsSvg" flag to "false",
             // the save operation will convert shapes with text into images.
-            HtmlSaveOptions options = new HtmlSaveOptions { ExportPageSetup = exportTextBoxAsSvg };
+            HtmlSaveOptions options = new HtmlSaveOptions { ExportShapesAsSvg = exportShapesAsSvg };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTextBox.html", options);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportTextBox.html");
 
-            if (exportTextBoxAsSvg)
+            if (exportShapesAsSvg)
             {
                 Assert.True(outDocContents.Contains(
                     "<span style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\">" +

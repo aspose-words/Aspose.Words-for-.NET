@@ -83,7 +83,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldStart.FieldData
-            //ExSummary:
+            //ExSummary:Shows how to get data associated with the field.
             Document doc = new Document(MyDir + "Field sample - Field with data.docx");
 
             Field field = doc.Range.Fields[2];
