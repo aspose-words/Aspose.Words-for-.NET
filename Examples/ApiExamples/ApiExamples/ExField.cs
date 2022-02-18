@@ -77,7 +77,20 @@ namespace ApiExamples
 
             TestUtil.VerifyField(FieldType.FieldDate, " DATE  \\@ \"dddd, MMMM dd, yyyy\"", DateTime.Now.ToString("dddd, MMMM dd, yyyy"), doc.Range.Fields[0]);
         }
-        
+
+        [Test]
+        public void GetFieldData()
+        {
+            //ExStart
+            //ExFor:FieldStart.FieldData
+            //ExSummary:
+            Document doc = new Document(MyDir + "Field sample - Field with data.docx");
+
+            Field field = doc.Range.Fields[2];
+            Console.WriteLine(Encoding.Default.GetString(field.Start.FieldData));
+            //ExEnd
+        }
+
         [Test]
         public void GetFieldCode()
         {

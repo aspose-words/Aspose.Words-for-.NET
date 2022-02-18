@@ -1348,7 +1348,7 @@ namespace ApiExamples
             // the save operation will convert shapes with text into SVG objects.
             // If we set the "ExportTextBoxAsSvg" flag to "false",
             // the save operation will convert shapes with text into images.
-            HtmlSaveOptions options = new HtmlSaveOptions { ExportTextBoxAsSvg = exportTextBoxAsSvg };
+            HtmlSaveOptions options = new HtmlSaveOptions { ExportPageSetup = exportTextBoxAsSvg };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTextBox.html", options);
 
