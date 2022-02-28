@@ -2231,7 +2231,6 @@ namespace ApiExamples
             //ExFor:PdfEncryptionDetails.#ctor
             //ExFor:PdfSaveOptions.EncryptionDetails
             //ExFor:PdfEncryptionDetails.Permissions
-            //ExFor:PdfEncryptionDetails.EncryptionAlgorithm
             //ExFor:PdfEncryptionDetails.OwnerPassword
             //ExFor:PdfEncryptionDetails.UserPassword
             //ExFor:PdfPermissions
