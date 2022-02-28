@@ -2092,7 +2092,7 @@ namespace ApiExamples
 
             Assert.AreEqual("AsposeDigitalSignature", signatureField.FullName);
             Assert.AreEqual("AsposeDigitalSignature", signatureField.PartialName);
-            Assert.AreEqual(typeof(Aspose.Pdf.Forms.PKCS7), signatureField.Signature.GetType());
+            Assert.AreEqual(typeof(Aspose.Pdf.Forms.PKCS7Detached), signatureField.Signature.GetType());
             Assert.AreEqual(DateTime.Today, signatureField.Signature.Date.Date);
             Assert.AreEqual("þÿ\0M\0o\0r\0z\0a\0l\0.\0M\0e", signatureField.Signature.Authority);
             Assert.AreEqual("þÿ\0M\0y\0 \0O\0f\0f\0i\0c\0e", signatureField.Signature.Location);
@@ -2160,7 +2160,7 @@ namespace ApiExamples
 
             Assert.AreEqual("AsposeDigitalSignature", signatureField.FullName);
             Assert.AreEqual("AsposeDigitalSignature", signatureField.PartialName);
-            Assert.AreEqual(typeof(Aspose.Pdf.Forms.PKCS7), signatureField.Signature.GetType());
+            Assert.AreEqual(typeof(Aspose.Pdf.Forms.PKCS7Detached), signatureField.Signature.GetType());
             Assert.AreEqual(new DateTime(1, 1, 1, 0, 0, 0), signatureField.Signature.Date);
             Assert.AreEqual("þÿ\0M\0o\0r\0z\0a\0l\0.\0M\0e", signatureField.Signature.Authority);
             Assert.AreEqual("þÿ\0A\0s\0p\0o\0s\0e\0 \0O\0f\0f\0i\0c\0e", signatureField.Signature.Location);
@@ -2234,7 +2234,6 @@ namespace ApiExamples
             //ExFor:PdfEncryptionDetails.EncryptionAlgorithm
             //ExFor:PdfEncryptionDetails.OwnerPassword
             //ExFor:PdfEncryptionDetails.UserPassword
-            //ExFor:PdfEncryptionAlgorithm
             //ExFor:PdfPermissions
             //ExFor:PdfEncryptionDetails
             //ExSummary:Shows how to set permissions on a saved PDF document.
@@ -2244,7 +2243,7 @@ namespace ApiExamples
             builder.Writeln("Hello world!");
 
             PdfEncryptionDetails encryptionDetails =
-                new PdfEncryptionDetails("password", string.Empty, PdfEncryptionAlgorithm.RC4_128);
+                new PdfEncryptionDetails("password", string.Empty);
 
             // Start by disallowing all permissions.
             encryptionDetails.Permissions = PdfPermissions.DisallowAll;

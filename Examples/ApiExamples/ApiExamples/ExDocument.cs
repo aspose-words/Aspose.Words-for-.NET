@@ -233,7 +233,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Pdf Document.pdf");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.EncryptionDetails = new PdfEncryptionDetails("Aspose", null, PdfEncryptionAlgorithm.RC4_40);
+            saveOptions.EncryptionDetails = new PdfEncryptionDetails("Aspose", null);
 
             doc.Save(ArtifactsDir + "Document.PdfDocumentEncrypted.pdf", saveOptions);
 
