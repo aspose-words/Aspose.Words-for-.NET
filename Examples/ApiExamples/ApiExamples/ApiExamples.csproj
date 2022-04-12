@@ -155,8 +155,8 @@
   <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="22.1.0" />
     <PackageReference Include="Aspose.PDF" Version="22.1.0" />
-    <PackageReference Include="Aspose.Words" Version="22.2.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="22.2.0" />
+    <PackageReference Include="Aspose.Words" Version="22.4.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="22.4.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1">
