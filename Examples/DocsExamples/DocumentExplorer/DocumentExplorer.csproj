@@ -141,7 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Aspose.Words">
-      <Version>22.4.0</Version>
+      <Version>22.5.0</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
