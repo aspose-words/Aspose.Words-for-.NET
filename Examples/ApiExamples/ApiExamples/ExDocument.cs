@@ -233,7 +233,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Pdf Document.pdf");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.EncryptionDetails = new PdfEncryptionDetails("Aspose", null, PdfEncryptionAlgorithm.RC4_40);
+            saveOptions.EncryptionDetails = new PdfEncryptionDetails("Aspose", null);
 
             doc.Save(ArtifactsDir + "Document.PdfDocumentEncrypted.pdf", saveOptions);
 
@@ -1056,40 +1056,6 @@ namespace ApiExamples
                 ArtifactsDir + "Document.TableStyleToDirectFormatting.docx", "document.xml");
             TestUtil.DocPackageFileContainsString("<w:tblBorders><w:top w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:left w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:bottom w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:right w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:insideH w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:insideV w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /></w:tblBorders>",
                 ArtifactsDir + "Document.TableStyleToDirectFormatting.docx", "document.xml");
-        }
-
-        [Test]
-        public void UpdateTableLayout()
-        {
-            //ExStart
-            //ExFor:Document.UpdateTableLayout
-            //ExSummary:Shows how to preserve a table's layout when saving to .txt.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Table table = builder.StartTable();
-            builder.InsertCell();
-            builder.Write("Cell 1");
-            builder.InsertCell();
-            builder.Write("Cell 2");
-            builder.InsertCell();
-            builder.Write("Cell 3");
-            builder.EndTable();
-
-            // Use a TxtSaveOptions object to preserve the table's layout when converting the document to plaintext.
-            TxtSaveOptions options = new TxtSaveOptions();
-            options.PreserveTableLayout = true;
-
-            // Previewing the appearance of the document in .txt form shows that the table will not be represented accurately.
-            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.Width);
-            Assert.AreEqual("CCC\r\neee\r\nlll\r\nlll\r\n   \r\n123\r\n\r\n", doc.ToString(options));
-
-            // We can call UpdateTableLayout() to fix some of these issues.
-            doc.UpdateTableLayout();
-
-            Assert.AreEqual("Cell 1                                       Cell 2                                       Cell 3\r\n\r\n", doc.ToString(options));
-            Assert.AreEqual(155.0d, table.FirstRow.Cells[0].CellFormat.Width, 2f);
-            //ExEnd
         }
 
         [Test]

@@ -128,7 +128,7 @@ namespace ApiExamples
 
             // Configure a SaveOptions object to encrypt this PDF document while saving it to the local file system.
             PdfEncryptionDetails encryptionDetails =
-                new PdfEncryptionDetails("MyPassword", string.Empty, PdfEncryptionAlgorithm.RC4_128);
+                new PdfEncryptionDetails("MyPassword", string.Empty);
 
             Assert.AreEqual(PdfPermissions.DisallowAll, encryptionDetails.Permissions);
 

@@ -918,6 +918,7 @@ namespace ApiExamples
             // before we can begin working on a blank chart.
             chartData.Clear();
             Assert.AreEqual(0, chartData.Count); //ExSkip
+
             //ExEnd
         }
 

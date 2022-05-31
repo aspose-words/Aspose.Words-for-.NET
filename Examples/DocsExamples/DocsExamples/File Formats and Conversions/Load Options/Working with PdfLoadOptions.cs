@@ -15,7 +15,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
 
             PdfSaveOptions saveOptions = new PdfSaveOptions
             {
-                EncryptionDetails = new PdfEncryptionDetails("Aspose", null, PdfEncryptionAlgorithm.RC4_40)
+                EncryptionDetails = new PdfEncryptionDetails("Aspose", null)
             };
 
             doc.Save(ArtifactsDir + "WorkingWithPdfLoadOptions.LoadEncryptedPdf.pdf", saveOptions);
