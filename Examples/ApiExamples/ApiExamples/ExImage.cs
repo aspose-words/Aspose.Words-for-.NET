@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2022 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -56,7 +56,7 @@ namespace ApiExamples
             Assert.AreEqual(100.0d, shape.Width);
         }
 
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void FromUrl()
         {
             //ExStart
@@ -74,7 +74,7 @@ namespace ApiExamples
 
             // 2 -  Pass a URL which points to an image.
             builder.Write("Image from a URL: ");
-            builder.InsertImage(AsposeLogoUrl);
+            builder.InsertImage(ImageUrl);
             builder.Writeln();
 
             doc.Save(ArtifactsDir + "Image.FromUrl.docx");
@@ -85,7 +85,7 @@ namespace ApiExamples
 
             Assert.AreEqual(2, shapes.Count);
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, (Shape)shapes[0]);
-            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, (Shape)shapes[1]);
+            TestUtil.VerifyImageInShape(5184, 3456, ImageType.Jpeg, (Shape)shapes[1]);
         }
 
         [Test]

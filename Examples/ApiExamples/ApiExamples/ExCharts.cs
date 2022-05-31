@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2022 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -918,6 +918,7 @@ namespace ApiExamples
             // before we can begin working on a blank chart.
             chartData.Clear();
             Assert.AreEqual(0, chartData.Count); //ExSkip
+
             //ExEnd
         }
 

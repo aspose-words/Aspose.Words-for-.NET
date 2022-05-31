@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2022 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -173,9 +173,9 @@ namespace ApiExamples
         internal static string FontsDir { get; }
 
         /// <summary>
-        /// Gets the URL of the Aspose logo.
+        /// Gets the URL of the test image.
         /// </summary>
-        internal static string AsposeLogoUrl { get; }
+        internal static string ImageUrl { get; }
 
         static ApiExampleBase()
         {
@@ -188,7 +188,7 @@ namespace ApiExamples
             ImageDir = new Uri(new Uri(CodeBaseDir), @"Data/Images/").LocalPath;
             DatabaseDir = new Uri(new Uri(CodeBaseDir), @"Data/Database/").LocalPath;
             FontsDir = new Uri(new Uri(CodeBaseDir), @"Data/MyFonts/").LocalPath;
-            AsposeLogoUrl = new Uri("https://www.aspose.cloud/templates/aspose/App_Themes/V3/images/words/header/aspose_words-for-net.png").AbsoluteUri;
+            ImageUrl = new Uri("https://images.pexels.com/photos/239548/pexels-photo-239548.jpeg").AbsoluteUri;
         }
     }
 }
