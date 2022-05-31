@@ -2852,5 +2852,31 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Shape.IsDecorative.docx");
             //ExEnd
         }
+
+        [Test]
+        public void FillImage()
+        {
+            //ExStart
+            //ExFor:Fill.SetImage(String)
+            //ExSummary:Shows how to set shape fill type as image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // There are several ways of setting image.
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 80, 80);
+            // 1 -  Using a local system filename:
+            shape.Fill.SetImage(ImageDir + "Logo.jpg");
+            doc.Save(ArtifactsDir + "Shape.FillImage.FileName.docx");
+            
+            // 2 -  Load a file into a byte array:
+            shape.Fill.SetImage(File.ReadAllBytes(ImageDir + "Logo.jpg"));
+            doc.Save(ArtifactsDir + "Shape.FillImage.ByteArray.docx");
+            
+            // 3 -  From a stream:
+            using (FileStream stream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open))
+                shape.Fill.SetImage(stream);
+            doc.Save(ArtifactsDir + "Shape.FillImage.Stream.docx");
+            //ExEnd
+        }
     }
 }
