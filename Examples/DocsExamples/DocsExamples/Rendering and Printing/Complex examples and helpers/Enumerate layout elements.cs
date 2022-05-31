@@ -1,4 +1,4 @@
-﻿#if NET48
+﻿#if NET48 || JAVA
 using System;
 using System.Drawing;
 using Aspose.Words;
@@ -25,7 +25,6 @@ namespace DocsExamples.Complex_examples_and_helpers
             OutlineLayoutEntitiesRenderer.Run(doc, layoutEnumerator, ArtifactsDir);
         }
     }
-
     internal class LayoutInfoWriter
     {
         public static void Run(LayoutEnumerator layoutEnumerator)

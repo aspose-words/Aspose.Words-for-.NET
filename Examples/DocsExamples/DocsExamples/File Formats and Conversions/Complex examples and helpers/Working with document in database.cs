@@ -9,7 +9,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Complex_examples_and_helpers
 {
     public class WorkingWithDocumentInDatabase : DocsExamplesBase
     {
-        [Test, Ignore("Uses Microsoft.Jet.OLEDB.4.0")]
+#if NET48 || JAVA
+        [Test]
         public void LoadAndSaveDocToDatabase()
         {
             Document doc = new Document(MyDir + "Document.docx");
@@ -83,5 +84,6 @@ namespace DocsExamples.File_Formats_and_Conversions.Complex_examples_and_helpers
             command.ExecuteNonQuery();
         }
         //ExEnd:DeleteFromDatabase
+#endif
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2022 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -555,7 +555,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FontSettings            
             //ExFor:FontSettings.GetFontsSources()
-            //ExFor:FontSettings.SetFontsSources()
+            //ExFor:FontSettings.SetFontsSources(FontSourceBase[])
             //ExSummary:Shows how to add a font source to our existing font sources.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

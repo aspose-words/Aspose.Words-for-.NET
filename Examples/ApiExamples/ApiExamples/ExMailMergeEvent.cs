@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2021 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2022 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -327,7 +327,7 @@ namespace ApiExamples
             // Create a data source that contains URIs of images that we will merge. 
             // A URI can be a web URL that points to an image, or a local file system filename of an image file.
             string[] columns = { "logo_FromWeb", "logo_FromFileSystem" };
-            object[] URIs = { AsposeLogoUrl, ImageDir + "Logo.jpg" };
+            object[] URIs = { ImageUrl, ImageDir + "Logo.jpg" };
 
             // Execute a mail merge on a data source with one row.
             doc.MailMerge.Execute(columns, URIs);
@@ -343,7 +343,7 @@ namespace ApiExamples
 
             imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImageInShape(320, 320, ImageType.Png, imageShape);
+            TestUtil.VerifyImageInShape(5184, 3456, ImageType.Jpeg, imageShape);
         }
 
 #if NET48 || JAVA

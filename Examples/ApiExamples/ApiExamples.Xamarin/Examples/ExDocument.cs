@@ -236,7 +236,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Pdf Document.pdf");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-            saveOptions.EncryptionDetails = new PdfEncryptionDetails("Aspose", null, PdfEncryptionAlgorithm.RC4_40);
+            saveOptions.EncryptionDetails = new PdfEncryptionDetails("Aspose", null);
 
             doc.Save(ArtifactsDir + "Document.PdfDocumentEncrypted.pdf", saveOptions);
 
@@ -2003,13 +2003,13 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public void ShowComments(bool showComments)
+        [Test]
+        public void ShowComments()
         {
             //ExStart
-            //ExFor:LayoutOptions.ShowComments
-            //ExSummary:Shows how to show/hide comments when saving a document to a rendered format.
+            //ExFor:LayoutOptions.CommentDisplayMode
+            //ExFor:CommentDisplayMode
+            //ExSummary:Shows how to show comments when saving a document to a rendered format.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2019,13 +2019,22 @@ namespace ApiExamples
             comment.SetText("My comment.");
             builder.CurrentParagraph.AppendChild(comment);
 
-            doc.LayoutOptions.ShowComments = showComments;
+            // ShowInAnnotations is only available in Pdf1.7 and Pdf1.5 formats.
+            // In other formats, it will work similarly to Hide.
+            doc.LayoutOptions.CommentDisplayMode = CommentDisplayMode.ShowInAnnotations;
 
-            doc.Save(ArtifactsDir + "Document.ShowComments.pdf");
+            doc.Save(ArtifactsDir + "Document.ShowCommentsInAnnotations.pdf");
+
+            // Note that it's required to rebuild the document page layout (via Document.UpdatePageLayout() method)
+            // after changing the Document.LayoutOptions values.
+            doc.LayoutOptions.CommentDisplayMode = CommentDisplayMode.ShowInBalloons;
+            doc.UpdatePageLayout();
+
+            doc.Save(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
             //ExEnd
 
 #if NET462 || NETCOREAPP2_1 || JAVA
-            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.ShowComments.pdf");
+            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
