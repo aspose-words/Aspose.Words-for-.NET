@@ -955,7 +955,7 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        public void ExportImagesAsBase64(bool exportItemsAsBase64)
+        public void ExportImagesAsBase64(bool exportImagesAsBase64)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportFontsAsBase64
@@ -965,7 +965,7 @@ namespace ApiExamples
 
             HtmlSaveOptions options = new HtmlSaveOptions
             {
-                ExportImagesAsBase64 = exportItemsAsBase64,
+                ExportImagesAsBase64 = exportImagesAsBase64,
                 PrettyFormat = true
             };
 
@@ -973,7 +973,7 @@ namespace ApiExamples
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportImagesAsBase64.html");
 
-            Assert.True(exportItemsAsBase64
+            Assert.True(exportImagesAsBase64
                 ? outDocContents.Contains("<img src=\"data:image/png;base64")
                 : outDocContents.Contains("<img src=\"HtmlSaveOptions.ExportImagesAsBase64.001.png\""));
             //ExEnd

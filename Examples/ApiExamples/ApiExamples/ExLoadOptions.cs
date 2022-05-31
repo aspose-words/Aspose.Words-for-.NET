@@ -15,6 +15,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fonts;
 using Aspose.Words.Loading;
+using Aspose.Words.Loading.Progress;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -346,8 +347,7 @@ namespace ApiExamples
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "HTML help.chm");
             Assert.AreEqual(info.LoadFormat, LoadFormat.Chm);
 
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.Encoding = Encoding.GetEncoding("windows-1251");
+            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.GetEncoding("windows-1251") };
 
             Document doc = new Document(MyDir + "HTML help.chm", loadOptions);
         }
@@ -361,7 +361,7 @@ namespace ApiExamples
             //ExSummary:Shows how to binding structured document tags to any format.
             // If true - SDT will contain raw HTML text.
             // If false - mapped HTML will parsed and resulting document will be inserted into SDT content.
-            LoadOptions loadOptions = new LoadOptions {FlatOpcXmlMappingOnly = isFlatOpcXmlMappingOnly};
+            LoadOptions loadOptions = new LoadOptions { FlatOpcXmlMappingOnly = isFlatOpcXmlMappingOnly };
             Document doc = new Document(MyDir + "Structured document tag with HTML content.docx", loadOptions);
 
             SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
@@ -387,5 +387,67 @@ namespace ApiExamples
                     "TCSVerify vData3: \r\n\r\nDepression Program\r\n\r\nDepression Abuse"));
 #endif
         }
+
+        //ExStart
+        //ExFor:LoadOptions.ProgressCallback
+        //ExFor:IDocumentLoadingCallback
+        //ExFor:IDocumentLoadingCallback.Notify
+        //ExSummary:Shows how to notify the user if document loading exceeded expected loading time.
+        [Test]
+        public void ProgressCallback()
+        {
+            LoadingProgressCallback progressCallback = new LoadingProgressCallback();
+
+            LoadOptions loadOptions = new LoadOptions { ProgressCallback = progressCallback };
+
+            try
+            {
+                Document doc = new Document(MyDir + "Big document.docx", loadOptions);
+            }
+            catch (OperationCanceledException exception)
+            {
+                Console.WriteLine(exception.Message);
+
+                // Handle loading duration issue.
+            }
+        }
+
+        /// <summary>
+        /// Cancel a document loading after the "MaxDuration" seconds.
+        /// </summary>
+        public class LoadingProgressCallback : IDocumentLoadingCallback
+        {
+            /// <summary>
+            /// Ctr.
+            /// </summary>
+            public LoadingProgressCallback()
+            {
+                mLoadingStartedAt = DateTime.Now;
+            }
+
+            /// <summary>
+            /// Callback method which called during document loading.
+            /// </summary>
+            /// <param name="args">Loading arguments.</param>
+            public void Notify(DocumentLoadingArgs args)
+            {
+                DateTime canceledAt = DateTime.Now;
+                double ellapsedSeconds = (canceledAt - mLoadingStartedAt).TotalSeconds;
+
+                if (ellapsedSeconds > MaxDuration)
+                    throw new OperationCanceledException($"EstimatedProgress = {args.EstimatedProgress}; CanceledAt = {canceledAt}");
+            }
+
+            /// <summary>
+            /// Date and time when document loading is started.
+            /// </summary>
+            private readonly DateTime mLoadingStartedAt;
+
+            /// <summary>
+            /// Maximum allowed duration in sec.
+            /// </summary>
+            private const double MaxDuration = 0.5;
+        }
+        //ExEnd
     }
 }
