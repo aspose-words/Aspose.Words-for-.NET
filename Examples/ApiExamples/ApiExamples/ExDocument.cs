@@ -617,6 +617,27 @@ namespace ApiExamples
         }
 
         [Test]
+        public void ForceCopyStyles()
+        {
+            //ExStart
+            //ExFor:ImportFormatOptions.ForceCopyStyles
+            //ExSummary:Shows how to copy source styles with unique names forcibly.
+            // Both documents contain MyStyle1 and MyStyle2, MyStyle3 exists only in a source document.
+            Document srcDoc = new Document(MyDir + "Styles source.docx");
+            Document dstDoc = new Document(MyDir + "Styles destination.docx");
+
+            ImportFormatOptions options = new ImportFormatOptions { ForceCopyStyles = true };
+            dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
+
+            ParagraphCollection paras = dstDoc.Sections[1].Body.Paragraphs;
+            
+            Assert.AreEqual(paras[0].ParagraphFormat.Style.Name, "MyStyle1_0");
+            Assert.AreEqual(paras[1].ParagraphFormat.Style.Name, "MyStyle2_0");
+            Assert.AreEqual(paras[2].ParagraphFormat.Style.Name, "MyStyle3");
+            //ExEnd
+        }
+
+        [Test]
         public void ValidateIndividualDocumentSignatures()
         {
             //ExStart
