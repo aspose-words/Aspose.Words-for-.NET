@@ -74,7 +74,7 @@ namespace ApiExamples
             // If we convert a document that contains images into Markdown, we will end up with one Markdown file which links to several images.
             // Each image will be in the form of a file in the local file system.
             // There is also a callback that can customize the name and file system location of each image.
-            saveOptions.ImageSavingCallback = new SavedImageRename("DocumentBuilder.HandleDocument.md");
+            saveOptions.ImageSavingCallback = new SavedImageRename("MarkdownSaveOptions.HandleDocument.md");
 
             // The ImageSaving() method of our callback will be run at this time.
             doc.Save(ArtifactsDir + "MarkdownSaveOptions.HandleDocument.md", saveOptions);

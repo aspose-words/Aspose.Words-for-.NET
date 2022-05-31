@@ -149,7 +149,7 @@ namespace ApiExamples
             /// <summary>
             /// Maximum allowed duration in sec.
             /// </summary>
-            private const double MaxDuration = 0.1d;
+            private const double MaxDuration = 0.01d;
         }
         //ExEnd
     }
