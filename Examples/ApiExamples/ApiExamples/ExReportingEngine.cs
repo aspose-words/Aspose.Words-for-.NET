@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -300,6 +301,18 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ReportingEngine.Operators.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.Operators.docx", GoldsDir + "ReportingEngine.Operators Gold.docx"));
+        }
+
+        [Test]
+        public void HeaderVariable()
+        {
+            Document doc = new Document(MyDir + "Reporting engine template - Header variable.docx");
+
+            BuildReport(doc, new DataSet(), "", ReportBuildOptions.UseLegacyHeaderFooterVisiting);
+
+            doc.Save(ArtifactsDir + "ReportingEngine.HeaderVariable.docx");
+
+            Assert.AreEqual("Value of myHeaderVariable is: I am header variable", doc.FirstSection.Body.FirstParagraph.GetText().Trim());
         }
 
         [Test]
@@ -798,7 +811,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void SetBackgroundColor()
+        public void SetBackgroundColorDynamically()
         {
             Document doc = new Document(MyDir + "Reporting engine template - Background color.docx");
 
@@ -811,10 +824,30 @@ namespace ApiExamples
 
             BuildReport(doc, colors, "Colors");
 
-            doc.Save(ArtifactsDir + "ReportingEngine.BackColor.docx");
+            doc.Save(ArtifactsDir + "ReportingEngine.SetBackgroundColorDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.BackColor.docx",
-                GoldsDir + "ReportingEngine.BackColor Gold.docx"));
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetBackgroundColorDynamically.docx",
+                GoldsDir + "ReportingEngine.SetBackgroundColorDynamically Gold.docx"));
+        }
+
+        [Test]
+        public void SetTextColorDynamically()
+        {
+            Document doc = new Document(MyDir + "Reporting engine template - Text color.docx");
+
+            List<ColorItemTestClass> colors = new List<ColorItemTestClass>
+            {
+                new ColorItemTestBuilder().WithColor("Black", Color.Blue).Build(),
+                new ColorItemTestBuilder().WithColor("Red", Color.FromArgb(255, 0, 0)).Build(),
+                new ColorItemTestBuilder().WithColor("Empty", Color.Empty).Build()
+            };
+
+            BuildReport(doc, colors, "Colors");
+
+            doc.Save(ArtifactsDir + "ReportingEngine.SetTextColorDynamically.docx");
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetTextColorDynamically.docx",
+                GoldsDir + "ReportingEngine.SetTextColorDynamically Gold.docx"));
         }
 
         [Test]

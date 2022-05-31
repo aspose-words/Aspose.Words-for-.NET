@@ -10,11 +10,14 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using Aspose.Words;
+using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 #if NET48 || JAVA
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using Aspose.Words.Drawing;
+
 #elif NET5_0 || __MOBILE__
 using SkiaSharp;
 #endif
@@ -167,6 +170,25 @@ namespace ApiExamples
             //ExEnd
 
             TestUtil.VerifyImage(794, 1122, ArtifactsDir + "ImageSaveOptions.GraphicsQuality.jpg");
+        }
+
+        [Test]
+        public void UseTileFlipMode()
+        {
+            //ExStart
+            //ExFor:
+            //ExSummary:Shows how to prevent the white line appears when rendering with a high resolution.
+            Document doc = new Document(MyDir + "Shape high dpi.docx");
+                        
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            ShapeRenderer renderer = shape.GetShapeRenderer();
+            
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png)
+            {
+                Resolution = 500, GraphicsQualityOptions = new GraphicsQualityOptions { UseTileFlipMode = true }
+            };
+            renderer.Save(ArtifactsDir + "ImageSaveOptions.UseTileFlipMode.png", saveOptions);
+            //ExEnd
         }
 
         [TestCase(MetafileRenderingMode.Vector), Category("SkipMono")]
