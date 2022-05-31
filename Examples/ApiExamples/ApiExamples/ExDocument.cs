@@ -2660,5 +2660,15 @@ namespace ApiExamples
                 doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl);
             Assert.False(doc.Frameset.ChildFramesets[0].ChildFramesets[0].IsFrameLinkToFile);
         }
+
+        [Test]
+        public void OpenAzw()
+        {
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Azw3 document.azw3");
+            Assert.AreEqual(info.LoadFormat, LoadFormat.Azw3);
+
+            Document doc = new Document(MyDir + "Azw3 document.azw3");
+            Assert.True(doc.GetText().Contains("Hachette Book Group USA"));
+        }
     }
 }
