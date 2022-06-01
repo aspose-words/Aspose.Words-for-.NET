@@ -78,7 +78,7 @@ namespace ApiExamples
             builder.Write("Hello world!");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(saveFormat);
-            saveOptions.ExportTextBoxAsSvg = isTextBoxAsSvg;
+            saveOptions.ExportShapesAsSvg = isTextBoxAsSvg;
             
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTextBoxAsSvgEpub" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
 
@@ -902,14 +902,14 @@ namespace ApiExamples
             {
                 Assert.True(outDocContents.Contains("Content-ID: <document.html>"));
                 Assert.True(outDocContents.Contains("<link href=3D\"cid:styles.css\" type=3D\"text/css\" rel=3D\"stylesheet\" />"));
-                Assert.True(outDocContents.Contains("@font-face { font-family:'Arial Black'; src:url('cid:ariblk.ttf') }"));
+                Assert.True(outDocContents.Contains("@font-face { font-family:'Arial Black'; font-weight:bold; src:url('cid:arib=\r\nlk.ttf') }"));
                 Assert.True(outDocContents.Contains("<img src=3D\"cid:image.003.jpeg\" width=3D\"350\" height=3D\"180\" alt=3D\"\" />"));
             }
             else
             {
                 Assert.True(outDocContents.Contains("Content-Location: document.html"));
                 Assert.True(outDocContents.Contains("<link href=3D\"styles.css\" type=3D\"text/css\" rel=3D\"stylesheet\" />"));
-                Assert.True(outDocContents.Contains("@font-face { font-family:'Arial Black'; src:url('ariblk.ttf') }"));
+                Assert.True(outDocContents.Contains("@font-face { font-family:'Arial Black'; font-weight:bold; src:url('ariblk.t=\r\ntf') }"));
                 Assert.True(outDocContents.Contains("<img src=3D\"image.003.jpeg\" width=3D\"350\" height=3D\"180\" alt=3D\"\" />"));
             }
             //ExEnd
@@ -1333,7 +1333,7 @@ namespace ApiExamples
         public void ExportTextBox(bool exportTextBoxAsSvg)
         {
             //ExStart
-            //ExFor:HtmlSaveOptions.ExportTextBoxAsSvg
+            //ExFor:HtmlSaveOptions.ExportShapesAsSvg
             //ExSummary:Shows how to export text boxes as scalable vector graphics.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1348,7 +1348,7 @@ namespace ApiExamples
             // the save operation will convert shapes with text into SVG objects.
             // If we set the "ExportTextBoxAsSvg" flag to "false",
             // the save operation will convert shapes with text into images.
-            HtmlSaveOptions options = new HtmlSaveOptions { ExportTextBoxAsSvg = exportTextBoxAsSvg };
+            HtmlSaveOptions options = new HtmlSaveOptions { ExportShapesAsSvg = exportTextBoxAsSvg };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTextBox.html", options);
 
