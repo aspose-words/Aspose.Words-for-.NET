@@ -12,12 +12,11 @@ using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
+using Aspose.Words.Drawing;
 using NUnit.Framework;
 #if NET48 || JAVA
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using Aspose.Words.Drawing;
-
 #elif NET5_0 || __MOBILE__
 using SkiaSharp;
 #endif
