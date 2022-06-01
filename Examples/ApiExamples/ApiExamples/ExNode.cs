@@ -15,7 +15,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
-#if NET5_0 || __MOBILE__
+#if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #else
 using System.Drawing;
@@ -598,7 +598,7 @@ namespace ApiExamples
 
             #if NET48 || JAVA
             builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
-            #elif NET5_0 || __MOBILE__
+            #elif NET5_0_OR_GREATER || __MOBILE__
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
                 builder.InsertImage(image);
             #endif
@@ -709,7 +709,7 @@ namespace ApiExamples
 
             #if NET48 || JAVA
             builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
-            #elif NET5_0 || __MOBILE__
+            #elif NET5_0_OR_GREATER || __MOBILE__
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
                 builder.InsertImage(image);
             #endif

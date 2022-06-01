@@ -16,7 +16,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing.Text;
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -246,7 +246,7 @@ namespace ApiExamples
             }
             //ExEnd
         }
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
         [Test]
         public void RenderToSizeNetStandard2()
         {

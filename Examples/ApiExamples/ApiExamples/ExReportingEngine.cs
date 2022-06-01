@@ -19,7 +19,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Markup;
 using Aspose.Words.Reporting;
 using NUnit.Framework;
-#if NET5_0 || __MOBILE__
+#if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -412,7 +412,7 @@ namespace ApiExamples
             
             #if NET48 || JAVA
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
-            #elif NET5_0 || __MOBILE__
+            #elif NET5_0_OR_GREATER || __MOBILE__
             ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
             #endif
             
@@ -494,7 +494,7 @@ namespace ApiExamples
             
 #if NET48 || JAVA
             ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
             ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
 #endif
             BuildReport(template, image, "src", ReportBuildOptions.None);
