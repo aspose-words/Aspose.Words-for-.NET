@@ -11,7 +11,7 @@ using System.Globalization;
 using Aspose.BarCode.Generation;
 using Aspose.Words.Fields;
 using BarcodeParameters = Aspose.Words.Fields.BarcodeParameters;
-#if NET5_0 || __MOBILE__
+#if NET5_0_OR_GREATER || __MOBILE__
 using Image = SkiaSharp.SKBitmap;
 #endif
 
@@ -178,7 +178,7 @@ namespace ApiExamples
 #if NET48 || JAVA
             return generator.GenerateBarCodeImage();            
 
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
             generator.GenerateBarCodeImage().Save(ArtifactsDir + "GetBarcodeImage.png");
             return Image.Decode(ArtifactsDir + "GetBarcodeImage.png");
 #endif
@@ -202,7 +202,7 @@ namespace ApiExamples
             // Hardcode type for old-fashioned Barcode
 #if NET48 || JAVA
             return generator.GenerateBarCodeImage();
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
             generator.GenerateBarCodeImage().Save(ArtifactsDir + "OldBarcodeImage.png");            
             return Image.Decode(ArtifactsDir + "OldBarcodeImage.png");            
 #endif

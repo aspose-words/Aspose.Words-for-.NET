@@ -13,7 +13,7 @@ using Aspose.Words.Drawing;
 using NUnit.Framework;
 #if NET48 || JAVA
 using System.Drawing;
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -133,7 +133,7 @@ namespace ApiExamples
 
             builder.Document.Save(ArtifactsDir + "Image.FromImage.docx");
         }
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
         [Test]
         [Category("SkipMono")]
         public void FromImageNetStandard2()
@@ -413,7 +413,7 @@ namespace ApiExamples
 
             Assert.AreEqual(400, image.Size.Width);
             Assert.AreEqual(400, image.Size.Height);
-#elif NET5_0
+#elif NET5_0_OR_GREATER
             SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg");
 
             Assert.AreEqual(400, image.Width);

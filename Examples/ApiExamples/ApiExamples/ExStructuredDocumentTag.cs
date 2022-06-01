@@ -17,7 +17,7 @@ using System.Text;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
 using Aspose.Pdf.Text;
 #endif
 
@@ -117,7 +117,7 @@ namespace ApiExamples
             Assert.That(tags[0].XmlMapping.StoreItemId, Is.Empty);
         }
 
-#if NET48 || NET5_0 || JAVA // because of a Xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
+#if NET48 || NET5_0_OR_GREATER || JAVA // because of a Xamarin bug with CultureInfo (https://xamarin.github.io/bugzilla-archives/59/59077/bug.html)
         [Test, Category("SkipMono")]
         public void Date()
         {
@@ -886,7 +886,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);

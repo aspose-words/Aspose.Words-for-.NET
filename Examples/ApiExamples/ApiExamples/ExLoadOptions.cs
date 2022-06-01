@@ -334,7 +334,7 @@ namespace ApiExamples
 
 #if NET48
             TestUtil.VerifyImageInShape(1666, 1666, ImageType.Png, shape);
-#elif NET5_0
+#elif NET5_0_OR_GREATER
             TestUtil.VerifyImageInShape(1666, 1666, ImageType.Png, shape);
 #endif
             //ExEnd
@@ -370,7 +370,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "LoadOptions.FlatOpcXmlMappingOnly.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "LoadOptions.FlatOpcXmlMappingOnly.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();

@@ -22,7 +22,7 @@ using Aspose.Words.Loading;
 using NUnit.Framework;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
-#if NET5_0 || __MOBILE__
+#if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -233,7 +233,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.Html5Support.html", saveOptions);
         }
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
         [TestCase(false)]
         [TestCase(true)]
         public void ExportFonts(bool exportAsBase64)
@@ -1701,7 +1701,7 @@ namespace ApiExamples
 
             Assert.AreEqual(400, image.Size.Width);
             Assert.AreEqual(400, image.Size.Height);
-#elif NET5_0
+#elif NET5_0_OR_GREATER
             SKBitmap image = SKBitmap.Decode(ImageDir + "Transparent background logo.png");
 
             Assert.AreEqual(400, image.Width);
@@ -1731,7 +1731,7 @@ namespace ApiExamples
             Assert.That(3000, Is.AtLeast(fileInfo.Length));
         else
             Assert.That(20000, Is.LessThan(fileInfo.Length));
-#elif NET5_0
+#elif NET5_0_OR_GREATER
         if (scaleImageToShapeSize)
             Assert.That(10000, Is.AtLeast(fileInfo.Length));
         else

@@ -15,7 +15,7 @@ using NUnit.Framework;
 #if NET48 || JAVA
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -85,7 +85,7 @@ namespace ApiExamples
             if (useGdiEmfRenderer)
 #if NET48 || JAVA
                 Assert.That(300000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length));
-#elif NET5_0
+#elif NET5_0_OR_GREATER
 	            Assert.That(30000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length));
 #endif
             else
@@ -282,7 +282,7 @@ namespace ApiExamples
                     Assert.That(20000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
                     break;
             }
-#elif NET5_0
+#elif NET5_0_OR_GREATER
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
@@ -388,7 +388,7 @@ namespace ApiExamples
                     Assert.That(200000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
                     break;
             }
-#elif NET5_0
+#elif NET5_0_OR_GREATER
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
@@ -564,7 +564,7 @@ namespace ApiExamples
                     Assert.That(3000000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
                     break;
                 case TiffCompression.Rle:
-#if NET5_0
+#if NET5_0_OR_GREATER
                     Assert.That(6000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
 #else
                     Assert.That(600000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
@@ -615,7 +615,7 @@ namespace ApiExamples
 
             Assert.AreEqual(612, image.Width);
             Assert.AreEqual(792, image.Height);
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
             using (SKBitmap image = SKBitmap.Decode(ArtifactsDir + "ImageSaveOptions.Resolution.72dpi.png")) 
             {
                 Assert.AreEqual(612, image.Width);
@@ -634,7 +634,7 @@ namespace ApiExamples
 
             Assert.AreEqual(2550, image.Width);
             Assert.AreEqual(3300, image.Height);
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
             using (SKBitmap image = SKBitmap.Decode(ArtifactsDir + "ImageSaveOptions.Resolution.300dpi.png")) 
             {
                 Assert.AreEqual(2550, image.Width);

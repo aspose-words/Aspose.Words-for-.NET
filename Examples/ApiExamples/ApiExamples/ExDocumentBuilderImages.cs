@@ -14,7 +14,7 @@ using NUnit.Framework;
 #if NET48 || JAVA
 using System.Drawing;
 using System.Drawing.Imaging;
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -370,7 +370,7 @@ namespace ApiExamples
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.HeightPoints, 0.1d);
             Assert.AreEqual(300.0d, imageShape.ImageData.ImageSize.WidthPoints, 0.1d);
         }
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
         [Test]
         public void InsertImageFromImageObjectNetStandard2()
         {
