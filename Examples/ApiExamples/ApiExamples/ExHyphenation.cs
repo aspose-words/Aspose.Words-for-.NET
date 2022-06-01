@@ -56,7 +56,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Hyphenation.Dictionary.Unregistered.pdf");
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Hyphenation.Dictionary.Registered.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);

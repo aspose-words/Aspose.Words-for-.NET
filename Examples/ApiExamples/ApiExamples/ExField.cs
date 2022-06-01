@@ -29,7 +29,7 @@ using NUnit.Framework;
 using LoadOptions = Aspose.Words.Loading.LoadOptions;
 #if NET48 || JAVA
 using Aspose.BarCode.BarCodeRecognition;
-#elif NET5_0
+#elif NET5_0_OR_GREATER
 using SkiaSharp;
 #endif
 
@@ -2987,7 +2987,7 @@ namespace ApiExamples
                 {
                     #if NET48 || JAVA
                     args.Image = Image.FromFile(mImageFilenames[args.FieldValue.ToString()]);
-                    #elif NET5_0
+                    #elif NET5_0_OR_GREATER
                     args.Image = SKBitmap.Decode(mImageFilenames[args.FieldValue.ToString()]);
                     args.ImageFileName = mImageFilenames[args.FieldValue.ToString()];
                     #endif
@@ -4627,7 +4627,7 @@ namespace ApiExamples
             Assert.True(field.SuppressNonDelimiters);
         }
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
         [Test]
         public void FieldDate()
         {

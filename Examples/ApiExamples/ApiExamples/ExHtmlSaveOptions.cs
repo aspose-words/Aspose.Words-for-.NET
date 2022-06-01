@@ -22,7 +22,7 @@ using Aspose.Words.Loading;
 using NUnit.Framework;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
-#if NET5_0 || __MOBILE__
+#if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -78,7 +78,7 @@ namespace ApiExamples
             builder.Write("Hello world!");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(saveFormat);
-            saveOptions.ExportTextBoxAsSvg = isTextBoxAsSvg;
+            saveOptions.ExportShapesAsSvg = isTextBoxAsSvg;
             
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTextBoxAsSvgEpub" + FileFormatUtil.SaveFormatToExtension(saveFormat), saveOptions);
 
@@ -233,7 +233,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.Html5Support.html", saveOptions);
         }
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
         [TestCase(false)]
         [TestCase(true)]
         public void ExportFonts(bool exportAsBase64)
@@ -902,14 +902,14 @@ namespace ApiExamples
             {
                 Assert.True(outDocContents.Contains("Content-ID: <document.html>"));
                 Assert.True(outDocContents.Contains("<link href=3D\"cid:styles.css\" type=3D\"text/css\" rel=3D\"stylesheet\" />"));
-                Assert.True(outDocContents.Contains("@font-face { font-family:'Arial Black'; src:url('cid:ariblk.ttf') }"));
+                Assert.True(outDocContents.Contains("@font-face { font-family:'Arial Black'; font-weight:bold; src:url('cid:arib=\r\nlk.ttf') }"));
                 Assert.True(outDocContents.Contains("<img src=3D\"cid:image.003.jpeg\" width=3D\"350\" height=3D\"180\" alt=3D\"\" />"));
             }
             else
             {
                 Assert.True(outDocContents.Contains("Content-Location: document.html"));
                 Assert.True(outDocContents.Contains("<link href=3D\"styles.css\" type=3D\"text/css\" rel=3D\"stylesheet\" />"));
-                Assert.True(outDocContents.Contains("@font-face { font-family:'Arial Black'; src:url('ariblk.ttf') }"));
+                Assert.True(outDocContents.Contains("@font-face { font-family:'Arial Black'; font-weight:bold; src:url('ariblk.t=\r\ntf') }"));
                 Assert.True(outDocContents.Contains("<img src=3D\"image.003.jpeg\" width=3D\"350\" height=3D\"180\" alt=3D\"\" />"));
             }
             //ExEnd
@@ -1333,7 +1333,7 @@ namespace ApiExamples
         public void ExportShape(bool exportShapesAsSvg)
         {
             //ExStart
-            //ExFor:HtmlSaveOptions.exportShapesAsSvg
+            //ExFor:HtmlSaveOptions.ExportShapesAsSvg
             //ExSummary:Shows how to export shape as scalable vector graphics.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1701,7 +1701,7 @@ namespace ApiExamples
 
             Assert.AreEqual(400, image.Size.Width);
             Assert.AreEqual(400, image.Size.Height);
-#elif NET5_0
+#elif NET5_0_OR_GREATER
             SKBitmap image = SKBitmap.Decode(ImageDir + "Transparent background logo.png");
 
             Assert.AreEqual(400, image.Width);
@@ -1731,7 +1731,7 @@ namespace ApiExamples
             Assert.That(3000, Is.AtLeast(fileInfo.Length));
         else
             Assert.That(20000, Is.LessThan(fileInfo.Length));
-#elif NET5_0
+#elif NET5_0_OR_GREATER
         if (scaleImageToShapeSize)
             Assert.That(10000, Is.AtLeast(fileInfo.Length));
         else

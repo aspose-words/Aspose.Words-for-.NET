@@ -14,7 +14,7 @@ namespace ApiExamples
     [TestFixture]
     class ExLicense : ApiExampleBase
     {
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
         [Test]
         public void LicenseFromFileNoPath()
         {

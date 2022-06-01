@@ -29,11 +29,11 @@ using WarningType = Aspose.Words.WarningType;
 using Image =
 #if NET48 || JAVA
 System.Drawing.Image;
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
 SkiaSharp.SKBitmap;
 using SkiaSharp;
 #endif
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
 using Aspose.Pdf;
 using Aspose.Pdf.Annotations;
 using Aspose.Pdf.Facades;
@@ -77,7 +77,7 @@ namespace ApiExamples
             }
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.OnePage.pdf");
 
             Assert.AreEqual(1, pdfDocument.Pages.Count);
@@ -131,7 +131,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.HeadingsOutlineLevels.pdf", saveOptions);
             //ExEnd
 
-            #if NET48 || NET5_0 || JAVA
+            #if NET48 || NET5_0_OR_GREATER || JAVA
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "PdfSaveOptions.HeadingsOutlineLevels.pdf");
 
@@ -184,7 +184,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf");
 
@@ -238,7 +238,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.TableHeadingOutlines.pdf", pdfSaveOptions);
             //ExEnd
 
-            #if NET48 || NET5_0 || JAVA
+            #if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.TableHeadingOutlines.pdf");
 
             if (createOutlinesForHeadingsInTables)
@@ -317,7 +317,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExpandedOutlineLevels.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ExpandedOutlineLevels.pdf");
 
             Assert.AreEqual(1, pdfDocument.Outlines.Count);
@@ -372,7 +372,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.UpdateFields.pdf", options);
             //ExEnd
 
-            #if NET48 || NET5_0 || JAVA
+            #if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.UpdateFields.pdf");
 
             TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
@@ -409,7 +409,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreserveFormFields.pdf", pdfOptions);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PreserveFormFields.pdf");
 
             Assert.AreEqual(1, pdfDocument.Pages.Count);
@@ -479,7 +479,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.Compliance.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.Compliance.pdf");
 
             switch (pdfCompliance)
@@ -584,7 +584,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf", pdfSaveOptions);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf");
             Stream pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[1].ToStream();
 
@@ -604,7 +604,7 @@ namespace ApiExamples
                             Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length));
 #if NET48
                         Assert.Throws<ArgumentException>(() => { TestUtil.VerifyImage(400, 400, pdfDocImageStream); });
-#elif NET5_0
+#elif NET5_0_OR_GREATER
                         Assert.Throws<NullReferenceException>(() => { TestUtil.VerifyImage(400, 400, pdfDocImageStream); });
 #endif
                         break;
@@ -650,7 +650,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ImageColorSpaceExportMode.pdf", pdfSaveOptions);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageColorSpaceExportMode.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
@@ -720,7 +720,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.LowerResolution.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.Default.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
@@ -750,7 +750,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ColorRendering.pdf", pdfSaveOptions);
             //ExEnd
 
-            #if NET48 || NET5_0 || JAVA
+            #if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ColorRendering.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
@@ -791,7 +791,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.DocTitle.pdf", pdfSaveOptions);
             //ExEnd
 
-            #if NET48 || NET5_0 || JAVA
+            #if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DocTitle.pdf");
 
             Assert.AreEqual(displayDocTitle, pdfDocument.DisplayDocTitle);
@@ -832,7 +832,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
             Page page = pdfDocument.Pages[1];
@@ -878,7 +878,7 @@ namespace ApiExamples
                     "<</Type/Border/S/S/W 0>>/A<</Type /Action/S /URI/URI(https://www.google.com/search?q=%20aspose)>>>>",
                     ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf");
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf");
 
@@ -983,7 +983,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf");
             string inputDocLocaleName = new CultureInfo(doc.Styles.DefaultFont.LocaleId).Name;
@@ -1073,7 +1073,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf");
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
 
@@ -1132,7 +1132,7 @@ namespace ApiExamples
             FontSettings.DefaultInstance.SetFontsSources(originalFontsSources);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf");
 
             Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
@@ -1191,7 +1191,7 @@ namespace ApiExamples
             }
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf");
 
             Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
@@ -1238,7 +1238,7 @@ namespace ApiExamples
                 Assert.That(30000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf").Length));
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf");
 
             Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
@@ -1283,7 +1283,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf");
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
@@ -1341,7 +1341,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
 
@@ -1401,7 +1401,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf");
             GoToAction action = (GoToAction)pdfDocument.OpenAction;
 
@@ -1475,7 +1475,7 @@ namespace ApiExamples
                     break;
             }
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
 
             switch (pageMode)
@@ -1556,7 +1556,7 @@ namespace ApiExamples
                             ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf"));
             }
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
             Page page = pdfDocument.Pages[1];
             AnnotationSelector annotationSelector = new AnnotationSelector(new LinkAnnotation(page, Rectangle.Trivial));
@@ -1640,7 +1640,7 @@ namespace ApiExamples
                     break;
             }
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
 
             Assert.AreEqual("Aspose.Words", pdfDocument.Info.Creator);
@@ -1699,7 +1699,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
 
@@ -1767,7 +1767,7 @@ namespace ApiExamples
                     break;
             }
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
 
@@ -1969,7 +1969,7 @@ namespace ApiExamples
             private readonly List<WarningInfo> mWarnings = new List<WarningInfo>();
         }
 
-#elif NET5_0
+#elif NET5_0_OR_GREATER
         [TestCase(false)]
         [TestCase(true)]
         public void PreblendImagesNetStandard2(bool preblendImages)
@@ -2102,7 +2102,7 @@ namespace ApiExamples
             Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf")
                 .HasDigitalSignature);
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf");
 
             Assert.True(pdfDocument.Form.SignaturesExist);
@@ -2170,7 +2170,7 @@ namespace ApiExamples
                                         "<</Type /Annot/Subtype /Widget/Rect [0 0 0 0]/FT /Sig/T", 
             ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
 
             Assert.True(pdfDocument.Form.SignaturesExist);
@@ -2220,7 +2220,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
 
@@ -2280,7 +2280,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.EncryptionPermissions.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument;
 
             Assert.Throws<InvalidPasswordException>(() => 
@@ -2329,7 +2329,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.SetNumeralFormat.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.SetNumeralFormat.pdf");
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
 
@@ -2388,7 +2388,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExportPageSet.All.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ExportPageSet.Even.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             pdfDocument.Pages.Accept(textAbsorber);

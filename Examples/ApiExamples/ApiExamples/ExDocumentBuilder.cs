@@ -27,7 +27,7 @@ using Aspose.Words.Notes;
 using Aspose.Words.Saving;
 using List = NUnit.Framework.List;
 
-#if NET5_0 || __MOBILE__
+#if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -411,7 +411,7 @@ namespace ApiExamples
             Assert.AreEqual("PowerPoint.Show.12", shape.OleFormat.ProgId);
             Assert.AreEqual(".pptx", shape.OleFormat.SuggestedExtension);
         }
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
         [Test]
         public void InsertWatermarkNetStandard2()
         {
@@ -3102,7 +3102,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NET48 || NET5_0 || JAVA
+        #if NET48 || NET5_0_OR_GREATER || JAVA
         /// <summary>
         /// All markdown tests work with the same file. That's why we need order for them.
         /// </summary>

@@ -33,11 +33,11 @@ using Aspose.Words.Vba;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
 using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
 using Aspose.Pdf.Text;
 using Aspose.Words.Shaping.HarfBuzz;
 #endif
-#if NET5_0 || __MOBILE__
+#if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -165,7 +165,7 @@ namespace ApiExamples
                     Assert.AreEqual(1056, image.Height);
                 }
             }
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
             using (MemoryStream stream = new MemoryStream())
             {
                 doc.Save(stream, SaveFormat.Bmp);
@@ -188,7 +188,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
         [Test, Category("SkipMono")]
         public void OpenType()
         {
@@ -1751,7 +1751,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.LayoutOptionsHiddenText.pdf");
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.LayoutOptionsHiddenText.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
@@ -1785,7 +1785,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.LayoutOptionsParagraphMarks.pdf");
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.LayoutOptionsParagraphMarks.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
@@ -2051,7 +2051,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
             //ExEnd
 
-#if NET48 || NET5_0 || JAVA
+#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc =
                 new Aspose.Pdf.Document(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
@@ -2434,7 +2434,7 @@ namespace ApiExamples
 
 #if NET48 || JAVA
             doc.Watermark.SetImage(Image.FromFile(ImageDir + "Logo.jpg"), imageWatermarkOptions);
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {
                 doc.Watermark.SetImage(image, imageWatermarkOptions);

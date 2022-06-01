@@ -1,7 +1,7 @@
 ﻿using System.IO;
 #if NET48 || JAVA
 using System.Drawing;
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -11,7 +11,7 @@ namespace ApiExamples.TestData.TestClasses
     {
 #if NET48 || JAVA
         public Image Image { get; set; }        
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
         public SKBitmap Image { get; set; }
 #endif
         public Stream ImageStream { get; set; }
@@ -26,7 +26,7 @@ namespace ApiExamples.TestData.TestClasses
             ImageBytes = imageBytes;
             ImageString = imageString;
         }
-#elif NET5_0 || __MOBILE__
+#elif NET5_0_OR_GREATER || __MOBILE__
         public ImageTestClass(SKBitmap image, Stream imageStream, byte[] imageBytes, string imageString)
         {
             this.Image = image;
