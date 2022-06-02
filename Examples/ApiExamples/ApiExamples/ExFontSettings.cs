@@ -1284,9 +1284,8 @@ namespace ApiExamples
         //ExEnd
 
         //ExStart
-        //ExFor:FileFontSource(String, Int32, String)
-        //ExFor:MemoryFontSource(byte[], Int32, String)
-        //ExFor:StreamFontSource(Int32, String)
+        //ExFor:FileFontSource.#ctor(String, Int32, String)
+        //ExFor:MemoryFontSource.#ctor(Byte[], Int32, String)
         //ExFor:FontSettings.SaveSearchCache(Stream)
         //ExFor:FontSettings.SetFontsSources(FontSourceBase[], Stream)
         //ExSummary:Shows how to speed up the font cache initialization process.
@@ -1309,7 +1308,7 @@ namespace ApiExamples
                 parsedFonts.SaveSearchCache(cacheStream);
                 loadedCache.SetFontsSources(new FontSourceBase[]
                 {
-                    new SearchCacheStream(cacheKey1),
+                    new SearchCacheStream(cacheKey1),                    
                     new MemoryFontSource(File.ReadAllBytes(FontsDir + "Arvo-Bold.ttf"), 0, cacheKey2)
                 }, cacheStream);
             }

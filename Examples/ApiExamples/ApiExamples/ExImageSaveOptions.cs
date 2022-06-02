@@ -13,6 +13,7 @@ using Aspose.Words;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using NUnit.Framework;
+using Aspose.Words.Drawing;
 #if NET48 || JAVA
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
