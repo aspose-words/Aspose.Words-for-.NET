@@ -175,7 +175,7 @@ namespace ApiExamples
         public void UseTileFlipMode()
         {
             //ExStart
-            //ExFor:
+            //ExFor:UseTileFlipMode
             //ExSummary:Shows how to prevent the white line appears when rendering with a high resolution.
             Document doc = new Document(MyDir + "Shape high dpi.docx");
                         
