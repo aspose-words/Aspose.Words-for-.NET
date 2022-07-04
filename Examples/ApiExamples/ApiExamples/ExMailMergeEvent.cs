@@ -343,7 +343,7 @@ namespace ApiExamples
 
             imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImageInShape(5184, 3456, ImageType.Jpeg, imageShape);
+            TestUtil.VerifyImageInShape(252, 213, ImageType.Png, imageShape);
         }
 
 #if NET48 || JAVA
