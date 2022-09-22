@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Fields;
@@ -11,6 +11,18 @@ namespace DocsExamples.Programming_with_Documents
 {
     internal class WorkingWithFields : DocsExamplesBase
     {
+        [Test]
+        public void FieldCode()
+        {
+            Document doc = new Document(MyDir + "Hyperlinks.docx");
+
+            foreach (Field field in doc.Range.Fields)
+            {
+                string fieldCode = field.GetFieldCode();
+                string fieldResult = field.Result;
+            }
+        }
+
         [Test]
         public void ChangeFieldUpdateCultureSource()
         {
@@ -106,6 +118,15 @@ namespace DocsExamples.Programming_with_Documents
             Field field = doc.Range.Fields[0];
             field.Remove();
             //ExEnd:RemoveField
+        }
+
+        [Test]
+        public void UnlinkFields()
+        {
+            //ExStart:UnlinkFields
+            Document doc = new Document(MyDir + "Various fields.docx");
+            doc.UnlinkFields();
+            //ExEnd:UnlinkFields
         }
 
         [Test]
@@ -286,6 +307,32 @@ namespace DocsExamples.Programming_with_Documents
             
             doc.Save(ArtifactsDir + "WorkingWithFields.InsertField.docx");
             //ExEnd:InsertField
+        }
+
+        [Test]
+        public void InsertFieldUsingFieldBuilder()
+        {
+            Document doc = new Document();
+
+            // Prepare IF field with two nested MERGEFIELD fields: { IF "left expression" = "right expression" "Firstname: { MERGEFIELD firstname }" "Lastname: { MERGEFIELD lastname }"}
+            FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldIf)
+                .AddArgument("left expression")
+                .AddArgument("=")
+                .AddArgument("right expression")
+                .AddArgument(
+                    new FieldArgumentBuilder()
+                        .AddText("Firstname: ")
+                        .AddField(new FieldBuilder(FieldType.FieldMergeField).AddArgument("firstname")))
+                .AddArgument(
+                    new FieldArgumentBuilder()
+                        .AddText("Lastname: ")
+                        .AddField(new FieldBuilder(FieldType.FieldMergeField).AddArgument("lastname")));
+
+            // Insert IF field in exact location            
+            Field field = fieldBuilder.BuildAndInsert(doc.FirstSection.Body.FirstParagraph);
+            field.Update();
+
+            doc.Save(ArtifactsDir + "Field.InsertFieldUsingFieldBuilder.docx");
         }
 
         [Test]
