@@ -85,7 +85,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             Document doc = new Document(MyDir + "Document.docx");
 
             InsertWatermarkText(doc, "CONFIDENTIAL");
-            doc.Save(ArtifactsDir + "TestFile.Watermark.docx");
+            doc.Save(ArtifactsDir + "WorkWithWatermark.AddWatermark.docx");
 
             RemoveWatermarkText(doc);
             doc.Save(ArtifactsDir + "WorkWithWatermark.RemoveWatermark.docx");
