@@ -871,7 +871,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void UpdateSdtContent(bool updateSdtContent)
+        public void UpdateSdtContent()
         {
             //ExStart
             //ExFor:SaveOptions.UpdateSdtContent
@@ -899,8 +899,7 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.AreEqual(updateSdtContent ? "Value 2" : "Choose an item.",
-                textAbsorber.Text);
+            Assert.AreEqual("Value 2", textAbsorber.Text);
 #endif
         }
 
