@@ -870,8 +870,7 @@ namespace ApiExamples
             Assert.AreEqual("Built-in", buildingBlockSdt.BuildingBlockCategory);
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
+        [Test]
         public void UpdateSdtContent(bool updateSdtContent)
         {
             //ExStart
@@ -892,16 +891,7 @@ namespace ApiExamples
 
             doc.FirstSection.Body.AppendChild(tag);
 
-            // Create a "PdfSaveOptions" object to pass to the document's "Save" method
-            // to modify how that method saves the document to .PDF.
-            PdfSaveOptions options = new PdfSaveOptions();
-
-            // Set the "UpdateSdtContent" property to "false" not to update the structured document tags
-            // while saving the document to PDF. They will display their default values as they were at the time of construction.
-            // Set the "UpdateSdtContent" property to "true" to make sure the tags display updated values in the PDF.
-            options.UpdateSdtContent = updateSdtContent;
-
-            doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf", options);
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf");
             //ExEnd
 
 #if NET48 || NET5_0_OR_GREATER || JAVA
