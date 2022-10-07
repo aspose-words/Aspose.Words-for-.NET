@@ -14,7 +14,7 @@ namespace Runner.Android
 {
 	
 	
-	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Android.Build.Tasks", "12.2.4.160")]
+	[global::System.CodeDom.Compiler.GeneratedCodeAttribute("Xamarin.Android.Build.Tasks", "13.0.0.73")]
 	public partial class Resource
 	{
 		
