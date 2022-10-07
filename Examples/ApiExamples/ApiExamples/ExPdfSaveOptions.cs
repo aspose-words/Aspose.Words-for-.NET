@@ -451,6 +451,7 @@ namespace ApiExamples
         [TestCase(PdfCompliance.PdfA2u)]
         [TestCase(PdfCompliance.Pdf17)]
         [TestCase(PdfCompliance.PdfA2a)]
+        [TestCase(PdfCompliance.PdfUa1)]
         public void Compliance(PdfCompliance pdfCompliance)
         {
             //ExStart
@@ -461,6 +462,8 @@ namespace ApiExamples
 
             // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
             // to modify how that method converts the document to .PDF.
+            // Note that some PdfSaveOptions are prohibited when saving to one of the standards and automatically fixed.
+            // Use IWarningCallback to know which options are automatically fixed.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
             // Set the "Compliance" property to "PdfCompliance.PdfA1b" to comply with the "PDF/A-1b" standard,
@@ -468,6 +471,8 @@ namespace ApiExamples
             // Set the "Compliance" property to "PdfCompliance.Pdf17" to comply with the "1.7" standard.
             // Set the "Compliance" property to "PdfCompliance.PdfA1a" to comply with the "PDF/A-1a" standard,
             // which complies with "PDF/A-1b" as well as preserving the document structure of the original document.
+            // Set the "Compliance" property to "PdfCompliance.PdfUa1" to comply with the "PDF/UA-1" (ISO 14289-1) standard,
+            // which aims to define represent electronic documents in PDF that allow the file to be accessible.
             // This helps with making documents searchable but may significantly increase the size of already large documents.
             saveOptions.Compliance = pdfCompliance;
 
@@ -489,6 +494,10 @@ namespace ApiExamples
                     break;
                 case PdfCompliance.PdfA2u:
                     Assert.AreEqual(PdfFormat.PDF_A_2U, pdfDocument.PdfFormat);
+                    Assert.AreEqual("1.7", pdfDocument.Version);
+                    break;
+                case PdfCompliance.PdfUa1:
+                    Assert.AreEqual(PdfFormat.PDF_UA_1, pdfDocument.PdfFormat);
                     Assert.AreEqual("1.7", pdfDocument.Version);
                     break;
             }
@@ -1405,6 +1414,7 @@ namespace ApiExamples
         [TestCase(PdfPageMode.UseOC)]
         [TestCase(PdfPageMode.UseOutlines)]
         [TestCase(PdfPageMode.UseNone)]
+        [TestCase(PdfPageMode.UseAttachments)]
         public void PageMode(PdfPageMode pageMode)
         {
             //ExStart
@@ -1428,6 +1438,7 @@ namespace ApiExamples
             // Set the "PageMode" property to "PdfPageMode.UseOutlines" to get the PDF reader
             // also to display the outline, if possible.
             // Set the "PageMode" property to "PdfPageMode.UseNone" to get the PDF reader to display just the document itself.
+            // Set the "PageMode" property to "PdfPageMode.UseAttachments" to make visible attachments panel.
             options.PageMode = pageMode;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PageMode.pdf", options);
@@ -1457,6 +1468,11 @@ namespace ApiExamples
                     TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/Lang({docLocaleName})/Metadata 4 0 R>>\r\n",
                         ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
                     break;
+                case PdfPageMode.UseAttachments:
+                    TestUtil.FileContainsString(
+                        $"<</Type /Catalog/Pages 3 0 R/PageMode /UseAttachments/Lang({docLocaleName})/Metadata 4 0 R>>\r\n",
+                        ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
+                    break;
             }
 
 #if NET48 || NET5_0_OR_GREATER || JAVA
@@ -1476,6 +1492,9 @@ namespace ApiExamples
                     break;
                 case PdfPageMode.UseOC:
                     Assert.AreEqual(Aspose.Pdf.PageMode.UseOC, pdfDocument.PageMode);
+                    break;
+                case PdfPageMode.UseAttachments:
+                    Assert.AreEqual(Aspose.Pdf.PageMode.UseAttachments, pdfDocument.PageMode);
                     break;
             }
 #endif

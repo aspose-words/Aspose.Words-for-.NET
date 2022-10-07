@@ -955,7 +955,7 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        public void ExportImagesAsBase64(bool exportItemsAsBase64)
+        public void ExportImagesAsBase64(bool exportImagesAsBase64)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportFontsAsBase64
@@ -965,7 +965,7 @@ namespace ApiExamples
 
             HtmlSaveOptions options = new HtmlSaveOptions
             {
-                ExportImagesAsBase64 = exportItemsAsBase64,
+                ExportImagesAsBase64 = exportImagesAsBase64,
                 PrettyFormat = true
             };
 
@@ -973,7 +973,7 @@ namespace ApiExamples
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportImagesAsBase64.html");
 
-            Assert.True(exportItemsAsBase64
+            Assert.True(exportImagesAsBase64
                 ? outDocContents.Contains("<img src=\"data:image/png;base64")
                 : outDocContents.Contains("<img src=\"HtmlSaveOptions.ExportImagesAsBase64.001.png\""));
             //ExEnd
@@ -1193,12 +1193,12 @@ namespace ApiExamples
             if (exportPageMargins)
             {
                 Assert.True(outDocContents.Contains("<style type=\"text/css\">div.Section1 { margin:70.85pt }</style>"));
-                Assert.True(outDocContents.Contains("<div class=\"Section1\"><p style=\"margin-top:0pt; margin-left:151pt; margin-bottom:0pt\">"));
+                Assert.True(outDocContents.Contains("<div class=\"Section1\"><p style=\"margin-top:0pt; margin-left:150pt; margin-bottom:0pt\">"));
             }
             else
             {
                 Assert.False(outDocContents.Contains("style type=\"text/css\">"));
-                Assert.True(outDocContents.Contains("<div><p style=\"margin-top:0pt; margin-left:221.85pt; margin-bottom:0pt\">"));
+                Assert.True(outDocContents.Contains("<div><p style=\"margin-top:0pt; margin-left:220.85pt; margin-bottom:0pt\">"));
             }
             //ExEnd
         }
@@ -1330,11 +1330,11 @@ namespace ApiExamples
 
         [TestCase(false)]
         [TestCase(true)]
-        public void ExportTextBox(bool exportTextBoxAsSvg)
+        public void ExportShape(bool exportShapesAsSvg)
         {
             //ExStart
             //ExFor:HtmlSaveOptions.ExportShapesAsSvg
-            //ExSummary:Shows how to export text boxes as scalable vector graphics.
+            //ExSummary:Shows how to export shape as scalable vector graphics.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1348,13 +1348,13 @@ namespace ApiExamples
             // the save operation will convert shapes with text into SVG objects.
             // If we set the "ExportTextBoxAsSvg" flag to "false",
             // the save operation will convert shapes with text into images.
-            HtmlSaveOptions options = new HtmlSaveOptions { ExportShapesAsSvg = exportTextBoxAsSvg };
+            HtmlSaveOptions options = new HtmlSaveOptions { ExportShapesAsSvg = exportShapesAsSvg };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTextBox.html", options);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportTextBox.html");
 
-            if (exportTextBoxAsSvg)
+            if (exportShapesAsSvg)
             {
                 Assert.True(outDocContents.Contains(
                     "<span style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\">" +
@@ -1869,5 +1869,66 @@ namespace ApiExamples
                     html);
             //ExEnd
         }
+
+        [TestCase(SaveFormat.Html, "html")]
+        [TestCase(SaveFormat.Mhtml, "mhtml")]
+        [TestCase(SaveFormat.Epub, "epub")]
+        //ExStart
+        //ExFor:SaveOptions.ProgressCallback
+        //ExFor:IDocumentSavingCallback
+        //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
+        //ExFor:DocumentSavingArgs.EstimatedProgress
+        //ExSummary:Shows how to manage a document while saving to html.
+        public void ProgressCallback(SaveFormat saveFormat, string ext)
+        {
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            // Following formats are supported: Html, Mhtml, Epub.
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(saveFormat)
+            {
+                ProgressCallback = new SavingProgressCallback()
+            };
+
+            var exception = Assert.Throws<OperationCanceledException>(() =>
+                doc.Save(ArtifactsDir + $"HtmlSaveOptions.ProgressCallback.{ext}", saveOptions));
+            Assert.True(exception?.Message.Contains("EstimatedProgress"));
+        }
+
+        /// <summary>
+        /// Saving progress callback. Cancel a document saving after the "MaxDuration" seconds.
+        /// </summary>
+        public class SavingProgressCallback : IDocumentSavingCallback
+        {
+            /// <summary>
+            /// Ctr.
+            /// </summary>
+            public SavingProgressCallback()
+            {
+                mSavingStartedAt = DateTime.Now;
+            }
+
+            /// <summary>
+            /// Callback method which called during document saving.
+            /// </summary>
+            /// <param name="args">Saving arguments.</param>
+            public void Notify(DocumentSavingArgs args)
+            {
+                DateTime canceledAt = DateTime.Now;
+                double ellapsedSeconds = (canceledAt - mSavingStartedAt).TotalSeconds;
+                if (ellapsedSeconds > MaxDuration)
+                    throw new OperationCanceledException($"EstimatedProgress = {args.EstimatedProgress}; CanceledAt = {canceledAt}");
+            }
+
+            /// <summary>
+            /// Date and time when document saving is started.
+            /// </summary>
+            private readonly DateTime mSavingStartedAt;
+
+            /// <summary>
+            /// Maximum allowed duration in sec.
+            /// </summary>
+            private const double MaxDuration = 0.1d;
+        }
+        //ExEnd
     }
 }

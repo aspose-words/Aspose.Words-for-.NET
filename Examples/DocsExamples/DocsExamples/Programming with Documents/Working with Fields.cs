@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Fields;
@@ -11,6 +11,18 @@ namespace DocsExamples.Programming_with_Documents
 {
     internal class WorkingWithFields : DocsExamplesBase
     {
+        [Test]
+        public void FieldCode()
+        {
+            Document doc = new Document(MyDir + "Hyperlinks.docx");
+
+            foreach (Field field in doc.Range.Fields)
+            {
+                string fieldCode = field.GetFieldCode();
+                string fieldResult = field.Result;
+            }
+        }
+
         [Test]
         public void ChangeFieldUpdateCultureSource()
         {
@@ -83,103 +95,19 @@ namespace DocsExamples.Programming_with_Documents
             builder.InsertField(@"MERGEFIELD MyMergeField1 \* MERGEFORMAT");
             builder.InsertField(@"MERGEFIELD MyMergeField2 \* MERGEFORMAT");
 
-            // Select all field start nodes so we can find the merge fields.
-            NodeCollection fieldStarts = doc.GetChildNodes(NodeType.FieldStart, true);
-            foreach (FieldStart fieldStart in fieldStarts)
+            foreach (Field f in doc.Range.Fields)
             {
-                if (fieldStart.FieldType == FieldType.FieldMergeField)
+                if (f.Type == FieldType.FieldMergeField)
                 {
-                    MergeField mergeField = new MergeField(fieldStart);
-                    mergeField.Name += "_Renamed";
+                    FieldMergeField mergeField = (FieldMergeField)f;
+                    mergeField.FieldName = mergeField.FieldName + "_Renamed";
+                    mergeField.Update();
                 }
             }
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.RenameMergeFields.doc");
+            doc.Save(ArtifactsDir + "WorkingWithFields.RenameMergeFields.docx");
             //ExEnd:RenameMergeFields
         }
-
-        //ExStart:MergeField
-        /// <summary>
-        /// Represents a facade object for a merge field in a Microsoft Word document.
-        /// </summary>
-        internal class MergeField
-        {
-            internal MergeField(FieldStart fieldStart)
-            {
-                if (fieldStart == null)
-                    throw new ArgumentNullException(nameof(fieldStart));
-                if (fieldStart.FieldType != FieldType.FieldMergeField)
-                    throw new ArgumentException("Field start type must be FieldMergeField.");
-
-                mFieldStart = fieldStart;
-
-                // Find the field separator node.
-                mFieldSeparator = fieldStart.GetField().Separator;
-                if (mFieldSeparator == null)
-                    throw new InvalidOperationException("Cannot find field separator.");
-
-                mFieldEnd = fieldStart.GetField().End;
-            }
-
-            /// <summary>
-            /// Gets or sets the name of the merge field.
-            /// </summary>
-            internal string Name
-            {
-                get => ((FieldStart) mFieldStart).GetField().Result.Replace("«", "").Replace("»", "");
-                set
-                {
-                    // Merge field name is stored in the field result which is a Run
-                    // node between field separator and field end.
-                    Run fieldResult = (Run) mFieldSeparator.NextSibling;
-                    fieldResult.Text = string.Format("«{0}»", value);
-
-                    // But sometimes the field result can consist of more than one run, delete these runs.
-                    RemoveSameParent(fieldResult.NextSibling, mFieldEnd);
-
-                    UpdateFieldCode(value);
-                }
-            }
-
-            private void UpdateFieldCode(string fieldName)
-            {
-                // Field code is stored in a Run node between field start and field separator.
-                Run fieldCode = (Run) mFieldStart.NextSibling;
-
-                Match match = gRegex.Match(((FieldStart) mFieldStart).GetField().GetFieldCode());
-
-                string newFieldCode = string.Format(" {0}{1} ", match.Groups["start"].Value, fieldName);
-                fieldCode.Text = newFieldCode;
-
-                // But sometimes the field code can consist of more than one run, delete these runs.
-                RemoveSameParent(fieldCode.NextSibling, mFieldSeparator);
-            }
-
-            /// <summary>
-            /// Removes nodes from start up to but not including the end node.
-            /// Start and end are assumed to have the same parent.
-            /// </summary>
-            private void RemoveSameParent(Node startNode, Node endNode)
-            {
-                if (endNode != null && startNode.ParentNode != endNode.ParentNode)
-                    throw new ArgumentException("Start and end nodes are expected to have the same parent.");
-
-                Node curChild = startNode;
-                while (curChild != null && curChild != endNode)
-                {
-                    Node nextChild = curChild.NextSibling;
-                    curChild.Remove();
-                    curChild = nextChild;
-                }
-            }
-
-            private readonly Node mFieldStart;
-            private readonly Node mFieldSeparator;
-            private readonly Node mFieldEnd;
-
-            private readonly Regex gRegex = new Regex(@"\s*(?<start>MERGEFIELD\s|)(\s|)(?<name>\S+)\s+");
-        }
-        //ExEnd:MergeField
 
         [Test]
         public void RemoveField()
@@ -190,6 +118,15 @@ namespace DocsExamples.Programming_with_Documents
             Field field = doc.Range.Fields[0];
             field.Remove();
             //ExEnd:RemoveField
+        }
+
+        [Test]
+        public void UnlinkFields()
+        {
+            //ExStart:UnlinkFields
+            Document doc = new Document(MyDir + "Various fields.docx");
+            doc.UnlinkFields();
+            //ExEnd:UnlinkFields
         }
 
         [Test]
@@ -370,6 +307,32 @@ namespace DocsExamples.Programming_with_Documents
             
             doc.Save(ArtifactsDir + "WorkingWithFields.InsertField.docx");
             //ExEnd:InsertField
+        }
+
+        [Test]
+        public void InsertFieldUsingFieldBuilder()
+        {
+            Document doc = new Document();
+
+            // Prepare IF field with two nested MERGEFIELD fields: { IF "left expression" = "right expression" "Firstname: { MERGEFIELD firstname }" "Lastname: { MERGEFIELD lastname }"}
+            FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldIf)
+                .AddArgument("left expression")
+                .AddArgument("=")
+                .AddArgument("right expression")
+                .AddArgument(
+                    new FieldArgumentBuilder()
+                        .AddText("Firstname: ")
+                        .AddField(new FieldBuilder(FieldType.FieldMergeField).AddArgument("firstname")))
+                .AddArgument(
+                    new FieldArgumentBuilder()
+                        .AddText("Lastname: ")
+                        .AddField(new FieldBuilder(FieldType.FieldMergeField).AddArgument("lastname")));
+
+            // Insert IF field in exact location            
+            Field field = fieldBuilder.BuildAndInsert(doc.FirstSection.Body.FirstParagraph);
+            field.Update();
+
+            doc.Save(ArtifactsDir + "Field.InsertFieldUsingFieldBuilder.docx");
         }
 
         [Test]

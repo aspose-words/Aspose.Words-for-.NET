@@ -81,19 +81,14 @@ namespace ApiExamples
                 </html>
             ";
 
-            Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), options);
-            Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-
-            Assert.AreEqual(1109843, imageShape.ImageData.ImageBytes.Length);
-            Assert.AreEqual(0, warningCallback.Warnings().Count);
-
             // Set an unreasonable timeout limit and try load the document again.
             options.WebRequestTimeout = 0;
-            doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), options);
+            Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), options);
+            Assert.AreEqual(2, warningCallback.Warnings().Count);
 
             // A web request that fails to obtain an image within the time limit will still produce an image.
             // However, the image will be the red 'x' that commonly signifies missing images.
-            imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(924, imageShape.ImageData.ImageBytes.Length);
 
             // We can also configure a custom callback to pick up any warnings from timed out web requests.

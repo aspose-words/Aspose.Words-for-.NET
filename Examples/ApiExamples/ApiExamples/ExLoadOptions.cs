@@ -346,46 +346,71 @@ namespace ApiExamples
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "HTML help.chm");
             Assert.AreEqual(info.LoadFormat, LoadFormat.Chm);
 
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.Encoding = Encoding.GetEncoding("windows-1251");
+            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.GetEncoding("windows-1251") };
 
             Document doc = new Document(MyDir + "HTML help.chm", loadOptions);
         }
 
-        [TestCase(true)]
-        [TestCase(false)]
-        public void FlatOpcXmlMappingOnly(bool isFlatOpcXmlMappingOnly)
+        //ExStart
+        //ExFor:LoadOptions.ProgressCallback
+        //ExFor:IDocumentLoadingCallback
+        //ExFor:IDocumentLoadingCallback.Notify
+        //ExSummary:Shows how to notify the user if document loading exceeded expected loading time.
+        [Test]
+        public void ProgressCallback()
         {
-            //ExStart
-            //ExFor:SaveOptions.FlatOpcXmlMappingOnly
-            //ExSummary:Shows how to binding structured document tags to any format.
-            // If true - SDT will contain raw HTML text.
-            // If false - mapped HTML will parsed and resulting document will be inserted into SDT content.
-            LoadOptions loadOptions = new LoadOptions {FlatOpcXmlMappingOnly = isFlatOpcXmlMappingOnly};
-            Document doc = new Document(MyDir + "Structured document tag with HTML content.docx", loadOptions);
+            LoadingProgressCallback progressCallback = new LoadingProgressCallback();
 
-            SaveOptions saveOptions = SaveOptions.CreateSaveOptions(SaveFormat.Pdf);
-            saveOptions.FlatOpcXmlMappingOnly = isFlatOpcXmlMappingOnly;
+            LoadOptions loadOptions = new LoadOptions { ProgressCallback = progressCallback };
 
-            doc.Save(ArtifactsDir + "LoadOptions.FlatOpcXmlMappingOnly.pdf", saveOptions);
-            //ExEnd
+            try
+            {
+                Document doc = new Document(MyDir + "Big document.docx", loadOptions);
+            }
+            catch (OperationCanceledException exception)
+            {
+                Console.WriteLine(exception.Message);
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
-            Aspose.Pdf.Document pdfDocument =
-                new Aspose.Pdf.Document(ArtifactsDir + "LoadOptions.FlatOpcXmlMappingOnly.pdf");
-            TextAbsorber textAbsorber = new TextAbsorber();
-            pdfDocument.Pages.Accept(textAbsorber);
-
-            Assert.True(isFlatOpcXmlMappingOnly
-                ? textAbsorber.Text.Contains(
-                    "TCSVerify vData1: <!DOCTYPE html><html><body><h1>My First Heading</h1><p>My first \r\nparagraph.</p></body></html>\r\n\r\n" +
-                    "TCSVerify vData2: <html><body><b>This is BOLD</b><i>This is Italics</i></body></html>\r\n\r\n" +
-                    "TCSVerify vData3: <!DOCTYPE HTML PUBLIC")
-                : textAbsorber.Text.Contains(
-                    "TCSVerify vData1: \r\nMy First Heading\r\n\r\nMy first paragraph.\r\n\r\n\r\n" +
-                    "TCSVerify vData2: This is BOLDThis is Italics\r\n\r\n" +
-                    "TCSVerify vData3: \r\n\r\nDepression Program\r\n\r\nDepression Abuse"));
-#endif
+                // Handle loading duration issue.
+            }
         }
+
+        /// <summary>
+        /// Cancel a document loading after the "MaxDuration" seconds.
+        /// </summary>
+        public class LoadingProgressCallback : IDocumentLoadingCallback
+        {
+            /// <summary>
+            /// Ctr.
+            /// </summary>
+            public LoadingProgressCallback()
+            {
+                mLoadingStartedAt = DateTime.Now;
+            }
+
+            /// <summary>
+            /// Callback method which called during document loading.
+            /// </summary>
+            /// <param name="args">Loading arguments.</param>
+            public void Notify(DocumentLoadingArgs args)
+            {
+                DateTime canceledAt = DateTime.Now;
+                double ellapsedSeconds = (canceledAt - mLoadingStartedAt).TotalSeconds;
+
+                if (ellapsedSeconds > MaxDuration)
+                    throw new OperationCanceledException($"EstimatedProgress = {args.EstimatedProgress}; CanceledAt = {canceledAt}");
+            }
+
+            /// <summary>
+            /// Date and time when document loading is started.
+            /// </summary>
+            private readonly DateTime mLoadingStartedAt;
+
+            /// <summary>
+            /// Maximum allowed duration in sec.
+            /// </summary>
+            private const double MaxDuration = 0.5;
+        }
+        //ExEnd
     }
 }

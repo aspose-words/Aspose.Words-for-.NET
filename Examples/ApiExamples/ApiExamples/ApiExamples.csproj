@@ -52,6 +52,7 @@
     <Content Include="ExBuildVersion.cs" />
     <Content Include="ExCellFormat.cs" />
     <Content Include="ExCharts.cs" />
+    <Content Include="ExChmLoadOptions.cs" />
     <Content Include="ExComment.cs" />
     <Content Include="ExCompatibilityOptions.cs" />
     <Content Include="ExControlChar.cs" />
@@ -83,6 +84,7 @@
     <Content Include="ExMailMerge.cs" />
     <Content Include="ExMailMergeCustom.cs" />
     <Content Include="ExMailMergeEvent.cs" />
+    <Content Include="ExMarkdownSaveOptions.cs" />
     <Content Include="ExMetered.cs" />
     <Content Include="ExMossDoc2Pdf.cs" />
     <Content Include="ExMossRtf2Docx.cs" />
@@ -153,11 +155,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="22.4.0" />
-    <PackageReference Include="Aspose.PDF" Version="22.4.0" />
-    <PackageReference Include="Aspose.Words" Version="22.5.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="22.5.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+    <PackageReference Include="Aspose.BarCode" Version="22.9.0" />
+    <PackageReference Include="Aspose.PDF" Version="22.9.0" />
+    <PackageReference Include="Aspose.Words" Version="22.10.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="22.10.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.2.1">
       <PrivateAssets>all</PrivateAssets>

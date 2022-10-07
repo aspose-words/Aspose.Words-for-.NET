@@ -1222,9 +1222,9 @@ namespace ApiExamples
             //ExSummary:Shows how to access the raw data of an embedded OLE object.
             Document doc = new Document(MyDir + "OLE objects.docx");
 
-            foreach (Node shape in doc.GetChildNodes(NodeType.Shape, true))
+            foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
             {
-                OleFormat oleFormat = ((Shape)shape).OleFormat;
+                OleFormat oleFormat = shape.OleFormat;
                 if (oleFormat != null)
                 {
                     Console.WriteLine($"This is {(oleFormat.IsLink ? "a linked" : "an embedded")} object");
@@ -1233,6 +1233,20 @@ namespace ApiExamples
                     Assert.AreEqual(24576, oleRawData.Length);
                 }
             }
+            //ExEnd
+        }
+
+        [Test]
+        public void LinkedChartSourceFullName()
+        {
+            //ExStart
+            //ExFor:Chart.SourceFullName
+            //ExSummary:Shows how to get the full name of the external xls/xlsx document if the chart is linked.
+            Document doc = new Document(MyDir + "Shape with linked chart.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.True(shape.Chart.SourceFullName.Contains("Examples\\Data\\Spreadsheet.xlsx"));
             //ExEnd
         }
 
@@ -2850,6 +2864,32 @@ namespace ApiExamples
             shape.IsDecorative = true;
 
             doc.Save(ArtifactsDir + "Shape.IsDecorative.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FillImage()
+        {
+            //ExStart
+            //ExFor:Fill.SetImage(String)
+            //ExSummary:Shows how to set shape fill type as image.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // There are several ways of setting image.
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 80, 80);
+            // 1 -  Using a local system filename:
+            shape.Fill.SetImage(ImageDir + "Logo.jpg");
+            doc.Save(ArtifactsDir + "Shape.FillImage.FileName.docx");
+            
+            // 2 -  Load a file into a byte array:
+            shape.Fill.SetImage(File.ReadAllBytes(ImageDir + "Logo.jpg"));
+            doc.Save(ArtifactsDir + "Shape.FillImage.ByteArray.docx");
+            
+            // 3 -  From a stream:
+            using (FileStream stream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open))
+                shape.Fill.SetImage(stream);
+            doc.Save(ArtifactsDir + "Shape.FillImage.Stream.docx");
             //ExEnd
         }
     }

@@ -34,14 +34,32 @@ namespace ApiExamples
             //ExSummary:Shows how to get the type of a structured document tag.
             Document doc = new Document(MyDir + "Structured document tags.docx");
 
-            List<StructuredDocumentTag> sdTags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true)
+            List<StructuredDocumentTag> tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true)
                 .OfType<StructuredDocumentTag>().ToList();
 
-            Assert.AreEqual(SdtType.RepeatingSection, sdTags[0].SdtType);
-            Assert.AreEqual(SdtType.RepeatingSectionItem, sdTags[1].SdtType);
-            Assert.AreEqual(SdtType.RichText, sdTags[2].SdtType);
+            Assert.AreEqual(SdtType.RepeatingSection, tags[0].SdtType);
+            Assert.AreEqual(SdtType.RepeatingSectionItem, tags[1].SdtType);
+            Assert.AreEqual(SdtType.RichText, tags[2].SdtType);
             //ExEnd
         }
+
+        [Test]
+        public void FlatOpcContent()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTag.WordOpenXML
+            //ExSummary:Shows how to get XML contained within the node in the FlatOpc format.
+            Document doc = new Document(MyDir + "Structured document tags.docx");
+
+            List<StructuredDocumentTag> tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true)
+                .OfType<StructuredDocumentTag>().ToList();
+
+            Assert.True(tags[0].WordOpenXML
+                .Contains(
+                    "<pkg:part pkg:name=\"/docProps/app.xml\" pkg:contentType=\"application/vnd.openxmlformats-officedocument.extended-properties+xml\">"));
+            //ExEnd
+        }
+
 
         [Test]
         public void ApplyStyle()
@@ -852,9 +870,8 @@ namespace ApiExamples
             Assert.AreEqual("Built-in", buildingBlockSdt.BuildingBlockCategory);
         }
 
-        [TestCase(false)]
-        [TestCase(true)]
-        public void UpdateSdtContent(bool updateSdtContent)
+        [Test]
+        public void UpdateSdtContent()
         {
             //ExStart
             //ExFor:SaveOptions.UpdateSdtContent
@@ -874,16 +891,7 @@ namespace ApiExamples
 
             doc.FirstSection.Body.AppendChild(tag);
 
-            // Create a "PdfSaveOptions" object to pass to the document's "Save" method
-            // to modify how that method saves the document to .PDF.
-            PdfSaveOptions options = new PdfSaveOptions();
-
-            // Set the "UpdateSdtContent" property to "false" not to update the structured document tags
-            // while saving the document to PDF. They will display their default values as they were at the time of construction.
-            // Set the "UpdateSdtContent" property to "true" to make sure the tags display updated values in the PDF.
-            options.UpdateSdtContent = updateSdtContent;
-
-            doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf", options);
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf");
             //ExEnd
 
 #if NET48 || NET5_0_OR_GREATER || JAVA
@@ -891,8 +899,7 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.AreEqual(updateSdtContent ? "Value 2" : "Choose an item.",
-                textAbsorber.Text);
+            Assert.AreEqual("Value 2", textAbsorber.Text);
 #endif
         }
 
@@ -1026,6 +1033,7 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTagRangeStart.RangeEnd
             //ExFor:StructuredDocumentTagRangeStart.Color
             //ExFor:StructuredDocumentTagRangeStart.SdtType
+            //ExFor:StructuredDocumentTagRangeStart.WordOpenXML
             //ExFor:StructuredDocumentTagRangeStart.Tag
             //ExFor:StructuredDocumentTagRangeEnd
             //ExFor:StructuredDocumentTagRangeEnd.Id
@@ -1053,6 +1061,7 @@ namespace ApiExamples
             Console.WriteLine($"\t|RangeEnd: {rangeStartTag.RangeEnd}");
             Console.WriteLine($"\t|Color: {rangeStartTag.Color.ToArgb()}");
             Console.WriteLine($"\t|SdtType: {rangeStartTag.SdtType}");
+            Console.WriteLine($"\t|FlatOpcContent: {rangeStartTag.WordOpenXML}");
             Console.WriteLine($"\t|Tag: {rangeStartTag.Tag}\n");
 
             Console.WriteLine("StructuredDocumentTagRangeEnd values:");

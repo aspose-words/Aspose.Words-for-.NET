@@ -306,5 +306,68 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.ExportGeneratorName.docx", saveOptions);
             //ExEnd
         }
+
+        [TestCase(SaveFormat.Docx, "docx")]
+        [TestCase(SaveFormat.Docm, "docm")]
+        [TestCase(SaveFormat.Dotm, "dotm")]
+        [TestCase(SaveFormat.Dotx, "dotx")]
+        [TestCase(SaveFormat.FlatOpc, "flatopc")]
+        //ExStart
+        //ExFor:SaveOptions.ProgressCallback
+        //ExFor:IDocumentSavingCallback
+        //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
+        //ExFor:DocumentSavingArgs.EstimatedProgress
+        //ExSummary:Shows how to manage a document while saving to docx.
+        public void ProgressCallback(SaveFormat saveFormat, string ext)
+        {
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            // Following formats are supported: Docx, FlatOpc, Docm, Dotm, Dotx.
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(saveFormat)
+            {
+                ProgressCallback = new SavingProgressCallback()
+            };
+
+            var exception = Assert.Throws<OperationCanceledException>(() =>
+                doc.Save(ArtifactsDir + $"OoxmlSaveOptions.ProgressCallback.{ext}", saveOptions));
+            Assert.True(exception?.Message.Contains("EstimatedProgress"));
+        }
+
+        /// <summary>
+        /// Saving progress callback. Cancel a document saving after the "MaxDuration" seconds.
+        /// </summary>
+        public class SavingProgressCallback : IDocumentSavingCallback
+        {
+            /// <summary>
+            /// Ctr.
+            /// </summary>
+            public SavingProgressCallback()
+            {
+                mSavingStartedAt = DateTime.Now;
+            }
+
+            /// <summary>
+            /// Callback method which called during document saving.
+            /// </summary>
+            /// <param name="args">Saving arguments.</param>
+            public void Notify(DocumentSavingArgs args)
+            {
+                DateTime canceledAt = DateTime.Now;
+                double ellapsedSeconds = (canceledAt - mSavingStartedAt).TotalSeconds;
+                if (ellapsedSeconds > MaxDuration)
+                    throw new OperationCanceledException($"EstimatedProgress = {args.EstimatedProgress}; CanceledAt = {canceledAt}");
+            }
+
+            /// <summary>
+            /// Date and time when document saving is started.
+            /// </summary>
+            private readonly DateTime mSavingStartedAt;
+
+            /// <summary>
+            /// Maximum allowed duration in sec.
+            /// </summary>
+            private const double MaxDuration = 0.01d;
+        }
+        //ExEnd
     }
 }

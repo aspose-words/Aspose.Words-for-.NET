@@ -85,7 +85,7 @@ namespace ApiExamples
 
             Assert.AreEqual(2, shapes.Count);
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, (Shape)shapes[0]);
-            TestUtil.VerifyImageInShape(5184, 3456, ImageType.Jpeg, (Shape)shapes[1]);
+            TestUtil.VerifyImageInShape(252, 213, ImageType.Png, (Shape)shapes[1]);
         }
 
         [Test]

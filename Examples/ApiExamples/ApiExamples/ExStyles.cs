@@ -183,7 +183,7 @@ namespace ApiExamples
         public void CopyStyleSameDocument()
         {
             //ExStart
-            //ExFor:StyleCollection.AddCopy
+            //ExFor:StyleCollection.AddCopy(Style)
             //ExFor:Style.Name
             //ExSummary:Shows how to clone a document's style.
             Document doc = new Document();
@@ -213,7 +213,7 @@ namespace ApiExamples
         public void CopyStyleDifferentDocument()
         {
             //ExStart
-            //ExFor:StyleCollection.AddCopy
+            //ExFor:StyleCollection.AddCopy(Style)
             //ExSummary:Shows how to import a style from one document into a different document.
             Document srcDoc = new Document();
 
@@ -328,6 +328,29 @@ namespace ApiExamples
             Assert.AreEqual(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style, 
                 doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style);
             //ExEnd
+        }
+
+        [Test]
+        public void LatentStyles()
+        {
+            // This test is to check that after re-saving a document it doesn't lose LatentStyle information
+            // for 4 styles from documents created in Microsoft Word.
+            Document doc = new Document(MyDir + "Blank.docx");
+
+            doc.Save(ArtifactsDir + "Styles.LatentStyles.docx");
+
+            TestUtil.DocPackageFileContainsString(
+                @"<w:lsdException w:name=""Mention"" w:semiHidden=""1"" w:unhideWhenUsed=""1"" />",
+                ArtifactsDir + "Styles.LatentStyles.docx", "styles.xml");
+            TestUtil.DocPackageFileContainsString(
+                @"<w:lsdException w:name=""Smart Hyperlink"" w:semiHidden=""1"" w:unhideWhenUsed=""1"" />",
+                ArtifactsDir + "Styles.LatentStyles.docx", "styles.xml");
+            TestUtil.DocPackageFileContainsString(
+                @"<w:lsdException w:name=""Hashtag"" w:semiHidden=""1"" w:unhideWhenUsed=""1"" />",
+                ArtifactsDir + "Styles.LatentStyles.docx", "styles.xml");
+            TestUtil.DocPackageFileContainsString(
+                @"<w:lsdException w:name=""Unresolved Mention"" w:semiHidden=""1"" w:unhideWhenUsed=""1"" />",
+                ArtifactsDir + "Styles.LatentStyles.docx", "styles.xml");
         }
     }
 }

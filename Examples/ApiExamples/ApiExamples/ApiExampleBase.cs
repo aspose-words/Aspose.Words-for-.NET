@@ -29,11 +29,7 @@ namespace ApiExamples
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            ServicePointManager.ServerCertificateValidationCallback = new
-                RemoteCertificateValidationCallback
-                (
-                    delegate { return true; }
-                );
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
 
             SetUnlimitedLicense();
 
@@ -55,11 +51,7 @@ namespace ApiExamples
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            ServicePointManager.ServerCertificateValidationCallback = new
-                RemoteCertificateValidationCallback
-                (
-                    delegate { return false; }
-                );
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return false; };
 
             if (Directory.Exists(ArtifactsDir))
                 Directory.Delete(ArtifactsDir, true);
@@ -188,7 +180,7 @@ namespace ApiExamples
             ImageDir = new Uri(new Uri(CodeBaseDir), @"Data/Images/").LocalPath;
             DatabaseDir = new Uri(new Uri(CodeBaseDir), @"Data/Database/").LocalPath;
             FontsDir = new Uri(new Uri(CodeBaseDir), @"Data/MyFonts/").LocalPath;
-            ImageUrl = new Uri("https://images.pexels.com/photos/239548/pexels-photo-239548.jpeg").AbsoluteUri;
+            ImageUrl = new Uri("https://www.aspose.cloud/templates/aspose/img/products/words/aspose_words.svg").AbsoluteUri;
         }
     }
 }
