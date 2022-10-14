@@ -46,7 +46,7 @@ namespace ApiExamples
             Paragraph paragraph = new Paragraph(doc);
             firstCell.AppendChild(paragraph);
 
-            // Add text to the first call in the first row of the table.
+            // Add text to the first cell in the first row of the table.
             Run run = new Run(doc, "Hello world!");
             paragraph.AppendChild(run);
 
