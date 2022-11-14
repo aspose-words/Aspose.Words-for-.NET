@@ -334,7 +334,6 @@ namespace ApiExamples
 
         [TestCase(true)]
         [TestCase(false)]
-        [Ignore("WORDSNET-16037")]
         public void UpdateDirtyFields(bool updateDirtyFields)
         {
             //ExStart
@@ -2273,8 +2272,7 @@ namespace ApiExamples
             Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
         }
 
-        [Test]
-        [Ignore("WORDSNET-18083")]
+        [Test]        
         public void TocSeqBookmark()
         {
             //ExStart
@@ -2653,8 +2651,7 @@ namespace ApiExamples
         //ExFor:FieldIncludeText.XPath
         //ExFor:FieldIncludeText.XslTransformation
         //ExSummary:Shows how to create an INCLUDETEXT field, and set its properties.
-        [Test] //ExSkip
-        [Ignore("WORDSNET-17543")] //ExSkip
+        [Test] //ExSkip        
         public void FieldIncludeText()
         {
             Document doc = new Document();
@@ -2672,6 +2669,7 @@ namespace ApiExamples
             fieldIncludeText.NamespaceMappings = "xmlns:n='myNamespace'";
             fieldIncludeText.XPath = "/catalog/cd/title";
 
+            doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INCLUDETEXT.docx");
             TestFieldIncludeText(new Document(ArtifactsDir + "Field.INCLUDETEXT.docx")); //ExSkip
         }
@@ -3020,8 +3018,7 @@ namespace ApiExamples
             Assert.AreEqual(300.0d, shape.Height, 1);
         }
 
-        [Test]
-        [Ignore("WORDSNET-17524")]
+        [Test]        
         public void FieldIndexFilter()
         {
             //ExStart
@@ -3078,6 +3075,7 @@ namespace ApiExamples
             indexEntry.Text = "Index entry 3";
             indexEntry.EntryType = "A";
 
+            doc.UpdatePageLayout();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INDEX.XE.Filtering.docx");
             //ExEnd
@@ -3108,8 +3106,7 @@ namespace ApiExamples
             Assert.AreEqual("A", indexEntry.EntryType);
         }
 
-        [Test]
-        [Ignore("WORDSNET-17524")]
+        [Test]        
         public void FieldIndexFormatting()
         {
             //ExStart
@@ -3182,6 +3179,7 @@ namespace ApiExamples
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Durian";
 
+            doc.UpdatePageLayout();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INDEX.XE.Formatting.docx");
             //ExEnd
@@ -3246,8 +3244,7 @@ namespace ApiExamples
             Assert.False(indexEntry.IsItalic);
         }
 
-        [Test]
-        [Ignore("WORDSNET-17524")]
+        [Test]        
         public void FieldIndexSequence()
         {
             //ExStart
@@ -3317,7 +3314,8 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Dog";
-            
+
+            doc.UpdatePageLayout();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INDEX.XE.Sequence.docx");
             //ExEnd
@@ -3336,8 +3334,7 @@ namespace ApiExamples
             Assert.AreEqual(3, doc.Range.Fields.Where(f => f.Type == FieldType.FieldSequence).Count());
         }
 
-        [Test]
-        [Ignore("WORDSNET-17524")]
+        [Test]        
         public void FieldIndexPageNumberSeparator()
         {
             //ExStart
@@ -3379,6 +3376,7 @@ namespace ApiExamples
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "First entry";
 
+            doc.UpdatePageLayout();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INDEX.XE.PageNumberList.docx");
             //ExEnd
@@ -3392,8 +3390,7 @@ namespace ApiExamples
             Assert.True(index.HasPageNumberSeparator);
         }
 
-        [Test]
-        [Ignore("WORDSNET-17524")]
+        [Test]        
         public void FieldIndexPageRangeBookmark()
         {
             //ExStart
@@ -3440,6 +3437,7 @@ namespace ApiExamples
             builder.Write("End of MyBookmark");
             builder.EndBookmark("MyBookmark");
 
+            doc.UpdatePageLayout();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INDEX.XE.PageRangeBookmark.docx");
             //ExEnd
@@ -3458,8 +3456,7 @@ namespace ApiExamples
             Assert.AreEqual("MyBookmark", indexEntry.PageRangeBookmarkName);
         }
 
-        [Test]
-        [Ignore("WORDSNET-17524")]
+        [Test]        
         public void FieldIndexCrossReferenceSeparator()
         {
             //ExStart
@@ -3503,6 +3500,7 @@ namespace ApiExamples
 
             Assert.AreEqual(" XE  Banana \\t \"Tropical fruit\"", indexEntry.GetFieldCode());
 
+            doc.UpdatePageLayout();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INDEX.XE.CrossReferenceSeparator.docx");
             //ExEnd
@@ -3510,7 +3508,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Field.INDEX.XE.CrossReferenceSeparator.docx");
             index = (FieldIndex)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldIndexEntry, " INDEX  \\k \", see: \"",
+            TestUtil.VerifyField(FieldType.FieldIndex, " INDEX  \\k \", see: \"",
                 "Apple, 2\r" +
                 "Banana, see: Tropical fruit\r", index);
             Assert.AreEqual(", see: ", index.CrossReferenceSeparator);
@@ -3529,8 +3527,7 @@ namespace ApiExamples
         }
 
         [TestCase(true)]
-        [TestCase(false)]
-        [Ignore("WORDSNET-17524")]
+        [TestCase(false)]        
         public void FieldIndexSubheading(bool runSubentriesOnTheSameLine)
         {
             //ExStart
@@ -3580,7 +3577,8 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             indexEntry = (FieldXE)builder.InsertField(FieldType.FieldIndexEntry, true);
             indexEntry.Text = "Heading 1:Subheading 2";
-            
+
+            doc.UpdatePageLayout();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + $"Field.INDEX.XE.Subheading.docx");
             //ExEnd
@@ -3590,7 +3588,7 @@ namespace ApiExamples
 
             if (runSubentriesOnTheSameLine)
             {
-                TestUtil.VerifyField(FieldType.FieldIndex, " INDEX  \\r \\e \", see page \" \\h A",
+                TestUtil.VerifyField(FieldType.FieldIndex, " INDEX  \\e \", see page \" \\h A \\r",
                     "H\r" +
                     "Heading 1: Subheading 1, see page 2; Subheading 2, see page 3\r", index);
                 Assert.True(index.RunSubentriesOnSameLine);
@@ -3618,7 +3616,7 @@ namespace ApiExamples
 
         [TestCase(true)]
         [TestCase(false)]
-        [Ignore("WORDSNET-17524")]
+        [Ignore("WORDSNET-24595")]
         public void FieldIndexYomi(bool sortEntriesUsingYomi)
         {
             //ExStart
@@ -3671,11 +3669,12 @@ namespace ApiExamples
             indexEntry.Text = "愛美";
             indexEntry.Yomi = "え";
 
+            doc.UpdatePageLayout();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INDEX.XE.Yomi.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Field.INDEX.XE.Yomi.docx");
+            doc = new Document(ArtifactsDir + "Field.INDEX.XE.Yomi.docx");            
             index = (FieldIndex)doc.Range.Fields[0];
 
             if (sortEntriesUsingYomi)
@@ -4513,7 +4512,6 @@ namespace ApiExamples
         }
 
         [Test]
-        [Ignore("WORDSNET-17657")]
         public void FieldStyleRefParagraphNumbers()
         {
             //ExStart
@@ -4584,6 +4582,7 @@ namespace ApiExamples
             field.InsertParagraphNumberInFullContext = true;
             field.SuppressNonDelimiters = true;
 
+            doc.UpdatePageLayout();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.STYLEREF.docx");
             //ExEnd
@@ -4735,7 +4734,7 @@ namespace ApiExamples
             field.UseSakaEraCalendar = true;
 
             Assert.AreEqual(" CREATEDATE  \\s", field.GetFieldCode());
-
+            
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.CREATEDATE.docx");
             //ExEnd
@@ -4807,7 +4806,7 @@ namespace ApiExamples
             // The SAVEDATE fields draw their date/time values from the LastSavedTime built-in property.
             // The document's Save method will not update this value, but we can still update it manually.
             doc.BuiltInDocumentProperties.LastSavedTime = DateTime.Now;
-
+            
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.SAVEDATE.docx");
             //ExEnd
@@ -5766,8 +5765,7 @@ namespace ApiExamples
         //ExFor:FieldNoteRef.InsertReferenceMark
         //ExFor:FieldNoteRef.InsertRelativePosition
         //ExSummary:Shows to insert NOTEREF fields, and modify their appearance.
-        [Test] //ExSkip
-        [Ignore("WORDSNET-17845")] //ExSkip
+        [Test] //ExSkip        
         public void FieldNoteRef()
         {
             Document doc = new Document();
@@ -5794,6 +5792,7 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             InsertBookmarkWithFootnote(builder, "MyBookmark2", "Contents of MyBookmark2", "Footnote from MyBookmark2");
 
+            doc.UpdatePageLayout();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.NOTEREF.docx");
             TestNoteRef(new Document(ArtifactsDir + "Field.NOTEREF.docx")); //ExSkip
@@ -5856,44 +5855,41 @@ namespace ApiExamples
             Assert.True(field.InsertReferenceMark);
         }
 
-        [Test]
-        [Ignore("WORDSNET-17845")]
-        public void FootnoteRef()
+        [Test]        
+        public void NoteRef()
         {
             //ExStart
-            //ExFor:FieldFootnoteRef
-            //ExSummary:Shows how to cross-reference footnotes with the FOOTNOTEREF field.
+            //ExFor:FieldNoteRef
+            //ExSummary:Shows how to cross-reference footnotes with the NOTEREF field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("CrossReference: ");
+
+            FieldNoteRef field = (FieldNoteRef)builder.InsertField(FieldType.FieldNoteRef, false); // <--- don't update field
+            field.BookmarkName = "CrossRefBookmark";
+            field.InsertHyperlink = true;
+            field.InsertReferenceMark = true;
+            field.InsertRelativePosition = false;
+            builder.Writeln();
 
             builder.StartBookmark("CrossRefBookmark");
             builder.Write("Hello world!");
             builder.InsertFootnote(FootnoteType.Footnote, "Cross referenced footnote.");
             builder.EndBookmark("CrossRefBookmark");
-            builder.InsertParagraph();
+            builder.Writeln();            
 
-            // Insert a FOOTNOTEREF field, which lets us reference a footnote more than once while re-using the same footnote marker.
-            builder.Write("CrossReference: ");
-            FieldFootnoteRef field = (FieldFootnoteRef) builder.InsertField(FieldType.FieldFootnoteRef, true);
-
-            // Reference the bookmark that we have created with the FOOTNOTEREF field. That bookmark contains a footnote marker
-            // belonging to the footnote we inserted. The field will display that footnote marker.
-            builder.MoveTo(field.Separator);
-            builder.Write("CrossRefBookmark");
-
-            Assert.AreEqual(" FOOTNOTEREF CrossRefBookmark", field.GetFieldCode());
-
-            doc.UpdateFields();
+            doc.UpdateFields();           
 
             // This field works only in older versions of Microsoft Word.
-            doc.Save(ArtifactsDir + "Field.FOOTNOTEREF.doc");
+            doc.Save(ArtifactsDir + "Field.NOTEREF.doc");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Field.FOOTNOTEREF.doc");
-            field = (FieldFootnoteRef)doc.Range.Fields[0];
+            doc = new Document(ArtifactsDir + "Field.NOTEREF.doc");
+            field = (FieldNoteRef)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldFootnoteRef, " FOOTNOTEREF CrossRefBookmark", "1", field);
-            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty, "Cross referenced footnote.", 
+            TestUtil.VerifyField(FieldType.FieldNoteRef, " NOTEREF  CrossRefBookmark \\h \\f", "1", field);
+            TestUtil.VerifyFootnote(FootnoteType.Footnote, true, null, "Cross referenced footnote.", 
                 (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
         }
 
@@ -5903,12 +5899,11 @@ namespace ApiExamples
         //ExFor:FieldPageRef.InsertHyperlink
         //ExFor:FieldPageRef.InsertRelativePosition
         //ExSummary:Shows to insert PAGEREF fields to display the relative location of bookmarks.
-        [Test] //ExSkip
-        [Ignore("WORDSNET-17836")] //ExSkip
+        [Test] //ExSkip        
         public void FieldPageRef()
         {
             Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
+            DocumentBuilder builder = new DocumentBuilder(doc);            
 
             InsertAndNameBookmark(builder, "MyBookmark1");
 
@@ -5935,6 +5930,7 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             InsertAndNameBookmark(builder, "MyBookmark3");
 
+            doc.UpdatePageLayout();
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.PAGEREF.docx");
             TestPageRef(new Document(ArtifactsDir + "Field.PAGEREF.docx")); //ExSkip
@@ -6011,7 +6007,6 @@ namespace ApiExamples
         //ExFor:FieldRef.SuppressNonDelimiters
         //ExSummary:Shows how to insert REF fields to reference bookmarks.
         [Test] //ExSkip
-        [Ignore("WORDSNET-18067")] //ExSkip
         public void FieldRef()
         {
             Document doc = new Document();
@@ -6100,7 +6095,7 @@ namespace ApiExamples
             TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty, "MyBookmark footnote #1", 
                 (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
             TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty, "MyBookmark footnote #2", 
-                (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
+                (Footnote)doc.GetChild(NodeType.Footnote, 1, true));
 
             FieldRef field = (FieldRef)doc.Range.Fields[0];
 
@@ -6179,7 +6174,7 @@ namespace ApiExamples
             refDocBuilder.CurrentParagraph.ParagraphFormat.StyleName = "Heading 1";
             refDocBuilder.Writeln("TOC entry from referenced document");
             referencedDoc.Save(ArtifactsDir + "ReferencedDocument.docx");
-
+            
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.RD.docx");
             //ExEnd
@@ -6913,8 +6908,7 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldLastSavedBy, " LASTSAVEDBY ", "John Doe", doc.Range.Fields[0]);
         }
 
-        [Test]
-        [Ignore("WORDSNET-18173")]
+        [Test]        
         public void FieldMergeRec()
         {
             //ExStart
@@ -6965,7 +6959,7 @@ namespace ApiExamples
             table.Rows.Add(new[] { "John Doe" });
             table.Rows.Add(new[] { "Joe Bloggs" });
 
-            doc.MailMerge.Execute(table);
+            doc.MailMerge.Execute(table);            
             doc.Save(ArtifactsDir + "Field.MERGEREC.MERGESEQ.docx");
             //ExEnd
 
@@ -6978,8 +6972,8 @@ namespace ApiExamples
                             "Row number of record in data source: 1\r" +
                             "Successful merge number: 1\fDear Joe Bloggs,\r" +
                             "\r" +
-                            "Row number of record in data source: 2\r" +
-                            "Successful merge number: 3", doc.GetText().Trim());
+                            "Row number of record in data source: 3\r" +
+                            "Successful merge number: 2", doc.GetText().Trim());
         }
 
         [Test]

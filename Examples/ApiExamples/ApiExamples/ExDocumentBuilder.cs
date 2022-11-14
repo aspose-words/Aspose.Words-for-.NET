@@ -26,6 +26,7 @@ using Aspose.Words.Lists;
 using Aspose.Words.Notes;
 using Aspose.Words.Saving;
 using List = NUnit.Framework.List;
+using System.Net.Http;
 
 #if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
@@ -2919,7 +2920,7 @@ namespace ApiExamples
             // This time, it will have an image downloaded from the web for an icon.
             using (Stream powerpointStream = File.Open(MyDir + "Presentation.pptx", FileMode.Open))
             {
-                using (WebClient webClient = new WebClient())
+                using (HttpClient httpClient = new HttpClient())
                 {
                     byte[] imgBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
 
