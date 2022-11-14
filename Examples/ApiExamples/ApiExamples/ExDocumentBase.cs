@@ -173,9 +173,14 @@ namespace ApiExamples
 
             Assert.IsTrue(doc.BackgroundShape.HasImage);
 
+            Aspose.Words.Saving.PdfSaveOptions saveOptions = new Aspose.Words.Saving.PdfSaveOptions
+            {
+                CacheBackgroundGraphics = false
+            };
+
             // Microsoft Word does not support shapes with images as backgrounds,
             // but we can still see these backgrounds in other save formats such as .pdf.
-            doc.Save(ArtifactsDir + "DocumentBase.BackgroundShape.Image.pdf");
+            doc.Save(ArtifactsDir + "DocumentBase.BackgroundShape.Image.pdf", saveOptions);
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBase.BackgroundShape.FlatColor.docx");
