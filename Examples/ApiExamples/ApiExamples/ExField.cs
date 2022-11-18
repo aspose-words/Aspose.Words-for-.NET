@@ -6162,10 +6162,9 @@ namespace ApiExamples
             // Insert an RD field, which references another local file system document in its FileName property.
             // The TOC will also now accept all headings from the referenced document as entries for its table.
             FieldRD field = (FieldRD)builder.InsertField(FieldType.FieldRefDoc, true);
-            field.FileName = "ReferencedDocument.docx";
-            field.IsPathRelative = true;
+            field.FileName = ArtifactsDir + "ReferencedDocument.docx";
 
-            Assert.AreEqual(" RD  ReferencedDocument.docx \\f", field.GetFieldCode());
+            Assert.AreEqual($" RD  {ArtifactsDir.Replace(@"\",@"\\")}ReferencedDocument.docx", field.GetFieldCode());
 
             // Create the document that the RD field is referencing and insert a heading. 
             // This heading will show up as an entry in the TOC field in our first document.
@@ -6183,18 +6182,18 @@ namespace ApiExamples
 
             FieldToc fieldToc = (FieldToc)doc.Range.Fields[0];
 
-            Assert.AreEqual("TOC entry from within this document\t\u0013 PAGEREF _Toc36149519 \\h \u00142\u0015\r" +
+            Assert.AreEqual("TOC entry from within this document\t\u0013 PAGEREF _Toc256000000 \\h \u00142\u0015\r" +
                             "TOC entry from referenced document\t1\r", fieldToc.Result);
 
             FieldPageRef fieldPageRef = (FieldPageRef)doc.Range.Fields[1];
 
-            TestUtil.VerifyField(FieldType.FieldPageRef, " PAGEREF _Toc36149519 \\h ", "2", fieldPageRef);
+            TestUtil.VerifyField(FieldType.FieldPageRef, " PAGEREF _Toc256000000 \\h ", "2", fieldPageRef);
 
             field = (FieldRD)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldRefDoc, " RD  ReferencedDocument.docx \\f", string.Empty, field);
-            Assert.AreEqual("ReferencedDocument.docx", field.FileName);
-            Assert.True(field.IsPathRelative);
+            VerifyField(FieldType.FieldRefDoc, $" RD  {ArtifactsDir.Replace(@"\",@"\\")}ReferencedDocument.docx", string.Empty, field);
+            Assert.AreEqual(ArtifactsDir.Replace(@"\",@"\\") + "ReferencedDocument.docx", field.FileName);
+            Assert.False(field.IsPathRelative);
         }
 
         [Test]
