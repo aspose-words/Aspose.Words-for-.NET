@@ -454,7 +454,7 @@ namespace ApiExamples
             return barcodeReader;
         }
 
-        [Test]
+        [Test, Category("SkipMono")]
         public void FieldDatabase()
         {
             //ExStart

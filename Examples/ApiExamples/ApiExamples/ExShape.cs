@@ -71,11 +71,11 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.AltText.html");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 153.0d, 153.0d, 0, 0, shape);
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 151.5d, 151.5d, 0, 0, shape);
             Assert.AreEqual("Alt text for MyCube.", shape.AlternativeText);
 
             TestUtil.FileContainsString(
-                "<img src=\"Shape.AltText.001.png\" width=\"204\" height=\"204\" alt=\"Alt text for MyCube.\" " +
+                "<img src=\"Shape.AltText.001.png\" width=\"202\" height=\"202\" alt=\"Alt text for MyCube.\" " +
                 "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />", 
                 ArtifactsDir + "Shape.AltText.html");
         }
@@ -2144,7 +2144,11 @@ namespace ApiExamples
                 case LayoutFlow.BottomToTop:
                 case LayoutFlow.Horizontal:
                 case LayoutFlow.TopToBottomIdeographic:
+                case LayoutFlow.Vertical:
                     expectedLayoutFlow = layoutFlow;
+                    break;
+                case LayoutFlow.TopToBottom:
+                    expectedLayoutFlow = LayoutFlow.Vertical;
                     break;
                 default:
                     expectedLayoutFlow = LayoutFlow.Horizontal;
