@@ -809,7 +809,8 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyShape(ShapeType.CloudCallout, "CloudCallout 100002", 250.0d, 150.0d, 25.0d, 25.0d, shape);
-            Assert.AreEqual(Color.LightBlue.ToArgb(), shape.FillColor.ToArgb());
+            Color colorWithOpacity = Color.FromArgb(Convert.ToInt32(255 * shape.Fill.Opacity), Color.LightBlue.R, Color.LightBlue.G, Color.LightBlue.B);
+            Assert.AreEqual(colorWithOpacity.ToArgb(), shape.FillColor.ToArgb());
             Assert.AreEqual(Color.CadetBlue.ToArgb(), shape.StrokeColor.ToArgb());
             Assert.AreEqual(0.3d, shape.Fill.Opacity, 0.01d);
         }
