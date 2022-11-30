@@ -27,6 +27,7 @@ using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
 using LoadOptions = Aspose.Words.Loading.LoadOptions;
+using System.Data.OleDb;
 #if NET48 || JAVA
 using Aspose.BarCode.BarCodeRecognition;
 #elif NET5_0_OR_GREATER
@@ -453,7 +454,7 @@ namespace ApiExamples
             return barcodeReader;
         }
 
-        [Test, Ignore("WORDSNET-13854")]
+        [Test]
         public void FieldDatabase()
         {
             //ExStart
@@ -470,20 +471,19 @@ namespace ApiExamples
             //ExSummary:Shows how to extract data from a database and insert it as a field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             // This DATABASE field will run a query on a database, and display the result in a table.
             FieldDatabase field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
-            field.FileName = MyDir + @"Database\Northwind.mdb";
-            field.Connection = "DSN=MS Access Databases";
+            field.FileName = DatabaseDir + "Northwind.mdb";
+            field.Connection = "Provider=Microsoft.Jet.OLEDB.4.0";
             field.Query = "SELECT * FROM [Products]";
 
-            Assert.AreEqual($" DATABASE  \\d \"{DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"}\" \\c \"DSN=MS Access Databases\" \\s \"SELECT * FROM [Products]\"", 
-                field.GetFieldCode());
+            Assert.AreEqual($" DATABASE  \\d {DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"} \\c Provider=Microsoft.Jet.OLEDB.4.0 \\s \"SELECT * FROM [Products]\"", field.GetFieldCode());
 
             // Insert another DATABASE field with a more complex query that sorts all products in descending order by gross sales.
             field = (FieldDatabase)builder.InsertField(FieldType.FieldDatabase, true);
-            field.FileName = MyDir + @"Database\Northwind.mdb";
-            field.Connection = "DSN=MS Access Databases";
+            field.FileName = DatabaseDir + "Northwind.mdb";
+            field.Connection = "Provider=Microsoft.Jet.OLEDB.4.0";
             field.Query =
                 "SELECT [Products].ProductName, FORMAT(SUM([Order Details].UnitPrice * (1 - [Order Details].Discount) * [Order Details].Quantity), 'Currency') AS GrossSales " +
                 "FROM([Products] " +
@@ -508,7 +508,9 @@ namespace ApiExamples
             field.InsertHeadings = true;
             field.InsertOnceOnMailMerge = true;
 
+            doc.FieldOptions.FieldDatabaseProvider = new OleDbFieldDatabaseProvider();
             doc.UpdateFields();
+
             doc.Save(ArtifactsDir + "Field.DATABASE.docx");
             //ExEnd
 
@@ -523,7 +525,7 @@ namespace ApiExamples
 
             field = (FieldDatabase)doc.Range.Fields[0];
 
-            Assert.AreEqual($" DATABASE  \\d \"{DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"}\" \\c \"DSN=MS Access Databases\" \\s \"SELECT * FROM [Products]\"",
+            Assert.AreEqual($" DATABASE  \\d {DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"} \\c Provider=Microsoft.Jet.OLEDB.4.0 \\s \"SELECT * FROM [Products]\"",
                 field.GetFieldCode());
 
             TestUtil.TableMatchesQueryResult(table, DatabaseDir + "Northwind.mdb", field.Query);
@@ -536,7 +538,7 @@ namespace ApiExamples
             Assert.AreEqual("ProductName\a", table.Rows[0].Cells[0].GetText());
             Assert.AreEqual("GrossSales\a", table.Rows[0].Cells[1].GetText());
 
-            Assert.AreEqual($" DATABASE  \\d \"{DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"}\" \\c \"DSN=MS Access Databases\" " +
+            Assert.AreEqual($" DATABASE  \\d {DatabaseDir.Replace("\\", "\\\\") + "Northwind.mdb"} \\c Provider=Microsoft.Jet.OLEDB.4.0 " +
                             $"\\s \"SELECT [Products].ProductName, FORMAT(SUM([Order Details].UnitPrice * (1 - [Order Details].Discount) * [Order Details].Quantity), 'Currency') AS GrossSales " +
                             "FROM([Products] " +
                             "LEFT JOIN[Order Details] ON[Products].[ProductID] = [Order Details].[ProductID]) " +
@@ -549,6 +551,24 @@ namespace ApiExamples
             TestUtil.TableMatchesQueryResult(table, DatabaseDir + "Northwind.mdb", field.Query.Insert(7, " TOP 10 "));
         }
 #endif
+
+        public class OleDbFieldDatabaseProvider : IFieldDatabaseProvider
+        {
+            FieldDatabaseDataTable IFieldDatabaseProvider.GetQueryResult(string fileName, string connection, string query, FieldDatabase field)
+            {
+                OleDbConnectionStringBuilder connectionStringBuilder = new OleDbConnectionStringBuilder(connection);
+                connectionStringBuilder.DataSource = fileName;
+
+                using (OleDbConnection oleDbConnection = new OleDbConnection(connectionStringBuilder.ToString()))
+                {
+                    OleDbDataAdapter oleDbDataAdapter = new OleDbDataAdapter(query, oleDbConnection);
+                    DataTable dataTable = new DataTable();
+                    oleDbDataAdapter.Fill(dataTable);
+
+                    return FieldDatabaseDataTable.CreateFrom(dataTable);
+                }
+            }
+        }
 
         [TestCase(false)]
         [TestCase(true)]
@@ -6191,7 +6211,7 @@ namespace ApiExamples
 
             field = (FieldRD)doc.Range.Fields[2];
 
-            VerifyField(FieldType.FieldRefDoc, $" RD  {ArtifactsDir.Replace(@"\",@"\\")}ReferencedDocument.docx", string.Empty, field);
+            TestUtil.VerifyField(FieldType.FieldRefDoc, $" RD  {ArtifactsDir.Replace(@"\",@"\\")}ReferencedDocument.docx", string.Empty, field);
             Assert.AreEqual(ArtifactsDir.Replace(@"\",@"\\") + "ReferencedDocument.docx", field.FileName);
             Assert.False(field.IsPathRelative);
         }

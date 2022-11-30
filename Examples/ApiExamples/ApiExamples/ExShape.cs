@@ -1241,12 +1241,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Chart.SourceFullName
-            //ExSummary:Shows how to get the full name of the external xls/xlsx document if the chart is linked.
+            //ExSummary:Shows how to get/set the full name of the external xls/xlsx document if the chart is linked.
             Document doc = new Document(MyDir + "Shape with linked chart.docx");
-
+            
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            
+            var sourceFullName = shape.Chart.SourceFullName;
+            Assert.True(sourceFullName.Contains("Examples\\Data\\Spreadsheet.xlsx"));
 
-            Assert.True(shape.Chart.SourceFullName.Contains("Examples\\Data\\Spreadsheet.xlsx"));
+            sourceFullName = "D:\\Documents\\ChartData.xlsx";
+            Assert.True(sourceFullName.Equals("D:\\Documents\\ChartData.xlsx"));
             //ExEnd
         }
 
@@ -2890,6 +2894,25 @@ namespace ApiExamples
             using (FileStream stream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open))
                 shape.Fill.SetImage(stream);
             doc.Save(ArtifactsDir + "Shape.FillImage.Stream.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ShadowFormat()
+        {
+            //ExStart
+            //ExFor:ShadowFormat.Visible
+            //ExFor:ShadowFormat.Clear()
+            //ExFor:ShadowType
+            //ExSummary:Shows how to work with a shadow formatting for the shape.
+            Document doc = new Document(MyDir + "Shape stroke pattern border.docx");
+            Shape shape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
+            
+            if (shape.ShadowFormat.Visible && shape.ShadowFormat.Type == ShadowType.Shadow2)                
+                shape.ShadowFormat.Type = ShadowType.Shadow7;
+            
+            if (shape.ShadowFormat.Type == ShadowType.ShadowMixed)            
+                shape.ShadowFormat.Clear();
             //ExEnd
         }
     }
