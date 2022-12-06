@@ -1419,8 +1419,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Category("IgnoreOnJenkins")]
-        [Description("To pass this test you need to add font to the current user font folder.")]
+        [Test, Explicit("To pass this test you need to add font to the current user font folder.")]        
         public void CheckScanUserFontsFolder()
         {
             // On Windows 10 fonts may be installed either into system folder "%windir%\fonts" for all users
