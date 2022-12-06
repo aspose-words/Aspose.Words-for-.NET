@@ -71,11 +71,11 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.AltText.html");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 153.0d, 153.0d, 0, 0, shape);
+            TestUtil.VerifyShape(ShapeType.Image, string.Empty, 151.5d, 151.5d, 0, 0, shape);
             Assert.AreEqual("Alt text for MyCube.", shape.AlternativeText);
 
             TestUtil.FileContainsString(
-                "<img src=\"Shape.AltText.001.png\" width=\"204\" height=\"204\" alt=\"Alt text for MyCube.\" " +
+                "<img src=\"Shape.AltText.001.png\" width=\"202\" height=\"202\" alt=\"Alt text for MyCube.\" " +
                 "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />", 
                 ArtifactsDir + "Shape.AltText.html");
         }
@@ -809,7 +809,8 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyShape(ShapeType.CloudCallout, "CloudCallout 100002", 250.0d, 150.0d, 25.0d, 25.0d, shape);
-            Assert.AreEqual(Color.LightBlue.ToArgb(), shape.FillColor.ToArgb());
+            Color colorWithOpacity = Color.FromArgb(Convert.ToInt32(255 * shape.Fill.Opacity), Color.LightBlue.R, Color.LightBlue.G, Color.LightBlue.B);
+            Assert.AreEqual(colorWithOpacity.ToArgb(), shape.FillColor.ToArgb());
             Assert.AreEqual(Color.CadetBlue.ToArgb(), shape.StrokeColor.ToArgb());
             Assert.AreEqual(0.3d, shape.Fill.Opacity, 0.01d);
         }
@@ -1241,12 +1242,16 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Chart.SourceFullName
-            //ExSummary:Shows how to get the full name of the external xls/xlsx document if the chart is linked.
+            //ExSummary:Shows how to get/set the full name of the external xls/xlsx document if the chart is linked.
             Document doc = new Document(MyDir + "Shape with linked chart.docx");
-
+            
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            
+            var sourceFullName = shape.Chart.SourceFullName;
+            Assert.True(sourceFullName.Contains("Examples\\Data\\Spreadsheet.xlsx"));
 
-            Assert.True(shape.Chart.SourceFullName.Contains("Examples\\Data\\Spreadsheet.xlsx"));
+            sourceFullName = "D:\\Documents\\ChartData.xlsx";
+            Assert.True(sourceFullName.Equals("D:\\Documents\\ChartData.xlsx"));
             //ExEnd
         }
 
@@ -2140,7 +2145,11 @@ namespace ApiExamples
                 case LayoutFlow.BottomToTop:
                 case LayoutFlow.Horizontal:
                 case LayoutFlow.TopToBottomIdeographic:
+                case LayoutFlow.Vertical:
                     expectedLayoutFlow = layoutFlow;
+                    break;
+                case LayoutFlow.TopToBottom:
+                    expectedLayoutFlow = LayoutFlow.Vertical;
                     break;
                 default:
                     expectedLayoutFlow = LayoutFlow.Horizontal;
@@ -2890,6 +2899,25 @@ namespace ApiExamples
             using (FileStream stream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open))
                 shape.Fill.SetImage(stream);
             doc.Save(ArtifactsDir + "Shape.FillImage.Stream.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ShadowFormat()
+        {
+            //ExStart
+            //ExFor:ShadowFormat.Visible
+            //ExFor:ShadowFormat.Clear()
+            //ExFor:ShadowType
+            //ExSummary:Shows how to work with a shadow formatting for the shape.
+            Document doc = new Document(MyDir + "Shape stroke pattern border.docx");
+            Shape shape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
+            
+            if (shape.ShadowFormat.Visible && shape.ShadowFormat.Type == ShadowType.Shadow2)                
+                shape.ShadowFormat.Type = ShadowType.Shadow7;
+            
+            if (shape.ShadowFormat.Type == ShadowType.ShadowMixed)            
+                shape.ShadowFormat.Clear();
             //ExEnd
         }
     }

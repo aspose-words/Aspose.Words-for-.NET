@@ -452,6 +452,8 @@ namespace ApiExamples
         [TestCase(PdfCompliance.Pdf17)]
         [TestCase(PdfCompliance.PdfA2a)]
         [TestCase(PdfCompliance.PdfUa1)]
+        [TestCase(PdfCompliance.Pdf20)]
+        [TestCase(PdfCompliance.PdfA4)]
         public void Compliance(PdfCompliance pdfCompliance)
         {
             //ExStart
@@ -473,6 +475,9 @@ namespace ApiExamples
             // which complies with "PDF/A-1b" as well as preserving the document structure of the original document.
             // Set the "Compliance" property to "PdfCompliance.PdfUa1" to comply with the "PDF/UA-1" (ISO 14289-1) standard,
             // which aims to define represent electronic documents in PDF that allow the file to be accessible.
+            // Set the "Compliance" property to "PdfCompliance.Pdf20" to comply with the "PDF 2.0" (ISO 32000-2) standard.
+            // Set the "Compliance" property to "PdfCompliance.PdfA4" to comply with the "PDF/A-4" (ISO 19004:2020) standard,
+            // which preserving document static visual appearance over time.
             // This helps with making documents searchable but may significantly increase the size of already large documents.
             saveOptions.Compliance = pdfCompliance;
 
@@ -499,6 +504,14 @@ namespace ApiExamples
                 case PdfCompliance.PdfUa1:
                     Assert.AreEqual(PdfFormat.PDF_UA_1, pdfDocument.PdfFormat);
                     Assert.AreEqual("1.7", pdfDocument.Version);
+                    break;
+                case PdfCompliance.Pdf20:
+                    Assert.AreEqual(PdfFormat.v_2_0, pdfDocument.PdfFormat);
+                    Assert.AreEqual("2.0", pdfDocument.Version);
+                    break;
+                case PdfCompliance.PdfA4:
+                    Assert.AreEqual(PdfFormat.v_2_0, pdfDocument.PdfFormat);
+                    Assert.AreEqual("2.0", pdfDocument.Version);
                     break;
             }
 #endif
@@ -2086,7 +2099,7 @@ namespace ApiExamples
             DateTime signingTime = DateTime.Now;
             options.DigitalSignatureDetails =
                 new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "My Office", signingTime);
-            options.DigitalSignatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.Sha256;
+            options.DigitalSignatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.RipeMD160;
 
             Assert.AreEqual("Test Signing", options.DigitalSignatureDetails.Reason);
             Assert.AreEqual("My Office", options.DigitalSignatureDetails.Location);

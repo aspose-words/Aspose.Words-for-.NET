@@ -270,5 +270,33 @@ namespace ApiExamples
 
             Assert.AreEqual(ignoreNoscriptElements ? "" : "Your browser does not support JavaScript!", textAbsorber.Text);
         }
+
+        [TestCase(BlockImportMode.Preserve)]
+        [TestCase(BlockImportMode.Merge)]
+        public void BlockImport(BlockImportMode blockImportMode)
+        {
+            //ExStart
+            //ExFor:HtmlLoadOptions.BlockImportMode
+            //ExFor:BlockImportMode
+            //ExSummary:Shows how properties of block-level elements are imported from HTML-based documents.
+            const string html = @"
+            <html>
+                <div style='border:dotted'>
+                    <div style='border:solid'>
+                        <p>paragraph 1</p>
+                        <p>paragraph 2</p>
+                    </div>
+                </div>
+            </html>";
+            MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(html));
+
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions();
+            // Set the new mode of import HTML block-level elements.
+            loadOptions.BlockImportMode = blockImportMode;
+                        
+            Document doc = new Document(stream, loadOptions);
+            doc.Save(ArtifactsDir + "HtmlLoadOptions.BlockImport.docx");
+            //ExEnd
+        }
     }
 }

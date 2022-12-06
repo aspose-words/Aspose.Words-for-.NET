@@ -232,7 +232,7 @@ namespace ApiExamples
             //ExFor:Font.Superscript
             //ExSummary:Shows how to format text to offset its position.
             Document doc = new Document();
-            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
+            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
 
             // Raise this run of text 5 points above the baseline.
             Run run = new Run(doc, "Raised text. ");
@@ -460,7 +460,7 @@ namespace ApiExamples
             // It is not advised to use this method to hide sensitive information.
             builder.Font.Hidden = true;
             builder.Font.Size = 36;
-            
+
             builder.Writeln("This text will not be visible in the document.");
 
             doc.Save(ArtifactsDir + "Font.Hidden.docx");
@@ -494,7 +494,7 @@ namespace ApiExamples
             // Any text we add from this point will have kerning applied. The spaces between characters
             // will be adjusted, normally resulting in a slightly more aesthetically pleasing text run.
             builder.Font.Kerning = 12;
-            
+
             builder.Writeln("TALLY. (Kerning applied)");
 
             doc.Save(ArtifactsDir + "Font.Kerning.docx");
@@ -553,7 +553,7 @@ namespace ApiExamples
             // the English locale spell checker will not recognize the text and detect it as a spelling error.
             builder.Font.LocaleId = new CultureInfo("en-US", false).LCID;
             builder.Writeln("Привет!");
-            
+
             // Set a matching locale for the text that we are about to add to apply the appropriate spell checker.
             builder.Font.LocaleId = new CultureInfo("ru-RU", false).LCID;
             builder.Writeln("Привет!");
@@ -694,7 +694,7 @@ namespace ApiExamples
             //ExSummary:Shows how to define separate sets of font settings for right-to-left, and right-to-left text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             // Define a set of font settings for left-to-right text.
             builder.Font.Name = "Courier New";
             builder.Font.Size = 16;
@@ -772,7 +772,7 @@ namespace ApiExamples
             // This could be useful when a western font does not have ideal representations for Asian characters.
             builder.Font.NameFarEast = "SimSun";
             builder.Font.LocaleIdFarEast = new CultureInfo("zh-CN", false).LCID;
-            
+
             // This text will be displayed in the default font/locale.
             builder.Writeln("Hello world!");
 
@@ -857,7 +857,7 @@ namespace ApiExamples
             // 2 -  Using a built-in style identifier:
             builder.Font.StyleIdentifier = StyleIdentifier.IntenseEmphasis;
             builder.Writeln("Text originally in \"Intense Emphasis\" style");
-       
+
             // Convert all uses of one style to another,
             // using the above methods to reference old and new styles.
             foreach (Run run in doc.GetChildNodes(NodeType.Run, true).OfType<Run>())
@@ -928,7 +928,7 @@ namespace ApiExamples
 
             builder.Font.StyleName = "MyStyle";
             builder.Write("This text is in a custom style.");
-            
+
             // Iterate over every run and add a double underline to every custom style.
             foreach (Run run in doc.GetChildNodes(NodeType.Run, true).OfType<Run>())
             {
@@ -949,7 +949,7 @@ namespace ApiExamples
             Assert.False(docRun.Font.Style.BuiltIn);
             Assert.AreEqual(Underline.Double, docRun.Font.Underline);
         }
-        
+
         [Test]
         public void GetAvailableFonts()
         {
@@ -963,7 +963,7 @@ namespace ApiExamples
             //ExSummary:Shows how to list available fonts.
             // Configure Aspose.Words to source fonts from a custom folder, and then print every available font.
             FontSourceBase[] folderFontSource = { new FolderFontSource(FontsDir, true) };
-            
+
             foreach (PhysicalFontInfo fontInfo in folderFontSource[0].GetAvailableFonts())
             {
                 Console.WriteLine("FontFamilyName : {0}", fontInfo.FontFamilyName);
@@ -973,7 +973,7 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.AreEqual(folderFontSource[0].GetAvailableFonts().Count, 
+            Assert.AreEqual(folderFontSource[0].GetAvailableFonts().Count,
                 Directory.EnumerateFiles(FontsDir, "*.*", SearchOption.AllDirectories).Count(f => f.EndsWith(".ttf") || f.EndsWith(".otf")));
         }
 
@@ -1053,7 +1053,7 @@ namespace ApiExamples
             // Below are three types of fields which can accept a document visitor,
             // which will allow it to visit the accepting node, and then traverse its child nodes in a depth-first manner.
             // 1 -  Paragraph node:
-            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 4, true);
+            Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 4, true);
             para.Accept(hiddenContentRemover);
 
             // 2 -  Table node:
@@ -1206,7 +1206,7 @@ namespace ApiExamples
                 // which this visitor will not remove.
                 if (!table.HasChildNodes)
                     table.Remove();
-                
+
                 return VisitorAction.Continue;
             }
 
@@ -1277,7 +1277,7 @@ namespace ApiExamples
                         Assert.False(specialChar.Font.Hidden);
                         break;
                 }
-            } 
+            }
         }
 
         [Test]
@@ -1319,7 +1319,7 @@ namespace ApiExamples
             Assert.IsNotNull(embeddedFontBytes); //ExSkip
 
             File.WriteAllBytes(ArtifactsDir + "Alte DIN 1451 Mittelschrift.ttf", embeddedFontBytes);
-            
+
             // Embedded font formats may be different in other formats such as .doc.
             // We need to know the correct format before we can extract the font.
             doc = new Document(MyDir + "Embedded font.doc");
@@ -1335,7 +1335,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void GetFontInfoFromFile() 
+        public void GetFontInfoFromFile()
         {
             //ExStart
             //ExFor:Fonts.FontFamily
@@ -1348,7 +1348,7 @@ namespace ApiExamples
             //ExFor:Fonts.FontInfoCollection.GetEnumerator
             //ExSummary:Shows how to access and print details of each font in a document.
             Document doc = new Document(MyDir + "Document.docx");
-            
+
             IEnumerator<FontInfo> fontCollectionEnumerator = doc.FontInfos.GetEnumerator();
             while (fontCollectionEnumerator.MoveNext())
             {
@@ -1408,9 +1408,9 @@ namespace ApiExamples
             //ExFor:Font.HasDmlEffect(TextDmlEffect)
             //ExSummary:Shows how to check if a run displays a DrawingML text effect.
             Document doc = new Document(MyDir + "DrawingML text effects.docx");
-            
+
             RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
-            
+
             Assert.True(runs[0].Font.HasDmlEffect(TextDmlEffect.Shadow));
             Assert.True(runs[1].Font.HasDmlEffect(TextDmlEffect.Shadow));
             Assert.True(runs[2].Font.HasDmlEffect(TextDmlEffect.Reflection));
@@ -1418,8 +1418,9 @@ namespace ApiExamples
             Assert.True(runs[4].Font.HasDmlEffect(TextDmlEffect.Fill));
             //ExEnd
         }
-        
+
         [Test, Category("IgnoreOnJenkins")]
+        [Description("To pass this test you need to add font to the current user font folder.")]
         public void CheckScanUserFontsFolder()
         {
             // On Windows 10 fonts may be installed either into system folder "%windir%\fonts" for all users

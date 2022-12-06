@@ -33,6 +33,10 @@ using Aspose.Words.Vba;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
 using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
+using Aspose.Words.Pdf2Word.FixedFormats;
+using Aspose.Page.XPS;
+using LoadOptions = Aspose.Words.Loading.LoadOptions;
+using Aspose.Page.XPS.XpsModel;
 #if NET48 || NET5_0_OR_GREATER || JAVA
 using Aspose.Pdf.Text;
 using Aspose.Words.Shaping.HarfBuzz;
@@ -243,7 +247,162 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.PdfDocumentEncrypted.pdf", loadOptions);
         }
-        
+
+        [TestCase("Protected pdf document.pdf", "PDF")]
+        [TestCase("Pdf Document.pdf", "HTML")]
+        [TestCase("Pdf Document.pdf", "XPS")]
+        [TestCase("Images.pdf", "JPEG")]
+        [TestCase("Images.pdf", "PNG")]
+        [TestCase("Images.pdf", "TIFF")]
+        [TestCase("Images.pdf", "BMP")]
+        public void PdfRenderer(string docName, string format)
+        {
+            var pdfRenderer = new PdfFixedRenderer();
+            var options = new PdfFixedOptions();
+
+
+            switch (format)
+            {
+                case "PDF":
+                    options = new PdfFixedOptions() { Password = "{Asp0se}P@ssw0rd" };
+                    SaveTo(pdfRenderer, docName, options, "pdf");
+                    AssertResult("pdf");
+
+                    break;
+
+                case "HTML":
+                    options = new PdfFixedOptions() { PageIndex = 0, PageCount = 1 };
+                    SaveTo(pdfRenderer, docName, options, "html");
+                    AssertResult("html");
+
+                    break;
+
+                case "XPS":                    
+                    SaveTo(pdfRenderer, docName, options, "xps");
+                    AssertResult("xps");
+
+                    break;
+
+                case "JPEG":
+                    options = new PdfFixedOptions() { JpegQuality = 10, ImageFormat = FixedImageFormat.Jpeg };
+                    SaveTo(pdfRenderer, docName, options, "jpeg");
+                    AssertResult("jpeg");
+
+                    break;
+
+                case "PNG":
+                    options = new PdfFixedOptions() { 
+                        PageIndex = 0, 
+                        PageCount = 2, 
+                        JpegQuality = 50, 
+                        ImageFormat = FixedImageFormat.Png 
+                    };
+                    SaveTo(pdfRenderer, docName, options, "png");
+                    AssertResult("png");
+
+                    break;
+
+                case "TIFF":
+                    options = new PdfFixedOptions() { JpegQuality = 100, ImageFormat = FixedImageFormat.Tiff };
+                    SaveTo(pdfRenderer, docName, options, "tiff");
+                    AssertResult("tiff");
+
+                    break;
+
+                case "BMP":
+                    options = new PdfFixedOptions() { ImageFormat = FixedImageFormat.Bmp };
+                    SaveTo(pdfRenderer, docName, options, "bmp");
+                    AssertResult("bmp");
+
+                    break;
+            }
+        }
+
+        private void SaveTo(PdfFixedRenderer pdfRenderer, string docName, PdfFixedOptions fixedOptions, string fileExt)
+        {
+            using (var pdfDoc = File.OpenRead(MyDir + docName))
+            {
+                Stream stream = new MemoryStream();
+                IReadOnlyList<Stream> imagesStream = new List<Stream>();
+
+                if (fileExt == "pdf")
+                {
+                    stream = pdfRenderer.SavePdfAsPdf(pdfDoc, fixedOptions);
+                }
+                else if (fileExt == "html")
+                {
+                    stream = pdfRenderer.SavePdfAsHtml(pdfDoc, fixedOptions);
+                }
+                else if (fileExt == "xps")
+                {
+                    stream = pdfRenderer.SavePdfAsXps(pdfDoc, fixedOptions);
+                }
+                else if (fileExt == "jpeg" || fileExt == "png" || fileExt == "tiff" || fileExt == "bmp")
+                {
+                    imagesStream = pdfRenderer.SavePdfAsImages(pdfDoc, fixedOptions);
+                }
+
+                if (imagesStream.Count != 0)
+                {
+                    for (int i = 0; i < imagesStream.Count; i++)
+                    {
+                        using (FileStream resultDoc = new FileStream(ArtifactsDir + $"PdfRenderer_{i}.{fileExt}", FileMode.Create))
+                            imagesStream[i].CopyTo(resultDoc);                        
+                    }                    
+                }
+                else
+                {
+                    using (FileStream resultDoc = new FileStream(ArtifactsDir + $"PdfRenderer.{fileExt}", FileMode.Create))
+                        stream.CopyTo(resultDoc);
+                }
+            }
+        }
+
+        private void AssertResult(string fileExt)
+        {
+            if (fileExt == "jpeg" || fileExt == "png" || fileExt == "tiff" || fileExt == "bmp")
+            {
+                Regex reg = new Regex("PdfRenderer_*");
+
+                var images = Directory.GetFiles(ArtifactsDir, $"*.{fileExt}")
+                                     .Where(path => reg.IsMatch(path))
+                                     .ToList();
+
+                if(fileExt == "png")
+                    Assert.AreEqual(2, images.Count);
+                else
+                    Assert.AreEqual(5, images.Count);
+            }
+            else
+            {
+                if (fileExt == "xps")
+                {
+                    var doc = new XpsDocument(ArtifactsDir + $"PdfRenderer.{fileExt}");
+                    AssertXpsText(doc);
+                }
+                else
+                {
+                    var doc = new Document(ArtifactsDir + $"PdfRenderer.{fileExt}");
+                    var content = doc.GetText().Replace("\r", " ");
+
+                    Assert.True(content.Contains("Heading 1 Heading 1.1.1.1 Heading 1.1.1.2"));
+                }               
+            }
+        }
+
+        private static void AssertXpsText(XpsDocument doc)
+        {
+            AssertXpsText(doc.SelectActivePage(1));
+        }
+
+        private static void AssertXpsText(XpsElement element)
+        {
+            for (int i = 0; i < element.Count; i++)
+                AssertXpsText(element[i]);
+            if (element is XpsGlyphs)
+                Assert.True(new[] { "Heading 1", "Head", "ing 1" }.Any(c => ((XpsGlyphs)element).UnicodeString.Contains(c)));
+        }
+
         [Test]
         public void OpenFromStreamWithBaseUri()
         {
@@ -2669,6 +2828,26 @@ namespace ApiExamples
 
             Document doc = new Document(MyDir + "Azw3 document.azw3");
             Assert.True(doc.GetText().Contains("Hachette Book Group USA"));
+        }
+
+        [Test]
+        public void OpenEpub()
+        {
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Epub document.epub");
+            Assert.AreEqual(info.LoadFormat, LoadFormat.Epub);
+
+            Document doc = new Document(MyDir + "Epub document.epub");
+            Assert.True(doc.GetText().Contains("Down the Rabbit-Hole"));
+        }
+
+        [Test]
+        public void OpenXml()
+        {
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Mail merge data - Customers.xml");
+            Assert.AreEqual(info.LoadFormat, LoadFormat.Xml);
+
+            Document doc = new Document(MyDir + "Mail merge data - Purchase order.xml");
+            Assert.True(doc.GetText().Contains("Ellen Adams\r123 Maple Street"));
         }
     }
 }

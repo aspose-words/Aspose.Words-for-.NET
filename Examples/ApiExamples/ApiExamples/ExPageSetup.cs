@@ -1084,5 +1084,23 @@ namespace ApiExamples
 
             Assert.True(pageSetup.SuppressEndnotes);
         }
+
+        [Test]
+        public void ChapterPageSeparator()
+        {
+            //ExStart
+            //ExFor:PageSetup.HeadingLevelForChapter
+            //ExFor:ChapterPageSeparator
+            //ExFor:PageSetup.ChapterPageSeparator
+            //ExSummary:Shows how to work with page chapters.
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            PageSetup pageSetup = doc.FirstSection.PageSetup;
+
+            pageSetup.PageNumberStyle = NumberStyle.UppercaseRoman;
+            pageSetup.ChapterPageSeparator = Aspose.Words.ChapterPageSeparator.Colon;
+            pageSetup.HeadingLevelForChapter = 1;
+            //ExEnd
+        }
     }
 }

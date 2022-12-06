@@ -3607,5 +3607,30 @@ namespace ApiExamples
             //ExEnd
         }
 #endif
+
+        [Test]
+        public void PreserveBlocks()
+        {
+            //ExStart
+            //ExFor:HtmlInsertOptions
+            //ExSummary:Shows how to allows better preserve borders and margins seen.
+            const string html = @"
+                <html>
+                    <div style='border:dotted'>
+                    <div style='border:solid'>
+                        <p>paragraph 1</p>
+                        <p>paragraph 2</p>
+                    </div>
+                    </div>
+                </html>";
+
+            // Set the new mode of import HTML block-level elements.
+            HtmlInsertOptions insertOptions = HtmlInsertOptions.PreserveBlocks;
+            
+            DocumentBuilder builder = new DocumentBuilder();
+            builder.InsertHtml(html, insertOptions);
+            builder.Document.Save(ArtifactsDir + "DocumentBuilder.PreserveBlocks.docx");
+            //ExEnd
+        }
     }
 }

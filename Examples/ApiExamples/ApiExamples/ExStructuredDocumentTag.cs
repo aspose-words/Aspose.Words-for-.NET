@@ -1142,5 +1142,56 @@ namespace ApiExamples
             doc.LastSection.Body.InsertAfter(rangeEnd, doc.FirstSection.Body.FirstParagraph);
         }
         //ExEnd
+
+        [Test]
+        public void GetSdt()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTagCollection.Remove(int)
+            //ExFor:StructuredDocumentTagCollection.RemoveAt(int)
+            //ExSummary:Shows how to remove structured document tag.
+            Document doc = new Document(MyDir + "Structured document tags.docx");
+
+            StructuredDocumentTagCollection structuredDocumentTags = doc.Range.StructuredDocumentTags;
+            IStructuredDocumentTag sdt;
+            for (int i = 0; i < structuredDocumentTags.Count; i++)
+            {
+                sdt = structuredDocumentTags[i];
+                Console.WriteLine(sdt.Title);
+            }
+            
+            sdt = structuredDocumentTags.GetById(1691867797);
+            Assert.AreEqual(1691867797, sdt.Id);
+
+            Assert.AreEqual(3, structuredDocumentTags.Count);
+            // Remove the structured document tag by Id.
+            structuredDocumentTags.Remove(1691867797);
+            // Remove the structured document tag at position 0.
+            structuredDocumentTags.RemoveAt(0);
+            Assert.AreEqual(1, structuredDocumentTags.Count);
+            //ExEnd
+        }
+
+        [Test]
+        public void RangeSdt()
+        {
+            //ExStart
+            //ExFor:StructuredDocumentTagCollection.GetById(int)
+            //ExFor:StructuredDocumentTagCollection.GetByTitle(String)
+            //ExFor:IStructuredDocumentTag.IsRanged()
+            //ExFor:IStructuredDocumentTag.Title
+            //ExSummary:Shows how to get structured document tag.
+            Document doc = new Document(MyDir + "Structured document tags by id.docx");
+
+            // Get the structured document tag by Id.
+            IStructuredDocumentTag sdt = doc.Range.StructuredDocumentTags.GetById(1160505028);
+            Console.WriteLine(sdt.IsRanged());
+            Console.WriteLine(sdt.Title);
+
+            // Get the structured document tag or ranged tag by Title.
+            sdt = doc.Range.StructuredDocumentTags.GetByTitle("Alias4");
+            Console.WriteLine(sdt.Id);
+            //ExEnd
+        }
     }
 }

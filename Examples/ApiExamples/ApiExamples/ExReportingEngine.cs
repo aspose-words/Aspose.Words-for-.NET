@@ -499,7 +499,20 @@ namespace ApiExamples
                 "Fail inserting document by bytes");
 
         }
-        
+
+        [Test]
+        public void ImageExifOrientation()
+        {
+            Document template = new Document(MyDir + "Reporting engine template - Image exif orientation.docx");
+
+            byte[] image1Bytes = File.ReadAllBytes(ImageDir + "RightF.jpg");
+            byte[] image2Bytes = File.ReadAllBytes(ImageDir + "WrongF.jpg");
+
+            BuildReport(template, new object[] { image1Bytes, image2Bytes }, new string[] { "image1", "image2" }, 
+                ReportBuildOptions.RespectJpegExifOrientation);
+            template.Save(ArtifactsDir + "ReportingEngine.ImageExifOrientation.docx");
+        }
+
         [Test]
         public void DynamicStretchingImageWithinTextBox()
         {
@@ -1114,6 +1127,12 @@ namespace ApiExamples
                 Assert.AreEqual(expectedItems[i].Value, sdt.ListItems[i].Value);
                 Assert.AreEqual(expectedItems[i].DisplayText, sdt.ListItems[i].DisplayText);
             }
+        }
+
+        private static void BuildReport(Document document, object dataSource, ReportBuildOptions reportBuildOptions)
+        {
+            ReportingEngine engine = new ReportingEngine { Options = reportBuildOptions };
+            engine.BuildReport(document, dataSource);
         }
 
         private static void BuildReport(Document document, object dataSource, string dataSourceName,
