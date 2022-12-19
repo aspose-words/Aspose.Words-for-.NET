@@ -1962,6 +1962,7 @@ namespace ApiExamples
             //ExFor:StyleCollection.Item(String)
             //ExFor:SectionCollection.Item(Int32)
             //ExFor:Document.UpdatePageLayout
+            //ExFor:PageSetup.Margins
             //ExSummary:Shows when to recalculate the page layout of the document.
             Document doc = new Document(MyDir + "Rendering.docx");
 
@@ -1972,6 +1973,7 @@ namespace ApiExamples
             // Modify the document in some way.
             doc.Styles["Normal"].Font.Size = 6;
             doc.Sections[0].PageSetup.Orientation = Aspose.Words.Orientation.Landscape;
+            doc.Sections[0].PageSetup.Margins = Margins.Mirrored;
 
             // In the current version of Aspose.Words, modifying the document does not automatically rebuild 
             // the cached page layout. If we wish for the cached layout
@@ -2848,6 +2850,40 @@ namespace ApiExamples
 
             Document doc = new Document(MyDir + "Mail merge data - Purchase order.xml");
             Assert.True(doc.GetText().Contains("Ellen Adams\r123 Maple Street"));
+        }
+
+        [Test]
+        public void MoveToStructuredDocumentTag()
+        {
+            //ExStart
+            //ExFor:DocumentBuilder.MoveToStructuredDocumentTag(int, int)
+            //ExFor:DocumentBuilder.MoveToStructuredDocumentTag(StructuredDocumentTag, int)
+            //ExFor:DocumentBuilder.IsAtEndOfStructuredDocumentTag
+            //ExFor:DocumentBuilder.CurrentStructuredDocumentTag
+            //ExSummary:Shows how to move cursor of DocumentBuilder inside a structured document tag.
+            Document doc = new Document(MyDir + "Structured document tags.docx");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // There is a several ways to move the cursor:
+            // 1 -  Move to the first character of structured document tag by index.
+            builder.MoveToStructuredDocumentTag(1, 1);
+
+            // 2 -  Move to the first character of structured document tag by object.
+            StructuredDocumentTag tag = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 2, true);
+            builder.MoveToStructuredDocumentTag(tag, 1);
+            builder.Write(" New text.");
+
+            Assert.AreEqual("R New text.ichText", tag.GetText().Trim());
+
+            // 3 -  Move to the end of the second structured document tag.
+            builder.MoveToStructuredDocumentTag(1, -1);
+            Assert.True(builder.IsAtEndOfStructuredDocumentTag);            
+
+            // Get currently selected structured document tag.
+            builder.CurrentStructuredDocumentTag.Color = Color.Green;
+
+            doc.Save(ArtifactsDir + "Document.MoveToStructuredDocumentTag.docx");
+            //ExEnd
         }
     }
 }

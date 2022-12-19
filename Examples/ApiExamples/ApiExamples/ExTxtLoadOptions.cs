@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -177,6 +178,26 @@ namespace ApiExamples
 
             Assert.False(doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Bidi);
             //ExEnd
+        }
+
+        [Test]
+        public void AutoNumberingDetection()
+        {
+            //ExStart
+            //ExFor:TxtLoadOptions.AutoNumberingDetection            
+            //ExSummary:Shows how to disable automatic numbering detection.            
+            TxtLoadOptions options = new TxtLoadOptions { AutoNumberingDetection = false };
+            Document doc = new Document(MyDir + "Number detection.txt", options);
+            //ExEnd            
+
+            int listItemsCount = 0;
+            foreach (Paragraph paragraph in doc.GetChildNodes(NodeType.Paragraph, true))
+            {
+                if (paragraph.IsListItem)
+                    listItemsCount++;
+            }
+
+            Assert.AreEqual(0, listItemsCount);            
         }
     }
 }

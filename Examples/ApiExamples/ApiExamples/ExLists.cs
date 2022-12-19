@@ -546,7 +546,6 @@ namespace ApiExamples
             builder.ListFormat.RemoveNumbers();
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
-
             Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
 
             foreach (Paragraph paragraph in paras)
@@ -788,11 +787,9 @@ namespace ApiExamples
             Document doc = new Document();
 
             ListCollection lists = doc.Lists;
-
             Assert.AreEqual(doc, lists.Document);
 
             List list = lists.Add(ListTemplate.BulletDefault);
-
             Assert.AreEqual(doc, list.Document);
 
             Console.WriteLine("Current list count: " + lists.Count);
@@ -997,6 +994,19 @@ namespace ApiExamples
                 Throws.TypeOf<ArgumentException>());
             Assert.That(() => ListLevel.GetEffectiveValue(5, NumberStyle.Custom, "...."),
                 Throws.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void HasSameTemplate()
+        {
+            //ExStart
+            //ExFor:List.HasSameTemplate(List)
+            //ExSummary:Shows how to define lists with the same ListDefId.
+            Document doc = new Document(MyDir + "Different lists.docx");
+
+            Assert.True(doc.Lists[0].HasSameTemplate(doc.Lists[1]));
+            Assert.False(doc.Lists[1].HasSameTemplate(doc.Lists[2]));
+            //ExEnd
         }
     }
 }

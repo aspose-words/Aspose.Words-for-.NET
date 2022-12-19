@@ -17,6 +17,7 @@ using System.Text;
 using Aspose.Words.BuildingBlocks;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
+using Aspose.Words.Replacing;
 #if NET48 || NET5_0_OR_GREATER || JAVA
 using Aspose.Pdf.Text;
 #endif
@@ -1163,12 +1164,12 @@ namespace ApiExamples
             sdt = structuredDocumentTags.GetById(1691867797);
             Assert.AreEqual(1691867797, sdt.Id);
 
-            Assert.AreEqual(3, structuredDocumentTags.Count);
+            Assert.AreEqual(5, structuredDocumentTags.Count);
             // Remove the structured document tag by Id.
             structuredDocumentTags.Remove(1691867797);
             // Remove the structured document tag at position 0.
             structuredDocumentTags.RemoveAt(0);
-            Assert.AreEqual(1, structuredDocumentTags.Count);
+            Assert.AreEqual(3, structuredDocumentTags.Count);
             //ExEnd
         }
 
@@ -1192,6 +1193,91 @@ namespace ApiExamples
             sdt = doc.Range.StructuredDocumentTags.GetByTitle("Alias4");
             Console.WriteLine(sdt.Id);
             //ExEnd
+        }
+
+        [Test]
+        public void SdtAtRowLevel()
+        {
+            //ExStart
+            //ExFor:SdtType
+            //ExSummary:Shows how to  fill a table with data from in an XML part.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Table table = builder.StartTable();
+
+            // Create a Group structured document tag at the Row level.
+            StructuredDocumentTag groupSdt = new StructuredDocumentTag(doc, SdtType.Group, MarkupLevel.Row);
+            table.AppendChild(groupSdt);
+            groupSdt.IsShowingPlaceholderText = false;
+            groupSdt.RemoveAllChildren();
+
+            // Create a child row of the structured document tag.
+            Row row = new Row(doc);
+            groupSdt.AppendChild(row);
+
+            Cell cell = new Cell(doc);
+            row.AppendChild(cell);
+
+            builder.EndTable();
+
+            // Insert cell contents.
+            cell.EnsureMinimum();
+            builder.MoveTo(cell.LastParagraph);
+            builder.Write("Lorem ipsum dolor.");
+
+            // Insert text after the table.
+            builder.MoveTo(table.NextSibling);
+            builder.Write("Nulla blandit nisi.");
+
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.SdtAtRowLevel.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void IgnoreStructuredDocumentTags()
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.IgnoreStructuredDocumentTags
+            //ExSummary:Shows how to ignore content of tags from replacement.
+            Document doc = new Document(MyDir + "Structured document tags.docx");
+
+            // This paragraph contains SDT.
+            Paragraph p = (Paragraph)doc.FirstSection.Body.GetChild(NodeType.Paragraph, 2, true);
+            string textToSearch = p.ToString(SaveFormat.Text).Trim();
+            
+            FindReplaceOptions options = new FindReplaceOptions() { IgnoreStructuredDocumentTags = true };
+            doc.Range.Replace(textToSearch, "replacement", options);
+
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.IgnoreStructuredDocumentTags.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "StructuredDocumentTag.IgnoreStructuredDocumentTags.docx");
+            Assert.AreEqual("This document contains Structured Document Tags with text inside them\r\rRepeatingSection\rRichText\rreplacement", doc.GetText().Trim());
+        }
+
+        [Test]
+        public void Citation()
+        {
+            //ExStart
+            //ExFor:SdtType
+            //ExSummary:Shows how to create a structured document tag of the Citation type.
+            Document doc = new Document();
+            
+            StructuredDocumentTag sdt = new StructuredDocumentTag(doc, SdtType.Citation, MarkupLevel.Inline);
+            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
+            paragraph.AppendChild(sdt);
+
+            // Create a Citation field.
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.MoveToParagraph(0, -1);
+            builder.InsertField(@"CITATION Ath22 \l 1033 ", "(John Lennon, 2022)");
+
+            // Move the field to the structured document tag.
+            while (sdt.NextSibling != null)
+                sdt.AppendChild(sdt.NextSibling);
+
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.Citation.docx");
         }
     }
 }

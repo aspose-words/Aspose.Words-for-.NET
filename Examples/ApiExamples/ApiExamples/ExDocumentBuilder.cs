@@ -355,7 +355,7 @@ namespace ApiExamples
             Assert.AreEqual(RelativeVerticalPosition.Page, shape.RelativeVerticalPosition);
             Assert.AreEqual((doc.FirstSection.PageSetup.PageWidth - shape.Width) / 2, shape.Left);
             Assert.AreEqual((doc.FirstSection.PageSetup.PageHeight - shape.Height) / 2, shape.Top);
-        }
+        }        
 
         [Test]
         public void InsertOleObject()

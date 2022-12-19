@@ -34,6 +34,7 @@ namespace ApiExamples
         [TestCase(SaveFormat.Html)]
         [TestCase(SaveFormat.Mhtml)]
         [TestCase(SaveFormat.Epub)]
+        [TestCase(SaveFormat.Azw3)]
         public void ExportPageMarginsEpub(SaveFormat saveFormat)
         {
             Document doc = new Document(MyDir + "TextBoxes.docx");
@@ -52,6 +53,7 @@ namespace ApiExamples
         [TestCase(SaveFormat.Html, HtmlOfficeMathOutputMode.Image)]
         [TestCase(SaveFormat.Mhtml, HtmlOfficeMathOutputMode.MathML)]
         [TestCase(SaveFormat.Epub, HtmlOfficeMathOutputMode.Text)]
+        [TestCase(SaveFormat.Azw3, HtmlOfficeMathOutputMode.Text)]
         public void ExportOfficeMathEpub(SaveFormat saveFormat, HtmlOfficeMathOutputMode outputMode)
         {
             Document doc = new Document(MyDir + "Office math.docx");
@@ -66,6 +68,7 @@ namespace ApiExamples
         [TestCase(SaveFormat.Html, true, Description = "TextBox as svg (html)")]
         [TestCase(SaveFormat.Epub, true, Description = "TextBox as svg (epub)")]
         [TestCase(SaveFormat.Mhtml, false, Description = "TextBox as img (mhtml)")]
+        [TestCase(SaveFormat.Azw3, false, Description = "TextBox as img (azw3)")]
         public void ExportTextBoxAsSvgEpub(SaveFormat saveFormat, bool isTextBoxAsSvg)
         {
             string[] dirFiles;
@@ -99,6 +102,13 @@ namespace ApiExamples
                     return;
 
                 case SaveFormat.Mhtml:
+
+                    dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
+                        SearchOption.AllDirectories);
+                    Assert.That(dirFiles, Is.Empty);
+                    return;
+
+                case SaveFormat.Azw3:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);

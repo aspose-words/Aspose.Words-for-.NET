@@ -261,7 +261,7 @@ namespace ApiExamples
 
             // 2 -  Print while applying our printing settings, while also
             // giving the document a custom name that we may recognize in the printer queue:
-            doc.Print(printerSettings, "My rendered document");
+            doc.Print(printerSettings, "My rendered document");            
             //ExEnd
         }
 
@@ -271,6 +271,9 @@ namespace ApiExamples
             //ExStart
             //ExFor:AsposeWordsPrintDocument.#ctor(Document)
             //ExFor:AsposeWordsPrintDocument.CachePrinterSettings
+            //ExFor:AsposeWordsPrintDocument.ColorMode
+            //ExFor:AsposeWordsPrintDocument.ColorPagesPrinted
+            //ExFor:ColorPrintMode
             //ExSummary:Shows how to select a page range and a printer to print the document with, and then bring up a print preview.
             Document doc = new Document(MyDir + "Rendering.docx");
 
@@ -295,6 +298,9 @@ namespace ApiExamples
             AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(doc);
             awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
 
+            // Specify the new color print mode.
+            awPrintDoc.ColorMode = ColorPrintMode.GrayscaleAuto;
+
             // Use the "CachePrinterSettings" method to reduce time of the first call of the "Print" method.
             awPrintDoc.CachePrinterSettings();
 
@@ -304,8 +310,10 @@ namespace ApiExamples
 
             // Pass the "Aspose.Words" print document to the .NET Print Preview dialog.
             previewDlg.Document = awPrintDoc;
-
             previewDlg.ShowDialog();
+
+            awPrintDoc.Print();            
+            Console.WriteLine($"The numer of pages printed in color are {awPrintDoc.ColorPagesPrinted}.");
             //ExEnd
         }
 #endif

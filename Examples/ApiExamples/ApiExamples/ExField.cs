@@ -28,6 +28,7 @@ using Aspose.Words.Tables;
 using NUnit.Framework;
 using LoadOptions = Aspose.Words.Loading.LoadOptions;
 using System.Data.OleDb;
+using Aspose.Words.Math;
 #if NET48 || JAVA
 using Aspose.BarCode.BarCodeRecognition;
 #elif NET5_0_OR_GREATER
@@ -6847,6 +6848,24 @@ namespace ApiExamples
         }
 
         [Test]
+        public void FieldEQAsOfficeMath()
+        {
+            //ExStart
+            //ExFor:FieldEQ
+            //ExSummary:Shows how to replace the EQ field with Office Math.
+            Document doc = new Document(MyDir + "Field sample - EQ.docx");
+            FieldEQ fieldEQ = doc.Range.Fields.OfType<FieldEQ>().First();
+
+            OfficeMath officeMath = fieldEQ.AsOfficeMath();
+
+            fieldEQ.Start.ParentNode.InsertBefore(officeMath, fieldEQ.Start);
+            fieldEQ.Remove();
+
+            doc.Save(ArtifactsDir + "Field.EQAsOfficeMath.docx");
+            //ExEnd
+        }
+
+        [Test]
         public void FieldForms()
         {
             //ExStart
@@ -7492,6 +7511,11 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:IFieldUpdatingCallback
+        //ExFor:IFieldUpdatingProgressCallback
+        //ExFor:IFieldUpdatingProgressCallback.Notify(FieldUpdatingProgressArgs)
+        //ExFor:FieldUpdatingProgressArgs.UpdateCompleted
+        //ExFor:FieldUpdatingProgressArgs.TotalFieldsCount
+        //ExFor:FieldUpdatingProgressArgs.UpdatedFieldsCount
         //ExFor:IFieldUpdatingCallback.FieldUpdating(Field)
         //ExFor:IFieldUpdatingCallback.FieldUpdated(Field)
         //ExSummary:Shows how to use callback methods during a field update.
@@ -7519,7 +7543,7 @@ namespace ApiExamples
         /// <summary>
         /// Implement this interface if you want to have your own custom methods called during a field update.
         /// </summary>
-        public class FieldUpdatingCallback : IFieldUpdatingCallback
+        public class FieldUpdatingCallback : IFieldUpdatingCallback, IFieldUpdatingProgressCallback
         {
             public FieldUpdatingCallback()
             {
@@ -7546,8 +7570,15 @@ namespace ApiExamples
                 FieldUpdatedCalls.Add(field.Result);
             }
 
+            void IFieldUpdatingProgressCallback.Notify(FieldUpdatingProgressArgs args)
+            {
+                Console.WriteLine($"{args.UpdateCompleted}/{args.TotalFieldsCount}");
+                Console.WriteLine($"{args.UpdatedFieldsCount}");
+            }
+
             public IList<string> FieldUpdatedCalls { get; }
         }
         //ExEnd
     }
 }
+

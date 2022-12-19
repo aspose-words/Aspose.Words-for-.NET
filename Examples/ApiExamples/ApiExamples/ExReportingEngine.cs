@@ -362,6 +362,21 @@ namespace ApiExamples
         }
 
         [Test]
+        public void InsertDocumentDynamicallyTrimLastParagraph()
+        {
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document] -inline>>");
+
+            DocumentTestClass doc = new DocumentTestBuilder()
+                .WithDocument(new Document(MyDir + "Reporting engine template - Data table.docx")).Build();
+
+            BuildReport(template, doc, "src", ReportBuildOptions.None);
+            template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
+
+            template = new Document(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
+            Assert.AreEqual(1, template.FirstSection.Body.Paragraphs.Count);
+        }
+
+        [Test]
         public void InsertDocumentDynamicallyByStream()
         {
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentStream]>>");
@@ -694,10 +709,10 @@ namespace ApiExamples
 
             foreach (Shape shape in shapes.OfType<Shape>())
             {
-                // Assert that the image is really insert in textbox 
+                // Assert that the image is really insert in textbox.
                 Assert.IsNotNull(shape.Fill.ImageBytes);
 
-                // Assert that the width is preserved, and the height is changed
+                // Assert that the width is preserved, and the height is changed.
                 Assert.AreNotEqual(346.35, shape.Height);
                 Assert.AreEqual(431.5, shape.Width);
             }
@@ -722,7 +737,7 @@ namespace ApiExamples
             {
                 Assert.IsNotNull(shape.Fill.ImageBytes);
 
-                // Assert that the height is preserved, and the width is changed
+                // Assert that the height is preserved, and the width is changed.
                 Assert.AreNotEqual(431.5, shape.Width);
                 Assert.AreEqual(346.35, shape.Height);
             }
@@ -746,8 +761,8 @@ namespace ApiExamples
             foreach (Shape shape in shapes.OfType<Shape>())
             {
                 Assert.IsNotNull(shape.Fill.ImageBytes);
-
-                // Assert that the height and the width are changed
+                
+                // Assert that the height and the width are changed.
                 Assert.AreNotEqual(346.35, shape.Height);
                 Assert.AreNotEqual(431.5, shape.Width);
             }
@@ -772,7 +787,7 @@ namespace ApiExamples
             {
                 Assert.IsNotNull(shape.Fill.ImageBytes);
 
-                // Assert that textbox size are equal image size
+                // Assert that textbox size are equal image size.
                 Assert.AreEqual(300.0d, shape.Height);
                 Assert.AreEqual(300.0d, shape.Width);
             }
@@ -783,11 +798,11 @@ namespace ApiExamples
         {
             DocumentBuilder builder = new DocumentBuilder();
 
-            //Add templete to the document for reporting engine
+            // Add templete to the document for reporting engine.
             DocumentHelper.InsertBuilderText(builder,
                 new[] { "<<[missingObject.First().id]>>", "<<foreach [in missingObject]>><<[id]>><</foreach>>" });
 
-            //Assert that build report failed without "ReportBuildOptions.AllowMissingMembers"
+            // Assert that build report failed without "ReportBuildOptions.AllowMissingMembers".
             Assert.That(() => BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.None),
                 Throws.TypeOf<InvalidOperationException>());
         }
@@ -797,13 +812,13 @@ namespace ApiExamples
         {
             DocumentBuilder builder = new DocumentBuilder();
 
-            //Add templete to the document for reporting engine
+            // Add templete to the document for reporting engine.
             DocumentHelper.InsertBuilderText(builder,
                 new[] { "<<[missingObject.First().id]>>", "<<foreach [in missingObject]>><<[id]>><</foreach>>" });
 
             BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.AllowMissingMembers);
 
-            //Assert that build report success with "ReportBuildOptions.AllowMissingMembers"
+            // Assert that build report success with "ReportBuildOptions.AllowMissingMembers".
             Assert.AreEqual(ControlChar.ParagraphBreak + ControlChar.ParagraphBreak + ControlChar.SectionBreak,
                 builder.Document.GetText());
         }
