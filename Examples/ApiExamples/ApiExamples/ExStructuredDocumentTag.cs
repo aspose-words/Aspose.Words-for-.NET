@@ -1200,7 +1200,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:SdtType
-            //ExSummary:Shows how to  fill a table with data from in an XML part.
+            //ExSummary:Shows how to create group structured document tag at the Row level.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
