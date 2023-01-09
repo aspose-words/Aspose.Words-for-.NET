@@ -2450,5 +2450,43 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExportLanguageToSpanTag.pdf", saveOptions);
             //ExEnd
         }
+
+        [Test]
+        public void PdfEmbedAttachments()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.EmbedAttachments
+            //ExSummary:Shows how to add embed attachments to the PDF document.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
+
+            PdfSaveOptions options = new PdfSaveOptions();
+            options.EmbedAttachments = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfEmbedAttachments.pdf", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void CacheBackgroundGraphics()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.CacheBackgroundGraphics
+            //ExSummary:Shows how to cache graphics placed in document's background.
+            Document doc = new Document(MyDir + "Background images.docx");
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.CacheBackgroundGraphics = true;
+            
+            doc.Save(ArtifactsDir + "PdfSaveOptions.CacheBackgroundGraphics.pdf", saveOptions);
+
+            long asposeToPdfSize = new FileInfo(ArtifactsDir + "PdfSaveOptions.CacheBackgroundGraphics.pdf").Length;
+            long wordToPdfSize = new FileInfo(MyDir + "Background images (word to pdf).pdf").Length;
+
+            Assert.Less(asposeToPdfSize, wordToPdfSize);
+            //ExEnd
+        }
     }
 }

@@ -8,6 +8,7 @@
 using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Tables;
+using Aspose.Words.Themes;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -54,6 +55,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:BorderCollection
+            //ExFor:Border.ThemeColor
+            //ExFor:Border.TintAndShade
             //ExFor:Border
             //ExFor:BorderType
             //ExFor:ParagraphFormat.Borders
@@ -61,22 +64,25 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Border topBorder = builder.ParagraphFormat.Borders[BorderType.Top];
-            topBorder.Color = Color.Red;
+            Border topBorder = builder.ParagraphFormat.Borders.Top;
             topBorder.LineWidth = 4.0d;
             topBorder.LineStyle = LineStyle.DashSmallGap;
+            // Set ThemeColor only when LineWidth or LineStyle setted.
+            topBorder.ThemeColor = ThemeColor.Accent1;
+            topBorder.TintAndShade = 0.25d;
 
-            builder.Writeln("Text with a red top border.");
+            builder.Writeln("Text with a top border.");
 
             doc.Save(ArtifactsDir + "Border.ParagraphTopBorder.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Border.ParagraphTopBorder.docx");
-            Border border = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders[BorderType.Top];
+            Border border = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders.Top;
 
-            Assert.AreEqual(Color.Red.ToArgb(), border.Color.ToArgb());
             Assert.AreEqual(4.0d, border.LineWidth);
             Assert.AreEqual(LineStyle.DashSmallGap, border.LineStyle);
+            Assert.AreEqual(ThemeColor.Accent1, border.ThemeColor);
+            Assert.AreEqual(0.25d, border.TintAndShade, 0.01);
         }
 
         [Test]
