@@ -1201,7 +1201,7 @@ namespace ApiExamples
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             OleControl oleControl = shape.OleFormat.OleControl;
 
-            Assert.AreEqual(null, oleControl.Name);
+            Assert.AreEqual("CheckBox1", oleControl.Name);
 
             if (oleControl.IsForms2OleControl)
             {
