@@ -68,6 +68,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ChartDataLabelCollection.NumberFormat
+            //ExFor:ChartDataLabelCollection.Font
             //ExFor:ChartNumberFormat.FormatCode
             //ExSummary:Shows how to enable and configure data labels for a chart series.
             Document doc = new Document();
@@ -92,6 +93,7 @@ namespace ApiExamples
             ChartDataLabelCollection dataLabels = series.DataLabels;
             dataLabels.ShowValue = true;
             dataLabels.NumberFormat.FormatCode = "\"US$\" #,##0.000\"M\"";
+            dataLabels.Font.Size = 12;            
 
             doc.Save(ArtifactsDir + "Charts.DataLabelNumberFormat.docx");
             //ExEnd
@@ -736,6 +738,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Charts.ChartDataLabel.ShowBubbleSize
+            //ExFor:Charts.ChartDataLabel.Font
             //ExFor:Charts.IChartDataPoint.Bubble3D
             //ExSummary:Shows how to use 3D effects with bubble charts.
             Document doc = new Document();
@@ -753,6 +756,7 @@ namespace ApiExamples
             {
                 chart.Series[0].HasDataLabels = true;
                 chart.Series[0].DataLabels[i].ShowBubbleSize = true;
+                chart.Series[0].DataLabels[i].Font.Size = 12;
             }
             
             doc.Save(ArtifactsDir + "Charts.Bubble3D.docx");

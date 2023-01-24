@@ -342,7 +342,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void Revisions()
+        public void MoveRevisions()
         {
             //ExStart
             //ExFor:Paragraph.IsMoveFromRevision
@@ -375,6 +375,26 @@ namespace ApiExamples
             // The "Move to" revision is the paragraph where we dragged the text to.
             // If we reject the revision, this paragraph instead will disappear, and the other will remain.
             Assert.True(paragraphs[3].IsMoveToRevision);
+            //ExEnd
+        }
+
+        [Test]
+        public void RangeRevisions() 
+        {
+            //ExStart
+            //ExFor:Range.Revisions
+            //ExSummary:Shows how to work with revisions in range.
+            Document doc = new Document(MyDir + "Revisions.docx");
+
+            Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
+            foreach (Revision revision in paragraph.Range.Revisions)
+            {
+                if (revision.RevisionType == RevisionType.Deletion)
+                    revision.Accept();
+            }
+
+            // Reject the first section revisions.
+            doc.FirstSection.Range.Revisions.RejectAll();
             //ExEnd
         }
 

@@ -136,5 +136,20 @@ namespace ApiExamples
                 : outDocContents.Contains("MarkdownSaveOptions.ExportImagesAsBase64.001.jpeg"));
             //ExEnd
         }
+
+        [TestCase(MarkdownListExportMode.PlainText)]
+        [TestCase(MarkdownListExportMode.MarkdownSyntax)]
+        public void ListExportMode(MarkdownListExportMode markdownListExportMode)
+        {
+            //ExStart
+            //ExFor:MarkdownSaveOptions.ListExportMode
+            //ExSummary:Shows how to list items will be written to the markdown document.
+            Document doc = new Document(MyDir + "List item.docx");
+
+            // Use MarkdownListExportMode.PlainText or MarkdownListExportMode.MarkdownSyntax to export list.
+            MarkdownSaveOptions options = new MarkdownSaveOptions { ListExportMode = markdownListExportMode };
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.ListExportMode.md", options);
+            //ExEnd
+        }
     }
 }

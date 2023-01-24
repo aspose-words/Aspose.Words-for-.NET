@@ -117,6 +117,21 @@ namespace ApiExamples
             }
         }
 
+        [Test]
+        public void CreateAZW3Toc()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.EpubNavigationMapLevel
+            //ExSummary:Shows how to generate table of contents for azw3 documents.
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Azw3);
+            options.EpubNavigationMapLevel = 2;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.CreateAZW3Toc.azw3", options);
+            //ExEnd
+        }
+
         [TestCase(ExportListLabels.Auto)]
         [TestCase(ExportListLabels.AsInlineText)]
         [TestCase(ExportListLabels.ByHtmlTags)]

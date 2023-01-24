@@ -648,6 +648,46 @@ namespace ApiExamples
         }
 
         [Test]
+        public void ForegroundAndBackground()
+        {
+            //ExStart
+            //ExFor:Shading.ForegroundPatternThemeColor
+            //ExFor:Shading.BackgroundPatternThemeColor
+            //ExFor:Shading.ForegroundTintAndShade
+            //ExFor:Shading.BackgroundTintAndShade
+            //ExSummary:Shows how to set foreground and background colors for shading texture.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shading shading = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Shading;
+            shading.Texture = TextureIndex.Texture12Pt5Percent;
+            shading.ForegroundPatternThemeColor = ThemeColor.Dark1;
+            shading.BackgroundPatternThemeColor = ThemeColor.Dark2;
+
+            shading.ForegroundTintAndShade = 0.5;
+            shading.BackgroundTintAndShade = -0.2;
+
+            builder.Font.Border.Color = Color.Green;
+            builder.Font.Border.LineWidth = 2.5d;
+            builder.Font.Border.LineStyle = LineStyle.DashDotStroker;
+
+            builder.Writeln("Foreground and background pattern colors for shading texture.");
+
+            doc.Save(ArtifactsDir + "Font.ForegroundAndBackground.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Font.ForegroundAndBackground.docx");
+            Run run = doc.FirstSection.Body.Paragraphs[0].Runs[0];
+
+            Assert.AreEqual("Foreground and background pattern colors for shading texture.", run.GetText().Trim());
+            Assert.AreEqual(ThemeColor.Dark1, doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Shading.ForegroundPatternThemeColor);
+            Assert.AreEqual(ThemeColor.Dark2, doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Shading.BackgroundPatternThemeColor);
+
+            Assert.AreEqual(0.5, doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Shading.ForegroundTintAndShade, 0.1);
+            Assert.AreEqual(-0.2, doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Shading.BackgroundTintAndShade, 0.1);
+        }
+
+        [Test]
         public void Shading()
         {
             //ExStart

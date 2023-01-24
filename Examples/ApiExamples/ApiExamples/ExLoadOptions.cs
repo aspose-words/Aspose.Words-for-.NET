@@ -412,5 +412,20 @@ namespace ApiExamples
             private const double MaxDuration = 0.5;
         }
         //ExEnd
+
+        [Test]
+        public void IgnoreOleData()
+        {
+            //ExStart
+            //ExFor:LoadOptions.IgnoreOleData
+            //ExSummary:Shows how to ingore OLE data while loading.
+            // Ignoring OLE data may reduce memory consumption and increase performance
+            // without data lost in a case when destination format does not support OLE objects.
+            LoadOptions loadOptions = new LoadOptions() { IgnoreOleData = true };
+            Document doc = new Document(MyDir + "OLE objects.docx", loadOptions);
+
+            doc.Save(ArtifactsDir + "LoadOptions.IgnoreOleData.docx");
+            //ExEnd
+        }
     }
 }
