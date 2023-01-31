@@ -47,7 +47,6 @@ using System.Threading.Tasks;
 using SkiaSharp;
 #endif
 
-[assembly: Parallelizable(ParallelScope.Fixtures)]
 namespace ApiExamples
 {
     [TestFixture]   

@@ -58,7 +58,7 @@ namespace DocumentExplorer
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(364, 20);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Copyright © 2002-2021 Aspose Pty Ltd. All Rights Reserved. ";
+            this.label2.Text = "Copyright © 2002-2023 Aspose Pty Ltd. All Rights Reserved. ";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 

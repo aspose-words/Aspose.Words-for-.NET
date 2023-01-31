@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;net5.0</TargetFrameworks>
+    <TargetFrameworks>net48;net6.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
@@ -116,10 +116,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="22.12.0" />
+    <PackageReference Include="Aspose.BarCode" Version="23.1.0" />
     <PackageReference Include="Aspose.Email" Version="22.12.0" />
-    <PackageReference Include="Aspose.Words" Version="23.1.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.1.0" />
+    <PackageReference Include="Aspose.Words" Version="23.2.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
@@ -127,9 +127,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Interop.ADODB">
-      <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows.Forms" Condition="'$(TargetFramework)' == 'net462'" />
   </ItemGroup>
 
