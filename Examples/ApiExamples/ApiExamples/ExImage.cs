@@ -11,6 +11,7 @@ using System.Net;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
+using System.Threading.Tasks;
 #if NET48 || JAVA
 using System.Drawing;
 #elif NET5_0_OR_GREATER || __MOBILE__
@@ -256,7 +257,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertImageWithHyperlink()
+        public async Task InsertImageWithHyperlink()
         {
             //ExStart
             //ExFor:ShapeBase.HRef
@@ -279,7 +280,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Image.InsertImageWithHyperlink.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual("New Window", shape.Target);
             Assert.AreEqual("Aspose.Words Support Forums", shape.ScreenTip);

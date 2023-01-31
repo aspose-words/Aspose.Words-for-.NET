@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml;
 using Aspose.Words;
 using Aspose.Words.Fonts;
@@ -874,7 +875,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void LoadNotoFontsFallbackSettings()
+        public async Task LoadNotoFontsFallbackSettings()
         {
             //ExStart
             //ExFor:FontFallbackSettings.LoadNotoFallbackSettings
@@ -897,7 +898,7 @@ namespace ApiExamples
             doc.FontSettings = fontSettings;
             //ExEnd
 
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "https://www.google.com/get/noto/#sans-lgc");
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "https://www.google.com/get/noto/#sans-lgc");
         }
 
         [Test]

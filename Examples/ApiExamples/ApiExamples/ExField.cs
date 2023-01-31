@@ -29,6 +29,7 @@ using NUnit.Framework;
 using LoadOptions = Aspose.Words.Loading.LoadOptions;
 using System.Data.OleDb;
 using Aspose.Words.Math;
+using System.Threading.Tasks;
 #if NET48 || JAVA
 using Aspose.BarCode.BarCodeRecognition;
 #elif NET5_0_OR_GREATER
@@ -6811,7 +6812,7 @@ namespace ApiExamples
             InsertFieldEQ(builder, @"\i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)");
 
             doc.Save(ArtifactsDir + "Field.EQ.docx");
-            TestFieldEQ(new Document(ArtifactsDir + "Field.EQ.docx")); //ExSkip
+            Task.WhenAll(TestFieldEQ(new Document(ArtifactsDir + "Field.EQ.docx"))); //ExSkip
         }
 
         /// <summary>
@@ -6829,7 +6830,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestFieldEQ(Document doc)
+        private async Task TestFieldEQ(Document doc)
         {
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \f(1,4)", string.Empty, doc.Range.Fields[0]);
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \a \al \co2 \vs3 \hs3(4x,- 4y,-4x,+ y)", string.Empty, doc.Range.Fields[1]);
@@ -6844,7 +6845,7 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \a \ac \vs1 \co1(lim,n→∞) \b (\f(n,n2 + 12) + \f(n,n2 + 22) + ... + \f(n,n2 + n2))", string.Empty, doc.Range.Fields[10]);
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \i (,,  \b(\f(x,x2 + 3x + 2))) \s \up10(2)", string.Empty, doc.Range.Fields[11]);
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)", string.Empty, doc.Range.Fields[12]);
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "https://blogs.msdn.microsoft.com/murrays/2018/01/23/microsoft-word-eq-field/");
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "https://blogs.msdn.microsoft.com/murrays/2018/01/23/microsoft-word-eq-field/");
         }
 
         [Test]

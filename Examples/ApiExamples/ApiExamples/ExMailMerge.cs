@@ -18,8 +18,8 @@ using Aspose.Words.Lists;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-#if NET48 || JAVA
 using System.Web;
+#if NET48 || JAVA
 using System.Data.Odbc;
 #endif
 

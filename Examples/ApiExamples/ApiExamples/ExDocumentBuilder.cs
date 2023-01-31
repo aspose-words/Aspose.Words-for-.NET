@@ -27,6 +27,7 @@ using Aspose.Words.Notes;
 using Aspose.Words.Saving;
 using List = NUnit.Framework.List;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 #if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
@@ -220,7 +221,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertHyperlink()
+        public async Task InsertHyperlinkAsync()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertHyperlink
@@ -249,7 +250,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertHyperlink.docx");
 
             FieldHyperlink hyperlink = (FieldHyperlink)doc.Range.Fields[0];
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, hyperlink.Address);
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, hyperlink.Address);
 
             Run fieldContents = (Run)hyperlink.Start.NextSibling;
 
@@ -259,7 +260,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void PushPopFont()
+        public async Task PushPopFont()
         {
             //ExStart
             //ExFor:DocumentBuilder.PushFont
@@ -311,7 +312,7 @@ namespace ApiExamples
             Assert.AreNotEqual(runs[0].Font.Color, runs[2].Font.Color);
             Assert.AreNotEqual(runs[0].Font.Underline, runs[2].Font.Underline);
 
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, ((FieldHyperlink)doc.Range.Fields[0]).Address);
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, ((FieldHyperlink)doc.Range.Fields[0]).Address);
         }
 
 #if NET48 || JAVA
@@ -2813,7 +2814,7 @@ namespace ApiExamples
         //ExEnd
 
         [Test, Ignore("Failed")]
-        public void InsertVideoWithUrl()
+        public async Task InsertVideoWithUrl()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, Double, Double)
@@ -2831,7 +2832,7 @@ namespace ApiExamples
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(480, 360, ImageType.Jpeg, shape);
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
 
             Assert.AreEqual(360.0d, shape.Width);
             Assert.AreEqual(270.0d, shape.Height);
@@ -3466,7 +3467,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void InsertOnlineVideo()
+        public async Task InsertOnlineVideo()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, RelativeHorizontalPosition, Double, RelativeVerticalPosition, Double, Double, Double, WrapType)
@@ -3500,11 +3501,11 @@ namespace ApiExamples
             Assert.AreEqual(RelativeHorizontalPosition.LeftMargin, shape.RelativeHorizontalPosition);
 
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
         }
 
         [Test]
-        public void InsertOnlineVideoCustomThumbnail()
+        public async Task InsertOnlineVideoCustomThumbnail()
         {
             //ExStart
             //ExFor:DocumentBuilder.InsertOnlineVideo(String, String, Byte[], Double, Double)
@@ -3572,7 +3573,7 @@ namespace ApiExamples
             Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
         }
 
         [Test]

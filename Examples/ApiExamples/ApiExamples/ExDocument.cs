@@ -125,7 +125,7 @@ namespace ApiExamples
             }
             //ExEnd
 
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
         }
 
         [Test]
@@ -433,19 +433,20 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Ignore("Need to rework.")]
-        public void InsertHtmlFromWebPage()
+        [Test]
+        public async Task InsertHtmlFromWebPage()
         {
             //ExStart
             //ExFor:Document.#ctor(Stream, LoadOptions)
             //ExFor:LoadOptions.#ctor(LoadFormat, String, String)
             //ExFor:LoadFormat
             //ExSummary:Shows how save a web page as a .docx file.
-            const string url = "http://www.aspose.com/";
+            const string url = "https://www.aspose.com/";
 
-            using (WebClient client = new WebClient()) 
-            { 
-                using (MemoryStream stream = new MemoryStream(client.DownloadData(url)))
+            using (HttpClient client = new HttpClient()) 
+            {
+                var bytes = await client.GetByteArrayAsync(url);
+                using (MemoryStream stream = new MemoryStream(bytes))
                 {
                     // The URL is used again as a baseUri to ensure that any relative image paths are retrieved correctly.
                     LoadOptions options = new LoadOptions(LoadFormat.Html, "", url);
@@ -454,14 +455,14 @@ namespace ApiExamples
                     Document doc = new Document(stream, options);
 
                     // At this stage, we can read and edit the document's contents and then save it to the local file system.
-                    Assert.AreEqual("File Format APIs", doc.FirstSection.Body.Paragraphs[1].Runs[0].GetText().Trim()); //ExSkip
+                    Assert.AreEqual("HYPERLINK \"https://products.aspose.com/words/family/\" \\o \"Aspose.Words\"", doc.FirstSection.Body.Paragraphs[50].Runs[0].GetText().Trim()); //ExSkip
 
                     doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
                 }
             }
             //ExEnd
 
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
         }
 
         [Test]

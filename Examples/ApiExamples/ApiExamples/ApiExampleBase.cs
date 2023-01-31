@@ -106,7 +106,7 @@ namespace ApiExamples
         internal static string GetCodeBaseDir(Assembly assembly)
         {
             // CodeBase is a full URI, such as file:///x:\blahblah.
-            Uri uri = new Uri(assembly.CodeBase);
+            Uri uri = new Uri(assembly.Location);
             string mainFolder = Path.GetDirectoryName(uri.LocalPath)
                 ?.Substring(0, uri.LocalPath.IndexOf("ApiExamples", StringComparison.Ordinal));
             return mainFolder;
@@ -118,7 +118,7 @@ namespace ApiExamples
         internal static string GetAssemblyDir(Assembly assembly)
         {
             // CodeBase is a full URI, such as file:///x:\blahblah.
-            Uri uri = new Uri(assembly.CodeBase);
+            Uri uri = new Uri(assembly.Location);
             return Path.GetDirectoryName(uri.LocalPath) + Path.DirectorySeparatorChar;
         }
 

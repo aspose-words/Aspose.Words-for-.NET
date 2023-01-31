@@ -161,6 +161,7 @@
     <PackageReference Include="Aspose.Words" Version="23.2.0" />
     <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.2.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.3.1">
@@ -169,6 +170,7 @@
     </PackageReference>
     <PackageReference Include="System.Data.Odbc" Version="7.0.0" />
     <PackageReference Include="System.Data.OleDb" Version="7.0.0" />
+    <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
 
@@ -177,8 +179,6 @@
       <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
     </Reference>
     <Reference Include="System.IO.Compression" Condition="'$(TargetFramework)' == 'net462'" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web" />
   </ItemGroup>
 
