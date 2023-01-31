@@ -455,7 +455,7 @@ namespace ApiExamples
             return barcodeReader;
         }
 
-        [Test, Category("SkipMono")]
+        [Test, Category("IgnoreOnJenkins")]
         public void FieldDatabase()
         {
             //ExStart
