@@ -67,7 +67,7 @@ namespace DocsExamples
         /// </summary>
         internal static string GetCodeBaseDir(Assembly assembly)
         {
-            Uri uri = new Uri(assembly.CodeBase);
+            Uri uri = new Uri(assembly.Location);
             string mainFolder = Path.GetDirectoryName(uri.LocalPath)
                 ?.Substring(0, uri.LocalPath.IndexOf("DocsExamples", StringComparison.Ordinal));
             

@@ -40,6 +40,8 @@ using Aspose.Page.XPS.XpsModel;
 #if NET48 || NET5_0_OR_GREATER || JAVA
 using Aspose.Pdf.Text;
 using Aspose.Words.Shaping.HarfBuzz;
+using System.Net.Http;
+using System.Threading.Tasks;
 #endif
 #if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
@@ -47,7 +49,7 @@ using SkiaSharp;
 
 namespace ApiExamples
 {
-    [TestFixture]
+    [TestFixture]   
     public class ExDocument : ApiExampleBase
     {
         [Test]
@@ -95,7 +97,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void LoadFromWeb()
+        public async Task LoadFromWeb()
         {
             //ExStart
             //ExFor:Document.#ctor(Stream)
@@ -104,9 +106,9 @@ namespace ApiExamples
             const string url = "https://omextemplates.content.office.net/support/templates/en-us/tf16402488.dotx";
 
             // Download the document into a byte array, then load that array into a document using a memory stream.
-            using (WebClient webClient = new WebClient())
+            using (HttpClient webClient = new HttpClient())
             {
-                byte[] dataBytes = webClient.DownloadData(url);
+                byte[] dataBytes = await webClient.GetByteArrayAsync(url);
 
                 using (MemoryStream byteStream = new MemoryStream(dataBytes))
                 {
@@ -123,7 +125,7 @@ namespace ApiExamples
             }
             //ExEnd
 
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
         }
 
         [Test]
@@ -431,19 +433,20 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Ignore("Need to rework.")]
-        public void InsertHtmlFromWebPage()
+        [Test]
+        public async Task InsertHtmlFromWebPage()
         {
             //ExStart
             //ExFor:Document.#ctor(Stream, LoadOptions)
             //ExFor:LoadOptions.#ctor(LoadFormat, String, String)
             //ExFor:LoadFormat
             //ExSummary:Shows how save a web page as a .docx file.
-            const string url = "http://www.aspose.com/";
+            const string url = "https://www.aspose.com/";
 
-            using (WebClient client = new WebClient()) 
-            { 
-                using (MemoryStream stream = new MemoryStream(client.DownloadData(url)))
+            using (HttpClient client = new HttpClient()) 
+            {
+                var bytes = await client.GetByteArrayAsync(url);
+                using (MemoryStream stream = new MemoryStream(bytes))
                 {
                     // The URL is used again as a baseUri to ensure that any relative image paths are retrieved correctly.
                     LoadOptions options = new LoadOptions(LoadFormat.Html, "", url);
@@ -452,14 +455,14 @@ namespace ApiExamples
                     Document doc = new Document(stream, options);
 
                     // At this stage, we can read and edit the document's contents and then save it to the local file system.
-                    Assert.AreEqual("File Format APIs", doc.FirstSection.Body.Paragraphs[1].Runs[0].GetText().Trim()); //ExSkip
+                    Assert.AreEqual("HYPERLINK \"https://products.aspose.com/words/family/\" \\o \"Aspose.Words\"", doc.FirstSection.Body.Paragraphs[50].Runs[0].GetText().Trim()); //ExSkip
 
                     doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
                 }
             }
             //ExEnd
 
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
         }
 
         [Test]

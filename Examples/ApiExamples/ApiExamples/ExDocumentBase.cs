@@ -17,6 +17,7 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using System.IO;
 using Aspose.Words.Loading;
 using System.Net;
+using System.Threading.Tasks;
 #endif
 #if NET48 || NET5_0_OR_GREATER || JAVA
 using Aspose.Pdf;
@@ -230,7 +231,7 @@ namespace ApiExamples
             Assert.AreEqual(3, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             doc.Save(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx");
-            TestResourceLoadingCallback(new Document(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx")); //ExSkip
+            Task.WhenAll(TestResourceLoadingCallback(new Document(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx"))); //ExSkip
         }
 
         /// <summary>
@@ -270,7 +271,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private void TestResourceLoadingCallback(Document doc)
+        private async Task TestResourceLoadingCallback(Document doc)
         {
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
             {
@@ -278,7 +279,7 @@ namespace ApiExamples
                 Assert.IsNotEmpty(shape.ImageData.ImageBytes);
             }
 
-            TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "http://www.google.com/images/logos/ps_logo2.png");
+            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "http://www.google.com/images/logos/ps_logo2.png");
         }
 #endif
     }

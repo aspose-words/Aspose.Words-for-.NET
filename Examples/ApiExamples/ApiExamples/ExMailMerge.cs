@@ -18,8 +18,8 @@ using Aspose.Words.Lists;
 using Aspose.Words.MailMerging;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-#if NET48 || JAVA
 using System.Web;
+#if NET48 || JAVA
 using System.Data.Odbc;
 #endif
 
@@ -66,7 +66,7 @@ namespace ApiExamples
             TestUtil.MailMergeMatchesArray(new[] { new[] { "James Bond", "MI5 Headquarters", "Milbank", "London" } }, doc, true);
         }
 
-        [Test, Category("SkipMono")]
+        [Test, Category("IgnoreOnJenkins")]
         public void ExecuteDataReader()
         {
             //ExStart
@@ -122,7 +122,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:MailMerge.ExecuteADO(Object)
         //ExSummary:Shows how to run a mail merge with data from an ADO dataset.
-        [Test, Category("SkipMono")] //ExSkip
+        [Test, Category("IgnoreOnJenkins")] //ExSkip
         public void ExecuteADO()
         {
             Document doc = CreateSourceDocADOMailMerge();
@@ -172,7 +172,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegionsADO(Object,String)
         //ExSummary:Shows how to run a mail merge with multiple regions, compiled with data from an ADO dataset.
-        [Test, Category("SkipMono")] //ExSkip
+        [Test, Category("IgnoreOnJenkins")] //ExSkip
         public void ExecuteWithRegionsADO()
         {
             Document doc = CreateSourceDocADOMailMergeWithRegions();

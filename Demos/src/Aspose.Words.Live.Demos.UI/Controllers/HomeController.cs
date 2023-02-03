@@ -10,7 +10,7 @@ namespace Aspose.Words.Live.Demos.UI.Controllers
 	public class HomeController : BaseController
 	{
 	
-		public override string Product => (string)RouteData.Values["productname"];
+		public override string Product => (string)RouteData.Values["product"];
 		
 
 		public ActionResult Index()

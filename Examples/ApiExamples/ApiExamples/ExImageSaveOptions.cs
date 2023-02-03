@@ -197,6 +197,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ImageSaveOptions.MetafileRenderingOptions
+            //ExFor:MetafileRenderingOptions.UseGdiRasterOperationsEmulation
             //ExSummary:Shows how to set the rendering mode when saving documents with Windows Metafile images to other image formats. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -210,6 +211,8 @@ namespace ApiExamples
             // If we set the "RenderingMode" property to "MetafileRenderingMode.Bitmap", we will render all metafiles as bitmaps.
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
             options.MetafileRenderingOptions.RenderingMode = metafileRenderingMode;
+            // Aspose.Words uses GDI+ for raster operations emulation, when value is set to true.
+            options.MetafileRenderingOptions.UseGdiRasterOperationsEmulation = true;
             
             doc.Save(ArtifactsDir + "ImageSaveOptions.WindowsMetaFile.png", options);
             //ExEnd
