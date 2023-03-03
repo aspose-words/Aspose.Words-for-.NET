@@ -156,15 +156,15 @@
 
   <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="23.1.0" />
-    <PackageReference Include="Aspose.Page" Version="23.1.1" />
-    <PackageReference Include="Aspose.PDF" Version="23.1.0" />
-    <PackageReference Include="Aspose.Words" Version="23.2.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.2.0" />
-    <PackageReference Include="BouncyCastle.Cryptography" Version="2.0.0" />
+    <PackageReference Include="Aspose.Page" Version="23.2.0" />
+    <PackageReference Include="Aspose.PDF" Version="23.2.0" />
+    <PackageReference Include="Aspose.Words" Version="23.3.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.3.0" />
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.1.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="NUnit" Version="3.13.3" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.3.1">
+    <PackageReference Include="NUnit3TestAdapter" Version="4.4.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>

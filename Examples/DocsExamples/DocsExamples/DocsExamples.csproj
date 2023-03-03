@@ -117,12 +117,12 @@
 
   <ItemGroup>
     <PackageReference Include="Aspose.BarCode" Version="23.1.0" />
-    <PackageReference Include="Aspose.Email" Version="22.12.0" />
-    <PackageReference Include="Aspose.Words" Version="23.2.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+    <PackageReference Include="Aspose.Email" Version="23.2.0" />
+    <PackageReference Include="Aspose.Words" Version="23.3.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.3.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageReference Include="NUnit" Version="3.13.3" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.3.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.4.2" />
     <PackageReference Include="System.Data.OleDb" Version="7.0.0" />
   </ItemGroup>
 

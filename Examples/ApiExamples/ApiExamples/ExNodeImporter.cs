@@ -81,7 +81,7 @@ namespace ApiExamples
         //ExFor:NodeImporter.#ctor(DocumentBase, DocumentBase, ImportFormatMode)
         //ExFor:NodeImporter.ImportNode(Node, Boolean)
         //ExSummary:Shows how to insert the contents of one document to a bookmark in another document.
-        [Test]
+        [Test]//ExSkip
         public void InsertAtBookmark()
         {
             Document doc = new Document();

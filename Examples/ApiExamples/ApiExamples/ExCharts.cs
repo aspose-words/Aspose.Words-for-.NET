@@ -643,7 +643,7 @@ namespace ApiExamples
         //ExFor:IChartDataPoint.Marker
         //ExFor:MarkerSymbol
         //ExSummary:Shows how to work with data points on a line chart.
-        [Test]
+        [Test]//ExSkip
         public void ChartDataPoint()
         {
             Document doc = new Document();

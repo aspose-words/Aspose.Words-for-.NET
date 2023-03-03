@@ -111,7 +111,7 @@ namespace ApiExamples
         //ExFor:VbaReferenceCollection.Remove(VbaReference)
         //ExFor:VbaReferenceType
         //ExSummary:Shows how to get/remove an element from the VBA reference collection.
-        [Test]
+        [Test]//ExSkip
         public void RemoveVbaReference()
         {
             const string brokenPath = @"X:\broken.dll";
