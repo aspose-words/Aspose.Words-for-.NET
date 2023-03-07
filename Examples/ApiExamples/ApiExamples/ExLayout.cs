@@ -249,7 +249,7 @@ namespace ApiExamples
         //ExFor:PageLayoutCallbackArgs.PageIndex
         //ExFor:PageLayoutEvent
         //ExSummary:Shows how to track layout changes with a layout callback.
-        [Test]
+        [Test]//ExSkip
         public void PageLayoutCallback()
         {
             Document doc = new Document();

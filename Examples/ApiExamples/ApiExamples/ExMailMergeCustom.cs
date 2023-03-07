@@ -34,9 +34,11 @@ namespace ApiExamples
             builder.InsertParagraph();
             builder.InsertField(" MERGEFIELD Address ");
 
-            List<Customer> customers = new List<Customer>();
-            customers.Add(new Customer("Thomas Hardy", "120 Hanover Sq., London"));
-            customers.Add(new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino"));
+            List<Customer> customers = new List<Customer>
+            {
+                new Customer("Thomas Hardy", "120 Hanover Sq., London"),
+                new Customer("Paolo Accorti", "Via Monte Bianco 34, Torino")
+            };
 
             // To use a custom object as a data source, it must implement the IMailMergeDataSource interface. 
             CustomerMailMergeDataSource dataSource = new CustomerMailMergeDataSource(customers);

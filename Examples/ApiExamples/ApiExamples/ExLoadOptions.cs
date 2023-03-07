@@ -356,7 +356,7 @@ namespace ApiExamples
         //ExFor:IDocumentLoadingCallback
         //ExFor:IDocumentLoadingCallback.Notify
         //ExSummary:Shows how to notify the user if document loading exceeded expected loading time.
-        [Test]
+        [Test]//ExSkip
         public void ProgressCallback()
         {
             LoadingProgressCallback progressCallback = new LoadingProgressCallback();

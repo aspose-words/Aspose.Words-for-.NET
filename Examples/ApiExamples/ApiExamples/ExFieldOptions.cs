@@ -315,7 +315,7 @@ namespace ApiExamples
         //ExFor:IFieldUpdateCultureProvider
         //ExFor:IFieldUpdateCultureProvider.GetCulture(string, Field)
         //ExSummary:Shows how to specify a culture which parses date/time formatting for each field.
-        [Test]
+        [Test]//ExSkip
         public void DefineDateTimeFormatting()
         {
             Document doc = new Document();

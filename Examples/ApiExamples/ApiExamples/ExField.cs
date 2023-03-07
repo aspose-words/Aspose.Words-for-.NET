@@ -828,7 +828,7 @@ namespace ApiExamples
         //ExFor:IFieldUserPromptRespondent
         //ExFor:IFieldUserPromptRespondent.Respond(String,String)
         //ExSummary:Shows how to create an ASK field, and set its properties.
-        [Test]
+        [Test]//ExSkip
         public void FieldAsk()
         {
             Document doc = new Document();

@@ -342,7 +342,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:MailMerge.ExecuteWithRegions(DataSet)
         //ExSummary:Shows how to execute a nested mail merge with two merge regions and two data tables.
-        [Test]
+        [Test]//ExSkip
         public void ExecuteWithRegionsNested()
         {
             Document doc = new Document();
