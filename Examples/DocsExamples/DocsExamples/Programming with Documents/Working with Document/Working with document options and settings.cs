@@ -178,5 +178,26 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.PageBorderProperties.docx");
             //ExEnd:PageBorderProperties
         }
+
+        [Test]
+        public void LineGridSectionLayoutMode()
+        {
+            //ExStart:LineGridSectionLayoutMode
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Enable pitching, and then use it to set the number of lines per page in this section.
+            // A large enough font size will push some lines down onto the next page to avoid overlapping characters.
+            builder.PageSetup.LayoutMode = SectionLayoutMode.LineGrid;
+            builder.PageSetup.LinesPerPage = 15;
+
+            builder.ParagraphFormat.SnapToGrid = true;
+
+            for (int i = 0; i < 30; i++)
+                builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ");
+
+            doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.LinesPerPage.docx");
+            //ExEnd:LineGridSectionLayoutMode
+        }
     }
 }
