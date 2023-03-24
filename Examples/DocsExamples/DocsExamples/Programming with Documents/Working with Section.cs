@@ -1,5 +1,6 @@
 ﻿using Aspose.Words;
 using NUnit.Framework;
+using System;
 
 namespace DocsExamples.Programming_with_Documents
 {
@@ -59,22 +60,19 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Writeln("Hello1");
-            doc.AppendChild(new Section(doc));
-            builder.Writeln("Hello22");
-            doc.AppendChild(new Section(doc));
-            builder.Writeln("Hello3");
-            doc.AppendChild(new Section(doc));
-            builder.Writeln("Hello45");
+            builder.Write("Section 1");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("Section 2");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("Section 3");
 
-            // This is the section that we will append and prepend to.
             Section section = doc.Sections[2];
 
-            // This copies the content of the 1st section and inserts it at the beginning of the specified section.
+            // Insert the contents of the first section to the beginning of the third section.
             Section sectionToPrepend = doc.Sections[0];
             section.PrependContent(sectionToPrepend);
 
-            // This copies the content of the 2nd section and inserts it at the end of the specified section.
+            // Insert the contents of the second section to the end of the third section.
             Section sectionToAppend = doc.Sections[1];
             section.AppendContent(sectionToAppend);
             //ExEnd:AppendSectionContent
@@ -97,9 +95,9 @@ namespace DocsExamples.Programming_with_Documents
             Document dstDoc = new Document();
 
             Section sourceSection = srcDoc.Sections[0];
-            Section newSection = (Section) dstDoc.ImportNode(sourceSection, true);
+            Section newSection = (Section)dstDoc.ImportNode(sourceSection, true);
             dstDoc.Sections.Add(newSection);
-            
+
             dstDoc.Save(ArtifactsDir + "WorkingWithSection.CopySection.docx");
             //ExEnd:CopySection
         }
@@ -109,7 +107,7 @@ namespace DocsExamples.Programming_with_Documents
         {
             //ExStart:DeleteHeaderFooterContent
             Document doc = new Document(MyDir + "Document.docx");
-            
+
             Section section = doc.Sections[0];
             section.ClearHeadersFooters();
             //ExEnd:DeleteHeaderFooterContent
@@ -120,7 +118,7 @@ namespace DocsExamples.Programming_with_Documents
         {
             //ExStart:DeleteSectionContent
             Document doc = new Document(MyDir + "Document.docx");
-            
+
             Section section = doc.Sections[0];
             section.ClearContent();
             //ExEnd:DeleteSectionContent
@@ -133,13 +131,13 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.Writeln("Hello1");
+            builder.Writeln("Section 1");
             doc.AppendChild(new Section(doc));
-            builder.Writeln("Hello22");
+            builder.Writeln("Section 2");
             doc.AppendChild(new Section(doc));
-            builder.Writeln("Hello3");
+            builder.Writeln("Section 3");
             doc.AppendChild(new Section(doc));
-            builder.Writeln("Hello45");
+            builder.Writeln("Section 4");
 
             // It is important to understand that a document can contain many sections,
             // and each section has its page setup. In this case, we want to modify them all.
@@ -155,7 +153,7 @@ namespace DocsExamples.Programming_with_Documents
         {
             //ExStart:SectionsAccessByIndex
             Document doc = new Document(MyDir + "Document.docx");
-            
+
             Section section = doc.Sections[0];
             section.PageSetup.LeftMargin = 90; // 3.17 cm
             section.PageSetup.RightMargin = 90; // 3.17 cm
@@ -165,6 +163,67 @@ namespace DocsExamples.Programming_with_Documents
             section.PageSetup.FooterDistance = 35.4; // 1.25 cm
             section.PageSetup.TextColumns.Spacing = 35.4; // 1.25 cm
             //ExEnd:SectionsAccessByIndex
+        }
+
+        [Test]
+        public void SectionChildNodes()
+        {
+            //ExStart:SectionChildNodes
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Section 1");
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.Write("Primary header");
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.Write("Primary footer");
+
+            Section section = doc.FirstSection;
+
+            // A Section is a composite node and can contain child nodes,
+            // but only if those child nodes are of a "Body" or "HeaderFooter" node type.
+            foreach (Node node in section)
+            {
+                switch (node.NodeType)
+                {
+                    case NodeType.Body:
+                        {
+                            Body body = (Body)node;
+
+                            Console.WriteLine("Body:");
+                            Console.WriteLine($"\t\"{body.GetText().Trim()}\"");
+                            break;
+                        }
+                    case NodeType.HeaderFooter:
+                        {
+                            HeaderFooter headerFooter = (HeaderFooter)node;
+
+                            Console.WriteLine($"HeaderFooter type: {headerFooter.HeaderFooterType}:");
+                            Console.WriteLine($"\t\"{headerFooter.GetText().Trim()}\"");
+                            break;
+                        }
+                    default:
+                        {
+                            throw new Exception("Unexpected node type in a section.");
+                        }
+                }
+            }
+            //ExEnd:SectionChildNodes
+        }
+
+        [Test]
+        public void EnsureMinimum()
+        {
+            //ExStart:EnsureMinimum
+            Document doc = new Document();
+
+            // If we add a new section like this, it will not have a body, or any other child nodes.
+            doc.Sections.Add(new Section(doc));
+            // Run the "EnsureMinimum" method to add a body and a paragraph to this section to begin editing it.
+            doc.LastSection.EnsureMinimum();
+            
+            doc.Sections[0].Body.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
+            //ExEnd:EnsureMinimum
         }
     }
 }

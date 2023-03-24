@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Loading;
 using Aspose.Words.Settings;
@@ -155,6 +156,27 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.SetPageSetupAndSectionFormatting.docx");
             //ExEnd:DocumentBuilderSetPageSetupAndSectionFormatting
+        }
+
+        [Test]
+        public void PageBorderProperties()
+        {
+            //ExStart:PageBorderProperties
+            Document doc = new Document();
+
+            PageSetup pageSetup = doc.Sections[0].PageSetup;
+            pageSetup.BorderAlwaysInFront = false;
+            pageSetup.BorderDistanceFrom = PageBorderDistanceFrom.PageEdge;
+            pageSetup.BorderAppliesTo = PageBorderAppliesTo.FirstPage;
+
+            Border border = pageSetup.Borders[BorderType.Top];
+            border.LineStyle = LineStyle.Single;
+            border.LineWidth = 30;
+            border.Color = Color.Blue;
+            border.DistanceFromText = 0;
+
+            doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.PageBorderProperties.docx");
+            //ExEnd:PageBorderProperties
         }
     }
 }

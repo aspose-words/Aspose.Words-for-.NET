@@ -64,6 +64,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
             return topicStartParas;
         }
 
+        //ExStart:InsertSectionBreaks
         /// <summary>
         /// Insert section breaks before the specified paragraphs.
         /// </summary>
@@ -86,6 +87,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
                 }
             }
         }
+        //ExEnd:InsertSectionBreaks
 
         /// <summary>
         /// Splits the current document into one topic per section and saves each topic

@@ -11,6 +11,7 @@ namespace DocsExamples.Programming_with_Documents
         public void CreateHeaderFooter()
         {
             //ExStart:CreateHeaderFooterUsingDocBuilder
+            //ExStart:DifferentFirstPageHeaderFooter
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -44,6 +45,7 @@ namespace DocsExamples.Programming_with_Documents
             builder.Write("Aspose.Words Header/Footer Creation Primer.");
 
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            //ExEnd:DifferentFirstPageHeaderFooter
 
             // We use a table with two cells to make one part of the text on the line (with page numbering).
             // To be aligned left, and the other part of the text (with copyright) to be aligned right.
