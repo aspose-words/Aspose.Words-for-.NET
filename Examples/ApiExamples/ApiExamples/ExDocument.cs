@@ -2923,7 +2923,7 @@ namespace ApiExamples
         public void IncludeTextboxesFootnotesEndnotesInStat()
         {
             //ExStart
-            //ExFor:IncludeTextboxesFootnotesEndnotesInStat
+            //ExFor:Document.IncludeTextboxesFootnotesEndnotesInStat
             //ExSummary: Shows how to include or exclude textboxes, footnotes and endnotes from word count statistics.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
