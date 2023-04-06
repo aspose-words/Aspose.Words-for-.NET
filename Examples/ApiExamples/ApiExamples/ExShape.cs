@@ -1019,6 +1019,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Fill.ForeThemeColor
             //ExFor:Fill.BackThemeColor
+            //ExFor:Fill.BackTintAndShade
             //ExSummary:Shows how to set theme color for foreground/background shape color.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1041,8 +1042,7 @@ namespace ApiExamples
         public void FillTintAndShade()
         {
             //ExStart
-            //ExFor:Fill.ForeTintAndShade
-            //ExFor:Fill.BackTintAndShade
+            //ExFor:Fill.ForeTintAndShade            
             //ExSummary:Shows how to manage lightening and darkening foreground font color.
             Document doc = new Document(MyDir + "Big document.docx");
 
