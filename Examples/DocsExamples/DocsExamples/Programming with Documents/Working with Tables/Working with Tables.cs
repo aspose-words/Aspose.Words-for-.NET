@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -18,6 +18,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void RemoveColumn()
         {
             //ExStart:RemoveColumn
+            //GistId:7e7e54ead8b97457543ea46fc6bae045
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
@@ -31,6 +32,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void InsertBlankColumn()
         {
             //ExStart:InsertBlankColumn
+            //GistId:7e7e54ead8b97457543ea46fc6bae045
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -51,6 +53,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         }
 
         //ExStart:ColumnClass
+        //GistId:9ceee4f7efd470ef243890104ccaf8b2
         /// <summary>
         /// Represents a facade object for a column of a table in a Microsoft Word document.
         /// </summary>
@@ -158,6 +161,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void AutoFitTableToContents()
         {
             //ExStart:AutoFitTableToContents
+            //GistId:6548beaa03bdc6cffceae2bbf0e95a83
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -171,6 +175,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void AutoFitTableToFixedColumnWidths()
         {
             //ExStart:AutoFitTableToFixedColumnWidths
+            //GistId:6548beaa03bdc6cffceae2bbf0e95a83
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -185,6 +190,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void AutoFitTableToPageWidth()
         {
             //ExStart:AutoFitTableToPageWidth
+            //GistId:6548beaa03bdc6cffceae2bbf0e95a83
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -199,6 +205,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void BuildTableFromDataTable()
         {
             //ExStart:BuildTableFromDataTable
+            //GistId:affb937d8f345f60e6a506e1da3db9fa
             Document doc = new Document();
             // We can position where we want the table to be inserted and specify any extra formatting to the table.
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -226,6 +233,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         }
 
         //ExStart:ImportTableFromDataTable
+        //GistId:affb937d8f345f60e6a506e1da3db9fa
         /// <summary>
         /// Imports the content from the specified DataTable into a new Aspose.Words Table object.
         /// The table is inserted at the document builder's current position and using the current builder's formatting if any is defined.
@@ -296,6 +304,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void CloneCompleteTable()
         {
             //ExStart:CloneCompleteTable
+            //GistId:10307fa0baf630b07d0cbdae30119bf3
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -316,6 +325,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void CloneLastRow()
         {
             //ExStart:CloneLastRow
+            //GistId:10307fa0baf630b07d0cbdae30119bf3
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -330,13 +340,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             doc.Save(ArtifactsDir + "WorkingWithTables.CloneLastRow.docx");
             //ExEnd:CloneLastRow
         }
-        
+
         [Test]
         public void FindingIndex()
         {
             Document doc = new Document(MyDir + "Tables.docx");
 
             //ExStart:RetrieveTableIndex
+            //GistId:9ceee4f7efd470ef243890104ccaf8b2
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
             NodeCollection allTables = doc.GetChildNodes(NodeType.Table, true);
@@ -345,12 +356,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             Console.WriteLine("\nTable index is " + tableIndex);
 
             //ExStart:RetrieveRowIndex
+            //GistId:9ceee4f7efd470ef243890104ccaf8b2
             int rowIndex = table.IndexOf(table.LastRow);
             //ExEnd:RetrieveRowIndex
             Console.WriteLine("\nRow index is " + rowIndex);
 
             Row row = table.LastRow;
             //ExStart:RetrieveCellIndex
+            //GistId:9ceee4f7efd470ef243890104ccaf8b2
             int cellIndex = row.IndexOf(row.Cells[4]);
             //ExEnd:RetrieveCellIndex
             Console.WriteLine("\nCell index is " + cellIndex);
@@ -360,6 +373,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void InsertTableDirectly()
         {
             //ExStart:InsertTableDirectly
+            //GistId:10307fa0baf630b07d0cbdae30119bf3
             Document doc = new Document();
             
             // We start by creating the table object. Note that we must pass the document object
@@ -402,6 +416,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void InsertTableFromHtml()
         {
             //ExStart:InsertTableFromHtml
+            //GistId:10307fa0baf630b07d0cbdae30119bf3
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -425,6 +440,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void CreateSimpleTable()
         {
             //ExStart:CreateSimpleTable
+            //GistId:10307fa0baf630b07d0cbdae30119bf3
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -460,6 +476,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void FormattedTable()
         {
             //ExStart:FormattedTable
+            //GistId:10307fa0baf630b07d0cbdae30119bf3
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -534,6 +551,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void NestedTable()
         {
             //ExStart:NestedTable
+            //GistId:10307fa0baf630b07d0cbdae30119bf3
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -565,6 +583,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void CombineRows()
         {
             //ExStart:CombineRows
+            //GistId:b0735c64408bcb2c063f96f7c9d5af75
             Document doc = new Document(MyDir + "Tables.docx");
 
             // The rows from the second table will be appended to the end of the first table.
@@ -586,6 +605,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void SplitTable()
         {
             //ExStart:SplitTable
+            //GistId:4ab56c5443822fa44f4cac1f45af32b7
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table firstTable = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -618,6 +638,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void RowFormatDisableBreakAcrossPages()
         {
             //ExStart:RowFormatDisableBreakAcrossPages
+            //GistId:9ceee4f7efd470ef243890104ccaf8b2
             Document doc = new Document(MyDir + "Table spanning two pages.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -634,6 +655,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void KeepTableTogether()
         {
             //ExStart:KeepTableTogether
+            //GistId:9ceee4f7efd470ef243890104ccaf8b2
             Document doc = new Document(MyDir + "Table spanning two pages.docx");
             
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -656,7 +678,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         [Test]
         public void CheckCellsMerged()
         {
-            //ExStart:CheckCellsMerged 
+            //ExStart:CheckCellsMerged
+            //GistId:93de23a2f74a7f2e4971ed203874c983
             Document doc = new Document(MyDir + "Table with merged cells.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -668,7 +691,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
                     Console.WriteLine(PrintCellMergeType(cell));
                 }
             }
-            //ExEnd:CheckCellsMerged 
+            //ExEnd:CheckCellsMerged
         }
 
         //ExStart:PrintCellMergeType 
@@ -696,7 +719,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         [Test]
         public void VerticalMerge()
         {
-            //ExStart:VerticalMerge           
+            //ExStart:VerticalMerge
+            //GistId:93de23a2f74a7f2e4971ed203874c983
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -726,7 +750,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         [Test]
         public void HorizontalMerge()
         {
-            //ExStart:HorizontalMerge         
+            //ExStart:HorizontalMerge
+            //GistId:93de23a2f74a7f2e4971ed203874c983
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -756,6 +781,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void MergeCellRange()
         {
             //ExStart:MergeCellRange
+            //GistId:93de23a2f74a7f2e4971ed203874c983
             Document doc = new Document(MyDir + "Table with merged cells.docx");
 
             Table table = doc.FirstSection.Body.Tables[0];
@@ -775,6 +801,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void PrintHorizontalAndVerticalMerged()
         {
             //ExStart:PrintHorizontalAndVerticalMerged
+            //GistId:93de23a2f74a7f2e4971ed203874c983
             Document doc = new Document(MyDir + "Table with merged cells.docx");
 
             SpanVisitor visitor = new SpanVisitor(doc);
@@ -785,7 +812,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         [Test]
         public void ConvertToHorizontallyMergedCells()
         {
-            //ExStart:ConvertToHorizontallyMergedCells         
+            //ExStart:ConvertToHorizontallyMergedCells
+            //GistId:93de23a2f74a7f2e4971ed203874c983
             Document doc = new Document(MyDir + "Table with merged cells.docx");
 
             Table table = doc.FirstSection.Body.Tables[0];
@@ -795,6 +823,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         }
 
         //ExStart:MergeCells
+        //GistId:93de23a2f74a7f2e4971ed203874c983
         internal void MergeCells(Cell startCell, Cell endCell)
         {
             Table parentTable = startCell.ParentRow.ParentTable;
@@ -827,8 +856,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             }
         }
         //ExEnd:MergeCells
-        
+
         //ExStart:HorizontalAndVerticalMergeHelperClasses
+        //GistId:93de23a2f74a7f2e4971ed203874c983
         /// <summary>
         /// Helper class that contains collection of rowinfo for each row.
         /// </summary>
@@ -952,6 +982,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void RepeatRowsOnSubsequentPages()
         {
             //ExStart:RepeatRowsOnSubsequentPages
+            //GistId:9ceee4f7efd470ef243890104ccaf8b2
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -984,9 +1015,10 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         }
 
         [Test]
-        public void AutoFitToPageWidth()
+        public void AutoFitPageWidth()
         {
-            //ExStart:AutoFitToPageWidth
+            //ExStart:AutoFitPageWidth
+            //GistId:6548beaa03bdc6cffceae2bbf0e95a83
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1003,14 +1035,15 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             builder.InsertCell();
             builder.Writeln("Cell #3");
 
-            doc.Save(ArtifactsDir + "WorkingWithTables.AutoFitToPageWidth.docx");
-            //ExEnd:AutoFitToPageWidth
+            doc.Save(ArtifactsDir + "WorkingWithTables.AutoFitPageWidth.docx");
+            //ExEnd:AutoFitPageWidth
         }
 
         [Test]
         public void PreferredWidthSettings()
         {
             //ExStart:PreferredWidthSettings
+            //GistId:6548beaa03bdc6cffceae2bbf0e95a83
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1045,10 +1078,12 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void RetrievePreferredWidthType()
         {
             //ExStart:RetrievePreferredWidthType
+            //GistId:6548beaa03bdc6cffceae2bbf0e95a83
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             //ExStart:AllowAutoFit
+            //GistId:6548beaa03bdc6cffceae2bbf0e95a83
             table.AllowAutoFit = true;
             //ExEnd:AllowAutoFit
 
@@ -1062,6 +1097,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void GetTablePosition()
         {
             //ExStart:GetTablePosition
+            //GistId:dd82233d8220e813e54f6dd403e48511
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -1082,6 +1118,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void GetFloatingTablePosition()
         {
             //ExStart:GetFloatingTablePosition
+            //GistId:dd82233d8220e813e54f6dd403e48511
             Document doc = new Document(MyDir + "Table wrapped by text.docx");
             
             foreach (Table table in doc.FirstSection.Body.Tables)
@@ -1106,6 +1143,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void FloatingTablePosition()
         {
             //ExStart:FloatingTablePosition
+            //GistId:d3ec21a7b56ae5a964df413b565d1bcc
             Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
             Table table = doc.FirstSection.Body.Tables[0];
@@ -1117,17 +1155,18 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         }
 
         [Test]
-        public void SetRelativeHorizontalOrVerticalPosition()
+        public void RelativeHorizontalOrVerticalPosition()
         {
-            //ExStart:SetRelativeHorizontalOrVerticalPosition
+            //ExStart:RelativeHorizontalOrVerticalPosition
+            //GistId:dd82233d8220e813e54f6dd403e48511
             Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
             Table table = doc.FirstSection.Body.Tables[0];
             table.HorizontalAnchor = RelativeHorizontalPosition.Column;
             table.VerticalAnchor = RelativeVerticalPosition.Page;
 
-            doc.Save(ArtifactsDir + "WorkingWithTables.SetFloatingTablePosition.docx");
-            //ExEnd:SetRelativeHorizontalOrVerticalPosition
+            doc.Save(ArtifactsDir + "WorkingWithTables.RelativeHorizontalOrVerticalPosition.docx");
+            //ExEnd:RelativeHorizontalOrVerticalPosition
         }
     }
 }
