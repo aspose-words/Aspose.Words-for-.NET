@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Saving;
@@ -10,9 +10,10 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
     internal class WorkingWithTableStylesAndFormatting : DocsExamplesBase
     {
         [Test]
-        public void GetDistanceBetweenTableSurroundingText()
+        public void DistanceBetweenTableSurroundingText()
         {
-            //ExStart:GetDistancebetweenTableSurroundingText
+            //ExStart:DistanceBetweenTableSurroundingText
+            //GistId:8df1ad0825619cab7c80b571c6e6ba99
             Document doc = new Document(MyDir + "Tables.docx");
 
             Console.WriteLine("\nGet distance between table left, right, bottom, top and the surrounding text.");
@@ -22,18 +23,22 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             Console.WriteLine(table.DistanceBottom);
             Console.WriteLine(table.DistanceRight);
             Console.WriteLine(table.DistanceLeft);
-            //ExEnd:GetDistancebetweenTableSurroundingText
+            //ExEnd:DistanceBetweenTableSurroundingText
         }
 
         [Test]
         public void ApplyOutlineBorder()
         {
             //ExStart:ApplyOutlineBorder
+            //GistId:770bf20bd617f3cb80031a74cc6c9b73
+            //ExStart:InlineTablePosition
+            //GistId:8df1ad0825619cab7c80b571c6e6ba99
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
             // Align the table to the center of the page.
             table.Alignment = TableAlignment.Center;
+            //ExEnd:InlineTablePosition
             // Clear any existing borders from the table.
             table.ClearBorders();
 
@@ -54,6 +59,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void BuildTableWithBorders()
         {
             //ExStart:BuildTableWithBorders
+            //GistId:770bf20bd617f3cb80031a74cc6c9b73
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -72,6 +78,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void ModifyRowFormatting()
         {
             //ExStart:ModifyRowFormatting
+            //GistId:770bf20bd617f3cb80031a74cc6c9b73
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -88,6 +95,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void ApplyRowFormatting()
         {
             //ExStart:ApplyRowFormatting
+            //GistId:770bf20bd617f3cb80031a74cc6c9b73
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -114,9 +122,10 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         }
 
         [Test]
-        public void SetCellPadding()
+        public void CellPadding()
         {
-            //ExStart:SetCellPadding
+            //ExStart:CellPadding
+            //GistId:770bf20bd617f3cb80031a74cc6c9b73
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -130,8 +139,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             builder.EndRow();
             builder.EndTable();
 
-            doc.Save(ArtifactsDir + "WorkingWithTableStylesAndFormatting.SetCellPadding.docx");
-            //ExEnd:SetCellPadding
+            doc.Save(ArtifactsDir + "WorkingWithTableStylesAndFormatting.CellPadding.docx");
+            //ExEnd:CellPadding
         }
 
         /// <summary>
@@ -141,6 +150,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void ModifyCellFormatting()
         {
             //ExStart:ModifyCellFormatting
+            //GistId:770bf20bd617f3cb80031a74cc6c9b73
             Document doc = new Document(MyDir + "Tables.docx");
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
@@ -155,6 +165,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void FormatTableAndCellWithDifferentBorders()
         {
             //ExStart:FormatTableAndCellWithDifferentBorders
+            //GistId:770bf20bd617f3cb80031a74cc6c9b73
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -198,9 +209,10 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         }
 
         [Test]
-        public void SetTableTitleAndDescription()
+        public void TableTitleAndDescription()
         {
-            //ExStart:SetTableTitleAndDescription
+            //ExStart:TableTitleAndDescription
+            //GistId:458eb4fd5bd1de8b06fab4d1ef1acdc6
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -211,14 +223,15 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
 
             doc.CompatibilityOptions.OptimizeFor(Aspose.Words.Settings.MsWordVersion.Word2016);
 
-            doc.Save(ArtifactsDir + "WorkingWithTableStylesAndFormatting.SetTableTitleAndDescription.docx", options);
-            //ExEnd:SetTableTitleAndDescription
+            doc.Save(ArtifactsDir + "WorkingWithTableStylesAndFormatting.TableTitleAndDescription.docx", options);
+            //ExEnd:TableTitleAndDescription
         }
 
         [Test]
         public void AllowCellSpacing()
         {
             //ExStart:AllowCellSpacing
+            //GistId:770bf20bd617f3cb80031a74cc6c9b73
             Document doc = new Document(MyDir + "Tables.docx");
 
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -233,6 +246,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void BuildTableWithStyle()
         {
             //ExStart:BuildTableWithStyle
+            //GistId:93b92a7e6f2f4bbfd9177dd7fcecbd8c
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -281,6 +295,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void ExpandFormattingOnCellsAndRowFromStyle()
         {
             //ExStart:ExpandFormattingOnCellsAndRowFromStyle
+            //GistId:93b92a7e6f2f4bbfd9177dd7fcecbd8c
             Document doc = new Document(MyDir + "Tables.docx");
 
             // Get the first cell of the first table in the document.
@@ -305,6 +320,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void CreateTableStyle()
         {
             //ExStart:CreateTableStyle
+            //GistId:93b92a7e6f2f4bbfd9177dd7fcecbd8c
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -336,6 +352,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         public void DefineConditionalFormatting()
         {
             //ExStart:DefineConditionalFormatting
+            //GistId:93b92a7e6f2f4bbfd9177dd7fcecbd8c
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

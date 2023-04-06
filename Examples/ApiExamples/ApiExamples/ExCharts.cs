@@ -259,6 +259,8 @@ namespace ApiExamples
             //ExFor:Charts.AxisTickLabelPosition
             //ExFor:Charts.AxisTimeUnit
             //ExFor:Charts.ChartAxis.BaseTimeUnit
+            //ExFor:ChartAxis.HasMajorGridlines
+            //ExFor:ChartAxis.HasMinorGridlines
             //ExSummary:Shows how to insert chart with date/time values.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -290,6 +292,8 @@ namespace ApiExamples
             xAxis.MajorTickMark = AxisTickMark.Cross;
             xAxis.MinorUnit = 1.0d;
             xAxis.MinorTickMark = AxisTickMark.Outside;
+            xAxis.HasMajorGridlines = true;
+            xAxis.HasMinorGridlines = true;
 
             // Define Y-axis properties for decimal values.
             ChartAxis yAxis = chart.AxisY;
@@ -299,6 +303,8 @@ namespace ApiExamples
             yAxis.DisplayUnit.Unit = AxisBuiltInUnit.Hundreds;
             yAxis.Scaling.Minimum = new AxisBound(100);
             yAxis.Scaling.Maximum = new AxisBound(700);
+            yAxis.HasMajorGridlines = true;
+            yAxis.HasMinorGridlines = true;
 
             doc.Save(ArtifactsDir + "Charts.DateTimeValues.docx");
             //ExEnd
@@ -313,6 +319,8 @@ namespace ApiExamples
             Assert.AreEqual(1.0d, chart.AxisX.MinorUnit);
             Assert.AreEqual(AxisTickMark.Cross, chart.AxisX.MajorTickMark);
             Assert.AreEqual(AxisTickMark.Outside, chart.AxisX.MinorTickMark);
+            Assert.AreEqual(true, chart.AxisX.HasMajorGridlines);
+            Assert.AreEqual(true, chart.AxisX.HasMinorGridlines);
 
             Assert.AreEqual(AxisTickLabelPosition.High, chart.AxisY.TickLabelPosition);
             Assert.AreEqual(100.0d, chart.AxisY.MajorUnit);
@@ -320,6 +328,8 @@ namespace ApiExamples
             Assert.AreEqual(AxisBuiltInUnit.Hundreds, chart.AxisY.DisplayUnit.Unit);
             Assert.AreEqual(new AxisBound(100), chart.AxisY.Scaling.Minimum);
             Assert.AreEqual(new AxisBound(700), chart.AxisY.Scaling.Maximum);
+            Assert.AreEqual(true, chart.AxisY.HasMajorGridlines);
+            Assert.AreEqual(true, chart.AxisY.HasMinorGridlines);
         }
 
         [Test]

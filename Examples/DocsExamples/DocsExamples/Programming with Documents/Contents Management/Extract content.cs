@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Aspose.Words;
@@ -419,8 +419,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ExtractPrintText()
         {
             //ExStart:ExtractText
+            //GistId:7267ba4569c671e5f6c7a58bba57297a
             Document doc = new Document(MyDir + "Tables.docx");
-
             
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
 
@@ -429,15 +429,16 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             Console.WriteLine("Contents of the table: ");
             Console.WriteLine(table.Range.Text);
-            //ExEnd:ExtractText   
+            //ExEnd:ExtractText
 
-            //ExStart:PrintTextRangeOFRowAndTable
+            //ExStart:PrintTextRangeRowAndTable
+            //GistId:7267ba4569c671e5f6c7a58bba57297a
             Console.WriteLine("\nContents of the row: ");
             Console.WriteLine(table.Rows[1].Range.Text);
 
             Console.WriteLine("\nContents of the cell: ");
             Console.WriteLine(table.LastRow.LastCell.Range.Text);
-            //ExEnd:PrintTextRangeOFRowAndTable
+            //ExEnd:PrintTextRangeRowAndTable
         }
 
         [Test]

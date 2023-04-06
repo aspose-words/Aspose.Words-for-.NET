@@ -24,6 +24,7 @@ using Color = System.Drawing.Color;
 using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 using TextBox = Aspose.Words.Drawing.TextBox;
+using Aspose.Words.Themes;
 #if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
@@ -1009,6 +1010,48 @@ namespace ApiExamples
             fill.Patterned(PatternType.DiagonalBrick, Color.Aqua, Color.Bisque);
 
             doc.Save(ArtifactsDir + "Shape.FillPattern.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FillThemeColor()
+        {
+            //ExStart
+            //ExFor:Fill.ForeThemeColor
+            //ExFor:Fill.BackThemeColor
+            //ExFor:Fill.BackTintAndShade
+            //ExSummary:Shows how to set theme color for foreground/background shape color.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertShape(ShapeType.RoundRectangle, 80, 80);
+            
+            Fill fill = shape.Fill;
+            fill.ForeThemeColor = ThemeColor.Dark1;
+            fill.BackThemeColor = ThemeColor.Background2;
+
+            // Note: do not use "BackThemeColor" and "BackTintAndShade" for font fill.
+            if (fill.BackTintAndShade == 0)
+                fill.BackTintAndShade = 0.2;
+
+            doc.Save(ArtifactsDir + "Shape.FillThemeColor.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void FillTintAndShade()
+        {
+            //ExStart
+            //ExFor:Fill.ForeTintAndShade            
+            //ExSummary:Shows how to manage lightening and darkening foreground font color.
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            Fill textFill = doc.FirstSection.Body.FirstParagraph.Runs[0].Font.Fill;
+            textFill.ForeThemeColor = ThemeColor.Accent1;
+            if (textFill.ForeTintAndShade == 0)
+                textFill.ForeTintAndShade = 0.5;
+
+            doc.Save(ArtifactsDir + "Shape.FillTintAndShade.docx");
             //ExEnd
         }
 
@@ -2915,6 +2958,28 @@ namespace ApiExamples
             if (shape.ShadowFormat.Type == ShadowType.ShadowMixed)            
                 shape.ShadowFormat.Clear();
             //ExEnd
+        }
+
+        [Test]
+        public void NoTextRotation()
+        {
+            //ExStart
+            //ExFor:TextBox.NoTextRotation
+            //ExSummary:Shows how to disable text rotation when the shape is rotate.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertShape(ShapeType.Ellipse, 20, 20);
+            shape.TextBox.NoTextRotation = true;
+
+            doc.Save(ArtifactsDir + "Shape.NoTextRotation.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "Shape.NoTextRotation.docx");
+            shape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
+
+            Assert.AreEqual(true, shape.TextBox.NoTextRotation);
+
         }
     }
 }

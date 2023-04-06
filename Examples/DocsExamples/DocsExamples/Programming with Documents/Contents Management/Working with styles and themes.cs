@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Aspose.Words;
 using NUnit.Framework;
@@ -95,6 +95,27 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             doc.Save(ArtifactsDir + "WorkingWithStylesAndThemes.InsertStyleSeparator.docx");
             //ExEnd:InsertStyleSeparator
+        }
+
+        [Test]
+        public void CopyStyleDifferentDocument()
+        {
+            //ExStart:CopyStyleDifferentDocument
+            //GistId:b0d8bd66b25a20a9a1975ce600cdcd0e
+            Document srcDoc = new Document();
+
+            // Create a custom style for the source document.
+            Style srcStyle = srcDoc.Styles.Add(StyleType.Paragraph, "MyStyle");
+            srcStyle.Font.Color = Color.Red;
+
+            // Import the source document's custom style into the destination document.
+            Document dstDoc = new Document();
+            Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
+
+            // The imported style has an appearance identical to its source style.
+            Assert.AreEqual("MyStyle", newStyle.Name);
+            Assert.AreEqual(Color.Red.ToArgb(), newStyle.Font.Color.ToArgb());
+            //ExEnd:CopyStyleDifferentDocument
         }
     }
 }

@@ -14,7 +14,6 @@ This repository contains [Demos](Demos), [Examples](Examples), [Plugins](Plugins
 
 Directory | Description
 --------- | -----------
-[Demos](Demos)  | Aspose.Words for .NET Live Demos Source Code
 [Examples](Examples)  | A collection of .NET examples that help you learn and explore the API features
 [Showcases](Showcases)  | Standalone ready-to-use applications that demonstrate some specific use cases
 [Plugins](Plugins)  | Plugins that will demonstrate one or more features of Aspose.Words for .NET

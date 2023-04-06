@@ -37,6 +37,7 @@ using Aspose.Words.Pdf2Word.FixedFormats;
 using Aspose.Page.XPS;
 using LoadOptions = Aspose.Words.Loading.LoadOptions;
 using Aspose.Page.XPS.XpsModel;
+using Aspose.Words.Settings;
 #if NET48 || NET5_0_OR_GREATER || JAVA
 using Aspose.Pdf.Text;
 using Aspose.Words.Shaping.HarfBuzz;
@@ -215,6 +216,13 @@ namespace ApiExamples
             //ExEnd
         }
 #endif
+
+        [Test]
+        public void DetectMobiDocumentFormat()
+        {
+            FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.mobi");
+            Assert.AreEqual(info.LoadFormat, LoadFormat.Mobi);
+        }
 
         [Test]
         public void DetectPdfDocumentFormat()
@@ -796,6 +804,28 @@ namespace ApiExamples
             Assert.AreEqual(paras[0].ParagraphFormat.Style.Name, "MyStyle1_0");
             Assert.AreEqual(paras[1].ParagraphFormat.Style.Name, "MyStyle2_0");
             Assert.AreEqual(paras[2].ParagraphFormat.Style.Name, "MyStyle3");
+            //ExEnd
+        }
+
+        [Test]
+        public void AdjustSentenceAndWordSpacing()
+        {
+            //ExStart
+            //ExFor:ImportFormatOptions.AdjustSentenceAndWordSpacing
+            //ExSummary:Shows how to adjust sentence and word spacing automatically.
+            Document srcDoc = new Document();
+            Document dstDoc = new Document();
+
+            DocumentBuilder builder = new DocumentBuilder(srcDoc);
+            builder.Write("Dolor sit amet.");
+
+            builder = new DocumentBuilder(dstDoc);
+            builder.Write("Lorem ipsum.");
+
+            ImportFormatOptions options = new ImportFormatOptions() { AdjustSentenceAndWordSpacing = true };
+            builder.InsertDocument(srcDoc, ImportFormatMode.UseDestinationStyles, options);
+
+            Assert.AreEqual("Lorem ipsum. Dolor sit amet.", dstDoc.FirstSection.Body.FirstParagraph.GetText().Trim());
             //ExEnd
         }
 
@@ -2886,6 +2916,46 @@ namespace ApiExamples
             builder.CurrentStructuredDocumentTag.Color = Color.Green;
 
             doc.Save(ArtifactsDir + "Document.MoveToStructuredDocumentTag.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void IncludeTextboxesFootnotesEndnotesInStat()
+        {
+            //ExStart
+            //ExFor:Document.IncludeTextboxesFootnotesEndnotesInStat
+            //ExSummary: Shows how to include or exclude textboxes, footnotes and endnotes from word count statistics.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Lorem ipsum");
+            builder.InsertFootnote(FootnoteType.Footnote, "sit amet");
+
+            // By default option is set to 'false'.
+            doc.UpdateWordCount();
+            // Words count without textboxes, footnotes and endnotes.
+            Assert.AreEqual(2, doc.BuiltInDocumentProperties.Words);            
+
+            doc.IncludeTextboxesFootnotesEndnotesInStat = true;
+            doc.UpdateWordCount();
+            // Words count with textboxes, footnotes and endnotes.
+            Assert.AreEqual(4, doc.BuiltInDocumentProperties.Words);            
+            //ExEnd
+        }
+
+        [Test]
+        public void SetJustificationMode()
+        {
+            //ExStart
+            //ExFor:Document.JustificationMode
+            //ExFor:JustificationMode
+            //ExSummary:Shows how to manage character spacing control.
+            Document doc = new Document(MyDir + "Document.docx");
+            
+            JustificationMode justificationMode = doc.JustificationMode;
+            if (justificationMode == JustificationMode.Expand)                
+                doc.JustificationMode = JustificationMode.Compress;
+
+            doc.Save(ArtifactsDir + "Document.SetJustificationMode.docx");
             //ExEnd
         }
     }

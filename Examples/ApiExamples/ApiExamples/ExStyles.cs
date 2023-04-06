@@ -61,6 +61,7 @@ namespace ApiExamples
             //ExFor:Style.Font
             //ExFor:Style
             //ExFor:Style.Remove
+            //ExFor:Style.AutomaticallyUpdate
             //ExSummary:Shows how to create and apply a custom style.
             Document doc = new Document();
 
@@ -68,6 +69,8 @@ namespace ApiExamples
             style.Font.Name = "Times New Roman";
             style.Font.Size = 16;
             style.Font.Color = Color.Navy;
+            // Automatically redefine style.
+            style.AutomaticallyUpdate = true;
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -104,15 +107,13 @@ namespace ApiExamples
             //ExFor:StyleCollection.Item(Int32)
             //ExSummary:Shows how to add a Style to a document's styles collection.
             Document doc = new Document();
-            StyleCollection styles = doc.Styles;
 
+            StyleCollection styles = doc.Styles;
             // Set default parameters for new styles that we may later add to this collection.
             styles.DefaultFont.Name = "Courier New";
-
             // If we add a style of the "StyleType.Paragraph", the collection will apply the values of
             // its "DefaultParagraphFormat" property to the style's "ParagraphFormat" property.
             styles.DefaultParagraphFormat.FirstLineIndent = 15.0;
-
             // Add a style, and then verify that it has the default settings.
             styles.Add(StyleType.Paragraph, "MyStyle");
 
@@ -128,7 +129,6 @@ namespace ApiExamples
             //ExFor:StyleCollection.ClearQuickStyleGallery
             //ExSummary:Shows how to remove styles from Style Gallery panel.
             Document doc = new Document();
-
             // Note that remove styles work only with DOCX format for now.
             doc.Styles.ClearQuickStyleGallery();
 
