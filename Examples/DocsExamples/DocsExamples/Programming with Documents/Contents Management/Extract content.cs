@@ -419,7 +419,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ExtractPrintText()
         {
             //ExStart:ExtractText
-            //GistId:7267ba4569c671e5f6c7a58bba57297a
+            //GistId:458eb4fd5bd1de8b06fab4d1ef1acdc6
             Document doc = new Document(MyDir + "Tables.docx");
             
             Table table = (Table) doc.GetChild(NodeType.Table, 0, true);
@@ -432,7 +432,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             //ExEnd:ExtractText
 
             //ExStart:PrintTextRangeRowAndTable
-            //GistId:7267ba4569c671e5f6c7a58bba57297a
+            //GistId:458eb4fd5bd1de8b06fab4d1ef1acdc6
             Console.WriteLine("\nContents of the row: ");
             Console.WriteLine(table.Rows[1].Range.Text);
 
