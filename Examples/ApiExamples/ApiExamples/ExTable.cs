@@ -504,22 +504,29 @@ namespace ApiExamples
         }
 
         [Test]
-        public void GetDistance()
+        public void DistanceBetweenTableAndText()
         {
             //ExStart
             //ExFor:Table.DistanceBottom
             //ExFor:Table.DistanceLeft
             //ExFor:Table.DistanceRight
             //ExFor:Table.DistanceTop
-            //ExSummary:Shows the minimum distance operations between table boundaries and text.
+            //ExSummary:Shows how to set distance between table boundaries and text.
             Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
             Table table = doc.FirstSection.Body.Tables[0];
-
             Assert.AreEqual(25.9d, table.DistanceTop);
             Assert.AreEqual(25.9d, table.DistanceBottom);
             Assert.AreEqual(17.3d, table.DistanceLeft);
             Assert.AreEqual(17.3d, table.DistanceRight);
+
+            // Set distance between table and surrounding text.                        
+            table.DistanceLeft = 24;
+            table.DistanceRight = 24;
+            table.DistanceTop = 3;
+            table.DistanceBottom = 3;
+
+            doc.Save(ArtifactsDir + "Table.DistanceBetweenTableAndText.docx");            
             //ExEnd
         }
 

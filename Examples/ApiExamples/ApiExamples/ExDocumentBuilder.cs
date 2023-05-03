@@ -24,8 +24,6 @@ using System.Drawing;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Lists;
 using Aspose.Words.Notes;
-using Aspose.Words.Saving;
-using List = NUnit.Framework.List;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -3632,6 +3630,17 @@ namespace ApiExamples
             builder.InsertHtml(html, insertOptions);
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.PreserveBlocks.docx");
             //ExEnd
+        }
+
+        [Test]
+        public void PhoneticGuide()
+        {
+            DocumentBuilder builder = new DocumentBuilder();
+            builder.Write("Lorem ipsum.");
+
+            RunCollection runs = builder.Document.FirstSection.Body.FirstParagraph.Runs;
+            // Use phonetic guide in the Asian text.
+            Assert.AreEqual(false, runs[0].IsPhoneticGuide);
         }
     }
 }

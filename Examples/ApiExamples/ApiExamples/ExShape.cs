@@ -923,6 +923,7 @@ namespace ApiExamples
             //ExFor:GradientStopCollection.Count
             //ExFor:GradientStop.#ctor(Color, Double)
             //ExFor:GradientStop.#ctor(Color, Double, Double)
+            //ExFor:GradientStop.BaseColor
             //ExFor:GradientStop.Color
             //ExFor:GradientStop.Position
             //ExFor:GradientStop.Transparency
@@ -937,8 +938,8 @@ namespace ApiExamples
             // Get gradient stops collection.
             GradientStopCollection gradientStops = shape.Fill.GradientStops;
 
-            // Change first gradient stop.
-            gradientStops[0].Color = Color.Aqua;
+            // Change first gradient stop.            
+            gradientStops[0].Color = Color.Aqua;            
             gradientStops[0].Position = 0.1;
             gradientStops[0].Transparency = 0.25;
 
@@ -957,6 +958,7 @@ namespace ApiExamples
 
             Assert.AreEqual(2, gradientStops.Count);
 
+            Assert.AreEqual(Color.FromArgb(255, 0, 255, 255), gradientStops[0].BaseColor);
             Assert.AreEqual(Color.Aqua.ToArgb(), gradientStops[0].Color.ToArgb());
             Assert.AreEqual(0.1d, gradientStops[0].Position, 0.01d);
             Assert.AreEqual(0.25d, gradientStops[0].Transparency, 0.01d);
@@ -977,7 +979,7 @@ namespace ApiExamples
             shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             gradientStops = shape.Fill.GradientStops;
 
-            Assert.AreEqual(2, gradientStops.Count);
+            Assert.AreEqual(2, gradientStops.Count);            
 
             Assert.AreEqual(Color.Aqua.ToArgb(), gradientStops[0].Color.ToArgb());
             Assert.AreEqual(0.1d, gradientStops[0].Position, 0.01d);
@@ -1677,6 +1679,7 @@ namespace ApiExamples
             //ExFor:Stroke.Weight
             //ExFor:Stroke.JoinStyle
             //ExFor:Stroke.LineStyle
+            //ExFor:Stroke.Fill
             //ExFor:ShapeLineStyle
             //ExSummary:Shows how change stroke properties.
             Document doc = new Document();
@@ -1699,6 +1702,7 @@ namespace ApiExamples
             stroke.JoinStyle = JoinStyle.Miter;
             stroke.EndCap = EndCap.Square;
             stroke.LineStyle = ShapeLineStyle.Triple;
+            stroke.Fill.TwoColorGradient(Color.Red, Color.Blue, GradientStyle.Vertical, GradientVariant.Variant1);
 
             doc.Save(ArtifactsDir + "Shape.Stroke.docx");
             //ExEnd
@@ -2980,6 +2984,67 @@ namespace ApiExamples
 
             Assert.AreEqual(true, shape.TextBox.NoTextRotation);
 
+        }
+
+        [Test]
+        public void RelativeSizeAndPosition()
+        {
+            //ExStart
+            //ExFor:ShapeBase.RelativeHorizontalSize
+            //ExFor:ShapeBase.RelativeVerticalSize
+            //ExFor:ShapeBase.WidthRelative
+            //ExFor:ShapeBase.HeightRelative
+            //ExFor:ShapeBase.TopRelative
+            //ExFor:ShapeBase.LeftRelative
+            //ExFor:RelativeHorizontalSize
+            //ExFor:RelativeVerticalSize
+            //ExSummary:Shows how to set relative size and position.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Adding a simple shape with absolute size and position.
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 100, 40);
+            // Set WrapType to WrapType.None since Inline shapes are automatically converted to absolute units.
+            shape.WrapType = WrapType.None;
+
+            // Checking and setting the relative horizontal size.
+            if (shape.RelativeHorizontalSize == RelativeHorizontalSize.Default)
+            {
+                // Setting the horizontal size binding to Margin.
+                shape.RelativeHorizontalSize = RelativeHorizontalSize.Margin;
+                // Setting the width to 50% of Margin width.
+                shape.WidthRelative = 50;
+            }
+
+            // Checking and setting the relative vertical size.
+            if (shape.RelativeVerticalSize == RelativeVerticalSize.Default)
+            {
+                // Setting the vertical size binding to Margin.
+                shape.RelativeVerticalSize = RelativeVerticalSize.Margin;
+                // Setting the heigh to 30% of Margin height.
+                shape.HeightRelative = 30;
+            }
+
+            // Checking and setting the relative vertical position.
+            if (shape.RelativeVerticalPosition == RelativeVerticalPosition.Paragraph)
+            {
+                // etting the position binding to TopMargin.
+                shape.RelativeVerticalPosition = RelativeVerticalPosition.TopMargin;
+                // Setting relative Top to 30% of TopMargin position.
+                shape.TopRelative = 30;
+            }
+
+            // Checking and setting the relative horizontal position.
+            if (shape.RelativeHorizontalPosition == RelativeHorizontalPosition.Default)
+            {
+                // Setting the position binding to RightMargin.
+                shape.RelativeHorizontalPosition = RelativeHorizontalPosition.RightMargin;
+                // The position relative value can be negative.
+                shape.LeftRelative = -260;
+            }
+
+            doc.Save(ArtifactsDir + "Shape.RelativeSizeAndPosition.docx");
+            //ExEnd
         }
     }
 }

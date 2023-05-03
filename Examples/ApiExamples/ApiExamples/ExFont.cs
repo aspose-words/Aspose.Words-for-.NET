@@ -7,7 +7,6 @@
 
 #if NET48 || NET5_0_OR_GREATER || JAVA
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;

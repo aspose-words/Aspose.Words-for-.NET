@@ -10,12 +10,10 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text;
-using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fonts;
 using Aspose.Words.Loading;
-using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
 

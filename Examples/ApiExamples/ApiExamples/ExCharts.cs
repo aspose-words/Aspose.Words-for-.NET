@@ -246,6 +246,30 @@ namespace ApiExamples
         }
 
         [Test]
+        public void AxisCollection()
+        {
+            //ExStart
+            //ExFor:ChartAxisCollection
+            //ExFor:Chart.Axes
+            //ExSummary:Shows how to work with axes collection.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 500, 300);
+            Chart chart = shape.Chart;            
+
+            // Hide the major grid lines on the primary and secondary Y axes.
+            foreach (ChartAxis axis in chart.Axes)
+            {
+                if (axis.Type == ChartAxisType.Value)
+                    axis.HasMajorGridlines = false;
+            }
+
+            doc.Save(ArtifactsDir + "Charts.AxisCollection.docx");
+            //ExEnd
+        }
+
+        [Test]
         public void DateTimeValues()
         {
             //ExStart
