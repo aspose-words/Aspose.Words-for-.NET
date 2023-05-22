@@ -5,14 +5,14 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 
 namespace ApiExamples
 {
@@ -1397,6 +1397,149 @@ namespace ApiExamples
             series1.LegendEntry.Font.Italic = true;
 
             doc.Save(ArtifactsDir + "Charts.LegendEntries.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void RemoveSpecificChartSeries()
+        {
+            //ExStart
+            //ExFor:ChartSeries.SeriesType
+            //ExFor:ChartSeriesType
+            //ExSummary:Shows how to 
+            Document doc = new Document(MyDir + "Reporting engine template - Chart series.docx");
+            Chart chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
+
+            // Remove all series of the Column type.
+            for (int i = chart.Series.Count - 1; i >= 0; i--)
+            {
+                if (chart.Series[i].SeriesType == ChartSeriesType.Column)
+                    chart.Series.RemoveAt(i);
+            }
+            
+            chart.Series.Add(
+                "Aspose Series",
+                new string[] { "Category 1", "Category 2", "Category 3", "Category 4" },
+                new double[] { 5.6, 7.1, 2.9, 8.9 });
+
+            doc.Save(ArtifactsDir + "Charts.RemoveSpecificChartSeries.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void PopulateChartWithData()
+        {
+            //ExStart
+            //ExFor:ChartXValue.FromDouble(Double)
+            //ExFor:ChartYValue.FromDouble(Double)
+            //ExFor:ChartSeries.Add(ChartXValue, ChartYValue)
+            //ExSummary:Shows how to populate chart series with data.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder();
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+            ChartSeries series1 = chart.Series[0];
+
+            // Clear X and Y values of the first series.
+            series1.ClearValues();
+
+            // Populate the series with data.
+            series1.Add(ChartXValue.FromDouble(3), ChartYValue.FromDouble(10));
+            series1.Add(ChartXValue.FromDouble(5), ChartYValue.FromDouble(5));
+            series1.Add(ChartXValue.FromDouble(7), ChartYValue.FromDouble(11));
+            series1.Add(ChartXValue.FromDouble(9), ChartYValue.FromDouble(17));
+
+            ChartSeries series2 = chart.Series[1];
+
+            // Clear X and Y values of the second series.
+            series2.ClearValues();
+
+            // Populate the series with data.
+            series2.Add(ChartXValue.FromDouble(2), ChartYValue.FromDouble(4));
+            series2.Add(ChartXValue.FromDouble(4), ChartYValue.FromDouble(7));
+            series2.Add(ChartXValue.FromDouble(6), ChartYValue.FromDouble(14));
+            series2.Add(ChartXValue.FromDouble(8), ChartYValue.FromDouble(7));
+
+            doc.Save(ArtifactsDir + "Charts.PopulateChartWithData.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void GetChartSeriesData()
+        {
+            //ExStart
+            //ExFor:ChartXValueCollection
+            //ExFor:ChartYValueCollection
+            //ExSummary:Shows how to get chart series data.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder();
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+            ChartSeries series = chart.Series[0];
+
+            double minValue = double.MaxValue;
+            int minValueIndex = 0;
+            double maxValue = double.MinValue;
+            int maxValueIndex = 0;
+
+            for (int i = 0; i < series.YValues.Count; i++)
+            {
+                // Clear individual format of all data points.
+                // Data points and data values are one-to-one in column charts.
+                series.DataPoints[i].ClearFormat();
+
+                // Get Y value.
+                double yValue = series.YValues[i].DoubleValue;
+
+                if (yValue < minValue)
+                {
+                    minValue = yValue;
+                    minValueIndex = i;
+                }
+
+                if (yValue > maxValue)
+                {
+                    maxValue = yValue;
+                    maxValueIndex = i;
+                }
+            }
+
+            // Change colors of the max and min values.
+            series.DataPoints[minValueIndex].Format.Fill.ForeColor = Color.Red;
+            series.DataPoints[maxValueIndex].Format.Fill.ForeColor = Color.Green;
+
+            doc.Save(ArtifactsDir + "Charts.GetChartSeriesData.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ChartDataValues()
+        {
+            //ExStart
+            //ExFor:ChartXValue.FromString(String)
+            //ExFor:ChartSeries.Remove(Int32)
+            //ExFor:ChartSeries.Add(ChartXValue, ChartYValue)
+            //ExSummary:Shows how to add/remove chart data values.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder();
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+            ChartSeries department1Series = chart.Series[0];
+            ChartSeries department2Series = chart.Series[1];
+
+            // Remove the first value in the both series.
+            department1Series.Remove(0);
+            department2Series.Remove(0);
+
+            // Add new values to the both series.
+            ChartXValue newXCategory = ChartXValue.FromString("Q1, 2023");
+            department1Series.Add(newXCategory, ChartYValue.FromDouble(10.3));
+            department2Series.Add(newXCategory, ChartYValue.FromDouble(5.7));
+
+            doc.Save(ArtifactsDir + "Charts.ChartDataValues.docx");
             //ExEnd
         }
     }

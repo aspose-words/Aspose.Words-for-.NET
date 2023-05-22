@@ -73,6 +73,15 @@ namespace ApiExamples
         }
 
         [Test]
+        public void RemoveSignatures()
+        {
+            DigitalSignatureUtil.RemoveAllSignatures(MyDir + "Digitally signed.odt",
+                ArtifactsDir + "DigitalSignatureUtil.RemoveSignatures.odt");
+
+            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.RemoveSignatures.odt"), Is.Empty);
+        }
+
+        [Test]
         [Description("WORDSNET-16868")]
         public void SignDocument()
         {

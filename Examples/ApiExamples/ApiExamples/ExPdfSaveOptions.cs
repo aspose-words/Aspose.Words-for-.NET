@@ -2486,5 +2486,25 @@ namespace ApiExamples
             Assert.Less(asposeToPdfSize, wordToPdfSize);
             //ExEnd
         }
+
+        [Test]
+        public void ExportParagraphGraphicsToArtifact()
+        {
+            //ExStart
+            //ExFor:PdfSaveOptions.ExportParagraphGraphicsToArtifact
+            //ExSummary:Shows how to export paragraph graphics as artifact (underlines, text emphasis, etc.).
+            Document doc = new Document(MyDir + "PDF artifacts.docx");
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.ExportDocumentStructure = true;
+            saveOptions.ExportParagraphGraphicsToArtifact = true;
+            saveOptions.TextCompression = PdfTextCompression.None;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ExportParagraphGraphicsToArtifact.pdf", saveOptions);
+            //ExEnd
+
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ExportParagraphGraphicsToArtifact.pdf");
+            Assert.AreEqual(3, pdfDocument.Pages[1].Artifacts.Count());
+        }
     }
 }
