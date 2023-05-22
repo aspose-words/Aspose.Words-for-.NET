@@ -277,6 +277,25 @@ namespace ApiExamples
         }
 
         [Test]
+        public void IgnoreShapes() 
+        {
+            //ExStart
+            //ExFor:FindReplaceOptions.IgnoreShapes
+            //ExSummary:Shows how to ignore shapes while replacing text.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+            builder.InsertShape(ShapeType.Balloon, 200, 200);            
+            builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
+
+            builder.Document.Range.Replace("Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", new FindReplaceOptions() { IgnoreShapes = true });
+            Assert.AreEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit.", builder.Document.GetText().Trim());
+            //ExEnd
+        }
+
+        [Test]
         public void UpdateFieldsInRange()
         {
             //ExStart

@@ -1240,6 +1240,7 @@ namespace ApiExamples
             //ExFor:Forms2OleControl.Enabled
             //ExFor:Forms2OleControl.Type
             //ExFor:Forms2OleControl.ChildNodes
+            //ExFor:Forms2OleControl.GroupName
             //ExSummary:Shows how to verify the properties of an ActiveX control.
             Document doc = new Document(MyDir + "ActiveX controls.docx");
 
@@ -1256,8 +1257,20 @@ namespace ApiExamples
                 Assert.AreEqual(true, checkBox.Enabled);
                 Assert.AreEqual(Forms2OleControlType.CheckBox, checkBox.Type);
                 Assert.AreEqual(null, checkBox.ChildNodes);
+                Assert.AreEqual(string.Empty, checkBox.GroupName);
+
+                // Note, that you can't set GroupName for a Frame.
+                checkBox.GroupName = "Aspose group name";
             }
             //ExEnd
+
+            doc.Save(ArtifactsDir + "Shape.GetActiveXControlProperties.docx");
+            doc = new Document(ArtifactsDir + "Shape.GetActiveXControlProperties.docx");
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Forms2OleControl forms2OleControl = (Forms2OleControl) shape.OleFormat.OleControl;
+
+            Assert.AreEqual("Aspose group name", forms2OleControl.GroupName);
         }
 
         [Test]

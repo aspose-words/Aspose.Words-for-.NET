@@ -69,6 +69,7 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTag.NodeType
             //ExFor:StructuredDocumentTag.Style
             //ExFor:StructuredDocumentTag.StyleName
+            //ExFor:StructuredDocumentTag.WordOpenXMLMinimal
             //ExFor:MarkupLevel
             //ExFor:SdtType
             //ExSummary:Shows how to work with styles for content control elements.
@@ -95,6 +96,8 @@ namespace ApiExamples
             foreach (Node node in tags)
             {
                 StructuredDocumentTag sdt = (StructuredDocumentTag)node;
+
+                Console.WriteLine(sdt.WordOpenXMLMinimal);
 
                 Assert.AreEqual(StyleIdentifier.Quote, sdt.Style.StyleIdentifier);
                 Assert.AreEqual("Quote", sdt.StyleName);
