@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Loading;
@@ -147,7 +147,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void PageSetupAndSectionFormatting()
         {
             //ExStart:PageSetupAndSectionFormatting
-            //GistDesc:Work with sections C#
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -184,7 +184,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void LineGridSectionLayoutMode()
         {
             //ExStart:LineGridSectionLayoutMode
-            //GistDesc:Work with sections C#
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

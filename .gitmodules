@@ -28,3 +28,6 @@
 [submodule "Gists/How_to_merge_table_cells_in_C#"]
 	path = "Gists/How_to_merge_table_cells_in_C#"
 	url = https://gist.github.com/aspose-words-gists/93de23a2f74a7f2e4971ed203874c983
+[submodule "Gists/Work_with_sections_C#"]
+	path = "Gists/Work_with_sections_C#"
+	url = https://gist.github.com/aspose-words-gists/1afca4d3da7cb4240fb91c3d93d8c30d

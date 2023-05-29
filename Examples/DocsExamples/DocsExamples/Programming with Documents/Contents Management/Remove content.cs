@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Aspose.Words;
 using Aspose.Words.Fields;
@@ -45,7 +45,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         //ExEnd:RemovePageBreaks
 
         //ExStart:RemoveSectionBreaks
-        //GistDesc:Work with sections C#
+        //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
         private void RemoveSectionBreaks(Document doc)
         {
             // Loop through all sections starting from the section that precedes the last one and moving to the first section.
