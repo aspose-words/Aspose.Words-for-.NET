@@ -65,6 +65,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         }
 
         //ExStart:InsertSectionBreaks
+        //GistDesc:Work with sections C#
         /// <summary>
         /// Insert section breaks before the specified paragraphs.
         /// </summary>

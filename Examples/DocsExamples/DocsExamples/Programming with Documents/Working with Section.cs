@@ -1,6 +1,7 @@
 ﻿using Aspose.Words;
 using NUnit.Framework;
 using System;
+using static System.Collections.Specialized.BitVector32;
 
 namespace DocsExamples.Programming_with_Documents
 {
@@ -57,6 +58,7 @@ namespace DocsExamples.Programming_with_Documents
         public void AppendSectionContent()
         {
             //ExStart:AppendSectionContent
+            //GistDesc:Work with sections C#
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -82,6 +84,7 @@ namespace DocsExamples.Programming_with_Documents
         public void CloneSection()
         {
             //ExStart:CloneSection
+            //GistDesc:Work with sections C#
             Document doc = new Document(MyDir + "Document.docx");
             Section cloneSection = doc.Sections[0].Clone();
             //ExEnd:CloneSection
@@ -91,6 +94,7 @@ namespace DocsExamples.Programming_with_Documents
         public void CopySection()
         {
             //ExStart:CopySection
+            //GistDesc:Work with sections C#
             Document srcDoc = new Document(MyDir + "Document.docx");
             Document dstDoc = new Document();
 
@@ -106,11 +110,24 @@ namespace DocsExamples.Programming_with_Documents
         public void DeleteHeaderFooterContent()
         {
             //ExStart:DeleteHeaderFooterContent
+            //GistDesc:Work with sections C#
             Document doc = new Document(MyDir + "Document.docx");
 
             Section section = doc.Sections[0];
             section.ClearHeadersFooters();
             //ExEnd:DeleteHeaderFooterContent
+        }
+
+        [Test]
+        public void DeleteHeaderFooterShapes()
+        {
+            //ExStart:DeleteHeaderFooterShapes
+            //GistDesc:Work with sections C#
+            Document doc = new Document(MyDir + "Document.docx");
+
+            Section section = doc.Sections[0];
+            section.DeleteHeaderFooterShapes();
+            //ExEnd:DeleteHeaderFooterShapes
         }
 
         [Test]
@@ -128,6 +145,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ModifyPageSetupInAllSections()
         {
             //ExStart:ModifyPageSetupInAllSections
+            //GistDesc:Work with sections C#
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -169,6 +187,7 @@ namespace DocsExamples.Programming_with_Documents
         public void SectionChildNodes()
         {
             //ExStart:SectionChildNodes
+            //GistDesc:Work with sections C#
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -215,6 +234,7 @@ namespace DocsExamples.Programming_with_Documents
         public void EnsureMinimum()
         {
             //ExStart:EnsureMinimum
+            //GistDesc:Work with sections C#
             Document doc = new Document();
 
             // If we add a new section like this, it will not have a body, or any other child nodes.

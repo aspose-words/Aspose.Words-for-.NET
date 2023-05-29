@@ -45,6 +45,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         //ExEnd:RemovePageBreaks
 
         //ExStart:RemoveSectionBreaks
+        //GistDesc:Work with sections C#
         private void RemoveSectionBreaks(Document doc)
         {
             // Loop through all sections starting from the section that precedes the last one and moving to the first section.

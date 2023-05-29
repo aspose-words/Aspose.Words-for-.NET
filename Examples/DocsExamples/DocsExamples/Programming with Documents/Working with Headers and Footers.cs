@@ -12,6 +12,7 @@ namespace DocsExamples.Programming_with_Documents
         {
             //ExStart:CreateHeaderFooterUsingDocBuilder
             //ExStart:DifferentFirstPageHeaderFooter
+            //GistDesc:Work with sections C#
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
