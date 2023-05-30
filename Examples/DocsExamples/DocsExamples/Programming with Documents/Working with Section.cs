@@ -1,7 +1,6 @@
 using Aspose.Words;
 using NUnit.Framework;
 using System;
-using static System.Collections.Specialized.BitVector32;
 
 namespace DocsExamples.Programming_with_Documents
 {
