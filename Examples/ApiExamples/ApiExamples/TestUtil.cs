@@ -444,8 +444,8 @@ namespace ApiExamples
             CompositeNode innerFieldParent = innerField.Start.ParentNode;
 
             Assert.True(innerFieldParent == outerField.Start.ParentNode);
-            Assert.True(innerFieldParent.ChildNodes.IndexOf(innerField.Start) > innerFieldParent.ChildNodes.IndexOf(outerField.Start));
-            Assert.True(innerFieldParent.ChildNodes.IndexOf(innerField.End) < innerFieldParent.ChildNodes.IndexOf(outerField.End));
+            Assert.True(innerFieldParent.GetChildNodes(NodeType.Any, false).IndexOf(innerField.Start) > innerFieldParent.GetChildNodes(NodeType.Any, false).IndexOf(outerField.Start));
+            Assert.True(innerFieldParent.GetChildNodes(NodeType.Any, false).IndexOf(innerField.End) < innerFieldParent.GetChildNodes(NodeType.Any, false).IndexOf(outerField.End));
         }
 
         /// <summary>

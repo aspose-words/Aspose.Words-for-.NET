@@ -2239,15 +2239,10 @@ namespace ApiExamples
             {
                 case EmfPlusDualRenderingMode.Emf:
                 case EmfPlusDualRenderingMode.EmfPlusWithFallback:
+                case EmfPlusDualRenderingMode.EmfPlus:
                     Assert.AreEqual(0, pdfDocument.Pages[1].Resources.Images.Count);
                     TestUtil.FileContainsString("5 0 obj\r\n" +
                                                 "<</Type /Page/Parent 3 0 R/Contents 6 0 R/MediaBox [0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAI 8 0 R/FAAABB 11 0 R/FAAABE 14 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
-                        ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
-                    break;
-                case EmfPlusDualRenderingMode.EmfPlus:
-                    Assert.AreEqual(1, pdfDocument.Pages[1].Resources.Images.Count);
-                    TestUtil.FileContainsString("5 0 obj\r\n" +
-                                                "<</Type /Page/Parent 3 0 R/Contents 6 0 R/MediaBox [0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R/FAAABF 15 0 R>>/XObject<</X1 10 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
                     break;
             }

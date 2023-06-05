@@ -118,7 +118,7 @@ namespace ApiExamples
             //ExFor:NodeType
             //ExFor:CompositeNode
             //ExFor:CompositeNode.GetChild
-            //ExFor:CompositeNode.ChildNodes
+            //ExFor:CompositeNode.GetChildNodes(NodeType.Any, false)
             //ExFor:CompositeNode.GetEnumerator
             //ExFor:NodeCollection.Count
             //ExFor:NodeCollection.Item
@@ -141,9 +141,9 @@ namespace ApiExamples
 
             // Iterate through the paragraph's collection of immediate children,
             // and print any runs or shapes that we find within.
-            NodeCollection children = paragraph.ChildNodes;
+            NodeCollection children = paragraph.GetChildNodes(NodeType.Any, false);
 
-            Assert.AreEqual(3, paragraph.ChildNodes.Count);
+            Assert.AreEqual(3, paragraph.GetChildNodes(NodeType.Any, false).Count);
 
             foreach (Node child in children)
                 switch (child.NodeType)
@@ -438,7 +438,7 @@ namespace ApiExamples
             Body body = doc.FirstSection.Body;
 
             // Retrieve the index of the last paragraph in the body of the first section.
-            Assert.AreEqual(24, body.ChildNodes.IndexOf(body.LastParagraph));
+            Assert.AreEqual(24, body.GetChildNodes(NodeType.Any, false).IndexOf(body.LastParagraph));
             //ExEnd
         }
 

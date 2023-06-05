@@ -450,16 +450,16 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             GroupShape shapes = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
 
-            Assert.AreEqual(2, shapes.ChildNodes.Count);
+            Assert.AreEqual(2, shapes.GetChildNodes(NodeType.Any, false).Count);
 
-            Shape shape = (Shape)shapes.ChildNodes[0];
+            Shape shape = (Shape)shapes.GetChildNodes(NodeType.Any, false)[0];
 
             Assert.AreEqual(ShapeType.Balloon, shape.ShapeType);
             Assert.AreEqual(200.0d, shape.Width);
             Assert.AreEqual(200.0d, shape.Height);
             Assert.AreEqual(Color.Red.ToArgb(), shape.StrokeColor.ToArgb());
 
-            shape = (Shape)shapes.ChildNodes[1];
+            shape = (Shape)shapes.GetChildNodes(NodeType.Any, false)[1];
 
             Assert.AreEqual(ShapeType.Cube, shape.ShapeType);
             Assert.AreEqual(100.0d, shape.Width);

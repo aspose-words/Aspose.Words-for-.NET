@@ -487,8 +487,8 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         public override VisitorAction VisitParagraphEnd(Paragraph paragraph)
         {
             // If the paragraph contains only section break, add fake run into.
-            if (paragraph.IsEndOfSection && paragraph.ChildNodes.Count == 1 &&
-                paragraph.ChildNodes[0].GetText() == "\f")
+            if (paragraph.IsEndOfSection && paragraph.GetChildNodes(NodeType.Any, false).Count == 1 &&
+                paragraph.GetChildNodes(NodeType.Any, false)[0].GetText() == "\f")
             {
                 Run run = new Run(paragraph.Document);
                 paragraph.AppendChild(run);
@@ -568,8 +568,8 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
             int startingPage = pageNumberFinder.GetPage(node);
             
             Node[] childNodes = node.NodeType == NodeType.Section
-                ? ((Section) node).Body.ChildNodes.ToArray()
-                : node.ChildNodes.ToArray();
+                ? ((Section) node).Body.GetChildNodes(NodeType.Any, false).ToArray()
+                : node.GetChildNodes(NodeType.Any, false).ToArray();
             foreach (Node childNode in childNodes)
             {
                 int pageNum = pageNumberFinder.GetPage(childNode);
@@ -628,7 +628,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
                 // If we are dealing with a row, we need to add dummy cells for the cloned row.
                 int targetPageNum = pageNumberFinder.GetPage(targetNode);
                 
-                Node[] childNodes = baseNode.ChildNodes.ToArray();
+                Node[] childNodes = baseNode.GetChildNodes(NodeType.Any, false).ToArray();
                 foreach (Node childNode in childNodes)
                 {
                     int pageNum = pageNumberFinder.GetPage(childNode);
@@ -679,12 +679,12 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
 
         public static void ProcessSection(Section section)
         {
-            if (section.ChildNodes.Count == 0)
+            if (section.GetChildNodes(NodeType.Any, false).Count == 0)
             {
                 return;
             }
 
-            Body lastBody = section.ChildNodes.OfType<Body>().LastOrDefault();
+            Body lastBody = section.GetChildNodes(NodeType.Any, false).OfType<Body>().LastOrDefault();
 
             Run run = lastBody?.GetChildNodes(NodeType.Run, true).OfType<Run>()
                 .FirstOrDefault(p => p.Text.EndsWith(PageBreakStr));
@@ -706,7 +706,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
 
         private void ProcessLastParagraph(Paragraph paragraph)
         {
-            Node lastNode = paragraph.ChildNodes[paragraph.ChildNodes.Count - 1];
+            Node lastNode = paragraph.GetChildNodes(NodeType.Any, false)[paragraph.GetChildNodes(NodeType.Any, false).Count - 1];
             if (lastNode.NodeType != NodeType.Run)
             {
                 return;
@@ -729,7 +729,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
                 run.Text = run.Text.TrimEnd(PageBreak);
             }
 
-            if (paragraph.ChildNodes.Count == 0)
+            if (paragraph.GetChildNodes(NodeType.Any, false).Count == 0)
             {
                 CompositeNode parent = paragraph.ParentNode;
                 parent.RemoveChild(paragraph);

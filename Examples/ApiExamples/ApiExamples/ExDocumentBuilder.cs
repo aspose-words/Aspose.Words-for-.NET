@@ -744,7 +744,7 @@ namespace ApiExamples
             builder.Write("Bookmark contents.");
             builder.EndBookmark("MyBookmark");
 
-            NodeCollection firstParagraphNodes = doc.FirstSection.Body.FirstParagraph.ChildNodes;
+            NodeCollection firstParagraphNodes = doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Any, false);
 
             Assert.AreEqual(NodeType.BookmarkStart, firstParagraphNodes[0].NodeType);
             Assert.AreEqual(NodeType.Run, firstParagraphNodes[1].NodeType);

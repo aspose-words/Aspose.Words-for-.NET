@@ -1227,8 +1227,8 @@ namespace ApiExamples
 
             if (exportPageMargins)
             {
-                Assert.True(outDocContents.Contains("<style type=\"text/css\">div.Section1 { margin:70.85pt }</style>"));
-                Assert.True(outDocContents.Contains("<div class=\"Section1\"><p style=\"margin-top:0pt; margin-left:150pt; margin-bottom:0pt\">"));
+                Assert.True(outDocContents.Contains("<style type=\"text/css\">div.Section_1 { margin:70.85pt }</style>"));
+                Assert.True(outDocContents.Contains("<div class=\"Section_1\"><p style=\"margin-top:0pt; margin-left:150pt; margin-bottom:0pt\">"));
             }
             else
             {
@@ -1272,13 +1272,13 @@ namespace ApiExamples
             {
                 Assert.True(outDocContents.Contains(
                     "<style type=\"text/css\">" +
-                        "@page Section1 { size:419.55pt 595.3pt; margin:36pt 70.85pt; -aw-footer-distance:35.4pt; -aw-header-distance:35.4pt }" +
-                        "@page Section2 { size:612pt 792pt; margin:70.85pt; -aw-footer-distance:35.4pt; -aw-header-distance:35.4pt }" +
-                        "div.Section1 { page:Section1 }div.Section2 { page:Section2 }" +
+                        "@page Section_1 { size:419.55pt 595.3pt; margin:36pt 70.85pt; -aw-footer-distance:35.4pt; -aw-header-distance:35.4pt }" +
+                        "@page Section_2 { size:612pt 792pt; margin:70.85pt; -aw-footer-distance:35.4pt; -aw-header-distance:35.4pt }" +
+                        "div.Section_1 { page:Section_1 }div.Section_2 { page:Section_2 }" +
                     "</style>"));
 
                 Assert.True(outDocContents.Contains(
-                    "<div class=\"Section1\">" +
+                    "<div class=\"Section_1\">" +
                         "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
                             "<span>Section 1</span>" +
                         "</p>" +
