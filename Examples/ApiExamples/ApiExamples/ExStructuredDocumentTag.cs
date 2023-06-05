@@ -1076,8 +1076,7 @@ namespace ApiExamples
         [Test]
         public void SdtChildNodes()
         {
-            //ExStart
-            //ExFor:StructuredDocumentTagRangeStart.GetChildNodes(NodeType.Any, false)
+            //ExStart            
             //ExFor:StructuredDocumentTagRangeStart.GetChildNodes(NodeType, bool)
             //ExSummary:Shows how to get child nodes of StructuredDocumentTagRangeStart.
             Document doc = new Document(MyDir + "Multi-section structured document tags.docx");

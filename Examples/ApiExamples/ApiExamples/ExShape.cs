@@ -1239,7 +1239,7 @@ namespace ApiExamples
             //ExFor:Forms2OleControl.Value
             //ExFor:Forms2OleControl.Enabled
             //ExFor:Forms2OleControl.Type
-            //ExFor:Forms2OleControl.GetChildNodes(NodeType.Any, false)
+            //ExFor:Forms2OleControl.ChildNodes
             //ExFor:Forms2OleControl.GroupName
             //ExSummary:Shows how to verify the properties of an ActiveX control.
             Document doc = new Document(MyDir + "ActiveX controls.docx");
