@@ -11,6 +11,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Web.UI;
 using ApiExamples.TestData;
 using ApiExamples.TestData.TestBuilders;
 using ApiExamples.TestData.TestClasses;
@@ -512,6 +513,21 @@ namespace ApiExamples
                     GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"),
                 "Fail inserting document by bytes");
 
+        }
+
+        [TestCase("<<[html_text] -html>>")]
+        [TestCase("<<html [html_text]>>")]
+        [TestCase("<<html [html_text] -sourceStyles>>")]
+        public void InsertHtmlDinamically(string templateText)
+        {
+            string html = File.ReadAllText(MyDir + "Reporting engine template - Html.html");
+
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln(templateText);
+
+            BuildReport(doc, html, "html_text");
+            doc.Save(ArtifactsDir + "ReportingEngine.InsertHtmlDinamically.docx");
         }
 
         [Test]

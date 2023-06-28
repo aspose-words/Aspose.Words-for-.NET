@@ -228,6 +228,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:Fonts.FontInfoSubstitutionRule
         //ExFor:Fonts.FontSubstitutionSettings.FontInfoSubstitution
+        //ExFor:LayoutOptions.KeepOriginalFontMetrics
         //ExFor:IWarningCallback
         //ExFor:IWarningCallback.Warning(WarningInfo)
         //ExFor:WarningInfo
@@ -255,6 +256,9 @@ namespace ApiExamples
             fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
             ;
             fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
+
+            // Original font metrics should be used after font substitution.
+            doc.LayoutOptions.KeepOriginalFontMetrics = true;
 
             // We will get a font substitution warning if we save a document with a missing font.
             doc.FontSettings = fontSettings;

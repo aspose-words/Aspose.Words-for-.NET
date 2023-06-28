@@ -505,6 +505,15 @@ namespace ApiExamples
         }
 
         [Test]
+        public void NotSupportedWarning()
+        {
+            WarningInfoCollection warings = new WarningInfoCollection();
+            Document doc = new Document(MyDir + "FB2 document.fb2", new LoadOptions { WarningCallback = warings });
+
+            Assert.AreEqual("The original file load format is FB2, which is not supported by Aspose.Words. The file is loaded as an XML document.", warings[0].Description);
+        }
+
+        [Test]
         public void TempFolder()
         {
             //ExStart
@@ -2956,6 +2965,19 @@ namespace ApiExamples
                 doc.JustificationMode = JustificationMode.Compress;
 
             doc.Save(ArtifactsDir + "Document.SetJustificationMode.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void PageIsInColor()
+        {
+            //ExStart
+            //ExFor:PageInfo.Colored
+            //ExSummary:Shows how to check whether the page is in color or not.
+            Document doc = new Document(MyDir + "Document.docx");
+
+            // Check that the first page of the document is not colored.
+            Assert.IsFalse(doc.GetPageInfo(0).Colored);
             //ExEnd
         }
     }
