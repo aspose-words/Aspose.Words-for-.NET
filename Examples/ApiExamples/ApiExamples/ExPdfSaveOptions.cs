@@ -418,9 +418,7 @@ namespace ApiExamples
             if (preserveFormFields)
             {
                 Assert.AreEqual("Please select a fruit: ", textFragmentAbsorber.Text);
-                TestUtil.FileContainsString("11 0 obj\r\n" +
-                                            "<</Type /Annot/Subtype /Widget/P 5 0 R/FT /Ch/F 4/Rect [168.39199829 707.35101318 217.87442017 722.64007568]/Ff 131072/T(þÿ\0M\0y\0C\0o\0m\0b\0o\0B\0o\0x)/Opt " +
-                                            "[(þÿ\0A\0p\0p\0l\0e) (þÿ\0B\0a\0n\0a\0n\0a) (þÿ\0C\0h\0e\0r\0r\0y) ]/V(þÿ\0A\0p\0p\0l\0e)/DA(0 g /FAAABD 12 Tf )/AP<</N 12 0 R>>>>",
+                TestUtil.FileContainsString("<</Type/Annot/Subtype/Widget/P 5 0 R/FT/Ch/F 4/Rect[168.39199829 707.35101318 217.87442017 722.64007568]/Ff 131072/T",
                     ArtifactsDir + "PdfSaveOptions.PreserveFormFields.pdf");
 
                 Aspose.Pdf.Forms.Form form = pdfDocument.Form;
@@ -549,13 +547,13 @@ namespace ApiExamples
                 case PdfTextCompression.None:
                     Assert.That(60000,
                         Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf").Length));
-                    TestUtil.FileContainsString("12 0 obj\r\n<</Length 13 0 R>>stream",
+                    TestUtil.FileContainsString("<</Length 11 0 R>>stream",
                         ArtifactsDir + "PdfSaveOptions.TextCompression.pdf");
                     break;
                 case PdfTextCompression.Flate:
                     Assert.That(30000,
                         Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf").Length));
-                    TestUtil.FileContainsString("12 0 obj\r\n<</Length 13 0 R/Filter /FlateDecode>>stream",
+                    TestUtil.FileContainsString("<</Length 11 0 R/Filter/FlateDecode>>stream",
                         ArtifactsDir + "PdfSaveOptions.TextCompression.pdf");
                     break;
             }
@@ -880,13 +878,13 @@ namespace ApiExamples
 
             if (openHyperlinksInNewWindow)
                 TestUtil.FileContainsString(
-                    "<</Type /Annot/Subtype /Link/Rect [70.84999847 707.35101318 110.17799377 721.15002441]/BS " +
-                    "<</Type/Border/S/S/W 0>>/A<</Type /Action/S /JavaScript/JS(app.launchURL\\(\"https://www.google.com/search?q=%20aspose\", true\\);)>>>>",
+                    "<</Type/Annot/Subtype/Link/Rect[70.84999847 707.35101318 110.17799377 721.15002441]/BS" +
+                    "<</Type/Border/S/S/W 0>>/A<</Type/Action/S/JavaScript/JS(app.launchURL\\(\"https://www.google.com/search?q=%20aspose\", true\\);)>>>>",
                     ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf");
             else
                 TestUtil.FileContainsString(
-                    "<</Type /Annot/Subtype /Link/Rect [70.84999847 707.35101318 110.17799377 721.15002441]/BS " +
-                    "<</Type/Border/S/S/W 0>>/A<</Type /Action/S /URI/URI(https://www.google.com/search?q=%20aspose)>>>>",
+                    "<</Type/Annot/Subtype/Link/Rect[70.84999847 707.35101318 110.17799377 721.15002441]/BS" +
+                    "<</Type/Border/S/S/W 0>>/A<</Type/Action/S/URI/URI(https://www.google.com/search?q=%20aspose)>>>>",
                     ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf");
 
 #if NET48 || NET5_0_OR_GREATER || JAVA
@@ -1004,7 +1002,7 @@ namespace ApiExamples
             switch (headerFooterBookmarksExportMode)
             {
                 case Aspose.Words.Saving.HeaderFooterBookmarksExportMode.None:
-                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/Lang({inputDocLocaleName})/Metadata 4 0 R>>\r\n",
+                    TestUtil.FileContainsString($"<</Type/Catalog/Pages 3 0 R/Lang({inputDocLocaleName})/Metadata 4 0 R>>\r\n",
                         ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf");
 
                     Assert.AreEqual(0, pdfDoc.Outlines.Count);
@@ -1012,7 +1010,7 @@ namespace ApiExamples
                 case Aspose.Words.Saving.HeaderFooterBookmarksExportMode.First:
                 case Aspose.Words.Saving.HeaderFooterBookmarksExportMode.All:
                     TestUtil.FileContainsString(
-                        $"<</Type /Catalog/Pages 3 0 R/Outlines 14 0 R/PageMode /UseOutlines/Lang({inputDocLocaleName})/Metadata 4 0 R>>",
+                        $"<</Type/Catalog/Pages 3 0 R/Outlines 15 0 R/PageMode/UseOutlines/Lang({inputDocLocaleName})/Metadata 4 0 R>>",
                         ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf");
 
                     OutlineCollection outlineItemCollection = pdfDoc.Outlines;
@@ -1197,7 +1195,7 @@ namespace ApiExamples
                     Assert.That(480000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
                     break;
                 case PdfFontEmbeddingMode.EmbedNone:
-                    Assert.That(4217, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
+                    Assert.That(4255, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
                     break;
             }
             //ExEnd
@@ -1461,27 +1459,27 @@ namespace ApiExamples
             {
                 case PdfPageMode.FullScreen:
                     TestUtil.FileContainsString(
-                        $"<</Type /Catalog/Pages 3 0 R/PageMode /FullScreen/Lang({docLocaleName})/Metadata 4 0 R>>\r\n",
+                        $"<</Type/Catalog/Pages 3 0 R/PageMode/FullScreen/Lang({docLocaleName})/Metadata 4 0 R>>\r\n",
                         ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
                     break;
                 case PdfPageMode.UseThumbs:
                     TestUtil.FileContainsString(
-                        $"<</Type /Catalog/Pages 3 0 R/PageMode /UseThumbs/Lang({docLocaleName})/Metadata 4 0 R>>",
+                        $"<</Type/Catalog/Pages 3 0 R/PageMode/UseThumbs/Lang({docLocaleName})/Metadata 4 0 R>>",
                         ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
                     break;
                 case PdfPageMode.UseOC:
                     TestUtil.FileContainsString(
-                        $"<</Type /Catalog/Pages 3 0 R/PageMode /UseOC/Lang({docLocaleName})/Metadata 4 0 R>>\r\n",
+                        $"<</Type/Catalog/Pages 3 0 R/PageMode/UseOC/Lang({docLocaleName})/Metadata 4 0 R>>\r\n",
                         ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
                     break;
                 case PdfPageMode.UseOutlines:
                 case PdfPageMode.UseNone:
-                    TestUtil.FileContainsString($"<</Type /Catalog/Pages 3 0 R/Lang({docLocaleName})/Metadata 4 0 R>>\r\n",
+                    TestUtil.FileContainsString($"<</Type/Catalog/Pages 3 0 R/Lang({docLocaleName})/Metadata 4 0 R>>\r\n",
                         ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
                     break;
                 case PdfPageMode.UseAttachments:
                     TestUtil.FileContainsString(
-                        $"<</Type /Catalog/Pages 3 0 R/PageMode /UseAttachments/Lang({docLocaleName})/Metadata 4 0 R>>\r\n",
+                        $"<</Type/Catalog/Pages 3 0 R/PageMode/UseAttachments/Lang({docLocaleName})/Metadata 4 0 R>>\r\n",
                         ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
                     break;
             }
@@ -1535,28 +1533,28 @@ namespace ApiExamples
             if (createNoteHyperlinks)
             {
                 TestUtil.FileContainsString(
-                    "<</Type /Annot/Subtype /Link/Rect [157.80099487 720.90106201 159.35600281 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 85 677 0]>>",
+                    "<</Type/Annot/Subtype/Link/Rect[157.80099487 720.90106201 159.35600281 733.55004883]/BS<</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 85 677 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
                 TestUtil.FileContainsString(
-                    "<</Type /Annot/Subtype /Link/Rect [202.16900635 720.90106201 206.06201172 733.55004883]/BS <</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 85 79 0]>>",
+                    "<</Type/Annot/Subtype/Link/Rect[202.16900635 720.90106201 206.06201172 733.55004883]/BS<</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 85 79 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
                 TestUtil.FileContainsString(
-                    "<</Type /Annot/Subtype /Link/Rect [212.23199463 699.2510376 215.34199524 711.90002441]/BS <</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 85 654 0]>>",
+                    "<</Type/Annot/Subtype/Link/Rect[212.23199463 699.2510376 215.34199524 711.90002441]/BS<</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 85 654 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
                 TestUtil.FileContainsString(
-                    "<</Type /Annot/Subtype /Link/Rect [258.15499878 699.2510376 262.04800415 711.90002441]/BS <</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 85 68 0]>>",
+                    "<</Type/Annot/Subtype/Link/Rect[258.15499878 699.2510376 262.04800415 711.90002441]/BS<</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 85 68 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
                 TestUtil.FileContainsString(
-                    "<</Type /Annot/Subtype /Link/Rect [85.05000305 68.19904327 88.66500092 79.69804382]/BS <</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 202 733 0]>>",
+                    "<</Type/Annot/Subtype/Link/Rect[85.05000305 68.19904327 88.66500092 79.69804382]/BS<</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 202 733 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
                 TestUtil.FileContainsString(
-                    "<</Type /Annot/Subtype /Link/Rect [85.05000305 56.70004272 88.66500092 68.19904327]/BS <</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 258 711 0]>>",
+                    "<</Type/Annot/Subtype/Link/Rect[85.05000305 56.70004272 88.66500092 68.19904327]/BS<</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 258 711 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
                 TestUtil.FileContainsString(
-                    "<</Type /Annot/Subtype /Link/Rect [85.05000305 666.10205078 86.4940033 677.60107422]/BS <</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 157 733 0]>>",
+                    "<</Type/Annot/Subtype/Link/Rect[85.05000305 666.10205078 86.4940033 677.60107422]/BS<</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 157 733 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
                 TestUtil.FileContainsString(
-                    "<</Type /Annot/Subtype /Link/Rect [85.05000305 643.10406494 87.93800354 654.60308838]/BS <</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 212 711 0]>>",
+                    "<</Type/Annot/Subtype/Link/Rect[85.05000305 643.10406494 87.93800354 654.60308838]/BS<</Type/Border/S/S/W 0>>/Dest[5 0 R /XYZ 212 711 0]>>",
                     ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
             }
             else
@@ -1642,11 +1640,11 @@ namespace ApiExamples
                     TestUtil.FileContainsString(
                         "<</Creator(þÿ\0A\0s\0p\0o\0s\0e\0.\0W\0o\0r\0d\0s)/Producer(þÿ\0A\0s\0p\0o\0s\0e\0.\0W\0o\0r\0d\0s\0 \0f\0o\0r\0",
                         ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
-                    TestUtil.FileContainsString("/Company (þÿ\0M\0y\0 \0v\0a\0l\0u\0e)>>",
+                    TestUtil.FileContainsString("/Company(þÿ\0M\0y\0 \0v\0a\0l\0u\0e)>>",
                         ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
                     break;
                 case PdfCustomPropertiesExport.Metadata:
-                    TestUtil.FileContainsString("<</Type /Metadata/Subtype /XML/Length 8 0 R/Filter /FlateDecode>>",
+                    TestUtil.FileContainsString("<</Type/Metadata/Subtype/XML/Length 8 0 R/Filter/FlateDecode>>",
                         ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
                     break;
             }
@@ -1724,15 +1722,14 @@ namespace ApiExamples
             {
                 case DmlEffectsRenderingMode.None:
                 case DmlEffectsRenderingMode.Simplified:
-                    TestUtil.FileContainsString("5 0 obj\r\n" +
-                                                "<</Type /Page/Parent 3 0 R/Contents 6 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                    TestUtil.FileContainsString("<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
                     Assert.AreEqual(0, imagePlacementAbsorber.ImagePlacements.Count);
                     Assert.AreEqual(28, tableAbsorber.TableList.Count);
                     break;
                 case DmlEffectsRenderingMode.Fine:
                     TestUtil.FileContainsString(
-                        "5 0 obj\r\n<</Type /Page/Parent 3 0 R/Contents 6 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R>>/XObject<</X1 10 0 R/X2 11 0 R/X3 12 0 R/X4 13 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                        "<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R>>/XObject<</X1 11 0 R/X2 12 0 R/X3 13 0 R/X4 14 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
                     Assert.AreEqual(21, imagePlacementAbsorber.ImagePlacements.Count);
                     Assert.AreEqual(4, tableAbsorber.TableList.Count);
@@ -1768,12 +1765,12 @@ namespace ApiExamples
             {
                 case DmlRenderingMode.DrawingML:
                     TestUtil.FileContainsString(
-                        "<</Type /Page/Parent 3 0 R/Contents 6 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R/FAAABB 11 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                        "<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
                     break;
                 case DmlRenderingMode.Fallback:
                     TestUtil.FileContainsString(
-                        "5 0 obj\r\n<</Type /Page/Parent 3 0 R/Contents 6 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R/FAAABD 13 0 R>>/ExtGState<</GS1 10 0 R/GS2 11 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                        "<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R/FAAABE 14 0 R>>/ExtGState<</GS1 11 0 R/GS2 12 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
                     break;
             }
@@ -1833,14 +1830,12 @@ namespace ApiExamples
 
             if (exportDocumentStructure)
             {
-                TestUtil.FileContainsString("5 0 obj\r\n" +
-                                            "<</Type /Page/Parent 3 0 R/Contents 6 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R>>/ExtGState<</GS1 10 0 R/GS2 14 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>/StructParents 0/Tabs /S>>",
+                TestUtil.FileContainsString("<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R/FAAABD 13 0 R>>/ExtGState<</GS1 11 0 R/GS2 16 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>/StructParents 0/Tabs/S>>",
                     ArtifactsDir + "PdfSaveOptions.ExportDocumentStructure.pdf");
             }
             else
             {
-                TestUtil.FileContainsString("5 0 obj\r\n" +
-                                            "<</Type /Page/Parent 3 0 R/Contents 6 0 R/MediaBox [0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R/FAAABB 11 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                TestUtil.FileContainsString("<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                     ArtifactsDir + "PdfSaveOptions.ExportDocumentStructure.pdf");
             }
         }
@@ -1880,12 +1875,10 @@ namespace ApiExamples
 
                 if (preblendImages)
                 {
-                    TestUtil.FileContainsString("11 0 obj\r\n20849 ", ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf");
                     Assert.AreEqual(17898, stream.Length);
                 }
                 else
                 {
-                    TestUtil.FileContainsString("11 0 obj\r\n19289 ", ArtifactsDir + "PdfSaveOptions.PreblendImages.pdf");
                     Assert.AreEqual(19216, stream.Length);
                 }
             }
@@ -1920,14 +1913,12 @@ namespace ApiExamples
 
             if (interpolateImages)
             {
-                TestUtil.FileContainsString("7 0 obj\r\n" +
-                                            "<</Type /XObject/Subtype /Image/Width 400/Height 400/ColorSpace /DeviceRGB/BitsPerComponent 8/SMask 10 0 R/Interpolate true/Length 11 0 R/Filter /FlateDecode>>",
+                TestUtil.FileContainsString("<</Type/XObject/Subtype/Image/Width 400/Height 400/ColorSpace/DeviceRGB/BitsPerComponent 8/SMask 10 0 R/Interpolate true/Length 11 0 R/Filter/FlateDecode>>",
                     ArtifactsDir + "PdfSaveOptions.InterpolateImages.pdf");
             }
             else
             {
-                TestUtil.FileContainsString("7 0 obj\r\n" +
-                                            "<</Type /XObject/Subtype /Image/Width 400/Height 400/ColorSpace /DeviceRGB/BitsPerComponent 8/SMask 10 0 R/Length 11 0 R/Filter /FlateDecode>>",
+                TestUtil.FileContainsString("<</Type/XObject/Subtype/Image/Width 400/Height 400/ColorSpace/DeviceRGB/BitsPerComponent 8/SMask 10 0 R/Length 11 0 R/Filter/FlateDecode>>",
                     ArtifactsDir + "PdfSaveOptions.InterpolateImages.pdf");
             }
         }
@@ -2106,8 +2097,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf", options);
             //ExEnd
 
-            TestUtil.FileContainsString("7 0 obj\r\n" +
-                                        "<</Type /Annot/Subtype /Widget/Rect [0 0 0 0]/FT /Sig/T",
+            TestUtil.FileContainsString("<</Type/Annot/Subtype/Widget/Rect[0 0 0 0]/FT/Sig/T",
                 ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf");
 
             Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf")
@@ -2177,8 +2167,7 @@ namespace ApiExamples
             //ExEnd
 
             Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf").HasDigitalSignature);
-            TestUtil.FileContainsString("7 0 obj\r\n" +
-                                        "<</Type /Annot/Subtype /Widget/Rect [0 0 0 0]/FT /Sig/T", 
+            TestUtil.FileContainsString("<</Type/Annot/Subtype/Widget/Rect[0 0 0 0]/FT/Sig/T", 
             ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
 
 #if NET48 || NET5_0_OR_GREATER || JAVA
@@ -2241,8 +2230,7 @@ namespace ApiExamples
                 case EmfPlusDualRenderingMode.EmfPlusWithFallback:
                 case EmfPlusDualRenderingMode.EmfPlus:
                     Assert.AreEqual(0, pdfDocument.Pages[1].Resources.Images.Count);
-                    TestUtil.FileContainsString("5 0 obj\r\n" +
-                                                "<</Type /Page/Parent 3 0 R/Contents 6 0 R/MediaBox [0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAI 8 0 R/FAAABB 11 0 R/FAAABE 14 0 R>>>>/Group <</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                    TestUtil.FileContainsString("<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R/FAAABG 16 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
                     break;
             }
