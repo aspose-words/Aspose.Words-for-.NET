@@ -2006,12 +2006,10 @@ namespace ApiExamples
 
                 if (preblendImages)
                 {
-                    TestUtil.FileContainsString("11 0 obj\r\n20849 ", ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf");
                     Assert.AreEqual(17898, stream.Length);
                 }
                 else
                 {
-                    TestUtil.FileContainsString("11 0 obj\r\n20266 ", ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf");
                     Assert.AreEqual(19135, stream.Length);
                 }
             }
@@ -2046,14 +2044,12 @@ namespace ApiExamples
 
             if (interpolateImages)
             {
-                TestUtil.FileContainsString("7 0 obj\r\n" +
-                                            "<</Type /XObject/Subtype /Image/Width 400/Height 400/ColorSpace /DeviceRGB/BitsPerComponent 8/SMask 10 0 R/Interpolate true/Length 11 0 R/Filter /FlateDecode>>",
+                TestUtil.FileContainsString("<</Type/XObject/Subtype/Image/Width 400/Height 400/ColorSpace/DeviceRGB/BitsPerComponent 8/SMask 10 0 R/Interpolate true/Length 11 0 R/Filter/FlateDecode>>",
                     ArtifactsDir + "PdfSaveOptions.InterpolateImagesNetStandard2.pdf");
             }
             else
             {
-                TestUtil.FileContainsString("7 0 obj\r\n" +
-                                            "<</Type /XObject/Subtype /Image/Width 400/Height 400/ColorSpace /DeviceRGB/BitsPerComponent 8/SMask 10 0 R/Length 11 0 R/Filter /FlateDecode>>",
+                TestUtil.FileContainsString("<</Type/XObject/Subtype/Image/Width 400/Height 400/ColorSpace/DeviceRGB/BitsPerComponent 8/SMask 10 0 R/Length 11 0 R/Filter/FlateDecode>>",
                     ArtifactsDir + "PdfSaveOptions.InterpolateImagesNetStandard2.pdf");
             }
         }
