@@ -160,8 +160,7 @@
     <PackageReference Include="Aspose.BarCode" Version="23.1.0" />
     <PackageReference Include="Aspose.Page" Version="23.4.0" />
     <PackageReference Include="Aspose.PDF" Version="23.5.0" />
-    <PackageReference Include="Aspose.Words" Version="23.6.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.6.0" />
+    <PackageReference Include="Aspose.Words" Version="23.7.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.2.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.1" />
@@ -174,6 +173,7 @@
     <PackageReference Include="System.Data.OleDb" Version="7.0.0" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.7.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,6 +10,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void EncryptDocumentWithPassword()
         {
             //ExStart:EncryptDocumentWithPassword
+            //GistDesc:Encrypt document using encryption algorithms in C#.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
