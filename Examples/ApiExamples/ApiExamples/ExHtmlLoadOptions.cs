@@ -16,6 +16,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Loading;
 using Aspose.Words.Markup;
+using Aspose.Words.Saving;
 using NUnit.Framework;
 
 namespace ApiExamples
@@ -120,6 +121,28 @@ namespace ApiExamples
             private readonly List<WarningInfo> mWarnings = new List<WarningInfo>();
         }
         //ExEnd
+
+        [Test]
+        public void LoadHtmlFixed()
+        {
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { SaveFormat = SaveFormat.HtmlFixed };
+
+            doc.Save(ArtifactsDir + "HtmlLoadOptions.Fixed.html", saveOptions);
+
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions();
+
+            ListDocumentWarnings warningCallback = new ListDocumentWarnings();
+            loadOptions.WarningCallback = warningCallback;
+
+            doc = new Document(ArtifactsDir + "HtmlLoadOptions.Fixed.html", loadOptions);
+            Assert.AreEqual(1, warningCallback.Warnings().Count);
+
+            Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[0].Source);
+            Assert.AreEqual(WarningType.MajorFormattingLoss, warningCallback.Warnings()[0].WarningType);
+            Assert.AreEqual("The document is fixed-page HTML. Its structure may not be loaded correctly.", warningCallback.Warnings()[0].Description);
+        }
 
         [Test]
         public void EncryptedHtml()

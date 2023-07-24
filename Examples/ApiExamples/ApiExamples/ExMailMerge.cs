@@ -1855,5 +1855,35 @@ namespace ApiExamples
 
             Assert.AreEqual(4, doc.FirstSection.Body.Paragraphs.Count);
         }
+
+        [Test]
+        public void MustacheTags()
+        {
+            //ExStart
+            //ExFor:MustacheTag.Text
+            //ExFor:MustacheTag.ReferenceOffset
+            //ExFor:MustacheTag.ReferenceRun
+            //ExFor:MailMergeRegionInfo.StartMustacheTag
+            //ExFor:MailMergeRegionInfo.EndMustacheTag
+            //ExSummary:Shows how to work with the mustache tags.
+            Document document = new Document(MyDir + "Mail merge mustache tags.docx");
+            document.MailMerge.UseNonMergeFields = true;
+
+            MailMergeRegionInfo hierarchy = document.MailMerge.GetRegionsHierarchy();
+
+            foreach (MustacheTag mustacheTag in hierarchy.MustacheTags)
+            {
+                Console.WriteLine(mustacheTag.Text);
+                Console.WriteLine(mustacheTag.ReferenceOffset);
+                Console.WriteLine(mustacheTag.ReferenceRun);
+            }
+
+            foreach (MailMergeRegionInfo region in hierarchy.Regions)
+            {
+                Console.WriteLine(region.StartMustacheTag.Text);
+                Console.WriteLine(region.EndMustacheTag.Text);
+            }
+            //ExEnd
+        }
     }
 }

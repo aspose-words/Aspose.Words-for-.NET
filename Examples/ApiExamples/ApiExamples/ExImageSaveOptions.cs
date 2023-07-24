@@ -707,5 +707,26 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageSaveOptions.RenderInkObject.jpeg", saveOptions);
             //ExEnd
         }
+
+        [Test]
+        public void ConversionDocumentToEps()
+        {
+            Document doc = new Document(MyDir + "Images.docx");
+
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Eps);
+            saveOptions.PageSet = new PageSet(2);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.ConversionDocumentToEps.eps", saveOptions);
+        }
+
+        [Test]
+        public void ConversionShapeToEps()
+        {
+            Document doc = new Document(MyDir + "Shape shadow effect.docx");
+
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Eps);
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            ShapeRenderer renderer = shape.GetShapeRenderer();
+            renderer.Save(ArtifactsDir + "ImageSaveOptions.ConversionShapeToEps.eps", saveOptions);
+        }
     }
 }

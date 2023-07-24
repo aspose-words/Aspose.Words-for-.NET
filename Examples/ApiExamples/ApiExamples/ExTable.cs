@@ -1673,5 +1673,28 @@ namespace ApiExamples
             Assert.AreEqual(CellMerge.None, row.Cells[6].CellFormat.HorizontalMerge);
             //ExEnd
         }
+
+        [Test]
+        public void GetTextFromCells()
+        {
+            //ExStart
+            //ExFor:Row.NextRow
+            //ExFor:Row.PreviousRow
+            //ExFor:Cell.NextCell
+            //ExFor:Cell.PreviousCell
+            //ExSummary:Shows how to enumerate through all table cells.
+            Document doc = new Document(MyDir + "Tables.docx");
+            Table table = doc.FirstSection.Body.Tables[0];
+
+            // Enumerate through all cells of the table.
+            for (Row row = table.FirstRow; row != null; row = row.NextRow)
+            {
+                for (Cell cell = row.FirstCell; cell != null; cell = cell.NextCell)
+                {
+                    Console.WriteLine(cell.GetText());
+                }
+            }
+            //ExEnd
+        }
     }
 }
