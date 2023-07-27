@@ -15,7 +15,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Complex_examples_and_helpers
         {
             Document doc = new Document(MyDir + "Document.docx");
             //ExStart:OpenDatabaseConnection 
-            string connString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.accdb";
             
             OleDbConnection connection = new OleDbConnection(connString);
             connection.Open();

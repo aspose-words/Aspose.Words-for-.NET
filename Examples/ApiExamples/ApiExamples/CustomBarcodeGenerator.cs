@@ -13,6 +13,7 @@ using Aspose.Words.Fields;
 using BarcodeParameters = Aspose.Words.Fields.BarcodeParameters;
 #if NET5_0_OR_GREATER || __MOBILE__
 using Image = SkiaSharp.SKBitmap;
+using Color = Aspose.Drawing.Color;
 #endif
 
 namespace ApiExamples

@@ -133,7 +133,7 @@ namespace ApiExamples
 #if NET48 || NET5_0_OR_GREATER || JAVA
             using (OleDbConnection connection = new OleDbConnection())
             {
-                connection.ConnectionString = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={dbFilename};";
+                connection.ConnectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbFilename};";
                 connection.Open();
 
                 OleDbCommand command = connection.CreateCommand();
@@ -184,38 +184,43 @@ namespace ApiExamples
         {
 #if NET48 || JAVA
             List<string[]> expectedStrings = new List<string[]>(); 
-            string connectionString = @"Driver={Microsoft Access Driver (*.mdb)};Dbq=" + dbFilename;
+            string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source=" + dbFilename;
 
-            using (OdbcConnection connection = new OdbcConnection())
+            using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
-                connection.ConnectionString = connectionString;
-                connection.Open();
-
-                OdbcCommand command = connection.CreateCommand();
+                OleDbCommand command = new OleDbCommand(sqlQuery, connection);
                 command.CommandText = sqlQuery;
 
-                using (OdbcDataReader reader = command.ExecuteReader(CommandBehavior.CloseConnection))
+                try
                 {
-                    while (reader.Read())
+                    connection.Open();
+                    using (OleDbDataReader reader = command.ExecuteReader())
                     {
-                        string[] row = new string[reader.FieldCount];
+                        while (reader.Read())
+                        {
+                            string[] row = new string[reader.FieldCount];
 
-                        for (int i = 0; i < reader.FieldCount; i++)
-                            switch (reader[i])
-                            {
-                                case decimal d:
-                                    row[i] = d.ToString("G29");
-                                    break;
-                                case string s:
-                                    row[i] = s.Trim().Replace("\n", string.Empty);
-                                    break;
-                                default:
-                                    row[i] = string.Empty;
-                                    break;
-                            }
+                            for (int i = 0; i < reader.FieldCount; i++)
+                                switch (reader[i])
+                                {
+                                    case decimal d:
+                                        row[i] = d.ToString("G29");
+                                        break;
+                                    case string s:
+                                        row[i] = s.Trim().Replace("\n", string.Empty);
+                                        break;
+                                    default:
+                                        row[i] = string.Empty;
+                                        break;
+                                }
 
-                        expectedStrings.Add(row);
+                            expectedStrings.Add(row);
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
             }
 

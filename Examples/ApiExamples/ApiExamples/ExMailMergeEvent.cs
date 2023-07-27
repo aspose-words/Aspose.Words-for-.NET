@@ -363,7 +363,7 @@ namespace ApiExamples
 
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
 
-            string connString = $"Provider=Microsoft.Jet.OLEDB.4.0;Data Source={DatabaseDir + "Northwind.mdb"};";
+            string connString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={DatabaseDir + "Northwind.accdb"};";
             string query = "SELECT FirstName, LastName, Title, Address, City, Region, Country, PhotoBLOB FROM Employees";
 
             using (OleDbConnection conn = new OleDbConnection(connString))
@@ -378,7 +378,7 @@ namespace ApiExamples
             }
 
             doc.Save(ArtifactsDir + "MailMergeEvent.ImageFromBlob.docx");
-            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.mdb", query, new Document(ArtifactsDir + "MailMergeEvent.ImageFromBlob.docx"), false); //ExSkip
+            TestUtil.MailMergeMatchesQueryResult(DatabaseDir + "Northwind.accdb", query, new Document(ArtifactsDir + "MailMergeEvent.ImageFromBlob.docx"), false); //ExSkip
         }
 
         private class HandleMergeImageFieldFromBlob : IFieldMergingCallback

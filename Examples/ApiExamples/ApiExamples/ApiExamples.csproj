@@ -2,40 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net48;net6.0</TargetFrameworks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.1|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net462|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
-    <Optimize>false</Optimize>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net462|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <Optimize>false</Optimize>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|AnyCPU'">
-    <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.1|x86'">
-    <PlatformTarget>x86</PlatformTarget>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -152,28 +119,25 @@
     <Content Include="ExSmartTag.cs" />
     <Content Include="ExVbaProject.cs" />
     <Content Include="ExWordML2003SaveOptions.cs" />
-    <Content Include="ExXlsxSaveOptions.cs" />
-    <Content Include="ExLowCode.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="23.1.0" />
-    <PackageReference Include="Aspose.Page" Version="23.4.0" />
-    <PackageReference Include="Aspose.PDF" Version="23.5.0" />
+    <PackageReference Include="Aspose.BarCode" Version="23.7.0" />
+    <PackageReference Include="Aspose.Page" Version="23.7.0" />
+    <PackageReference Include="Aspose.PDF" Version="23.7.0" />
     <PackageReference Include="Aspose.Words" Version="23.7.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.7.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.2.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.1" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Data.Odbc" Version="7.0.0" />
     <PackageReference Include="System.Data.OleDb" Version="7.0.0" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.7.0" />
   </ItemGroup>
 
   <ItemGroup>
