@@ -132,13 +132,28 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlSaveOptions.EpubNavigationMapLevel
-            //ExSummary:Shows how to generate table of contents for azw3 documents.
+            //ExSummary:Shows how to generate table of contents for Azw3 documents.
             Document doc = new Document(MyDir + "Big document.docx");
 
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Azw3);
-            options.EpubNavigationMapLevel = 2;
+            options.NavigationMapLevel = 2;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.CreateAZW3Toc.azw3", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void CreateMobiToc()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.EpubNavigationMapLevel
+            //ExSummary:Shows how to generate table of contents for Mobi documents.
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mobi);
+            options.NavigationMapLevel = 5;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.CreateMobiToc.mobi", options);
             //ExEnd
         }
 
@@ -847,7 +862,7 @@ namespace ApiExamples
             // We can use the "EpubNavigationMapLevel" property to set a maximum heading level. 
             // The Epub reader will not add headings with a level above the one we specify to the contents table.
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Epub);
-            options.EpubNavigationMapLevel = 2;
+            options.NavigationMapLevel = 2;
 
             // Our document has six headings, two of which are above level 2.
             // The table of contents for this document will have four entries.

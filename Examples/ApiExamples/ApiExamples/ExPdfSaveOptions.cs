@@ -2237,7 +2237,7 @@ namespace ApiExamples
         public void EncryptionPermissions()
         {
             //ExStart
-            //ExFor:PdfEncryptionDetails.#ctor
+            //ExFor:PdfEncryptionDetails.#ctor(String,String,PdfPermissions)
             //ExFor:PdfSaveOptions.EncryptionDetails
             //ExFor:PdfEncryptionDetails.Permissions
             //ExFor:PdfEncryptionDetails.OwnerPassword
@@ -2250,19 +2250,13 @@ namespace ApiExamples
 
             builder.Writeln("Hello world!");
 
-            PdfEncryptionDetails encryptionDetails =
-                new PdfEncryptionDetails("password", string.Empty);
-
-            // Start by disallowing all permissions.
-            encryptionDetails.Permissions = PdfPermissions.DisallowAll;
-
             // Extend permissions to allow the editing of annotations.
-            encryptionDetails.Permissions = PdfPermissions.ModifyAnnotations | PdfPermissions.DocumentAssembly;
+            PdfEncryptionDetails encryptionDetails =
+                new PdfEncryptionDetails("password", string.Empty, PdfPermissions.ModifyAnnotations | PdfPermissions.DocumentAssembly);
 
             // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-
             // Enable encryption via the "EncryptionDetails" property.
             saveOptions.EncryptionDetails = encryptionDetails;
 

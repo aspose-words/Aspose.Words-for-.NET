@@ -34,7 +34,7 @@ using Shape = Aspose.Words.Drawing.Shape;
 
 namespace ApiExamples
 {
-    class TestUtil : ApiExampleBase
+    internal class TestUtil : ApiExampleBase
     {
         /// <summary>
         /// Checks whether a file at a specified filename contains a valid image with specified dimensions.

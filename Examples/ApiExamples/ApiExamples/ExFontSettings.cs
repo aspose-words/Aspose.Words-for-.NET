@@ -22,7 +22,7 @@ using NUnit.Framework;
 namespace ApiExamples
 {
     [TestFixture]
-    class ExFontSettings : ApiExampleBase
+    public class ExFontSettings : ApiExampleBase
     {
         [Test]
         public void DefaultFontInstance()
@@ -173,7 +173,7 @@ namespace ApiExamples
             Assert.True(callback.FontSubstitutionWarnings[0].WarningType == WarningType.FontSubstitution);
             Assert.True(callback.FontSubstitutionWarnings[0].Description
                 .Equals(
-                    "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
+                    "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font.", StringComparison.Ordinal));
         }
 
         private class FontSubstitutionWarningCollector : IWarningCallback
@@ -306,7 +306,7 @@ namespace ApiExamples
 
             Assert.True(callback.FontWarnings[0].Description
                 .Equals(
-                    "Font \'SymbolPS\' has not been found. Using \'Wingdings\' font instead. Reason: font info substitution."));
+                    "Font \'SymbolPS\' has not been found. Using \'Wingdings\' font instead. Reason: font info substitution.", StringComparison.Ordinal));
         }
 
         [Test]

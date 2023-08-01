@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -2419,8 +2419,7 @@ namespace ApiExamples
             Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
         }
 
-        [Test]
-        [Ignore("WORDSNET-13854")]
+        [Test]        
         public void FieldCitation()
         {
             //ExStart
@@ -2478,9 +2477,9 @@ namespace ApiExamples
             // We can use a BIBLIOGRAPHY field to display all the sources within the document.
             builder.InsertBreak(BreakType.PageBreak);
             FieldBibliography fieldBibliography = (FieldBibliography)builder.InsertField(FieldType.FieldBibliography, true);
-            fieldBibliography.FormatLanguageId = "1124";
+            fieldBibliography.FormatLanguageId = "5129";
 
-            Assert.AreEqual(" BIBLIOGRAPHY  \\l 1124", fieldBibliography.GetFieldCode());
+            Assert.AreEqual(" BIBLIOGRAPHY  \\l 5129", fieldBibliography.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.CITATION.docx");
@@ -2492,7 +2491,7 @@ namespace ApiExamples
 
             fieldCitation = (FieldCitation)doc.Range.Fields[0];
 
-            TestUtil.VerifyField(FieldType.FieldCitation, " CITATION  Book1 \\p 85 \\t \\y", " (Doe, p. 85)", fieldCitation);
+            TestUtil.VerifyField(FieldType.FieldCitation, " CITATION  Book1 \\p 85 \\t \\y", "(Doe, p. 85)", fieldCitation);
             Assert.AreEqual("Book1", fieldCitation.SourceTag);
             Assert.AreEqual("85", fieldCitation.PageNumber);
             Assert.False(fieldCitation.SuppressAuthor);
@@ -2503,7 +2502,7 @@ namespace ApiExamples
 
             TestUtil.VerifyField(FieldType.FieldCitation, 
                 " CITATION  Book1 \\m Book2 \\l en-US \\p 19 \\f \"Prefix \" \\s \" Suffix\" \\v VII", 
-                " (Doe, 2018; Prefix Cardholder, 2018, VII:19 Suffix)", fieldCitation);
+                "(Doe, 2018; Prefix Cardholder, 2018, VII:19 Suffix)", fieldCitation);
             Assert.AreEqual("Book1", fieldCitation.SourceTag);
             Assert.AreEqual("Book2", fieldCitation.AnotherSourceTag);
             Assert.AreEqual("en-US", fieldCitation.FormatLanguageId);
@@ -2517,13 +2516,13 @@ namespace ApiExamples
 
             fieldBibliography = (FieldBibliography)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldBibliography, " BIBLIOGRAPHY  \\l 1124",
+            TestUtil.VerifyField(FieldType.FieldBibliography, " BIBLIOGRAPHY  \\l 5129",
                 "Cardholder, A. (2018). My Book, Vol. II. New York: Doe Co. Ltd.\rDoe, J. (2018). My Book, Vol I. London: Doe Co. Ltd.\r", fieldBibliography);
-            Assert.AreEqual("1124", fieldBibliography.FormatLanguageId);
+            Assert.AreEqual("5129", fieldBibliography.FormatLanguageId);
 
             fieldCitation = (FieldCitation)doc.Range.Fields[3];
 
-            TestUtil.VerifyField(FieldType.FieldCitation, " CITATION Book1 \\l 1033 ", "(Doe, 2018)", fieldCitation);
+            TestUtil.VerifyField(FieldType.FieldCitation, " CITATION Book1 \\l 1033 ", " (Doe, 2018)", fieldCitation);
             Assert.AreEqual("Book1", fieldCitation.SourceTag);
             Assert.AreEqual("1033", fieldCitation.FormatLanguageId);
 
@@ -2532,6 +2531,30 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldBibliography, " BIBLIOGRAPHY ", 
                 "Cardholder, A. (2018). My Book, Vol. II. New York: Doe Co. Ltd.\rDoe, J. (2018). My Book, Vol I. London: Doe Co. Ltd.\r", fieldBibliography);
         }
+
+        //ExStart
+        //ExFor:IBibliographyStylesProvider
+        //ExFor:FieldOptions.BibliographyStylesProvider
+        //ExSummary:Shows how to override built-in styles or provide custom one.
+        [Test] //ExSkip
+        public void ChangeBibliographyStyles()
+        {            
+            Document doc = new Document(MyDir + "Bibliography.docx");
+
+            doc.FieldOptions.BibliographyStylesProvider = new BibliographyStylesProvider();
+            doc.UpdateFields();
+
+            doc.Save(ArtifactsDir + "Field.ChangeBibliographyStyles.docx");
+        }
+        
+        public class BibliographyStylesProvider : IBibliographyStylesProvider
+        {
+            Stream IBibliographyStylesProvider.GetStyle(string styleFileName)
+            {
+                return File.OpenRead(MyDir + "Bibliography custom style.xsl");
+            }
+        }
+        //ExEnd
 
         [Test]
         public void FieldData()
@@ -6122,8 +6145,7 @@ namespace ApiExamples
             FieldRef field = (FieldRef)doc.Range.Fields[0];
 
             TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\f \\h", 
-                "\u0002 MyBookmark footnote #1\r" +
-                "Text that will appear in REF field\u0002 MyBookmark footnote #2\r", field);
+                "Text that will appear in REF field", field);
             Assert.AreEqual("MyBookmark", field.BookmarkName);
             Assert.True(field.IncludeNoteOrComment);
             Assert.True(field.InsertHyperlink);

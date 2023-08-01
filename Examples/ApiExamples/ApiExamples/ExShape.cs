@@ -1309,7 +1309,7 @@ namespace ApiExamples
             Assert.True(sourceFullName.Contains("Examples\\Data\\Spreadsheet.xlsx"));
 
             sourceFullName = "D:\\Documents\\ChartData.xlsx";
-            Assert.True(sourceFullName.Equals("D:\\Documents\\ChartData.xlsx"));
+            Assert.True(sourceFullName.Equals("D:\\Documents\\ChartData.xlsx", StringComparison.Ordinal));
             //ExEnd
         }
 

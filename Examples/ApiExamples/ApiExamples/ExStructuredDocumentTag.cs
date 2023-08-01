@@ -876,9 +876,6 @@ namespace ApiExamples
         [Test]
         public void UpdateSdtContent()
         {
-            //ExStart
-            //ExFor:SaveOptions.UpdateSdtContent
-            //ExSummary:Shows how to update structured document tags while saving a document to PDF.
             Document doc = new Document();
 
             // Insert a drop-down list structured document tag.
@@ -895,7 +892,6 @@ namespace ApiExamples
             doc.FirstSection.Body.AppendChild(tag);
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf");
-            //ExEnd
 
 #if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf");

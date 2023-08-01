@@ -11,6 +11,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web.UI;
 using ApiExamples.TestData;
 using ApiExamples.TestData.TestBuilders;
@@ -1068,6 +1069,34 @@ namespace ApiExamples
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataWithNestedElements.docx",
                 GoldsDir + "ReportingEngine.DataSourceWithNestedElements Gold.docx"));
+        }
+
+        [Test]
+        public void JsonDataPreserveSpaces()
+        {
+            const string template = "LINE BEFORE\r<<[LineWhitespace]>>\r<<[BlockWhitespace]>>LINE AFTER";
+            const string expectedResult = "LINE BEFORE\r    \r\r\r\r\rLINE AFTER";
+            const string json =
+                "{" +
+                "    \"LineWhitespace\" : \"    \"," +
+                "    \"BlockWhitespace\" : \"\r\n\r\n\r\n\r\n\"" +
+                "}";
+
+            using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(json)))
+            {
+                JsonDataLoadOptions options = new JsonDataLoadOptions();
+                options.PreserveSpaces = true;
+                options.SimpleValueParseMode = JsonSimpleValueParseMode.Strict;
+
+                JsonDataSource dataSource = new JsonDataSource(stream, options);
+
+                DocumentBuilder builder = new DocumentBuilder();
+                builder.Write(template);
+
+                BuildReport(builder.Document, dataSource, "ds");                
+
+                Assert.AreEqual(expectedResult + ControlChar.SectionBreak, builder.Document.GetText());
+            }
         }
 
         [Test]
