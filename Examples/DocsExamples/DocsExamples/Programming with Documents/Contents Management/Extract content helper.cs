@@ -227,7 +227,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             {
                 Node currentNode = nodeBranch[i];
                 int nodeIndex = currentNode.ParentNode.IndexOf(currentNode);
-                currentCloneNode = ((CompositeNode) currentCloneNode).ChildNodes[nodeIndex];
+                currentCloneNode = ((CompositeNode) currentCloneNode).GetChildNodes(NodeType.Any, false)[nodeIndex];
 
                 RemoveNodesOutsideOfRange(currentCloneNode, isInclusive || (i > 0), isStartMarker);
             }

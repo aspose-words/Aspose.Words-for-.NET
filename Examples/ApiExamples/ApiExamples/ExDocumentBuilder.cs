@@ -744,7 +744,7 @@ namespace ApiExamples
             builder.Write("Bookmark contents.");
             builder.EndBookmark("MyBookmark");
 
-            NodeCollection firstParagraphNodes = doc.FirstSection.Body.FirstParagraph.ChildNodes;
+            NodeCollection firstParagraphNodes = doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Any, false);
 
             Assert.AreEqual(NodeType.BookmarkStart, firstParagraphNodes[0].NodeType);
             Assert.AreEqual(NodeType.Run, firstParagraphNodes[1].NodeType);
@@ -3635,12 +3635,20 @@ namespace ApiExamples
         [Test]
         public void PhoneticGuide()
         {
-            DocumentBuilder builder = new DocumentBuilder();
-            builder.Write("Lorem ipsum.");
+            //ExStart
+            //ExFor:Run.IsPhoneticGuide
+            //ExFor:Run.PhoneticGuide
+            //ExFor:PhoneticGuide.BaseText
+            //ExFor:PhoneticGuide.RubyText
+            //ExSummary:Shows how to get properties of the phonetic guide.
+            Document doc = new Document(MyDir + "Phonetic guide.docx");            
 
-            RunCollection runs = builder.Document.FirstSection.Body.FirstParagraph.Runs;
+            RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
             // Use phonetic guide in the Asian text.
-            Assert.AreEqual(false, runs[0].IsPhoneticGuide);
+            Assert.AreEqual(true, runs[0].IsPhoneticGuide);
+            Assert.AreEqual("base", runs[0].PhoneticGuide.BaseText);
+            Assert.AreEqual("ruby", runs[0].PhoneticGuide.RubyText);
+            //ExEnd
         }
     }
 }

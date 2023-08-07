@@ -65,7 +65,7 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document();
             Paragraph paragraph = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
-            NodeCollection children = paragraph.ChildNodes;
+            NodeCollection children = paragraph.GetChildNodes(NodeType.Any, false);
             foreach (Node child in children)
             {
                 // A paragraph may contain children of various types such as runs, shapes, and others.

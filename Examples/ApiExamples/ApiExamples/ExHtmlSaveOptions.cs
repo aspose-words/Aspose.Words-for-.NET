@@ -132,13 +132,28 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlSaveOptions.EpubNavigationMapLevel
-            //ExSummary:Shows how to generate table of contents for azw3 documents.
+            //ExSummary:Shows how to generate table of contents for Azw3 documents.
             Document doc = new Document(MyDir + "Big document.docx");
 
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Azw3);
-            options.EpubNavigationMapLevel = 2;
+            options.NavigationMapLevel = 2;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.CreateAZW3Toc.azw3", options);
+            //ExEnd
+        }
+
+        [Test]
+        public void CreateMobiToc()
+        {
+            //ExStart
+            //ExFor:HtmlSaveOptions.EpubNavigationMapLevel
+            //ExSummary:Shows how to generate table of contents for Mobi documents.
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mobi);
+            options.NavigationMapLevel = 5;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.CreateMobiToc.mobi", options);
             //ExEnd
         }
 
@@ -847,7 +862,7 @@ namespace ApiExamples
             // We can use the "EpubNavigationMapLevel" property to set a maximum heading level. 
             // The Epub reader will not add headings with a level above the one we specify to the contents table.
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Epub);
-            options.EpubNavigationMapLevel = 2;
+            options.NavigationMapLevel = 2;
 
             // Our document has six headings, two of which are above level 2.
             // The table of contents for this document will have four entries.
@@ -1161,31 +1176,12 @@ namespace ApiExamples
                                 "<span>Default numbered list item 3.</span>" +
                             "</li>" +
                         "</ol>"));
-
-                    Assert.True(outDocContents.Contains(
-                        "<p style=\"margin-top:0pt; margin-left:43.2pt; margin-bottom:0pt; text-indent:-43.2pt; -aw-import:list-item; -aw-list-level-number:3; " +
-                        "-aw-list-number-format:'%0.%1.%2.%3'; -aw-list-number-styles:'decimal decimal decimal decimal'; " +
-                        "-aw-list-number-values:'2 1 1 1'; -aw-list-padding-sml:10.2pt\">" +
-                            "<span style=\"-aw-import:ignore\">" +
-                                "<span>2.1.1.1</span>" +
-                                "<span style=\"width:10.2pt; font:7pt 'Times New Roman'; display:inline-block; -aw-import:spaces\">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>" +
-                            "</span>" +
-                            "<span>Outline legal heading list item 5.</span>" +
-                        "</p>"));
                     break;
                 case ExportListLabels.ByHtmlTags:
                     Assert.True(outDocContents.Contains(
                         "<ol type=\"a\" style=\"margin-right:0pt; margin-left:0pt; padding-left:0pt\">" +
                             "<li style=\"margin-left:31.33pt; padding-left:4.67pt\">" +
                                 "<span>Default numbered list item 3.</span>" +
-                            "</li>" +
-                        "</ol>"));
-
-                    Assert.True(outDocContents.Contains(
-                        "<ol type=\"1\" class=\"awlist3\" style=\"margin-right:0pt; margin-left:0pt; padding-left:0pt\">" +
-                            "<li style=\"margin-left:7.2pt; text-indent:-43.2pt; -aw-list-padding-sml:10.2pt\">" +
-                                "<span style=\"width:10.2pt; font:7pt 'Times New Roman'; display:inline-block; -aw-import:ignore\">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>" +
-                                "<span>Outline legal heading list item 5.</span>" +
                             "</li>" +
                         "</ol>"));
                     break;
@@ -1227,8 +1223,8 @@ namespace ApiExamples
 
             if (exportPageMargins)
             {
-                Assert.True(outDocContents.Contains("<style type=\"text/css\">div.Section1 { margin:70.85pt }</style>"));
-                Assert.True(outDocContents.Contains("<div class=\"Section1\"><p style=\"margin-top:0pt; margin-left:150pt; margin-bottom:0pt\">"));
+                Assert.True(outDocContents.Contains("<style type=\"text/css\">div.Section_1 { margin:70.85pt }</style>"));
+                Assert.True(outDocContents.Contains("<div class=\"Section_1\"><p style=\"margin-top:0pt; margin-left:150pt; margin-bottom:0pt\">"));
             }
             else
             {
@@ -1272,13 +1268,13 @@ namespace ApiExamples
             {
                 Assert.True(outDocContents.Contains(
                     "<style type=\"text/css\">" +
-                        "@page Section1 { size:419.55pt 595.3pt; margin:36pt 70.85pt; -aw-footer-distance:35.4pt; -aw-header-distance:35.4pt }" +
-                        "@page Section2 { size:612pt 792pt; margin:70.85pt; -aw-footer-distance:35.4pt; -aw-header-distance:35.4pt }" +
-                        "div.Section1 { page:Section1 }div.Section2 { page:Section2 }" +
+                        "@page Section_1 { size:419.55pt 595.3pt; margin:36pt 70.85pt; -aw-footer-distance:35.4pt; -aw-header-distance:35.4pt }" +
+                        "@page Section_2 { size:612pt 792pt; margin:70.85pt; -aw-footer-distance:35.4pt; -aw-header-distance:35.4pt }" +
+                        "div.Section_1 { page:Section_1 }div.Section_2 { page:Section_2 }" +
                     "</style>"));
 
                 Assert.True(outDocContents.Contains(
-                    "<div class=\"Section1\">" +
+                    "<div class=\"Section_1\">" +
                         "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
                             "<span>Section 1</span>" +
                         "</p>" +

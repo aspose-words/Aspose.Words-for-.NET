@@ -219,7 +219,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
 
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
 
-            string connString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.accdb";
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();
 

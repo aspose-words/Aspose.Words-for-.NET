@@ -112,7 +112,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             run.Text = "Hello World";
             run.Font.Color = Color.Green;
             para.Runs.Add(run);
-            sdtRichText.ChildNodes.Add(para);
+            sdtRichText.GetChildNodes(NodeType.Any, false).Add(para);
             doc.FirstSection.Body.AppendChild(sdtRichText);
 
             doc.Save(ArtifactsDir + "WorkingWithSdt.RichTextBoxContentControl.docx");

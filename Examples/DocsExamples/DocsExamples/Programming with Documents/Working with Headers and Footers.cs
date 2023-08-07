@@ -1,4 +1,4 @@
-﻿using Aspose.Words;
+using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
@@ -12,6 +12,7 @@ namespace DocsExamples.Programming_with_Documents
         {
             //ExStart:CreateHeaderFooterUsingDocBuilder
             //ExStart:DifferentFirstPageHeaderFooter
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

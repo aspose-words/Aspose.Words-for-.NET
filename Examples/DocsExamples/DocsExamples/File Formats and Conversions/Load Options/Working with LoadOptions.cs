@@ -26,13 +26,26 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         [Test]
         public void LoadEncryptedDocument()
         {
-            //ExStart:LoadSaveEncryptedDoc
+            //ExStart:LoadSaveEncryptedDocument
+            //GistDesc:Encrypt document using encryption algorithms in C#.
             //ExStart:OpenEncryptedDocument
             Document doc = new Document(MyDir + "Encrypted.docx", new LoadOptions("docPassword"));
             //ExEnd:OpenEncryptedDocument
 
-            doc.Save(ArtifactsDir + "WorkingWithLoadOptions.LoadAndSaveEncryptedOdt.odt", new OdtSaveOptions("newPassword"));
-            //ExEnd:LoadSaveEncryptedDoc
+            doc.Save(ArtifactsDir + "WorkingWithLoadOptions.LoadSaveEncryptedDocument.odt", new OdtSaveOptions("newPassword"));
+            //ExEnd:LoadSaveEncryptedDocument
+        }
+
+        [Test]
+        public void LoadEncryptedDocumentWithoutPassword()
+        {
+            //ExStart:LoadEncryptedDocumentWithoutPassword
+            //GistDesc:Encrypt document using encryption algorithms in C#.
+            // We will not be able to open this document with Microsoft Word or
+            // Aspose.Words without providing the correct password.
+            Assert.Throws<IncorrectPasswordException>(() =>
+                new Document(MyDir + "Encrypted.docx"));
+            //ExEnd:LoadEncryptedDocumentWithoutPassword
         }
 
         [Test]
@@ -154,9 +167,10 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         public void LoadWithEncoding()
         {
             //ExStart:LoadWithEncoding
-            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.UTF7 };
+            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.ASCII };
 
-            Document doc = new Document(MyDir + "Encoded in UTF-7.txt", loadOptions);
+            // Load the document while passing the LoadOptions object, then verify the document's contents.
+            Document doc = new Document(MyDir + "English text.txt", loadOptions);
             //ExEnd:LoadWithEncoding
         }
 

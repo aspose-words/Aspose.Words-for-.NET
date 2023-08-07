@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.Words" Version="23.5.0" />
+    <PackageReference Include="Aspose.Words" Version="23.8.0" />
   </ItemGroup>
 
 </Project>

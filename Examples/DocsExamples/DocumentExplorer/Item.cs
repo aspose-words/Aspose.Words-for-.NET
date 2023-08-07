@@ -79,7 +79,7 @@ namespace DocumentExplorer
                     mTreeNode.ImageIndex = index;
                     mTreeNode.SelectedImageIndex = index;
                     mTreeNode.Tag = this;
-                    if (mNode is CompositeNode && ((CompositeNode)mNode).ChildNodes.Count > 0)
+                    if (mNode is CompositeNode && ((CompositeNode)mNode).GetChildNodes(NodeType.Any, false).Count > 0)
                     {
                         mTreeNode.Nodes.Add("#dummy");
                     }
@@ -112,7 +112,7 @@ namespace DocumentExplorer
             if (TreeNode.Nodes[0].Text.Equals("#dummy"))
             {
                 TreeNode.Nodes.Clear();
-                foreach (Node n in ((CompositeNode)mNode).ChildNodes)
+                foreach (Node n in ((CompositeNode)mNode).GetChildNodes(NodeType.Any, false))
                 {
                     TreeNode.Nodes.Add(CreateItem(n).TreeNode);
                 }

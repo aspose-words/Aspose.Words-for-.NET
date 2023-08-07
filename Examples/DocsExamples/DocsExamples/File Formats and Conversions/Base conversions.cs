@@ -6,6 +6,8 @@ using Aspose.Email;
 using Aspose.Email.Clients.Smtp;
 using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Replacing;
+using Aspose.Words.Saving;
 using NUnit.Framework;
 
 namespace DocsExamples.File_Formats_and_Conversions
@@ -163,6 +165,47 @@ namespace DocsExamples.File_Formats_and_Conversions
 
             doc.Save(ArtifactsDir + "BaseConversions.PdfToDocx.docx");
             //ExEnd:PdfToDocx
+        }
+
+        [Test]
+        public void PdfToXlsx()
+        {
+            //ExStart:PdfToXlsx
+            Document doc = new Document(MyDir + "Pdf Document.pdf");
+
+            doc.Save(ArtifactsDir + "BaseConversions.PdfToXlsx.xlsx");
+            //ExEnd:PdfToXlsx
+        }
+
+        [Test]
+        public void FindReplaceXlsx()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Ruby bought a ruby necklace.");
+
+            // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
+            FindReplaceOptions options = new FindReplaceOptions();
+
+            // Set the "MatchCase" flag to "true" to apply case sensitivity while finding strings to replace.
+            // Set the "MatchCase" flag to "false" to ignore character case while searching for text to replace.
+            options.MatchCase = true;
+
+            doc.Range.Replace("Ruby", "Jade", options);
+
+            doc.Save(ArtifactsDir + "BaseConversions.FindReplaceXlsx.xlsx");
+        }
+
+        [Test]
+        public void CompressXlsx()
+        {
+            Document doc = new Document(MyDir + "Document.docx");
+
+            XlsxSaveOptions saveOptions = new XlsxSaveOptions();
+            saveOptions.CompressionLevel = CompressionLevel.Maximum;
+
+            doc.Save(ArtifactsDir + "BaseConversions.CompressXlsx.xlsx", saveOptions);
         }
 
 #if NET48

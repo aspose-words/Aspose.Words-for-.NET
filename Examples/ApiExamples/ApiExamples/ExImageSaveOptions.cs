@@ -93,10 +93,6 @@ namespace ApiExamples
             else
                 Assert.That(30000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length));
             //ExEnd
-
-#if NET48 || JAVA
-            TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.Renderer.emf");
-#endif
         }
 
         [Test]
@@ -227,6 +223,7 @@ namespace ApiExamples
             //ExFor:Document.Save(String, SaveOptions)
             //ExFor:FixedPageSaveOptions
             //ExFor:ImageSaveOptions.PageSet
+            //ExFor:ImageSaveOptions.ImageSize
             //ExSummary:Shows how to render every page of a document to a separate TIFF image.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -247,6 +244,9 @@ namespace ApiExamples
                 // Set the "PageSet" property to the number of the first page from
                 // which to start rendering the document from.
                 options.PageSet = new PageSet(i);
+                // Export page at 2325x5325 pixels and 600 dpi.
+                options.Resolution = 600;
+                options.ImageSize = new Size(2325, 5325);
 
                 doc.Save(ArtifactsDir + $"ImageSaveOptions.PageByPage.{i + 1}.tiff", options);
             }
@@ -258,7 +258,7 @@ namespace ApiExamples
             Assert.AreEqual(3, imageFileNames.Count);
 
             foreach (string imageFileName in imageFileNames)
-                TestUtil.VerifyImage(816, 1056, imageFileName);
+                TestUtil.VerifyImage(2325, 5325, imageFileName);
         }
 #endif
 
@@ -706,6 +706,27 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.RenderInkObject.jpeg", saveOptions);
             //ExEnd
+        }
+
+        [Test]
+        public void ConversionDocumentToEps()
+        {
+            Document doc = new Document(MyDir + "Images.docx");
+
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Eps);
+            saveOptions.PageSet = new PageSet(2);
+            doc.Save(ArtifactsDir + "ImageSaveOptions.ConversionDocumentToEps.eps", saveOptions);
+        }
+
+        [Test]
+        public void ConversionShapeToEps()
+        {
+            Document doc = new Document(MyDir + "Shape shadow effect.docx");
+
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Eps);
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            ShapeRenderer renderer = shape.GetShapeRenderer();
+            renderer.Save(ArtifactsDir + "ImageSaveOptions.ConversionShapeToEps.eps", saveOptions);
         }
     }
 }

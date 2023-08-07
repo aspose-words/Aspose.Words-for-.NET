@@ -22,7 +22,7 @@ using NUnit.Framework;
 namespace ApiExamples
 {
     [TestFixture]
-    class ExFontSettings : ApiExampleBase
+    public class ExFontSettings : ApiExampleBase
     {
         [Test]
         public void DefaultFontInstance()
@@ -173,7 +173,7 @@ namespace ApiExamples
             Assert.True(callback.FontSubstitutionWarnings[0].WarningType == WarningType.FontSubstitution);
             Assert.True(callback.FontSubstitutionWarnings[0].Description
                 .Equals(
-                    "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
+                    "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font.", StringComparison.Ordinal));
         }
 
         private class FontSubstitutionWarningCollector : IWarningCallback
@@ -228,6 +228,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:Fonts.FontInfoSubstitutionRule
         //ExFor:Fonts.FontSubstitutionSettings.FontInfoSubstitution
+        //ExFor:LayoutOptions.KeepOriginalFontMetrics
         //ExFor:IWarningCallback
         //ExFor:IWarningCallback.Warning(WarningInfo)
         //ExFor:WarningInfo
@@ -255,6 +256,9 @@ namespace ApiExamples
             fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
             ;
             fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
+
+            // Original font metrics should be used after font substitution.
+            doc.LayoutOptions.KeepOriginalFontMetrics = true;
 
             // We will get a font substitution warning if we save a document with a missing font.
             doc.FontSettings = fontSettings;
@@ -302,7 +306,7 @@ namespace ApiExamples
 
             Assert.True(callback.FontWarnings[0].Description
                 .Equals(
-                    "Font \'SymbolPS\' has not been found. Using \'Wingdings\' font instead. Reason: font info substitution."));
+                    "Font \'SymbolPS\' has not been found. Using \'Wingdings\' font instead. Reason: font info substitution.", StringComparison.Ordinal));
         }
 
         [Test]
@@ -1014,8 +1018,8 @@ namespace ApiExamples
             XmlNodeList rules =
                 fallbackSettingsDoc.SelectNodes("//aw:FontFallbackSettings/aw:FallbackTable/aw:Rule", manager);
 
-            Assert.AreEqual("0C00-0C7F", rules[8].Attributes["Ranges"].Value);
-            Assert.AreEqual("Vani", rules[8].Attributes["FallbackFonts"].Value);
+            Assert.AreEqual("0C00-0C7F", rules[9].Attributes["Ranges"].Value);
+            Assert.AreEqual("Vani", rules[9].Attributes["FallbackFonts"].Value);
         }
 
         [Test]

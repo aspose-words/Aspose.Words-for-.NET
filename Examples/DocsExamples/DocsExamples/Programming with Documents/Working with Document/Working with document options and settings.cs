@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Loading;
@@ -144,9 +144,10 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         }
 
         [Test]
-        public void SetPageSetupAndSectionFormatting()
+        public void PageSetupAndSectionFormatting()
         {
-            //ExStart:DocumentBuilderSetPageSetupAndSectionFormatting
+            //ExStart:PageSetupAndSectionFormatting
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -154,8 +155,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             builder.PageSetup.LeftMargin = 50;
             builder.PageSetup.PaperSize = PaperSize.Paper10x14;
 
-            doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.SetPageSetupAndSectionFormatting.docx");
-            //ExEnd:DocumentBuilderSetPageSetupAndSectionFormatting
+            doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.PageSetupAndSectionFormatting.docx");
+            //ExEnd:PageSetupAndSectionFormatting
         }
 
         [Test]
@@ -183,6 +184,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void LineGridSectionLayoutMode()
         {
             //ExStart:LineGridSectionLayoutMode
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

@@ -1,4 +1,4 @@
-﻿using Aspose.Words;
+using Aspose.Words;
 using NUnit.Framework;
 using System;
 
@@ -57,6 +57,7 @@ namespace DocsExamples.Programming_with_Documents
         public void AppendSectionContent()
         {
             //ExStart:AppendSectionContent
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -82,6 +83,7 @@ namespace DocsExamples.Programming_with_Documents
         public void CloneSection()
         {
             //ExStart:CloneSection
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document(MyDir + "Document.docx");
             Section cloneSection = doc.Sections[0].Clone();
             //ExEnd:CloneSection
@@ -91,6 +93,7 @@ namespace DocsExamples.Programming_with_Documents
         public void CopySection()
         {
             //ExStart:CopySection
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document srcDoc = new Document(MyDir + "Document.docx");
             Document dstDoc = new Document();
 
@@ -106,11 +109,24 @@ namespace DocsExamples.Programming_with_Documents
         public void DeleteHeaderFooterContent()
         {
             //ExStart:DeleteHeaderFooterContent
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document(MyDir + "Document.docx");
 
             Section section = doc.Sections[0];
             section.ClearHeadersFooters();
             //ExEnd:DeleteHeaderFooterContent
+        }
+
+        [Test]
+        public void DeleteHeaderFooterShapes()
+        {
+            //ExStart:DeleteHeaderFooterShapes
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
+            Document doc = new Document(MyDir + "Document.docx");
+
+            Section section = doc.Sections[0];
+            section.DeleteHeaderFooterShapes();
+            //ExEnd:DeleteHeaderFooterShapes
         }
 
         [Test]
@@ -128,6 +144,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ModifyPageSetupInAllSections()
         {
             //ExStart:ModifyPageSetupInAllSections
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -169,6 +186,7 @@ namespace DocsExamples.Programming_with_Documents
         public void SectionChildNodes()
         {
             //ExStart:SectionChildNodes
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -215,6 +233,7 @@ namespace DocsExamples.Programming_with_Documents
         public void EnsureMinimum()
         {
             //ExStart:EnsureMinimum
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document();
 
             // If we add a new section like this, it will not have a body, or any other child nodes.

@@ -69,6 +69,7 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTag.NodeType
             //ExFor:StructuredDocumentTag.Style
             //ExFor:StructuredDocumentTag.StyleName
+            //ExFor:StructuredDocumentTag.WordOpenXMLMinimal
             //ExFor:MarkupLevel
             //ExFor:SdtType
             //ExSummary:Shows how to work with styles for content control elements.
@@ -95,6 +96,8 @@ namespace ApiExamples
             foreach (Node node in tags)
             {
                 StructuredDocumentTag sdt = (StructuredDocumentTag)node;
+
+                Console.WriteLine(sdt.WordOpenXMLMinimal);
 
                 Assert.AreEqual(StyleIdentifier.Quote, sdt.Style.StyleIdentifier);
                 Assert.AreEqual("Quote", sdt.StyleName);
@@ -873,9 +876,6 @@ namespace ApiExamples
         [Test]
         public void UpdateSdtContent()
         {
-            //ExStart
-            //ExFor:SaveOptions.UpdateSdtContent
-            //ExSummary:Shows how to update structured document tags while saving a document to PDF.
             Document doc = new Document();
 
             // Insert a drop-down list structured document tag.
@@ -892,7 +892,6 @@ namespace ApiExamples
             doc.FirstSection.Body.AppendChild(tag);
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf");
-            //ExEnd
 
 #if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf");
@@ -1073,8 +1072,7 @@ namespace ApiExamples
         [Test]
         public void SdtChildNodes()
         {
-            //ExStart
-            //ExFor:StructuredDocumentTagRangeStart.ChildNodes
+            //ExStart            
             //ExFor:StructuredDocumentTagRangeStart.GetChildNodes(NodeType, bool)
             //ExSummary:Shows how to get child nodes of StructuredDocumentTagRangeStart.
             Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
@@ -1082,9 +1080,9 @@ namespace ApiExamples
                 doc.GetChildNodes(NodeType.StructuredDocumentTagRangeStart, true)[0] as StructuredDocumentTagRangeStart;
 
             Console.WriteLine("StructuredDocumentTagRangeStart values:");
-            Console.WriteLine($"\t|Child nodes count: {tag.ChildNodes.Count}\n");
+            Console.WriteLine($"\t|Child nodes count: {tag.GetChildNodes(NodeType.Any, false).Count}\n");
 
-            foreach (Node node in tag.ChildNodes)
+            foreach (Node node in tag.GetChildNodes(NodeType.Any, false))
                 Console.WriteLine($"\t|Child node type: {node.NodeType}");
 
             foreach (Node node in tag.GetChildNodes(NodeType.Run, true))

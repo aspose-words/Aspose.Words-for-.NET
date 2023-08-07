@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Aspose.Words;
@@ -65,6 +65,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         }
 
         //ExStart:InsertSectionBreaks
+        //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
         /// <summary>
         /// Insert section breaks before the specified paragraphs.
         /// </summary>

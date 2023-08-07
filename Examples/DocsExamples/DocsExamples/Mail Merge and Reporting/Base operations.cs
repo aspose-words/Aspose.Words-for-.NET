@@ -116,7 +116,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         /// </summary>
         private DataTable ExecuteDataTable(string commandText)
         {
-            string connString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            string connString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.accdb";
 
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();
@@ -137,7 +137,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         public void ProduceMultipleDocuments()
         {
             //ExStart:ProduceMultipleDocuments
-            string connString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DatabaseDir + "Northwind.mdb";
+            string connString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.accdb";
 
             Document doc = new Document(MyDir + "Mail merge destination - Northwind suppliers.docx");
 
