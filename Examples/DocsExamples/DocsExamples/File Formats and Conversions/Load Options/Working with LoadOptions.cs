@@ -167,9 +167,10 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         public void LoadWithEncoding()
         {
             //ExStart:LoadWithEncoding
-            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.UTF7 };
+            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.ASCII };
 
-            Document doc = new Document(MyDir + "Encoded in UTF-7.txt", loadOptions);
+            // Load the document while passing the LoadOptions object, then verify the document's contents.
+            Document doc = new Document(MyDir + "English text.txt", loadOptions);
             //ExEnd:LoadWithEncoding
         }
 

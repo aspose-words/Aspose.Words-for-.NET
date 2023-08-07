@@ -125,11 +125,11 @@
     <PackageReference Include="Aspose.BarCode" Version="23.7.0" />
     <PackageReference Include="Aspose.Page" Version="23.7.0" />
     <PackageReference Include="Aspose.PDF" Version="23.7.0" />
-    <PackageReference Include="Aspose.Words" Version="23.7.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.7.0" />
+    <PackageReference Include="Aspose.Words" Version="23.8.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.8.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.2.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.0" />
     <PackageReference Include="NUnit" Version="3.13.3" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0">
       <PrivateAssets>all</PrivateAssets>
@@ -143,13 +143,9 @@
   <ItemGroup>
     <Reference Include="Interop.ADODB">
       <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Compression" Condition="'$(TargetFramework)' == 'net462'" />
-    <Reference Include="System.Web" />
-  </ItemGroup>
-
-  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
-    <Reference Include="System.Windows.Forms" />
+    </Reference>    
+    <Reference Include="System.Web" Condition="'$(TargetFramework)' != 'net6.0'" />
+    <Reference Include="System.Windows.Forms" Condition="$(TargetFramework.StartsWith('net4'))" />
   </ItemGroup>
 
 </Project>
