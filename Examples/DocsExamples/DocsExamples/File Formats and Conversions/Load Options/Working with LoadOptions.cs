@@ -27,7 +27,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         public void LoadEncryptedDocument()
         {
             //ExStart:LoadSaveEncryptedDocument
-            //GistDesc:Encrypt document using encryption algorithms in C#.
+            //GistDesc:Encrypt document using encryption algorithms in C#
             //ExStart:OpenEncryptedDocument
             Document doc = new Document(MyDir + "Encrypted.docx", new LoadOptions("docPassword"));
             //ExEnd:OpenEncryptedDocument
@@ -40,7 +40,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         public void LoadEncryptedDocumentWithoutPassword()
         {
             //ExStart:LoadEncryptedDocumentWithoutPassword
-            //GistDesc:Encrypt document using encryption algorithms in C#.
+            //GistDesc:Encrypt document using encryption algorithms in C#
             // We will not be able to open this document with Microsoft Word or
             // Aspose.Words without providing the correct password.
             Assert.Throws<IncorrectPasswordException>(() =>

@@ -133,7 +133,7 @@ namespace DocsExamples.File_Formats_and_Conversions
         public void VerifyEncryptedDocument()
         {
             //ExStart:VerifyEncryptedDocument
-            //GistDesc:Encrypt document using encryption algorithms in C#.
+            //GistDesc:Encrypt document using encryption algorithms in C#
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Encrypted.docx");
             Console.WriteLine(info.IsEncrypted);
             //ExEnd:VerifyEncryptedDocument
