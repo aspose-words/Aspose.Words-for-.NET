@@ -12,12 +12,13 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         [Test]
         public void SignDocument()
         {
-            //ExStart:SingDocument
+            //ExStart:SignDocument
+            //GistDesc:Working with digital signatures using C#
             CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
             
             DigitalSignatureUtil.Sign(MyDir + "Digitally signed.docx", ArtifactsDir + "Document.Signed.docx",
                 certHolder);
-            //ExEnd:SingDocument
+            //ExEnd:SignDocument
         }
 
         [Test]
@@ -104,14 +105,15 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         public void CreateNewSignatureLineAndSetProviderId()
         {
             //ExStart:CreateNewSignatureLineAndSetProviderID
+            //GistDesc:Working with digital signatures using C#
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             SignatureLineOptions signatureLineOptions = new SignatureLineOptions
             {
-                Signer = "vderyushev",
-                SignerTitle = "QA",
-                Email = "vderyushev@aspose.com",
+                Signer = "yourname",
+                SignerTitle = "Worker",
+                Email = "yourname@aspose.com",
                 ShowDate = true,
                 DefaultInstructions = false,
                 Instructions = "Please sign here.",
@@ -127,7 +129,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
             {
                 SignatureLineId = signatureLine.Id,
                 ProviderId = signatureLine.ProviderId,
-                Comments = "Document was signed by vderyushev",
+                Comments = "Document was signed by Aspose",
                 SignTime = DateTime.Now
             };
 
@@ -156,6 +158,32 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
                 Console.WriteLine();
             }
             //ExEnd:AccessAndVerifySignature
+        }
+
+        [Test]
+        public void RemoveSignatures()
+        {
+            //ExStart:RemoveSignatures
+            //GistDesc:Working with digital signatures using C#
+            // There are two ways of using the DigitalSignatureUtil class to remove digital signatures
+            // from a signed document by saving an unsigned copy of it somewhere else in the local file system.
+            // 1 - Determine the locations of both the signed document and the unsigned copy by filename strings:
+            DigitalSignatureUtil.RemoveAllSignatures(MyDir + "Digitally signed.docx",
+                ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx");
+
+            // 2 - Determine the locations of both the signed document and the unsigned copy by file streams:
+            using (Stream streamIn = new FileStream(MyDir + "Digitally signed.docx", FileMode.Open))
+            {
+                using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Create))
+                {
+                    DigitalSignatureUtil.RemoveAllSignatures(streamIn, streamOut);
+                }
+            }
+
+            // Verify that both our output documents have no digital signatures.
+            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx"), Is.Empty);
+            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx"), Is.Empty);
+            //ExEnd:RemoveSignatures
         }
     }
 }

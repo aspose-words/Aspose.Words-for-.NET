@@ -75,6 +75,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void DigitallySignedPdfUsingCertificateHolder()
         {
             //ExStart:DigitallySignedPdfUsingCertificateHolder
+            //GistDesc:Working with digital signatures using C#
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
