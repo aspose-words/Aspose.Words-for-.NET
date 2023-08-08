@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -133,7 +133,7 @@ namespace DocsExamples.File_Formats_and_Conversions
         public void VerifyEncryptedDocument()
         {
             //ExStart:VerifyEncryptedDocument
-            //GistDesc:Encrypt document using encryption algorithms in C#
+            //GistId:af95c7a408187bb25cf9137465fe5ce6
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Encrypted.docx");
             Console.WriteLine(info.IsEncrypted);
             //ExEnd:VerifyEncryptedDocument
