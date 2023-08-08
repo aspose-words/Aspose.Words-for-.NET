@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
@@ -13,7 +13,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         public void SignDocument()
         {
             //ExStart:SignDocument
-            //GistDesc:Working with digital signatures using C#
+            //GistId:bdc15a6de6b25d9d4e66f2ce918fc01b
             CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
             
             DigitalSignatureUtil.Sign(MyDir + "Digitally signed.docx", ArtifactsDir + "Document.Signed.docx",
@@ -104,8 +104,8 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         [Test]
         public void CreateNewSignatureLineAndSetProviderId()
         {
-            //ExStart:CreateNewSignatureLineAndSetProviderID
-            //GistDesc:Working with digital signatures using C#
+            //ExStart:CreateNewSignatureLineAndSetProviderId
+            //GistId:bdc15a6de6b25d9d4e66f2ce918fc01b
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -137,7 +137,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
 
             DigitalSignatureUtil.Sign(ArtifactsDir + "SignDocuments.SignatureLineProviderId.docx", 
                 ArtifactsDir + "SignDocuments.CreateNewSignatureLineAndSetProviderId.docx", certHolder, signOptions);
-            //ExEnd:CreateNewSignatureLineAndSetProviderID
+            //ExEnd:CreateNewSignatureLineAndSetProviderId
         }
 
         [Test]
@@ -164,7 +164,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         public void RemoveSignatures()
         {
             //ExStart:RemoveSignatures
-            //GistDesc:Working with digital signatures using C#
+            //GistId:bdc15a6de6b25d9d4e66f2ce918fc01b
             // There are two ways of using the DigitalSignatureUtil class to remove digital signatures
             // from a signed document by saving an unsigned copy of it somewhere else in the local file system.
             // 1 - Determine the locations of both the signed document and the unsigned copy by filename strings:

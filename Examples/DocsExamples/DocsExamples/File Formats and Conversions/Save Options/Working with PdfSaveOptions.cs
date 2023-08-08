@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Saving;
@@ -75,7 +75,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void DigitallySignedPdfUsingCertificateHolder()
         {
             //ExStart:DigitallySignedPdfUsingCertificateHolder
-            //GistDesc:Working with digital signatures using C#
+            //GistId:bdc15a6de6b25d9d4e66f2ce918fc01b
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             

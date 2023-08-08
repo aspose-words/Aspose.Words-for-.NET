@@ -118,7 +118,7 @@ namespace DocsExamples.File_Formats_and_Conversions
         public void DetectDocumentSignatures()
         {
             //ExStart:DetectDocumentSignatures
-            //GistDesc:Working with digital signatures using C#
+            //GistId:bdc15a6de6b25d9d4e66f2ce918fc01b
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Digitally signed.docx");
 
             if (info.HasDigitalSignature)
