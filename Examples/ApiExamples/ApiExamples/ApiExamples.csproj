@@ -119,6 +119,8 @@
     <Content Include="ExSmartTag.cs" />
     <Content Include="ExVbaProject.cs" />
     <Content Include="ExWordML2003SaveOptions.cs" />
+    <Content Include="ExXlsxSaveOptions.cs" />
+    <Content Include="ExLowCode.cs" />
   </ItemGroup>
 
   <ItemGroup>
