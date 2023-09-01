@@ -188,22 +188,22 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         }
 
         [Test]
-        public void ScaleWmfFontsToMetafileSize()
+        public void EmulateRenderingToSizeOnPage()
         {
-            //ExStart:ScaleWmfFontsToMetafileSize
+            //ExStart:EmulateRenderingToSizeOnPage
             Document doc = new Document(MyDir + "WMF with text.docx");
 
             MetafileRenderingOptions metafileRenderingOptions = new MetafileRenderingOptions
             {
-                ScaleWmfFontsToMetafileSize = false
+                EmulateRenderingToSizeOnPage = false
             };
 
             // If Aspose.Words cannot correctly render some of the metafile records to vector graphics
             // then Aspose.Words renders this metafile to a bitmap.
             PdfSaveOptions saveOptions = new PdfSaveOptions { MetafileRenderingOptions = metafileRenderingOptions };
 
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.ScaleWmfFontsToMetafileSize.pdf", saveOptions);
-            //ExEnd:ScaleWmfFontsToMetafileSize
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EmulateRenderingToSizeOnPage.pdf", saveOptions);
+            //ExEnd:EmulateRenderingToSizeOnPage
         }
 
         [Test]

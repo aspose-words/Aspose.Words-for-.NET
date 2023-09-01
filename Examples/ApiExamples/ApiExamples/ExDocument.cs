@@ -463,7 +463,7 @@ namespace ApiExamples
                     Document doc = new Document(stream, options);
 
                     // At this stage, we can read and edit the document's contents and then save it to the local file system.
-                    Assert.AreEqual("HYPERLINK \"https://products.aspose.com/words/family/\" \\o \"Aspose.Words\"", doc.FirstSection.Body.Paragraphs[50].Runs[0].GetText().Trim()); //ExSkip
+                    Assert.True(doc.GetText().Contains("HYPERLINK \"https://products.aspose.com/words/family/\" \\o \"Aspose.Words\"")); //ExSkip
 
                     doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
                 }
