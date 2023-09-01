@@ -426,7 +426,6 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             // The range text will include control characters such as "\a" for a cell.
             // You can call ToString and pass SaveFormat.Text on the desired node to find the plain text content.
-
             Console.WriteLine("Contents of the table: ");
             Console.WriteLine(table.Range.Text);
             //ExEnd:ExtractText
