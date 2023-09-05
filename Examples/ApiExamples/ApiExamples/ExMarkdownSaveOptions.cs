@@ -156,7 +156,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NET48 || JAVA
         [Test]
         public void ImagesFolder()
         {
@@ -166,46 +165,25 @@ namespace ApiExamples
             //ExSummary:Shows how to specifies the name of the folder used to construct image URIs.
             DocumentBuilder builder = new DocumentBuilder();
 
-            builder.Writeln("Some image below:");
-            Image image = Image.FromFile(ImageDir + "Logo.jpg");
-            builder.InsertImage(image);
+            builder.Writeln("Some image below:");            
+            builder.InsertImage(ImageDir + "Logo.jpg");
 
+            string imagesFolder = Path.Combine(ArtifactsDir, "ImagesDir");
             MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
             // Use the "ImagesFolder" property to assign a folder in the local file system into which
             // Aspose.Words will save all the document's linked images.
-            saveOptions.ImagesFolder = ArtifactsDir + "ImagesDir/";
+            saveOptions.ImagesFolder = imagesFolder;
             // Use the "ImagesFolderAlias" property to use this folder
             // when constructing image URIs instead of the images folder's name.
             saveOptions.ImagesFolderAlias = "http://example.com/images";
 
             builder.Document.Save(ArtifactsDir + "MarkdownSaveOptions.ImagesFolder.md", saveOptions);
             //ExEnd
+
+            string[] dirFiles = Directory.GetFiles(imagesFolder, "MarkdownSaveOptions.ImagesFolder.001.jpeg");
+            Assert.AreEqual(1, dirFiles.Length);
+            Document doc = new Document(ArtifactsDir + "MarkdownSaveOptions.ImagesFolder.md");
+            doc.GetText().Contains("http://example.com/images/MarkdownSaveOptions.ImagesFolder.001.jpeg");
         }
-#elif NET5_0_OR_GREATER || __MOBILE__
-        [Test]
-        public void ImagesFolderNetStandard2()
-        {
-            //ExStart
-            //ExFor:MarkdownSaveOptions.ImagesFolder
-            //ExFor:MarkdownSaveOptions.ImagesFolderAlias
-            //ExSummary:Shows how to specifies the name of the folder used to construct image URIs (.NetStandard 2.0).
-            DocumentBuilder builder = new DocumentBuilder();
-
-            builder.Writeln("Some image below:");
-            using (SKBitmap bitmap = SKBitmap.Decode(ImageDir + "Logo.jpg"))
-                builder.InsertImage(bitmap);
-
-            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
-            // Use the "ImagesFolder" property to assign a folder in the local file system into which
-            // Aspose.Words will save all the document's linked images.
-            saveOptions.ImagesFolder = ArtifactsDir + "ImagesDir/";
-            // Use the "ImagesFolderAlias" property to use this folder
-            // when constructing image URIs instead of the images folder's name.
-            saveOptions.ImagesFolderAlias = "http://example.com/images";
-
-            builder.Document.Save(ArtifactsDir + "MarkdownSaveOptions.ImagesFolder.md", saveOptions);
-            //ExEnd
-        }
-#endif
     }
 }
