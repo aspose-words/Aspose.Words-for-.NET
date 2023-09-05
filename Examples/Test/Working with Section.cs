@@ -10,7 +10,9 @@ namespace DocsExamples.Programming_with_Documents
         public void AppendSectionContent()
         {
             //ExStart:NewTestAppendSectionContent
-            //GistId:f44c5f27ccf595ae98813e7588d4e2d3			
+            //GistId:f44c5f27ccf595ae98813e7588d4e2d3
+			//ReleaseNotesFunc:Added an ability to set chart axis title
+			//ReleaseVersion:23.9
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -37,7 +39,7 @@ namespace DocsExamples.Programming_with_Documents
         {
             //ExStart:NewTestAppendSectionContent2
             //GistId:f44c5f27ccf595ae98813e7588d4e2d3
-			//OldName:NewTestAppendSectionContent1
+			//RNDecs:Added public property MarkdownSaveOptions.ImagesFolderAlias
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
