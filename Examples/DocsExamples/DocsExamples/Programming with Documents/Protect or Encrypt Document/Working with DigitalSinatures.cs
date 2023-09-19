@@ -185,5 +185,22 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
             Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx"), Is.Empty);
             //ExEnd:RemoveSignatures
         }
+
+        [Test]
+        public void SignatureValue()
+        {
+            //ExStart:SignatureValue
+            //GistId:bdc15a6de6b25d9d4e66f2ce918fc01b
+            Document doc = new Document(MyDir + "Digitally signed.docx");
+
+            foreach (DigitalSignature digitalSignature in doc.DigitalSignatures)
+            {
+                string signatureValue = Convert.ToBase64String(digitalSignature.SignatureValue);
+                Assert.AreEqual("K1cVLLg2kbJRAzT5WK+m++G8eEO+l7S+5ENdjMxxTXkFzGUfvwxREuJdSFj9AbD" +
+                    "MhnGvDURv9KEhC25DDF1al8NRVR71TF3CjHVZXpYu7edQS5/yLw/k5CiFZzCp1+MmhOdYPcVO+Fm" +
+                    "+9fKr2iNLeyYB+fgEeZHfTqTFM2WwAqo=", signatureValue);
+            }
+            //ExEnd:SignatureValue
+        }
     }
 }
