@@ -1303,7 +1303,7 @@ namespace ApiExamples
             //ExSummary:Shows how to get/set the full name of the external xls/xlsx document if the chart is linked.
             Document doc = new Document(MyDir + "Shape with linked chart.docx");
             
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);            
             
             var sourceFullName = shape.Chart.SourceFullName;
             Assert.True(sourceFullName.Contains("Examples\\Data\\Spreadsheet.xlsx"));
@@ -1668,7 +1668,7 @@ namespace ApiExamples
         [TestCase(MsWordVersion.Word2010, ShapeMarkupLanguage.Dml)]
         [TestCase(MsWordVersion.Word2013, ShapeMarkupLanguage.Dml)]
         [TestCase(MsWordVersion.Word2016, ShapeMarkupLanguage.Dml)]
-        public void MarkupLunguageForDifferentMsWordVersions(MsWordVersion msWordVersion,
+        public void MarkupLanguageForDifferentMsWordVersions(MsWordVersion msWordVersion,
             ShapeMarkupLanguage shapeMarkupLanguage)
         {
             Document doc = new Document();
@@ -2496,7 +2496,7 @@ namespace ApiExamples
             Shape shape = AppendWordArt(doc, "Hello World! This text is bold, and italic.", 
                 "Arial", 480, 24, Color.White, Color.Black, ShapeType.TextPlainText);
 
-            // Apply the "Bold' and "Italic" formatting settings to the text using the respective properties.
+            // Apply the "Bold" and "Italic" formatting settings to the text using the respective properties.
             shape.TextPath.Bold = true;
             shape.TextPath.Italic = true;
 
