@@ -1,6 +1,6 @@
 name: Update nuget packages
-on:
-  workflow_call:
+
+on: workflow_dispatch
   
 jobs:
   sync-branch:
