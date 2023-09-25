@@ -1,0 +1,34 @@
+name: Update nuget packages
+on:
+  workflow_call:
+  
+jobs:
+  sync-branch:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+
+      - name: update packages
+        uses: Bchir/update-nuget@V1.0.0
+        with:
+          searchFor: 'outdated'
+          versionToSelect: 'latest'
+      
+      - name: Install dependencies ApiExamples
+        run: dotnet restore "Examples/ApiExamples/ApiExamples/ApiExamples.csproj"
+
+      - name: Install dependencies DocsExamples
+        run: dotnet restore "Examples/DocsExamples/DocsExamples/DocsExamples.csproj"
+      
+      - name: Run ApiExamples tests .Net Framework 4.8
+        run: dotnet test "Examples/ApiExamples/ApiExamples/ApiExamples.csproj" --framework net48 --configuration Release
+
+      - name: Run ApiExamples tests .Net 6.0
+        run: dotnet test "Examples/ApiExamples/ApiExamples/ApiExamples.csproj" --framework net6.0 --configuration Release
+
+      - name: Run DocsExamples tests .Net Framework 4.8
+        run: dotnet test "Examples/DocsExamples/DocsExamples/DocsExamples.csproj" --framework net48 --configuration Release
+
+      - name: Run DocsExamples tests .Net 6.0
+        run: dotnet test "Examples/DocsExamples/DocsExamples/DocsExamples.csproj" --framework net6.0 --configuration Release
