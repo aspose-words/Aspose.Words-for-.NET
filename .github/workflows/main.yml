@@ -27,12 +27,12 @@ jobs:
         
       - shell: bash
         run: |
-          cd ./Examples
+          cd Examples
           OUTPUT=$(dotnet outdated -r)
           if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
             echo "::set-output name=updated::false"
           else
-            dotnet outdated -u -r ./Examples/
+            dotnet outdated -u -r
             echo "::set-output name=updated::true"
           fi      
       
