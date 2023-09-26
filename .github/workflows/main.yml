@@ -23,8 +23,7 @@ jobs:
 
       # Update packages
       - name: Tools
-        run: dotnet tool install --global dotnet-outdated-tool
-      - name: Update
+        run: dotnet tool install --global dotnet-outdated-tool      
       - shell: bash
         run: |
           OUTPUT=$(dotnet outdated)
