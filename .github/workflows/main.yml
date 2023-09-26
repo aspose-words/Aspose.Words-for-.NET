@@ -1,34 +1,38 @@
 name: Update nuget packages
 
-on: workflow_dispatch
+on:
+  workflow_dispatch: # Allow running the workflow manually from the GitHub UI
   
 jobs:
   sync-branch:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-dotnet@v1
-
+      - uses: actions/checkout@v3
+      - uses: actions/setup-dotnet@v3
+  
+  update_packages:
+    runs-on: windows-latest
+    needs: [ sync-branch ]
+    steps:
+      - name: Install dependencies ApiExamples
+        run: dotnet restore "Examples/ApiExamples/ApiExamples/ApiExamples.csproj"      
+      - name: Install dependencies DocsExamples
+        run: dotnet restore "Examples/DocsExamples/DocsExamples/DocsExamples.csproj"      
       - name: update packages
         uses: Bchir/update-nuget@V1.0.0
         with:
           searchFor: 'outdated'
           versionToSelect: 'latest'
-      
-      - name: Install dependencies ApiExamples
-        run: dotnet restore "Examples/ApiExamples/ApiExamples/ApiExamples.csproj"
 
-      - name: Install dependencies DocsExamples
-        run: dotnet restore "Examples/DocsExamples/DocsExamples/DocsExamples.csproj"
-      
-      - name: Run ApiExamples tests .Net Framework 4.8
-        run: dotnet test "Examples/ApiExamples/ApiExamples/ApiExamples.csproj" --framework net48 --configuration Release
-
-      - name: Run ApiExamples tests .Net 6.0
-        run: dotnet test "Examples/ApiExamples/ApiExamples/ApiExamples.csproj" --framework net6.0 --configuration Release
-
-      - name: Run DocsExamples tests .Net Framework 4.8
-        run: dotnet test "Examples/DocsExamples/DocsExamples/DocsExamples.csproj" --framework net48 --configuration Release
-
-      - name: Run DocsExamples tests .Net 6.0
-        run: dotnet test "Examples/DocsExamples/DocsExamples/DocsExamples.csproj" --framework net6.0 --configuration Release
+  run_tests:
+      runs-on: windows-latest
+      needs: [ sync-branch, update_packages ]
+      steps:      
+        - name: Run ApiExamples tests .Net Framework 4.8
+          run: dotnet test "Examples/ApiExamples/ApiExamples/ApiExamples.csproj" --framework net48 --configuration Release
+        - name: Run ApiExamples tests .Net 6.0
+          run: dotnet test "Examples/ApiExamples/ApiExamples/ApiExamples.csproj" --framework net6.0 --configuration Release
+        - name: Run DocsExamples tests .Net Framework 4.8
+          run: dotnet test "Examples/DocsExamples/DocsExamples/DocsExamples.csproj" --framework net48 --configuration Release
+        - name: Run DocsExamples tests .Net 6.0
+          run: dotnet test "Examples/DocsExamples/DocsExamples/DocsExamples.csproj" --framework net6.0 --configuration Release
