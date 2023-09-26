@@ -1077,7 +1077,7 @@ namespace ApiExamples
             // that format text within WMF images according to the size of the metafile on the page.
             // Set the "ScaleWmfFontsToMetafileSize" property to "false" to
             // preserve the default scale of these fonts.
-            saveOptions.MetafileRenderingOptions.ScaleWmfFontsToMetafileSize = scaleWmfFonts;
+            saveOptions.MetafileRenderingOptions.EmulateRenderingToSizeOnPage = scaleWmfFonts;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf", saveOptions);
             //ExEnd
