@@ -18,7 +18,7 @@ jobs:
         run: dotnet restore ./Examples/ApiExamples/Runner.MAUI/Runner.MAUI.csproj
       - name: Install dependencies Docker
         run: dotnet restore ./Examples/DocsExamples/Docker/Docker.csproj
-      - name: Install dependencies Docker
+      - name: Install dependencies DocumentExplorer
         run: dotnet restore ./Examples/DocsExamples/DocumentExplorer/DocumentExplorer.csproj
 
       # Update packages
@@ -28,10 +28,10 @@ jobs:
         run: |
           OUTPUT=$(dotnet outdated)
           if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
-          echo "::set-output name=updated::false"
+            echo "::set-output name=updated::false"
           else
-          dotnet outdated -u ./Examples/
-          echo "::set-output name=updated::true"
+            dotnet outdated -u -r ./Examples/
+            echo "::set-output name=updated::true"
           fi      
       
       # Run tests
