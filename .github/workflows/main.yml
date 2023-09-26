@@ -1,6 +1,7 @@
 name: Update nuget packages
-on:
-  workflow_dispatch: # Allow running the workflow manually from the GitHub UI
+ 
+ # Allow running the workflow manually from the GitHub UI
+on: workflow_dispatch
   
 jobs:
   update_packages:
