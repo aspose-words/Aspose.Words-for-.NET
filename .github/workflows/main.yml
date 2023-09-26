@@ -10,17 +10,31 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-dotnet@v3      
 
-      # Update packages
+      # Restore packages
       - name: Install dependencies ApiExamples
         run: dotnet restore ./Examples/ApiExamples/ApiExamples/ApiExamples.csproj
       - name: Install dependencies DocsExamples
         run: dotnet restore ./Examples/DocsExamples/DocsExamples/DocsExamples.csproj
-      - name: update packages
-        uses: Bchir/update-nuget@V1.0.0
-        with:
-          directory: ./Examples/
-          searchFor: 'outdated'
-          versionToSelect: 'latest'
+      - name: Install dependencies ApiExamples.MAUI
+        run: dotnet restore ./Examples/ApiExamples/Runner.MAUI/Runner.MAUI.csproj
+      - name: Install dependencies Docker
+        run: dotnet restore ./Examples/DocsExamples/Docker/Docker.csproj
+      - name: Install dependencies Docker
+        run: dotnet restore ./Examples/DocsExamples/DocumentExplorer/DocumentExplorer.csproj
+
+      # Update packages
+      - name: Tools
+        run: dotnet tool install --global dotnet-outdated-tool
+      - name: Update
+      - shell: bash
+        run: |
+          OUTPUT=$(dotnet outdated)
+          if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
+          echo "::set-output name=updated::false"
+          else
+          dotnet outdated -u ./Examples/
+          echo "::set-output name=updated::true"
+          fi      
       
       # Run tests
       - name: Run ApiExamples tests .Net Framework 4.8
