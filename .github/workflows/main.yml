@@ -26,7 +26,7 @@ jobs:
         run: dotnet tool install --global dotnet-outdated-tool      
       - shell: bash
         run: |
-          OUTPUT=$(dotnet outdated)
+          OUTPUT=$(dotnet outdated -r ./Examples/)
           if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
             echo "::set-output name=updated::false"
           else
