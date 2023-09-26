@@ -8,16 +8,17 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v3      
   
-  update_packages:
+  update_packages:  
     runs-on: windows-latest
     needs: [ sync-branch ]
     steps:
+      - run: echo ${{ inputs.working-directory }}
       - name: Install dependencies ApiExamples
-        run: dotnet restore ${GITHUB_WORKSPACE}/Examples/ApiExamples/ApiExamples/ApiExamples.csproj
+        run: dotnet restore /Examples/ApiExamples/ApiExamples/ApiExamples.csproj
       - name: Install dependencies DocsExamples
-        run: dotnet restore ${GITHUB_WORKSPACE}/Examples/DocsExamples/DocsExamples/DocsExamples.csproj
+        run: dotnet restore /Examples/DocsExamples/DocsExamples/DocsExamples.csproj
       - name: update packages
         uses: Bchir/update-nuget@V1.0.0
         with:
