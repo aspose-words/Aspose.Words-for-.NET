@@ -1547,7 +1547,7 @@ namespace ApiExamples
         public void FormatDataLables()
         {
             //ExStart
-            //ExFor:ChartDataLableCollection.Format
+            //ExFor:ChartDataLabelCollection.Format
             //ExFor:ChartFormat.ShapeType
             //ExFor:ChartShapeType
             //ExSummary:Shows how to set fill, stroke and callout formatting for chart data labels.
@@ -1582,6 +1582,39 @@ namespace ApiExamples
             labelFormat.Fill.Solid(Color.Blue);
 
             doc.Save(ArtifactsDir + "Charts.FormatDataLables.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ChartAxisTitle()
+        {
+            //ExStart
+            //ExFor:ChartAxisTitle
+            //ExFor:ChartAxisTitle.Text
+            //ExFor:ChartAxisTitle.Show
+            //ExFor:ChartAxisTitle.Overlay
+            //ExSummary:Shows how to set chart axis title.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+
+            Chart chart = shape.Chart;
+            ChartSeriesCollection seriesColl = chart.Series;
+            // Delete default generated series.
+            seriesColl.Clear();
+
+            seriesColl.Add("AW Series 1", new string[] { "AW Category 1", "AW Category 2" }, new double[] { 1, 2 });
+
+            // Set axis title.
+            chart.AxisX.Title.Text = "Categories";
+            chart.AxisX.Title.Show = true;
+            chart.AxisY.Title.Text = "Values";
+            chart.AxisY.Title.Show = true;
+            chart.AxisY.Title.Overlay = true;
+
+            doc.Save(ArtifactsDir + "Charts.ChartAxisTitle.docx");
+            //ExEnd
         }
     }
 }

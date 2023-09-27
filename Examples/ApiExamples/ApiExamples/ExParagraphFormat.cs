@@ -500,5 +500,28 @@ namespace ApiExamples
             Assert.AreEqual(format.LineUnitAfter, 10.9d);
             Assert.AreEqual(format.SpaceAfter, 130.8d, 0.1d);
         }
+
+        [Test]
+        public void ParagraphBaselineAlignment()
+        {
+            //ExStart
+            //ExFor:BaselineAlignment
+            //ExFor:ParagraphFormat.BaselineAlignment
+            //ExSummary:Shows how to set fonts vertical position on a line.
+            Document doc = new Document(MyDir + "Office math.docx");
+
+            ParagraphFormat format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
+            if (format.BaselineAlignment == BaselineAlignment.Auto)
+            {                
+                format.BaselineAlignment = BaselineAlignment.Top;
+            }
+
+            doc.Save(ArtifactsDir + "ParagraphFormat.ParagraphBaselineAlignment.docx");
+            //ExEnd
+
+            doc = new Document(ArtifactsDir + "ParagraphFormat.ParagraphBaselineAlignment.docx");
+            format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
+            Assert.AreEqual(BaselineAlignment.Top, format.BaselineAlignment);
+        }
     }
 }

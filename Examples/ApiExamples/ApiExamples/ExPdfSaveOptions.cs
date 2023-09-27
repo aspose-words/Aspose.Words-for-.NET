@@ -66,7 +66,7 @@ namespace ApiExamples
                 // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
                 // to modify how that method converts the document to .PDF.
                 PdfSaveOptions options = new PdfSaveOptions();
-                
+
                 // Set the "PageIndex" to "1" to render a portion of the document starting from the second page.
                 options.PageSet = new PageSet(1);
 
@@ -119,7 +119,7 @@ namespace ApiExamples
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.SaveFormat = SaveFormat.Pdf;
-            
+
             // The output PDF document will contain an outline, which is a table of contents that lists headings in the document body.
             // Clicking on an entry in this outline will take us to the location of its respective heading.
             // Set the "HeadingsOutlineLevels" property to "2" to exclude all headings whose levels are above 2 from the outline.
@@ -171,7 +171,7 @@ namespace ApiExamples
             // Set the "HeadingsOutlineLevels" property to "5" to include all headings of levels 5 and below in the outline.
             saveOptions.OutlineOptions.HeadingsOutlineLevels = 5;
 
-            // This document contains headings of levels 1 and 5, and no headings with levels of 2, 3, and 4. 
+            // This document contains headings of levels 1 and 5, and no headings with levels of 2, 3, and 4.
             // The output PDF document will treat outline levels 2, 3, and 4 as "missing".
             // Set the "CreateMissingOutlineLevels" property to "true" to include all missing levels in the outline,
             // leaving blank outline entries since there are no usable headings.
@@ -306,10 +306,10 @@ namespace ApiExamples
             // If an outline entry has subsequent entries of a higher level inbetween itself and the next entry of the same or lower level,
             // an arrow will appear to the left of the entry. This entry is the "owner" of several such "sub-entries".
             // In our document, the outline entries from the 5th heading level are sub-entries of the second 4th level outline entry,
-            // the 4th and 5th heading level entries are sub-entries of the second 3rd level entry, and so on. 
+            // the 4th and 5th heading level entries are sub-entries of the second 3rd level entry, and so on.
             // In the outline, we can click on the arrow of the "owner" entry to collapse/expand all its sub-entries.
             // Set the "ExpandedOutlineLevels" property to "2" to automatically expand all heading level 2 and lower outline entries
-            // and collapse all level and 3 and higher entries when we open the document. 
+            // and collapse all level and 3 and higher entries when we open the document.
             options.OutlineOptions.ExpandedOutlineLevels = 2;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExpandedOutlineLevels.pdf", options);
@@ -363,7 +363,7 @@ namespace ApiExamples
             // fields and update them before we save it as a PDF. This will make sure that all the fields will display
             // the most accurate values in the PDF.
             options.UpdateFields = updateFields;
-            
+
             // We can clone PdfSaveOptions objects.
             Assert.AreNotSame(options, options.Clone());
 
@@ -425,7 +425,7 @@ namespace ApiExamples
                 Assert.AreEqual(1, pdfDocument.Form.Count);
 
                 ComboBoxField field = (ComboBoxField)form.Fields[0];
-                
+
                 Assert.AreEqual("MyComboBox", field.FullName);
                 Assert.AreEqual(3, field.Options.Count);
                 Assert.AreEqual("Apple", field.Value);
@@ -609,7 +609,7 @@ namespace ApiExamples
                 switch (pdfImageCompression)
                 {
                     case PdfImageCompression.Auto:
-                        Assert.That(50000, 
+                        Assert.That(50000,
                             Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length));
 #if NET48
                         Assert.Throws<ArgumentException>(() => { TestUtil.VerifyImage(400, 400, pdfDocImageStream); });
@@ -618,7 +618,7 @@ namespace ApiExamples
 #endif
                         break;
                     case PdfImageCompression.Jpeg:
-                        Assert.That(42000, 
+                        Assert.That(42000,
                             Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length));
                         TestUtil.VerifyImage(400, 400, pdfDocImageStream);
                         break;
@@ -755,7 +755,7 @@ namespace ApiExamples
             // The size of the output document may be larger with this setting.
             // Set the "ColorMode" property to "Normal" to render all images in color.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = colorMode };
-            
+
             doc.Save(ArtifactsDir + "PdfSaveOptions.ColorRendering.pdf", pdfSaveOptions);
             //ExEnd
 
@@ -933,7 +933,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.HandleBinaryRasterWarnings.pdf", saveOptions);
 
             Assert.AreEqual(1, callback.Warnings.Count);
-            Assert.AreEqual("'R2_XORPEN' binary raster operation is partly supported.",
+            Assert.AreEqual("'R2_XORPEN' binary raster operation is not supported.",
                 callback.Warnings[0].Description);
         }
 
@@ -1059,37 +1059,39 @@ namespace ApiExamples
 
             internal WarningInfoCollection SaveWarnings = new WarningInfoCollection();
 		}
-		
+
 		[TestCase(false)]
         [TestCase(true)]
-        public void FontsScaledToMetafileSize(bool scaleWmfFonts)
+        public void EmulateRenderingToSizeOnPage(bool renderToSize)
         {
-            //ExStart
-            //ExFor:MetafileRenderingOptions.ScaleWmfFontsToMetafileSize
-            //ExSummary:Shows how to WMF fonts scaling according to metafile size on the page.
+            //ExStart            
+            //ExFor:MetafileRenderingOptions.EmulateRenderingToSizeOnPage
+            //ExFor:MetafileRenderingOptions.EmulateRenderingToSizeOnPageResolution
+            //ExSummary:Shows how to display of the metafile according to the size on page.
             Document doc = new Document(MyDir + "WMF with text.docx");
 
             // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
-            // Set the "ScaleWmfFontsToMetafileSize" property to "true" to scale fonts
-            // that format text within WMF images according to the size of the metafile on the page.
-            // Set the "ScaleWmfFontsToMetafileSize" property to "false" to
-            // preserve the default scale of these fonts.
-            saveOptions.MetafileRenderingOptions.ScaleWmfFontsToMetafileSize = scaleWmfFonts;
+            // Set the "EmulateRenderingToSizeOnPage" property to "true"
+            // to emulate rendering according to the metafile size on page.
+            // Set the "EmulateRenderingToSizeOnPage" property to "false"
+            // to emulate metafile rendering to its default size in pixels.
+            saveOptions.MetafileRenderingOptions.EmulateRenderingToSizeOnPage = renderToSize;
+            saveOptions.MetafileRenderingOptions.EmulateRenderingToSizeOnPageResolution = 50;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.EmulateRenderingToSizeOnPage.pdf", saveOptions);
             //ExEnd
 
 #if NET48 || NET5_0_OR_GREATER || JAVA
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf");
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmulateRenderingToSizeOnPage.pdf");
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
 
             pdfDocument.Pages[1].Accept(textAbsorber);
             Rectangle textFragmentRectangle = textAbsorber.TextFragments[3].Rectangle;
 
-            Assert.AreEqual(scaleWmfFonts ? 1.589d : 5.045d, textFragmentRectangle.Width, 0.001d);
+            Assert.AreEqual(renderToSize ? 1.585d : 5.045d, textFragmentRectangle.Width, 0.001d);
 #endif
         }
 
@@ -1206,11 +1208,11 @@ namespace ApiExamples
             Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
 
             Assert.AreEqual("ArialMT", pdfDocFonts[0].FontName);
-            Assert.AreEqual(pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedAll, 
+            Assert.AreEqual(pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedAll,
                 pdfDocFonts[0].IsEmbedded);
 
             Assert.AreEqual("CourierNewPSMT", pdfDocFonts[1].FontName);
-            Assert.AreEqual(pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedAll || pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedNonstandard, 
+            Assert.AreEqual(pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedAll || pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedNonstandard,
                 pdfDocFonts[1].IsEmbedded);
 #endif
         }
@@ -1452,7 +1454,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PageMode.pdf", options);
             //ExEnd
-            
+
             string docLocaleName = new CultureInfo(doc.Styles.DefaultFont.LocaleId).Name;
 
             switch (pageMode)
@@ -1612,7 +1614,7 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "CustomPropertiesExport" property to "PdfCustomPropertiesExport.None" to discard
-            // custom document properties as we save the document to .PDF. 
+            // custom document properties as we save the document to .PDF.
             // Set the "CustomPropertiesExport" property to "PdfCustomPropertiesExport.Standard"
             // to preserve custom properties within the output PDF document.
             // Set the "CustomPropertiesExport" property to "PdfCustomPropertiesExport.Metadata"
@@ -1654,7 +1656,7 @@ namespace ApiExamples
 
             Assert.AreEqual("Aspose.Words", pdfDocument.Info.Creator);
             Assert.True(pdfDocument.Info.Producer.StartsWith("Aspose.Words"));
-            
+
             switch (pdfCustomPropertiesExportMode)
             {
                 case PdfCustomPropertiesExport.None:
@@ -1927,13 +1929,13 @@ namespace ApiExamples
         public void Dml3DEffectsRenderingModeTest()
         {
             Document doc = new Document(MyDir + "DrawingML shape 3D effects.docx");
-            
+
             RenderCallback warningCallback = new RenderCallback();
             doc.WarningCallback = warningCallback;
-            
+
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced;
-            
+
             doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
 
             Assert.AreEqual(38, warningCallback.Count);
@@ -2081,14 +2083,14 @@ namespace ApiExamples
 
             // Configure the "DigitalSignatureDetails" object of the "SaveOptions" object to
             // digitally sign the document as we render it with the "Save" method.
-            DateTime signingTime = DateTime.Now;
+            DateTime signingTime = new DateTime(2015, 7, 20);
             options.DigitalSignatureDetails =
                 new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "My Office", signingTime);
             options.DigitalSignatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.RipeMD160;
 
             Assert.AreEqual("Test Signing", options.DigitalSignatureDetails.Reason);
             Assert.AreEqual("My Office", options.DigitalSignatureDetails.Location);
-            Assert.AreEqual(signingTime.ToUniversalTime(), options.DigitalSignatureDetails.SignatureDate.ToUniversalTime());
+            Assert.AreEqual(signingTime, options.DigitalSignatureDetails.SignatureDate.ToLocalTime());
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf", options);
             //ExEnd
@@ -2109,13 +2111,13 @@ namespace ApiExamples
             Assert.AreEqual("AsposeDigitalSignature", signatureField.FullName);
             Assert.AreEqual("AsposeDigitalSignature", signatureField.PartialName);
             Assert.AreEqual(typeof(Aspose.Pdf.Forms.PKCS7Detached), signatureField.Signature.GetType());
-            Assert.AreEqual(DateTime.Today, signatureField.Signature.Date.Date);
+            Assert.AreEqual(signingTime, signatureField.Signature.Date.ToLocalTime());
             Assert.AreEqual("þÿ\0M\0o\0r\0z\0a\0l\0.\0M\0e", signatureField.Signature.Authority);
             Assert.AreEqual("þÿ\0M\0y\0 \0O\0f\0f\0i\0c\0e", signatureField.Signature.Location);
             Assert.AreEqual("þÿ\0T\0e\0s\0t\0 \0S\0i\0g\0n\0i\0n\0g", signatureField.Signature.Reason);
 #endif
         }
-        
+
         [Test]
         public void PdfDigitalSignatureTimestamp()
         {
@@ -2138,7 +2140,7 @@ namespace ApiExamples
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
-            // Create a digital signature and assign it to our SaveOptions object to sign the document when we save it to PDF. 
+            // Create a digital signature and assign it to our SaveOptions object to sign the document when we save it to PDF.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
             options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
 
@@ -2163,7 +2165,7 @@ namespace ApiExamples
             //ExEnd
 
             Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf").HasDigitalSignature);
-            TestUtil.FileContainsString("<</Type/Annot/Subtype/Widget/Rect[0 0 0 0]/FT/Sig/T", 
+            TestUtil.FileContainsString("<</Type/Annot/Subtype/Widget/Rect[0 0 0 0]/FT/Sig/T",
             ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
 
 #if NET48 || NET5_0_OR_GREATER || JAVA
@@ -2226,7 +2228,7 @@ namespace ApiExamples
                 case EmfPlusDualRenderingMode.EmfPlusWithFallback:
                 case EmfPlusDualRenderingMode.EmfPlus:
                     Assert.AreEqual(0, pdfDocument.Pages[1].Resources.Images.Count);
-                    TestUtil.FileContainsString("<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R/FAAABG 16 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                    TestUtil.FileContainsString("<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R/FAAABF 15 0 R/FAAACB 21 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
                     break;
             }
@@ -2267,14 +2269,14 @@ namespace ApiExamples
 #if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument;
 
-            Assert.Throws<InvalidPasswordException>(() => 
+            Assert.Throws<InvalidPasswordException>(() =>
                 pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EncryptionPermissions.pdf"));
 
             pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EncryptionPermissions.pdf", "password");
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
 
             pdfDocument.Pages[1].Accept(textAbsorber);
-            
+
             Assert.AreEqual("Hello world!", textAbsorber.Text);
 #endif
         }
@@ -2450,7 +2452,7 @@ namespace ApiExamples
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.CacheBackgroundGraphics = true;
-            
+
             doc.Save(ArtifactsDir + "PdfSaveOptions.CacheBackgroundGraphics.pdf", saveOptions);
 
             long asposeToPdfSize = new FileInfo(ArtifactsDir + "PdfSaveOptions.CacheBackgroundGraphics.pdf").Length;
