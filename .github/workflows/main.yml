@@ -1,34 +1,46 @@
 name: Update nuget packages
-
 on: workflow_dispatch
   
 jobs:
-  sync-branch:
+  update_packages:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-dotnet@v1
+      # Sync branch
+      - uses: actions/checkout@v3
+      - uses: actions/setup-dotnet@v3      
 
-      - name: update packages
-        uses: Bchir/update-nuget@V1.0.0
-        with:
-          searchFor: 'outdated'
-          versionToSelect: 'latest'
-      
+      # Restore packages
       - name: Install dependencies ApiExamples
-        run: dotnet restore "Examples/ApiExamples/ApiExamples/ApiExamples.csproj"
-
+        run: dotnet restore ./Examples/ApiExamples/ApiExamples/ApiExamples.csproj
       - name: Install dependencies DocsExamples
-        run: dotnet restore "Examples/DocsExamples/DocsExamples/DocsExamples.csproj"
+        run: dotnet restore ./Examples/DocsExamples/DocsExamples/DocsExamples.csproj
+      - name: Install dependencies ApiExamples.MAUI
+        run: dotnet restore ./Examples/ApiExamples/Runner.MAUI/Runner.MAUI.csproj
+      - name: Install dependencies Docker
+        run: dotnet restore ./Examples/DocsExamples/Docker/Docker.csproj
+      - name: Install dependencies DocumentExplorer
+        run: dotnet restore ./Examples/DocsExamples/DocumentExplorer/DocumentExplorer.csproj
+
+      # Update packages
+      - name: Install dotnet-outdated-tool
+        run: dotnet tool install --global dotnet-outdated-tool
+        
+      - name: Update packages
+        run: |
+          cd Examples
+          OUTPUT=$(dotnet outdated -r)
+          if [[ $OUTPUT =~ "No outdated dependencies" ]]; then
+            echo "::set-output name=updated::false"
+          else
+            dotnet outdated -u -r
+            echo "::set-output name=updated::true"
+          fi 
+        shell: bash
       
-      - name: Run ApiExamples tests .Net Framework 4.8
-        run: dotnet test "Examples/ApiExamples/ApiExamples/ApiExamples.csproj" --framework net48 --configuration Release
-
-      - name: Run ApiExamples tests .Net 6.0
-        run: dotnet test "Examples/ApiExamples/ApiExamples/ApiExamples.csproj" --framework net6.0 --configuration Release
-
-      - name: Run DocsExamples tests .Net Framework 4.8
-        run: dotnet test "Examples/DocsExamples/DocsExamples/DocsExamples.csproj" --framework net48 --configuration Release
-
-      - name: Run DocsExamples tests .Net 6.0
-        run: dotnet test "Examples/DocsExamples/DocsExamples/DocsExamples.csproj" --framework net6.0 --configuration Release
+      # Check build
+      - name: Build ApiExamples
+        run: dotnet build ./Examples/ApiExamples/ApiExamples/ApiExamples.csproj
+      - name: Build ApiExamples.MAUI
+        run: dotnet build ./Examples/ApiExamples/Runner.MAUI/Runner.MAUI.csproj
+      - name: Build DocsExamples
+        run: dotnet build ./Examples/DocsExamples/DocsExamples/DocsExamples.csproj
