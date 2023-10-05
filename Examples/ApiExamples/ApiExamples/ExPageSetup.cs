@@ -11,10 +11,8 @@ using Aspose.Words.Notes;
 using Aspose.Words.Settings;
 using NUnit.Framework;
 using PaperSize = Aspose.Words.PaperSize;
-#if NET48 || NET5_0_OR_GREATER || JAVA
 using System.Drawing.Printing;
 using System.Linq;
-#endif
 
 namespace ApiExamples
 {
@@ -293,7 +291,6 @@ namespace ApiExamples
             Assert.AreEqual(SectionStart.NewColumn, doc.Sections[5].PageSetup.SectionStart);
         }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
         [Test]
         [Ignore("Run only when the printer driver is installed")]
         public void DefaultPaperTray()
@@ -376,7 +373,6 @@ namespace ApiExamples
                 }
             }
         }
-#endif
 
         [Test]
         public void PageMargins()

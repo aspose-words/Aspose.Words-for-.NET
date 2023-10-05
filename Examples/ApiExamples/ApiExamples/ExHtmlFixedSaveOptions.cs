@@ -27,7 +27,7 @@ namespace ApiExamples
             //ExSummary:Shows how to set which encoding to use while exporting a document to HTML.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.Writeln("Hello World!");
 
             // The default encoding is UTF-8. If we want to represent our document using a different encoding,
@@ -42,7 +42,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.UseEncoding.html", htmlFixedSaveOptions);
             //ExEnd
 
-            Assert.True(Regex.Match(File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.UseEncoding.html"), 
+            Assert.True(Regex.Match(File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.UseEncoding.html"),
                 "content=\"text/html; charset=us-ascii\"").Success);
         }
 
@@ -250,7 +250,7 @@ namespace ApiExamples
             }
             else
             {
-                Assert.True(Regex.Match(outDocContents, 
+                Assert.True(Regex.Match(outDocContents,
                     "<a name=\"CheckBox\" style=\"left:0pt; top:0pt;\"></a>" +
                     "<div class=\"awdiv\" style=\"left:0.8pt; top:0.8pt; width:14.25pt; height:14.25pt; border:solid 0.75pt #000000;\"").Success);
             }
@@ -316,11 +316,11 @@ namespace ApiExamples
                         "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt auto; overflow:hidden; }").Success);
                     break;
                 case HtmlFixedPageHorizontalAlignment.Left:
-                    Assert.True(Regex.Match(outDocContents, 
+                    Assert.True(Regex.Match(outDocContents,
                         "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt 10pt; overflow:hidden; }").Success);
                     break;
                 case HtmlFixedPageHorizontalAlignment.Right:
-                    Assert.True(Regex.Match(outDocContents, 
+                    Assert.True(Regex.Match(outDocContents,
                         "[.]awpage { position:relative; border:solid 1pt black; margin:10pt 10pt 10pt auto; overflow:hidden; }").Success);
                     break;
             }
@@ -366,11 +366,11 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = optimizeOutput };
-            
+
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
 
             // The size of the optimized version of the document is almost a third of the size of the unoptimized document.
-            Assert.AreEqual(optimizeOutput ? 62521 : 191770,
+            Assert.AreEqual(optimizeOutput ? 61889 : 191770,
                 new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length, 200);
             //ExEnd
         }
@@ -456,7 +456,7 @@ namespace ApiExamples
 
         private void TestResourceSavingCallback(FontSavingCallback callback)
         {
-            Assert.True(callback.GetText().Contains("font001.woff")); 
+            Assert.True(callback.GetText().Contains("font001.woff"));
             Assert.True(callback.GetText().Contains("styles.css"));
         }
 
@@ -503,7 +503,7 @@ namespace ApiExamples
             Assert.AreEqual(6, resourceFiles.Count(f => f.EndsWith(".jpeg") || f.EndsWith(".png") || f.EndsWith(".css")));
             TestHtmlFixedResourceFolder(callback); //ExSkip
         }
-        
+
         /// <summary>
         /// Counts and prints URIs of resources contained by as they are converted to fixed HTML.
         /// </summary>

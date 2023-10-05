@@ -1,14 +1,16 @@
-﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Aspose.Words;
+using Aspose.Words.Fields;
 using Aspose.Words.Loading;
 using NUnit.Framework;
 
@@ -197,6 +199,35 @@ namespace ApiExamples
             }
 
             Assert.AreEqual(0, listItemsCount);            
+        }
+
+        [Test]
+        public void DetectHyperlinks()
+        {
+            //ExStart:DetectHyperlinks
+            //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:TxtLoadOptions.DetectHyperlinks
+            //ExSummary:Shows how to read and display hyperlinks.
+            const string inputText = "Some links in TXT:\n" +
+                    "https://www.aspose.com/\n" +
+                    "https://docs.aspose.com/words/net/\n";
+
+            using (Stream stream = new MemoryStream())
+            {
+                byte[] buf = Encoding.ASCII.GetBytes(inputText);
+                stream.Write(buf, 0, buf.Length);
+
+                // Load document with hyperlinks.
+                Document doc = new Document(stream, new TxtLoadOptions() { DetectHyperlinks = true });
+
+                // Print hyperlinks text.
+                foreach (Field field in doc.Range.Fields)
+                    Console.WriteLine(field.Result);
+
+                Assert.AreEqual(doc.Range.Fields[0].Result.Trim(), "https://www.aspose.com/");
+                Assert.AreEqual(doc.Range.Fields[1].Result.Trim(), "https://docs.aspose.com/words/net/");
+            }
+            //ExEnd:DetectHyperlinks
         }
     }
 }

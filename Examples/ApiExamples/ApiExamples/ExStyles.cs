@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -351,6 +351,26 @@ namespace ApiExamples
             TestUtil.DocPackageFileContainsString(
                 @"<w:lsdException w:name=""Unresolved Mention"" w:semiHidden=""1"" w:unhideWhenUsed=""1"" />",
                 ArtifactsDir + "Styles.LatentStyles.docx", "styles.xml");
+        }
+
+        [Test]
+        public void LockStyle()
+        {
+            //ExStart:LockStyle
+            //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:Style.Locked
+            //ExSummary:Shows how to lock style.
+            Document doc = new Document();
+
+            Style styleHeading1 = doc.Styles[StyleIdentifier.Heading1];
+            if (!styleHeading1.Locked)            
+                styleHeading1.Locked = true;
+
+            doc.Save(ArtifactsDir + "Styles.LockStyle.docx");
+            //ExEnd:LockStyle
+
+            doc = new Document(ArtifactsDir + "Styles.LockStyle.docx");
+            Assert.IsTrue(doc.Styles[StyleIdentifier.Heading1].Locked);            
         }
     }
 }

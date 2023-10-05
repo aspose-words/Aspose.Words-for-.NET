@@ -30,6 +30,7 @@ using LoadOptions = Aspose.Words.Loading.LoadOptions;
 using System.Data.OleDb;
 using Aspose.Words.Math;
 using System.Threading.Tasks;
+using System.Threading;
 #if NET48 || JAVA
 using Aspose.BarCode.BarCodeRecognition;
 #elif NET5_0_OR_GREATER
@@ -2421,7 +2422,10 @@ namespace ApiExamples
 
         [Test]        
         public void FieldCitation()
-        {
+        {            
+            var oldCulture = Thread.CurrentThread.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-nz", false);
+
             //ExStart
             //ExFor:FieldCitation
             //ExFor:FieldCitation.AnotherSourceTag
@@ -2530,6 +2534,8 @@ namespace ApiExamples
 
             TestUtil.VerifyField(FieldType.FieldBibliography, " BIBLIOGRAPHY ", 
                 "Cardholder, A. (2018). My Book, Vol. II. New York: Doe Co. Ltd.\rDoe, J. (2018). My Book, Vol I. London: Doe Co. Ltd.\r", fieldBibliography);
+
+            Thread.CurrentThread.CurrentCulture = oldCulture;
         }
 
         //ExStart
@@ -2538,13 +2544,18 @@ namespace ApiExamples
         //ExSummary:Shows how to override built-in styles or provide custom one.
         [Test] //ExSkip
         public void ChangeBibliographyStyles()
-        {            
+        {
+            var oldCulture = Thread.CurrentThread.CurrentCulture; //ExSkip
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-nz", false); //ExSkip
+
             Document doc = new Document(MyDir + "Bibliography.docx");
 
             doc.FieldOptions.BibliographyStylesProvider = new BibliographyStylesProvider();
             doc.UpdateFields();
 
             doc.Save(ArtifactsDir + "Field.ChangeBibliographyStyles.docx");
+
+            Thread.CurrentThread.CurrentCulture = oldCulture; //ExSkip
         }
         
         public class BibliographyStylesProvider : IBibliographyStylesProvider
@@ -4671,7 +4682,6 @@ namespace ApiExamples
             Assert.True(field.SuppressNonDelimiters);
         }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
         [Test]
         public void FieldDate()
         {
@@ -4740,7 +4750,6 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldDate, " DATE  \\l", DateTime.Now.ToShortDateString(), field);
             Assert.True(field.UseLastFormat);
         }
-#endif
 
         [Test]
         [Ignore("WORDSNET-17669")]

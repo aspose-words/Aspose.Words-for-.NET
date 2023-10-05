@@ -197,9 +197,9 @@ namespace ApiExamples
             //ExSummary:Shows how to set the rendering mode when saving documents with Windows Metafile images to other image formats. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
-            builder.InsertImage(Image.FromFile(ImageDir + "Windows MetaFile.wmf"));
-            
+
+            builder.InsertImage(ImageDir + "Windows MetaFile.wmf");
+
             // When we save the document as an image, we can pass a SaveOptions object to
             // determine how the saving operation will process Windows Metafiles in the document.
             // If we set the "RenderingMode" property to "MetafileRenderingMode.Vector",
