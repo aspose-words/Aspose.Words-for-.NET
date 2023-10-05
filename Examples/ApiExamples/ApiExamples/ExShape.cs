@@ -1030,8 +1030,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:WrapSide
             //ExFor:ShapeBase.WrapSide
-            //ExFor:NodeCollection
-            //ExFor:CompositeNode.InsertAfter(Node, Node)
+            //ExFor:NodeCollection            
             //ExFor:NodeCollection.ToArray
             //ExSummary:Shows how to replace all textbox shapes with image shapes.
             Document doc = new Document(MyDir + "Textboxes in drawing canvas.docx");

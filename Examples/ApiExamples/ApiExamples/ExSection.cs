@@ -134,8 +134,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Node.GetText
-            //ExFor:CompositeNode.RemoveAllChildren
-            //ExFor:CompositeNode.AppendChild
+            //ExFor:CompositeNode.RemoveAllChildren            
             //ExFor:Section
             //ExFor:Section.#ctor
             //ExFor:Section.PageSetup

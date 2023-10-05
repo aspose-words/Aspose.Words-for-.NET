@@ -54,8 +54,10 @@ namespace ApiExamples
         [Test]
         public void CreateSimpleDocument()
         {
-            //ExStart:CreateSimpleDocument
+            //ExStart:CreateSimpleDocument            
             //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:Document.#ctor()
+            //ExSummary:Shows how to create simple document.
             Document doc = new Document();
 
             // New Document objects by default come with the minimal set of nodes
