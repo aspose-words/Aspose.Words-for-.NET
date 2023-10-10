@@ -1518,14 +1518,15 @@ namespace ApiExamples
 
             seriesColl.Add("AW Series 1", new string[] { "AW Category 1", "AW Category 2" }, new double[] { 1, 2 });
 
-            ChartAxisTitle chartAxisTitle = chart.AxisX.Title;
-            chartAxisTitle.Text = "Categories";
-            chartAxisTitle.Show = true;
-            chartAxisTitle.Text = "Values";
-            chartAxisTitle.Show = true;
-            chartAxisTitle.Overlay = true;
-            chartAxisTitle.Font.Size = 12;
-            chartAxisTitle.Font.Color = Color.Blue;
+            ChartAxisTitle chartAxisXTitle = chart.AxisX.Title;
+            chartAxisXTitle.Text = "Categories";
+            chartAxisXTitle.Show = true;
+            ChartAxisTitle chartAxisYTitle = chart.AxisY.Title;
+            chartAxisYTitle.Text = "Values";
+            chartAxisYTitle.Show = true;
+            chartAxisYTitle.Overlay = true;
+            chartAxisYTitle.Font.Size = 12;
+            chartAxisYTitle.Font.Color = Color.Blue;
 
             doc.Save(ArtifactsDir + "Charts.ChartAxisTitle.docx");
             //ExEnd:ChartAxisTitle
