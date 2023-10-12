@@ -2881,8 +2881,7 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:MergeFieldImageDimension
-        //ExFor:MergeFieldImageDimension.#ctor
+        //ExFor:MergeFieldImageDimension        
         //ExFor:MergeFieldImageDimension.#ctor(Double)
         //ExFor:MergeFieldImageDimension.#ctor(Double,MergeFieldImageDimensionUnit)
         //ExFor:MergeFieldImageDimension.Unit

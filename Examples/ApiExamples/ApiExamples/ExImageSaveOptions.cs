@@ -177,7 +177,7 @@ namespace ApiExamples
                         
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             ShapeRenderer renderer = shape.GetShapeRenderer();
-            
+
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png)
             {
                 Resolution = 500, GraphicsQualityOptions = new GraphicsQualityOptions { UseTileFlipMode = true }
