@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.1401
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Docker", "Docker\Docker.csproj", "{4DE72EB4-1975-4D11-8B59-1BA32DF9C5BC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocsExamples", "DocsExamples\DocsExamples.csproj", "{6FD809AD-5AA9-4B7B-A4B0-FF8BFF217949}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentExplorer", "DocumentExplorer\DocumentExplorer.csproj", "{F0C4971F-4B12-45B4-856F-CC4FDCA416AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PluginsExamples", "PluginsExamples\PluginsExamples.csproj", "{7F2F976B-B991-4903-9B04-0367FE54E30C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,14 @@ Global
 		{F0C4971F-4B12-45B4-856F-CC4FDCA416AD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F0C4971F-4B12-45B4-856F-CC4FDCA416AD}.Release|x64.ActiveCfg = Release|Any CPU
 		{F0C4971F-4B12-45B4-856F-CC4FDCA416AD}.Release|x64.Build.0 = Release|Any CPU
+		{7F2F976B-B991-4903-9B04-0367FE54E30C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F2F976B-B991-4903-9B04-0367FE54E30C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F2F976B-B991-4903-9B04-0367FE54E30C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7F2F976B-B991-4903-9B04-0367FE54E30C}.Debug|x64.Build.0 = Debug|Any CPU
+		{7F2F976B-B991-4903-9B04-0367FE54E30C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F2F976B-B991-4903-9B04-0367FE54E30C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F2F976B-B991-4903-9B04-0367FE54E30C}.Release|x64.ActiveCfg = Release|Any CPU
+		{7F2F976B-B991-4903-9B04-0367FE54E30C}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
