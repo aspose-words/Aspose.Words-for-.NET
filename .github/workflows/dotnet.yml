@@ -21,7 +21,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore ./Examples/ApiExamples/ApiExamples/ApiExamples.csproj
     - name: Test
-      run: dotnet test --no-build --verbosity normal --results-directory "TestResults" ./Examples/ApiExamples/ApiExamples/ApiExamples.csproj
+      run: dotnet test --no-build --verbosity normal --results-directory "./Examples/ApiExamples/ApiExamples/TestResults/" ./Examples/ApiExamples/ApiExamples/ApiExamples.csproj
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v3
       with:
