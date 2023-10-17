@@ -124,11 +124,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="23.8.1" />
-    <PackageReference Include="Aspose.Page" Version="23.8.0" />
-    <PackageReference Include="Aspose.PDF" Version="23.8.0" />
-    <PackageReference Include="Aspose.Words" Version="23.9.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.9.0" />
+    <PackageReference Include="Aspose.BarCode" Version="23.9.0" />
+    <PackageReference Include="Aspose.Page" Version="23.10.0" />
+    <PackageReference Include="Aspose.PDF" Version="23.9.0" />
+    <PackageReference Include="Aspose.Words" Version="23.10.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.10.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.2.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
