@@ -1,0 +1,15 @@
+name: Run API tests
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+    - name: Build ENV
+      run: |
+        mkdir ./Examples/Data/License/
+        echo "${{ secrets.API_LICENSE }}" | base64 -d > ./Examples/Data/License/Aspose.Total.NET.lic
+        echo ./Examples/Data/License/Aspose.Total.NET.lic
