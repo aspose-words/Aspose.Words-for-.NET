@@ -16,7 +16,9 @@ jobs:
         fileName: 'Aspose.Total.NET.lic'
         fileDir: './Examples/Data/License/'
         encodedString: ${{ secrets.API_LICENSE }}
-    - name: Print license
-      run: |
-        cd ./Examples/Data/License/
-        more Aspose.Total.NET.lic
+    - name: Restore dependencies
+      run: dotnet restore ./Examples/ApiExamples/ApiExamples/ApiExamples.csproj
+    - name: Build
+      run: dotnet build --no-restore ./Examples/ApiExamples/ApiExamples/ApiExamples.csproj
+    - name: Test
+      run: dotnet test --no-build --verbosity normal ./Examples/ApiExamples/ApiExamples/ApiExamples.csproj
