@@ -9,7 +9,12 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
     - name: Build ENV
-      run: |
-        mkdir ./Examples/Data/License/
-        echo "${{ secrets.API_LICENSE }}" | base64 -d > ./Examples/Data/License/Aspose.Total.NET.lic
-        echo ./Examples/Data/License/Aspose.Total.NET.lic
+      run: mkdir ./Examples/Data/License/
+    - name: Add license
+      uses: timheuer/base64-to-file@v1.2
+      with:
+        fileName: 'Aspose.Total.NET.lic'
+        fileDir: './Examples/Data/License/'
+        encodedString: ${{ secrets.API_LICENSE }}
+    - name: Print license
+      run: print ./Examples/Data/License/Aspose.Total.NET.lic
