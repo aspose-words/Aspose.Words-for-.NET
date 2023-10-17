@@ -17,4 +17,4 @@ jobs:
         fileDir: './Examples/Data/License/'
         encodedString: ${{ secrets.API_LICENSE }}
     - name: Print license
-      run: print ./Examples/Data/License/Aspose.Total.NET.lic
+      run: more ./Examples/Data/License/Aspose.Total.NET.lic
