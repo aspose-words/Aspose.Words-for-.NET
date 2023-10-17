@@ -31,14 +31,12 @@ System.Drawing.Image;
 SkiaSharp.SKBitmap;
 using SkiaSharp;
 #endif
-#if NET48 || NET5_0_OR_GREATER || JAVA
 using Aspose.Pdf;
 using Aspose.Pdf.Annotations;
 using Aspose.Pdf.Facades;
 using Aspose.Pdf.Forms;
 using Aspose.Pdf.Operators;
 using Aspose.Pdf.Text;
-#endif
 
 namespace ApiExamples
 {
@@ -66,7 +64,7 @@ namespace ApiExamples
                 // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
                 // to modify how that method converts the document to .PDF.
                 PdfSaveOptions options = new PdfSaveOptions();
-                
+
                 // Set the "PageIndex" to "1" to render a portion of the document starting from the second page.
                 options.PageSet = new PageSet(1);
 
@@ -75,7 +73,6 @@ namespace ApiExamples
             }
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.OnePage.pdf");
 
             Assert.AreEqual(1, pdfDocument.Pages.Count);
@@ -84,7 +81,6 @@ namespace ApiExamples
             pdfDocument.Pages.Accept(textFragmentAbsorber);
 
             Assert.AreEqual("Page 2.", textFragmentAbsorber.Text);
-#endif
         }
 
         [Test]
@@ -119,7 +115,7 @@ namespace ApiExamples
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.SaveFormat = SaveFormat.Pdf;
-            
+
             // The output PDF document will contain an outline, which is a table of contents that lists headings in the document body.
             // Clicking on an entry in this outline will take us to the location of its respective heading.
             // Set the "HeadingsOutlineLevels" property to "2" to exclude all headings whose levels are above 2 from the outline.
@@ -129,14 +125,12 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.HeadingsOutlineLevels.pdf", saveOptions);
             //ExEnd
 
-            #if NET48 || NET5_0_OR_GREATER || JAVA
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "PdfSaveOptions.HeadingsOutlineLevels.pdf");
 
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
-            Assert.AreEqual(3, bookmarks.Count);
-            #endif
+            Assert.AreEqual(3, bookmarks.Count);            
         }
 
         [TestCase(false)]
@@ -171,7 +165,7 @@ namespace ApiExamples
             // Set the "HeadingsOutlineLevels" property to "5" to include all headings of levels 5 and below in the outline.
             saveOptions.OutlineOptions.HeadingsOutlineLevels = 5;
 
-            // This document contains headings of levels 1 and 5, and no headings with levels of 2, 3, and 4. 
+            // This document contains headings of levels 1 and 5, and no headings with levels of 2, 3, and 4.
             // The output PDF document will treat outline levels 2, 3, and 4 as "missing".
             // Set the "CreateMissingOutlineLevels" property to "true" to include all missing levels in the outline,
             // leaving blank outline entries since there are no usable headings.
@@ -182,14 +176,12 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "PdfSaveOptions.CreateMissingOutlineLevels.pdf");
 
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
             Assert.AreEqual(createMissingOutlineLevels ? 6 : 3, bookmarks.Count);
-#endif
         }
 
         [TestCase(false)]
@@ -236,7 +228,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.TableHeadingOutlines.pdf", pdfSaveOptions);
             //ExEnd
 
-            #if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.TableHeadingOutlines.pdf");
 
             if (createOutlinesForHeadingsInTables)
@@ -252,7 +243,6 @@ namespace ApiExamples
             Assert.AreEqual("Customers", tableAbsorber.TableList[0].RowList[0].CellList[0].TextFragments[1].Text);
             Assert.AreEqual("John Doe", tableAbsorber.TableList[0].RowList[1].CellList[0].TextFragments[1].Text);
             Assert.AreEqual("Jane Doe", tableAbsorber.TableList[0].RowList[2].CellList[0].TextFragments[1].Text);
-#endif
         }
 
         [Test]
@@ -306,16 +296,15 @@ namespace ApiExamples
             // If an outline entry has subsequent entries of a higher level inbetween itself and the next entry of the same or lower level,
             // an arrow will appear to the left of the entry. This entry is the "owner" of several such "sub-entries".
             // In our document, the outline entries from the 5th heading level are sub-entries of the second 4th level outline entry,
-            // the 4th and 5th heading level entries are sub-entries of the second 3rd level entry, and so on. 
+            // the 4th and 5th heading level entries are sub-entries of the second 3rd level entry, and so on.
             // In the outline, we can click on the arrow of the "owner" entry to collapse/expand all its sub-entries.
             // Set the "ExpandedOutlineLevels" property to "2" to automatically expand all heading level 2 and lower outline entries
-            // and collapse all level and 3 and higher entries when we open the document. 
+            // and collapse all level and 3 and higher entries when we open the document.
             options.OutlineOptions.ExpandedOutlineLevels = 2;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExpandedOutlineLevels.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ExpandedOutlineLevels.pdf");
 
             Assert.AreEqual(1, pdfDocument.Outlines.Count);
@@ -329,7 +318,6 @@ namespace ApiExamples
 
             Assert.True(pdfDocument.Outlines[1][2].Open);
             Assert.AreEqual(2, pdfDocument.Outlines[1][2].Level);
-#endif
         }
 
         [TestCase(false)]
@@ -363,21 +351,19 @@ namespace ApiExamples
             // fields and update them before we save it as a PDF. This will make sure that all the fields will display
             // the most accurate values in the PDF.
             options.UpdateFields = updateFields;
-            
+
             // We can clone PdfSaveOptions objects.
             Assert.AreNotSame(options, options.Clone());
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.UpdateFields.pdf", options);
             //ExEnd
 
-            #if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.UpdateFields.pdf");
 
             TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
             pdfDocument.Pages.Accept(textFragmentAbsorber);
 
             Assert.AreEqual(updateFields ? "Page 1 of 2" : "Page  of ", textFragmentAbsorber.TextFragments[1].Text);
-#endif
         }
 
         [TestCase(false)]
@@ -407,7 +393,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.PreserveFormFields.pdf", pdfOptions);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PreserveFormFields.pdf");
 
             Assert.AreEqual(1, pdfDocument.Pages.Count);
@@ -425,7 +410,7 @@ namespace ApiExamples
                 Assert.AreEqual(1, pdfDocument.Form.Count);
 
                 ComboBoxField field = (ComboBoxField)form.Fields[0];
-                
+
                 Assert.AreEqual("MyComboBox", field.FullName);
                 Assert.AreEqual(3, field.Options.Count);
                 Assert.AreEqual("Apple", field.Value);
@@ -441,7 +426,6 @@ namespace ApiExamples
 
                 Assert.AreEqual(0, pdfDocument.Form.Count);
             }
-#endif
         }
 
         [TestCase(PdfCompliance.PdfA2u)]
@@ -480,7 +464,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.Compliance.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.Compliance.pdf");
 
             switch (pdfCompliance)
@@ -510,7 +493,6 @@ namespace ApiExamples
                     Assert.AreEqual("2.0", pdfDocument.Version);
                     break;
             }
-#endif
         }
 
         [TestCase(PdfTextCompression.None)]
@@ -593,7 +575,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf", pdfSaveOptions);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf");
             Stream pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[1].ToStream();
 
@@ -609,7 +590,7 @@ namespace ApiExamples
                 switch (pdfImageCompression)
                 {
                     case PdfImageCompression.Auto:
-                        Assert.That(50000, 
+                        Assert.That(50000,
                             Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length));
 #if NET48
                         Assert.Throws<ArgumentException>(() => { TestUtil.VerifyImage(400, 400, pdfDocImageStream); });
@@ -618,13 +599,12 @@ namespace ApiExamples
 #endif
                         break;
                     case PdfImageCompression.Jpeg:
-                        Assert.That(42000, 
+                        Assert.That(42000,
                             Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length));
                         TestUtil.VerifyImage(400, 400, pdfDocImageStream);
                         break;
                 }
             }
-#endif
                 }
 
         [TestCase(PdfImageColorSpaceExportMode.Auto)]
@@ -659,7 +639,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ImageColorSpaceExportMode.pdf", pdfSaveOptions);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageColorSpaceExportMode.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
@@ -692,7 +671,6 @@ namespace ApiExamples
             Assert.AreEqual(400, pdfDocImage.Width);
             Assert.AreEqual(400, pdfDocImage.Height);
             Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
-#endif
         }
 
         [Test]
@@ -729,13 +707,11 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.LowerResolution.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.Default.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
             Assert.That(300000, Is.LessThan(pdfDocImage.ToStream().Length));
             Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
-#endif
         }
 
         [TestCase(ColorMode.Grayscale)]
@@ -755,11 +731,10 @@ namespace ApiExamples
             // The size of the output document may be larger with this setting.
             // Set the "ColorMode" property to "Normal" to render all images in color.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions { ColorMode = colorMode };
-            
+
             doc.Save(ArtifactsDir + "PdfSaveOptions.ColorRendering.pdf", pdfSaveOptions);
             //ExEnd
 
-            #if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ColorRendering.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
@@ -774,7 +749,6 @@ namespace ApiExamples
                     Assert.AreEqual(ColorType.Grayscale, pdfDocImage.GetColorType());
                     break;
             }
-            #endif
         }
 
         [TestCase(false)]
@@ -800,12 +774,10 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.DocTitle.pdf", pdfSaveOptions);
             //ExEnd
 
-            #if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DocTitle.pdf");
 
             Assert.AreEqual(displayDocTitle, pdfDocument.DisplayDocTitle);
             Assert.AreEqual("Windows bar pdf title", pdfDocument.Info.Title);
-            #endif
         }
 
         [TestCase(false)]
@@ -841,7 +813,6 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EscapedUri.pdf");
 
             Page page = pdfDocument.Pages[1];
@@ -850,7 +821,6 @@ namespace ApiExamples
             GoToURIAction action = (GoToURIAction)linkAnnot.Action;
 
             Assert.AreEqual(result, action.URI);
-#endif
         }
 
         [TestCase(false)]
@@ -887,7 +857,6 @@ namespace ApiExamples
                     "<</Type/Border/S/S/W 0>>/A<</Type/Action/S/URI/URI(https://www.google.com/search?q=%20aspose)>>>>",
                     ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf");
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.OpenHyperlinksInNewWindow.pdf");
 
@@ -896,7 +865,6 @@ namespace ApiExamples
 
             Assert.AreEqual(openHyperlinksInNewWindow ? typeof(JavascriptAction) : typeof(GoToURIAction),
                 linkAnnot.Action.GetType());
-#endif
         }
 
         //ExStart
@@ -933,7 +901,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.HandleBinaryRasterWarnings.pdf", saveOptions);
 
             Assert.AreEqual(1, callback.Warnings.Count);
-            Assert.AreEqual("'R2_XORPEN' binary raster operation is partly supported.",
+            Assert.AreEqual("'R2_XORPEN' binary raster operation is not supported.",
                 callback.Warnings[0].Description);
         }
 
@@ -992,7 +960,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.HeaderFooterBookmarksExportMode.pdf");
             string inputDocLocaleName = new CultureInfo(doc.Styles.DefaultFont.LocaleId).Name;
@@ -1029,7 +996,6 @@ namespace ApiExamples
                     Assert.AreEqual("2 XYZ 85 48 0", outlineItemCollection[4].Destination.ToString());
                     break;
             }
-#endif
         }
 
         [Test]
@@ -1059,38 +1025,38 @@ namespace ApiExamples
 
             internal WarningInfoCollection SaveWarnings = new WarningInfoCollection();
 		}
-		
+
 		[TestCase(false)]
         [TestCase(true)]
-        public void FontsScaledToMetafileSize(bool scaleWmfFonts)
+        public void EmulateRenderingToSizeOnPage(bool renderToSize)
         {
-            //ExStart
-            //ExFor:MetafileRenderingOptions.ScaleWmfFontsToMetafileSize
-            //ExSummary:Shows how to WMF fonts scaling according to metafile size on the page.
+            //ExStart            
+            //ExFor:MetafileRenderingOptions.EmulateRenderingToSizeOnPage
+            //ExFor:MetafileRenderingOptions.EmulateRenderingToSizeOnPageResolution
+            //ExSummary:Shows how to display of the metafile according to the size on page.
             Document doc = new Document(MyDir + "WMF with text.docx");
 
             // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
 
-            // Set the "ScaleWmfFontsToMetafileSize" property to "true" to scale fonts
-            // that format text within WMF images according to the size of the metafile on the page.
-            // Set the "ScaleWmfFontsToMetafileSize" property to "false" to
-            // preserve the default scale of these fonts.
-            saveOptions.MetafileRenderingOptions.EmulateRenderingToSizeOnPage = scaleWmfFonts;
+            // Set the "EmulateRenderingToSizeOnPage" property to "true"
+            // to emulate rendering according to the metafile size on page.
+            // Set the "EmulateRenderingToSizeOnPage" property to "false"
+            // to emulate metafile rendering to its default size in pixels.
+            saveOptions.MetafileRenderingOptions.EmulateRenderingToSizeOnPage = renderToSize;
+            saveOptions.MetafileRenderingOptions.EmulateRenderingToSizeOnPageResolution = 50;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "PdfSaveOptions.EmulateRenderingToSizeOnPage.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.FontsScaledToMetafileSize.pdf");
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmulateRenderingToSizeOnPage.pdf");
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
 
             pdfDocument.Pages[1].Accept(textAbsorber);
             Rectangle textFragmentRectangle = textAbsorber.TextFragments[3].Rectangle;
 
-            Assert.AreEqual(scaleWmfFonts ? 1.589d : 5.045d, textFragmentRectangle.Width, 0.001d);
-#endif
+            Assert.AreEqual(renderToSize ? 1.585d : 5.045d, textFragmentRectangle.Width, 0.001d);
         }
 
         [TestCase(false)]
@@ -1141,7 +1107,6 @@ namespace ApiExamples
             FontSettings.DefaultInstance.SetFontsSources(originalFontsSources);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf");
 
             Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
@@ -1151,7 +1116,6 @@ namespace ApiExamples
 
             Assert.AreEqual("Arvo", pdfDocFonts[1].FontName);
             Assert.AreNotEqual(embedFullFonts, pdfDocFonts[1].IsSubset);
-#endif
         }
 
         [TestCase(PdfFontEmbeddingMode.EmbedAll)]
@@ -1195,24 +1159,22 @@ namespace ApiExamples
                     Assert.That(480000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
                     break;
                 case PdfFontEmbeddingMode.EmbedNone:
-                    Assert.That(4255, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
+                    Assert.That(4258, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
                     break;
             }
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf");
 
             Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
 
             Assert.AreEqual("ArialMT", pdfDocFonts[0].FontName);
-            Assert.AreEqual(pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedAll, 
+            Assert.AreEqual(pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedAll,
                 pdfDocFonts[0].IsEmbedded);
 
             Assert.AreEqual("CourierNewPSMT", pdfDocFonts[1].FontName);
-            Assert.AreEqual(pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedAll || pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedNonstandard, 
+            Assert.AreEqual(pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedAll || pdfFontEmbeddingMode == PdfFontEmbeddingMode.EmbedNonstandard,
                 pdfDocFonts[1].IsEmbedded);
-#endif
         }
 
         [TestCase(false)]
@@ -1247,7 +1209,6 @@ namespace ApiExamples
                 Assert.That(30000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf").Length));
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf");
 
             Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
@@ -1265,7 +1226,6 @@ namespace ApiExamples
 
             Assert.AreNotEqual(useCoreFonts, pdfDocFonts[0].IsEmbedded);
             Assert.AreNotEqual(useCoreFonts, pdfDocFonts[1].IsEmbedded);
-#endif
         }
 
         [TestCase(false)]
@@ -1292,7 +1252,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf");
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
@@ -1300,7 +1259,7 @@ namespace ApiExamples
             pdfDocument.Pages[1].Accept(textAbsorber);
 
             SetGlyphsPositionShowText tjOperator =
-                (SetGlyphsPositionShowText) textAbsorber.TextFragments[1].Page.Contents[85];
+                (SetGlyphsPositionShowText) textAbsorber.TextFragments[1].Page.Contents[83];
 
             if (applyAdditionalTextPositioning)
             {
@@ -1316,7 +1275,6 @@ namespace ApiExamples
                     Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length));
                 Assert.AreEqual("[(Samsta) -1 (g) 1 (, 10. November) -1 ( ) 1 (2) -1 (018)] TJ", tjOperator.ToString());
             }
-#endif
         }
 
         [TestCase(false, Category = "SkipMono")]
@@ -1350,7 +1308,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.SaveAsPdfBookFold.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
 
@@ -1380,7 +1337,6 @@ namespace ApiExamples
                 Assert.True(textAbsorber.Text.IndexOf("Heading #8", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #9", StringComparison.Ordinal));
                 Assert.True(textAbsorber.Text.IndexOf("Heading #9", StringComparison.Ordinal) < textAbsorber.Text.IndexOf("Heading #10", StringComparison.Ordinal));
             }
-#endif
         }
 
         [Test]
@@ -1410,12 +1366,10 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ZoomBehaviour.pdf");
             GoToAction action = (GoToAction)pdfDocument.OpenAction;
 
             Assert.AreEqual(0.25d, (action.Destination as XYZExplicitDestination).Zoom);
-#endif
         }
 
         [TestCase(PdfPageMode.FullScreen)]
@@ -1452,7 +1406,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PageMode.pdf", options);
             //ExEnd
-            
+
             string docLocaleName = new CultureInfo(doc.Styles.DefaultFont.LocaleId).Name;
 
             switch (pageMode)
@@ -1484,7 +1438,6 @@ namespace ApiExamples
                     break;
             }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PageMode.pdf");
 
             switch (pageMode)
@@ -1506,7 +1459,6 @@ namespace ApiExamples
                     Assert.AreEqual(Aspose.Pdf.PageMode.UseAttachments, pdfDocument.PageMode);
                     break;
             }
-#endif
         }
 
         [TestCase(false)]
@@ -1565,7 +1517,6 @@ namespace ApiExamples
                             ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf"));
             }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.NoteHyperlinks.pdf");
             Page page = pdfDocument.Pages[1];
             AnnotationSelector annotationSelector = new AnnotationSelector(new LinkAnnotation(page, Rectangle.Trivial));
@@ -1591,7 +1542,6 @@ namespace ApiExamples
             {
                 Assert.AreEqual(0, annotationSelector.Selected.Count);
             }
-#endif
         }
 
         [TestCase(PdfCustomPropertiesExport.None)]
@@ -1612,7 +1562,7 @@ namespace ApiExamples
             PdfSaveOptions options = new PdfSaveOptions();
 
             // Set the "CustomPropertiesExport" property to "PdfCustomPropertiesExport.None" to discard
-            // custom document properties as we save the document to .PDF. 
+            // custom document properties as we save the document to .PDF.
             // Set the "CustomPropertiesExport" property to "PdfCustomPropertiesExport.Standard"
             // to preserve custom properties within the output PDF document.
             // Set the "CustomPropertiesExport" property to "PdfCustomPropertiesExport.Metadata"
@@ -1649,12 +1599,11 @@ namespace ApiExamples
                     break;
             }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.CustomPropertiesExport.pdf");
 
             Assert.AreEqual("Aspose.Words", pdfDocument.Info.Creator);
             Assert.True(pdfDocument.Info.Producer.StartsWith("Aspose.Words"));
-            
+
             switch (pdfCustomPropertiesExportMode)
             {
                 case PdfCustomPropertiesExport.None:
@@ -1675,7 +1624,6 @@ namespace ApiExamples
                     Assert.AreEqual("My value", pdfDocument.Info["Company"]);
                     break;
             }
-#endif
         }
 
         [TestCase(DmlEffectsRenderingMode.None)]
@@ -1708,7 +1656,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DrawingMLEffects.pdf");
 
@@ -1735,7 +1682,6 @@ namespace ApiExamples
                     Assert.AreEqual(4, tableAbsorber.TableList.Count);
                     break;
             }
-#endif
         }
 
         [TestCase(DmlRenderingMode.Fallback)]
@@ -1770,12 +1716,11 @@ namespace ApiExamples
                     break;
                 case DmlRenderingMode.Fallback:
                     TestUtil.FileContainsString(
-                        "<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R/FAAABE 14 0 R>>/ExtGState<</GS1 11 0 R/GS2 12 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                        "<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 612 792]/Resources<</Font<</FAAAAI 8 0 R/FAAABE 14 0 R>>/ExtGState<</GS1 11 0 R/GS2 12 0 R/GS3 17 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
                     break;
             }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DrawingMLFallback.pdf");
 
@@ -1794,7 +1739,6 @@ namespace ApiExamples
                     Assert.AreEqual(15, tableAbsorber.TableList.Count);
                     break;
             }
-#endif
         }
 
         [TestCase(false)]
@@ -1927,13 +1871,13 @@ namespace ApiExamples
         public void Dml3DEffectsRenderingModeTest()
         {
             Document doc = new Document(MyDir + "DrawingML shape 3D effects.docx");
-            
+
             RenderCallback warningCallback = new RenderCallback();
             doc.WarningCallback = warningCallback;
-            
+
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced;
-            
+
             doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
 
             Assert.AreEqual(38, warningCallback.Count);
@@ -2081,14 +2025,14 @@ namespace ApiExamples
 
             // Configure the "DigitalSignatureDetails" object of the "SaveOptions" object to
             // digitally sign the document as we render it with the "Save" method.
-            DateTime signingTime = DateTime.Now;
+            DateTime signingTime = new DateTime(2015, 7, 20);
             options.DigitalSignatureDetails =
                 new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "My Office", signingTime);
             options.DigitalSignatureDetails.HashAlgorithm = PdfDigitalSignatureHashAlgorithm.RipeMD160;
 
             Assert.AreEqual("Test Signing", options.DigitalSignatureDetails.Reason);
             Assert.AreEqual("My Office", options.DigitalSignatureDetails.Location);
-            Assert.AreEqual(signingTime.ToUniversalTime(), options.DigitalSignatureDetails.SignatureDate.ToUniversalTime());
+            Assert.AreEqual(signingTime, options.DigitalSignatureDetails.SignatureDate.ToLocalTime());
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf", options);
             //ExEnd
@@ -2099,7 +2043,6 @@ namespace ApiExamples
             Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf")
                 .HasDigitalSignature);
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf");
 
             Assert.True(pdfDocument.Form.SignaturesExist);
@@ -2109,13 +2052,12 @@ namespace ApiExamples
             Assert.AreEqual("AsposeDigitalSignature", signatureField.FullName);
             Assert.AreEqual("AsposeDigitalSignature", signatureField.PartialName);
             Assert.AreEqual(typeof(Aspose.Pdf.Forms.PKCS7Detached), signatureField.Signature.GetType());
-            Assert.AreEqual(DateTime.Today, signatureField.Signature.Date.Date);
+            Assert.AreEqual(signingTime, signatureField.Signature.Date.ToLocalTime());
             Assert.AreEqual("þÿ\0M\0o\0r\0z\0a\0l\0.\0M\0e", signatureField.Signature.Authority);
             Assert.AreEqual("þÿ\0M\0y\0 \0O\0f\0f\0i\0c\0e", signatureField.Signature.Location);
             Assert.AreEqual("þÿ\0T\0e\0s\0t\0 \0S\0i\0g\0n\0i\0n\0g", signatureField.Signature.Reason);
-#endif
         }
-        
+
         [Test]
         public void PdfDigitalSignatureTimestamp()
         {
@@ -2138,7 +2080,7 @@ namespace ApiExamples
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
 
-            // Create a digital signature and assign it to our SaveOptions object to sign the document when we save it to PDF. 
+            // Create a digital signature and assign it to our SaveOptions object to sign the document when we save it to PDF.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
             options.DigitalSignatureDetails = new PdfDigitalSignatureDetails(certificateHolder, "Test Signing", "Aspose Office", DateTime.Now);
 
@@ -2163,10 +2105,9 @@ namespace ApiExamples
             //ExEnd
 
             Assert.False(FileFormatUtil.DetectFileFormat(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf").HasDigitalSignature);
-            TestUtil.FileContainsString("<</Type/Annot/Subtype/Widget/Rect[0 0 0 0]/FT/Sig/T", 
+            TestUtil.FileContainsString("<</Type/Annot/Subtype/Widget/Rect[0 0 0 0]/FT/Sig/T",
             ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignatureTimestamp.pdf");
 
             Assert.True(pdfDocument.Form.SignaturesExist);
@@ -2181,7 +2122,6 @@ namespace ApiExamples
             Assert.AreEqual("þÿ\0A\0s\0p\0o\0s\0e\0 \0O\0f\0f\0i\0c\0e", signatureField.Signature.Location);
             Assert.AreEqual("þÿ\0T\0e\0s\0t\0 \0S\0i\0g\0n\0i\0n\0g", signatureField.Signature.Reason);
             Assert.Null(signatureField.Signature.TimestampSettings);
-#endif
         }
 
         [TestCase(EmfPlusDualRenderingMode.Emf)]
@@ -2216,7 +2156,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument =
                 new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
 
@@ -2226,11 +2165,10 @@ namespace ApiExamples
                 case EmfPlusDualRenderingMode.EmfPlusWithFallback:
                 case EmfPlusDualRenderingMode.EmfPlus:
                     Assert.AreEqual(0, pdfDocument.Pages[1].Resources.Images.Count);
-                    TestUtil.FileContainsString("<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R/FAAABG 16 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                    TestUtil.FileContainsString("<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R/FAAABF 15 0 R/FAAACB 21 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
                     break;
             }
-#endif
         }
 
         [Test]
@@ -2264,19 +2202,17 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.EncryptionPermissions.pdf", saveOptions);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument;
 
-            Assert.Throws<InvalidPasswordException>(() => 
+            Assert.Throws<InvalidPasswordException>(() =>
                 pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EncryptionPermissions.pdf"));
 
             pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EncryptionPermissions.pdf", "password");
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
 
             pdfDocument.Pages[1].Accept(textAbsorber);
-            
+
             Assert.AreEqual("Hello world!", textAbsorber.Text);
-#endif
         }
 
         [TestCase(NumeralFormat.ArabicIndic)]
@@ -2313,7 +2249,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.SetNumeralFormat.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.SetNumeralFormat.pdf");
             TextFragmentAbsorber textAbsorber = new TextFragmentAbsorber();
 
@@ -2331,7 +2266,6 @@ namespace ApiExamples
                     Assert.AreEqual("۱۰۰ ,۵۰ ,۱۰ ,۹ ,۸ ,۷ ,۶ ,۵ ,۴ ,۳ ,۲ ,۱", textAbsorber.Text);
                     break;
             }
-#endif
         }
 
         [Test]
@@ -2372,7 +2306,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExportPageSet.All.pdf", options);
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ExportPageSet.Even.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             pdfDocument.Pages.Accept(textAbsorber);
@@ -2397,7 +2330,6 @@ namespace ApiExamples
                             "Page 3 (odd)\r\n" +
                             "Page 4 (even)\r\n" +
                             "Page 5 (odd)", textAbsorber.Text);
-#endif
         }
 
         [Test]
@@ -2450,7 +2382,7 @@ namespace ApiExamples
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.CacheBackgroundGraphics = true;
-            
+
             doc.Save(ArtifactsDir + "PdfSaveOptions.CacheBackgroundGraphics.pdf", saveOptions);
 
             long asposeToPdfSize = new FileInfo(ArtifactsDir + "PdfSaveOptions.CacheBackgroundGraphics.pdf").Length;

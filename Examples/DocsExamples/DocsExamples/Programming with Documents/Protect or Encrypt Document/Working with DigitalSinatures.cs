@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
@@ -12,12 +12,13 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         [Test]
         public void SignDocument()
         {
-            //ExStart:SingDocument
+            //ExStart:SignDocument
+            //GistId:bdc15a6de6b25d9d4e66f2ce918fc01b
             CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
             
             DigitalSignatureUtil.Sign(MyDir + "Digitally signed.docx", ArtifactsDir + "Document.Signed.docx",
                 certHolder);
-            //ExEnd:SingDocument
+            //ExEnd:SignDocument
         }
 
         [Test]
@@ -103,15 +104,16 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         [Test]
         public void CreateNewSignatureLineAndSetProviderId()
         {
-            //ExStart:CreateNewSignatureLineAndSetProviderID
+            //ExStart:CreateNewSignatureLineAndSetProviderId
+            //GistId:bdc15a6de6b25d9d4e66f2ce918fc01b
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             SignatureLineOptions signatureLineOptions = new SignatureLineOptions
             {
-                Signer = "vderyushev",
-                SignerTitle = "QA",
-                Email = "vderyushev@aspose.com",
+                Signer = "yourname",
+                SignerTitle = "Worker",
+                Email = "yourname@aspose.com",
                 ShowDate = true,
                 DefaultInstructions = false,
                 Instructions = "Please sign here.",
@@ -127,7 +129,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
             {
                 SignatureLineId = signatureLine.Id,
                 ProviderId = signatureLine.ProviderId,
-                Comments = "Document was signed by vderyushev",
+                Comments = "Document was signed by Aspose",
                 SignTime = DateTime.Now
             };
 
@@ -135,7 +137,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
 
             DigitalSignatureUtil.Sign(ArtifactsDir + "SignDocuments.SignatureLineProviderId.docx", 
                 ArtifactsDir + "SignDocuments.CreateNewSignatureLineAndSetProviderId.docx", certHolder, signOptions);
-            //ExEnd:CreateNewSignatureLineAndSetProviderID
+            //ExEnd:CreateNewSignatureLineAndSetProviderId
         }
 
         [Test]
@@ -156,6 +158,49 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
                 Console.WriteLine();
             }
             //ExEnd:AccessAndVerifySignature
+        }
+
+        [Test]
+        public void RemoveSignatures()
+        {
+            //ExStart:RemoveSignatures
+            //GistId:bdc15a6de6b25d9d4e66f2ce918fc01b
+            // There are two ways of using the DigitalSignatureUtil class to remove digital signatures
+            // from a signed document by saving an unsigned copy of it somewhere else in the local file system.
+            // 1 - Determine the locations of both the signed document and the unsigned copy by filename strings:
+            DigitalSignatureUtil.RemoveAllSignatures(MyDir + "Digitally signed.docx",
+                ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx");
+
+            // 2 - Determine the locations of both the signed document and the unsigned copy by file streams:
+            using (Stream streamIn = new FileStream(MyDir + "Digitally signed.docx", FileMode.Open))
+            {
+                using (Stream streamOut = new FileStream(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx", FileMode.Create))
+                {
+                    DigitalSignatureUtil.RemoveAllSignatures(streamIn, streamOut);
+                }
+            }
+
+            // Verify that both our output documents have no digital signatures.
+            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx"), Is.Empty);
+            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx"), Is.Empty);
+            //ExEnd:RemoveSignatures
+        }
+
+        [Test]
+        public void SignatureValue()
+        {
+            //ExStart:SignatureValue
+            //GistId:bdc15a6de6b25d9d4e66f2ce918fc01b
+            Document doc = new Document(MyDir + "Digitally signed.docx");
+
+            foreach (DigitalSignature digitalSignature in doc.DigitalSignatures)
+            {
+                string signatureValue = Convert.ToBase64String(digitalSignature.SignatureValue);
+                Assert.AreEqual("K1cVLLg2kbJRAzT5WK+m++G8eEO+l7S+5ENdjMxxTXkFzGUfvwxREuJdSFj9AbD" +
+                    "MhnGvDURv9KEhC25DDF1al8NRVR71TF3CjHVZXpYu7edQS5/yLw/k5CiFZzCp1+MmhOdYPcVO+Fm" +
+                    "+9fKr2iNLeyYB+fgEeZHfTqTFM2WwAqo=", signatureValue);
+            }
+            //ExEnd:SignatureValue
         }
     }
 }

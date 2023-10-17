@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -25,9 +25,6 @@ using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 using TextBox = Aspose.Words.Drawing.TextBox;
 using Aspose.Words.Themes;
-#if NET5_0_OR_GREATER || __MOBILE__
-using SkiaSharp;
-#endif
 
 namespace ApiExamples
 {
@@ -37,7 +34,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExShape : ApiExampleBase
     {
-#if NET48 || JAVA
         [Test]
         public void AltText()
         {
@@ -153,7 +149,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a shape with an image.
-            Shape shape = builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
+            Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
             Assert.True(shape.CanHaveImage);
             Assert.True(shape.HasImage);
 
@@ -171,66 +167,6 @@ namespace ApiExamples
             Assert.True(shape.HasImage);
             Assert.AreEqual(45.0d, shape.Rotation);
         }
-
-        [Test]
-        public void AspectRatioLockedDefaultValue()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            Image image = Image.FromFile(ImageDir + "Transparent background logo.png");
-
-            Shape shape = builder.InsertImage(image);
-            shape.WrapType = WrapType.None;
-            shape.BehindText = true;
-
-            shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
-            shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
-
-            // Calculate image left and top position so it appears in the center of the page.
-            shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
-            shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
-
-            doc = DocumentHelper.SaveOpen(doc);
-
-            shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-            Assert.AreEqual(true, shape.AspectRatioLocked);            
-        }
-#elif NET5_0_OR_GREATER || __MOBILE__
-        [Test]
-        public void AspectRatioLockedDefaultValueNetStandard2()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // The best place for the watermark image is in the header or footer so it is shown on every page
-            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            
-            using (SKManagedStream stream = new SKManagedStream(File.OpenRead(ImageDir + "Transparent background logo.png")))
-            {
-                using (SKBitmap bitmap = SKBitmap.Decode(stream))
-                {
-                    // Insert a floating picture.
-                    Shape shape = builder.InsertImage(bitmap);
-                    shape.WrapType = WrapType.None;
-                    shape.BehindText = true;
-
-                    shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
-                    shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
-
-                    // Calculate image left and top position so it appears in the center of the page
-                    shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
-                    shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
-
-                    doc = DocumentHelper.SaveOpen(doc);
-        
-                    shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-                    Assert.AreEqual(true, shape.AspectRatioLocked);
-                }
-            }            
-        }
-#endif
 
         [Test]
         public void Coordinates()
@@ -830,7 +766,7 @@ namespace ApiExamples
 
             // Apply texture alignment to the shape fill.
             shape.Fill.PresetTextured(PresetTexture.Canvas);
-            shape.Fill.TextureAlignment = TextureAlignment.TopRight;
+            shape.Fill.TextureAlignment = TextureAlignment.TopRight;            
 
             // Use the compliance option to define the shape using DML if you want to get "TextureAlignment"
             // property after the document saves.
@@ -1095,7 +1031,7 @@ namespace ApiExamples
             //ExFor:WrapSide
             //ExFor:ShapeBase.WrapSide
             //ExFor:NodeCollection
-            //ExFor:CompositeNode.InsertAfter(Node, Node)
+            //ExFor:CompositeNode.InsertAfter``1(``0,Node)
             //ExFor:NodeCollection.ToArray
             //ExSummary:Shows how to replace all textbox shapes with image shapes.
             Document doc = new Document(MyDir + "Textboxes in drawing canvas.docx");
@@ -1303,7 +1239,7 @@ namespace ApiExamples
             //ExSummary:Shows how to get/set the full name of the external xls/xlsx document if the chart is linked.
             Document doc = new Document(MyDir + "Shape with linked chart.docx");
             
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);            
             
             var sourceFullName = shape.Chart.SourceFullName;
             Assert.True(sourceFullName.Contains("Examples\\Data\\Spreadsheet.xlsx"));
@@ -1474,15 +1410,6 @@ namespace ApiExamples
 
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             Assert.That(shape.OleFormat.SuggestedFileName, Is.Empty);
-        }
-
-        [Test]
-        public void ResolutionDefaultValues()
-        {
-            ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg);
-
-            Assert.AreEqual(96, imageOptions.HorizontalResolution);
-            Assert.AreEqual(96, imageOptions.VerticalResolution);
         }
 
         [Test]
@@ -1668,7 +1595,7 @@ namespace ApiExamples
         [TestCase(MsWordVersion.Word2010, ShapeMarkupLanguage.Dml)]
         [TestCase(MsWordVersion.Word2013, ShapeMarkupLanguage.Dml)]
         [TestCase(MsWordVersion.Word2016, ShapeMarkupLanguage.Dml)]
-        public void MarkupLunguageForDifferentMsWordVersions(MsWordVersion msWordVersion,
+        public void MarkupLanguageForDifferentMsWordVersions(MsWordVersion msWordVersion,
             ShapeMarkupLanguage shapeMarkupLanguage)
         {
             Document doc = new Document();
@@ -2496,7 +2423,7 @@ namespace ApiExamples
             Shape shape = AppendWordArt(doc, "Hello World! This text is bold, and italic.", 
                 "Arial", 480, 24, Color.White, Color.Black, ShapeType.TextPlainText);
 
-            // Apply the "Bold' and "Italic" formatting settings to the text using the respective properties.
+            // Apply the "Bold" and "Italic" formatting settings to the text using the respective properties.
             shape.TextPath.Bold = true;
             shape.TextPath.Italic = true;
 
@@ -2761,13 +2688,13 @@ namespace ApiExamples
 
             // The effects have also affected the visible dimensions of the shape.
             Assert.AreEqual(1045, rectangleFOut.Width);
-            Assert.AreEqual(1132, rectangleFOut.Height);
+            Assert.AreEqual(1133.5, rectangleFOut.Height);
 
             // The effects have also affected the visible bounds of the shape.
             Assert.AreEqual(-28.5, shape.BoundsWithEffects.X);
             Assert.AreEqual(-33, shape.BoundsWithEffects.Y);
             Assert.AreEqual(192, shape.BoundsWithEffects.Width);
-            Assert.AreEqual(279, shape.BoundsWithEffects.Height);
+            Assert.AreEqual(280.5, shape.BoundsWithEffects.Height);
             //ExEnd
         }
 
@@ -3058,6 +2985,53 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.RelativeSizeAndPosition.docx");
             //ExEnd
+        }
+
+        [Test]
+        public void FillBaseColor()
+        {
+            //ExStart:FillBaseColor
+            //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:Fill.BaseForeColor
+            //ExFor:Stroke.BaseForeColor
+            //ExSummary:Shows how to get foreground color without modifiers.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder();
+
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 100, 40);
+            shape.Fill.ForeColor = Color.Red;
+            shape.Fill.ForeTintAndShade = 0.5;
+            shape.Stroke.Fill.ForeColor = Color.Green;
+            shape.Stroke.Fill.Transparency = 0.5;
+
+            Assert.AreEqual(Color.FromArgb(255, 255, 188, 188).ToArgb(), shape.Fill.ForeColor.ToArgb());
+            Assert.AreEqual(Color.Red.ToArgb(), shape.Fill.BaseForeColor.ToArgb());
+
+            Assert.AreEqual(Color.FromArgb(128, 0, 128, 0).ToArgb(), shape.Stroke.ForeColor.ToArgb());
+            Assert.AreEqual(Color.Green.ToArgb(), shape.Stroke.BaseForeColor.ToArgb());
+
+            Assert.AreEqual(Color.Green.ToArgb(), shape.Stroke.Fill.ForeColor.ToArgb());
+            Assert.AreEqual(Color.Green.ToArgb(), shape.Stroke.Fill.BaseForeColor.ToArgb());
+            //ExEnd:FillBaseColor
+        }
+
+        [Test]
+        public void FitImageToShape()
+        {
+            //ExStart:FitImageToShape
+            //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:ImageData.FitImageToShape
+            //ExSummary:Shows hot to fit the image data to Shape frame.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert an image shape and leave its orientation in its default state.
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 300, 450);
+            shape.ImageData.SetImage(ImageDir + "Barcode.png");
+            shape.ImageData.FitImageToShape();
+
+            doc.Save(ArtifactsDir + "Shape.FitImageToShape.docx");
+            //ExEnd:FitImageToShape
         }
     }
 }

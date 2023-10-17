@@ -1,9 +1,13 @@
-﻿using System.IO;
+﻿using System.Drawing;
+using System.IO;
 using System.Linq;
 using Aspose.Words;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
+#if NET5_0_OR_GREATER || __MOBILE__
+using SkiaSharp;
+#endif
 
 namespace ApiExamples
 {
@@ -150,6 +154,36 @@ namespace ApiExamples
             MarkdownSaveOptions options = new MarkdownSaveOptions { ListExportMode = markdownListExportMode };
             doc.Save(ArtifactsDir + "MarkdownSaveOptions.ListExportMode.md", options);
             //ExEnd
+        }
+
+        [Test]
+        public void ImagesFolder()
+        {
+            //ExStart
+            //ExFor:MarkdownSaveOptions.ImagesFolder
+            //ExFor:MarkdownSaveOptions.ImagesFolderAlias
+            //ExSummary:Shows how to specifies the name of the folder used to construct image URIs.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            builder.Writeln("Some image below:");            
+            builder.InsertImage(ImageDir + "Logo.jpg");
+
+            string imagesFolder = Path.Combine(ArtifactsDir, "ImagesDir");
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            // Use the "ImagesFolder" property to assign a folder in the local file system into which
+            // Aspose.Words will save all the document's linked images.
+            saveOptions.ImagesFolder = imagesFolder;
+            // Use the "ImagesFolderAlias" property to use this folder
+            // when constructing image URIs instead of the images folder's name.
+            saveOptions.ImagesFolderAlias = "http://example.com/images";
+
+            builder.Document.Save(ArtifactsDir + "MarkdownSaveOptions.ImagesFolder.md", saveOptions);
+            //ExEnd
+
+            string[] dirFiles = Directory.GetFiles(imagesFolder, "MarkdownSaveOptions.ImagesFolder.001.jpeg");
+            Assert.AreEqual(1, dirFiles.Length);
+            Document doc = new Document(ArtifactsDir + "MarkdownSaveOptions.ImagesFolder.md");
+            doc.GetText().Contains("http://example.com/images/MarkdownSaveOptions.ImagesFolder.001.jpeg");
         }
     }
 }

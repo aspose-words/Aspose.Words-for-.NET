@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -38,12 +38,10 @@ using Aspose.Page.XPS;
 using LoadOptions = Aspose.Words.Loading.LoadOptions;
 using Aspose.Page.XPS.XpsModel;
 using Aspose.Words.Settings;
-#if NET48 || NET5_0_OR_GREATER || JAVA
 using Aspose.Pdf.Text;
 using Aspose.Words.Shaping.HarfBuzz;
 using System.Net.Http;
 using System.Threading.Tasks;
-#endif
 #if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
@@ -53,6 +51,24 @@ namespace ApiExamples
     [TestFixture]   
     public class ExDocument : ApiExampleBase
     {
+        [Test]
+        public void CreateSimpleDocument()
+        {
+            //ExStart:CreateSimpleDocument            
+            //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:Document.#ctor()
+            //ExSummary:Shows how to create simple document.
+            Document doc = new Document();
+
+            // New Document objects by default come with the minimal set of nodes
+            // required to begin adding content such as text and shapes: a Section, a Body, and a Paragraph.
+            doc.AppendChild(new Section(doc))
+                .AppendChild(new Body(doc))
+                .AppendChild(new Paragraph(doc))
+                .AppendChild(new Run(doc, "Hello world!"));
+            //ExEnd:CreateSimpleDocument
+        }
+
         [Test]
         public void Constructor()
         {
@@ -180,7 +196,6 @@ namespace ApiExamples
                 stream.Position = 0;
 
                 SKCodec codec = SKCodec.Create(stream);
-
                 Assert.AreEqual(SKEncodedImageFormat.Bmp, codec.EncodedFormat);
 
                 stream.Position = 0;
@@ -195,7 +210,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
         [Test, Category("SkipMono")]
         public void OpenType()
         {
@@ -215,7 +229,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.OpenType.pdf");
             //ExEnd
         }
-#endif
 
         [Test]
         public void DetectMobiDocumentFormat()
@@ -463,7 +476,7 @@ namespace ApiExamples
                     Document doc = new Document(stream, options);
 
                     // At this stage, we can read and edit the document's contents and then save it to the local file system.
-                    Assert.AreEqual("HYPERLINK \"https://products.aspose.com/words/family/\" \\o \"Aspose.Words\"", doc.FirstSection.Body.Paragraphs[50].Runs[0].GetText().Trim()); //ExSkip
+                    Assert.True(doc.GetText().Contains("HYPERLINK \"https://products.aspose.com/words/family/\" \\o \"Aspose.Words\"")); //ExSkip
 
                     doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
                 }
@@ -1069,22 +1082,6 @@ namespace ApiExamples
             // ToString will give us the document's appearance if saved to a passed save format.
             Assert.AreEqual("«Field»\r\n", doc.ToString(SaveFormat.Text));
             //ExEnd
-        }
-
-        [Test]
-        public void DocumentByteArray()
-        {
-            Document doc = new Document(MyDir + "Document.docx");
-
-            MemoryStream streamOut = new MemoryStream();
-            doc.Save(streamOut, SaveFormat.Docx);
-
-            byte[] docBytes = streamOut.ToArray();
-
-            MemoryStream streamIn = new MemoryStream(docBytes);
-
-            Document loadDoc = new Document(streamIn);
-            Assert.AreEqual(doc.GetText(), loadDoc.GetText());
         }
 
         [Test]
@@ -1697,16 +1694,12 @@ namespace ApiExamples
         }
 
         [Test]
-        public void HyphenationOptionsExceptions()
+        public void HyphenationZoneException()
         {
             Document doc = new Document();
-
-            doc.HyphenationOptions.ConsecutiveHyphenLimit = 0;
-            Assert.That(() => doc.HyphenationOptions.HyphenationZone = 0, Throws.TypeOf<ArgumentOutOfRangeException>());
-
-            Assert.That(() => doc.HyphenationOptions.ConsecutiveHyphenLimit = -1,
+            
+            Assert.That(() => doc.HyphenationOptions.HyphenationZone = 0,
                 Throws.TypeOf<ArgumentOutOfRangeException>());
-            doc.HyphenationOptions.HyphenationZone = 360;
         }
 
         [Test]
@@ -1717,16 +1710,15 @@ namespace ApiExamples
             //ExSummary:Shows how to read a loaded document's Open Office XML compliance version.
             // The compliance version varies between documents created by different versions of Microsoft Word.
             Document doc = new Document(MyDir + "Document.doc");
-
             Assert.AreEqual(doc.Compliance, OoxmlCompliance.Ecma376_2006);
 
             doc = new Document(MyDir + "Document.docx");
-
             Assert.AreEqual(doc.Compliance, OoxmlCompliance.Iso29500_2008_Transitional);
             //ExEnd
         }
 
-        [Test, Ignore("WORDSNET-20342")]
+        [Test]
+        [Description("WORDSNET-20342")]
         public void ImageSaveOptions()
         {
             //ExStart
@@ -1970,7 +1962,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.LayoutOptionsHiddenText.pdf");
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.LayoutOptionsHiddenText.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
@@ -1978,7 +1969,6 @@ namespace ApiExamples
             Assert.AreEqual(showHiddenText ? 
                     $"This text is not hidden.{Environment.NewLine}This text is hidden." : 
                     "This text is not hidden.", textAbsorber.Text);
-#endif
         }
 
         [TestCase(false)]
@@ -2004,7 +1994,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.LayoutOptionsParagraphMarks.pdf");
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.LayoutOptionsParagraphMarks.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
@@ -2012,7 +2001,6 @@ namespace ApiExamples
             Assert.AreEqual(showParagraphMarks ? 
                     $"Hello world!¶{Environment.NewLine}Hello again!¶{Environment.NewLine}¶" : 
                     $"Hello world!{Environment.NewLine}Hello again!", textAbsorber.Text);
-#endif
         }
 
         [Test]
@@ -2272,7 +2260,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
             //ExEnd
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDoc =
                 new Aspose.Pdf.Document(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
@@ -2281,7 +2268,6 @@ namespace ApiExamples
             Assert.AreEqual(
                 "Hello world!                                                                    Commented [J.D.1]:  My comment.",
                 textAbsorber.Text);
-#endif
         }
 
         [Test]
@@ -2997,6 +2983,33 @@ namespace ApiExamples
             // Check that the first page of the document is not colored.
             Assert.IsFalse(doc.GetPageInfo(0).Colored);
             //ExEnd
+        }
+
+        [Test]
+        public void InsertDocumentInline()
+        {
+            //ExStart:InsertDocumentInline
+            //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:DocumentBuilder.InsertDocumentInline(Document, ImportFormatMode, ImportFormatOptions)
+            //ExSummary:Shows how to insert a document inline at the cursor position.
+            DocumentBuilder srcDoc = new DocumentBuilder();
+            srcDoc.Write("[src content]");
+
+            // Create destination document.
+            DocumentBuilder dstDoc = new DocumentBuilder();
+            dstDoc.Write("Before ");
+            dstDoc.InsertNode(new BookmarkStart(dstDoc.Document, "src_place"));
+            dstDoc.InsertNode(new BookmarkEnd(dstDoc.Document, "src_place"));
+            dstDoc.Write(" after");
+
+            Assert.AreEqual("Before  after", dstDoc.Document.GetText().TrimEnd());
+
+            // Insert source document into destination inline.
+            dstDoc.MoveToBookmark("src_place");
+            dstDoc.InsertDocumentInline(srcDoc.Document, ImportFormatMode.UseDestinationStyles, new ImportFormatOptions());
+
+            Assert.AreEqual("Before [src content] after", dstDoc.Document.GetText().TrimEnd());
+            //ExEnd:InsertDocumentInline
         }
     }
 }

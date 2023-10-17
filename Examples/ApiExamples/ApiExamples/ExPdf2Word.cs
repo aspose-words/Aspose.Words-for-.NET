@@ -3,16 +3,13 @@ using NUnit.Framework;
 using Aspose.Words;
 using Aspose.Words.Loading;
 using Aspose.Words.Saving;
-#if NET48 || NET5_0_OR_GREATER || JAVA
 using Aspose.Pdf.Text;
-#endif
 
 namespace ApiExamples
 {
     [TestFixture]
     public class ExPdf2Word : ApiExampleBase
     {
-#if NET48 || NET5_0_OR_GREATER || JAVA
         [Test]
         public void LoadPdf()
         {
@@ -41,7 +38,6 @@ namespace ApiExamples
             Assert.AreEqual("Hello world!", textFragmentAbsorber.Text.Trim());
             //ExEnd
         }
-#endif
 
         [Test]
         public static void ConvertPdfToDocx()

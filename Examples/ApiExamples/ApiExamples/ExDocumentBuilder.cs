@@ -26,7 +26,6 @@ using Aspose.Words.Lists;
 using Aspose.Words.Notes;
 using System.Net.Http;
 using System.Threading.Tasks;
-
 #if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
@@ -3102,11 +3101,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-        #if NET48 || NET5_0_OR_GREATER || JAVA
-        /// <summary>
-        /// All markdown tests work with the same file. That's why we need order for them.
-        /// </summary>
-        [Test, Order(1)]
         public void MarkdownDocumentEmphases()
         {
             DocumentBuilder builder = new DocumentBuilder();
@@ -3138,11 +3132,7 @@ namespace ApiExamples
             // Markdown treats asterisks (*), underscores (_) and tilde (~) as indicators of emphasis.
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
-
-        /// <summary>
-        /// All markdown tests work with the same file. That's why we need order for them.
-        /// </summary>
-        [Test, Order(2)]
+        
         public void MarkdownDocumentInlineCode()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3168,12 +3158,7 @@ namespace ApiExamples
 
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
-
-        /// <summary>
-        /// All markdown tests work with the same file. That's why we need order for them.
-        /// </summary>
-        [Test, Order(3)]
-        [Description("WORDSNET-19850")]
+        
         public void MarkdownDocumentHeadings()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3244,10 +3229,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
-        /// <summary>
-        /// All markdown tests work with the same file. That's why we need order for them.
-        /// </summary>
-        [Test, Order(4)]
         public void MarkdownDocumentBlockquotes()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3303,10 +3284,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
-        /// <summary>
-        /// All markdown tests work with the same file. That's why we need order for them.
-        /// </summary>
-        [Test, Order(5)]
         public void MarkdownDocumentIndentedCode()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3326,10 +3303,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
-        /// <summary>
-        /// All markdown tests work with the same file. That's why we need order for them.
-        /// </summary>
-        [Test, Order(6)]
         public void MarkdownDocumentFencedCode()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3353,10 +3326,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
-        /// <summary>
-        /// All markdown tests work with the same file. That's why we need order for them.
-        /// </summary>
-        [Test, Order(7)]
         public void MarkdownDocumentHorizontalRule()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3374,10 +3343,6 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
-        /// <summary>
-        /// All markdown tests work with the same file. That's why we need order for them.
-        /// </summary>
-        [Test, Order(8)]
         public void MarkdownDocumentBulletedList()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3404,10 +3369,7 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
-        /// <summary>
-        /// All markdown tests work with the same file. That's why we need order for them.
-        /// </summary>
-        [Test, Order(9)]
+        [Test, Description("WORDSNET-19850")]
         [TestCase("Italic", "Normal", true, false)]
         [TestCase("Bold", "Normal", false, true)]
         [TestCase("ItalicBold", "Normal", true, true)]
@@ -3434,6 +3396,16 @@ namespace ApiExamples
         [TestCase("Item 1", "Normal", false, false)]
         public void LoadMarkdownDocumentAndAssertContent(string text, string styleName, bool isItalic, bool isBold)
         {
+            // Prepeare document to test.
+            MarkdownDocumentEmphases();
+            MarkdownDocumentInlineCode();
+            MarkdownDocumentHeadings();
+            MarkdownDocumentBlockquotes();
+            MarkdownDocumentIndentedCode();
+            MarkdownDocumentFencedCode();
+            MarkdownDocumentHorizontalRule();
+            MarkdownDocumentBulletedList();
+
             // Load created document from previous tests.
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
@@ -3605,7 +3577,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertOleObjectAsIcon.docx");
             //ExEnd
         }
-#endif
 
         [Test]
         public void PreserveBlocks()

@@ -283,7 +283,6 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.Html5Support.html", saveOptions);
         }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
         [TestCase(false)]
         [TestCase(true)]
         public void ExportFonts(bool exportAsBase64)
@@ -366,7 +365,6 @@ namespace ApiExamples
             Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderLowPriority.css",
                 SearchOption.AllDirectories));
         }
-#endif
 
         [Test]
         public void SvgMetafileFormat()

@@ -5,7 +5,6 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -77,7 +76,7 @@ namespace ApiExamples
             run.Font.AllCaps = true;
             para.AppendChild(run);
 
-            para = (Paragraph)para.ParentNode.AppendChild(new Paragraph(doc));
+            para = para.ParentNode.AppendChild(new Paragraph(doc));
 
             // 2 -  Set the SmallCaps flag to display all characters in small capitals:
             // If a character is lower case, it will appear in its upper case form
@@ -200,7 +199,7 @@ namespace ApiExamples
             run.Font.StrikeThrough = true;
             para.AppendChild(run);
 
-            para = (Paragraph)para.ParentNode.AppendChild(new Paragraph(doc));
+            para = para.ParentNode.AppendChild(new Paragraph(doc));
 
             run = new Run(doc, "Text with a double-line strikethrough.");
             run.Font.DoubleStrikeThrough = true;
@@ -1640,4 +1639,3 @@ namespace ApiExamples
         }
     }
 }
-#endif

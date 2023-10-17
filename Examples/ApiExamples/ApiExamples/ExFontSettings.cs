@@ -5,7 +5,6 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -1338,4 +1337,3 @@ namespace ApiExamples
         //ExEnd
     }
 }
-#endif

@@ -13,15 +13,11 @@ using NUnit.Framework;
 using Document = Aspose.Words.Document;
 using IResourceLoadingCallback = Aspose.Words.Loading.IResourceLoadingCallback;
 using SaveFormat = Aspose.Words.SaveFormat;
-#if NET48 || JAVA
 using System.IO;
 using Aspose.Words.Loading;
 using System.Net;
 using System.Threading.Tasks;
-#endif
-#if NET48 || NET5_0_OR_GREATER || JAVA
 using Aspose.Pdf;
-#endif
 
 namespace ApiExamples
 {
@@ -192,14 +188,12 @@ namespace ApiExamples
                 doc.BackgroundShape = new Shape(doc, ShapeType.Triangle);
             });
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "DocumentBase.BackgroundShape.Image.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
             Assert.AreEqual(400, pdfDocImage.Width);
             Assert.AreEqual(400, pdfDocImage.Height);
             Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
-#endif
         }
 
 #if NET48 || JAVA

@@ -324,7 +324,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompositeNode.LastChild
             //ExFor:Node.PreviousSibling
-            //ExFor:CompositeNode.RemoveChild
+            //ExFor:CompositeNode.RemoveChild``1(``0)
             //ExSummary:Shows how to use of methods of Node and CompositeNode to remove a section before the last section in the document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -596,12 +596,7 @@ namespace ApiExamples
             builder.Write("Cell 2");
             builder.EndTable();
 
-            #if NET48 || JAVA
-            builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
-            #elif NET5_0_OR_GREATER || __MOBILE__
-            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
-                builder.InsertImage(image);
-            #endif
+            builder.InsertImage(ImageDir + "Logo.jpg");            
 
             builder.CurrentParagraph.ParentNode.RemoveAllChildren();
         }
@@ -707,12 +702,7 @@ namespace ApiExamples
             builder.Write("Cell 2");
             builder.EndTable();
 
-            #if NET48 || JAVA
-            builder.InsertImage(Image.FromFile(ImageDir + "Logo.jpg"));
-            #elif NET5_0_OR_GREATER || __MOBILE__
-            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
-                builder.InsertImage(image);
-            #endif
+            builder.InsertImage(ImageDir + "Logo.jpg");            
 
             // Our document contains three Run nodes.
             NodeList nodeList = doc.SelectNodes("//Run");

@@ -1,10 +1,11 @@
-﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using Aspose;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
@@ -22,13 +23,15 @@ namespace ApiExamples
         [Test]
         public void ChartTitle()
         {
-            //ExStart
+            //ExStart:ChartTitle
+            //GistId:3428e84add5beb0d46a8face6e5fc858
             //ExFor:Chart
             //ExFor:Chart.Title
             //ExFor:ChartTitle
             //ExFor:ChartTitle.Overlay
             //ExFor:ChartTitle.Show
             //ExFor:ChartTitle.Text
+            //ExFor:ChartTitle.Font
             //ExSummary:Shows how to insert a chart and set a title.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -40,6 +43,8 @@ namespace ApiExamples
             // Use the "Title" property to give our chart a title, which appears at the top center of the chart area.
             ChartTitle title = chart.Title;
             title.Text = "My Chart";
+            title.Font.Size = 15;
+            title.Font.Color = Color.Blue;
 
             // Set the "Show" property to "true" to make the title visible. 
             title.Show = true;
@@ -48,7 +53,7 @@ namespace ApiExamples
             title.Overlay = true;
 
             doc.Save(ArtifactsDir + "Charts.ChartTitle.docx");
-            //ExEnd
+            //ExEnd:ChartTitle
 
             doc = new Document(ArtifactsDir + "Charts.ChartTitle.docx");
             chartShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
@@ -80,11 +85,11 @@ namespace ApiExamples
             Chart chart = shape.Chart;
             chart.Series.Clear();
             chart.Title.Text = "Monthly sales report";
-            
+
             // Insert a custom chart series with months as categories for the X-axis,
             // and respective decimal amounts for the Y-axis.
-            ChartSeries series = chart.Series.Add("Revenue", 
-                new[] { "January", "February", "March" }, 
+            ChartSeries series = chart.Series.Add("Revenue",
+                new[] { "January", "February", "March" },
                 new[] { 25.611d, 21.439d, 33.750d });
 
             // Enable data labels, and then apply a custom number format for values displayed in the data labels.
@@ -93,7 +98,7 @@ namespace ApiExamples
             ChartDataLabelCollection dataLabels = series.DataLabels;
             dataLabels.ShowValue = true;
             dataLabels.NumberFormat.FormatCode = "\"US$\" #,##0.000\"M\"";
-            dataLabels.Font.Size = 12;            
+            dataLabels.Font.Size = 12;
 
             doc.Save(ArtifactsDir + "Charts.DataLabelNumberFormat.docx");
             //ExEnd
@@ -104,53 +109,6 @@ namespace ApiExamples
             Assert.True(series.HasDataLabels);
             Assert.True(series.DataLabels.ShowValue);
             Assert.AreEqual("\"US$\" #,##0.000\"M\"", series.DataLabels.NumberFormat.FormatCode);
-        }
-
-        [Test]
-        public void DataArraysWrongSize()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
-            Chart chart = shape.Chart;
-
-            ChartSeriesCollection seriesColl = chart.Series;
-            seriesColl.Clear();
-
-            string[] categories = { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
-            seriesColl.Add("AW Series 1", categories, new double[] { 1, 2, double.NaN, 4, 5, 6 });
-            seriesColl.Add("AW Series 2", categories, new double[] { 2, 3, double.NaN, 5, 6, 7 });
-
-            Assert.That(
-                () => seriesColl.Add("AW Series 3", categories, new[] { double.NaN, 4, 5, double.NaN, double.NaN }),
-                Throws.TypeOf<ArgumentException>());
-            Assert.That(
-                () => seriesColl.Add("AW Series 4", categories,
-                    new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN }),
-                Throws.TypeOf<ArgumentException>());
-        }
-
-        [Test]
-        public void EmptyValuesInChartData()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
-            Chart chart = shape.Chart;
-
-            ChartSeriesCollection seriesColl = chart.Series;
-            seriesColl.Clear();
-
-            string[] categories = { "Cat1", null, "Cat3", "Cat4", "Cat5", null };
-            seriesColl.Add("AW Series 1", categories, new[] { 1, 2, double.NaN, 4, 5, 6 });
-            seriesColl.Add("AW Series 2", categories, new[] { 2, 3, double.NaN, 5, 6, 7 });
-            seriesColl.Add("AW Series 3", categories, new[] { double.NaN, 4, 5, double.NaN, 7, 8 });
-            seriesColl.Add("AW Series 4", categories,
-                new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 9 });
-
-            doc.Save(ArtifactsDir + "Charts.EmptyValuesInChartData.docx");
         }
 
         [Test]
@@ -188,7 +146,7 @@ namespace ApiExamples
             chart.Series.Add("Aspose Test Series",
                 new[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 640, 320, 280, 120, 150 });
-            
+
             // Chart axes have various options that can change their appearance,
             // such as their direction, major/minor unit ticks, and tick marks.
             ChartAxis xAxis = chart.AxisX;
@@ -256,7 +214,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Shape shape = builder.InsertChart(ChartType.Column, 500, 300);
-            Chart chart = shape.Chart;            
+            Chart chart = shape.Chart;
 
             // Hide the major grid lines on the primary and secondary Y axes.
             foreach (ChartAxis axis in chart.Axes)
@@ -411,7 +369,7 @@ namespace ApiExamples
             // Add a custom series to the chart with categories for the X-axis,
             // and large respective numeric values for the Y-axis. 
             chart.Series.Add("Aspose Test Series",
-                new [] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
 
             // Set the number format of the Y-axis tick labels to not group digits with commas. 
@@ -427,54 +385,6 @@ namespace ApiExamples
             chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
 
             Assert.AreEqual("#,##0", chart.AxisY.NumberFormat.FormatCode);
-        }
-
-        [TestCase(ChartType.Column)]
-        [TestCase(ChartType.Line)]
-        [TestCase(ChartType.Pie)]
-        [TestCase(ChartType.Bar)]
-        [TestCase(ChartType.Area)]
-        public void TestDisplayChartsWithConversion(ChartType chartType)
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Shape shape = builder.InsertChart(chartType, 500, 300);
-            Chart chart = shape.Chart;
-            chart.Series.Clear();
-            
-            chart.Series.Add("Aspose Test Series",
-                new[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
-                new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
-
-            doc.Save(ArtifactsDir + "Charts.TestDisplayChartsWithConversion.docx");
-            doc.Save(ArtifactsDir + "Charts.TestDisplayChartsWithConversion.pdf");
-        }
-
-        [Test]
-        public void Surface3DChart()
-        {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            Shape shape = builder.InsertChart(ChartType.Surface3D, 500, 300);
-            Chart chart = shape.Chart;
-            chart.Series.Clear();
-            
-            chart.Series.Add("Aspose Test Series 1",
-                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
-                new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
-            
-            chart.Series.Add("Aspose Test Series 2",
-                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
-                new double[] { 900000, 50000, 1100000, 400000, 2500000 });
-            
-            chart.Series.Add("Aspose Test Series 3",
-                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
-                new double[] { 500000, 820000, 1500000, 400000, 100000 });
-
-            doc.Save(ArtifactsDir + "Charts.SurfaceChart.docx");
-            doc.Save(ArtifactsDir + "Charts.SurfaceChart.pdf");
         }
 
         [Test]
@@ -594,7 +504,7 @@ namespace ApiExamples
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             Shape chartShape = builder.InsertChart(ChartType.Line, 400, 300);
             Chart chart = chartShape.Chart;
 
@@ -692,7 +602,7 @@ namespace ApiExamples
             Assert.AreEqual("Series 3", chart.Series[2].Name);
 
             // Emphasize the chart's data points by making them appear as diamond shapes.
-            foreach (ChartSeries series in chart.Series) 
+            foreach (ChartSeries series in chart.Series)
                 ApplyDataPoints(series, 4, MarkerSymbol.Diamond, 15);
 
             // Smooth out the line that represents the first data series.
@@ -792,7 +702,7 @@ namespace ApiExamples
                 chart.Series[0].DataLabels[i].ShowBubbleSize = true;
                 chart.Series[0].DataLabels[i].Font.Size = 12;
             }
-            
+
             doc.Save(ArtifactsDir + "Charts.Bubble3D.docx");
             //ExEnd
 
@@ -820,7 +730,7 @@ namespace ApiExamples
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             // There are several ways of populating a chart's series collection.
             // Different series schemas are intended for different chart types.
             // 1 -  Column chart with columns grouped and banded along the X-axis by category:
@@ -830,8 +740,8 @@ namespace ApiExamples
 
             // Insert two series of decimal values containing a value for each respective category.
             // This column chart will have three groups, each with two columns.
-            chart.Series.Add("Series 1", categories, new [] { 76.6, 82.1, 91.6 });
-            chart.Series.Add("Series 2", categories, new [] { 64.2, 79.5, 94.0 });
+            chart.Series.Add("Series 1", categories, new[] { 76.6, 82.1, 91.6 });
+            chart.Series.Add("Series 2", categories, new[] { 64.2, 79.5, 94.0 });
 
             // Categories are distributed along the X-axis, and values are distributed along the Y-axis.
             Assert.AreEqual(ChartAxisType.Category, chart.AxisX.Type);
@@ -850,7 +760,7 @@ namespace ApiExamples
             // Insert a series with a decimal value for each respective date.
             // The dates will be distributed along a linear X-axis,
             // and the values added to this series will create data points.
-            chart.Series.Add("Series 1", dates, new [] { 15.8, 21.5, 22.9, 28.7, 33.1 });
+            chart.Series.Add("Series 1", dates, new[] { 15.8, 21.5, 22.9, 28.7, 33.1 });
 
             Assert.AreEqual(ChartAxisType.Category, chart.AxisX.Type);
             Assert.AreEqual(ChartAxisType.Value, chart.AxisY.Type);
@@ -861,11 +771,11 @@ namespace ApiExamples
             // Each series will need two decimal arrays of equal length.
             // The first array contains X-values, and the second contains corresponding Y-values
             // of data points on the chart's graph.
-            chart.Series.Add("Series 1", 
-                new[] { 3.1, 3.5, 6.3, 4.1, 2.2, 8.3, 1.2, 3.6 }, 
+            chart.Series.Add("Series 1",
+                new[] { 3.1, 3.5, 6.3, 4.1, 2.2, 8.3, 1.2, 3.6 },
                 new[] { 3.1, 6.3, 4.6, 0.9, 8.5, 4.2, 2.3, 9.9 });
-            chart.Series.Add("Series 2", 
-                new[] { 2.6, 7.3, 4.5, 6.6, 2.1, 9.3, 0.7, 3.3 }, 
+            chart.Series.Add("Series 2",
+                new[] { 2.6, 7.3, 4.5, 6.6, 2.1, 9.3, 0.7, 3.3 },
                 new[] { 7.1, 6.6, 3.5, 7.8, 7.7, 9.5, 1.3, 4.6 });
 
             Assert.AreEqual(ChartAxisType.Value, chart.AxisX.Type);
@@ -877,14 +787,14 @@ namespace ApiExamples
             // Each series will need three decimal arrays of equal length.
             // The first array contains X-values, the second contains corresponding Y-values,
             // and the third contains diameters for each of the graph's data points.
-            chart.Series.Add("Series 1", 
-                new [] { 1.1, 5.0, 9.8 }, 
-                new [] { 1.2, 4.9, 9.9 }, 
-                new [] { 2.0, 4.0, 8.0 });
+            chart.Series.Add("Series 1",
+                new[] { 1.1, 5.0, 9.8 },
+                new[] { 1.2, 4.9, 9.9 },
+                new[] { 2.0, 4.0, 8.0 });
 
             doc.Save(ArtifactsDir + "Charts.ChartSeriesCollection.docx");
         }
-        
+
         /// <summary>
         /// Insert a chart using a document builder of a specified ChartType, width and height, and remove its demo data.
         /// </summary>
@@ -940,7 +850,7 @@ namespace ApiExamples
             chart.Series.Add("Series 4", categories, new[] { 4.4, 7.0, 3.5, 2.1 });
             Assert.AreEqual(4, chartData.Count); //ExSkip
             Assert.AreEqual("Series 4", chartData[3].Name); //ExSkip
-            
+
             // A chart series can also be removed by index, like this.
             // This will remove one of the three demo series that came with the chart.
             chartData.RemoveAt(2);
@@ -977,8 +887,8 @@ namespace ApiExamples
             chart.Series.Clear();
 
             // Insert a series with X/Y coordinates for five points.
-            chart.Series.Add("Series 1", 
-                new[] { 1.0, 2.0, 3.0, 4.0, 5.0 }, 
+            chart.Series.Add("Series 1",
+                new[] { 1.0, 2.0, 3.0, 4.0, 5.0 },
                 new[] { 1.0, 20.0, 400.0, 8000.0, 160000.0 });
 
             // The scaling of the X-axis is linear by default,
@@ -1021,8 +931,8 @@ namespace ApiExamples
 
             // Add a series with two decimal arrays. The first array contains the X-values,
             // and the second contains corresponding Y-values for points in the scatter chart.
-            chart.Series.Add("Series 1", 
-                new[] { 1.1, 5.4, 7.9, 3.5, 2.1, 9.7 }, 
+            chart.Series.Add("Series 1",
+                new[] { 1.1, 5.4, 7.9, 3.5, 2.1, 9.7 },
                 new[] { 2.1, 0.3, 0.6, 3.3, 1.4, 1.9 });
 
             // By default, default scaling is applied to the graph's X and Y-axes,
@@ -1192,7 +1102,7 @@ namespace ApiExamples
             // Set they Y-axis to show a major tick every 10 units, and a minor tick every 1 unit.
             axis.MajorUnit = 10;
             axis.MinorUnit = 1;
-            
+
             // Set the Y-axis bounds to -10 and 20.
             // This Y-axis will now display 4 major tick marks and 27 minor tick marks.
             axis.Scaling.Minimum = new AxisBound(-10);
@@ -1214,7 +1124,7 @@ namespace ApiExamples
             axis.TickLabelAlignment = ParagraphAlignment.Right;
 
             Assert.AreEqual(1, axis.TickLabelSpacing);
-            
+
             // Set the tick labels to display their value in millions.
             axis.DisplayUnit.Unit = AxisBuiltInUnit.Millions;
 
@@ -1272,7 +1182,7 @@ namespace ApiExamples
 
             Shape shape = builder.InsertChart(ChartType.Scatter, 432, 252);
             Chart chart = shape.Chart;
-            
+
             // Delete default generated series.
             chart.Series.Clear();
             ChartSeries series = chart.Series.Add("AW Series 1", new[] { 0.7, 1.8, 2.6, 3.9 },
@@ -1416,7 +1326,7 @@ namespace ApiExamples
                 if (chart.Series[i].SeriesType == ChartSeriesType.Column)
                     chart.Series.RemoveAt(i);
             }
-            
+
             chart.Series.Add(
                 "Aspose Series",
                 new string[] { "Category 1", "Category 2", "Category 3", "Category 4" },
@@ -1547,7 +1457,7 @@ namespace ApiExamples
         public void FormatDataLables()
         {
             //ExStart
-            //ExFor:ChartDataLableCollection.Format
+            //ExFor:ChartDataLabelCollection.Format
             //ExFor:ChartFormat.ShapeType
             //ExFor:ChartShapeType
             //ExSummary:Shows how to set fill, stroke and callout formatting for chart data labels.
@@ -1582,6 +1492,124 @@ namespace ApiExamples
             labelFormat.Fill.Solid(Color.Blue);
 
             doc.Save(ArtifactsDir + "Charts.FormatDataLables.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void ChartAxisTitle()
+        {
+            //ExStart:ChartAxisTitle
+            //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:ChartAxisTitle
+            //ExFor:ChartAxisTitle.Text
+            //ExFor:ChartAxisTitle.Show
+            //ExFor:ChartAxisTitle.Overlay
+            //ExFor:ChartAxisTitle.Font
+            //ExSummary:Shows how to set chart axis title.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+
+            Chart chart = shape.Chart;
+            ChartSeriesCollection seriesColl = chart.Series;
+            // Delete default generated series.
+            seriesColl.Clear();
+
+            seriesColl.Add("AW Series 1", new string[] { "AW Category 1", "AW Category 2" }, new double[] { 1, 2 });
+
+            ChartAxisTitle chartAxisXTitle = chart.AxisX.Title;
+            chartAxisXTitle.Text = "Categories";
+            chartAxisXTitle.Show = true;
+            ChartAxisTitle chartAxisYTitle = chart.AxisY.Title;
+            chartAxisYTitle.Text = "Values";
+            chartAxisYTitle.Show = true;
+            chartAxisYTitle.Overlay = true;
+            chartAxisYTitle.Font.Size = 12;
+            chartAxisYTitle.Font.Color = Color.Blue;
+
+            doc.Save(ArtifactsDir + "Charts.ChartAxisTitle.docx");
+            //ExEnd:ChartAxisTitle
+        }
+
+        [TestCase(new[] { 1, 2, double.NaN, 4, 5, 6 })]
+        [TestCase(new[] { double.NaN, 4, 5, double.NaN, 7, 8 })]
+        [TestCase(new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN, 9 })]
+        [TestCase(new[] { double.NaN, 4, 5, double.NaN, double.NaN }, typeof(ArgumentException))]
+        [TestCase(new[] { double.NaN, double.NaN, double.NaN, double.NaN, double.NaN }, typeof(ArgumentException))]
+        public void DataArraysWrongSize(double[] seriesValue, Type exception = null)
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Line, 500, 300);
+            ChartSeriesCollection seriesColl = shape.Chart.Series;
+            seriesColl.Clear();
+
+            string[] categories = { "Word", null, "Excel", "GoogleDocs", "Note", null };
+            if (exception is null)
+                seriesColl.Add("AW Series", categories, seriesValue);
+            else
+                Assert.Throws(exception, () => seriesColl.Add("AW Series", categories, seriesValue));
+        }
+
+        [Test]
+        public void CopyDataPointFormat()
+        {
+            //ExStart:CopyDataPointFormat
+            //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:ChartSeries.CopyFormatFrom(int)
+            //ExFor:ChartDataPointCollection.HasDefaultFormat(int)
+            //ExFor:ChartDataPointCollection.CopyFormat(int, int)
+            //ExSummary:Shows how to copy data point format.
+            Document doc = new Document(MyDir + "DataPoint format.docx");
+
+            // Get the chart and series to update format.
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            ChartSeries series = shape.Chart.Series[0];
+            ChartDataPointCollection dataPoints = series.DataPoints;
+
+            Assert.IsTrue(dataPoints.HasDefaultFormat(0));
+            Assert.IsFalse(dataPoints.HasDefaultFormat(1));
+
+            // Copy format of the data point with index 1 to the data point with index 2
+            // so that the data point 2 looks the same as the data point 1.
+            dataPoints.CopyFormat(0, 1);
+
+            Assert.IsTrue(dataPoints.HasDefaultFormat(0));
+            Assert.IsTrue(dataPoints.HasDefaultFormat(1));
+
+            // Copy format of the data point with index 0 to the series defaults so that all data points
+            // in the series that have the default format look the same as the data point 0.
+            series.CopyFormatFrom(1);
+
+            Assert.IsTrue(dataPoints.HasDefaultFormat(0));
+            Assert.IsTrue(dataPoints.HasDefaultFormat(1));
+
+            doc.Save(ArtifactsDir + "Charts.CopyDataPointFormat.docx");
+            //ExEnd:CopyDataPointFormat
+        }
+
+        [Test]
+        public void ResetDataPointFill()
+        {
+            //ExStart:ResetDataPointFill
+            //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:ChartFormat.IsDefined
+            //ExFor:ChartFormat.SetDefaultFill
+            //ExSummary:Shows how to reset the fill to the default value defined in the series.
+            Document doc = new Document(MyDir + "DataPoint format.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            ChartSeries series = shape.Chart.Series[0];
+            ChartDataPoint dataPoint = series.DataPoints[1];
+
+            Assert.IsTrue(dataPoint.Format.IsDefined);            
+
+            dataPoint.Format.SetDefaultFill();
+
+            doc.Save(ArtifactsDir + "Charts.ResetDataPointFill.docx");
+            //ExEnd:ResetDataPointFill
         }
     }
 }

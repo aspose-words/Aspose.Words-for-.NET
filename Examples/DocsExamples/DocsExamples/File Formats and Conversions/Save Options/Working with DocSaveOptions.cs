@@ -1,4 +1,4 @@
-﻿using Aspose.Words;
+using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 
@@ -10,7 +10,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void EncryptDocumentWithPassword()
         {
             //ExStart:EncryptDocumentWithPassword
-            //GistDesc:Encrypt document using encryption algorithms in C#.
+            //GistId:af95c7a408187bb25cf9137465fe5ce6
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
