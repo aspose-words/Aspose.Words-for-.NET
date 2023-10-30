@@ -10,12 +10,18 @@ jobs:
       uses: actions/setup-dotnet@v3
     - name: Build ENV
       run: mkdir ./Examples/Data/License/
-    - name: Add license
+    - name: Add total license
       uses: timheuer/base64-to-file@v1.2
       with:
         fileName: 'Aspose.Total.NET.lic'
         fileDir: './Examples/Data/License/'
         encodedString: ${{ secrets.API_LICENSE }}
+    - name: Add words license
+      uses: timheuer/base64-to-file@v1.2
+      with:
+        fileName: 'Aspose.Words.NET.lic'
+        fileDir: './Examples/Data/License/'
+        encodedString: ${{ secrets.API_WORDS_LICENSE }}
     - name: Restore dependencies
       run: dotnet restore ./Examples/ApiExamples/ApiExamples/ApiExamples.csproj
     - name: Build
