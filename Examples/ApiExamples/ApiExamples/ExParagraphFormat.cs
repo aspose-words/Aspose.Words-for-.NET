@@ -413,9 +413,7 @@ namespace ApiExamples
 
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "ParagraphFormat.SuppressHyphens.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
-            textAbsorber.Visit(pdfDoc);
-
-            Console.WriteLine(textAbsorber.Text);
+            textAbsorber.Visit(pdfDoc);            
 
             if (suppressAutoHyphens)
                 Assert.True(textAbsorber.Text.Contains($"La ob storen an deinen am sachen. {Environment.NewLine}" +

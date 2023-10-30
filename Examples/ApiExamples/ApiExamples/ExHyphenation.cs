@@ -59,9 +59,7 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Hyphenation.Dictionary.Registered.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
-
-            Console.WriteLine(textAbsorber.Text);
-
+            
             Assert.True(textAbsorber.Text.Contains($"La ob storen an deinen am sachen. Dop-{Environment.NewLine}" +
                 $"pelte um da am spateren verlogen ge-{Environment.NewLine}" +
                 $"kommen achtzehn blaulich."));

@@ -31,9 +31,8 @@ using System.Data.OleDb;
 using Aspose.Words.Math;
 using System.Threading.Tasks;
 using System.Threading;
-#if NET48 || JAVA
 using Aspose.BarCode.BarCodeRecognition;
-#elif NET5_0_OR_GREATER
+#if NET5_0_OR_GREATER
 using SkiaSharp;
 #endif
 
@@ -413,7 +412,6 @@ namespace ApiExamples
                     .AddArgument(10).AddArgument(20.0).BuildAndInsert(run), Throws.TypeOf<ArgumentException>());
         }
 
-#if NET48 || JAVA
         [Test]
         public void BarCodeWord2Pdf()
         {
@@ -553,7 +551,6 @@ namespace ApiExamples
 
             TestUtil.TableMatchesQueryResult(table, DatabaseDir + "Northwind.accdb", field.Query.Insert(7, " TOP 10 "));
         }
-#endif
 
         public class OleDbFieldDatabaseProvider : IFieldDatabaseProvider
         {
