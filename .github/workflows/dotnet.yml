@@ -8,6 +8,8 @@ jobs:
     - uses: actions/checkout@v4
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
+    - name: Install fonts
+      run: dism /online /enable-feature /featurename:ServerCoreFonts-NonCritical-Fonts-TrueType /Source:O:\ /LimitAccess
     - name: Build ENV
       run: mkdir ./Examples/Data/License/
     - name: Add total license
