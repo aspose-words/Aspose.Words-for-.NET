@@ -2819,7 +2819,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertOnlineVideo("https://youtu.be/t_1LYZ102RA", 360, 270);
+            builder.InsertOnlineVideo("https://youtu.be/g1N9ke8Prmk", 360, 270);
 
             // We can watch the video from Microsoft Word by clicking on the shape.
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertVideoWithUrl.docx");

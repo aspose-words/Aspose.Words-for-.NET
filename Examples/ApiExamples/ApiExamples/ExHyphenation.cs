@@ -60,6 +60,8 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
+            Console.WriteLine(textAbsorber.Text);
+
             Assert.True(textAbsorber.Text.Contains("La ob storen an deinen am sachen. Dop-\r\n" +
                                                    "pelte  um  da  am  spateren  verlogen  ge-\r\n" +
                                                    "kommen  achtzehn  blaulich."));

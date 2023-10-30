@@ -9,6 +9,7 @@ using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.Layout;
 using NUnit.Framework;
+using System;
 
 namespace ApiExamples
 {
@@ -413,6 +414,8 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "ParagraphFormat.SuppressHyphens.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
+
+            Console.WriteLine(textAbsorber.Text);
 
             if (suppressAutoHyphens)
                 Assert.True(textAbsorber.Text.Contains("La  ob  storen  an  deinen  am  sachen. \r\n" +
