@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -26,16 +26,15 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertDocumentAtReplace()
         {
             //ExStart:InsertDocumentAtReplace
+            //GistId:db2dfc4150d7c714bcac3782ae241d03
             Document mainDoc = new Document(MyDir + "Document insertion 1.docx");
-
-            // Set find and replace options.
+                        
             FindReplaceOptions options = new FindReplaceOptions
             {
                 Direction = FindReplaceDirection.Backward, 
                 ReplacingCallback = new InsertDocumentAtReplaceHandler()
             };
 
-            // Call the replace method.
             mainDoc.Range.Replace(new Regex("\\[MY_DOCUMENT\\]"), "", options);
             mainDoc.Save(ArtifactsDir + "CloneAndCombineDocuments.InsertDocumentAtReplace.docx");
             //ExEnd:InsertDocumentAtReplace
@@ -44,7 +43,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         [Test]
         public void InsertDocumentAtBookmark()
         {
-            //ExStart:InsertDocumentAtBookmark         
+            //ExStart:InsertDocumentAtBookmark
+            //GistId:db2dfc4150d7c714bcac3782ae241d03
             Document mainDoc = new Document(MyDir + "Document insertion 1.docx");
             Document subDoc = new Document(MyDir + "Document insertion 2.docx");
 
@@ -58,7 +58,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         [Test]
         public void InsertDocumentAtMailMerge()
         {
-            //ExStart:InsertDocumentAtMailMerge   
+            //ExStart:InsertDocumentAtMailMerge
+            //GistId:db2dfc4150d7c714bcac3782ae241d03
             Document mainDoc = new Document(MyDir + "Document insertion 1.docx");
 
             mainDoc.MailMerge.FieldMergingCallback = new InsertDocumentAtMailMergeHandler();
@@ -71,14 +72,15 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             //ExEnd:InsertDocumentAtMailMerge
         }
 
+        //ExStart:InsertDocumentAsNodes
+        //GistId:db2dfc4150d7c714bcac3782ae241d03
         /// <summary>
         /// Inserts content of the external document after the specified node.
         /// Section breaks and section formatting of the inserted document are ignored.
         /// </summary>
         /// <param name="insertionDestination">Node in the destination document after which the content
         /// Should be inserted. This node should be a block level node (paragraph or table).</param>
-        /// <param name="docToInsert">The document to insert.</param>
-        //ExStart:InsertDocument
+        /// <param name="docToInsert">The document to insert.</param>        
         private static void InsertDocument(Node insertionDestination, Document docToInsert)
         {
             if (insertionDestination.NodeType == NodeType.Paragraph || insertionDestination.NodeType == NodeType.Table)
@@ -111,7 +113,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
                 throw new ArgumentException("The destination node should be either a paragraph or table.");
             }
         }
-        //ExEnd:InsertDocument
+        //ExEnd:InsertDocumentAsNodes
 
         //ExStart:InsertDocumentWithSectionFormatting
         /// <summary>
@@ -164,6 +166,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         //ExEnd:InsertDocumentWithSectionFormatting
 
         //ExStart:InsertDocumentAtMailMergeHandler
+        //GistId:db2dfc4150d7c714bcac3782ae241d03
         private class InsertDocumentAtMailMergeHandler : IFieldMergingCallback
         {
             // This handler makes special processing for the "Document_1" field.
@@ -232,8 +235,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             }
         }
         //ExEnd:InsertDocumentAtMailMergeBlobHandler
-        
+
         //ExStart:InsertDocumentAtReplaceHandler
+        //GistId:db2dfc4150d7c714bcac3782ae241d03
         private class InsertDocumentAtReplaceHandler : IReplacingCallback
         {
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs args)

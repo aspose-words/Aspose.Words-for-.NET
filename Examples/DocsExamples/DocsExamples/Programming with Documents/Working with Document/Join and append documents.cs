@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text;
 using Aspose.Words;
 using Aspose.Words.Fields;
@@ -235,6 +235,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void DifferentPageSetup()
         {
             //ExStart:DifferentPageSetup
+            //GistId:db2dfc4150d7c714bcac3782ae241d03
             Document srcDoc = new Document(MyDir + "Document source.docx");
             Document dstDoc = new Document(MyDir + "Northwind traders.docx");
 
@@ -301,6 +302,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void KeepSourceFormatting()
         {
             //ExStart:KeepSourceFormatting
+            //GistId:db2dfc4150d7c714bcac3782ae241d03
             Document dstDoc = new Document();
             dstDoc.FirstSection.Body.AppendParagraph("Destination document text. ");
 
@@ -473,9 +475,10 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         }
 
         [Test]
-        public void InsertDocumentWithBuilder()
+        public void InsertDocument()
         {
             //ExStart:InsertDocumentWithBuilder
+            //GistId:db2dfc4150d7c714bcac3782ae241d03
             Document srcDoc = new Document(MyDir + "Document source.docx");
             Document dstDoc = new Document(MyDir + "Northwind traders.docx");
             DocumentBuilder builder = new DocumentBuilder(dstDoc);
@@ -484,8 +487,33 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             builder.InsertBreak(BreakType.PageBreak);
 
             builder.InsertDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
-            builder.Document.Save(ArtifactsDir + "JoinAndAppendDocuments.InsertDocumentWithBuilder.docx");
+            builder.Document.Save(ArtifactsDir + "JoinAndAppendDocuments.InsertDocument.docx");
             //ExEnd:InsertDocumentWithBuilder
+        }
+
+        [Test]
+        public void InsertDocumentInline()
+        {
+            //ExStart:InsertDocumentInlineWithBuilder
+            //GistId:db2dfc4150d7c714bcac3782ae241d03
+            DocumentBuilder srcDoc = new DocumentBuilder();
+            srcDoc.Write("[src content]");
+
+            // Create destination document.
+            DocumentBuilder dstDoc = new DocumentBuilder();
+            dstDoc.Write("Before ");
+            dstDoc.InsertNode(new BookmarkStart(dstDoc.Document, "src_place"));
+            dstDoc.InsertNode(new BookmarkEnd(dstDoc.Document, "src_place"));
+            dstDoc.Write(" after");
+
+            Assert.AreEqual("Before  after", dstDoc.Document.GetText().TrimEnd());
+
+            // Insert source document into destination inline.
+            dstDoc.MoveToBookmark("src_place");
+            dstDoc.InsertDocumentInline(srcDoc.Document, ImportFormatMode.UseDestinationStyles, new ImportFormatOptions());
+
+            Assert.AreEqual("Before [src content] after", dstDoc.Document.GetText().TrimEnd());
+            //ExEnd:InsertDocumentInlineWithBuilder
         }
 
         [Test]

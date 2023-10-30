@@ -316,11 +316,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Image.CreateImageDirectly.docx", loadOptions);
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-#if NET48
             TestUtil.VerifyImageInShape(1666, 1666, ImageType.Png, shape);
-#elif NET5_0_OR_GREATER
-            TestUtil.VerifyImageInShape(1666, 1666, ImageType.Png, shape);
-#endif
             //ExEnd
         }
 

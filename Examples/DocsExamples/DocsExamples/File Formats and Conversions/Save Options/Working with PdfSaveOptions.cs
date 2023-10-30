@@ -222,13 +222,14 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         [Test]
         public void ConversionToPdf17()
         {
-            //ExStart:ConversionToPDF17
+            //ExStart:ConversionToPdf17
+            //GistId:a53bdaad548845275c1b9556ee21ae65
             Document doc = new Document(MyDir + "Rendering.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions { Compliance = PdfCompliance.Pdf17 };
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.ConversionToPdf17.pdf", saveOptions);
-            //ExEnd:ConversionToPDF17
+            //ExEnd:ConversionToPdf17
         }
 
         [Test]
@@ -349,6 +350,19 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.InterpolateImages.pdf", saveOptions);
             //ExEnd:SetImageInterpolation
+        }
+
+        [Test]
+        public void OptimizeOutput()
+        {
+            //ExStart:OptimizeOutput
+            //GistId:a53bdaad548845275c1b9556ee21ae65
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions { OptimizeOutput = true };
+
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.OptimizeOutput.pdf", saveOptions);
+            //ExEnd:OptimizeOutput
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -55,11 +55,12 @@ namespace DocsExamples.File_Formats_and_Conversions
         [Test]
         public void DocxToPdf()
         {
-            //ExStart:Doc2Pdf
+            //ExStart:DocxToPdf
+            //GistId:a53bdaad548845275c1b9556ee21ae65
             Document doc = new Document(MyDir + "Document.docx");
 
             doc.Save(ArtifactsDir + "BaseConversions.DocxToPdf.pdf");
-            //ExEnd:Doc2Pdf
+            //ExEnd:DocxToPdf
         }
 
         [Test]
@@ -208,11 +209,12 @@ namespace DocsExamples.File_Formats_and_Conversions
             doc.Save(ArtifactsDir + "BaseConversions.CompressXlsx.xlsx", saveOptions);
         }
 
-#if NET48
+#if NET48 || JAVA
         [Test]
         public void ImagesToPdf()
         {
             //ExStart:ImageToPdf
+            //GistId:a53bdaad548845275c1b9556ee21ae65
             ConvertImageToPdf(ImagesDir + "Logo.jpg", ArtifactsDir + "BaseConversions.JpgToPdf.pdf");
             ConvertImageToPdf(ImagesDir + "Transparent background logo.png", ArtifactsDir + "BaseConversions.PngToPdf.pdf");
             ConvertImageToPdf(ImagesDir + "Windows MetaFile.wmf", ArtifactsDir + "BaseConversions.WmfToPdf.pdf");
@@ -221,6 +223,8 @@ namespace DocsExamples.File_Formats_and_Conversions
             //ExEnd:ImageToPdf
         }
 
+        //ExStart:ConvertImageToPdf
+        //GistId:a53bdaad548845275c1b9556ee21ae65
         /// <summary>
         /// Converts an image to PDF using Aspose.Words for .NET.
         /// </summary>
@@ -230,7 +234,7 @@ namespace DocsExamples.File_Formats_and_Conversions
         {
             Console.WriteLine("Converting " + inputFileName + " to PDF ....");
 
-            //ExStart:ConvertImageToPdf
+            
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -270,9 +274,9 @@ namespace DocsExamples.File_Formats_and_Conversions
                 }
             }
 
-            doc.Save(outputFileName);
-            //ExEnd:ConvertImageToPdf
+            doc.Save(outputFileName);            
         }
+        //ExEnd:ConvertImageToPdf
 #endif
     }
 }
