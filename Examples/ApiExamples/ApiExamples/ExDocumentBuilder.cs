@@ -2810,7 +2810,7 @@ namespace ApiExamples
         }
         //ExEnd
 
-        [Test, Ignore("Failed")]
+        [Test]
         public async Task InsertVideoWithUrl()
         {
             //ExStart
