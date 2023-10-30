@@ -418,13 +418,13 @@ namespace ApiExamples
             Console.WriteLine(textAbsorber.Text);
 
             if (suppressAutoHyphens)
-                Assert.True(textAbsorber.Text.Contains("La  ob  storen  an  deinen  am  sachen. \r\n" +
-                                                       "Doppelte  um  da  am  spateren  verlogen \r\n" +
-                                                       "gekommen  achtzehn  blaulich."));
+                Assert.True(textAbsorber.Text.Contains($"La ob storen an deinen am sachen. {Environment.NewLine}" +
+                                                       $"Doppelte um da am spateren verlogen {Environment.NewLine}" +
+                                                       $"gekommen achtzehn blaulich."));
             else
-                Assert.True(textAbsorber.Text.Contains("La ob storen an deinen am sachen. Dop-\r\n" +
-                                                       "pelte  um  da  am  spateren  verlogen  ge-\r\n" +
-                                                       "kommen  achtzehn  blaulich."));
+                Assert.True(textAbsorber.Text.Contains($"La ob storen an deinen am sachen. Dop-{Environment.NewLine}" +
+                                                       $"pelte um da am spateren verlogen ge-{Environment.NewLine}" +
+                                                       $"kommen achtzehn blaulich."));
         }
 
         [Test]
