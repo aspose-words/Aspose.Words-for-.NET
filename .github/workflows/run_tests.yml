@@ -1,7 +1,7 @@
 name: Run API tests
 on: 
-  push
-  workflow_dispatch
+  push:
+  workflow_dispatch:
 
 jobs:
   build:
