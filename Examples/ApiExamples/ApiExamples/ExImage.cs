@@ -12,11 +12,6 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
 using System.Threading.Tasks;
-#if NET48 || JAVA
-using System.Drawing;
-#elif NET5_0_OR_GREATER || __MOBILE__
-using SkiaSharp;
-#endif
 
 namespace ApiExamples
 {
@@ -111,47 +106,6 @@ namespace ApiExamples
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, (Shape)doc.GetChildNodes(NodeType.Shape, true)[0]);
         }
-
-        #if NET48 || JAVA
-        [Test, Category("SkipMono")]
-        public void FromImage()
-        {
-            DocumentBuilder builder = new DocumentBuilder();
-
-            using (Image rasterImage = Image.FromFile(ImageDir + "Logo.jpg"))
-            {
-                builder.Write("Raster image: ");
-                builder.InsertImage(rasterImage);
-                builder.Writeln();
-            }
-
-            using (Image metafile = Image.FromFile(ImageDir + "Windows MetaFile.wmf"))
-            {
-                builder.Write("Metafile: ");
-                builder.InsertImage(metafile);
-                builder.Writeln();
-            }
-
-            builder.Document.Save(ArtifactsDir + "Image.FromImage.docx");
-        }
-#elif NET5_0_OR_GREATER || __MOBILE__
-        [Test]
-        [Category("SkipMono")]
-        public void FromImageNetStandard2()
-        {
-            DocumentBuilder builder = new DocumentBuilder();
-
-            // Insert a raster image
-            using (SKBitmap rasterImage = SKBitmap.Decode(ImageDir + "Logo.jpg"))
-            {
-                builder.Write("Raster image: ");
-                builder.InsertImage(rasterImage);
-                builder.Writeln();
-            }
-
-            builder.Document.Save(ArtifactsDir + "Image.FromImage.docx");
-        }
-#endif
 
         [Test]
         public void CreateFloatingPageCenter()
@@ -409,18 +363,6 @@ namespace ApiExamples
             //ExFor:ShapeBase.Width
             //ExFor:ShapeBase.Height
             //ExSummary:Shows how to resize a shape with an image.
-#if NET48 || JAVA
-            Image image = Image.FromFile(ImageDir + "Logo.jpg");
-
-            Assert.AreEqual(400, image.Size.Width);
-            Assert.AreEqual(400, image.Size.Height);
-#elif NET5_0_OR_GREATER
-            SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg");
-
-            Assert.AreEqual(400, image.Width);
-            Assert.AreEqual(400, image.Height);
-#endif
-
             // When we insert an image using the "InsertImage" method, the builder scales the shape that displays the image so that,
             // when we view the document using 100% zoom in Microsoft Word, the shape displays the image in its actual size.
             Document doc = new Document();

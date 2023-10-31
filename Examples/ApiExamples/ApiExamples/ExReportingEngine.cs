@@ -439,12 +439,8 @@ namespace ApiExamples
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Image]>>", ShapeType.TextBox);
             
-            #if NET48 || JAVA
-            ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
-            #elif NET5_0_OR_GREATER || __MOBILE__
-            ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
-            #endif
-            
+            ImageTestClass image = new ImageTestBuilder().WithImage(mImage).Build();
+                        
             BuildReport(template, image, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
 
@@ -549,11 +545,8 @@ namespace ApiExamples
         {
             Document template = new Document(MyDir + "Reporting engine template - Dynamic stretching.docx");
             
-#if NET48 || JAVA
-            ImageTestClass image = new ImageTestBuilder().WithImage(Image.FromFile(mImage, true)).Build();
-#elif NET5_0_OR_GREATER || __MOBILE__
-            ImageTestClass image = new ImageTestBuilder().WithImage(SKBitmap.Decode(mImage)).Build();
-#endif
+            ImageTestClass image = new ImageTestBuilder().WithImage(mImage).Build();
+
             BuildReport(template, image, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox.docx");
 

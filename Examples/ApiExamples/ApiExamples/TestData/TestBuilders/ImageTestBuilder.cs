@@ -1,20 +1,15 @@
 ﻿using System.IO;
 using ApiExamples.TestData.TestClasses;
-#if NET48 || JAVA
 using System.Drawing;
-#elif NET5_0_OR_GREATER || __MOBILE__
-using SkiaSharp;
+#if NET5_0_OR_GREATER
+using Image = SkiaSharp.SKBitmap;
 #endif
 
 namespace ApiExamples.TestData.TestBuilders
 {
     public class ImageTestBuilder : ApiExampleBase
     {
-#if NET48 || JAVA
         private Image mImage;
-#elif NET5_0_OR_GREATER || __MOBILE__
-        private SKBitmap mImage;
-#endif
         private Stream mImageStream;
         private byte[] mImageBytes;
         private string mImageString;
@@ -22,28 +17,24 @@ namespace ApiExamples.TestData.TestBuilders
         public ImageTestBuilder()
         {
 #if NET48 || JAVA
-            mImage = Image.FromFile(ImageDir + "Transparent background logo.png");            
+            mImage = Image.FromFile(ImageDir + "Transparent background logo.png");
 #elif NET5_0_OR_GREATER || __MOBILE__
-        this.mImage = SKBitmap.Decode(ImageDir + "Transparent background logo.png");
+            mImage = Image.Decode(ImageDir + "Transparent background logo.png");
 #endif
             mImageStream = Stream.Null;
             mImageBytes = new byte[0];
             mImageString = string.Empty;
         }
 
+        public ImageTestBuilder WithImage(string imagePath)
+        {
 #if NET48 || JAVA
-        public ImageTestBuilder WithImage(Image image)
-        {
-            mImage = image;
-            return this;
-        }
+            mImage = Image.FromFile(imagePath);
 #elif NET5_0_OR_GREATER || __MOBILE__
-        public ImageTestBuilder WithImage(SKBitmap image)
-        {
-            this.mImage = image;
+            mImage = Image.Decode(imagePath);
+#endif
             return this;
         }
-#endif
 
         public ImageTestBuilder WithImageStream(Stream imageStream)
         {

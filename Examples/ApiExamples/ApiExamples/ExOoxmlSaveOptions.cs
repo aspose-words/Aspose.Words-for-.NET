@@ -225,19 +225,21 @@ namespace ApiExamples
             Console.WriteLine($"\tFile Size:\t{fileInfo.Length} bytes");
             //ExEnd
 
+            var testedFileLength = fileInfo.Length;
+
             switch (compressionLevel)
             {
                 case CompressionLevel.Maximum:
-                    Assert.That(1266000, Is.AtLeast(fileInfo.Length));
+                    Assert.That(testedFileLength, Is.LessThan(1266000));
                     break;
                 case CompressionLevel.Normal:
-                    Assert.That(1266900, Is.LessThan(fileInfo.Length));
+                    Assert.That(testedFileLength, Is.LessThan(1267000));
                     break;
                 case CompressionLevel.Fast:
-                    Assert.That(1269000, Is.LessThan(fileInfo.Length));
+                    Assert.That(testedFileLength, Is.LessThan(1270000));
                     break;
                 case CompressionLevel.SuperFast:
-                    Assert.That(1271000, Is.LessThan(fileInfo.Length));
+                    Assert.That(testedFileLength, Is.LessThan(1272000));
                     break;
             }
         }

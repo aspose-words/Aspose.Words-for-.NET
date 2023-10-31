@@ -312,7 +312,6 @@ namespace ApiExamples
             await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, ((FieldHyperlink)doc.Range.Fields[0]).Address);
         }
 
-#if NET48 || JAVA
         [Test]
         public void InsertWatermark()
         {
@@ -328,9 +327,8 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert the image into the header so that it will be visible on every page.
-            Image image = Image.FromFile(ImageDir + "Transparent background logo.png");
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            Shape shape = builder.InsertImage(image);
+            Shape shape = builder.InsertImage(ImageDir + "Transparent background logo.png");
             shape.WrapType = WrapType.None;
             shape.BehindText = true;
 
@@ -410,53 +408,6 @@ namespace ApiExamples
             Assert.AreEqual("PowerPoint.Show.12", shape.OleFormat.ProgId);
             Assert.AreEqual(".pptx", shape.OleFormat.SuggestedExtension);
         }
-#elif NET5_0_OR_GREATER || __MOBILE__
-        [Test]
-        public void InsertWatermarkNetStandard2()
-        {
-            //ExStart
-            //ExFor:DocumentBuilder.MoveToHeaderFooter
-            //ExFor:PageSetup.PageWidth
-            //ExFor:PageSetup.PageHeight
-            //ExFor:WrapType
-            //ExFor:RelativeHorizontalPosition
-            //ExFor:RelativeVerticalPosition
-            //ExSummary:Shows how to insert an image, and use it as a watermark (.NetStandard 2.0).
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert the image into the header so that it will be visible on every page.
-            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-
-            using (SKBitmap image = SKBitmap.Decode(ImageDir + "Transparent background logo.png"))
-            {
-                builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-                Shape shape = builder.InsertImage(image);
-                shape.WrapType = WrapType.None;
-                shape.BehindText = true;
-
-                // Place the image at the center of the page.
-                shape.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
-                shape.RelativeVerticalPosition = RelativeVerticalPosition.Page;
-                shape.Left = (builder.PageSetup.PageWidth - shape.Width) / 2;
-                shape.Top = (builder.PageSetup.PageHeight - shape.Height) / 2;
-            }
-
-            doc.Save(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.docx");
-            //ExEnd
-
-            doc = new Document(ArtifactsDir + "DocumentBuilder.InsertWatermarkNetStandard2.docx");
-            Shape outShape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
-
-            TestUtil.VerifyImageInShape(400, 400, ImageType.Png, outShape);
-            Assert.AreEqual(WrapType.None, outShape.WrapType);
-            Assert.True(outShape.BehindText);
-            Assert.AreEqual(RelativeHorizontalPosition.Page, outShape.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Page, outShape.RelativeVerticalPosition);
-            Assert.AreEqual((doc.FirstSection.PageSetup.PageWidth - outShape.Width) / 2, outShape.Left);
-            Assert.AreEqual((doc.FirstSection.PageSetup.PageHeight - outShape.Height) / 2, outShape.Top);
-        }
-#endif
 
         [Test]
         public void InsertHtml()

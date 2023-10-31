@@ -20,16 +20,8 @@ using Aspose.Words.Lists;
 using Aspose.Words.Notes;
 using NUnit.Framework;
 using Table = Aspose.Words.Tables.Table;
-using Image =
-#if NET48 || JAVA
-System.Drawing.Image;
-using System.Collections.Generic;
-using System.Data.Odbc;
 using System.Drawing;
-#elif NET5_0_OR_GREATER || __MOBILE__
-SkiaSharp.SKBitmap;
-using SkiaSharp;
-#endif
+using System.Collections.Generic;
 using Shape = Aspose.Words.Drawing.Shape;
 
 namespace ApiExamples
@@ -47,39 +39,13 @@ namespace ApiExamples
         /// <param name="filename">Local file system filename of the image file.</param>
         internal static void VerifyImage(int expectedWidth, int expectedHeight, string filename)
         {
-            using (FileStream fileStream = new FileStream(filename, FileMode.Open))
+            using (Image image = Image.FromFile(filename))
             {
-                VerifyImage(expectedWidth, expectedHeight, fileStream);
-            }
-        }
-
-        /// <summary>
-        /// Checks whether a stream contains a valid image with specified dimensions.
-        /// </summary>
-        /// <remarks>
-        /// Serves to check that an image file is valid and nonempty without looking up its file size.
-        /// </remarks>
-        /// <param name="expectedWidth">Expected width of the image, in pixels.</param>
-        /// <param name="expectedHeight">Expected height of the image, in pixels.</param>
-        /// <param name="imageStream">Stream that contains the image.</param>
-        internal static void VerifyImage(int expectedWidth, int expectedHeight, Stream imageStream)
-        {
-#if NET48 || JAVA
-            using (Image image = Image.FromStream(imageStream))
-#elif NET5_0_OR_GREATER || __MOBILE__
-            using (Image image = Image.Decode(imageStream))
-#endif
-            {
-#if NET48 || NET5_0_OR_GREATER || JAVA
                 Assert.Multiple(() =>
                 {
                     Assert.AreEqual(expectedWidth, image.Width, 1);
                     Assert.AreEqual(expectedHeight, image.Height, 1);
                 });
-#elif __MOBILE__
-                Assert.AreEqual(expectedWidth, image.Width);
-                Assert.AreEqual(expectedHeight, image.Height);
-#endif
             }
         }
 
@@ -89,20 +55,12 @@ namespace ApiExamples
         /// <param name="filename">Local file system filename of the image file.</param>
         internal static void ImageContainsTransparency(string filename)
         {
-#if NET48 || JAVA
             using (Bitmap bitmap = (Bitmap)Image.FromFile(filename))
                 for (int x = 0; x < bitmap.Width; x++)
                     for (int y = 0; y < bitmap.Height; y++)
                         if (bitmap.GetPixel(x, y).A != 255) return;
 
             Assert.Fail($"The image from \"{filename}\" does not contain any transparency.");
-#elif NET5_0_OR_GREATER || __MOBILE__
-            using (Image image = Image.Decode(filename))
-                foreach (SKColor pixelColor in image.Pixels)
-                    if (pixelColor.Alpha != 255) return;
-
-            Assert.Fail($"The image from \"{filename}\" does not contain any transparency.");
-#endif
         }
 
         /// <summary>
@@ -130,7 +88,6 @@ namespace ApiExamples
         /// <param name="sqlQuery">Microsoft.Jet.OLEDB.4.0-compliant SQL query.</param>
         internal static void TableMatchesQueryResult(Table expectedResult, string dbFilename, string sqlQuery)
         {
-#if NET48 || NET5_0_OR_GREATER || JAVA
             using (OleDbConnection connection = new OleDbConnection())
             {
                 connection.ConnectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbFilename};";
@@ -151,7 +108,6 @@ namespace ApiExamples
                         Assert.AreEqual(expectedResult.Rows[i].Cells[j].GetText().Replace(ControlChar.Cell, string.Empty),
                             myDataTable.Rows[i][j].ToString());
             }
-#endif
         }
 
         /// <summary>
@@ -182,7 +138,6 @@ namespace ApiExamples
         /// <param name="onePagePerRow">True if the mail merge produced a document with one page per row in the data source.</param>
         internal static void MailMergeMatchesQueryResult(string dbFilename, string sqlQuery, Document doc, bool onePagePerRow)
         {
-#if NET48 || JAVA
             List<string[]> expectedStrings = new List<string[]>(); 
             string connectionString = @"Provider = Microsoft.ACE.OLEDB.12.0; Data Source=" + dbFilename;
 
@@ -225,7 +180,6 @@ namespace ApiExamples
             }
 
             MailMergeMatchesArray(expectedStrings.ToArray(), doc, onePagePerRow);
-#endif
         }
 
         /// <summary>
@@ -370,18 +324,12 @@ namespace ApiExamples
         /// <param name="field">The field that's being tested.</param>
         internal static void VerifyField(FieldType expectedType, string expectedFieldCode, string expectedResult, Field field)
         {
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedType, field.Type);
                 Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
                 Assert.AreEqual(expectedResult, field.Result);
             });
-#elif __MOBILE__
-            Assert.AreEqual(expectedType, field.Type);
-            Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
-            Assert.AreEqual(expectedResult, field.Result);
-#endif
         }
 
         /// <summary>
@@ -398,7 +346,6 @@ namespace ApiExamples
         /// <param name="delta">Margin of error for expectedResult.</param>
         internal static void VerifyField(FieldType expectedType, string expectedFieldCode, DateTime expectedResult, Field field, TimeSpan delta)
         {
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedType, field.Type);
@@ -410,16 +357,6 @@ namespace ApiExamples
                 else
                     VerifyDate(expectedResult.Date, actual, delta);
             });
-#elif __MOBILE__
-            Assert.AreEqual(expectedType, field.Type);
-            Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
-            Assert.True(DateTime.TryParse(field.Result, out DateTime actual));
-
-            if (field.Type == FieldType.FieldTime)
-                VerifyDate(expectedResult, actual, delta);
-            else
-                VerifyDate(expectedResult.Date, actual, delta);
-#endif
         }
 
         /// <summary>
@@ -465,7 +402,6 @@ namespace ApiExamples
         /// <param name="imageShape">Shape that contains the image.</param>
         internal static void VerifyImageInShape(int expectedWidth, int expectedHeight, ImageType expectedImageType, Shape imageShape)
         {
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Assert.Multiple(() =>
             {
                 Assert.True(imageShape.HasImage);
@@ -473,12 +409,6 @@ namespace ApiExamples
                 Assert.AreEqual(expectedWidth, imageShape.ImageData.ImageSize.WidthPixels);
                 Assert.AreEqual(expectedHeight, imageShape.ImageData.ImageSize.HeightPixels);
             });
-#elif __MOBILE__
-            Assert.True(imageShape.HasImage);
-            Assert.AreEqual(expectedImageType, imageShape.ImageData.ImageType);
-            Assert.AreEqual(expectedWidth, imageShape.ImageData.ImageSize.WidthPixels);
-            Assert.AreEqual(expectedHeight, imageShape.ImageData.ImageSize.HeightPixels);
-#endif
         }
 
         /// <summary>
@@ -491,7 +421,6 @@ namespace ApiExamples
         /// <param name="footnote">Footnote node in question.</param>
         internal static void VerifyFootnote(FootnoteType expectedFootnoteType, bool expectedIsAuto, string expectedReferenceMark, string expectedContents, Footnote footnote)
         {
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedFootnoteType, footnote.FootnoteType);
@@ -499,12 +428,6 @@ namespace ApiExamples
                 Assert.AreEqual(expectedReferenceMark, footnote.ReferenceMark);
                 Assert.AreEqual(expectedContents, footnote.ToString(SaveFormat.Text).Trim());
             });
-#elif __MOBILE__
-            Assert.AreEqual(expectedFootnoteType, footnote.FootnoteType);
-            Assert.AreEqual(expectedIsAuto, footnote.IsAuto);
-            Assert.AreEqual(expectedReferenceMark, footnote.ReferenceMark);
-            Assert.AreEqual(expectedContents, footnote.ToString(SaveFormat.Text).Trim());
-#endif
         }
 
         /// <summary>
@@ -519,18 +442,12 @@ namespace ApiExamples
         /// <param name="listLevel">List level in question.</param>
         internal static void VerifyListLevel(string expectedListFormat, double expectedNumberPosition, NumberStyle expectedNumberStyle, ListLevel listLevel)
         {
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedListFormat, listLevel.NumberFormat);
                 Assert.AreEqual(expectedNumberPosition, listLevel.NumberPosition);
                 Assert.AreEqual(expectedNumberStyle, listLevel.NumberStyle);
             });
-#elif __MOBILE__
-            Assert.AreEqual(expectedListFormat, listLevel.NumberFormat);
-            Assert.AreEqual(expectedNumberPosition, listLevel.NumberPosition);
-            Assert.AreEqual(expectedNumberStyle, listLevel.NumberStyle);
-#endif
         }
         
         /// <summary>
@@ -584,7 +501,6 @@ namespace ApiExamples
         /// <param name="tabStop">Tab stop that's being tested.</param>
         internal static void VerifyTabStop(double expectedPosition, TabAlignment expectedTabAlignment, TabLeader expectedTabLeader, bool isClear, TabStop tabStop)
         {
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedPosition, tabStop.Position);
@@ -592,12 +508,6 @@ namespace ApiExamples
                 Assert.AreEqual(expectedTabLeader, tabStop.Leader);
                 Assert.AreEqual(isClear, tabStop.IsClear);
             });
-#elif __MOBILE__
-            Assert.AreEqual(expectedPosition, tabStop.Position);
-            Assert.AreEqual(expectedTabAlignment, tabStop.Alignment);
-            Assert.AreEqual(expectedTabLeader, tabStop.Leader);
-            Assert.AreEqual(isClear, tabStop.IsClear);
-#endif
         }
 
         /// <summary>
@@ -608,7 +518,6 @@ namespace ApiExamples
         /// </remarks>
         internal static void VerifyShape(ShapeType expectedShapeType, string expectedName, double expectedWidth, double expectedHeight, double expectedTop, double expectedLeft, Shape shape)
         {
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedShapeType, shape.ShapeType);
@@ -618,14 +527,6 @@ namespace ApiExamples
                 Assert.AreEqual(expectedTop, shape.Top);
                 Assert.AreEqual(expectedLeft, shape.Left);
             });
-#elif __MOBILE__
-            Assert.AreEqual(expectedShapeType, shape.ShapeType);
-            Assert.AreEqual(expectedName, shape.Name);
-            Assert.AreEqual(expectedWidth, shape.Width);
-            Assert.AreEqual(expectedHeight, shape.Height);
-            Assert.AreEqual(expectedTop, shape.Top);
-            Assert.AreEqual(expectedLeft, shape.Left);
-#endif
         }
 
         /// <summary>
@@ -636,7 +537,6 @@ namespace ApiExamples
         /// </remarks>
         internal static void VerifyTextBox(LayoutFlow expectedLayoutFlow, bool expectedFitShapeToText, TextBoxWrapMode expectedTextBoxWrapMode, double marginTop, double marginBottom, double marginLeft, double marginRight, TextBox textBox)
         {
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedLayoutFlow, textBox.LayoutFlow);
@@ -647,15 +547,6 @@ namespace ApiExamples
                 Assert.AreEqual(marginLeft, textBox.InternalMarginLeft);
                 Assert.AreEqual(marginRight, textBox.InternalMarginRight);
             });
-#elif __MOBILE__
-            Assert.AreEqual(expectedLayoutFlow, textBox.LayoutFlow);
-            Assert.AreEqual(expectedFitShapeToText, textBox.FitShapeToText);
-            Assert.AreEqual(expectedTextBoxWrapMode, textBox.TextBoxWrapMode);
-            Assert.AreEqual(marginTop, textBox.InternalMarginTop);
-            Assert.AreEqual(marginBottom, textBox.InternalMarginBottom);
-            Assert.AreEqual(marginLeft, textBox.InternalMarginLeft);
-            Assert.AreEqual(marginRight, textBox.InternalMarginRight);
-#endif
         }
 
         /// <summary>
@@ -663,18 +554,12 @@ namespace ApiExamples
         /// </summary>
         internal static void VerifyEditableRange(int expectedId, string expectedEditorUser, EditorType expectedEditorGroup, EditableRange editableRange)
         {
-#if NET48 || NET5_0_OR_GREATER || JAVA
             Assert.Multiple(() =>
             {
                 Assert.AreEqual(expectedId, editableRange.Id);
                 Assert.AreEqual(expectedEditorUser, editableRange.SingleUser);
                 Assert.AreEqual(expectedEditorGroup, editableRange.EditorGroup);
             });
-#elif __MOBILE__
-            Assert.AreEqual(expectedId, editableRange.Id);
-            Assert.AreEqual(expectedEditorUser, editableRange.SingleUser);
-            Assert.AreEqual(expectedEditorGroup, editableRange.EditorGroup);
-#endif
         }
     }
 }
