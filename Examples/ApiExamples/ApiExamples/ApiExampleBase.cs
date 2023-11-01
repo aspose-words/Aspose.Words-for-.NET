@@ -45,6 +45,7 @@ namespace ApiExamples
             }
 
             Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
+            Console.WriteLine(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"));
         }
 
         [OneTimeTearDown]
@@ -70,9 +71,10 @@ namespace ApiExamples
         /// Workaround for .netcore.
         /// </summary>
         /// <returns>True if being executed in Mono, false otherwise.</returns>
-        internal static bool IsRunningOnMono() {
+        internal static bool IsRunningOnMono()
+        {
             return Type.GetType("Mono.Runtime") != null;
-        }        
+        }
 
         internal static void SetUnlimitedLicense()
         {
@@ -140,7 +142,7 @@ namespace ApiExamples
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
         internal static string ArtifactsDir { get; }
-        
+
         /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
