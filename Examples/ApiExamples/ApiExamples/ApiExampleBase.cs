@@ -45,12 +45,12 @@ namespace ApiExamples
                 Assert.Ignore("Test skipped on mono");
             }
 
-            Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
-            foreach (DictionaryEntry env in Environment.GetEnvironmentVariables())
+            if (CheckForSkipGitHub() && IsRunningOnGitHub())
             {
-                string sInfo = string.Format("{0} | {1}", env.Key, env.Value);
-                Console.WriteLine(sInfo);
+                Assert.Ignore("Test skipped on GitHub");
             }
+
+            Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");            
         }
 
         [OneTimeTearDown]
@@ -69,6 +69,25 @@ namespace ApiExamples
         {
             bool skipMono = TestContext.CurrentContext.Test.Properties["Category"].Contains("SkipMono");
             return skipMono;
+        }
+
+        /// <summary>
+        /// Checks when we need to ignore test on GitHub.
+        /// </summary>
+        private static bool CheckForSkipGitHub()
+        {
+            bool skipGitHub = TestContext.CurrentContext.Test.Properties["Category"].Contains("SkipGitHub");
+            return skipGitHub;
+        }
+
+        /// <summary>
+        /// Determine if runtime is GitHub.
+        /// </summary>
+        /// <returns>True if being executed in GitHub, false otherwise.</returns>
+        internal static bool IsRunningOnGitHub()
+        {
+            bool isGitHub = Environment.GetEnvironmentVariable("RUNNER_ENVIRONMENT") != null ? true : false;
+            return isGitHub;
         }
 
         /// <summary>

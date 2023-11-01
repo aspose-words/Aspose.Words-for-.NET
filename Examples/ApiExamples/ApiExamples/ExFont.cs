@@ -1459,7 +1459,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]        
+        [Test, Category("SkipGitHub")]        
         public void CheckScanUserFontsFolder()
         {
             var userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
