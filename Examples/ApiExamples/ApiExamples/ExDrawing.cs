@@ -24,7 +24,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDrawing : ApiExampleBase
     {
-        #if NET48 || JAVA
+#if NET48 || JAVA
         [Test]
         public void VariousShapes()
         {
@@ -163,113 +163,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void TypeOfImage()
-        {
-            //ExStart
-            //ExFor:Drawing.ImageType
-            //ExSummary:Shows how to add an image to a shape and check its type.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            
-            byte[] imageBytes = File.ReadAllBytes(ImageDir + "Logo.jpg");
-
-            using (MemoryStream stream = new MemoryStream(imageBytes))
-            {
-                Image image = Image.FromStream(stream);
-
-                // The image in the URL is a .gif. Inserting it into a document converts it into a .png.
-                Shape imgShape = builder.InsertImage(image);
-                Assert.AreEqual(ImageType.Jpeg, imgShape.ImageData.ImageType);
-            }
-
-            //ExEnd
-        }
-
-        [Test]
-        public void FillSolid()
-        {
-            //ExStart
-            //ExFor:Fill.Color()
-            //ExFor:Fill.Solid(Color)
-            //ExSummary:Shows how to convert any of the fills back to solid fill.
-            Document doc = new Document(MyDir + "Two color gradient.docx");
-
-            // Get Fill object for Font of the first Run.
-            Fill fill = doc.FirstSection.Body.Paragraphs[0].Runs[0].Font.Fill;
-
-            // Check Fill properties of the Font.
-            Console.WriteLine("The type of the fill is: {0}", fill.FillType);
-            Console.WriteLine("The foreground color of the fill is: {0}", fill.ForeColor);
-            Console.WriteLine("The fill is transparent at {0}%", fill.Transparency * 100);
-
-            // Change type of the fill to Solid with uniform green color.
-            fill.Solid(Color.Green);
-            Console.WriteLine("\nThe fill is changed:");
-            Console.WriteLine("The type of the fill is: {0}", fill.FillType);
-            Console.WriteLine("The foreground color of the fill is: {0}", fill.ForeColor);
-            Console.WriteLine("The fill transparency is {0}%", fill.Transparency * 100);
-
-            doc.Save(ArtifactsDir + "Drawing.FillSolid.docx");
-            //ExEnd
-        }
-
-        [Test]
-        public void SaveAllImages()
-        {
-            //ExStart
-            //ExFor:ImageData.HasImage
-            //ExFor:ImageData.ToImage
-            //ExFor:ImageData.Save(Stream)
-            //ExSummary:Shows how to save all images from a document to the file system.
-            Document imgSourceDoc = new Document(MyDir + "Images.docx");
-
-            // Shapes with the "HasImage" flag set store and display all the document's images.
-            IEnumerable<Shape> shapesWithImages = 
-                imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Where(s => s.HasImage);
-
-            // Go through each shape and save its image.
-            ImageFormatConverter formatConverter = new ImageFormatConverter();
-
-            using (IEnumerator<Shape> enumerator = shapesWithImages.GetEnumerator())
-            {
-                int shapeIndex = 0;
-
-                while (enumerator.MoveNext())
-                {
-                    ImageData imageData = enumerator.Current.ImageData;
-                    ImageFormat format = imageData.ToImage().RawFormat;
-                    string fileExtension = formatConverter.ConvertToString(format);
-
-                    using (FileStream fileStream = File.Create(ArtifactsDir + $"Drawing.SaveAllImages.{++shapeIndex}.{fileExtension}"))
-                        imageData.Save(fileStream);
-                }
-            }
-            //ExEnd
-
-            string[] imageFileNames = Directory.GetFiles(ArtifactsDir).Where(s => s.StartsWith(ArtifactsDir + "Drawing.SaveAllImages.")).OrderBy(s => s).ToArray();
-            List<FileInfo> fileInfos = imageFileNames.Select(s => new FileInfo(s)).ToList();
-            
-            TestUtil.VerifyImage(2467, 1500, fileInfos[0].FullName);
-            Assert.AreEqual(".Jpeg", fileInfos[0].Extension);
-            TestUtil.VerifyImage(400, 400, fileInfos[1].FullName);
-            Assert.AreEqual(".Png", fileInfos[1].Extension);
-            TestUtil.VerifyImage(382, 138, fileInfos[2].FullName);
-            Assert.AreEqual(".Emf", fileInfos[2].Extension);
-            TestUtil.VerifyImage(1600, 1600, fileInfos[3].FullName);
-            Assert.AreEqual(".Wmf", fileInfos[3].Extension);
-            TestUtil.VerifyImage(534, 534, fileInfos[4].FullName);
-            Assert.AreEqual(".Emf", fileInfos[4].Extension);
-            TestUtil.VerifyImage(1260, 660, fileInfos[5].FullName);
-            Assert.AreEqual(".Jpeg", fileInfos[5].Extension);
-            TestUtil.VerifyImage(1125, 1500, fileInfos[6].FullName);
-            Assert.AreEqual(".Jpeg", fileInfos[6].Extension);
-            TestUtil.VerifyImage(1027, 1500, fileInfos[7].FullName);
-            Assert.AreEqual(".Jpeg", fileInfos[7].Extension);
-            TestUtil.VerifyImage(1200, 1500, fileInfos[8].FullName);
-            Assert.AreEqual(".Jpeg", fileInfos[8].Extension);
-        }
-
-        [Test]
         public void ImportImage()
         {
             //ExStart
@@ -325,6 +218,104 @@ namespace ApiExamples
             Assert.AreEqual(300.0d, imgShape.Width);
         }
 #endif
+
+        [Test]
+        public void TypeOfImage()
+        {
+            //ExStart
+            //ExFor:Drawing.ImageType
+            //ExSummary:Shows how to add an image to a shape and check its type.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape imgShape = builder.InsertImage(ImageDir + "Logo.jpg");
+            Assert.AreEqual(ImageType.Jpeg, imgShape.ImageData.ImageType);
+            //ExEnd
+        }
+
+        [Test]
+        public void FillSolid()
+        {
+            //ExStart
+            //ExFor:Fill.Color()
+            //ExFor:Fill.Solid(Color)
+            //ExSummary:Shows how to convert any of the fills back to solid fill.
+            Document doc = new Document(MyDir + "Two color gradient.docx");
+
+            // Get Fill object for Font of the first Run.
+            Fill fill = doc.FirstSection.Body.Paragraphs[0].Runs[0].Font.Fill;
+
+            // Check Fill properties of the Font.
+            Console.WriteLine("The type of the fill is: {0}", fill.FillType);
+            Console.WriteLine("The foreground color of the fill is: {0}", fill.ForeColor);
+            Console.WriteLine("The fill is transparent at {0}%", fill.Transparency * 100);
+
+            // Change type of the fill to Solid with uniform green color.
+            fill.Solid(Color.Green);
+            Console.WriteLine("\nThe fill is changed:");
+            Console.WriteLine("The type of the fill is: {0}", fill.FillType);
+            Console.WriteLine("The foreground color of the fill is: {0}", fill.ForeColor);
+            Console.WriteLine("The fill transparency is {0}%", fill.Transparency * 100);
+
+            doc.Save(ArtifactsDir + "Drawing.FillSolid.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void SaveAllImages()
+        {
+            //ExStart
+            //ExFor:ImageData.HasImage
+            //ExFor:ImageData.ToImage
+            //ExFor:ImageData.Save(Stream)
+            //ExSummary:Shows how to save all images from a document to the file system.
+            Document imgSourceDoc = new Document(MyDir + "Images.docx");
+
+            // Shapes with the "HasImage" flag set store and display all the document's images.
+            IEnumerable<Shape> shapesWithImages = 
+                imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Where(s => s.HasImage);
+
+            // Go through each shape and save its image.
+            ImageFormatConverter formatConverter = new ImageFormatConverter();
+
+            using (IEnumerator<Shape> enumerator = shapesWithImages.GetEnumerator())
+            {
+                int shapeIndex = 0;
+
+                while (enumerator.MoveNext())
+                {
+                    ImageData imageData = enumerator.Current.ImageData;                    
+
+                    using (FileStream fileStream = File.Create(ArtifactsDir + $"Drawing.SaveAllImages.{++shapeIndex}.{imageData.ImageType}"))
+                        imageData.Save(fileStream);
+                }
+            }
+            //ExEnd
+
+            string[] imageFileNames = Directory.GetFiles(ArtifactsDir).Where(s => s.StartsWith(ArtifactsDir + "Drawing.SaveAllImages.")).OrderBy(s => s).ToArray();
+            List<FileInfo> fileInfos = imageFileNames.Select(s => new FileInfo(s)).ToList();
+            
+            TestUtil.VerifyImage(2467, 1500, fileInfos[0].FullName);
+            Assert.AreEqual(".Jpeg", fileInfos[0].Extension);
+            TestUtil.VerifyImage(400, 400, fileInfos[1].FullName);
+            Assert.AreEqual(".Png", fileInfos[1].Extension);
+#if NET48 || JAVA
+            TestUtil.VerifyImage(382, 138, fileInfos[2].FullName);
+            Assert.AreEqual(".Emf", fileInfos[2].Extension);
+            TestUtil.VerifyImage(1600, 1600, fileInfos[3].FullName);
+            Assert.AreEqual(".Wmf", fileInfos[3].Extension);
+            TestUtil.VerifyImage(534, 534, fileInfos[4].FullName);
+            Assert.AreEqual(".Emf", fileInfos[4].Extension);
+#endif
+            TestUtil.VerifyImage(1260, 660, fileInfos[5].FullName);
+            Assert.AreEqual(".Jpeg", fileInfos[5].Extension);
+            TestUtil.VerifyImage(1125, 1500, fileInfos[6].FullName);
+            Assert.AreEqual(".Jpeg", fileInfos[6].Extension);
+            TestUtil.VerifyImage(1027, 1500, fileInfos[7].FullName);
+            Assert.AreEqual(".Jpeg", fileInfos[7].Extension);
+            TestUtil.VerifyImage(1200, 1500, fileInfos[8].FullName);
+            Assert.AreEqual(".Jpeg", fileInfos[8].Extension);
+        }        
 
         [Test]
         public void StrokePattern()

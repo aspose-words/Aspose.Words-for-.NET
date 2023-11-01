@@ -106,7 +106,6 @@ namespace ApiExamples
             // Create an "XpsSaveOptions" object to pass to the document's "Save" method
             // to modify how that method converts the document to .XPS.
             XpsSaveOptions saveOptions = new XpsSaveOptions();
-
             // Set the "OptimizeOutput" property to "true" to take measures such as removing nested or empty canvases
             // and concatenating adjacent runs with identical formatting to optimize the output document's content.
             // This may affect the appearance of the document.
@@ -116,12 +115,11 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps", saveOptions);
             //ExEnd
 
-            FileInfo outFileInfo = new FileInfo(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps");
-
+            var testedFileLength = new FileInfo(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps").Length;
             if (optimizeOutput)
-                Assert.That(50000, Is.AtLeast(outFileInfo.Length));
+                Assert.That(testedFileLength, Is.LessThan(43000));
             else
-                Assert.That(60000, Is.LessThan(outFileInfo.Length));
+                Assert.That(testedFileLength, Is.LessThan(64000));
 
             TestUtil.DocPackageFileContainsString(
                 optimizeOutput

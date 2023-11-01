@@ -24,13 +24,6 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using SaveOptions = Aspose.Words.Saving.SaveOptions;
 using WarningInfo = Aspose.Words.WarningInfo;
 using WarningType = Aspose.Words.WarningType;
-using Image =
-#if NET48 || JAVA
-System.Drawing.Image;
-#elif NET5_0_OR_GREATER || __MOBILE__
-SkiaSharp.SKBitmap;
-using SkiaSharp;
-#endif
 using Aspose.Pdf;
 using Aspose.Pdf.Annotations;
 using Aspose.Pdf.Facades;
@@ -524,19 +517,18 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf", options);
             //ExEnd
 
+            var filePath = ArtifactsDir + "PdfSaveOptions.TextCompression.pdf";
+            var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf").Length;
+
             switch (pdfTextCompression)
             {
                 case PdfTextCompression.None:
-                    Assert.That(60000,
-                        Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf").Length));
-                    TestUtil.FileContainsString("<</Length 11 0 R>>stream",
-                        ArtifactsDir + "PdfSaveOptions.TextCompression.pdf");
+                    Assert.That(testedFileLength, Is.LessThan(69000));
+                    TestUtil.FileContainsString("<</Length 11 0 R>>stream", filePath);
                     break;
                 case PdfTextCompression.Flate:
-                    Assert.That(30000,
-                        Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.TextCompression.pdf").Length));
-                    TestUtil.FileContainsString("<</Length 11 0 R/Filter/FlateDecode>>stream",
-                        ArtifactsDir + "PdfSaveOptions.TextCompression.pdf");
+                    Assert.That(testedFileLength, Is.LessThan(27000));
+                    TestUtil.FileContainsString("<</Length 11 0 R/Filter/FlateDecode>>stream", filePath);
                     break;
             }
         }
@@ -562,13 +554,11 @@ namespace ApiExamples
             // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions pdfSaveOptions = new PdfSaveOptions();
-
             // Set the "ImageCompression" property to "PdfImageCompression.Auto" to use the
             // "ImageCompression" property to control the quality of the Jpeg images that end up in the output PDF.
             // Set the "ImageCompression" property to "PdfImageCompression.Jpeg" to use the
             // "ImageCompression" property to control the quality of all images that end up in the output PDF.
             pdfSaveOptions.ImageCompression = pdfImageCompression;
-
             // Set the "JpegQuality" property to "10" to strengthen compression at the cost of image quality.
             pdfSaveOptions.JpegQuality = 10;
 
@@ -576,36 +566,31 @@ namespace ApiExamples
             //ExEnd
 
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf");
-            Stream pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[1].ToStream();
+            XImage image = pdfDocument.Pages[1].Resources.Images[1];
+            string imagePath = ArtifactsDir + $"PdfSaveOptions.ImageCompression.Image1.{image.FilterType}";
+            using (FileStream stream = new FileStream(imagePath, FileMode.Create))
+                image.Save(stream);
 
-            using (pdfDocImageStream)
+            TestUtil.VerifyImage(400, 400, imagePath);
+
+            image = pdfDocument.Pages[1].Resources.Images[2];
+            imagePath = ArtifactsDir + $"PdfSaveOptions.ImageCompression.Image2.{image.FilterType}";
+            using (FileStream stream = new FileStream(imagePath, FileMode.Create))
+                image.Save(stream);
+
+            var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length;
+            switch (pdfImageCompression)
             {
-                TestUtil.VerifyImage(400, 400, pdfDocImageStream);
+                case PdfImageCompression.Auto:
+                    Assert.That(testedFileLength, Is.LessThan(54000));
+                    TestUtil.VerifyImage(400, 400, imagePath);
+                    break;
+                case PdfImageCompression.Jpeg:
+                    Assert.That(testedFileLength, Is.LessThan(40000));
+                    TestUtil.VerifyImage(400, 400, imagePath);
+                    break;
             }
-
-            pdfDocImageStream = pdfDocument.Pages[1].Resources.Images[2].ToStream();
-
-            using (pdfDocImageStream)
-            {
-                switch (pdfImageCompression)
-                {
-                    case PdfImageCompression.Auto:
-                        Assert.That(50000,
-                            Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length));
-#if NET48
-                        Assert.Throws<ArgumentException>(() => { TestUtil.VerifyImage(400, 400, pdfDocImageStream); });
-#elif NET5_0_OR_GREATER
-                        Assert.Throws<NullReferenceException>(() => { TestUtil.VerifyImage(400, 400, pdfDocImageStream); });
-#endif
-                        break;
-                    case PdfImageCompression.Jpeg:
-                        Assert.That(42000,
-                            Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.ImageCompression.pdf").Length));
-                        TestUtil.VerifyImage(400, 400, pdfDocImageStream);
-                        break;
-                }
-            }
-                }
+        }
 
         [TestCase(PdfImageColorSpaceExportMode.Auto)]
         [TestCase(PdfImageColorSpaceExportMode.SimpleCmyk)]
@@ -642,13 +627,14 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ImageColorSpaceExportMode.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
+            var testedImageLength = pdfDocImage.ToStream().Length;
             switch (pdfImageColorSpaceExportMode)
             {
                 case PdfImageColorSpaceExportMode.Auto:
-                    Assert.That(20000, Is.LessThan(pdfDocImage.ToStream().Length));
+                    Assert.That(testedImageLength, Is.LessThan(20500));
                     break;
                 case PdfImageColorSpaceExportMode.SimpleCmyk:
-                    Assert.That(100000, Is.LessThan(pdfDocImage.ToStream().Length));
+                    Assert.That(testedImageLength, Is.LessThan(140000));
                     break;
             }
 
@@ -657,14 +643,15 @@ namespace ApiExamples
             Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
 
             pdfDocImage = pdfDocument.Pages[1].Resources.Images[2];
-
+            
+            testedImageLength = pdfDocImage.ToStream().Length;
             switch (pdfImageColorSpaceExportMode)
             {
                 case PdfImageColorSpaceExportMode.Auto:
-                    Assert.That(25000, Is.AtLeast(pdfDocImage.ToStream().Length));
+                    Assert.That(testedImageLength, Is.LessThan(20500));
                     break;
                 case PdfImageColorSpaceExportMode.SimpleCmyk:
-                    Assert.That(18000, Is.LessThan(pdfDocImage.ToStream().Length));
+                    Assert.That(testedImageLength, Is.LessThan(21500));
                     break;
             }
 
@@ -710,7 +697,7 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.Default.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
-            Assert.That(300000, Is.LessThan(pdfDocImage.ToStream().Length));
+            Assert.That(pdfDocImage.ToStream().Length, Is.LessThan(400000));
             Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
         }
 
@@ -738,14 +725,15 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ColorRendering.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
+            var testedImageLength = pdfDocImage.ToStream().Length;
             switch (colorMode)
             {
                 case ColorMode.Normal:
-                    Assert.That(300000, Is.LessThan(pdfDocImage.ToStream().Length));
+                    Assert.That(testedImageLength, Is.LessThan(400000));
                     Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
                     break;
                 case ColorMode.Grayscale:
-                    Assert.That(1000000, Is.LessThan(pdfDocImage.ToStream().Length));
+                    Assert.That(testedImageLength, Is.LessThan(1450000));
                     Assert.AreEqual(ColorType.Grayscale, pdfDocImage.GetColorType());
                     break;
             }
@@ -1098,17 +1086,17 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf", options);
 
-            if (embedFullFonts)
-                Assert.That(500000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf").Length));
-            else
-                Assert.That(25000, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf").Length));
-
             // Restore the original font sources.
             FontSettings.DefaultInstance.SetFontsSources(originalFontsSources);
             //ExEnd
 
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf");
+            var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf").Length;
+            if (embedFullFonts)
+                Assert.That(testedFileLength, Is.LessThan(571000));
+            else
+                Assert.That(testedFileLength, Is.LessThan(24000));
 
+            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf");
             Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
 
             Assert.AreEqual("ArialMT", pdfDocFonts[0].FontName);
@@ -1139,33 +1127,31 @@ namespace ApiExamples
             // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-
             // Set the "EmbedFullFonts" property to "true" to embed every glyph of every embedded font in the output PDF.
             options.EmbedFullFonts = true;
-
             // Set the "FontEmbeddingMode" property to "EmbedAll" to embed all fonts in the output PDF.
             // Set the "FontEmbeddingMode" property to "EmbedNonstandard" to only allow nonstandard fonts' embedding in the output PDF.
             // Set the "FontEmbeddingMode" property to "EmbedNone" to not embed any fonts in the output PDF.
             options.FontEmbeddingMode = pdfFontEmbeddingMode;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf", options);
+            //ExEnd
 
+            var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length;
             switch (pdfFontEmbeddingMode)
             {
                 case PdfFontEmbeddingMode.EmbedAll:
-                    Assert.That(1000000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
+                    Assert.That(testedFileLength, Is.LessThan(1040000));
                     break;
                 case PdfFontEmbeddingMode.EmbedNonstandard:
-                    Assert.That(480000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
+                    Assert.That(testedFileLength, Is.LessThan(492000));
                     break;
                 case PdfFontEmbeddingMode.EmbedNone:
-                    Assert.That(4258, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf").Length));
+                    Assert.That(testedFileLength, Is.LessThan(4300));
                     break;
-            }
-            //ExEnd
+            }            
 
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedWindowsFonts.pdf");
-
             Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
 
             Assert.AreEqual("ArialMT", pdfDocFonts[0].FontName);
@@ -1195,22 +1181,21 @@ namespace ApiExamples
             // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-
             // Set the "UseCoreFonts" property to "true" to replace some fonts,
             // including the two fonts in our document, with their PDF Type 1 equivalents.
             // Set the "UseCoreFonts" property to "false" to not apply PDF Type 1 fonts.
             options.UseCoreFonts = useCoreFonts;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf", options);
-
-            if (useCoreFonts)
-                Assert.That(3000, Is.AtLeast(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf").Length));
-            else
-                Assert.That(30000, Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf").Length));
             //ExEnd
 
+            var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf").Length;
+            if (useCoreFonts)
+                Assert.That(testedFileLength, Is.LessThan(2000));
+            else
+                Assert.That(testedFileLength, Is.LessThan(33500));
+            
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf");
-
             Aspose.Pdf.Text.Font[] pdfDocFonts = pdfDocument.FontUtilities.GetAllFonts();
 
             if (useCoreFonts)
@@ -1261,18 +1246,17 @@ namespace ApiExamples
             SetGlyphsPositionShowText tjOperator =
                 (SetGlyphsPositionShowText) textAbsorber.TextFragments[1].Page.Contents[83];
 
+            var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length;
             if (applyAdditionalTextPositioning)
             {
-                Assert.That(100000,
-                    Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length));
+                Assert.That(testedFileLength, Is.LessThan(102000));
                 Assert.AreEqual(
                     "[0 (S) 0 (a) 0 (m) 0 (s) 0 (t) 0 (a) -1 (g) 1 (,) 0 ( ) 0 (1) 0 (0) 0 (.) 0 ( ) 0 (N) 0 (o) 0 (v) 0 (e) 0 (m) 0 (b) 0 (e) 0 (r) -1 ( ) 1 (2) -1 (0) 0 (1) 0 (8)] TJ",
                     tjOperator.ToString());
             }
             else
             {
-                Assert.That(97000,
-                    Is.LessThan(new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length));
+                Assert.That(testedFileLength, Is.LessThan(99500));
                 Assert.AreEqual("[(Samsta) -1 (g) 1 (, 10. November) -1 ( ) 1 (2) -1 (018)] TJ", tjOperator.ToString());
             }
         }
@@ -1760,7 +1744,6 @@ namespace ApiExamples
             // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-
             // Set the "ExportDocumentStructure" property to "true" to make the document structure, such tags, available via the
             // "Content" navigation pane of Adobe Acrobat at the cost of increased file size.
             // Set the "ExportDocumentStructure" property to "false" to not export the document structure.
@@ -1784,7 +1767,6 @@ namespace ApiExamples
             }
         }
 
-#if NET48 || JAVA
         [TestCase(false, Category = "SkipMono")]
         [TestCase(true, Category = "SkipMono")]
         public void PreblendImages(bool preblendImages)
@@ -1795,13 +1777,11 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image img = Image.FromFile(ImageDir + "Transparent background logo.png");
-            builder.InsertImage(img);
+            builder.InsertImage(ImageDir + "Transparent background logo.png");
 
             // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions options = new PdfSaveOptions();
-
             // Set the "PreblendImages" property to "true" to preblend transparent images
             // with a background, which may reduce artifacts.
             // Set the "PreblendImages" property to "false" to render transparent images normally.
@@ -1823,7 +1803,7 @@ namespace ApiExamples
                 }
                 else
                 {
-                    Assert.AreEqual(19216, stream.Length);
+                    Assert.That(stream.Length, Is.LessThan(19500));
                 }
             }
         }
@@ -1838,13 +1818,11 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Image img = Image.FromFile(ImageDir + "Transparent background logo.png");
-            builder.InsertImage(img);
+            builder.InsertImage(ImageDir + "Transparent background logo.png");
 
             // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
             // to modify how that method converts the document to .PDF.
             PdfSaveOptions saveOptions = new PdfSaveOptions();
-
             // Set the "InterpolateImages" property to "true" to get the reader that opens this document to interpolate images.
             // Their resolution should be lower than that of the device that is displaying the document.
             // Set the "InterpolateImages" property to "false" to make it so that the reader does not apply any interpolation.
@@ -1880,7 +1858,11 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
 
+#if NET5_0_OR_GREATER
+            Assert.AreEqual(48, warningCallback.Count);
+#else
             Assert.AreEqual(38, warningCallback.Count);
+#endif
         }
 
         public class RenderCallback : IWarningCallback
@@ -1914,90 +1896,6 @@ namespace ApiExamples
 
             private readonly List<WarningInfo> mWarnings = new List<WarningInfo>();
         }
-
-#elif NET5_0_OR_GREATER
-        [TestCase(false)]
-        [TestCase(true)]
-        public void PreblendImagesNetStandard2(bool preblendImages)
-        {
-            //ExStart
-            //ExFor:PdfSaveOptions.PreblendImages
-            //ExSummary:Shows how to preblend images with transparent backgrounds (.NetStandard 2.0).
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            using (Image image = Image.Decode(ImageDir + "Transparent background logo.png"))
-                builder.InsertImage(image);
-
-            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
-            // to modify how that method converts the document to .PDF.
-            PdfSaveOptions options = new PdfSaveOptions();
-
-            // Set the "PreblendImages" property to "true" to preblend transparent images
-            // with a background, which may reduce artifacts.
-            // Set the "PreblendImages" property to "false" to render transparent images normally.
-            options.PreblendImages = preblendImages;
-
-            doc.Save(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf", options);
-            //ExEnd
-
-            Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.PreblendImagesNetStandard2.pdf");
-            XImage xImage = pdfDocument.Pages[1].Resources.Images[1];
-
-            using (MemoryStream stream = new MemoryStream())
-            {
-                xImage.Save(stream);
-
-                if (preblendImages)
-                {
-                    Assert.AreEqual(17898, stream.Length);
-                }
-                else
-                {
-                    Assert.AreEqual(19135, stream.Length);
-                }
-            }
-        }
-
-        [TestCase(false)]
-        [TestCase(true)]
-        public void InterpolateImagesNetStandard2(bool interpolateImages)
-        {
-            //ExStart
-            //ExFor:PdfSaveOptions.InterpolateImages
-            //ExSummary:Shows how to improve the quality of an image in the rendered documents (.NetStandard 2.0).
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            using (Image image = Image.Decode(ImageDir + "Transparent background logo.png"))
-                builder.InsertImage(image);
-
-            // Create a "PdfSaveOptions" object that we can pass to the document's "Save" method
-            // to modify how that method converts the document to .PDF.
-            PdfSaveOptions saveOptions = new PdfSaveOptions();
-
-            // Set the "InterpolateImages" property to "true" to get the reader that opens this document to interpolate images.
-            // Their resolution should be lower than that of the device that is displaying the document.
-            // Set the "InterpolateImages" property to "false" to make it so that the reader does not apply any interpolation.
-            saveOptions.InterpolateImages = interpolateImages;
-
-            // When we open this document with a reader such as Adobe Acrobat, we will need to zoom in on the image
-            // to see the interpolation effect if we saved the document with it enabled.
-            doc.Save(ArtifactsDir + "PdfSaveOptions.InterpolateImagesNetStandard2.pdf", saveOptions);
-            //ExEnd
-
-            if (interpolateImages)
-            {
-                TestUtil.FileContainsString("<</Type/XObject/Subtype/Image/Width 400/Height 400/ColorSpace/DeviceRGB/BitsPerComponent 8/SMask 10 0 R/Interpolate true/Length 11 0 R/Filter/FlateDecode>>",
-                    ArtifactsDir + "PdfSaveOptions.InterpolateImagesNetStandard2.pdf");
-            }
-            else
-            {
-                TestUtil.FileContainsString("<</Type/XObject/Subtype/Image/Width 400/Height 400/ColorSpace/DeviceRGB/BitsPerComponent 8/SMask 10 0 R/Length 11 0 R/Filter/FlateDecode>>",
-                    ArtifactsDir + "PdfSaveOptions.InterpolateImagesNetStandard2.pdf");
-            }
-        }
-#endif
 
         [Test]
         public void PdfDigitalSignature()

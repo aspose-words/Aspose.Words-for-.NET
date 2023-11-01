@@ -196,7 +196,6 @@ namespace ApiExamples
             Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
         }
 
-#if NET48 || JAVA
         //ExStart
         //ExFor:DocumentBase.ResourceLoadingCallback
         //ExFor:IResourceLoadingCallback
@@ -275,6 +274,5 @@ namespace ApiExamples
 
             await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "http://www.google.com/images/logos/ps_logo2.png");
         }
-#endif
     }
 }

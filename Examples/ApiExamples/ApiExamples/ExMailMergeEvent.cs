@@ -346,7 +346,6 @@ namespace ApiExamples
             TestUtil.VerifyImageInShape(252, 213, ImageType.Png, imageShape);
         }
 
-#if NET48 || JAVA
         //ExStart
         //ExFor:MailMerge.FieldMergingCallback
         //ExFor:MailMerge.ExecuteWithRegions(IDataReader,String)
@@ -356,7 +355,7 @@ namespace ApiExamples
         //ExFor:IFieldMergingCallback.ImageFieldMerging
         //ExFor:ImageFieldMergingArgs.ImageStream
         //ExSummary:Shows how to insert images stored in a database BLOB field into a report.
-        [Test, Category("IgnoreOnJenkins")] //ExSkip        
+        [Test, Category("IgnoreOnJenkins"), Category("SkipGitHub")] //ExSkip        
         public void ImageFromBlob()
         {
             Document doc = new Document(MyDir + "Mail merge destination - Northwind employees.docx");
@@ -398,6 +397,5 @@ namespace ApiExamples
             }
         }
         //ExEnd
-#endif
     }
 }

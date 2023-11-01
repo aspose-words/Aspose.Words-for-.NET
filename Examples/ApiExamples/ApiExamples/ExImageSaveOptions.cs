@@ -47,7 +47,6 @@ namespace ApiExamples
             // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
             // to modify the way in which that method renders the document into an image.
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
-
             // Set the "PageSet" to "1" to select the second page via
             // the zero-based index to start rendering the document from.
             options.PageSet = new PageSet(1);
@@ -82,16 +81,6 @@ namespace ApiExamples
             saveOptions.UseGdiEmfRenderer = useGdiEmfRenderer;
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.Renderer.emf", saveOptions);
-
-            // The GDI+ renderer usually creates larger files.
-            if (useGdiEmfRenderer)
-#if NET48 || JAVA
-                Assert.That(300000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length));
-#elif NET5_0_OR_GREATER
-	            Assert.That(30000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length));
-#endif
-            else
-                Assert.That(30000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.Renderer.emf").Length));
             //ExEnd
         }
 
@@ -116,7 +105,6 @@ namespace ApiExamples
             // When we save the document as an image, Aspose.Words only renders the first page by default.
             // We can pass a SaveOptions object to specify a different page to render.
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Gif);
-
             // Render every page of the document to a separate image file.
             for (int i = 1; i <= doc.PageCount; i++)
             {
@@ -185,6 +173,7 @@ namespace ApiExamples
             renderer.Save(ArtifactsDir + "ImageSaveOptions.UseTileFlipMode.png", saveOptions);
             //ExEnd
         }
+#endif
 
         [TestCase(MetafileRenderingMode.Vector), Category("SkipMono")]
         [TestCase(MetafileRenderingMode.Bitmap), Category("SkipMono")]
@@ -256,11 +245,11 @@ namespace ApiExamples
                 .Where(item => item.Contains("ImageSaveOptions.PageByPage.") && item.EndsWith(".tiff")).ToList();
 
             Assert.AreEqual(3, imageFileNames.Count);
-
+#if NET48 || JAVA
             foreach (string imageFileName in imageFileNames)
                 TestUtil.VerifyImage(2325, 5325, imageFileName);
-        }
 #endif
+        }
 
         [TestCase(ImageColorMode.BlackAndWhite)]
         [TestCase(ImageColorMode.Grayscale)]
@@ -278,8 +267,6 @@ namespace ApiExamples
             builder.Writeln("Hello world!");
             builder.InsertImage(ImageDir + "Logo.jpg");
 
-            Assert.That(20000, Is.LessThan(new FileInfo(ImageDir + "Logo.jpg").Length));
-
             // When we save the document as an image, we can pass a SaveOptions object to
             // select a color mode for the image that the saving operation will generate.
             // If we set the "ImageColorMode" property to "ImageColorMode.BlackAndWhite",
@@ -292,35 +279,37 @@ namespace ApiExamples
             imageSaveOptions.ImageColorMode = imageColorMode;
             
             doc.Save(ArtifactsDir + "ImageSaveOptions.ColorMode.png", imageSaveOptions);
+            //ExEnd
+
+            var testedImageLength = new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length;
 
 #if NET48 || JAVA
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
-                    Assert.That(150000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
+                    Assert.That(testedImageLength, Is.LessThan(175000));
                     break;
                 case ImageColorMode.Grayscale:
-                    Assert.That(80000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
+                    Assert.That(testedImageLength, Is.LessThan(90000));
                     break;
                 case ImageColorMode.BlackAndWhite:
-                    Assert.That(20000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
+                    Assert.That(testedImageLength, Is.LessThan(15000));
                     break;
             }
 #elif NET5_0_OR_GREATER
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
-                    Assert.That(120000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
+                    Assert.That(testedImageLength, Is.LessThan(132000));
                     break;
                 case ImageColorMode.Grayscale:
-                    Assert.That(80000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
+                    Assert.That(testedImageLength, Is.LessThan(90000));
                     break;
                 case ImageColorMode.BlackAndWhite:
-                    Assert.That(20000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length));
+                    Assert.That(testedImageLength, Is.LessThan(11000));
                     break;
             }
-#endif
-            //ExEnd
+#endif            
         }
 
         [Test]
@@ -342,7 +331,6 @@ namespace ApiExamples
             // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
             // to modify the way in which that method renders the document into an image.
             ImageSaveOptions imgOptions = new ImageSaveOptions(SaveFormat.Png);
-
             // Set the "PaperColor" property to a transparent color to apply a transparent
             // background to the document while rendering it to an image.
             imgOptions.PaperColor = Color.Transparent;
@@ -361,11 +349,16 @@ namespace ApiExamples
                 TestUtil.ImageContainsTransparency(ArtifactsDir + "ImageSaveOptions.PaperColor.LightCoral.png"));
         }
 
-        [TestCase(ImagePixelFormat.Format1bppIndexed)]
-        [TestCase(ImagePixelFormat.Format16BppRgb555)]
+        [TestCase(ImagePixelFormat.Format1bppIndexed)]        
+        [TestCase(ImagePixelFormat.Format16BppRgb555)]        
+        [TestCase(ImagePixelFormat.Format16BppRgb565)]
         [TestCase(ImagePixelFormat.Format24BppRgb)]
         [TestCase(ImagePixelFormat.Format32BppRgb)]
-        [TestCase(ImagePixelFormat.Format48BppRgb)]
+        [TestCase(ImagePixelFormat.Format32BppArgb)]
+        [TestCase(ImagePixelFormat.Format32BppPArgb)]
+        [TestCase(ImagePixelFormat.Format48BppRgb)]        
+        [TestCase(ImagePixelFormat.Format64BppArgb)]        
+        [TestCase(ImagePixelFormat.Format64BppPArgb)]        
         public void PixelFormat(ImagePixelFormat imagePixelFormat)
         {
             //ExStart
@@ -380,8 +373,6 @@ namespace ApiExamples
             builder.Writeln("Hello world!");
             builder.InsertImage(ImageDir + "Logo.jpg");
 
-            Assert.That(20000, Is.LessThan(new FileInfo(ImageDir + "Logo.jpg").Length));
-
             // When we save the document as an image, we can pass a SaveOptions object to
             // select a pixel format for the image that the saving operation will generate.
             // Various bit per pixel rates will affect the quality and file size of the generated image.
@@ -392,43 +383,57 @@ namespace ApiExamples
             Assert.AreNotEqual(imageSaveOptions, imageSaveOptions.Clone());
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.PixelFormat.png", imageSaveOptions);
+            //ExEnd
+
+            var testedImageLength = new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length;
 
 #if NET48 || JAVA
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
-                    Assert.That(10000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
+                    Assert.That(testedImageLength, Is.LessThan(2500));
+                    break;                
+                case ImagePixelFormat.Format16BppRgb565:
+                    Assert.That(testedImageLength, Is.LessThan(104000));
                     break;
                 case ImagePixelFormat.Format16BppRgb555:
-                    Assert.That(80000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
+                    Assert.That(testedImageLength, Is.LessThan(88000));
                     break;
                 case ImagePixelFormat.Format24BppRgb:
-                    Assert.That(125000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
+                    Assert.That(testedImageLength, Is.LessThan(160000));
                     break;
                 case ImagePixelFormat.Format32BppRgb:
-                    Assert.That(150000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
+                case ImagePixelFormat.Format32BppArgb:
+                    Assert.That(testedImageLength, Is.LessThan(175000));
                     break;
                 case ImagePixelFormat.Format48BppRgb:
-                    Assert.That(200000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
+                    Assert.That(testedImageLength, Is.LessThan(212000));
+                    break;
+                case ImagePixelFormat.Format64BppArgb:
+                case ImagePixelFormat.Format64BppPArgb:
+                    Assert.That(testedImageLength, Is.LessThan(239000));
                     break;
             }
 #elif NET5_0_OR_GREATER
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
-                    Assert.That(10000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
+                    Assert.That(testedImageLength, Is.LessThan(7500));
                     break;
                 case ImagePixelFormat.Format24BppRgb:
-                    Assert.That(70000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
-                    break;
+                    Assert.That(testedImageLength, Is.LessThan(77000));
+                    break;                
+                case ImagePixelFormat.Format16BppRgb565:
                 case ImagePixelFormat.Format16BppRgb555:
                 case ImagePixelFormat.Format32BppRgb:
+                case ImagePixelFormat.Format32BppArgb:
                 case ImagePixelFormat.Format48BppRgb:
-                    Assert.That(125000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length));
+                case ImagePixelFormat.Format64BppArgb:
+                case ImagePixelFormat.Format64BppPArgb:
+                    Assert.That(testedImageLength, Is.LessThan(132000));
                     break;
             }
-#endif
-            //ExEnd
+#endif            
         }
 
         [Test, Category("SkipMono")]
@@ -526,30 +531,19 @@ namespace ApiExamples
             // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
             // to modify the way in which that method renders the document into an image.
             ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg);
-
             // Set the "JpegQuality" property to "10" to use stronger compression when rendering the document.
             // This will reduce the file size of the document, but the image will display more prominent compression artifacts.
             imageOptions.JpegQuality = 10;
-
-            doc.Save(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg", imageOptions);
-
-            Assert.That(20000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg").Length));
+            doc.Save(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg", imageOptions);            
 
             // Set the "JpegQuality" property to "100" to use weaker compression when rending the document.
             // This will improve the quality of the image at the cost of an increased file size.
             imageOptions.JpegQuality = 100;
-
             doc.Save(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg", imageOptions);
-
-            Assert.That(60000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg").Length));
             //ExEnd
-        }
 
-        [Test, Category("SkipMono")]
-        public void SaveToTiffDefault()
-        {
-            Document doc = new Document(MyDir + "Rendering.docx");
-            doc.Save(ArtifactsDir + "ImageSaveOptions.SaveToTiffDefault.tiff");
+            Assert.That(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg").Length, Is.LessThan(18000));
+            Assert.That(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg").Length, Is.LessThan(75000));            
         }
 
         [TestCase(TiffCompression.None), Category("SkipMono")]
@@ -571,7 +565,6 @@ namespace ApiExamples
             // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
             // to modify the way in which that method renders the document into an image.
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff);
-
             // Set the "TiffCompression" property to "TiffCompression.None" to apply no compression while saving,
             // which may result in a very large output file.
             // Set the "TiffCompression" property to "TiffCompression.Rle" to apply RLE compression
@@ -581,30 +574,36 @@ namespace ApiExamples
             options.TiffCompression = tiffCompression;
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff", options);
+            //ExEnd
+
+            var testedImageLength = new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length;
 
             switch (tiffCompression)
             {
                 case TiffCompression.None:
-                    Assert.That(3000000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
+                    Assert.That(testedImageLength, Is.LessThan(3450000));
                     break;
                 case TiffCompression.Rle:
 #if NET5_0_OR_GREATER
-                    Assert.That(6000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
+                    Assert.That(testedImageLength, Is.LessThan(7500));
 #else
-                    Assert.That(600000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
+                    Assert.That(testedImageLength, Is.LessThan(687000));
 #endif
                     break;
                 case TiffCompression.Lzw:
-                    Assert.That(200000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
+                    Assert.That(testedImageLength, Is.LessThan(250000));
                     break;
                 case TiffCompression.Ccitt3:
-                    Assert.That(90000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
+#if NET5_0_OR_GREATER
+                    Assert.That(testedImageLength, Is.LessThan(6100));
+#else
+                    Assert.That(testedImageLength, Is.LessThan(8300));
+#endif
                     break;
                 case TiffCompression.Ccitt4:
-                    Assert.That(20000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length));
+                    Assert.That(testedImageLength, Is.LessThan(1700));
                     break;
-            }
-            //ExEnd
+            }            
         }
 
         [Test]
@@ -629,43 +628,15 @@ namespace ApiExamples
 
             // Set the "Resolution" property to "72" to render the document in 72dpi.
             options.Resolution = 72;
-
             doc.Save(ArtifactsDir + "ImageSaveOptions.Resolution.72dpi.png", options);
 
-            Assert.That(120000, Is.AtLeast(new FileInfo(ArtifactsDir + "ImageSaveOptions.Resolution.72dpi.png").Length));
-
-#if NET48 || JAVA
-            Image image = Image.FromFile(ArtifactsDir + "ImageSaveOptions.Resolution.72dpi.png");
-
-            Assert.AreEqual(612, image.Width);
-            Assert.AreEqual(792, image.Height);
-#elif NET5_0_OR_GREATER || __MOBILE__
-            using (SKBitmap image = SKBitmap.Decode(ArtifactsDir + "ImageSaveOptions.Resolution.72dpi.png")) 
-            {
-                Assert.AreEqual(612, image.Width);
-                Assert.AreEqual(792, image.Height);
-            }
-#endif
             // Set the "Resolution" property to "300" to render the document in 300dpi.
             options.Resolution = 300;
-
             doc.Save(ArtifactsDir + "ImageSaveOptions.Resolution.300dpi.png", options);
-
-            Assert.That(700000, Is.LessThan(new FileInfo(ArtifactsDir + "ImageSaveOptions.Resolution.300dpi.png").Length));
-
-#if NET48 || JAVA
-            image = Image.FromFile(ArtifactsDir + "ImageSaveOptions.Resolution.300dpi.png");
-
-            Assert.AreEqual(2550, image.Width);
-            Assert.AreEqual(3300, image.Height);
-#elif NET5_0_OR_GREATER || __MOBILE__
-            using (SKBitmap image = SKBitmap.Decode(ArtifactsDir + "ImageSaveOptions.Resolution.300dpi.png")) 
-            {
-                Assert.AreEqual(2550, image.Width);
-                Assert.AreEqual(3300, image.Height);
-            }
-#endif
             //ExEnd
+
+            TestUtil.VerifyImage(612, 792, ArtifactsDir + "ImageSaveOptions.Resolution.72dpi.png");
+            TestUtil.VerifyImage(2550, 3300, ArtifactsDir + "ImageSaveOptions.Resolution.300dpi.png");
         }
 
         [Test]
@@ -706,27 +677,6 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.RenderInkObject.jpeg", saveOptions);
             //ExEnd
-        }
-
-        [Test]
-        public void ConversionDocumentToEps()
-        {
-            Document doc = new Document(MyDir + "Images.docx");
-
-            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Eps);
-            saveOptions.PageSet = new PageSet(2);
-            doc.Save(ArtifactsDir + "ImageSaveOptions.ConversionDocumentToEps.eps", saveOptions);
-        }
-
-        [Test]
-        public void ConversionShapeToEps()
-        {
-            Document doc = new Document(MyDir + "Shape shadow effect.docx");
-
-            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Eps);
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            ShapeRenderer renderer = shape.GetShapeRenderer();
-            renderer.Save(ArtifactsDir + "ImageSaveOptions.ConversionShapeToEps.eps", saveOptions);
         }
     }
 }

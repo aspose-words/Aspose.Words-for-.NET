@@ -22,7 +22,6 @@ namespace ApiExamples
     [TestFixture]
     public class ExLoadOptions : ApiExampleBase
     {
-#if NET48 || MAC || JAVA
         //ExStart
         //ExFor:LoadOptions.ResourceLoadingCallback
         //ExSummary:Shows how to handle external resources when loading Html documents.
@@ -68,7 +67,6 @@ namespace ApiExamples
             }
         }
         //ExEnd
-#endif
 
         [TestCase(true)]
         [TestCase(false)]

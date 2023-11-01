@@ -375,10 +375,7 @@ namespace ApiExamples
             File.WriteAllBytes(ArtifactsDir + "DocumentProperties.Thumbnail.gif", thumbnail.ToByteArray());
             //ExEnd
 
-            using (FileStream imgStream = new FileStream(ArtifactsDir + "DocumentProperties.Thumbnail.gif", FileMode.Open))
-            {
-                TestUtil.VerifyImage(400, 400, imgStream);
-            }
+            TestUtil.VerifyImage(400, 400, ArtifactsDir + "DocumentProperties.Thumbnail.gif");            
         }
 
         [Test]

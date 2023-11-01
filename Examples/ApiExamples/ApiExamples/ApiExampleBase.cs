@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -44,7 +45,12 @@ namespace ApiExamples
                 Assert.Ignore("Test skipped on mono");
             }
 
-            Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
+            if (CheckForSkipGitHub() && IsRunningOnGitHub())
+            {
+                Assert.Ignore("Test skipped on GitHub");
+            }
+
+            Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");            
         }
 
         [OneTimeTearDown]
@@ -66,13 +72,36 @@ namespace ApiExamples
         }
 
         /// <summary>
+        /// Checks when we need to ignore test on GitHub.
+        /// </summary>
+        private static bool CheckForSkipGitHub()
+        {
+            bool skipGitHub = TestContext.CurrentContext.Test.Properties["Category"].Contains("SkipGitHub");
+            return skipGitHub;
+        }
+
+        /// <summary>
+        /// Determine if runtime is GitHub.
+        /// </summary>
+        /// <returns>True if being executed in GitHub, false otherwise.</returns>
+        internal static bool IsRunningOnGitHub()
+        {
+            string runEnv = Environment.GetEnvironmentVariable("RUNNER_ENVIRONMENT");
+            if (runEnv != null && runEnv.Equals("github-hosted"))
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
         /// Determine if runtime is Mono.
         /// Workaround for .netcore.
         /// </summary>
         /// <returns>True if being executed in Mono, false otherwise.</returns>
-        internal static bool IsRunningOnMono() {
+        internal static bool IsRunningOnMono()
+        {
             return Type.GetType("Mono.Runtime") != null;
-        }        
+        }
 
         internal static void SetUnlimitedLicense()
         {
@@ -140,7 +169,7 @@ namespace ApiExamples
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>
         internal static string ArtifactsDir { get; }
-        
+
         /// <summary>
         /// Gets the path to the documents used by the code examples. Ends with a back slash.
         /// </summary>

@@ -9,11 +9,16 @@ using System.Drawing;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Aspose.Drawing;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Loading;
 using NUnit.Framework;
+#if NET5_0_OR_GREATER || __MOBILE__
+using SkiaSharp;
+using Image = SkiaSharp.SKBitmap;
+#endif
 
 namespace ApiExamples
 {
@@ -379,7 +384,6 @@ namespace ApiExamples
         }
         //ExEnd
 
-#if NET48 || JAVA
         [Test]
         public void BarcodeGenerator()
         {
@@ -412,7 +416,7 @@ namespace ApiExamples
             Assert.IsNull(doc.FieldOptions.BarcodeGenerator); //ExSkip
 
             // We can use a custom IBarcodeGenerator implementation to generate barcodes,
-            // and then insert them into the document as images.
+            // and then insert them into the document as images.            
             doc.FieldOptions.BarcodeGenerator = new CustomBarcodeGenerator();
 
             // Below are four examples of different barcode types that we can create using our generator.
@@ -432,8 +436,14 @@ namespace ApiExamples
             };
 
             Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+#if NET48 || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
-
+#elif NET5_0_OR_GREATER
+            using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg"))
+            {
+                img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
+            }
+#endif
             builder.InsertImage(img);
 
             // 2 -  EAN13 barcode:
@@ -447,7 +457,14 @@ namespace ApiExamples
             };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+#if NET48 || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
+#elif NET5_0_OR_GREATER
+            using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg"))
+            {
+                img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
+            }
+#endif
             builder.InsertImage(img);
 
             // 3 -  CODE39 barcode:
@@ -459,7 +476,14 @@ namespace ApiExamples
             };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+#if NET48 || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
+#elif NET5_0_OR_GREATER
+            using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg"))
+            {
+                img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
+            }
+#endif
             builder.InsertImage(img);
 
             // 4 -  ITF14 barcode:
@@ -471,7 +495,14 @@ namespace ApiExamples
             };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
+#if NET48 || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");
+#elif NET5_0_OR_GREATER
+            using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg"))
+            {
+                img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
+            }
+#endif            
             builder.InsertImage(img);
 
             doc.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.docx");
@@ -487,6 +518,5 @@ namespace ApiExamples
 
             Assert.True(barcode.HasImage);
         }
-#endif
     }
 }

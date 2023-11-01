@@ -5,15 +5,13 @@ using System.Net;
 using System.Security;
 using Aspose.Words.DigitalSignatures;
 using NUnit.Framework;
-#if NET48 || MAC || JAVA
 using Org.BouncyCastle.Pkcs;
-#endif
+
 namespace ApiExamples
 {
     [TestFixture]
     public class ExCertificateHolder : ApiExampleBase
     {
-#if NET48 || MAC || JAVA
         [Test]
         public void Create()
         {
@@ -59,6 +57,5 @@ namespace ApiExamples
             CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
             //ExEnd
         }
-#endif
     }
 }

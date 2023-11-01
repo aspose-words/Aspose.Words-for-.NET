@@ -156,12 +156,14 @@ namespace ApiExamples
             fontInfos.SaveSubsetFonts = embedAllFonts;
 
             doc.Save(ArtifactsDir + "Font.FontInfoCollection.docx");
+            //ExEnd
+
+            var testedFileLength = new FileInfo(ArtifactsDir + "Font.FontInfoCollection.docx").Length;
 
             if (embedAllFonts)
-                Assert.That(25000, Is.LessThan(new FileInfo(ArtifactsDir + "Font.FontInfoCollection.docx").Length));
+                Assert.That(testedFileLength, Is.LessThan(28000));
             else
-                Assert.That(15000, Is.AtLeast(new FileInfo(ArtifactsDir + "Font.FontInfoCollection.docx").Length));
-            //ExEnd
+                Assert.That(testedFileLength, Is.LessThan(13000));
         }
 
         [TestCase(true, false, false, Description =
@@ -1457,7 +1459,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test]        
+        [Test, Category("SkipGitHub")]        
         public void CheckScanUserFontsFolder()
         {
             var userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);

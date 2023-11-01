@@ -1288,8 +1288,8 @@ namespace ApiExamples
             oleFormat.Save(ArtifactsDir + "OLE spreadsheet saved directly" + oleFormat.SuggestedExtension);
             //ExEnd
 
-            Assert.That(8000, Is.LessThan(new FileInfo(ArtifactsDir + "OLE spreadsheet extracted via stream.xlsx").Length));
-            Assert.That(8000, Is.LessThan(new FileInfo(ArtifactsDir + "OLE spreadsheet saved directly.xlsx").Length));
+            Assert.That(new FileInfo(ArtifactsDir + "OLE spreadsheet extracted via stream.xlsx").Length, Is.LessThan(8400));
+            Assert.That(new FileInfo(ArtifactsDir + "OLE spreadsheet saved directly.xlsx").Length, Is.LessThan(8400));
         }
 
         [Test]

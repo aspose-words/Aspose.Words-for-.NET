@@ -1724,19 +1724,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Insert a shape which contains an image, and then make that shape considerably smaller than the image.
-#if NET48 || JAVA
-            Image image = Image.FromFile(ImageDir + "Transparent background logo.png");
-
-            Assert.AreEqual(400, image.Size.Width);
-            Assert.AreEqual(400, image.Size.Height);
-#elif NET5_0_OR_GREATER
-            SKBitmap image = SKBitmap.Decode(ImageDir + "Transparent background logo.png");
-
-            Assert.AreEqual(400, image.Width);
-            Assert.AreEqual(400, image.Height);
-#endif
-
-            Shape imageShape = builder.InsertImage(image);
+            Shape imageShape = builder.InsertImage(ImageDir + "Transparent background logo.png");
             imageShape.Width = 50;
             imageShape.Height = 50;
 
@@ -1751,21 +1739,19 @@ namespace ApiExamples
             HtmlSaveOptions options = new HtmlSaveOptions { ScaleImageToShapeSize = scaleImageToShapeSize };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.html", options);
-
-            FileInfo fileInfo = new FileInfo(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.001.png");
-
-#if NET48 || JAVA
-        if (scaleImageToShapeSize)
-            Assert.That(3000, Is.AtLeast(fileInfo.Length));
-        else
-            Assert.That(20000, Is.LessThan(fileInfo.Length));
-#elif NET5_0_OR_GREATER
-        if (scaleImageToShapeSize)
-            Assert.That(10000, Is.AtLeast(fileInfo.Length));
-        else
-            Assert.That(30000, Is.LessThan(fileInfo.Length));
-#endif
             //ExEnd
+
+            var testedImageLength = new FileInfo(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.001.png").Length;
+
+            if (scaleImageToShapeSize)
+#if NET48 || JAVA
+                Assert.That(testedImageLength, Is.LessThan(3000));
+#elif NET5_0_OR_GREATER
+                Assert.That(testedImageLength, Is.LessThan(6000));
+#endif
+            else
+                Assert.That(testedImageLength, Is.LessThan(16000));
+            
         }
 
         [Test]

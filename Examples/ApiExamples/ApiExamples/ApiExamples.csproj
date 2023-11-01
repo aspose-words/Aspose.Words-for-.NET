@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;net6.0</TargetFrameworks>
+    <TargetFrameworks>net48;net7.0</TargetFrameworks>
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
@@ -124,11 +124,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="23.8.1" />
-    <PackageReference Include="Aspose.Page" Version="23.8.0" />
-    <PackageReference Include="Aspose.PDF" Version="23.8.0" />
-    <PackageReference Include="Aspose.Words" Version="23.9.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.9.0" />
+    <PackageReference Include="Aspose.BarCode" Version="23.9.0" />
+    <PackageReference Include="Aspose.Page" Version="23.10.0" />
+    <PackageReference Include="Aspose.PDF" Version="23.9.0" />
+    <PackageReference Include="Aspose.Words" Version="23.10.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.10.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.2.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
@@ -146,7 +146,7 @@
     <Reference Include="Interop.ADODB">
       <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
     </Reference>    
-    <Reference Include="System.Web" Condition="'$(TargetFramework)' != 'net6.0'" />
+    <Reference Include="System.Web" Condition="'$(TargetFramework)' != 'net7.0'" />
     <Reference Include="System.Windows.Forms" Condition="$(TargetFramework.StartsWith('net4'))" />
   </ItemGroup>
 

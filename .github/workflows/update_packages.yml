@@ -6,7 +6,7 @@ jobs:
     runs-on: windows-latest
     steps:
       # Sync branch
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v3      
 
       # Restore packages
@@ -44,3 +44,12 @@ jobs:
         run: dotnet build ./Examples/ApiExamples/Runner.MAUI/Runner.MAUI.csproj
       - name: Build DocsExamples
         run: dotnet build ./Examples/DocsExamples/DocsExamples/DocsExamples.csproj
+
+      # Commit changes
+      - name: Commit changes
+        run: |          
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Updated API versions"
+          git push
