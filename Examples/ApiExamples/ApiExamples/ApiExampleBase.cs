@@ -6,6 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.Collections;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -45,8 +46,11 @@ namespace ApiExamples
             }
 
             Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
-            foreach(var env in Environment.GetEnvironmentVariables())
-                Console.WriteLine(env);
+            foreach (DictionaryEntry env in Environment.GetEnvironmentVariables())
+            {
+                string sInfo = string.Format("{0} | {1}", env.Key, env.Value);
+                Console.WriteLine(sInfo);
+            }
         }
 
         [OneTimeTearDown]
