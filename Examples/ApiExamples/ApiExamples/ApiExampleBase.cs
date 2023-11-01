@@ -45,7 +45,8 @@ namespace ApiExamples
             }
 
             Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
-            Console.WriteLine(Environment.GetEnvironmentVariables());
+            foreach(var env in Environment.GetEnvironmentVariables())
+                Console.WriteLine(env);
         }
 
         [OneTimeTearDown]
