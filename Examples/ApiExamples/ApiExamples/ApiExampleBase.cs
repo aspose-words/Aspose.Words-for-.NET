@@ -86,8 +86,11 @@ namespace ApiExamples
         /// <returns>True if being executed in GitHub, false otherwise.</returns>
         internal static bool IsRunningOnGitHub()
         {
-            bool isGitHub = Environment.GetEnvironmentVariable("RUNNER_ENVIRONMENT") != null ? true : false;
-            return isGitHub;
+            string runEnv = Environment.GetEnvironmentVariable("RUNNER_ENVIRONMENT");
+            if (runEnv != null && runEnv.Equals("github-hosted"))
+                return true;
+            else
+                return false;
         }
 
         /// <summary>
