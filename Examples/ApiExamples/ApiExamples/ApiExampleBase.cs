@@ -45,7 +45,7 @@ namespace ApiExamples
             }
 
             Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
-            Console.WriteLine(Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER"));
+            Console.WriteLine(Environment.GetEnvironmentVariables());
         }
 
         [OneTimeTearDown]
