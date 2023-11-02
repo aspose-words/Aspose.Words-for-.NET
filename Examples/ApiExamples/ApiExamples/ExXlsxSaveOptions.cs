@@ -28,5 +28,23 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "XlsxSaveOptions.CompressXlsx.xlsx", xlsxSaveOptions);
             //ExEnd
         }
+
+        [Test]
+        public void SelectionMode()
+        {
+            //ExStart:SelectionMode
+            //ReleaseVersion:23.11
+            //ExFor:XlsxSaveOptions.SectionMode
+            //ExSummary:Shows how to save document as a separate worksheets.
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            // Each section of a document will be created as a separate worksheet.
+            // Use 'SingleWorksheet' to display all document on one worksheet.
+            XlsxSaveOptions xlsxSaveOptions = new XlsxSaveOptions();
+            xlsxSaveOptions.SectionMode = XlsxSectionMode.MultipleWorksheets;
+
+            doc.Save(ArtifactsDir + "XlsxSaveOptions.SelectionMode.xlsx", xlsxSaveOptions);
+            //ExEnd:SelectionMode
+        }
     }
 }

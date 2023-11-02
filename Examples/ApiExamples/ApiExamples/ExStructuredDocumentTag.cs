@@ -58,7 +58,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-
         [Test]
         public void ApplyStyle()
         {
@@ -1269,6 +1268,24 @@ namespace ApiExamples
                 sdt.AppendChild(sdt.NextSibling);
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.Citation.docx");
+        }
+
+        [Test]
+        public void RangeStartWordOpenXMLMinimal()
+        {
+            //ExStart:RangeStartWordOpenXMLMinimal
+            //ReleaseVersion:23.11
+            //ExFor:StructuredDocumentTagRangeStart.WordOpenXMLMinimal
+            //ExSummary:Shows how to get minimal XML contained within the node in the FlatOpc format.
+            Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
+            StructuredDocumentTagRangeStart tag =
+                doc.GetChild(NodeType.StructuredDocumentTagRangeStart, 0, true) as StructuredDocumentTagRangeStart;
+
+            Assert.True(tag.WordOpenXMLMinimal
+                .Contains(
+                    "<pkg:part pkg:name=\"/docProps/app.xml\" pkg:contentType=\"application/vnd.openxmlformats-officedocument.extended-properties+xml\">"));
+            Assert.False(tag.WordOpenXMLMinimal.Contains("xmlns:w16cid=\"http://schemas.microsoft.com/office/word/2016/wordml/cid\""));
+            //ExEnd:
         }
     }
 }

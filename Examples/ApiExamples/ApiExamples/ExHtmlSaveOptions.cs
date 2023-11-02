@@ -131,7 +131,7 @@ namespace ApiExamples
         public void CreateAZW3Toc()
         {
             //ExStart
-            //ExFor:HtmlSaveOptions.EpubNavigationMapLevel
+            //ExFor:HtmlSaveOptions.NavigationMapLevel
             //ExSummary:Shows how to generate table of contents for Azw3 documents.
             Document doc = new Document(MyDir + "Big document.docx");
 
@@ -146,7 +146,7 @@ namespace ApiExamples
         public void CreateMobiToc()
         {
             //ExStart
-            //ExFor:HtmlSaveOptions.EpubNavigationMapLevel
+            //ExFor:HtmlSaveOptions.NavigationMapLevel
             //ExSummary:Shows how to generate table of contents for Mobi documents.
             Document doc = new Document(MyDir + "Big document.docx");
 
@@ -834,7 +834,7 @@ namespace ApiExamples
         public void EpubHeadings()
         {
             //ExStart
-            //ExFor:HtmlSaveOptions.EpubNavigationMapLevel
+            //ExFor:HtmlSaveOptions.NavigationMapLevel
             //ExSummary:Shows how to filter headings that appear in the navigation panel of a saved Epub document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -857,7 +857,7 @@ namespace ApiExamples
 
             // Epub readers typically create a table of contents for their documents.
             // Each paragraph with a "Heading" style in the document will create an entry in this table of contents.
-            // We can use the "EpubNavigationMapLevel" property to set a maximum heading level. 
+            // We can use the "NavigationMapLevel" property to set a maximum heading level. 
             // The Epub reader will not add headings with a level above the one we specify to the contents table.
             HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Epub);
             options.NavigationMapLevel = 2;
@@ -1744,7 +1744,7 @@ namespace ApiExamples
             var testedImageLength = new FileInfo(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.001.png").Length;
 
             if (scaleImageToShapeSize)
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
                 Assert.That(testedImageLength, Is.LessThan(3000));
 #elif NET5_0_OR_GREATER
                 Assert.That(testedImageLength, Is.LessThan(6000));

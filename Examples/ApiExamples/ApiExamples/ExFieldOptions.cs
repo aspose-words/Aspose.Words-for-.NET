@@ -436,7 +436,7 @@ namespace ApiExamples
             };
 
             Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
 #elif NET5_0_OR_GREATER
             using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg"))
@@ -457,7 +457,7 @@ namespace ApiExamples
             };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
 #elif NET5_0_OR_GREATER
             using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg"))
@@ -476,7 +476,7 @@ namespace ApiExamples
             };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
 #elif NET5_0_OR_GREATER
             using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg"))
@@ -495,7 +495,7 @@ namespace ApiExamples
             };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");
 #elif NET5_0_OR_GREATER
             using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg"))

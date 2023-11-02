@@ -1181,6 +1181,23 @@ namespace ApiExamples
             }
         }
 
+        [Test]
+        public void UpdateFieldsSyntaxAware()
+        {
+            //ExStart:UpdateFieldsSyntaxAware
+            //ReleaseVersion:23.11
+            Document doc = new Document(MyDir + "Reporting engine template - Fields.docx");
+
+            // Note that enabling of the option makes the engine to update fields while building a report,
+            // so there is no need to update fields separately after that.
+            ReportingEngine engine = new ReportingEngine();
+            BuildReport(doc, new string[] { "First topic", "Second topic", "Third topic" }, "topics",
+                ReportBuildOptions.UpdateFieldsSyntaxAware);
+
+            doc.Save(ArtifactsDir + "ReportingEngine.UpdateFieldsSyntaxAware.docx");
+            //ExEnd:UpdateFieldsSyntaxAware
+        }
+
         private static void BuildReport(Document document, object dataSource, ReportBuildOptions reportBuildOptions)
         {
             ReportingEngine engine = new ReportingEngine { Options = reportBuildOptions };

@@ -3035,7 +3035,7 @@ namespace ApiExamples
             {
                 if (mImageFilenames.ContainsKey(args.FieldValue.ToString()))
                 {
-                    #if NET48 || JAVA
+                    #if NET461_OR_GREATER || JAVA
                     args.Image = Image.FromFile(mImageFilenames[args.FieldValue.ToString()]);
                     #elif NET5_0_OR_GREATER
                     args.Image = SKBitmap.Decode(mImageFilenames[args.FieldValue.ToString()]);
