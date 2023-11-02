@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -1308,7 +1308,7 @@ namespace ApiExamples
         public void LegendFont()
         {
             //ExStart:LegendFont
-            //ReleaseVersion:23.11
+            //GistId:470c0da51e4317baae82ad9495747fed
             //ExFor:ChartLegendEntry.Font
             //ExFor:ChartLegend.Font
             //ExSummary:Shows how to work with a legend font.
