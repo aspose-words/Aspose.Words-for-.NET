@@ -1268,6 +1268,7 @@ namespace ApiExamples
                 sdt.AppendChild(sdt.NextSibling);
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.Citation.docx");
+            //ExEnd
         }
 
         [Test]
