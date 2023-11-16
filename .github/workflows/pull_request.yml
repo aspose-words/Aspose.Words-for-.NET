@@ -10,5 +10,5 @@ jobs:
       uses: peter-evans/create-pull-request@v4
       with:
         commit-message: Updated API version        
-        base: aspose-words/Aspose.Words-for-.NET/master
-        branch: falleretic/Aspose.Words-for-.NET/master
+        base: aspose-words/Aspose.Words-for-.NET/main
+        branch: falleretic/Aspose.Words-for-.NET/main
