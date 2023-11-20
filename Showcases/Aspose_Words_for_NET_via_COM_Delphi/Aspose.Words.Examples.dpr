@@ -30,7 +30,7 @@ begin
   Set8087CW($133f);
   try
     license := CoLicense.Create;
-    license.SetLicense('X:\Aspose.Words-for-.NET.git\Examples\Data\License\Aspose.Words.NET.lic');
+    license.SetLicense('Use your license');
 
     ConvertDocument();
     CreateNewDocument();
