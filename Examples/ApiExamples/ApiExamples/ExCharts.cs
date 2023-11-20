@@ -1280,7 +1280,6 @@ namespace ApiExamples
             //ExFor:ChartLegendEntryCollection
             //ExFor:ChartLegend.LegendEntries
             //ExFor:ChartLegendEntry.IsHidden
-            //ExFor:ChartLegendEntry.Font
             //ExSummary:Shows how to work with a legend entry for chart series.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1301,13 +1300,30 @@ namespace ApiExamples
             ChartLegendEntryCollection legendEntries = chart.Legend.LegendEntries;
             legendEntries[3].IsHidden = true;
 
-            foreach (ChartLegendEntry legendEntry in legendEntries)
-                legendEntry.Font.Size = 12;
-
-            series1.LegendEntry.Font.Italic = true;
-
             doc.Save(ArtifactsDir + "Charts.LegendEntries.docx");
             //ExEnd
+        }
+
+        [Test]
+        public void LegendFont()
+        {
+            //ExStart:LegendFont
+            //GistId:470c0da51e4317baae82ad9495747fed
+            //ExFor:ChartLegendEntry.Font
+            //ExFor:ChartLegend.Font
+            //ExSummary:Shows how to work with a legend font.
+            Document doc = new Document(MyDir + "Reporting engine template - Chart series.docx");
+            Chart chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
+
+            ChartLegend chartLegend = chart.Legend;
+            // Set default font size all legend entries.
+            chartLegend.Font.Size = 14;
+            // Change font for specific legend entry.
+            chartLegend.LegendEntries[1].Font.Italic = true;
+            chartLegend.LegendEntries[1].Font.Size = 12;
+
+            doc.Save(ArtifactsDir + "Charts.LegendFont.docx");
+            //ExEnd:LegendFont
         }
 
         [Test]

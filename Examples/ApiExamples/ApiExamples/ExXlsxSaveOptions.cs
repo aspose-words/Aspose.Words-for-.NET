@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -27,6 +27,24 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "XlsxSaveOptions.CompressXlsx.xlsx", xlsxSaveOptions);
             //ExEnd
+        }
+
+        [Test]
+        public void SelectionMode()
+        {
+            //ExStart:SelectionMode
+            //GistId:470c0da51e4317baae82ad9495747fed
+            //ExFor:XlsxSaveOptions.SectionMode
+            //ExSummary:Shows how to save document as a separate worksheets.
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            // Each section of a document will be created as a separate worksheet.
+            // Use 'SingleWorksheet' to display all document on one worksheet.
+            XlsxSaveOptions xlsxSaveOptions = new XlsxSaveOptions();
+            xlsxSaveOptions.SectionMode = XlsxSectionMode.MultipleWorksheets;
+
+            doc.Save(ArtifactsDir + "XlsxSaveOptions.SelectionMode.xlsx", xlsxSaveOptions);
+            //ExEnd:SelectionMode
         }
     }
 }

@@ -173,7 +173,7 @@ namespace ApiExamples
 
             builder.InsertImage(ImageDir + "Logo.jpg");
 
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             using (MemoryStream stream = new MemoryStream())
             {
                 doc.Save(stream, SaveFormat.Bmp);
@@ -2639,7 +2639,7 @@ namespace ApiExamples
             imageWatermarkOptions.Scale = 5;
             imageWatermarkOptions.IsWashout = false;
 
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             doc.Watermark.SetImage(Image.FromFile(ImageDir + "Logo.jpg"), imageWatermarkOptions);
 #elif NET5_0_OR_GREATER
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))

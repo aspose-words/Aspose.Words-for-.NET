@@ -12,7 +12,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 using Aspose.Words.Rendering;
 using NUnit.Framework;
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing.Text;
@@ -25,7 +25,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExRendering : ApiExampleBase
     {
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
         //ExStart
         //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
         //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)

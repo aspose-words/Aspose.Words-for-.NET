@@ -11,7 +11,7 @@ using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -90,7 +90,7 @@ namespace ApiExamples
         /// </summary>
         private static byte[] ImageToByteArray(string imagePath)
         {
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             Image image = Image.FromFile(imagePath);
             using (MemoryStream ms = new MemoryStream())
             {

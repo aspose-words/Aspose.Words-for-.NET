@@ -14,7 +14,7 @@ using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 using Aspose.Words.Drawing;
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 #elif NET5_0_OR_GREATER || __MOBILE__
@@ -120,7 +120,7 @@ namespace ApiExamples
             Assert.False(File.Exists(ArtifactsDir + "ImageSaveOptions.PageIndex.Page 4.gif"));
         }
 
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
         [Test]
         public void GraphicsQuality()
         {
@@ -245,7 +245,7 @@ namespace ApiExamples
                 .Where(item => item.Contains("ImageSaveOptions.PageByPage.") && item.EndsWith(".tiff")).ToList();
 
             Assert.AreEqual(3, imageFileNames.Count);
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             foreach (string imageFileName in imageFileNames)
                 TestUtil.VerifyImage(2325, 5325, imageFileName);
 #endif
@@ -283,7 +283,7 @@ namespace ApiExamples
 
             var testedImageLength = new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length;
 
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
@@ -387,7 +387,7 @@ namespace ApiExamples
 
             var testedImageLength = new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length;
 
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
@@ -465,7 +465,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
             
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff");
 #endif
         }

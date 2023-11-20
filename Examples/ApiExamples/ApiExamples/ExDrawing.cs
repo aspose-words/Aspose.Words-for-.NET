@@ -15,7 +15,7 @@ using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
 using Shape = Aspose.Words.Drawing.Shape;
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
 using System.Drawing.Imaging;
 #endif
 
@@ -24,7 +24,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExDrawing : ApiExampleBase
     {
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
         [Test]
         public void VariousShapes()
         {
@@ -299,7 +299,7 @@ namespace ApiExamples
             Assert.AreEqual(".Jpeg", fileInfos[0].Extension);
             TestUtil.VerifyImage(400, 400, fileInfos[1].FullName);
             Assert.AreEqual(".Png", fileInfos[1].Extension);
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             TestUtil.VerifyImage(382, 138, fileInfos[2].FullName);
             Assert.AreEqual(".Emf", fileInfos[2].Extension);
             TestUtil.VerifyImage(1600, 1600, fileInfos[3].FullName);

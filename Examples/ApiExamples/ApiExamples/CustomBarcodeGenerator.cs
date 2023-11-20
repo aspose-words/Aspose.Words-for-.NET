@@ -176,7 +176,7 @@ namespace ApiExamples
                 generator.Parameters.AutoSizeMode = AutoSizeMode.None;
             }
 
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             return generator.GenerateBarCodeImage();
 #elif NET5_0_OR_GREATER
             generator.GenerateBarCodeImage().Save(ArtifactsDir + "GetBarcodeImage.png");
@@ -200,7 +200,7 @@ namespace ApiExamples
             };
 
             // Hardcode type for old-fashioned Barcode
-#if NET48 || JAVA
+#if NET461_OR_GREATER || JAVA
             return generator.GenerateBarCodeImage();
 #elif NET5_0_OR_GREATER
             generator.GenerateBarCodeImage().Save(ArtifactsDir + "OldBarcodeImage.png");            

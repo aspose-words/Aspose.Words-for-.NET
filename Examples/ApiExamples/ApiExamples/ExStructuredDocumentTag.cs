@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -57,7 +57,6 @@ namespace ApiExamples
                     "<pkg:part pkg:name=\"/docProps/app.xml\" pkg:contentType=\"application/vnd.openxmlformats-officedocument.extended-properties+xml\">"));
             //ExEnd
         }
-
 
         [Test]
         public void ApplyStyle()
@@ -1269,6 +1268,25 @@ namespace ApiExamples
                 sdt.AppendChild(sdt.NextSibling);
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.Citation.docx");
+            //ExEnd
+        }
+
+        [Test]
+        public void RangeStartWordOpenXmlMinimal()
+        {
+            //ExStart:RangeStartWordOpenXmlMinimal
+            //GistId:470c0da51e4317baae82ad9495747fed
+            //ExFor:StructuredDocumentTagRangeStart.WordOpenXMLMinimal
+            //ExSummary:Shows how to get minimal XML contained within the node in the FlatOpc format.
+            Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
+            StructuredDocumentTagRangeStart tag =
+                doc.GetChild(NodeType.StructuredDocumentTagRangeStart, 0, true) as StructuredDocumentTagRangeStart;
+
+            Assert.True(tag.WordOpenXMLMinimal
+                .Contains(
+                    "<pkg:part pkg:name=\"/docProps/app.xml\" pkg:contentType=\"application/vnd.openxmlformats-officedocument.extended-properties+xml\">"));
+            Assert.False(tag.WordOpenXMLMinimal.Contains("xmlns:w16cid=\"http://schemas.microsoft.com/office/word/2016/wordml/cid\""));
+            //ExEnd:RangeStartWordOpenXmlMinimal
         }
     }
 }

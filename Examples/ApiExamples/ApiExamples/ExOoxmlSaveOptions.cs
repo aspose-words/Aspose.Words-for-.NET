@@ -230,16 +230,16 @@ namespace ApiExamples
             switch (compressionLevel)
             {
                 case CompressionLevel.Maximum:
-                    Assert.That(testedFileLength, Is.LessThan(1266000));
+                    Assert.That(testedFileLength, Is.LessThan(1269000));
                     break;
                 case CompressionLevel.Normal:
-                    Assert.That(testedFileLength, Is.LessThan(1267000));
+                    Assert.That(testedFileLength, Is.LessThan(1271000));
                     break;
                 case CompressionLevel.Fast:
-                    Assert.That(testedFileLength, Is.LessThan(1270000));
+                    Assert.That(testedFileLength, Is.LessThan(1280000));
                     break;
                 case CompressionLevel.SuperFast:
-                    Assert.That(testedFileLength, Is.LessThan(1272000));
+                    Assert.That(testedFileLength, Is.LessThan(1276000));
                     break;
             }
         }

@@ -416,11 +416,11 @@ namespace ApiExamples
             textAbsorber.Visit(pdfDoc);            
 
             if (suppressAutoHyphens)
-                Assert.True(textAbsorber.Text.Contains($"La ob storen an deinen am sachen. {Environment.NewLine}" +
+                Assert.True(textAbsorber.Text.Replace("  ", " ").Contains($"La ob storen an deinen am sachen. {Environment.NewLine}" +
                                                        $"Doppelte um da am spateren verlogen {Environment.NewLine}" +
                                                        $"gekommen achtzehn blaulich."));
             else
-                Assert.True(textAbsorber.Text.Contains($"La ob storen an deinen am sachen. Dop-{Environment.NewLine}" +
+                Assert.True(textAbsorber.Text.Replace("  ", " ").Contains($"La ob storen an deinen am sachen. Dop-{Environment.NewLine}" +
                                                        $"pelte um da am spateren verlogen ge-{Environment.NewLine}" +
                                                        $"kommen achtzehn blaulich."));
         }

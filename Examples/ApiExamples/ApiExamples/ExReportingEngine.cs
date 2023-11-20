@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -1179,6 +1179,20 @@ namespace ApiExamples
                 Assert.AreEqual(expectedItems[i].Value, sdt.ListItems[i].Value);
                 Assert.AreEqual(expectedItems[i].DisplayText, sdt.ListItems[i].DisplayText);
             }
+        }
+
+        [Test]
+        public void UpdateFieldsSyntaxAware()
+        {
+            Document doc = new Document(MyDir + "Reporting engine template - Fields.docx");
+
+            // Note that enabling of the option makes the engine to update fields while building a report,
+            // so there is no need to update fields separately after that.
+            ReportingEngine engine = new ReportingEngine();
+            BuildReport(doc, new string[] { "First topic", "Second topic", "Third topic" }, "topics",
+                ReportBuildOptions.UpdateFieldsSyntaxAware);
+
+            doc.Save(ArtifactsDir + "ReportingEngine.UpdateFieldsSyntaxAware.docx");            
         }
 
         private static void BuildReport(Document document, object dataSource, ReportBuildOptions reportBuildOptions)
