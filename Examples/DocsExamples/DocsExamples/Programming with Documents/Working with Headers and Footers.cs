@@ -173,7 +173,6 @@ namespace DocsExamples.Programming_with_Documents
             //ExEnd:LinkToPreviousHeaderFooter
         }
 
-
         [Test]
         public void SectionsWithDifferentHeaders()
         {
