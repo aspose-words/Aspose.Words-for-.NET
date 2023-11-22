@@ -177,8 +177,7 @@ namespace DocsExamples.Programming_with_Documents
         public void SectionsWithDifferentHeaders()
         {
             //ExStart:SectionsWithDifferentHeaders            
-            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
-            //OldName:DifferentFirstPageHeaderFooter
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d            
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
