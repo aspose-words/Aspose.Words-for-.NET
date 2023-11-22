@@ -10,18 +10,18 @@ namespace DocsExamples.Programming_with_Documents
         public void CreateHeaderFooter()
         {
             //ExStart:CreateHeaderFooter
-            //GistDesc:Create headers and footers using C#
+            //GistId:84cab3a22008f041ee6c1e959da09949
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             //ExStart:HeaderFooterType
-            //GistDesc:Create headers and footers using C#
+            //GistId:84cab3a22008f041ee6c1e959da09949
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderFirst);
-            builder.Write("Aspose.Words Header Creation Primer.");
+            builder.Write("Header for the first page.");
             //ExEnd:HeaderFooterType
 
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
-            builder.Write("Aspose.Words Footer Creation Primer.");
+            builder.Write("Header for odd page.");
 
             doc.Save(ArtifactsDir + "WorkingWithHeadersAndFooters.CreateHeaderFooter.docx");
             //ExEnd:CreateHeaderFooter
@@ -31,7 +31,7 @@ namespace DocsExamples.Programming_with_Documents
         public void DifferentFirstPage()
         {
             //ExStart:DifferentFirstPage
-            //GistDesc:Create headers and footers using C#
+            //GistId:84cab3a22008f041ee6c1e959da09949
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -54,7 +54,7 @@ namespace DocsExamples.Programming_with_Documents
         public void OddEvenPages()
         {
             //ExStart:OddEvenPages
-            //GistDesc:Create headers and footers using C#
+            //GistId:84cab3a22008f041ee6c1e959da09949
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -79,7 +79,7 @@ namespace DocsExamples.Programming_with_Documents
         public void InsertImage()
         {
             //ExStart:InsertImage
-            //GistDesc:Create headers and footers using C#
+            //GistId:84cab3a22008f041ee6c1e959da09949
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -95,18 +95,16 @@ namespace DocsExamples.Programming_with_Documents
         public void FontProps()
         {
             //ExStart:FontProps
-            //GistDesc:Create headers and footers using C#
+            //GistId:84cab3a22008f041ee6c1e959da09949
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-
             builder.Font.Name = "Arial";
             builder.Font.Bold = true;
             builder.Font.Size = 14;
-
-            builder.Write("Aspose.Words Header/Footer Creation Primer");
+            builder.Write("Header for odd page.");
 
             doc.Save(ArtifactsDir + "WorkingWithHeadersAndFooters.HeaderFooterFontProps.docx");
             //ExEnd:FontProps
@@ -116,7 +114,7 @@ namespace DocsExamples.Programming_with_Documents
         public void PageNumbers()
         {
             //ExStart:PageNumbers
-            //GistDesc:Create headers and footers using C#
+            //GistId:84cab3a22008f041ee6c1e959da09949
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -135,7 +133,7 @@ namespace DocsExamples.Programming_with_Documents
         public void LinkToPreviousHeaderFooter()
         {
             //ExStart:LinkToPreviousHeaderFooter
-            //GistDesc:Create headers and footers using C#
+            //GistId:84cab3a22008f041ee6c1e959da09949
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -146,7 +144,7 @@ namespace DocsExamples.Programming_with_Documents
             builder.Font.Name = "Arial";
             builder.Font.Bold = true;
             builder.Font.Size = 14;
-            builder.Write("Aspose.Words Header Creation Primer.");
+            builder.Write("Header for the first page.");
 
             builder.MoveToDocumentEnd();            
             builder.InsertBreak(BreakType.SectionBreakNewPage);
@@ -169,7 +167,7 @@ namespace DocsExamples.Programming_with_Documents
 
             builder.Font.Name = "Arial";            
             builder.Font.Size = 12;
-            builder.Write("New Aspose.Words Header Creation Primer.");
+            builder.Write("New Header for the first page.");
 
             doc.Save(ArtifactsDir + "WorkingWithHeadersAndFooters.LinkToPreviousHeaderFooter.docx");
             //ExEnd:LinkToPreviousHeaderFooter
@@ -179,9 +177,9 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void SectionsWithDifferentHeaders()
         {
-            //ExStart:SectionsWithDifferentHeaders
-            //OldName:DifferentFirstPageHeaderFooter
+            //ExStart:SectionsWithDifferentHeaders            
             //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
+            //OldName:DifferentFirstPageHeaderFooter
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -194,7 +192,7 @@ namespace DocsExamples.Programming_with_Documents
             builder.Font.Name = "Arial";
             builder.Font.Bold = true;
             builder.Font.Size = 14;
-            builder.Write("Aspose.Words Header/Footer Creation Primer - Title Page.");
+            builder.Write("Header for the first page.");
                         
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             // Insert a positioned image into the top/left corner of the header.
@@ -202,14 +200,14 @@ namespace DocsExamples.Programming_with_Documents
             builder.InsertImage(ImagesDir + "Logo.jpg", RelativeHorizontalPosition.Page, 10,
                 RelativeVerticalPosition.Page, 10, 50, 50, WrapType.Through);
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
-            builder.Write("Aspose.Words Header/Footer Creation Primer.");            
+            builder.Write("Header for odd page.");            
 
             doc.Save(ArtifactsDir + "WorkingWithHeadersAndFooters.SectionsWithDifferentHeaders.docx");
             //ExEnd:SectionsWithDifferentHeaders
         }
 
         //ExStart:CopyHeadersFootersFromPreviousSection
-        //GistDesc:Create headers and footers using C#
+        //GistId:84cab3a22008f041ee6c1e959da09949
         /// <summary>
         /// Clones and copies headers/footers form the previous section to the specified section.
         /// </summary>

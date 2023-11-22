@@ -63,7 +63,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void RemoveFooters()
         {
             //ExStart:RemoveFooters
-            //GistDesc:Create headers and footers using C#
+            //GistId:84cab3a22008f041ee6c1e959da09949
             Document doc = new Document(MyDir + "Header and footer types.docx");
 
             foreach (Section section in doc)
