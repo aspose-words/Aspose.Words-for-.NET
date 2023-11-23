@@ -14,14 +14,17 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
+            // Use HeaderPrimary and FooterPrimary
+            // if you want to set header/footer for all document.
+            // This header/footer type also responsible for odd pages.
             //ExStart:HeaderFooterType
             //GistId:84cab3a22008f041ee6c1e959da09949
-            builder.MoveToHeaderFooter(HeaderFooterType.HeaderFirst);
-            builder.Write("Header for the first page.");
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
+            builder.Write("Header for page.");
             //ExEnd:HeaderFooterType
 
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
-            builder.Write("Header for odd page.");
+            builder.Write("Footer for page.");
 
             doc.Save(ArtifactsDir + "WorkingWithHeadersAndFooters.CreateHeaderFooter.docx");
             //ExEnd:CreateHeaderFooter
@@ -40,6 +43,8 @@ namespace DocsExamples.Programming_with_Documents
 
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderFirst);
             builder.Write("Header for the first page.");
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterFirst);
+            builder.Write("Footer for the first page.");
 
             builder.MoveToSection(0);
             builder.Writeln("Page 1");
@@ -64,7 +69,11 @@ namespace DocsExamples.Programming_with_Documents
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderEven);
             builder.Write("Header for even pages.");
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            builder.Write("Header for odd pages.");
+            builder.Write("Header for odd pages.");            
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterEven);
+            builder.Write("Footer for even pages.");
+            builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
+            builder.Write("Footer for odd pages.");
 
             builder.MoveToSection(0);
             builder.Writeln("Page 1");
@@ -104,9 +113,9 @@ namespace DocsExamples.Programming_with_Documents
             builder.Font.Name = "Arial";
             builder.Font.Bold = true;
             builder.Font.Size = 14;
-            builder.Write("Header for odd page.");
+            builder.Write("Header for page.");
 
-            doc.Save(ArtifactsDir + "WorkingWithHeadersAndFooters.HeaderFooterFontProps.docx");
+            doc.Save(ArtifactsDir + "WorkingWithHeadersAndFooters.FontProps.docx");
             //ExEnd:FontProps
         }
 
@@ -164,7 +173,6 @@ namespace DocsExamples.Programming_with_Documents
 
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-
             builder.Font.Name = "Arial";            
             builder.Font.Size = 12;
             builder.Write("New Header for the first page.");
@@ -191,7 +199,10 @@ namespace DocsExamples.Programming_with_Documents
             builder.Font.Bold = true;
             builder.Font.Size = 14;
             builder.Write("Header for the first page.");
-                        
+
+            builder.MoveToDocumentEnd();
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             // Insert a positioned image into the top/left corner of the header.
             // Distance from the top/left edges of the page is set to 10 points.
