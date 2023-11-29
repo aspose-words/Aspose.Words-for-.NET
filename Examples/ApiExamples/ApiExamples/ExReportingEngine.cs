@@ -23,6 +23,7 @@ using Aspose.Words.Reporting;
 using NUnit.Framework;
 #if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 #endif
 
 namespace ApiExamples
@@ -1187,12 +1188,35 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Reporting engine template - Fields.docx");
 
             // Note that enabling of the option makes the engine to update fields while building a report,
-            // so there is no need to update fields separately after that.
-            ReportingEngine engine = new ReportingEngine();
+            // so there is no need to update fields separately after that.            
             BuildReport(doc, new string[] { "First topic", "Second topic", "Third topic" }, "topics",
                 ReportBuildOptions.UpdateFieldsSyntaxAware);
 
-            doc.Save(ArtifactsDir + "ReportingEngine.UpdateFieldsSyntaxAware.docx");            
+            doc.Save(ArtifactsDir + "ReportingEngine.UpdateFieldsSyntaxAware.docx");
+        }
+
+        [Test]
+        public void DollarTextFormat()
+        {
+            //ExStart:DollarTextFormat
+            //ReleaseVersion:23.12
+            //ExFor:ReportingEngine.BuildReport(Document, object, string)
+            //ExSummary:Shows how to display values as dollar text.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("<<[ds.Value1]:dollarText>>\r<<[ds.Value2]:dollarText>>");
+
+            NumericTestClass testData = new NumericTestBuilder().WithValues(1234, 5621718.589).Build();
+
+            ReportingEngine report = new ReportingEngine();
+            report.KnownTypes.Add(typeof(NumericTestClass));
+            report.BuildReport(doc, testData, "ds");
+
+            doc.Save(ArtifactsDir + "ReportingEngine.DollarTextFormat.docx");
+            //ExEnd:DollarTextFormat
+
+            Assert.AreEqual("one thousand two hundred thirty-four and 00/100\rfive million six hundred twenty-one thousand seven hundred eighteen and 59/100\r\f", doc.GetText());
         }
 
         private static void BuildReport(Document document, object dataSource, ReportBuildOptions reportBuildOptions)

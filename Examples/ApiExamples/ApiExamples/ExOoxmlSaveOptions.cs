@@ -7,6 +7,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
@@ -371,5 +372,35 @@ namespace ApiExamples
             private const double MaxDuration = 0.01d;
         }
         //ExEnd
+
+        [Test]
+        public void Zip64ModeOption()
+        {
+            //ExStart:Zip64ModeOption
+            //ReleaseVersion:23.12
+            //ExFor:OoxmlSaveOptions.Zip64Mode
+            //ExFor:Zip64Mode
+            //ExSummary:Shows how to use ZIP64 format extensions.
+            Random random = new Random();
+            DocumentBuilder builder = new DocumentBuilder();
+
+            for (int i = 0; i < 10000; i++)
+            {
+                using (Bitmap bmp = new Bitmap(5, 5))
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.Clear(Color.FromArgb(random.Next(0, 254), random.Next(0, 254), random.Next(0, 254)));
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                        builder.InsertImage(ms.ToArray());
+                    }
+                }
+            }
+
+            builder.Document.Save(ArtifactsDir + "OoxmlSaveOptions.Zip64ModeOption.docx", 
+                new OoxmlSaveOptions { Zip64Mode = Zip64Mode.Always });
+            //ExEnd:Zip64ModeOption
+        }
     }
 }

@@ -81,7 +81,7 @@ namespace ApiExamples
 
             Assert.AreEqual(2, shapes.Count);
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, (Shape)shapes[0]);
-            TestUtil.VerifyImageInShape(252, 213, ImageType.Png, (Shape)shapes[1]);
+            TestUtil.VerifyImageInShape(272, 92, ImageType.Png, (Shape)shapes[1]);
         }
 
         [Test]
@@ -411,5 +411,37 @@ namespace ApiExamples
             Assert.AreEqual(300.0d, imageSize.WidthPoints);
             Assert.AreEqual(300.0d, imageSize.HeightPoints);
         }
+
+#if NET5_0_OR_GREATER
+        [Test]
+        public void InsertWebpImage()
+        {
+            //ExStart:InsertWebpImage
+            //ReleaseVersion:23.12
+            //ExFor:DocumentBuilder.InsertImage(String)
+            //ExSummary:Shows how to insert WebP image (only .NetStandard)
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            
+            builder.InsertImage(ImageDir + "WebP image.webp");
+
+            doc.Save(ArtifactsDir + "Image.InsertWebpImage.docx");
+            //ExEnd:InsertWebpImage
+        }
+
+        [Test]
+        public void ReadWebpImage()
+        {
+            //ExStart:ReadWebpImage
+            //ReleaseVersion:23.12
+            //ExFor:ImageType
+            //ExSummary:Shows how to read WebP image (only .NetStandard)
+            Document doc = new Document(MyDir + "Document with WebP image.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Assert.AreEqual(ImageType.WebP, shape.ImageData.ImageType);
+            //ExEnd:ReadWebpImage
+        }
+#endif
     }
 }

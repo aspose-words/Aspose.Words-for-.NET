@@ -2309,5 +2309,23 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ExportParagraphGraphicsToArtifact.pdf");
             Assert.AreEqual(3, pdfDocument.Pages[1].Artifacts.Count());
         }
+
+        [Test]
+        public void PageLayout()
+        {
+            //ExStart:PageLayout
+            //ReleaseVersion:23.12
+            //ExFor:PdfSaveOptions.PageLayout
+            //ExFor:PdfPageLayout
+            //ExSummary:Shows how to display pages when opened in a PDF reader.
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            // Display the pages two at a time, with odd-numbered pages on the left.
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.PageLayout = PdfPageLayout.TwoPageLeft;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PageLayout.pdf", saveOptions);
+            //ExEnd:PageLayout
+        }
     }
 }

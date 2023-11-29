@@ -44,6 +44,13 @@ namespace ApiExamples.TestData.TestBuilders
             return this;
         }
 
+        public NumericTestBuilder WithValues(int? value1, double value2)
+        {
+            mValue1 = value1;
+            mValue2 = value2;
+            return this;
+        }
+
         public NumericTestClass Build()
         {
             return new NumericTestClass(mValue1, mValue2, mValue3, mValue4, mLogical, mDate);

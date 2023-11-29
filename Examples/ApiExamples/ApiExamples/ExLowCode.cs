@@ -5,6 +5,8 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
+using System.Drawing;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.LowCode;
@@ -17,7 +19,7 @@ namespace ApiExamples
     class ExLowCode : ApiExampleBase
     {
         [Test]
-        public void MergeDocument()
+        public void MergeDocuments()
         {
             //ExStart
             //ExFor:Merger.Merge(String, String[])
@@ -61,6 +63,27 @@ namespace ApiExamples
                 }
             }
             //ExEnd
+        }
+
+        [Test]
+        public void MergeDocumentInstances()
+        {
+            //ExStart:MergeDocumentInstances
+            //ReleaseVersion:23.12
+            //ExFor:Merger.Merge(Document[], MergeFormatMode)
+            //ExSummary:Shows how to merge input documents to a single document instance.
+            DocumentBuilder firstDoc = new DocumentBuilder();
+            firstDoc.Font.Size = 16;
+            firstDoc.Font.Color = Color.Blue;
+            firstDoc.Write("Hello first word!");
+            
+            DocumentBuilder secondDoc = new DocumentBuilder();
+            secondDoc.Write("Hello second word!");
+            
+            Document mergedDoc = Merger.Merge(new Document[] { firstDoc.Document, secondDoc.Document }, MergeFormatMode.KeepSourceLayout);
+
+            Assert.AreEqual("Hello first word!\fHello second word!\f", mergedDoc.GetText());
+            //ExEnd:MergeDocumentInstances
         }
     }
 }
