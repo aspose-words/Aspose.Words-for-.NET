@@ -22,7 +22,7 @@ namespace PluginsExamples
         {
             //ExStart:AddWatermarkWithFormatting
             //GistId:f1cc2c41c92a748dda99a825cd08c616
-            var doc = new Document("Document.docx");
+            var doc = new Document(MyDir + "Document.docx");
 
             // You can edit the text formatting using it as a watermark.
             var textWatermarkOptions = new TextWatermarkOptions();
