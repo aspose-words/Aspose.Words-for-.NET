@@ -1294,7 +1294,7 @@ namespace ApiExamples
         public void RemoveSelfOnly()
         {
             //ExStart:RemoveSelfOnly
-            //ReleaseVersion:23.12
+            //GistId:e386727403c2341ce4018bca370a5b41
             //ExFor:IStructuredDocumentTag.GetChildNodes(NodeType, bool)
             //ExFor:IStructuredDocumentTag.RemoveSelfOnly
             //ExSummary:Shows how to remove structured document tag, but keeps content inside.
@@ -1303,9 +1303,9 @@ namespace ApiExamples
             // This collection provides a unified interface for accessing ranged and non-ranged structured tags. 
             IEnumerable<IStructuredDocumentTag> sdts = doc.Range.StructuredDocumentTags.Cast<IStructuredDocumentTag>().ToList();
             Assert.AreEqual(5, sdts.Count());
-            
-            foreach (IStructuredDocumentTag sdt in sdts)
-                // Here we can get child nodes from the common interface of ranged and non-ranged structured tags.
+
+            // Here we can get child nodes from the common interface of ranged and non-ranged structured tags.
+            foreach (IStructuredDocumentTag sdt in sdts)                
                 if (sdt.GetChildNodes(NodeType.Any, false).Count > 0)
                     sdt.RemoveSelfOnly();
             

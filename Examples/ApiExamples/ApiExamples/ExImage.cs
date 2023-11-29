@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -417,7 +417,7 @@ namespace ApiExamples
         public void InsertWebpImage()
         {
             //ExStart:InsertWebpImage
-            //ReleaseVersion:23.12
+            //GistId:e386727403c2341ce4018bca370a5b41
             //ExFor:DocumentBuilder.InsertImage(String)
             //ExSummary:Shows how to insert WebP image (only .NetStandard)
             Document doc = new Document();
@@ -433,7 +433,7 @@ namespace ApiExamples
         public void ReadWebpImage()
         {
             //ExStart:ReadWebpImage
-            //ReleaseVersion:23.12
+            //GistId:e386727403c2341ce4018bca370a5b41
             //ExFor:ImageType
             //ExSummary:Shows how to read WebP image (only .NetStandard)
             Document doc = new Document(MyDir + "Document with WebP image.docx");

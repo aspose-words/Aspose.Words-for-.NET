@@ -1199,7 +1199,7 @@ namespace ApiExamples
         public void DollarTextFormat()
         {
             //ExStart:DollarTextFormat
-            //ReleaseVersion:23.12
+            //GistId:e386727403c2341ce4018bca370a5b41
             //ExFor:ReportingEngine.BuildReport(Document, object, string)
             //ExSummary:Shows how to display values as dollar text.
             Document doc = new Document();

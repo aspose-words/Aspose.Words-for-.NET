@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -2314,7 +2314,7 @@ namespace ApiExamples
         public void PageLayout()
         {
             //ExStart:PageLayout
-            //ReleaseVersion:23.12
+            //GistId:e386727403c2341ce4018bca370a5b41
             //ExFor:PdfSaveOptions.PageLayout
             //ExFor:PdfPageLayout
             //ExSummary:Shows how to display pages when opened in a PDF reader.

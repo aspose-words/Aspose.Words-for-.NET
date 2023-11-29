@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -69,7 +69,7 @@ namespace ApiExamples
         public void MergeDocumentInstances()
         {
             //ExStart:MergeDocumentInstances
-            //ReleaseVersion:23.12
+            //GistId:e386727403c2341ce4018bca370a5b41
             //ExFor:Merger.Merge(Document[], MergeFormatMode)
             //ExSummary:Shows how to merge input documents to a single document instance.
             DocumentBuilder firstDoc = new DocumentBuilder();
@@ -81,7 +81,6 @@ namespace ApiExamples
             secondDoc.Write("Hello second word!");
             
             Document mergedDoc = Merger.Merge(new Document[] { firstDoc.Document, secondDoc.Document }, MergeFormatMode.KeepSourceLayout);
-
             Assert.AreEqual("Hello first word!\fHello second word!\f", mergedDoc.GetText());
             //ExEnd:MergeDocumentInstances
         }
