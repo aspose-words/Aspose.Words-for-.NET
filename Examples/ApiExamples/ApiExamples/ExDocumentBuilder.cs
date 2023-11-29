@@ -1802,7 +1802,7 @@ namespace ApiExamples
 
             image = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            TestUtil.VerifyImageInShape(252, 213, ImageType.Png, image);
+            TestUtil.VerifyImageInShape(272, 92, ImageType.Png, image);
             Assert.AreEqual(100.0d, image.Left);
             Assert.AreEqual(250.0d, image.Top);
             Assert.AreEqual(200.0d, image.Width);

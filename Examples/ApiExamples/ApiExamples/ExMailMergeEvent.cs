@@ -343,7 +343,7 @@ namespace ApiExamples
 
             imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            TestUtil.VerifyImageInShape(252, 213, ImageType.Png, imageShape);
+            TestUtil.VerifyImageInShape(272, 92, ImageType.Png, imageShape);
         }
 
         //ExStart
