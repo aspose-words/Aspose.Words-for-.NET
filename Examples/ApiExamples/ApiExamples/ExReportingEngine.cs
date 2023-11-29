@@ -1200,7 +1200,7 @@ namespace ApiExamples
         {
             //ExStart:DollarTextFormat
             //GistId:e386727403c2341ce4018bca370a5b41
-            //ExFor:ReportingEngine.BuildReport(Document, object, string)
+            //ExFor:ReportingEngine.BuildReport(Document, Object, String)
             //ExSummary:Shows how to display values as dollar text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
