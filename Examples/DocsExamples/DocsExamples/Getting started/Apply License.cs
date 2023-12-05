@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Aspose.Words;
 using NUnit.Framework;
@@ -11,7 +11,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ApplyLicenseFromFile()
         {
             //ExStart:ApplyLicenseFromFile
-            //GistDesc:Apply lisence using C#
+            //GistId:c762ebd027c53ed61fce5bc5ccac1ca7
             License license = new License();
 
             // This line attempts to set a license from several locations relative to the executable and Aspose.Words.dll.
@@ -36,7 +36,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ApplyLicenseFromStream()
         {
             //ExStart:ApplyLicenseFromStream
-            //GistDesc:Apply lisence using C#
+            //GistId:c762ebd027c53ed61fce5bc5ccac1ca7
             License license = new License();
 
             try
@@ -58,7 +58,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ApplyMeteredLicense()
         {
             //ExStart:ApplyMeteredLicense
-            //GistDesc:Apply lisence using C#
+            //GistId:c762ebd027c53ed61fce5bc5ccac1ca7
             try
             {
                 Metered metered = new Metered();
