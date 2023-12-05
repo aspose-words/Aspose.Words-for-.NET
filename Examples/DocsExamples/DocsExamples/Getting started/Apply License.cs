@@ -11,6 +11,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ApplyLicenseFromFile()
         {
             //ExStart:ApplyLicenseFromFile
+            //GistDesc:Apply lisence using C#
             License license = new License();
 
             // This line attempts to set a license from several locations relative to the executable and Aspose.Words.dll.
@@ -35,6 +36,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ApplyLicenseFromStream()
         {
             //ExStart:ApplyLicenseFromStream
+            //GistDesc:Apply lisence using C#
             License license = new License();
 
             try
@@ -56,6 +58,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ApplyMeteredLicense()
         {
             //ExStart:ApplyMeteredLicense
+            //GistDesc:Apply lisence using C#
             try
             {
                 Metered metered = new Metered();
