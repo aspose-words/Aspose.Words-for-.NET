@@ -3,10 +3,10 @@ using NUnit.Framework;
 
 namespace DocsExamples.Getting_started
 {
-    public class Hello_world : DocsExamplesBase
+    public class HelloWorld : DocsExamplesBase
     {
         [Test]
-        public void HelloWorld()
+        public void SimpleHelloWorld()
         {
             //ExStart:HelloWorld
             //GistId:542a463e1857480986d18ec296ed43d5
@@ -21,7 +21,7 @@ namespace DocsExamples.Getting_started
             // Add document B to the and of document A, preserving document B formatting.
             docA.AppendDocument(docB, ImportFormatMode.KeepSourceFormatting);
             
-            docA.Save(ArtifactsDir + "C:\\Temp\\output_AB.pdf");
+            docA.Save(ArtifactsDir + "HelloWorld.SimpleHelloWorld.pdf");
             //ExEnd:HelloWorld
         }
     }
