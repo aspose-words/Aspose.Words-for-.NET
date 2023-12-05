@@ -1,4 +1,4 @@
-﻿using Aspose.Words;
+using Aspose.Words;
 using NUnit.Framework;
 
 namespace DocsExamples.Getting_started
@@ -9,7 +9,7 @@ namespace DocsExamples.Getting_started
         public void HelloWorld()
         {
             //ExStart:HelloWorld
-            //GistDesc:Getting started example
+            //GistId:542a463e1857480986d18ec296ed43d5
             Document docA = new Document();            
             DocumentBuilder builder = new DocumentBuilder(docA);
 
