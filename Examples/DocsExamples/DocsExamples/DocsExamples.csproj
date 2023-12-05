@@ -61,7 +61,7 @@
     <Content Include="Mail Merge and Reporting\Working with CleanupOptions.cs" />
     <Content Include="Mail Merge and Reporting\Working with Fields.cs" />
     <Content Include="Mail Merge and Reporting\Working with XML data.cs" />
-    <Content Include="Programming with Documents\Apply License.cs" />
+    <Content Include="Getting started\Apply License.cs" />
     <Content Include="Programming with Documents\Contents Management\Extract content helper.cs" />
     <Content Include="Programming with Documents\Contents Management\Extract content.cs" />
     <Content Include="Programming with Documents\Contents Management\Find and replace.cs" />
