@@ -6,7 +6,6 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 {
     internal class ExtractContentHelper
     {
-        //ExStart:CommonExtractContent
         public static List<Node> ExtractContent(Node startNode, Node endNode, bool isInclusive)
         {
             // First, check that the nodes passed to this method are valid for use.
@@ -14,7 +13,6 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             // Create a list to store the extracted nodes.
             List<Node> nodes = new List<Node>();
-
             // If either marker is part of a comment, including the comment itself, we need to move the pointer
             // forward to the Comment Node found after the CommentRangeEnd node.
             if (endNode.NodeType == NodeType.CommentRangeEnd && isInclusive)
@@ -80,11 +78,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
                     Section nextSection = (Section) currNode.GetAncestor(NodeType.Section).NextSibling;
                     currNode = nextSection.Body.FirstChild;
                 }
-                else
-                {
+                else                
                     // Move to the next node in the body.
-                    currNode = currNode.NextSibling;
-                }
+                    currNode = currNode.NextSibling;                
             }
 
             // For compatibility with mode with inline bookmarks, add the next paragraph (empty).
@@ -93,47 +89,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             // Return the nodes between the node markers.
             return nodes;
-        }
-        //ExEnd:CommonExtractContent
+        }        
 
-        public static List<Paragraph> ParagraphsByStyleName(Document doc, string styleName)
-        {
-            // Create an array to collect paragraphs of the specified style.
-            List<Paragraph> paragraphsWithStyle = new List<Paragraph>();
-            
-            NodeCollection paragraphs = doc.GetChildNodes(NodeType.Paragraph, true);
-            
-            // Look through all paragraphs to find those with the specified style.
-            foreach (Paragraph paragraph in paragraphs)
-            {
-                if (paragraph.ParagraphFormat.Style.Name == styleName)
-                    paragraphsWithStyle.Add(paragraph);
-            }
-
-            return paragraphsWithStyle;
-        }
-
-        //ExStart:CommonGenerateDocument
-        public static Document GenerateDocument(Document srcDoc, List<Node> nodes)
-        {
-            Document dstDoc = new Document();
-            // Remove the first paragraph from the empty document.
-            dstDoc.FirstSection.Body.RemoveAllChildren();
-
-            // Import each node from the list into the new document. Keep the original formatting of the node.
-            NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting);
-
-            foreach (Node node in nodes)
-            {
-                Node importNode = importer.ImportNode(node, true);
-                dstDoc.FirstSection.Body.AppendChild(importNode);
-            }
-
-            return dstDoc;
-        }
-        //ExEnd:CommonGenerateDocument
-
-        //ExStart:CommonExtractContentHelperMethods
         private static void VerifyParameterNodes(Node startNode, Node endNode)
         {
             // The order in which these checks are done is important.
@@ -180,15 +137,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             }
 
             return FindNextNode(nodeType, fromNode.NextSibling);
-        }
-
-        private bool IsInline(Node node)
-        {
-            // Test if the node is a descendant of a Paragraph or Table node and is not a paragraph
-            // or a table a paragraph inside a comment class that is decent of a paragraph is possible.
-            return ((node.GetAncestor(NodeType.Paragraph) != null || node.GetAncestor(NodeType.Table) != null) &&
-                    !(node.NodeType == NodeType.Paragraph || node.NodeType == NodeType.Table));
-        }
+        }        
 
         private static void ProcessMarker(Node cloneNode, List<Node> nodes, Node node, Node blockLevelAncestor,
             bool isInclusive, bool isStartMarker, bool canAdd, bool forceAdd)
@@ -305,6 +254,26 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
                 startNode = startNode.ParentNode;
             return startNode;
         }
-        //ExEnd:CommonExtractContentHelperMethods
+
+
+        //ExStart:GenerateDocument
+        //GistDesc:Extracting document content using C#
+        public static Document GenerateDocument(Document srcDoc, List<Node> nodes)
+        {
+            Document dstDoc = new Document();
+            // Remove the first paragraph from the empty document.
+            dstDoc.FirstSection.Body.RemoveAllChildren();
+
+            // Import each node from the list into the new document. Keep the original formatting of the node.
+            NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting);
+            foreach (Node node in nodes)
+            {
+                Node importNode = importer.ImportNode(node, true);
+                dstDoc.FirstSection.Body.AppendChild(importNode);
+            }
+
+            return dstDoc;
+        }
+        //ExEnd:GenerateDocument
     }
 }
