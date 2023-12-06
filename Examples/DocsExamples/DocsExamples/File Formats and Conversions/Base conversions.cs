@@ -131,7 +131,7 @@ namespace DocsExamples.File_Formats_and_Conversions
         public void DocxToTxt()
         {
             //ExStart:DocxToTxt
-            //GistDesc:Extracting document content using C#
+            //GistId:1f94e59ea4838ffac2f0edf921f67060
             Document doc = new Document(MyDir + "Document.docx");
             doc.Save(ArtifactsDir + "BaseConversions.DocxToTxt.txt");
             //ExEnd:DocxToTxt

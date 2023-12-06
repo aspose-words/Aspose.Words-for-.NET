@@ -15,7 +15,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ExtractContentBetweenBlockLevelNodes()
         {
             //ExStart:ExtractContentBetweenBlockLevelNodes
-            //GistDesc:Extracting document content using C#
+            //GistId:1f94e59ea4838ffac2f0edf921f67060
             Document doc = new Document(MyDir + "Extract content.docx");
 
             Paragraph startPara = (Paragraph) doc.LastSection.GetChild(NodeType.Paragraph, 2, true);
@@ -36,7 +36,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ExtractContentBetweenBookmark()
         {
             //ExStart:ExtractContentBetweenBookmark
-            //GistDesc:Extracting document content using C#
+            //GistId:1f94e59ea4838ffac2f0edf921f67060
             Document doc = new Document(MyDir + "Extract content.docx");            
 
             Bookmark bookmark = doc.Range.Bookmarks["Bookmark1"];            
@@ -61,7 +61,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ExtractContentBetweenCommentRange()
         {
             //ExStart:ExtractContentBetweenCommentRange
-            //GistDesc:Extracting document content using C#
+            //GistId:1f94e59ea4838ffac2f0edf921f67060
             Document doc = new Document(MyDir + "Extract content.docx");
 
             CommentRangeStart commentStart = (CommentRangeStart) doc.GetChild(NodeType.CommentRangeStart, 0, true);
@@ -85,7 +85,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ExtractContentBetweenParagraphs()
         {
             //ExStart:ExtractContentBetweenParagraphs
-            //GistDesc:Extracting document content using C#
+            //GistId:1f94e59ea4838ffac2f0edf921f67060
             Document doc = new Document(MyDir + "Extract content.docx");
 
             Paragraph startPara = (Paragraph) doc.FirstSection.Body.GetChild(NodeType.Paragraph, 6, true);
@@ -102,7 +102,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ExtractContentBetweenParagraphStyles()
         {
             //ExStart:ExtractContentBetweenParagraphStyles
-            //GistDesc:Extracting document content using C#
+            //GistId:1f94e59ea4838ffac2f0edf921f67060
             Document doc = new Document(MyDir + "Extract content.docx");
 
             // Gather a list of the paragraphs using the respective heading styles.
@@ -122,7 +122,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         }
 
         //ExStart:ParagraphsByStyleName
-        //GistDesc:Extracting document content using C#
+        //GistId:1f94e59ea4838ffac2f0edf921f67060
         public List<Paragraph> ParagraphsByStyleName(Document doc, string styleName)
         {
             // Create an array to collect paragraphs of the specified style.
@@ -144,7 +144,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ExtractContentBetweenRuns()
         {
             //ExStart:ExtractContentBetweenRuns
-            //GistDesc:Extracting document content using C#
+            //GistId:1f94e59ea4838ffac2f0edf921f67060
             Document doc = new Document(MyDir + "Extract content.docx");
 
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 7, true);
@@ -162,7 +162,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ExtractContentUsingDocumentVisitor()
         {
             //ExStart:ExtractContentUsingDocumentVisitor
-            //GistDesc:Extracting document content using C#
+            //GistId:1f94e59ea4838ffac2f0edf921f67060
             Document doc = new Document(MyDir + "Absolute position tab.docx");
 
             ConvertDocToTxt convertToPlainText = new ConvertDocToTxt();
@@ -177,7 +177,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         }
 
         //ExStart:ConvertDocToTxt
-        //GistDesc:Extracting document content using C#
+        //GistId:1f94e59ea4838ffac2f0edf921f67060
         /// <summary>
         /// Simple implementation of saving a document in the plain text format. Implemented as a Visitor.
         /// </summary>
@@ -297,7 +297,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ExtractContentUsingField()
         {
             //ExStart:ExtractContentUsingField
-            //GistDesc:Extracting document content using C#
+            //GistId:1f94e59ea4838ffac2f0edf921f67060
             Document doc = new Document(MyDir + "Extract content.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
             // Pass the first boolean parameter to get the DocumentBuilder to move to the FieldStart of the field.
@@ -319,7 +319,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void SimpleExtractText()
         {
             //ExStart:SimpleExtractText
-            //GistDesc:Extracting document content using C#
+            //GistId:1f94e59ea4838ffac2f0edf921f67060
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);            
             
@@ -397,7 +397,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ExtractImages()
         {
             //ExStart:ExtractImages
-            //GistDesc:Extracting document content using C#
+            //GistId:1f94e59ea4838ffac2f0edf921f67060
             Document doc = new Document(MyDir + "Images.docx");
 
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);

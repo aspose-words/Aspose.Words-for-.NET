@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Aspose.Words;
 
@@ -257,7 +257,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
 
         //ExStart:GenerateDocument
-        //GistDesc:Extracting document content using C#
+        //GistId:1f94e59ea4838ffac2f0edf921f67060
         public static Document GenerateDocument(Document srcDoc, List<Node> nodes)
         {
             Document dstDoc = new Document();
