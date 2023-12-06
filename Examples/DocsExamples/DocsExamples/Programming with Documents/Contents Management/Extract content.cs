@@ -163,7 +163,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         {
             //ExStart:ExtractContentUsingDocumentVisitor
             //GistId:1f94e59ea4838ffac2f0edf921f67060
-            Document doc = new Document(MyDir + "Absolute position tab.docx");
+            Document doc = new Document(MyDir + "Extract content.docx");
 
             ConvertDocToTxt convertToPlainText = new ConvertDocToTxt();
             // Note that every node in the object model has the accept method so the visiting
@@ -330,43 +330,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             // This is the same as "viewing" the document as if it was opened in a text editor.
             Console.WriteLine("Convert to text result: " + doc.ToString(SaveFormat.Text));
             //ExEnd:SimpleExtractText            
-        }
-
-        [Test]
-        public void ExtractContentBasedOnStyles()
-        {
-            //ExStart:ExtractContentBasedOnStyles
-            Document doc = new Document(MyDir + "Styles.docx");
-
-            List<Paragraph> paragraphs = ParagraphsByStyleName(doc, "Heading 1");
-            Console.WriteLine($"Paragraphs with \"Heading 1\" styles ({paragraphs.Count}):");
-            
-            foreach (Paragraph paragraph in paragraphs)
-                Console.Write(paragraph.ToString(SaveFormat.Text));
-
-            List<Run> runs = RunsByStyleName(doc, "Intense Emphasis");
-            Console.WriteLine($"\nRuns with \"Intense Emphasis\" styles ({runs.Count}):");
-            
-            foreach (Run run in runs)
-                Console.WriteLine(run.Range.Text);
-            //ExEnd:ExtractContentBasedOnStyles
-        }
-        
-        //ExStart:RunsByStyleName
-        public List<Run> RunsByStyleName(Document doc, string styleName)
-        {
-            List<Run> runsWithStyle = new List<Run>();
-            NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
-            
-            foreach (Run run in runs)
-            {
-                if (run.Font.Style.Name == styleName)
-                    runsWithStyle.Add(run);
-            }
-
-            return runsWithStyle;
-        }
-        //ExEnd:RunsByStyleName
+        }        
 
         [Test]
         public void ExtractPrintText()
@@ -416,5 +380,41 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             }
             //ExEnd:ExtractImages
         }
+
+        [Test]
+        public void ExtractContentBasedOnStyles()
+        {
+            //ExStart:ExtractContentBasedOnStyles
+            Document doc = new Document(MyDir + "Styles.docx");
+
+            List<Paragraph> paragraphs = ParagraphsByStyleName(doc, "Heading 1");
+            Console.WriteLine($"Paragraphs with \"Heading 1\" styles ({paragraphs.Count}):");
+
+            foreach (Paragraph paragraph in paragraphs)
+                Console.Write(paragraph.ToString(SaveFormat.Text));
+
+            List<Run> runs = RunsByStyleName(doc, "Intense Emphasis");
+            Console.WriteLine($"\nRuns with \"Intense Emphasis\" styles ({runs.Count}):");
+
+            foreach (Run run in runs)
+                Console.WriteLine(run.Range.Text);
+            //ExEnd:ExtractContentBasedOnStyles
+        }
+
+        //ExStart:RunsByStyleName
+        public List<Run> RunsByStyleName(Document doc, string styleName)
+        {
+            List<Run> runsWithStyle = new List<Run>();
+            NodeCollection runs = doc.GetChildNodes(NodeType.Run, true);
+
+            foreach (Run run in runs)
+            {
+                if (run.Font.Style.Name == styleName)
+                    runsWithStyle.Add(run);
+            }
+
+            return runsWithStyle;
+        }
+        //ExEnd:RunsByStyleName
     }
 }
