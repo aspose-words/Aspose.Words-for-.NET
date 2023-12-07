@@ -59,6 +59,10 @@ namespace DocsExamples
                 // binaries or you add the license to your project as an embedded resource.
                 License wordsLicense = new License();
                 wordsLicense.SetLicense(testLicenseFileName);
+
+                Aspose.BarCode.License barcodeLicense = new Aspose.BarCode.License();
+                barcodeLicense.SetLicense(testLicenseFileName);
+
             }
         }
 

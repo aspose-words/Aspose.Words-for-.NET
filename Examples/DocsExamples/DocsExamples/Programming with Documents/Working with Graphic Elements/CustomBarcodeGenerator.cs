@@ -141,7 +141,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
 
             generator.Parameters.CaptionAbove.Text = "";
 
-            const float scale = 2.4f; // Empiric scaling factor for converting Word barcode to Aspose.BarCode
+            // Empiric scaling factor for converting Word barcode to Aspose.BarCode.
+            const float scale = 2.4f; 
             float xdim = 1.0f;
 
             if (generator.BarcodeType.Equals(EncodeTypes.QR))
@@ -192,8 +193,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             {
                 CodeText = parameters.PostalAddress
             };
-
-            // Hardcode type for old-fashioned Barcode
+            
 #if NET48 || JAVA
             return generator.GenerateBarCodeImage();
 #elif NET6_0 || __MOBILE__
