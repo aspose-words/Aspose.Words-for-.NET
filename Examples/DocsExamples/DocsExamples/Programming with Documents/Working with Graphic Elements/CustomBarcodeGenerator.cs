@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Globalization;
 using Aspose.BarCode.Generation;
@@ -11,7 +11,8 @@ using Color = Aspose.Drawing.Color;
 
 namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
 {
-    //ExStart:GenerateACustomBarCodeImage_IBarcodeGenerator
+    //ExStart:CustomBarcodeGenerator
+    //GistId:00d34dba66626dbc0175b60bb3b71c8a
     public class CustomBarcodeGenerator : DocsExamplesBase, IBarcodeGenerator
     {
         /// <summary>
@@ -21,13 +22,13 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         /// <returns></returns>
         private static float ConvertSymbolHeight(string heightInTwipsString)
         {
-            // Input value is in 1/1440 inches (twips)
+            // Input value is in 1/1440 inches (twips).
             int heightInTwips = TryParseInt(heightInTwipsString);
 
             if (heightInTwips == int.MinValue)
                 throw new Exception("Error! Incorrect height - " + heightInTwipsString + ".");
 
-            // Convert to mm
+            // Convert to mm.
             return (float) (heightInTwips * 25.4 / 1440);
         }
 
@@ -38,7 +39,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         /// <returns></returns>
         private static Color ConvertColor(string inputColor)
         {
-            // Input should be from "0x000000" to "0xFFFFFF"
+            // Input should be from "0x000000" to "0xFFFFFF".
             int color = TryParseHex(inputColor.Replace("0x", ""));
 
             if (color == int.MinValue)
@@ -47,7 +48,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             return Color.FromArgb(color >> 16, (color & 0xFF00) >> 8, color & 0xFF);
 
             // Backward conversion -
-            //return string.Format("0x{0,6:X6}", mControl.ForeColor.ToArgb() & 0xFFFFFF);
+            // return string.Format("0x{0,6:X6}", mControl.ForeColor.ToArgb() & 0xFFFFFF);
         }
 
         /// <summary>
@@ -235,5 +236,5 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
                 : int.MinValue;
         }
     }
-    //ExEnd:GenerateACustomBarCodeImage_IBarcodeGenerator
+    //ExEnd:CustomBarcodeGenerator
 }
