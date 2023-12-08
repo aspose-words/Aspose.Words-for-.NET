@@ -1166,8 +1166,7 @@ namespace ApiExamples
         [Test]
         public void RangeSdt()
         {
-            //ExStart
-            //ReleaseVersion:23.12
+            //ExStart            
             //ExFor:StructuredDocumentTagCollection.GetById(int)
             //ExFor:StructuredDocumentTagCollection.GetByTitle(String)
             //ExFor:IStructuredDocumentTag.IsMultiSection
