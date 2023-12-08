@@ -374,6 +374,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
                     string imageFileName =
                         $"Image.ExportImages.{imageIndex}_{FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType)}";
 
+                    // Note, if you have only an image (not a shape with a text and the image),
+                    // you can use shape.GetShapeRenderer().Save(...) method to save the image.
                     shape.ImageData.Save(ArtifactsDir + imageFileName);
                     imageIndex++;
                 }
