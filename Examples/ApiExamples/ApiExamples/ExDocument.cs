@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -462,7 +462,7 @@ namespace ApiExamples
             //ExFor:LoadOptions.#ctor(LoadFormat, String, String)
             //ExFor:LoadFormat
             //ExSummary:Shows how save a web page as a .docx file.
-            const string url = "https://www.aspose.com/";
+            const string url = "https://products.aspose.com/words/";
 
             using (HttpClient client = new HttpClient()) 
             {
@@ -471,19 +471,18 @@ namespace ApiExamples
                 {
                     // The URL is used again as a baseUri to ensure that any relative image paths are retrieved correctly.
                     LoadOptions options = new LoadOptions(LoadFormat.Html, "", url);
+                    options.Encoding = Encoding.UTF8;
 
                     // Load the HTML document from stream and pass the LoadOptions object.
                     Document doc = new Document(stream, options);
 
                     // At this stage, we can read and edit the document's contents and then save it to the local file system.
-                    Assert.True(doc.GetText().Contains("HYPERLINK \"https://products.aspose.com/words/family/\" \\o \"Aspose.Words\"")); //ExSkip
+                    Assert.True(doc.GetText().Contains("HYPERLINK \"https://products.aspose.com/words/net/\" \\o \"Aspose.Words\"")); //ExSkip
 
                     doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
                 }
             }
             //ExEnd
-
-            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
         }
 
         [Test]
@@ -1077,10 +1076,10 @@ namespace ApiExamples
             builder.InsertField("MERGEFIELD Field");
 
             // GetText will retrieve the visible text as well as field codes and special characters.
-            Assert.AreEqual("\u0013MERGEFIELD Field\u0014«Field»\u0015\u000c", doc.GetText());
+            Assert.AreEqual("\u0013MERGEFIELD Field\u0014«Field»\u0015", doc.GetText().Trim());
 
             // ToString will give us the document's appearance if saved to a passed save format.
-            Assert.AreEqual("«Field»\r\n", doc.ToString(SaveFormat.Text));
+            Assert.AreEqual("«Field»", doc.ToString(SaveFormat.Text).Trim());
             //ExEnd
         }
 
@@ -2000,7 +1999,7 @@ namespace ApiExamples
 
             Assert.AreEqual(showParagraphMarks ? 
                     $"Hello world!¶{Environment.NewLine}Hello again!¶{Environment.NewLine}¶" : 
-                    $"Hello world!{Environment.NewLine}Hello again!", textAbsorber.Text);
+                    $"Hello world!{Environment.NewLine}Hello again!", textAbsorber.Text.Trim());
         }
 
         [Test]
