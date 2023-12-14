@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using Aspose.Words;

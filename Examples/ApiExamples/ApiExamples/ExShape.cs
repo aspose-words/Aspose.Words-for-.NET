@@ -1,4 +1,4 @@
-// Copyright (c) 2001-2023 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -1188,7 +1188,7 @@ namespace ApiExamples
             if (oleControl.IsForms2OleControl)
             {
                 Forms2OleControl checkBox = (Forms2OleControl) oleControl;
-                Assert.AreEqual("Первый", checkBox.Caption);
+                Assert.AreEqual("First", checkBox.Caption);
                 Assert.AreEqual("0", checkBox.Value);
                 Assert.AreEqual(true, checkBox.Enabled);
                 Assert.AreEqual(Forms2OleControlType.CheckBox, checkBox.Type);
