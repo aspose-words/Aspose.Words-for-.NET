@@ -1219,6 +1219,28 @@ namespace ApiExamples
             Assert.AreEqual("one thousand two hundred thirty-four and 00/100\rfive million six hundred twenty-one thousand seven hundred eighteen and 59/100\r\f", doc.GetText());
         }
 
+        [Test]
+        public void RestrictedTypes()
+        {
+            //ExStart:RestrictedTypes
+            //ReleaseVersion:24.01
+            //ExFor:ReportingEngine.SetRestrictedTypes(Type[])
+            //ExSummary:Shows how to deny access to members of types considered insecure.
+            Document doc =
+                DocumentHelper.CreateSimpleDocument(
+                    "<<var [typeVar = \"\".GetType().BaseType]>><<[typeVar]>>");
+
+            // We set "AllowMissingMembers" option to avoid exceptions during building a report.
+            ReportingEngine engine = new ReportingEngine() { Options = ReportBuildOptions.AllowMissingMembers };
+            // Note, that you can't set restricted types during or after building a report.
+            ReportingEngine.SetRestrictedTypes(typeof(System.Type));
+            engine.BuildReport(doc, new object());
+
+            // We get an empty string because we can't access the GetType() method.
+            Assert.AreEqual(string.Empty, doc.GetText().Trim());
+            //ExEnd:RestrictedTypes
+        }
+
         private static void BuildReport(Document document, object dataSource, ReportBuildOptions reportBuildOptions)
         {
             ReportingEngine engine = new ReportingEngine { Options = reportBuildOptions };

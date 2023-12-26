@@ -32,6 +32,7 @@ using Aspose.Words.Math;
 using System.Threading.Tasks;
 using System.Threading;
 using Aspose.BarCode.BarCodeRecognition;
+using Aspose.Words.Bibliography;
 #if NET5_0_OR_GREATER
 using SkiaSharp;
 #endif
@@ -7607,6 +7608,42 @@ namespace ApiExamples
             public IList<string> FieldUpdatedCalls { get; }
         }
         //ExEnd
+
+        [Test]
+        public void BibliographySources()
+        {
+            //ExStart:BibliographySources
+            //ReleaseVersion:24.01
+            //ExFor:Bibliography
+            //ExFor:Bibliography.Sources
+            //ExFor:Source.Title
+            //ExFor:Source.Contributors
+            //ExFor:ContributorCollection
+            //ExFor:ContributorCollection.Author
+            //ExFor:PersonCollection
+            //ExFor:Person
+            //ExFor:Person.First
+            //ExFor:Person.Middle
+            //ExFor:Person.Last
+            //ExSummary:Shows how to get bibliography sources available in the document.
+            Document document = new Document(MyDir + "Bibliography sources.docx");
+
+            Bibliography bibliography = document.Bibliography;
+            Assert.AreEqual(12, bibliography.Sources.Count);
+
+            Source source = bibliography.Sources.FirstOrDefault();
+            Assert.AreEqual("Book 0 (No LCID)", source.Title);
+
+            ContributorCollection contributors = source.Contributors;
+            PersonCollection authors = (PersonCollection)contributors.Author;
+            Assert.AreEqual(2, authors.Count());
+
+            Person person = authors.FirstOrDefault();
+            Assert.AreEqual("Roxanne", person.First);
+            Assert.AreEqual("Brielle", person.Middle);
+            Assert.AreEqual("Tejeda", person.Last);
+            //ExEnd:BibliographySources
+        }
     }
 }
 

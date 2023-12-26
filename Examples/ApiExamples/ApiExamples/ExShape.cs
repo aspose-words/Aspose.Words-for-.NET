@@ -25,6 +25,7 @@ using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 using TextBox = Aspose.Words.Drawing.TextBox;
 using Aspose.Words.Themes;
+using Aspose.Words.Forms2;
 
 namespace ApiExamples
 {
@@ -3032,6 +3033,78 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.FitImageToShape.docx");
             //ExEnd:FitImageToShape
+        }
+
+        [Test]
+        public void StrokeForeThemeColors()
+        {
+            //ExStart:StrokeForeThemeColors
+            //ReleaseVersion:24.01
+            //ExFor:Stroke.ForeThemeColor            
+            //ExFor:Stroke.ForeTintAndShade            
+            //ExSummary:Shows how to set fore theme color and tint and shade.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertShape(ShapeType.TextBox, 100, 40);
+            Stroke stroke = shape.Stroke;
+            stroke.ForeThemeColor = ThemeColor.Dark1;
+            stroke.ForeTintAndShade = 0.5;
+
+            doc.Save(ArtifactsDir + "Shape.StrokeForeThemeColors.docx");
+            //ExEnd:StrokeForeThemeColors
+
+            doc = new Document(ArtifactsDir + "Shape.StrokeForeThemeColors.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(ThemeColor.Dark1, shape.Stroke.ForeThemeColor);
+            Assert.AreEqual(0.5, shape.Stroke.ForeTintAndShade);
+
+        }
+
+        [Test]
+        public void StrokeBackThemeColors()
+        {
+            //ExStart:StrokeBackThemeColors
+            //ReleaseVersion:24.01            
+            //ExFor:Stroke.BackThemeColor            
+            //ExFor:Stroke.BackTintAndShade
+            //ExSummary:Shows how to set back theme color and tint and shade.
+            Document doc = new Document(MyDir + "Stroke gradient outline.docx");            
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Stroke stroke = shape.Stroke;
+            stroke.BackThemeColor = ThemeColor.Dark2;
+            stroke.BackTintAndShade = 0.2d;
+
+            doc.Save(ArtifactsDir + "Shape.StrokeBackThemeColors.docx");
+            //ExEnd:StrokeBackThemeColors
+
+            doc = new Document(ArtifactsDir + "Shape.StrokeBackThemeColors.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(ThemeColor.Dark2, shape.Stroke.BackThemeColor);
+            double precision = 1e-6;
+            Assert.AreEqual(0.2d, shape.Stroke.BackTintAndShade, precision);
+        }
+
+        [Test]
+        public void TextBoxOleControl()
+        {
+            //ExStart:TextBoxOleControl
+            //ReleaseVersion:24.01
+            //ExFor:TextBoxControl
+            //ExFor:TextBoxControl.Text
+            //ExSummary:Shows how to change text of the TextBox OLE control.
+            Document doc = new Document(MyDir + "Textbox control.docm");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            TextBoxControl textBoxControl = (TextBoxControl)shape.OleFormat.OleControl;
+            Assert.AreEqual("Aspose.Words test", textBoxControl.Text);
+
+            textBoxControl.Text = "Updated text";
+            Assert.AreEqual("Updated text", textBoxControl.Text);
+            //ExEnd:TextBoxOleControl
         }
     }
 }

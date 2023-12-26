@@ -186,5 +186,23 @@ namespace ApiExamples
             Document doc = new Document(ArtifactsDir + "MarkdownSaveOptions.ImagesFolder.md");
             doc.GetText().Contains("http://example.com/images/MarkdownSaveOptions.ImagesFolder.001.jpeg");
         }
+
+        [Test]
+        public void ExportUnderlineFormatting()
+        {
+            //ExStart:ExportUnderlineFormatting
+            //ReleaseVersion:24.01
+            //ExFor:MarkdownSaveOptions.ExportUnderlineFormatting
+            //ExSummary:Shows how to export underline formatting as ++.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Underline = Underline.Single;
+            builder.Write("Lorem ipsum. Dolor sit amet.");
+
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions() { ExportUnderlineFormatting = true };
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.ExportUnderlineFormatting.md", saveOptions);
+            //ExEnd:ExportUnderlineFormatting
+        }
     }
 }
