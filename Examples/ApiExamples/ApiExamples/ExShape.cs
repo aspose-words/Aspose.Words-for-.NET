@@ -3059,7 +3059,6 @@ namespace ApiExamples
 
             Assert.AreEqual(ThemeColor.Dark1, shape.Stroke.ForeThemeColor);
             Assert.AreEqual(0.5, shape.Stroke.ForeTintAndShade);
-
         }
 
         [Test]
