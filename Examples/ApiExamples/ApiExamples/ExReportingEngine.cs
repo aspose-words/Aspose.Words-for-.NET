@@ -1224,7 +1224,7 @@ namespace ApiExamples
         public void RestrictedTypes()
         {
             //ExStart:RestrictedTypes
-            //ReleaseVersion:24.01
+            //GistId:eeeec1fbf118e95e7df3f346c91ed726
             //ExFor:ReportingEngine.SetRestrictedTypes(Type[])
             //ExSummary:Shows how to deny access to members of types considered insecure.
             Document doc =

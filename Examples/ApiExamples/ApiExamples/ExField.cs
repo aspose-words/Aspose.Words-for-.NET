@@ -7613,7 +7613,7 @@ namespace ApiExamples
         public void BibliographySources()
         {
             //ExStart:BibliographySources
-            //ReleaseVersion:24.01
+            //GistId:eeeec1fbf118e95e7df3f346c91ed726
             //ExFor:Bibliography
             //ExFor:Bibliography.Sources
             //ExFor:Source.Title

@@ -191,7 +191,7 @@ namespace ApiExamples
         public void ExportUnderlineFormatting()
         {
             //ExStart:ExportUnderlineFormatting
-            //ReleaseVersion:24.01
+            //GistId:eeeec1fbf118e95e7df3f346c91ed726
             //ExFor:MarkdownSaveOptions.ExportUnderlineFormatting
             //ExSummary:Shows how to export underline formatting as ++.
             Document doc = new Document();

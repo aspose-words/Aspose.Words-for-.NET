@@ -3039,7 +3039,7 @@ namespace ApiExamples
         public void StrokeForeThemeColors()
         {
             //ExStart:StrokeForeThemeColors
-            //ReleaseVersion:24.01
+            //GistId:eeeec1fbf118e95e7df3f346c91ed726
             //ExFor:Stroke.ForeThemeColor            
             //ExFor:Stroke.ForeTintAndShade            
             //ExSummary:Shows how to set fore theme color and tint and shade.
@@ -3066,7 +3066,7 @@ namespace ApiExamples
         public void StrokeBackThemeColors()
         {
             //ExStart:StrokeBackThemeColors
-            //ReleaseVersion:24.01            
+            //GistId:eeeec1fbf118e95e7df3f346c91ed726
             //ExFor:Stroke.BackThemeColor            
             //ExFor:Stroke.BackTintAndShade
             //ExSummary:Shows how to set back theme color and tint and shade.
@@ -3092,7 +3092,7 @@ namespace ApiExamples
         public void TextBoxOleControl()
         {
             //ExStart:TextBoxOleControl
-            //ReleaseVersion:24.01
+            //GistId:eeeec1fbf118e95e7df3f346c91ed726
             //ExFor:TextBoxControl
             //ExFor:TextBoxControl.Text
             //ExSummary:Shows how to change text of the TextBox OLE control.
