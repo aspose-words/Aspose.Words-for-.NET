@@ -1209,9 +1209,9 @@ namespace ApiExamples
 
             NumericTestClass testData = new NumericTestBuilder().WithValues(1234, 5621718.589).Build();
 
-            ReportingEngine report = new ReportingEngine();
-            report.KnownTypes.Add(typeof(NumericTestClass));
-            report.BuildReport(doc, testData, "ds");
+            ReportingEngine engine = new ReportingEngine();
+            engine.KnownTypes.Add(typeof(NumericTestClass));
+            engine.BuildReport(doc, testData, "ds");            
 
             doc.Save(ArtifactsDir + "ReportingEngine.DollarTextFormat.docx");
             //ExEnd:DollarTextFormat
@@ -1219,7 +1219,8 @@ namespace ApiExamples
             Assert.AreEqual("one thousand two hundred thirty-four and 00/100\rfive million six hundred twenty-one thousand seven hundred eighteen and 59/100\r\f", doc.GetText());
         }
 
-        [Test]
+        [Test, Order(1)]
+        [Description("Test ordered as first to avoid exception with 'SetRestrictedTypes' after execution other tests.")]
         public void RestrictedTypes()
         {
             //ExStart:RestrictedTypes
@@ -1230,10 +1231,10 @@ namespace ApiExamples
                 DocumentHelper.CreateSimpleDocument(
                     "<<var [typeVar = \"\".GetType().BaseType]>><<[typeVar]>>");
 
-            // We set "AllowMissingMembers" option to avoid exceptions during building a report.
-            ReportingEngine engine = new ReportingEngine() { Options = ReportBuildOptions.AllowMissingMembers };
             // Note, that you can't set restricted types during or after building a report.
             ReportingEngine.SetRestrictedTypes(typeof(System.Type));
+            // We set "AllowMissingMembers" option to avoid exceptions during building a report.
+            ReportingEngine engine = new ReportingEngine() { Options = ReportBuildOptions.AllowMissingMembers };            
             engine.BuildReport(doc, new object());
 
             // We get an empty string because we can't access the GetType() method.
