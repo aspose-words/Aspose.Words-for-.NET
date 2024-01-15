@@ -1799,7 +1799,7 @@ namespace ApiExamples
 
                 if (preblendImages)
                 {
-                    Assert.AreEqual(17898, stream.Length);
+                    Assert.AreEqual(17890, stream.Length);
                 }
                 else
                 {

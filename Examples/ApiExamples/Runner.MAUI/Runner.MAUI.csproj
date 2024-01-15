@@ -1,10 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
 		<RootNamespace>Runner.MAUI</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -49,12 +49,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Aspose.Page" Version="23.11.0" />
-	  <PackageReference Include="Aspose.PDF" Version="23.11.1" />
-	  <PackageReference Include="Aspose.Words" Version="23.12.0" />
-	  <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="23.12.0" />
+	  <PackageReference Include="Aspose.Page" Version="23.12.0" />
+	  <PackageReference Include="Aspose.PDF" Version="23.12.0" />
+	  <PackageReference Include="Aspose.Words" Version="24.1.0" />
+	  <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="24.1.0" />
 	  <PackageReference Include="Shiny.Xunit.Runners.Maui" Version="1.0.0" />
-	  <PackageReference Include="SkiaSharp" Version="2.88.6" />
+	  <PackageReference Include="SkiaSharp" Version="2.88.7" />
 	</ItemGroup>
 
 </Project>
