@@ -1484,13 +1484,14 @@ namespace ApiExamples
             // to the "InsertHyperlink" method as part of the argument containing the referenced bookmark's name.
             builder.Font.Color = Color.Blue;
             builder.Font.Underline = Underline.Single;
-            builder.InsertHyperlink("Link to Bookmark1", @"Bookmark1"" \o ""Hyperlink Tip", true);
+            FieldHyperlink hyperlink = (FieldHyperlink)builder.InsertHyperlink("Link to Bookmark1", "Bookmark1", true);
+            hyperlink.ScreenTip = "Hyperlink Tip";
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertHyperlinkToLocalBookmark.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertHyperlinkToLocalBookmark.docx");
-            FieldHyperlink hyperlink = (FieldHyperlink)doc.Range.Fields[0];
+            hyperlink = (FieldHyperlink)doc.Range.Fields[0];
 
             TestUtil.VerifyField(FieldType.FieldHyperlink, " HYPERLINK \\l \"Bookmark1\" \\o \"Hyperlink Tip\" ", "Link to Bookmark1", hyperlink);
             Assert.AreEqual("Bookmark1", hyperlink.SubAddress);
