@@ -51,6 +51,7 @@
     <Content Include="ExMailMerge.cs" />
     <Content Include="ExMailMergeCustom.cs" />
     <Content Include="ExMailMergeEvent.cs" />
+    <Content Include="ExMarkdownLoadOptions.cs" />
     <Content Include="ExMarkdownSaveOptions.cs" />
     <Content Include="ExMetered.cs" />
     <Content Include="ExMossDoc2Pdf.cs" />
@@ -127,8 +128,8 @@
     <PackageReference Include="Aspose.BarCode" Version="23.12.0" />
     <PackageReference Include="Aspose.Page" Version="23.12.0" />
     <PackageReference Include="Aspose.PDF" Version="23.12.0" />
-    <PackageReference Include="Aspose.Words" Version="24.1.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="24.1.0" />
+    <PackageReference Include="Aspose.Words" Version="24.2.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="24.2.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.2.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />

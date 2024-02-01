@@ -1312,5 +1312,22 @@ namespace ApiExamples
             Assert.AreEqual(0, sdts.Count());
             //ExEnd:RemoveSelfOnly
         }
+
+        [Test]
+        public void Appearance()
+        {
+            //ExStart:Appearance
+            //GistId:a775441ecb396eea917a2717cb9e8f8f
+            //ExFor:SdtAppearance
+            //ExFor:StructuredDocumentTagRangeStart.Appearance
+            //ExSummary:Shows how to show tag around content.
+            Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
+            StructuredDocumentTagRangeStart tag =
+                doc.GetChild(NodeType.StructuredDocumentTagRangeStart, 0, true) as StructuredDocumentTagRangeStart;
+
+            if (tag.Appearance == SdtAppearance.Hidden)
+                tag.Appearance = SdtAppearance.Tags;
+            //ExEnd:Appearance
+        }
     }
 }

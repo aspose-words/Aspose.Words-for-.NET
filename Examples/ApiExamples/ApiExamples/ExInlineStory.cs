@@ -623,5 +623,23 @@ namespace ApiExamples
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
             //ExEnd
         }
+
+        [Test]
+        public void UpdateActualReferenceMarks()
+        {
+            //ExStart:UpdateActualReferenceMarks
+            //GistId:a775441ecb396eea917a2717cb9e8f8f
+            //ExFor:Document.UpdateActualReferenceMarks
+            //ExFor:Footnote.ActualReferenceMark
+            //ExSummary:Shows how to get actual footnote reference mark.
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
+
+            Footnote footnote = (Footnote)doc.GetChild(NodeType.Footnote, 1, true);
+            doc.UpdateFields();
+            doc.UpdateActualReferenceMarks();
+
+            Assert.AreEqual("1", footnote.ActualReferenceMark);
+            //ExEnd:UpdateActualReferenceMarks
+        }
     }
 }

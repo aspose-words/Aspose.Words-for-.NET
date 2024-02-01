@@ -123,15 +123,15 @@ namespace ApiExamples
             //ExFor:ChartAxis.MinorTickMark
             //ExFor:ChartAxis.MajorUnit
             //ExFor:ChartAxis.MinorUnit
-            //ExFor:ChartAxis.TickLabelOffset
-            //ExFor:ChartAxis.TickLabelPosition
-            //ExFor:ChartAxis.TickLabelSpacingIsAuto
+            //ExFor:AxisTickLabels.Offset
+            //ExFor:AxisTickLabels.Position
+            //ExFor:AxisTickLabels.IsAutoSpacing
             //ExFor:ChartAxis.TickMarkSpacing
             //ExFor:Charts.AxisCategoryType
             //ExFor:Charts.AxisCrosses
-            //ExFor:Charts.Chart.AxisX
-            //ExFor:Charts.Chart.AxisY
-            //ExFor:Charts.Chart.AxisZ
+            //ExFor:Chart.AxisX
+            //ExFor:Chart.AxisY
+            //ExFor:Chart.AxisZ
             //ExSummary:Shows how to insert a chart and modify the appearance of its axes.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1626,6 +1626,43 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.ResetDataPointFill.docx");
             //ExEnd:ResetDataPointFill
+        }
+
+        [Test]
+        public void DataTable()
+        {
+            //ExStart:DataTable
+            //GistId:a775441ecb396eea917a2717cb9e8f8f
+            //ExFor:ChartDataTable
+            //ExFor:ChartDataTable.Show
+            //ExSummary:Shows how to show data table with chart series data.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+
+            ChartSeriesCollection series = chart.Series;
+            series.Clear();
+            double[] xValues = new double[] { 2020, 2021, 2022, 2023 };
+            series.Add("Series1", xValues, new double[] { 5, 11, 2, 7 });
+            series.Add("Series2", xValues, new double[] { 6, 5.5, 7, 7.8 });
+            series.Add("Series3", xValues, new double[] { 10, 8, 7, 9 });
+
+            ChartDataTable dataTable = chart.DataTable;
+            dataTable.Show = true;
+
+            dataTable.HasLegendKeys = false;
+            dataTable.HasHorizontalBorder = false;
+            dataTable.HasVerticalBorder = false;
+
+            dataTable.Font.Italic = true;
+            dataTable.Format.Stroke.Weight = 1;
+            dataTable.Format.Stroke.DashStyle = DashStyle.ShortDot;
+            dataTable.Format.Stroke.Color = Color.DarkBlue;
+
+            doc.Save(ArtifactsDir + "Charts.DataTable.docx");
+            //ExEnd:DataTable
         }
     }
 }

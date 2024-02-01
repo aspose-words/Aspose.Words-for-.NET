@@ -372,5 +372,30 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Styles.LockStyle.docx");
             Assert.IsTrue(doc.Styles[StyleIdentifier.Heading1].Locked);            
         }
+
+        [Test]
+        public void StylePriority()
+        {
+            //ExStart:StylePriority
+            //GistId:a775441ecb396eea917a2717cb9e8f8f
+            //ExFor:Style.Priority
+            //ExFor:Style.UnhideWhenUsed
+            //ExFor:Style.SemiHidden
+            //ExSummary:Shows how to prioritize and hide a style.
+            Document doc = new Document();
+            Style styleTitle = doc.Styles[StyleIdentifier.Subtitle];
+
+            if (styleTitle.Priority == 9)
+                styleTitle.Priority = 10;
+
+            if (!styleTitle.UnhideWhenUsed)
+                styleTitle.UnhideWhenUsed = true;
+
+            if (styleTitle.SemiHidden)
+                styleTitle.SemiHidden = true;
+
+            doc.Save(ArtifactsDir + "Styles.StylePriority.docx");
+            //ExEnd:StylePriority
+        }
     }
 }

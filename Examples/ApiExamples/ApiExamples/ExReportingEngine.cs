@@ -1242,6 +1242,23 @@ namespace ApiExamples
             //ExEnd:RestrictedTypes
         }
 
+        [Test]
+        public void Word2016Charts()
+        {
+            //ExStart:Word2016Charts
+            //GistId:a775441ecb396eea917a2717cb9e8f8f
+            //ExFor:ReportingEngine.BuildReport(Document, Object[], String[])
+            //ExSummary:Shows how to work with charts from word 2016.
+            Document doc = new Document(MyDir + "Reporting engine template - Word 2016 Charts.docx");
+
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, new object[] { Common.GetShares(), Common.GetShareQuotes() },
+                new string[] { "shares", "quotes" });
+
+            doc.Save(ArtifactsDir + "ReportingEngine.Word2016Charts.docx");
+            //ExEnd:Word2016Charts
+        }
+
         private static void BuildReport(Document document, object dataSource, ReportBuildOptions reportBuildOptions)
         {
             ReportingEngine engine = new ReportingEngine { Options = reportBuildOptions };
