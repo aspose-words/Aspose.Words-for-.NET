@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Aspose.Words.ApiExamples.HelperClasses.TestClasses
+﻿namespace Aspose.Words.ApiExamples.HelperClasses.TestClasses
 {
     public class ShareQuoteTestClass
     {
         internal ShareQuoteTestClass(int date, int volume, double open, double high, double low, double close)
         {
-            this.Date = date;
-            this.Volume = volume;
-            this.Open = open;
-            this.High = high;
-            this.Low = low;
-            this.Close = close;
+            Date = date;
+            Volume = volume;
+            Open = open;
+            High = high;
+            Low = low;
+            Close = close;
         }
 
         public string Color()

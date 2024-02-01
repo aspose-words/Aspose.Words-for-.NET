@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Aspose.Common;
-
-namespace Aspose.Words.ApiExamples.HelperClasses.TestClasses
+﻿namespace Aspose.Words.ApiExamples.HelperClasses.TestClasses
 {
     public class ShareTestClass
     {
         internal ShareTestClass(string sector, string industry, string ticker, double weight, double delta)
         {
-            this.Sector = sector;
-            this.Industry = industry;
-            this.Ticker = ticker;
-            this.Weight = weight;
-            this.Delta = delta;
+            Sector = sector;
+            Industry = industry;
+            Ticker = ticker;
+            Weight = weight;
+            Delta = delta;
         }
 
         public string Title()
