@@ -170,9 +170,8 @@ namespace DocsExamples.Rendering_and_Printing
             Document doc = new Document(MyDir + "Rendering.docx");
             
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
-
             //ExStart:RenderShapeImage
-            shape.GetShapeRenderer().Save(ArtifactsDir + "RenderShape.RenderShapeImage.jpg", null);
+            shape.GetShapeRenderer().Save(ArtifactsDir + "RenderShape.RenderShapeImage.jpg", new ImageSaveOptions(SaveFormat.Jpeg));
             //ExEnd:RenderShapeImage
         }
 
