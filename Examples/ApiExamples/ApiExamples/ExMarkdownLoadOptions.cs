@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
-using ApiExamples;
+using System.Threading.Tasks;
+using Aspose.Words;
 using Aspose.Words.Loading;
 using NUnit.Framework;
 
-namespace Aspose.Words.ApiExamples
+namespace ApiExamples
 {
     class ExMarkdownLoadOptions : ApiExampleBase
     {

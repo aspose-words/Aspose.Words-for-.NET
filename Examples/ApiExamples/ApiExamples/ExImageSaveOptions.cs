@@ -553,14 +553,15 @@ namespace ApiExamples
         [TestCase(TiffCompression.Ccitt4), Category("SkipMono")]
         public void TiffImageCompression(TiffCompression tiffCompression)
         {
-            //ExStart
+            //ExStart:TiffImageCompression
+            //GistId:0e50f625c0e76c25844c7e77ffa31057
             //ExFor:TiffCompression
             //ExFor:ImageSaveOptions.TiffCompression
             //ExSummary:Shows how to select the compression scheme to apply to a document that we convert into a TIFF image.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertImage(ImageDir + "Logo.jpg");
+            builder.InsertImage(ImageDir + "Tagged Image File Format.tiff");
 
             // Create an "ImageSaveOptions" object which we can pass to the document's "Save" method
             // to modify the way in which that method renders the document into an image.
@@ -574,7 +575,7 @@ namespace ApiExamples
             options.TiffCompression = tiffCompression;
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff", options);
-            //ExEnd
+            //ExEnd:TiffImageCompression
 
             var testedImageLength = new FileInfo(ArtifactsDir + "ImageSaveOptions.TiffImageCompression.tiff").Length;
 
@@ -585,23 +586,27 @@ namespace ApiExamples
                     break;
                 case TiffCompression.Rle:
 #if NET5_0_OR_GREATER
-                    Assert.That(testedImageLength, Is.LessThan(7500));
+                    Assert.That(testedImageLength, Is.LessThan(12200));
 #else
-                    Assert.That(testedImageLength, Is.LessThan(687000));
+                    Assert.That(testedImageLength, Is.LessThan(780200));
 #endif
                     break;
                 case TiffCompression.Lzw:
-                    Assert.That(testedImageLength, Is.LessThan(250000));
+                    Assert.That(testedImageLength, Is.LessThan(548500));
                     break;
                 case TiffCompression.Ccitt3:
 #if NET5_0_OR_GREATER
-                    Assert.That(testedImageLength, Is.LessThan(6100));
+                    Assert.That(testedImageLength, Is.LessThan(11900));
 #else
-                    Assert.That(testedImageLength, Is.LessThan(8300));
+                    Assert.That(testedImageLength, Is.LessThan(10100));
 #endif
                     break;
-                case TiffCompression.Ccitt4:
-                    Assert.That(testedImageLength, Is.LessThan(1700));
+                case TiffCompression.Ccitt4:                    
+#if NET5_0_OR_GREATER
+                    Assert.That(testedImageLength, Is.LessThan(8900));
+#else
+                    Assert.That(testedImageLength, Is.LessThan(5000));
+#endif
                     break;
             }            
         }

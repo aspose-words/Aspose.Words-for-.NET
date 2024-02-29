@@ -384,7 +384,7 @@ namespace ApiExamples
             //ExSummary:Shows how to prioritize and hide a style.
             Document doc = new Document();
             Style styleTitle = doc.Styles[StyleIdentifier.Subtitle];
-
+            
             if (styleTitle.Priority == 9)
                 styleTitle.Priority = 10;
 

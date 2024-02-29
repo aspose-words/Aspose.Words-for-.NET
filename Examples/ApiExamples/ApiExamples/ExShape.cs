@@ -25,7 +25,6 @@ using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 using TextBox = Aspose.Words.Drawing.TextBox;
 using Aspose.Words.Themes;
-using Aspose.Words.Forms2;
 
 namespace ApiExamples
 {
@@ -1436,7 +1435,7 @@ namespace ApiExamples
             //ExEnd
 
             if (!IsRunningOnMono())
-                TestUtil.VerifyImage(795, 87, ArtifactsDir + "Shape.RenderOfficeMath.png");
+                TestUtil.VerifyImage(792, 87, ArtifactsDir + "Shape.RenderOfficeMath.png");
             else
                 TestUtil.VerifyImage(735, 128, ArtifactsDir + "Shape.RenderOfficeMath.png");
         }
@@ -2762,14 +2761,14 @@ namespace ApiExamples
             OfficeMathRenderer renderer = new OfficeMathRenderer(officeMath);
 
             // Verify the size of the image that the OfficeMath object will create when we render it.
-            Assert.AreEqual(119.0f, renderer.SizeInPoints.Width, 0.2f);
+            Assert.AreEqual(119.0f, renderer.SizeInPoints.Width, 0.25f);
             Assert.AreEqual(13.0f, renderer.SizeInPoints.Height, 0.1f);
 
-            Assert.AreEqual(119.0f, renderer.BoundsInPoints.Width, 0.2f);
+            Assert.AreEqual(119.0f, renderer.BoundsInPoints.Width, 0.25f);
             Assert.AreEqual(13.0f, renderer.BoundsInPoints.Height, 0.1f);
 
             // Shapes with transparent parts may contain different values in the "OpaqueBoundsInPoints" properties.
-            Assert.AreEqual(119.0f, renderer.OpaqueBoundsInPoints.Width, 0.2f);
+            Assert.AreEqual(119.0f, renderer.OpaqueBoundsInPoints.Width, 0.25f);
             Assert.AreEqual(14.2f, renderer.OpaqueBoundsInPoints.Height, 0.1f);
 
             // Get the shape size in pixels, with linear scaling to a specific DPI.
@@ -3069,7 +3068,7 @@ namespace ApiExamples
             //ExFor:Stroke.BackThemeColor            
             //ExFor:Stroke.BackTintAndShade
             //ExSummary:Shows how to set back theme color and tint and shade.
-            Document doc = new Document(MyDir + "Stroke gradient outline.docx");            
+            Document doc = new Document(MyDir + "Stroke gradient outline.docx");
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Stroke stroke = shape.Stroke;

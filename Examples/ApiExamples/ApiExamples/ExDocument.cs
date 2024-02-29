@@ -3010,5 +3010,74 @@ namespace ApiExamples
             Assert.AreEqual("Before [src content] after", dstDoc.Document.GetText().TrimEnd());
             //ExEnd:InsertDocumentInline
         }
+
+        [TestCase(SaveFormat.Doc)]
+        [TestCase(SaveFormat.Dot)]
+        [TestCase(SaveFormat.Docx)]
+        [TestCase(SaveFormat.Docm)]
+        [TestCase(SaveFormat.Dotx)]
+        [TestCase(SaveFormat.Dotm)]
+        [TestCase(SaveFormat.FlatOpc)]
+        [TestCase(SaveFormat.FlatOpcMacroEnabled)]
+        [TestCase(SaveFormat.FlatOpcTemplate)]
+        [TestCase(SaveFormat.FlatOpcTemplateMacroEnabled)]
+        [TestCase(SaveFormat.Rtf)]
+        [TestCase(SaveFormat.WordML)]
+        [TestCase(SaveFormat.Pdf)]
+        [TestCase(SaveFormat.Xps)]
+        [TestCase(SaveFormat.XamlFixed)]
+        [TestCase(SaveFormat.Svg)]
+        [TestCase(SaveFormat.HtmlFixed)]
+        [TestCase(SaveFormat.OpenXps)]
+        [TestCase(SaveFormat.Ps)]
+        [TestCase(SaveFormat.Pcl)]
+        [TestCase(SaveFormat.Html)]
+        [TestCase(SaveFormat.Mhtml)]
+        [TestCase(SaveFormat.Epub)]
+        [TestCase(SaveFormat.Azw3)]
+        [TestCase(SaveFormat.Mobi)]
+        [TestCase(SaveFormat.Odt)]
+        [TestCase(SaveFormat.Ott)]
+        [TestCase(SaveFormat.Text)]
+        [TestCase(SaveFormat.XamlFlow)]
+        [TestCase(SaveFormat.XamlFlowPack)]
+        [TestCase(SaveFormat.Markdown)]
+        [TestCase(SaveFormat.Xlsx)]
+        [TestCase(SaveFormat.Tiff)]
+        [TestCase(SaveFormat.Png)]
+        [TestCase(SaveFormat.Bmp)]
+        [TestCase(SaveFormat.Emf)]
+        [TestCase(SaveFormat.Jpeg)]
+        [TestCase(SaveFormat.Gif)]
+        [TestCase(SaveFormat.Eps)]
+        public void SaveDocumentToStream(SaveFormat saveFormat)
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("Lorem ipsum");
+
+            using (Stream stream = new MemoryStream())
+            {
+                if (saveFormat == SaveFormat.HtmlFixed)
+                {
+                    HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+                    saveOptions.ExportEmbeddedCss = true;
+                    saveOptions.ExportEmbeddedFonts = true;
+                    saveOptions.SaveFormat = saveFormat;
+
+                    doc.Save(stream, saveOptions);
+                }
+                else if (saveFormat == SaveFormat.XamlFixed)
+                {
+                    XamlFixedSaveOptions saveOptions = new XamlFixedSaveOptions();
+                    saveOptions.ResourcesFolder = ArtifactsDir;
+                    saveOptions.SaveFormat = saveFormat;
+
+                    doc.Save(stream, saveOptions);
+                }
+                else                
+                    doc.Save(stream, saveFormat);
+            }
+        }
     }
 }
