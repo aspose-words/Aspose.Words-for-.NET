@@ -129,13 +129,13 @@ namespace ApiExamples
                     references.RemoveAt(i);
             }
             Assert.AreEqual(4 ,references.Count);
-            
+
             references.Remove(references[1]);
             Assert.AreEqual(3 ,references.Count);
- 
+
             doc.Save(ArtifactsDir + "VbaProject.RemoveVbaReference.docm"); 
         }
- 
+
         /// <summary>
         /// Returns string representing LibId path of a specified reference. 
         /// </summary>

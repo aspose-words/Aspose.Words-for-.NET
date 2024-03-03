@@ -387,6 +387,54 @@ namespace ApiExamples
             Assert.AreEqual("#,##0", chart.AxisY.NumberFormat.FormatCode);
         }
 
+        [TestCase(ChartType.Column)]
+        [TestCase(ChartType.Line)]
+        [TestCase(ChartType.Pie)]
+        [TestCase(ChartType.Bar)]
+        [TestCase(ChartType.Area)]
+        public void TestDisplayChartsWithConversion(ChartType chartType)
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(chartType, 500, 300);
+            Chart chart = shape.Chart;
+            chart.Series.Clear();
+            
+            chart.Series.Add("Aspose Test Series",
+                new[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
+
+            doc.Save(ArtifactsDir + "Charts.TestDisplayChartsWithConversion.docx");
+            doc.Save(ArtifactsDir + "Charts.TestDisplayChartsWithConversion.pdf");
+        }
+
+        [Test]
+        public void Surface3DChart()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Surface3D, 500, 300);
+            Chart chart = shape.Chart;
+            chart.Series.Clear();
+
+            chart.Series.Add("Aspose Test Series 1",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
+
+            chart.Series.Add("Aspose Test Series 2",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 900000, 50000, 1100000, 400000, 2500000 });
+
+            chart.Series.Add("Aspose Test Series 3",
+                new string[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
+                new double[] { 500000, 820000, 1500000, 400000, 100000 });
+
+            doc.Save(ArtifactsDir + "Charts.SurfaceChart.docx");
+            doc.Save(ArtifactsDir + "Charts.SurfaceChart.pdf");
+        }
+
         [Test]
         public void DataLabelsBubbleChart()
         {
@@ -1620,7 +1668,7 @@ namespace ApiExamples
             ChartSeries series = shape.Chart.Series[0];
             ChartDataPoint dataPoint = series.DataPoints[1];
 
-            Assert.IsTrue(dataPoint.Format.IsDefined);            
+            Assert.IsTrue(dataPoint.Format.IsDefined);
 
             dataPoint.Format.SetDefaultFill();
 

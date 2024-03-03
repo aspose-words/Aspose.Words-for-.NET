@@ -362,14 +362,14 @@ namespace ApiExamples
             // please use DocumentBuilder.InsertShape methods.
             Shape balloon = new Shape(doc, ShapeType.Balloon)
             {
-                Width = 200, 
+                Width = 200,
                 Height = 200,
                 Stroke = { Color = Color.Red }
             };
 
             Shape cube = new Shape(doc, ShapeType.Cube)
             {
-                Width = 100, 
+                Width = 100,
                 Height = 100,
                 Stroke = { Color = Color.Blue }
             };
@@ -639,13 +639,13 @@ namespace ApiExamples
 
             // If the shape contains an image, its ImageData property will be valid,
             // and it will contain an ImageSize object.
-            ImageSize imageSize = shape.ImageData.ImageSize; 
+            ImageSize imageSize = shape.ImageData.ImageSize;
 
             // The ImageSize object contains read-only information about the image within the shape.
             Assert.AreEqual(400, imageSize.HeightPixels);
             Assert.AreEqual(400, imageSize.WidthPixels);
 
-			const double delta = 0.05;
+            const double delta = 0.05;
             Assert.AreEqual(95.98d, imageSize.HorizontalResolution, delta);
             Assert.AreEqual(95.98d, imageSize.VerticalResolution, delta);
 

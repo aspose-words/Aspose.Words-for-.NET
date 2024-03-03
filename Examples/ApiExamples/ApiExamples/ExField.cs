@@ -13,8 +13,8 @@ using System.Text;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Xml;
 using Aspose.Words;
 using Aspose.Words.BuildingBlocks;
@@ -29,8 +29,6 @@ using NUnit.Framework;
 using LoadOptions = Aspose.Words.Loading.LoadOptions;
 using System.Data.OleDb;
 using Aspose.Words.Math;
-using System.Threading.Tasks;
-using System.Threading;
 using Aspose.BarCode.BarCodeRecognition;
 using Aspose.Words.Bibliography;
 #if NET5_0_OR_GREATER
@@ -74,7 +72,7 @@ namespace ApiExamples
             Assert.AreEqual(" DATE  \\@ \"dddd, MMMM dd, yyyy\"", field.GetFieldCode());
 
             // Update the field to show the current date.
-            field.Update();         
+            field.Update();
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
@@ -127,7 +125,7 @@ namespace ApiExamples
             //ExSummary:Shows how to get the real text that a field displays in the document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.Write("This document was written by ");
             FieldAuthor fieldAuthor = (FieldAuthor)builder.InsertField(FieldType.FieldAuthor, true);
             fieldAuthor.AuthorName = "John Doe";
@@ -374,7 +372,7 @@ namespace ApiExamples
                 LoadOptions options = new LoadOptions();
                 options.UpdateDirtyFields = updateDirtyFields;
                 doc = new Document(docStream, options);
-                
+
                 Assert.AreEqual("John & Jane Doe", doc.BuiltInDocumentProperties.Author);
 
                 field = (FieldAuthor)doc.Range.Fields[0];
@@ -519,7 +517,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Field.DATABASE.docx");
 
             Assert.AreEqual(2, doc.Range.Fields.Count);
-            
+
             Table table = doc.FirstSection.Body.Tables[0];
 
             Assert.AreEqual(77, table.Rows.Count);
@@ -895,7 +893,7 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldAsk, 
                 " ASK  MyAskField \"Please provide a response for this ASK field\" \\d \"Response from within the field.\" \\o", 
                 "Response from MyPromptRespondent. Response from within the field.", fieldAsk);
-            
+
             Assert.AreEqual("MyAskField", fieldAsk.BookmarkName);
             Assert.AreEqual("Please provide a response for this ASK field", fieldAsk.PromptText);
             Assert.AreEqual("Response from within the field.", fieldAsk.DefaultResponse);
@@ -934,7 +932,7 @@ namespace ApiExamples
             Assert.AreEqual(" ADVANCE  \\r 5 \\u 5", field.GetFieldCode());
 
             builder.Write("This text will be moved up and to the right.");
-            
+
             field = (FieldAdvance)builder.InsertField(FieldType.FieldAdvance, true);
             field.DownOffset = "5";
             field.LeftOffset = "100";
@@ -1441,7 +1439,7 @@ namespace ApiExamples
             foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal))
             {
                 TestUtil.VerifyField(FieldType.FieldAutoNumLegal, " AUTONUMLGL  \\s : \\e", string.Empty, field);
-                
+
                 Assert.AreEqual(":", field.SeparatorCharacter);
                 Assert.True(field.RemoveTrailingPeriod);
             }
@@ -1522,19 +1520,19 @@ namespace ApiExamples
             fieldAutoText.EntryName = "MyBlock";
 
             Assert.AreEqual(" AUTOTEXT  MyBlock", fieldAutoText.GetFieldCode());
-            
+
             // 2 -  Using a GLOSSARY field:
             FieldGlossary fieldGlossary = (FieldGlossary)builder.InsertField(FieldType.FieldGlossary, true);
             fieldGlossary.EntryName = "MyBlock";
 
             Assert.AreEqual(" GLOSSARY  MyBlock", fieldGlossary.GetFieldCode());
 
-			doc.UpdateFields();
+            doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.AUTOTEXT.GLOSSARY.dotx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Field.AUTOTEXT.GLOSSARY.dotx");
-            
+
             Assert.That(doc.FieldOptions.BuiltInTemplatesPaths, Is.Empty);
 
             fieldAutoText = (FieldAutoText)doc.Range.Fields[0];
@@ -2004,7 +2002,7 @@ namespace ApiExamples
 
             // This entry will be omitted from the table because it has an entry-level outside of the 1-3 range.
             InsertTocEntry(builder, "TC field 4", "A", "5");
-            
+
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TC.docx");
             TestFieldTocEntryIdentifier(doc); //ExSkip
@@ -2293,7 +2291,7 @@ namespace ApiExamples
             Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
         }
 
-        [Test]        
+        [Test]
         public void TocSeqBookmark()
         {
             //ExStart
@@ -2385,7 +2383,7 @@ namespace ApiExamples
 
             TestUtil.VerifyField(FieldType.FieldPageRef, $" PAGEREF {pageRefIds[0]} \\h ", "2", fieldPageRef);
             Assert.AreEqual(pageRefIds[0], fieldPageRef.BookmarkName);
-            
+
             fieldPageRef = (FieldPageRef)doc.Range.Fields[2];
 
             TestUtil.VerifyField(FieldType.FieldPageRef, $" PAGEREF {pageRefIds[1]} \\h ", "2", fieldPageRef);
@@ -2418,9 +2416,9 @@ namespace ApiExamples
             Assert.AreEqual("MySequence", fieldSeq.SequenceIdentifier);
         }
 
-        [Test]        
+        [Test]
         public void FieldCitation()
-        {            
+        {
             var oldCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-nz", false);
 
@@ -2555,7 +2553,7 @@ namespace ApiExamples
 
             Thread.CurrentThread.CurrentCulture = oldCulture; //ExSkip
         }
-        
+
         public class BibliographyStylesProvider : IBibliographyStylesProvider
         {
             Stream IBibliographyStylesProvider.GetStyle(string styleFileName)
@@ -2577,7 +2575,7 @@ namespace ApiExamples
             FieldData field = (FieldData)builder.InsertField(FieldType.FieldData, true);
             Assert.AreEqual(" DATA ", field.GetFieldCode());
             //ExEnd
-            
+
             TestUtil.VerifyField(FieldType.FieldData, " DATA ", string.Empty, DocumentHelper.SaveOpen(doc).Range.Fields[0]);
         }
 
@@ -2673,7 +2671,7 @@ namespace ApiExamples
             Assert.AreEqual(ImageDir + "Transparent background logo.png", fieldImport.SourceFullName);
             Assert.AreEqual("PNG32", fieldImport.GraphicFilter);
             Assert.True(fieldImport.IsLinked);
-            
+
             doc = new Document(ArtifactsDir + "Field.IMPORT.INCLUDEPICTURE.docx");
 
             // The INCLUDEPICTURE fields have been converted into shapes with linked images during loading.
@@ -2705,7 +2703,7 @@ namespace ApiExamples
         //ExFor:FieldIncludeText.XPath
         //ExFor:FieldIncludeText.XslTransformation
         //ExSummary:Shows how to create an INCLUDETEXT field, and set its properties.
-        [Test] //ExSkip        
+        [Test] //ExSkip
         public void FieldIncludeText()
         {
             Document doc = new Document();
@@ -2879,7 +2877,7 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:MergeFieldImageDimension        
+        //ExFor:MergeFieldImageDimension
         //ExFor:MergeFieldImageDimension.#ctor(Double)
         //ExFor:MergeFieldImageDimension.#ctor(Double,MergeFieldImageDimensionUnit)
         //ExFor:MergeFieldImageDimension.Unit
@@ -2909,7 +2907,7 @@ namespace ApiExamples
             dataTable.Rows.Add(ImageDir + "Logo.jpg");
             dataTable.Rows.Add(ImageDir + "Transparent background logo.png");
             dataTable.Rows.Add(ImageDir + "Enhanced Windows MetaFile.emf");
-            
+
             // Configure a callback to modify the sizes of images at merge time, then execute the mail merge.
             doc.MailMerge.FieldMergingCallback = new MergedImageResizer(200, 200, MergeFieldImageDimensionUnit.Point);
             doc.MailMerge.Execute(dataTable);
@@ -3071,7 +3069,7 @@ namespace ApiExamples
             Assert.AreEqual(300.0d, shape.Height, 1);
         }
 
-        [Test]        
+        [Test]
         public void FieldIndexFilter()
         {
             //ExStart
@@ -3159,7 +3157,7 @@ namespace ApiExamples
             Assert.AreEqual("A", indexEntry.EntryType);
         }
 
-        [Test]        
+        [Test]
         public void FieldIndexFormatting()
         {
             //ExStart
@@ -3236,7 +3234,7 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INDEX.XE.Formatting.docx");
             //ExEnd
-            
+
             doc = new Document(ArtifactsDir + "Field.INDEX.XE.Formatting.docx");
             index = (FieldIndex)doc.Range.Fields[0];
 
@@ -3297,7 +3295,7 @@ namespace ApiExamples
             Assert.False(indexEntry.IsItalic);
         }
 
-        [Test]        
+        [Test]
         public void FieldIndexSequence()
         {
             //ExStart
@@ -3387,7 +3385,7 @@ namespace ApiExamples
             Assert.AreEqual(3, doc.Range.Fields.Where(f => f.Type == FieldType.FieldSequence).Count());
         }
 
-        [Test]        
+        [Test]
         public void FieldIndexPageNumberSeparator()
         {
             //ExStart
@@ -3410,7 +3408,7 @@ namespace ApiExamples
             // We can set custom separators to customize the appearance of these page numbers.
             index.PageNumberSeparator = ", on page(s) ";
             index.PageNumberListSeparator = " & ";
-            
+
             Assert.AreEqual(" INDEX  \\e \", on page(s) \" \\l \" & \"", index.GetFieldCode());
             Assert.True(index.HasPageNumberSeparator);
 
@@ -3443,7 +3441,7 @@ namespace ApiExamples
             Assert.True(index.HasPageNumberSeparator);
         }
 
-        [Test]        
+        [Test]
         public void FieldIndexPageRangeBookmark()
         {
             //ExStart
@@ -3509,7 +3507,7 @@ namespace ApiExamples
             Assert.AreEqual("MyBookmark", indexEntry.PageRangeBookmarkName);
         }
 
-        [Test]        
+        [Test]
         public void FieldIndexCrossReferenceSeparator()
         {
             //ExStart
@@ -3557,7 +3555,7 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.INDEX.XE.CrossReferenceSeparator.docx");
             //ExEnd
-            
+
             doc = new Document(ArtifactsDir + "Field.INDEX.XE.CrossReferenceSeparator.docx");
             index = (FieldIndex)doc.Range.Fields[0];
 
@@ -3580,7 +3578,7 @@ namespace ApiExamples
         }
 
         [TestCase(true)]
-        [TestCase(false)]        
+        [TestCase(false)]
         public void FieldIndexSubheading(bool runSubentriesOnTheSameLine)
         {
             //ExStart
@@ -3609,7 +3607,7 @@ namespace ApiExamples
             // We can set the RunSubentriesOnSameLine flag to true to keep the heading,
             // and every subheading for the group on one line instead, which will make the INDEX field more compact.
             index.RunSubentriesOnSameLine = runSubentriesOnTheSameLine;
-            
+
             if (runSubentriesOnTheSameLine)
                 Assert.AreEqual(" INDEX  \\e \", see page \" \\h A \\r", index.GetFieldCode());
             else
@@ -3727,7 +3725,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Field.INDEX.XE.Yomi.docx");
             //ExEnd
 
-            doc = new Document(ArtifactsDir + "Field.INDEX.XE.Yomi.docx");            
+            doc = new Document(ArtifactsDir + "Field.INDEX.XE.Yomi.docx");
             index = (FieldIndex)doc.Range.Fields[0];
 
             if (sortEntriesUsingYomi)
@@ -4451,7 +4449,7 @@ namespace ApiExamples
             Assert.AreEqual(" USERADDRESS ", fieldUserAddress.GetFieldCode());
             Assert.AreEqual("123 Main Street", fieldUserAddress.Result);
 
-            // We can set this property to get our field to override the value currently stored in the UserInformation object. 
+            // We can set this property to get our field to override the value currently stored in the UserInformation object.
             fieldUserAddress.UserAddress = "456 North Road";
             fieldUserAddress.Update();
 
@@ -4857,7 +4855,7 @@ namespace ApiExamples
             // The SAVEDATE fields draw their date/time values from the LastSavedTime built-in property.
             // The document's Save method will not update this value, but we can still update it manually.
             doc.BuiltInDocumentProperties.LastSavedTime = DateTime.Now;
-            
+
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.SAVEDATE.docx");
             //ExEnd
@@ -5014,7 +5012,7 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldFormula, " = 2.5 * 5.2 ", "13", doc.Range.Fields[8]);
             TestUtil.FieldsAreNested(doc.Range.Fields[8], doc.Range.Fields[3]);
         }
-        
+
         [Test]
         public void FieldAuthor()
         {
@@ -5049,12 +5047,12 @@ namespace ApiExamples
             Assert.AreEqual("Joe Bloggs", doc.BuiltInDocumentProperties.Author);
 
             // Changing this property, then updating the AUTHOR field will apply this value to the field.
-            doc.BuiltInDocumentProperties.Author = "John Doe";      
+            doc.BuiltInDocumentProperties.Author = "John Doe";
             field.Update();
 
             Assert.AreEqual(" AUTHOR ", field.GetFieldCode());
             Assert.AreEqual("John Doe", field.Result);
-            
+
             // If we update an AUTHOR field after changing its "Name" property,
             // then the field will display the new name and apply the new name to the built-in property.
             field.AuthorName = "Jane Doe";
@@ -5219,14 +5217,14 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldComments, " COMMENTS  \"My overriding comment.\"", "My overriding comment.", field);
             Assert.AreEqual("My overriding comment.", field.Text);
         }
-        
+
         [Test]
         public void FieldFileSize()
         {
             //ExStart
             //ExFor:FieldFileSize
             //ExFor:FieldFileSize.IsInKilobytes
-            //ExFor:FieldFileSize.IsInMegabytes            
+            //ExFor:FieldFileSize.IsInMegabytes
             //ExSummary:Shows how to display the file size of a document with a FILESIZE field.
             Document doc = new Document(MyDir + "Document.docx");
 
@@ -5324,7 +5322,7 @@ namespace ApiExamples
             Assert.AreEqual("My Button", field.DisplayText);
             Assert.AreEqual("MyBookmark", field.Location);
         }
-        
+
         [Test]
         //ExStart
         //ExFor:FieldFillIn
@@ -5351,12 +5349,12 @@ namespace ApiExamples
 
             FieldMergeField mergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
             mergeField.FieldName = "MergeField";
-            
+
             // If we perform a mail merge programmatically, we can use a custom prompt respondent
             // to automatically edit responses for FILLIN fields that the mail merge encounters.
             doc.FieldOptions.UserPromptRespondent = new PromptRespondent();
             doc.MailMerge.Execute(new [] { "MergeField" }, new object[] { "" });
-            
+
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.FILLIN.docx");
             TestFieldFillIn(new Document(ArtifactsDir + "Field.FILLIN.docx")); //ExSKip
@@ -5613,7 +5611,7 @@ namespace ApiExamples
             field.PrinterInstructions = "erasepage";
 
             Assert.AreEqual(" PRINT  erasepage \\p para", field.GetFieldCode());
-            
+
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.PRINT.docx");
             //ExEnd
@@ -5816,7 +5814,7 @@ namespace ApiExamples
         //ExFor:FieldNoteRef.InsertReferenceMark
         //ExFor:FieldNoteRef.InsertRelativePosition
         //ExSummary:Shows to insert NOTEREF fields, and modify their appearance.
-        [Test] //ExSkip        
+        [Test] //ExSkip
         public void FieldNoteRef()
         {
             Document doc = new Document();
@@ -5862,10 +5860,10 @@ namespace ApiExamples
             field.InsertRelativePosition = insertRelativePosition;
             field.InsertReferenceMark = insertReferenceMark;
             builder.Writeln();
-            
+
             return field;
         }
-        
+
         /// <summary>
         /// Uses a document builder to insert a named bookmark with a footnote at the end.
         /// </summary>
@@ -5906,7 +5904,7 @@ namespace ApiExamples
             Assert.True(field.InsertReferenceMark);
         }
 
-        [Test]        
+        [Test]
         public void NoteRef()
         {
             //ExStart
@@ -5928,9 +5926,9 @@ namespace ApiExamples
             builder.Write("Hello world!");
             builder.InsertFootnote(FootnoteType.Footnote, "Cross referenced footnote.");
             builder.EndBookmark("CrossRefBookmark");
-            builder.Writeln();            
+            builder.Writeln();
 
-            doc.UpdateFields();           
+            doc.UpdateFields();
 
             // This field works only in older versions of Microsoft Word.
             doc.Save(ArtifactsDir + "Field.NOTEREF.doc");
@@ -5950,11 +5948,11 @@ namespace ApiExamples
         //ExFor:FieldPageRef.InsertHyperlink
         //ExFor:FieldPageRef.InsertRelativePosition
         //ExSummary:Shows to insert PAGEREF fields to display the relative location of bookmarks.
-        [Test] //ExSkip        
+        [Test] //ExSkip
         public void FieldPageRef()
         {
             Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);            
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             InsertAndNameBookmark(builder, "MyBookmark1");
 
@@ -5999,7 +5997,7 @@ namespace ApiExamples
             field.InsertHyperlink = insertHyperlink;
             field.InsertRelativePosition = insertRelativePosition;
             builder.Writeln();
-          
+
             return field;
         }
 
@@ -6223,7 +6221,7 @@ namespace ApiExamples
             refDocBuilder.CurrentParagraph.ParagraphFormat.StyleName = "Heading 1";
             refDocBuilder.Writeln("TOC entry from referenced document");
             referencedDoc.Save(ArtifactsDir + "ReferencedDocument.docx");
-            
+
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.RD.docx");
             //ExEnd
@@ -6257,7 +6255,7 @@ namespace ApiExamples
             //ExSummary:Shows how to skip pages in a mail merge using the SKIPIF field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             // Insert a SKIPIF field. If the current row of a mail merge operation fulfills the condition
             // which the expressions of this field state, then the mail merge operation aborts the current row,
             // discards the current merge document, and then immediately moves to the next row to begin the next merge document.
@@ -6279,7 +6277,7 @@ namespace ApiExamples
             fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
             fieldMergeField.FieldName = "Name";
             builder.Writeln(", ");
-            
+
             // This table has three rows, and one of them fulfills the condition of our SKIPIF field. 
             // The mail merge will produce two pages.
             DataTable table = new DataTable("Employees");
@@ -6299,7 +6297,7 @@ namespace ApiExamples
             Assert.AreEqual("Dear John Doe, \r" +
                             "\fDear Jane Doe, \r\f", doc.GetText());
         }
-      
+
         [Test]
         public void FieldSetRef()
         {
@@ -6756,7 +6754,7 @@ namespace ApiExamples
             builder.Write("You've been editing this document for ");
             FieldEditTime field = (FieldEditTime)builder.InsertField(FieldType.FieldEditTime, true);
             builder.Writeln(" minutes.");
-            
+
             // This built in document property tracks the minutes. Microsoft Word uses this property
             // to track the time spent with the document open. We can also edit it ourselves.
             doc.BuiltInDocumentProperties.TotalEditingTime = 10;
@@ -6840,7 +6838,7 @@ namespace ApiExamples
             InsertFieldEQ(builder, @"\i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)");
 
             doc.Save(ArtifactsDir + "Field.EQ.docx");
-            Task.WhenAll(TestFieldEQ(new Document(ArtifactsDir + "Field.EQ.docx"))); //ExSkip
+            TestFieldEQ(new Document(ArtifactsDir + "Field.EQ.docx")); //ExSkip
         }
 
         /// <summary>
@@ -6852,13 +6850,13 @@ namespace ApiExamples
             builder.MoveTo(field.Separator);
             builder.Write(args);
             builder.MoveTo(field.Start.ParentNode);
-            
+
             builder.InsertParagraph();
             return field;
         }
         //ExEnd
 
-        private async Task TestFieldEQ(Document doc)
+        private void TestFieldEQ(Document doc)
         {
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \f(1,4)", string.Empty, doc.Range.Fields[0]);
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \a \al \co2 \vs3 \hs3(4x,- 4y,-4x,+ y)", string.Empty, doc.Range.Fields[1]);
@@ -6873,7 +6871,6 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \a \ac \vs1 \co1(lim,n→∞) \b (\f(n,n2 + 12) + \f(n,n2 + 22) + ... + \f(n,n2 + n2))", string.Empty, doc.Range.Fields[10]);
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \i (,,  \b(\f(x,x2 + 3x + 2))) \s \up10(2)", string.Empty, doc.Range.Fields[11]);
             TestUtil.VerifyField(FieldType.FieldEquation, @" EQ \i \in( tan x, \s \up2(sec x), \b(\r(3) )\s \up4(t) \s \up7(2)  dt)", string.Empty, doc.Range.Fields[12]);
-            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "https://blogs.msdn.microsoft.com/murrays/2018/01/23/microsoft-word-eq-field/");
         }
 
         [Test]
@@ -6975,7 +6972,7 @@ namespace ApiExamples
             TestUtil.VerifyField(FieldType.FieldLastSavedBy, " LASTSAVEDBY ", "John Doe", doc.Range.Fields[0]);
         }
 
-        [Test]        
+        [Test]
         public void FieldMergeRec()
         {
             //ExStart
@@ -7022,11 +7019,11 @@ namespace ApiExamples
             // On page 2, the MERGEREC field will display "3" and the MERGESEQ field will display "2".
             DataTable table = new DataTable("Employees");
             table.Columns.Add("Name");
-            table.Rows.Add(new[] { "Jane Doe" });
-            table.Rows.Add(new[] { "John Doe" });
-            table.Rows.Add(new[] { "Joe Bloggs" });
+            table.Rows.Add("Jane Doe");
+            table.Rows.Add("John Doe");
+            table.Rows.Add("Joe Bloggs");
 
-            doc.MailMerge.Execute(table);            
+            doc.MailMerge.Execute(table);
             doc.Save(ArtifactsDir + "Field.MERGEREC.MERGESEQ.docx");
             //ExEnd
 
@@ -7568,7 +7565,7 @@ namespace ApiExamples
 
             Assert.True(callback.FieldUpdatedCalls.Contains("Updating John Doe"));
         }
-        
+
         /// <summary>
         /// Implement this interface if you want to have your own custom methods called during a field update.
         /// </summary>
@@ -7646,4 +7643,3 @@ namespace ApiExamples
         }
     }
 }
-

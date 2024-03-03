@@ -179,7 +179,7 @@ namespace ApiExamples
             public override VisitorAction VisitSubDocument(SubDocument subDocument)
             {
                 IndentAndAppendLine("[SubDocument]");
-                
+
                 return VisitorAction.Continue;
             }
 

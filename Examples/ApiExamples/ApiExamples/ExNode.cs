@@ -491,7 +491,7 @@ namespace ApiExamples
             //ExSummary:Shows how to use "hot remove" to remove a node during enumeration.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.Writeln("The first paragraph");
             builder.Writeln("The second paragraph");
             builder.Writeln("The third paragraph");
@@ -501,7 +501,7 @@ namespace ApiExamples
             foreach (Paragraph para in doc.FirstSection.Body.Paragraphs.ToArray())
                 if (para.Range.Text.Contains("third"))
                     para.Remove();
-            
+
             Assert.False(doc.GetText().Contains("The third paragraph"));
             //ExEnd
         }

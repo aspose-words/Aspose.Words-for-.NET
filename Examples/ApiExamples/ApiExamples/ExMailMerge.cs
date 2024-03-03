@@ -98,8 +98,8 @@ namespace ApiExamples
                 OleDbCommand command = new OleDbCommand(query, connection);
                 command.CommandText = query;
                 try
-                {                    
-                    connection.Open();                 
+                {
+                    connection.Open();
                     using (OleDbDataReader reader = command.ExecuteReader())
                     {
                         // Take the data from the reader and use it in the mail merge.
@@ -109,7 +109,7 @@ namespace ApiExamples
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                }                
+                }
             }
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteDataReader.docx");
@@ -270,7 +270,7 @@ namespace ApiExamples
 
             // 2 -  Use one row of the table to create one output mail merge document:
             doc = CreateSourceDocExecuteDataTable();
-            
+
             doc.MailMerge.Execute(table.Rows[1]);
 
             doc.Save(ArtifactsDir + "MailMerge.ExecuteDataTable.OneRow.docx");
@@ -1822,7 +1822,7 @@ namespace ApiExamples
             //ExFor:MailMerge.RestartListsAtEachSection
             //ExSummary:Shows how to control whether or not list numbering is restarted at each section when mail merge is performed.
             Document doc = new Document(MyDir + "Section breaks with numbering.docx");
-            
+
             doc.MailMerge.RestartListsAtEachSection = false;
             doc.MailMerge.Execute(new string[0], new object[0]);
 

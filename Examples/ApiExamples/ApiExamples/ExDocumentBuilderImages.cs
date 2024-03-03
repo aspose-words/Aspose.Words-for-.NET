@@ -371,7 +371,7 @@ namespace ApiExamples
             Shape gifImage = builder.InsertImage(ImageDir + "Graphics Interchange Format.gif");
 
             gifImage = builder.InsertImage(File.ReadAllBytes(ImageDir + "Graphics Interchange Format.gif"));
-            
+
             builder.Document.Save(ArtifactsDir + "InsertGif.docx");
             //ExEnd
         }

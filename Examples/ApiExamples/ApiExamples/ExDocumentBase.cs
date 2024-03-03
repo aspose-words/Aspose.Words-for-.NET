@@ -16,7 +16,6 @@ using SaveFormat = Aspose.Words.SaveFormat;
 using System.IO;
 using Aspose.Words.Loading;
 using System.Net;
-using System.Threading.Tasks;
 using Aspose.Pdf;
 
 namespace ApiExamples
@@ -187,6 +186,13 @@ namespace ApiExamples
             {
                 doc.BackgroundShape = new Shape(doc, ShapeType.Triangle);
             });
+        }
+
+#if NET48 || NET5_0_OR_GREATER || JAVA
+        [Test]
+        public void UsePdfDocumentForBackgroundShape()
+        {
+            BackgroundShape();
 
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "DocumentBase.BackgroundShape.Image.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
@@ -195,6 +201,7 @@ namespace ApiExamples
             Assert.AreEqual(400, pdfDocImage.Height);
             Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
         }
+#endif
 
         //ExStart
         //ExFor:DocumentBase.ResourceLoadingCallback
@@ -224,7 +231,7 @@ namespace ApiExamples
             Assert.AreEqual(3, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             doc.Save(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx");
-            Task.WhenAll(TestResourceLoadingCallback(new Document(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx"))); //ExSkip
+            TestResourceLoadingCallback(new Document(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx")); //ExSkip
         }
 
         /// <summary>
@@ -264,15 +271,13 @@ namespace ApiExamples
         }
         //ExEnd
 
-        private async Task TestResourceLoadingCallback(Document doc)
+        private void TestResourceLoadingCallback(Document doc)
         {
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
             {
                 Assert.IsTrue(shape.HasImage);
                 Assert.IsNotEmpty(shape.ImageData.ImageBytes);
             }
-
-            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "http://www.google.com/images/logos/ps_logo2.png");
         }
     }
 }

@@ -127,7 +127,7 @@ namespace ApiExamples
             // Set the "IgnoreDeleted" flag to "false" to get the find-and-replace
             // operation to also search for text inside delete revisions.
             options.IgnoreDeleted = ignoreTextInsideDeleteRevisions;
-            
+
             doc.Range.Replace("Hello", "Greetings", options);
 
             Assert.AreEqual(
@@ -401,7 +401,7 @@ namespace ApiExamples
             {
                 mLog.AppendLine($"\"{args.Match.Value}\" converted to \"{args.Replacement}\" " +
                                 $"{args.MatchOffset} characters into a {args.MatchNode.NodeType} node.");
-                
+
                 args.Replacement = $"(Old value:\"{args.Match.Value}\") {args.Replacement}";
                 return ReplaceAction.Replace;
             }
@@ -438,7 +438,7 @@ namespace ApiExamples
 
             // Set the "HighlightColor" property to a background color that we want to apply to the operation's resulting text.
             options.ApplyFont.HighlightColor = Color.LightGray;
-            
+
             NumberHexer numberHexer = new NumberHexer();
             options.ReplacingCallback = numberHexer;
 
@@ -462,9 +462,9 @@ namespace ApiExamples
             public ReplaceAction Replacing(ReplacingArgs args)
             {
                 mCurrentReplacementNumber++;
-                
+
                 int number = Convert.ToInt32(args.Match.Value);
-                
+
                 args.Replacement = $"0x{number:X}";
 
                 mLog.AppendLine($"Match #{mCurrentReplacementNumber}");
@@ -538,7 +538,7 @@ namespace ApiExamples
             //ExSummary:Shows how to delete all the nodes from a range.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             // Add text to the first section in the document, and then add another section.
             builder.Write("Section 1. ");
             builder.InsertBreak(BreakType.SectionBreakContinuous);

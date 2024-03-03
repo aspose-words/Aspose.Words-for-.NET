@@ -9,9 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Xml;
 using Aspose.Words;
 using Aspose.Words.Fonts;
@@ -332,7 +330,6 @@ namespace ApiExamples
                 if (match.Success)
                 {
                     Assert.Pass();
-                    break;
                 }
             }
         }
@@ -565,7 +562,7 @@ namespace ApiExamples
         public void AddFontSource()
         {
             //ExStart
-            //ExFor:FontSettings            
+            //ExFor:FontSettings
             //ExFor:FontSettings.GetFontsSources()
             //ExFor:FontSettings.SetFontsSources(FontSourceBase[])
             //ExSummary:Shows how to add a font source to our existing font sources.
@@ -877,7 +874,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public async Task LoadNotoFontsFallbackSettings()
+        public void LoadNotoFontsFallbackSettings()
         {
             //ExStart
             //ExFor:FontFallbackSettings.LoadNotoFallbackSettings
@@ -899,8 +896,6 @@ namespace ApiExamples
             Document doc = new Document();
             doc.FontSettings = fontSettings;
             //ExEnd
-
-            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, "https://www.google.com/get/noto/#sans-lgc");
         }
 
         [Test]
@@ -1213,7 +1208,7 @@ namespace ApiExamples
             Assert.AreEqual(new[] {"Arvo", "M+ 2m"}, tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
 
             // SetSubstitutes() can set a new list of substitute fonts for a font.
-            tableSubstitutionRule.SetSubstitutes("Times New Roman", new[] {"Squarish Sans CT", "M+ 2m"});
+            tableSubstitutionRule.SetSubstitutes("Times New Roman", "Squarish Sans CT", "M+ 2m");
             Assert.AreEqual(new[] {"Squarish Sans CT", "M+ 2m"},
                 tableSubstitutionRule.GetSubstitutes("Times New Roman").ToArray());
 
@@ -1243,7 +1238,7 @@ namespace ApiExamples
             // this rule will substitute the unavailable font with one that does exist.
             // In this case, all uses of the "MissingFont" will convert to "Comic Sans MS".
             TableSubstitutionRule substitutionRule = loadOptions.FontSettings.SubstitutionSettings.TableSubstitution;
-            substitutionRule.AddSubstitutes("MissingFont", new[] {"Comic Sans MS"});
+            substitutionRule.AddSubstitutes("MissingFont", "Comic Sans MS");
 
             Document doc = new Document(MyDir + "Missing font.html", loadOptions);
 
@@ -1311,7 +1306,7 @@ namespace ApiExamples
                 parsedFonts.SaveSearchCache(cacheStream);
                 loadedCache.SetFontsSources(new FontSourceBase[]
                 {
-                    new SearchCacheStream(cacheKey1),                    
+                    new SearchCacheStream(cacheKey1),
                     new MemoryFontSource(File.ReadAllBytes(FontsDir + "Arvo-Bold.ttf"), 0, cacheKey2)
                 }, cacheStream);
             }

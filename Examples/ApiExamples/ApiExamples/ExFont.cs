@@ -1459,7 +1459,7 @@ namespace ApiExamples
             //ExEnd
         }
 
-        [Test, Category("SkipGitHub")]        
+        [Test, Category("SkipGitHub")]
         public void CheckScanUserFontsFolder()
         {
             var userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
@@ -1516,7 +1516,7 @@ namespace ApiExamples
             //ExFor:ThemeColor
             //ExSummary:Shows how to work with theme fonts and colors.
             Document doc = new Document();
-            
+
             // Define fonts for languages uses by default.
             doc.Theme.MinorFonts.Latin = "Algerian";
             doc.Theme.MinorFonts.EastAsian = "Aharoni";
@@ -1528,10 +1528,10 @@ namespace ApiExamples
             // We can use theme font and color instead of default values.
             font.ThemeFont = ThemeFont.Minor;
             font.ThemeColor = ThemeColor.Accent2;
-            
+
             Assert.AreEqual(ThemeFont.Minor, font.ThemeFont);
             Assert.AreEqual("Algerian", font.Name);
-            
+
             Assert.AreEqual(ThemeFont.Minor, font.ThemeFontAscii);
             Assert.AreEqual("Algerian", font.NameAscii);
 
@@ -1606,7 +1606,7 @@ namespace ApiExamples
             //ExSummary:Shows how to create and use themed style.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.Writeln();
 
             // Create some style with theme font properties.
@@ -1618,7 +1618,7 @@ namespace ApiExamples
             builder.ParagraphFormat.StyleName = "ThemedStyle";
             builder.Writeln("Text with themed style");
             //ExEnd
-            
+
             Run run = (Run)((Paragraph)builder.CurrentParagraph.PreviousSibling).FirstChild;
 
             Assert.AreEqual(ThemeFont.Major, run.Font.ThemeFont);

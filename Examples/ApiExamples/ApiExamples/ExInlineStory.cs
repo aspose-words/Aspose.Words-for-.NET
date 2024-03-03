@@ -583,7 +583,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "InlineStory.InsertInlineStoryNodes.docx");
             //ExEnd
-            
+
             doc = new Document(ArtifactsDir + "InlineStory.InsertInlineStoryNodes.docx");
 
             footnote = (Footnote)doc.GetChild(NodeType.Footnote, 0, true);

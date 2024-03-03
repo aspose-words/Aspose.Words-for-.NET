@@ -312,14 +312,14 @@ namespace ApiExamples
             // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
             // to modify how we save the document to plaintext.
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
-            
+
             // Verify that the "Encoding" property contains the appropriate encoding for our document's contents.
             Assert.AreEqual(System.Text.Encoding.UTF8, txtSaveOptions.Encoding);
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.Encoding.UTF8.txt", txtSaveOptions);
 
             string docText = System.Text.Encoding.UTF8.GetString(File.ReadAllBytes(ArtifactsDir + "TxtSaveOptions.Encoding.UTF8.txt"));
-            
+
             Assert.AreEqual("\uFEFFÀ È Ì Ò Ù.\r\n", docText);
 
             // Using an unsuitable encoding may result in a loss of document contents.

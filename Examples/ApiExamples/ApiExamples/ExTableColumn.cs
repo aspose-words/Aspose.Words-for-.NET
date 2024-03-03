@@ -66,7 +66,7 @@ namespace ApiExamples
                 // Create a clone of this column
                 foreach (Cell cell in columnCells)
                     cell.ParentRow.InsertBefore(cell.Clone(false), cell);
-                
+
                 Column newColumn = new Column(columnCells[0].ParentRow.ParentTable, mColumnIndex);
 
                 // We want to make sure that the cells are all valid to work with (have at least one paragraph).
@@ -130,7 +130,7 @@ namespace ApiExamples
 
             Column column = Column.FromIndex(table, 2);
             column.Remove();
-            
+
             doc.Save(ArtifactsDir + "TableColumn.RemoveColumn.doc");
 
             Assert.AreEqual(16, table.GetChildNodes(NodeType.Cell, true).Count);
@@ -153,7 +153,7 @@ namespace ApiExamples
             // Add some text to each cell in the column.
             foreach (Cell cell in newColumn.Cells)
                 cell.FirstParagraph.AppendChild(new Run(doc, "Column Text " + newColumn.IndexOf(cell)));
-            
+
             doc.Save(ArtifactsDir + "TableColumn.Insert.doc");
 
             Assert.AreEqual(24, table.GetChildNodes(NodeType.Cell, true).Count);

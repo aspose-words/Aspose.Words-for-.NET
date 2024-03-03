@@ -34,7 +34,7 @@ namespace ApiExamples
             //ExSummary:Shows how to see the the ranges of pages that a node spans.
             Document doc = new Document();
             LayoutCollector layoutCollector = new LayoutCollector(doc);
-            
+
             // Call the "GetNumPagesSpanned" method to count how many pages the content of our document spans.
             // Since the document is empty, that number of pages is currently zero.
             Assert.AreEqual(doc, layoutCollector.Document);

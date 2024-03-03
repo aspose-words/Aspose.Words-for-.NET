@@ -5,11 +5,11 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.Layout;
 using NUnit.Framework;
-using System;
 
 namespace ApiExamples
 {
@@ -276,7 +276,6 @@ namespace ApiExamples
             Assert.AreEqual(OutlineLevel.Level3, paragraphs[2].ParagraphFormat.OutlineLevel);
             Assert.AreEqual(OutlineLevel.Level3, paragraphs[3].ParagraphFormat.OutlineLevel);
             Assert.AreEqual(OutlineLevel.BodyText, paragraphs[4].ParagraphFormat.OutlineLevel);
-
         }
 
         [TestCase(false)]
@@ -410,6 +409,14 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ParagraphFormat.SuppressHyphens.pdf");
             //ExEnd
+        }
+
+#if NET48 || NET5_0_OR_GREATER || JAVA
+        [TestCase(false)]
+        [TestCase(true)]
+        public void UsePdfDocumentForSuppressHyphens(bool suppressAutoHyphens)
+        {
+            SuppressHyphens(suppressAutoHyphens);
 
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "ParagraphFormat.SuppressHyphens.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
@@ -424,6 +431,7 @@ namespace ApiExamples
                                                        $"pelte um da am spateren verlogen ge-{Environment.NewLine}" +
                                                        $"kommen achtzehn blaulich."));
         }
+#endif
 
         [Test]
         public void ParagraphSpacingAndIndents()
@@ -438,7 +446,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             ParagraphFormat format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
-            
+
             // Below are five different spacing options, along with the properties that their configuration indirectly affects.
             // 1 -  Left indent:
             Assert.AreEqual(format.LeftIndent, 0.0d);
@@ -483,19 +491,19 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
             format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
-            
+
             Assert.AreEqual(format.CharacterUnitLeftIndent, 10.0d);
             Assert.AreEqual(format.LeftIndent, 120.0d);
             
             Assert.AreEqual(format.CharacterUnitRightIndent, -5.5d);
             Assert.AreEqual(format.RightIndent, -66.0d);
-            
+
             Assert.AreEqual(format.CharacterUnitFirstLineIndent, 20.3d);
             Assert.AreEqual(format.FirstLineIndent, 243.59d, 0.1d);
             
             Assert.AreEqual(format.LineUnitBefore, 5.1d, 0.1d);
             Assert.AreEqual(format.SpaceBefore, 61.1d, 0.1d);
-            
+
             Assert.AreEqual(format.LineUnitAfter, 10.9d);
             Assert.AreEqual(format.SpaceAfter, 130.8d, 0.1d);
         }

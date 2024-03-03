@@ -32,7 +32,7 @@ namespace ApiExamples
             // Create a new Metered license, and then print its usage statistics.
             Metered metered = new Metered();
             metered.SetMeteredKey("MyPublicKey", "MyPrivateKey");
-            
+
             Console.WriteLine($"Credit before operation: {Metered.GetConsumptionCredit()}");
             Console.WriteLine($"Consumption quantity before operation: {Metered.GetConsumptionQuantity()}");
 

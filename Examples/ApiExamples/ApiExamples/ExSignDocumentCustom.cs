@@ -130,7 +130,7 @@ namespace ApiExamples
                     ImageToByteArray(signImagePath))                
             };
         }
-        
+
         private static List<Signee> mSignees;
         //ExEnd
     }

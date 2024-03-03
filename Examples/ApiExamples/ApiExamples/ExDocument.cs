@@ -48,13 +48,13 @@ using SkiaSharp;
 
 namespace ApiExamples
 {
-    [TestFixture]   
+    [TestFixture]
     public class ExDocument : ApiExampleBase
     {
         [Test]
         public void CreateSimpleDocument()
         {
-            //ExStart:CreateSimpleDocument            
+            //ExStart:CreateSimpleDocument
             //GistId:3428e84add5beb0d46a8face6e5fc858
             //ExFor:Document.#ctor()
             //ExSummary:Shows how to create simple document.
@@ -114,7 +114,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public async Task LoadFromWeb()
+        public async Task LoadFromWebAsync()
         {
             //ExStart
             //ExFor:Document.#ctor(Stream)
@@ -142,7 +142,37 @@ namespace ApiExamples
             }
             //ExEnd
 
-            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, url);
+            await TestUtil.VerifyWebResponseStatusCodeAsync(HttpStatusCode.OK, url);
+        }
+
+        [Test]
+        public void LoadFromWeb()
+        {
+            //ExStart
+            //ExFor:Document.#ctor(Stream)
+            //ExSummary:Shows how to load a document from a URL.
+            // Create a URL that points to a Microsoft Word document.
+            const string url = "https://filesamples.com/samples/document/docx/sample3.docx";
+
+            // Download the document into a byte array, then load that array into a document using a memory stream.
+            using (WebClient webClient = new WebClient())
+            {
+                byte[] dataBytes = webClient.DownloadData(url);
+
+                using (MemoryStream byteStream = new MemoryStream(dataBytes))
+                {
+                    Document doc = new Document(byteStream);
+
+                    // At this stage, we can read and edit the document's contents and then save it to the local file system.
+                    Assert.AreEqual("There are eight section headings in this document. At the beginning, \"Sample Document\" is a level 1 heading. " +
+                                    "The main section headings, such as \"Headings\" and \"Lists\" are level 2 headings. " +
+                                    "The Tables section contains two sub-headings, \"Simple Table\" and \"Complex Table,\" which are both level 3 headings.",
+                        doc.FirstSection.Body.Paragraphs[3].GetText().Trim());
+
+                    doc.Save(ArtifactsDir + "Document.LoadFromWeb.docx");
+                }
+            }
+            //ExEnd
         }
 
         [Test]
@@ -153,7 +183,7 @@ namespace ApiExamples
             //ExFor:Document.Save(String)
             //ExSummary:Shows how to open a document and convert it to .PDF.
             Document doc = new Document(MyDir + "Document.docx");
-            
+
             doc.Save(ArtifactsDir + "Document.ConvertToPdf.pdf");
             //ExEnd
         }
@@ -370,8 +400,8 @@ namespace ApiExamples
                     for (int i = 0; i < imagesStream.Count; i++)
                     {
                         using (FileStream resultDoc = new FileStream(ArtifactsDir + $"PdfRenderer_{i}.{fileExt}", FileMode.Create))
-                            imagesStream[i].CopyTo(resultDoc);                        
-                    }                    
+                            imagesStream[i].CopyTo(resultDoc);
+                    }
                 }
                 else
                 {
@@ -409,7 +439,7 @@ namespace ApiExamples
                     var content = doc.GetText().Replace("\r", " ");
 
                     Assert.True(content.Contains("Heading 1 Heading 1.1.1.1 Heading 1.1.1.2"));
-                }               
+                }
             }
         }
 
@@ -455,7 +485,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public async Task InsertHtmlFromWebPage()
+        public async Task InsertHtmlFromWebPageAsync()
         {
             //ExStart
             //ExFor:Document.#ctor(Stream, LoadOptions)
@@ -472,6 +502,38 @@ namespace ApiExamples
                     // The URL is used again as a baseUri to ensure that any relative image paths are retrieved correctly.
                     LoadOptions options = new LoadOptions(LoadFormat.Html, "", url);
                     options.Encoding = Encoding.UTF8;
+
+                    // Load the HTML document from stream and pass the LoadOptions object.
+                    Document doc = new Document(stream, options);
+
+                    // At this stage, we can read and edit the document's contents and then save it to the local file system.
+                    Assert.True(doc.GetText().Contains("HYPERLINK \"https://products.aspose.com/words/net/\" \\o \"Aspose.Words\"")); //ExSkip
+
+                    doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
+                }
+            }
+            //ExEnd
+
+            await TestUtil.VerifyWebResponseStatusCodeAsync(HttpStatusCode.OK, url);
+        }
+
+        [Test]
+        public void InsertHtmlFromWebPage()
+        {
+            //ExStart
+            //ExFor:Document.#ctor(Stream, LoadOptions)
+            //ExFor:LoadOptions.#ctor(LoadFormat, String, String)
+            //ExFor:LoadFormat
+            //ExSummary:Shows how save a web page as a .docx file.
+            const string url = "https://products.aspose.com/words/";
+
+            using (WebClient client = new WebClient())
+            {
+                var bytes = client.DownloadData(url);
+                using (MemoryStream stream = new MemoryStream(bytes))
+                {
+                    // The URL is used again as a baseUri to ensure that any relative image paths are retrieved correctly.
+                    LoadOptions options = new LoadOptions(LoadFormat.Html, "", url);
 
                     // Load the HTML document from stream and pass the LoadOptions object.
                     Document doc = new Document(stream, options);
@@ -534,10 +596,10 @@ namespace ApiExamples
             // Note that such an approach can reduce memory usage but degrades speed
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.TempFolder = @"C:\TempFolder\";
-            
+
             // Ensure that the directory exists and load
             Directory.CreateDirectory(loadOptions.TempFolder);
-             
+
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
             //ExEnd
         }
@@ -593,7 +655,7 @@ namespace ApiExamples
             }
             //ExEnd
         }
-        
+
         //ExStart
         //ExFor:INodeChangingCallback
         //ExFor:INodeChangingCallback.NodeInserting
@@ -712,7 +774,7 @@ namespace ApiExamples
         public void AppendDocumentFromAutomation()
         {
             Document doc = new Document();
-            
+
             // We should call this method to clear this document of any existing content.
             doc.RemoveAllChildren();
 
@@ -778,7 +840,7 @@ namespace ApiExamples
             // Set the "KeepSourceNumbering" property to "true" to apply a different list definition ID
             // to identical styles as Aspose.Words imports them into destination documents.
             ImportFormatOptions importFormatOptions = new ImportFormatOptions { KeepSourceNumbering = true };
-            
+
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles, importFormatOptions);
             dstDoc.UpdateListLabels();
             //ExEnd
@@ -821,7 +883,7 @@ namespace ApiExamples
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
 
             ParagraphCollection paras = dstDoc.Sections[1].Body.Paragraphs;
-            
+
             Assert.AreEqual(paras[0].ParagraphFormat.Style.Name, "MyStyle1_0");
             Assert.AreEqual(paras[1].ParagraphFormat.Style.Name, "MyStyle2_0");
             Assert.AreEqual(paras[2].ParagraphFormat.Style.Name, "MyStyle3");
@@ -913,8 +975,9 @@ namespace ApiExamples
 
             // There are two ways of saving a signed copy of a document to the local file system:
             // 1 - Designate a document by a local system filename and save a signed copy at a location specified by another filename.
+            SignOptions signOptions = new SignOptions { SignTime = DateTime.Now };
             DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "Document.DigitalSignature.docx", 
-                certificateHolder, new SignOptions() { SignTime = DateTime.Now } );
+                certificateHolder, signOptions);
 
             Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
 
@@ -1228,7 +1291,7 @@ namespace ApiExamples
             //ExSummary:Shows how to update all list labels in a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
                             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
             builder.Write("Ut enim ad minim veniam, " +
@@ -1327,7 +1390,7 @@ namespace ApiExamples
 
             Assert.AreEqual(2, doc.FirstSection.PageSetup.FootnoteOptions.Columns);
         }
-        
+
         [Test]
         public void Compare()
         {
@@ -1546,14 +1609,14 @@ namespace ApiExamples
             Assert.AreEqual(2, doc.Revisions.Count);
             Assert.AreEqual("John Doe", doc.Revisions[1].Author);
             Assert.AreEqual(DateTime.MinValue, doc.Revisions[1].DateTime);
-            
+
             // We can accept/reject these revisions programmatically
             // by calling methods such as Document.AcceptAllRevisions, or each revision's Accept method.
             // In Microsoft Word, we can process them manually via "Review" -> "Changes".
             doc.Save(ArtifactsDir + "Document.StartTrackRevisions.docx");
             //ExEnd
         }
-        
+
         [Test]
         public void AcceptAllRevisions()
         {
@@ -1644,7 +1707,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.UpdateThumbnail.FirstImage.epub");
             //ExEnd
         }
-        
+
         [Test]
         public void HyphenationOptions()
         {
@@ -1787,7 +1850,7 @@ namespace ApiExamples
             Assert.AreEqual(4, doc.Styles.Count);
             //ExEnd
         }
-        
+
         [Test]
         public void AutomaticallyUpdateStyles()
         {
@@ -1852,11 +1915,11 @@ namespace ApiExamples
             //ExSummary:Shows how to recognize and use substitutions within replacement patterns.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-             
+
             builder.Write("Jason gave money to Paul.");
-             
+
             Regex regex = new Regex(@"([A-z]+) gave money to ([A-z]+)");
-             
+
             FindReplaceOptions options = new FindReplaceOptions();
             options.UseSubstitutions = true;
 
@@ -1864,7 +1927,7 @@ namespace ApiExamples
             options.LegacyMode = false;
 
             doc.Range.Replace(regex, @"$2 took money from $1", options);
-            
+
             Assert.AreEqual(doc.GetText(), "Paul took money from Jason.\f");
             //ExEnd
         }
@@ -1950,7 +2013,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             Assert.IsFalse(doc.LayoutOptions.ShowHiddenText); //ExSkip
-            
+
             // Insert hidden text, then specify whether we wish to omit it from a rendered document.
             builder.Writeln("This text is not hidden.");
             builder.Font.Hidden = true;
@@ -1960,6 +2023,14 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Document.LayoutOptionsHiddenText.pdf");
             //ExEnd
+        }
+
+#if NET48 || NET5_0_OR_GREATER || JAVA
+        [TestCase(false)]
+        [TestCase(true)]
+        public void UsePdfDocumentForLayoutOptionsHiddenText(bool showHiddenText)
+        {
+            LayoutOptionsHiddenText(showHiddenText);
 
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.LayoutOptionsHiddenText.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
@@ -1969,6 +2040,7 @@ namespace ApiExamples
                     $"This text is not hidden.{Environment.NewLine}This text is hidden." : 
                     "This text is not hidden.", textAbsorber.Text);
         }
+#endif
 
         [TestCase(false)]
         [TestCase(true)]
@@ -1992,6 +2064,14 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Document.LayoutOptionsParagraphMarks.pdf");
             //ExEnd
+        }
+
+#if NET48 || NET5_0_OR_GREATER || JAVA
+        [TestCase(false)]
+        [TestCase(true)]
+        public void UsePdfDocumentForLayoutOptionsParagraphMarks(bool showParagraphMarks)
+        {
+            LayoutOptionsParagraphMarks(showParagraphMarks);
 
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.LayoutOptionsParagraphMarks.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
@@ -2001,6 +2081,7 @@ namespace ApiExamples
                     $"Hello world!¶{Environment.NewLine}Hello again!¶{Environment.NewLine}¶" : 
                     $"Hello world!{Environment.NewLine}Hello again!", textAbsorber.Text.Trim());
         }
+#endif
 
         [Test]
         public void UpdatePageLayout()
@@ -2146,7 +2227,7 @@ namespace ApiExamples
             // We can read this property of a document, but we cannot preserve it while saving.
             Assert.AreEqual(4, doc.VersionsCount);
 
-            doc.Save(ArtifactsDir + "Document.VersionsCount.doc");      
+            doc.Save(ArtifactsDir + "Document.VersionsCount.doc");
             doc = new Document(ArtifactsDir + "Document.VersionsCount.doc");
 
             Assert.AreEqual(0, doc.VersionsCount);
@@ -2216,7 +2297,7 @@ namespace ApiExamples
             // This flag is equivalent to File -> Options -> Trust Center -> Trust Center Settings... ->
             // Privacy Options -> "Remove personal information from file properties on save" in Microsoft Word.
             doc.RemovePersonalInformation = saveWithoutPersonalInfo;
-            
+
             // This option will not take effect during a save operation made using Aspose.Words.
             // Personal data will be removed from our document with the flag set when we save it manually using Microsoft Word.
             doc.Save(ArtifactsDir + "Document.RemovePersonalInformation.docx");
@@ -2258,9 +2339,15 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
             //ExEnd
+        }
 
-            Aspose.Pdf.Document pdfDoc =
-                new Aspose.Pdf.Document(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
+#if NET48 || NET5_0_OR_GREATER || JAVA
+        [Test]
+        public void UsePdfDocumentForShowComments()
+        {
+            ShowComments();
+
+            Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Document.ShowCommentsInBalloons.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
@@ -2268,6 +2355,7 @@ namespace ApiExamples
                 "Hello world!                                                                    Commented [J.D.1]:  My comment.",
                 textAbsorber.Text);
         }
+#endif
 
         [Test]
         public void CopyTemplateStylesViaDocument()
@@ -2296,7 +2384,7 @@ namespace ApiExamples
             //ExSummary:Shows how to copy styles from one document to another.
             // Create a document, and then add styles that we will copy to another document.
             Document template = new Document();
-            
+
             Style style = template.Styles.Add(StyleType.Paragraph, "TemplateStyle1");
             style.Font.Name = "Times New Roman";
             style.Font.Color = Color.Navy;
@@ -2559,9 +2647,9 @@ namespace ApiExamples
 
             Assert.AreEqual(0, doc.WebExtensionTaskPanes.Count);
             //ExEnd
-		}
+        }
 
-		[Test]
+        [Test]
         public void EpubCover()
         {
             Document doc = new Document();
@@ -2578,7 +2666,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Document.EpubCover.epub");
         }
-        
+
         [Test]
         public void TextWatermark()
         {
@@ -2598,7 +2686,7 @@ namespace ApiExamples
 
             // Add a plain text watermark.
             doc.Watermark.SetText("Aspose Watermark");
-            
+
             // If we wish to edit the text formatting using it as a watermark,
             // we can do so by passing a TextWatermarkOptions object when creating the watermark.
             TextWatermarkOptions textWatermarkOptions = new TextWatermarkOptions();
@@ -2675,7 +2763,7 @@ namespace ApiExamples
             // in the output document by a jagged red line, and a double blue line will highlight grammatical mistakes.
             doc.ShowGrammaticalErrors = showErrors;
             doc.ShowSpellingErrors = showErrors;
-            
+
             doc.Save(ArtifactsDir + "Document.SpellingAndGrammarErrors.docx");
             //ExEnd
 
@@ -2756,7 +2844,7 @@ namespace ApiExamples
             //ExFor:LayoutOptions.IgnorePrinterMetrics
             //ExSummary:Shows how to ignore 'Use printer metrics to lay out document' option.
             Document doc = new Document(MyDir + "Rendering.docx");
-    
+
             doc.LayoutOptions.IgnorePrinterMetrics = false;
 
             doc.Save(ArtifactsDir + "Document.IgnorePrinterMetrics.docx");
@@ -2772,7 +2860,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Layout entities.docx");
 
             doc = doc.ExtractPages(0, 2);
-    
+
             doc.Save(ArtifactsDir + "Document.ExtractPages.docx");
             //ExEnd
 
@@ -2922,7 +3010,7 @@ namespace ApiExamples
 
             // 3 -  Move to the end of the second structured document tag.
             builder.MoveToStructuredDocumentTag(1, -1);
-            Assert.True(builder.IsAtEndOfStructuredDocumentTag);            
+            Assert.True(builder.IsAtEndOfStructuredDocumentTag);
 
             // Get currently selected structured document tag.
             builder.CurrentStructuredDocumentTag.Color = Color.Green;
@@ -2945,12 +3033,12 @@ namespace ApiExamples
             // By default option is set to 'false'.
             doc.UpdateWordCount();
             // Words count without textboxes, footnotes and endnotes.
-            Assert.AreEqual(2, doc.BuiltInDocumentProperties.Words);            
+            Assert.AreEqual(2, doc.BuiltInDocumentProperties.Words);
 
             doc.IncludeTextboxesFootnotesEndnotesInStat = true;
             doc.UpdateWordCount();
             // Words count with textboxes, footnotes and endnotes.
-            Assert.AreEqual(4, doc.BuiltInDocumentProperties.Words);            
+            Assert.AreEqual(4, doc.BuiltInDocumentProperties.Words);
             //ExEnd
         }
 
@@ -2962,9 +3050,9 @@ namespace ApiExamples
             //ExFor:JustificationMode
             //ExSummary:Shows how to manage character spacing control.
             Document doc = new Document(MyDir + "Document.docx");
-            
+
             JustificationMode justificationMode = doc.JustificationMode;
-            if (justificationMode == JustificationMode.Expand)                
+            if (justificationMode == JustificationMode.Expand)
                 doc.JustificationMode = JustificationMode.Compress;
 
             doc.Save(ArtifactsDir + "Document.SetJustificationMode.docx");

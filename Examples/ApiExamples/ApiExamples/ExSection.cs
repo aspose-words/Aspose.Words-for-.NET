@@ -77,7 +77,7 @@ namespace ApiExamples
             doc.Sections.RemoveAt(0);
 
             Assert.AreEqual("Section 2", doc.GetText().Trim());
-            
+
             // Append a copy of what is now the first section to the end of the document.
             int lastSectionIdx = doc.Sections.Count - 1;
             Section newSection = doc.Sections[lastSectionIdx].Clone();
@@ -173,7 +173,7 @@ namespace ApiExamples
             // Set some page setup properties for the section.
             section.PageSetup.SectionStart = SectionStart.NewPage;
             section.PageSetup.PaperSize = PaperSize.Letter;
-            
+
             // A section needs a body, which will contain and display all its contents
             // on the page between the section's header and footer.
             Body body = new Body(doc);
@@ -209,7 +209,7 @@ namespace ApiExamples
             //ExFor:SectionCollection.Item(Int32)
             //ExSummary:Shows how to prepare a new section node for editing.
             Document doc = new Document();
-            
+
             // A blank document comes with a section, which has a body, which in turn has a paragraph.
             // We can add contents to this document by adding elements such as text runs, shapes, or tables to that paragraph.
             Assert.AreEqual(NodeType.Section, doc.GetChild(NodeType.Any, 0, true).NodeType);
@@ -260,7 +260,7 @@ namespace ApiExamples
 
             // This body has no children, so we cannot add runs to it yet.
             Assert.AreEqual(0, doc.FirstSection.Body.GetChildNodes(NodeType.Any, true).Count);
-            
+
             // Call the "EnsureMinimum" to make sure that this body contains at least one empty paragraph. 
             body.EnsureMinimum();
 
@@ -336,7 +336,7 @@ namespace ApiExamples
 
             // Clear the collection of sections, which will remove all of the document's children.
             doc.Sections.Clear();
-            
+
             Assert.AreEqual(0, doc.GetChildNodes(NodeType.Any, true).Count);
             Assert.AreEqual(string.Empty, doc.GetText().Trim());
             //ExEnd
@@ -518,7 +518,7 @@ namespace ApiExamples
 
             // Assert that page defaults comply with current culture info.
             Section sectionEn = docEn.Sections[0];
-            Assert.AreEqual(72.0, sectionEn.PageSetup.LeftMargin); // 2.54 cm         
+            Assert.AreEqual(72.0, sectionEn.PageSetup.LeftMargin); // 2.54 cm
             Assert.AreEqual(72.0, sectionEn.PageSetup.RightMargin); // 2.54 cm
             Assert.AreEqual(72.0, sectionEn.PageSetup.TopMargin); // 2.54 cm
             Assert.AreEqual(72.0, sectionEn.PageSetup.BottomMargin); // 2.54 cm
@@ -532,7 +532,7 @@ namespace ApiExamples
             Document docDe = new Document();
 
             Section sectionDe = docDe.Sections[0];
-            Assert.AreEqual(70.85, sectionDe.PageSetup.LeftMargin); // 2.5 cm         
+            Assert.AreEqual(70.85, sectionDe.PageSetup.LeftMargin); // 2.5 cm
             Assert.AreEqual(70.85, sectionDe.PageSetup.RightMargin); // 2.5 cm
             Assert.AreEqual(70.85, sectionDe.PageSetup.TopMargin); // 2.5 cm
             Assert.AreEqual(56.7, sectionDe.PageSetup.BottomMargin); // 2 cm
@@ -552,7 +552,7 @@ namespace ApiExamples
             docDe = DocumentHelper.SaveOpen(docDe);
 
             Section sectionDeAfter = docDe.Sections[0];
-            Assert.AreEqual(90.0, sectionDeAfter.PageSetup.LeftMargin); // 3.17 cm         
+            Assert.AreEqual(90.0, sectionDeAfter.PageSetup.LeftMargin); // 3.17 cm
             Assert.AreEqual(90.0, sectionDeAfter.PageSetup.RightMargin); // 3.17 cm
             Assert.AreEqual(72.0, sectionDeAfter.PageSetup.TopMargin); // 2.54 cm
             Assert.AreEqual(72.0, sectionDeAfter.PageSetup.BottomMargin); // 2.54 cm

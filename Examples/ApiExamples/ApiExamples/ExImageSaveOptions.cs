@@ -162,7 +162,7 @@ namespace ApiExamples
             //ExFor:GraphicsQualityOptions.UseTileFlipMode
             //ExSummary:Shows how to prevent the white line appears when rendering with a high resolution.
             Document doc = new Document(MyDir + "Shape high dpi.docx");
-                        
+
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             ShapeRenderer renderer = shape.GetShapeRenderer();
 
@@ -198,7 +198,7 @@ namespace ApiExamples
             options.MetafileRenderingOptions.RenderingMode = metafileRenderingMode;
             // Aspose.Words uses GDI+ for raster operations emulation, when value is set to true.
             options.MetafileRenderingOptions.UseGdiRasterOperationsEmulation = true;
-            
+
             doc.Save(ArtifactsDir + "ImageSaveOptions.WindowsMetaFile.png", options);
             //ExEnd
 
@@ -277,7 +277,7 @@ namespace ApiExamples
             // and preserve all the document's colors in the output image.
             ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
             imageSaveOptions.ImageColorMode = imageColorMode;
-            
+
             doc.Save(ArtifactsDir + "ImageSaveOptions.ColorMode.png", imageSaveOptions);
             //ExEnd
 
@@ -349,16 +349,16 @@ namespace ApiExamples
                 TestUtil.ImageContainsTransparency(ArtifactsDir + "ImageSaveOptions.PaperColor.LightCoral.png"));
         }
 
-        [TestCase(ImagePixelFormat.Format1bppIndexed)]        
-        [TestCase(ImagePixelFormat.Format16BppRgb555)]        
+        [TestCase(ImagePixelFormat.Format1bppIndexed)]
+        [TestCase(ImagePixelFormat.Format16BppRgb555)]
         [TestCase(ImagePixelFormat.Format16BppRgb565)]
         [TestCase(ImagePixelFormat.Format24BppRgb)]
         [TestCase(ImagePixelFormat.Format32BppRgb)]
         [TestCase(ImagePixelFormat.Format32BppArgb)]
         [TestCase(ImagePixelFormat.Format32BppPArgb)]
-        [TestCase(ImagePixelFormat.Format48BppRgb)]        
-        [TestCase(ImagePixelFormat.Format64BppArgb)]        
-        [TestCase(ImagePixelFormat.Format64BppPArgb)]        
+        [TestCase(ImagePixelFormat.Format48BppRgb)]
+        [TestCase(ImagePixelFormat.Format64BppArgb)]
+        [TestCase(ImagePixelFormat.Format64BppPArgb)]
         public void PixelFormat(ImagePixelFormat imagePixelFormat)
         {
             //ExStart
@@ -464,7 +464,6 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
-            
 #if NET461_OR_GREATER || JAVA
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff");
 #endif

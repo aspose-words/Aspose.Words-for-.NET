@@ -268,8 +268,8 @@ namespace ApiExamples
             // Set a different template for our document, and then update the "Template" built-in property manually to reflect this change.
             doc.AttachedTemplate = MyDir + "Business brochure.dotx";
 
-            Assert.AreEqual("Normal", properties.Template);    
-            
+            Assert.AreEqual("Normal", properties.Template);
+
             properties.Template = doc.AttachedTemplate;
 
             // "ContentStatus" is a descriptive built-in property.
@@ -428,7 +428,7 @@ namespace ApiExamples
             //ExFor:Properties.BuiltInDocumentProperties.TitlesOfParts
             //ExSummary:Shows the relationship between "HeadingPairs" and "TitlesOfParts" properties.
             Document doc = new Document(MyDir + "Heading pairs and titles of parts.docx");
-            
+
             // We can find the combined values of these collections via
             // "File" -> "Properties" -> "Advanced Properties" -> "Contents" tab.
             // The HeadingPairs property is a collection of <string, int> pairs that
@@ -561,7 +561,7 @@ namespace ApiExamples
             Assert.AreEqual(true, customProperty.IsLinkToContent);
             Assert.AreEqual("MyBookmark", customProperty.LinkSource);
             Assert.AreEqual("Hello world!", customProperty.Value);
-            
+
             doc.Save(ArtifactsDir + "DocumentProperties.LinkCustomDocumentPropertiesToBookmark.docx");
             //ExEnd
 

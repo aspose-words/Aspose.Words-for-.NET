@@ -25,7 +25,6 @@ using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 using TextBox = Aspose.Words.Drawing.TextBox;
 using Aspose.Words.Themes;
-using Aspose.Words.Forms2;
 
 namespace ApiExamples
 {
@@ -74,7 +73,7 @@ namespace ApiExamples
 
             TestUtil.FileContainsString(
                 "<img src=\"Shape.AltText.001.png\" width=\"202\" height=\"202\" alt=\"Alt text for MyCube.\" " +
-                "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />", 
+                "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />",
                 ArtifactsDir + "Shape.AltText.html");
         }
 
@@ -107,7 +106,7 @@ namespace ApiExamples
                 shape.Font.Color = Color.Red;
                 shape.Font.Underline = Underline.Dash;
             }
-            
+
             // Move the builder out of the text box back into the main document.
             builder.MoveTo(shape.ParentParagraph);
 
@@ -193,7 +192,7 @@ namespace ApiExamples
 
             // Move the shape closer to the center of the page, and then rotate the shape 60 degrees clockwise.
             shape.Top = 75;
-            shape.Left = 150; 
+            shape.Left = 150;
             shape.Rotation = 60;
 
             // Add text that will wrap around the shape.
@@ -246,61 +245,66 @@ namespace ApiExamples
             group.CoordOrigin = new Point(-250, -250);
 
             // Create a rectangle that will display the boundary of this group shape and add it to the group.
-            group.AppendChild(new Shape(doc, ShapeType.Rectangle)
+            Shape child1 = new Shape(doc, ShapeType.Rectangle)
             {
                 Width = group.CoordSize.Width,
                 Height = group.CoordSize.Height,
                 Left = group.CoordOrigin.X,
                 Top = group.CoordOrigin.Y
-            });
+            };
+            group.AppendChild(child1);
 
             // Once a shape is a part of a group shape, we can access it as a child node and then modify it.
             ((Shape)group.GetChild(NodeType.Shape, 0, true)).Stroke.DashStyle = DashStyle.Dash;
 
             // Create a small red star and insert it into the group.
             // Line up the shape with the group's coordinate origin, which we have moved to the center.
-            group.AppendChild(new Shape(doc, ShapeType.Star)
+            Shape child2 = new Shape(doc, ShapeType.Star)
             {
                 Width = 20,
                 Height = 20,
                 Left = -10,
                 Top = -10,
                 FillColor = Color.Red
-            });
+            };
+            group.AppendChild(child2);
 
-            // Insert a rectangle, and then insert a slightly smaller rectangle in the same place with an image. 
+            // Insert a rectangle, and then insert a slightly smaller rectangle in the same place with an image.
             // Newer shapes that we add to the group overlap older shapes. The light blue rectangle will partially overlap the red star,
             // and then the shape with the image will overlap the light blue rectangle, using it as a frame.
-            // We cannot use the "ZOrder" properties of shapes to manipulate their arrangement within a group shape. 
-            group.AppendChild(new Shape(doc, ShapeType.Rectangle)
+            // We cannot use the "ZOrder" properties of shapes to manipulate their arrangement within a group shape.
+            Shape child3 = new Shape(doc, ShapeType.Rectangle)
             {
                 Width = 250,
                 Height = 250,
                 Left = -250,
                 Top = -250,
                 FillColor = Color.LightBlue
-            });
+            };
+            group.AppendChild(child3);
 
-            group.AppendChild(new Shape(doc, ShapeType.Image)
+            Shape child4 = new Shape(doc, ShapeType.Image)
             {
                 Width = 200,
                 Height = 200,
                 Left = -225,
                 Top = -225
-            });
+            };
+            group.AppendChild(child4);
 
             ((Shape)group.GetChild(NodeType.Shape, 3, true)).ImageData.SetImage(ImageDir + "Logo.jpg");
 
             // Insert a text box into the group shape. Set the "Left" property so that the text box's right edge
             // touches the right boundary of the group shape. Set the "Top" property so that the text box sits outside
             // the boundary of the group shape, with its top size lined up along the group shape's bottom margin.
-            group.AppendChild(new Shape(doc, ShapeType.TextBox)
+            Shape child5 = new Shape(doc, ShapeType.TextBox)
             {
                 Width = 200,
                 Height = 50,
                 Left = group.CoordSize.Width + group.CoordOrigin.X - 200,
                 Top = group.CoordSize.Height + group.CoordOrigin.Y
-            });
+            };
+            group.AppendChild(child5);
 
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.InsertNode(group);
@@ -436,7 +440,7 @@ namespace ApiExamples
             // Set the "AnchorLocked" property to "false" to allow any movement of the shape
             // to also move its anchor to any other paragraph that the shape ends up close to.
             shape.AnchorLocked = anchorLocked;
-            
+
             // If the shape does not have a visible anchor symbol to its left,
             // we will need to enable visible anchors via "Options" -> "Display" -> "Object Anchors".
             doc.Save(ArtifactsDir + "Shape.AnchorLocked.docx");
@@ -518,8 +522,8 @@ namespace ApiExamples
             Assert.True(shape.IsInline);
 
             // 2 -  Floating:
-            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin ,200, 
-                RelativeVerticalPosition.TopMargin ,200, 100, 100, WrapType.None);
+            shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 200,
+                RelativeVerticalPosition.TopMargin, 200, 100, 100, WrapType.None);
             shape.FillColor = Color.Orange;
 
             // A floating shape belongs to the paragraph that we insert it into,
@@ -680,7 +684,7 @@ namespace ApiExamples
             // Set the "FlipOrientation" property to "FlipOrientation.Horizontal" to flip the fourth shape on both the x and y axes,
             // making it into a horizontal and vertical mirror image of the first shape.
             shape.FlipOrientation = FlipOrientation.Both;
-            
+
             doc.Save(ArtifactsDir + "Shape.FlipShapeOrientation.docx");
             //ExEnd
 
@@ -739,7 +743,7 @@ namespace ApiExamples
 
             // Set the shape fill color's opacity to a lower value so that we can see the text underneath it.
             shape.Fill.Opacity = 0.3;
-            
+
             doc.Save(ArtifactsDir + "Shape.Fill.docx");
             //ExEnd
 
@@ -767,7 +771,7 @@ namespace ApiExamples
 
             // Apply texture alignment to the shape fill.
             shape.Fill.PresetTextured(PresetTexture.Canvas);
-            shape.Fill.TextureAlignment = TextureAlignment.TopRight;            
+            shape.Fill.TextureAlignment = TextureAlignment.TopRight;
 
             // Use the compliance option to define the shape using DML if you want to get "TextureAlignment"
             // property after the document saves.
@@ -799,7 +803,7 @@ namespace ApiExamples
             //ExSummary:Shows how to fill a shape with a gradients.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             Shape shape = builder.InsertShape(ShapeType.Rectangle, 80, 80);
             // Apply One-color gradient fill to the shape with ForeColor of gradient fill.
             shape.Fill.OneColorGradient(Color.Red, GradientStyle.Horizontal, GradientVariant.Variant2, 0.1);
@@ -868,15 +872,15 @@ namespace ApiExamples
             //ExSummary:Shows how to add gradient stops to the gradient fill.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             Shape shape = builder.InsertShape(ShapeType.Rectangle, 80, 80);
             shape.Fill.TwoColorGradient(Color.Green, Color.Red, GradientStyle.Horizontal, GradientVariant.Variant2);
 
             // Get gradient stops collection.
             GradientStopCollection gradientStops = shape.Fill.GradientStops;
 
-            // Change first gradient stop.            
-            gradientStops[0].Color = Color.Aqua;            
+            // Change first gradient stop.
+            gradientStops[0].Color = Color.Aqua;
             gradientStops[0].Position = 0.1;
             gradientStops[0].Transparency = 0.25;
 
@@ -913,10 +917,10 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Shape.GradientStops.docx");
 
-            shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             gradientStops = shape.Fill.GradientStops;
 
-            Assert.AreEqual(2, gradientStops.Count);            
+            Assert.AreEqual(2, gradientStops.Count);
 
             Assert.AreEqual(Color.Aqua.ToArgb(), gradientStops[0].Color.ToArgb());
             Assert.AreEqual(0.1d, gradientStops[0].Position, 0.01d);
@@ -926,8 +930,8 @@ namespace ApiExamples
             Assert.AreEqual(0.75d, gradientStops[1].Position, 0.01d);
             Assert.AreEqual(0.3d, gradientStops[1].Transparency, 0.01d);
         }
-            
-		[Test]
+
+        [Test]
         public void FillPattern()
         {
             //ExStart
@@ -964,7 +968,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Shape shape = builder.InsertShape(ShapeType.RoundRectangle, 80, 80);
-            
+
             Fill fill = shape.Fill;
             fill.ForeThemeColor = ThemeColor.Dark1;
             fill.BackThemeColor = ThemeColor.Background2;
@@ -981,7 +985,7 @@ namespace ApiExamples
         public void FillTintAndShade()
         {
             //ExStart
-            //ExFor:Fill.ForeTintAndShade            
+            //ExFor:Fill.ForeTintAndShade
             //ExSummary:Shows how to manage lightening and darkening foreground font color.
             Document doc = new Document(MyDir + "Big document.docx");
 
@@ -1008,7 +1012,7 @@ namespace ApiExamples
             shape.Width = 200;
             shape.Height = 200;
             shape.Title = "My cube";
-            
+
             builder.InsertNode(shape);
 
             // When we save a document with a shape that has a title,
@@ -1098,7 +1102,7 @@ namespace ApiExamples
             // Set the horizontal, and vertical alignment of the text inside the shape.
             textBox.HorizontalAlignment = HorizontalAlignment.Center;
             textBox.VerticalAlignment = VerticalAlignment.Top;
-            
+
             // Add a paragraph to the text box and add a run of text that the text box will display.
             textBox.AppendChild(new Paragraph(doc));
             Paragraph para = textBox.FirstParagraph;
@@ -1181,14 +1185,14 @@ namespace ApiExamples
             //ExSummary:Shows how to verify the properties of an ActiveX control.
             Document doc = new Document(MyDir + "ActiveX controls.docx");
 
-            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             OleControl oleControl = shape.OleFormat.OleControl;
 
             Assert.AreEqual("CheckBox1", oleControl.Name);
 
             if (oleControl.IsForms2OleControl)
             {
-                Forms2OleControl checkBox = (Forms2OleControl) oleControl;
+                Forms2OleControl checkBox = (Forms2OleControl)oleControl;
                 Assert.AreEqual("First", checkBox.Caption);
                 Assert.AreEqual("0", checkBox.Value);
                 Assert.AreEqual(true, checkBox.Enabled);
@@ -1205,7 +1209,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.GetActiveXControlProperties.docx");
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            Forms2OleControl forms2OleControl = (Forms2OleControl) shape.OleFormat.OleControl;
+            Forms2OleControl forms2OleControl = (Forms2OleControl)shape.OleFormat.OleControl;
 
             Assert.AreEqual("Aspose group name", forms2OleControl.GroupName);
         }
@@ -1239,9 +1243,9 @@ namespace ApiExamples
             //ExFor:Chart.SourceFullName
             //ExSummary:Shows how to get/set the full name of the external xls/xlsx document if the chart is linked.
             Document doc = new Document(MyDir + "Shape with linked chart.docx");
-            
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);            
-            
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
             var sourceFullName = shape.Chart.SourceFullName;
             Assert.True(sourceFullName.Contains("Examples\\Data\\Spreadsheet.xlsx"));
 
@@ -1389,7 +1393,7 @@ namespace ApiExamples
             //ExSummary:Shows how to get an OLE object's suggested file name.
             Document doc = new Document(MyDir + "OLE shape.rtf");
 
-            Shape oleShape = (Shape) doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true);
+            Shape oleShape = (Shape)doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true);
 
             // OLE objects can provide a suggested filename and extension,
             // which we can use when saving the object's contents into a file in the local file system.
@@ -1409,7 +1413,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "ActiveX controls.docx");
 
-            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Assert.That(shape.OleFormat.SuggestedFileName, Is.Empty);
         }
 
@@ -1446,7 +1450,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Office math.docx");
 
-            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Display;
 
             Assert.That(() => officeMath.Justification = OfficeMathJustification.Inline,
@@ -1458,7 +1462,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Office math.docx");
 
-            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 6, true);
+            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 6, true);
 
             Assert.AreEqual(OfficeMathDisplayType.Inline, officeMath.DisplayType);
             Assert.AreEqual(OfficeMathJustification.Inline, officeMath.Justification);
@@ -1478,7 +1482,7 @@ namespace ApiExamples
             //ExSummary:Shows how to set office math display formatting.
             Document doc = new Document(MyDir + "Office math.docx");
 
-            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
 
             // OfficeMath nodes that are children of other OfficeMath nodes are always inline.
             // The node we are working with is the base node to change its location and display type.
@@ -1501,7 +1505,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Office math.docx");
 
-            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Display;
 
             Assert.Throws<ArgumentException>(() => officeMath.Justification = OfficeMathJustification.Inline);
@@ -1512,7 +1516,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Office math.docx");
 
-            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Inline;
 
             Assert.Throws<ArgumentException>(() => officeMath.Justification = OfficeMathJustification.Center);
@@ -1523,7 +1527,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Office math.docx");
 
-            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, 0, true);
+            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
 
             Assert.AreEqual(OfficeMathDisplayType.Display, officeMath.DisplayType);
             Assert.AreEqual(OfficeMathJustification.Center, officeMath.Justification);
@@ -1538,7 +1542,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Office math.docx");
 
-            OfficeMath officeMath = (OfficeMath) doc.GetChild(NodeType.OfficeMath, index, true);
+            OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, index, true);
             Assert.AreEqual(objectType, officeMath.MathObjectType);
         }
 
@@ -1567,7 +1571,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Shape.AspectRatio.docx");
-            shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             Assert.AreEqual(lockAspectRatio, shape.AspectRatioLocked);
         }
@@ -1696,7 +1700,7 @@ namespace ApiExamples
                 shape.OleFormat.OlePackage.FileName = "Package file name.zip";
                 shape.OleFormat.OlePackage.DisplayName = "Package display name.zip";
             }
-            
+
             doc.Save(ArtifactsDir + "Shape.InsertOlePackage.docx");
             //ExEnd
 
@@ -1811,7 +1815,7 @@ namespace ApiExamples
             builder.InsertCell();
             builder.InsertCell();
             builder.EndTable();
-            
+
             TableStyle tableStyle = (TableStyle)doc.Styles.Add(StyleType.Table, "MyTableStyle1");
             tableStyle.BottomPadding = 20;
             tableStyle.LeftPadding = 10;
@@ -1862,7 +1866,7 @@ namespace ApiExamples
 
             // Below are two wrapping types that shapes may have.
             // 1 -  Floating:
-            builder.InsertShape(ShapeType.TopCornersRounded, RelativeHorizontalPosition.Page, 100, 
+            builder.InsertShape(ShapeType.TopCornersRounded, RelativeHorizontalPosition.Page, 100,
                     RelativeVerticalPosition.Page, 100, 50, 50, WrapType.None);
 
             // 2 -  Inline:
@@ -1873,7 +1877,7 @@ namespace ApiExamples
             // then save the document with "Strict" or "Transitional" compliance, which allows saving shape as DML.
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
             saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
-            
+
             doc.Save(ArtifactsDir + "Shape.ShapeInsertion.docx", saveOptions);
             //ExEnd
 
@@ -1960,7 +1964,6 @@ namespace ApiExamples
                     Assert.AreEqual(shape.Stroke.Color, shape.StrokeColor);
                     AppendLine($"Stroke colors: {shape.Stroke.Color}, {shape.Stroke.Color2}");
                     AppendLine($"Stroke weight: {shape.StrokeWeight}");
-
                 }
 
                 if (shape.Filled)
@@ -2048,7 +2051,7 @@ namespace ApiExamples
             // customize using the "SignatureLineOptions" object we have created above.
             // If we insert a shape whose coordinates originate at the bottom right hand corner of the page,
             // we will need to supply negative x and y coordinates to bring the shape into view.
-            Shape shape = builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, -170.0, 
+            Shape shape = builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, -170.0,
                     RelativeVerticalPosition.BottomMargin, -60.0, WrapType.None);
 
             Assert.True(shape.IsSignatureLine);
@@ -2063,7 +2066,7 @@ namespace ApiExamples
             Assert.True(signatureLine.ShowDate);
             Assert.True(signatureLine.AllowComments);
             Assert.True(signatureLine.DefaultInstructions);
-            
+
             doc.Save(ArtifactsDir + "Shape.SignatureLine.docx");
             //ExEnd
 
@@ -2230,7 +2233,7 @@ namespace ApiExamples
             // Set the "TextBoxWrapMode" property to "TextBoxWrapMode.Square" to
             // wrap all text inside the text box, preserving its dimensions.
             textBox.TextBoxWrapMode = textBoxWrapMode;
-            
+
             builder.MoveTo(textBoxShape.LastParagraph);
             builder.Font.Size = 32;
             builder.Write("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
@@ -2259,7 +2262,7 @@ namespace ApiExamples
             // Not all formats are compatible with this one.
             // For most of the incompatible formats, AW generated warnings on save, so use doc.WarningCallback to check it.
             textBoxShape.TextBox.VerticalAnchor = TextBoxAnchor.Bottom;
-            
+
             builder.MoveTo(textBoxShape.LastParagraph);
             builder.Write("Text placed bottom");
 
@@ -2281,18 +2284,18 @@ namespace ApiExamples
             Shape textBoxShape1 = builder.InsertShape(ShapeType.TextBox, 100, 100);
             TextBox textBox1 = textBoxShape1.TextBox;
             builder.Writeln();
-            
+
             Shape textBoxShape2 = builder.InsertShape(ShapeType.TextBox, 100, 100);
             TextBox textBox2 = textBoxShape2.TextBox;
             builder.Writeln();
-            
+
             Shape textBoxShape3 = builder.InsertShape(ShapeType.TextBox, 100, 100);
             TextBox textBox3 = textBoxShape3.TextBox;
             builder.Writeln();
 
             Shape textBoxShape4 = builder.InsertShape(ShapeType.TextBox, 100, 100);
             TextBox textBox4 = textBoxShape4.TextBox;
-            
+
             // Create links between some of the text boxes.
             if (textBox1.IsValidLinkTarget(textBox2))
                 textBox1.Next = textBox2;
@@ -2305,19 +2308,19 @@ namespace ApiExamples
 
             builder.MoveTo(textBoxShape4.LastParagraph);
             builder.Write("Hello world!");
-            
+
             Assert.False(textBox3.IsValidLinkTarget(textBox4));
-            
+
             if (textBox1.Next != null && textBox1.Previous == null)
                 Console.WriteLine("This TextBox is the head of the sequence");
- 
+
             if (textBox2.Next != null && textBox2.Previous != null)
                 Console.WriteLine("This TextBox is the middle of the sequence");
- 
+
             if (textBox3.Next == null && textBox3.Previous != null)
             {
                 Console.WriteLine("This TextBox is the tail of the sequence");
-                
+
                 // Break the forward link between textBox2 and textBox3, and then verify that they are no longer linked.
                 textBox3.Previous.BreakForwardLink();
 
@@ -2371,7 +2374,7 @@ namespace ApiExamples
             // Set the "VerticalAnchor" property to "TextBoxAnchor.Bottom" to
             // align the text in this text box to the bottom of the shape.
             shape.TextBox.VerticalAnchor = verticalAnchor;
-            
+
             builder.MoveTo(shape.FirstParagraph);
             builder.Write("Hello world!");
 
@@ -2379,7 +2382,7 @@ namespace ApiExamples
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2007);
             doc.Save(ArtifactsDir + "Shape.VerticalAnchor.docx");
             //ExEnd
-            
+
             doc = new Document(ArtifactsDir + "Shape.VerticalAnchor.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
@@ -2421,7 +2424,7 @@ namespace ApiExamples
 
             // Insert a WordArt object to display text in a shape that we can re-size and move by using the mouse in Microsoft Word.
             // Provide a "ShapeType" as an argument to set a shape for the WordArt.
-            Shape shape = AppendWordArt(doc, "Hello World! This text is bold, and italic.", 
+            Shape shape = AppendWordArt(doc, "Hello World! This text is bold, and italic.",
                 "Arial", 480, 24, Color.White, Color.Black, ShapeType.TextPlainText);
 
             // Apply the "Bold" and "Italic" formatting settings to the text using the respective properties.
@@ -2682,7 +2685,7 @@ namespace ApiExamples
             shape = shapes[1];
             rectangleF = new RectangleF(200, 200, 1000, 1000);
             rectangleFOut = shape.AdjustWithEffects(rectangleF);
-            
+
             // The shape effects have moved the apparent top left corner of the shape slightly.
             Assert.AreEqual(171.5, rectangleFOut.X);
             Assert.AreEqual(167, rectangleFOut.Y);
@@ -2731,7 +2734,7 @@ namespace ApiExamples
             //ExFor:Shape.HasSmartArt
             //ExSummary:Shows how to count the number of shapes in a document with SmartArt objects.
             Document doc = new Document(MyDir + "SmartArt.docx");
- 
+
             int numberOfSmartArtShapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Count(shape => shape.HasSmartArt);
 
             Assert.AreEqual(2, numberOfSmartArtShapes);
@@ -2807,10 +2810,10 @@ namespace ApiExamples
 
             builder.InsertShape(ShapeType.Heptagon, RelativeHorizontalPosition.Page, 0,
                 RelativeVerticalPosition.Page, 0, 0, 0, WrapType.None);
-            
+
             builder.InsertShape(ShapeType.Cloud, RelativeHorizontalPosition.RightMargin, 0,
                 RelativeVerticalPosition.Page, 0, 0, 0, WrapType.None);
-            
+
             builder.InsertShape(ShapeType.MathPlus, RelativeHorizontalPosition.RightMargin, 0,
                 RelativeVerticalPosition.Page, 0, 0, 0, WrapType.None);
 
@@ -2820,7 +2823,7 @@ namespace ApiExamples
                 // "Strict" or "Transitional" compliance allows to save shape as DML.
                 Compliance = OoxmlCompliance.Iso29500_2008_Transitional
             };
-            
+
             doc.Save(ArtifactsDir + "Shape.ShapeTypes.docx", saveOptions);
             doc = new Document(ArtifactsDir + "Shape.ShapeTypes.docx");
 
@@ -2841,9 +2844,9 @@ namespace ApiExamples
             //ExSummary:Shows how to set that the shape is decorative.
             Document doc = new Document(MyDir + "Decorative shapes.docx");
 
-            Shape shape = (Shape) doc.GetChildNodes(NodeType.Shape, true)[0];
+            Shape shape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
             Assert.True(shape.IsDecorative);
-            
+
             // If "AlternativeText" is not empty, the shape cannot be decorative.
             // That's why our value has changed to 'false'.
             shape.AlternativeText = "Alternative text.";
@@ -2874,11 +2877,11 @@ namespace ApiExamples
             // 1 -  Using a local system filename:
             shape.Fill.SetImage(ImageDir + "Logo.jpg");
             doc.Save(ArtifactsDir + "Shape.FillImage.FileName.docx");
-            
+
             // 2 -  Load a file into a byte array:
             shape.Fill.SetImage(File.ReadAllBytes(ImageDir + "Logo.jpg"));
             doc.Save(ArtifactsDir + "Shape.FillImage.ByteArray.docx");
-            
+
             // 3 -  From a stream:
             using (FileStream stream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open))
                 shape.Fill.SetImage(stream);
@@ -2896,11 +2899,11 @@ namespace ApiExamples
             //ExSummary:Shows how to work with a shadow formatting for the shape.
             Document doc = new Document(MyDir + "Shape stroke pattern border.docx");
             Shape shape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
-            
-            if (shape.ShadowFormat.Visible && shape.ShadowFormat.Type == ShadowType.Shadow2)                
+
+            if (shape.ShadowFormat.Visible && shape.ShadowFormat.Type == ShadowType.Shadow2)
                 shape.ShadowFormat.Type = ShadowType.Shadow7;
-            
-            if (shape.ShadowFormat.Type == ShadowType.ShadowMixed)            
+
+            if (shape.ShadowFormat.Type == ShadowType.ShadowMixed)
                 shape.ShadowFormat.Clear();
             //ExEnd
         }
@@ -2924,7 +2927,6 @@ namespace ApiExamples
             shape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
 
             Assert.AreEqual(true, shape.TextBox.NoTextRotation);
-
         }
 
         [Test]
@@ -3040,8 +3042,8 @@ namespace ApiExamples
         {
             //ExStart:StrokeForeThemeColors
             //GistId:eeeec1fbf118e95e7df3f346c91ed726
-            //ExFor:Stroke.ForeThemeColor            
-            //ExFor:Stroke.ForeTintAndShade            
+            //ExFor:Stroke.ForeThemeColor
+            //ExFor:Stroke.ForeTintAndShade
             //ExSummary:Shows how to set fore theme color and tint and shade.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -3066,10 +3068,10 @@ namespace ApiExamples
         {
             //ExStart:StrokeBackThemeColors
             //GistId:eeeec1fbf118e95e7df3f346c91ed726
-            //ExFor:Stroke.BackThemeColor            
+            //ExFor:Stroke.BackThemeColor
             //ExFor:Stroke.BackTintAndShade
             //ExSummary:Shows how to set back theme color and tint and shade.
-            Document doc = new Document(MyDir + "Stroke gradient outline.docx");            
+            Document doc = new Document(MyDir + "Stroke gradient outline.docx");
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Stroke stroke = shape.Stroke;
