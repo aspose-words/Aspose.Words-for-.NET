@@ -188,7 +188,6 @@ namespace ApiExamples
             });
         }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
         [Test]
         public void UsePdfDocumentForBackgroundShape()
         {
@@ -201,7 +200,6 @@ namespace ApiExamples
             Assert.AreEqual(400, pdfDocImage.Height);
             Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
         }
-#endif
 
         //ExStart
         //ExFor:DocumentBase.ResourceLoadingCallback

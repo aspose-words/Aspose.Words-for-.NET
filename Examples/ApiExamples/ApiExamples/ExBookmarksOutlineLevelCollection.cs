@@ -82,7 +82,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
         [Test]
         public void UsePdfBookmarkEditorForBookmarkLevels()
         {
@@ -98,6 +97,5 @@ namespace ApiExamples
             Assert.AreEqual("Bookmark 2", bookmarks[1].Title);
             Assert.AreEqual("Bookmark 3", bookmarks[2].Title);
         }
-#endif
     }
 }

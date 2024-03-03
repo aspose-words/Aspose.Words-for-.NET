@@ -2025,7 +2025,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
         [TestCase(false)]
         [TestCase(true)]
         public void UsePdfDocumentForLayoutOptionsHiddenText(bool showHiddenText)
@@ -2040,7 +2039,6 @@ namespace ApiExamples
                     $"This text is not hidden.{Environment.NewLine}This text is hidden." : 
                     "This text is not hidden.", textAbsorber.Text);
         }
-#endif
 
         [TestCase(false)]
         [TestCase(true)]
@@ -2066,7 +2064,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
         [TestCase(false)]
         [TestCase(true)]
         public void UsePdfDocumentForLayoutOptionsParagraphMarks(bool showParagraphMarks)
@@ -2081,7 +2078,6 @@ namespace ApiExamples
                     $"Hello world!¶{Environment.NewLine}Hello again!¶{Environment.NewLine}¶" : 
                     $"Hello world!{Environment.NewLine}Hello again!", textAbsorber.Text.Trim());
         }
-#endif
 
         [Test]
         public void UpdatePageLayout()
@@ -2341,7 +2337,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
         [Test]
         public void UsePdfDocumentForShowComments()
         {
@@ -2355,7 +2350,6 @@ namespace ApiExamples
                 "Hello world!                                                                    Commented [J.D.1]:  My comment.",
                 textAbsorber.Text);
         }
-#endif
 
         [Test]
         public void CopyTemplateStylesViaDocument()

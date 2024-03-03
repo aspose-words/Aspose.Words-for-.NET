@@ -422,7 +422,7 @@ namespace ApiExamples
                     break;
                 case ImagePixelFormat.Format24BppRgb:
                     Assert.That(testedImageLength, Is.LessThan(77000));
-                    break;                
+                    break;
                 case ImagePixelFormat.Format16BppRgb565:
                 case ImagePixelFormat.Format16BppRgb555:
                 case ImagePixelFormat.Format32BppRgb:
@@ -433,7 +433,7 @@ namespace ApiExamples
                     Assert.That(testedImageLength, Is.LessThan(132000));
                     break;
             }
-#endif            
+#endif
         }
 
         [Test, Category("SkipMono")]
@@ -602,7 +602,7 @@ namespace ApiExamples
                 case TiffCompression.Ccitt4:
                     Assert.That(testedImageLength, Is.LessThan(1700));
                     break;
-            }            
+            }
         }
 
         [Test]

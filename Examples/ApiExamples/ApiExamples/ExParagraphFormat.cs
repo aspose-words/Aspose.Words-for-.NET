@@ -411,7 +411,6 @@ namespace ApiExamples
             //ExEnd
         }
 
-#if NET48 || NET5_0_OR_GREATER || JAVA
         [TestCase(false)]
         [TestCase(true)]
         public void UsePdfDocumentForSuppressHyphens(bool suppressAutoHyphens)
@@ -420,7 +419,7 @@ namespace ApiExamples
 
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "ParagraphFormat.SuppressHyphens.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
-            textAbsorber.Visit(pdfDoc);            
+            textAbsorber.Visit(pdfDoc);
 
             if (suppressAutoHyphens)
                 Assert.True(textAbsorber.Text.Replace("  ", " ").Contains($"La ob storen an deinen am sachen. {Environment.NewLine}" +
@@ -431,7 +430,6 @@ namespace ApiExamples
                                                        $"pelte um da am spateren verlogen ge-{Environment.NewLine}" +
                                                        $"kommen achtzehn blaulich."));
         }
-#endif
 
         [Test]
         public void ParagraphSpacingAndIndents()
