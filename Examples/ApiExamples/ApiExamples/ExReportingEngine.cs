@@ -593,7 +593,7 @@ namespace ApiExamples
             builder.Writeln("<<[new DateTime()]:”dd.MM.yyyy”>>");
 
             ReportingEngine engine = new ReportingEngine();
-            Assert.That(() => engine.BuildReport(doc, ""), Throws.TypeOf<InvalidOperationException>());
+            Assert.Throws<InvalidOperationException>(() => engine.BuildReport(doc, ""));
         }
 
         [Test]
@@ -808,8 +808,8 @@ namespace ApiExamples
                 new[] { "<<[missingObject.First().id]>>", "<<foreach [in missingObject]>><<[id]>><</foreach>>" });
 
             // Assert that build report failed without "ReportBuildOptions.AllowMissingMembers".
-            Assert.That(() => BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.None),
-                Throws.TypeOf<InvalidOperationException>());
+            Assert.Throws<InvalidOperationException>(
+                () => BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.None));
         }
 
         [Test]
@@ -840,7 +840,7 @@ namespace ApiExamples
 
             BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.InlineErrorMessages);
 
-            Assert.That(builder.Document.FirstSection.Body.Paragraphs[0].GetText().TrimEnd(), Is.EqualTo(result));
+            Assert.AreEqual(result, builder.Document.FirstSection.Body.Paragraphs[0].GetText().TrimEnd());
         }
 
         [Test]

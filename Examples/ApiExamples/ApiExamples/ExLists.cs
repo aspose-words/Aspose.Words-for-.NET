@@ -988,12 +988,10 @@ namespace ApiExamples
             Assert.AreEqual("005", ListLevel.GetEffectiveValue(5, NumberStyle.Custom, customNumberStyleFormat));
             //ExEnd
 
-            Assert.That(() => ListLevel.GetEffectiveValue(5, NumberStyle.LowercaseRoman, customNumberStyleFormat),
-                Throws.TypeOf<ArgumentException>());
-            Assert.That(() => ListLevel.GetEffectiveValue(5, NumberStyle.Custom, null),
-                Throws.TypeOf<ArgumentException>());
-            Assert.That(() => ListLevel.GetEffectiveValue(5, NumberStyle.Custom, "...."),
-                Throws.TypeOf<ArgumentException>());
+            Assert.Throws<ArgumentException>(
+                () => ListLevel.GetEffectiveValue(5, NumberStyle.LowercaseRoman, customNumberStyleFormat));
+            Assert.Throws<ArgumentException>(() => ListLevel.GetEffectiveValue(5, NumberStyle.Custom, null));
+            Assert.Throws<ArgumentException>(() => ListLevel.GetEffectiveValue(5, NumberStyle.Custom, "...."));
         }
 
         [Test]

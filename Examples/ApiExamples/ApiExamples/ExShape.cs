@@ -1293,8 +1293,8 @@ namespace ApiExamples
             oleFormat.Save(ArtifactsDir + "OLE spreadsheet saved directly" + oleFormat.SuggestedExtension);
             //ExEnd
 
-            Assert.That(new FileInfo(ArtifactsDir + "OLE spreadsheet extracted via stream.xlsx").Length, Is.LessThan(8400));
-            Assert.That(new FileInfo(ArtifactsDir + "OLE spreadsheet saved directly.xlsx").Length, Is.LessThan(8400));
+            Assert.IsTrue(new FileInfo(ArtifactsDir + "OLE spreadsheet extracted via stream.xlsx").Length < 8400);
+            Assert.IsTrue(new FileInfo(ArtifactsDir + "OLE spreadsheet saved directly.xlsx").Length < 8400);
         }
 
         [Test]
@@ -1414,7 +1414,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "ActiveX controls.docx");
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            Assert.That(shape.OleFormat.SuggestedFileName, Is.Empty);
+            Assert.AreEqual(string.Empty, shape.OleFormat.SuggestedFileName);
         }
 
         [Test]
@@ -1453,8 +1453,7 @@ namespace ApiExamples
             OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
             officeMath.DisplayType = OfficeMathDisplayType.Display;
 
-            Assert.That(() => officeMath.Justification = OfficeMathJustification.Inline,
-                Throws.TypeOf<ArgumentException>());
+            Assert.Throws<ArgumentException>(() => officeMath.Justification = OfficeMathJustification.Inline);
         }
 
         [Test]

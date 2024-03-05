@@ -581,11 +581,11 @@ namespace ApiExamples
             switch (pdfTextCompression)
             {
                 case PdfTextCompression.None:
-                    Assert.That(testedFileLength, Is.LessThan(69000));
+                    Assert.IsTrue(testedFileLength < 69000);
                     TestUtil.FileContainsString("<</Length 11 0 R>>stream", filePath);
                     break;
                 case PdfTextCompression.Flate:
-                    Assert.That(testedFileLength, Is.LessThan(27000));
+                    Assert.IsTrue(testedFileLength < 27000);
                     TestUtil.FileContainsString("<</Length 11 0 R/Filter/FlateDecode>>stream", filePath);
                     break;
             }
@@ -649,11 +649,11 @@ namespace ApiExamples
             switch (pdfImageCompression)
             {
                 case PdfImageCompression.Auto:
-                    Assert.That(testedFileLength, Is.LessThan(54000));
+                    Assert.IsTrue(testedFileLength < 54000);
                     TestUtil.VerifyImage(400, 400, imagePath);
                     break;
                 case PdfImageCompression.Jpeg:
-                    Assert.That(testedFileLength, Is.LessThan(40000));
+                    Assert.IsTrue(testedFileLength < 40000);
                     TestUtil.VerifyImage(400, 400, imagePath);
                     break;
             }
@@ -705,10 +705,10 @@ namespace ApiExamples
             switch (pdfImageColorSpaceExportMode)
             {
                 case PdfImageColorSpaceExportMode.Auto:
-                    Assert.That(testedImageLength, Is.LessThan(20500));
+                    Assert.IsTrue(testedImageLength < 20500);
                     break;
                 case PdfImageColorSpaceExportMode.SimpleCmyk:
-                    Assert.That(testedImageLength, Is.LessThan(140000));
+                    Assert.IsTrue(testedImageLength < 140000);
                     break;
             }
 
@@ -722,10 +722,10 @@ namespace ApiExamples
             switch (pdfImageColorSpaceExportMode)
             {
                 case PdfImageColorSpaceExportMode.Auto:
-                    Assert.That(testedImageLength, Is.LessThan(20500));
+                    Assert.IsTrue(testedImageLength < 20500);
                     break;
                 case PdfImageColorSpaceExportMode.SimpleCmyk:
-                    Assert.That(testedImageLength, Is.LessThan(21500));
+                    Assert.IsTrue(testedImageLength < 21500);
                     break;
             }
 
@@ -777,7 +777,7 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.DownsampleOptions.Default.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
-            Assert.That(pdfDocImage.ToStream().Length, Is.LessThan(400000));
+            Assert.IsTrue(pdfDocImage.ToStream().Length < 400000);
             Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
         }
 
@@ -816,11 +816,11 @@ namespace ApiExamples
             switch (colorMode)
             {
                 case ColorMode.Normal:
-                    Assert.That(testedImageLength, Is.LessThan(400000));
+                    Assert.IsTrue(testedImageLength < 400000);
                     Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
                     break;
                 case ColorMode.Grayscale:
-                    Assert.That(testedImageLength, Is.LessThan(1450000));
+                    Assert.IsTrue(testedImageLength < 1450000);
                     Assert.AreEqual(ColorType.Grayscale, pdfDocImage.GetColorType());
                     break;
             }
@@ -1133,8 +1133,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOption.UnsupportedImageFormatWarning.pdf", SaveFormat.Pdf);
 
-            Assert.That(saveWarningCallback.SaveWarnings[0].Description,
-                Is.EqualTo("Image can not be processed. Possibly unsupported image format."));
+            Assert.AreEqual("Image can not be processed. Possibly unsupported image format.",
+                saveWarningCallback.SaveWarnings[0].Description);
         }
 
         public class SaveWarningCallback : IWarningCallback
@@ -1238,9 +1238,9 @@ namespace ApiExamples
 
             var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedFullFonts.pdf").Length;
             if (embedFullFonts)
-                Assert.That(testedFileLength, Is.LessThan(571000));
+                Assert.IsTrue(testedFileLength < 571000);
             else
-                Assert.That(testedFileLength, Is.LessThan(24000));
+                Assert.IsTrue(testedFileLength < 24000);
         }
 
         [TestCase(false)]
@@ -1294,16 +1294,15 @@ namespace ApiExamples
             switch (pdfFontEmbeddingMode)
             {
                 case PdfFontEmbeddingMode.EmbedAll:
-                    Assert.That(testedFileLength, Is.LessThan(1040000));
+                    Assert.IsTrue(testedFileLength < 1040000);
                     break;
                 case PdfFontEmbeddingMode.EmbedNonstandard:
-                    Assert.That(testedFileLength, Is.LessThan(492000));
+                    Assert.IsTrue(testedFileLength < 492000);
                     break;
                 case PdfFontEmbeddingMode.EmbedNone:
-                    Assert.That(testedFileLength, Is.LessThan(4300));
+                    Assert.IsTrue(testedFileLength < 4300);
                     break;
             }
-
         }
 
         [TestCase(PdfFontEmbeddingMode.EmbedAll)]
@@ -1353,9 +1352,9 @@ namespace ApiExamples
 
             var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.EmbedCoreFonts.pdf").Length;
             if (useCoreFonts)
-                Assert.That(testedFileLength, Is.LessThan(2000));
+                Assert.IsTrue(testedFileLength < 2000);
             else
-                Assert.That(testedFileLength, Is.LessThan(33500));
+                Assert.IsTrue(testedFileLength < 33500);
         }
 
         [TestCase(false)]
@@ -1424,14 +1423,14 @@ namespace ApiExamples
             var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length;
             if (applyAdditionalTextPositioning)
             {
-                Assert.That(testedFileLength, Is.LessThan(102000));
+                Assert.IsTrue(testedFileLength < 102000);
                 Assert.AreEqual(
                     "[0 (S) 0 (a) 0 (m) 0 (s) 0 (t) 0 (a) -1 (g) 1 (,) 0 ( ) 0 (1) 0 (0) 0 (.) 0 ( ) 0 (N) 0 (o) 0 (v) 0 (e) 0 (m) 0 (b) 0 (e) 0 (r) -1 ( ) 1 (2) -1 (0) 0 (1) 0 (8)] TJ",
                     tjOperator.ToString());
             }
             else
             {
-                Assert.That(testedFileLength, Is.LessThan(99500));
+                Assert.IsTrue(testedFileLength < 99500);
                 Assert.AreEqual("[(Samsta) -1 (g) 1 (, 10. November) -1 ( ) 1 (2) -1 (018)] TJ", tjOperator.ToString());
             }
         }
@@ -2032,7 +2031,7 @@ namespace ApiExamples
                 }
                 else
                 {
-                    Assert.That(stream.Length, Is.LessThan(19500));
+                    Assert.IsTrue(stream.Length < 19500);
                 }
             }
         }

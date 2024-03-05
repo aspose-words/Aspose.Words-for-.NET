@@ -232,7 +232,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx", options);
 
             // The folder will persist with no residual contents from the load operation.
-            Assert.That(Directory.GetFiles(options.TempFolder), Is.Empty);
+            Assert.AreEqual(0, Directory.GetFiles(options.TempFolder).Length);
             //ExEnd
         }
 

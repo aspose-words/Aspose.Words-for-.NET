@@ -783,8 +783,7 @@ namespace ApiExamples
             {
                 Document srcDoc = new Document();
 
-                Assert.That(() => srcDoc == new Document("C:\\DetailsList.doc"),
-                    Throws.TypeOf<FileNotFoundException>());
+                Assert.Throws<FileNotFoundException>(() => new Document("C:\\DetailsList.doc"));
 
                 // Append the source document at the end of the destination document.
                 doc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles);
@@ -795,8 +794,7 @@ namespace ApiExamples
                 // Unlink all headers/footers in this section from the previous section headers/footers
                 // if this is the second document or above being appended.
                 if (i > 1)
-                    Assert.That(() => doc.Sections[i].HeadersFooters.LinkToPrevious(false),
-                        Throws.TypeOf<NullReferenceException>());
+                    Assert.Throws<NullReferenceException>(() => doc.Sections[i].HeadersFooters.LinkToPrevious(false));
             }
         }
 
@@ -1442,8 +1440,7 @@ namespace ApiExamples
             docWithRevision.StartTrackRevisions("John Doe");
             builder.Writeln("This is a revision.");
 
-            Assert.That(() => docWithRevision.Compare(doc1, "John Doe", DateTime.Now),
-                Throws.TypeOf<InvalidOperationException>());
+            Assert.Throws<InvalidOperationException>(() => docWithRevision.Compare(doc1, "John Doe", DateTime.Now));
         }
 
         [Test]
@@ -1592,7 +1589,7 @@ namespace ApiExamples
             Assert.AreEqual(1, doc.Revisions.Count);
             Assert.True(doc.FirstSection.Body.Paragraphs[0].Runs[1].IsInsertRevision);
             Assert.AreEqual("John Doe", doc.Revisions[0].Author);
-            Assert.That(doc.Revisions[0].DateTime, Is.EqualTo(DateTime.Now).Within(10).Milliseconds);
+            Assert.IsTrue((DateTime.Now - doc.Revisions[0].DateTime).Milliseconds <= 10);
 
             // Stop tracking revisions to not count any future edits as revisions.
             doc.StopTrackRevisions();
@@ -1759,9 +1756,8 @@ namespace ApiExamples
         public void HyphenationZoneException()
         {
             Document doc = new Document();
-            
-            Assert.That(() => doc.HyphenationOptions.HyphenationZone = 0,
-                Throws.TypeOf<ArgumentOutOfRangeException>());
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => doc.HyphenationOptions.HyphenationZone = 0);
         }
 
         [Test]

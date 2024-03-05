@@ -88,7 +88,7 @@ namespace ApiExamples
             // 3 -  Clear the whole collection at once:
             variables.Clear();
 
-            Assert.That(variables, Is.Empty);
+            Assert.AreEqual(0, variables.Count);
             //ExEnd
         }
     }

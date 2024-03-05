@@ -67,8 +67,8 @@ namespace ApiExamples
             }
 
             // Verify that both our output documents have no digital signatures.
-            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx"), Is.Empty);
-            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx"), Is.Empty);
+            Assert.AreEqual(0, DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx").Count);
+            Assert.AreEqual(0, DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx").Count);
             //ExEnd
         }
 
@@ -78,7 +78,7 @@ namespace ApiExamples
             DigitalSignatureUtil.RemoveAllSignatures(MyDir + "Digitally signed.odt",
                 ArtifactsDir + "DigitalSignatureUtil.RemoveSignatures.odt");
 
-            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.RemoveSignatures.odt"), Is.Empty);
+            Assert.AreEqual(0, DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.RemoveSignatures.odt").Count);
         }
 
         [Test]
@@ -196,9 +196,9 @@ namespace ApiExamples
                 DecryptionPassword = "docPassword1"
             };
 
-            Assert.That(
+            Assert.Throws<IncorrectPasswordException>(
                 () => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions),
-                Throws.TypeOf<IncorrectPasswordException>(), "The document password is incorrect.");
+                "The document password is incorrect.");
         }
 
         [Test]
@@ -211,8 +211,8 @@ namespace ApiExamples
                 DecryptionPassword = string.Empty
             };
 
-            Assert.That(() => DigitalSignatureUtil.Sign(string.Empty, string.Empty, null, signOptions),
-                Throws.TypeOf<ArgumentException>());
+            Assert.Throws<ArgumentException>(
+                () => DigitalSignatureUtil.Sign(string.Empty, string.Empty, null, signOptions));
         }
 
         [Test]
@@ -228,8 +228,8 @@ namespace ApiExamples
                 DecryptionPassword = "docPassword"
             };
 
-            Assert.That(() => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, null, signOptions),
-                Throws.TypeOf<ArgumentNullException>());
+            Assert.Throws<ArgumentNullException>(
+                () => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, null, signOptions));
         }
     }
 }

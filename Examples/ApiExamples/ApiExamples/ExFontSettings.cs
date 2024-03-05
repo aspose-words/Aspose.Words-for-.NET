@@ -108,7 +108,7 @@ namespace ApiExamples
             // Even though the document was rendered previously, any save warnings are notified to the user during document save
             doc.Save(ArtifactsDir + "FontSettings.UpdatePageLayoutWarnings.pdf");
 
-            Assert.That(callback.FontWarnings.Count, Is.GreaterThan(0));
+            Assert.True(callback.FontWarnings.Count > 0);
             Assert.True(callback.FontWarnings[0].WarningType == WarningType.FontSubstitution);
             Assert.True(callback.FontWarnings[0].Description.Contains("has not been found"));
 
@@ -273,7 +273,7 @@ namespace ApiExamples
 
             substitutionWarningHandler.FontWarnings.Clear();
 
-            Assert.That(substitutionWarningHandler.FontWarnings, Is.Empty);
+            Assert.AreEqual(0, substitutionWarningHandler.FontWarnings.Count);
         }
 
         public class HandleDocumentSubstitutionWarnings : IWarningCallback

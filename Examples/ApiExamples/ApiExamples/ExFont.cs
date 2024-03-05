@@ -161,9 +161,9 @@ namespace ApiExamples
             var testedFileLength = new FileInfo(ArtifactsDir + "Font.FontInfoCollection.docx").Length;
 
             if (embedAllFonts)
-                Assert.That(testedFileLength, Is.LessThan(28000));
+                Assert.IsTrue(testedFileLength < 28000);
             else
-                Assert.That(testedFileLength, Is.LessThan(13000));
+                Assert.IsTrue(testedFileLength < 13000);
         }
 
         [TestCase(true, false, false, Description =

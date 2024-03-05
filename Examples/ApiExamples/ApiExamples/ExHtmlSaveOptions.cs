@@ -94,35 +94,35 @@ namespace ApiExamples
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles, Is.Empty);
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
 
                 case SaveFormat.Epub:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles, Is.Empty);
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
 
                 case SaveFormat.Mhtml:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles, Is.Empty);
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
 
                 case SaveFormat.Azw3:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles, Is.Empty);
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
 
                 case SaveFormat.Mobi:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles, Is.Empty);
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
             }
         }
@@ -1745,12 +1745,12 @@ namespace ApiExamples
 
             if (scaleImageToShapeSize)
 #if NET461_OR_GREATER || JAVA
-                Assert.That(testedImageLength, Is.LessThan(3000));
+                Assert.IsTrue(testedImageLength < 3000);
 #elif NET5_0_OR_GREATER
-                Assert.That(testedImageLength, Is.LessThan(6000));
+                Assert.IsTrue(testedImageLength < 6000);
 #endif
             else
-                Assert.That(testedImageLength, Is.LessThan(16000));
+                Assert.IsTrue(testedImageLength < 16000);
             
         }
 

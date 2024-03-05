@@ -287,26 +287,26 @@ namespace ApiExamples
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
-                    Assert.That(testedImageLength, Is.LessThan(175000));
+                    Assert.IsTrue(testedImageLength < 175000);
                     break;
                 case ImageColorMode.Grayscale:
-                    Assert.That(testedImageLength, Is.LessThan(90000));
+                    Assert.IsTrue(testedImageLength < 90000);
                     break;
                 case ImageColorMode.BlackAndWhite:
-                    Assert.That(testedImageLength, Is.LessThan(15000));
+                    Assert.IsTrue(testedImageLength < 15000);
                     break;
             }
 #elif NET5_0_OR_GREATER
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
-                    Assert.That(testedImageLength, Is.LessThan(132000));
+                    Assert.IsTrue(testedImageLength < 132000);
                     break;
                 case ImageColorMode.Grayscale:
-                    Assert.That(testedImageLength, Is.LessThan(90000));
+                    Assert.IsTrue(testedImageLength < 90000);
                     break;
                 case ImageColorMode.BlackAndWhite:
-                    Assert.That(testedImageLength, Is.LessThan(11000));
+                    Assert.IsTrue(testedImageLength < 11000);
                     break;
             }
 #endif            
@@ -391,37 +391,37 @@ namespace ApiExamples
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
-                    Assert.That(testedImageLength, Is.LessThan(2500));
-                    break;                
+                    Assert.IsTrue(testedImageLength < 2500);
+                    break;
                 case ImagePixelFormat.Format16BppRgb565:
-                    Assert.That(testedImageLength, Is.LessThan(104000));
+                    Assert.IsTrue(testedImageLength < 104000);
                     break;
                 case ImagePixelFormat.Format16BppRgb555:
-                    Assert.That(testedImageLength, Is.LessThan(88000));
+                    Assert.IsTrue(testedImageLength < 88000);
                     break;
                 case ImagePixelFormat.Format24BppRgb:
-                    Assert.That(testedImageLength, Is.LessThan(160000));
+                    Assert.IsTrue(testedImageLength < 160000);
                     break;
                 case ImagePixelFormat.Format32BppRgb:
                 case ImagePixelFormat.Format32BppArgb:
-                    Assert.That(testedImageLength, Is.LessThan(175000));
+                    Assert.IsTrue(testedImageLength < 175000);
                     break;
                 case ImagePixelFormat.Format48BppRgb:
-                    Assert.That(testedImageLength, Is.LessThan(212000));
+                    Assert.IsTrue(testedImageLength < 212000);
                     break;
                 case ImagePixelFormat.Format64BppArgb:
                 case ImagePixelFormat.Format64BppPArgb:
-                    Assert.That(testedImageLength, Is.LessThan(239000));
+                    Assert.IsTrue(testedImageLength < 239000);
                     break;
             }
 #elif NET5_0_OR_GREATER
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
-                    Assert.That(testedImageLength, Is.LessThan(7500));
+                    Assert.IsTrue(testedImageLength < 7500);
                     break;
                 case ImagePixelFormat.Format24BppRgb:
-                    Assert.That(testedImageLength, Is.LessThan(77000));
+                    Assert.IsTrue(testedImageLength < 77000);
                     break;
                 case ImagePixelFormat.Format16BppRgb565:
                 case ImagePixelFormat.Format16BppRgb555:
@@ -430,7 +430,7 @@ namespace ApiExamples
                 case ImagePixelFormat.Format48BppRgb:
                 case ImagePixelFormat.Format64BppArgb:
                 case ImagePixelFormat.Format64BppPArgb:
-                    Assert.That(testedImageLength, Is.LessThan(132000));
+                    Assert.IsTrue(testedImageLength < 132000);
                     break;
             }
 #endif
@@ -533,7 +533,7 @@ namespace ApiExamples
             // Set the "JpegQuality" property to "10" to use stronger compression when rendering the document.
             // This will reduce the file size of the document, but the image will display more prominent compression artifacts.
             imageOptions.JpegQuality = 10;
-            doc.Save(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg", imageOptions);            
+            doc.Save(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg", imageOptions);
 
             // Set the "JpegQuality" property to "100" to use weaker compression when rending the document.
             // This will improve the quality of the image at the cost of an increased file size.
@@ -541,8 +541,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg", imageOptions);
             //ExEnd
 
-            Assert.That(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg").Length, Is.LessThan(18000));
-            Assert.That(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg").Length, Is.LessThan(75000));            
+            Assert.IsTrue(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg").Length < 18000);
+            Assert.IsTrue(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg").Length < 75000);
         }
 
         [TestCase(TiffCompression.None), Category("SkipMono")]
@@ -580,27 +580,27 @@ namespace ApiExamples
             switch (tiffCompression)
             {
                 case TiffCompression.None:
-                    Assert.That(testedImageLength, Is.LessThan(3450000));
+                    Assert.IsTrue(testedImageLength < 3450000);
                     break;
                 case TiffCompression.Rle:
 #if NET5_0_OR_GREATER
-                    Assert.That(testedImageLength, Is.LessThan(7500));
+                    Assert.IsTrue(testedImageLength < 7500);
 #else
-                    Assert.That(testedImageLength, Is.LessThan(687000));
+                    Assert.IsTrue(testedImageLength < 687000);
 #endif
                     break;
                 case TiffCompression.Lzw:
-                    Assert.That(testedImageLength, Is.LessThan(250000));
+                    Assert.IsTrue(testedImageLength < 250000);
                     break;
                 case TiffCompression.Ccitt3:
 #if NET5_0_OR_GREATER
-                    Assert.That(testedImageLength, Is.LessThan(6100));
+                    Assert.IsTrue(testedImageLength < 6100);
 #else
-                    Assert.That(testedImageLength, Is.LessThan(8300));
+                    Assert.IsTrue(testedImageLength < 8300);
 #endif
                     break;
                 case TiffCompression.Ccitt4:
-                    Assert.That(testedImageLength, Is.LessThan(1700));
+                    Assert.IsTrue(testedImageLength < 1700);
                     break;
             }
         }

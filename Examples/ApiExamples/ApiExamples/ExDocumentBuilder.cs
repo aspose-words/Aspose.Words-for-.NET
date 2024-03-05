@@ -204,13 +204,13 @@ namespace ApiExamples
             HorizontalRuleFormat horizontalRuleFormat = shape.HorizontalRuleFormat;
             horizontalRuleFormat.WidthPercent = 1;
             horizontalRuleFormat.WidthPercent = 100;
-            Assert.That(() => horizontalRuleFormat.WidthPercent = 0, Throws.TypeOf<ArgumentOutOfRangeException>());
-            Assert.That(() => horizontalRuleFormat.WidthPercent = 101, Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.Throws<ArgumentOutOfRangeException>(() => horizontalRuleFormat.WidthPercent = 0);
+            Assert.Throws<ArgumentOutOfRangeException>(() => horizontalRuleFormat.WidthPercent = 101);
 
             horizontalRuleFormat.Height = 0;
             horizontalRuleFormat.Height = 1584;
-            Assert.That(() => horizontalRuleFormat.Height = -1, Throws.TypeOf<ArgumentOutOfRangeException>());
-            Assert.That(() => horizontalRuleFormat.Height = 1585, Throws.TypeOf<ArgumentOutOfRangeException>());
+            Assert.Throws<ArgumentOutOfRangeException>(() => horizontalRuleFormat.Height = -1);
+            Assert.Throws<ArgumentOutOfRangeException>(() => horizontalRuleFormat.Height = 1585);
         }
 
         [Test]
@@ -2480,8 +2480,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Assert.That(() => builder.InsertOleObject("", "checkbox", false, true, null),
-                Throws.TypeOf<ArgumentException>());
+            Assert.Throws<ArgumentException>(() => builder.InsertOleObject("", "checkbox", false, true, null));
         }
 
         [Test]
@@ -2559,7 +2558,7 @@ namespace ApiExamples
             Assert.AreEqual("DATE \\@ \"dddd, MMMM dd, yyyy\"", field.GetFieldCode());
 
             // This overload of the InsertField method automatically updates inserted fields.
-            Assert.That(DateTime.Parse(field.Result), Is.EqualTo(DateTime.Today).Within(1).Days);
+            Assert.True((DateTime.Today - DateTime.Parse(field.Result)).Days <= 1);
             //ExEnd
         }
 

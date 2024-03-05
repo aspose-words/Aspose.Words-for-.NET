@@ -406,9 +406,9 @@ namespace ApiExamples
 
             FieldBuilder fieldBuilder = new FieldBuilder(FieldType.FieldIncludeText);
 
-            Assert.That(
+            Assert.Throws<ArgumentException>(
                 () => fieldBuilder.AddArgument(argumentBuilder).AddArgument("=").AddArgument("BestField")
-                    .AddArgument(10).AddArgument(20.0).BuildAndInsert(run), Throws.TypeOf<ArgumentException>());
+                    .AddArgument(10).AddArgument(20.0).BuildAndInsert(run));
         }
 
         [Test]
@@ -1533,7 +1533,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Field.AUTOTEXT.GLOSSARY.dotx");
 
-            Assert.That(doc.FieldOptions.BuiltInTemplatesPaths, Is.Empty);
+            Assert.AreEqual(0, doc.FieldOptions.BuiltInTemplatesPaths.Length);
 
             fieldAutoText = (FieldAutoText)doc.Range.Fields[0];
 
@@ -1678,7 +1678,7 @@ namespace ApiExamples
 
             doc.MailMerge.Execute(table);
 
-            Assert.That(doc.Range.Fields, Is.Empty);
+            Assert.AreEqual(0, doc.Range.Fields.Count);
             Assert.AreEqual("Dear Mr. Doe,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!\r" +
                             "\fDear Mrs. Cardholder,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!\r" +
                             "\fDear Sir or Madam,\r\r\tThis is your custom greeting, created programmatically using Aspose Words!",
@@ -1844,7 +1844,7 @@ namespace ApiExamples
             Assert.AreEqual("Dear Mr. Doe:\u000cDear Mrs. Cardholder:", doc.GetText().Trim());
             //ExEnd
 
-            Assert.That(doc.Range.Fields, Is.Empty);
+            Assert.AreEqual(0, doc.Range.Fields.Count);
         }
 
         //ExStart
@@ -5105,7 +5105,7 @@ namespace ApiExamples
 
             // 2 -  Display a custom document variable:
             // Define a custom variable, then reference that variable with a DOCPROPERTY field.
-            Assert.That(doc.Variables, Is.Empty);
+            Assert.AreEqual(0, doc.Variables.Count);
             doc.Variables.Add("My variable", "My variable's value");
 
             FieldDocVariable fieldDocVariable = (FieldDocVariable)builder.InsertField(FieldType.FieldDocVariable, true);

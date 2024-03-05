@@ -270,7 +270,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Assert that isn't valid structure for the current document.
-            Assert.That(() => builder.EndEditableRange(), Throws.TypeOf<InvalidOperationException>());
+            Assert.Throws<InvalidOperationException>(() => builder.EndEditableRange());
 
             builder.StartEditableRange();
         }

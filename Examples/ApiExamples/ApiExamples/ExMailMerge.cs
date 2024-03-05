@@ -51,11 +51,11 @@ namespace ApiExamples
                 new object[] { "James Bond", "MI5 Headquarters", "Milbank", "London" });
 
             // Send the document to the client browser.
-            Assert.That(() => doc.Save(response, "Artifacts/MailMerge.ExecuteArray.docx", ContentDisposition.Inline, null),
-                Throws.TypeOf<ArgumentNullException>()); //Thrown because HttpResponse is null in the test.
+            //Thrown because HttpResponse is null in the test.
+            Assert.Throws<ArgumentNullException>(() => doc.Save(response, "Artifacts/MailMerge.ExecuteArray.docx", ContentDisposition.Inline, null));
 
             // We will need to close this response manually to ensure that we do not add any superfluous content to the document after saving.
-            Assert.That(() => response.End(), Throws.TypeOf<NullReferenceException>());
+            Assert.Throws<NullReferenceException>(() => response.End());
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
@@ -1562,7 +1562,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "MailMerge.OdsoEmail.docx");
-            Assert.That(doc.MailMergeSettings.ConnectString, Is.Empty);
+            Assert.AreEqual(string.Empty, doc.MailMergeSettings.ConnectString);
         }
 
         private void TestOdsoEmail(Document doc)

@@ -132,7 +132,7 @@ namespace ApiExamples
                 .OfType<StructuredDocumentTag>().ToArray();
 
             Assert.AreEqual(true, tags[0].Checked);
-            Assert.That(tags[0].XmlMapping.StoreItemId, Is.Empty);
+            Assert.AreEqual(string.Empty, tags[0].XmlMapping.StoreItemId);
         }
 
         [Test, Category("SkipMono")]
@@ -204,7 +204,7 @@ namespace ApiExamples
             tag.Tag = "MyPlainTextSDT";
 
             // Every structured document tag has a random unique ID.
-            Assert.That(tag.Id, Is.Positive);
+            Assert.IsTrue(tag.Id > 0);
 
             // Set the font for the text inside the structured document tag.
             tag.ContentsFont.Name = "Arial";
@@ -245,7 +245,7 @@ namespace ApiExamples
             Assert.AreEqual("My plain text", tag.Title);
             Assert.AreEqual(Color.Magenta.ToArgb(), tag.Color.ToArgb());
             Assert.AreEqual("MyPlainTextSDT", tag.Tag);
-            Assert.That(tag.Id, Is.Positive);
+            Assert.IsTrue(tag.Id > 0);
             Assert.AreEqual("Arial", tag.ContentsFont.Name);
             Assert.AreEqual("Arial Black", tag.EndCharacterFont.Name);
             Assert.True(tag.Multiline);
@@ -835,7 +835,7 @@ namespace ApiExamples
                 (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 1, true);
 
             Assert.AreEqual(SdtType.PlainText, plainTextSdt.SdtType);
-            Assert.That(() => plainTextSdt.BuildingBlockGallery, Throws.TypeOf<InvalidOperationException>(),
+            Assert.Throws<InvalidOperationException>(() => { var _ =plainTextSdt.BuildingBlockGallery; },
                 "BuildingBlockType is only accessible for BuildingBlockGallery SDT type.");
         }
 
