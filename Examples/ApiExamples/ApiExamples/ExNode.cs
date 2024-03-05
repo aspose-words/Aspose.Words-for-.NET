@@ -119,7 +119,6 @@ namespace ApiExamples
             //ExFor:CompositeNode
             //ExFor:CompositeNode.GetChild
             //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
-            //ExFor:CompositeNode.GetEnumerator
             //ExFor:NodeCollection.Count
             //ExFor:NodeCollection.Item
             //ExSummary:Shows how to traverse through a composite node's collection of child nodes.

@@ -272,23 +272,15 @@ namespace ApiExamples
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
             // Shapes with the "HasImage" flag set store and display all the document's images.
-            IEnumerable<Shape> shapesWithImages = 
-                imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Where(s => s.HasImage);
+            Shape[] shapesWithImages = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>()
+                .Where(s => s.HasImage).ToArray();
 
             // Go through each shape and save its image.
-            ImageFormatConverter formatConverter = new ImageFormatConverter();
-
-            using (IEnumerator<Shape> enumerator = shapesWithImages.GetEnumerator())
+            for (int shapeIndex = 0; shapeIndex < shapesWithImages.Length; ++shapeIndex)
             {
-                int shapeIndex = 0;
-
-                while (enumerator.MoveNext())
-                {
-                    ImageData imageData = enumerator.Current.ImageData;                    
-
-                    using (FileStream fileStream = File.Create(ArtifactsDir + $"Drawing.SaveAllImages.{++shapeIndex}.{imageData.ImageType}"))
-                        imageData.Save(fileStream);
-                }
+                ImageData imageData = shapesWithImages[shapeIndex].ImageData;
+                using (FileStream fileStream = File.Create(ArtifactsDir + $"Drawing.SaveAllImages.{shapeIndex + 1}.{imageData.ImageType}"))
+                    imageData.Save(fileStream);
             }
             //ExEnd
 

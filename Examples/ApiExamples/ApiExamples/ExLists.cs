@@ -726,7 +726,6 @@ namespace ApiExamples
         //ExStart
         //ExFor:ListCollection
         //ExFor:ListCollection.AddCopy(List)
-        //ExFor:ListCollection.GetEnumerator
         //ExSummary:Shows how to create a document with a sample of all the lists from another document.
         [Test] //ExSkip
         public void PrintOutAllLists()
@@ -759,7 +758,7 @@ namespace ApiExamples
             builder.ListFormat.RemoveNumbers();
             builder.Writeln();
         }
-        //ExEnd		
+        //ExEnd
 
         private void TestPrintOutAllLists(Document listSourceDoc, Document outDoc)
         {
@@ -816,7 +815,6 @@ namespace ApiExamples
             //ExFor:ListLevel.IsLegal
             //ExFor:ListLevel.RestartAfterLevel
             //ExFor:ListLevel.LinkedStyle
-            //ExFor:ListLevelCollection.GetEnumerator
             //ExSummary:Shows advances ways of customizing list labels.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
