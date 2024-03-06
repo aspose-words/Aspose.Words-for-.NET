@@ -330,7 +330,7 @@ namespace ApiExamples
 
                     break;
 
-                case "XPS":                    
+                case "XPS":
                     SaveTo(pdfRenderer, docName, options, "xps");
                     AssertResult("xps");
 

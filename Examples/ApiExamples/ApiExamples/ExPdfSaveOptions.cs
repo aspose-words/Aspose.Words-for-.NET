@@ -2576,6 +2576,12 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.ExportParagraphGraphicsToArtifact.pdf", saveOptions);
             //ExEnd
+        }
+
+        [Test]
+        public void UsePdfDocumentForExportParagraphGraphicsToArtifact()
+        {
+            ExportParagraphGraphicsToArtifact();
 
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.ExportParagraphGraphicsToArtifact.pdf");
             Assert.AreEqual(3, pdfDocument.Pages[1].Artifacts.Count());

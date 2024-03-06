@@ -378,8 +378,8 @@ namespace ApiExamples
                         style='fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;' />
                   </svg> ");
 
-            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.SvgMetafileFormat.html",
-                new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png });
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png };
+            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.SvgMetafileFormat.html", saveOptions);
         }
 
         [Test]
@@ -394,8 +394,8 @@ namespace ApiExamples
                         style='fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;' />
                   </svg> ");
 
-            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.PngMetafileFormat.html",
-                new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png });
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png };
+            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.PngMetafileFormat.html", saveOptions);
         }
 
         [Test]
@@ -413,8 +413,8 @@ namespace ApiExamples
                     ch9//q1uH4TLzw4d6+ErXMMcXuHWxId3KOETnnXXV6MJpcq2MLaI97CER3N0
                     vr4MkhoXe0rZigAAAABJRU5ErkJggg=="" alt=""Red dot"" />");
 
-            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.EmfOrWmfMetafileFormat.html",
-                new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.EmfOrWmf });
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.EmfOrWmf };
+            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.EmfOrWmfMetafileFormat.html", saveOptions);
         }
 
         [Test]

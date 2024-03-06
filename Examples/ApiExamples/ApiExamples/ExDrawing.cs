@@ -307,7 +307,7 @@ namespace ApiExamples
             Assert.AreEqual(".Jpeg", fileInfos[7].Extension);
             TestUtil.VerifyImage(1200, 1500, fileInfos[8].FullName);
             Assert.AreEqual(".Jpeg", fileInfos[8].Extension);
-        }        
+        }
 
         [Test]
         public void StrokePattern()
@@ -461,17 +461,17 @@ namespace ApiExamples
 
             Shape textbox = new Shape(doc, ShapeType.TextBox)
             {
-                Width = 100, 
-                Height = 100,
-                TextBox = { LayoutFlow = LayoutFlow.BottomToTop }
+                Width = 100,
+                Height = 100
             };
-            
+            textbox.TextBox.LayoutFlow = LayoutFlow.BottomToTop;
+
             textbox.AppendChild(new Paragraph(doc));
             builder.InsertNode(textbox);
 
             builder.MoveTo(textbox.FirstParagraph);
             builder.Write("This text is flipped 90 degrees to the left.");
-            
+
             doc.Save(ArtifactsDir + "Drawing.TextBox.docx");
             //ExEnd
 
