@@ -57,7 +57,7 @@ namespace ApiExamples
             
             doc.MailMerge.FieldMergingCallback = new HandleMergeFieldInsertHtml();
             doc.MailMerge.Execute(new[] { "html_Title", "html_Body" }, mergeData);
-            
+
             doc.Save(ArtifactsDir + "MailMergeEvent.MergeHtml.docx");
         }
 

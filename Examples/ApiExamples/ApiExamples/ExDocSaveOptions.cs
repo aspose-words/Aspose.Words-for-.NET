@@ -74,7 +74,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocSaveOptions.TempFolder.doc", options);
 
             // The folder will persist with no residual contents from the load operation.
-            Assert.That(Directory.GetFiles(options.TempFolder), Is.Empty);
+            Assert.AreEqual(0, Directory.GetFiles(options.TempFolder).Length);
             //ExEnd
         }
 
@@ -175,9 +175,9 @@ namespace ApiExamples
             var testedFileLength = new FileInfo(ArtifactsDir + "DocSaveOptions.AlwaysCompressMetafiles.docx").Length;
 
             if (compressAllMetafiles)
-                Assert.That(testedFileLength, Is.LessThan(14000));
+                Assert.IsTrue(testedFileLength < 14000);
             else
-                Assert.That(testedFileLength, Is.LessThan(22000));            
+                Assert.IsTrue(testedFileLength < 22000);
         }
     }
 }

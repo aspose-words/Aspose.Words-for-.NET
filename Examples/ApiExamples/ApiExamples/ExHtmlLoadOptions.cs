@@ -172,7 +172,7 @@ namespace ApiExamples
 
             Document doc = new Document(outputFileName, loadOptions);
 
-            Assert.AreEqual("Test encrypted document.", doc.GetText().Trim());       
+            Assert.AreEqual("Test encrypted document.", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -217,7 +217,7 @@ namespace ApiExamples
                 <html>
                     <select name='ComboBox' size='1'>
                         <option value='val1'>item1</option>
-                        <option value='val2'></option>                        
+                        <option value='val2'></option>
                     </select>
                 </html>
             ";
@@ -286,6 +286,13 @@ namespace ApiExamples
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), htmlLoadOptions);
             doc.Save(ArtifactsDir + "HtmlLoadOptions.IgnoreNoscriptElements.pdf");
             //ExEnd
+        }
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void UsePdfDocumentForIgnoreNoscriptElements(bool ignoreNoscriptElements)
+        {
+            IgnoreNoscriptElements(ignoreNoscriptElements);
 
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "HtmlLoadOptions.IgnoreNoscriptElements.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
@@ -316,7 +323,7 @@ namespace ApiExamples
             HtmlLoadOptions loadOptions = new HtmlLoadOptions();
             // Set the new mode of import HTML block-level elements.
             loadOptions.BlockImportMode = blockImportMode;
-                        
+
             Document doc = new Document(stream, loadOptions);
             doc.Save(ArtifactsDir + "HtmlLoadOptions.BlockImport.docx");
             //ExEnd

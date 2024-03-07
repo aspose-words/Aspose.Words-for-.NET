@@ -71,7 +71,7 @@ namespace ApiExamples
         /// </remarks>
         /// <param name="expectedHttpStatusCode">Expected result status code of a request HTTP "HEAD" method performed on the web address.</param>
         /// <param name="webAddress">URL where the request will be sent.</param>
-        internal static async System.Threading.Tasks.Task VerifyWebResponseStatusCode(HttpStatusCode expectedHttpStatusCode, string webAddress)
+        internal static async System.Threading.Tasks.Task VerifyWebResponseStatusCodeAsync(HttpStatusCode expectedHttpStatusCode, string webAddress)
         {
             var myClient = new System.Net.Http.HttpClient();
             var response = await myClient.GetAsync(webAddress);
@@ -350,7 +350,15 @@ namespace ApiExamples
             {
                 Assert.AreEqual(expectedType, field.Type);
                 Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
-                Assert.True(DateTime.TryParse(field.Result, out DateTime actual));
+                DateTime actual = DateTime.Now;
+                try
+                {
+                    actual = DateTime.Parse(field.Result);
+                }
+                catch (Exception)
+                {
+                    Assert.Fail();
+                }
 
                 if (field.Type == FieldType.FieldTime)
                     VerifyDate(expectedResult, actual, delta);

@@ -205,7 +205,8 @@ namespace ApiExamples
 
             // Calculate the number of rows and columns that we will fill with thumbnails.
             const int thumbColumns = 2;
-            int thumbRows = Math.DivRem(doc.PageCount, thumbColumns, out int remainder);
+            int thumbRows = doc.PageCount / thumbColumns;
+            int remainder = doc.PageCount % thumbColumns;
 
             if (remainder > 0)
                 thumbRows++;
@@ -229,7 +230,8 @@ namespace ApiExamples
 
                     for (int pageIndex = 0; pageIndex < doc.PageCount; pageIndex++)
                     {
-                        int rowIdx = Math.DivRem(pageIndex, thumbColumns, out int columnIdx);
+                        int rowIdx = pageIndex / thumbColumns;
+                        int columnIdx = pageIndex % thumbColumns;
 
                         // Specify where we want the thumbnail to appear.
                         float thumbLeft = columnIdx * thumbSize.Width;
@@ -253,7 +255,7 @@ namespace ApiExamples
             //ExFor:Document.RenderToSize
             //ExSummary:Shows how to render the document as a bitmap at a specified location and size (.NetStandard 2.0).
             Document doc = new Document(MyDir + "Rendering.docx");
-            
+
             using (SKBitmap bitmap = new SKBitmap(700, 700))
             {
                 using (SKCanvas canvas = new SKCanvas(bitmap))
@@ -305,7 +307,7 @@ namespace ApiExamples
                         bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
                     }
                 }
-            }            
+            }
             //ExEnd
         }
 
@@ -319,7 +321,8 @@ namespace ApiExamples
 
             // Calculate the number of rows and columns that we will fill with thumbnails.
             const int thumbnailColumnsNum = 2;
-            int thumbRows = Math.DivRem(doc.PageCount, thumbnailColumnsNum, out int remainder);
+            int thumbRows = doc.PageCount / thumbnailColumnsNum;
+            int remainder = doc.PageCount % thumbnailColumnsNum;
 
             if (remainder > 0)
                 thumbRows++;
@@ -341,7 +344,8 @@ namespace ApiExamples
 
                     for (int pageIndex = 0; pageIndex < doc.PageCount; pageIndex++)
                     {
-                        int rowIdx = Math.DivRem(pageIndex, thumbnailColumnsNum, out int columnIdx);
+                        int rowIdx = pageIndex / thumbnailColumnsNum;
+                        int columnIdx = pageIndex % thumbnailColumnsNum;
 
                         // Specify where we want the thumbnail to appear.
                         float thumbLeft = columnIdx * thumbSize.Width;
@@ -364,7 +368,7 @@ namespace ApiExamples
                         bitmap.PeekPixels().Encode(fs, SKEncodedImageFormat.Png, 100);
                     }
                 }
-            }            
+            }
             //ExEnd
         }
 #endif

@@ -49,7 +49,7 @@ namespace ApiExamples
 
             PclSaveOptions saveOptions = new PclSaveOptions();
             saveOptions.FallbackFontName = "Times New Roman";
-            
+
             // This document will instruct the printer to apply "Times New Roman" to the text with the missing font.
             // Should "Times New Roman" also be unavailable, the printer will default to the "Arial" font.
             doc.Save(ArtifactsDir + "PclSaveOptions.SetPrinterFont.pcl", saveOptions);

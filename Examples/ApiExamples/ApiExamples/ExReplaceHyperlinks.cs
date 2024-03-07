@@ -105,7 +105,10 @@ namespace ApiExamples
         /// </summary>
         internal string Name
         {
-            get => GetTextSameParent(mFieldSeparator, mFieldEnd); 
+            get
+            {
+                return GetTextSameParent(mFieldSeparator, mFieldEnd);
+            }
             set
             {
                 // Hyperlink display name is stored in the field result, which is a Run 
@@ -123,7 +126,10 @@ namespace ApiExamples
         /// </summary>
         internal string Target
         {
-            get => mTarget;
+            get
+            {
+                return mTarget;
+            }
             set
             {
                 mTarget = value;
@@ -136,7 +142,10 @@ namespace ApiExamples
         /// </summary>
         internal bool IsLocal
         {
-            get => mIsLocal; 
+            get
+            {
+                return mIsLocal;
+            }
             set
             {
                 mIsLocal = value;

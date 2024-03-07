@@ -185,11 +185,11 @@ namespace ApiExamples
         public void AutoNumberingDetection()
         {
             //ExStart
-            //ExFor:TxtLoadOptions.AutoNumberingDetection            
-            //ExSummary:Shows how to disable automatic numbering detection.            
+            //ExFor:TxtLoadOptions.AutoNumberingDetection
+            //ExSummary:Shows how to disable automatic numbering detection.
             TxtLoadOptions options = new TxtLoadOptions { AutoNumberingDetection = false };
             Document doc = new Document(MyDir + "Number detection.txt", options);
-            //ExEnd            
+            //ExEnd
 
             int listItemsCount = 0;
             foreach (Paragraph paragraph in doc.GetChildNodes(NodeType.Paragraph, true))
@@ -198,7 +198,7 @@ namespace ApiExamples
                     listItemsCount++;
             }
 
-            Assert.AreEqual(0, listItemsCount);            
+            Assert.AreEqual(0, listItemsCount);
         }
 
         [Test]

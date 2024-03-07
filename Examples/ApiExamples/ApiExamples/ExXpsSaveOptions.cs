@@ -117,9 +117,9 @@ namespace ApiExamples
 
             var testedFileLength = new FileInfo(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps").Length;
             if (optimizeOutput)
-                Assert.That(testedFileLength, Is.LessThan(43000));
+                Assert.IsTrue(testedFileLength < 43000);
             else
-                Assert.That(testedFileLength, Is.LessThan(64000));
+                Assert.IsTrue(testedFileLength < 64000);
 
             TestUtil.DocPackageFileContainsString(
                 optimizeOutput

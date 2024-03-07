@@ -23,7 +23,7 @@ namespace ApiExamples
             //ExSummary:Shows how to skip images during loading PDF files.
             PdfLoadOptions options = new PdfLoadOptions();
             options.SkipPdfImages = isSkipPdfImages;
-            
+
             Document doc = new Document(MyDir + "Images.pdf", options);
             NodeCollection shapeCollection = doc.GetChildNodes(NodeType.Shape, true);
 

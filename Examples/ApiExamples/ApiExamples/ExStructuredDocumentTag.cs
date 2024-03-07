@@ -132,7 +132,7 @@ namespace ApiExamples
                 .OfType<StructuredDocumentTag>().ToArray();
 
             Assert.AreEqual(true, tags[0].Checked);
-            Assert.That(tags[0].XmlMapping.StoreItemId, Is.Empty);
+            Assert.AreEqual(string.Empty, tags[0].XmlMapping.StoreItemId);
         }
 
         [Test, Category("SkipMono")]
@@ -204,7 +204,7 @@ namespace ApiExamples
             tag.Tag = "MyPlainTextSDT";
 
             // Every structured document tag has a random unique ID.
-            Assert.That(tag.Id, Is.Positive);
+            Assert.IsTrue(tag.Id > 0);
 
             // Set the font for the text inside the structured document tag.
             tag.ContentsFont.Name = "Arial";
@@ -245,7 +245,7 @@ namespace ApiExamples
             Assert.AreEqual("My plain text", tag.Title);
             Assert.AreEqual(Color.Magenta.ToArgb(), tag.Color.ToArgb());
             Assert.AreEqual("MyPlainTextSDT", tag.Tag);
-            Assert.That(tag.Id, Is.Positive);
+            Assert.IsTrue(tag.Id > 0);
             Assert.AreEqual("Arial", tag.ContentsFont.Name);
             Assert.AreEqual("Arial Black", tag.EndCharacterFont.Name);
             Assert.True(tag.Multiline);
@@ -553,7 +553,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.CustomXml.docx");
             xmlPart = doc.CustomXmlParts[0];
 
-            Assert.True(Guid.TryParse(xmlPart.Id, out Guid temp));
+            Assert.DoesNotThrow(() => Guid.Parse(xmlPart.Id));
             Assert.AreEqual("<root><text>Hello world!</text></root>", Encoding.UTF8.GetString(xmlPart.Data));
             Assert.AreEqual("http://www.w3.org/2001/XMLSchema", xmlPart.Schemas[0]);
 
@@ -635,7 +635,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.XmlMapping.docx");
             xmlPart = doc.CustomXmlParts[0];
 
-            Assert.True(Guid.TryParse(xmlPart.Id, out Guid temp));
+            Assert.DoesNotThrow(() => Guid.Parse(xmlPart.Id));
             Assert.AreEqual("<root><text>Text element #1</text><text>Text element #2</text></root>", Encoding.UTF8.GetString(xmlPart.Data));
 
             tag = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
@@ -674,7 +674,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.StructuredDocumentTagRangeStartXmlMapping.docx");
             xmlPart = doc.CustomXmlParts[0];
 
-            Assert.True(Guid.TryParse(xmlPart.Id, out Guid temp));
+            Assert.DoesNotThrow(() => Guid.Parse(xmlPart.Id));
             Assert.AreEqual("<root><text>Text element #1</text><text>Text element #2</text></root>", Encoding.UTF8.GetString(xmlPart.Data));
 
             sdtRangeStart = (StructuredDocumentTagRangeStart)doc.GetChild(NodeType.StructuredDocumentTagRangeStart, 0, true);
@@ -835,7 +835,7 @@ namespace ApiExamples
                 (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 1, true);
 
             Assert.AreEqual(SdtType.PlainText, plainTextSdt.SdtType);
-            Assert.That(() => plainTextSdt.BuildingBlockGallery, Throws.TypeOf<InvalidOperationException>(),
+            Assert.Throws<InvalidOperationException>(() => { var _ =plainTextSdt.BuildingBlockGallery; },
                 "BuildingBlockType is only accessible for BuildingBlockGallery SDT type.");
         }
 
@@ -887,6 +887,12 @@ namespace ApiExamples
             doc.FirstSection.Body.AppendChild(tag);
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf");
+        }
+
+        [Test]
+        public void UsePdfDocumentForUpdateSdtContent()
+        {
+            UpdateSdtContent();
 
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "StructuredDocumentTag.UpdateSdtContent.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
@@ -1065,7 +1071,7 @@ namespace ApiExamples
         [Test]
         public void SdtChildNodes()
         {
-            //ExStart            
+            //ExStart
             //ExFor:StructuredDocumentTagRangeStart.GetChildNodes(NodeType, bool)
             //ExSummary:Shows how to get child nodes of StructuredDocumentTagRangeStart.
             Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
@@ -1097,7 +1103,7 @@ namespace ApiExamples
 
             builder.Writeln("StructuredDocumentTag element");
 
-            InsertStructuredDocumentTagRanges(doc, out StructuredDocumentTagRangeStart rangeStart);            
+            StructuredDocumentTagRangeStart rangeStart = InsertStructuredDocumentTagRanges(doc);
 
             // Removes ranged structured document tag, but keeps content inside.
             rangeStart.RemoveSelfOnly();
@@ -1112,7 +1118,7 @@ namespace ApiExamples
             Assert.AreEqual(null, rangeEnd);
             Assert.AreEqual("StructuredDocumentTag element", doc.GetText().Trim());
 
-            InsertStructuredDocumentTagRanges(doc, out rangeStart);
+            rangeStart = InsertStructuredDocumentTagRanges(doc);
 
             Node paragraphNode = rangeStart.LastOrDefault();
             Assert.AreEqual("StructuredDocumentTag element", paragraphNode?.GetText().Trim());
@@ -1124,13 +1130,15 @@ namespace ApiExamples
             Assert.AreEqual(null, paragraphNode?.GetText());
         }
 
-        public void InsertStructuredDocumentTagRanges(Document doc, out StructuredDocumentTagRangeStart rangeStart)
+        public StructuredDocumentTagRangeStart InsertStructuredDocumentTagRanges(Document doc)
         {
-            rangeStart = new StructuredDocumentTagRangeStart(doc, SdtType.PlainText);
+            StructuredDocumentTagRangeStart rangeStart = new StructuredDocumentTagRangeStart(doc, SdtType.PlainText);
             StructuredDocumentTagRangeEnd rangeEnd = new StructuredDocumentTagRangeEnd(doc, rangeStart.Id);
 
             doc.FirstSection.Body.InsertBefore(rangeStart, doc.FirstSection.Body.FirstParagraph);
             doc.LastSection.Body.InsertAfter(rangeEnd, doc.FirstSection.Body.FirstParagraph);
+
+            return rangeStart;
         }
         //ExEnd
 
@@ -1166,7 +1174,7 @@ namespace ApiExamples
         [Test]
         public void RangeSdt()
         {
-            //ExStart            
+            //ExStart
             //ExFor:StructuredDocumentTagCollection.GetById(int)
             //ExFor:StructuredDocumentTagCollection.GetByTitle(String)
             //ExFor:IStructuredDocumentTag.IsMultiSection
@@ -1300,15 +1308,15 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Structured document tags.docx");
             
             // This collection provides a unified interface for accessing ranged and non-ranged structured tags. 
-            IEnumerable<IStructuredDocumentTag> sdts = doc.Range.StructuredDocumentTags.Cast<IStructuredDocumentTag>().ToList();
+            IEnumerable<IStructuredDocumentTag> sdts = doc.Range.StructuredDocumentTags.ToList();
             Assert.AreEqual(5, sdts.Count());
 
             // Here we can get child nodes from the common interface of ranged and non-ranged structured tags.
-            foreach (IStructuredDocumentTag sdt in sdts)                
+            foreach (IStructuredDocumentTag sdt in sdts)
                 if (sdt.GetChildNodes(NodeType.Any, false).Count > 0)
                     sdt.RemoveSelfOnly();
             
-            sdts = doc.Range.StructuredDocumentTags.Cast<IStructuredDocumentTag>().ToList();
+            sdts = doc.Range.StructuredDocumentTags.ToList();
             Assert.AreEqual(0, sdts.Count());
             //ExEnd:RemoveSelfOnly
         }

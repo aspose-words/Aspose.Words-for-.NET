@@ -272,23 +272,15 @@ namespace ApiExamples
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
 
             // Shapes with the "HasImage" flag set store and display all the document's images.
-            IEnumerable<Shape> shapesWithImages = 
-                imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Where(s => s.HasImage);
+            Shape[] shapesWithImages = imgSourceDoc.GetChildNodes(NodeType.Shape, true).Cast<Shape>()
+                .Where(s => s.HasImage).ToArray();
 
             // Go through each shape and save its image.
-            ImageFormatConverter formatConverter = new ImageFormatConverter();
-
-            using (IEnumerator<Shape> enumerator = shapesWithImages.GetEnumerator())
+            for (int shapeIndex = 0; shapeIndex < shapesWithImages.Length; ++shapeIndex)
             {
-                int shapeIndex = 0;
-
-                while (enumerator.MoveNext())
-                {
-                    ImageData imageData = enumerator.Current.ImageData;                    
-
-                    using (FileStream fileStream = File.Create(ArtifactsDir + $"Drawing.SaveAllImages.{++shapeIndex}.{imageData.ImageType}"))
-                        imageData.Save(fileStream);
-                }
+                ImageData imageData = shapesWithImages[shapeIndex].ImageData;
+                using (FileStream fileStream = File.Create(ArtifactsDir + $"Drawing.SaveAllImages.{shapeIndex + 1}.{imageData.ImageType}"))
+                    imageData.Save(fileStream);
             }
             //ExEnd
 
@@ -315,7 +307,7 @@ namespace ApiExamples
             Assert.AreEqual(".Jpeg", fileInfos[7].Extension);
             TestUtil.VerifyImage(1200, 1500, fileInfos[8].FullName);
             Assert.AreEqual(".Jpeg", fileInfos[8].Extension);
-        }        
+        }
 
         [Test]
         public void StrokePattern()
@@ -362,14 +354,14 @@ namespace ApiExamples
             // please use DocumentBuilder.InsertShape methods.
             Shape balloon = new Shape(doc, ShapeType.Balloon)
             {
-                Width = 200, 
+                Width = 200,
                 Height = 200,
                 Stroke = { Color = Color.Red }
             };
 
             Shape cube = new Shape(doc, ShapeType.Cube)
             {
-                Width = 100, 
+                Width = 100,
                 Height = 100,
                 Stroke = { Color = Color.Blue }
             };
@@ -469,17 +461,17 @@ namespace ApiExamples
 
             Shape textbox = new Shape(doc, ShapeType.TextBox)
             {
-                Width = 100, 
-                Height = 100,
-                TextBox = { LayoutFlow = LayoutFlow.BottomToTop }
+                Width = 100,
+                Height = 100
             };
-            
+            textbox.TextBox.LayoutFlow = LayoutFlow.BottomToTop;
+
             textbox.AppendChild(new Paragraph(doc));
             builder.InsertNode(textbox);
 
             builder.MoveTo(textbox.FirstParagraph);
             builder.Write("This text is flipped 90 degrees to the left.");
-            
+
             doc.Save(ArtifactsDir + "Drawing.TextBox.docx");
             //ExEnd
 
@@ -639,13 +631,13 @@ namespace ApiExamples
 
             // If the shape contains an image, its ImageData property will be valid,
             // and it will contain an ImageSize object.
-            ImageSize imageSize = shape.ImageData.ImageSize; 
+            ImageSize imageSize = shape.ImageData.ImageSize;
 
             // The ImageSize object contains read-only information about the image within the shape.
             Assert.AreEqual(400, imageSize.HeightPixels);
             Assert.AreEqual(400, imageSize.WidthPixels);
 
-			const double delta = 0.05;
+            const double delta = 0.05;
             Assert.AreEqual(95.98d, imageSize.HorizontalResolution, delta);
             Assert.AreEqual(95.98d, imageSize.VerticalResolution, delta);
 

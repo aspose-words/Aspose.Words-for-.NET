@@ -353,7 +353,7 @@ namespace ApiExamples
         public void PageMarginsException()
         {
             HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
-            Assert.That(() => saveOptions.PageMargins = -1, Throws.TypeOf<ArgumentException>());
+            Assert.Throws<ArgumentException>(() => saveOptions.PageMargins = -1);
         }
 
         [TestCase(false)]

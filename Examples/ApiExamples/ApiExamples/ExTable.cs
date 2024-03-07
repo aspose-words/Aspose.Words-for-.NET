@@ -80,7 +80,7 @@ namespace ApiExamples
             builder.InsertCell();
             builder.Write("Row 1, cell 2.");
             builder.EndTable();
-            
+
             // For every cell in the table, set the distance between its contents and each of its borders. 
             // This table will maintain the minimum padding distance by wrapping text.
             table.LeftPadding = 30;
@@ -440,7 +440,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Table.SetBorders.docx");
             table = doc.FirstSection.Body.Tables[0];
-            
+
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Top.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Left.Color.ToArgb());
             Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Right.Color.ToArgb());
@@ -520,13 +520,13 @@ namespace ApiExamples
             Assert.AreEqual(17.3d, table.DistanceLeft);
             Assert.AreEqual(17.3d, table.DistanceRight);
 
-            // Set distance between table and surrounding text.                        
+            // Set distance between table and surrounding text.
             table.DistanceLeft = 24;
             table.DistanceRight = 24;
             table.DistanceTop = 3;
             table.DistanceBottom = 3;
 
-            doc.Save(ArtifactsDir + "Table.DistanceBetweenTableAndText.docx");            
+            doc.Save(ArtifactsDir + "Table.DistanceBetweenTableAndText.docx");
             //ExEnd
         }
 
@@ -653,7 +653,7 @@ namespace ApiExamples
             // Print the plain text range of the table to the screen.
             Console.WriteLine("Contents of the table: ");
             Console.WriteLine(table.Range.Text);
-            
+
             // Print the contents of the second row to the screen.
             Console.WriteLine("\nContents of the row: ");
             Console.WriteLine(table.Rows[1].Range.Text);
@@ -661,7 +661,7 @@ namespace ApiExamples
             // Print the contents of the last cell in the table to the screen.
             Console.WriteLine("\nContents of the cell: ");
             Console.WriteLine(table.LastRow.LastCell.Range.Text);
-            
+
             Assert.AreEqual("\aColumn 1\aColumn 2\aColumn 3\aColumn 4\a\a", table.Rows[1].Range.Text);
             Assert.AreEqual("Cell 12 contents\a", table.LastRow.LastCell.Range.Text);
         }
@@ -682,13 +682,13 @@ namespace ApiExamples
             table.ParentNode.InsertAfter(new Paragraph(doc), table);
 
             doc.Save(ArtifactsDir + "Table.CloneTable.doc");
-            
+
             Assert.AreEqual(3, doc.GetChildNodes(NodeType.Table, true).Count);
             Assert.AreEqual(table.Range.Text, tableClone.Range.Text);
 
             foreach (Cell cell in tableClone.GetChildNodes(NodeType.Cell, true).OfType<Cell>())
                 cell.RemoveAllChildren();
-            
+
             Assert.AreEqual(string.Empty, tableClone.ToString(SaveFormat.Text).Trim());
         }
 

@@ -7,11 +7,9 @@
 
 using System.IO;
 using System.Linq;
-using System.Net;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-using System.Threading.Tasks;
 
 namespace ApiExamples
 {
@@ -211,7 +209,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public async Task InsertImageWithHyperlink()
+        public void InsertImageWithHyperlink()
         {
             //ExStart
             //ExFor:ShapeBase.HRef
@@ -230,11 +228,11 @@ namespace ApiExamples
             // and take us to the hyperlink in the "HRef" property.
             doc.Save(ArtifactsDir + "Image.InsertImageWithHyperlink.docx");
             //ExEnd
-            
+
             doc = new Document(ArtifactsDir + "Image.InsertImageWithHyperlink.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            await TestUtil.VerifyWebResponseStatusCode(HttpStatusCode.OK, shape.HRef);
+            Assert.AreEqual("https://forum.aspose.com/", shape.HRef);
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
             Assert.AreEqual("New Window", shape.Target);
             Assert.AreEqual("Aspose.Words Support Forums", shape.ScreenTip);

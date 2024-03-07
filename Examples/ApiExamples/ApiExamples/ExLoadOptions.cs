@@ -145,7 +145,7 @@ namespace ApiExamples
             //ExSummary:Shows how to emulate the loading procedure of a specific Microsoft Word version during document loading.
             // By default, Aspose.Words load documents according to Microsoft Word 2019 specification.
             LoadOptions loadOptions = new LoadOptions();
-            
+
             Assert.AreEqual(MsWordVersion.Word2019, loadOptions.MswVersion);
 
             // This document is missing the default paragraph formatting style.
@@ -232,7 +232,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx", options);
 
             // The folder will persist with no residual contents from the load operation.
-            Assert.That(Directory.GetFiles(options.TempFolder), Is.Empty);
+            Assert.AreEqual(0, Directory.GetFiles(options.TempFolder).Length);
             //ExEnd
         }
 
@@ -294,7 +294,7 @@ namespace ApiExamples
             //ExFor:LoadOptions.ConvertMetafilesToPng
             //ExSummary:Shows how to convert WMF/EMF to PNG during loading document.
             Document doc = new Document();
-    
+
             Shape shape = new Shape(doc, ShapeType.Image);
             shape.ImageData.SetImage(ImageDir + "Windows MetaFile.wmf");
             shape.Width = 100;

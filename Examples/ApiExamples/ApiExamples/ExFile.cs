@@ -125,7 +125,7 @@ namespace ApiExamples
             //ExFor:FileFormatInfo.IsEncrypted
             //ExSummary:Shows how to use the FileFormatUtil class to detect the document format and encryption.
             Document doc = new Document();
-            
+
             // Configure a SaveOptions object to encrypt the document
             // with a password when we save it, and then save the document.
             OdtSaveOptions saveOptions = new OdtSaveOptions(SaveFormat.Odt);
@@ -157,8 +157,9 @@ namespace ApiExamples
             Assert.False(info.HasDigitalSignature);
 
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
+            SignOptions signOptions = new SignOptions() { SignTime = DateTime.Now };
             DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "File.DetectDigitalSignatures.docx",
-                certificateHolder, new SignOptions() { SignTime = DateTime.Now });
+                certificateHolder, signOptions);
 
             // Use a new FileFormatInstance to confirm that it is signed.
             info = FileFormatUtil.DetectFileFormat(ArtifactsDir + "File.DetectDigitalSignatures.docx");
@@ -238,7 +239,7 @@ namespace ApiExamples
             //ExFor:CompositeNode.GetChildNodes(NodeType, bool)
             //ExSummary:Shows how to extract images from a document, and save them to the local file system as individual files.
             Document doc = new Document(MyDir + "Images.docx");
-            
+
             // Get the collection of shapes from the document,
             // and save the image data of every shape with an image as a file to the local file system.
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);

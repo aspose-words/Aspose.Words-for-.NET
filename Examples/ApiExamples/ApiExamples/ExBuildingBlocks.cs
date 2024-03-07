@@ -153,11 +153,16 @@ namespace ApiExamples
             Document doc = new Document();
             GlossaryDocument glossaryDoc = new GlossaryDocument();
 
-            glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 1" });
-            glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 2" });
-            glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 3" });
-            glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 4" });
-            glossaryDoc.AppendChild(new BuildingBlock(glossaryDoc) { Name = "Block 5" });
+            BuildingBlock child1 = new BuildingBlock(glossaryDoc) { Name = "Block 1" };
+            glossaryDoc.AppendChild(child1);
+            BuildingBlock child2 = new BuildingBlock(glossaryDoc) { Name = "Block 2" };
+            glossaryDoc.AppendChild(child2);
+            BuildingBlock child3 = new BuildingBlock(glossaryDoc) { Name = "Block 3" };
+            glossaryDoc.AppendChild(child3);
+            BuildingBlock child4 = new BuildingBlock(glossaryDoc) { Name = "Block 4" };
+            glossaryDoc.AppendChild(child4);
+            BuildingBlock child5 = new BuildingBlock(glossaryDoc) { Name = "Block 5" };
+            glossaryDoc.AppendChild(child5);
 
             Assert.AreEqual(5, glossaryDoc.BuildingBlocks.Count);
 

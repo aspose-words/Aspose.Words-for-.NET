@@ -94,35 +94,35 @@ namespace ApiExamples
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles, Is.Empty);
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
 
                 case SaveFormat.Epub:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles, Is.Empty);
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
 
                 case SaveFormat.Mhtml:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles, Is.Empty);
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
 
                 case SaveFormat.Azw3:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles, Is.Empty);
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
 
                 case SaveFormat.Mobi:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles, Is.Empty);
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
             }
         }
@@ -208,7 +208,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "TextBoxes.docx");
             HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportRoundtripInformation = true };
-            
+
             doc.Save(ArtifactsDir + "HtmlSaveOptions.RoundtripInformation.html", saveOptions);
         }
 
@@ -270,7 +270,7 @@ namespace ApiExamples
             };
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ConvertFontsAsBase64.html", saveOptions);
-		}
+        }
 
         [TestCase(HtmlVersion.Html5)]
         [TestCase(HtmlVersion.Xhtml)]
@@ -288,9 +288,9 @@ namespace ApiExamples
         public void ExportFonts(bool exportAsBase64)
         {
             string fontsFolder = ArtifactsDir + "HtmlSaveOptions.ExportFonts.Resources";
-            
+
             Document doc = new Document(MyDir + "Document.docx");
-            
+
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
                 ExportFontResources = true,
@@ -343,7 +343,7 @@ namespace ApiExamples
         public void ResourceFolderLowPriority()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
-            
+
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
             {
                 CssStyleSheetType = CssStyleSheetType.External,
@@ -378,8 +378,8 @@ namespace ApiExamples
                         style='fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;' />
                   </svg> ");
 
-            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.SvgMetafileFormat.html",
-                new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png });
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png };
+            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.SvgMetafileFormat.html", saveOptions);
         }
 
         [Test]
@@ -394,8 +394,8 @@ namespace ApiExamples
                         style='fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;' />
                   </svg> ");
 
-            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.PngMetafileFormat.html",
-                new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png });
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png };
+            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.PngMetafileFormat.html", saveOptions);
         }
 
         [Test]
@@ -413,8 +413,8 @@ namespace ApiExamples
                     ch9//q1uH4TLzw4d6+ErXMMcXuHWxId3KOETnnXXV6MJpcq2MLaI97CER3N0
                     vr4MkhoXe0rZigAAAABJRU5ErkJggg=="" alt=""Red dot"" />");
 
-            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.EmfOrWmfMetafileFormat.html",
-                new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.EmfOrWmf });
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.EmfOrWmf };
+            builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.EmfOrWmfMetafileFormat.html", saveOptions);
         }
 
         [Test]
@@ -509,7 +509,7 @@ namespace ApiExamples
             };
 
             doc.FontSettings = fontSettings;
-            
+
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
             {
                 // By default, this option is set to 'False' and Aspose.Words writes font names as specified in the source document
@@ -561,7 +561,7 @@ namespace ApiExamples
                 DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph,
                 DocumentSplitHeadingLevel = 2
             };
-            
+
             // Our document has four headings of levels 1 - 2. One of those headings will not be
             // a split point since it is at the beginning of the document.
             // The saving operation will split our document at three places, into four smaller documents.
@@ -1110,7 +1110,7 @@ namespace ApiExamples
             //ExSummary:Shows how to configure list exporting to HTML.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             Aspose.Words.Lists.List list = doc.Lists.Add(ListTemplate.NumberDefault);
             builder.ListFormat.List = list;
             
@@ -1431,15 +1431,15 @@ namespace ApiExamples
             {
                 Assert.True(outDocContents.Contains("<div style=\"-aw-headerfooter-type:header-primary; clear:both\">"));
                 Assert.True(outDocContents.Contains("<span style=\"-aw-import:ignore\">&#xa0;</span>"));
-                
+
                 Assert.True(outDocContents.Contains(
                     "td colspan=\"2\" style=\"width:210.6pt; border-style:solid; border-width:0.75pt 6pt 0.75pt 0.75pt; " +
                     "padding-right:2.4pt; padding-left:5.03pt; vertical-align:top; " +
                     "-aw-border-bottom:0.5pt single; -aw-border-left:0.5pt single; -aw-border-top:0.5pt single\">"));
-                
+
                 Assert.True(outDocContents.Contains(
                     "<li style=\"margin-left:30.2pt; padding-left:5.8pt; -aw-font-family:'Courier New'; -aw-font-weight:normal; -aw-number-format:'o'\">"));
-                
+
                 Assert.True(outDocContents.Contains(
                     "<img src=\"HtmlSaveOptions.RoundTripInformation.003.jpeg\" width=\"350\" height=\"180\" alt=\"\" " +
                     "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />"));
@@ -1459,14 +1459,14 @@ namespace ApiExamples
             {
                 Assert.True(outDocContents.Contains("<div style=\"clear:both\">"));
                 Assert.True(outDocContents.Contains("<span>&#xa0;</span>"));
-                
+
                 Assert.True(outDocContents.Contains(
                     "<td colspan=\"2\" style=\"width:210.6pt; border-style:solid; border-width:0.75pt 6pt 0.75pt 0.75pt; " +
                     "padding-right:2.4pt; padding-left:5.03pt; vertical-align:top\">"));
                 
                 Assert.True(outDocContents.Contains(
                     "<li style=\"margin-left:30.2pt; padding-left:5.8pt\">"));
-                
+
                 Assert.True(outDocContents.Contains(
                     "<img src=\"HtmlSaveOptions.RoundTripInformation.003.jpeg\" width=\"350\" height=\"180\" alt=\"\" />"));
 
@@ -1745,12 +1745,12 @@ namespace ApiExamples
 
             if (scaleImageToShapeSize)
 #if NET461_OR_GREATER || JAVA
-                Assert.That(testedImageLength, Is.LessThan(3000));
+                Assert.IsTrue(testedImageLength < 3000);
 #elif NET5_0_OR_GREATER
-                Assert.That(testedImageLength, Is.LessThan(6000));
+                Assert.IsTrue(testedImageLength < 6000);
 #endif
             else
-                Assert.That(testedImageLength, Is.LessThan(16000));
+                Assert.IsTrue(testedImageLength < 16000);
             
         }
 
@@ -1803,7 +1803,7 @@ namespace ApiExamples
             // to customize the image saving process.
             HtmlSaveOptions options = new HtmlSaveOptions();
             options.ImageSavingCallback = new ImageShapePrinter();
-           
+
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ImageSavingCallback.html", options);
         }
 
