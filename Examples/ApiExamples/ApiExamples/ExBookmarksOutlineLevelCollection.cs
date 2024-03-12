@@ -80,7 +80,13 @@ namespace ApiExamples
             // Emptying this collection will preserve the bookmarks and put them all on the same outline level.
             outlineLevels.Clear();
             //ExEnd
-            
+        }
+
+        [Test]
+        public void UsePdfBookmarkEditorForBookmarkLevels()
+        {
+            BookmarkLevels();
+
             PdfBookmarkEditor bookmarkEditor = new PdfBookmarkEditor();
             bookmarkEditor.BindPdf(ArtifactsDir + "BookmarksOutlineLevelCollection.BookmarkLevels.pdf");
 
@@ -89,7 +95,7 @@ namespace ApiExamples
             Assert.AreEqual(3, bookmarks.Count);
             Assert.AreEqual("Bookmark 1", bookmarks[0].Title);
             Assert.AreEqual("Bookmark 2", bookmarks[1].Title);
-            Assert.AreEqual("Bookmark 3", bookmarks[2].Title);            
+            Assert.AreEqual("Bookmark 3", bookmarks[2].Title);
         }
     }
 }

@@ -12,7 +12,6 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Web.UI;
 using ApiExamples.TestData;
 using ApiExamples.TestData.TestBuilders;
 using ApiExamples.TestData.TestClasses;
@@ -21,10 +20,6 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Markup;
 using Aspose.Words.Reporting;
 using NUnit.Framework;
-#if NET5_0_OR_GREATER || __MOBILE__
-using SkiaSharp;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-#endif
 
 namespace ApiExamples
 {
@@ -219,7 +214,7 @@ namespace ApiExamples
         public void ConditionalExpressionForLeaveChartSeries()
         {
             Document doc = new Document(MyDir + "Reporting engine template - Chart series.docx");
-            
+
             int condition = 3;
             BuildReport(doc, new object[] { Common.GetManagers(), condition }, new[] { "managers", "condition" });
 
@@ -232,7 +227,7 @@ namespace ApiExamples
         public void ConditionalExpressionForRemoveChartSeries()
         {
             Document doc = new Document(MyDir + "Reporting engine template - Chart series.docx");
-            
+
             int condition = 2;
             BuildReport(doc, new object[] { Common.GetManagers(), condition }, new[] { "managers", "condition" });
 
@@ -439,9 +434,9 @@ namespace ApiExamples
         {
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.Image]>>", ShapeType.TextBox);
-            
+
             ImageTestClass image = new ImageTestBuilder().WithImage(mImage).Build();
-                        
+
             BuildReport(template, image, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
 
@@ -598,7 +593,7 @@ namespace ApiExamples
             builder.Writeln("<<[new DateTime()]:”dd.MM.yyyy”>>");
 
             ReportingEngine engine = new ReportingEngine();
-            Assert.That(() => engine.BuildReport(doc, ""), Throws.TypeOf<InvalidOperationException>());
+            Assert.Throws<InvalidOperationException>(() => engine.BuildReport(doc, ""));
         }
 
         [Test]
@@ -813,8 +808,8 @@ namespace ApiExamples
                 new[] { "<<[missingObject.First().id]>>", "<<foreach [in missingObject]>><<[id]>><</foreach>>" });
 
             // Assert that build report failed without "ReportBuildOptions.AllowMissingMembers".
-            Assert.That(() => BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.None),
-                Throws.TypeOf<InvalidOperationException>());
+            Assert.Throws<InvalidOperationException>(
+                () => BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.None));
         }
 
         [Test]
@@ -842,10 +837,10 @@ namespace ApiExamples
         {
             DocumentBuilder builder = new DocumentBuilder();
             DocumentHelper.InsertBuilderText(builder, new[] { templateText });
-            
+
             BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.InlineErrorMessages);
 
-            Assert.That(builder.Document.FirstSection.Body.Paragraphs[0].GetText().TrimEnd(), Is.EqualTo(result));
+            Assert.AreEqual(result, builder.Document.FirstSection.Body.Paragraphs[0].GetText().TrimEnd());
         }
 
         [Test]
@@ -922,7 +917,7 @@ namespace ApiExamples
                                    FileFormatUtil.SaveFormatToExtension(SaveFormat.Docx);
             string goldPath = GoldsDir + resultDocumentName + " Gold" +
                               FileFormatUtil.SaveFormatToExtension(SaveFormat.Docx);
-            
+
             Document doc = new Document(MyDir + "Reporting engine template - Merging table cells dynamically.docx");
 
             List<ClientTestClass> clients = new List<ClientTestClass>
@@ -1010,7 +1005,7 @@ namespace ApiExamples
 
             JsonDataSource dataSource = new JsonDataSource(MyDir + "List of people.json", options);
             BuildReport(doc, dataSource, "persons");
-            
+
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataString.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataString.docx",
@@ -1024,7 +1019,7 @@ namespace ApiExamples
 
             JsonDataLoadOptions options = new JsonDataLoadOptions();
             options.SimpleValueParseMode = JsonSimpleValueParseMode.Strict;
-            
+
             JsonDataSource dataSource = new JsonDataSource(MyDir + "List of people.json", options);
             Assert.Throws<InvalidOperationException>(() => BuildReport(doc, dataSource, "persons"));
         }
@@ -1058,7 +1053,7 @@ namespace ApiExamples
 
             JsonDataSource dataSource = new JsonDataSource(MyDir + "Nested elements.json");
             BuildReport(doc, dataSource, "managers");
-            
+
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataWithNestedElements.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataWithNestedElements.docx",
@@ -1087,7 +1082,7 @@ namespace ApiExamples
                 DocumentBuilder builder = new DocumentBuilder();
                 builder.Write(template);
 
-                BuildReport(builder.Document, dataSource, "ds");                
+                BuildReport(builder.Document, dataSource, "ds");
 
                 Assert.AreEqual(expectedResult + ControlChar.SectionBreak, builder.Document.GetText());
             }
@@ -1097,14 +1092,14 @@ namespace ApiExamples
         public void CsvDataString()
         {
             Document doc = new Document(MyDir + "Reporting engine template - CSV data destination.docx");
-            
+
             CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
             loadOptions.Delimiter = ';';
             loadOptions.CommentChar = '$';
 
             CsvDataSource dataSource = new CsvDataSource(MyDir + "List of people.csv", loadOptions);
             BuildReport(doc, dataSource, "persons");
-            
+
             doc.Save(ArtifactsDir + "ReportingEngine.CsvDataString.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataString.docx",
@@ -1115,7 +1110,7 @@ namespace ApiExamples
         public void CsvDataStream()
         {
             Document doc = new Document(MyDir + "Reporting engine template - CSV data destination.docx");
-            
+
             CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
             loadOptions.Delimiter = ';';
             loadOptions.CommentChar = '$';
@@ -1125,7 +1120,7 @@ namespace ApiExamples
                 CsvDataSource dataSource = new CsvDataSource(stream, loadOptions);
                 BuildReport(doc, dataSource, "persons");
             }
-            
+
             doc.Save(ArtifactsDir + "ReportingEngine.CsvDataStream.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataStream.docx",

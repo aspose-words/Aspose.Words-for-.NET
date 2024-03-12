@@ -42,17 +42,13 @@ namespace ApiExamples
             {
                 Pkcs12Store pkcs12Store = new Pkcs12StoreBuilder().Build();
                 pkcs12Store.Load(certStream, "aw".ToCharArray());
-                IEnumerator enumerator = pkcs12Store.Aliases.GetEnumerator();
-
-                while (enumerator.MoveNext())
+                foreach (string currentAlias in pkcs12Store.Aliases)
                 {
-                    if (enumerator.Current != null)
+                    if ((currentAlias != null) &&
+                        (pkcs12Store.IsKeyEntry(currentAlias) &&
+                         pkcs12Store.GetKey(currentAlias).Key.IsPrivate))
                     {
-                        string currentAlias = enumerator.Current.ToString();
-                        if (pkcs12Store.IsKeyEntry(currentAlias) && pkcs12Store.GetKey(currentAlias).Key.IsPrivate)
-                        {
-                            Console.WriteLine($"Valid alias found: {enumerator.Current}");
-                        }
+                        Console.WriteLine($"Valid alias found: {currentAlias}");
                     }
                 }
             }

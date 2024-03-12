@@ -261,7 +261,7 @@ namespace ApiExamples
 
             // 2 -  Print while applying our printing settings, while also
             // giving the document a custom name that we may recognize in the printer queue:
-            doc.Print(printerSettings, "My rendered document");            
+            doc.Print(printerSettings, "My rendered document");
             //ExEnd
         }
 
@@ -312,7 +312,7 @@ namespace ApiExamples
             previewDlg.Document = awPrintDoc;
             previewDlg.ShowDialog();
 
-            awPrintDoc.Print();            
+            awPrintDoc.Print();
             Console.WriteLine($"The numer of pages printed in color are {awPrintDoc.ColorPagesPrinted}.");
             //ExEnd
         }

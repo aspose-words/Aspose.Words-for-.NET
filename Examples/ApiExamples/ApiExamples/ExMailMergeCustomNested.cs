@@ -62,7 +62,7 @@ namespace ApiExamples
 
             // To mail merge from your data source, we must wrap it into an object that implements the IMailMergeDataSource interface.
             CustomerMailMergeDataSource customersDataSource = new CustomerMailMergeDataSource(customers);
-            
+
             doc.MailMerge.ExecuteWithRegions(customersDataSource);
 
             doc.Save(ArtifactsDir + "NestedMailMergeCustom.CustomDataSource.docx");

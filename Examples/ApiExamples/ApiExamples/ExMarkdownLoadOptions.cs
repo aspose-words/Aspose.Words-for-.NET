@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Aspose.Words;
 using Aspose.Words.Loading;
 using NUnit.Framework;
 
 namespace ApiExamples
 {
-    class ExMarkdownLoadOptions : ApiExampleBase
+    [TestFixture]
+    public class ExMarkdownLoadOptions : ApiExampleBase
     {
         [Test]
         public void PreserveEmptyLines()

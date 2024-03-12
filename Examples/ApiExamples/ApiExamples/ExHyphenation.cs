@@ -36,7 +36,7 @@ namespace ApiExamples
             Hyphenation.RegisterDictionary("de-CH", MyDir + "hyph_de_CH.dic");
 
             Assert.True(Hyphenation.IsDictionaryRegistered("de-CH"));
-            
+
             // Open a document containing text with a locale matching that of our dictionary,
             // and save it to a fixed-page save format. The text in that document will be hyphenated.
             Document doc = new Document(MyDir + "German text.docx");
@@ -55,6 +55,12 @@ namespace ApiExamples
             doc = new Document(MyDir + "German text.docx");
             doc.Save(ArtifactsDir + "Hyphenation.Dictionary.Unregistered.pdf");
             //ExEnd
+        }
+
+        [Test]
+        public void UsePdfDocumentForDictionary()
+        {
+            Dictionary();
 
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Hyphenation.Dictionary.Registered.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
@@ -111,6 +117,10 @@ namespace ApiExamples
             Assert.AreEqual(WarningSource.Layout, warningInfoCollection[0].Source);
             Assert.AreEqual("Hyphenation dictionary contains duplicate patterns. The only first found pattern will be used. " +
                             "Content can be wrapped differently.", warningInfoCollection[0].Description);
+
+            Hyphenation.WarningCallback = null; //ExSkip
+            Hyphenation.UnregisterDictionary("en-US"); //ExSkip
+            Hyphenation.Callback = null; //ExSkip
         }
 
         /// <summary>

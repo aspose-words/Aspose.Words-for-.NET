@@ -34,9 +34,9 @@ namespace ApiExamples
             //ExFor:StyleCollection.GetEnumerator
             //ExSummary:Shows how to access a document's style collection.
             Document doc = new Document();
-           
+
             Assert.AreEqual(4, doc.Styles.Count);
-            
+
             // Enumerate and list all the styles that a document created using Aspose.Words contains by default.
             using (IEnumerator<Style> stylesEnum = doc.Styles.GetEnumerator())
             {

@@ -176,7 +176,7 @@ namespace ApiExamples
             //ExSummary:Shows how to specify a for the number of characters that each line may have.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             // Enable pitching, and then use it to set the number of characters per line in this section.
             builder.PageSetup.LayoutMode = SectionLayoutMode.Grid;
             builder.PageSetup.CharactersPerLine = 10;
@@ -208,7 +208,7 @@ namespace ApiExamples
             //ExSummary:Shows how to specify a limit for the number of lines that each page may have.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             // Enable pitching, and then use it to set the number of lines per page in this section.
             // A large enough font size will push some lines down onto the next page to avoid overlapping characters.
             builder.PageSetup.LayoutMode = SectionLayoutMode.LineGrid;
@@ -304,7 +304,7 @@ namespace ApiExamples
             // Find the default printer that we will use for printing this document.
             // You can define a specific printer using the "PrinterName" property of the PrinterSettings object.
             PrinterSettings settings = new PrinterSettings();
-            
+
             // The paper tray value stored in documents is printer specific.
             // This means the code below resets all page tray values to use the current printers default tray.
             // You can enumerate PrinterSettings.PaperSources to find the other valid paper tray values of the selected printer.
@@ -314,7 +314,7 @@ namespace ApiExamples
                 section.PageSetup.OtherPagesTray = settings.DefaultPageSettings.PaperSource.RawKind;
             }
             //ExEnd
-            
+
             foreach (Section section in DocumentHelper.SaveOpen(doc).Sections.OfType<Section>())
             {
                 Assert.AreEqual(settings.DefaultPageSettings.PaperSource.RawKind, section.PageSetup.FirstPageTray);
@@ -932,7 +932,7 @@ namespace ApiExamples
 
             // Determine how much space our pages have for text within the margins and then add an amount to pad a margin. 
             Assert.AreEqual(470.30d, pageSetup.PageWidth - pageSetup.LeftMargin - pageSetup.RightMargin, 0.01d);
-            
+
             pageSetup.Gutter = 100.0d;
 
             // Set the "RtlGutter" property to "true" to place the gutter in a more suitable position for right-to-left text.

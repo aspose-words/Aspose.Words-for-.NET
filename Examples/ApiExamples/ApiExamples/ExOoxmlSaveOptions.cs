@@ -157,7 +157,7 @@ namespace ApiExamples
             DateTime lastSavedTimeNew = doc.BuiltInDocumentProperties.LastSavedTime;
 
             if (updateLastSavedTimeProperty)
-                Assert.That(DateTime.Now, Is.EqualTo(lastSavedTimeNew).Within(1).Days);
+                Assert.IsTrue((DateTime.Now - lastSavedTimeNew).Days < 1);
             else
                 Assert.AreEqual(new DateTime(2021, 5, 11, 6, 32, 0), 
                     lastSavedTimeNew);
@@ -214,7 +214,7 @@ namespace ApiExamples
             // the default compression that Microsoft Word uses.
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
             saveOptions.CompressionLevel = compressionLevel;
-            
+
             Stopwatch st = Stopwatch.StartNew();
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.DocumentCompression.docx", saveOptions);
             st.Stop();
@@ -231,16 +231,16 @@ namespace ApiExamples
             switch (compressionLevel)
             {
                 case CompressionLevel.Maximum:
-                    Assert.That(testedFileLength, Is.LessThan(1269000));
+                    Assert.IsTrue(testedFileLength < 1269000);
                     break;
                 case CompressionLevel.Normal:
-                    Assert.That(testedFileLength, Is.LessThan(1271000));
+                    Assert.IsTrue(testedFileLength < 1271000);
                     break;
                 case CompressionLevel.Fast:
-                    Assert.That(testedFileLength, Is.LessThan(1280000));
+                    Assert.IsTrue(testedFileLength < 1280000);
                     break;
                 case CompressionLevel.SuperFast:
-                    Assert.That(testedFileLength, Is.LessThan(1276000));
+                    Assert.IsTrue(testedFileLength < 1276000);
                     break;
             }
         }
@@ -285,7 +285,7 @@ namespace ApiExamples
                 using (FileStream outputFileStream = File.Open(ArtifactsDir + "OoxmlSaveOptions.CheckFileSignatures.docx", FileMode.Open))
                 {
                     long fileSize = outputFileStream.Length;
-                    Assert.That(prevFileSize < fileSize);
+                    Assert.IsTrue(prevFileSize < fileSize);
 
                     TestUtil.CopyStream(outputFileStream, stream);
                     Assert.AreEqual(fileSignatures[i], TestUtil.DumpArray(stream.ToArray(), 0, 10));
@@ -302,10 +302,10 @@ namespace ApiExamples
             //ExFor:SaveOptions.ExportGeneratorName
             //ExSummary:Shows how to disable adding name and version of Aspose.Words into produced files.
             Document doc = new Document();
-            
+
             // Use https://docs.aspose.com/words/net/generator-or-producer-name-included-in-output-documents/ to know how to check the result.
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { ExportGeneratorName = false };
-            
+
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.ExportGeneratorName.docx", saveOptions);
             //ExEnd
         }
