@@ -1380,7 +1380,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ChartSeries.SeriesType
             //ExFor:ChartSeriesType
-            //ExSummary:Shows how to 
+            //ExSummary:Shows how to remove specific chart serie.
             Document doc = new Document(MyDir + "Reporting engine template - Chart series.docx");
             Chart chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
 
