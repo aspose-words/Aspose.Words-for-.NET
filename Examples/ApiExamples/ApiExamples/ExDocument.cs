@@ -114,38 +114,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public async Task LoadFromWebAsync()
-        {
-            //ExStart
-            //ExFor:Document.#ctor(Stream)
-            //ExSummary:Shows how to load a document from a URL.
-            // Create a URL that points to a Microsoft Word document.
-            const string url = "https://filesamples.com/samples/document/docx/sample3.docx";
-
-            // Download the document into a byte array, then load that array into a document using a memory stream.
-            using (HttpClient webClient = new HttpClient())
-            {
-                byte[] dataBytes = await webClient.GetByteArrayAsync(url);
-
-                using (MemoryStream byteStream = new MemoryStream(dataBytes))
-                {
-                    Document doc = new Document(byteStream);
-
-                    // At this stage, we can read and edit the document's contents and then save it to the local file system.
-                    Assert.AreEqual("There are eight section headings in this document. At the beginning, \"Sample Document\" is a level 1 heading. " +
-                        "The main section headings, such as \"Headings\" and \"Lists\" are level 2 headings. " +
-                        "The Tables section contains two sub-headings, \"Simple Table\" and \"Complex Table,\" which are both level 3 headings.",                         
-                        doc.FirstSection.Body.Paragraphs[3].GetText().Trim());
-
-                    doc.Save(ArtifactsDir + "Document.LoadFromWeb.docx");
-                }
-            }
-            //ExEnd
-
-            await TestUtil.VerifyWebResponseStatusCodeAsync(HttpStatusCode.OK, url);
-        }
-
-        [Test]
         public void LoadFromWeb()
         {
             //ExStart
@@ -482,39 +450,6 @@ namespace ApiExamples
                 Assert.AreEqual(32.0, ConvertUtil.PointToPixel(shape.Height), 0.01);
             }
             //ExEnd
-        }
-
-        [Test]
-        public async Task InsertHtmlFromWebPageAsync()
-        {
-            //ExStart
-            //ExFor:Document.#ctor(Stream, LoadOptions)
-            //ExFor:LoadOptions.#ctor(LoadFormat, String, String)
-            //ExFor:LoadFormat
-            //ExSummary:Shows how save a web page as a .docx file.
-            const string url = "https://products.aspose.com/words/";
-
-            using (HttpClient client = new HttpClient()) 
-            {
-                var bytes = await client.GetByteArrayAsync(url);
-                using (MemoryStream stream = new MemoryStream(bytes))
-                {
-                    // The URL is used again as a baseUri to ensure that any relative image paths are retrieved correctly.
-                    LoadOptions options = new LoadOptions(LoadFormat.Html, "", url);
-                    options.Encoding = Encoding.UTF8;
-
-                    // Load the HTML document from stream and pass the LoadOptions object.
-                    Document doc = new Document(stream, options);
-
-                    // At this stage, we can read and edit the document's contents and then save it to the local file system.
-                    Assert.True(doc.GetText().Contains("HYPERLINK \"https://products.aspose.com/words/net/\" \\o \"Aspose.Words\"")); //ExSkip
-
-                    doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
-                }
-            }
-            //ExEnd
-
-            await TestUtil.VerifyWebResponseStatusCodeAsync(HttpStatusCode.OK, url);
         }
 
         [Test]
