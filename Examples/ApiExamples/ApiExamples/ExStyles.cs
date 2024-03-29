@@ -397,5 +397,29 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Styles.StylePriority.docx");
             //ExEnd:StylePriority
         }
+
+        [Test]
+        public void LinkedStyleName()
+        {
+            //ExStart:LinkedStyleName
+            //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
+            //ExFor:Style.LinkedStyleName
+            //ExSummary:Shows how to link styles among themselves.
+            Document doc = new Document();
+
+            Style styleHeading1 = doc.Styles[StyleIdentifier.Heading1];
+
+            Style styleHeading1Char = doc.Styles.Add(StyleType.Character, "Heading 1 Char");
+            styleHeading1Char.Font.Name = "Verdana";
+            styleHeading1Char.Font.Bold = true;
+            styleHeading1Char.Font.Border.LineStyle = LineStyle.Dot;
+            styleHeading1Char.Font.Border.LineWidth = 15;
+
+            styleHeading1.LinkedStyleName = "Heading 1 Char";
+
+            Assert.AreEqual("Heading 1 Char", styleHeading1.LinkedStyleName);
+            Assert.AreEqual("Heading 1", styleHeading1Char.LinkedStyleName);
+            //ExEnd:LinkedStyleName
+        }
     }
 }

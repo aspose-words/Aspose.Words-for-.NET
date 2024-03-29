@@ -410,14 +410,13 @@ namespace ApiExamples
             Assert.AreEqual(300.0d, imageSize.HeightPoints);
         }
 
-#if NET5_0_OR_GREATER
         [Test]
         public void InsertWebpImage()
         {
             //ExStart:InsertWebpImage
             //GistId:e386727403c2341ce4018bca370a5b41
             //ExFor:DocumentBuilder.InsertImage(String)
-            //ExSummary:Shows how to insert WebP image (only .NetStandard)
+            //ExSummary:Shows how to insert WebP image.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -433,13 +432,12 @@ namespace ApiExamples
             //ExStart:ReadWebpImage
             //GistId:e386727403c2341ce4018bca370a5b41
             //ExFor:ImageType
-            //ExSummary:Shows how to read WebP image (only .NetStandard)
+            //ExSummary:Shows how to read WebP image.
             Document doc = new Document(MyDir + "Document with WebP image.docx");
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Assert.AreEqual(ImageType.WebP, shape.ImageData.ImageType);
             //ExEnd:ReadWebpImage
         }
-#endif
     }
 }

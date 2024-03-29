@@ -528,5 +528,26 @@ namespace ApiExamples
             format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
             Assert.AreEqual(BaselineAlignment.Top, format.BaselineAlignment);
         }
+
+        [Test]
+        public void MirrorIndents()
+        {
+            //ExStart:MirrorIndents
+            //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
+            //ExFor:ParagraphFormat.MirrorIndents
+            //ExSummary:Show how to make left and right indents the same.
+            Document doc = new Document(MyDir + "Document.docx");
+            ParagraphFormat format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
+
+            format.MirrorIndents = true;
+
+            doc.Save(ArtifactsDir + "ParagraphFormat.MirrorIndents.docx");
+            //ExEnd:MirrorIndents
+
+            doc = new Document(ArtifactsDir + "ParagraphFormat.MirrorIndents.docx");
+            format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
+
+            Assert.AreEqual(true, format.MirrorIndents);
+        }
     }
 }
