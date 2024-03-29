@@ -340,7 +340,7 @@ namespace ApiExamples
             loadOptions.SupportFontFaceRules = true;
             Document doc = new Document(MyDir + "Html with FontFace.html", loadOptions);
 
-            Assert.AreEqual("Bitstream Vera Serif Bold", doc.FontInfos[0].Name);
+            Assert.AreEqual("Squarish Sans CT Regular", doc.FontInfos[0].Name);
             //ExEnd:FontFaceRules
         }
     }
