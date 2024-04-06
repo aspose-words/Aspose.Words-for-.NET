@@ -5,7 +5,6 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using Aspose;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
@@ -127,8 +126,8 @@ namespace ApiExamples
             //ExFor:AxisTickLabels.Position
             //ExFor:AxisTickLabels.IsAutoSpacing
             //ExFor:ChartAxis.TickMarkSpacing
-            //ExFor:Charts.AxisCategoryType
-            //ExFor:Charts.AxisCrosses
+            //ExFor:AxisCategoryType
+            //ExFor:AxisCrosses
             //ExFor:Chart.AxisX
             //ExFor:Chart.AxisY
             //ExFor:Chart.AxisZ
@@ -237,10 +236,10 @@ namespace ApiExamples
             //ExFor:AxisScaling.Minimum
             //ExFor:AxisScaling.Maximum
             //ExFor:ChartAxis.Scaling
-            //ExFor:Charts.AxisTickMark
-            //ExFor:Charts.AxisTickLabelPosition
-            //ExFor:Charts.AxisTimeUnit
-            //ExFor:Charts.ChartAxis.BaseTimeUnit
+            //ExFor:AxisTickMark
+            //ExFor:AxisTickLabelPosition
+            //ExFor:AxisTimeUnit
+            //ExFor:ChartAxis.BaseTimeUnit
             //ExFor:ChartAxis.HasMajorGridlines
             //ExFor:ChartAxis.HasMinorGridlines
             //ExSummary:Shows how to insert chart with date/time values.
@@ -353,9 +352,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ChartAxis.NumberFormat
-            //ExFor:Charts.ChartNumberFormat
+            //ExFor:ChartNumberFormat
             //ExFor:ChartNumberFormat.FormatCode
-            //ExFor:Charts.ChartNumberFormat.IsLinkedToSource
+            //ExFor:ChartNumberFormat.IsLinkedToSource
             //ExSummary:Shows how to set formatting for chart values.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -626,7 +625,7 @@ namespace ApiExamples
         //ExFor:ChartDataPointCollection.ClearFormat
         //ExFor:ChartDataPointCollection.Count
         //ExFor:ChartDataPointCollection.GetEnumerator
-        //ExFor:ChartDataPointCollection.Item(System.Int32)
+        //ExFor:ChartDataPointCollection.Item(Int32)
         //ExFor:ChartMarker
         //ExFor:ChartMarker.Size
         //ExFor:ChartMarker.Symbol
@@ -694,7 +693,7 @@ namespace ApiExamples
         public void PieChartExplosion()
         {
             //ExStart
-            //ExFor:Charts.IChartDataPoint.Explosion
+            //ExFor:IChartDataPoint.Explosion
             //ExSummary:Shows how to move the slices of a pie chart away from the center.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -729,9 +728,9 @@ namespace ApiExamples
         public void Bubble3D()
         {
             //ExStart
-            //ExFor:Charts.ChartDataLabel.ShowBubbleSize
-            //ExFor:Charts.ChartDataLabel.Font
-            //ExFor:Charts.IChartDataPoint.Bubble3D
+            //ExFor:ChartDataLabel.ShowBubbleSize
+            //ExFor:ChartDataLabel.Font
+            //ExFor:IChartDataPoint.Bubble3D
             //ExSummary:Shows how to use 3D effects with bubble charts.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

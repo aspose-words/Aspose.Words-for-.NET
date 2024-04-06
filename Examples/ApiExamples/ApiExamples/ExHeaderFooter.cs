@@ -77,9 +77,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HeaderFooter.IsLinkedToPrevious
-            //ExFor:HeaderFooterCollection.Item(System.Int32)
-            //ExFor:HeaderFooterCollection.LinkToPrevious(Aspose.Words.HeaderFooterType,System.Boolean)
-            //ExFor:HeaderFooterCollection.LinkToPrevious(System.Boolean)
+            //ExFor:HeaderFooterCollection.Item(Int32)
+            //ExFor:HeaderFooterCollection.LinkToPrevious(HeaderFooterType,Boolean)
+            //ExFor:HeaderFooterCollection.LinkToPrevious(Boolean)
             //ExFor:HeaderFooter.ParentSection
             //ExSummary:Shows how to link headers and footers between sections.
             Document doc = new Document();

@@ -303,7 +303,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Style.Aliases
             //ExFor:Style.BaseStyleName
-            //ExFor:Style.Equals(Aspose.Words.Style)
+            //ExFor:Style.Equals(Style)
             //ExFor:Style.LinkedStyleName
             //ExSummary:Shows how to use style aliases.
             Document doc = new Document(MyDir + "Style with alias.docx");
@@ -363,14 +363,14 @@ namespace ApiExamples
             Document doc = new Document();
 
             Style styleHeading1 = doc.Styles[StyleIdentifier.Heading1];
-            if (!styleHeading1.Locked)            
+            if (!styleHeading1.Locked)
                 styleHeading1.Locked = true;
 
             doc.Save(ArtifactsDir + "Styles.LockStyle.docx");
             //ExEnd:LockStyle
 
             doc = new Document(ArtifactsDir + "Styles.LockStyle.docx");
-            Assert.IsTrue(doc.Styles[StyleIdentifier.Heading1].Locked);            
+            Assert.IsTrue(doc.Styles[StyleIdentifier.Heading1].Locked);
         }
 
         [Test]

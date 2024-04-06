@@ -166,7 +166,7 @@ namespace ApiExamples
             //ExSummary:Shows how to specifies the name of the folder used to construct image URIs.
             DocumentBuilder builder = new DocumentBuilder();
 
-            builder.Writeln("Some image below:");            
+            builder.Writeln("Some image below:");
             builder.InsertImage(ImageDir + "Logo.jpg");
 
             string imagesFolder = Path.Combine(ArtifactsDir, "ImagesDir");

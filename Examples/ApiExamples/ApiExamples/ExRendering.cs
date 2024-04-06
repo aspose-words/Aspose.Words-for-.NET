@@ -29,7 +29,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
         //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
-        //ExFor:ShapeRenderer        
+        //ExFor:ShapeRenderer
         //ExSummary:Shows how to render a shape with a Graphics object and display it using a Windows Form.
         [Test, Category("IgnoreOnJenkins"), Category("SkipMono")] //ExSkip
         public void RenderShapesOnForm()

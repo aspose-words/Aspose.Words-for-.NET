@@ -856,11 +856,11 @@ namespace ApiExamples
             //ExStart
             //ExFor:Fill.GradientStops
             //ExFor:GradientStopCollection
-            //ExFor:GradientStopCollection.Insert(System.Int32, GradientStop)
+            //ExFor:GradientStopCollection.Insert(Int32, GradientStop)
             //ExFor:GradientStopCollection.Add(GradientStop)
-            //ExFor:GradientStopCollection.RemoveAt(System.Int32)
+            //ExFor:GradientStopCollection.RemoveAt(Int32)
             //ExFor:GradientStopCollection.Remove(GradientStop)
-            //ExFor:GradientStopCollection.Item(System.Int32)
+            //ExFor:GradientStopCollection.Item(Int32)
             //ExFor:GradientStopCollection.Count
             //ExFor:GradientStop.#ctor(Color, Double)
             //ExFor:GradientStop.#ctor(Color, Double, Double)
@@ -1172,8 +1172,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OleControl
-            //ExFor:Ole.OleControl.IsForms2OleControl
-            //ExFor:Ole.OleControl.Name
+            //ExFor:OleControl.IsForms2OleControl
+            //ExFor:OleControl.Name
             //ExFor:OleFormat.OleControl
             //ExFor:Forms2OleControl
             //ExFor:Forms2OleControl.Caption
@@ -1356,9 +1356,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:OleFormat.Clsid
-            //ExFor:Ole.Forms2OleControlCollection
-            //ExFor:Ole.Forms2OleControlCollection.Count
-            //ExFor:Ole.Forms2OleControlCollection.Item(Int32)
+            //ExFor:Forms2OleControlCollection
+            //ExFor:Forms2OleControlCollection.Count
+            //ExFor:Forms2OleControlCollection.Item(Int32)
             //ExSummary:Shows how to access an OLE control embedded in a document and its child controls.
             Document doc = new Document(MyDir + "OLE ActiveX controls.docm");
 

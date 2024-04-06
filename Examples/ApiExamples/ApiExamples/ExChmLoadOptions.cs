@@ -27,7 +27,7 @@ namespace ApiExamples
 
             Document doc = new Document(new MemoryStream(File.ReadAllBytes(MyDir + "Document with ms-its links.chm")),
                 loadOptions);
-            
+
             doc.Save(ArtifactsDir + "ExChmLoadOptions.OriginalFileName.html");
             //ExEnd
         }

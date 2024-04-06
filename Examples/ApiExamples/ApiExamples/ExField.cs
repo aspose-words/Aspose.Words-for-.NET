@@ -816,11 +816,11 @@ namespace ApiExamples
         }
         
         //ExStart
-        //ExFor:Fields.FieldAsk
-        //ExFor:Fields.FieldAsk.BookmarkName
-        //ExFor:Fields.FieldAsk.DefaultResponse
-        //ExFor:Fields.FieldAsk.PromptOnceOnMailMerge
-        //ExFor:Fields.FieldAsk.PromptText
+        //ExFor:FieldAsk
+        //ExFor:FieldAsk.BookmarkName
+        //ExFor:FieldAsk.DefaultResponse
+        //ExFor:FieldAsk.PromptOnceOnMailMerge
+        //ExFor:FieldAsk.PromptText
         //ExFor:FieldOptions.UserPromptRespondent
         //ExFor:IFieldUserPromptRespondent
         //ExFor:IFieldUserPromptRespondent.Respond(String,String)
@@ -906,13 +906,13 @@ namespace ApiExamples
         public void FieldAdvance()
         {
             //ExStart
-            //ExFor:Fields.FieldAdvance
-            //ExFor:Fields.FieldAdvance.DownOffset
-            //ExFor:Fields.FieldAdvance.HorizontalPosition
-            //ExFor:Fields.FieldAdvance.LeftOffset
-            //ExFor:Fields.FieldAdvance.RightOffset
-            //ExFor:Fields.FieldAdvance.UpOffset
-            //ExFor:Fields.FieldAdvance.VerticalPosition
+            //ExFor:FieldAdvance
+            //ExFor:FieldAdvance.DownOffset
+            //ExFor:FieldAdvance.HorizontalPosition
+            //ExFor:FieldAdvance.LeftOffset
+            //ExFor:FieldAdvance.RightOffset
+            //ExFor:FieldAdvance.UpOffset
+            //ExFor:FieldAdvance.VerticalPosition
             //ExSummary:Shows how to insert an ADVANCE field, and edit its properties. 
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -978,11 +978,11 @@ namespace ApiExamples
         public void FieldAddressBlock()
         {
             //ExStart
-            //ExFor:Fields.FieldAddressBlock.ExcludedCountryOrRegionName
-            //ExFor:Fields.FieldAddressBlock.FormatAddressOnCountryOrRegion
-            //ExFor:Fields.FieldAddressBlock.IncludeCountryOrRegionName
-            //ExFor:Fields.FieldAddressBlock.LanguageId
-            //ExFor:Fields.FieldAddressBlock.NameAndAddressFormat
+            //ExFor:FieldAddressBlock.ExcludedCountryOrRegionName
+            //ExFor:FieldAddressBlock.FormatAddressOnCountryOrRegion
+            //ExFor:FieldAddressBlock.IncludeCountryOrRegionName
+            //ExFor:FieldAddressBlock.LanguageId
+            //ExFor:FieldAddressBlock.NameAndAddressFormat
             //ExSummary:Shows how to insert an ADDRESSBLOCK field.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1483,7 +1483,7 @@ namespace ApiExamples
         public void FieldAutoText()
         {
             //ExStart
-            //ExFor:Fields.FieldAutoText
+            //ExFor:FieldAutoText
             //ExFor:FieldAutoText.EntryName
             //ExFor:FieldOptions.BuiltInTemplatesPaths
             //ExFor:FieldGlossary
@@ -1547,10 +1547,10 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:Fields.FieldAutoTextList
-        //ExFor:Fields.FieldAutoTextList.EntryName
-        //ExFor:Fields.FieldAutoTextList.ListStyle
-        //ExFor:Fields.FieldAutoTextList.ScreenTip
+        //ExFor:FieldAutoTextList
+        //ExFor:FieldAutoTextList.EntryName
+        //ExFor:FieldAutoTextList.ListStyle
+        //ExFor:FieldAutoTextList.ScreenTip
         //ExSummary:Shows how to use an AUTOTEXTLIST field to select from a list of AutoText entries.
         [Test] //ExSkip
         public void FieldAutoTextList()
@@ -5018,7 +5018,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldAuthor
-            //ExFor:FieldAuthor.AuthorName  
+            //ExFor:FieldAuthor.AuthorName
             //ExFor:FieldOptions.DefaultDocumentAuthor
             //ExSummary:Shows how to use an AUTHOR field to display a document creator's name.
             Document doc = new Document();

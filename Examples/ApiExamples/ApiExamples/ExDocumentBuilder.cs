@@ -1119,7 +1119,7 @@ namespace ApiExamples
             //ExFor:PreferredWidth
             //ExFor:PreferredWidth.Auto
             //ExFor:PreferredWidth.Equals(PreferredWidth)
-            //ExFor:PreferredWidth.Equals(System.Object)
+            //ExFor:PreferredWidth.Equals(Object)
             //ExFor:PreferredWidth.FromPoints
             //ExFor:PreferredWidth.FromPercent
             //ExFor:PreferredWidth.GetHashCode

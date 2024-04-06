@@ -1715,7 +1715,7 @@ namespace ApiExamples
         public void ImageSaveOptions()
         {
             //ExStart
-            //ExFor:Document.Save(String, Saving.SaveOptions)
+            //ExFor:Document.Save(String, SaveOptions)
             //ExFor:SaveOptions.UseAntiAliasing
             //ExFor:SaveOptions.UseHighQualityRendering
             //ExSummary:Shows how to improve the quality of a rendered document with SaveOptions.
@@ -1939,7 +1939,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.LayoutOptions
             //ExFor:LayoutOptions
-            //ExFor:Layout.LayoutOptions.ShowHiddenText
+            //ExFor:LayoutOptions.ShowHiddenText
             //ExSummary:Shows how to hide text in a rendered output document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1978,7 +1978,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.LayoutOptions
             //ExFor:LayoutOptions
-            //ExFor:Layout.LayoutOptions.ShowParagraphMarks
+            //ExFor:LayoutOptions.ShowParagraphMarks
             //ExSummary:Shows how to show paragraph marks in a rendered output document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2359,8 +2359,8 @@ namespace ApiExamples
             //ExFor:Document.VbaProject
             //ExFor:VbaModuleCollection
             //ExFor:VbaModuleCollection.Count
-            //ExFor:VbaModuleCollection.Item(System.Int32)
-            //ExFor:VbaModuleCollection.Item(System.String)
+            //ExFor:VbaModuleCollection.Item(Int32)
+            //ExFor:VbaModuleCollection.Item(String)
             //ExFor:VbaModuleCollection.Remove
             //ExFor:VbaModule
             //ExFor:VbaModule.Name

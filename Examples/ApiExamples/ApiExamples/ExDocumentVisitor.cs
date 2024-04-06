@@ -219,12 +219,12 @@ namespace ApiExamples
         //ExFor:Cell.Accept(DocumentVisitor)
         //ExFor:Cell.IsFirstCell
         //ExFor:Cell.IsLastCell
-        //ExFor:DocumentVisitor.VisitTableEnd(Tables.Table)
-        //ExFor:DocumentVisitor.VisitTableStart(Tables.Table)
-        //ExFor:DocumentVisitor.VisitRowEnd(Tables.Row)
-        //ExFor:DocumentVisitor.VisitRowStart(Tables.Row)
-        //ExFor:DocumentVisitor.VisitCellStart(Tables.Cell)
-        //ExFor:DocumentVisitor.VisitCellEnd(Tables.Cell)
+        //ExFor:DocumentVisitor.VisitTableEnd(Table)
+        //ExFor:DocumentVisitor.VisitTableStart(Table)
+        //ExFor:DocumentVisitor.VisitRowEnd(Row)
+        //ExFor:DocumentVisitor.VisitRowStart(Row)
+        //ExFor:DocumentVisitor.VisitCellStart(Cell)
+        //ExFor:DocumentVisitor.VisitCellEnd(Cell)
         //ExFor:Row.Accept(DocumentVisitor)
         //ExFor:Row.FirstCell
         //ExFor:Row.GetText
@@ -955,11 +955,11 @@ namespace ApiExamples
         }
         
         //ExStart
-        //ExFor:DocumentVisitor.VisitOfficeMathEnd(Math.OfficeMath)
-        //ExFor:DocumentVisitor.VisitOfficeMathStart(Math.OfficeMath)
-        //ExFor:Math.MathObjectType
-        //ExFor:Math.OfficeMath.Accept(DocumentVisitor)
-        //ExFor:Math.OfficeMath.MathObjectType
+        //ExFor:DocumentVisitor.VisitOfficeMathEnd(OfficeMath)
+        //ExFor:DocumentVisitor.VisitOfficeMathStart(OfficeMath)
+        //ExFor:MathObjectType
+        //ExFor:OfficeMath.Accept(DocumentVisitor)
+        //ExFor:OfficeMath.MathObjectType
         //ExSummary:Shows how to print the node structure of every office math node in a document.
         [Test] //ExSkip
         public void OfficeMathToText()
@@ -1064,8 +1064,8 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:DocumentVisitor.VisitSmartTagEnd(Markup.SmartTag)
-        //ExFor:DocumentVisitor.VisitSmartTagStart(Markup.SmartTag)
+        //ExFor:DocumentVisitor.VisitSmartTagEnd(SmartTag)
+        //ExFor:DocumentVisitor.VisitSmartTagStart(SmartTag)
         //ExSummary:Shows how to print the node structure of every smart tag in a document.
         [Test] //ExSkip
         public void SmartTagToText()
@@ -1171,8 +1171,8 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:StructuredDocumentTag.Accept(DocumentVisitor)
-        //ExFor:DocumentVisitor.VisitStructuredDocumentTagEnd(Markup.StructuredDocumentTag)
-        //ExFor:DocumentVisitor.VisitStructuredDocumentTagStart(Markup.StructuredDocumentTag)
+        //ExFor:DocumentVisitor.VisitStructuredDocumentTagEnd(StructuredDocumentTag)
+        //ExFor:DocumentVisitor.VisitStructuredDocumentTagStart(StructuredDocumentTag)
         //ExSummary:Shows how to print the node structure of every structured document tag in a document.
         [Test] //ExSkip
         public void StructuredDocumentTagToText()
