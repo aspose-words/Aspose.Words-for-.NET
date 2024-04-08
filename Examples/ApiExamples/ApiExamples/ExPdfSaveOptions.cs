@@ -1948,7 +1948,7 @@ namespace ApiExamples
                     Assert.AreEqual(6, tableAbsorber.TableList.Count);
                     break;
                 case DmlRenderingMode.Fallback:
-                    Assert.AreEqual(15, tableAbsorber.TableList.Count);
+                    Assert.AreEqual(12, tableAbsorber.TableList.Count);
                     break;
             }
         }
