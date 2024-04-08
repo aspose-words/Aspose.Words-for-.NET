@@ -569,5 +569,17 @@ namespace ApiExamples
                 Assert.AreEqual(expectedEditorGroup, editableRange.EditorGroup);
             });
         }
+
+        /// <summary>
+        /// Get File's Encoding.
+        /// </summary>
+        internal static Encoding GetEncoding(string filename)
+        {
+            using (var streamReader = new StreamReader(filename, true))
+            {
+                streamReader.Read();
+                return streamReader.CurrentEncoding;
+            }
+        }
     }
 }

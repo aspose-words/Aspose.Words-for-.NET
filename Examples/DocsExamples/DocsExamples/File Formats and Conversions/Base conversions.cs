@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -135,6 +135,16 @@ namespace DocsExamples.File_Formats_and_Conversions
             Document doc = new Document(MyDir + "Document.docx");
             doc.Save(ArtifactsDir + "BaseConversions.DocxToTxt.txt");
             //ExEnd:DocxToTxt
+        }
+
+        [Test]
+        public void DocxToXlsx()
+        {
+            //ExStart:DocxToXlsx
+            //GistId:f5a08835e924510d3809e41c3b8b81a2
+            Document doc = new Document(MyDir + "Document.docx");
+            doc.Save(ArtifactsDir + "BaseConversions.DocxToXlsx.xlsx");
+            //ExEnd:DocxToXlsx
         }
 
         [Test]

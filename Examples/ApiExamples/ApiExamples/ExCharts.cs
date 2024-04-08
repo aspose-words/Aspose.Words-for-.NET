@@ -157,9 +157,9 @@ namespace ApiExamples
             xAxis.MinorTickMark = AxisTickMark.Cross;
             xAxis.MajorUnit = 10.0d;
             xAxis.MinorUnit = 15.0d;
-            xAxis.TickLabelOffset = 50;
-            xAxis.TickLabelPosition = AxisTickLabelPosition.Low;
-            xAxis.TickLabelSpacingIsAuto = false;
+            xAxis.TickLabels.Offset = 50;
+            xAxis.TickLabels.Position = AxisTickLabelPosition.Low;
+            xAxis.TickLabels.IsAutoSpacing = false;
             xAxis.TickMarkSpacing = 1;
 
             ChartAxis yAxis = chart.AxisY;
@@ -170,7 +170,7 @@ namespace ApiExamples
             yAxis.MinorTickMark = AxisTickMark.Cross;
             yAxis.MajorUnit = 100.0d;
             yAxis.MinorUnit = 20.0d;
-            yAxis.TickLabelPosition = AxisTickLabelPosition.NextToAxis;
+            yAxis.TickLabels.Position = AxisTickLabelPosition.NextToAxis;
 
             // Column charts do not have a Z-axis.
             Assert.Null(chart.AxisZ);
@@ -188,9 +188,9 @@ namespace ApiExamples
             Assert.AreEqual(AxisTickMark.Cross, chart.AxisX.MinorTickMark);
             Assert.AreEqual(1.0d, chart.AxisX.MajorUnit);
             Assert.AreEqual(0.5d, chart.AxisX.MinorUnit);
-            Assert.AreEqual(50, chart.AxisX.TickLabelOffset);
-            Assert.AreEqual(AxisTickLabelPosition.Low, chart.AxisX.TickLabelPosition);
-            Assert.False(chart.AxisX.TickLabelSpacingIsAuto);
+            Assert.AreEqual(50, chart.AxisX.TickLabels.Offset);
+            Assert.AreEqual(AxisTickLabelPosition.Low, chart.AxisX.TickLabels.Position);
+            Assert.False(chart.AxisX.TickLabels.IsAutoSpacing);
             Assert.AreEqual(1, chart.AxisX.TickMarkSpacing);
 
             Assert.AreEqual(AxisCategoryType.Category, chart.AxisY.CategoryType);
@@ -200,7 +200,7 @@ namespace ApiExamples
             Assert.AreEqual(AxisTickMark.Cross, chart.AxisY.MinorTickMark);
             Assert.AreEqual(100.0d, chart.AxisY.MajorUnit);
             Assert.AreEqual(20.0d, chart.AxisY.MinorUnit);
-            Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisY.TickLabelPosition);
+            Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisY.TickLabels.Position);
         }
 
         [Test]
@@ -279,7 +279,7 @@ namespace ApiExamples
 
             // Define Y-axis properties for decimal values.
             ChartAxis yAxis = chart.AxisY;
-            yAxis.TickLabelPosition = AxisTickLabelPosition.High;
+            yAxis.TickLabels.Position = AxisTickLabelPosition.High;
             yAxis.MajorUnit = 100.0d;
             yAxis.MinorUnit = 50.0d;
             yAxis.DisplayUnit.Unit = AxisBuiltInUnit.Hundreds;
@@ -304,7 +304,7 @@ namespace ApiExamples
             Assert.AreEqual(true, chart.AxisX.HasMajorGridlines);
             Assert.AreEqual(true, chart.AxisX.HasMinorGridlines);
 
-            Assert.AreEqual(AxisTickLabelPosition.High, chart.AxisY.TickLabelPosition);
+            Assert.AreEqual(AxisTickLabelPosition.High, chart.AxisY.TickLabels.Position);
             Assert.AreEqual(100.0d, chart.AxisY.MajorUnit);
             Assert.AreEqual(50.0d, chart.AxisY.MinorUnit);
             Assert.AreEqual(AxisBuiltInUnit.Hundreds, chart.AxisY.DisplayUnit.Unit);
@@ -1169,9 +1169,9 @@ namespace ApiExamples
             // Set the X-axis bounds so that the X-axis spans 5 major tick marks and 12 minor tick marks.
             axis.Scaling.Minimum = new AxisBound(-10);
             axis.Scaling.Maximum = new AxisBound(30);
-            axis.TickLabelAlignment = ParagraphAlignment.Right;
+            axis.TickLabels.Alignment = ParagraphAlignment.Right;
 
-            Assert.AreEqual(1, axis.TickLabelSpacing);
+            Assert.AreEqual(1, axis.TickLabels.Spacing);
 
             // Set the tick labels to display their value in millions.
             axis.DisplayUnit.Unit = AxisBuiltInUnit.Millions;
@@ -1197,8 +1197,8 @@ namespace ApiExamples
             Assert.AreEqual(10.0d, axis.MajorUnit);
             Assert.AreEqual(-10.0d, axis.Scaling.Minimum.Value);
             Assert.AreEqual(30.0d, axis.Scaling.Maximum.Value);
-            Assert.AreEqual(1, axis.TickLabelSpacing);
-            Assert.AreEqual(ParagraphAlignment.Right, axis.TickLabelAlignment);
+            Assert.AreEqual(1, axis.TickLabels.Spacing);
+            Assert.AreEqual(ParagraphAlignment.Right, axis.TickLabels.Alignment);
             Assert.AreEqual(AxisBuiltInUnit.Custom, axis.DisplayUnit.Unit);
             Assert.AreEqual(1000000.0d, axis.DisplayUnit.CustomUnit);
 
@@ -1380,7 +1380,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ChartSeries.SeriesType
             //ExFor:ChartSeriesType
-            //ExSummary:Shows how to 
+            //ExSummary:Shows how to remove specific chart serie.
             Document doc = new Document(MyDir + "Reporting engine template - Chart series.docx");
             Chart chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
 
@@ -1689,7 +1689,7 @@ namespace ApiExamples
 
             Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
             Chart chart = shape.Chart;
-
+            
             ChartSeriesCollection series = chart.Series;
             series.Clear();
             double[] xValues = new double[] { 2020, 2021, 2022, 2023 };
@@ -1711,6 +1711,61 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.DataTable.docx");
             //ExEnd:DataTable
+        }
+
+        [Test]
+        public void ChartFormat()
+        {
+            //ExStart:ChartFormat
+            //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
+            //ExFor:Chart.Format
+            //ExFor:ChartTitle.Format
+            //ExFor:ChartAxisTitle.Format
+            //ExFor:ChartLegend.Format
+            //ExSummary:Shows how to use chart formating.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+
+            // Delete series generated by default.
+            ChartSeriesCollection series = chart.Series;
+            series.Clear();
+
+            string[] categories = new string[] { "Category 1", "Category 2" };
+            series.Add("Series 1", categories, new double[] { 1, 2 });
+            series.Add("Series 2", categories, new double[] { 3, 4 });
+
+            // Format chart background.
+            chart.Format.Fill.Solid(Color.DarkSlateGray);
+
+            // Hide axis tick labels.
+            chart.AxisX.TickLabels.Position = AxisTickLabelPosition.None;
+            chart.AxisY.TickLabels.Position = AxisTickLabelPosition.None;
+
+            // Format chart title.
+            chart.Title.Format.Fill.Solid(Color.LightGoldenrodYellow);
+
+            // Format axis title.
+            chart.AxisX.Title.Show = true;
+            chart.AxisX.Title.Format.Fill.Solid(Color.LightGoldenrodYellow);
+
+            // Format legend.
+            chart.Legend.Format.Fill.Solid(Color.LightGoldenrodYellow);
+
+            doc.Save(ArtifactsDir + "Charts.ChartFormat.docx");
+            //ExEnd:ChartFormat
+
+            doc = new Document(ArtifactsDir + "Charts.ChartFormat.docx");
+
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            chart = shape.Chart;
+
+            Assert.AreEqual(Color.DarkSlateGray.ToArgb(), chart.Format.Fill.Color.ToArgb());
+            Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), chart.Title.Format.Fill.Color.ToArgb());
+            Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), chart.AxisX.Title.Format.Fill.Color.ToArgb());
+            Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), chart.Legend.Format.Fill.Color.ToArgb());
         }
     }
 }

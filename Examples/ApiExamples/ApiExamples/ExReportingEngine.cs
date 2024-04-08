@@ -150,7 +150,7 @@ namespace ApiExamples
             mainTemplate.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDynamically.docx");
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDynamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically Gold.docx"));
-         }
+        }
 
         [Test]
         public void ChartTest()
@@ -1204,9 +1204,9 @@ namespace ApiExamples
 
             NumericTestClass testData = new NumericTestBuilder().WithValues(1234, 5621718.589).Build();
 
-            ReportingEngine engine = new ReportingEngine();
-            engine.KnownTypes.Add(typeof(NumericTestClass));
-            engine.BuildReport(doc, testData, "ds");            
+            ReportingEngine report = new ReportingEngine();
+            report.KnownTypes.Add(typeof(NumericTestClass));
+            report.BuildReport(doc, testData, "ds");
 
             doc.Save(ArtifactsDir + "ReportingEngine.DollarTextFormat.docx");
             //ExEnd:DollarTextFormat
@@ -1229,7 +1229,7 @@ namespace ApiExamples
             // Note, that you can't set restricted types during or after building a report.
             ReportingEngine.SetRestrictedTypes(typeof(System.Type));
             // We set "AllowMissingMembers" option to avoid exceptions during building a report.
-            ReportingEngine engine = new ReportingEngine() { Options = ReportBuildOptions.AllowMissingMembers };            
+            ReportingEngine engine = new ReportingEngine() { Options = ReportBuildOptions.AllowMissingMembers };
             engine.BuildReport(doc, new object());
 
             // We get an empty string because we can't access the GetType() method.

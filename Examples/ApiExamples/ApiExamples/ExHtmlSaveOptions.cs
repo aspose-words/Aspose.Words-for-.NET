@@ -1944,5 +1944,23 @@ namespace ApiExamples
             private const double MaxDuration = 0.1d;
         }
         //ExEnd
+
+        [TestCase(SaveFormat.Mobi)]
+        [TestCase(SaveFormat.Azw3)]
+        public void MobiAzw3DefaultEncoding(SaveFormat saveFormat)
+        {
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.SaveFormat = saveFormat;
+            saveOptions.Encoding = Encoding.ASCII;
+
+            string outputFileName = $"{ArtifactsDir}HtmlSaveOptions.MobiDefaultEncoding{FileFormatUtil.SaveFormatToExtension(saveFormat)}";
+            doc.Save(outputFileName);
+
+            Encoding encoding = TestUtil.GetEncoding(outputFileName);
+            Assert.AreNotEqual(Encoding.ASCII, encoding);
+            Assert.AreEqual(Encoding.UTF8, encoding);
+        }
     }
 }

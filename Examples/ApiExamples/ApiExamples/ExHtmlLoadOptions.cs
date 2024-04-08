@@ -328,5 +328,20 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlLoadOptions.BlockImport.docx");
             //ExEnd
         }
+
+        [Test]
+        public void FontFaceRules()
+        {
+            //ExStart:FontFaceRules
+            //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
+            //ExFor:HtmlLoadOptions.SupportFontFaceRules
+            //ExSummary:Shows how to load declared "@font-face" rules.
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions();
+            loadOptions.SupportFontFaceRules = true;
+            Document doc = new Document(MyDir + "Html with FontFace.html", loadOptions);
+
+            Assert.AreEqual("Squarish Sans CT Regular", doc.FontInfos[0].Name);
+            //ExEnd:FontFaceRules
+        }
     }
 }

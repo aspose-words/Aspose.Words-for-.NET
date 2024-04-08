@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using Aspose.Words;
+using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using Aspose.Words.Lists;
 using Aspose.Words.Loading;
@@ -401,6 +402,25 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "OoxmlSaveOptions.Zip64ModeOption.docx", 
                 new OoxmlSaveOptions { Zip64Mode = Zip64Mode.Always });
             //ExEnd:Zip64ModeOption
+        }
+
+        [Test]
+        public void DigitalSignature()
+        {
+            //ExStart:DigitalSignature
+            //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
+            //ExFor:OoxmlSaveOptions.DigitalSignatureDetails
+            //ExSummary:Shows how to sign OOXML document.
+            Document doc = new Document(MyDir + "Document.docx");
+
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.DigitalSignatureDetails = new DigitalSignatureDetails(
+                certificateHolder,
+                new SignOptions() { Comments = "Some comments", SignTime = DateTime.Now });
+
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.DigitalSignature.docx", saveOptions);
+            //ExEnd:DigitalSignature
         }
     }
 }

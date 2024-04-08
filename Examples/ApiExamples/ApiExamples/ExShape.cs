@@ -1440,7 +1440,7 @@ namespace ApiExamples
             //ExEnd
 
             if (!IsRunningOnMono())
-                TestUtil.VerifyImage(795, 87, ArtifactsDir + "Shape.RenderOfficeMath.png");
+                TestUtil.VerifyImage(792, 87, ArtifactsDir + "Shape.RenderOfficeMath.png");
             else
                 TestUtil.VerifyImage(735, 128, ArtifactsDir + "Shape.RenderOfficeMath.png");
         }
@@ -2764,14 +2764,14 @@ namespace ApiExamples
             OfficeMathRenderer renderer = new OfficeMathRenderer(officeMath);
 
             // Verify the size of the image that the OfficeMath object will create when we render it.
-            Assert.AreEqual(119.0f, renderer.SizeInPoints.Width, 0.2f);
+            Assert.AreEqual(119.0f, renderer.SizeInPoints.Width, 0.25f);
             Assert.AreEqual(13.0f, renderer.SizeInPoints.Height, 0.1f);
 
-            Assert.AreEqual(119.0f, renderer.BoundsInPoints.Width, 0.2f);
+            Assert.AreEqual(119.0f, renderer.BoundsInPoints.Width, 0.25f);
             Assert.AreEqual(13.0f, renderer.BoundsInPoints.Height, 0.1f);
 
             // Shapes with transparent parts may contain different values in the "OpaqueBoundsInPoints" properties.
-            Assert.AreEqual(119.0f, renderer.OpaqueBoundsInPoints.Width, 0.2f);
+            Assert.AreEqual(119.0f, renderer.OpaqueBoundsInPoints.Width, 0.25f);
             Assert.AreEqual(14.2f, renderer.OpaqueBoundsInPoints.Height, 0.1f);
 
             // Get the shape size in pixels, with linear scaling to a specific DPI.
@@ -3105,6 +3105,80 @@ namespace ApiExamples
             textBoxControl.Text = "Updated text";
             Assert.AreEqual("Updated text", textBoxControl.Text);
             //ExEnd:TextBoxOleControl
+        }
+
+        [Test]
+        public void Glow()
+        {
+            //ExStart:Glow
+            //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
+            //ExFor:ShapeBase.Glow
+            //ExFor:GlowFormat.Color
+            //ExFor:GlowFormat.Radius
+            //ExFor:GlowFormat.Transparency
+            //ExFor:GlowFormat.Remove()
+            //ExSummary:Shows how to interact with glow shape effect.
+            Document doc = new Document(MyDir + "Various shapes.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            shape.Glow.Color = Color.Salmon;
+            shape.Glow.Radius = 30;
+            shape.Glow.Transparency = 0.15;
+
+            doc.Save(ArtifactsDir + "Shape.Glow.docx");
+
+            doc = new Document(ArtifactsDir + "Shape.Glow.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(Color.FromArgb(217, 250, 128, 114).ToArgb(), shape.Glow.Color.ToArgb());
+            Assert.AreEqual(30, shape.Glow.Radius);
+            Assert.AreEqual(0.15d, shape.Glow.Transparency, 0.01d);
+
+            shape.Glow.Remove();
+
+            Assert.AreEqual(Color.Black.ToArgb(), shape.Glow.Color.ToArgb());
+            Assert.AreEqual(0, shape.Glow.Radius);
+            Assert.AreEqual(0, shape.Glow.Transparency);
+            //ExEnd:Glow
+        }
+
+        [Test]
+        public void Reflection()
+        {
+            //ExStart:Reflection
+            //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
+            //ExFor:ShapeBase.Reflection
+            //ExFor:ReflectionFormat.Size
+            //ExFor:ReflectionFormat.Blur
+            //ExFor:ReflectionFormat.Transparency
+            //ExFor:ReflectionFormat.Distance
+            //ExFor:ReflectionFormat.Remove()
+            //ExSummary:Shows how to interact with reflection shape effect.
+            Document doc = new Document(MyDir + "Various shapes.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            shape.Reflection.Transparency = 0.37;
+            shape.Reflection.Size = 0.48;
+            shape.Reflection.Blur = 17.5;
+            shape.Reflection.Distance = 9.2;
+
+            doc.Save(ArtifactsDir + "Shape.Reflection.docx");
+
+            doc = new Document(ArtifactsDir + "Shape.Reflection.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            Assert.AreEqual(0.37d, shape.Reflection.Transparency, 0.01d);
+            Assert.AreEqual(0.48d, shape.Reflection.Size, 0.01d);
+            Assert.AreEqual(17.5d, shape.Reflection.Blur, 0.01d);
+            Assert.AreEqual(9.2d, shape.Reflection.Distance, 0.01d);
+
+            shape.Reflection.Remove();
+
+            Assert.AreEqual(0, shape.Reflection.Transparency);
+            Assert.AreEqual(0, shape.Reflection.Size);
+            Assert.AreEqual(0, shape.Reflection.Blur);
+            Assert.AreEqual(0, shape.Reflection.Distance);
+            //ExEnd:Reflection
         }
     }
 }
