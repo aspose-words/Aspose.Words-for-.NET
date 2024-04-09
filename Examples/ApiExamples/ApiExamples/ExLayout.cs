@@ -22,15 +22,15 @@ namespace ApiExamples
         public void LayoutCollector()
         {
             //ExStart
-            //ExFor:Layout.LayoutCollector
-            //ExFor:Layout.LayoutCollector.#ctor(Document)
-            //ExFor:Layout.LayoutCollector.Clear
-            //ExFor:Layout.LayoutCollector.Document
-            //ExFor:Layout.LayoutCollector.GetEndPageIndex(Node)
-            //ExFor:Layout.LayoutCollector.GetEntity(Node)
-            //ExFor:Layout.LayoutCollector.GetNumPagesSpanned(Node)
-            //ExFor:Layout.LayoutCollector.GetStartPageIndex(Node)
-            //ExFor:Layout.LayoutEnumerator.Current
+            //ExFor:LayoutCollector
+            //ExFor:LayoutCollector.#ctor(Document)
+            //ExFor:LayoutCollector.Clear
+            //ExFor:LayoutCollector.Document
+            //ExFor:LayoutCollector.GetEndPageIndex(Node)
+            //ExFor:LayoutCollector.GetEntity(Node)
+            //ExFor:LayoutCollector.GetNumPagesSpanned(Node)
+            //ExFor:LayoutCollector.GetStartPageIndex(Node)
+            //ExFor:LayoutEnumerator.Current
             //ExSummary:Shows how to see the the ranges of pages that a node spans.
             Document doc = new Document();
             LayoutCollector layoutCollector = new LayoutCollector(doc);
@@ -84,24 +84,24 @@ namespace ApiExamples
         }
 
         //ExStart
-        //ExFor:Layout.LayoutEntityType
-        //ExFor:Layout.LayoutEnumerator
-        //ExFor:Layout.LayoutEnumerator.#ctor(Document)
-        //ExFor:Layout.LayoutEnumerator.Document
-        //ExFor:Layout.LayoutEnumerator.Kind
-        //ExFor:Layout.LayoutEnumerator.MoveFirstChild
-        //ExFor:Layout.LayoutEnumerator.MoveLastChild
-        //ExFor:Layout.LayoutEnumerator.MoveNext
-        //ExFor:Layout.LayoutEnumerator.MoveNextLogical
-        //ExFor:Layout.LayoutEnumerator.MoveParent
-        //ExFor:Layout.LayoutEnumerator.MoveParent(Layout.LayoutEntityType)
-        //ExFor:Layout.LayoutEnumerator.MovePrevious
-        //ExFor:Layout.LayoutEnumerator.MovePreviousLogical
-        //ExFor:Layout.LayoutEnumerator.PageIndex
-        //ExFor:Layout.LayoutEnumerator.Rectangle
-        //ExFor:Layout.LayoutEnumerator.Reset
-        //ExFor:Layout.LayoutEnumerator.Text
-        //ExFor:Layout.LayoutEnumerator.Type
+        //ExFor:LayoutEntityType
+        //ExFor:LayoutEnumerator
+        //ExFor:LayoutEnumerator.#ctor(Document)
+        //ExFor:LayoutEnumerator.Document
+        //ExFor:LayoutEnumerator.Kind
+        //ExFor:LayoutEnumerator.MoveFirstChild
+        //ExFor:LayoutEnumerator.MoveLastChild
+        //ExFor:LayoutEnumerator.MoveNext
+        //ExFor:LayoutEnumerator.MoveNextLogical
+        //ExFor:LayoutEnumerator.MoveParent
+        //ExFor:LayoutEnumerator.MoveParent(LayoutEntityType)
+        //ExFor:LayoutEnumerator.MovePrevious
+        //ExFor:LayoutEnumerator.MovePreviousLogical
+        //ExFor:LayoutEnumerator.PageIndex
+        //ExFor:LayoutEnumerator.Rectangle
+        //ExFor:LayoutEnumerator.Reset
+        //ExFor:LayoutEnumerator.Text
+        //ExFor:LayoutEnumerator.Type
         //ExSummary:Shows ways of traversing a document's layout entities.
         [Test] //ExSkip
         public void LayoutEnumerator()

@@ -424,8 +424,8 @@ namespace ApiExamples
         public void HeadingPairs()
         {
             //ExStart
-            //ExFor:Properties.BuiltInDocumentProperties.HeadingPairs
-            //ExFor:Properties.BuiltInDocumentProperties.TitlesOfParts
+            //ExFor:BuiltInDocumentProperties.HeadingPairs
+            //ExFor:BuiltInDocumentProperties.TitlesOfParts
             //ExSummary:Shows the relationship between "HeadingPairs" and "TitlesOfParts" properties.
             Document doc = new Document(MyDir + "Heading pairs and titles of parts.docx");
 
@@ -477,8 +477,8 @@ namespace ApiExamples
         public void Security()
         {
             //ExStart
-            //ExFor:Properties.BuiltInDocumentProperties.Security
-            //ExFor:Properties.DocumentSecurity
+            //ExFor:BuiltInDocumentProperties.Security
+            //ExFor:DocumentSecurity
             //ExSummary:Shows how to use document properties to display the security level of a document.
             Document doc = new Document();
 
@@ -583,13 +583,13 @@ namespace ApiExamples
             //ExFor:CustomDocumentProperties.Add(String,DateTime)
             //ExFor:CustomDocumentProperties.Add(String,Double)
             //ExFor:DocumentProperty.Type
-            //ExFor:Properties.DocumentPropertyCollection
-            //ExFor:Properties.DocumentPropertyCollection.Clear
-            //ExFor:Properties.DocumentPropertyCollection.Contains(System.String)
-            //ExFor:Properties.DocumentPropertyCollection.GetEnumerator
-            //ExFor:Properties.DocumentPropertyCollection.IndexOf(System.String)
-            //ExFor:Properties.DocumentPropertyCollection.RemoveAt(System.Int32)
-            //ExFor:Properties.DocumentPropertyCollection.Remove
+            //ExFor:DocumentPropertyCollection
+            //ExFor:DocumentPropertyCollection.Clear
+            //ExFor:DocumentPropertyCollection.Contains(String)
+            //ExFor:DocumentPropertyCollection.GetEnumerator
+            //ExFor:DocumentPropertyCollection.IndexOf(String)
+            //ExFor:DocumentPropertyCollection.RemoveAt(Int32)
+            //ExFor:DocumentPropertyCollection.Remove
             //ExFor:PropertyType
             //ExSummary:Shows how to work with a document's custom properties.
             Document doc = new Document();

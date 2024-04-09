@@ -29,7 +29,7 @@ namespace ApiExamples
         //ExStart
         //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
         //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
-        //ExFor:ShapeRenderer        
+        //ExFor:ShapeRenderer
         //ExSummary:Shows how to render a shape with a Graphics object and display it using a Windows Form.
         [Test, Category("IgnoreOnJenkins"), Category("SkipMono")] //ExSkip
         public void RenderShapesOnForm()
@@ -87,10 +87,10 @@ namespace ApiExamples
         {
             public ShapeForm(Size size)
             {
-                Timer timer = new Timer(); //ExSKip
-                timer.Interval = 10000; //ExSKip
-                timer.Tick += TimerTick; //ExSKip
-                timer.Start(); //ExSKip
+                Timer timer = new Timer(); //ExSkip
+                timer.Interval = 10000; //ExSkip
+                timer.Tick += TimerTick; //ExSkip
+                timer.Start(); //ExSkip
                 Size = size;
                 mShapesToRender = new List<KeyValuePair<ShapeBase, float[]>>();
             }

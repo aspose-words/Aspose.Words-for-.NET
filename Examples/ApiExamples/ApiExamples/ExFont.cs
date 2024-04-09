@@ -994,7 +994,7 @@ namespace ApiExamples
         public void GetAvailableFonts()
         {
             //ExStart
-            //ExFor:Fonts.PhysicalFontInfo
+            //ExFor:PhysicalFontInfo
             //ExFor:FontSourceBase.GetAvailableFonts
             //ExFor:PhysicalFontInfo.FontFamilyName
             //ExFor:PhysicalFontInfo.FullFontName
@@ -1324,8 +1324,8 @@ namespace ApiExamples
         public void DefaultFonts()
         {
             //ExStart
-            //ExFor:Fonts.FontInfoCollection.Contains(String)
-            //ExFor:Fonts.FontInfoCollection.Count
+            //ExFor:FontInfoCollection.Contains(String)
+            //ExFor:FontInfoCollection.Count
             //ExSummary:Shows info about the fonts that are present in the blank document.
             Document doc = new Document();
 
@@ -1345,12 +1345,12 @@ namespace ApiExamples
         public void ExtractEmbeddedFont()
         {
             //ExStart
-            //ExFor:Fonts.EmbeddedFontFormat
-            //ExFor:Fonts.EmbeddedFontStyle
-            //ExFor:Fonts.FontInfo.GetEmbeddedFont(EmbeddedFontFormat,EmbeddedFontStyle)
-            //ExFor:Fonts.FontInfo.GetEmbeddedFontAsOpenType(EmbeddedFontStyle)
-            //ExFor:Fonts.FontInfoCollection.Item(Int32)
-            //ExFor:Fonts.FontInfoCollection.Item(String)
+            //ExFor:EmbeddedFontFormat
+            //ExFor:EmbeddedFontStyle
+            //ExFor:FontInfo.GetEmbeddedFont(EmbeddedFontFormat,EmbeddedFontStyle)
+            //ExFor:FontInfo.GetEmbeddedFontAsOpenType(EmbeddedFontStyle)
+            //ExFor:FontInfoCollection.Item(Int32)
+            //ExFor:FontInfoCollection.Item(String)
             //ExSummary:Shows how to extract an embedded font from a document, and save it to the local file system.
             Document doc = new Document(MyDir + "Embedded font.docx");
 
@@ -1378,14 +1378,14 @@ namespace ApiExamples
         public void GetFontInfoFromFile()
         {
             //ExStart
-            //ExFor:Fonts.FontFamily
-            //ExFor:Fonts.FontPitch
-            //ExFor:Fonts.FontInfo.AltName
-            //ExFor:Fonts.FontInfo.Charset
-            //ExFor:Fonts.FontInfo.Family
-            //ExFor:Fonts.FontInfo.Panose
-            //ExFor:Fonts.FontInfo.Pitch
-            //ExFor:Fonts.FontInfoCollection.GetEnumerator
+            //ExFor:FontFamily
+            //ExFor:FontPitch
+            //ExFor:FontInfo.AltName
+            //ExFor:FontInfo.Charset
+            //ExFor:FontInfo.Family
+            //ExFor:FontInfo.Panose
+            //ExFor:FontInfo.Pitch
+            //ExFor:FontInfoCollection.GetEnumerator
             //ExSummary:Shows how to access and print details of each font in a document.
             Document doc = new Document(MyDir + "Document.docx");
 

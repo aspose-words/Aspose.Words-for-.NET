@@ -108,8 +108,8 @@ namespace ApiExamples
             //ExStart
             //ExFor:StructuredDocumentTag.#ctor(DocumentBase, SdtType, MarkupLevel)
             //ExFor:StructuredDocumentTag.Checked
-            //ExFor:StructuredDocumentTag.SetCheckedSymbol(System.Int32, System.String)
-            //ExFor:StructuredDocumentTag.SetUncheckedSymbol(System.Int32, System.String)
+            //ExFor:StructuredDocumentTag.SetCheckedSymbol(Int32, String)
+            //ExFor:StructuredDocumentTag.SetUncheckedSymbol(Int32, String)
             //ExSummary:Show how to create a structured document tag in the form of a check box.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -402,17 +402,17 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:SdtListItem
-            //ExFor:SdtListItem.#ctor(System.String)
-            //ExFor:SdtListItem.#ctor(System.String,System.String)
+            //ExFor:SdtListItem.#ctor(String)
+            //ExFor:SdtListItem.#ctor(String,String)
             //ExFor:SdtListItem.DisplayText
             //ExFor:SdtListItem.Value
             //ExFor:SdtListItemCollection
-            //ExFor:SdtListItemCollection.Add(Aspose.Words.Markup.SdtListItem)
+            //ExFor:SdtListItemCollection.Add(SdtListItem)
             //ExFor:SdtListItemCollection.Clear
             //ExFor:SdtListItemCollection.Count
             //ExFor:SdtListItemCollection.GetEnumerator
-            //ExFor:SdtListItemCollection.Item(System.Int32)
-            //ExFor:SdtListItemCollection.RemoveAt(System.Int32)
+            //ExFor:SdtListItemCollection.Item(Int32)
+            //ExFor:SdtListItemCollection.RemoveAt(Int32)
             //ExFor:SdtListItemCollection.SelectedValue
             //ExFor:StructuredDocumentTag.ListItems
             //ExSummary:Shows how to work with drop down-list structured document tags.
@@ -686,15 +686,15 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:CustomXmlSchemaCollection
-            //ExFor:CustomXmlSchemaCollection.Add(System.String)
+            //ExFor:CustomXmlSchemaCollection.Add(String)
             //ExFor:CustomXmlSchemaCollection.Clear
             //ExFor:CustomXmlSchemaCollection.Clone
             //ExFor:CustomXmlSchemaCollection.Count
             //ExFor:CustomXmlSchemaCollection.GetEnumerator
-            //ExFor:CustomXmlSchemaCollection.IndexOf(System.String)
-            //ExFor:CustomXmlSchemaCollection.Item(System.Int32)
-            //ExFor:CustomXmlSchemaCollection.Remove(System.String)
-            //ExFor:CustomXmlSchemaCollection.RemoveAt(System.Int32)
+            //ExFor:CustomXmlSchemaCollection.IndexOf(String)
+            //ExFor:CustomXmlSchemaCollection.Item(Int32)
+            //ExFor:CustomXmlSchemaCollection.Remove(String)
+            //ExFor:CustomXmlSchemaCollection.RemoveAt(Int32)
             //ExSummary:Shows how to work with an XML schema collection.
             Document doc = new Document();
 

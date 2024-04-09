@@ -19,21 +19,21 @@ namespace ApiExamples
     {
         //ExStart
         //ExFor:Document.GlossaryDocument
-        //ExFor:BuildingBlocks.BuildingBlock
-        //ExFor:BuildingBlocks.BuildingBlock.#ctor(BuildingBlocks.GlossaryDocument) 
-        //ExFor:BuildingBlocks.BuildingBlock.Accept(DocumentVisitor)
-        //ExFor:BuildingBlocks.BuildingBlock.Behavior
-        //ExFor:BuildingBlocks.BuildingBlock.Category
-        //ExFor:BuildingBlocks.BuildingBlock.Description
-        //ExFor:BuildingBlocks.BuildingBlock.FirstSection
-        //ExFor:BuildingBlocks.BuildingBlock.Gallery
-        //ExFor:BuildingBlocks.BuildingBlock.Guid
-        //ExFor:BuildingBlocks.BuildingBlock.LastSection
-        //ExFor:BuildingBlocks.BuildingBlock.Name
-        //ExFor:BuildingBlocks.BuildingBlock.Sections
-        //ExFor:BuildingBlocks.BuildingBlock.Type
-        //ExFor:BuildingBlocks.BuildingBlockBehavior
-        //ExFor:BuildingBlocks.BuildingBlockType
+        //ExFor:BuildingBlock
+        //ExFor:BuildingBlock.#ctor(GlossaryDocument)
+        //ExFor:BuildingBlock.Accept(DocumentVisitor)
+        //ExFor:BuildingBlock.Behavior
+        //ExFor:BuildingBlock.Category
+        //ExFor:BuildingBlock.Description
+        //ExFor:BuildingBlock.FirstSection
+        //ExFor:BuildingBlock.Gallery
+        //ExFor:BuildingBlock.Guid
+        //ExFor:BuildingBlock.LastSection
+        //ExFor:BuildingBlock.Name
+        //ExFor:BuildingBlock.Sections
+        //ExFor:BuildingBlock.Type
+        //ExFor:BuildingBlockBehavior
+        //ExFor:BuildingBlockType
         //ExSummary:Shows how to add a custom building block to a document.
         [Test] //ExSkip
         public void CreateAndInsert()
@@ -132,16 +132,16 @@ namespace ApiExamples
         //ExEnd
 
         //ExStart
-        //ExFor:BuildingBlocks.GlossaryDocument
-        //ExFor:BuildingBlocks.GlossaryDocument.Accept(DocumentVisitor)
-        //ExFor:BuildingBlocks.GlossaryDocument.BuildingBlocks
-        //ExFor:BuildingBlocks.GlossaryDocument.FirstBuildingBlock
-        //ExFor:BuildingBlocks.GlossaryDocument.GetBuildingBlock(BuildingBlocks.BuildingBlockGallery,System.String,System.String)
-        //ExFor:BuildingBlocks.GlossaryDocument.LastBuildingBlock
-        //ExFor:BuildingBlocks.BuildingBlockCollection
-        //ExFor:BuildingBlocks.BuildingBlockCollection.Item(System.Int32)
-        //ExFor:BuildingBlocks.BuildingBlockCollection.ToArray
-        //ExFor:BuildingBlocks.BuildingBlockGallery
+        //ExFor:GlossaryDocument
+        //ExFor:GlossaryDocument.Accept(DocumentVisitor)
+        //ExFor:GlossaryDocument.BuildingBlocks
+        //ExFor:GlossaryDocument.FirstBuildingBlock
+        //ExFor:GlossaryDocument.GetBuildingBlock(BuildingBlockGallery,String,String)
+        //ExFor:GlossaryDocument.LastBuildingBlock
+        //ExFor:BuildingBlockCollection
+        //ExFor:BuildingBlockCollection.Item(Int32)
+        //ExFor:BuildingBlockCollection.ToArray
+        //ExFor:BuildingBlockGallery
         //ExFor:DocumentVisitor.VisitBuildingBlockEnd(BuildingBlock)
         //ExFor:DocumentVisitor.VisitBuildingBlockStart(BuildingBlock)
         //ExFor:DocumentVisitor.VisitGlossaryDocumentEnd(GlossaryDocument)

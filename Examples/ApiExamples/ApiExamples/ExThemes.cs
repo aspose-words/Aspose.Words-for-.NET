@@ -24,23 +24,23 @@ namespace ApiExamples
             //ExFor:Theme.Colors
             //ExFor:Theme.MajorFonts
             //ExFor:Theme.MinorFonts
-            //ExFor:Themes.ThemeColors
-            //ExFor:Themes.ThemeColors.Accent1
-            //ExFor:Themes.ThemeColors.Accent2
-            //ExFor:Themes.ThemeColors.Accent3
-            //ExFor:Themes.ThemeColors.Accent4
-            //ExFor:Themes.ThemeColors.Accent5
-            //ExFor:Themes.ThemeColors.Accent6
-            //ExFor:Themes.ThemeColors.Dark1
-            //ExFor:Themes.ThemeColors.Dark2
-            //ExFor:Themes.ThemeColors.FollowedHyperlink
-            //ExFor:Themes.ThemeColors.Hyperlink
-            //ExFor:Themes.ThemeColors.Light1
-            //ExFor:Themes.ThemeColors.Light2
-            //ExFor:Themes.ThemeFonts
-            //ExFor:Themes.ThemeFonts.ComplexScript
-            //ExFor:Themes.ThemeFonts.EastAsian
-            //ExFor:Themes.ThemeFonts.Latin
+            //ExFor:ThemeColors
+            //ExFor:ThemeColors.Accent1
+            //ExFor:ThemeColors.Accent2
+            //ExFor:ThemeColors.Accent3
+            //ExFor:ThemeColors.Accent4
+            //ExFor:ThemeColors.Accent5
+            //ExFor:ThemeColors.Accent6
+            //ExFor:ThemeColors.Dark1
+            //ExFor:ThemeColors.Dark2
+            //ExFor:ThemeColors.FollowedHyperlink
+            //ExFor:ThemeColors.Hyperlink
+            //ExFor:ThemeColors.Light1
+            //ExFor:ThemeColors.Light2
+            //ExFor:ThemeFonts
+            //ExFor:ThemeFonts.ComplexScript
+            //ExFor:ThemeFonts.EastAsian
+            //ExFor:ThemeFonts.Latin
             //ExSummary:Shows how to set custom colors and fonts for themes.
             Document doc = new Document(MyDir + "Theme colors.docx");
 

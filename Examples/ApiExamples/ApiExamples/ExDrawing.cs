@@ -29,15 +29,15 @@ namespace ApiExamples
         public void VariousShapes()
         {
             //ExStart
-            //ExFor:Drawing.ArrowLength
-            //ExFor:Drawing.ArrowType
-            //ExFor:Drawing.ArrowWidth
-            //ExFor:Drawing.DashStyle
-            //ExFor:Drawing.EndCap
-            //ExFor:Drawing.Fill.ForeColor
-            //ExFor:Drawing.Fill.ImageBytes
-            //ExFor:Drawing.Fill.Visible
-            //ExFor:Drawing.JoinStyle
+            //ExFor:ArrowLength
+            //ExFor:ArrowType
+            //ExFor:ArrowWidth
+            //ExFor:DashStyle
+            //ExFor:EndCap
+            //ExFor:Fill.ForeColor
+            //ExFor:Fill.ImageBytes
+            //ExFor:Fill.Visible
+            //ExFor:JoinStyle
             //ExFor:Shape.Stroke
             //ExFor:Stroke.Color
             //ExFor:Stroke.StartArrowLength
@@ -223,7 +223,7 @@ namespace ApiExamples
         public void TypeOfImage()
         {
             //ExStart
-            //ExFor:Drawing.ImageType
+            //ExFor:ImageType
             //ExSummary:Shows how to add an image to a shape and check its type.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -337,9 +337,9 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitShapeStart(Shape)
         //ExFor:DocumentVisitor.VisitGroupShapeEnd(GroupShape)
         //ExFor:DocumentVisitor.VisitGroupShapeStart(GroupShape)
-        //ExFor:Drawing.GroupShape
-        //ExFor:Drawing.GroupShape.#ctor(DocumentBase)
-        //ExFor:Drawing.GroupShape.Accept(DocumentVisitor)
+        //ExFor:GroupShape
+        //ExFor:GroupShape.#ctor(DocumentBase)
+        //ExFor:GroupShape.Accept(DocumentVisitor)
         //ExFor:ShapeBase.IsGroup
         //ExFor:ShapeBase.ShapeType
         //ExSummary:Shows how to create a group of shapes, and print its contents using a document visitor.
@@ -454,7 +454,7 @@ namespace ApiExamples
         public void TextBox()
         {
             //ExStart
-            //ExFor:Drawing.LayoutFlow
+            //ExFor:LayoutFlow
             //ExSummary:Shows how to add text to a text box, and change its orientation
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
