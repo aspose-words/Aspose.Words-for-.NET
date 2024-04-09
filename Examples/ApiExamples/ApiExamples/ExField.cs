@@ -5357,7 +5357,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.FILLIN.docx");
-            TestFieldFillIn(new Document(ArtifactsDir + "Field.FILLIN.docx")); //ExSKip
+            TestFieldFillIn(new Document(ArtifactsDir + "Field.FILLIN.docx")); //ExSkip
         }
 
         /// <summary>
@@ -5771,7 +5771,7 @@ namespace ApiExamples
             // Our data source has 3 rows, and we skipped rows twice. 
             // Our output document will have 1 page with data from all 3 rows.
             doc.Save(ArtifactsDir + "Field.NEXT.NEXTIF.docx");
-            TestFieldNext(doc); //ExSKip
+            TestFieldNext(doc); //ExSkip
         }
 
         /// <summary>
@@ -6643,7 +6643,7 @@ namespace ApiExamples
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.TOA.TA.docx");
-            TestFieldTOA(new Document(ArtifactsDir + "Field.TOA.TA.docx")); //ExSKip
+            TestFieldTOA(new Document(ArtifactsDir + "Field.TOA.TA.docx")); //ExSkip
         }
 
         private static FieldTA InsertToaEntry(DocumentBuilder builder, string entryCategory, string longCitation)

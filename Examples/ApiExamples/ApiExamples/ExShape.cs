@@ -1904,7 +1904,7 @@ namespace ApiExamples
         public void VisitShapes()
         {
             Document doc = new Document(MyDir + "Revision shape.docx");
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count); //ExSKip
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count); //ExSkip
 
             ShapeAppearancePrinter visitor = new ShapeAppearancePrinter();
             doc.Accept(visitor);

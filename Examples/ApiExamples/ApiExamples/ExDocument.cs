@@ -1630,7 +1630,7 @@ namespace ApiExamples
 
             // 2 -  Use the first image found in the document:
             ThumbnailGeneratingOptions options = new ThumbnailGeneratingOptions();
-            Assert.AreEqual(new Size(600, 900), options.ThumbnailSize); //ExSKip
+            Assert.AreEqual(new Size(600, 900), options.ThumbnailSize); //ExSkip
             Assert.True(options.GenerateFromFirstPage); //ExSkip
             options.ThumbnailSize = new Size(400, 400);
             options.GenerateFromFirstPage = false;
