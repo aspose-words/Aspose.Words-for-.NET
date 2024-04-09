@@ -58,7 +58,7 @@ namespace ApiExamples
         [Test]
         public void TabStopCollection()
         {
-            //ExStart            
+            //ExStart
             //ExFor:TabStop.#ctor(Double)
             //ExFor:TabStop.#ctor(Double,TabAlignment,TabLeader)
             //ExFor:TabStop.Equals(TabStop)

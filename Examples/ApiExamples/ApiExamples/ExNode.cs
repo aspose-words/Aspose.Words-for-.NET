@@ -595,7 +595,7 @@ namespace ApiExamples
             builder.Write("Cell 2");
             builder.EndTable();
 
-            builder.InsertImage(ImageDir + "Logo.jpg");            
+            builder.InsertImage(ImageDir + "Logo.jpg");
 
             builder.CurrentParagraph.ParentNode.RemoveAllChildren();
         }
@@ -686,7 +686,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:NodeList.Count
-            //ExFor:NodeList.Item(System.Int32)
+            //ExFor:NodeList.Item(Int32)
             //ExSummary:Shows how to use XPaths to navigate a NodeList.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -701,7 +701,7 @@ namespace ApiExamples
             builder.Write("Cell 2");
             builder.EndTable();
 
-            builder.InsertImage(ImageDir + "Logo.jpg");            
+            builder.InsertImage(ImageDir + "Logo.jpg");
 
             // Our document contains three Run nodes.
             NodeList nodeList = doc.SelectNodes("//Run");

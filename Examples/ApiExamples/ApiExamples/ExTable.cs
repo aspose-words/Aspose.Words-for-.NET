@@ -162,16 +162,16 @@ namespace ApiExamples
             //ExStart
             //ExFor:Cell
             //ExFor:CellCollection
-            //ExFor:CellCollection.Item(System.Int32)
+            //ExFor:CellCollection.Item(Int32)
             //ExFor:CellCollection.ToArray
             //ExFor:Row
             //ExFor:Row.Cells
             //ExFor:RowCollection
-            //ExFor:RowCollection.Item(System.Int32)
+            //ExFor:RowCollection.Item(Int32)
             //ExFor:RowCollection.ToArray
             //ExFor:Table
             //ExFor:Table.Rows
-            //ExFor:TableCollection.Item(System.Int32)
+            //ExFor:TableCollection.Item(Int32)
             //ExFor:TableCollection.ToArray
             //ExSummary:Shows how to iterate through all tables in the document and print the contents of each cell.
             Document doc = new Document(MyDir + "Tables.docx");
@@ -215,7 +215,7 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:Node.GetAncestor(NodeType)
-        //ExFor:Node.GetAncestor(System.Type)
+        //ExFor:Node.GetAncestor(Type)
         //ExFor:Table.NodeType
         //ExFor:Cell.Tables
         //ExFor:TableCollection

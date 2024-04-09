@@ -102,7 +102,7 @@ namespace ApiExamples
         public void ImportNodeCustom()
         {
             //ExStart
-            //ExFor:DocumentBase.ImportNode(Node, System.Boolean, ImportFormatMode)
+            //ExFor:DocumentBase.ImportNode(Node, Boolean, ImportFormatMode)
             //ExSummary:Shows how to import node from source document to destination document with specific options.
             // Create two documents and add a character style to each document.
             // Configure the styles to have the same name, but different text formatting.

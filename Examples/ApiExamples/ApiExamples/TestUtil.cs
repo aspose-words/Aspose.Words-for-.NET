@@ -206,7 +206,7 @@ namespace ApiExamples
 
             for (int i = 0; i < expectedResult.Rows.Count; i++)
                 expectedStrings[i] = Array.ConvertAll(expectedResult.Rows[i].ItemArray, x => x.ToString());
-            
+
             MailMergeMatchesArray(expectedStrings, doc, onePagePerRow);
         }
 
@@ -262,9 +262,9 @@ namespace ApiExamples
             using (ZipArchive archive = ZipFile.Open(docFilename, ZipArchiveMode.Update))
             {
                 ZipArchiveEntry entry = archive.Entries.First(e => e.Name == docPartFilename);
-                
+
                 using (Stream stream = entry.Open())
-                { 
+                {
                    StreamContainsString(expected, stream);
                 }
             }

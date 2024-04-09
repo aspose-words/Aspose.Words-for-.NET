@@ -22,13 +22,13 @@ namespace ApiExamples
             //ExFor:BookmarksOutlineLevelCollection
             //ExFor:BookmarksOutlineLevelCollection.Add(String, Int32)
             //ExFor:BookmarksOutlineLevelCollection.Clear
-            //ExFor:BookmarksOutlineLevelCollection.Contains(System.String)
+            //ExFor:BookmarksOutlineLevelCollection.Contains(String)
             //ExFor:BookmarksOutlineLevelCollection.Count
-            //ExFor:BookmarksOutlineLevelCollection.IndexOfKey(System.String)
-            //ExFor:BookmarksOutlineLevelCollection.Item(System.Int32)
-            //ExFor:BookmarksOutlineLevelCollection.Item(System.String)
-            //ExFor:BookmarksOutlineLevelCollection.Remove(System.String)
-            //ExFor:BookmarksOutlineLevelCollection.RemoveAt(System.Int32)
+            //ExFor:BookmarksOutlineLevelCollection.IndexOfKey(String)
+            //ExFor:BookmarksOutlineLevelCollection.Item(Int32)
+            //ExFor:BookmarksOutlineLevelCollection.Item(String)
+            //ExFor:BookmarksOutlineLevelCollection.Remove(String)
+            //ExFor:BookmarksOutlineLevelCollection.RemoveAt(Int32)
             //ExFor:OutlineOptions.BookmarksOutlineLevels
             //ExSummary:Shows how to set outline levels for bookmarks.
             Document doc = new Document();

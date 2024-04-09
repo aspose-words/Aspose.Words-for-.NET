@@ -74,7 +74,7 @@ namespace ApiExamples
             }
             //ExEnd
         }
-        
+
         //ExStart
         //ExFor:Paragraph.IsEndOfSection
         //ExFor:NodeImporter

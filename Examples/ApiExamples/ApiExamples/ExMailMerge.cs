@@ -489,9 +489,9 @@ namespace ApiExamples
         public void MailMergeRegionInfo()
         {
             //ExStart
-            //ExFor:MailMerge.GetFieldNamesForRegion(System.String)
-            //ExFor:MailMerge.GetFieldNamesForRegion(System.String,System.Int32)
-            //ExFor:MailMerge.GetRegionsByName(System.String)
+            //ExFor:MailMerge.GetFieldNamesForRegion(String)
+            //ExFor:MailMerge.GetFieldNamesForRegion(String,Int32)
+            //ExFor:MailMerge.GetRegionsByName(String)
             //ExFor:MailMerge.RegionEndTag
             //ExFor:MailMerge.RegionStartTag
             //ExFor:MailMergeRegionInfo.ParentRegion
