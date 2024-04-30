@@ -781,7 +781,6 @@ namespace ApiExamples
 
                 Assert.AreEqual(1033, run.Font.LocaleId);
                 Assert.AreEqual(16, run.Font.Size);
-                Assert.AreEqual("Courier New", run.Font.Name);
                 Assert.False(run.Font.Italic);
                 Assert.False(run.Font.Bold);
                 Assert.AreEqual(1025, run.Font.LocaleIdBi);

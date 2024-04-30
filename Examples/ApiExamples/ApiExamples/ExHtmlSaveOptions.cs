@@ -783,7 +783,7 @@ namespace ApiExamples
                 case HtmlVersion.Html5:
                     Assert.True(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"));
                     Assert.True(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"));
-                    Assert.True(outDocContents.Contains("<table style=\"-aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
+                    Assert.True(outDocContents.Contains("<table style=\"padding:0pt; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
                     break;
                 case HtmlVersion.Xhtml:
                     Assert.True(outDocContents.Contains("<a name=\"_Toc76372689\"></a>"));

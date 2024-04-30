@@ -298,7 +298,7 @@ namespace ApiExamples
 
             // Sometimes, fields may not format their numbers correctly under certain cultures. 
             Assert.IsFalse(doc.FieldOptions.UseInvariantCultureNumberFormat);
-            Assert.AreEqual("$1234567,89 .     ", field.Result);
+            Assert.AreEqual("$1.234.567,89 ,     ", field.Result);
 
             // To fix this, we could change the culture for the entire thread.
             // Another way to fix this is to set this flag,

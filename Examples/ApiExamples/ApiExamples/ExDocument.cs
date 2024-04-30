@@ -3092,5 +3092,17 @@ namespace ApiExamples
                     doc.Save(stream, saveFormat);
             }
         }
+
+        [Test]
+        public void HasMacros()
+        {
+            //ExStart:HasMacros
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:FileFormatInfo.HasMacros
+            //ExSummary:Shows how to check VBA macro presence without loading document.
+            FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "Macro.docm");
+            Assert.IsTrue(fileFormatInfo.HasMacros);
+            //ExEnd:HasMacros
+        }
     }
 }

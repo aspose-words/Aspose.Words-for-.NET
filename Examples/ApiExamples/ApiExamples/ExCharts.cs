@@ -1766,5 +1766,116 @@ namespace ApiExamples
             Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), chart.AxisX.Title.Format.Fill.Color.ToArgb());
             Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), chart.Legend.Format.Fill.Color.ToArgb());
         }
+
+        [Test]
+        public void SecondaryAxis()
+        {
+            //ExStart:SecondaryAxis
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ChartSeriesGroup
+            //ExFor:ChartSeriesGroup.AxisGroup
+            //ExFor:ChartSeriesGroup.AxisX
+            //ExFor:ChartSeriesGroup.AxisY
+            //ExFor:ChartSeriesGroup.Series
+            //ExFor:ChartSeriesGroupCollection.Add(ChartSeriesType)
+            //ExFor:AxisGroup
+            //ExSummary:Shows how to work with the secondary axis of chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Line, 450, 250);
+            Chart chart = shape.Chart;
+            ChartSeriesCollection series = chart.Series;
+
+            // Delete default generated series.
+            series.Clear();
+
+            string[] categories = new string[] { "Category 1", "Category 2", "Category 3" };
+            series.Add("Series 1 of primary series group", categories, new double[] { 2, 3, 4 });
+            series.Add("Series 2 of primary series group", categories, new double[] { 5, 2, 3 });
+
+            // Create an additional series group, also of the line type.
+            ChartSeriesGroup newSeriesGroup = chart.SeriesGroups.Add(ChartSeriesType.Line);
+            // Specify the use of secondary axes for the new series group.
+            newSeriesGroup.AxisGroup = AxisGroup.Secondary;
+            // Hide the secondary X axis.
+            newSeriesGroup.AxisX.Hidden = true;
+            // Define title of the secondary Y axis.
+            newSeriesGroup.AxisY.Title.Show = true;
+            newSeriesGroup.AxisY.Title.Text = "Secondary Y axis";
+
+            // Add a series to the new series group.
+            ChartSeries series3 =
+                newSeriesGroup.Series.Add("Series of secondary series group", categories, new double[] { 13, 11, 16 });
+            series3.Format.Stroke.Weight = 3.5;
+
+            doc.Save(ArtifactsDir + "Charts.SecondaryAxis.docx");
+            //ExEnd:SecondaryAxis
+        }
+
+        [Test]
+        public void ConfigureGapOverlap()
+        {
+            //ExStart:ConfigureGapOverlap
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ChartSeriesGroup.GapWidth
+            //ExFor:ChartSeriesGroup.Overlap
+            //ExSummary:Show how to configure gap width and overlap.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 450, 250);
+            ChartSeriesGroup seriesGroup = shape.Chart.SeriesGroups[0];
+
+            // Set column gap width and overlap.
+            seriesGroup.GapWidth = 450;
+            seriesGroup.Overlap = -75;
+
+            doc.Save(ArtifactsDir + "Charts.ConfigureGapOverlap.docx");
+            //ExEnd:ConfigureGapOverlap
+        }
+
+        [Test]
+        public void BubbleScale()
+        {
+            //ExStart:BubbleScale
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ChartSeriesGroup.BubbleScale
+            //ExSummary:Show how to set size of the bubbles.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a bubble 3D chart.
+            Shape shape = builder.InsertChart(ChartType.Bubble3D, 450, 250);
+            ChartSeriesGroup seriesGroup = shape.Chart.SeriesGroups[0];
+
+            // Set bubble scale to 200%.
+            seriesGroup.BubbleScale = 200;
+
+            doc.Save(ArtifactsDir + "Charts.BubbleScale.docx");
+            //ExEnd:BubbleScale
+        }
+
+        [Test]
+        public void RemoveSecondaryAxis()
+        {
+            //ExStart:RemoveSecondaryAxis
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ChartSeriesGroupCollection.Count
+            //ExFor:ChartSeriesGroupCollection.Item(Int32)
+            //ExFor:ChartSeriesGroupCollection.RemoveAt(Int32)
+            //ExSummary:Show how to remove secondary axis.
+            Document doc = new Document(MyDir + "Combo chart.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Chart chart = shape.Chart;
+            ChartSeriesGroupCollection seriesGroups = chart.SeriesGroups;
+
+            // Find secondary axis and remove from the collection.
+            for (int i = 0; i < seriesGroups.Count; i++)
+                if (seriesGroups[i].AxisGroup == AxisGroup.Secondary)
+                    seriesGroups.RemoveAt(i);
+            //ExEnd:RemoveSecondaryAxis
+        }
     }
 }

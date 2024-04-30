@@ -25,6 +25,7 @@ using DashStyle = Aspose.Words.Drawing.DashStyle;
 using HorizontalAlignment = Aspose.Words.Drawing.HorizontalAlignment;
 using TextBox = Aspose.Words.Drawing.TextBox;
 using Aspose.Words.Themes;
+using Aspose.Words.Model.Drawing;
 
 namespace ApiExamples
 {
@@ -3179,6 +3180,75 @@ namespace ApiExamples
             Assert.AreEqual(0, shape.Reflection.Blur);
             Assert.AreEqual(0, shape.Reflection.Distance);
             //ExEnd:Reflection
+        }
+
+        [Test]
+        public void SoftEdge()
+        {
+            //ExStart:SoftEdge
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ShapeBase.SoftEdge
+            //ExFor:SoftEdgeFormat.Radius
+            //ExFor:SoftEdgeFormat.Remove
+            //ExSummary:Shows how to work with soft edge formatting.
+            DocumentBuilder builder = new DocumentBuilder();
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 200, 200);
+
+            // Apply soft edge to the shape.
+            shape.SoftEdge.Radius = 30;
+
+            builder.Document.Save(ArtifactsDir + "Shape.SoftEdge.docx");
+
+            // Load document with rectangle shape with soft edge.
+            Document doc = new Document(ArtifactsDir + "Shape.SoftEdge.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            // Check soft edge radius.
+            Assert.AreEqual(30, shape.SoftEdge.Radius);
+
+            // Remove soft edge from the shape.
+            shape.SoftEdge.Remove();
+
+            // Check radius of the removed soft edge.
+            Assert.AreEqual(0, shape.SoftEdge.Radius);
+            //ExEnd:SoftEdge
+        }
+
+        [Test]
+        public void Adjustments()
+        {
+            //ExStart:Adjustments
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:Shape.Adjustments
+            //ExFor:AdjustmentCollection
+            //ExFor:Adjustment
+            //ExFor:Adjustment.Name
+            //ExFor:Adjustment.Value
+            //ExSummary:Shows how to work with adjustment raw values.
+            Document doc = new Document(MyDir + "Rounded rectangle shape.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            AdjustmentCollection adjustments = shape.Adjustments;
+            Assert.AreEqual(1, adjustments.Count);
+
+            Adjustment adjustment = adjustments[0];
+            Assert.AreEqual("adj", adjustment.Name);
+            Assert.AreEqual(16667, adjustment.Value);
+
+            adjustment.Value = 30000;
+
+            doc.Save(ArtifactsDir + "Shape.Adjustments.docx");
+            //ExEnd:Adjustments
+
+            doc = new Document(ArtifactsDir + "Shape.Adjustments.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            adjustments = shape.Adjustments;
+            Assert.AreEqual(1, adjustments.Count);
+
+            adjustment = adjustments[0];
+            Assert.AreEqual("adj", adjustment.Name);
+            Assert.AreEqual(30000, adjustment.Value);
         }
     }
 }

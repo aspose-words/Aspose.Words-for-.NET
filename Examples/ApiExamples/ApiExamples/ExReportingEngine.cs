@@ -374,6 +374,29 @@ namespace ApiExamples
         }
 
         [Test]
+        public void SourseListNumbering()
+        {
+            //ExStart:SourseListNumbering
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ReportingEngine.BuildReport(Document, Object[], String[])
+            //ExSummary:Shows how to keep inserted numbering as is.
+            // By default, numbered lists from a template document are continued when their identifiers match those from a document being inserted.
+            // With "-sourceNumbering" numbering should be separated and kept as is.
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document]>>" + Environment.NewLine + "<<doc [src.Document] -sourceNumbering>>");
+
+            DocumentTestClass doc = new DocumentTestBuilder()
+                .WithDocument(new Document(MyDir + "List item.docx")).Build();
+
+            ReportingEngine engine = new ReportingEngine() { Options = ReportBuildOptions.RemoveEmptyParagraphs };
+            engine.BuildReport(template, new object[] { doc }, new[] { "src" });
+
+            template.Save(ArtifactsDir + "ReportingEngine.SourseListNumbering.docx");
+            //ExEnd:SourseListNumbering
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SourseListNumbering.docx", GoldsDir + "ReportingEngine.SourseListNumbering Gold.docx"));
+        }
+
+        [Test]
         public void InsertDocumentDynamicallyByStream()
         {
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentStream]>>");

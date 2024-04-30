@@ -101,5 +101,23 @@ namespace ApiExamples
             math.GetMathRenderer().Save(ArtifactsDir + "SvgSaveOptions.Output.svg", options);
             //ExEnd:SaveOfficeMath
         }
+
+        [Test]
+        public void MaxImageResolution()
+        {
+            //ExStart:MaxImageResolution
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ShapeBase.SoftEdge
+            //ExFor:SoftEdgeFormat.Radius
+            //ExFor:SoftEdgeFormat.Remove
+            //ExSummary:Shows how to set limit for image resolution.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            SvgSaveOptions saveOptions = new SvgSaveOptions();
+            saveOptions.MaxImageResolution = 72;
+
+            doc.Save(ArtifactsDir + "SvgSaveOptions.MaxImageResolution.svg", saveOptions);
+            //ExEnd:MaxImageResolution
+        }
     }
 }
