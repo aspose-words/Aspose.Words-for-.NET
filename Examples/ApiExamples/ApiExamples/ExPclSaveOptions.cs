@@ -85,7 +85,7 @@ namespace ApiExamples
 
             // Paper tray information is now preserved when saving document to PCL format.
             // Following information is transferred from document's model to PCL file.
-            foreach (Section section in doc.Sections.OfType<Section>())
+            foreach (Section section in doc.Sections)
             {
                 section.PageSetup.FirstPageTray = 15;
                 section.PageSetup.OtherPagesTray = 12;
