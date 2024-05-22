@@ -12,6 +12,7 @@ using NUnit.Framework;
 
 namespace ApiExamples
 {
+    [TestFixture]
     public class ExChmLoadOptions : ApiExampleBase
     {
         [Test] // ToDo: Need to add tests.

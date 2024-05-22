@@ -76,7 +76,7 @@ namespace ApiExamples
             run.Font.AllCaps = true;
             para.AppendChild(run);
 
-            para = para.ParentNode.AppendChild(new Paragraph(doc));
+            para = (Paragraph)para.ParentNode.AppendChild(new Paragraph(doc));
 
             // 2 -  Set the SmallCaps flag to display all characters in small capitals:
             // If a character is lower case, it will appear in its upper case form
@@ -201,7 +201,7 @@ namespace ApiExamples
             run.Font.StrikeThrough = true;
             para.AppendChild(run);
 
-            para = para.ParentNode.AppendChild(new Paragraph(doc));
+            para = (Paragraph)para.ParentNode.AppendChild(new Paragraph(doc));
 
             run = new Run(doc, "Text with a double-line strikethrough.");
             run.Font.DoubleStrikeThrough = true;
@@ -900,7 +900,7 @@ namespace ApiExamples
 
             // Convert all uses of one style to another,
             // using the above methods to reference old and new styles.
-            foreach (Run run in doc.GetChildNodes(NodeType.Run, true).OfType<Run>())
+            foreach (Run run in doc.GetChildNodes(NodeType.Run, true))
             {
                 if (run.Font.StyleName == "Emphasis")
                     run.Font.StyleName = "Strong";
@@ -970,7 +970,7 @@ namespace ApiExamples
             builder.Write("This text is in a custom style.");
 
             // Iterate over every run and add a double underline to every custom style.
-            foreach (Run run in doc.GetChildNodes(NodeType.Run, true).OfType<Run>())
+            foreach (Run run in doc.GetChildNodes(NodeType.Run, true))
             {
                 Style charStyle = run.Font.Style;
 

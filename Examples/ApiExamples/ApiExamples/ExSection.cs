@@ -503,7 +503,7 @@ namespace ApiExamples
 
             // It is important to understand that a document can contain many sections,
             // and each section has its page setup. In this case, we want to modify them all.
-            foreach (Section section in doc.OfType<Section>())
+            foreach (Section section in doc.GetChildNodes(NodeType.Section, true))
                 section.PageSetup.PaperSize = PaperSize.Letter;
 
             doc.Save(ArtifactsDir + "Section.ModifyPageSetupInAllSections.doc");

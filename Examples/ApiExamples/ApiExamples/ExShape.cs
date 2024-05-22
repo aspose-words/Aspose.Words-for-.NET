@@ -2756,7 +2756,7 @@ namespace ApiExamples
             //ExFor:NodeRendererBase.OpaqueBoundsInPoints
             //ExFor:NodeRendererBase.SizeInPoints
             //ExFor:OfficeMathRenderer
-            //ExFor:OfficeMathRenderer.#ctor(Math.OfficeMath)
+            //ExFor:OfficeMathRenderer.#ctor(OfficeMath)
             //ExSummary:Shows how to measure and scale shapes.
             Document doc = new Document(MyDir + "Office math.docx");
 

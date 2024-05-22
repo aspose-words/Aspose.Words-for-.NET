@@ -279,9 +279,9 @@ namespace ApiExamples
         {
             int childTableCount = 0;
 
-            foreach (Row row in table.Rows.OfType<Row>())
+            foreach (Row row in table.Rows)
             {
-                foreach (Cell Cell in row.Cells.OfType<Cell>())
+                foreach (Cell Cell in row.Cells)
                 {
                     TableCollection childTables = Cell.Tables;
 
@@ -686,7 +686,7 @@ namespace ApiExamples
             Assert.AreEqual(3, doc.GetChildNodes(NodeType.Table, true).Count);
             Assert.AreEqual(table.Range.Text, tableClone.Range.Text);
 
-            foreach (Cell cell in tableClone.GetChildNodes(NodeType.Cell, true).OfType<Cell>())
+            foreach (Cell cell in tableClone.GetChildNodes(NodeType.Cell, true))
                 cell.RemoveAllChildren();
 
             Assert.AreEqual(string.Empty, tableClone.ToString(SaveFormat.Text).Trim());
@@ -706,7 +706,7 @@ namespace ApiExamples
             // in one piece if a table spans two pages, which break up along that row.
             // If the row is too big to fit in one page, Microsoft Word will push it down to the next page.
             // Set the "AllowBreakAcrossPages" property to "true" to allow the row to break up across two pages.
-            foreach (Row row in table.OfType<Row>())
+            foreach (Row row in table)
                 row.RowFormat.AllowBreakAcrossPages = allowBreakAcrossPages;
 
             doc.Save(ArtifactsDir + "Table.AllowBreakAcrossPages.docx");
@@ -786,8 +786,8 @@ namespace ApiExamples
 
             // Enabling KeepWithNext for every paragraph in the table except for the
             // last ones in the last row will prevent the table from splitting across multiple pages.
-            foreach (Cell cell in table.GetChildNodes(NodeType.Cell, true).OfType<Cell>())
-                foreach (Paragraph para in cell.Paragraphs.OfType<Paragraph>())
+            foreach (Cell cell in table.GetChildNodes(NodeType.Cell, true))
+                foreach (Paragraph para in cell.Paragraphs)
                 {
                     Assert.True(para.IsInCell);
 
@@ -801,7 +801,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Table.KeepTableTogether.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            foreach (Paragraph para in table.GetChildNodes(NodeType.Paragraph, true).OfType<Paragraph>())
+            foreach (Paragraph para in table.GetChildNodes(NodeType.Paragraph, true))
                 if (para.IsEndOfCell && ((Cell)para.ParentNode).ParentRow.IsLastRow)
                     Assert.False(para.ParagraphFormat.KeepWithNext);
                 else
@@ -991,8 +991,8 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Table with merged cells.docx");
             Table table = doc.FirstSection.Body.Tables[0];
 
-            foreach (Row row in table.Rows.OfType<Row>())
-                foreach (Cell cell in row.Cells.OfType<Cell>())
+            foreach (Row row in table.Rows)
+                foreach (Cell cell in row.Cells)
                     Console.WriteLine(PrintCellMergeType(cell));
             Assert.AreEqual("The cell at R1, C1 is vertically merged", PrintCellMergeType(table.FirstRow.FirstCell)); //ExSkip
         }
@@ -1066,9 +1066,9 @@ namespace ApiExamples
                 Math.Abs(endCellPos.X - startCellPos.X) + 1,
                 Math.Abs(endCellPos.Y - startCellPos.Y) + 1);
 
-            foreach (Row row in parentTable.Rows.OfType<Row>())
+            foreach (Row row in parentTable.Rows)
             {
-                foreach (Cell cell in row.Cells.OfType<Cell>())
+                foreach (Cell cell in row.Cells)
                 {
                     Point currentPos = new Point(row.IndexOf(cell), parentTable.IndexOf(row));
 

@@ -12,6 +12,7 @@ using SkiaSharp;
 
 namespace ApiExamples
 {
+    [TestFixture]
     class ExMarkdownSaveOptions : ApiExampleBase
     {
         [TestCase(TableContentAlignment.Left)]
