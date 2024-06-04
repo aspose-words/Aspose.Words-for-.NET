@@ -836,19 +836,23 @@ namespace ApiExamples
         }
 
         [Test]
-        public void WithMissingMembers()
+        public void MissingMembers()
         {
+            //ExStart:MissingMembers
+            //ReleaseVersion:24.6
+            //ExFor:ReportingEngine.BuildReport(Document, Object, String)
+            //ExSummary:Shows how to allow missinng members.
             DocumentBuilder builder = new DocumentBuilder();
+            builder.Writeln("<<[missingObject.First().id]>>");
+            builder.Writeln("<<foreach [in missingObject]>><<[id]>><</foreach>>");
 
-            // Add templete to the document for reporting engine.
-            DocumentHelper.InsertBuilderText(builder,
-                new[] { "<<[missingObject.First().id]>>", "<<foreach [in missingObject]>><<[id]>><</foreach>>" });
-
-            BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.AllowMissingMembers);
+            ReportingEngine engine = new ReportingEngine { Options = ReportBuildOptions.AllowMissingMembers };
+            engine.MissingMemberMessage = "Missed";
+            engine.BuildReport(builder.Document, new DataSet(), "");
+            //ExEnd:MissingMembers
 
             // Assert that build report success with "ReportBuildOptions.AllowMissingMembers".
-            Assert.AreEqual(ControlChar.ParagraphBreak + ControlChar.ParagraphBreak + ControlChar.SectionBreak,
-                builder.Document.GetText());
+            Assert.AreEqual("Missed", builder.Document.GetText().Trim());
         }
 
         [TestCase("<<[missingObject.First().id]>>", "<<[missingObject.First( Error! Can not get the value of member 'missingObject' on type 'System.Data.DataSet'. ).id]>>", TestName = "Can not get the value of member")]
@@ -1275,6 +1279,24 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.Word2016Charts.docx");
             //ExEnd:Word2016Charts
+        }
+
+        [Test]
+        public void RemoveParagraphsSelectively()
+        {
+            //ExStart:RemoveParagraphsSelectively
+            //ReleaseVersion:24.6
+            //ExFor:ReportingEngine.BuildReport(Document, Object, String)
+            //ExSummary:Shows how to remove paragraphs selectively.
+            Document doc = new Document(MyDir + "Reporting engine template - Selective remove paragraphs.docx");
+
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, false, "value");
+
+            doc.Save(ArtifactsDir + "ReportingEngine.SelectiveDeletionOfParagraphs.docx");
+            //ExEnd:RemoveParagraphsSelectively
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SelectiveDeletionOfParagraphs.docx", GoldsDir + "ReportingEngine.SelectiveDeletionOfParagraphs Gold.docx"));
         }
 
         private static void BuildReport(Document document, object dataSource, ReportBuildOptions reportBuildOptions)

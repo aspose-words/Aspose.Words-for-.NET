@@ -440,8 +440,8 @@ namespace ApiExamples
 
             outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.css");
 
-            Assert.True(outDocContents.Contains(".myprefix-Footer { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt }\r\n" +
-                                                ".myprefix-Header { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt }\r\n"));
+            Assert.True(outDocContents.Contains(".myprefix-Footer { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt; -aw-style-name:footer }\r\n" +
+                                                ".myprefix-Header { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt; -aw-style-name:header }\r\n"));
             //ExEnd
         }
 
@@ -1683,9 +1683,9 @@ namespace ApiExamples
             switch (htmlOfficeMathOutputMode)
             {
                 case HtmlOfficeMathOutputMode.Image:
-                    Assert.True(Regex.Match(outDocContents, 
+                    Assert.True(Regex.Match(outDocContents,
                         "<p style=\"margin-top:0pt; margin-bottom:10pt\">" +
-                            "<img src=\"HtmlSaveOptions.OfficeMathOutputMode.001.png\" width=\"159\" height=\"19\" alt=\"\" style=\"vertical-align:middle; " +
+                            "<img src=\"HtmlSaveOptions.OfficeMathOutputMode.001.png\" width=\"160\" height=\"19\" alt=\"\" style=\"vertical-align:middle; " +
                             "-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />" +
                         "</p>").Success);
                     break;

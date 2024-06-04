@@ -334,5 +334,30 @@ namespace ApiExamples
             private readonly StringBuilder mBuilder;
         }
         //ExEnd
+
+        [Test]
+        public void UtcDateTime()
+        {
+            //ExStart:UtcDateTime
+            //ReleaseVersion:24.6
+            //ExFor:Comment.DateTimeUtc
+            //ExSummary:Shows how to get UTC date and time.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            DateTime dateTime = DateTime.Now;
+            Comment comment = new Comment(doc, "John Doe", "J.D.", dateTime);
+            comment.SetText("My comment.");
+
+            builder.CurrentParagraph.AppendChild(comment);
+
+            doc.Save(ArtifactsDir + "Comment.UtcDateTime.docx");
+            doc = new Document(ArtifactsDir + "Comment.UtcDateTime.docx");
+
+            comment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
+            // By default DateTimeUtc without millisaconds.
+            Assert.AreEqual(dateTime.ToUniversalTime().ToString("yyyy-MM-dd hh:mm:ss"), comment.DateTimeUtc.ToString("yyyy-MM-dd hh:mm:ss"));
+            //ExEnd:UtcDateTime
+        }
     }
 }
