@@ -724,7 +724,7 @@ namespace ApiExamples
         public void IgnoreStoreItemId()
         {
             //ExStart:IgnoreStoreItemId
-            //ReleaseVersion:24.6
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:AdvancedCompareOptions.IgnoreStoreItemId
             //ExSummary:Shows how to compare SDT with same text and different store item id.
             Document docA = new Document(MyDir + "Document with SDT 1.docx");

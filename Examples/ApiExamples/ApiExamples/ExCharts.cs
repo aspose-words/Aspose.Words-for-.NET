@@ -1883,7 +1883,7 @@ namespace ApiExamples
         public void TreemapChart()
         {
             //ExStart:TreemapChart
-            //ReleaseVersion:24.6
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ChartSeriesCollection.Add(String, ChartMultilevelValue[], double[])
             //ExFor:ChartMultilevelValue(String, String)
             //ExSummary:Shows how to create treemap chart.
@@ -1950,7 +1950,7 @@ namespace ApiExamples
         public void SunburstChart()
         {
             //ExStart:SunburstChart
-            //ReleaseVersion:24.6
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ChartSeriesCollection.Add(String, ChartMultilevelValue[], double[])
             //ExSummary:Shows how to create sunburst chart.
             Document doc = new Document();
@@ -1997,7 +1997,7 @@ namespace ApiExamples
         public void HistogramChart()
         {
             //ExStart:HistogramChart
-            //ReleaseVersion:24.6
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ChartSeriesCollection.Add(String, double[])
             //ExSummary:Shows how to create histogram chart.
             Document doc = new Document();
@@ -2028,7 +2028,7 @@ namespace ApiExamples
         public void ParetoChart()
         {
             //ExStart:ParetoChart
-            //ReleaseVersion:24.6
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ChartSeriesCollection.Add(String, String[], double[])
             //ExSummary:Shows how to create pareto chart.
             Document doc = new Document();
@@ -2055,7 +2055,7 @@ namespace ApiExamples
         public void BoxAndWhiskerChart()
         {
             //ExStart:BoxAndWhiskerChart
-            //ReleaseVersion:24.6
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ChartSeriesCollection.Add(String, String[], double[])
             //ExSummary:Shows how to create box and whisker chart.
             Document doc = new Document();
@@ -2096,7 +2096,7 @@ namespace ApiExamples
         public void WaterfallChart()
         {
             //ExStart:WaterfallChart
-            //ReleaseVersion:24.6
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ChartSeriesCollection.Add(String, String[], double[], bool[])
             //ExSummary:Shows how to create waterfall chart.
             Document doc = new Document();
@@ -2128,7 +2128,7 @@ namespace ApiExamples
         public void FunnelChart()
         {
             //ExStart:FunnelChart
-            //ReleaseVersion:24.6
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ChartSeriesCollection.Add(String, String[], double[])
             //ExSummary:Shows how to create funnel chart.
             Document doc = new Document();

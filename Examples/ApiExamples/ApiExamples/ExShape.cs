@@ -3254,7 +3254,7 @@ namespace ApiExamples
         public void ShadowFormatColor()
         {
             //ExStart:ShadowFormatColor
-            //ReleaseVersion:24.6
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ShadowFormat.Color
             //ExSummary:Shows how to get shadow color.
             Document doc = new Document(MyDir + "Shadow color.docx");

@@ -839,7 +839,7 @@ namespace ApiExamples
         public void MissingMembers()
         {
             //ExStart:MissingMembers
-            //ReleaseVersion:24.6
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ReportingEngine.BuildReport(Document, Object, String)
             //ExSummary:Shows how to allow missinng members.
             DocumentBuilder builder = new DocumentBuilder();
@@ -1285,7 +1285,7 @@ namespace ApiExamples
         public void RemoveParagraphsSelectively()
         {
             //ExStart:RemoveParagraphsSelectively
-            //ReleaseVersion:24.6
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ReportingEngine.BuildReport(Document, Object, String)
             //ExSummary:Shows how to remove paragraphs selectively.
             Document doc = new Document(MyDir + "Reporting engine template - Selective remove paragraphs.docx");

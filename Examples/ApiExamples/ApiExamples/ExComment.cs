@@ -339,7 +339,7 @@ namespace ApiExamples
         public void UtcDateTime()
         {
             //ExStart:UtcDateTime
-            //ReleaseVersion:24.6
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:Comment.DateTimeUtc
             //ExSummary:Shows how to get UTC date and time.
             Document doc = new Document();
