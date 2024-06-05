@@ -1994,6 +1994,7 @@ namespace ApiExamples
             //ExEnd:SunburstChart
         }
 
+        [Test]
         public void HistogramChart()
         {
             //ExStart:HistogramChart
@@ -2025,6 +2026,7 @@ namespace ApiExamples
             //ExEnd:HistogramChart
         }
 
+        [Test]
         public void ParetoChart()
         {
             //ExStart:ParetoChart
@@ -2052,6 +2054,7 @@ namespace ApiExamples
             //ExEnd:ParetoChart
         }
 
+        [Test]
         public void BoxAndWhiskerChart()
         {
             //ExStart:BoxAndWhiskerChart
