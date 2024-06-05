@@ -1288,6 +1288,7 @@ namespace ApiExamples
             //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ReportingEngine.BuildReport(Document, Object, String)
             //ExSummary:Shows how to remove paragraphs selectively.
+            // Template contains tags with an exclamation mark. For such tags, empty paragraphs will be removed.
             Document doc = new Document(MyDir + "Reporting engine template - Selective remove paragraphs.docx");
 
             ReportingEngine engine = new ReportingEngine();

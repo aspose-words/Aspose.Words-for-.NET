@@ -355,7 +355,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Comment.UtcDateTime.docx");
 
             comment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
-            // By default DateTimeUtc without millisaconds.
+            // DateTimeUtc return data without milliseconds.
             Assert.AreEqual(dateTime.ToUniversalTime().ToString("yyyy-MM-dd hh:mm:ss"), comment.DateTimeUtc.ToString("yyyy-MM-dd hh:mm:ss"));
             //ExEnd:UtcDateTime
         }

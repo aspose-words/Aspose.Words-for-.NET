@@ -1885,7 +1885,7 @@ namespace ApiExamples
             //ExStart:TreemapChart
             //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ChartSeriesCollection.Add(String, ChartMultilevelValue[], double[])
-            //ExFor:ChartMultilevelValue(String, String)
+            //ExFor:ChartMultilevelValue.#ctor(String, String)
             //ExSummary:Shows how to create treemap chart.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

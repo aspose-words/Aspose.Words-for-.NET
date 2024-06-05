@@ -726,11 +726,12 @@ namespace ApiExamples
             //ExStart:IgnoreStoreItemId
             //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:AdvancedCompareOptions.IgnoreStoreItemId
-            //ExSummary:Shows how to compare SDT with same text and different store item id.
+            //ExSummary:Shows how to compare SDT with same content but different store item id.
             Document docA = new Document(MyDir + "Document with SDT 1.docx");
             Document docB = new Document(MyDir + "Document with SDT 2.docx");
 
-            Aspose.Words.Comparing.CompareOptions compareOptions = new Aspose.Words.Comparing.CompareOptions();
+            // Configure options to compare SDT with same content but different store item id.
+            CompareOptions compareOptions = new CompareOptions();
             compareOptions.AdvancedOptions.IgnoreStoreItemId = false;
 
             docA.Compare(docB, "user", DateTime.Now, compareOptions);
