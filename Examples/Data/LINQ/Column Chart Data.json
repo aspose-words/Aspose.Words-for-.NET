@@ -1,0 +1,27 @@
+[
+  {
+    "department": "Sales",
+    "revenue": 50000,
+    "expenses": 30000
+  },
+  {
+    "department": "Marketing",
+    "revenue": 40000,
+    "expenses": 25000
+  },
+  {
+    "department": "Finance",
+    "revenue": 30000,
+    "expenses": 20000
+  },
+  {
+    "department": "Operations",
+    "revenue": 35000,
+    "expenses": 22000
+  },
+  {
+    "department": "Human Resources",
+    "revenue": 25000,
+    "expenses": 15000
+  }
+]
