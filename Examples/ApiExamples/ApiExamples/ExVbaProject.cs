@@ -177,5 +177,17 @@ namespace ApiExamples
             return libIdProject != null ? libIdProject.Substring(3) : "";
         }
         //ExEnd
+
+        [Test]
+        public void IsProtected()
+        {
+            //ExStart:IsProtected
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:VbaProject.IsProtected
+            //ExSummary:Shows whether the VbaProject is password protected.
+            Document doc = new Document(MyDir + "Vba protected.docm");
+            Assert.True(doc.VbaProject.IsProtected);
+            //ExEnd:IsProtected
+        }
     }
 }

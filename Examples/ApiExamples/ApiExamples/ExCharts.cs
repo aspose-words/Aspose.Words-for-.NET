@@ -2159,5 +2159,44 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Charts.Funnel.docx");
             //ExEnd:FunnelChart
         }
+
+        [Test]
+        public void LabelOrientationRotation()
+        {
+            //ExStart:LabelOrientationRotation
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:ChartDataLabelCollection.Orientation
+            //ExFor:ChartDataLabelCollection.Rotation
+            //ExFor:ChartDataLabel.Rotation
+            //ExFor:ChartDataLabel.Orientation
+            //ExFor:ShapeTextOrientation
+            //ExSummary:Shows how to change orientation and rotation for data labels.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            ChartSeries series = shape.Chart.Series[0];
+            ChartDataLabelCollection dataLabels = series.DataLabels;
+
+            // Show data labels.
+            series.HasDataLabels = true;
+            dataLabels.ShowValue = true;
+            dataLabels.ShowCategoryName = true;
+
+            // Define data label shape.
+            dataLabels.Format.ShapeType = ChartShapeType.UpArrow;
+            dataLabels.Format.Stroke.Fill.Solid(Color.DarkBlue);
+
+            // Set data label orientation and rotation for the entire series.
+            dataLabels.Orientation = ShapeTextOrientation.VerticalFarEast;
+            dataLabels.Rotation = -45;
+
+            // Change orientation and rotation of the first data label.
+            dataLabels[0].Orientation = ShapeTextOrientation.Horizontal;
+            dataLabels[0].Rotation = 45;
+
+            doc.Save(ArtifactsDir + "Charts.LabelOrientationRotation.docx");
+            //ExEnd:LabelOrientationRotation
+        }
     }
 }

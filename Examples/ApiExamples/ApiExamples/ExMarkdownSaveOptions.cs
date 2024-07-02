@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
@@ -204,6 +205,36 @@ namespace ApiExamples
             MarkdownSaveOptions saveOptions = new MarkdownSaveOptions() { ExportUnderlineFormatting = true };
             doc.Save(ArtifactsDir + "MarkdownSaveOptions.ExportUnderlineFormatting.md", saveOptions);
             //ExEnd:ExportUnderlineFormatting
+        }
+
+        [Test]
+        public void LinkExportMode()
+        {
+            //ExStart:LinkExportMode
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:MarkdownSaveOptions.LinkExportMode
+            //ExFor:MarkdownLinkExportMode
+            //ExSummary:Shows how to links will be written to the .md file.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertShape(ShapeType.Balloon, 100, 100);
+
+            // Image will be written as reference:
+            // ![ref1]
+            //
+            // [ref1]: aw_ref.001.png
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.LinkExportMode = MarkdownLinkExportMode.Reference;
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.LinkExportMode.Reference.md", saveOptions);
+
+            // Image will be written as inline:
+            // ![](aw_inline.001.png)
+            saveOptions.LinkExportMode = MarkdownLinkExportMode.Inline;
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.LinkExportMode.Inline.md", saveOptions);
+            //ExEnd:LinkExportMode
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "MarkdownSaveOptions.LinkExportMode.Inline.md");
+            Assert.AreEqual("![](MarkdownSaveOptions.LinkExportMode.Inline.001.png)", outDocContents.Trim());
         }
     }
 }

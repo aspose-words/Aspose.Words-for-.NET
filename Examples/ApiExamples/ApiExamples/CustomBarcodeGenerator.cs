@@ -101,7 +101,7 @@ namespace ApiExamples
                     generator = new BarcodeGenerator(EncodeTypes.Code128);
                     break;
                 case "CODE39":
-                    generator = new BarcodeGenerator(EncodeTypes.Code39Standard);
+                    generator = new BarcodeGenerator(EncodeTypes.Code39);
                     break;
                 case "EAN8":
                     generator = new BarcodeGenerator(EncodeTypes.EAN8);

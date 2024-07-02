@@ -1440,7 +1440,7 @@ namespace ApiExamples
             //ExEnd
 
             if (!IsRunningOnMono())
-                TestUtil.VerifyImage(799, 87, ArtifactsDir + "Shape.RenderOfficeMath.png");
+                TestUtil.VerifyImage(813, 87, ArtifactsDir + "Shape.RenderOfficeMath.png");
             else
                 TestUtil.VerifyImage(735, 128, ArtifactsDir + "Shape.RenderOfficeMath.png");
         }
@@ -2764,37 +2764,37 @@ namespace ApiExamples
             OfficeMathRenderer renderer = new OfficeMathRenderer(officeMath);
 
             // Verify the size of the image that the OfficeMath object will create when we render it.
-            Assert.AreEqual(120.0f, renderer.SizeInPoints.Width, 0.25f);
-            Assert.AreEqual(13.0f, renderer.SizeInPoints.Height, 0.1f);
+            Assert.AreEqual(122.0f, renderer.SizeInPoints.Width, 0.25f);
+            Assert.AreEqual(13.0f, renderer.SizeInPoints.Height, 0.15f);
 
-            Assert.AreEqual(120.0f, renderer.BoundsInPoints.Width, 0.25f);
-            Assert.AreEqual(13.0f, renderer.BoundsInPoints.Height, 0.1f);
+            Assert.AreEqual(122.0f, renderer.BoundsInPoints.Width, 0.25f);
+            Assert.AreEqual(13.0f, renderer.BoundsInPoints.Height, 0.15f);
 
             // Shapes with transparent parts may contain different values in the "OpaqueBoundsInPoints" properties.
-            Assert.AreEqual(120.0f, renderer.OpaqueBoundsInPoints.Width, 0.25f);
+            Assert.AreEqual(122.0f, renderer.OpaqueBoundsInPoints.Width, 0.25f);
             Assert.AreEqual(14.2f, renderer.OpaqueBoundsInPoints.Height, 0.1f);
 
             // Get the shape size in pixels, with linear scaling to a specific DPI.
             Rectangle bounds = renderer.GetBoundsInPixels(1.0f, 96.0f);
 
-            Assert.AreEqual(160, bounds.Width);
+            Assert.AreEqual(163, bounds.Width);
             Assert.AreEqual(18, bounds.Height);
 
             // Get the shape size in pixels, but with a different DPI for the horizontal and vertical dimensions.
             bounds = renderer.GetBoundsInPixels(1.0f, 96.0f, 150.0f);
-            Assert.AreEqual(160, bounds.Width);
-            Assert.AreEqual(28, bounds.Height);
+            Assert.AreEqual(163, bounds.Width);
+            Assert.AreEqual(27, bounds.Height);
 
             // The opaque bounds may vary here also.
             bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f);
 
-            Assert.AreEqual(160, bounds.Width);
-            Assert.AreEqual(18, bounds.Height);
+            Assert.AreEqual(163, bounds.Width);
+            Assert.AreEqual(19, bounds.Height);
 
             bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f, 150.0f);
 
-            Assert.AreEqual(160, bounds.Width);
-            Assert.AreEqual(30, bounds.Height);
+            Assert.AreEqual(163, bounds.Width);
+            Assert.AreEqual(29, bounds.Height);
             //ExEnd
         }
 
@@ -3262,6 +3262,72 @@ namespace ApiExamples
 
             Assert.AreEqual(Color.Red.ToArgb(), shape.ShadowFormat.Color.ToArgb());
             //ExEnd:ShadowFormatColor
+        }
+
+        [Test]
+        public void SetActiveXProperties()
+        {
+            //ExStart:SetActiveXProperties
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:Forms2OleControl.ForeColor
+            //ExFor:Forms2OleControl.BackColor
+            //ExFor:Forms2OleControl.Height
+            //ExFor:Forms2OleControl.Width
+            //ExSummary:Shows how to set properties for ActiveX control.
+            Document doc = new Document(MyDir + "ActiveX controls.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Forms2OleControl oleControl = (Forms2OleControl)shape.OleFormat.OleControl;
+            oleControl.ForeColor = Color.FromArgb(0x17, 0xE1, 0x35);
+            oleControl.BackColor = Color.FromArgb(0x33, 0x97, 0xF4);
+            oleControl.Height = 100.54;
+            oleControl.Width = 201.06;
+            //ExEnd:SetActiveXProperties
+
+            Assert.AreEqual(Color.FromArgb(0x17, 0xE1, 0x35).ToArgb(), oleControl.ForeColor.ToArgb());
+            Assert.AreEqual(Color.FromArgb(0x33, 0x97, 0xF4).ToArgb(), oleControl.BackColor.ToArgb());
+            Assert.AreEqual(100.54, oleControl.Height);
+            Assert.AreEqual(201.06, oleControl.Width);
+        }
+
+        [Test]
+        public void SelectRadioControl()
+        {
+            //ExStart:SelectRadioControl
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:OptionButtonControl.Selected
+            //ExSummary:Shows how to select radio button.
+            Document doc = new Document(MyDir + "Radio buttons.docx");
+
+            Shape shape1 = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            OptionButtonControl optionButton1 = (OptionButtonControl)shape1.OleFormat.OleControl;
+            // Deselect selected first item.
+            optionButton1.Selected = false;
+
+            Shape shape2 = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+            OptionButtonControl optionButton2 = (OptionButtonControl)shape2.OleFormat.OleControl;
+            // Select second option button.
+            optionButton2.Selected = true;
+
+            doc.Save(ArtifactsDir + "Shape.SelectRadioControl.docx");
+            //ExEnd:SelectRadioControl
+        }
+
+        [Test]
+        public void CheckedCheckBox()
+        {
+            //ExStart:CheckedCheckBox
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:CheckBoxControl.Checked
+            //ExSummary:Shows how to change state of the CheckBox control.
+            Document doc = new Document(MyDir + "ActiveX controls.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            CheckBoxControl checkBoxControl = (CheckBoxControl)shape.OleFormat.OleControl;
+
+            checkBoxControl.Checked = true;
+            //ExEnd:CheckedCheckBox
+            Assert.AreEqual(true, checkBoxControl.Checked);
         }
     }
 }

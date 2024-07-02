@@ -1685,7 +1685,7 @@ namespace ApiExamples
                 case HtmlOfficeMathOutputMode.Image:
                     Assert.True(Regex.Match(outDocContents,
                         "<p style=\"margin-top:0pt; margin-bottom:10pt\">" +
-                            "<img src=\"HtmlSaveOptions.OfficeMathOutputMode.001.png\" width=\"160\" height=\"19\" alt=\"\" style=\"vertical-align:middle; " +
+                            "<img src=\"HtmlSaveOptions.OfficeMathOutputMode.001.png\" width=\"163\" height=\"19\" alt=\"\" style=\"vertical-align:middle; " +
                             "-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />" +
                         "</p>").Success);
                     break;

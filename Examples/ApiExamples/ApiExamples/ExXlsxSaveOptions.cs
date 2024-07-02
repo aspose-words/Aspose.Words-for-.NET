@@ -46,5 +46,23 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "XlsxSaveOptions.SelectionMode.xlsx", xlsxSaveOptions);
             //ExEnd:SelectionMode
         }
+
+        [Test]
+        public void DateTimeParsingMode()
+        {
+            //ExStart:DateTimeParsingMode
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:XlsxSaveOptions.DateTimeParsingMode
+            //ExFor:XlsxDateTimeParsingMode
+            //ExSummary:Shows how to specify autodetection of the date time format.
+            Document doc = new Document(MyDir + "Xlsx DateTime.docx");
+
+            XlsxSaveOptions saveOptions = new XlsxSaveOptions();
+            // Specify using datetime format autodetection.
+            saveOptions.DateTimeParsingMode = XlsxDateTimeParsingMode.Auto;
+
+            doc.Save(ArtifactsDir + "XlsxSaveOptions.DateTimeParsingMode.xlsx", saveOptions);
+            //ExEnd:DateTimeParsingMode
+        }
     }
 }

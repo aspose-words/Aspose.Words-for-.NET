@@ -474,6 +474,8 @@ namespace ApiExamples
         [TestCase(PdfCompliance.PdfUa1)]
         [TestCase(PdfCompliance.Pdf20)]
         [TestCase(PdfCompliance.PdfA4)]
+        [TestCase(PdfCompliance.PdfA4Ua2)]
+        [TestCase(PdfCompliance.PdfUa2)]
         public void Compliance(PdfCompliance pdfCompliance)
         {
             //ExStart
@@ -498,6 +500,9 @@ namespace ApiExamples
             // Set the "Compliance" property to "PdfCompliance.Pdf20" to comply with the "PDF 2.0" (ISO 32000-2) standard.
             // Set the "Compliance" property to "PdfCompliance.PdfA4" to comply with the "PDF/A-4" (ISO 19004:2020) standard,
             // which preserving document static visual appearance over time.
+            // Set the "Compliance" property to "PdfCompliance.PdfA4Ua2" to comply with both PDF/A-4 (ISO 19005-4:2020)
+            // and PDF/UA-2 (ISO 14289-2:2024) standards.
+            // Set the "Compliance" property to "PdfCompliance.PdfUa2" to comply with the PDF/UA-2 (ISO 14289-2:2024) standard.
             // This helps with making documents searchable but may significantly increase the size of already large documents.
             saveOptions.Compliance = pdfCompliance;
 
@@ -511,6 +516,8 @@ namespace ApiExamples
         [TestCase(PdfCompliance.PdfUa1)]
         [TestCase(PdfCompliance.Pdf20)]
         [TestCase(PdfCompliance.PdfA4)]
+        [TestCase(PdfCompliance.PdfA4Ua2)]
+        [TestCase(PdfCompliance.PdfUa2)]
         public void UsePdfDocumentForCompliance(PdfCompliance pdfCompliance)
         {
             Compliance(pdfCompliance);
@@ -541,6 +548,14 @@ namespace ApiExamples
                     break;
                 case PdfCompliance.PdfA4:
                     Assert.AreEqual(PdfFormat.v_2_0, pdfDocument.PdfFormat);
+                    Assert.AreEqual("2.0", pdfDocument.Version);
+                    break;
+                case PdfCompliance.PdfA4Ua2:
+                    Assert.AreEqual(PdfFormat.PDF_UA_1, pdfDocument.PdfFormat);
+                    Assert.AreEqual("2.0", pdfDocument.Version);
+                    break;
+                case PdfCompliance.PdfUa2:
+                    Assert.AreEqual(PdfFormat.PDF_UA_1, pdfDocument.PdfFormat);
                     Assert.AreEqual("2.0", pdfDocument.Version);
                     break;
             }
@@ -2312,7 +2327,7 @@ namespace ApiExamples
                 case EmfPlusDualRenderingMode.EmfPlusWithFallback:
                 case EmfPlusDualRenderingMode.EmfPlus:
                     Assert.AreEqual(0, pdfDocument.Pages[1].Resources.Images.Count);
-                    TestUtil.FileContainsString("<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R/FAAABF 15 0 R/FAAACB 21 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                    TestUtil.FileContainsString("<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R/FAAABG 16 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
                     break;
             }
