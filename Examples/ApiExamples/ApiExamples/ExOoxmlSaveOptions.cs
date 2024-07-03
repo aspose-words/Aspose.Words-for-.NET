@@ -17,6 +17,7 @@ using Aspose.Words.Loading;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace ApiExamples
 {
@@ -410,6 +411,8 @@ namespace ApiExamples
             //ExStart:DigitalSignature
             //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
             //ExFor:OoxmlSaveOptions.DigitalSignatureDetails
+            //ExFor:DigitalSignatureDetails
+            //ExFor:DigitalSignatureDetails.#ctor(CertificateHolder, SignOptions)
             //ExSummary:Shows how to sign OOXML document.
             Document doc = new Document(MyDir + "Document.docx");
 

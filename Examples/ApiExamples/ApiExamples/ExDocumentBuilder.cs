@@ -1905,6 +1905,7 @@ namespace ApiExamples
             //ExFor:SignatureLine.IsSigned
             //ExFor:SignatureLine.IsValid
             //ExFor:SignatureLine.ProviderId
+            //ExFor:SignatureLineOptions
             //ExFor:SignatureLineOptions.ShowDate
             //ExFor:SignatureLineOptions.Email
             //ExFor:SignatureLineOptions.DefaultInstructions
@@ -3011,6 +3012,9 @@ namespace ApiExamples
         [Test]
         public void EmphasesWarningSourceMarkdown()
         {
+            //ExStart
+            //ExFor:WarningInfo.Source
+            //ExSummary:Shows how to work with the warning source.
             Document doc = new Document(MyDir + "Emphases markdown warning.docx");
             
             WarningInfoCollection warnings = new WarningInfoCollection();
@@ -3022,6 +3026,7 @@ namespace ApiExamples
                 if (warningInfo.Source == WarningSource.Markdown)
                     Assert.AreEqual("The (*, 0:11) cannot be properly written into Markdown.", warningInfo.Description);
             }
+            //ExEnd
         }
 
         [Test]
@@ -3546,6 +3551,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Run.IsPhoneticGuide
             //ExFor:Run.PhoneticGuide
+            //ExFor:PhoneticGuide
             //ExFor:PhoneticGuide.BaseText
             //ExFor:PhoneticGuide.RubyText
             //ExSummary:Shows how to get properties of the phonetic guide.
@@ -3554,8 +3560,10 @@ namespace ApiExamples
             RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
             // Use phonetic guide in the Asian text.
             Assert.AreEqual(true, runs[0].IsPhoneticGuide);
-            Assert.AreEqual("base", runs[0].PhoneticGuide.BaseText);
-            Assert.AreEqual("ruby", runs[0].PhoneticGuide.RubyText);
+
+            PhoneticGuide phoneticGuide = runs[0].PhoneticGuide;
+            Assert.AreEqual("base", phoneticGuide.BaseText);
+            Assert.AreEqual("ruby", phoneticGuide.RubyText);
             //ExEnd
         }
     }

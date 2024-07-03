@@ -571,6 +571,8 @@ namespace ApiExamples
         public void TabStops()
         {
             //ExStart
+            //ExFor:TabLeader
+            //ExFor:TabAlignment
             //ExFor:Paragraph.GetEffectiveTabStops
             //ExSummary:Shows how to set custom tab stops for a paragraph.
             Document doc = new Document();

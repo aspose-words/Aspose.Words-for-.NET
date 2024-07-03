@@ -1147,6 +1147,7 @@ namespace ApiExamples
         public void GetSdt()
         {
             //ExStart
+            //ExFor:Range.StructuredDocumentTags
             //ExFor:StructuredDocumentTagCollection.Remove(int)
             //ExFor:StructuredDocumentTagCollection.RemoveAt(int)
             //ExSummary:Shows how to remove structured document tag.

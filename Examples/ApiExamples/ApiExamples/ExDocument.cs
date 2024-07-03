@@ -514,10 +514,16 @@ namespace ApiExamples
         [Test]
         public void NotSupportedWarning()
         {
-            WarningInfoCollection warings = new WarningInfoCollection();
-            Document doc = new Document(MyDir + "FB2 document.fb2", new LoadOptions { WarningCallback = warings });
+            //ExStart
+            //ExFor:WarningInfoCollection.Count
+            //ExFor:WarningInfoCollection.Item(Int32)
+            //ExSummary:Shows how to get warnings about unsupported formats.
+            WarningInfoCollection warnings = new WarningInfoCollection();
+            Document doc = new Document(MyDir + "FB2 document.fb2", new LoadOptions { WarningCallback = warnings });
 
-            Assert.AreEqual("The original file load format is FB2, which is not supported by Aspose.Words. The file is loaded as an XML document.", warings[0].Description);
+            Assert.AreEqual("The original file load format is FB2, which is not supported by Aspose.Words. The file is loaded as an XML document.", warnings[0].Description);
+            Assert.AreEqual(1, warnings.Count);
+            //ExEnd
         }
 
         [Test]
@@ -590,6 +596,7 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:Range.Fields
         //ExFor:INodeChangingCallback
         //ExFor:INodeChangingCallback.NodeInserting
         //ExFor:INodeChangingCallback.NodeInserted
@@ -1568,6 +1575,7 @@ namespace ApiExamples
         public void UseSubstitutions()
         {
             //ExStart
+            //ExFor:FindReplaceOptions.#ctor
             //ExFor:FindReplaceOptions.UseSubstitutions
             //ExFor:FindReplaceOptions.LegacyMode
             //ExSummary:Shows how to recognize and use substitutions within replacement patterns.
@@ -2294,9 +2302,12 @@ namespace ApiExamples
         public void TextWatermark()
         {
             //ExStart
+            //ExFor:Document.Watermark
+            //ExFor:Watermark
             //ExFor:Watermark.SetText(String)
             //ExFor:Watermark.SetText(String, TextWatermarkOptions)
             //ExFor:Watermark.Remove
+            //ExFor:TextWatermarkOptions
             //ExFor:TextWatermarkOptions.FontFamily
             //ExFor:TextWatermarkOptions.FontSize
             //ExFor:TextWatermarkOptions.Color
@@ -2304,6 +2315,7 @@ namespace ApiExamples
             //ExFor:TextWatermarkOptions.IsSemitrasparent
             //ExFor:WatermarkLayout
             //ExFor:WatermarkType
+            //ExFor:Watermark.Type
             //ExSummary:Shows how to create a text watermark.
             Document doc = new Document();
 
@@ -2340,6 +2352,8 @@ namespace ApiExamples
             //ExFor:Watermark.SetImage(Image, ImageWatermarkOptions)
             //ExFor:ImageWatermarkOptions.Scale
             //ExFor:ImageWatermarkOptions.IsWashout
+            //ExFor:Watermark.SetImage(Image)
+            //ExFor:Watermark.SetImage(String, ImageWatermarkOptions)
             //ExSummary:Shows how to create a watermark from an image in the local file system.
             Document doc = new Document();
 
@@ -2350,7 +2364,12 @@ namespace ApiExamples
             imageWatermarkOptions.IsWashout = false;
 
 #if NET461_OR_GREATER || JAVA
+            // We have a different options to insert image:
             doc.Watermark.SetImage(Image.FromFile(ImageDir + "Logo.jpg"), imageWatermarkOptions);
+
+            doc.Watermark.SetImage(Image.FromFile(ImageDir + "Logo.jpg"));
+
+            doc.Watermark.SetImage(ImageDir + "Logo.jpg", imageWatermarkOptions);
 #elif NET5_0_OR_GREATER
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {

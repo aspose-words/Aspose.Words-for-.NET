@@ -21,6 +21,7 @@ namespace ApiExamples
         //ExFor:Body.Accept(DocumentVisitor)
         //ExFor:Body.AcceptStart(DocumentVisitor)
         //ExFor:Body.AcceptEnd(DocumentVisitor)
+        //ExFor:VisitorAction
         //ExSummary:Shows how to process absolute position tab characters with a document visitor.
         [Test] //ExSkip
         public void DocumentToTxt()

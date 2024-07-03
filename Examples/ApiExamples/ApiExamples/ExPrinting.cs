@@ -130,6 +130,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PageInfo
+            //ExFor:PageInfo.GetSizeInPixels(Single, Single)
             //ExFor:PageInfo.GetSizeInPixels(Single, Single, Single)
             //ExFor:PageInfo.GetSpecifiedPrinterPaperSource(PaperSourceCollection, PaperSource)
             //ExFor:PageInfo.HeightInPoints
@@ -269,6 +270,7 @@ namespace ApiExamples
         public void PreviewAndPrint()
         {
             //ExStart
+            //ExFor:AsposeWordsPrintDocument
             //ExFor:AsposeWordsPrintDocument.#ctor(Document)
             //ExFor:AsposeWordsPrintDocument.CachePrinterSettings
             //ExFor:AsposeWordsPrintDocument.ColorMode

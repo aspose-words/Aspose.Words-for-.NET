@@ -626,6 +626,7 @@ namespace ApiExamples
         public void SparklingText()
         {
             //ExStart
+            //ExFor:TextEffect
             //ExFor:Font.TextEffect
             //ExSummary:Shows how to apply a visual effect to a run.
             Document doc = new Document();
@@ -1064,7 +1065,7 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:Font.Hidden
-        //ExFor:Paragraph.Accept
+        //ExFor:Paragraph.Accept(DocumentVisitor)
         //ExFor:DocumentVisitor.VisitParagraphStart(Paragraph)
         //ExFor:DocumentVisitor.VisitFormField(FormField)
         //ExFor:DocumentVisitor.VisitTableEnd(Table)
@@ -1076,7 +1077,9 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitCommentStart(Comment)
         //ExFor:DocumentVisitor.VisitFootnoteStart(Footnote)
         //ExFor:SpecialChar
-        //ExFor:Node.Accept
+        //ExFor:SpecialChar.Accept(DocumentVisitor)
+        //ExFor:SpecialChar.GetText
+        //ExFor:Node.Accept(DocumentVisitor)
         //ExFor:Paragraph.ParagraphBreakFont
         //ExFor:Table.Accept(DocumentVisitor)
         //ExFor:Table.AcceptStart(DocumentVisitor)
@@ -1228,6 +1231,8 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitSpecialChar(SpecialChar specialChar)
             {
+                Console.WriteLine(specialChar.GetText());
+
                 if (specialChar.Font.Hidden)
                     specialChar.Remove();
 
@@ -1447,6 +1452,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.HasDmlEffect(TextDmlEffect)
+            //ExFor:TextDmlEffect
             //ExSummary:Shows how to check if a run displays a DrawingML text effect.
             Document doc = new Document(MyDir + "DrawingML text effects.docx");
 
@@ -1642,3 +1648,4 @@ namespace ApiExamples
         }
     }
 }
+

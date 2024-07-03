@@ -90,6 +90,7 @@ namespace ApiExamples
             //ExStart:SaveOfficeMath
             //GistId:a775441ecb396eea917a2717cb9e8f8f
             //ExFor:NodeRendererBase.Save(String, SvgSaveOptions)
+            //ExFor:NodeRendererBase.Save(Stream, SvgSaveOptions)
             //ExSummary:Shows how to pass save options when rendering office math.
             Document doc = new Document(MyDir + "Office math.docx");
 
@@ -99,6 +100,9 @@ namespace ApiExamples
             options.TextOutputMode = SvgTextOutputMode.UsePlacedGlyphs;
 
             math.GetMathRenderer().Save(ArtifactsDir + "SvgSaveOptions.Output.svg", options);
+            
+            using (MemoryStream stream = new MemoryStream())
+                math.GetMathRenderer().Save(stream, options);
             //ExEnd:SaveOfficeMath
         }
 

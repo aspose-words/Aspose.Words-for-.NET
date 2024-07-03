@@ -183,6 +183,7 @@ namespace ApiExamples
         public void CopyStyleSameDocument()
         {
             //ExStart
+            //ExFor:StyleCollection.Add(Style)
             //ExFor:StyleCollection.AddCopy(Style)
             //ExFor:Style.Name
             //ExSummary:Shows how to clone a document's style.
