@@ -19,6 +19,8 @@ namespace ApiExamples
         public void OriginalFileName()
         {
             //ExStart
+            //ExFor:ChmLoadOptions
+            //ExFor:ChmLoadOptions.#ctor
             //ExFor:ChmLoadOptions.OriginalFileName
             //ExSummary:Shows how to resolve URLs like "ms-its:myfile.chm::/index.htm".
             // Our document contains URLs like "ms-its:amhelp.chm::....htm", but it has a different name,

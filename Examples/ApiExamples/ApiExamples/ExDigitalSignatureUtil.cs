@@ -89,6 +89,7 @@ namespace ApiExamples
             //ExFor:CertificateHolder
             //ExFor:CertificateHolder.Create(String, String)
             //ExFor:DigitalSignatureUtil.Sign(Stream, Stream, CertificateHolder, SignOptions)
+            //ExFor:DigitalSignatures.SignOptions
             //ExFor:SignOptions.Comments
             //ExFor:SignOptions.SignTime
             //ExSummary:Shows how to digitally sign documents.

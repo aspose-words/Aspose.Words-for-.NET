@@ -104,12 +104,15 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:VbaReference
+        //ExFor:VbaReference.Type
         //ExFor:VbaReference.LibId
         //ExFor:VbaReferenceCollection
+        //ExFor:VbaReferenceCollection.Item(Int32)
         //ExFor:VbaReferenceCollection.Count
         //ExFor:VbaReferenceCollection.RemoveAt(int)
         //ExFor:VbaReferenceCollection.Remove(VbaReference)
         //ExFor:VbaReferenceType
+        //ExFor:VbaProject.References
         //ExSummary:Shows how to get/remove an element from the VBA reference collection.
         [Test]//ExSkip
         public void RemoveVbaReference()

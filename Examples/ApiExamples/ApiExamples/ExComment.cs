@@ -163,11 +163,13 @@ namespace ApiExamples
             Assert.AreEqual("\u0005Fix the spelling error!", comment.GetText().Trim());
             Assert.AreEqual("Hello world!", doc.FirstSection.Body.FirstParagraph.Runs[0].Text);
         }
-        
+
         //ExStart
         //ExFor:Comment.Done
         //ExFor:Comment.#ctor(DocumentBase)
         //ExFor:Comment.Accept(DocumentVisitor)
+        //ExFor:Comment.AcceptStart(DocumentVisitor)
+        //ExFor:Comment.AcceptEnd(DocumentVisitor)
         //ExFor:Comment.DateTime
         //ExFor:Comment.Id
         //ExFor:Comment.Initial
@@ -224,6 +226,10 @@ namespace ApiExamples
 
                 // Then, visit the comment, and any replies that it may have.
                 comment.Accept(commentVisitor);
+                // Visit only start of the comment.
+                comment.AcceptStart(commentVisitor);
+                // Visit only end of the comment.
+                comment.AcceptEnd(commentVisitor);
 
                 foreach (Comment reply in comment.Replies)
                     reply.Accept(commentVisitor);

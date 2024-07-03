@@ -144,6 +144,7 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTag.DateDisplayLocale
             //ExFor:StructuredDocumentTag.DateStorageFormat
             //ExFor:StructuredDocumentTag.FullDate
+            //ExFor:SdtCalendarType
             //ExSummary:Shows how to prompt the user to enter a date with a structured document tag.
             Document doc = new Document();
 

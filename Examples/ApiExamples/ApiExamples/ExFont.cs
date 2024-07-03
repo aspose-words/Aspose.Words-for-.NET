@@ -1078,7 +1078,9 @@ namespace ApiExamples
         //ExFor:SpecialChar
         //ExFor:Node.Accept
         //ExFor:Paragraph.ParagraphBreakFont
-        //ExFor:Table.Accept
+        //ExFor:Table.Accept(DocumentVisitor)
+        //ExFor:Table.AcceptStart(DocumentVisitor)
+        //ExFor:Table.AcceptEnd(DocumentVisitor)
         //ExSummary:Shows how to use a DocumentVisitor implementation to remove all hidden content from a document.
         [Test] //ExSkip
         public void RemoveHiddenContentFromDocument()

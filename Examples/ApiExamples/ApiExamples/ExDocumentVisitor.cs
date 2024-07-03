@@ -22,7 +22,6 @@ namespace ApiExamples
     {
         //ExStart
         //ExFor:Document.Accept(DocumentVisitor)
-        //ExFor:Body.Accept(DocumentVisitor)
         //ExFor:SubDocument.Accept(DocumentVisitor)
         //ExFor:DocumentVisitor
         //ExFor:DocumentVisitor.VisitRun(Run)
@@ -217,6 +216,8 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:Cell.Accept(DocumentVisitor)
+        //ExFor:Cell.AcceptStart(DocumentVisitor)
+        //ExFor:Cell.AcceptEnd(DocumentVisitor)
         //ExFor:Cell.IsFirstCell
         //ExFor:Cell.IsLastCell
         //ExFor:DocumentVisitor.VisitTableEnd(Table)
@@ -226,6 +227,8 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitCellStart(Cell)
         //ExFor:DocumentVisitor.VisitCellEnd(Cell)
         //ExFor:Row.Accept(DocumentVisitor)
+        //ExFor:Row.AcceptStart(DocumentVisitor)
+        //ExFor:Row.AcceptEnd(DocumentVisitor)
         //ExFor:Row.FirstCell
         //ExFor:Row.GetText
         //ExFor:Row.IsFirstRow

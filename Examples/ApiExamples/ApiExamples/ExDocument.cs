@@ -2162,6 +2162,7 @@ namespace ApiExamples
             //ExFor:WebExtension.Properties
             //ExFor:WebExtension.Bindings
             //ExFor:WebExtension.IsFrozen
+            //ExFor:WebExtensionReference
             //ExFor:WebExtensionReference.Id
             //ExFor:WebExtensionReference.Version
             //ExFor:WebExtensionReference.StoreType
@@ -2174,6 +2175,8 @@ namespace ApiExamples
             //ExFor:WebExtensionBindingType
             //ExFor:TaskPaneDockState
             //ExFor:TaskPaneCollection
+            //ExFor:WebExtensionBinding.AppRef
+            //ExFor:WebExtensionBinding.BindingType
             //ExSummary:Shows how to add a web extension to a document.
             Document doc = new Document();
 
@@ -2210,7 +2213,6 @@ namespace ApiExamples
             doc.WebExtensionTaskPanes.Clear();
 
             Assert.AreEqual(0, doc.WebExtensionTaskPanes.Count);
-            //ExEnd
 
             doc = new Document(ArtifactsDir + "Document.WebExtension.docx");
             myScriptTaskPane = doc.WebExtensionTaskPanes[0];
@@ -2235,6 +2237,7 @@ namespace ApiExamples
             Assert.AreEqual("104380646", webExtension.Bindings[0].AppRef);
 
             Assert.False(webExtension.IsFrozen);
+            //ExEnd
         }
 
         [Test]

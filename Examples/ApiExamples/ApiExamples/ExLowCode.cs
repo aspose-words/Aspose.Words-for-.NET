@@ -25,6 +25,8 @@ namespace ApiExamples
             //ExFor:Merger.Merge(String[], MergeFormatMode)
             //ExFor:Merger.Merge(String, String[], SaveOptions, MergeFormatMode)
             //ExFor:Merger.Merge(String, String[], SaveFormat, MergeFormatMode)
+            //ExFor:LowCode.MergeFormatMode
+            //ExFor:LowCode.Merger
             //ExSummary:Shows how to merge documents into a single output document.
             //There is a several ways to merge documents:
             Merger.Merge(ArtifactsDir + "LowCode.MergeDocument.SimpleMerge.docx", new[] { MyDir + "Big document.docx", MyDir + "Tables.docx" });
