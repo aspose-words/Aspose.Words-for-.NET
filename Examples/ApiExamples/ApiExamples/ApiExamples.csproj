@@ -129,7 +129,7 @@
     <PackageReference Include="Aspose.Page" Version="24.6.1" />
     <PackageReference Include="Aspose.PDF" Version="24.6.0" />
     <PackageReference Include="Aspose.Words" Version="24.7.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="24.6.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="24.7.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
