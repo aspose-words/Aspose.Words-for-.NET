@@ -17,7 +17,6 @@ using Aspose.Words.Loading;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace ApiExamples
 {
