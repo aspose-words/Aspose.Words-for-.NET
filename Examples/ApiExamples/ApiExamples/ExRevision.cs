@@ -302,6 +302,8 @@ namespace ApiExamples
         //GistId:470c0da51e4317baae82ad9495747fed
         //ExFor:RevisionCollection.Accept(IRevisionCriteria)
         //ExFor:RevisionCollection.Reject(IRevisionCriteria)
+        //ExFor:IRevisionCriteria
+        //ExFor:IRevisionCriteria.IsMatch(Revision)
         //ExSummary:Shows how to accept or reject revision based on criteria.
         [Test] //ExSkip
         public void RevisionSpecifiedCriteria()
@@ -608,7 +610,8 @@ namespace ApiExamples
         public void IgnoreDmlUniqueId(bool isIgnoreDmlUniqueId)
         {
             //ExStart
-            //ExFor:CompareOptions.IgnoreDmlUniqueId
+            //ExFor:CompareOptions.AdvancedOptions
+            //ExFor:AdvancedCompareOptions.IgnoreDmlUniqueId
             //ExSummary:Shows how to compare documents ignoring DML unique ID.
             Document docA = new Document(MyDir + "DML unique ID original.docx");
             Document docB = new Document(MyDir + "DML unique ID compare.docx");
@@ -725,6 +728,7 @@ namespace ApiExamples
         {
             //ExStart:IgnoreStoreItemId
             //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:AdvancedCompareOptions
             //ExFor:AdvancedCompareOptions.IgnoreStoreItemId
             //ExSummary:Shows how to compare SDT with same content but different store item id.
             Document docA = new Document(MyDir + "Document with SDT 1.docx");

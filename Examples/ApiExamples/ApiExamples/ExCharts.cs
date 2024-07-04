@@ -123,9 +123,13 @@ namespace ApiExamples
             //ExFor:ChartAxis.MinorTickMark
             //ExFor:ChartAxis.MajorUnit
             //ExFor:ChartAxis.MinorUnit
+            //ExFor:AxisTickLabels
             //ExFor:AxisTickLabels.Offset
             //ExFor:AxisTickLabels.Position
             //ExFor:AxisTickLabels.IsAutoSpacing
+            //ExFor:AxisTickLabels.Alignment
+            //ExFor:AxisTickLabels.Font
+            //ExFor:AxisTickLabels.Spacing
             //ExFor:ChartAxis.TickMarkSpacing
             //ExFor:AxisCategoryType
             //ExFor:AxisCrosses
@@ -171,6 +175,9 @@ namespace ApiExamples
             yAxis.MajorUnit = 100.0d;
             yAxis.MinorUnit = 20.0d;
             yAxis.TickLabels.Position = AxisTickLabelPosition.NextToAxis;
+            yAxis.TickLabels.Alignment = ParagraphAlignment.Center;
+            yAxis.TickLabels.Font.Color = Color.Red;
+            yAxis.TickLabels.Spacing = 1;
 
             // Column charts do not have a Z-axis.
             Assert.Null(chart.AxisZ);
@@ -201,6 +208,9 @@ namespace ApiExamples
             Assert.AreEqual(100.0d, chart.AxisY.MajorUnit);
             Assert.AreEqual(20.0d, chart.AxisY.MinorUnit);
             Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisY.TickLabels.Position);
+            Assert.AreEqual(ParagraphAlignment.Center, chart.AxisY.TickLabels.Alignment);
+            Assert.AreEqual(Color.Red.ToArgb(), chart.AxisY.TickLabels.Font.Color.ToArgb());
+            Assert.AreEqual(1, chart.AxisY.TickLabels.Spacing);
         }
 
         [Test]
@@ -1223,6 +1233,7 @@ namespace ApiExamples
             //ExFor:Stroke.BackColor
             //ExFor:Stroke.Visible
             //ExFor:Stroke.Transparency
+            //ExFor:PresetTexture
             //ExFor:Fill.PresetTextured(PresetTexture)
             //ExSummary:Show how to set marker formatting.
             Document doc = new Document();
@@ -1357,6 +1368,7 @@ namespace ApiExamples
         {
             //ExStart:LegendFont
             //GistId:470c0da51e4317baae82ad9495747fed
+            //ExFor:ChartLegendEntry
             //ExFor:ChartLegendEntry.Font
             //ExFor:ChartLegend.Font
             //ExSummary:Shows how to work with a legend font.
@@ -1404,6 +1416,7 @@ namespace ApiExamples
         public void PopulateChartWithData()
         {
             //ExStart
+            //ExFor:ChartXValue
             //ExFor:ChartXValue.FromDouble(Double)
             //ExFor:ChartYValue.FromDouble(Double)
             //ExFor:ChartSeries.Add(ChartXValue, ChartYValue)
@@ -1681,6 +1694,7 @@ namespace ApiExamples
         {
             //ExStart:DataTable
             //GistId:a775441ecb396eea917a2717cb9e8f8f
+            //ExFor:Chart.DataTable
             //ExFor:ChartDataTable
             //ExFor:ChartDataTable.Show
             //ExSummary:Shows how to show data table with chart series data.
@@ -1718,6 +1732,7 @@ namespace ApiExamples
         {
             //ExStart:ChartFormat
             //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
+            //ExFor:ChartFormat
             //ExFor:Chart.Format
             //ExFor:ChartTitle.Format
             //ExFor:ChartAxisTitle.Format
@@ -1819,6 +1834,7 @@ namespace ApiExamples
         {
             //ExStart:ConfigureGapOverlap
             //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:Chart.SeriesGroups
             //ExFor:ChartSeriesGroup.GapWidth
             //ExFor:ChartSeriesGroup.Overlap
             //ExSummary:Show how to configure gap width and overlap.
@@ -1885,7 +1901,10 @@ namespace ApiExamples
             //ExStart:TreemapChart
             //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ChartSeriesCollection.Add(String, ChartMultilevelValue[], double[])
+            //ExFor:ChartMultilevelValue
+            //ExFor:ChartMultilevelValue.#ctor(String, String, String)
             //ExFor:ChartMultilevelValue.#ctor(String, String)
+            //ExFor:ChartMultilevelValue.#ctor(String)
             //ExSummary:Shows how to create treemap chart.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1921,7 +1940,7 @@ namespace ApiExamples
                     new ChartMultilevelValue("Latin America", "Brazil"),
                     new ChartMultilevelValue("Latin America", "Mexico"),
                     new ChartMultilevelValue("Latin America", "Other"),
-                    new ChartMultilevelValue("Northern America", "United States"),
+                    new ChartMultilevelValue("Northern America", "United States", "Other"),
                     new ChartMultilevelValue("Northern America", "Other"),
                     new ChartMultilevelValue("Oceania")
                 },

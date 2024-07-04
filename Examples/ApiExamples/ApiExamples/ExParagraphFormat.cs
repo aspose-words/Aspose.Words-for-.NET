@@ -88,6 +88,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:ParagraphFormat.LineSpacing
             //ExFor:ParagraphFormat.LineSpacingRule
+            //ExFor:LineSpacingRule
             //ExSummary:Shows how to work with line spacing.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -240,6 +241,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:ParagraphFormat.OutlineLevel
+            //ExFor:OutlineLevel
             //ExSummary:Shows how to configure paragraph outline levels to create collapsible text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

@@ -1213,6 +1213,7 @@ namespace ApiExamples
             //ExFor:MailMergeRegionInfo.StartField
             //ExFor:MailMergeRegionInfo.EndField
             //ExFor:MailMergeRegionInfo.Level
+            //ExFor:MailMergeRegionInfo.MustacheTags
             //ExSummary:Shows how to verify mail merge regions.
             Document doc = new Document(MyDir + "Mail merge regions.docx");
 
@@ -1236,6 +1237,7 @@ namespace ApiExamples
             Assert.AreEqual("NestedRegion2", nestedRegions[1].Name);
             Assert.AreEqual(2, nestedRegions[0].Level);
             Assert.AreEqual(2, nestedRegions[1].Level);
+            Assert.AreEqual(0, nestedRegions[1].MustacheTags.Count);
 
             // Get list of fields inside the first top region.
             IList<Field> fieldList = topRegions[0].Fields;

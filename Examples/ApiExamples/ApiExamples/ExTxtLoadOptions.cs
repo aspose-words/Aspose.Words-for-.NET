@@ -157,6 +157,7 @@ namespace ApiExamples
         public void DetectDocumentDirection()
         {
             //ExStart
+            //ExFor:DocumentDirection
             //ExFor:TxtLoadOptions.DocumentDirection
             //ExFor:ParagraphFormat.Bidi
             //ExSummary:Shows how to detect plaintext document text direction.
@@ -206,6 +207,8 @@ namespace ApiExamples
         {
             //ExStart:DetectHyperlinks
             //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:TxtLoadOptions
+            //ExFor:TxtLoadOptions.#ctor
             //ExFor:TxtLoadOptions.DetectHyperlinks
             //ExSummary:Shows how to read and display hyperlinks.
             const string inputText = "Some links in TXT:\n" +

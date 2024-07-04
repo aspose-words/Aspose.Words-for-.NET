@@ -26,6 +26,8 @@ namespace ApiExamples
         //ExFor:SmartTag
         //ExFor:SmartTag.#ctor(DocumentBase)
         //ExFor:SmartTag.Accept(DocumentVisitor)
+        //ExFor:SmartTag.AcceptStart(DocumentVisitor)
+        //ExFor:SmartTag.AcceptEnd(DocumentVisitor)
         //ExFor:SmartTag.Element
         //ExFor:SmartTag.Properties
         //ExFor:SmartTag.Uri

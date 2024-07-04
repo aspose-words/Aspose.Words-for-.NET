@@ -27,6 +27,7 @@ namespace ApiExamples
             //ExFor:DocSaveOptions.Password
             //ExFor:DocSaveOptions.SaveFormat
             //ExFor:DocSaveOptions.SaveRoutingSlip
+            //ExFor:IncorrectPasswordException
             //ExSummary:Shows how to set save options for older Microsoft Word formats.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

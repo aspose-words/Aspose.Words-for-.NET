@@ -333,6 +333,8 @@ namespace ApiExamples
         //ExFor:LoadOptions.ProgressCallback
         //ExFor:IDocumentLoadingCallback
         //ExFor:IDocumentLoadingCallback.Notify
+        //ExFor:DocumentLoadingArgs
+        //ExFor:DocumentLoadingArgs.EstimatedProgress
         //ExSummary:Shows how to notify the user if document loading exceeded expected loading time.
         [Test]//ExSkip
         public void ProgressCallback()

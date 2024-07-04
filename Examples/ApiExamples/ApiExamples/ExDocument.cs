@@ -429,6 +429,7 @@ namespace ApiExamples
             //ExFor:Document.#ctor(Stream,LoadOptions)
             //ExFor:LoadOptions.#ctor
             //ExFor:LoadOptions.BaseUri
+            //ExFor:ShapeBase.IsImage
             //ExSummary:Shows how to open an HTML document with images from a stream using a base URI.
             using (Stream stream = File.OpenRead(MyDir + "Document.html"))
             {
@@ -1603,6 +1604,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.NormalizeFieldTypes
+            //ExFor:Range.NormalizeFieldTypes
             //ExSummary:Shows how to get the keep a field's type up to date with its field code.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2158,6 +2160,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:BaseWebExtensionCollection`1.Add(`0)
             //ExFor:BaseWebExtensionCollection`1.Clear
+            //ExFor:Document.WebExtensionTaskPanes
             //ExFor:TaskPane
             //ExFor:TaskPane.DockState
             //ExFor:TaskPane.IsVisible
@@ -2350,6 +2353,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Watermark.SetImage(Image, ImageWatermarkOptions)
+            //ExFor:ImageWatermarkOptions
             //ExFor:ImageWatermarkOptions.Scale
             //ExFor:ImageWatermarkOptions.IsWashout
             //ExFor:Watermark.SetImage(Image)
@@ -2642,6 +2646,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PageInfo.Colored
+            //ExFor:Document.GetPageInfo(Int32)
             //ExSummary:Shows how to check whether the page is in color or not.
             Document doc = new Document(MyDir + "Document.docx");
 

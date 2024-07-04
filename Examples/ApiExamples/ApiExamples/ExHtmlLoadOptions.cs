@@ -29,6 +29,7 @@ namespace ApiExamples
         public void SupportVml(bool supportVml)
         {
             //ExStart
+            //ExFor:HtmlLoadOptions
             //ExFor:HtmlLoadOptions.#ctor
             //ExFor:HtmlLoadOptions.SupportVml
             //ExSummary:Shows how to support conditional comments while loading an HTML document.
@@ -212,6 +213,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:HtmlLoadOptions.PreferredControlType
+            //ExFor:HtmlControlType
             //ExSummary:Shows how to set preferred type of document nodes that will represent imported <input> and <select> elements.
             const string html = @"
                 <html>

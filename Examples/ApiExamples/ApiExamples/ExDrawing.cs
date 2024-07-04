@@ -238,7 +238,10 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Fill.Color()
-            //ExFor:Fill.Solid(Color)
+            //ExFor:FillType
+            //ExFor:Fill.FillType
+            //ExFor:Fill.Solid
+            //ExFor:Fill.Transparency
             //ExFor:Font.Fill
             //ExSummary:Shows how to convert any of the fills back to solid fill.
             Document doc = new Document(MyDir + "Two color gradient.docx");
@@ -252,7 +255,7 @@ namespace ApiExamples
             Console.WriteLine("The fill is transparent at {0}%", fill.Transparency * 100);
 
             // Change type of the fill to Solid with uniform green color.
-            fill.Solid(Color.Green);
+            fill.Solid();
             Console.WriteLine("\nThe fill is changed:");
             Console.WriteLine("The type of the fill is: {0}", fill.FillType);
             Console.WriteLine("The foreground color of the fill is: {0}", fill.ForeColor);
@@ -341,6 +344,8 @@ namespace ApiExamples
         //ExFor:GroupShape
         //ExFor:GroupShape.#ctor(DocumentBase)
         //ExFor:GroupShape.Accept(DocumentVisitor)
+        //ExFor:GroupShape.AcceptStart(DocumentVisitor)
+        //ExFor:GroupShape.AcceptEnd(DocumentVisitor)
         //ExFor:ShapeBase.IsGroup
         //ExFor:ShapeBase.ShapeType
         //ExSummary:Shows how to create a group of shapes, and print its contents using a document visitor.

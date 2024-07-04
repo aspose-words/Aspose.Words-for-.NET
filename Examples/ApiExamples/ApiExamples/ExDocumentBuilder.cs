@@ -164,6 +164,7 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.InsertHorizontalRule
             //ExFor:ShapeBase.IsHorizontalRule
             //ExFor:Shape.HorizontalRuleFormat
+            //ExFor:HorizontalRuleAlignment
             //ExFor:HorizontalRuleFormat
             //ExFor:HorizontalRuleFormat.Alignment
             //ExFor:HorizontalRuleFormat.WidthPercent
@@ -3014,6 +3015,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:WarningInfo.Source
+            //ExFor:WarningSource
             //ExSummary:Shows how to work with the warning source.
             Document doc = new Document(MyDir + "Emphases markdown warning.docx");
             

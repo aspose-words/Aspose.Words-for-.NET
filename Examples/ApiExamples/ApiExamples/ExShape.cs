@@ -761,6 +761,7 @@ namespace ApiExamples
         public void TextureFill()
         {
             //ExStart
+            //ExFor:Fill.PresetTexture
             //ExFor:Fill.TextureAlignment
             //ExFor:TextureAlignment
             //ExSummary:Shows how to fill and tiling the texture inside the shape.
@@ -778,13 +779,13 @@ namespace ApiExamples
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Compliance = OoxmlCompliance.Iso29500_2008_Strict };
 
             doc.Save(ArtifactsDir + "Shape.TextureFill.docx", saveOptions);
-            //ExEnd
 
             doc = new Document(ArtifactsDir + "Shape.TextureFill.docx");
-
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             Assert.AreEqual(TextureAlignment.TopRight, shape.Fill.TextureAlignment);
+            Assert.AreEqual(PresetTexture.Canvas, shape.Fill.PresetTexture);
+            //ExEnd
         }
 
         [Test]
@@ -795,6 +796,7 @@ namespace ApiExamples
             //ExFor:Fill.OneColorGradient(GradientStyle, GradientVariant, Double)
             //ExFor:Fill.TwoColorGradient(Color, Color, GradientStyle, GradientVariant)
             //ExFor:Fill.TwoColorGradient(GradientStyle, GradientVariant)
+            //ExFor:Fill.BackColor
             //ExFor:Fill.GradientStyle
             //ExFor:Fill.GradientVariant
             //ExFor:Fill.GradientAngle
@@ -862,6 +864,7 @@ namespace ApiExamples
             //ExFor:GradientStopCollection.Remove(GradientStop)
             //ExFor:GradientStopCollection.Item(Int32)
             //ExFor:GradientStopCollection.Count
+            //ExFor:GradientStop
             //ExFor:GradientStop.#ctor(Color, Double)
             //ExFor:GradientStop.#ctor(Color, Double, Double)
             //ExFor:GradientStop.BaseColor
@@ -935,6 +938,8 @@ namespace ApiExamples
         public void FillPattern()
         {
             //ExStart
+            //ExFor:PatternType
+            //ExFor:Fill.Pattern
             //ExFor:Fill.Patterned(PatternType)
             //ExFor:Fill.Patterned(PatternType, Color, Color)
             //ExSummary:Shows how to set pattern for a shape.
@@ -1889,6 +1894,8 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:Shape.Accept(DocumentVisitor)
+        //ExFor:Shape.AcceptStart(DocumentVisitor)
+        //ExFor:Shape.AcceptEnd(DocumentVisitor)
         //ExFor:Shape.Chart
         //ExFor:Shape.ExtrusionEnabled
         //ExFor:Shape.Filled
@@ -2414,6 +2421,7 @@ namespace ApiExamples
         //ExFor:TextPath.Trim
         //ExFor:TextPath.Underline
         //ExFor:TextPath.XScale
+        //ExFor:TextPath.Size
         //ExFor:TextPathAlignment
         //ExSummary:Shows how to work with WordArt.
         [Test] //ExSkip
@@ -2867,6 +2875,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Fill.SetImage(String)
+            //ExFor:Fill.SetImage(Byte[])
+            //ExFor:Fill.SetImage(Stream)
             //ExSummary:Shows how to set shape fill type as image.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -3095,6 +3105,7 @@ namespace ApiExamples
             //GistId:eeeec1fbf118e95e7df3f346c91ed726
             //ExFor:TextBoxControl
             //ExFor:TextBoxControl.Text
+            //ExFor:TextBoxControl.Type
             //ExSummary:Shows how to change text of the TextBox OLE control.
             Document doc = new Document(MyDir + "Textbox control.docm");
 
@@ -3104,6 +3115,7 @@ namespace ApiExamples
 
             textBoxControl.Text = "Updated text";
             Assert.AreEqual("Updated text", textBoxControl.Text);
+            Assert.AreEqual(Forms2OleControlType.Textbox, textBoxControl.Type);
             //ExEnd:TextBoxOleControl
         }
 
@@ -3113,6 +3125,7 @@ namespace ApiExamples
             //ExStart:Glow
             //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
             //ExFor:ShapeBase.Glow
+            //ExFor:GlowFormat
             //ExFor:GlowFormat.Color
             //ExFor:GlowFormat.Radius
             //ExFor:GlowFormat.Transparency
@@ -3148,6 +3161,7 @@ namespace ApiExamples
             //ExStart:Reflection
             //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
             //ExFor:ShapeBase.Reflection
+            //ExFor:ReflectionFormat
             //ExFor:ReflectionFormat.Size
             //ExFor:ReflectionFormat.Blur
             //ExFor:ReflectionFormat.Transparency
@@ -3167,17 +3181,19 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.Reflection.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual(0.37d, shape.Reflection.Transparency, 0.01d);
-            Assert.AreEqual(0.48d, shape.Reflection.Size, 0.01d);
-            Assert.AreEqual(17.5d, shape.Reflection.Blur, 0.01d);
-            Assert.AreEqual(9.2d, shape.Reflection.Distance, 0.01d);
+            ReflectionFormat reflectionFormat = shape.Reflection;
 
-            shape.Reflection.Remove();
+            Assert.AreEqual(0.37d, reflectionFormat.Transparency, 0.01d);
+            Assert.AreEqual(0.48d, reflectionFormat.Size, 0.01d);
+            Assert.AreEqual(17.5d, reflectionFormat.Blur, 0.01d);
+            Assert.AreEqual(9.2d, reflectionFormat.Distance, 0.01d);
 
-            Assert.AreEqual(0, shape.Reflection.Transparency);
-            Assert.AreEqual(0, shape.Reflection.Size);
-            Assert.AreEqual(0, shape.Reflection.Blur);
-            Assert.AreEqual(0, shape.Reflection.Distance);
+            reflectionFormat.Remove();
+
+            Assert.AreEqual(0, reflectionFormat.Transparency);
+            Assert.AreEqual(0, reflectionFormat.Size);
+            Assert.AreEqual(0, reflectionFormat.Blur);
+            Assert.AreEqual(0, reflectionFormat.Distance);
             //ExEnd:Reflection
         }
 
@@ -3187,6 +3203,7 @@ namespace ApiExamples
             //ExStart:SoftEdge
             //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
             //ExFor:ShapeBase.SoftEdge
+            //ExFor:SoftEdgeFormat
             //ExFor:SoftEdgeFormat.Radius
             //ExFor:SoftEdgeFormat.Remove
             //ExSummary:Shows how to work with soft edge formatting.
@@ -3201,15 +3218,16 @@ namespace ApiExamples
             // Load document with rectangle shape with soft edge.
             Document doc = new Document(ArtifactsDir + "Shape.SoftEdge.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            SoftEdgeFormat softEdgeFormat = shape.SoftEdge;
 
             // Check soft edge radius.
-            Assert.AreEqual(30, shape.SoftEdge.Radius);
+            Assert.AreEqual(30, softEdgeFormat.Radius);
 
             // Remove soft edge from the shape.
-            shape.SoftEdge.Remove();
+            softEdgeFormat.Remove();
 
             // Check radius of the removed soft edge.
-            Assert.AreEqual(0, shape.SoftEdge.Radius);
+            Assert.AreEqual(0, softEdgeFormat.Radius);
             //ExEnd:SoftEdge
         }
 
@@ -3220,6 +3238,8 @@ namespace ApiExamples
             //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
             //ExFor:Shape.Adjustments
             //ExFor:AdjustmentCollection
+            //ExFor:AdjustmentCollection.Count
+            //ExFor:AdjustmentCollection.Item(Int32)
             //ExFor:Adjustment
             //ExFor:Adjustment.Name
             //ExFor:Adjustment.Value
@@ -3255,12 +3275,17 @@ namespace ApiExamples
         {
             //ExStart:ShadowFormatColor
             //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:ShapeBase.ShadowFormat
+            //ExFor:ShadowFormat
             //ExFor:ShadowFormat.Color
+            //ExFor:ShadowFormat.Type
             //ExSummary:Shows how to get shadow color.
             Document doc = new Document(MyDir + "Shadow color.docx");
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            ShadowFormat shadowFormat = shape.ShadowFormat;
 
-            Assert.AreEqual(Color.Red.ToArgb(), shape.ShadowFormat.Color.ToArgb());
+            Assert.AreEqual(Color.Red.ToArgb(), shadowFormat.Color.ToArgb());
+            Assert.AreEqual(ShadowType.ShadowMixed, shadowFormat.Type);
             //ExEnd:ShadowFormatColor
         }
 
@@ -3295,7 +3320,9 @@ namespace ApiExamples
         {
             //ExStart:SelectRadioControl
             //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:OptionButtonControl
             //ExFor:OptionButtonControl.Selected
+            //ExFor:OptionButtonControl.Type
             //ExSummary:Shows how to select radio button.
             Document doc = new Document(MyDir + "Radio buttons.docx");
 
@@ -3309,6 +3336,9 @@ namespace ApiExamples
             // Select second option button.
             optionButton2.Selected = true;
 
+            Assert.AreEqual(Forms2OleControlType.OptionButton, optionButton1.Type);
+            Assert.AreEqual(Forms2OleControlType.OptionButton, optionButton2.Type);
+
             doc.Save(ArtifactsDir + "Shape.SelectRadioControl.docx");
             //ExEnd:SelectRadioControl
         }
@@ -3318,16 +3348,20 @@ namespace ApiExamples
         {
             //ExStart:CheckedCheckBox
             //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:CheckBoxControl
             //ExFor:CheckBoxControl.Checked
+            //ExFor:CheckBoxControl.Type
+            //ExFor:Forms2OleControlType
             //ExSummary:Shows how to change state of the CheckBox control.
             Document doc = new Document(MyDir + "ActiveX controls.docx");
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             CheckBoxControl checkBoxControl = (CheckBoxControl)shape.OleFormat.OleControl;
-
             checkBoxControl.Checked = true;
-            //ExEnd:CheckedCheckBox
+            
             Assert.AreEqual(true, checkBoxControl.Checked);
+            Assert.AreEqual(Forms2OleControlType.CheckBox, checkBoxControl.Type);
+            //ExEnd:CheckedCheckBox
         }
     }
 }

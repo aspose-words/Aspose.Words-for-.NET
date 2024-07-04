@@ -1066,6 +1066,8 @@ namespace ApiExamples
         //ExStart
         //ExFor:Font.Hidden
         //ExFor:Paragraph.Accept(DocumentVisitor)
+        //ExFor:Paragraph.AcceptStart(DocumentVisitor)
+        //ExFor:Paragraph.AcceptEnd(DocumentVisitor)
         //ExFor:DocumentVisitor.VisitParagraphStart(Paragraph)
         //ExFor:DocumentVisitor.VisitFormField(FormField)
         //ExFor:DocumentVisitor.VisitTableEnd(Table)

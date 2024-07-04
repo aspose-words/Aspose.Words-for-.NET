@@ -468,6 +468,9 @@ namespace ApiExamples
             //ExFor:FieldDatabase.LastRecord
             //ExFor:FieldDatabase.Query
             //ExFor:FieldDatabase.TableFormat
+            //ExFor:FieldDatabaseDataTable
+            //ExFor:IFieldDatabaseProvider
+            //ExFor:IFieldDatabaseProvider.GetQueryResult(String,String,String,FieldDatabase)
             //ExSummary:Shows how to extract data from a database and insert it as a field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2536,6 +2539,7 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:IBibliographyStylesProvider
+        //ExFor:IBibliographyStylesProvider.GetStyle(String)
         //ExFor:FieldOptions.BibliographyStylesProvider
         //ExSummary:Shows how to override built-in styles or provide custom one.
         [Test] //ExSkip
@@ -4896,6 +4900,7 @@ namespace ApiExamples
             //ExFor:FieldBuilder.AddSwitch(String, String)
             //ExFor:FieldBuilder.BuildAndInsert(Paragraph)
             //ExFor:FieldArgumentBuilder
+            //ExFor:FieldArgumentBuilder.#ctor
             //ExFor:FieldArgumentBuilder.AddField(FieldBuilder)
             //ExFor:FieldArgumentBuilder.AddText(String)
             //ExFor:FieldArgumentBuilder.AddNode(Inline)
@@ -6878,6 +6883,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldEQ
+            //ExFor:FieldEQ.AsOfficeMath
             //ExSummary:Shows how to replace the EQ field with Office Math.
             Document doc = new Document(MyDir + "Field sample - EQ.docx");
             FieldEQ fieldEQ = doc.Range.Fields.OfType<FieldEQ>().First();
@@ -7336,6 +7342,7 @@ namespace ApiExamples
         public void SetFieldIndexFormat()
         {
             //ExStart
+            //ExFor:FieldIndexFormat
             //ExFor:FieldOptions.FieldIndexFormat
             //ExSummary:Shows how to formatting FieldIndex fields.
             Document doc = new Document();
@@ -7363,6 +7370,8 @@ namespace ApiExamples
         //ExFor:ComparisonExpression.ComparisonOperator
         //ExFor:ComparisonExpression.RightExpression
         //ExFor:FieldOptions.ComparisonExpressionEvaluator
+        //ExFor:IComparisonExpressionEvaluator
+        //ExFor:IComparisonExpressionEvaluator.Evaluate(Field,ComparisonExpression)
         //ExSummary:Shows how to implement custom evaluation for the IF and COMPARE fields.
         [TestCase(" IF {0} {1} {2} \"true argument\" \"false argument\" ", 1, null, "true argument")] //ExSkip
         [TestCase(" IF {0} {1} {2} \"true argument\" \"false argument\" ", 0, null, "false argument")] //ExSkip
@@ -7536,9 +7545,12 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:FieldOptions.FieldUpdatingCallback
+        //ExFor:FieldOptions.FieldUpdatingProgressCallback
         //ExFor:IFieldUpdatingCallback
         //ExFor:IFieldUpdatingProgressCallback
         //ExFor:IFieldUpdatingProgressCallback.Notify(FieldUpdatingProgressArgs)
+        //ExFor:FieldUpdatingProgressArgs
         //ExFor:FieldUpdatingProgressArgs.UpdateCompleted
         //ExFor:FieldUpdatingProgressArgs.TotalFieldsCount
         //ExFor:FieldUpdatingProgressArgs.UpdatedFieldsCount
@@ -7611,6 +7623,7 @@ namespace ApiExamples
         {
             //ExStart:BibliographySources
             //GistId:eeeec1fbf118e95e7df3f346c91ed726
+            //ExFor:Document.Bibliography
             //ExFor:Bibliography
             //ExFor:Bibliography.Sources
             //ExFor:Source.Title

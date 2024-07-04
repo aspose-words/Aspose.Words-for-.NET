@@ -145,6 +145,7 @@ namespace ApiExamples
             //ExFor:StructuredDocumentTag.DateStorageFormat
             //ExFor:StructuredDocumentTag.FullDate
             //ExFor:SdtCalendarType
+            //ExFor:SdtDateStorageFormat
             //ExSummary:Shows how to prompt the user to enter a date with a structured document tag.
             Document doc = new Document();
 
@@ -1177,6 +1178,7 @@ namespace ApiExamples
         public void RangeSdt()
         {
             //ExStart
+            //ExFor:StructuredDocumentTagCollection
             //ExFor:StructuredDocumentTagCollection.GetById(int)
             //ExFor:StructuredDocumentTagCollection.GetByTitle(String)
             //ExFor:IStructuredDocumentTag.IsMultiSection
