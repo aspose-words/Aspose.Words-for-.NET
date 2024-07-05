@@ -612,6 +612,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:CompareOptions.AdvancedOptions
             //ExFor:AdvancedCompareOptions.IgnoreDmlUniqueId
+            //ExFor:CompareOptions.IgnoreDmlUniqueId
             //ExSummary:Shows how to compare documents ignoring DML unique ID.
             Document docA = new Document(MyDir + "DML unique ID original.docx");
             Document docB = new Document(MyDir + "DML unique ID compare.docx");
@@ -638,6 +639,7 @@ namespace ApiExamples
             //ExFor:RevisionOptions
             //ExFor:RevisionOptions.InsertedTextColor
             //ExFor:RevisionOptions.ShowRevisionBars
+            //ExFor:RevisionOptions.RevisionBarsPosition
             //ExSummary:Shows how to alter the appearance of revisions in a rendered output document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -654,6 +656,7 @@ namespace ApiExamples
             // Remove the bar that appears to the left of every revised line.
             doc.LayoutOptions.RevisionOptions.InsertedTextColor = RevisionColor.BrightGreen;
             doc.LayoutOptions.RevisionOptions.ShowRevisionBars = false;
+            doc.LayoutOptions.RevisionOptions.RevisionBarsPosition = HorizontalAlignment.Right;
 
             doc.Save(ArtifactsDir + "Document.LayoutOptionsRevisions.pdf");
             //ExEnd

@@ -124,6 +124,9 @@ namespace ApiExamples
         [Test]
         public static void LoadEncryptedPdfUsingPlugin()
         {
+            //ExStart
+            //ExFor:PdfEncryptionDetails.#ctor(String,String)
+            //ExSummary:Shows how to load encrypted pdf using plugin.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -158,6 +161,7 @@ namespace ApiExamples
 
             Assert.AreEqual("Hello world! This is an encrypted PDF document.",
                 pdfDoc.GetText().Trim());
+            //ExEnd
         }
     }
 }

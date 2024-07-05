@@ -963,6 +963,7 @@ namespace ApiExamples
             //ExFor:PageSetup.Gutter
             //ExFor:PageSetup.MultiplePages
             //ExFor:PageSetup.SheetsPerBooklet
+            //ExFor:MultiplePagesType
             //ExSummary:Shows how to configure a document that can be printed as a book fold.
             Document doc = new Document();
 

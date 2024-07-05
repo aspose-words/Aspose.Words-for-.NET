@@ -53,6 +53,7 @@ namespace ApiExamples
         {
             //ExStart:CreateSimpleDocument
             //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:DocumentBase.Document
             //ExFor:Document.#ctor()
             //ExSummary:Shows how to create simple document.
             Document doc = new Document();
@@ -1722,6 +1723,7 @@ namespace ApiExamples
             //ExFor:StyleCollection.Item(String)
             //ExFor:SectionCollection.Item(Int32)
             //ExFor:Document.UpdatePageLayout
+            //ExFor:Margins
             //ExFor:PageSetup.Margins
             //ExSummary:Shows when to recalculate the page layout of the document.
             Document doc = new Document(MyDir + "Rendering.docx");
@@ -2511,10 +2513,14 @@ namespace ApiExamples
             //ExFor:Frameset.FrameDefaultUrl
             //ExFor:Frameset.IsFrameLinkToFile
             //ExFor:Frameset.ChildFramesets
+            //ExFor:FramesetCollection
+            //ExFor:FramesetCollection.Count
+            //ExFor:FramesetCollection.Item(Int32)
             //ExSummary:Shows how to access frames on-page.
             // Document contains several frames with links to other documents.
             Document doc = new Document(MyDir + "Frameset.docx");
 
+            Assert.AreEqual(3, doc.Frameset.ChildFramesets.Count);
             // We can check the default URL (a web page URL or local document) or if the frame is an external resource.
             Assert.AreEqual("https://file-examples-com.github.io/uploads/2017/02/file-sample_100kB.docx",
                 doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl);

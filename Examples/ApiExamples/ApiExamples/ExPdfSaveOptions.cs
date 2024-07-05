@@ -2091,6 +2091,10 @@ namespace ApiExamples
         [Test, Category("SkipMono")]
         public void Dml3DEffectsRenderingModeTest()
         {
+            //ExStart
+            //ExFor:Dml3DEffectsRenderingMode
+            //ExFor:SaveOptions.Dml3DEffectsRenderingMode
+            //ExSummary:Shows how 3D effects are rendered.
             Document doc = new Document(MyDir + "DrawingML shape 3D effects.docx");
 
             RenderCallback warningCallback = new RenderCallback();
@@ -2100,6 +2104,7 @@ namespace ApiExamples
             saveOptions.Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
+            //ExEnd
 
 #if NET5_0_OR_GREATER
             Assert.AreEqual(48, warningCallback.Count);
@@ -2153,6 +2158,7 @@ namespace ApiExamples
             //ExFor:PdfDigitalSignatureDetails.SignatureDate
             //ExFor:PdfDigitalSignatureHashAlgorithm
             //ExFor:PdfSaveOptions.DigitalSignatureDetails
+            //ExFor:PdfDigitalSignatureDetails.CertificateHolder
             //ExSummary:Shows how to sign a generated PDF document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2174,6 +2180,7 @@ namespace ApiExamples
             Assert.AreEqual("Test Signing", options.DigitalSignatureDetails.Reason);
             Assert.AreEqual("My Office", options.DigitalSignatureDetails.Location);
             Assert.AreEqual(signingTime, options.DigitalSignatureDetails.SignatureDate.ToLocalTime());
+            Assert.AreEqual(certificateHolder, options.DigitalSignatureDetails.CertificateHolder);
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf", options);
             //ExEnd
@@ -2451,6 +2458,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FixedPageSaveOptions.PageSet
+            //ExFor:PageSet.All
+            //ExFor:PageSet.Even
+            //ExFor:PageSet.Odd
             //ExSummary:Shows how to export Odd pages from the document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

@@ -841,6 +841,8 @@ namespace ApiExamples
             //ExStart:MissingMembers
             //GistId:65919861586e42e24f61a3ccb65f8f4e
             //ExFor:ReportingEngine.BuildReport(Document, Object, String)
+            //ExFor:ReportingEngine.MissingMemberMessage
+            //ExFor:ReportingEngine.Options
             //ExSummary:Shows how to allow missinng members.
             DocumentBuilder builder = new DocumentBuilder();
             builder.Writeln("<<[missingObject.First().id]>>");
@@ -978,12 +980,17 @@ namespace ApiExamples
         [Test]
         public void XmlDataStringWithoutSchema()
         {
+            //ExStart
+            //ExFor:XmlDataSource
+            //ExFor:XmlDataSource.#ctor(String)
+            //ExSummary:Show how to use XML as a data source (string).
             Document doc = new Document(MyDir + "Reporting engine template - XML data destination.docx");
 
             XmlDataSource dataSource = new XmlDataSource(MyDir + "List of people.xml");
             BuildReport(doc, dataSource, "persons");
 
             doc.Save(ArtifactsDir + "ReportingEngine.XmlDataString.docx");
+            //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataString.docx",
                 GoldsDir + "ReportingEngine.DataSource Gold.docx"));
@@ -992,6 +999,10 @@ namespace ApiExamples
         [Test]
         public void XmlDataStreamWithoutSchema()
         {
+            //ExStart
+            //ExFor:XmlDataSource
+            //ExFor:XmlDataSource.#ctor(Stream)
+            //ExSummary:Show how to use XML as a data source (stream).
             Document doc = new Document(MyDir + "Reporting engine template - XML data destination.docx");
 
             using (FileStream stream = File.OpenRead(MyDir + "List of people.xml"))
@@ -1001,6 +1012,7 @@ namespace ApiExamples
             }
 
             doc.Save(ArtifactsDir + "ReportingEngine.XmlDataStream.docx");
+            //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataStream.docx",
                 GoldsDir + "ReportingEngine.DataSource Gold.docx"));
@@ -1023,17 +1035,32 @@ namespace ApiExamples
         [Test]
         public void JsonDataString()
         {
+            //ExStart
+            //ExFor:JsonDataLoadOptions
+            //ExFor:JsonDataLoadOptions.#ctor
+            //ExFor:JsonDataLoadOptions.ExactDateTimeParseFormats
+            //ExFor:JsonDataLoadOptions.AlwaysGenerateRootObject
+            //ExFor:JsonDataLoadOptions.PreserveSpaces
+            //ExFor:JsonDataLoadOptions.SimpleValueParseMode
+            //ExFor:JsonDataSource
+            //ExFor:JsonDataSource.#ctor(String,JsonDataLoadOptions)
+            //ExFor:JsonSimpleValueParseMode
+            //ExSummary:Shows how to use JSON as a data source (string).
             Document doc = new Document(MyDir + "Reporting engine template - JSON data destination.docx");
 
             JsonDataLoadOptions options = new JsonDataLoadOptions
             {
-                ExactDateTimeParseFormats = new List<string> {"MM/dd/yyyy", "MM.d.yy", "MM d yy"}
+                ExactDateTimeParseFormats = new List<string> {"MM/dd/yyyy", "MM.d.yy", "MM d yy"},
+                AlwaysGenerateRootObject = true,
+                PreserveSpaces = true,
+                SimpleValueParseMode = JsonSimpleValueParseMode.Loose
             };
 
             JsonDataSource dataSource = new JsonDataSource(MyDir + "List of people.json", options);
             BuildReport(doc, dataSource, "persons");
 
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataString.docx");
+            //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataString.docx",
                 GoldsDir + "ReportingEngine.JsonDataString Gold.docx"));
@@ -1054,6 +1081,9 @@ namespace ApiExamples
         [Test]
         public void JsonDataStream()
         {
+            //ExStart
+            //ExFor:JsonDataSource.#ctor(Stream,JsonDataLoadOptions)
+            //ExSummary:Shows how to use JSON as a data source (stream).
             Document doc = new Document(MyDir + "Reporting engine template - JSON data destination.docx");
 
             JsonDataLoadOptions options = new JsonDataLoadOptions
@@ -1068,6 +1098,7 @@ namespace ApiExamples
             }
 
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataStream.docx");
+            //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataStream.docx",
                 GoldsDir + "ReportingEngine.JsonDataString Gold.docx"));
@@ -1118,16 +1149,30 @@ namespace ApiExamples
         [Test]
         public void CsvDataString()
         {
+            //ExStart
+            //ExFor:CsvDataLoadOptions
+            //ExFor:CsvDataLoadOptions.#ctor
+            //ExFor:CsvDataLoadOptions.#ctor(Boolean)
+            //ExFor:CsvDataLoadOptions.Delimiter
+            //ExFor:CsvDataLoadOptions.CommentChar
+            //ExFor:CsvDataLoadOptions.HasHeaders
+            //ExFor:CsvDataLoadOptions.QuoteChar
+            //ExFor:CsvDataSource
+            //ExFor:CsvDataSource.#ctor(String,CsvDataLoadOptions)
+            //ExSummary:Shows how to use CSV as a data source (string).
             Document doc = new Document(MyDir + "Reporting engine template - CSV data destination.docx");
 
             CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
             loadOptions.Delimiter = ';';
             loadOptions.CommentChar = '$';
+            loadOptions.HasHeaders = true;
+            loadOptions.QuoteChar = '"';
 
             CsvDataSource dataSource = new CsvDataSource(MyDir + "List of people.csv", loadOptions);
             BuildReport(doc, dataSource, "persons");
 
             doc.Save(ArtifactsDir + "ReportingEngine.CsvDataString.docx");
+            //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataString.docx",
                 GoldsDir + "ReportingEngine.CsvData Gold.docx"));
@@ -1136,6 +1181,9 @@ namespace ApiExamples
         [Test]
         public void CsvDataStream()
         {
+            //ExStart
+            //ExFor:CsvDataSource.#ctor(Stream,CsvDataLoadOptions)
+            //ExSummary:Shows how to use CSV as a data source (stream).
             Document doc = new Document(MyDir + "Reporting engine template - CSV data destination.docx");
 
             CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
@@ -1149,6 +1197,7 @@ namespace ApiExamples
             }
 
             doc.Save(ArtifactsDir + "ReportingEngine.CsvDataStream.docx");
+            //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataStream.docx",
                 GoldsDir + "ReportingEngine.CsvData Gold.docx"));
@@ -1363,3 +1412,4 @@ namespace ApiExamples
         }
     }
 }
+

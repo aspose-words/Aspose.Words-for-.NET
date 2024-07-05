@@ -18,12 +18,15 @@ namespace ApiExamples
         public void CompressXlsx()
         {
             //ExStart
+            //ExFor:XlsxSaveOptions
             //ExFor:XlsxSaveOptions.CompressionLevel
+            //ExFor:XlsxSaveOptions.SaveFormat
             //ExSummary:Shows how to compress XLSX document.
             Document doc = new Document(MyDir + "Shape with linked chart.docx");
 
             XlsxSaveOptions xlsxSaveOptions = new XlsxSaveOptions();
-            xlsxSaveOptions.CompressionLevel = CompressionLevel.Maximum; 
+            xlsxSaveOptions.CompressionLevel = CompressionLevel.Maximum;
+            xlsxSaveOptions.SaveFormat = SaveFormat.Xlsx;
 
             doc.Save(ArtifactsDir + "XlsxSaveOptions.CompressXlsx.xlsx", xlsxSaveOptions);
             //ExEnd
@@ -35,6 +38,7 @@ namespace ApiExamples
             //ExStart:SelectionMode
             //GistId:470c0da51e4317baae82ad9495747fed
             //ExFor:XlsxSaveOptions.SectionMode
+            //ExFor:XlsxSectionMode
             //ExSummary:Shows how to save document as a separate worksheets.
             Document doc = new Document(MyDir + "Big document.docx");
 

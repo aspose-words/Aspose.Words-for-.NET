@@ -22,6 +22,7 @@ namespace ApiExamples
     {
         //ExStart
         //ExFor:Document.Accept(DocumentVisitor)
+        //ExFor:Section.Accept(DocumentVisitor)
         //ExFor:SubDocument.Accept(DocumentVisitor)
         //ExFor:CompositeNode.AcceptEnd(DocumentVisitor)
         //ExFor:CompositeNode.AcceptStart(DocumentVisitor)

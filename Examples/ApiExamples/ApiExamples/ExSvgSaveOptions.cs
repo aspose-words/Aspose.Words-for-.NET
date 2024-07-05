@@ -114,6 +114,7 @@ namespace ApiExamples
             //ExFor:ShapeBase.SoftEdge
             //ExFor:SoftEdgeFormat.Radius
             //ExFor:SoftEdgeFormat.Remove
+            //ExFor:SvgSaveOptions.MaxImageResolution
             //ExSummary:Shows how to set limit for image resolution.
             Document doc = new Document(MyDir + "Rendering.docx");
 

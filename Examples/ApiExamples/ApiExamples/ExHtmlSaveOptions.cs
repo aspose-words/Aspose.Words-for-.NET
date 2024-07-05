@@ -1892,6 +1892,7 @@ namespace ApiExamples
         //ExFor:IDocumentSavingCallback
         //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
         //ExFor:DocumentSavingArgs.EstimatedProgress
+        //ExFor:DocumentSavingArgs
         //ExSummary:Shows how to manage a document while saving to html.
         public void ProgressCallback(SaveFormat saveFormat, string ext)
         {

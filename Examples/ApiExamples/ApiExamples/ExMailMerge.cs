@@ -1865,6 +1865,7 @@ namespace ApiExamples
         public void MustacheTags()
         {
             //ExStart
+            //ExFor:MustacheTag
             //ExFor:MustacheTag.Text
             //ExFor:MustacheTag.ReferenceOffset
             //ExFor:MustacheTag.ReferenceRun

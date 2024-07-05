@@ -134,7 +134,7 @@ namespace ApiExamples
         public void UpdateCreatedTimeProperty(bool isUpdateCreatedTimeProperty)
         {
             //ExStart
-            //ExFor:SaveOptions.UpdateLastPrintedProperty
+            //ExFor:SaveOptions.UpdateCreatedTimeProperty
             //ExSummary:Shows how to update a document's "CreatedTime" property when saving.
             Document doc = new Document();
             doc.BuiltInDocumentProperties.CreatedTime = new DateTime(2019, 12, 20);

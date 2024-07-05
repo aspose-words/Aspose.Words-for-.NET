@@ -1737,6 +1737,7 @@ namespace ApiExamples
             //ExFor:ChartTitle.Format
             //ExFor:ChartAxisTitle.Format
             //ExFor:ChartLegend.Format
+            //ExFor:Fill.Solid(Color)
             //ExSummary:Shows how to use chart formating.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);

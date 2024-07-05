@@ -471,6 +471,7 @@ namespace ApiExamples
             //ExFor:FieldDatabaseDataTable
             //ExFor:IFieldDatabaseProvider
             //ExFor:IFieldDatabaseProvider.GetQueryResult(String,String,String,FieldDatabase)
+            //ExFor:FieldOptions.FieldDatabaseProvider
             //ExSummary:Shows how to extract data from a database and insert it as a field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2439,6 +2440,8 @@ namespace ApiExamples
             //ExFor:FieldCitation.VolumeNumber
             //ExFor:FieldBibliography
             //ExFor:FieldBibliography.FormatLanguageId
+            //ExFor:FieldBibliography.FilterLanguageId
+            //ExFor:FieldBibliography.SourceTag
             //ExSummary:Shows how to work with CITATION and BIBLIOGRAPHY fields.
             // Open a document containing bibliographical sources that we can find in
             // Microsoft Word via References -> Citations & Bibliography -> Manage Sources.
@@ -2481,8 +2484,10 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             FieldBibliography fieldBibliography = (FieldBibliography)builder.InsertField(FieldType.FieldBibliography, true);
             fieldBibliography.FormatLanguageId = "5129";
+            fieldBibliography.FilterLanguageId = "5129";
+            fieldBibliography.SourceTag = "Book2";
 
-            Assert.AreEqual(" BIBLIOGRAPHY  \\l 5129", fieldBibliography.GetFieldCode());
+            Assert.AreEqual(" BIBLIOGRAPHY  \\l 5129 \\f 5129 \\m Book2", fieldBibliography.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.CITATION.docx");
@@ -2519,9 +2524,10 @@ namespace ApiExamples
 
             fieldBibliography = (FieldBibliography)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldBibliography, " BIBLIOGRAPHY  \\l 5129",
-                "Cardholder, A. (2018). My Book, Vol. II. New York: Doe Co. Ltd.\rDoe, J. (2018). My Book, Vol I. London: Doe Co. Ltd.\r", fieldBibliography);
+            TestUtil.VerifyField(FieldType.FieldBibliography, " BIBLIOGRAPHY  \\l 5129 \\f 5129 \\m Book2",
+                "Cardholder, A. (2018). My Book, Vol. II. New York: Doe Co. Ltd.\r", fieldBibliography);
             Assert.AreEqual("5129", fieldBibliography.FormatLanguageId);
+            Assert.AreEqual("5129", fieldBibliography.FilterLanguageId);
 
             fieldCitation = (FieldCitation)doc.Range.Fields[3];
 
@@ -7365,6 +7371,8 @@ namespace ApiExamples
         //ExFor:ComparisonEvaluationResult.#ctor(bool)
         //ExFor:ComparisonEvaluationResult.#ctor(string)
         //ExFor:ComparisonEvaluationResult
+        //ExFor:ComparisonEvaluationResult.ErrorMessage
+        //ExFor:ComparisonEvaluationResult.Result
         //ExFor:ComparisonExpression
         //ExFor:ComparisonExpression.LeftExpression
         //ExFor:ComparisonExpression.ComparisonOperator
@@ -7417,6 +7425,11 @@ namespace ApiExamples
             public ComparisonExpressionEvaluator(ComparisonEvaluationResult result)
             {
                 mResult = result;
+                if (mResult != null)
+                {
+                    Console.WriteLine(mResult.ErrorMessage);
+                    Console.WriteLine(mResult.Result);
+                }
             }
 
             public ComparisonEvaluationResult Evaluate(Field field, ComparisonExpression expression)
@@ -7626,11 +7639,30 @@ namespace ApiExamples
             //ExFor:Document.Bibliography
             //ExFor:Bibliography
             //ExFor:Bibliography.Sources
+            //ExFor:Source
             //ExFor:Source.Title
             //ExFor:Source.Contributors
+            //ExFor:Contributor
             //ExFor:ContributorCollection
             //ExFor:ContributorCollection.Author
+            //ExFor:ContributorCollection.Artist
+            //ExFor:ContributorCollection.BookAuthor
+            //ExFor:ContributorCollection.Compiler
+            //ExFor:ContributorCollection.Composer
+            //ExFor:ContributorCollection.Conductor
+            //ExFor:ContributorCollection.Counsel
+            //ExFor:ContributorCollection.Director
+            //ExFor:ContributorCollection.Editor
+            //ExFor:ContributorCollection.Interviewee
+            //ExFor:ContributorCollection.Interviewer
+            //ExFor:ContributorCollection.Inventor
+            //ExFor:ContributorCollection.Performer
+            //ExFor:ContributorCollection.Producer
+            //ExFor:ContributorCollection.Translator
+            //ExFor:ContributorCollection.Writer
             //ExFor:PersonCollection
+            //ExFor:PersonCollection.Count
+            //ExFor:PersonCollection.Item(Int32)
             //ExFor:Person
             //ExFor:Person.First
             //ExFor:Person.Middle
@@ -7645,10 +7677,27 @@ namespace ApiExamples
             Assert.AreEqual("Book 0 (No LCID)", source.Title);
 
             ContributorCollection contributors = source.Contributors;
+            Assert.IsNull(contributors.Artist);
+            Assert.IsNull(contributors.BookAuthor);
+            Assert.IsNull(contributors.Compiler);
+            Assert.IsNull(contributors.Composer);
+            Assert.IsNull(contributors.Conductor);
+            Assert.IsNull(contributors.Counsel);
+            Assert.IsNull(contributors.Director);
+            Assert.IsNotNull(contributors.Editor);
+            Assert.IsNull(contributors.Interviewee);
+            Assert.IsNull(contributors.Interviewer);
+            Assert.IsNull(contributors.Inventor);
+            Assert.IsNull(contributors.Performer);
+            Assert.IsNull(contributors.Producer);
+            Assert.IsNotNull(contributors.Translator);
+            Assert.IsNull(contributors.Writer);
+            Contributor editor  = contributors.Editor;
+            Assert.AreEqual(2, ((PersonCollection)editor).Count());
             PersonCollection authors = (PersonCollection)contributors.Author;
             Assert.AreEqual(2, authors.Count());
 
-            Person person = authors.FirstOrDefault();
+            Person person = authors[0];
             Assert.AreEqual("Roxanne", person.First);
             Assert.AreEqual("Brielle", person.Middle);
             Assert.AreEqual("Tejeda", person.Last);
