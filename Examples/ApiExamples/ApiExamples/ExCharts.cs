@@ -1794,6 +1794,7 @@ namespace ApiExamples
             //ExFor:ChartSeriesGroup.AxisX
             //ExFor:ChartSeriesGroup.AxisY
             //ExFor:ChartSeriesGroup.Series
+            //ExFor:ChartSeriesGroupCollection
             //ExFor:ChartSeriesGroupCollection.Add(ChartSeriesType)
             //ExFor:AxisGroup
             //ExSummary:Shows how to work with the secondary axis of chart.
