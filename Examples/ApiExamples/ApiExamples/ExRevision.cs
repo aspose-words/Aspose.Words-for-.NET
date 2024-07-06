@@ -274,7 +274,7 @@ namespace ApiExamples
             revisionOptions.MovedFromTextColor = RevisionColor.Yellow;
             revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleStrikeThrough;
             revisionOptions.MovedToTextColor = RevisionColor.ClassicBlue;
-            revisionOptions.MovedFromTextEffect = RevisionTextEffect.DoubleUnderline;
+            revisionOptions.MovedToTextEffect = RevisionTextEffect.DoubleUnderline;
 
             // Render format revisions in dark red and bold.
             revisionOptions.RevisedPropertiesColor = RevisionColor.DarkRed;
