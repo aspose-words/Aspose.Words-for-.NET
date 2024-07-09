@@ -1,0 +1,22 @@
+[
+  {
+    "quarter": "Q1",
+    "customerSatisfaction": 78,
+    "employeeSatisfaction": 73
+  },
+  {
+    "quarter": "Q2",
+    "customerSatisfaction": 85,
+    "employeeSatisfaction": 71
+  },
+  {
+    "quarter": "Q3",
+    "customerSatisfaction": 87,
+    "employeeSatisfaction": 75
+  },
+  {
+    "quarter": "Q4",
+    "customerSatisfaction": 91,
+    "employeeSatisfaction": 79
+  }
+]

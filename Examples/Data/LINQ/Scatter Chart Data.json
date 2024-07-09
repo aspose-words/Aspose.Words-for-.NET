@@ -1,0 +1,22 @@
+[
+  { 
+    "customers": 230, 
+    "retentionRate": 82 
+  },
+  { 
+    "customers": 320, 
+    "retentionRate": 87 
+  },
+  { 
+    "customers": 410, 
+    "retentionRate": 92 
+  },
+  { 
+    "customers": 510, 
+    "retentionRate": 93 
+  },
+  { 
+    "customers": 590, 
+    "retentionRate": 96 
+  }
+]

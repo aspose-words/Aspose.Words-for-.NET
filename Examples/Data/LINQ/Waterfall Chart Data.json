@@ -1,0 +1,34 @@
+[
+  {
+    "component": "Q1 Revenue",
+    "value": 22000
+  },
+  {
+    "component": "Q1 Expenses",
+    "value": -15000
+  },
+  {
+    "component": "Q2 Revenue",
+    "value": 24000
+  },
+  {
+    "component": "Q2 Expenses",
+    "value": -16000
+  },
+  {
+    "component": "Q3 Revenue",
+    "value": 21000
+  },
+  {
+    "component": "Q3 Expenses",
+    "value": -17000
+  },
+  {
+    "component": "Q4 Revenue",
+    "value": 25000
+  },
+  {
+    "component": "Q4 Expenses",
+    "value": -13000
+  }
+]

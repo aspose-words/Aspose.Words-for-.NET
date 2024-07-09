@@ -1,0 +1,22 @@
+[
+  {
+    "issue": "Quality Control",
+    "count": 30
+  },
+  {
+    "issue": "Customer Complaints",
+    "count": 50
+  },
+  {
+    "issue": "Product Defects",
+    "count": 20
+  },
+  {
+    "issue": "Late Deliveries",
+    "count": 25
+  },
+  {
+    "issue": "Machine Downtime",
+    "count": 15
+  }
+]

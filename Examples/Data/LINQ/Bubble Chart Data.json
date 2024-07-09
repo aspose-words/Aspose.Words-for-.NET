@@ -1,0 +1,27 @@
+[
+  { 
+    "revenue": 95000, 
+    "profit": 5200, 
+    "marketShare": 18 
+  },
+  { 
+    "revenue": 145000, 
+    "profit": 7300, 
+    "marketShare": 23 
+  },
+  { 
+    "revenue": 205000, 
+    "profit": 9800, 
+    "marketShare": 28 
+  },
+  { 
+    "revenue": 245000, 
+    "profit": 13000, 
+    "marketShare": 33 
+  },
+  { 
+    "revenue": 295000, 
+    "profit": 14500, 
+    "marketShare": 38 
+  }
+]

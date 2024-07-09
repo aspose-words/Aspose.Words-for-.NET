@@ -1,0 +1,22 @@
+[
+  {
+    "stage": "Leads Generated",
+    "value": 850
+  },
+  {
+    "stage": "Leads Contacted",
+    "value": 600
+  },
+  {
+    "stage": "Leads Qualified",
+    "value": 450
+  },
+  {
+    "stage": "Deals Closed",
+    "value": 200
+  },
+  {
+    "stage": "Revenue Generated",
+    "value": 100
+  }
+]

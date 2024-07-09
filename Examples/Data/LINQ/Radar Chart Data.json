@@ -1,0 +1,27 @@
+[
+  {
+    "department": "Operations",
+    "quarter1": 31000,
+    "quarter2": 32000
+  },
+  {
+    "department": "Customer Service",
+    "quarter1": 24000,
+    "quarter2": 25000
+  },
+  {
+    "department": "Sales",
+    "quarter1": 30000,
+    "quarter2": 35000
+  },
+  {
+    "department": "Finance",
+    "quarter1": 38000,
+    "quarter2": 40000
+  },
+  {
+    "department": "Marketing",
+    "quarter1": 26000,
+    "quarter2": 28000
+  }
+]

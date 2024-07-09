@@ -1,0 +1,26 @@
+[
+  {
+    "quarter": "Q1",
+    "sales": 50000,
+    "expenses": 30000,
+    "profit": 20000
+  },
+  {
+    "quarter": "Q2",
+    "sales": 60000,
+    "expenses": 35000,
+    "profit": 25000
+  },
+  {
+    "quarter": "Q3",
+    "sales": 55000,
+    "expenses": 32000,
+    "profit": 23000
+  },
+  {
+    "quarter": "Q4",
+    "sales": 58000,
+    "expenses": 33000,
+    "profit": 25000
+  }
+]

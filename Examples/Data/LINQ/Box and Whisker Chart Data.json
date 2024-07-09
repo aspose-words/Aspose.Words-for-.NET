@@ -1,0 +1,42 @@
+[
+  {
+    "region": "Asia",
+    "productA": 13700,
+    "productB": 18400
+  },
+  {
+    "region": "Asia",
+    "productA": 15200,
+    "productB": 19100
+  },
+  {
+    "region": "Asia",
+    "productA": 11900,
+    "productB": 18700
+  },
+  {
+    "region": "Asia",
+    "productA": 13100,
+    "productB": 15200
+  },
+  {
+    "region": "Europe",
+    "productA": 15700,
+    "productB": 21000
+  },
+  {
+    "region": "Europe",
+    "productA": 16100,
+    "productB": 19700
+  },
+  {
+    "region": "Europe",
+    "productA": 15300,
+    "productB": 23400
+  },
+  {
+    "region": "Europe",
+    "productA": 14900,
+    "productB": 17300
+  }
+]

@@ -1,0 +1,22 @@
+[
+  { 
+    "industry": "Technology", 
+    "sales": 25000 
+  },
+  { 
+    "industry": "Retail", 
+    "sales": 18000 
+  },
+  { 
+    "industry": "Healthcare", 
+    "sales": 15000 
+  },
+  { 
+    "industry": "Finance", 
+    "sales": 12000 
+  },
+  { 
+    "industry": "Manufacturing", 
+    "sales": 10000 
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "year": 2019,
+    "profit": 50,
+    "revenue": 120
+  },
+  {
+    "year": 2020,
+    "profit": 75,
+    "revenue": 150
+  },
+  {
+    "year": 2021,
+    "profit": 100,
+    "revenue": 180
+  },
+  {
+    "year": 2022,
+    "profit": 85,
+    "revenue": 160
+  },
+  {
+    "year": 2023,
+    "profit": 130,
+    "revenue": 200
+  }
+]

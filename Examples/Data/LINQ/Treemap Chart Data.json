@@ -1,0 +1,74 @@
+[
+  {
+    "region": "North America",
+    "country": "USA",
+    "city": "New York",
+    "value": 25000
+  },
+  {
+    "region": "North America",
+    "country": "USA",
+    "city": "Los Angeles",
+    "value": 20000
+  },
+  {
+    "region": "North America",
+    "country": "Canada",
+    "city": "Toronto",
+    "value": 12000
+  },
+  {
+    "region": "North America",
+    "country": "Canada",
+    "city": "Vancouver",
+    "value": 8000
+  },
+  {
+    "region": "Europe",
+    "country": "Germany",
+    "city": "Berlin",
+    "value": 15000
+  },
+  {
+    "region": "Europe",
+    "country": "Germany",
+    "city": "Munich",
+    "value": 12000
+  },
+  {
+    "region": "Europe",
+    "country": "France",
+    "city": "Paris",
+    "value": 10000
+  },
+  {
+    "region": "Europe",
+    "country": "France",
+    "city": "Marseille",
+    "value": 8000
+  },
+  {
+    "region": "Asia",
+    "country": "China",
+    "city": "Beijing",
+    "value": 20000
+  },
+  {
+    "region": "Asia",
+    "country": "China",
+    "city": "Shanghai",
+    "value": 15000
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "city": "Tokyo",
+    "value": 18000
+  },
+  {
+    "region": "Asia",
+    "country": "Japan",
+    "city": "Osaka",
+    "value": 12000
+  }
+]

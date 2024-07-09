@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Technology",
+    "sector": "Software",
+    "subsector": "Cloud Computing",
+    "value": 20000
+  },
+  {
+    "name": "Technology",
+    "sector": "Software",
+    "subsector": "Cybersecurity",
+    "value": 25000
+  },
+  {
+    "name": "Technology",
+    "sector": "Hardware",
+    "subsector": "Semiconductors",
+    "value": 15000
+  },
+  {
+    "name": "Technology",
+    "sector": "Hardware",
+    "subsector": "Consumer Electronics",
+    "value": 18000
+  },
+  {
+    "name": "Finance",
+    "sector": "Banking",
+    "subsector": "Retail Banking",
+    "value": 22000
+  },
+  {
+    "name": "Finance",
+    "sector": "Banking",
+    "subsector": "Investment Banking",
+    "value": 28000
+  },
+  {
+    "name": "Finance",
+    "sector": "Insurance",
+    "subsector": "Life Insurance",
+    "value": 16000
+  },
+  {
+    "name": "Finance",
+    "sector": "Insurance",
+    "subsector": "Property Insurance",
+    "value": 19000
+  }
+]

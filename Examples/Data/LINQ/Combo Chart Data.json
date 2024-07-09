@@ -1,0 +1,27 @@
+[
+  {
+    "region": "North America",
+    "sales": 500000,
+    "expenses": 300000
+  },
+  {
+    "region": "Europe",
+    "sales": 450000,
+    "expenses": 280000
+  },
+  {
+    "region": "Asia",
+    "sales": 400000,
+    "expenses": 250000
+  },
+  {
+    "region": "Latin America",
+    "sales": 350000,
+    "expenses": 200000
+  },
+  {
+    "region": "Africa",
+    "sales": 300000,
+    "expenses": 180000
+  }
+]

@@ -1,0 +1,32 @@
+[
+  { 
+    "scenario": "Scenario 1",
+    "productQuality": 4.5, 
+    "customerLoyalty": 4.3, 
+    "marketGrowth": 5.1 
+  },
+  { 
+    "scenario": "Scenario 2",
+    "productQuality": 4.2, 
+    "customerLoyalty": 4.1, 
+    "marketGrowth": 4.9 
+  },
+  { 
+    "scenario": "Scenario 3",
+    "productQuality": 4.8, 
+    "customerLoyalty": 4.7, 
+    "marketGrowth": 5.3 
+  },
+  { 
+    "scenario": "Scenario 4",
+    "productQuality": 4.4, 
+    "customerLoyalty": 4.5, 
+    "marketGrowth": 5.0 
+  },
+  { 
+    "scenario": "Scenario 5",
+    "productQuality": 4.6, 
+    "customerLoyalty": 4.4, 
+    "marketGrowth": 5.2 
+  }
+]
