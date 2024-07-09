@@ -18,6 +18,7 @@ namespace DocsExamples.File_Formats_and_Conversions
         public void DocToDocx()
         {
             //ExStart:LoadAndSave
+            //GistId:7ee438947078cf070c5bc36a4e45a18c
             //ExStart:OpenDocument
             Document doc = new Document(MyDir + "Document.doc");
             //ExEnd:OpenDocument
@@ -29,15 +30,17 @@ namespace DocsExamples.File_Formats_and_Conversions
         [Test]
         public void DocxToRtf()
         {
-            //ExStart:LoadAndSaveToStream 
-            //ExStart:OpeningFromStream
+            //ExStart:LoadAndSaveToStream
+            //GistId:7ee438947078cf070c5bc36a4e45a18c
+            //ExStart:OpenFromStream
+            //GistId:1d626c7186a318d22d022dc96dd91d55
             // Read only access is enough for Aspose.Words to load a document.
             Stream stream = File.OpenRead(MyDir + "Document.docx");
 
             Document doc = new Document(stream);
             // You can close the stream now, it is no longer needed because the document is in memory.
             stream.Close();
-            //ExEnd:OpeningFromStream 
+            //ExEnd:OpenFromStream
 
             // ... do something with the document.
 
@@ -47,7 +50,7 @@ namespace DocsExamples.File_Formats_and_Conversions
 
             // Rewind the stream position back to zero so it is ready for the next reader.
             dstStream.Position = 0;
-            //ExEnd:LoadAndSaveToStream 
+            //ExEnd:LoadAndSaveToStream
             
             File.WriteAllBytes(ArtifactsDir + "BaseConversions.DocxToRtf.rtf", dstStream.ToArray());
         }
@@ -67,6 +70,7 @@ namespace DocsExamples.File_Formats_and_Conversions
         public void DocxToByte()
         {
             //ExStart:DocxToByte
+            //GistId:f8a622f8bc1cf3c2fa8a7a9be359faa2
             Document doc = new Document(MyDir + "Document.docx");
 
             MemoryStream outStream = new MemoryStream();
@@ -89,10 +93,22 @@ namespace DocsExamples.File_Formats_and_Conversions
             //ExEnd:DocxToEpub
         }
 
-        [Test, Ignore("Only for example")]
-        public void DocxToMhtmlAndSendingEmail()
+        [Test]
+        public void DocxToHtml()
         {
-            //ExStart:DocxToMhtmlAndSendingEmail
+            //ExStart:DocxToHtml
+            //GistId:c0df00d37081f41a7683339fd7ef66c1
+            Document doc = new Document(MyDir + "Document.docx");
+
+            doc.Save(ArtifactsDir + "BaseConversions.DocxToHtml.html");
+            //ExEnd:DocxToHtml
+        }
+
+        [Test, Ignore("Only for example")]
+        public void DocxToMhtml()
+        {
+            //ExStart:DocxToMhtml
+            //GistId:537e7d4e2ddd23fa701dc4bf315064b9
             Document doc = new Document(MyDir + "Document.docx");
 
             Stream stream = new MemoryStream();
@@ -111,20 +127,21 @@ namespace DocsExamples.File_Formats_and_Conversions
             SmtpClient client = new SmtpClient();
             client.Host = "your_smtp.com";
             client.Send(message);
-            //ExEnd:DocxToMhtmlAndSendingEmail
+            //ExEnd:DocxToMhtml
         }
 
         [Test]
         public void DocxToMarkdown()
         {
-            //ExStart:SaveToMarkdownDocument
+            //ExStart:DocxToMarkdown
+            //GistId:51b4cb9c451832f23527892e19c7bca6
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln("Some text!");
 
             doc.Save(ArtifactsDir + "BaseConversions.DocxToMarkdown.md");
-            //ExEnd:SaveToMarkdownDocument
+            //ExEnd:DocxToMarkdown
         }
 
         [Test]
@@ -162,6 +179,7 @@ namespace DocsExamples.File_Formats_and_Conversions
         public void PdfToJpeg()
         {
             //ExStart:PdfToJpeg
+            //GistId:ebbb90d74ef57db456685052a18f8e86
             Document doc = new Document(MyDir + "Pdf Document.pdf");
 
             doc.Save(ArtifactsDir + "BaseConversions.PdfToJpeg.jpeg");
@@ -172,6 +190,7 @@ namespace DocsExamples.File_Formats_and_Conversions
         public void PdfToDocx()
         {
             //ExStart:PdfToDocx
+            //GistId:a0d52b62c1643faa76a465a41537edfc
             Document doc = new Document(MyDir + "Pdf Document.pdf");
 
             doc.Save(ArtifactsDir + "BaseConversions.PdfToDocx.docx");
@@ -182,6 +201,7 @@ namespace DocsExamples.File_Formats_and_Conversions
         public void PdfToXlsx()
         {
             //ExStart:PdfToXlsx
+            //GistId:a50652f28531278511605e0fd778bbdf
             Document doc = new Document(MyDir + "Pdf Document.pdf");
 
             doc.Save(ArtifactsDir + "BaseConversions.PdfToXlsx.xlsx");
@@ -191,6 +211,8 @@ namespace DocsExamples.File_Formats_and_Conversions
         [Test]
         public void FindReplaceXlsx()
         {
+            //ExStart:FindReplaceXlsx
+            //GistId:a50652f28531278511605e0fd778bbdf
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -206,17 +228,21 @@ namespace DocsExamples.File_Formats_and_Conversions
             doc.Range.Replace("Ruby", "Jade", options);
 
             doc.Save(ArtifactsDir + "BaseConversions.FindReplaceXlsx.xlsx");
+            //ExEnd:FindReplaceXlsx
         }
 
         [Test]
         public void CompressXlsx()
         {
+            //ExStart:CompressXlsx
+            //GistId:a50652f28531278511605e0fd778bbdf
             Document doc = new Document(MyDir + "Document.docx");
 
             XlsxSaveOptions saveOptions = new XlsxSaveOptions();
             saveOptions.CompressionLevel = CompressionLevel.Maximum;
 
             doc.Save(ArtifactsDir + "BaseConversions.CompressXlsx.xlsx", saveOptions);
+            //ExEnd:CompressXlsx
         }
 
 #if NET48 || JAVA

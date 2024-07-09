@@ -9,9 +9,10 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
     internal class SplitDocument : DocsExamplesBase
     {
         [Test]
-        public void ByHeadingsHtml()
+        public void ByHeadings()
         {
-            //ExStart:SplitDocumentByHeadingsHtml
+            //ExStart:SplitDocumentByHeadings
+            //GistId:c0df00d37081f41a7683339fd7ef66c1
             Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlSaveOptions options = new HtmlSaveOptions
@@ -20,9 +21,8 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
                 DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph
             };
             
-
-            doc.Save(ArtifactsDir + "SplitDocument.ByHeadingsHtml.html", options);
-            //ExEnd:SplitDocumentByHeadingsHtml
+            doc.Save(ArtifactsDir + "SplitDocument.ByHeadings.epub", options);
+            //ExEnd:SplitDocumentByHeadings
         }
 
         [Test]

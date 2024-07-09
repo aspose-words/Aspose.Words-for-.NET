@@ -48,6 +48,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void Format1BppIndexed()
         {
             //ExStart:Format1BppIndexed
+            //GistId:83e5c469d0e72b5114fb8a05a1d01977
             Document doc = new Document(MyDir + "Rendering.docx");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png)
@@ -65,6 +66,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void GetJpegPageRange()
         {
             //ExStart:GetJpegPageRange
+            //GistId:ebbb90d74ef57db456685052a18f8e86
             Document doc = new Document(MyDir + "Rendering.docx");
 
             ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);

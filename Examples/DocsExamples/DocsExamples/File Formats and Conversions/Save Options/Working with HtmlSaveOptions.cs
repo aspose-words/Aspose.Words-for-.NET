@@ -11,6 +11,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void ExportRoundtripInformation()
         {
             //ExStart:ExportRoundtripInformation
+            //GistId:c0df00d37081f41a7683339fd7ef66c1
             Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportRoundtripInformation = true };
@@ -23,6 +24,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void ExportFontsAsBase64()
         {
             //ExStart:ExportFontsAsBase64
+            //GistId:c0df00d37081f41a7683339fd7ef66c1
             Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportFontsAsBase64 = true };
@@ -35,6 +37,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void ExportResources()
         {
             //ExStart:ExportResources
+            //GistId:c0df00d37081f41a7683339fd7ef66c1
             Document doc = new Document(MyDir + "Rendering.docx");
 
             HtmlSaveOptions saveOptions = new HtmlSaveOptions
@@ -141,6 +144,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void ExportTextInputFormFieldAsText()
         {
             //ExStart:ExportTextInputFormFieldAsText
+            //GistId:83e5c469d0e72b5114fb8a05a1d01977
             Document doc = new Document(MyDir + "Rendering.docx");
 
             string imagesDir = Path.Combine(ArtifactsDir, "Images");

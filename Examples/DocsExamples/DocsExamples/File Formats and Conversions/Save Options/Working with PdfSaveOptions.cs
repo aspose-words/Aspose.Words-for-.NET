@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Saving;
@@ -317,15 +317,16 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         }
 
         [Test]
-        public void UpdateLastPrintedProperty()
+        public void UpdateLastPrinted()
         {
-            //ExStart:UpdateIfLastPrinted
+            //ExStart:UpdateLastPrinted
+            //GistId:83e5c469d0e72b5114fb8a05a1d01977
             Document doc = new Document(MyDir + "Rendering.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions { UpdateLastPrintedProperty = true };
 
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.UpdateIfLastPrinted.pdf", saveOptions);
-            //ExEnd:UpdateIfLastPrinted
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.UpdateLastPrinted.pdf", saveOptions);
+            //ExEnd:UpdateLastPrinted
         }
 
         [Test]
