@@ -95,34 +95,37 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         [Test]
         public void EmbeddedAllFonts()
         {
-            //ExStart:EmbeddAllFonts
+            //ExStart:EmbeddedAllFonts
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // The output PDF will be embedded with all fonts found in the document.
             PdfSaveOptions saveOptions = new PdfSaveOptions { EmbedFullFonts = true };
             
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EmbeddedFontsInPdf.pdf", saveOptions);
-            //ExEnd:EmbeddAllFonts
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EmbeddedAllFonts.pdf", saveOptions);
+            //ExEnd:EmbeddedAllFonts
         }
 
         [Test]
         public void EmbeddedSubsetFonts()
         {
-            //ExStart:EmbeddSubsetFonts
+            //ExStart:EmbeddedSubsetFonts
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // The output PDF will contain subsets of the fonts in the document.
             // Only the glyphs used in the document are included in the PDF fonts.
             PdfSaveOptions saveOptions = new PdfSaveOptions { EmbedFullFonts = false };
             
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EmbeddSubsetFonts.pdf", saveOptions);
-            //ExEnd:EmbeddSubsetFonts
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EmbeddedSubsetFonts.pdf", saveOptions);
+            //ExEnd:EmbeddedSubsetFonts
         }
 
         [Test]
         public void DisableEmbedWindowsFonts()
         {
             //ExStart:DisableEmbedWindowsFonts
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // The output PDF will be saved without embedding standard windows fonts.
@@ -148,6 +151,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void AvoidEmbeddingCoreFonts()
         {
             //ExStart:AvoidEmbeddingCoreFonts
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // The output PDF will not be embedded with core fonts such as Arial, Times New Roman etc.
@@ -178,6 +182,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void ExportHeaderFooterBookmarks()
         {
             //ExStart:ExportHeaderFooterBookmarks
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Bookmarks in headers and footers.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
@@ -236,6 +241,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void DownsamplingImages()
         {
             //ExStart:DownsamplingImages
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // We can set a minimum threshold for downsampling.
@@ -250,23 +256,25 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         }
 
         [Test]
-        public void SetOutlineOptions()
+        public void OutlineOptions()
         {
-            //ExStart:SetOutlineOptions
+            //ExStart:OutlineOptions
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.OutlineOptions.HeadingsOutlineLevels = 3;
             saveOptions.OutlineOptions.ExpandedOutlineLevels = 1;
 
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.SetOutlineOptions.pdf", saveOptions);
-            //ExEnd:SetOutlineOptions
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.OutlineOptions.pdf", saveOptions);
+            //ExEnd:OutlineOptions
         }
 
         [Test]
         public void CustomPropertiesExport()
         {
             //ExStart:CustomPropertiesExport
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document();
             doc.CustomDocumentProperties.Add("Company", "Aspose");
 
@@ -280,6 +288,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         public void ExportDocumentStructure()
         {
             //ExStart:ExportDocumentStructure
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
             // The file size will be increased and the structure will be visible in the "Content" navigation pane
@@ -293,7 +302,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         [Test]
         public void ImageCompression()
         {
-            //ExStart:PdfImageCompression
+            //ExStart:ImageCompression
+            //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
             PdfSaveOptions saveOptions = new PdfSaveOptions
@@ -301,7 +311,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
                 ImageCompression = PdfImageCompression.Jpeg, PreserveFormFields = true
             };
 
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.PdfImageCompression.pdf", saveOptions);
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.ImageCompression.pdf", saveOptions);
 
             PdfSaveOptions saveOptionsA2U = new PdfSaveOptions
             {
@@ -312,8 +322,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             
 
-            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.PdfImageCompression_A2u.pdf", saveOptionsA2U);
-            //ExEnd:PdfImageComppression
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.ImageCompression_A2u.pdf", saveOptionsA2U);
+            //ExEnd:ImageCompression
         }
 
         [Test]
