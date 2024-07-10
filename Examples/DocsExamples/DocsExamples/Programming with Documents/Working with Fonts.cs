@@ -107,20 +107,6 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void SetFontsFolders()
-        {
-            //ExStart:SetFontsFolders
-            FontSettings.DefaultInstance.SetFontsSources(new FontSourceBase[]
-            {
-                new SystemFontSource(), new FolderFontSource("C:\\MyFonts\\", true)
-            });
-
-            Document doc = new Document(MyDir + "Rendering.docx");
-            doc.Save(ArtifactsDir + "WorkingWithFonts.SetFontsFolders.pdf");
-            //ExEnd:SetFontsFolders           
-        }
-
-        [Test]
         public void EnableDisableFontSubstitution()
         {
             //ExStart:EnableDisableFontSubstitution
@@ -137,9 +123,10 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void SetFontFallbackSettings()
+        public void FontFallbackSettings()
         {
-            //ExStart:SetFontFallbackSettings
+            //ExStart:FontFallbackSettings
+            //GistId:a08698f540d47082b4e2dbb1cb67fc1b
             Document doc = new Document(MyDir + "Rendering.docx");
 
             FontSettings fontSettings = new FontSettings();
@@ -147,14 +134,15 @@ namespace DocsExamples.Programming_with_Documents
             
             doc.FontSettings = fontSettings;
             
-            doc.Save(ArtifactsDir + "WorkingWithFonts.SetFontFallbackSettings.pdf");
-            //ExEnd:SetFontFallbackSettings
+            doc.Save(ArtifactsDir + "WorkingWithFonts.FontFallbackSettings.pdf");
+            //ExEnd:FontFallbackSettings
         }
 
         [Test]
         public void NotoFallbackSettings()
         {
-            //ExStart:SetPredefinedFontFallbackSettings
+            //ExStart:NotoFallbackSettings
+            //GistId:a08698f540d47082b4e2dbb1cb67fc1b
             Document doc = new Document(MyDir + "Rendering.docx");
 
             FontSettings fontSettings = new FontSettings();
@@ -163,24 +151,26 @@ namespace DocsExamples.Programming_with_Documents
             doc.FontSettings = fontSettings;
             
             doc.Save(ArtifactsDir + "WorkingWithFonts.NotoFallbackSettings.pdf");
-            //ExEnd:SetPredefinedFontFallbackSettings
+            //ExEnd:NotoFallbackSettings
         }
 
         [Test]
-        public void SetFontsFoldersDefaultInstance()
+        public void DefaultInstance()
         {
-            //ExStart:SetFontsFoldersDefaultInstance
+            //ExStart:DefaultInstance
+            //GistId:7e64f6d40825be58a8c12f1307c12964
             FontSettings.DefaultInstance.SetFontsFolder("C:\\MyFonts\\", true);
-            //ExEnd:SetFontsFoldersDefaultInstance           
+            //ExEnd:DefaultInstance
 
             Document doc = new Document(MyDir + "Rendering.docx");
-            doc.Save(ArtifactsDir + "WorkingWithFonts.SetFontsFoldersDefaultInstance.pdf");
+            doc.Save(ArtifactsDir + "WorkingWithFonts.DefaultInstance.pdf");
         }
 
         [Test]
-        public void SetFontsFoldersMultipleFolders()
+        public void MultipleFolders()
         {
-            //ExStart:SetFontsFoldersMultipleFolders
+            //ExStart:MultipleFolders
+            //GistId:7e64f6d40825be58a8c12f1307c12964
             Document doc = new Document(MyDir + "Rendering.docx");
             
             FontSettings fontSettings = new FontSettings();
@@ -191,8 +181,8 @@ namespace DocsExamples.Programming_with_Documents
             
             doc.FontSettings = fontSettings;
             
-            doc.Save(ArtifactsDir + "WorkingWithFonts.SetFontsFoldersMultipleFolders.pdf");
-            //ExEnd:SetFontsFoldersMultipleFolders           
+            doc.Save(ArtifactsDir + "WorkingWithFonts.MultipleFolders.pdf");
+            //ExEnd:MultipleFolders
         }
 
         [Test]
@@ -223,23 +213,25 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void SetFontsFoldersWithPriority()
+        public void FontsFoldersWithPriority()
         {
-            //ExStart:SetFontsFoldersWithPriority
+            //ExStart:FontsFoldersWithPriority
+            //GistId:7e64f6d40825be58a8c12f1307c12964
             FontSettings.DefaultInstance.SetFontsSources(new FontSourceBase[]
             {
-                new SystemFontSource(), new FolderFontSource("C:\\MyFonts\\", true,1)
+                new SystemFontSource(), new FolderFontSource("C:\\MyFonts\\", true, 1)
             });
-            //ExEnd:SetFontsFoldersWithPriority           
+            //ExEnd:FontsFoldersWithPriority
 
             Document doc = new Document(MyDir + "Rendering.docx");
-            doc.Save(ArtifactsDir + "WorkingWithFonts.SetFontsFoldersWithPriority.pdf");
+            doc.Save(ArtifactsDir + "WorkingWithFonts.FontsFoldersWithPriority.pdf");
         }
 
         [Test]
-        public void SetTrueTypeFontsFolder()
+        public void TrueTypeFontsFolder()
         {
-            //ExStart:SetTrueTypeFontsFolder
+            //ExStart:TrueTypeFontsFolder
+            //GistId:7e64f6d40825be58a8c12f1307c12964
             Document doc = new Document(MyDir + "Rendering.docx");
 
             FontSettings fontSettings = new FontSettings();
@@ -250,8 +242,8 @@ namespace DocsExamples.Programming_with_Documents
             // Set font settings
             doc.FontSettings = fontSettings;
             
-            doc.Save(ArtifactsDir + "WorkingWithFonts.SetTrueTypeFontsFolder.pdf");
-            //ExEnd:SetTrueTypeFontsFolder
+            doc.Save(ArtifactsDir + "WorkingWithFonts.TrueTypeFontsFolder.pdf");
+            //ExEnd:TrueTypeFontsFolder
         }
 
         [Test]
@@ -303,23 +295,28 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void FontSettingsWithLoadOption()
+        public void LoadOptionFontSettings()
         {
-            //ExStart:FontSettingsWithLoadOption
+            //ExStart:LoadOptionFontSettings
+            //GistId:a08698f540d47082b4e2dbb1cb67fc1b
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.FontSettings = new FontSettings();
 
             Document doc = new Document(MyDir + "Rendering.docx", loadOptions);
-            //ExEnd:FontSettingsWithLoadOption   
+            //ExEnd:LoadOptionFontSettings
         }
 
         [Test]
         public void FontSettingsDefaultInstance()
         {
+            //ExStart:FontsFolders
+            //GistId:7e64f6d40825be58a8c12f1307c12964
             //ExStart:FontSettingsFontSource
+            //GistId:a08698f540d47082b4e2dbb1cb67fc1b
             //ExStart:FontSettingsDefaultInstance
+            //GistId:a08698f540d47082b4e2dbb1cb67fc1b
             FontSettings fontSettings = FontSettings.DefaultInstance;
-            //ExEnd:FontSettingsDefaultInstance   
+            //ExEnd:FontSettingsDefaultInstance
             fontSettings.SetFontsSources(new FontSourceBase[]
             {
                 new SystemFontSource(),
@@ -327,15 +324,15 @@ namespace DocsExamples.Programming_with_Documents
             });
             //ExEnd:FontSettingsFontSource
 
-            LoadOptions loadOptions = new LoadOptions();
-            loadOptions.FontSettings = fontSettings;
-            Document doc = new Document(MyDir + "Rendering.docx", loadOptions);
+            Document doc = new Document(MyDir + "Rendering.docx");
+            //ExEnd:FontsFolders
         }
 
         [Test]
-        public void GetListOfAvailableFonts()
+        public void AvailableFonts()
         {
-            //ExStart:GetListOfAvailableFonts
+            //ExStart:AvailableFonts
+            //GistId:7e64f6d40825be58a8c12f1307c12964
             FontSettings fontSettings = new FontSettings();
             List<FontSourceBase> fontSources = new List<FontSourceBase>(fontSettings.GetFontsSources());
 
@@ -353,7 +350,7 @@ namespace DocsExamples.Programming_with_Documents
                 Console.WriteLine("Version  : " + fontInfo.Version);
                 Console.WriteLine("FilePath : " + fontInfo.FilePath);
             }
-            //ExEnd:GetListOfAvailableFonts
+            //ExEnd:AvailableFonts
         }
 
         [Test]
@@ -418,16 +415,17 @@ namespace DocsExamples.Programming_with_Documents
         }
         //ExEnd:HandleDocumentWarnings
 
-        //ExStart:ResourceSteamFontSourceExample
         [Test]
-        public void ResourceSteamFontSourceExample()
+        //ExStart:ResourceSteam
+        //GistId:7e64f6d40825be58a8c12f1307c12964
+        public void ResourceSteam()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
             
             FontSettings.DefaultInstance.SetFontsSources(new FontSourceBase[]
                 { new SystemFontSource(), new ResourceSteamFontSource() });
 
-            doc.Save(ArtifactsDir + "WorkingWithFonts.SetFontsFolders.pdf");
+            doc.Save(ArtifactsDir + "WorkingWithFonts.ResourceSteam.pdf");
         }
 
         internal class ResourceSteamFontSource : StreamFontSource
@@ -437,10 +435,11 @@ namespace DocsExamples.Programming_with_Documents
                 return Assembly.GetExecutingAssembly().GetManifestResourceStream("resourceName");
             }
         }
-        //ExEnd:ResourceSteamFontSourceExample
+        //ExEnd:ResourceSteam
 
-        //ExStart:GetSubstitutionWithoutSuffixes
         [Test]
+        //ExStart:GetSubstitutionWithoutSuffixes
+        //GistId:a08698f540d47082b4e2dbb1cb67fc1b
         public void GetSubstitutionWithoutSuffixes()
         {
             Document doc = new Document(MyDir + "Get substitution without suffixes.docx");

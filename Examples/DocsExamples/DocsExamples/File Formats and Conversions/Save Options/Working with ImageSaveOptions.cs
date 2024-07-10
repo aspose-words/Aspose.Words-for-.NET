@@ -7,9 +7,10 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
     public class WorkingWithImageSaveOptions : DocsExamplesBase
     {
         [Test]
-        public void ExposeThresholdControlForTiffBinarization()
+        public void ExposeThresholdControl()
         {
-            //ExStart:ExposeThresholdControlForTiffBinarization
+            //ExStart:ExposeThresholdControl
+            //GistId:b20a0ec0e1ff0556aa20d12f486e1963
             Document doc = new Document(MyDir + "Rendering.docx");
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Tiff)
@@ -20,19 +21,21 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
                 ThresholdForFloydSteinbergDithering = 254
             };
 
-            doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.ExposeThresholdControlForTiffBinarization.tiff", saveOptions);
-            //ExEnd:ExposeThresholdControlForTiffBinarization
+            doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.ExposeThresholdControl.tiff", saveOptions);
+            //ExEnd:ExposeThresholdControl
         }
 
         [Test]
         public void GetTiffPageRange()
         {
             //ExStart:GetTiffPageRange
+            //GistId:b20a0ec0e1ff0556aa20d12f486e1963
             Document doc = new Document(MyDir + "Rendering.docx");
-            //ExStart:SaveAsTIFF
+            //ExStart:SaveAsTiff
+            //GistId:b20a0ec0e1ff0556aa20d12f486e1963
             doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.MultipageTiff.tiff");
-            //ExEnd:SaveAsTIFF
-            
+            //ExEnd:SaveAsTiff
+
             //ExStart:SaveAsTIFFUsingImageSaveOptions
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Tiff)
             {

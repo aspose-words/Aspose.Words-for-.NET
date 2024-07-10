@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
+using Aspose.Words.Fields;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 
@@ -374,6 +376,34 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.OptimizeOutput.pdf", saveOptions);
             //ExEnd:OptimizeOutput
+        }
+
+        [Test]
+        public void UpdateScreenTip()
+        {
+            //ExStart:UpdateScreenTip
+            //GistId:8b0ab362f95040ada1255a0473acefe2
+            Document doc = new Document(MyDir + "Table of contents.docx");
+
+            var tocHyperLinks = doc.Range.Fields
+                .Where(f => f.Type == FieldType.FieldHyperlink)
+                .Cast<FieldHyperlink>()
+                .Where(f => f.SubAddress.StartsWith("#_Toc"));
+
+            foreach (FieldHyperlink link in tocHyperLinks)
+                link.ScreenTip = link.DisplayResult;
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions()
+            {
+                Compliance = PdfCompliance.PdfUa1,
+                DisplayDocTitle = true,
+                ExportDocumentStructure = true,
+            };
+            saveOptions.OutlineOptions.HeadingsOutlineLevels = 3;
+            saveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
+
+            doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.UpdateScreenTip.pdf", saveOptions);
+            //ExEnd:UpdateScreenTip
         }
     }
 }
