@@ -22,8 +22,8 @@ namespace DocsExamples.Rendering_and_Printing
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
             //ExStart:RenderShapeAsEmf
+            //GistId:7fc867ac8ef1b729b6f70580fbc5b3f9
             ShapeRenderer render = shape.GetShapeRenderer();
-
             ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Emf)
             {
                 Scale = 1.5f
@@ -41,6 +41,7 @@ namespace DocsExamples.Rendering_and_Printing
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
             //ExStart:RenderShapeAsJpeg
+            //GistId:7fc867ac8ef1b729b6f70580fbc5b3f9
             ShapeRenderer render = new ShapeRenderer(shape);
 
             ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg)
@@ -61,6 +62,7 @@ namespace DocsExamples.Rendering_and_Printing
 
         [Test]
         //ExStart:RenderShapeToGraphics
+        //GistId:7fc867ac8ef1b729b6f70580fbc5b3f9
         public void RenderShapeToGraphics()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
@@ -151,6 +153,7 @@ namespace DocsExamples.Rendering_and_Printing
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
             //ExStart:FindShapeSizes
+            //GistId:7fc867ac8ef1b729b6f70580fbc5b3f9
             Size shapeRenderedSize = shape.GetShapeRenderer().GetSizeInPixels(1.0f, 96.0f);
 
             using (Bitmap image = new Bitmap(shapeRenderedSize.Width, shapeRenderedSize.Height))
@@ -171,6 +174,7 @@ namespace DocsExamples.Rendering_and_Printing
             
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             //ExStart:RenderShapeImage
+            //GistId:7fc867ac8ef1b729b6f70580fbc5b3f9
             shape.GetShapeRenderer().Save(ArtifactsDir + "RenderShape.RenderShapeImage.jpg", new ImageSaveOptions(SaveFormat.Jpeg));
             //ExEnd:RenderShapeImage
         }

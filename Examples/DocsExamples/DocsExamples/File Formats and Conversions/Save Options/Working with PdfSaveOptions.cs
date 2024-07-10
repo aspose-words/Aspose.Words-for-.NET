@@ -24,6 +24,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
         [Test]
         //ExStart:PdfRenderWarnings
+        //GistId:f9c5250f94e595ea3590b3be679475ba
         public void PdfRenderWarnings()
         {
             Document doc = new Document(MyDir + "WMF with image.docx");
@@ -49,7 +50,6 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             }
         }
 
-        //ExStart:RenderMetafileToBitmap
         public class HandleDocumentWarnings : IWarningCallback
         {
             /// <summary>
@@ -70,7 +70,6 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             public WarningInfoCollection mWarnings = new WarningInfoCollection();
         }
-        //ExEnd:RenderMetafileToBitmap
         //ExEnd:PdfRenderWarnings
 
         [Test]
