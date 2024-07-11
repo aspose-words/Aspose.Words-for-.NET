@@ -427,6 +427,7 @@ namespace DocsExamples.Programming_with_Documents
         public void GetMailMergeFieldNames()
         {
             //ExStart:GetFieldNames
+            //GistId:b4bab1bf22437a86d8062e91cf154494
             Document doc = new Document();
 
             string[] fieldNames = doc.MailMerge.GetFieldNames();
@@ -438,6 +439,7 @@ namespace DocsExamples.Programming_with_Documents
         public void MappedDataFields()
         {
             //ExStart:MappedDataFields
+            //GistId:b4bab1bf22437a86d8062e91cf154494
             Document doc = new Document();
 
             doc.MailMerge.MappedDataFields.Add("MyFieldName_InDocument", "MyFieldName_InDataSource");
@@ -448,6 +450,7 @@ namespace DocsExamples.Programming_with_Documents
         public void DeleteFields()
         {
             //ExStart:DeleteFields
+            //GistId:f39874821cb317d245a769c9ce346fea
             Document doc = new Document();
 
             doc.MailMerge.DeleteFields();

@@ -5,9 +5,11 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
 {
     internal class CreateMailMergeTemplate
     {
-        //ExStart:CreateMailMergeTemplate
+        
         public Document Template()
         {
+            //ExStart:CreateMailMergeTemplate
+            //GistId:0a1baaa127443b485cc692c8d98ee353
             DocumentBuilder builder = new DocumentBuilder();
 
             // Insert a text input field the unique name of this field is "Hello", the other parameters define
@@ -51,7 +53,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting.Custom_examples
             builder.InsertField(@"MERGEFIELD EmployeeDepartment \* MERGEFORMAT");
 
             return builder.Document;
+            //ExEnd:CreateMailMergeTemplate
         }
-        //ExEnd:CreateMailMergeTemplate
     }
 }

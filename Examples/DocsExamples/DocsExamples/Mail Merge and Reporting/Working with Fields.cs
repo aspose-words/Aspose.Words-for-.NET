@@ -16,6 +16,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         public void MailMergeFormFields()
         {
             //ExStart:MailMergeFormFields
+            //GistId:0a1baaa127443b485cc692c8d98ee353
             Document doc = new Document(MyDir + "Mail merge destinations - Fax.docx");
 
             // Setup mail merge event handler to do the custom work.
@@ -40,6 +41,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         }
 
         //ExStart:HandleMergeField
+        //GistId:8a66b5cea0f9f8b862c092c9b93ccb3c
         private class HandleMergeField : IFieldMergingCallback
         {
             /// <summary>
@@ -81,6 +83,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             }
 
             //ExStart:ImageFieldMerging
+            //GistId:0a1baaa127443b485cc692c8d98ee353
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
                 args.ImageFileName = "Image.png";
@@ -96,7 +99,8 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         [Test]
         public void MailMergeImageField()
         {
-            //ExStart:MailMergeImageField       
+            //ExStart:MailMergeImageField
+            //GistId:8a66b5cea0f9f8b862c092c9b93ccb3c
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -120,6 +124,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         }
 
         //ExStart:ImageFieldMergingHandler
+        //GistId:8a66b5cea0f9f8b862c092c9b93ccb3c
         private class ImageFieldMergingHandler : IFieldMergingCallback
         {
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
@@ -142,6 +147,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         //ExEnd:ImageFieldMergingHandler
 
         //ExStart:DataSourceRoot
+        //GistId:8a66b5cea0f9f8b862c092c9b93ccb3c
         public class DataSourceRoot : IMailMergeDataSourceRoot
         {
             public IMailMergeDataSource GetDataSource(string s)
@@ -215,6 +221,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         public void MailMergeImageFromBlob()
         {
             //ExStart:MailMergeImageFromBlob
+            //GistId:8a66b5cea0f9f8b862c092c9b93ccb3c
             Document doc = new Document(MyDir + "Mail merge destination - Northwind employees.docx");
 
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
@@ -234,7 +241,8 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             //ExEnd:MailMergeImageFromBlob
         }
 
-        //ExStart:HandleMergeImageFieldFromBlob 
+        //ExStart:HandleMergeImageFieldFromBlob
+        //GistId:8a66b5cea0f9f8b862c092c9b93ccb3c
         public class HandleMergeImageFieldFromBlob : IFieldMergingCallback
         {
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs args)
@@ -386,5 +394,28 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             return dataTable;
         }
         //ExEnd:HandleMergeFieldAlternatingRows
+
+        [Test]
+        public void FieldNext()
+        {
+            //ExStart:FieldNext
+            //GistId:b4bab1bf22437a86d8062e91cf154494
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Use NextIf field. A NEXTIF field has the same function as a NEXT field,
+            // but it skips to the next row only if a statement constructed by the following 3 properties is true.
+            FieldNextIf fieldNextIf = (FieldNextIf)builder.InsertField(FieldType.FieldNextIf, true);
+
+            // Or use SkipIf field.
+            FieldNextIf fieldSkipIf = (FieldNextIf)builder.InsertField(FieldType.FieldSkipIf, true);
+            
+            fieldNextIf.LeftExpression = "5";
+            fieldNextIf.RightExpression = "2 + 3";
+            fieldNextIf.ComparisonOperator = "=";
+
+            doc.Save(ArtifactsDir + "WorkingWithFields.FieldNext.docx");
+            //ExEnd:FieldNext
+        }
     }
 }
