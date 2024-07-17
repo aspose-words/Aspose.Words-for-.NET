@@ -1,5 +1,7 @@
 ﻿using System.IO;
+using System.Text;
 using Aspose.Words;
+using Aspose.Words.Loading;
 using Aspose.Words.Saving;
 using NUnit.Framework;
 
@@ -53,26 +55,27 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         }
 
         [Test]
-        public void ConvertMetafilesToEmfOrWmf()
+        public void ConvertMetafilesToPng()
         {
-            //ExStart:ConvertMetafilesToEmfOrWmf
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
+            //ExStart:ConvertMetafilesToPng
+            string html =
+                @"<html>
+                    <svg xmlns='http://www.w3.org/2000/svg' width='500' height='40' viewBox='0 0 500 40'>
+                        <text x='0' y='35' font-family='Verdana' font-size='35'>Hello world!</text>
+                    </svg>
+                </html>";
 
-            builder.Write("Here is an image as is: ");
-            builder.InsertHtml(
-                @"<img src=""data:image/png;base64,
-                    iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAABGdBTUEAALGP
-                    C/xhBQAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9YGARc5KB0XV+IA
-                    AAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAF1J
-                    REFUGNO9zL0NglAAxPEfdLTs4BZM4DIO4C7OwQg2JoQ9LE1exdlYvBBeZ7jq
-                    ch9//q1uH4TLzw4d6+ErXMMcXuHWxId3KOETnnXXV6MJpcq2MLaI97CER3N0
-                    vr4MkhoXe0rZigAAAABJRU5ErkJggg=="" alt=""Red dot"" />");
+            // Use 'ConvertSvgToEmf' to turn back the legacy behavior
+            // where all SVG images loaded from an HTML document were converted to EMF.
+            // Now SVG images are loaded without conversion
+            // if the MS Word version specified in load options supports SVG images natively.
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions { ConvertSvgToEmf = true };
+            Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), loadOptions);
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.EmfOrWmf };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png };
 
-            doc.Save(ArtifactsDir + "WorkingWithHtmlSaveOptions.ConvertMetafilesToEmfOrWmf.html", saveOptions);
-            //ExEnd:ConvertMetafilesToEmfOrWmf
+            doc.Save(ArtifactsDir + "WorkingWithHtmlSaveOptions.ConvertMetafilesToPng.html", saveOptions);
+            //ExEnd:ConvertMetafilesToPng
         }
 
         [Test]

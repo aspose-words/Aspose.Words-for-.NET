@@ -165,7 +165,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             options.OutlineOptions.BookmarksOutlineLevels.Add("My Bookmark", 1);
             options.OutlineOptions.BookmarksOutlineLevels.Add("Nested Bookmark", 2);
 
-            doc.Save(ArtifactsDir + "WorkingWithBookmarks.CreateBookmark.pdf", options);
+            doc.Save(ArtifactsDir + "WorkingWithBookmarks.CreateBookmark.docx", options);
             //ExEnd:CreateBookmark
         }
 
@@ -175,58 +175,27 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             //ExStart:ShowHideBookmarks
             Document doc = new Document(MyDir + "Bookmarks.docx");
 
-            ShowHideBookmarkedContent(doc, "MyBookmark1", false);
+            ShowHideBookmarkedContent(doc, "MyBookmark1", true);
             
             doc.Save(ArtifactsDir + "WorkingWithBookmarks.ShowHideBookmarks.docx");
             //ExEnd:ShowHideBookmarks
         }
 
         //ExStart:ShowHideBookmarkedContent
-        public void ShowHideBookmarkedContent(Document doc, string bookmarkName, bool showHide)
+        public void ShowHideBookmarkedContent(Document doc, string bookmarkName, bool isHidden)
         {
             Bookmark bm = doc.Range.Bookmarks[bookmarkName];
 
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            builder.MoveToDocumentEnd();
-
-            // {IF "{MERGEFIELD bookmark}" = "true" "" ""}
-            Field field = builder.InsertField("IF \"", null);
-            builder.MoveTo(field.Start.NextSibling);
-            builder.InsertField("MERGEFIELD " + bookmarkName + "", null);
-            builder.Write("\" = \"true\" ");
-            builder.Write("\"");
-            builder.Write("\"");
-            builder.Write(" \"\"");
-
-            Node currentNode = field.Start;
-            bool flag = true;
-            while (currentNode != null && flag)
+            Node currentNode = bm.BookmarkStart;
+            while (currentNode != null && currentNode.NodeType != NodeType.BookmarkEnd)
             {
                 if (currentNode.NodeType == NodeType.Run)
-                    if (currentNode.ToString(SaveFormat.Text).Trim() == "\"")
-                        flag = false;
-
-                Node nextNode = currentNode.NextSibling;
-
-                bm.BookmarkStart.ParentNode.InsertBefore(currentNode, bm.BookmarkStart);
-                currentNode = nextNode;
+                {
+                    Run run = currentNode as Run;
+                    run.Font.Hidden = isHidden;
+                }
+                currentNode = currentNode.NextSibling;
             }
-
-            Node endNode = bm.BookmarkEnd;
-            flag = true;
-            while (currentNode != null && flag)
-            {
-                if (currentNode.NodeType == NodeType.FieldEnd)
-                    flag = false;
-
-                Node nextNode = currentNode.NextSibling;
-
-                bm.BookmarkEnd.ParentNode.InsertAfter(currentNode, endNode);
-                endNode = currentNode;
-                currentNode = nextNode;
-            }
-
-            doc.MailMerge.Execute(new[] { bookmarkName }, new object[] { showHide });
         }
         //ExEnd:ShowHideBookmarkedContent
 

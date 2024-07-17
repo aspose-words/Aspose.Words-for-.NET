@@ -192,8 +192,7 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Paragraph para = (Paragraph) doc.GetChildNodes(NodeType.Paragraph, true)[0];
-
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
             builder.MoveTo(para);
 
             // We want to insert a merge field like this:

@@ -99,11 +99,8 @@ namespace DocsExamples.Programming_with_Documents
             DocumentBuilder builder = new DocumentBuilder();
 
             // Insert image.
-            Shape shape = new Shape(builder.Document, ShapeType.Image);
-            shape.WrapType = WrapType.Inline;
-            shape.ImageData.SourceFullName = "/attachment/1456/pic001.png";
+            Shape shape = builder.InsertImage(ImagesDir + "Logo.jpg");
             shape.ImageData.Title = "title";
-            builder.InsertNode(shape);
             //ExEnd:Image
         }
 
@@ -249,9 +246,7 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.ListFormat.ApplyBulletDefault();
-            builder.ListFormat.List.ListLevels[0].NumberFormat = $"{(char) 0}.";
-            builder.ListFormat.List.ListLevels[1].NumberFormat = $"{(char) 1}.";
+            builder.ListFormat.ApplyNumberDefault();
 
             builder.Writeln("Item 1");
             builder.Writeln("Item 2");
@@ -275,6 +270,8 @@ namespace DocsExamples.Programming_with_Documents
             builder.Writeln("a");
             builder.InsertCell();
             builder.Writeln("b");
+
+            builder.EndRow();
 
             // Add the second row.
             builder.InsertCell();

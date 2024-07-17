@@ -35,24 +35,23 @@ namespace DocsExamples.File_Formats_and_Conversions
             //ExStart:OpenFromStream
             //GistId:1d626c7186a318d22d022dc96dd91d55
             // Read only access is enough for Aspose.Words to load a document.
-            Stream stream = File.OpenRead(MyDir + "Document.docx");
-
-            Document doc = new Document(stream);
-            // You can close the stream now, it is no longer needed because the document is in memory.
-            stream.Close();
+            Document doc;
+            using (Stream stream = File.OpenRead(MyDir + "Document.docx"))
+                doc = new Document(stream);
             //ExEnd:OpenFromStream
 
             // ... do something with the document.
 
             // Convert the document to a different format and save to stream.
-            MemoryStream dstStream = new MemoryStream();
-            doc.Save(dstStream, SaveFormat.Rtf);
+            using (MemoryStream dstStream = new MemoryStream())
+            {
+                doc.Save(dstStream, SaveFormat.Rtf);
+                // Rewind the stream position back to zero so it is ready for the next reader.
+                dstStream.Position = 0;
 
-            // Rewind the stream position back to zero so it is ready for the next reader.
-            dstStream.Position = 0;
+                File.WriteAllBytes(ArtifactsDir + "BaseConversions.DocxToRtf.rtf", dstStream.ToArray());
+            }
             //ExEnd:LoadAndSaveToStream
-            
-            File.WriteAllBytes(ArtifactsDir + "BaseConversions.DocxToRtf.rtf", dstStream.ToArray());
         }
 
         [Test]

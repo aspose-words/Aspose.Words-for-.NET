@@ -52,7 +52,6 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             Table table = builder.StartTable();
             builder.InsertCell();
-            table.AutoFit(AutoFitBehavior.FixedColumnWidths);
 
             builder.CellFormat.VerticalAlignment = CellVerticalAlignment.Center;
             builder.Write("This is row 1 cell 1");
@@ -75,6 +74,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             builder.EndRow();
             builder.EndTable();
+
+            table.AutoFit(AutoFitBehavior.FixedColumnWidths);
 
             doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.BuildTable.docx");
             //ExEnd:BuildTable
@@ -196,14 +197,13 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             //ExStart:InsertHyperlink
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            
+
             builder.Write("Please make sure to visit ");
-            builder.Font.Color = Color.Blue;
-            builder.Font.Underline = Underline.Single;
-            
+
+            builder.Font.Style = doc.Styles[StyleIdentifier.Hyperlink];
             builder.InsertHyperlink("Aspose Website", "http://www.aspose.com", false);
-            
             builder.Font.ClearFormatting();
+
             builder.Write(" for more information.");
 
             doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.InsertHyperlink.docx");

@@ -169,11 +169,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            builder.InsertHyperlink("Testlink", 
-                "https://www.google.com/search?q=%2Fthe%20test", false);
-            builder.Writeln();
-            builder.InsertHyperlink("https://www.google.com/search?q=%2Fthe%20test", 
-                "https://www.google.com/search?q=%2Fthe%20test", false);
+            builder.InsertHyperlink("Testlink",
+                "https://www.google.com/search?q= aspose", false);
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EscapeUri.pdf");
             //ExEnd:EscapeUri
