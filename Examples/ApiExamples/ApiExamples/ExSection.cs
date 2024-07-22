@@ -449,7 +449,7 @@ namespace ApiExamples
 
             // Create a primary footer with an image.
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
-            builder.InsertImage(ImageDir + "Logo Icon.ico");
+            builder.InsertImage(ImageDir + "Logo icon.ico");
 
             Assert.AreEqual(1, doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChildNodes(NodeType.Shape, true).Count);
             Assert.AreEqual(1, doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetChildNodes(NodeType.Shape, true).Count);

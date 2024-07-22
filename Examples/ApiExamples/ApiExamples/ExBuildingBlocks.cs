@@ -70,10 +70,6 @@ namespace ApiExamples
             BuildingBlockVisitor visitor = new BuildingBlockVisitor(glossaryDoc);
             // Visit start/end of the BuildingBlock.
             block.Accept(visitor);
-            // Visit only start of the BuildingBlock.
-            block.AcceptStart(visitor);
-            // Visit only end of the BuildingBlock.
-            block.AcceptEnd(visitor);
 
             // We can access the block that we just made from the glossary document.
             BuildingBlock customBlock = glossaryDoc.GetBuildingBlock(BuildingBlockGallery.QuickParts,
