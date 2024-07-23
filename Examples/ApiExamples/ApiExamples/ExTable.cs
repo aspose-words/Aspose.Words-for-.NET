@@ -1819,7 +1819,7 @@ namespace ApiExamples
         [Test]
         public void GetColSpanRowSpan()
         {
-            Document doc = new Document(MyDir + "Table with merged cells.docx");
+            Document doc = new Document(MyDir + "Merged table.docx");
 
             var table = (Table)doc.GetChild(NodeType.Table, 0, true);
             // Convert cells with merged columns into a format that can be easily manipulated.
