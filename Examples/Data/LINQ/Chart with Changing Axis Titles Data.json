@@ -1,0 +1,31 @@
+{
+  "xAxis": "Product Teams",
+  "yAxis": "Q1 Tasks",
+  "items": [
+    {
+      "team": "Product Development",
+      "tasksCompleted": 15,
+      "tasksPending": 5
+    },
+    {
+      "team": "Customer Support",
+      "tasksCompleted": 100,
+      "tasksPending": 50
+    },
+    {
+      "team": "Quality Assurance",
+      "tasksCompleted": 200,
+      "tasksPending": 100
+    },
+    {
+      "team": "Operations Management",
+      "tasksCompleted": 20,
+      "tasksPending": 10
+    },
+    {
+      "team": "Marketing Strategy",
+      "tasksCompleted": 30,
+      "tasksPending": 20
+    }
+  ]
+}

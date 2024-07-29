@@ -1,0 +1,31 @@
+{
+  "color1": "#33ff77",
+  "color2": "#ffb3b3",
+  "items": [
+    {
+      "project": "Project A",
+      "revenue": 95000,
+      "expenses": 72000
+    },
+    {
+      "project": "Project B",
+      "revenue": 87000,
+      "expenses": 59000
+    },
+    {
+      "project": "Project C",
+      "revenue": 73000,
+      "expenses": 45000
+    },
+    {
+      "project": "Project D",
+      "revenue": 70000,
+      "expenses": 40000
+    },
+    {
+      "project": "Project E",
+      "revenue": 63000,
+      "expenses": 39000
+    }
+  ]
+}

@@ -453,6 +453,191 @@ namespace ApiExamples.LinqTemp
             CompareDocs("Combo Chart Report.docx", "Combo Chart Report Gold.docx");
         }
 
+        [Test]
+        public void BuildingGaugeChart()
+        {
+            //ExStart:BuildingGaugeChart
+            //GistId:45e82d351f10b65ceca440d95d72aa5a
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Gauge Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Gauge Chart Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Gauge Chart Report.docx");
+            //ExEnd:BuildingGaugeChart
+
+            // Test the report.
+            CompareDocs("Gauge Chart Report.docx", "Gauge Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingChartWithVariableNumberOfSeries1()
+        {
+            //ExStart:BuildingChartWithVariableNumberOfSeries
+            //GistId:2f7a15f32189afa4c8a2195926cedf7d
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Variable Number of Series Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Variable Number of Series Data 1.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "data");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Variable Number of Series Report 1.docx");
+            //ExEnd:BuildingChartWithVariableNumberOfSeries
+
+            // Test the report.
+            CompareDocs("Chart with Variable Number of Series Report 1.docx",
+                "Chart with Variable Number of Series Report 1 Gold.docx");
+        }
+
+        [Test]
+        public void BuildingChartWithVariableNumberOfSeries2()
+        {
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Variable Number of Series Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Variable Number of Series Data 2.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "data");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Variable Number of Series Report 2.docx");
+            
+            // Test the report.
+            CompareDocs("Chart with Variable Number of Series Report 2.docx",
+                "Chart with Variable Number of Series Report 2 Gold.docx");
+        }
+
+        [Test]
+        public void ChangingChartTitle()
+        {
+            //ExStart:ChangingChartTitle
+            //GistId:86abd6970b9db97fa6b8a1a5852ac2fc
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Changing Title Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Title Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Changing Title Report.docx");
+            //ExEnd:ChangingChartTitle
+
+            // Test the report.
+            CompareDocs("Chart with Changing Title Report.docx", "Chart with Changing Title Report Gold.docx");
+        }
+
+        [Test]
+        public void ChangingChartLegendEntry()
+        {
+            //ExStart:ChangingChartLegendEntry
+            //GistId:ad4fcc877c14e6d4bd7346fce06d027a
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Changing Legend Entries Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Legend Entries Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "data");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Changing Legend Entries Report.docx");
+            //ExEnd:ChangingChartLegendEntry
+
+            // Test the report.
+            CompareDocs("Chart with Changing Legend Entries Report.docx",
+                "Chart with Changing Legend Entries Report Gold.docx");
+        }
+
+        [Test]
+        public void ChangingChartAxisTitle()
+        {
+            //ExStart:ChangingChartAxisTitle
+            //GistId:e9668c5d7f03033c56bea98921f80e72
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Changing Axis Titles Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Axis Titles Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "data");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Changing Axis Titles Report.docx");
+            //ExEnd:ChangingChartAxisTitle
+
+            // Test the report.
+            CompareDocs("Chart with Changing Axis Titles Report.docx", "Chart with Changing Axis Titles Report Gold.docx");
+        }
+
+        [Test]
+        public void ChangingChartSeriesColor()
+        {
+            //ExStart:ChangingChartSeriesColor
+            //GistId:f9a631509dab79e8cc36f2905c8e17d2
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Changing Series Colors Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Series Colors Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "data");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Changing Series Colors Report.docx");
+            //ExEnd:ChangingChartSeriesColor
+
+            // Test the report.
+            CompareDocs("Chart with Changing Series Colors Report.docx", "Chart with Changing Series Colors Report Gold.docx");
+        }
+
+        [Test]
+        public void ChangingChartSeriesPointColor()
+        {
+            //ExStart:ChangingChartSeriesPointColor
+            //GistId:efa74853ed5a592fa775479b0b480651
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Changing Series Point Colors Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Series Point Colors Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Changing Series Point Colors Report.docx");
+            //ExEnd:ChangingChartSeriesPointColor
+
+            // Test the report.
+            CompareDocs("Chart with Changing Series Point Colors Report.docx",
+                "Chart with Changing Series Point Colors Report Gold.docx");
+        }
+
         /// <summary>
         /// A helper method asserting that two files are equal.
         /// </summary>

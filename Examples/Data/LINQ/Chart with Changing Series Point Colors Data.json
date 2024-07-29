@@ -1,0 +1,27 @@
+[
+  {
+    "category": "SaaS",
+    "marketShare": 30,
+    "color": "#80ffd4"
+  },
+  {
+    "category": "PaaS",
+    "marketShare": 25,
+    "color": "#80aaff"
+  },
+  {
+    "category": "IaaS",
+    "marketShare": 20,
+    "color": "#ffb3ff"
+  },
+  {
+    "category": "On-Premises Software",
+    "marketShare": 15,
+    "color": "#ffbb99"
+  },
+  {
+    "category": "Open Source Software",
+    "marketShare": 10,
+    "color": "#ffd966"
+  }
+]

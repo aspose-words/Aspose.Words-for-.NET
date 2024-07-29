@@ -1,0 +1,30 @@
+{
+  "title": "Q1 Sales",
+  "items": [
+    {
+      "product": "Laptops",
+      "sales": 80000,
+      "expenses": 60000
+    },
+    {
+      "product": "Smartphones",
+      "sales": 110000,
+      "expenses": 75000
+    },
+    {
+      "product": "Tablets",
+      "sales": 30000,
+      "expenses": 20000
+    },
+    {
+      "product": "Desktops",
+      "sales": 50000,
+      "expenses": 35000
+    },
+    {
+      "product": "Accessories",
+      "sales": 20000,
+      "expenses": 10000
+    }
+  ]
+}

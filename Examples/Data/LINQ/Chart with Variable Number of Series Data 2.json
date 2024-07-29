@@ -1,0 +1,30 @@
+{
+  "hidePending": true,
+  "items": [
+    {
+      "project": "Project A",
+      "tasksCompleted": 80,
+      "tasksPending": 20
+    },
+    {
+      "project": "Project B",
+      "tasksCompleted": 70,
+      "tasksPending": 30
+    },
+    {
+      "project": "Project C",
+      "tasksCompleted": 85,
+      "tasksPending": 15
+    },
+    {
+      "project": "Project D",
+      "tasksCompleted": 75,
+      "tasksPending": 25
+    },
+    {
+      "project": "Project E",
+      "tasksCompleted": 90,
+      "tasksPending": 10
+    }
+  ]
+}
