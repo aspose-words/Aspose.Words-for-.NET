@@ -565,7 +565,7 @@ namespace ApiExamples
         public void PreserveWatermarks()
         {
             //ExStart:PreserveWatermarks
-            //ReleaseVersion:24.8
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:Section.ClearHeadersFooters(bool)
             //ExSummary:Shows how to clear the contents of header and footer with or without a watermark.
             Document doc = new Document(MyDir + "Header and footer types.docx");

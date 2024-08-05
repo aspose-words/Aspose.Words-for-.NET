@@ -2224,7 +2224,7 @@ namespace ApiExamples
         public void TickLabelsOrientationRotation()
         {
             //ExStart:TickLabelsOrientationRotation
-            //ReleaseVersion:24.8
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:AxisTickLabels.Rotation
             //ExFor:AxisTickLabels.Orientation
             //ExSummary:Shows how to change orientation and rotation for axis tick labels.

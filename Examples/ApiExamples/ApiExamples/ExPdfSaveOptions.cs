@@ -2634,7 +2634,7 @@ namespace ApiExamples
         public void SdtTagAsFormFieldName()
         {
             //ExStart:SdtTagAsFormFieldName
-            //ReleaseVersion:24.8
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:PdfSaveOptions.UseSdtTagAsFormFieldName
             //ExSummary:Shows how to use SDT control Tag or Id property as a name of form field in PDF.
             Document doc = new Document(MyDir + "Form fields.docx");
@@ -2648,6 +2648,5 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.SdtTagAsFormFieldName.pdf", saveOptions);
             //ExEnd:SdtTagAsFormFieldName
         }
-
     }
 }

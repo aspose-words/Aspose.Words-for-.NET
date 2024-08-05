@@ -164,7 +164,7 @@ namespace ApiExamples
         public void XpsDigitalSignature()
         {
             //ExStart:XpsDigitalSignature
-            //ReleaseVersion:24.8
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:XpsSaveOptions.DigitalSignatureDetails
             //ExSummary:Shows how to sign XPS document.
             Document doc = new Document(MyDir + "Document.docx");

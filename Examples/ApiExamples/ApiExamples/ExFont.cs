@@ -1653,7 +1653,7 @@ namespace ApiExamples
         public void FontInfoEmbeddingLicensingRights()
         {
             //ExStart:FontInfoEmbeddingLicensingRights
-            //ReleaseVersion:24.8
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:FontInfo.EmbeddingLicensingRights
             //ExFor:FontEmbeddingUsagePermissions
             //ExFor:FontEmbeddingLicensingRights.EmbeddingUsagePermissions
@@ -1680,7 +1680,7 @@ namespace ApiExamples
         public void PhysicalFontInfoEmbeddingLicensingRights()
         {
             //ExStart:PhysicalFontInfoEmbeddingLicensingRights
-            //ReleaseVersion:24.8
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:PhysicalFontInfo.EmbeddingLicensingRights
             //ExSummary:Shows how to get license rights information for embedded fonts (PhysicalFontInfo).
             FontSettings settings = FontSettings.DefaultInstance;

@@ -92,7 +92,7 @@ namespace ApiExamples
         public void Convert()
         {
             //ExStart:Convert
-            //ReleaseVersion:24.8
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:Converter.Convert(String, String)
             //ExFor:Converter.Convert(String, String, SaveFormat)
             //ExFor:Converter.Convert(String, String, SaveOptions)
@@ -109,8 +109,8 @@ namespace ApiExamples
         [Test]
         public void ConvertStream()
         {
-            //ExStart:Convert
-            //ReleaseVersion:24.8
+            //ExStart:ConvertStream
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:Converter.Convert(Stream, Stream, SaveFormat)
             //ExFor:Converter.Convert(Stream, Stream, SaveOptions)
             //ExSummary:Shows how to convert documents with a single line of code (Stream).
@@ -123,14 +123,14 @@ namespace ApiExamples
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MergeStreamDocument.SaveOptions.docx", FileMode.Create, FileAccess.ReadWrite))
                     Converter.Convert(streamIn, streamOut, saveOptions);
             }
-            //ExEnd:Convert
+            //ExEnd:ConvertStream
         }
 
         [Test]
         public void ConvertToImages()
         {
             //ExStart:ConvertToImages
-            //ReleaseVersion:24.8
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:Converter.ConvertToImages(String, String)
             //ExFor:Converter.ConvertToImages(String, String, SaveFormat)
             //ExFor:Converter.ConvertToImages(String, String, SaveOptions)
@@ -149,7 +149,7 @@ namespace ApiExamples
         public void ConvertToImagesStream()
         {
             //ExStart:ConvertToImagesStream
-            //ReleaseVersion:24.8
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:Converter.ConvertToImages(String, SaveFormat)
             //ExFor:Converter.ConvertToImages(String, SaveOptions)
             //ExFor:Converter.ConvertToImages(Document, SaveFormat)
@@ -171,7 +171,7 @@ namespace ApiExamples
         public void ConvertToImagesFromStream()
         {
             //ExStart:ConvertToImagesFromStream
-            //ReleaseVersion:24.8
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:Converter.ConvertToImages(Stream, SaveFormat)
             //ExFor:Converter.ConvertToImages(Stream, SaveOptions)
             //ExSummary:Shows how to convert document to images from stream.

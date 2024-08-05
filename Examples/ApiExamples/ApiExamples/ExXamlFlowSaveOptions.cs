@@ -157,7 +157,7 @@ namespace ApiExamples
         public void XamlReplaceBackslashWithYenSign()
         {
             //ExStart:XamlReplaceBackslashWithYenSign
-            //ReleaseVersion:24.8
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:XamlFlowSaveOptions.ReplaceBackslashWithYenSign
             //ExSummary:Shows how to replace backslash characters with yen signs (Xaml).
             Document doc = new Document(MyDir + "Korean backslash symbol.docx");

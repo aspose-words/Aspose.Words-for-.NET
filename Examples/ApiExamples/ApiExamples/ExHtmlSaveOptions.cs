@@ -1968,7 +1968,7 @@ namespace ApiExamples
         public void HtmlReplaceBackslashWithYenSign()
         {
             //ExStart:HtmlReplaceBackslashWithYenSign
-            //ReleaseVersion:24.8
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:HtmlSaveOptions.ReplaceBackslashWithYenSign
             //ExSummary:Shows how to replace backslash characters with yen signs (Html).
             Document doc = new Document(MyDir + "Korean backslash symbol.docx");
