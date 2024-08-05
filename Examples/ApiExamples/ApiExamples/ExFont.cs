@@ -1648,6 +1648,56 @@ namespace ApiExamples
             Assert.AreEqual(ThemeColor.Accent5, run.Font.ThemeColor);
             Assert.AreEqual(Color.Empty, run.Font.Color);
         }
+
+        [Test]
+        public void FontInfoEmbeddingLicensingRights()
+        {
+            //ExStart:FontInfoEmbeddingLicensingRights
+            //ReleaseVersion:24.8
+            //ExFor:FontInfo.EmbeddingLicensingRights
+            //ExFor:FontEmbeddingUsagePermissions
+            //ExFor:FontEmbeddingLicensingRights.EmbeddingUsagePermissions
+            //ExFor:FontEmbeddingLicensingRights.BitmapEmbeddingOnly
+            //ExFor:FontEmbeddingLicensingRights.NoSubsetting
+            //ExSummary:Shows how to get license rights information for embedded fonts (FontInfo).
+            Document doc = new Document(MyDir + "Embedded font rights.docx");
+
+            // Get the list of document fonts.
+            FontInfoCollection fontInfos = doc.FontInfos;
+            foreach (FontInfo fontInfo in fontInfos) 
+            {
+                if (fontInfo.EmbeddingLicensingRights != null)
+                {
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.EmbeddingUsagePermissions);
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.BitmapEmbeddingOnly);
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.NoSubsetting);
+                }
+            }
+            //ExEnd:FontInfoEmbeddingLicensingRights
+        }
+
+        [Test]
+        public void PhysicalFontInfoEmbeddingLicensingRights()
+        {
+            //ExStart:PhysicalFontInfoEmbeddingLicensingRights
+            //ReleaseVersion:24.8
+            //ExFor:PhysicalFontInfo.EmbeddingLicensingRights
+            //ExSummary:Shows how to get license rights information for embedded fonts (PhysicalFontInfo).
+            FontSettings settings = FontSettings.DefaultInstance;
+            FontSourceBase source = settings.GetFontsSources()[0];
+
+            // Get the list of available fonts.
+            IList<PhysicalFontInfo> fontInfos = source.GetAvailableFonts();
+            foreach (PhysicalFontInfo fontInfo in fontInfos)
+            {
+                if (fontInfo.EmbeddingLicensingRights != null)
+                {
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.EmbeddingUsagePermissions);
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.BitmapEmbeddingOnly);
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.NoSubsetting);
+                }
+            }
+            //ExEnd:PhysicalFontInfoEmbeddingLicensingRights
+        }
     }
 }
-

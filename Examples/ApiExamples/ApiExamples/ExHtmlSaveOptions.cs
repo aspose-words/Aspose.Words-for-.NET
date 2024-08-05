@@ -1963,5 +1963,24 @@ namespace ApiExamples
             Assert.AreNotEqual(Encoding.ASCII, encoding);
             Assert.AreEqual(Encoding.UTF8, encoding);
         }
+
+        [Test]
+        public void HtmlReplaceBackslashWithYenSign()
+        {
+            //ExStart:HtmlReplaceBackslashWithYenSign
+            //ReleaseVersion:24.8
+            //ExFor:HtmlSaveOptions.ReplaceBackslashWithYenSign
+            //ExSummary:Shows how to replace backslash characters with yen signs (Html).
+            Document doc = new Document(MyDir + "Korean backslash symbol.docx");
+
+            // By default, Aspose.Words mimics MS Word's behavior and doesn't replace backslash characters with yen signs in
+            // generated HTML documents. However, previous versions of Aspose.Words performed such replacements in certain
+            // scenarios. This flag enables backward compatibility with previous versions of Aspose.Words.
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.ReplaceBackslashWithYenSign = true;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ReplaceBackslashWithYenSign.html", saveOptions);
+            //ExEnd:HtmlReplaceBackslashWithYenSign
+        }
     }
 }

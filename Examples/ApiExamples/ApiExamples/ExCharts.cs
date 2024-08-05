@@ -2219,5 +2219,31 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Charts.LabelOrientationRotation.docx");
             //ExEnd:LabelOrientationRotation
         }
+
+        [Test]
+        public void TickLabelsOrientationRotation()
+        {
+            //ExStart:TickLabelsOrientationRotation
+            //ReleaseVersion:24.8
+            //ExFor:AxisTickLabels.Rotation
+            //ExFor:AxisTickLabels.Orientation
+            //ExSummary:Shows how to change orientation and rotation for axis tick labels.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a column chart.
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            AxisTickLabels xTickLabels = shape.Chart.AxisX.TickLabels;
+            AxisTickLabels yTickLabels = shape.Chart.AxisY.TickLabels;
+
+            // Set axis tick label orientation and rotation.
+            xTickLabels.Orientation = ShapeTextOrientation.VerticalFarEast;
+            xTickLabels.Rotation = -30;
+            yTickLabels.Orientation = ShapeTextOrientation.Horizontal;
+            yTickLabels.Rotation = 45;
+
+            doc.Save(ArtifactsDir + "Charts.TickLabelsOrientationRotation.docx");
+            //ExEnd:TickLabelsOrientationRotation
+        }
     }
 }

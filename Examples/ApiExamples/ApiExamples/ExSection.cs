@@ -560,5 +560,44 @@ namespace ApiExamples
             Assert.AreEqual(35.4, sectionDeAfter.PageSetup.FooterDistance); // 1.25 cm
             Assert.AreEqual(35.4, sectionDeAfter.PageSetup.TextColumns.Spacing); // 1.25 cm
         }
+
+        [Test]
+        public void PreserveWatermarks()
+        {
+            //ExStart:PreserveWatermarks
+            //ReleaseVersion:24.8
+            //ExFor:Section.ClearHeadersFooters(bool)
+            //ExSummary:Shows how to clear the contents of header and footer with or without a watermark.
+            Document doc = new Document(MyDir + "Header and footer types.docx");
+
+            // Add a plain text watermark.
+            doc.Watermark.SetText("Aspose Watermark");
+
+            // Make sure the headers and footers have content.
+            HeaderFooterCollection headersFooters = doc.FirstSection.HeadersFooters;
+            Assert.AreEqual("First header", headersFooters[HeaderFooterType.HeaderFirst].GetText().Trim());
+            Assert.AreEqual("Second header", headersFooters[HeaderFooterType.HeaderEven].GetText().Trim());
+            Assert.AreEqual("Third header", headersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim());
+            Assert.AreEqual("First footer", headersFooters[HeaderFooterType.FooterFirst].GetText().Trim());
+            Assert.AreEqual("Second footer", headersFooters[HeaderFooterType.FooterEven].GetText().Trim());
+            Assert.AreEqual("Third footer", headersFooters[HeaderFooterType.FooterPrimary].GetText().Trim());
+
+            // Removes all header and footer content except watermarks.
+            doc.FirstSection.ClearHeadersFooters(true);
+
+            headersFooters = doc.FirstSection.HeadersFooters;
+            Assert.AreEqual("", headersFooters[HeaderFooterType.HeaderFirst].GetText().Trim());
+            Assert.AreEqual("", headersFooters[HeaderFooterType.HeaderEven].GetText().Trim());
+            Assert.AreEqual("", headersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim());
+            Assert.AreEqual("", headersFooters[HeaderFooterType.FooterFirst].GetText().Trim());
+            Assert.AreEqual("", headersFooters[HeaderFooterType.FooterEven].GetText().Trim());
+            Assert.AreEqual("", headersFooters[HeaderFooterType.FooterPrimary].GetText().Trim());
+            Assert.AreEqual(WatermarkType.Text, doc.Watermark.Type);
+
+            // Removes all header and footer content including watermarks.
+            doc.FirstSection.ClearHeadersFooters(false);
+            Assert.AreEqual(WatermarkType.None, doc.Watermark.Type);
+            //ExEnd:PreserveWatermarks
+        }
     }
 }
