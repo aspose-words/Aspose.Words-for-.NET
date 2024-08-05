@@ -217,7 +217,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         }
 
 #if NET48 || JAVA
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void MailMergeImageFromBlob()
         {
             //ExStart:MailMergeImageFromBlob
@@ -408,7 +408,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             FieldNextIf fieldNextIf = (FieldNextIf)builder.InsertField(FieldType.FieldNextIf, true);
 
             // Or use SkipIf field.
-            FieldNextIf fieldSkipIf = (FieldNextIf)builder.InsertField(FieldType.FieldSkipIf, true);
+            FieldSkipIf fieldSkipIf = (FieldSkipIf)builder.InsertField(FieldType.FieldSkipIf, true);
             
             fieldNextIf.LeftExpression = "5";
             fieldNextIf.RightExpression = "2 + 3";

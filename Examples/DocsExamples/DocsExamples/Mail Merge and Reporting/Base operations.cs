@@ -78,7 +78,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         }
 
 #if NET48 || JAVA
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void ExecuteWithRegionsDataTable()
         {
             //ExStart:ExecuteWithRegionsDataTable
@@ -141,7 +141,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         }
         //ExEnd:ExecuteWithRegionsDataTableMethods
 
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void ProduceMultipleDocuments()
         {
             //ExStart:ProduceMultipleDocuments

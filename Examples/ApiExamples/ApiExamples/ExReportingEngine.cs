@@ -500,7 +500,7 @@ namespace ApiExamples
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageString]>>", ShapeType.TextBox);
             ImageTestClass imageUri = new ImageTestBuilder()
                 .WithImageString(
-                    "http://joomla-aspose.dynabic.com/templates/aspose/App_Themes/V3/images/customers/americanexpress.png")
+                    "https://metrics.aspose.com/img/headergraphics.svg")
                 .Build();
 
             BuildReport(template, imageUri, "src", ReportBuildOptions.None);

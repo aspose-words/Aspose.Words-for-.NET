@@ -10,7 +10,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Complex_examples_and_helpers
     public class WorkingWithDocumentInDatabase : DocsExamplesBase
     {
 #if NET48 || JAVA
-        [Test]
+        [Test, Category("IgnoreOnJenkins")]
         public void LoadAndSaveDocToDatabase()
         {
             Document doc = new Document(MyDir + "Document.docx");
