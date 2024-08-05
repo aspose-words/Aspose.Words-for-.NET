@@ -120,7 +120,7 @@ namespace ApiExamples
                     Converter.Convert(streamIn, streamOut, SaveFormat.Docx);
 
                 OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
-                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MergeStreamDocument.SaveOptions.docx", FileMode.Create, FileAccess.ReadWrite))
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ConvertStream.SaveOptions.docx", FileMode.Create, FileAccess.ReadWrite))
                     Converter.Convert(streamIn, streamOut, saveOptions);
             }
             //ExEnd:ConvertStream
