@@ -133,7 +133,7 @@ namespace ApiExamples
             //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:Converter.ConvertToImages(String, String)
             //ExFor:Converter.ConvertToImages(String, String, SaveFormat)
-            //ExFor:Converter.ConvertToImages(String, String, SaveOptions)
+            //ExFor:Converter.ConvertToImages(String, String, ImageSaveOptions)
             //ExSummary:Shows how to convert document to images.
             Converter.ConvertToImages(MyDir + "Big document.docx", ArtifactsDir + "LowCode.ConvertToImages.png");
 
@@ -151,9 +151,9 @@ namespace ApiExamples
             //ExStart:ConvertToImagesStream
             //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:Converter.ConvertToImages(String, SaveFormat)
-            //ExFor:Converter.ConvertToImages(String, SaveOptions)
+            //ExFor:Converter.ConvertToImages(String, ImageSaveOptions)
             //ExFor:Converter.ConvertToImages(Document, SaveFormat)
-            //ExFor:Converter.ConvertToImages(Document, SaveOptions)
+            //ExFor:Converter.ConvertToImages(Document, ImageSaveOptions)
             //ExSummary:Shows how to convert document to images stream.
             Stream[] streams = Converter.ConvertToImages(MyDir + "Big document.docx", SaveFormat.Png);
 
@@ -173,7 +173,7 @@ namespace ApiExamples
             //ExStart:ConvertToImagesFromStream
             //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:Converter.ConvertToImages(Stream, SaveFormat)
-            //ExFor:Converter.ConvertToImages(Stream, SaveOptions)
+            //ExFor:Converter.ConvertToImages(Stream, ImageSaveOptions)
             //ExSummary:Shows how to convert document to images from stream.
             using (FileStream streamIn = new FileStream(MyDir + "Big document.docx", FileMode.Open, FileAccess.Read))
             {
