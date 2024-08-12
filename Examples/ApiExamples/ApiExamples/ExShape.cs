@@ -761,6 +761,7 @@ namespace ApiExamples
         public void TextureFill()
         {
             //ExStart
+            //ExFor:Fill.PresetTexture
             //ExFor:Fill.TextureAlignment
             //ExFor:TextureAlignment
             //ExSummary:Shows how to fill and tiling the texture inside the shape.
@@ -778,13 +779,13 @@ namespace ApiExamples
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Compliance = OoxmlCompliance.Iso29500_2008_Strict };
 
             doc.Save(ArtifactsDir + "Shape.TextureFill.docx", saveOptions);
-            //ExEnd
 
             doc = new Document(ArtifactsDir + "Shape.TextureFill.docx");
-
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             Assert.AreEqual(TextureAlignment.TopRight, shape.Fill.TextureAlignment);
+            Assert.AreEqual(PresetTexture.Canvas, shape.Fill.PresetTexture);
+            //ExEnd
         }
 
         [Test]
@@ -795,6 +796,7 @@ namespace ApiExamples
             //ExFor:Fill.OneColorGradient(GradientStyle, GradientVariant, Double)
             //ExFor:Fill.TwoColorGradient(Color, Color, GradientStyle, GradientVariant)
             //ExFor:Fill.TwoColorGradient(GradientStyle, GradientVariant)
+            //ExFor:Fill.BackColor
             //ExFor:Fill.GradientStyle
             //ExFor:Fill.GradientVariant
             //ExFor:Fill.GradientAngle
@@ -862,6 +864,7 @@ namespace ApiExamples
             //ExFor:GradientStopCollection.Remove(GradientStop)
             //ExFor:GradientStopCollection.Item(Int32)
             //ExFor:GradientStopCollection.Count
+            //ExFor:GradientStop
             //ExFor:GradientStop.#ctor(Color, Double)
             //ExFor:GradientStop.#ctor(Color, Double, Double)
             //ExFor:GradientStop.BaseColor
@@ -935,6 +938,8 @@ namespace ApiExamples
         public void FillPattern()
         {
             //ExStart
+            //ExFor:PatternType
+            //ExFor:Fill.Pattern
             //ExFor:Fill.Patterned(PatternType)
             //ExFor:Fill.Patterned(PatternType, Color, Color)
             //ExSummary:Shows how to set pattern for a shape.
@@ -1440,7 +1445,7 @@ namespace ApiExamples
             //ExEnd
 
             if (!IsRunningOnMono())
-                TestUtil.VerifyImage(792, 87, ArtifactsDir + "Shape.RenderOfficeMath.png");
+                TestUtil.VerifyImage(813, 87, ArtifactsDir + "Shape.RenderOfficeMath.png");
             else
                 TestUtil.VerifyImage(735, 128, ArtifactsDir + "Shape.RenderOfficeMath.png");
         }
@@ -1889,6 +1894,8 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:Shape.Accept(DocumentVisitor)
+        //ExFor:Shape.AcceptStart(DocumentVisitor)
+        //ExFor:Shape.AcceptEnd(DocumentVisitor)
         //ExFor:Shape.Chart
         //ExFor:Shape.ExtrusionEnabled
         //ExFor:Shape.Filled
@@ -2414,6 +2421,7 @@ namespace ApiExamples
         //ExFor:TextPath.Trim
         //ExFor:TextPath.Underline
         //ExFor:TextPath.XScale
+        //ExFor:TextPath.Size
         //ExFor:TextPathAlignment
         //ExSummary:Shows how to work with WordArt.
         [Test] //ExSkip
@@ -2764,37 +2772,37 @@ namespace ApiExamples
             OfficeMathRenderer renderer = new OfficeMathRenderer(officeMath);
 
             // Verify the size of the image that the OfficeMath object will create when we render it.
-            Assert.AreEqual(119.0f, renderer.SizeInPoints.Width, 0.25f);
-            Assert.AreEqual(13.0f, renderer.SizeInPoints.Height, 0.1f);
+            Assert.AreEqual(122.0f, renderer.SizeInPoints.Width, 0.25f);
+            Assert.AreEqual(13.0f, renderer.SizeInPoints.Height, 0.15f);
 
-            Assert.AreEqual(119.0f, renderer.BoundsInPoints.Width, 0.25f);
-            Assert.AreEqual(13.0f, renderer.BoundsInPoints.Height, 0.1f);
+            Assert.AreEqual(122.0f, renderer.BoundsInPoints.Width, 0.25f);
+            Assert.AreEqual(13.0f, renderer.BoundsInPoints.Height, 0.15f);
 
             // Shapes with transparent parts may contain different values in the "OpaqueBoundsInPoints" properties.
-            Assert.AreEqual(119.0f, renderer.OpaqueBoundsInPoints.Width, 0.25f);
+            Assert.AreEqual(122.0f, renderer.OpaqueBoundsInPoints.Width, 0.25f);
             Assert.AreEqual(14.2f, renderer.OpaqueBoundsInPoints.Height, 0.1f);
 
             // Get the shape size in pixels, with linear scaling to a specific DPI.
             Rectangle bounds = renderer.GetBoundsInPixels(1.0f, 96.0f);
 
-            Assert.AreEqual(159, bounds.Width);
+            Assert.AreEqual(163, bounds.Width);
             Assert.AreEqual(18, bounds.Height);
 
             // Get the shape size in pixels, but with a different DPI for the horizontal and vertical dimensions.
             bounds = renderer.GetBoundsInPixels(1.0f, 96.0f, 150.0f);
-            Assert.AreEqual(159, bounds.Width);
-            Assert.AreEqual(28, bounds.Height);
+            Assert.AreEqual(163, bounds.Width);
+            Assert.AreEqual(27, bounds.Height);
 
             // The opaque bounds may vary here also.
             bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f);
 
-            Assert.AreEqual(159, bounds.Width);
-            Assert.AreEqual(18, bounds.Height);
+            Assert.AreEqual(163, bounds.Width);
+            Assert.AreEqual(19, bounds.Height);
 
             bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f, 150.0f);
 
-            Assert.AreEqual(159, bounds.Width);
-            Assert.AreEqual(30, bounds.Height);
+            Assert.AreEqual(163, bounds.Width);
+            Assert.AreEqual(29, bounds.Height);
             //ExEnd
         }
 
@@ -2867,6 +2875,8 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Fill.SetImage(String)
+            //ExFor:Fill.SetImage(Byte[])
+            //ExFor:Fill.SetImage(Stream)
             //ExSummary:Shows how to set shape fill type as image.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -3095,6 +3105,7 @@ namespace ApiExamples
             //GistId:eeeec1fbf118e95e7df3f346c91ed726
             //ExFor:TextBoxControl
             //ExFor:TextBoxControl.Text
+            //ExFor:TextBoxControl.Type
             //ExSummary:Shows how to change text of the TextBox OLE control.
             Document doc = new Document(MyDir + "Textbox control.docm");
 
@@ -3104,6 +3115,7 @@ namespace ApiExamples
 
             textBoxControl.Text = "Updated text";
             Assert.AreEqual("Updated text", textBoxControl.Text);
+            Assert.AreEqual(Forms2OleControlType.Textbox, textBoxControl.Type);
             //ExEnd:TextBoxOleControl
         }
 
@@ -3113,6 +3125,7 @@ namespace ApiExamples
             //ExStart:Glow
             //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
             //ExFor:ShapeBase.Glow
+            //ExFor:GlowFormat
             //ExFor:GlowFormat.Color
             //ExFor:GlowFormat.Radius
             //ExFor:GlowFormat.Transparency
@@ -3148,6 +3161,7 @@ namespace ApiExamples
             //ExStart:Reflection
             //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
             //ExFor:ShapeBase.Reflection
+            //ExFor:ReflectionFormat
             //ExFor:ReflectionFormat.Size
             //ExFor:ReflectionFormat.Blur
             //ExFor:ReflectionFormat.Transparency
@@ -3167,18 +3181,187 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.Reflection.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual(0.37d, shape.Reflection.Transparency, 0.01d);
-            Assert.AreEqual(0.48d, shape.Reflection.Size, 0.01d);
-            Assert.AreEqual(17.5d, shape.Reflection.Blur, 0.01d);
-            Assert.AreEqual(9.2d, shape.Reflection.Distance, 0.01d);
+            ReflectionFormat reflectionFormat = shape.Reflection;
 
-            shape.Reflection.Remove();
+            Assert.AreEqual(0.37d, reflectionFormat.Transparency, 0.01d);
+            Assert.AreEqual(0.48d, reflectionFormat.Size, 0.01d);
+            Assert.AreEqual(17.5d, reflectionFormat.Blur, 0.01d);
+            Assert.AreEqual(9.2d, reflectionFormat.Distance, 0.01d);
 
-            Assert.AreEqual(0, shape.Reflection.Transparency);
-            Assert.AreEqual(0, shape.Reflection.Size);
-            Assert.AreEqual(0, shape.Reflection.Blur);
-            Assert.AreEqual(0, shape.Reflection.Distance);
+            reflectionFormat.Remove();
+
+            Assert.AreEqual(0, reflectionFormat.Transparency);
+            Assert.AreEqual(0, reflectionFormat.Size);
+            Assert.AreEqual(0, reflectionFormat.Blur);
+            Assert.AreEqual(0, reflectionFormat.Distance);
             //ExEnd:Reflection
+        }
+
+        [Test]
+        public void SoftEdge()
+        {
+            //ExStart:SoftEdge
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ShapeBase.SoftEdge
+            //ExFor:SoftEdgeFormat
+            //ExFor:SoftEdgeFormat.Radius
+            //ExFor:SoftEdgeFormat.Remove
+            //ExSummary:Shows how to work with soft edge formatting.
+            DocumentBuilder builder = new DocumentBuilder();
+            Shape shape = builder.InsertShape(ShapeType.Rectangle, 200, 200);
+
+            // Apply soft edge to the shape.
+            shape.SoftEdge.Radius = 30;
+
+            builder.Document.Save(ArtifactsDir + "Shape.SoftEdge.docx");
+
+            // Load document with rectangle shape with soft edge.
+            Document doc = new Document(ArtifactsDir + "Shape.SoftEdge.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            SoftEdgeFormat softEdgeFormat = shape.SoftEdge;
+
+            // Check soft edge radius.
+            Assert.AreEqual(30, softEdgeFormat.Radius);
+
+            // Remove soft edge from the shape.
+            softEdgeFormat.Remove();
+
+            // Check radius of the removed soft edge.
+            Assert.AreEqual(0, softEdgeFormat.Radius);
+            //ExEnd:SoftEdge
+        }
+
+        [Test]
+        public void Adjustments()
+        {
+            //ExStart:Adjustments
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:Shape.Adjustments
+            //ExFor:AdjustmentCollection
+            //ExFor:AdjustmentCollection.Count
+            //ExFor:AdjustmentCollection.Item(Int32)
+            //ExFor:Adjustment
+            //ExFor:Adjustment.Name
+            //ExFor:Adjustment.Value
+            //ExSummary:Shows how to work with adjustment raw values.
+            Document doc = new Document(MyDir + "Rounded rectangle shape.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            AdjustmentCollection adjustments = shape.Adjustments;
+            Assert.AreEqual(1, adjustments.Count);
+
+            Adjustment adjustment = adjustments[0];
+            Assert.AreEqual("adj", adjustment.Name);
+            Assert.AreEqual(16667, adjustment.Value);
+
+            adjustment.Value = 30000;
+
+            doc.Save(ArtifactsDir + "Shape.Adjustments.docx");
+            //ExEnd:Adjustments
+
+            doc = new Document(ArtifactsDir + "Shape.Adjustments.docx");
+            shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            adjustments = shape.Adjustments;
+            Assert.AreEqual(1, adjustments.Count);
+
+            adjustment = adjustments[0];
+            Assert.AreEqual("adj", adjustment.Name);
+            Assert.AreEqual(30000, adjustment.Value);
+        }
+
+        [Test]
+        public void ShadowFormatColor()
+        {
+            //ExStart:ShadowFormatColor
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:ShapeBase.ShadowFormat
+            //ExFor:ShadowFormat
+            //ExFor:ShadowFormat.Color
+            //ExFor:ShadowFormat.Type
+            //ExSummary:Shows how to get shadow color.
+            Document doc = new Document(MyDir + "Shadow color.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            ShadowFormat shadowFormat = shape.ShadowFormat;
+
+            Assert.AreEqual(Color.Red.ToArgb(), shadowFormat.Color.ToArgb());
+            Assert.AreEqual(ShadowType.ShadowMixed, shadowFormat.Type);
+            //ExEnd:ShadowFormatColor
+        }
+
+        [Test]
+        public void SetActiveXProperties()
+        {
+            //ExStart:SetActiveXProperties
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:Forms2OleControl.ForeColor
+            //ExFor:Forms2OleControl.BackColor
+            //ExFor:Forms2OleControl.Height
+            //ExFor:Forms2OleControl.Width
+            //ExSummary:Shows how to set properties for ActiveX control.
+            Document doc = new Document(MyDir + "ActiveX controls.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Forms2OleControl oleControl = (Forms2OleControl)shape.OleFormat.OleControl;
+            oleControl.ForeColor = Color.FromArgb(0x17, 0xE1, 0x35);
+            oleControl.BackColor = Color.FromArgb(0x33, 0x97, 0xF4);
+            oleControl.Height = 100.54;
+            oleControl.Width = 201.06;
+            //ExEnd:SetActiveXProperties
+
+            Assert.AreEqual(Color.FromArgb(0x17, 0xE1, 0x35).ToArgb(), oleControl.ForeColor.ToArgb());
+            Assert.AreEqual(Color.FromArgb(0x33, 0x97, 0xF4).ToArgb(), oleControl.BackColor.ToArgb());
+            Assert.AreEqual(100.54, oleControl.Height);
+            Assert.AreEqual(201.06, oleControl.Width);
+        }
+
+        [Test]
+        public void SelectRadioControl()
+        {
+            //ExStart:SelectRadioControl
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:OptionButtonControl
+            //ExFor:OptionButtonControl.Selected
+            //ExFor:OptionButtonControl.Type
+            //ExSummary:Shows how to select radio button.
+            Document doc = new Document(MyDir + "Radio buttons.docx");
+
+            Shape shape1 = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            OptionButtonControl optionButton1 = (OptionButtonControl)shape1.OleFormat.OleControl;
+            // Deselect selected first item.
+            optionButton1.Selected = false;
+
+            Shape shape2 = (Shape)doc.GetChild(NodeType.Shape, 1, true);
+            OptionButtonControl optionButton2 = (OptionButtonControl)shape2.OleFormat.OleControl;
+            // Select second option button.
+            optionButton2.Selected = true;
+
+            Assert.AreEqual(Forms2OleControlType.OptionButton, optionButton1.Type);
+            Assert.AreEqual(Forms2OleControlType.OptionButton, optionButton2.Type);
+
+            doc.Save(ArtifactsDir + "Shape.SelectRadioControl.docx");
+            //ExEnd:SelectRadioControl
+        }
+
+        [Test]
+        public void CheckedCheckBox()
+        {
+            //ExStart:CheckedCheckBox
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:CheckBoxControl
+            //ExFor:CheckBoxControl.Checked
+            //ExFor:CheckBoxControl.Type
+            //ExFor:Forms2OleControlType
+            //ExSummary:Shows how to change state of the CheckBox control.
+            Document doc = new Document(MyDir + "ActiveX controls.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            CheckBoxControl checkBoxControl = (CheckBoxControl)shape.OleFormat.OleControl;
+            checkBoxControl.Checked = true;
+            
+            Assert.AreEqual(true, checkBoxControl.Checked);
+            Assert.AreEqual(Forms2OleControlType.CheckBox, checkBoxControl.Type);
+            //ExEnd:CheckedCheckBox
         }
     }
 }

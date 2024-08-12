@@ -474,6 +474,8 @@ namespace ApiExamples
         [TestCase(PdfCompliance.PdfUa1)]
         [TestCase(PdfCompliance.Pdf20)]
         [TestCase(PdfCompliance.PdfA4)]
+        [TestCase(PdfCompliance.PdfA4Ua2)]
+        [TestCase(PdfCompliance.PdfUa2)]
         public void Compliance(PdfCompliance pdfCompliance)
         {
             //ExStart
@@ -498,6 +500,9 @@ namespace ApiExamples
             // Set the "Compliance" property to "PdfCompliance.Pdf20" to comply with the "PDF 2.0" (ISO 32000-2) standard.
             // Set the "Compliance" property to "PdfCompliance.PdfA4" to comply with the "PDF/A-4" (ISO 19004:2020) standard,
             // which preserving document static visual appearance over time.
+            // Set the "Compliance" property to "PdfCompliance.PdfA4Ua2" to comply with both PDF/A-4 (ISO 19005-4:2020)
+            // and PDF/UA-2 (ISO 14289-2:2024) standards.
+            // Set the "Compliance" property to "PdfCompliance.PdfUa2" to comply with the PDF/UA-2 (ISO 14289-2:2024) standard.
             // This helps with making documents searchable but may significantly increase the size of already large documents.
             saveOptions.Compliance = pdfCompliance;
 
@@ -511,6 +516,8 @@ namespace ApiExamples
         [TestCase(PdfCompliance.PdfUa1)]
         [TestCase(PdfCompliance.Pdf20)]
         [TestCase(PdfCompliance.PdfA4)]
+        [TestCase(PdfCompliance.PdfA4Ua2)]
+        [TestCase(PdfCompliance.PdfUa2)]
         public void UsePdfDocumentForCompliance(PdfCompliance pdfCompliance)
         {
             Compliance(pdfCompliance);
@@ -541,6 +548,14 @@ namespace ApiExamples
                     break;
                 case PdfCompliance.PdfA4:
                     Assert.AreEqual(PdfFormat.v_2_0, pdfDocument.PdfFormat);
+                    Assert.AreEqual("2.0", pdfDocument.Version);
+                    break;
+                case PdfCompliance.PdfA4Ua2:
+                    Assert.AreEqual(PdfFormat.PDF_UA_1, pdfDocument.PdfFormat);
+                    Assert.AreEqual("2.0", pdfDocument.Version);
+                    break;
+                case PdfCompliance.PdfUa2:
+                    Assert.AreEqual(PdfFormat.PDF_UA_1, pdfDocument.PdfFormat);
                     Assert.AreEqual("2.0", pdfDocument.Version);
                     break;
             }
@@ -2076,6 +2091,10 @@ namespace ApiExamples
         [Test, Category("SkipMono")]
         public void Dml3DEffectsRenderingModeTest()
         {
+            //ExStart
+            //ExFor:Dml3DEffectsRenderingMode
+            //ExFor:SaveOptions.Dml3DEffectsRenderingMode
+            //ExSummary:Shows how 3D effects are rendered.
             Document doc = new Document(MyDir + "DrawingML shape 3D effects.docx");
 
             RenderCallback warningCallback = new RenderCallback();
@@ -2085,6 +2104,7 @@ namespace ApiExamples
             saveOptions.Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced;
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
+            //ExEnd
 
 #if NET5_0_OR_GREATER
             Assert.AreEqual(48, warningCallback.Count);
@@ -2138,6 +2158,7 @@ namespace ApiExamples
             //ExFor:PdfDigitalSignatureDetails.SignatureDate
             //ExFor:PdfDigitalSignatureHashAlgorithm
             //ExFor:PdfSaveOptions.DigitalSignatureDetails
+            //ExFor:PdfDigitalSignatureDetails.CertificateHolder
             //ExSummary:Shows how to sign a generated PDF document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2159,6 +2180,7 @@ namespace ApiExamples
             Assert.AreEqual("Test Signing", options.DigitalSignatureDetails.Reason);
             Assert.AreEqual("My Office", options.DigitalSignatureDetails.Location);
             Assert.AreEqual(signingTime, options.DigitalSignatureDetails.SignatureDate.ToLocalTime());
+            Assert.AreEqual(certificateHolder, options.DigitalSignatureDetails.CertificateHolder);
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PdfDigitalSignature.pdf", options);
             //ExEnd
@@ -2312,7 +2334,7 @@ namespace ApiExamples
                 case EmfPlusDualRenderingMode.EmfPlusWithFallback:
                 case EmfPlusDualRenderingMode.EmfPlus:
                     Assert.AreEqual(0, pdfDocument.Pages[1].Resources.Images.Count);
-                    TestUtil.FileContainsString("<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R/FAAABF 15 0 R/FAAACB 21 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
+                    TestUtil.FileContainsString("<</Type/Page/Parent 3 0 R/Contents 6 0 R/MediaBox[0 0 595.29998779 841.90002441]/Resources<</Font<</FAAAAI 8 0 R/FAAABC 12 0 R/FAAABG 16 0 R>>>>/Group<</Type/Group/S/Transparency/CS/DeviceRGB>>>>",
                         ArtifactsDir + "PdfSaveOptions.RenderMetafile.pdf");
                     break;
             }
@@ -2436,6 +2458,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FixedPageSaveOptions.PageSet
+            //ExFor:PageSet.All
+            //ExFor:PageSet.Even
+            //ExFor:PageSet.Odd
             //ExSummary:Shows how to export Odd pages from the document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2603,6 +2628,25 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PdfSaveOptions.PageLayout.pdf", saveOptions);
             //ExEnd:PageLayout
+        }
+
+        [Test]
+        public void SdtTagAsFormFieldName()
+        {
+            //ExStart:SdtTagAsFormFieldName
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:PdfSaveOptions.UseSdtTagAsFormFieldName
+            //ExSummary:Shows how to use SDT control Tag or Id property as a name of form field in PDF.
+            Document doc = new Document(MyDir + "Form fields.docx");
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.PreserveFormFields = true;
+            // When set to 'false', SDT control Id property is used as a name of form field in PDF.
+            // When set to 'true', SDT control Tag property is used as a name of form field in PDF.
+            saveOptions.UseSdtTagAsFormFieldName = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.SdtTagAsFormFieldName.pdf", saveOptions);
+            //ExEnd:SdtTagAsFormFieldName
         }
     }
 }

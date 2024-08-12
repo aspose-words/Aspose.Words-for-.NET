@@ -18,12 +18,15 @@ namespace ApiExamples
         public void CompressXlsx()
         {
             //ExStart
+            //ExFor:XlsxSaveOptions
             //ExFor:XlsxSaveOptions.CompressionLevel
+            //ExFor:XlsxSaveOptions.SaveFormat
             //ExSummary:Shows how to compress XLSX document.
             Document doc = new Document(MyDir + "Shape with linked chart.docx");
 
             XlsxSaveOptions xlsxSaveOptions = new XlsxSaveOptions();
-            xlsxSaveOptions.CompressionLevel = CompressionLevel.Maximum; 
+            xlsxSaveOptions.CompressionLevel = CompressionLevel.Maximum;
+            xlsxSaveOptions.SaveFormat = SaveFormat.Xlsx;
 
             doc.Save(ArtifactsDir + "XlsxSaveOptions.CompressXlsx.xlsx", xlsxSaveOptions);
             //ExEnd
@@ -35,6 +38,7 @@ namespace ApiExamples
             //ExStart:SelectionMode
             //GistId:470c0da51e4317baae82ad9495747fed
             //ExFor:XlsxSaveOptions.SectionMode
+            //ExFor:XlsxSectionMode
             //ExSummary:Shows how to save document as a separate worksheets.
             Document doc = new Document(MyDir + "Big document.docx");
 
@@ -45,6 +49,24 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "XlsxSaveOptions.SelectionMode.xlsx", xlsxSaveOptions);
             //ExEnd:SelectionMode
+        }
+
+        [Test]
+        public void DateTimeParsingMode()
+        {
+            //ExStart:DateTimeParsingMode
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:XlsxSaveOptions.DateTimeParsingMode
+            //ExFor:XlsxDateTimeParsingMode
+            //ExSummary:Shows how to specify autodetection of the date time format.
+            Document doc = new Document(MyDir + "Xlsx DateTime.docx");
+
+            XlsxSaveOptions saveOptions = new XlsxSaveOptions();
+            // Specify using datetime format autodetection.
+            saveOptions.DateTimeParsingMode = XlsxDateTimeParsingMode.Auto;
+
+            doc.Save(ArtifactsDir + "XlsxSaveOptions.DateTimeParsingMode.xlsx", saveOptions);
+            //ExEnd:DateTimeParsingMode
         }
     }
 }

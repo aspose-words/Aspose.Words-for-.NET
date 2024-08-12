@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Aspose.Words;
 using Aspose.Words.Fields;
@@ -11,9 +11,10 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         [Test]
         public void RemovePageBreaks()
         {
-            //ExStart:OpenFromFile
+            //ExStart:OpenDocument
+            //GistId:1d626c7186a318d22d022dc96dd91d55
             Document doc = new Document(MyDir + "Document.docx");
-            //ExEnd:OpenFromFile
+            //ExEnd:OpenDocument
 
             // In Aspose.Words section breaks are represented as separate Section nodes in the document.
             // To remove these separate sections, the sections are combined.

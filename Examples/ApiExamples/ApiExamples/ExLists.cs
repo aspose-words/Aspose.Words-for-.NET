@@ -964,7 +964,7 @@ namespace ApiExamples
         }
 
         [Test]
-        public void CustomNumberStyleFormat()
+        public void GetCustomNumberStyleFormat()
         {
             //ExStart
             //ExFor:ListLevel.CustomNumberStyleFormat
@@ -1003,6 +1003,32 @@ namespace ApiExamples
             Assert.True(doc.Lists[0].HasSameTemplate(doc.Lists[1]));
             Assert.False(doc.Lists[1].HasSameTemplate(doc.Lists[2]));
             //ExEnd
+        }
+
+        [Test]
+        public void SetCustomNumberStyleFormat()
+        {
+            //ExStart:SetCustomNumberStyleFormat
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:ListLevel.CustomNumberStyleFormat
+            //ExSummary:Shows how to set customer number style format.
+            Document doc = new Document(MyDir + "List with leading zero.docx");
+
+            doc.UpdateListLabels();
+
+            ParagraphCollection paras = doc.FirstSection.Body.Paragraphs;
+            Assert.AreEqual("001.", paras[0].ListLabel.LabelString);
+            Assert.AreEqual("0001.", paras[1].ListLabel.LabelString);
+            Assert.AreEqual("0002.", paras[2].ListLabel.LabelString);
+
+            paras[1].ListFormat.ListLevel.CustomNumberStyleFormat = "001, 002, 003, ...";
+
+            doc.UpdateListLabels();
+
+            Assert.AreEqual("001.", paras[0].ListLabel.LabelString);
+            Assert.AreEqual("001.", paras[1].ListLabel.LabelString);
+            Assert.AreEqual("002.", paras[2].ListLabel.LabelString);
+            //ExEnd:SetCustomNumberStyleFormat
         }
     }
 }

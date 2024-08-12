@@ -1696,5 +1696,204 @@ namespace ApiExamples
             }
             //ExEnd
         }
+
+        [Test]
+        public void ConvertWithParagraphMark()
+        {
+            Document doc = new Document(MyDir + "Nested tables.docx");
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            // Replace the table with the new paragraph
+            ConvertTable(table);
+
+            table.Remove();
+
+            doc.Save(ArtifactsDir + "output.docx");
+        }
+
+        /// <summary>
+        /// Recursively converts nested tables within a given table.
+        /// </summary>
+        /// <param name="table">The table to be converted.</param>
+        private void ConvertTable(Table table)
+        {
+            Node currentNode = table;
+            foreach (Row row in table.Rows)
+            {
+                foreach (Cell cell in row.Cells)
+                {
+                    // Get all nested tables within the current cell.
+                    NodeCollection nestedTables = cell.GetChildNodes(NodeType.Table, true);
+                    if (nestedTables.Count != 0)
+                        foreach (Table nestedTable in nestedTables)
+                            ConvertTable(nestedTable);
+
+                    // Get the text content of the cell and trim any whitespace.
+                    var cellText = cell.GetText().Trim();
+                    if (cellText == string.Empty)
+                        break;
+
+                    foreach (Paragraph cellPara in cell.Paragraphs)
+                        currentNode = table.ParentNode.InsertAfter(cellPara.Clone(true), currentNode);
+                }
+            }
+        }
+
+        [Test]
+        public void ConvertWith()
+        {
+            Document doc = new Document(MyDir + "Nested tables.docx");
+            Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
+
+            // Convert table to text with specified separator.
+            ConvertWith(ControlChar.Tab, table);
+            // Remove table after convertion.
+            table.Remove();
+
+            doc.Save(ArtifactsDir + "Table.ConvertWith.docx");
+        }
+
+        /// <summary>
+        /// Converts the content of a table into a series of paragraphs, separated by a specified separator.
+        /// </summary>
+        /// <param name="separator">The string used to separate the content of each cell.</param>
+        /// <param name="table">The table to be converted.</param>
+        private void ConvertWith(string separator, Table table)
+        {
+            Document doc = (Document)table.Document;
+            Node currentPara = table.NextSibling;
+            foreach (Row row in table.Rows)
+            {
+                double tabStopWidth = 0;
+                // By default MS Word adds 1.5 line spacing bitween paragraphs.
+                ((Paragraph)currentPara).ParagraphFormat.LineSpacing = 18;
+                foreach (Cell cell in row.Cells)
+                {
+                    NodeCollection nestedTables = cell.GetChildNodes(NodeType.Table, true);
+                    // If there are nested tables, process each one.
+                    if (nestedTables.Count != 0)
+                        foreach (Table nestedTable in nestedTables)
+                            ConvertWith(separator, nestedTable);
+
+                    ParagraphCollection paragraphs = cell.Paragraphs;
+                    foreach (Paragraph paragraph in paragraphs)
+                    {
+                        // If there's more than one paragraph and it's not the first, clone and insert it after the current paragraph.
+                        if (paragraphs.Count > 1 && !paragraph.Equals(cell.FirstParagraph))
+                        {
+                            Node node = currentPara.ParentNode.InsertAfter(paragraph.Clone(true), currentPara);
+                            currentPara = node;
+                        }
+                        else if (currentPara.NodeType == NodeType.Paragraph)
+                        {
+                            // If the current cell is not the first cell, append a separator.
+                            if (!cell.IsFirstCell)
+                            {
+                                ((Paragraph)currentPara).AppendChild(new Run(doc, separator));
+                                // If the separator is a tab, calculate the tab stop position based on the width of the previous cell.
+                                if (separator == ControlChar.Tab)
+                                {
+                                    var previousCell = cell.PreviousCell;
+                                    if (previousCell != null)
+                                        tabStopWidth += previousCell.CellFormat.Width;
+
+                                    // Add a tab stop at the calculated position.
+                                    TabStop tabStop = new TabStop(tabStopWidth, TabAlignment.Left, TabLeader.None);
+                                    ((Paragraph)currentPara).ParagraphFormat.TabStops.Add(tabStop);
+                                }
+                            }
+
+                            // Clone and append all child nodes of the paragraph to the current paragraph.
+                            var childNodes = paragraph.GetChildNodes(NodeType.Any, true);
+                            if (childNodes.Count > 0)
+                                foreach (Node node in childNodes)
+                                    ((Paragraph)currentPara).AppendChild(node.Clone(true));
+                        }
+                    }
+                }
+
+                currentPara = currentPara.ParentNode.InsertAfter(new Paragraph(doc), currentPara);
+            }
+        }
+
+        [Test]
+        public void GetColSpanRowSpan()
+        {
+            Document doc = new Document(MyDir + "Merged table.docx");
+
+            var table = (Table)doc.GetChild(NodeType.Table, 0, true);
+            // Convert cells with merged columns into a format that can be easily manipulated.
+            table.ConvertToHorizontallyMergedCells();
+
+            foreach (Row row in table.Rows)
+            {
+                var cell = row.FirstCell;
+
+                while (cell != null)
+                {
+                    var rowIndex = table.IndexOf(row);
+                    var cellIndex = cell.ParentRow.IndexOf(cell);
+
+                    var rowSpan = 1;
+                    var colSpan = 1;
+                    
+                    // Check if the current cell is the start of a vertically merged set of cells.
+                    if (cell.CellFormat.VerticalMerge == CellMerge.First)
+                        rowSpan = CalculateRowSpan(table, rowIndex, cellIndex);
+
+                    // Check if the current cell is the start of a horizontally merged set of cells.
+                    if (cell.CellFormat.HorizontalMerge == CellMerge.First)
+                        cell = CalculateColSpan(cell, out colSpan);
+                    else
+                        cell = cell.NextCell;
+
+                    Console.WriteLine($"RowIndex = {rowIndex}\t ColSpan = {colSpan}\t RowSpan = {rowSpan}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Calculates the row span for a cell in a table.
+        /// </summary>
+        /// <param name="table">The table containing the cell.</param>
+        /// <param name="rowIndex">The index of the row containing the cell.</param>
+        /// <param name="cellIndex">The index of the cell within the row.</param>
+        /// <returns>The number of rows spanned by the cell.</returns>
+        private int CalculateRowSpan(Table table, int rowIndex, int cellIndex)
+        {
+            var rowSpan = 1;
+            for (int i = rowIndex; i < table.Rows.Count; i++)
+            {
+                var currentRow = table.Rows[i + 1];
+                if (currentRow == null) 
+                    break;
+
+                var currentCell = currentRow.Cells[cellIndex];
+                if (currentCell.CellFormat.VerticalMerge != CellMerge.Previous)
+                    break;
+
+                rowSpan++;
+            }
+            return rowSpan;
+        }
+
+        /// <summary>
+        /// Calculates the column span of a cell based on its horizontal merge settings.
+        /// </summary>
+        /// <param name="cell">The cell for which to calculate the column span.</param>
+        /// <param name="colSpan">The resulting column span value.</param>
+        /// <returns>The next cell in the sequence after calculating the column span.</returns>
+        private Cell CalculateColSpan(Cell cell, out int colSpan)
+        {
+            colSpan = 1;
+
+            cell = cell.NextCell;
+            while (cell != null && cell.CellFormat.HorizontalMerge == CellMerge.Previous)
+            {
+                colSpan++;
+                cell = cell.NextCell;
+            }
+            return cell;
+        }
     }
 }

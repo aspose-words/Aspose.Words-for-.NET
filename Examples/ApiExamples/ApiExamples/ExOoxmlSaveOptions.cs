@@ -410,14 +410,23 @@ namespace ApiExamples
             //ExStart:DigitalSignature
             //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
             //ExFor:OoxmlSaveOptions.DigitalSignatureDetails
+            //ExFor:DigitalSignatureDetails
+            //ExFor:DigitalSignatureDetails.#ctor(CertificateHolder, SignOptions)
+            //ExFor:DigitalSignatureDetails.CertificateHolder
+            //ExFor:DigitalSignatureDetails.SignOptions
             //ExSummary:Shows how to sign OOXML document.
             Document doc = new Document(MyDir + "Document.docx");
 
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
-            saveOptions.DigitalSignatureDetails = new DigitalSignatureDetails(
+            DigitalSignatureDetails digitalSignatureDetails = new DigitalSignatureDetails(
                 certificateHolder,
                 new SignOptions() { Comments = "Some comments", SignTime = DateTime.Now });
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.DigitalSignatureDetails = digitalSignatureDetails;
+
+            Assert.AreEqual(certificateHolder, digitalSignatureDetails.CertificateHolder);
+            Assert.AreEqual("Some comments", digitalSignatureDetails.SignOptions.Comments);
 
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.DigitalSignature.docx", saveOptions);
             //ExEnd:DigitalSignature

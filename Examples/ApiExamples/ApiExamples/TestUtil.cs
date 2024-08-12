@@ -581,5 +581,13 @@ namespace ApiExamples
                 return streamReader.CurrentEncoding;
             }
         }
+
+        /// <summary>
+        /// Converts an image to a byte array.
+        /// </summary>
+        internal static byte[] ImageToByteArray(string imagePath)
+        {
+            return File.ReadAllBytes(imagePath);
+        }
     }
 }

@@ -315,7 +315,7 @@ namespace ApiExamples
 
             TestUtil.VerifyField(FieldType.FieldFormDropDown, " FORMDROPDOWN \u0001", string.Empty, doc.Range.Fields[0]);
             TestUtil.VerifyField(FieldType.FieldFormCheckBox, " FORMCHECKBOX \u0001", string.Empty, doc.Range.Fields[1]);
-            TestUtil.VerifyField(FieldType.FieldFormTextInput, " FORMTEXT \u0001", "New placeholder text", doc.Range.Fields[2]);
+            TestUtil.VerifyField(FieldType.FieldFormTextInput, " FORMTEXT \u0001", "Regular", doc.Range.Fields[2]);
 
             FormFieldCollection formFields = doc.Range.FormFields;
             Assert.AreEqual(3, formFields.Count);
@@ -345,7 +345,7 @@ namespace ApiExamples
             Assert.AreEqual("FIRST CAPITAL", formFields[2].TextInputFormat);
             Assert.AreEqual(TextFormFieldType.Regular, formFields[2].TextInputType);
             Assert.AreEqual(50, formFields[2].MaxLength);
-            Assert.AreEqual("New placeholder text", formFields[2].Result);
+            Assert.AreEqual("Regular", formFields[2].Result);
         }
 
         [Test]

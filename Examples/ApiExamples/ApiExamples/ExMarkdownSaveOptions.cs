@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
 using NUnit.Framework;
@@ -21,6 +22,10 @@ namespace ApiExamples
         [TestCase(TableContentAlignment.Auto)]
         public void MarkdownDocumentTableContentAlignment(TableContentAlignment tableContentAlignment)
         {
+            //ExStart
+            //ExFor:TableContentAlignment
+            //ExFor:MarkdownSaveOptions.TableContentAlignment
+            //ExSummary:Shows how to align contents in tables.
             DocumentBuilder builder = new DocumentBuilder();
 
             builder.InsertCell();
@@ -64,10 +69,14 @@ namespace ApiExamples
                         table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
                     break;
             }
+            //ExEnd
         }
 
         //ExStart
+        //ExFor:MarkdownSaveOptions
+        //ExFor:MarkdownSaveOptions.#ctor
         //ExFor:MarkdownSaveOptions.ImageSavingCallback
+        //ExFor:MarkdownSaveOptions.SaveFormat
         //ExFor:IImageSavingCallback
         //ExSummary:Shows how to rename the image name during saving into Markdown document.
         [Test] //ExSkip
@@ -76,11 +85,11 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Rendering.docx");
 
             MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
-
             // If we convert a document that contains images into Markdown, we will end up with one Markdown file which links to several images.
             // Each image will be in the form of a file in the local file system.
             // There is also a callback that can customize the name and file system location of each image.
             saveOptions.ImageSavingCallback = new SavedImageRename("MarkdownSaveOptions.HandleDocument.md");
+            saveOptions.SaveFormat = SaveFormat.Markdown;
 
             // The ImageSaving() method of our callback will be run at this time.
             doc.Save(ArtifactsDir + "MarkdownSaveOptions.HandleDocument.md", saveOptions);
@@ -149,6 +158,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:MarkdownSaveOptions.ListExportMode
+            //ExFor:MarkdownListExportMode
             //ExSummary:Shows how to list items will be written to the markdown document.
             Document doc = new Document(MyDir + "List item.docx");
 
@@ -205,5 +215,36 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MarkdownSaveOptions.ExportUnderlineFormatting.md", saveOptions);
             //ExEnd:ExportUnderlineFormatting
         }
+
+        [Test]
+        public void LinkExportMode()
+        {
+            //ExStart:LinkExportMode
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:MarkdownSaveOptions.LinkExportMode
+            //ExFor:MarkdownLinkExportMode
+            //ExSummary:Shows how to links will be written to the .md file.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.InsertShape(ShapeType.Balloon, 100, 100);
+
+            // Image will be written as reference:
+            // ![ref1]
+            //
+            // [ref1]: aw_ref.001.png
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.LinkExportMode = MarkdownLinkExportMode.Reference;
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.LinkExportMode.Reference.md", saveOptions);
+
+            // Image will be written as inline:
+            // ![](aw_inline.001.png)
+            saveOptions.LinkExportMode = MarkdownLinkExportMode.Inline;
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.LinkExportMode.Inline.md", saveOptions);
+            //ExEnd:LinkExportMode
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "MarkdownSaveOptions.LinkExportMode.Inline.md");
+            Assert.AreEqual("![](MarkdownSaveOptions.LinkExportMode.Inline.001.png)", outDocContents.Trim());
+        }
     }
 }
+

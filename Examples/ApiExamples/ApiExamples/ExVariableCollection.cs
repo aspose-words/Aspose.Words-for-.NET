@@ -31,6 +31,8 @@ namespace ApiExamples
             //ExFor:VariableCollection.IndexOfKey
             //ExFor:VariableCollection.Remove
             //ExFor:VariableCollection.RemoveAt
+            //ExFor:VariableCollection.Item(Int32)
+            //ExFor:VariableCollection.Item(String)
             //ExSummary:Shows how to work with a document's variable collection.
             Document doc = new Document();
             VariableCollection variables = doc.Variables;
@@ -68,6 +70,9 @@ namespace ApiExamples
             Assert.AreEqual(0, variables.IndexOfKey("Bedrooms"));
             Assert.AreEqual(1, variables.IndexOfKey("City"));
             Assert.AreEqual(2, variables.IndexOfKey("Home address"));
+
+            Assert.AreEqual("3", variables[0]);
+            Assert.AreEqual("London", variables["City"]);
 
             // Enumerate over the collection of variables.
             using (IEnumerator<KeyValuePair<string, string>> enumerator = doc.Variables.GetEnumerator())

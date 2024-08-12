@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Loading;
@@ -108,16 +108,16 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         }
 
         [Test]
-        public void AddJapaneseAsEditingLanguages()
+        public void AddEditingLanguage()
         {
-            //ExStart:AddJapaneseAsEditinglanguages
+            //ExStart:AddEditingLanguage
+            //GistId:40be8275fc43f78f5e5877212e4e1bf3
             LoadOptions loadOptions = new LoadOptions();
-            
             // Set language preferences that will be used when document is loading.
             loadOptions.LanguagePreferences.AddEditingLanguage(EditingLanguage.Japanese);
-            //ExEnd:AddJapaneseAsEditinglanguages
-
+            
             Document doc = new Document(MyDir + "No default editing language.docx", loadOptions);
+            //ExEnd:AddEditingLanguage
 
             int localeIdFarEast = doc.Styles.DefaultFont.LocaleIdFarEast;
             Console.WriteLine(

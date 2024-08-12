@@ -22,6 +22,8 @@ namespace ApiExamples
         //ExFor:BuildingBlock
         //ExFor:BuildingBlock.#ctor(GlossaryDocument)
         //ExFor:BuildingBlock.Accept(DocumentVisitor)
+        //ExFor:BuildingBlock.AcceptStart(DocumentVisitor)
+        //ExFor:BuildingBlock.AcceptEnd(DocumentVisitor)
         //ExFor:BuildingBlock.Behavior
         //ExFor:BuildingBlock.Category
         //ExFor:BuildingBlock.Description
@@ -66,6 +68,7 @@ namespace ApiExamples
             // Before we can add this building block to our document, we will need to give it some contents,
             // which we will do using a document visitor. This visitor will also set a category, gallery, and behavior.
             BuildingBlockVisitor visitor = new BuildingBlockVisitor(glossaryDoc);
+            // Visit start/end of the BuildingBlock.
             block.Accept(visitor);
 
             // We can access the block that we just made from the glossary document.
@@ -134,6 +137,8 @@ namespace ApiExamples
         //ExStart
         //ExFor:GlossaryDocument
         //ExFor:GlossaryDocument.Accept(DocumentVisitor)
+        //ExFor:GlossaryDocument.AcceptStart(DocumentVisitor)
+        //ExFor:GlossaryDocument.AcceptEnd(DocumentVisitor)
         //ExFor:GlossaryDocument.BuildingBlocks
         //ExFor:GlossaryDocument.FirstBuildingBlock
         //ExFor:GlossaryDocument.GetBuildingBlock(BuildingBlockGallery,String,String)
@@ -184,7 +189,12 @@ namespace ApiExamples
             // We will do that using a custom visitor,
             // which will give every BuildingBlock in the GlossaryDocument a unique GUID
             GlossaryDocVisitor visitor = new GlossaryDocVisitor();
+            // Visit start/end of the Glossary document.
             glossaryDoc.Accept(visitor);
+            // Visit only start of the Glossary document.
+            glossaryDoc.AcceptStart(visitor);
+            // Visit only end of the Glossary document.
+            glossaryDoc.AcceptEnd(visitor);
             Assert.AreEqual(5, visitor.GetDictionary().Count); //ExSkip
 
             Console.WriteLine(visitor.GetText());

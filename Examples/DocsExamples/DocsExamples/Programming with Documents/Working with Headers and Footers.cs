@@ -155,7 +155,7 @@ namespace DocsExamples.Programming_with_Documents
             builder.Font.Size = 14;
             builder.Write("Header for the first page.");
 
-            builder.MoveToDocumentEnd();            
+            builder.MoveToDocumentEnd();
             builder.InsertBreak(BreakType.SectionBreakNewPage);
 
             Section currentSection = builder.CurrentSection;
@@ -173,7 +173,7 @@ namespace DocsExamples.Programming_with_Documents
 
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-            builder.Font.Name = "Arial";            
+            builder.Font.Name = "Arial";
             builder.Font.Size = 12;
             builder.Write("New Header for the first page.");
 
@@ -184,8 +184,8 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void SectionsWithDifferentHeaders()
         {
-            //ExStart:SectionsWithDifferentHeaders            
-            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d            
+            //ExStart:SectionsWithDifferentHeaders
+            //GistId:1afca4d3da7cb4240fb91c3d93d8c30d
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

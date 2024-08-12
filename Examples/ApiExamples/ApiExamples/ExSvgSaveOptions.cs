@@ -90,6 +90,7 @@ namespace ApiExamples
             //ExStart:SaveOfficeMath
             //GistId:a775441ecb396eea917a2717cb9e8f8f
             //ExFor:NodeRendererBase.Save(String, SvgSaveOptions)
+            //ExFor:NodeRendererBase.Save(Stream, SvgSaveOptions)
             //ExSummary:Shows how to pass save options when rendering office math.
             Document doc = new Document(MyDir + "Office math.docx");
 
@@ -99,7 +100,29 @@ namespace ApiExamples
             options.TextOutputMode = SvgTextOutputMode.UsePlacedGlyphs;
 
             math.GetMathRenderer().Save(ArtifactsDir + "SvgSaveOptions.Output.svg", options);
+            
+            using (MemoryStream stream = new MemoryStream())
+                math.GetMathRenderer().Save(stream, options);
             //ExEnd:SaveOfficeMath
+        }
+
+        [Test]
+        public void MaxImageResolution()
+        {
+            //ExStart:MaxImageResolution
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ShapeBase.SoftEdge
+            //ExFor:SoftEdgeFormat.Radius
+            //ExFor:SoftEdgeFormat.Remove
+            //ExFor:SvgSaveOptions.MaxImageResolution
+            //ExSummary:Shows how to set limit for image resolution.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            SvgSaveOptions saveOptions = new SvgSaveOptions();
+            saveOptions.MaxImageResolution = 72;
+
+            doc.Save(ArtifactsDir + "SvgSaveOptions.MaxImageResolution.svg", saveOptions);
+            //ExEnd:MaxImageResolution
         }
     }
 }

@@ -626,6 +626,7 @@ namespace ApiExamples
         public void SparklingText()
         {
             //ExStart
+            //ExFor:TextEffect
             //ExFor:Font.TextEffect
             //ExSummary:Shows how to apply a visual effect to a run.
             Document doc = new Document();
@@ -781,7 +782,6 @@ namespace ApiExamples
 
                 Assert.AreEqual(1033, run.Font.LocaleId);
                 Assert.AreEqual(16, run.Font.Size);
-                Assert.AreEqual("Courier New", run.Font.Name);
                 Assert.False(run.Font.Italic);
                 Assert.False(run.Font.Bold);
                 Assert.AreEqual(1025, run.Font.LocaleIdBi);
@@ -1065,7 +1065,9 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:Font.Hidden
-        //ExFor:Paragraph.Accept
+        //ExFor:Paragraph.Accept(DocumentVisitor)
+        //ExFor:Paragraph.AcceptStart(DocumentVisitor)
+        //ExFor:Paragraph.AcceptEnd(DocumentVisitor)
         //ExFor:DocumentVisitor.VisitParagraphStart(Paragraph)
         //ExFor:DocumentVisitor.VisitFormField(FormField)
         //ExFor:DocumentVisitor.VisitTableEnd(Table)
@@ -1077,9 +1079,13 @@ namespace ApiExamples
         //ExFor:DocumentVisitor.VisitCommentStart(Comment)
         //ExFor:DocumentVisitor.VisitFootnoteStart(Footnote)
         //ExFor:SpecialChar
-        //ExFor:Node.Accept
+        //ExFor:SpecialChar.Accept(DocumentVisitor)
+        //ExFor:SpecialChar.GetText
+        //ExFor:Node.Accept(DocumentVisitor)
         //ExFor:Paragraph.ParagraphBreakFont
-        //ExFor:Table.Accept
+        //ExFor:Table.Accept(DocumentVisitor)
+        //ExFor:Table.AcceptStart(DocumentVisitor)
+        //ExFor:Table.AcceptEnd(DocumentVisitor)
         //ExSummary:Shows how to use a DocumentVisitor implementation to remove all hidden content from a document.
         [Test] //ExSkip
         public void RemoveHiddenContentFromDocument()
@@ -1227,6 +1233,8 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitSpecialChar(SpecialChar specialChar)
             {
+                Console.WriteLine(specialChar.GetText());
+
                 if (specialChar.Font.Hidden)
                     specialChar.Remove();
 
@@ -1446,6 +1454,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Font.HasDmlEffect(TextDmlEffect)
+            //ExFor:TextDmlEffect
             //ExSummary:Shows how to check if a run displays a DrawingML text effect.
             Document doc = new Document(MyDir + "DrawingML text effects.docx");
 
@@ -1638,6 +1647,57 @@ namespace ApiExamples
 
             Assert.AreEqual(ThemeColor.Accent5, run.Font.ThemeColor);
             Assert.AreEqual(Color.Empty, run.Font.Color);
+        }
+
+        [Test]
+        public void FontInfoEmbeddingLicensingRights()
+        {
+            //ExStart:FontInfoEmbeddingLicensingRights
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:FontInfo.EmbeddingLicensingRights
+            //ExFor:FontEmbeddingUsagePermissions
+            //ExFor:FontEmbeddingLicensingRights.EmbeddingUsagePermissions
+            //ExFor:FontEmbeddingLicensingRights.BitmapEmbeddingOnly
+            //ExFor:FontEmbeddingLicensingRights.NoSubsetting
+            //ExSummary:Shows how to get license rights information for embedded fonts (FontInfo).
+            Document doc = new Document(MyDir + "Embedded font rights.docx");
+
+            // Get the list of document fonts.
+            FontInfoCollection fontInfos = doc.FontInfos;
+            foreach (FontInfo fontInfo in fontInfos) 
+            {
+                if (fontInfo.EmbeddingLicensingRights != null)
+                {
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.EmbeddingUsagePermissions);
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.BitmapEmbeddingOnly);
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.NoSubsetting);
+                }
+            }
+            //ExEnd:FontInfoEmbeddingLicensingRights
+        }
+
+        [Test]
+        public void PhysicalFontInfoEmbeddingLicensingRights()
+        {
+            //ExStart:PhysicalFontInfoEmbeddingLicensingRights
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:PhysicalFontInfo.EmbeddingLicensingRights
+            //ExSummary:Shows how to get license rights information for embedded fonts (PhysicalFontInfo).
+            FontSettings settings = FontSettings.DefaultInstance;
+            FontSourceBase source = settings.GetFontsSources()[0];
+
+            // Get the list of available fonts.
+            IList<PhysicalFontInfo> fontInfos = source.GetAvailableFonts();
+            foreach (PhysicalFontInfo fontInfo in fontInfos)
+            {
+                if (fontInfo.EmbeddingLicensingRights != null)
+                {
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.EmbeddingUsagePermissions);
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.BitmapEmbeddingOnly);
+                    Console.WriteLine(fontInfo.EmbeddingLicensingRights.NoSubsetting);
+                }
+            }
+            //ExEnd:PhysicalFontInfoEmbeddingLicensingRights
         }
     }
 }

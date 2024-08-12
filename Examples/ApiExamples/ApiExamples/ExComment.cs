@@ -67,6 +67,7 @@ namespace ApiExamples
             //ExFor:Comment.Ancestor
             //ExFor:Comment.Author
             //ExFor:Comment.Replies
+            //ExFor:CompositeNode.GetEnumerator
             //ExFor:CompositeNode.GetChildNodes(NodeType, Boolean)
             //ExSummary:Shows how to print all of a document's comments and their replies.
             Document doc = new Document(MyDir + "Comments.docx");
@@ -163,11 +164,13 @@ namespace ApiExamples
             Assert.AreEqual("\u0005Fix the spelling error!", comment.GetText().Trim());
             Assert.AreEqual("Hello world!", doc.FirstSection.Body.FirstParagraph.Runs[0].Text);
         }
-        
+
         //ExStart
         //ExFor:Comment.Done
         //ExFor:Comment.#ctor(DocumentBase)
         //ExFor:Comment.Accept(DocumentVisitor)
+        //ExFor:Comment.AcceptStart(DocumentVisitor)
+        //ExFor:Comment.AcceptEnd(DocumentVisitor)
         //ExFor:Comment.DateTime
         //ExFor:Comment.Id
         //ExFor:Comment.Initial
@@ -224,6 +227,10 @@ namespace ApiExamples
 
                 // Then, visit the comment, and any replies that it may have.
                 comment.Accept(commentVisitor);
+                // Visit only start of the comment.
+                comment.AcceptStart(commentVisitor);
+                // Visit only end of the comment.
+                comment.AcceptEnd(commentVisitor);
 
                 foreach (Comment reply in comment.Replies)
                     reply.Accept(commentVisitor);
@@ -334,5 +341,30 @@ namespace ApiExamples
             private readonly StringBuilder mBuilder;
         }
         //ExEnd
+
+        [Test]
+        public void UtcDateTime()
+        {
+            //ExStart:UtcDateTime
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:Comment.DateTimeUtc
+            //ExSummary:Shows how to get UTC date and time.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            DateTime dateTime = DateTime.Now;
+            Comment comment = new Comment(doc, "John Doe", "J.D.", dateTime);
+            comment.SetText("My comment.");
+
+            builder.CurrentParagraph.AppendChild(comment);
+
+            doc.Save(ArtifactsDir + "Comment.UtcDateTime.docx");
+            doc = new Document(ArtifactsDir + "Comment.UtcDateTime.docx");
+
+            comment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
+            // DateTimeUtc return data without milliseconds.
+            Assert.AreEqual(dateTime.ToUniversalTime().ToString("yyyy-MM-dd hh:mm:ss"), comment.DateTimeUtc.ToString("yyyy-MM-dd hh:mm:ss"));
+            //ExEnd:UtcDateTime
+        }
     }
 }

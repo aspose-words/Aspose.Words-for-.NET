@@ -440,8 +440,8 @@ namespace ApiExamples
 
             outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.css");
 
-            Assert.True(outDocContents.Contains(".myprefix-Footer { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt }\r\n" +
-                                                ".myprefix-Header { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt }\r\n"));
+            Assert.True(outDocContents.Contains(".myprefix-Footer { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt; -aw-style-name:footer }\r\n" +
+                                                ".myprefix-Header { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt; -aw-style-name:header }\r\n"));
             //ExEnd
         }
 
@@ -783,7 +783,7 @@ namespace ApiExamples
                 case HtmlVersion.Html5:
                     Assert.True(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"));
                     Assert.True(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"));
-                    Assert.True(outDocContents.Contains("<table style=\"-aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
+                    Assert.True(outDocContents.Contains("<table style=\"padding:0pt; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
                     break;
                 case HtmlVersion.Xhtml:
                     Assert.True(outDocContents.Contains("<a name=\"_Toc76372689\"></a>"));
@@ -1683,9 +1683,9 @@ namespace ApiExamples
             switch (htmlOfficeMathOutputMode)
             {
                 case HtmlOfficeMathOutputMode.Image:
-                    Assert.True(Regex.Match(outDocContents, 
+                    Assert.True(Regex.Match(outDocContents,
                         "<p style=\"margin-top:0pt; margin-bottom:10pt\">" +
-                            "<img src=\"HtmlSaveOptions.OfficeMathOutputMode.001.png\" width=\"159\" height=\"19\" alt=\"\" style=\"vertical-align:middle; " +
+                            "<img src=\"HtmlSaveOptions.OfficeMathOutputMode.001.png\" width=\"163\" height=\"19\" alt=\"\" style=\"vertical-align:middle; " +
                             "-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />" +
                         "</p>").Success);
                     break;
@@ -1892,6 +1892,7 @@ namespace ApiExamples
         //ExFor:IDocumentSavingCallback
         //ExFor:IDocumentSavingCallback.Notify(DocumentSavingArgs)
         //ExFor:DocumentSavingArgs.EstimatedProgress
+        //ExFor:DocumentSavingArgs
         //ExSummary:Shows how to manage a document while saving to html.
         public void ProgressCallback(SaveFormat saveFormat, string ext)
         {
@@ -1961,6 +1962,25 @@ namespace ApiExamples
             Encoding encoding = TestUtil.GetEncoding(outputFileName);
             Assert.AreNotEqual(Encoding.ASCII, encoding);
             Assert.AreEqual(Encoding.UTF8, encoding);
+        }
+
+        [Test]
+        public void HtmlReplaceBackslashWithYenSign()
+        {
+            //ExStart:HtmlReplaceBackslashWithYenSign
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:HtmlSaveOptions.ReplaceBackslashWithYenSign
+            //ExSummary:Shows how to replace backslash characters with yen signs (Html).
+            Document doc = new Document(MyDir + "Korean backslash symbol.docx");
+
+            // By default, Aspose.Words mimics MS Word's behavior and doesn't replace backslash characters with yen signs in
+            // generated HTML documents. However, previous versions of Aspose.Words performed such replacements in certain
+            // scenarios. This flag enables backward compatibility with previous versions of Aspose.Words.
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.ReplaceBackslashWithYenSign = true;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.ReplaceBackslashWithYenSign.html", saveOptions);
+            //ExEnd:HtmlReplaceBackslashWithYenSign
         }
     }
 }

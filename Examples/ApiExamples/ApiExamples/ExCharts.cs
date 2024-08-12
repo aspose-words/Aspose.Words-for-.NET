@@ -12,6 +12,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 
 namespace ApiExamples
@@ -122,9 +123,13 @@ namespace ApiExamples
             //ExFor:ChartAxis.MinorTickMark
             //ExFor:ChartAxis.MajorUnit
             //ExFor:ChartAxis.MinorUnit
+            //ExFor:AxisTickLabels
             //ExFor:AxisTickLabels.Offset
             //ExFor:AxisTickLabels.Position
             //ExFor:AxisTickLabels.IsAutoSpacing
+            //ExFor:AxisTickLabels.Alignment
+            //ExFor:AxisTickLabels.Font
+            //ExFor:AxisTickLabels.Spacing
             //ExFor:ChartAxis.TickMarkSpacing
             //ExFor:AxisCategoryType
             //ExFor:AxisCrosses
@@ -170,6 +175,9 @@ namespace ApiExamples
             yAxis.MajorUnit = 100.0d;
             yAxis.MinorUnit = 20.0d;
             yAxis.TickLabels.Position = AxisTickLabelPosition.NextToAxis;
+            yAxis.TickLabels.Alignment = ParagraphAlignment.Center;
+            yAxis.TickLabels.Font.Color = Color.Red;
+            yAxis.TickLabels.Spacing = 1;
 
             // Column charts do not have a Z-axis.
             Assert.Null(chart.AxisZ);
@@ -200,6 +208,9 @@ namespace ApiExamples
             Assert.AreEqual(100.0d, chart.AxisY.MajorUnit);
             Assert.AreEqual(20.0d, chart.AxisY.MinorUnit);
             Assert.AreEqual(AxisTickLabelPosition.NextToAxis, chart.AxisY.TickLabels.Position);
+            Assert.AreEqual(ParagraphAlignment.Center, chart.AxisY.TickLabels.Alignment);
+            Assert.AreEqual(Color.Red.ToArgb(), chart.AxisY.TickLabels.Font.Color.ToArgb());
+            Assert.AreEqual(1, chart.AxisY.TickLabels.Spacing);
         }
 
         [Test]
@@ -1222,6 +1233,7 @@ namespace ApiExamples
             //ExFor:Stroke.BackColor
             //ExFor:Stroke.Visible
             //ExFor:Stroke.Transparency
+            //ExFor:PresetTexture
             //ExFor:Fill.PresetTextured(PresetTexture)
             //ExSummary:Show how to set marker formatting.
             Document doc = new Document();
@@ -1356,6 +1368,7 @@ namespace ApiExamples
         {
             //ExStart:LegendFont
             //GistId:470c0da51e4317baae82ad9495747fed
+            //ExFor:ChartLegendEntry
             //ExFor:ChartLegendEntry.Font
             //ExFor:ChartLegend.Font
             //ExSummary:Shows how to work with a legend font.
@@ -1403,6 +1416,7 @@ namespace ApiExamples
         public void PopulateChartWithData()
         {
             //ExStart
+            //ExFor:ChartXValue
             //ExFor:ChartXValue.FromDouble(Double)
             //ExFor:ChartYValue.FromDouble(Double)
             //ExFor:ChartSeries.Add(ChartXValue, ChartYValue)
@@ -1680,6 +1694,7 @@ namespace ApiExamples
         {
             //ExStart:DataTable
             //GistId:a775441ecb396eea917a2717cb9e8f8f
+            //ExFor:Chart.DataTable
             //ExFor:ChartDataTable
             //ExFor:ChartDataTable.Show
             //ExSummary:Shows how to show data table with chart series data.
@@ -1717,10 +1732,12 @@ namespace ApiExamples
         {
             //ExStart:ChartFormat
             //GistId:5f20ac02cb42c6b08481aa1c5b0cd3db
+            //ExFor:ChartFormat
             //ExFor:Chart.Format
             //ExFor:ChartTitle.Format
             //ExFor:ChartAxisTitle.Format
             //ExFor:ChartLegend.Format
+            //ExFor:Fill.Solid(Color)
             //ExSummary:Shows how to use chart formating.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1765,6 +1782,468 @@ namespace ApiExamples
             Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), chart.Title.Format.Fill.Color.ToArgb());
             Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), chart.AxisX.Title.Format.Fill.Color.ToArgb());
             Assert.AreEqual(Color.LightGoldenrodYellow.ToArgb(), chart.Legend.Format.Fill.Color.ToArgb());
+        }
+
+        [Test]
+        public void SecondaryAxis()
+        {
+            //ExStart:SecondaryAxis
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ChartSeriesGroup
+            //ExFor:ChartSeriesGroup.AxisGroup
+            //ExFor:ChartSeriesGroup.AxisX
+            //ExFor:ChartSeriesGroup.AxisY
+            //ExFor:ChartSeriesGroup.Series
+            //ExFor:ChartSeriesGroupCollection
+            //ExFor:ChartSeriesGroupCollection.Add(ChartSeriesType)
+            //ExFor:AxisGroup
+            //ExSummary:Shows how to work with the secondary axis of chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Line, 450, 250);
+            Chart chart = shape.Chart;
+            ChartSeriesCollection series = chart.Series;
+
+            // Delete default generated series.
+            series.Clear();
+
+            string[] categories = new string[] { "Category 1", "Category 2", "Category 3" };
+            series.Add("Series 1 of primary series group", categories, new double[] { 2, 3, 4 });
+            series.Add("Series 2 of primary series group", categories, new double[] { 5, 2, 3 });
+
+            // Create an additional series group, also of the line type.
+            ChartSeriesGroup newSeriesGroup = chart.SeriesGroups.Add(ChartSeriesType.Line);
+            // Specify the use of secondary axes for the new series group.
+            newSeriesGroup.AxisGroup = AxisGroup.Secondary;
+            // Hide the secondary X axis.
+            newSeriesGroup.AxisX.Hidden = true;
+            // Define title of the secondary Y axis.
+            newSeriesGroup.AxisY.Title.Show = true;
+            newSeriesGroup.AxisY.Title.Text = "Secondary Y axis";
+
+            // Add a series to the new series group.
+            ChartSeries series3 =
+                newSeriesGroup.Series.Add("Series of secondary series group", categories, new double[] { 13, 11, 16 });
+            series3.Format.Stroke.Weight = 3.5;
+
+            doc.Save(ArtifactsDir + "Charts.SecondaryAxis.docx");
+            //ExEnd:SecondaryAxis
+        }
+
+        [Test]
+        public void ConfigureGapOverlap()
+        {
+            //ExStart:ConfigureGapOverlap
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:Chart.SeriesGroups
+            //ExFor:ChartSeriesGroup.GapWidth
+            //ExFor:ChartSeriesGroup.Overlap
+            //ExSummary:Show how to configure gap width and overlap.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 450, 250);
+            ChartSeriesGroup seriesGroup = shape.Chart.SeriesGroups[0];
+
+            // Set column gap width and overlap.
+            seriesGroup.GapWidth = 450;
+            seriesGroup.Overlap = -75;
+
+            doc.Save(ArtifactsDir + "Charts.ConfigureGapOverlap.docx");
+            //ExEnd:ConfigureGapOverlap
+        }
+
+        [Test]
+        public void BubbleScale()
+        {
+            //ExStart:BubbleScale
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ChartSeriesGroup.BubbleScale
+            //ExSummary:Show how to set size of the bubbles.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a bubble 3D chart.
+            Shape shape = builder.InsertChart(ChartType.Bubble3D, 450, 250);
+            ChartSeriesGroup seriesGroup = shape.Chart.SeriesGroups[0];
+
+            // Set bubble scale to 200%.
+            seriesGroup.BubbleScale = 200;
+
+            doc.Save(ArtifactsDir + "Charts.BubbleScale.docx");
+            //ExEnd:BubbleScale
+        }
+
+        [Test]
+        public void RemoveSecondaryAxis()
+        {
+            //ExStart:RemoveSecondaryAxis
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ChartSeriesGroupCollection.Count
+            //ExFor:ChartSeriesGroupCollection.Item(Int32)
+            //ExFor:ChartSeriesGroupCollection.RemoveAt(Int32)
+            //ExSummary:Show how to remove secondary axis.
+            Document doc = new Document(MyDir + "Combo chart.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Chart chart = shape.Chart;
+            ChartSeriesGroupCollection seriesGroups = chart.SeriesGroups;
+
+            // Find secondary axis and remove from the collection.
+            for (int i = 0; i < seriesGroups.Count; i++)
+                if (seriesGroups[i].AxisGroup == AxisGroup.Secondary)
+                    seriesGroups.RemoveAt(i);
+            //ExEnd:RemoveSecondaryAxis
+        }
+
+        [Test]
+        public void TreemapChart()
+        {
+            //ExStart:TreemapChart
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:ChartSeriesCollection.Add(String, ChartMultilevelValue[], double[])
+            //ExFor:ChartMultilevelValue
+            //ExFor:ChartMultilevelValue.#ctor(String, String, String)
+            //ExFor:ChartMultilevelValue.#ctor(String, String)
+            //ExFor:ChartMultilevelValue.#ctor(String)
+            //ExSummary:Shows how to create treemap chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a Treemap chart.
+            Shape shape = builder.InsertChart(ChartType.Treemap, 450, 280);
+            Chart chart = shape.Chart;
+            chart.Title.Text = "World Population";
+
+            // Delete default generated series.
+            chart.Series.Clear();
+
+            // Add a series.
+            ChartSeries series = chart.Series.Add(
+                "Population by Region",
+                new ChartMultilevelValue[]
+                {
+                    new ChartMultilevelValue("Asia", "China"),
+                    new ChartMultilevelValue("Asia", "India"),
+                    new ChartMultilevelValue("Asia", "Indonesia"),
+                    new ChartMultilevelValue("Asia", "Pakistan"),
+                    new ChartMultilevelValue("Asia", "Bangladesh"),
+                    new ChartMultilevelValue("Asia", "Japan"),
+                    new ChartMultilevelValue("Asia", "Philippines"),
+                    new ChartMultilevelValue("Asia", "Other"),
+                    new ChartMultilevelValue("Africa", "Nigeria"),
+                    new ChartMultilevelValue("Africa", "Ethiopia"),
+                    new ChartMultilevelValue("Africa", "Egypt"),
+                    new ChartMultilevelValue("Africa", "Other"),
+                    new ChartMultilevelValue("Europe", "Russia"),
+                    new ChartMultilevelValue("Europe", "Germany"),
+                    new ChartMultilevelValue("Europe", "Other"),
+                    new ChartMultilevelValue("Latin America", "Brazil"),
+                    new ChartMultilevelValue("Latin America", "Mexico"),
+                    new ChartMultilevelValue("Latin America", "Other"),
+                    new ChartMultilevelValue("Northern America", "United States", "Other"),
+                    new ChartMultilevelValue("Northern America", "Other"),
+                    new ChartMultilevelValue("Oceania")
+                },
+                new double[]
+                {
+                    1409670000, 1400744000, 279118866, 241499431, 169828911, 123930000, 112892781, 764000000,
+                    223800000, 107334000, 105914499, 903000000,
+                    146150789, 84607016, 516000000,
+                    203080756, 129713690, 310000000,
+                    335893238, 35000000,
+                    42000000
+                });
+
+            // Show data labels.
+            series.HasDataLabels = true;
+            series.DataLabels.ShowValue = true;
+            series.DataLabels.ShowCategoryName = true;
+            string thousandSeparator = CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator;
+            series.DataLabels.NumberFormat.FormatCode = $"#{thousandSeparator}0";
+
+            doc.Save(ArtifactsDir + "Charts.Treemap.docx");
+            //ExEnd:TreemapChart
+        }
+
+        [Test]
+        public void SunburstChart()
+        {
+            //ExStart:SunburstChart
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:ChartSeriesCollection.Add(String, ChartMultilevelValue[], double[])
+            //ExSummary:Shows how to create sunburst chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a Sunburst chart.
+            Shape shape = builder.InsertChart(ChartType.Sunburst, 450, 450);
+            Chart chart = shape.Chart;
+            chart.Title.Text = "Sales";
+
+            // Delete default generated series.
+            chart.Series.Clear();
+
+            // Add a series.
+            ChartSeries series = chart.Series.Add(
+                "Sales",
+                new ChartMultilevelValue[]
+                {
+                    new ChartMultilevelValue("Sales - Europe", "UK", "London Dep."),
+                    new ChartMultilevelValue("Sales - Europe", "UK", "Liverpool Dep."),
+                    new ChartMultilevelValue("Sales - Europe", "UK", "Manchester Dep."),
+                    new ChartMultilevelValue("Sales - Europe", "France", "Paris Dep."),
+                    new ChartMultilevelValue("Sales - Europe", "France", "Lyon Dep."),
+                    new ChartMultilevelValue("Sales - NA", "USA", "Denver Dep."),
+                    new ChartMultilevelValue("Sales - NA", "USA", "Seattle Dep."),
+                    new ChartMultilevelValue("Sales - NA", "USA", "Detroit Dep."),
+                    new ChartMultilevelValue("Sales - NA", "USA", "Houston Dep."),
+                    new ChartMultilevelValue("Sales - NA", "Canada", "Toronto Dep."),
+                    new ChartMultilevelValue("Sales - NA", "Canada", "Montreal Dep."),
+                    new ChartMultilevelValue("Sales - Oceania", "Australia", "Sydney Dep."),
+                    new ChartMultilevelValue("Sales - Oceania", "New Zealand", "Auckland Dep.")
+                },
+                new double[] { 1236, 851, 536, 468, 179, 527, 799, 1148, 921, 457, 482, 761, 694 });
+
+            // Show data labels.
+            series.HasDataLabels = true;
+            series.DataLabels.ShowValue = false;
+            series.DataLabels.ShowCategoryName = true;
+
+            doc.Save(ArtifactsDir + "Charts.Sunburst.docx");
+            //ExEnd:SunburstChart
+        }
+
+        [Test]
+        public void HistogramChart()
+        {
+            //ExStart:HistogramChart
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:ChartSeriesCollection.Add(String, double[])
+            //ExSummary:Shows how to create histogram chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a Histogram chart.
+            Shape shape = builder.InsertChart(ChartType.Histogram, 450, 450);
+            Chart chart = shape.Chart;
+            chart.Title.Text = "Avg Temperature since 1991";
+
+            // Delete default generated series.
+            chart.Series.Clear();
+
+            // Add a series.
+            chart.Series.Add(
+                "Avg Temperature",
+                new double[]
+                {
+                    51.8, 53.6, 50.3, 54.7, 53.9, 54.3, 53.4, 52.9, 53.3, 53.7, 53.8, 52.0, 55.0, 52.1, 53.4,
+                    53.8, 53.8, 51.9, 52.1, 52.7, 51.8, 56.6, 53.3, 55.6, 56.3, 56.2, 56.1, 56.2, 53.6, 55.7,
+                    56.3, 55.9, 55.6
+                });
+
+            doc.Save(ArtifactsDir + "Charts.Histogram.docx");
+            //ExEnd:HistogramChart
+        }
+
+        [Test]
+        public void ParetoChart()
+        {
+            //ExStart:ParetoChart
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:ChartSeriesCollection.Add(String, String[], double[])
+            //ExSummary:Shows how to create pareto chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a Pareto chart.
+            Shape shape = builder.InsertChart(ChartType.Pareto, 450, 450);
+            Chart chart = shape.Chart;
+            chart.Title.Text = "Best-Selling Car";
+
+            // Delete default generated series.
+            chart.Series.Clear();
+
+            // Add a series.
+            chart.Series.Add(
+                "Best-Selling Car",
+                new string[] { "Tesla Model Y", "Toyota Corolla", "Toyota RAV4", "Ford F-Series", "Honda CR-V" },
+                new double[] { 1.43, 0.91, 1.17, 0.98, 0.85 });
+
+            doc.Save(ArtifactsDir + "Charts.Pareto.docx");
+            //ExEnd:ParetoChart
+        }
+
+        [Test]
+        public void BoxAndWhiskerChart()
+        {
+            //ExStart:BoxAndWhiskerChart
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:ChartSeriesCollection.Add(String, String[], double[])
+            //ExSummary:Shows how to create box and whisker chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a Box & Whisker chart.
+            Shape shape = builder.InsertChart(ChartType.BoxAndWhisker, 450, 450);
+            Chart chart = shape.Chart;
+            chart.Title.Text = "Points by Years";
+
+            // Delete default generated series.
+            chart.Series.Clear();
+
+            // Add a series.
+            ChartSeries series = chart.Series.Add(
+                "Points by Years",
+                new string[]
+                {
+                    "WC", "WC", "WC", "WC", "WC", "WC", "WC", "WC", "WC", "WC",
+                    "NR", "NR", "NR", "NR", "NR", "NR", "NR", "NR", "NR", "NR",
+                    "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"
+                },
+                new double[]
+                {
+                    91, 80, 100, 77, 90, 104, 105, 118, 120, 101,
+                    114, 107, 110, 60, 79, 78, 77, 102, 101, 113,
+                    94, 93, 84, 71, 80, 103, 80, 94, 100, 101
+                });
+
+            // Show data labels.
+            series.HasDataLabels = true;
+
+            doc.Save(ArtifactsDir + "Charts.BoxAndWhisker.docx");
+            //ExEnd:BoxAndWhiskerChart
+        }
+
+        [Test]
+        public void WaterfallChart()
+        {
+            //ExStart:WaterfallChart
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:ChartSeriesCollection.Add(String, String[], double[], bool[])
+            //ExSummary:Shows how to create waterfall chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a Waterfall chart.
+            Shape shape = builder.InsertChart(ChartType.Waterfall, 450, 450);
+            Chart chart = shape.Chart;
+            chart.Title.Text = "New Zealand GDP";
+
+            // Delete default generated series.
+            chart.Series.Clear();
+
+            // Add a series.
+            ChartSeries series = chart.Series.Add(
+                "New Zealand GDP",
+                new string[] { "2018", "2019 growth", "2020 growth", "2020", "2021 growth", "2022 growth", "2022" },
+                new double[] { 100, 0.57, -0.25, 100.32, 20.22, -2.92, 117.62 },
+                new bool[] { true, false, false, true, false, false, true });
+
+            // Show data labels.
+            series.HasDataLabels = true;
+
+            doc.Save(ArtifactsDir + "Charts.Waterfall.docx");
+            //ExEnd:WaterfallChart
+        }
+
+        [Test]
+        public void FunnelChart()
+        {
+            //ExStart:FunnelChart
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:ChartSeriesCollection.Add(String, String[], double[])
+            //ExSummary:Shows how to create funnel chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a Funnel chart.
+            Shape shape = builder.InsertChart(ChartType.Funnel, 450, 450);
+            Chart chart = shape.Chart;
+            chart.Title.Text = "Population by Age Group";
+
+            // Delete default generated series.
+            chart.Series.Clear();
+
+            // Add a series.
+            ChartSeries series = chart.Series.Add(
+                "Population by Age Group",
+                new string[] { "0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80-89", "90-" },
+                new double[] { 0.121, 0.128, 0.132, 0.146, 0.124, 0.124, 0.111, 0.075, 0.032, 0.007 });
+
+            // Show data labels.
+            series.HasDataLabels = true;
+            string decimalSeparator = CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator;
+            series.DataLabels.NumberFormat.FormatCode = $"0{decimalSeparator}0%";
+
+            doc.Save(ArtifactsDir + "Charts.Funnel.docx");
+            //ExEnd:FunnelChart
+        }
+
+        [Test]
+        public void LabelOrientationRotation()
+        {
+            //ExStart:LabelOrientationRotation
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:ChartDataLabelCollection.Orientation
+            //ExFor:ChartDataLabelCollection.Rotation
+            //ExFor:ChartDataLabel.Rotation
+            //ExFor:ChartDataLabel.Orientation
+            //ExFor:ShapeTextOrientation
+            //ExSummary:Shows how to change orientation and rotation for data labels.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            ChartSeries series = shape.Chart.Series[0];
+            ChartDataLabelCollection dataLabels = series.DataLabels;
+
+            // Show data labels.
+            series.HasDataLabels = true;
+            dataLabels.ShowValue = true;
+            dataLabels.ShowCategoryName = true;
+
+            // Define data label shape.
+            dataLabels.Format.ShapeType = ChartShapeType.UpArrow;
+            dataLabels.Format.Stroke.Fill.Solid(Color.DarkBlue);
+
+            // Set data label orientation and rotation for the entire series.
+            dataLabels.Orientation = ShapeTextOrientation.VerticalFarEast;
+            dataLabels.Rotation = -45;
+
+            // Change orientation and rotation of the first data label.
+            dataLabels[0].Orientation = ShapeTextOrientation.Horizontal;
+            dataLabels[0].Rotation = 45;
+
+            doc.Save(ArtifactsDir + "Charts.LabelOrientationRotation.docx");
+            //ExEnd:LabelOrientationRotation
+        }
+
+        [Test]
+        public void TickLabelsOrientationRotation()
+        {
+            //ExStart:TickLabelsOrientationRotation
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:AxisTickLabels.Rotation
+            //ExFor:AxisTickLabels.Orientation
+            //ExSummary:Shows how to change orientation and rotation for axis tick labels.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a column chart.
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            AxisTickLabels xTickLabels = shape.Chart.AxisX.TickLabels;
+            AxisTickLabels yTickLabels = shape.Chart.AxisY.TickLabels;
+
+            // Set axis tick label orientation and rotation.
+            xTickLabels.Orientation = ShapeTextOrientation.VerticalFarEast;
+            xTickLabels.Rotation = -30;
+            yTickLabels.Orientation = ShapeTextOrientation.Horizontal;
+            yTickLabels.Rotation = 45;
+
+            doc.Save(ArtifactsDir + "Charts.TickLabelsOrientationRotation.docx");
+            //ExEnd:TickLabelsOrientationRotation
         }
     }
 }

@@ -16,7 +16,6 @@ using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using Aspose.Words;
-using Aspose.Words.Comparing;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
@@ -40,8 +39,6 @@ using Aspose.Page.XPS.XpsModel;
 using Aspose.Words.Settings;
 using Aspose.Pdf.Text;
 using Aspose.Words.Shaping.HarfBuzz;
-using System.Net.Http;
-using System.Threading.Tasks;
 #if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
@@ -56,6 +53,7 @@ namespace ApiExamples
         {
             //ExStart:CreateSimpleDocument
             //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:DocumentBase.Document
             //ExFor:Document.#ctor()
             //ExSummary:Shows how to create simple document.
             Document doc = new Document();
@@ -312,11 +310,12 @@ namespace ApiExamples
                     break;
 
                 case "PNG":
-                    options = new PdfFixedOptions() { 
-                        PageIndex = 0, 
-                        PageCount = 2, 
-                        JpegQuality = 50, 
-                        ImageFormat = FixedImageFormat.Png 
+                    options = new PdfFixedOptions()
+                    {
+                        PageIndex = 0,
+                        PageCount = 2,
+                        JpegQuality = 50,
+                        ImageFormat = FixedImageFormat.Png
                     };
                     SaveTo(pdfRenderer, docName, options, "png");
                     AssertResult("png");
@@ -389,7 +388,7 @@ namespace ApiExamples
                                      .Where(path => reg.IsMatch(path))
                                      .ToList();
 
-                if(fileExt == "png")
+                if (fileExt == "png")
                     Assert.AreEqual(2, images.Count);
                 else
                     Assert.AreEqual(5, images.Count);
@@ -431,6 +430,7 @@ namespace ApiExamples
             //ExFor:Document.#ctor(Stream,LoadOptions)
             //ExFor:LoadOptions.#ctor
             //ExFor:LoadOptions.BaseUri
+            //ExFor:ShapeBase.IsImage
             //ExSummary:Shows how to open an HTML document with images from a stream using a base URI.
             using (Stream stream = File.OpenRead(MyDir + "Document.html"))
             {
@@ -516,10 +516,16 @@ namespace ApiExamples
         [Test]
         public void NotSupportedWarning()
         {
-            WarningInfoCollection warings = new WarningInfoCollection();
-            Document doc = new Document(MyDir + "FB2 document.fb2", new LoadOptions { WarningCallback = warings });
+            //ExStart
+            //ExFor:WarningInfoCollection.Count
+            //ExFor:WarningInfoCollection.Item(Int32)
+            //ExSummary:Shows how to get warnings about unsupported formats.
+            WarningInfoCollection warnings = new WarningInfoCollection();
+            Document doc = new Document(MyDir + "FB2 document.fb2", new LoadOptions { WarningCallback = warnings });
 
-            Assert.AreEqual("The original file load format is FB2, which is not supported by Aspose.Words. The file is loaded as an XML document.", warings[0].Description);
+            Assert.AreEqual("The original file load format is FB2, which is not supported by Aspose.Words. The file is loaded as an XML document.", warnings[0].Description);
+            Assert.AreEqual(1, warnings.Count);
+            //ExEnd
         }
 
         [Test]
@@ -592,6 +598,7 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:Range.Fields
         //ExFor:INodeChangingCallback
         //ExFor:INodeChangingCallback.NodeInserting
         //ExFor:INodeChangingCallback.NodeInserted
@@ -636,7 +643,7 @@ namespace ApiExamples
 
                 if (args.Node.NodeType == NodeType.Run)
                 {
-                    Aspose.Words.Font font = ((Run) args.Node).Font;
+                    Aspose.Words.Font font = ((Run)args.Node).Font;
                     mLog.Append($"\tFont:\tChanged from \"{font.Name}\" {font.Size}pt");
 
                     font.Size = 24;
@@ -863,7 +870,7 @@ namespace ApiExamples
             foreach (DigitalSignature signature in doc.DigitalSignatures)
             {
                 Console.WriteLine($"{(signature.IsValid ? "Valid" : "Invalid")} signature: ");
-                Console.WriteLine($"\tReason:\t{signature.Comments}"); 
+                Console.WriteLine($"\tReason:\t{signature.Comments}");
                 Console.WriteLine($"\tType:\t{signature.SignatureType}");
                 Console.WriteLine($"\tSign time:\t{signature.SignTime}");
                 Console.WriteLine($"\tSubject name:\t{signature.CertificateHolder.Certificate.SubjectName}");
@@ -909,7 +916,7 @@ namespace ApiExamples
             // There are two ways of saving a signed copy of a document to the local file system:
             // 1 - Designate a document by a local system filename and save a signed copy at a location specified by another filename.
             SignOptions signOptions = new SignOptions { SignTime = DateTime.Now };
-            DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "Document.DigitalSignature.docx", 
+            DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "Document.DigitalSignature.docx",
                 certificateHolder, signOptions);
 
             Assert.True(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
@@ -1052,7 +1059,7 @@ namespace ApiExamples
             // but with a unique copy of each of the original document's nodes.
             Document clone = doc.Clone();
 
-            Assert.AreEqual(doc.FirstSection.Body.FirstParagraph.Runs[0].GetText(), 
+            Assert.AreEqual(doc.FirstSection.Body.FirstParagraph.Runs[0].GetText(),
                 clone.FirstSection.Body.FirstParagraph.Runs[0].Text);
             Assert.AreNotEqual(doc.FirstSection.Body.FirstParagraph.Runs[0].GetHashCode(),
                 clone.FirstSection.Body.FirstParagraph.Runs[0].GetHashCode());
@@ -1282,9 +1289,9 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.TableStyleToDirectFormatting.docx");
             //ExEnd
 
-            TestUtil.DocPackageFileContainsString("<w:tblStyleRowBandSize w:val=\"3\" />", 
+            TestUtil.DocPackageFileContainsString("<w:tblStyleRowBandSize w:val=\"3\" />",
                 ArtifactsDir + "Document.TableStyleToDirectFormatting.docx", "document.xml");
-            TestUtil.DocPackageFileContainsString("<w:tblCellSpacing w:w=\"100\" w:type=\"dxa\" />", 
+            TestUtil.DocPackageFileContainsString("<w:tblCellSpacing w:w=\"100\" w:type=\"dxa\" />",
                 ArtifactsDir + "Document.TableStyleToDirectFormatting.docx", "document.xml");
             TestUtil.DocPackageFileContainsString("<w:tblBorders><w:top w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:left w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:bottom w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:right w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:insideH w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /><w:insideV w:val=\"dotDash\" w:sz=\"2\" w:space=\"0\" w:color=\"0000FF\" /></w:tblBorders>",
                 ArtifactsDir + "Document.TableStyleToDirectFormatting.docx", "document.xml");
@@ -1325,170 +1332,6 @@ namespace ApiExamples
         }
 
         [Test]
-        public void Compare()
-        {
-            //ExStart
-            //ExFor:Document.Compare(Document, String, DateTime)
-            //ExFor:RevisionCollection.AcceptAll
-            //ExSummary:Shows how to compare documents. 
-            Document docOriginal = new Document();
-            DocumentBuilder builder = new DocumentBuilder(docOriginal);
-            builder.Writeln("This is the original document.");
-
-            Document docEdited = new Document();
-            builder = new DocumentBuilder(docEdited);
-            builder.Writeln("This is the edited document.");
-
-            // Comparing documents with revisions will throw an exception.
-            if (docOriginal.Revisions.Count == 0 && docEdited.Revisions.Count == 0)
-                docOriginal.Compare(docEdited, "authorName", DateTime.Now);
-
-            // After the comparison, the original document will gain a new revision
-            // for every element that is different in the edited document.
-            Assert.AreEqual(2, docOriginal.Revisions.Count); //ExSkip
-            foreach (Revision r in docOriginal.Revisions)
-            {
-                Console.WriteLine($"Revision type: {r.RevisionType}, on a node of type \"{r.ParentNode.NodeType}\"");
-                Console.WriteLine($"\tChanged text: \"{r.ParentNode.GetText()}\"");
-            }
-
-            // Accepting these revisions will transform the original document into the edited document.
-            docOriginal.Revisions.AcceptAll();
-
-            Assert.AreEqual(docOriginal.GetText(), docEdited.GetText());
-            //ExEnd
-
-            docOriginal = DocumentHelper.SaveOpen(docOriginal);
-            Assert.AreEqual(0, docOriginal.Revisions.Count);
-        }
-
-        [Test]
-        public void CompareDocumentWithRevisions()
-        {
-            Document doc1 = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc1);
-            builder.Writeln("Hello world! This text is not a revision.");
-
-            Document docWithRevision = new Document();
-            builder = new DocumentBuilder(docWithRevision);
-
-            docWithRevision.StartTrackRevisions("John Doe");
-            builder.Writeln("This is a revision.");
-
-            Assert.Throws<InvalidOperationException>(() => docWithRevision.Compare(doc1, "John Doe", DateTime.Now));
-        }
-
-        [Test]
-        public void CompareOptions()
-        {
-            //ExStart
-            //ExFor:CompareOptions
-            //ExFor:CompareOptions.IgnoreFormatting
-            //ExFor:CompareOptions.IgnoreCaseChanges
-            //ExFor:CompareOptions.IgnoreComments
-            //ExFor:CompareOptions.IgnoreTables
-            //ExFor:CompareOptions.IgnoreFields
-            //ExFor:CompareOptions.IgnoreFootnotes
-            //ExFor:CompareOptions.IgnoreTextboxes
-            //ExFor:CompareOptions.IgnoreHeadersAndFooters
-            //ExFor:CompareOptions.Target
-            //ExFor:ComparisonTargetType
-            //ExFor:Document.Compare(Document, String, DateTime, CompareOptions)
-            //ExSummary:Shows how to filter specific types of document elements when making a comparison.
-            // Create the original document and populate it with various kinds of elements.
-            Document docOriginal = new Document();
-            DocumentBuilder builder = new DocumentBuilder(docOriginal);
-
-            // Paragraph text referenced with an endnote:
-            builder.Writeln("Hello world! This is the first paragraph.");
-            builder.InsertFootnote(FootnoteType.Endnote, "Original endnote text.");
-
-            // Table:
-            builder.StartTable();
-            builder.InsertCell();
-            builder.Write("Original cell 1 text");
-            builder.InsertCell();
-            builder.Write("Original cell 2 text");
-            builder.EndTable();
-
-            // Textbox:
-            Shape textBox = builder.InsertShape(ShapeType.TextBox, 150, 20);
-            builder.MoveTo(textBox.FirstParagraph);
-            builder.Write("Original textbox contents");
-
-            // DATE field:
-            builder.MoveTo(docOriginal.FirstSection.Body.AppendParagraph(""));
-            builder.InsertField(" DATE ");
-
-            // Comment:
-            Comment newComment = new Comment(docOriginal, "John Doe", "J.D.", DateTime.Now);
-            newComment.SetText("Original comment.");
-            builder.CurrentParagraph.AppendChild(newComment);
-
-            // Header:
-            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            builder.Writeln("Original header contents.");
-
-            // Create a clone of our document and perform a quick edit on each of the cloned document's elements.
-            Document docEdited = (Document)docOriginal.Clone(true);
-            Paragraph firstParagraph = docEdited.FirstSection.Body.FirstParagraph;
-
-            firstParagraph.Runs[0].Text = "hello world! this is the first paragraph, after editing.";
-            firstParagraph.ParagraphFormat.Style = docEdited.Styles[StyleIdentifier.Heading1];
-            ((Footnote)docEdited.GetChild(NodeType.Footnote, 0, true)).FirstParagraph.Runs[1].Text = "Edited endnote text.";
-            ((Table)docEdited.GetChild(NodeType.Table, 0, true)).FirstRow.Cells[1].FirstParagraph.Runs[0].Text = "Edited Cell 2 contents";
-            ((Shape)docEdited.GetChild(NodeType.Shape, 0, true)).FirstParagraph.Runs[0].Text = "Edited textbox contents";
-            ((FieldDate)docEdited.Range.Fields[0]).UseLunarCalendar = true; 
-            ((Comment)docEdited.GetChild(NodeType.Comment, 0, true)).FirstParagraph.Runs[0].Text = "Edited comment.";
-            docEdited.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].FirstParagraph.Runs[0].Text =
-                "Edited header contents.";
-
-            // Comparing documents creates a revision for every edit in the edited document.
-            // A CompareOptions object has a series of flags that can suppress revisions
-            // on each respective type of element, effectively ignoring their change.
-            Aspose.Words.Comparing.CompareOptions compareOptions = new Aspose.Words.Comparing.CompareOptions();
-            compareOptions.IgnoreFormatting = false;
-            compareOptions.IgnoreCaseChanges = false;
-            compareOptions.IgnoreComments = false;
-            compareOptions.IgnoreTables = false;
-            compareOptions.IgnoreFields = false;
-            compareOptions.IgnoreFootnotes = false;
-            compareOptions.IgnoreTextboxes = false;
-            compareOptions.IgnoreHeadersAndFooters = false;
-            compareOptions.Target = ComparisonTargetType.New;
-
-            docOriginal.Compare(docEdited, "John Doe", DateTime.Now, compareOptions);
-            docOriginal.Save(ArtifactsDir + "Document.CompareOptions.docx");
-            //ExEnd
-
-            docOriginal = new Document(ArtifactsDir + "Document.CompareOptions.docx");
-
-            TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
-                "OriginalEdited endnote text.", (Footnote)docOriginal.GetChild(NodeType.Footnote, 0, true));
-        }
-
-        [TestCase(false)]
-        [TestCase(true)]
-        public void IgnoreDmlUniqueId(bool isIgnoreDmlUniqueId)
-        {
-            //ExStart
-            //ExFor:CompareOptions.IgnoreDmlUniqueId
-            //ExSummary:Shows how to compare documents ignoring DML unique ID.
-            Document docA = new Document(MyDir + "DML unique ID original.docx");
-            Document docB = new Document(MyDir + "DML unique ID compare.docx");
-
-            // By default, Aspose.Words do not ignore DML's unique ID, and the revisions count was 2.
-            // If we are ignoring DML's unique ID, and revisions count were 0.
-            Aspose.Words.Comparing.CompareOptions compareOptions = new Aspose.Words.Comparing.CompareOptions();
-            compareOptions.IgnoreDmlUniqueId = isIgnoreDmlUniqueId;
- 
-            docA.Compare(docB, "Aspose.Words", DateTime.Now, compareOptions);
-
-            Assert.AreEqual(isIgnoreDmlUniqueId ? 0 : 2, docA.Revisions.Count);
-            //ExEnd
-        }
-
-        [Test]
         public void RemoveExternalSchemaReferences()
         {
             //ExStart
@@ -1498,113 +1341,6 @@ namespace ApiExamples
 
             doc.RemoveExternalSchemaReferences();
             //ExEnd
-        }
-
-        [Test]
-        public void TrackRevisions()
-        {
-            //ExStart
-            //ExFor:Document.StartTrackRevisions(String)
-            //ExFor:Document.StartTrackRevisions(String, DateTime)
-            //ExFor:Document.StopTrackRevisions
-            //ExSummary:Shows how to track revisions while editing a document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Editing a document usually does not count as a revision until we begin tracking them.
-            builder.Write("Hello world! ");
-
-            Assert.AreEqual(0, doc.Revisions.Count);
-            Assert.False(doc.FirstSection.Body.Paragraphs[0].Runs[0].IsInsertRevision);
-
-            doc.StartTrackRevisions("John Doe");
-
-            builder.Write("Hello again! ");
-
-            Assert.AreEqual(1, doc.Revisions.Count);
-            Assert.True(doc.FirstSection.Body.Paragraphs[0].Runs[1].IsInsertRevision);
-            Assert.AreEqual("John Doe", doc.Revisions[0].Author);
-            Assert.IsTrue((DateTime.Now - doc.Revisions[0].DateTime).Milliseconds <= 10);
-
-            // Stop tracking revisions to not count any future edits as revisions.
-            doc.StopTrackRevisions();
-            builder.Write("Hello again! ");
-
-            Assert.AreEqual(1, doc.Revisions.Count);
-            Assert.False(doc.FirstSection.Body.Paragraphs[0].Runs[2].IsInsertRevision);
-
-            // Creating revisions gives them a date and time of the operation.
-            // We can disable this by passing DateTime.MinValue when we start tracking revisions.
-            doc.StartTrackRevisions("John Doe", DateTime.MinValue);
-            builder.Write("Hello again! ");
-
-            Assert.AreEqual(2, doc.Revisions.Count);
-            Assert.AreEqual("John Doe", doc.Revisions[1].Author);
-            Assert.AreEqual(DateTime.MinValue, doc.Revisions[1].DateTime);
-
-            // We can accept/reject these revisions programmatically
-            // by calling methods such as Document.AcceptAllRevisions, or each revision's Accept method.
-            // In Microsoft Word, we can process them manually via "Review" -> "Changes".
-            doc.Save(ArtifactsDir + "Document.StartTrackRevisions.docx");
-            //ExEnd
-        }
-
-        [Test]
-        public void AcceptAllRevisions()
-        {
-            //ExStart
-            //ExFor:Document.AcceptAllRevisions
-            //ExSummary:Shows how to accept all tracking changes in the document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Edit the document while tracking changes to create a few revisions.
-            doc.StartTrackRevisions("John Doe");
-            builder.Write("Hello world! ");
-            builder.Write("Hello again! "); 
-            builder.Write("This is another revision.");
-            doc.StopTrackRevisions();
-
-            Assert.AreEqual(3, doc.Revisions.Count);
-
-            // We can iterate through every revision and accept/reject it as a part of our document.
-            // If we know we wish to accept every revision, we can do it more straightforwardly so by calling this method.
-            doc.AcceptAllRevisions();
-
-            Assert.AreEqual(0, doc.Revisions.Count);
-            Assert.AreEqual("Hello world! Hello again! This is another revision.", doc.GetText().Trim());
-            //ExEnd
-        }
-
-        [Test]
-        public void GetRevisedPropertiesOfList()
-        {
-            //ExStart
-            //ExFor:RevisionsView
-            //ExFor:Document.RevisionsView
-            //ExSummary:Shows how to switch between the revised and the original view of a document.
-            Document doc = new Document(MyDir + "Revisions at list levels.docx");
-            doc.UpdateListLabels();
-
-            ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-            Assert.AreEqual("1.", paragraphs[0].ListLabel.LabelString);
-            Assert.AreEqual("a.", paragraphs[1].ListLabel.LabelString);
-            Assert.AreEqual(string.Empty, paragraphs[2].ListLabel.LabelString);
-
-            // View the document object as if all the revisions are accepted. Currently supports list labels.
-            doc.RevisionsView = RevisionsView.Final;
-
-            Assert.AreEqual(string.Empty, paragraphs[0].ListLabel.LabelString);
-            Assert.AreEqual("1.", paragraphs[1].ListLabel.LabelString);
-            Assert.AreEqual("a.", paragraphs[2].ListLabel.LabelString);
-            //ExEnd
-
-            doc.RevisionsView = RevisionsView.Original;
-            doc.AcceptAllRevisions();
-
-            Assert.AreEqual("a.", paragraphs[0].ListLabel.LabelString);
-            Assert.AreEqual(string.Empty, paragraphs[1].ListLabel.LabelString);
-            Assert.AreEqual("b.", paragraphs[2].ListLabel.LabelString);
         }
 
         [Test]
@@ -1841,6 +1577,7 @@ namespace ApiExamples
         public void UseSubstitutions()
         {
             //ExStart
+            //ExFor:FindReplaceOptions.#ctor
             //ExFor:FindReplaceOptions.UseSubstitutions
             //ExFor:FindReplaceOptions.LegacyMode
             //ExSummary:Shows how to recognize and use substitutions within replacement patterns.
@@ -1868,6 +1605,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Document.NormalizeFieldTypes
+            //ExFor:Range.NormalizeFieldTypes
             //ExSummary:Shows how to get the keep a field's type up to date with its field code.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1895,40 +1633,8 @@ namespace ApiExamples
 
             Assert.AreEqual(FieldType.FieldPage, field.Type);
             Assert.AreEqual(FieldType.FieldPage, field.Start.FieldType);
-            Assert.AreEqual(FieldType.FieldPage, field.Separator.FieldType); 
+            Assert.AreEqual(FieldType.FieldPage, field.Separator.FieldType);
             Assert.AreEqual(FieldType.FieldPage, field.End.FieldType);
-            //ExEnd
-        }
-
-        [Test]
-        public void LayoutOptionsRevisions()
-        {
-            //ExStart
-            //ExFor:Document.LayoutOptions
-            //ExFor:LayoutOptions
-            //ExFor:LayoutOptions.RevisionOptions
-            //ExFor:RevisionColor
-            //ExFor:RevisionOptions
-            //ExFor:RevisionOptions.InsertedTextColor
-            //ExFor:RevisionOptions.ShowRevisionBars
-            //ExSummary:Shows how to alter the appearance of revisions in a rendered output document.
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            // Insert a revision, then change the color of all revisions to green.
-            builder.Writeln("This is not a revision.");
-            doc.StartTrackRevisions("John Doe", DateTime.Now);
-            Assert.AreEqual(RevisionColor.ByAuthor, doc.LayoutOptions.RevisionOptions.InsertedTextColor); //ExSkip
-            Assert.True(doc.LayoutOptions.RevisionOptions.ShowRevisionBars); //ExSkip
-            builder.Writeln("This is a revision.");
-            doc.StopTrackRevisions();
-            builder.Writeln("This is not a revision.");
-
-            // Remove the bar that appears to the left of every revised line.
-            doc.LayoutOptions.RevisionOptions.InsertedTextColor = RevisionColor.BrightGreen;
-            doc.LayoutOptions.RevisionOptions.ShowRevisionBars = false;
-
-            doc.Save(ArtifactsDir + "Document.LayoutOptionsRevisions.pdf");
             //ExEnd
         }
 
@@ -1966,8 +1672,8 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.AreEqual(showHiddenText ? 
-                    $"This text is not hidden.{Environment.NewLine}This text is hidden." : 
+            Assert.AreEqual(showHiddenText ?
+                    $"This text is not hidden.{Environment.NewLine}This text is hidden." :
                     "This text is not hidden.", textAbsorber.Text);
         }
 
@@ -2005,8 +1711,8 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.AreEqual(showParagraphMarks ? 
-                    $"Hello world!¶{Environment.NewLine}Hello again!¶{Environment.NewLine}¶" : 
+            Assert.AreEqual(showParagraphMarks ?
+                    $"Hello world!¶{Environment.NewLine}Hello again!¶{Environment.NewLine}¶" :
                     $"Hello world!{Environment.NewLine}Hello again!", textAbsorber.Text.Trim());
         }
 
@@ -2017,6 +1723,7 @@ namespace ApiExamples
             //ExFor:StyleCollection.Item(String)
             //ExFor:SectionCollection.Item(Int32)
             //ExFor:Document.UpdatePageLayout
+            //ExFor:Margins
             //ExFor:PageSetup.Margins
             //ExSummary:Shows when to recalculate the page layout of the document.
             Document doc = new Document(MyDir + "Rendering.docx");
@@ -2030,7 +1737,7 @@ namespace ApiExamples
             doc.Sections[0].PageSetup.Orientation = Aspose.Words.Orientation.Landscape;
             doc.Sections[0].PageSetup.Margins = Margins.Mirrored;
 
-            // In the current version of Aspose.Words, modifying the document does not automatically rebuild 
+            // In the current version of Aspose.Words, modifying the document does not automatically rebuild
             // the cached page layout. If we wish for the cached layout
             // to stay up to date, we will need to update it manually.
             doc.UpdatePageLayout();
@@ -2103,23 +1810,23 @@ namespace ApiExamples
         {
             Assert.AreEqual(3, parts.Count);
 
-            Assert.AreEqual("/payload/payload_on_package.test", parts[0].Name); 
-            Assert.AreEqual("mytest/somedata", parts[0].ContentType); 
-            Assert.AreEqual("http://mytest.payload.internal", parts[0].RelationshipType); 
-            Assert.AreEqual(false, parts[0].IsExternal); 
-            Assert.AreEqual(18, parts[0].Data.Length); 
+            Assert.AreEqual("/payload/payload_on_package.test", parts[0].Name);
+            Assert.AreEqual("mytest/somedata", parts[0].ContentType);
+            Assert.AreEqual("http://mytest.payload.internal", parts[0].RelationshipType);
+            Assert.AreEqual(false, parts[0].IsExternal);
+            Assert.AreEqual(18, parts[0].Data.Length);
 
-            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", parts[1].Name); 
-            Assert.AreEqual("", parts[1].ContentType); 
-            Assert.AreEqual("http://mytest.payload.external", parts[1].RelationshipType); 
-            Assert.AreEqual(true, parts[1].IsExternal); 
-            Assert.AreEqual(0, parts[1].Data.Length); 
+            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", parts[1].Name);
+            Assert.AreEqual("", parts[1].ContentType);
+            Assert.AreEqual("http://mytest.payload.external", parts[1].RelationshipType);
+            Assert.AreEqual(true, parts[1].IsExternal);
+            Assert.AreEqual(0, parts[1].Data.Length);
 
-            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", parts[2].Name); 
-            Assert.AreEqual("", parts[2].ContentType); 
-            Assert.AreEqual("http://mytest.payload.external", parts[2].RelationshipType); 
-            Assert.AreEqual(true, parts[2].IsExternal); 
-            Assert.AreEqual(0, parts[2].Data.Length); 
+            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", parts[2].Name);
+            Assert.AreEqual("", parts[2].ContentType);
+            Assert.AreEqual("http://mytest.payload.external", parts[2].RelationshipType);
+            Assert.AreEqual(true, parts[2].IsExternal);
+            Assert.AreEqual(0, parts[2].Data.Length);
         }
 
         [TestCase(false)]
@@ -2351,7 +2058,7 @@ namespace ApiExamples
             Assert.AreEqual(21, target.Styles.Count);
             //ExEnd
         }
-        
+
         [Test]
         public void ReadMacrosFromExistingDocument()
         {
@@ -2359,8 +2066,8 @@ namespace ApiExamples
             //ExFor:Document.VbaProject
             //ExFor:VbaModuleCollection
             //ExFor:VbaModuleCollection.Count
-            //ExFor:VbaModuleCollection.Item(Int32)
-            //ExFor:VbaModuleCollection.Item(String)
+            //ExFor:VbaModuleCollection.Item(System.Int32)
+            //ExFor:VbaModuleCollection.Item(System.String)
             //ExFor:VbaModuleCollection.Remove
             //ExFor:VbaModule
             //ExFor:VbaModule.Name
@@ -2380,7 +2087,7 @@ namespace ApiExamples
                 ? $"Project name: {vbaProject.Name} signed; Project code page: {vbaProject.CodePage}; Modules count: {vbaProject.Modules.Count()}\n"
                 : $"Project name: {vbaProject.Name} not signed; Project code page: {vbaProject.CodePage}; Modules count: {vbaProject.Modules.Count()}\n");
 
-            VbaModuleCollection vbaModules = doc.VbaProject.Modules; 
+            VbaModuleCollection vbaModules = doc.VbaProject.Modules;
 
             Assert.AreEqual(vbaModules.Count(), 3);
 
@@ -2455,6 +2162,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:BaseWebExtensionCollection`1.Add(`0)
             //ExFor:BaseWebExtensionCollection`1.Clear
+            //ExFor:Document.WebExtensionTaskPanes
             //ExFor:TaskPane
             //ExFor:TaskPane.DockState
             //ExFor:TaskPane.IsVisible
@@ -2467,6 +2175,7 @@ namespace ApiExamples
             //ExFor:WebExtension.Properties
             //ExFor:WebExtension.Bindings
             //ExFor:WebExtension.IsFrozen
+            //ExFor:WebExtensionReference
             //ExFor:WebExtensionReference.Id
             //ExFor:WebExtensionReference.Version
             //ExFor:WebExtensionReference.StoreType
@@ -2479,6 +2188,8 @@ namespace ApiExamples
             //ExFor:WebExtensionBindingType
             //ExFor:TaskPaneDockState
             //ExFor:TaskPaneCollection
+            //ExFor:WebExtensionBinding.AppRef
+            //ExFor:WebExtensionBinding.BindingType
             //ExSummary:Shows how to add a web extension to a document.
             Document doc = new Document();
 
@@ -2515,7 +2226,6 @@ namespace ApiExamples
             doc.WebExtensionTaskPanes.Clear();
 
             Assert.AreEqual(0, doc.WebExtensionTaskPanes.Count);
-            //ExEnd
 
             doc = new Document(ArtifactsDir + "Document.WebExtension.docx");
             myScriptTaskPane = doc.WebExtensionTaskPanes[0];
@@ -2540,6 +2250,7 @@ namespace ApiExamples
             Assert.AreEqual("104380646", webExtension.Bindings[0].AppRef);
 
             Assert.False(webExtension.IsFrozen);
+            //ExEnd
         }
 
         [Test]
@@ -2596,9 +2307,12 @@ namespace ApiExamples
         public void TextWatermark()
         {
             //ExStart
+            //ExFor:Document.Watermark
+            //ExFor:Watermark
             //ExFor:Watermark.SetText(String)
             //ExFor:Watermark.SetText(String, TextWatermarkOptions)
             //ExFor:Watermark.Remove
+            //ExFor:TextWatermarkOptions
             //ExFor:TextWatermarkOptions.FontFamily
             //ExFor:TextWatermarkOptions.FontSize
             //ExFor:TextWatermarkOptions.Color
@@ -2606,6 +2320,7 @@ namespace ApiExamples
             //ExFor:TextWatermarkOptions.IsSemitrasparent
             //ExFor:WatermarkLayout
             //ExFor:WatermarkType
+            //ExFor:Watermark.Type
             //ExSummary:Shows how to create a text watermark.
             Document doc = new Document();
 
@@ -2640,8 +2355,11 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Watermark.SetImage(Image, ImageWatermarkOptions)
+            //ExFor:ImageWatermarkOptions
             //ExFor:ImageWatermarkOptions.Scale
             //ExFor:ImageWatermarkOptions.IsWashout
+            //ExFor:Watermark.SetImage(Image)
+            //ExFor:Watermark.SetImage(String, ImageWatermarkOptions)
             //ExSummary:Shows how to create a watermark from an image in the local file system.
             Document doc = new Document();
 
@@ -2652,7 +2370,12 @@ namespace ApiExamples
             imageWatermarkOptions.IsWashout = false;
 
 #if NET461_OR_GREATER || JAVA
+            // We have a different options to insert image:
             doc.Watermark.SetImage(Image.FromFile(ImageDir + "Logo.jpg"), imageWatermarkOptions);
+
+            doc.Watermark.SetImage(Image.FromFile(ImageDir + "Logo.jpg"));
+
+            doc.Watermark.SetImage(ImageDir + "Logo.jpg", imageWatermarkOptions);
 #elif NET5_0_OR_GREATER
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
             {
@@ -2696,70 +2419,6 @@ namespace ApiExamples
 
             Assert.AreEqual(showErrors, doc.ShowGrammaticalErrors);
             Assert.AreEqual(showErrors, doc.ShowSpellingErrors);
-        }
-
-        [TestCase(Granularity.CharLevel)]
-        [TestCase(Granularity.WordLevel)]
-        public void GranularityCompareOption(Granularity granularity)
-        {
-            //ExStart
-            //ExFor:CompareOptions.Granularity
-            //ExFor:Granularity
-            //ExSummary:Shows to specify a granularity while comparing documents.
-            Document docA = new Document();
-            DocumentBuilder builderA = new DocumentBuilder(docA);
-            builderA.Writeln("Alpha Lorem ipsum dolor sit amet, consectetur adipiscing elit");
-
-            Document docB = new Document();
-            DocumentBuilder builderB = new DocumentBuilder(docB);
-            builderB.Writeln("Lorems ipsum dolor sit amet consectetur - \"adipiscing\" elit");
-
-            // Specify whether changes are tracking
-            // by character ('Granularity.CharLevel'), or by word ('Granularity.WordLevel').
-            Aspose.Words.Comparing.CompareOptions compareOptions = new Aspose.Words.Comparing.CompareOptions();
-            compareOptions.Granularity = granularity;
- 
-            docA.Compare(docB, "author", DateTime.Now, compareOptions);
-
-            // The first document's collection of revision groups contains all the differences between documents.
-            RevisionGroupCollection groups = docA.Revisions.Groups;
-            Assert.AreEqual(5, groups.Count);
-            //ExEnd
-
-            if (granularity == Granularity.CharLevel)
-            {
-                Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
-                Assert.AreEqual("Alpha ", groups[0].Text);
-
-                Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
-                Assert.AreEqual(",", groups[1].Text);
-
-                Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
-                Assert.AreEqual("s", groups[2].Text);
-
-                Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
-                Assert.AreEqual("- \"", groups[3].Text);
-
-                Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
-                Assert.AreEqual("\"", groups[4].Text);
-            }
-            else
-            {
-                Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
-                Assert.AreEqual("Alpha Lorem", groups[0].Text);
-
-                Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
-                Assert.AreEqual(",", groups[1].Text);
-
-                Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
-                Assert.AreEqual("Lorems", groups[2].Text);
-
-                Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
-                Assert.AreEqual("- \"", groups[3].Text);
-
-                Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
-                Assert.AreEqual("\"", groups[4].Text);   
-            }
         }
 
         [Test]
@@ -2806,7 +2465,7 @@ namespace ApiExamples
             // The string with spelling errors.
             doc.FirstSection.Body.FirstParagraph.Runs.Add(new Run(doc, "The speeling in this documentz is all broked."));
 
-            // Spelling/Grammar check start if we set properties to false. 
+            // Spelling/Grammar check start if we set properties to false.
             // We can see all errors in Microsoft Word via Review -> Spelling & Grammar.
             // Note that Microsoft Word does not start grammar/spell check automatically for DOC and RTF document format.
             doc.SpellingChecked = checkSpellingGrammar;
@@ -2854,10 +2513,14 @@ namespace ApiExamples
             //ExFor:Frameset.FrameDefaultUrl
             //ExFor:Frameset.IsFrameLinkToFile
             //ExFor:Frameset.ChildFramesets
+            //ExFor:FramesetCollection
+            //ExFor:FramesetCollection.Count
+            //ExFor:FramesetCollection.Item(Int32)
             //ExSummary:Shows how to access frames on-page.
             // Document contains several frames with links to other documents.
             Document doc = new Document(MyDir + "Frameset.docx");
 
+            Assert.AreEqual(3, doc.Frameset.ChildFramesets.Count);
             // We can check the default URL (a web page URL or local document) or if the frame is an external resource.
             Assert.AreEqual("https://file-examples-com.github.io/uploads/2017/02/file-sample_100kB.docx",
                 doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl);
@@ -2989,6 +2652,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:PageInfo.Colored
+            //ExFor:Document.GetPageInfo(Int32)
             //ExSummary:Shows how to check whether the page is in color or not.
             Document doc = new Document(MyDir + "Document.docx");
 
@@ -3088,9 +2752,21 @@ namespace ApiExamples
 
                     doc.Save(stream, saveOptions);
                 }
-                else                
+                else
                     doc.Save(stream, saveFormat);
             }
+        }
+
+        [Test]
+        public void HasMacros()
+        {
+            //ExStart:HasMacros
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:FileFormatInfo.HasMacros
+            //ExSummary:Shows how to check VBA macro presence without loading document.
+            FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "Macro.docm");
+            Assert.IsTrue(fileFormatInfo.HasMacros);
+            //ExEnd:HasMacros
         }
     }
 }

@@ -486,6 +486,8 @@ namespace ApiExamples
             //ExFor:TextColumnCollection
             //ExFor:TextColumnCollection.Spacing
             //ExFor:TextColumnCollection.SetCount
+            //ExFor:TextColumnCollection.Count
+            //ExFor:TextColumnCollection.Width
             //ExSummary:Shows how to create multiple evenly spaced columns in a section.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -505,6 +507,7 @@ namespace ApiExamples
 
             Assert.AreEqual(100.0d, doc.FirstSection.PageSetup.TextColumns.Spacing);
             Assert.AreEqual(2, doc.FirstSection.PageSetup.TextColumns.Count);
+            Assert.AreEqual(185.15, doc.FirstSection.PageSetup.TextColumns.Width, 0.01);
         }
 
         [Test]
@@ -960,6 +963,7 @@ namespace ApiExamples
             //ExFor:PageSetup.Gutter
             //ExFor:PageSetup.MultiplePages
             //ExFor:PageSetup.SheetsPerBooklet
+            //ExFor:MultiplePagesType
             //ExSummary:Shows how to configure a document that can be printed as a book fold.
             Document doc = new Document();
 

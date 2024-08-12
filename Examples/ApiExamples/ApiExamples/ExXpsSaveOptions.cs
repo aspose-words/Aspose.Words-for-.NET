@@ -5,8 +5,10 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.IO;
 using Aspose.Words;
+using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Saving;
 using Aspose.Words.Settings;
 using NUnit.Framework;
@@ -156,6 +158,30 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "XpsSaveOptions.ExportExactPages.xps", xpsOptions);
             //ExEnd
+        }
+
+        [Test]
+        public void XpsDigitalSignature()
+        {
+            //ExStart:XpsDigitalSignature
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:XpsSaveOptions.DigitalSignatureDetails
+            //ExSummary:Shows how to sign XPS document.
+            Document doc = new Document(MyDir + "Document.docx");
+
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            DigitalSignatureDetails digitalSignatureDetails = new DigitalSignatureDetails(
+                certificateHolder,
+                new SignOptions() { Comments = "Some comments", SignTime = DateTime.Now });
+
+            XpsSaveOptions saveOptions = new XpsSaveOptions();
+            saveOptions.DigitalSignatureDetails = digitalSignatureDetails;
+
+            Assert.AreEqual(certificateHolder, digitalSignatureDetails.CertificateHolder);
+            Assert.AreEqual("Some comments", digitalSignatureDetails.SignOptions.Comments);
+
+            doc.Save(ArtifactsDir + "XpsSaveOptions.XpsDigitalSignature.docx", saveOptions);
+            //ExEnd:XpsDigitalSignature
         }
     }
 }

@@ -374,6 +374,29 @@ namespace ApiExamples
         }
 
         [Test]
+        public void SourseListNumbering()
+        {
+            //ExStart:SourseListNumbering
+            //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
+            //ExFor:ReportingEngine.BuildReport(Document, Object[], String[])
+            //ExSummary:Shows how to keep inserted numbering as is.
+            // By default, numbered lists from a template document are continued when their identifiers match those from a document being inserted.
+            // With "-sourceNumbering" numbering should be separated and kept as is.
+            Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.Document]>>" + Environment.NewLine + "<<doc [src.Document] -sourceNumbering>>");
+
+            DocumentTestClass doc = new DocumentTestBuilder()
+                .WithDocument(new Document(MyDir + "List item.docx")).Build();
+
+            ReportingEngine engine = new ReportingEngine() { Options = ReportBuildOptions.RemoveEmptyParagraphs };
+            engine.BuildReport(template, new object[] { doc }, new[] { "src" });
+
+            template.Save(ArtifactsDir + "ReportingEngine.SourseListNumbering.docx");
+            //ExEnd:SourseListNumbering
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SourseListNumbering.docx", GoldsDir + "ReportingEngine.SourseListNumbering Gold.docx"));
+        }
+
+        [Test]
         public void InsertDocumentDynamicallyByStream()
         {
             Document template = DocumentHelper.CreateSimpleDocument("<<doc [src.DocumentStream]>>");
@@ -477,7 +500,7 @@ namespace ApiExamples
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageString]>>", ShapeType.TextBox);
             ImageTestClass imageUri = new ImageTestBuilder()
                 .WithImageString(
-                    "http://joomla-aspose.dynabic.com/templates/aspose/App_Themes/V3/images/customers/americanexpress.png")
+                    "https://metrics.aspose.com/img/headergraphics.svg")
                 .Build();
 
             BuildReport(template, imageUri, "src", ReportBuildOptions.None);
@@ -813,19 +836,25 @@ namespace ApiExamples
         }
 
         [Test]
-        public void WithMissingMembers()
+        public void MissingMembers()
         {
+            //ExStart:MissingMembers
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:ReportingEngine.BuildReport(Document, Object, String)
+            //ExFor:ReportingEngine.MissingMemberMessage
+            //ExFor:ReportingEngine.Options
+            //ExSummary:Shows how to allow missinng members.
             DocumentBuilder builder = new DocumentBuilder();
+            builder.Writeln("<<[missingObject.First().id]>>");
+            builder.Writeln("<<foreach [in missingObject]>><<[id]>><</foreach>>");
 
-            // Add templete to the document for reporting engine.
-            DocumentHelper.InsertBuilderText(builder,
-                new[] { "<<[missingObject.First().id]>>", "<<foreach [in missingObject]>><<[id]>><</foreach>>" });
-
-            BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.AllowMissingMembers);
+            ReportingEngine engine = new ReportingEngine { Options = ReportBuildOptions.AllowMissingMembers };
+            engine.MissingMemberMessage = "Missed";
+            engine.BuildReport(builder.Document, new DataSet(), "");
+            //ExEnd:MissingMembers
 
             // Assert that build report success with "ReportBuildOptions.AllowMissingMembers".
-            Assert.AreEqual(ControlChar.ParagraphBreak + ControlChar.ParagraphBreak + ControlChar.SectionBreak,
-                builder.Document.GetText());
+            Assert.AreEqual("Missed", builder.Document.GetText().Trim());
         }
 
         [TestCase("<<[missingObject.First().id]>>", "<<[missingObject.First( Error! Can not get the value of member 'missingObject' on type 'System.Data.DataSet'. ).id]>>", TestName = "Can not get the value of member")]
@@ -951,12 +980,17 @@ namespace ApiExamples
         [Test]
         public void XmlDataStringWithoutSchema()
         {
+            //ExStart
+            //ExFor:XmlDataSource
+            //ExFor:XmlDataSource.#ctor(String)
+            //ExSummary:Show how to use XML as a data source (string).
             Document doc = new Document(MyDir + "Reporting engine template - XML data destination.docx");
 
             XmlDataSource dataSource = new XmlDataSource(MyDir + "List of people.xml");
             BuildReport(doc, dataSource, "persons");
 
             doc.Save(ArtifactsDir + "ReportingEngine.XmlDataString.docx");
+            //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataString.docx",
                 GoldsDir + "ReportingEngine.DataSource Gold.docx"));
@@ -965,6 +999,10 @@ namespace ApiExamples
         [Test]
         public void XmlDataStreamWithoutSchema()
         {
+            //ExStart
+            //ExFor:XmlDataSource
+            //ExFor:XmlDataSource.#ctor(Stream)
+            //ExSummary:Show how to use XML as a data source (stream).
             Document doc = new Document(MyDir + "Reporting engine template - XML data destination.docx");
 
             using (FileStream stream = File.OpenRead(MyDir + "List of people.xml"))
@@ -974,6 +1012,7 @@ namespace ApiExamples
             }
 
             doc.Save(ArtifactsDir + "ReportingEngine.XmlDataStream.docx");
+            //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataStream.docx",
                 GoldsDir + "ReportingEngine.DataSource Gold.docx"));
@@ -996,17 +1035,32 @@ namespace ApiExamples
         [Test]
         public void JsonDataString()
         {
+            //ExStart
+            //ExFor:JsonDataLoadOptions
+            //ExFor:JsonDataLoadOptions.#ctor
+            //ExFor:JsonDataLoadOptions.ExactDateTimeParseFormats
+            //ExFor:JsonDataLoadOptions.AlwaysGenerateRootObject
+            //ExFor:JsonDataLoadOptions.PreserveSpaces
+            //ExFor:JsonDataLoadOptions.SimpleValueParseMode
+            //ExFor:JsonDataSource
+            //ExFor:JsonDataSource.#ctor(String,JsonDataLoadOptions)
+            //ExFor:JsonSimpleValueParseMode
+            //ExSummary:Shows how to use JSON as a data source (string).
             Document doc = new Document(MyDir + "Reporting engine template - JSON data destination.docx");
 
             JsonDataLoadOptions options = new JsonDataLoadOptions
             {
-                ExactDateTimeParseFormats = new List<string> {"MM/dd/yyyy", "MM.d.yy", "MM d yy"}
+                ExactDateTimeParseFormats = new List<string> {"MM/dd/yyyy", "MM.d.yy", "MM d yy"},
+                AlwaysGenerateRootObject = true,
+                PreserveSpaces = true,
+                SimpleValueParseMode = JsonSimpleValueParseMode.Loose
             };
 
             JsonDataSource dataSource = new JsonDataSource(MyDir + "List of people.json", options);
             BuildReport(doc, dataSource, "persons");
 
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataString.docx");
+            //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataString.docx",
                 GoldsDir + "ReportingEngine.JsonDataString Gold.docx"));
@@ -1027,6 +1081,9 @@ namespace ApiExamples
         [Test]
         public void JsonDataStream()
         {
+            //ExStart
+            //ExFor:JsonDataSource.#ctor(Stream,JsonDataLoadOptions)
+            //ExSummary:Shows how to use JSON as a data source (stream).
             Document doc = new Document(MyDir + "Reporting engine template - JSON data destination.docx");
 
             JsonDataLoadOptions options = new JsonDataLoadOptions
@@ -1041,6 +1098,7 @@ namespace ApiExamples
             }
 
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataStream.docx");
+            //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataStream.docx",
                 GoldsDir + "ReportingEngine.JsonDataString Gold.docx"));
@@ -1091,16 +1149,30 @@ namespace ApiExamples
         [Test]
         public void CsvDataString()
         {
+            //ExStart
+            //ExFor:CsvDataLoadOptions
+            //ExFor:CsvDataLoadOptions.#ctor
+            //ExFor:CsvDataLoadOptions.#ctor(Boolean)
+            //ExFor:CsvDataLoadOptions.Delimiter
+            //ExFor:CsvDataLoadOptions.CommentChar
+            //ExFor:CsvDataLoadOptions.HasHeaders
+            //ExFor:CsvDataLoadOptions.QuoteChar
+            //ExFor:CsvDataSource
+            //ExFor:CsvDataSource.#ctor(String,CsvDataLoadOptions)
+            //ExSummary:Shows how to use CSV as a data source (string).
             Document doc = new Document(MyDir + "Reporting engine template - CSV data destination.docx");
 
             CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
             loadOptions.Delimiter = ';';
             loadOptions.CommentChar = '$';
+            loadOptions.HasHeaders = true;
+            loadOptions.QuoteChar = '"';
 
             CsvDataSource dataSource = new CsvDataSource(MyDir + "List of people.csv", loadOptions);
             BuildReport(doc, dataSource, "persons");
 
             doc.Save(ArtifactsDir + "ReportingEngine.CsvDataString.docx");
+            //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataString.docx",
                 GoldsDir + "ReportingEngine.CsvData Gold.docx"));
@@ -1109,6 +1181,9 @@ namespace ApiExamples
         [Test]
         public void CsvDataStream()
         {
+            //ExStart
+            //ExFor:CsvDataSource.#ctor(Stream,CsvDataLoadOptions)
+            //ExSummary:Shows how to use CSV as a data source (stream).
             Document doc = new Document(MyDir + "Reporting engine template - CSV data destination.docx");
 
             CsvDataLoadOptions loadOptions = new CsvDataLoadOptions(true);
@@ -1122,6 +1197,7 @@ namespace ApiExamples
             }
 
             doc.Save(ArtifactsDir + "ReportingEngine.CsvDataStream.docx");
+            //ExEnd
 
             Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataStream.docx",
                 GoldsDir + "ReportingEngine.CsvData Gold.docx"));
@@ -1254,6 +1330,25 @@ namespace ApiExamples
             //ExEnd:Word2016Charts
         }
 
+        [Test]
+        public void RemoveParagraphsSelectively()
+        {
+            //ExStart:RemoveParagraphsSelectively
+            //GistId:65919861586e42e24f61a3ccb65f8f4e
+            //ExFor:ReportingEngine.BuildReport(Document, Object, String)
+            //ExSummary:Shows how to remove paragraphs selectively.
+            // Template contains tags with an exclamation mark. For such tags, empty paragraphs will be removed.
+            Document doc = new Document(MyDir + "Reporting engine template - Selective remove paragraphs.docx");
+
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, false, "value");
+
+            doc.Save(ArtifactsDir + "ReportingEngine.SelectiveDeletionOfParagraphs.docx");
+            //ExEnd:RemoveParagraphsSelectively
+
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SelectiveDeletionOfParagraphs.docx", GoldsDir + "ReportingEngine.SelectiveDeletionOfParagraphs Gold.docx"));
+        }
+
         private static void BuildReport(Document document, object dataSource, ReportBuildOptions reportBuildOptions)
         {
             ReportingEngine engine = new ReportingEngine { Options = reportBuildOptions };
@@ -1317,3 +1412,4 @@ namespace ApiExamples
         }
     }
 }
+

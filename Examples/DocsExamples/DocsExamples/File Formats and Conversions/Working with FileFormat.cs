@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +13,7 @@ namespace DocsExamples.File_Formats_and_Conversions
         public void DetectFileFormat()
         {
             //ExStart:CheckFormatCompatibility
+            //GistId:7fe3fc4004f081628a63608db70332b3
             string supportedDir = ArtifactsDir + "Supported";
             string unknownDir = ArtifactsDir + "Unknown";
             string encryptedDir = ArtifactsDir + "Encrypted";
@@ -28,15 +29,15 @@ namespace DocsExamples.File_Formats_and_Conversions
             if (Directory.Exists(pre97Dir) == false)
                 Directory.CreateDirectory(pre97Dir);
 
-            //ExStart:GetListOfFilesInFolder
+            //ExStart:GetFiles
+            //GistId:7fe3fc4004f081628a63608db70332b3
             IEnumerable<string> fileList = Directory.GetFiles(MyDir).Where(name => !name.EndsWith("Corrupted document.docx"));
-            //ExEnd:GetListOfFilesInFolder
+            //ExEnd:GetFiles
             foreach (string fileName in fileList)
             {
                 string nameOnly = Path.GetFileName(fileName);
                 
                 Console.Write(nameOnly);
-                //ExStart:DetectFileFormat
                 FileFormatInfo info = FileFormatUtil.DetectFileFormat(fileName);
 
                 // Display the document type
@@ -88,7 +89,6 @@ namespace DocsExamples.File_Formats_and_Conversions
                         Console.WriteLine("\tUnknown format.");
                         break;
                 }
-                //ExEnd:DetectFileFormat
 
                 if (info.IsEncrypted)
                 {
@@ -127,7 +127,7 @@ namespace DocsExamples.File_Formats_and_Conversions
                     $"Document {Path.GetFileName(MyDir + "Digitally signed.docx")} has digital signatures, " +
                     "they will be lost if you open/save this document with Aspose.Words.");
             }
-            //ExEnd:DetectDocumentSignatures            
+            //ExEnd:DetectDocumentSignatures
         }
 
         [Test]

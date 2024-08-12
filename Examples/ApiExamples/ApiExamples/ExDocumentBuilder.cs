@@ -164,6 +164,7 @@ namespace ApiExamples
             //ExFor:DocumentBuilder.InsertHorizontalRule
             //ExFor:ShapeBase.IsHorizontalRule
             //ExFor:Shape.HorizontalRuleFormat
+            //ExFor:HorizontalRuleAlignment
             //ExFor:HorizontalRuleFormat
             //ExFor:HorizontalRuleFormat.Alignment
             //ExFor:HorizontalRuleFormat.WidthPercent
@@ -1905,6 +1906,7 @@ namespace ApiExamples
             //ExFor:SignatureLine.IsSigned
             //ExFor:SignatureLine.IsValid
             //ExFor:SignatureLine.ProviderId
+            //ExFor:SignatureLineOptions
             //ExFor:SignatureLineOptions.ShowDate
             //ExFor:SignatureLineOptions.Email
             //ExFor:SignatureLineOptions.DefaultInstructions
@@ -3011,6 +3013,10 @@ namespace ApiExamples
         [Test]
         public void EmphasesWarningSourceMarkdown()
         {
+            //ExStart
+            //ExFor:WarningInfo.Source
+            //ExFor:WarningSource
+            //ExSummary:Shows how to work with the warning source.
             Document doc = new Document(MyDir + "Emphases markdown warning.docx");
             
             WarningInfoCollection warnings = new WarningInfoCollection();
@@ -3022,6 +3028,7 @@ namespace ApiExamples
                 if (warningInfo.Source == WarningSource.Markdown)
                     Assert.AreEqual("The (*, 0:11) cannot be properly written into Markdown.", warningInfo.Description);
             }
+            //ExEnd
         }
 
         [Test]
@@ -3032,7 +3039,11 @@ namespace ApiExamples
             //ExSummary:Shows how to specifies ignoring or not source formatting of headers/footers content.
             Document dstDoc = new Document(MyDir + "Document.docx");
             Document srcDoc = new Document(MyDir + "Header and footer types.docx");
- 
+
+            // If 'IgnoreHeaderFooter' is false then the original formatting for header/footer content
+            // from "Header and footer types.docx" will be used.
+            // If 'IgnoreHeaderFooter' is true then the formatting for header/footer content
+            // from "Document.docx" will be used.
             ImportFormatOptions importFormatOptions = new ImportFormatOptions();
             importFormatOptions.IgnoreHeaderFooter = false;
  
@@ -3546,6 +3557,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Run.IsPhoneticGuide
             //ExFor:Run.PhoneticGuide
+            //ExFor:PhoneticGuide
             //ExFor:PhoneticGuide.BaseText
             //ExFor:PhoneticGuide.RubyText
             //ExSummary:Shows how to get properties of the phonetic guide.
@@ -3554,8 +3566,10 @@ namespace ApiExamples
             RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
             // Use phonetic guide in the Asian text.
             Assert.AreEqual(true, runs[0].IsPhoneticGuide);
-            Assert.AreEqual("base", runs[0].PhoneticGuide.BaseText);
-            Assert.AreEqual("ruby", runs[0].PhoneticGuide.RubyText);
+
+            PhoneticGuide phoneticGuide = runs[0].PhoneticGuide;
+            Assert.AreEqual("base", phoneticGuide.BaseText);
+            Assert.AreEqual("ruby", phoneticGuide.RubyText);
             //ExEnd
         }
     }

@@ -25,6 +25,8 @@ namespace ApiExamples
             //ExFor:Merger.Merge(String[], MergeFormatMode)
             //ExFor:Merger.Merge(String, String[], SaveOptions, MergeFormatMode)
             //ExFor:Merger.Merge(String, String[], SaveFormat, MergeFormatMode)
+            //ExFor:LowCode.MergeFormatMode
+            //ExFor:LowCode.Merger
             //ExSummary:Shows how to merge documents into a single output document.
             //There is a several ways to merge documents:
             Merger.Merge(ArtifactsDir + "LowCode.MergeDocument.SimpleMerge.docx", new[] { MyDir + "Big document.docx", MyDir + "Tables.docx" });
@@ -84,6 +86,104 @@ namespace ApiExamples
             Document mergedDoc = Merger.Merge(new Document[] { firstDoc.Document, secondDoc.Document }, MergeFormatMode.KeepSourceLayout);
             Assert.AreEqual("Hello first word!\fHello second word!\f", mergedDoc.GetText());
             //ExEnd:MergeDocumentInstances
+        }
+
+        [Test]
+        public void Convert()
+        {
+            //ExStart:Convert
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:Converter.Convert(String, String)
+            //ExFor:Converter.Convert(String, String, SaveFormat)
+            //ExFor:Converter.Convert(String, String, SaveOptions)
+            //ExSummary:Shows how to convert documents with a single line of code.
+            Converter.Convert(MyDir + "Document.docx", ArtifactsDir + "LowCode.Convert.pdf");
+
+            Converter.Convert(MyDir + "Document.docx", ArtifactsDir + "LowCode.Convert.rtf", SaveFormat.Rtf);
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
+            Converter.Convert(MyDir + "Document.doc", ArtifactsDir + "LowCode.Convert.docx", saveOptions);
+            //ExEnd:Convert
+        }
+
+        [Test]
+        public void ConvertStream()
+        {
+            //ExStart:ConvertStream
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:Converter.Convert(Stream, Stream, SaveFormat)
+            //ExFor:Converter.Convert(Stream, Stream, SaveOptions)
+            //ExSummary:Shows how to convert documents with a single line of code (Stream).
+            using (FileStream streamIn = new FileStream(MyDir + "Big document.docx", FileMode.Open, FileAccess.Read))
+            {
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ConvertStream.SaveFormat.docx", FileMode.Create, FileAccess.ReadWrite))
+                    Converter.Convert(streamIn, streamOut, SaveFormat.Docx);
+
+                OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ConvertStream.SaveOptions.docx", FileMode.Create, FileAccess.ReadWrite))
+                    Converter.Convert(streamIn, streamOut, saveOptions);
+            }
+            //ExEnd:ConvertStream
+        }
+
+        [Test]
+        public void ConvertToImages()
+        {
+            //ExStart:ConvertToImages
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:Converter.ConvertToImages(String, String)
+            //ExFor:Converter.ConvertToImages(String, String, SaveFormat)
+            //ExFor:Converter.ConvertToImages(String, String, ImageSaveOptions)
+            //ExSummary:Shows how to convert document to images.
+            Converter.ConvertToImages(MyDir + "Big document.docx", ArtifactsDir + "LowCode.ConvertToImages.png");
+
+            Converter.ConvertToImages(MyDir + "Big document.docx", ArtifactsDir + "LowCode.ConvertToImages.jpeg", SaveFormat.Jpeg);
+
+            ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
+            imageSaveOptions.PageSet = new PageSet(1);
+            Converter.ConvertToImages(MyDir + "Big document.docx", ArtifactsDir + "LowCode.ConvertToImages.png", imageSaveOptions);
+            //ExEnd:ConvertToImages
+        }
+
+        [Test]
+        public void ConvertToImagesStream()
+        {
+            //ExStart:ConvertToImagesStream
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:Converter.ConvertToImages(String, SaveFormat)
+            //ExFor:Converter.ConvertToImages(String, ImageSaveOptions)
+            //ExFor:Converter.ConvertToImages(Document, SaveFormat)
+            //ExFor:Converter.ConvertToImages(Document, ImageSaveOptions)
+            //ExSummary:Shows how to convert document to images stream.
+            Stream[] streams = Converter.ConvertToImages(MyDir + "Big document.docx", SaveFormat.Png);
+
+            ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
+            imageSaveOptions.PageSet = new PageSet(1);
+            streams = Converter.ConvertToImages(MyDir + "Big document.docx", imageSaveOptions);
+
+            streams = Converter.ConvertToImages(new Document(MyDir + "Big document.docx"), SaveFormat.Png);
+
+            streams = Converter.ConvertToImages(new Document(MyDir + "Big document.docx"), imageSaveOptions);
+            //ExEnd:ConvertToImagesStream
+        }
+
+        [Test]
+        public void ConvertToImagesFromStream()
+        {
+            //ExStart:ConvertToImagesFromStream
+            //GistId:708ce40a68fac5003d46f6b4acfd5ff1
+            //ExFor:Converter.ConvertToImages(Stream, SaveFormat)
+            //ExFor:Converter.ConvertToImages(Stream, ImageSaveOptions)
+            //ExSummary:Shows how to convert document to images from stream.
+            using (FileStream streamIn = new FileStream(MyDir + "Big document.docx", FileMode.Open, FileAccess.Read))
+            {
+                Stream[] streams = Converter.ConvertToImages(streamIn, SaveFormat.Jpeg);
+
+                ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
+                imageSaveOptions.PageSet = new PageSet(1);
+                streams = Converter.ConvertToImages(streamIn, imageSaveOptions);
+            }
+            //ExEnd:ConvertToImagesFromStream
         }
     }
 }

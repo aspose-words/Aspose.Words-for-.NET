@@ -104,12 +104,15 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:VbaReference
+        //ExFor:VbaReference.Type
         //ExFor:VbaReference.LibId
         //ExFor:VbaReferenceCollection
+        //ExFor:VbaReferenceCollection.Item(Int32)
         //ExFor:VbaReferenceCollection.Count
         //ExFor:VbaReferenceCollection.RemoveAt(int)
         //ExFor:VbaReferenceCollection.Remove(VbaReference)
         //ExFor:VbaReferenceType
+        //ExFor:VbaProject.References
         //ExSummary:Shows how to get/remove an element from the VBA reference collection.
         [Test]//ExSkip
         public void RemoveVbaReference()
@@ -177,5 +180,17 @@ namespace ApiExamples
             return libIdProject != null ? libIdProject.Substring(3) : "";
         }
         //ExEnd
+
+        [Test]
+        public void IsProtected()
+        {
+            //ExStart:IsProtected
+            //GistId:ac8ba4eb35f3fbb8066b48c999da63b0
+            //ExFor:VbaProject.IsProtected
+            //ExSummary:Shows whether the VbaProject is password protected.
+            Document doc = new Document(MyDir + "Vba protected.docm");
+            Assert.True(doc.VbaProject.IsProtected);
+            //ExEnd:IsProtected
+        }
     }
 }

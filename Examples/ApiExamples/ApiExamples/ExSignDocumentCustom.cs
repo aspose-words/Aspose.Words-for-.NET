@@ -85,23 +85,6 @@ namespace ApiExamples
             DigitalSignatureUtil.Sign(dstDocumentPath, dstDocumentPath, certificateHolder, signOptions);
         }
 
-        /// <summary>
-        /// Converts an image to a byte array.
-        /// </summary>
-        private static byte[] ImageToByteArray(string imagePath)
-        {
-#if NET461_OR_GREATER || JAVA
-            Image image = Image.FromFile(imagePath);
-            using (MemoryStream ms = new MemoryStream())
-            {
-                image.Save(ms, ImageFormat.Png);
-                return ms.ToArray();
-            }
-#elif NET5_0_OR_GREATER || __MOBILE__
-            return SkiaSharp.SKBitmap.Decode(imagePath).Bytes;
-#endif
-        }
-
         public class Signee
         {
             public Guid PersonId { get; set; }
@@ -124,10 +107,8 @@ namespace ApiExamples
 
             mSignees = new List<Signee>
             {
-                new Signee(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer",
-                    ImageToByteArray(signImagePath)),
-                new Signee(Guid.NewGuid(), "Stephen Morse", "Head of Compliance",
-                    ImageToByteArray(signImagePath))
+                new Signee(Guid.NewGuid(), "Ron Williams", "Chief Executive Officer", TestUtil.ImageToByteArray(signImagePath)),
+                new Signee(Guid.NewGuid(), "Stephen Morse", "Head of Compliance", TestUtil.ImageToByteArray(signImagePath))
             };
         }
 

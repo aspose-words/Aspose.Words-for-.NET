@@ -468,6 +468,10 @@ namespace ApiExamples
             //ExFor:FieldDatabase.LastRecord
             //ExFor:FieldDatabase.Query
             //ExFor:FieldDatabase.TableFormat
+            //ExFor:FieldDatabaseDataTable
+            //ExFor:IFieldDatabaseProvider
+            //ExFor:IFieldDatabaseProvider.GetQueryResult(String,String,String,FieldDatabase)
+            //ExFor:FieldOptions.FieldDatabaseProvider
             //ExSummary:Shows how to extract data from a database and insert it as a field into a document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2436,6 +2440,8 @@ namespace ApiExamples
             //ExFor:FieldCitation.VolumeNumber
             //ExFor:FieldBibliography
             //ExFor:FieldBibliography.FormatLanguageId
+            //ExFor:FieldBibliography.FilterLanguageId
+            //ExFor:FieldBibliography.SourceTag
             //ExSummary:Shows how to work with CITATION and BIBLIOGRAPHY fields.
             // Open a document containing bibliographical sources that we can find in
             // Microsoft Word via References -> Citations & Bibliography -> Manage Sources.
@@ -2478,8 +2484,10 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             FieldBibliography fieldBibliography = (FieldBibliography)builder.InsertField(FieldType.FieldBibliography, true);
             fieldBibliography.FormatLanguageId = "5129";
+            fieldBibliography.FilterLanguageId = "5129";
+            fieldBibliography.SourceTag = "Book2";
 
-            Assert.AreEqual(" BIBLIOGRAPHY  \\l 5129", fieldBibliography.GetFieldCode());
+            Assert.AreEqual(" BIBLIOGRAPHY  \\l 5129 \\f 5129 \\m Book2", fieldBibliography.GetFieldCode());
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Field.CITATION.docx");
@@ -2516,9 +2524,10 @@ namespace ApiExamples
 
             fieldBibliography = (FieldBibliography)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldBibliography, " BIBLIOGRAPHY  \\l 5129",
-                "Cardholder, A. (2018). My Book, Vol. II. New York: Doe Co. Ltd.\rDoe, J. (2018). My Book, Vol I. London: Doe Co. Ltd.\r", fieldBibliography);
+            TestUtil.VerifyField(FieldType.FieldBibliography, " BIBLIOGRAPHY  \\l 5129 \\f 5129 \\m Book2",
+                "Cardholder, A. (2018). My Book, Vol. II. New York: Doe Co. Ltd.\r", fieldBibliography);
             Assert.AreEqual("5129", fieldBibliography.FormatLanguageId);
+            Assert.AreEqual("5129", fieldBibliography.FilterLanguageId);
 
             fieldCitation = (FieldCitation)doc.Range.Fields[3];
 
@@ -2536,6 +2545,7 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:IBibliographyStylesProvider
+        //ExFor:IBibliographyStylesProvider.GetStyle(String)
         //ExFor:FieldOptions.BibliographyStylesProvider
         //ExSummary:Shows how to override built-in styles or provide custom one.
         [Test] //ExSkip
@@ -4896,6 +4906,7 @@ namespace ApiExamples
             //ExFor:FieldBuilder.AddSwitch(String, String)
             //ExFor:FieldBuilder.BuildAndInsert(Paragraph)
             //ExFor:FieldArgumentBuilder
+            //ExFor:FieldArgumentBuilder.#ctor
             //ExFor:FieldArgumentBuilder.AddField(FieldBuilder)
             //ExFor:FieldArgumentBuilder.AddText(String)
             //ExFor:FieldArgumentBuilder.AddNode(Inline)
@@ -6878,6 +6889,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:FieldEQ
+            //ExFor:FieldEQ.AsOfficeMath
             //ExSummary:Shows how to replace the EQ field with Office Math.
             Document doc = new Document(MyDir + "Field sample - EQ.docx");
             FieldEQ fieldEQ = doc.Range.Fields.OfType<FieldEQ>().First();
@@ -7336,6 +7348,7 @@ namespace ApiExamples
         public void SetFieldIndexFormat()
         {
             //ExStart
+            //ExFor:FieldIndexFormat
             //ExFor:FieldOptions.FieldIndexFormat
             //ExSummary:Shows how to formatting FieldIndex fields.
             Document doc = new Document();
@@ -7358,11 +7371,15 @@ namespace ApiExamples
         //ExFor:ComparisonEvaluationResult.#ctor(bool)
         //ExFor:ComparisonEvaluationResult.#ctor(string)
         //ExFor:ComparisonEvaluationResult
+        //ExFor:ComparisonEvaluationResult.ErrorMessage
+        //ExFor:ComparisonEvaluationResult.Result
         //ExFor:ComparisonExpression
         //ExFor:ComparisonExpression.LeftExpression
         //ExFor:ComparisonExpression.ComparisonOperator
         //ExFor:ComparisonExpression.RightExpression
         //ExFor:FieldOptions.ComparisonExpressionEvaluator
+        //ExFor:IComparisonExpressionEvaluator
+        //ExFor:IComparisonExpressionEvaluator.Evaluate(Field,ComparisonExpression)
         //ExSummary:Shows how to implement custom evaluation for the IF and COMPARE fields.
         [TestCase(" IF {0} {1} {2} \"true argument\" \"false argument\" ", 1, null, "true argument")] //ExSkip
         [TestCase(" IF {0} {1} {2} \"true argument\" \"false argument\" ", 0, null, "false argument")] //ExSkip
@@ -7408,6 +7425,11 @@ namespace ApiExamples
             public ComparisonExpressionEvaluator(ComparisonEvaluationResult result)
             {
                 mResult = result;
+                if (mResult != null)
+                {
+                    Console.WriteLine(mResult.ErrorMessage);
+                    Console.WriteLine(mResult.Result);
+                }
             }
 
             public ComparisonEvaluationResult Evaluate(Field field, ComparisonExpression expression)
@@ -7536,9 +7558,12 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:FieldOptions.FieldUpdatingCallback
+        //ExFor:FieldOptions.FieldUpdatingProgressCallback
         //ExFor:IFieldUpdatingCallback
         //ExFor:IFieldUpdatingProgressCallback
         //ExFor:IFieldUpdatingProgressCallback.Notify(FieldUpdatingProgressArgs)
+        //ExFor:FieldUpdatingProgressArgs
         //ExFor:FieldUpdatingProgressArgs.UpdateCompleted
         //ExFor:FieldUpdatingProgressArgs.TotalFieldsCount
         //ExFor:FieldUpdatingProgressArgs.UpdatedFieldsCount
@@ -7611,13 +7636,84 @@ namespace ApiExamples
         {
             //ExStart:BibliographySources
             //GistId:eeeec1fbf118e95e7df3f346c91ed726
+            //ExFor:Document.Bibliography
             //ExFor:Bibliography
             //ExFor:Bibliography.Sources
+            //ExFor:Source
             //ExFor:Source.Title
+            //ExFor:Source.AbbreviatedCaseNumber
+            //ExFor:Source.AlbumTitle
+            //ExFor:Source.BookTitle
+            //ExFor:Source.Broadcaster
+            //ExFor:Source.BroadcastTitle
+            //ExFor:Source.CaseNumber
+            //ExFor:Source.ChapterNumber
+            //ExFor:Source.City
+            //ExFor:Source.Comments
+            //ExFor:Source.ConferenceName
+            //ExFor:Source.CountryOrRegion
+            //ExFor:Source.Court
+            //ExFor:Source.Day
+            //ExFor:Source.DayAccessed
+            //ExFor:Source.Department
+            //ExFor:Source.Distributor
+            //ExFor:Source.Edition
+            //ExFor:Source.Guid
+            //ExFor:Source.Institution
+            //ExFor:Source.InternetSiteTitle
+            //ExFor:Source.Issue
+            //ExFor:Source.JournalName
+            //ExFor:Source.Lcid
+            //ExFor:Source.Medium
+            //ExFor:Source.Month
+            //ExFor:Source.MonthAccessed
+            //ExFor:Source.NumberVolumes
+            //ExFor:Source.Pages
+            //ExFor:Source.PatentNumber
+            //ExFor:Source.PeriodicalTitle
+            //ExFor:Source.ProductionCompany
+            //ExFor:Source.PublicationTitle
+            //ExFor:Source.Publisher
+            //ExFor:Source.RecordingNumber
+            //ExFor:Source.RefOrder
+            //ExFor:Source.Reporter
+            //ExFor:Source.ShortTitle
+            //ExFor:Source.SourceType
+            //ExFor:Source.StandardNumber
+            //ExFor:Source.StateOrProvince
+            //ExFor:Source.Station
+            //ExFor:Source.Tag
+            //ExFor:Source.Theater
+            //ExFor:Source.ThesisType
+            //ExFor:Source.Type
+            //ExFor:Source.Url
+            //ExFor:Source.Version
+            //ExFor:Source.Volume
+            //ExFor:Source.Year
+            //ExFor:Source.YearAccessed
             //ExFor:Source.Contributors
+            //ExFor:SourceType
+            //ExFor:Contributor
             //ExFor:ContributorCollection
             //ExFor:ContributorCollection.Author
+            //ExFor:ContributorCollection.Artist
+            //ExFor:ContributorCollection.BookAuthor
+            //ExFor:ContributorCollection.Compiler
+            //ExFor:ContributorCollection.Composer
+            //ExFor:ContributorCollection.Conductor
+            //ExFor:ContributorCollection.Counsel
+            //ExFor:ContributorCollection.Director
+            //ExFor:ContributorCollection.Editor
+            //ExFor:ContributorCollection.Interviewee
+            //ExFor:ContributorCollection.Interviewer
+            //ExFor:ContributorCollection.Inventor
+            //ExFor:ContributorCollection.Performer
+            //ExFor:ContributorCollection.Producer
+            //ExFor:ContributorCollection.Translator
+            //ExFor:ContributorCollection.Writer
             //ExFor:PersonCollection
+            //ExFor:PersonCollection.Count
+            //ExFor:PersonCollection.Item(Int32)
             //ExFor:Person
             //ExFor:Person.First
             //ExFor:Person.Middle
@@ -7630,12 +7726,81 @@ namespace ApiExamples
 
             Source source = bibliography.Sources.FirstOrDefault();
             Assert.AreEqual("Book 0 (No LCID)", source.Title);
+            Assert.AreEqual(SourceType.Book, source.SourceType);
+            Assert.AreEqual(3, source.Contributors.Count());
+            Assert.IsNull(source.AbbreviatedCaseNumber);
+            Assert.IsNull(source.AlbumTitle);
+            Assert.IsNull(source.BookTitle);
+            Assert.IsNull(source.Broadcaster);
+            Assert.IsNull(source.BroadcastTitle);
+            Assert.IsNull(source.CaseNumber);
+            Assert.IsNull(source.ChapterNumber);
+            Assert.IsNull(source.Comments);
+            Assert.IsNull(source.ConferenceName);
+            Assert.IsNull(source.CountryOrRegion);
+            Assert.IsNull(source.Court);
+            Assert.IsNull(source.Day);
+            Assert.IsNull(source.DayAccessed);
+            Assert.IsNull(source.Department);
+            Assert.IsNull(source.Distributor);
+            Assert.IsNull(source.Edition);
+            Assert.IsNull(source.Guid);
+            Assert.IsNull(source.Institution);
+            Assert.IsNull(source.InternetSiteTitle);
+            Assert.IsNull(source.Issue);
+            Assert.IsNull(source.JournalName);
+            Assert.IsNull(source.Lcid);
+            Assert.IsNull(source.Medium);
+            Assert.IsNull(source.Month);
+            Assert.IsNull(source.MonthAccessed);
+            Assert.IsNull(source.NumberVolumes);
+            Assert.IsNull(source.Pages);
+            Assert.IsNull(source.PatentNumber);
+            Assert.IsNull(source.PeriodicalTitle);
+            Assert.IsNull(source.ProductionCompany);
+            Assert.IsNull(source.PublicationTitle);
+            Assert.IsNull(source.Publisher);
+            Assert.IsNull(source.RecordingNumber);
+            Assert.IsNull(source.RefOrder);
+            Assert.IsNull(source.Reporter);
+            Assert.IsNull(source.ShortTitle);
+            Assert.IsNull(source.StandardNumber);
+            Assert.IsNull(source.StateOrProvince);
+            Assert.IsNull(source.Station);
+            Assert.AreEqual("BookNoLCID", source.Tag);
+            Assert.IsNull(source.Theater);
+            Assert.IsNull(source.ThesisType);
+            Assert.IsNull(source.Type);
+            Assert.IsNull(source.Url);
+            Assert.IsNull(source.Version);
+            Assert.IsNull(source.Volume);
+            Assert.IsNull(source.Year);
+            Assert.IsNull(source.YearAccessed);
 
             ContributorCollection contributors = source.Contributors;
+            Assert.IsNull(contributors.Artist);
+            Assert.IsNull(contributors.BookAuthor);
+            Assert.IsNull(contributors.Compiler);
+            Assert.IsNull(contributors.Composer);
+            Assert.IsNull(contributors.Conductor);
+            Assert.IsNull(contributors.Counsel);
+            Assert.IsNull(contributors.Director);
+            Assert.IsNotNull(contributors.Editor);
+            Assert.IsNull(contributors.Interviewee);
+            Assert.IsNull(contributors.Interviewer);
+            Assert.IsNull(contributors.Inventor);
+            Assert.IsNull(contributors.Performer);
+            Assert.IsNull(contributors.Producer);
+            Assert.IsNotNull(contributors.Translator);
+            Assert.IsNull(contributors.Writer);
+            
+            Contributor editor  = contributors.Editor;
+            Assert.AreEqual(2, ((PersonCollection)editor).Count());
+            
             PersonCollection authors = (PersonCollection)contributors.Author;
             Assert.AreEqual(2, authors.Count());
 
-            Person person = authors.FirstOrDefault();
+            Person person = authors[0];
             Assert.AreEqual("Roxanne", person.First);
             Assert.AreEqual("Brielle", person.Middle);
             Assert.AreEqual("Tejeda", person.Last);
