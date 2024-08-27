@@ -109,18 +109,18 @@ namespace ApiExamples
             comment.AddReply("Joe Bloggs", "J.B.", DateTime.Now, "New reply");
             comment.AddReply("Joe Bloggs", "J.B.", DateTime.Now, "Another reply");
 
-            Assert.AreEqual(2, comment.Replies.Count()); 
+            Assert.AreEqual(2, comment.Replies.Count); 
 
             // Below are two ways of removing replies from a comment.
             // 1 -  Use the "RemoveReply" method to remove replies from a comment individually:
             comment.RemoveReply(comment.Replies[0]);
 
-            Assert.AreEqual(1, comment.Replies.Count());
+            Assert.AreEqual(1, comment.Replies.Count);
 
             // 2 -  Use the "RemoveAllReplies" method to remove all replies from a comment at once:
             comment.RemoveAllReplies();
 
-            Assert.AreEqual(0, comment.Replies.Count()); 
+            Assert.AreEqual(0, comment.Replies.Count); 
             //ExEnd
         }
 
