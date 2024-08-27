@@ -41,8 +41,6 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             //ExStart:UseIfElseMustache
             //GistId:544788f602e697802e313a641cedb9b8
             Document doc = new Document(MyDir + "Mail merge destinations - Mustache syntax.docx");
-            doc.Sections.Clear();
-            doc.Save(ArtifactsDir + "output.docx");
 
             doc.MailMerge.UseNonMergeFields = true;
             doc.MailMerge.Execute(new[] { "GENDER" }, new object[] { "MALE" });
