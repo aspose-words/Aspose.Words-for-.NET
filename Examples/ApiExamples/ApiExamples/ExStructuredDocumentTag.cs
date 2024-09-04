@@ -1359,8 +1359,8 @@ namespace ApiExamples
         [Test]
         public void InsertStructuredDocumentTag()
         {
-            //ExStart:ContextTableFormatting
-            //ReleaseVersion:24.9
+            //ExStart:InsertStructuredDocumentTag
+            //GistId:e06aa7a168b57907a5598e823a22bf0a
             //ExFor:DocumentBuilder.InsertStructuredDocumentTag(SdtType)
             //ExSummary:Shows how to simply insert structured document tag.
             Document doc = new Document(MyDir + "Rendering.docx");
@@ -1375,7 +1375,7 @@ namespace ApiExamples
             StructuredDocumentTag sdtPlain = builder.InsertStructuredDocumentTag(SdtType.PlainText);
 
             doc.Save(ArtifactsDir + "StructuredDocumentTag.InsertStructuredDocumentTag.docx");
-            //ExEnd:ContextTableFormatting
+            //ExEnd:InsertStructuredDocumentTag
         }
     }
 }

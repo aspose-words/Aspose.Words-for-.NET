@@ -34,7 +34,7 @@ namespace ApiExamples
         public void ImportUnderlineFormatting()
         {
             //ExStart:ImportUnderlineFormatting
-            //ReleaseVersion:24.9
+            //GistId:e06aa7a168b57907a5598e823a22bf0a
             //ExFor:MarkdownLoadOptions.ImportUnderlineFormatting
             //ExSummary:Shows how to recognize plus characters "++" as underline text formatting.
             using (MemoryStream stream = new MemoryStream(Encoding.ASCII.GetBytes("++12 and B++")))

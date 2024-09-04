@@ -237,7 +237,7 @@ namespace ApiExamples
         public void XmlDsig()
         {
             //ExStart:XmlDsig
-            //ReleaseVersion:24.9
+            //GistId:e06aa7a168b57907a5598e823a22bf0a
             //ExFor:SignOptions.XmlDsigLevel
             //ExFor:XmlDsigLevel
             //ExSummary:Shows how to sign document based on XML-DSig standard.

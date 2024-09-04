@@ -646,7 +646,7 @@ namespace ApiExamples
         public void EndnoteSeparator()
         {
             //ExStart:EndnoteSeparator
-            //ReleaseVersion:24.9
+            //GistId:e06aa7a168b57907a5598e823a22bf0a
             //ExFor:DocumentBase.FootnoteSeparators
             //ExFor:FootnoteSeparatorType
             //ExSummary:Shows how to remove endnote separator.
@@ -664,7 +664,7 @@ namespace ApiExamples
         public void FootnoteSeparator()
         {
             //ExStart:FootnoteSeparator
-            //ReleaseVersion:24.9
+            //GistId:e06aa7a168b57907a5598e823a22bf0a
             //ExFor:DocumentBase.FootnoteSeparators
             //ExFor:FootnoteSeparatorType
             //ExSummary:Shows how to manage footnote separator format.

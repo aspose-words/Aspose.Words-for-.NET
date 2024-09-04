@@ -3368,7 +3368,7 @@ namespace ApiExamples
         public void InsertGroupShape()
         {
             //ExStart:InsertGroupShape
-            //ReleaseVersion:24.9
+            //GistId:e06aa7a168b57907a5598e823a22bf0a
             //ExFor:DocumentBuilder.InsertGroupShape(double, double, double, double, Shape[])
             //ExFor:DocumentBuilder.InsertGroupShape(Shape[])
             //ExSummary:Shows how to insert DML group shape.

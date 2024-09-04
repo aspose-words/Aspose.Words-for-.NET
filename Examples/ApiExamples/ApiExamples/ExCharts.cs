@@ -1136,8 +1136,6 @@ namespace ApiExamples
             //ExFor:ChartAxis.MajorUnitScale
             //ExFor:ChartAxis.MinorUnitIsAuto
             //ExFor:ChartAxis.MinorUnitScale
-            //ExFor:ChartAxis.TickLabelSpacing
-            //ExFor:ChartAxis.TickLabelAlignment
             //ExFor:AxisDisplayUnit
             //ExFor:AxisDisplayUnit.CustomUnit
             //ExFor:AxisDisplayUnit.Unit

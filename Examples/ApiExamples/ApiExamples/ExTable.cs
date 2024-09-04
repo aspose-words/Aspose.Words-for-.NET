@@ -1900,7 +1900,7 @@ namespace ApiExamples
         public void ContextTableFormatting()
         {
             //ExStart:ContextTableFormatting
-            //ReleaseVersion:24.9
+            //GistId:e06aa7a168b57907a5598e823a22bf0a
             //ExFor:DocumentBuilderOptions
             //ExFor:DocumentBuilderOptions.ContextTableFormatting
             //ExSummary:Shows how to ignore table formatting for content after.
