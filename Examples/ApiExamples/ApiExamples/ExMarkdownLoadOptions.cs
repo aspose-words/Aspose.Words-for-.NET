@@ -29,5 +29,29 @@ namespace ApiExamples
             }
             //ExEnd:PreserveEmptyLines
         }
+
+        [Test]
+        public void ImportUnderlineFormatting()
+        {
+            //ExStart:ImportUnderlineFormatting
+            //ReleaseVersion:24.9
+            //ExFor:MarkdownLoadOptions.ImportUnderlineFormatting
+            //ExSummary:Shows how to recognize plus characters "++" as underline text formatting.
+            using (MemoryStream stream = new MemoryStream(Encoding.ASCII.GetBytes("++12 and B++")))
+            {
+                MarkdownLoadOptions loadOptions = new MarkdownLoadOptions() { ImportUnderlineFormatting = true };
+                Document doc = new Document(stream, loadOptions);
+
+                Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+                Assert.AreEqual(Underline.Single, para.Runs[0].Font.Underline);
+
+                loadOptions = new MarkdownLoadOptions() { ImportUnderlineFormatting = false };
+                doc = new Document(stream, loadOptions);
+
+                para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
+                Assert.AreEqual(Underline.None, para.Runs[0].Font.Underline);
+            }
+            //ExEnd:ImportUnderlineFormatting
+        }
     }
 }

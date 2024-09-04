@@ -1705,10 +1705,10 @@ namespace ApiExamples
 
             // Replace the table with the new paragraph
             ConvertTable(table);
-
+            // Remove table after convertion.
             table.Remove();
 
-            doc.Save(ArtifactsDir + "output.docx");
+            doc.Save(ArtifactsDir + "Table.ConvertWithParagraphMark.docx");
         }
 
         /// <summary>
@@ -1793,7 +1793,7 @@ namespace ApiExamples
                                 // If the separator is a tab, calculate the tab stop position based on the width of the previous cell.
                                 if (separator == ControlChar.Tab)
                                 {
-                                    var previousCell = cell.PreviousCell;
+                                    Cell previousCell = cell.PreviousCell;
                                     if (previousCell != null)
                                         tabStopWidth += previousCell.CellFormat.Width;
 
@@ -1804,7 +1804,7 @@ namespace ApiExamples
                             }
 
                             // Clone and append all child nodes of the paragraph to the current paragraph.
-                            var childNodes = paragraph.GetChildNodes(NodeType.Any, true);
+                            NodeCollection childNodes = paragraph.GetChildNodes(NodeType.Any, true);
                             if (childNodes.Count > 0)
                                 foreach (Node node in childNodes)
                                     ((Paragraph)currentPara).AppendChild(node.Clone(true));
@@ -1894,6 +1894,40 @@ namespace ApiExamples
                 cell = cell.NextCell;
             }
             return cell;
+        }
+
+        [Test]
+        public void ContextTableFormatting()
+        {
+            //ExStart:ContextTableFormatting
+            //ReleaseVersion:24.9
+            //ExFor:DocumentBuilderOptions
+            //ExFor:DocumentBuilderOptions.ContextTableFormatting
+            //ExSummary:Shows how to ignore table formatting for content after.
+            Document doc = new Document();
+            DocumentBuilderOptions builderOptions = new DocumentBuilderOptions();
+            builderOptions.ContextTableFormatting = true;
+            DocumentBuilder builder = new DocumentBuilder(doc, builderOptions);
+
+            // Adds content before the table.
+            // Default font size is 12.
+            builder.Writeln("Font size 12 here.");
+            builder.StartTable();
+            builder.InsertCell();
+            // Changes the font size inside the table.
+            builder.Font.Size = 5;
+            builder.Write("Font size 5 here");
+            builder.InsertCell();
+            builder.Write("Font size 5 here");
+            builder.EndRow();
+            builder.EndTable();
+
+            // If ContextTableFormatting is true, then table formatting isn't applied to the content after.
+            // If ContextTableFormatting is false, then table formatting is applied to the content after.
+            builder.Writeln("Font size 12 here.");
+
+            doc.Save(ArtifactsDir + "Table.ContextTableFormatting.docx");
+            //ExEnd:ContextTableFormatting
         }
     }
 }

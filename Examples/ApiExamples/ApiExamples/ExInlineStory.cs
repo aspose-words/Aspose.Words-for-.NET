@@ -641,5 +641,41 @@ namespace ApiExamples
             Assert.AreEqual("1", footnote.ActualReferenceMark);
             //ExEnd:UpdateActualReferenceMarks
         }
+
+        [Test]
+        public void EndnoteSeparator()
+        {
+            //ExStart:EndnoteSeparator
+            //ReleaseVersion:24.9
+            //ExFor:DocumentBase.FootnoteSeparators
+            //ExFor:FootnoteSeparatorType
+            //ExSummary:Shows how to remove endnote separator.
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
+
+            FootnoteSeparator endnoteSeparator = doc.FootnoteSeparators[FootnoteSeparatorType.EndnoteSeparator];
+            // Remove endnote separator.
+            endnoteSeparator.FirstParagraph.FirstChild.Remove();
+            //ExEnd:EndnoteSeparator
+
+            doc.Save(ArtifactsDir + "InlineStory.EndnoteSeparator.docx");
+        }
+
+        [Test]
+        public void FootnoteSeparator()
+        {
+            //ExStart:FootnoteSeparator
+            //ReleaseVersion:24.9
+            //ExFor:DocumentBase.FootnoteSeparators
+            //ExFor:FootnoteSeparatorType
+            //ExSummary:Shows how to manage footnote separator format.
+            Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
+
+            FootnoteSeparator footnoteSeparator = doc.FootnoteSeparators[FootnoteSeparatorType.FootnoteSeparator];
+            // Align footnote separator.
+            footnoteSeparator.FirstParagraph.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            //ExEnd:FootnoteSeparator
+
+            doc.Save(ArtifactsDir + "InlineStory.FootnoteSeparator.docx");
+        }
     }
 }
