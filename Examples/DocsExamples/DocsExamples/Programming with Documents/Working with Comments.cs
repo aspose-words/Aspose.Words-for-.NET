@@ -19,11 +19,9 @@ namespace DocsExamples.Programming_with_Documents
             //ExEnd:CreateSimpleDocumentUsingDocumentBuilder
             
             Comment comment = new Comment(doc, "Awais Hafeez", "AH", DateTime.Today);
+            comment.SetText("Comment text.");
 
             builder.CurrentParagraph.AppendChild(comment);
-
-            comment.Paragraphs.Add(new Paragraph(doc));
-            comment.FirstParagraph.Runs.Add(new Run(doc, "Comment text."));
 
             doc.Save(ArtifactsDir + "WorkingWithComments.AddComments.docx");
             //ExEnd:AddComments
@@ -165,7 +163,7 @@ namespace DocsExamples.Programming_with_Documents
         }
         //ExEnd:RemoveCommentsByAuthor
 
-        //ExStart:CommentResolvedandReplies
+        //ExStart:CommentResolvedAndReplies
         void CommentResolvedAndReplies(Document doc)
         {
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
@@ -181,6 +179,6 @@ namespace DocsExamples.Programming_with_Documents
                 childComment.Done = true;
             }
         }
-        //ExEnd:CommentResolvedandReplies
+        //ExEnd:CommentResolvedAndReplies
     }
 }

@@ -197,25 +197,18 @@ namespace DocsExamples.Programming_with_Documents
 
             // We want to insert a merge field like this:
             // { " MERGEFIELD Test1 \\b Test2 \\f Test3 \\m \\v" }
-
             FieldMergeField field = (FieldMergeField) builder.InsertField(FieldType.FieldMergeField, false);
-
             // { " MERGEFIELD Test1" }
             field.FieldName = "Test1";
-
             // { " MERGEFIELD Test1 \\b Test2" }
             field.TextBefore = "Test2";
-
             // { " MERGEFIELD Test1 \\b Test2 \\f Test3 }
             field.TextAfter = "Test3";
-
             // { " MERGEFIELD Test1 \\b Test2 \\f Test3 \\m" }
             field.IsMapped = true;
-
             // { " MERGEFIELD Test1 \\b Test2 \\f Test3 \\m \\v" }
             field.IsVerticalFormatting = true;
 
-            // Finally update this merge field
             field.Update();
 
             doc.Save(ArtifactsDir + "WorkingWithFields.InsertMergeFieldUsingDOM.docx");
@@ -229,27 +222,20 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Paragraph para = (Paragraph) doc.GetChildNodes(NodeType.Paragraph, true)[0];
-
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
             builder.MoveTo(para);
 
             // We want to insert a mail merge address block like this:
             // { ADDRESSBLOCK \\c 1 \\d \\e Test2 \\f Test3 \\l \"Test 4\" }
-
             FieldAddressBlock field = (FieldAddressBlock) builder.InsertField(FieldType.FieldAddressBlock, false);
-
             // { ADDRESSBLOCK \\c 1" }
             field.IncludeCountryOrRegionName = "1";
-
             // { ADDRESSBLOCK \\c 1 \\d" }
             field.FormatAddressOnCountryOrRegion = true;
-
             // { ADDRESSBLOCK \\c 1 \\d \\e Test2 }
             field.ExcludedCountryOrRegionName = "Test2";
-
             // { ADDRESSBLOCK \\c 1 \\d \\e Test2 \\f Test3 }
             field.NameAndAddressFormat = "Test3";
-
             // { ADDRESSBLOCK \\c 1 \\d \\e Test2 \\f Test3 \\l \"Test 4\" }
             field.LanguageId = "Test 4";
 
@@ -269,7 +255,6 @@ namespace DocsExamples.Programming_with_Documents
 
             // We want to insert an INCLUDETEXT field like this:
             // { INCLUDETEXT  "file path" }
-
             FieldIncludeText fieldIncludeText = (FieldIncludeText) para.AppendField(FieldType.FieldIncludeText, false);
             fieldIncludeText.BookmarkName = "bookmark";
             fieldIncludeText.SourceFullName = MyDir + "IncludeText.docx";
@@ -340,13 +325,12 @@ namespace DocsExamples.Programming_with_Documents
             //ExStart:InsertAuthorField
             Document doc = new Document();
 
-            Paragraph para = (Paragraph) doc.GetChildNodes(NodeType.Paragraph, true)[0];
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
             // We want to insert an AUTHOR field like this:
             // { AUTHOR Test1 }
-
-            FieldAuthor field = (FieldAuthor) para.AppendField(FieldType.FieldAuthor, false);            
-            field.AuthorName = "Test1"; // { AUTHOR Test1 }
+            FieldAuthor field = (FieldAuthor) para.AppendField(FieldType.FieldAuthor, false);
+            field.AuthorName = "Test1";
 
             field.Update();
 
@@ -360,22 +344,16 @@ namespace DocsExamples.Programming_with_Documents
             //ExStart:InsertASKFieldWithOutDocumentBuilder
             Document doc = new Document();
 
-            Paragraph para = (Paragraph) doc.GetChildNodes(NodeType.Paragraph, true)[0];
-
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
             // We want to insert an Ask field like this:
             // { ASK \"Test 1\" Test2 \\d Test3 \\o }
-
             FieldAsk field = (FieldAsk) para.AppendField(FieldType.FieldAsk, false);
-
             // { ASK \"Test 1\" " }
             field.BookmarkName = "Test 1";
-
             // { ASK \"Test 1\" Test2 }
             field.PromptText = "Test2";
-
             // { ASK \"Test 1\" Test2 \\d Test3 }
             field.DefaultResponse = "Test3";
-
             // { ASK \"Test 1\" Test2 \\d Test3 \\o }
             field.PromptOnceOnMailMerge = true;
 
@@ -391,28 +369,20 @@ namespace DocsExamples.Programming_with_Documents
             //ExStart:InsertAdvanceFieldWithOutDocumentBuilder
             Document doc = new Document();
 
-            Paragraph para = (Paragraph) doc.GetChildNodes(NodeType.Paragraph, true)[0];
-
+            Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
             // We want to insert an Advance field like this:
             // { ADVANCE \\d 10 \\l 10 \\r -3.3 \\u 0 \\x 100 \\y 100 }
-
             FieldAdvance field = (FieldAdvance) para.AppendField(FieldType.FieldAdvance, false);
-            
             // { ADVANCE \\d 10 " }
             field.DownOffset = "10";
-
             // { ADVANCE \\d 10 \\l 10 }
             field.LeftOffset = "10";
-
             // { ADVANCE \\d 10 \\l 10 \\r -3.3 }
             field.RightOffset = "-3.3";
-
             // { ADVANCE \\d 10 \\l 10 \\r -3.3 \\u 0 }
             field.UpOffset = "0";
-
             // { ADVANCE \\d 10 \\l 10 \\r -3.3 \\u 0 \\x 100 }
             field.HorizontalPosition = "100";
-
             // { ADVANCE \\d 10 \\l 10 \\r -3.3 \\u 0 \\x 100 \\y 100 }
             field.VerticalPosition = "100";
 
