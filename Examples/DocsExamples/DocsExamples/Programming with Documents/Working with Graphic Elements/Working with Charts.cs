@@ -203,9 +203,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             xAxis.ReverseOrder = true;
             xAxis.MajorTickMark = AxisTickMark.Cross;
             xAxis.MinorTickMark = AxisTickMark.Outside;
-            xAxis.TickLabelOffset = 200;
+            xAxis.TickLabels.Offset = 200;
 
-            yAxis.TickLabelPosition = AxisTickLabelPosition.High;
+            yAxis.TickLabels.Position = AxisTickLabelPosition.High;
             yAxis.MajorUnit = 100;
             yAxis.MinorUnit = 50;
             yAxis.DisplayUnit.Unit = AxisBuiltInUnit.Hundreds;
@@ -314,7 +314,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
                 new string[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" },
                 new double[] { 1.2, 0.3, 2.1, 2.9, 4.2 });
 
-            chart.AxisX.TickLabelSpacing = 2;
+            chart.AxisX.TickLabels.Spacing = 2;
 
             doc.Save(ArtifactsDir + "WorkingWithCharts.IntervalUnitBetweenLabelsOnAxis.docx");
             //ExEnd:SetIntervalUnitBetweenLabelsOnAxis
@@ -354,7 +354,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
 
             ChartAxis axis = shape.Chart.AxisX;
             // This property has effect only for multi-line labels.
-            axis.TickLabelAlignment = ParagraphAlignment.Right;
+            axis.TickLabels.Alignment = ParagraphAlignment.Right;
 
             doc.Save(ArtifactsDir + "WorkingWithCharts.TickMultiLineLabelAlignment.docx");
             //ExEnd:TickMultiLineLabelAlignment

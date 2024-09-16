@@ -3363,5 +3363,42 @@ namespace ApiExamples
             Assert.AreEqual(Forms2OleControlType.CheckBox, checkBoxControl.Type);
             //ExEnd:CheckedCheckBox
         }
+
+        [Test]
+        public void InsertGroupShape()
+        {
+            //ExStart:InsertGroupShape
+            //GistId:e06aa7a168b57907a5598e823a22bf0a
+            //ExFor:DocumentBuilder.InsertGroupShape(double, double, double, double, Shape[])
+            //ExFor:DocumentBuilder.InsertGroupShape(Shape[])
+            //ExSummary:Shows how to insert DML group shape.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape1 = builder.InsertShape(ShapeType.Rectangle, 200, 250);
+            shape1.Left = 20;
+            shape1.Top = 20;
+            shape1.Stroke.Color = Color.Red;
+
+            Shape shape2 = builder.InsertShape(ShapeType.Ellipse, 150, 200);
+            shape2.Left = 40;
+            shape2.Top = 50;
+            shape2.Stroke.Color = Color.Green;
+
+            // Dimensions for the new GroupShape node.
+            double left = 10;
+            double top = 10;
+            double width = 200;
+            double height = 300;
+            // Insert GroupShape node for the specified size which is inserted into the specified position.
+            GroupShape groupShape1 = builder.InsertGroupShape(left, top, width, height, new Shape[] { shape1, shape2 });
+
+            // Insert GroupShape node which position and dimension will be calculated automatically.
+            Shape shape3 = (Shape)shape1.Clone(true);
+            GroupShape groupShape2 = builder.InsertGroupShape(shape3);
+
+            doc.Save(ArtifactsDir + "Shape.InsertGroupShape.docx");
+            //ExEnd:InsertGroupShape
+        }
     }
 }

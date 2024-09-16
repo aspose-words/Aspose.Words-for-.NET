@@ -1355,5 +1355,27 @@ namespace ApiExamples
                 tag.Appearance = SdtAppearance.Tags;
             //ExEnd:Appearance
         }
+
+        [Test]
+        public void InsertStructuredDocumentTag()
+        {
+            //ExStart:InsertStructuredDocumentTag
+            //GistId:e06aa7a168b57907a5598e823a22bf0a
+            //ExFor:DocumentBuilder.InsertStructuredDocumentTag(SdtType)
+            //ExSummary:Shows how to simply insert structured document tag.
+            Document doc = new Document(MyDir + "Rendering.docx");
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.MoveTo(doc.FirstSection.Body.Paragraphs[3]);
+            // Note, that only following StructuredDocumentTag types are allowed for insertion:
+            // SdtType.PlainText, SdtType.RichText, SdtType.Checkbox, SdtType.DropDownList,
+            // SdtType.ComboBox, SdtType.Picture, SdtType.Date.
+            // Markup level of inserted StructuredDocumentTag will be detected automatically and depends on position being inserted at.
+            // Added StructuredDocumentTag will inherit paragraph and font formatting from cursor position.
+            StructuredDocumentTag sdtPlain = builder.InsertStructuredDocumentTag(SdtType.PlainText);
+
+            doc.Save(ArtifactsDir + "StructuredDocumentTag.InsertStructuredDocumentTag.docx");
+            //ExEnd:InsertStructuredDocumentTag
+        }
     }
 }

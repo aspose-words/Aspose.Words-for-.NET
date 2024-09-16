@@ -232,5 +232,22 @@ namespace ApiExamples
             Assert.Throws<ArgumentNullException>(
                 () => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, null, signOptions));
         }
+
+        [Test]
+        public void XmlDsig()
+        {
+            //ExStart:XmlDsig
+            //GistId:e06aa7a168b57907a5598e823a22bf0a
+            //ExFor:SignOptions.XmlDsigLevel
+            //ExFor:XmlDsigLevel
+            //ExSummary:Shows how to sign document based on XML-DSig standard.
+            CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            SignOptions signOptions = new SignOptions { XmlDsigLevel = XmlDsigLevel.XAdEsEpes };
+
+            string inputFileName = MyDir + "Document.docx";
+            string outputFileName = ArtifactsDir + "DigitalSignatureUtil.XmlDsig.docx";
+            DigitalSignatureUtil.Sign(inputFileName, outputFileName, certificateHolder, signOptions);
+            //ExEnd:XmlDsig
+        }
     }
 }
