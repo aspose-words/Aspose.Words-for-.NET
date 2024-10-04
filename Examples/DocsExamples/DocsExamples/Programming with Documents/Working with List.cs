@@ -14,27 +14,29 @@ namespace DocsExamples.Programming_with_Documents
         {
             //ExStart:RestartListAtEachSection
             Document doc = new Document();
-            
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
             doc.Lists.Add(ListTemplate.NumberDefault);
 
             List list = doc.Lists[0];
             list.IsRestartAtEachSection = true;
 
-            DocumentBuilder builder = new DocumentBuilder(doc);
+            // The "IsRestartAtEachSection" property will only be applicable when
+            // the document's OOXML compliance level is to a standard that is newer than "OoxmlComplianceCore.Ecma376".
+            OoxmlSaveOptions options = new OoxmlSaveOptions
+            {
+                Compliance = OoxmlCompliance.Iso29500_2008_Transitional
+            };
+
             builder.ListFormat.List = list;
 
-            for (int i = 1; i < 45; i++)
-            {
-                builder.Writeln($"List Item {i}");
+            builder.Writeln("List item 1");
+            builder.Writeln("List item 2");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Writeln("List item 3");
+            builder.Writeln("List item 4");
 
-                if (i == 15)
-                    builder.InsertBreak(BreakType.SectionBreakNewPage);
-            }
-
-            // IsRestartAtEachSection will be written only if compliance is higher then OoxmlComplianceCore.Ecma376.
-            OoxmlSaveOptions options = new OoxmlSaveOptions { Compliance = OoxmlCompliance.Iso29500_2008_Transitional };
-
-            doc.Save(ArtifactsDir + "WorkingWithList.RestartListAtEachSection.docx", options);
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.RestartingDocumentList.docx", options);
             //ExEnd:RestartListAtEachSection
         }
 
