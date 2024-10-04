@@ -3400,5 +3400,69 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Shape.InsertGroupShape.docx");
             //ExEnd:InsertGroupShape
         }
+
+        [Test]
+        public void CombineGroupShape()
+        {
+            //ExStart:CombineGroupShape
+            //GistId:bb594993b5fe48692541e16f4d354ac2
+            //ExFor:DocumentBuilder.InsertGroupShape(Shape[])
+            //ExSummary:Shows how to combine group shape with the shape.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape1 = builder.InsertShape(ShapeType.Rectangle, 200, 250);
+            shape1.Left = 20;
+            shape1.Top = 20;
+            shape1.Stroke.Color = Color.Red;
+
+            Shape shape2 = builder.InsertShape(ShapeType.Ellipse, 150, 200);
+            shape2.Left = 40;
+            shape2.Top = 50;
+            shape2.Stroke.Color = Color.Green;
+
+            // Combine shapes into a GroupShape node which is inserted into the specified position.
+            GroupShape groupShape1 = builder.InsertGroupShape(shape1, shape2);
+
+            // Combine Shape and GroupShape nodes.
+            Shape shape3 = (Shape)shape1.Clone(true);
+            GroupShape groupShape2 = builder.InsertGroupShape(groupShape1, shape3);
+
+            doc.Save(ArtifactsDir + "Shape.CombineGroupShape.docx");
+            //ExEnd:CombineGroupShape
+        }
+
+        [Test]
+        public void InsertCommandButton()
+        {
+            //ExStart:InsertCommandButton
+            //GistId:bb594993b5fe48692541e16f4d354ac2
+            //ExFor:CommandButtonControl
+            //ExFor:DocumentBuilder.InsertForms2OleControl(Forms2OleControl)
+            //ExSummary:Shows how to insert ActiveX control.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            CommandButtonControl button1 = new CommandButtonControl();
+            Shape shape = builder.InsertForms2OleControl(button1);
+            Assert.AreEqual(Forms2OleControlType.CommandButton, ((Forms2OleControl)shape.OleFormat.OleControl).Type);
+            //ExEnd:InsertCommandButton
+        }
+
+        [Test]
+        public void Hidden()
+        {
+            //ExStart:Hidden
+            //GistId:bb594993b5fe48692541e16f4d354ac2
+            //ExFor:ShapeBase.Hidden
+            //ExSummary:Shows how to hide the shape.
+            Document doc = new Document(MyDir + "Shadow color.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            if (!shape.Hidden)
+                shape.Hidden = true;
+
+            doc.Save(ArtifactsDir + "Shape.Hidden.docx");
+            //ExEnd:Hidden
+        }
     }
 }

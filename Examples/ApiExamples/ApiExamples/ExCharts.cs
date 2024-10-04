@@ -2243,5 +2243,60 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Charts.TickLabelsOrientationRotation.docx");
             //ExEnd:TickLabelsOrientationRotation
         }
+
+        [Test]
+        public void DoughnutChart()
+        {
+            //ExStart:DoughnutChart
+            //GistId:bb594993b5fe48692541e16f4d354ac2
+            //ExFor:ChartSeriesGroup.DoughnutHoleSize
+            //ExFor:ChartSeriesGroup.FirstSliceAngle
+            //ExSummary:Shows how to create and format Doughnut chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Doughnut, 400, 400);
+            Chart chart = shape.Chart;
+            // Delete the default generated series.
+            chart.Series.Clear();
+
+            string[] categories = new string[] { "Category 1", "Category 2", "Category 3" };
+            chart.Series.Add("Series 1", categories, new double[] { 4, 2, 5 });
+
+            // Format the Doughnut chart.
+            ChartSeriesGroup seriesGroup = chart.SeriesGroups[0];
+            seriesGroup.DoughnutHoleSize = 10;
+            seriesGroup.FirstSliceAngle = 270;
+
+            doc.Save(ArtifactsDir + "Charts.DoughnutChart.docx");
+            //ExEnd:DoughnutChart
+        }
+
+        [Test]
+        public void PieOfPieChart()
+        {
+            //ExStart:PieOfPieChart
+            //GistId:bb594993b5fe48692541e16f4d354ac2
+            //ExFor:ChartSeriesGroup.SecondSectionSize
+            //ExSummary:Shows how to create and format pie of Pie chart.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.PieOfPie, 440, 300);
+            Chart chart = shape.Chart;
+            // Delete the default generated series.
+            chart.Series.Clear();
+
+            string[] categories = new string[] { "Category 1", "Category 2", "Category 3", "Category 4" };
+            chart.Series.Add("Series 1", categories, new double[] { 11, 8, 4, 3 });
+
+            // Format the Pie of Pie chart.
+            ChartSeriesGroup seriesGroup = chart.SeriesGroups[0];
+            seriesGroup.GapWidth = 10;
+            seriesGroup.SecondSectionSize = 77;
+
+            doc.Save(ArtifactsDir + "Charts.PieOfPieChart.docx");
+            //ExEnd:PieOfPieChart
+        }
     }
 }
