@@ -868,24 +868,24 @@ namespace ApiExamples
             //ExEnd
 
             TestUtil.DocPackageFileContainsString("<navLabel><text>Heading #1</text></navLabel>", 
-                ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "HtmlSaveOptions.EpubHeadings.ncx");
+                ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "toc.ncx");
             TestUtil.DocPackageFileContainsString("<navLabel><text>Heading #2</text></navLabel>", 
-                ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "HtmlSaveOptions.EpubHeadings.ncx");
+                ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "toc.ncx");
             TestUtil.DocPackageFileContainsString("<navLabel><text>Heading #4</text></navLabel>", 
-                ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "HtmlSaveOptions.EpubHeadings.ncx");
+                ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "toc.ncx");
             TestUtil.DocPackageFileContainsString("<navLabel><text>Heading #5</text></navLabel>", 
-                ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "HtmlSaveOptions.EpubHeadings.ncx");
+                ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "toc.ncx");
 
             Assert.Throws<AssertionException>(() =>
             {
                 TestUtil.DocPackageFileContainsString("<navLabel><text>Heading #3</text></navLabel>", 
-                    ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "HtmlSaveOptions.EpubHeadings.ncx");
+                    ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "toc.ncx");
             });
 
             Assert.Throws<AssertionException>(() =>
             {
                 TestUtil.DocPackageFileContainsString("<navLabel><text>Heading #6</text></navLabel>", 
-                    ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "HtmlSaveOptions.EpubHeadings.ncx");
+                    ArtifactsDir + "HtmlSaveOptions.EpubHeadings.epub", "toc.ncx");
             });
         }
 
