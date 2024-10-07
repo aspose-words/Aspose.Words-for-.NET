@@ -485,7 +485,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             builder.InsertDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
 
-            dstDoc.Save(ArtifactsDir + "DocumentBuilder.SmartStyleBehavior.docx");
+            dstDoc.Save(ArtifactsDir + "JoinAndAppendDocuments.SmartStyleBehavior.docx");
             //ExEnd:SmartStyleBehavior
         }
 

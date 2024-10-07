@@ -36,7 +36,7 @@ namespace DocsExamples.Programming_with_Documents
             builder.Writeln("List item 3");
             builder.Writeln("List item 4");
 
-            doc.Save(ArtifactsDir + "OoxmlSaveOptions.RestartingDocumentList.docx", options);
+            doc.Save(ArtifactsDir + "WorkingWithList.RestartingDocumentList.docx", options);
             //ExEnd:RestartListAtEachSection
         }
 
