@@ -3369,8 +3369,8 @@ namespace ApiExamples
         {
             //ExStart:InsertGroupShape
             //GistId:e06aa7a168b57907a5598e823a22bf0a
-            //ExFor:DocumentBuilder.InsertGroupShape(double, double, double, double, Shape[])
-            //ExFor:DocumentBuilder.InsertGroupShape(Shape[])
+            //ExFor:DocumentBuilder.InsertGroupShape(double, double, double, double, ShapeBase[])
+            //ExFor:DocumentBuilder.InsertGroupShape(ShapeBase[])
             //ExSummary:Shows how to insert DML group shape.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -3406,7 +3406,7 @@ namespace ApiExamples
         {
             //ExStart:CombineGroupShape
             //GistId:bb594993b5fe48692541e16f4d354ac2
-            //ExFor:DocumentBuilder.InsertGroupShape(Shape[])
+            //ExFor:DocumentBuilder.InsertGroupShape(ShapeBase[])
             //ExSummary:Shows how to combine group shape with the shape.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
