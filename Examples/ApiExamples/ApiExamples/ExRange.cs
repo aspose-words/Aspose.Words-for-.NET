@@ -616,13 +616,18 @@ namespace ApiExamples
         /// </summary>
         private class TextReplacementTracker : IReplacingCallback
         {
+            public TextReplacementTracker()
+            {
+                Matches = new List<string>();
+            }
+
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
             {
                 Matches.Add(e.Match.Value);
                 return ReplaceAction.Replace;
             }
 
-            public List<string> Matches { get; } = new List<string>();
+            public List<string> Matches { get; }
         }
         //ExEnd
 
@@ -794,13 +799,18 @@ namespace ApiExamples
         /// </summary>
         private class TextReplacementRecorder : IReplacingCallback
         {
+            public TextReplacementRecorder()
+            {
+                Matches = new List<string>();
+            }
+
             ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
             {
                 Matches.Add(e.Match.Value);
                 return ReplaceAction.Replace;
             }
 
-            public List<string> Matches { get; } = new List<string>();
+            public List<string> Matches { get; }
         }
         //ExEnd
     }

@@ -41,11 +41,8 @@ namespace ApiExamples
         {
             using (Image image = Image.FromFile(filename))
             {
-                Assert.Multiple(() =>
-                {
-                    Assert.AreEqual(expectedWidth, image.Width, 1);
-                    Assert.AreEqual(expectedHeight, image.Height, 1);
-                });
+                Assert.AreEqual(expectedWidth, image.Width, 1);
+                Assert.AreEqual(expectedHeight, image.Height, 1);
             }
         }
 
@@ -156,18 +153,21 @@ namespace ApiExamples
                             string[] row = new string[reader.FieldCount];
 
                             for (int i = 0; i < reader.FieldCount; i++)
-                                switch (reader[i])
+                            {
+                                if (reader[i] is decimal)
                                 {
-                                    case decimal d:
-                                        row[i] = d.ToString("G29");
-                                        break;
-                                    case string s:
-                                        row[i] = s.Trim().Replace("\n", string.Empty);
-                                        break;
-                                    default:
-                                        row[i] = string.Empty;
-                                        break;
+                                    decimal d = (decimal)reader[i];
+                                    row[i] = d.ToString("G29");
+                                    continue;
                                 }
+                                if (reader[i] is string)
+                                {
+                                    string s = (string)reader[i];
+                                    row[i] = s.Trim().Replace("\n", string.Empty);
+                                    continue;
+                                }
+                                row[i] = string.Empty;
+                            }
 
                             expectedStrings.Add(row);
                         }
@@ -324,12 +324,9 @@ namespace ApiExamples
         /// <param name="field">The field that's being tested.</param>
         internal static void VerifyField(FieldType expectedType, string expectedFieldCode, string expectedResult, Field field)
         {
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expectedType, field.Type);
-                Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
-                Assert.AreEqual(expectedResult, field.Result);
-            });
+            Assert.AreEqual(expectedType, field.Type);
+            Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
+            Assert.AreEqual(expectedResult, field.Result);
         }
 
         /// <summary>
@@ -346,25 +343,22 @@ namespace ApiExamples
         /// <param name="delta">Margin of error for expectedResult.</param>
         internal static void VerifyField(FieldType expectedType, string expectedFieldCode, DateTime expectedResult, Field field, TimeSpan delta)
         {
-            Assert.Multiple(() =>
+            Assert.AreEqual(expectedType, field.Type);
+            Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
+            DateTime actual = DateTime.Now;
+            try
             {
-                Assert.AreEqual(expectedType, field.Type);
-                Assert.AreEqual(expectedFieldCode, field.GetFieldCode(true));
-                DateTime actual = DateTime.Now;
-                try
-                {
-                    actual = DateTime.Parse(field.Result);
-                }
-                catch (Exception)
-                {
-                    Assert.Fail();
-                }
+                actual = DateTime.Parse(field.Result);
+            }
+            catch (Exception)
+            {
+                Assert.Fail();
+            }
 
-                if (field.Type == FieldType.FieldTime)
-                    VerifyDate(expectedResult, actual, delta);
-                else
-                    VerifyDate(expectedResult.Date, actual, delta);
-            });
+            if (field.Type == FieldType.FieldTime)
+                VerifyDate(expectedResult, actual, delta);
+            else
+                VerifyDate(expectedResult.Date, actual, delta);
         }
 
         /// <summary>
@@ -410,13 +404,10 @@ namespace ApiExamples
         /// <param name="imageShape">Shape that contains the image.</param>
         internal static void VerifyImageInShape(int expectedWidth, int expectedHeight, ImageType expectedImageType, Shape imageShape)
         {
-            Assert.Multiple(() =>
-            {
-                Assert.True(imageShape.HasImage);
-                Assert.AreEqual(expectedImageType, imageShape.ImageData.ImageType);
-                Assert.AreEqual(expectedWidth, imageShape.ImageData.ImageSize.WidthPixels);
-                Assert.AreEqual(expectedHeight, imageShape.ImageData.ImageSize.HeightPixels);
-            });
+            Assert.True(imageShape.HasImage);
+            Assert.AreEqual(expectedImageType, imageShape.ImageData.ImageType);
+            Assert.AreEqual(expectedWidth, imageShape.ImageData.ImageSize.WidthPixels);
+            Assert.AreEqual(expectedHeight, imageShape.ImageData.ImageSize.HeightPixels);
         }
 
         /// <summary>
@@ -429,13 +420,10 @@ namespace ApiExamples
         /// <param name="footnote">Footnote node in question.</param>
         internal static void VerifyFootnote(FootnoteType expectedFootnoteType, bool expectedIsAuto, string expectedReferenceMark, string expectedContents, Footnote footnote)
         {
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expectedFootnoteType, footnote.FootnoteType);
-                Assert.AreEqual(expectedIsAuto, footnote.IsAuto);
-                Assert.AreEqual(expectedReferenceMark, footnote.ReferenceMark);
-                Assert.AreEqual(expectedContents, footnote.ToString(SaveFormat.Text).Trim());
-            });
+            Assert.AreEqual(expectedFootnoteType, footnote.FootnoteType);
+            Assert.AreEqual(expectedIsAuto, footnote.IsAuto);
+            Assert.AreEqual(expectedReferenceMark, footnote.ReferenceMark);
+            Assert.AreEqual(expectedContents, footnote.ToString(SaveFormat.Text).Trim());
         }
 
         /// <summary>
@@ -450,12 +438,9 @@ namespace ApiExamples
         /// <param name="listLevel">List level in question.</param>
         internal static void VerifyListLevel(string expectedListFormat, double expectedNumberPosition, NumberStyle expectedNumberStyle, ListLevel listLevel)
         {
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expectedListFormat, listLevel.NumberFormat);
-                Assert.AreEqual(expectedNumberPosition, listLevel.NumberPosition);
-                Assert.AreEqual(expectedNumberStyle, listLevel.NumberStyle);
-            });
+            Assert.AreEqual(expectedListFormat, listLevel.NumberFormat);
+            Assert.AreEqual(expectedNumberPosition, listLevel.NumberPosition);
+            Assert.AreEqual(expectedNumberStyle, listLevel.NumberStyle);
         }
         
         /// <summary>
@@ -509,13 +494,10 @@ namespace ApiExamples
         /// <param name="tabStop">Tab stop that's being tested.</param>
         internal static void VerifyTabStop(double expectedPosition, TabAlignment expectedTabAlignment, TabLeader expectedTabLeader, bool isClear, TabStop tabStop)
         {
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expectedPosition, tabStop.Position);
-                Assert.AreEqual(expectedTabAlignment, tabStop.Alignment);
-                Assert.AreEqual(expectedTabLeader, tabStop.Leader);
-                Assert.AreEqual(isClear, tabStop.IsClear);
-            });
+            Assert.AreEqual(expectedPosition, tabStop.Position);
+            Assert.AreEqual(expectedTabAlignment, tabStop.Alignment);
+            Assert.AreEqual(expectedTabLeader, tabStop.Leader);
+            Assert.AreEqual(isClear, tabStop.IsClear);
         }
 
         /// <summary>
@@ -526,15 +508,12 @@ namespace ApiExamples
         /// </remarks>
         internal static void VerifyShape(ShapeType expectedShapeType, string expectedName, double expectedWidth, double expectedHeight, double expectedTop, double expectedLeft, Shape shape)
         {
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expectedShapeType, shape.ShapeType);
-                Assert.AreEqual(expectedName, shape.Name);
-                Assert.AreEqual(expectedWidth, shape.Width);
-                Assert.AreEqual(expectedHeight, shape.Height);
-                Assert.AreEqual(expectedTop, shape.Top);
-                Assert.AreEqual(expectedLeft, shape.Left);
-            });
+            Assert.AreEqual(expectedShapeType, shape.ShapeType);
+            Assert.AreEqual(expectedName, shape.Name);
+            Assert.AreEqual(expectedWidth, shape.Width);
+            Assert.AreEqual(expectedHeight, shape.Height);
+            Assert.AreEqual(expectedTop, shape.Top);
+            Assert.AreEqual(expectedLeft, shape.Left);
         }
 
         /// <summary>
@@ -545,16 +524,13 @@ namespace ApiExamples
         /// </remarks>
         internal static void VerifyTextBox(LayoutFlow expectedLayoutFlow, bool expectedFitShapeToText, TextBoxWrapMode expectedTextBoxWrapMode, double marginTop, double marginBottom, double marginLeft, double marginRight, TextBox textBox)
         {
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expectedLayoutFlow, textBox.LayoutFlow);
-                Assert.AreEqual(expectedFitShapeToText, textBox.FitShapeToText);
-                Assert.AreEqual(expectedTextBoxWrapMode, textBox.TextBoxWrapMode);
-                Assert.AreEqual(marginTop, textBox.InternalMarginTop);
-                Assert.AreEqual(marginBottom, textBox.InternalMarginBottom);
-                Assert.AreEqual(marginLeft, textBox.InternalMarginLeft);
-                Assert.AreEqual(marginRight, textBox.InternalMarginRight);
-            });
+            Assert.AreEqual(expectedLayoutFlow, textBox.LayoutFlow);
+            Assert.AreEqual(expectedFitShapeToText, textBox.FitShapeToText);
+            Assert.AreEqual(expectedTextBoxWrapMode, textBox.TextBoxWrapMode);
+            Assert.AreEqual(marginTop, textBox.InternalMarginTop);
+            Assert.AreEqual(marginBottom, textBox.InternalMarginBottom);
+            Assert.AreEqual(marginLeft, textBox.InternalMarginLeft);
+            Assert.AreEqual(marginRight, textBox.InternalMarginRight);
         }
 
         /// <summary>
@@ -562,12 +538,9 @@ namespace ApiExamples
         /// </summary>
         internal static void VerifyEditableRange(int expectedId, string expectedEditorUser, EditorType expectedEditorGroup, EditableRange editableRange)
         {
-            Assert.Multiple(() =>
-            {
-                Assert.AreEqual(expectedId, editableRange.Id);
-                Assert.AreEqual(expectedEditorUser, editableRange.SingleUser);
-                Assert.AreEqual(expectedEditorGroup, editableRange.EditorGroup);
-            });
+            Assert.AreEqual(expectedId, editableRange.Id);
+            Assert.AreEqual(expectedEditorUser, editableRange.SingleUser);
+            Assert.AreEqual(expectedEditorGroup, editableRange.EditorGroup);
         }
 
         /// <summary>

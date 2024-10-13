@@ -170,8 +170,8 @@ namespace ApiExamples
                 Console.WriteLine($"Bookmark: {bookmark.Name}{(bookmark.IsColumn ? " (Column)" : "")}");
                 if (bookmark.IsColumn)
                 {
-                    if (bookmark.BookmarkStart.GetAncestor(NodeType.Row) is Row row &&
-                        bookmark.FirstColumn < row.Cells.Count)
+                    Row row = bookmark.BookmarkStart.GetAncestor(NodeType.Row) as Row;
+                    if (row != null && bookmark.FirstColumn < row.Cells.Count)
                     {
                         // Print the contents of the first and last columns enclosed by the bookmark.
                         Console.WriteLine(row.Cells[bookmark.FirstColumn].GetText().TrimEnd(ControlChar.CellChar));

@@ -2670,6 +2670,7 @@ namespace ApiExamples
                 mNumberFormat = numberFormat;
                 mDateFormat = dateFormat;
                 mGeneralFormat = generalFormat;
+                FormatInvocations = new List<FormatInvocation>();
             }
 
             public string FormatNumeric(double value, string format)
@@ -2730,9 +2731,9 @@ namespace ApiExamples
 
             private readonly string mNumberFormat;
             private readonly string mDateFormat;
-            private readonly string mGeneralFormat; 
-            private List<FormatInvocation> FormatInvocations { get; } = new List<FormatInvocation>();
-            
+            private readonly string mGeneralFormat;
+            private List<FormatInvocation> FormatInvocations { get; }
+
             private class FormatInvocation
             {
                 public FormatInvocationType FormatInvocationType { get; }

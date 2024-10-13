@@ -1289,42 +1289,69 @@ namespace ApiExamples
 
             foreach (Node node in doc.GetChildNodes(NodeType.Any, true))
             {
-                switch (node)
+                FieldStart fieldStart = node as FieldStart;
+                if (fieldStart != null)
                 {
-                    case FieldStart fieldStart:
-                        Assert.False(fieldStart.Font.Hidden);
-                        break;
-                    case FieldEnd fieldEnd:
-                        Assert.False(fieldEnd.Font.Hidden);
-                        break;
-                    case FieldSeparator fieldSeparator:
-                        Assert.False(fieldSeparator.Font.Hidden);
-                        break;
-                    case Run run:
-                        Assert.False(run.Font.Hidden);
-                        break;
-                    case Paragraph paragraph:
-                        Assert.False(paragraph.ParagraphBreakFont.Hidden);
-                        break;
-                    case FormField formField:
-                        Assert.False(formField.Font.Hidden);
-                        break;
-                    case GroupShape groupShape:
-                        Assert.False(groupShape.Font.Hidden);
-                        break;
-                    case Shape shape:
-                        Assert.False(shape.Font.Hidden);
-                        break;
-                    case Comment comment:
-                        Assert.False(comment.Font.Hidden);
-                        break;
-                    case Footnote footnote:
-                        Assert.False(footnote.Font.Hidden);
-                        break;
-                    case SpecialChar specialChar:
-                        Assert.False(specialChar.Font.Hidden);
-                        break;
+                    Assert.False(fieldStart.Font.Hidden);
+                    continue;
                 }
+                FieldEnd fieldEnd = node as FieldEnd;
+                if (fieldEnd != null)
+                {
+                    Assert.False(fieldEnd.Font.Hidden);
+                    continue;
+                }
+                FieldSeparator fieldSeparator = node as FieldSeparator;
+                if (fieldSeparator != null)
+                {
+                    Assert.False(fieldSeparator.Font.Hidden);
+                    continue;
+                }
+                Run run = node as Run;
+                if (run != null)
+                {
+                    Assert.False(run.Font.Hidden);
+                    continue;
+                }
+                Paragraph paragraph = node as Paragraph;
+                if (paragraph != null)
+                {
+                    Assert.False(paragraph.ParagraphBreakFont.Hidden);
+                    continue;
+                }
+                FormField formField = node as FormField;
+                if (formField != null)
+                {
+                    Assert.False(formField.Font.Hidden);
+                    continue;
+                }
+                GroupShape groupShape = node as GroupShape;
+                if (groupShape != null)
+                {
+                    Assert.False(groupShape.Font.Hidden);
+                    continue;
+                }
+                Shape shape = node as Shape;
+                if (shape != null)
+                {
+                    Assert.False(shape.Font.Hidden);
+                    continue;
+                }
+                Comment comment = node as Comment;
+                if (comment != null)
+                {
+                    Assert.False(comment.Font.Hidden);
+                    continue;
+                }
+                Footnote footnote = node as Footnote;
+                if (footnote != null)
+                {
+                    Assert.False(footnote.Font.Hidden);
+                    continue;
+                }
+                SpecialChar specialChar = node as SpecialChar;
+                if (specialChar != null)
+                    Assert.False(specialChar.Font.Hidden);
             }
         }
 

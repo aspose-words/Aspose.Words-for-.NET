@@ -10,13 +10,13 @@ namespace ApiExamples.TestData
     {
         public static IEnumerable<ManagerTestClass> GetManagers()
         {
-            ManagerTestClass manager = new ManagerTestClass
+            ManagerTestClass manager1 = new ManagerTestClass
             {
                 Name = "John Smith",
                 Age = 36
             };
 
-            manager.Contracts = new[]
+            manager1.Contracts = new[]
             {
                 new ContractTestClass
                 {
@@ -26,7 +26,7 @@ namespace ApiExamples.TestData
                         Country = "Australia",
                         LocalAddress = "219-241 Cleveland St STRAWBERRY HILLS  NSW  1427"
                     },
-                    Manager = manager,
+                    Manager = manager1,
                     Price = 1200000,
                     Date = new DateTime(2017, 1, 1)
                 },
@@ -38,7 +38,7 @@ namespace ApiExamples.TestData
                         Country = "Brazil",
                         LocalAddress = "Avenida João Jorge, 112, ap. 31 Vila Industrial Campinas - SP 13035-680"
                     },
-                    Manager = manager,
+                    Manager = manager1,
                     Price = 750000,
                     Date = new DateTime(2017, 4, 1)
                 },
@@ -50,21 +50,19 @@ namespace ApiExamples.TestData
                         Country = "Canada",
                         LocalAddress = "101-3485 RUE DE LA MONTAGNE MONTRÉAL (QUÉBEC) H3G 2A6"
                     },
-                    Manager = manager,
+                    Manager = manager1,
                     Price = 350000,
                     Date = new DateTime(2017, 7, 1)
                 }
             };
 
-            yield return manager;
-
-            manager = new ManagerTestClass
+            ManagerTestClass manager2 = new ManagerTestClass
             {
                 Name = "Tony Anderson",
                 Age = 37
             };
 
-            manager.Contracts = new[]
+            manager2.Contracts = new[]
             {
                 new ContractTestClass
                 {
@@ -73,7 +71,7 @@ namespace ApiExamples.TestData
                         Name = "E Corp.",
                         LocalAddress = "445 Mount Eden Road Mount Eden Auckland 1024"
                     },
-                    Manager = manager,
+                    Manager = manager2,
                     Price = 650000,
                     Date = new DateTime(2017, 2, 1)
                 },
@@ -84,21 +82,19 @@ namespace ApiExamples.TestData
                         Name = "F & Partners",
                         LocalAddress = "20 Greens Road Tuahiwi Kaiapoi 7691 "
                     },
-                    Manager = manager,
+                    Manager = manager2,
                     Price = 550000,
                     Date = new DateTime(2017, 8, 1)
                 }
             };
 
-            yield return manager;
-
-            manager = new ManagerTestClass
+            ManagerTestClass manager3 = new ManagerTestClass
             {
                 Name = "July James",
                 Age = 38
             };
 
-            manager.Contracts = new[]
+            manager3.Contracts = new[]
             {
                 new ContractTestClass
                 {
@@ -108,7 +104,7 @@ namespace ApiExamples.TestData
                         Country = "Greece",
                         LocalAddress = "Karkisias 6 GR-111 42  ATHINA GRÉCE"
                     },
-                    Manager = manager,
+                    Manager = manager3,
                     Price = 350000,
                     Date = new DateTime(2017, 2, 1)
                 },
@@ -120,7 +116,7 @@ namespace ApiExamples.TestData
                         Country = "Hungary",
                         LocalAddress = "Budapest Fiktív utca 82., IV. em./28.2806"
                     },
-                    Manager = manager,
+                    Manager = manager3,
                     Price = 250000,
                     Date = new DateTime(2017, 5, 1)
                 },
@@ -131,7 +127,7 @@ namespace ApiExamples.TestData
                         Name = "I & Sons",
                         LocalAddress = "43 Vogel Street Roslyn Palmerston North 4414"
                     },
-                    Manager = manager,
+                    Manager = manager3,
                     Price = 100000,
                     Date = new DateTime(2017, 7, 1)
                 },
@@ -143,13 +139,13 @@ namespace ApiExamples.TestData
                         Country = "Japan",
                         LocalAddress = "Hakusan 4-Chōme 3-2 Bunkyō-ku, TŌKYŌ 112-0001 Japan"
                     },
-                    Manager = manager,
+                    Manager = manager3,
                     Price = 100000,
                     Date = new DateTime(2017, 8, 1)
                 }
             };
 
-            yield return manager;
+            return new ManagerTestClass[]{manager1, manager2, manager3};
         }
 
         public static IEnumerable<ManagerTestClass> GetEmptyManagers()
@@ -159,20 +155,24 @@ namespace ApiExamples.TestData
 
         public static IEnumerable<ClientTestClass> GetClients()
         {
+            IList<ClientTestClass> clients = new List<ClientTestClass>();
             foreach (ManagerTestClass manager in GetManagers())
             {
                 foreach (ContractTestClass contract in manager.Contracts)
-                    yield return contract.Client;
+                    clients.Add(contract.Client);
             }
+            return clients;
         }
 
         public static IEnumerable<ContractTestClass> GetContracts()
         {
+            IList<ContractTestClass> contracts = new List<ContractTestClass>();
             foreach (ManagerTestClass manager in GetManagers())
             {
                 foreach (ContractTestClass contract in manager.Contracts)
-                    yield return contract;
+                    contracts.Add(contract);
             }
+            return contracts;
         }
 
         public static ShareTestClass[] GetShares()

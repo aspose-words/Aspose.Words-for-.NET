@@ -25,7 +25,10 @@ namespace ApiExamples
         {
             private Column(Table table, int columnIndex)
             {
-                mTable = table ?? throw new ArgumentException("table");
+                if (table == null)
+                    throw new ArgumentException("table");
+                mTable = table;
+
                 mColumnIndex = columnIndex;
             }
 
