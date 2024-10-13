@@ -2121,7 +2121,10 @@ namespace ApiExamples
                 mWarnings.Add(info);
             }
 
-            public WarningInfo this[int i] => mWarnings[i];
+            public WarningInfo this[int i]
+            {
+                get { return mWarnings[i]; }
+            }
 
             /// <summary>
             /// Clears warning collection.
@@ -2131,7 +2134,10 @@ namespace ApiExamples
                 mWarnings.Clear();
             }
 
-            public int Count => mWarnings.Count;
+            public int Count
+            {
+                get { return mWarnings.Count; }
+            }
 
             /// <summary>
             /// Returns true if a warning with the specified properties has been generated.

@@ -156,18 +156,21 @@ namespace ApiExamples
                             string[] row = new string[reader.FieldCount];
 
                             for (int i = 0; i < reader.FieldCount; i++)
-                                switch (reader[i])
+                            {
+                                if (reader[i] is decimal)
                                 {
-                                    case decimal d:
-                                        row[i] = d.ToString("G29");
-                                        break;
-                                    case string s:
-                                        row[i] = s.Trim().Replace("\n", string.Empty);
-                                        break;
-                                    default:
-                                        row[i] = string.Empty;
-                                        break;
+                                    decimal d = (decimal)reader[i];
+                                    row[i] = d.ToString("G29");
+                                    continue;
                                 }
+                                if (reader[i] is string)
+                                {
+                                    string s = (string)reader[i];
+                                    row[i] = s.Trim().Replace("\n", string.Empty);
+                                    continue;
+                                }
+                                row[i] = string.Empty;
+                            }
 
                             expectedStrings.Add(row);
                         }

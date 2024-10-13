@@ -292,7 +292,10 @@ namespace ApiExamples
                 return ReplaceAction.Skip;
             }
 
-            internal string Text => mTextBuilder.ToString();
+            internal string Text
+            {
+                get { return mTextBuilder.ToString(); }
+            }
 
             private readonly StringBuilder mTextBuilder = new StringBuilder();
         }
