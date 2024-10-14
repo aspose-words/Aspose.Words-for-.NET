@@ -245,6 +245,42 @@ namespace ApiExamples
             string outDocContents = File.ReadAllText(ArtifactsDir + "MarkdownSaveOptions.LinkExportMode.Inline.md");
             Assert.AreEqual("![](MarkdownSaveOptions.LinkExportMode.Inline.001.png)", outDocContents.Trim());
         }
+
+        [Test]
+        public void ExportTableAsHtml()
+        {
+            //ExStart:ExportTableAsHtml
+            //GistId:bb594993b5fe48692541e16f4d354ac2
+            //ExFor:MarkdownExportAsHtml
+            //ExFor:MarkdownSaveOptions.ExportAsHtml
+            //ExSummary:Shows how to export a table to Markdown as raw HTML.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("Sample table:");
+
+            // Create table.
+            builder.InsertCell();
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Right;
+            builder.Write("Cell1");
+            builder.InsertCell();
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
+            builder.Write("Cell2");
+
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.ExportAsHtml = MarkdownExportAsHtml.Tables;
+
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.ExportTableAsHtml.md", saveOptions);
+            //ExEnd:ExportTableAsHtml
+
+            string outDocContents = File.ReadAllText(ArtifactsDir + "MarkdownSaveOptions.ExportTableAsHtml.md");
+            Assert.AreEqual("Sample table:\r\n<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%; border:0.75pt solid #000000; border-collapse:collapse\">" +
+                "<tr><td style=\"border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">" +
+                "<p style=\"margin-top:0pt; margin-bottom:0pt; text-align:right; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Cell1</span></p>" +
+                "</td><td style=\"border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">" +
+                "<p style=\"margin-top:0pt; margin-bottom:0pt; text-align:center; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Cell2</span></p>" +
+                "</td></tr></table>", outDocContents.Trim());
+        }
     }
 }
 
