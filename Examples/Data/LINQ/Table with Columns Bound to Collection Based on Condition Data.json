@@ -1,0 +1,44 @@
+[
+  {
+    "firstName": "John",
+    "lastName": "Smithson",
+    "department": "Sales",
+    "hireDate": "2020-03-12",
+    "salary": 60000
+  },
+  {
+    "firstName": "Emily",
+    "lastName": "Johnson",
+    "department": "Marketing",
+    "hireDate": "2019-07-25",
+    "salary": 55000
+  },
+  {
+    "firstName": "Michael",
+    "lastName": "Williams",
+    "department": "IT",
+    "hireDate": "2021-05-10",
+    "salary": 70000
+  },
+  {
+    "firstName": "Sarah",
+    "lastName": "Davis",
+    "department": "HR",
+    "hireDate": "2022-01-15",
+    "salary": 48000
+  },
+  {
+    "firstName": "Robert",
+    "lastName": "Miller",
+    "department": "Finance",
+    "hireDate": "2021-09-01",
+    "salary": 75000
+  },
+  {
+    "firstName": "Anna",
+    "lastName": "Brown",
+    "department": "Operations",
+    "hireDate": "2020-11-20",
+    "salary": 52000
+  }
+]

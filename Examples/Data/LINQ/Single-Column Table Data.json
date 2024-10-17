@@ -1,0 +1,26 @@
+[
+  {
+    "customerName": "Alice Greenfield",
+    "feedbackDate": "2023-10-11",
+    "rating": 4,
+    "comments": "Great service!"
+  },
+  {
+    "customerName": "David Anderson",
+    "feedbackDate": "2023-10-12",
+    "rating": 5,
+    "comments": "Loved the product!"
+  },
+  {
+    "customerName": "Sophia Montgomery",
+    "feedbackDate": "2023-10-13",
+    "rating": 3,
+    "comments": "Average experience."
+  },
+  {
+    "customerName": "Emily Carter",
+    "feedbackDate": "2023-10-14",
+    "rating": 5,
+    "comments": "Completely satisfied!"
+  }
+]

@@ -1,0 +1,8 @@
+{
+  "firstName": "Emily",
+  "lastName": "Johnson",
+  "department": "Marketing",
+  "hireDate": "2019-07-25",
+  "salary": 55000,
+  "showSalary": false
+}

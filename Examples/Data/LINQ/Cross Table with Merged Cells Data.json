@@ -1,0 +1,58 @@
+{
+  "years": [
+    { "year": 2020 },
+    { "year": 2021 },
+    { "year": 2022 },
+    { "year": 2023 }
+  ],
+  "managers": [
+    {
+      "name": "James Atkins",
+      "city": "Seattle",
+      "contracts": [
+        { "year": 2020, "price": 290000 },
+        { "year": 2020, "price": 255000 },
+        { "year": 2021, "price": 340000 },
+        { "year": 2022, "price": 285000 },
+        { "year": 2022, "price": 335000 },
+        { "year": 2023, "price": 245000 },
+        { "year": 2023, "price": 265000 }
+      ]
+    },
+    {
+      "name": "John Lee",
+      "city": "Seattle",
+      "contracts": [
+        { "year": 2020, "price": 120000 },
+        { "year": 2021, "price": 320000 },
+        { "year": 2022, "price": 280000 },
+        { "year": 2022, "price": 285000 },
+        { "year": 2023, "price": 245000 },
+        { "year": 2023, "price": 250000 }
+      ]
+    },
+    {
+      "name": "Thelma Green",
+      "city": "Ottawa",
+      "contracts": [
+        { "year": 2020, "price": 310000 },
+        { "year": 2021, "price": 290000 },
+        { "year": 2022, "price": 240000 },
+        { "year": 2022, "price": 245000 },
+        { "year": 2023, "price": 260000 },
+        { "year": 2023, "price": 270000 }
+      ]
+    },
+    {
+      "name": "Ted LeMark",
+      "city": "Ottawa",
+      "contracts": [
+        { "year": 2021, "price": 110000 },
+        { "year": 2022, "price": 155000 },
+        { "year": 2022, "price": 190000 },
+        { "year": 2023, "price": 180000 },
+        { "year": 2023, "price": 200000 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "topic": "Customer Service Training",
+    "date": "2023-11-10",
+    "durationHours": 2,
+    "participants": 20
+  },
+  {
+    "topic": "Sales Techniques",
+    "date": "2023-11-15",
+    "durationHours": 3,
+    "participants": 15
+  },
+  {
+    "topic": "Time Management",
+    "date": "2023-11-20",
+    "durationHours": 1.5,
+    "participants": 25
+  },
+  {
+    "topic": "Leadership Skills",
+    "date": "2023-11-25",
+    "durationHours": 2,
+    "participants": 30
+  },
+  {
+    "topic": "Team Building",
+    "date": "2023-11-30",
+    "durationHours": 4,
+    "participants": 10
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Technology",
+    "sectors": [
+      { "name": "Software", "sales": 145000 },
+      { "name": "Hardware", "sales": 132000 }
+    ]
+  },
+  {
+    "name": "Finance",
+    "sectors": [
+      { "name": "Banking", "sales": 156000 },
+      { "name": "Insurance", "sales": 144000 }
+    ]
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "platform": "Platform A",
+    "postDate": "2023-10-12",
+    "engagements": 250,
+    "reach": 1500
+  },
+  {
+    "platform": "Platform B",
+    "postDate": "2023-10-13",
+    "engagements": 150,
+    "reach": 1000
+  },
+  {
+    "platform": "Platform C",
+    "postDate": "2023-10-14",
+    "engagements": 300,
+    "reach": 2000
+  },
+  {
+    "platform": "Platform D",
+    "postDate": "2023-10-15",
+    "engagements": 400,
+    "reach": 2500
+  },
+  {
+    "platform": "Platform E",
+    "postDate": "2023-10-16",
+    "engagements": 200,
+    "reach": 1200
+  }
+]

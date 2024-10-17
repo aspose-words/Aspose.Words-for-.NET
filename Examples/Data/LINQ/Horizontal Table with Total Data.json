@@ -1,0 +1,32 @@
+[
+  {
+    "campaignName": "Holiday Sale",
+    "startDate": "2023-11-01",
+    "endDate": "2023-12-31",
+    "budget": 10000
+  },
+  {
+    "campaignName": "Spring Promotion",
+    "startDate": "2024-03-01",
+    "endDate": "2024-04-30",
+    "budget": 15000
+  },
+  {
+    "campaignName": "Back to School",
+    "startDate": "2024-08-01",
+    "endDate": "2024-09-15",
+    "budget": 12000
+  },
+  {
+    "campaignName": "Winter Clearance",
+    "startDate": "2024-12-01",
+    "endDate": "2024-12-31",
+    "budget": 8000
+  },
+  {
+    "campaignName": "New Year Bash",
+    "startDate": "2024-01-01",
+    "endDate": "2024-01-31",
+    "budget": 5000
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "meetingDate": "2023-10-15",
+    "department": "Product Development",
+    "agenda": "New product features",
+    "attendees": 5
+  },
+  {
+    "meetingDate": "2023-10-16",
+    "department": "Sales",
+    "agenda": "Quarterly targets",
+    "attendees": 8
+  },
+  {
+    "meetingDate": "2023-10-17",
+    "department": "HR",
+    "agenda": "Employee training programs",
+    "attendees": 6
+  },
+  {
+    "meetingDate": "2023-10-18",
+    "department": "Marketing",
+    "agenda": "Social media strategy",
+    "attendees": 4
+  },
+  {
+    "meetingDate": "2023-10-19",
+    "department": "Finance",
+    "agenda": "Budget planning",
+    "attendees": 7
+  }
+]

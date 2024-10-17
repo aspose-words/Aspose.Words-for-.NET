@@ -1,0 +1,32 @@
+[
+  {
+    "date": "2023-10-05",
+    "category": "Marketing",
+    "amount": 1500,
+    "description": "Social media ads"
+  },
+  {
+    "date": "2023-10-07",
+    "category": "Utilities",
+    "amount": 600,
+    "description": "Electricity bill"
+  },
+  {
+    "date": "2023-10-08",
+    "category": "Office Supplies",
+    "amount": 250,
+    "description": "Printer cartridges"
+  },
+  {
+    "date": "2023-10-10",
+    "category": "Travel",
+    "amount": 1200,
+    "description": "Conference expenses"
+  },
+  {
+    "date": "2023-10-12",
+    "category": "Food",
+    "amount": 350,
+    "description": "Team lunch"
+  }
+]

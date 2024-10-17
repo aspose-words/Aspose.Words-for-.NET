@@ -638,6 +638,1076 @@ namespace ApiExamples.LinqTemp
                 "Chart with Changing Series Point Colors Report Gold.docx");
         }
 
+        [Test]
+        public void BuildingTable()
+        {
+            //ExStart:BuildingTable
+            //GistDesc:How to build a table using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table Report.docx");
+            //ExEnd:BuildingTable
+
+            // Test the report.
+            CompareDocs("Table Report.docx", "Table Report Gold.docx");
+        }
+
+        [Test]
+        public void BindingTableRowsToCollection()
+        {
+            //ExStart:BindingTableRowsToCollection
+            //GistDesc:How to bind table rows to a collection using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Rows Bound to Collection Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Rows Bound to Collection Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Rows Bound to Collection Report.docx");
+            //ExEnd:BindingTableRowsToCollection
+
+            // Test the report.
+            CompareDocs("Table with Rows Bound to Collection Report.docx",
+                "Table with Rows Bound to Collection Report Gold.docx");
+        }
+
+        [Test]
+        public void ChangingTableHeaders()
+        {
+            //ExStart:ChangingTableHeaders
+            //GistDesc:How to change table headers using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Changing Headers Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Changing Headers Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Changing Headers Report.docx");
+            //ExEnd:ChangingTableHeaders
+
+            // Test the report.
+            CompareDocs("Table with Changing Headers Report.docx",
+                "Table with Changing Headers Report Gold.docx");
+        }
+
+        [Test]
+        public void AddingTotalToTable()
+        {
+            //ExStart:AddingTotalToTable
+            //GistDesc:How to add a total to a table using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Total Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Total Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Total Report.docx");
+            //ExEnd:AddingTotalToTable
+
+            // Test the report.
+            CompareDocs("Table with Total Report.docx", "Table with Total Report Gold.docx");
+        }
+
+        [Test]
+        public void DisplayingMessageForEmptyTable1()
+        {
+            //ExStart:DisplayingMessageForEmptyTable
+            //GistDesc:How to display a message for an empty table using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Message If Empty Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Message If Empty Data 1.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.Options |= ReportBuildOptions.AllowMissingMembers; // Needed to accept possibly missing parts of data.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Message If Empty Report 1.docx");
+            //ExEnd:DisplayingMessageForEmptyTable
+
+            // Test the report.
+            CompareDocs("Table with Message If Empty Report 1.docx",
+                "Table with Message If Empty Report 1 Gold.docx");
+        }
+
+        [Test]
+        public void DisplayingMessageForEmptyTable2()
+        {
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Message If Empty Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Message If Empty Data 2.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.Options |= ReportBuildOptions.AllowMissingMembers; // Needed to accept possibly missing parts of data.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Message If Empty Report 2.docx");
+
+            // Test the report.
+            CompareDocs("Table with Message If Empty Report 2.docx",
+                "Table with Message If Empty Report 2 Gold.docx");
+        }
+
+        [Test]
+        public void ShowingTableRowBasedOnCondition1()
+        {
+            //ExStart:ShowingTableRowBasedOnCondition
+            //GistDesc:How to show a table row based on a condition using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Row Shown Based on Condition Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Row Shown Based on Condition Data 1.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Row Shown Based on Condition Report 1.docx");
+            //ExEnd:ShowingTableRowBasedOnCondition
+
+            // Test the report.
+            CompareDocs("Table with Row Shown Based on Condition Report 1.docx",
+                "Table with Row Shown Based on Condition Report 1 Gold.docx");
+        }
+
+        [Test]
+        public void ShowingTableRowBasedOnCondition2()
+        {
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Row Shown Based on Condition Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Row Shown Based on Condition Data 2.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Row Shown Based on Condition Report 2.docx");
+
+            // Test the report.
+            CompareDocs("Table with Row Shown Based on Condition Report 2.docx",
+                "Table with Row Shown Based on Condition Report 2 Gold.docx");
+        }
+
+        [Test]
+        public void BindingTableRowsToCollectionBasedOnCondition()
+        {
+            //ExStart:BindingTableRowsToCollectionBasedOnCondition
+            //GistDesc:How to bind table rows to a collection based on a condition using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Rows Bound to Collection Based on Condition Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Rows Bound to Collection Based on Condition Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Rows Bound to Collection Based on Condition Report.docx");
+            //ExEnd:BindingTableRowsToCollectionBasedOnCondition
+
+            // Test the report.
+            CompareDocs("Table with Rows Bound to Collection Based on Condition Report.docx",
+                "Table with Rows Bound to Collection Based on Condition Report Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingConditionalFormattingToTableRows()
+        {
+            //ExStart:ApplyingConditionalFormattingToTableRows
+            //GistDesc:How to apply conditional formatting to table rows using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Conditional Formatting Applied to Rows Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Conditional Formatting Applied to Rows Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Conditional Formatting Applied to Rows Report.docx");
+            //ExEnd:ApplyingConditionalFormattingToTableRows
+
+            // Test the report.
+            CompareDocs("Table with Conditional Formatting Applied to Rows Report.docx",
+                "Table with Conditional Formatting Applied to Rows Report Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingBackgroundColorsToTableRows()
+        {
+            //ExStart:ApplyingBackgroundColorsToTableRows
+            //GistDesc:How to apply background colors to table rows using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Background Colors Applied to Rows Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Background Colors Applied to Rows Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Background Colors Applied to Rows Report.docx");
+            //ExEnd:ApplyingBackgroundColorsToTableRows
+
+            // Test the report.
+            CompareDocs("Table with Background Colors Applied to Rows Report.docx",
+                "Table with Background Colors Applied to Rows Report Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingTextColorsToTableRows()
+        {
+            //ExStart:ApplyingTextColorsToTableRows
+            //GistDesc:How to apply text colors to table rows using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Text Colors Applied to Rows Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Text Colors Applied to Rows Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Text Colors Applied to Rows Report.docx");
+            //ExEnd:ApplyingTextColorsToTableRows
+
+            // Test the report.
+            CompareDocs("Table with Text Colors Applied to Rows Report.docx",
+                "Table with Text Colors Applied to Rows Report Gold.docx");
+        }
+
+        [Test]
+        public void AddingRunningTotalToTable()
+        {
+            //ExStart:AddingRunningTotalToTable
+            //GistDesc:How to add a running total to a table using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Running Total Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Running Total Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Running Total Report.docx");
+            //ExEnd:AddingRunningTotalToTable
+
+            // Test the report.
+            CompareDocs("Table with Running Total Report.docx", "Table with Running Total Report Gold.docx");
+        }
+
+        [Test]
+        public void DisplayingSeveralItemsPerTableRow()
+        {
+            //ExStart:DisplayingSeveralItemsPerTableRow
+            //GistDesc:How to display several items per table row using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Several Items Displayed per Row Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Several Items Displayed per Row Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Several Items Displayed per Row Report.docx");
+            //ExEnd:DisplayingSeveralItemsPerTableRow
+
+            // Test the report.
+            CompareDocs("Table with Several Items Displayed per Row Report.docx",
+                "Table with Several Items Displayed per Row Report Gold.docx");
+        }
+
+        [Test]
+        public void DisplayingMasterDetailDataInOneTableOption1()
+        {
+            //ExStart:DisplayingMasterDetailDataInOneTableOption1
+            //GistDesc:How to display master-detail data in one table using LINQ Reporting Engine in C# (Option 1)
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Master-Detail Data Option 1 Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Master-Detail Data Option 1 Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Master-Detail Data Option 1 Report.docx");
+            //ExEnd:DisplayingMasterDetailDataInOneTableOption1
+
+            // Test the report.
+            CompareDocs("Table with Master-Detail Data Option 1 Report.docx",
+                "Table with Master-Detail Data Option 1 Report Gold.docx");
+        }
+
+        [Test]
+        public void DisplayingMasterDetailDataInOneTableOption2()
+        {
+            //ExStart:DisplayingMasterDetailDataInOneTableOption2
+            //GistDesc:How to display master-detail data in one table using LINQ Reporting Engine in C# (Option 2)
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Master-Detail Data Option 2 Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Master-Detail Data Option 2 Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Master-Detail Data Option 2 Report.docx");
+            //ExEnd:DisplayingMasterDetailDataInOneTableOption2
+
+            // Test the report.
+            CompareDocs("Table with Master-Detail Data Option 2 Report.docx",
+                "Table with Master-Detail Data Option 2 Report Gold.docx");
+        }
+
+        [Test]
+        public void AddingSubheaderToTable()
+        {
+            //ExStart:AddingSubheaderToTable
+            //GistDesc:How to add subheaders to a table using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Subheaders Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Subheaders Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Subheaders Report.docx");
+            //ExEnd:AddingSubheaderToTable
+
+            // Test the report.
+            CompareDocs("Table with Subheaders Report.docx", "Table with Subheaders Report Gold.docx");
+        }
+
+        [Test]
+        public void AddingSubtotalToTable()
+        {
+            //ExStart:AddingSubtotalToTable
+            //GistDesc:How to add subtotals to a table using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Subtotals Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Subtotals Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Subtotals Report.docx");
+            //ExEnd:AddingSubtotalToTable
+
+            // Test the report.
+            CompareDocs("Table with Subtotals Report.docx", "Table with Subtotals Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingSingleColumnTable()
+        {
+            //ExStart:BuildingSingleColumnTable
+            //GistDesc:How to build a single-column table using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Single-Column Table Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Single-Column Table Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Single-Column Table Report.docx");
+            //ExEnd:BuildingSingleColumnTable
+
+            // Test the report.
+            CompareDocs("Single-Column Table Report.docx", "Single-Column Table Report Gold.docx");
+        }
+
+        [Test]
+        public void ShowingSingleColumnTableRowBasedOnCondition1()
+        {
+            //ExStart:ShowingSingleColumnTableRowBasedOnCondition
+            //GistDesc:How to show a single-column table row based on a condition using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Single-Column Table with Row Shown Based on Condition Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Single-Column Table with Row Shown Based on Condition Data 1.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Single-Column Table with Row Shown Based on Condition Report 1.docx");
+            //ExEnd:ShowingSingleColumnTableRowBasedOnCondition
+
+            // Test the report.
+            CompareDocs("Single-Column Table with Row Shown Based on Condition Report 1.docx",
+                "Single-Column Table with Row Shown Based on Condition Report 1 Gold.docx");
+        }
+
+        [Test]
+        public void ShowingSingleColumnTableRowBasedOnCondition2()
+        {
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Single-Column Table with Row Shown Based on Condition Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Single-Column Table with Row Shown Based on Condition Data 2.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Single-Column Table with Row Shown Based on Condition Report 2.docx");
+
+            // Test the report.
+            CompareDocs("Single-Column Table with Row Shown Based on Condition Report 2.docx",
+                "Single-Column Table with Row Shown Based on Condition Report 2 Gold.docx");
+        }
+
+        [Test]
+        public void BindingSingleColumnTableRowsToCollectionBasedOnCondition()
+        {
+            //ExStart:BindingSingleColumnTableRowsToCollectionBasedOnCondition
+            //GistDesc:How to bind single-column table rows to a collection based on a condition using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(
+                MyLinqDir + "Single-Column Table with Rows Bound to Collection Based on Condition Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Single-Column Table with Rows Bound to Collection Based on Condition Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Single-Column Table with Rows Bound to Collection Based on Condition Report.docx");
+            //ExEnd:BindingSingleColumnTableRowsToCollectionBasedOnCondition
+
+            // Test the report.
+            CompareDocs("Single-Column Table with Rows Bound to Collection Based on Condition Report.docx",
+                "Single-Column Table with Rows Bound to Collection Based on Condition Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingHorizontalTable()
+        {
+            //ExStart:BuildingHorizontalTable
+            //GistDesc:How to build a horizontal table using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Horizontal Table Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Horizontal Table Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Horizontal Table Report.docx");
+            //ExEnd:BuildingHorizontalTable
+
+            // Test the report.
+            CompareDocs("Horizontal Table Report.docx", "Horizontal Table Report Gold.docx");
+        }
+
+        [Test]
+        public void AddingTotalToHorizontalTable()
+        {
+            //ExStart:AddingTotalToHorizontalTable
+            //GistDesc:How to add a total to a horizontal table using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Horizontal Table with Total Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Horizontal Table with Total Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Horizontal Table with Total Report.docx");
+            //ExEnd:AddingTotalToHorizontalTable
+
+            // Test the report.
+            CompareDocs("Horizontal Table with Total Report.docx", "Horizontal Table with Total Report Gold.docx");
+        }
+
+        [Test]
+        public void DisplayingMessageForEmptyHorizontalTable1()
+        {
+            //ExStart:DisplayingMessageForEmptyHorizontalTable
+            //GistDesc:How to display a message for an empty horizontal table using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Horizontal Table with Message If Empty Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Horizontal Table with Message If Empty Data 1.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.Options |= ReportBuildOptions.AllowMissingMembers; // Needed to accept possibly missing parts of data.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Horizontal Table with Message If Empty Report 1.docx");
+            //ExEnd:DisplayingMessageForEmptyHorizontalTable
+
+            // Test the report.
+            CompareDocs("Horizontal Table with Message If Empty Report 1.docx",
+                "Horizontal Table with Message If Empty Report 1 Gold.docx");
+        }
+
+        [Test]
+        public void DisplayingMessageForEmptyHorizontalTable2()
+        {
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Horizontal Table with Message If Empty Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Horizontal Table with Message If Empty Data 2.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.Options |= ReportBuildOptions.AllowMissingMembers; // Needed to accept possibly missing parts of data.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Horizontal Table with Message If Empty Report 2.docx");
+
+            // Test the report.
+            CompareDocs("Horizontal Table with Message If Empty Report 2.docx",
+                "Horizontal Table with Message If Empty Report 2 Gold.docx");
+        }
+
+        [Test]
+        public void DisplayingMasterDetailDataInOneHorizontalTableOption1()
+        {
+            //ExStart:DisplayingMasterDetailDataInOneHorizontalTableOption1
+            //GistDesc:How to display master-detail data in one horizontal table using LINQ Reporting Engine in C# (Option 1)
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Horizontal Table with Master-Detail Data Option 1 Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Horizontal Table with Master-Detail Data Option 1 Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Horizontal Table with Master-Detail Data Option 1 Report.docx");
+            //ExEnd:DisplayingMasterDetailDataInOneHorizontalTableOption1
+
+            // Test the report.
+            CompareDocs("Horizontal Table with Master-Detail Data Option 1 Report.docx",
+                "Horizontal Table with Master-Detail Data Option 1 Report Gold.docx");
+        }
+
+        [Test]
+        public void DisplayingMasterDetailDataInOneHorizontalTableOption2()
+        {
+            //ExStart:DisplayingMasterDetailDataInOneHorizontalTableOption2
+            //GistDesc:How to display master-detail data in one horizontal table using LINQ Reporting Engine in C# (Option 2)
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Horizontal Table with Master-Detail Data Option 2 Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Horizontal Table with Master-Detail Data Option 2 Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Horizontal Table with Master-Detail Data Option 2 Report.docx");
+            //ExEnd:DisplayingMasterDetailDataInOneHorizontalTableOption2
+
+            // Test the report.
+            CompareDocs("Horizontal Table with Master-Detail Data Option 2 Report.docx",
+                "Horizontal Table with Master-Detail Data Option 2 Report Gold.docx");
+        }
+
+        [Test]
+        public void ShowingTableColumnBasedOnCondition1()
+        {
+            //ExStart:ShowingTableColumnBasedOnCondition
+            //GistDesc:How to show a table column based on a condition using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Column Shown Based on Condition Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Column Shown Based on Condition Data 1.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Column Shown Based on Condition Report 1.docx");
+            //ExEnd:ShowingTableColumnBasedOnCondition
+
+            // Test the report.
+            CompareDocs("Table with Column Shown Based on Condition Report 1.docx",
+                "Table with Column Shown Based on Condition Report 1 Gold.docx");
+        }
+
+        [Test]
+        public void ShowingTableColumnBasedOnCondition2()
+        {
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Column Shown Based on Condition Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Column Shown Based on Condition Data 2.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Column Shown Based on Condition Report 2.docx");
+
+            // Test the report.
+            CompareDocs("Table with Column Shown Based on Condition Report 2.docx",
+                "Table with Column Shown Based on Condition Report 2 Gold.docx");
+        }
+
+        [Test]
+        public void ShowingColumnOfTableWithRowsBoundToCollectionBasedOnCondition1()
+        {
+            //ExStart:ShowingColumnOfTableWithRowsBoundToCollectionBasedOnCondition
+            //GistDesc:How to show a column of a table with rows bound to a collection based on a condition using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(
+                MyLinqDir + "Table with Column Shown Based on Condition and Rows Bound to Collection Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Column Shown Based on Condition and Rows Bound to Collection Data 1.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "ds");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Column Shown Based on Condition and Rows Bound to Collection Report 1.docx");
+            //ExEnd:ShowingColumnOfTableWithRowsBoundToCollectionBasedOnCondition
+
+            // Test the report.
+            CompareDocs("Table with Column Shown Based on Condition and Rows Bound to Collection Report 1.docx",
+                "Table with Column Shown Based on Condition and Rows Bound to Collection Report 1 Gold.docx");
+        }
+
+        [Test]
+        public void ShowingColumnOfTableWithRowsBoundToCollectionBasedOnCondition2()
+        {
+            // Open the template document.
+            Document doc = new Document(
+                MyLinqDir + "Table with Column Shown Based on Condition and Rows Bound to Collection Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Column Shown Based on Condition and Rows Bound to Collection Data 2.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "ds");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Column Shown Based on Condition and Rows Bound to Collection Report 2.docx");
+            
+            // Test the report.
+            CompareDocs("Table with Column Shown Based on Condition and Rows Bound to Collection Report 2.docx",
+                "Table with Column Shown Based on Condition and Rows Bound to Collection Report 2 Gold.docx");
+        }
+
+        [Test]
+        public void BindingTableColumnsToCollectionBasedOnCondition()
+        {
+            //ExStart:BindingTableColumnsToCollectionBasedOnCondition
+            //GistDesc:How to bind table columns to a collection based on a condition using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Columns Bound to Collection Based on Condition Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Columns Bound to Collection Based on Condition Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Columns Bound to Collection Based on Condition Report.docx");
+            //ExEnd:BindingTableColumnsToCollectionBasedOnCondition
+
+            // Test the report.
+            CompareDocs("Table with Columns Bound to Collection Based on Condition Report.docx",
+                "Table with Columns Bound to Collection Based on Condition Report Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingConditionalFormattingToTableColumns()
+        {
+            //ExStart:ApplyingConditionalFormattingToTableColumns
+            //GistDesc:How to apply conditional formatting to table columns using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Conditional Formatting Applied to Columns Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Conditional Formatting Applied to Columns Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Conditional Formatting Applied to Columns Report.docx");
+            //ExEnd:ApplyingConditionalFormattingToTableColumns
+
+            // Test the report.
+            CompareDocs("Table with Conditional Formatting Applied to Columns Report.docx",
+                "Table with Conditional Formatting Applied to Columns Report Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingBackgroundColorsToTableColumns()
+        {
+            //ExStart:ApplyingBackgroundColorsToTableColumns
+            //GistDesc:How to apply background colors to table columns using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Background Colors Applied to Columns Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Background Colors Applied to Columns Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Background Colors Applied to Columns Report.docx");
+            //ExEnd:ApplyingBackgroundColorsToTableColumns
+
+            // Test the report.
+            CompareDocs("Table with Background Colors Applied to Columns Report.docx",
+                "Table with Background Colors Applied to Columns Report Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingTextColorsToTableColumns()
+        {
+            //ExStart:ApplyingTextColorsToTableColumns
+            //GistDesc:How to apply text colors to table columns using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Text Colors Applied to Columns Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Text Colors Applied to Columns Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Text Colors Applied to Columns Report.docx");
+            //ExEnd:ApplyingTextColorsToTableColumns
+
+            // Test the report.
+            CompareDocs("Table with Text Colors Applied to Columns Report.docx",
+                "Table with Text Colors Applied to Columns Report Gold.docx");
+        }
+
+        [Test]
+        public void MergingTableCellsVertically()
+        {
+            //ExStart:MergingTableCellsVertically
+            //GistDesc:How to merge table cells vertically using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Cells Merged Vertically Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Cells Merged Vertically Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Cells Merged Vertically Report.docx");
+            //ExEnd:MergingTableCellsVertically
+
+            // Test the report.
+            CompareDocs("Table with Cells Merged Vertically Report.docx",
+                "Table with Cells Merged Vertically Report Gold.docx");
+        }
+
+        [Test]
+        public void MergingTableCellsHorizontally()
+        {
+            //ExStart:MergingTableCellsHorizontally
+            //GistDesc:How to merge table cells horizontally using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Cells Merged Horizontally Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Cells Merged Horizontally Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Cells Merged Horizontally Report.docx");
+            //ExEnd:MergingTableCellsHorizontally
+
+            // Test the report.
+            CompareDocs("Table with Cells Merged Horizontally Report.docx",
+                "Table with Cells Merged Horizontally Report Gold.docx");
+        }
+
+        [Test]
+        public void MergingTableCellsVerticallyAndHorizontally()
+        {
+            //ExStart:MergingTableCellsVerticallyAndHorizontally
+            //GistDesc:How to merge table cells vertically and horizontally using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Cells Merged Vertically and Horizontally Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "Table with Cells Merged Vertically and Horizontally Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Cells Merged Vertically and Horizontally Report.docx");
+            //ExEnd:MergingTableCellsVerticallyAndHorizontally
+
+            // Test the report.
+            CompareDocs("Table with Cells Merged Vertically and Horizontally Report.docx",
+                "Table with Cells Merged Vertically and Horizontally Report Gold.docx");
+        }
+
+        [Test]
+        public void RestrictingTableCellMerging()
+        {
+            //ExStart:RestrictingTableCellMerging
+            //GistDesc:How to restrict table cell merging using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Table with Cell Merging Restriction Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Table with Cell Merging Restriction Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Table with Cell Merging Restriction Report.docx");
+            //ExEnd:RestrictingTableCellMerging
+
+            // Test the report.
+            CompareDocs("Table with Cell Merging Restriction Report.docx",
+                "Table with Cell Merging Restriction Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingCrossTable()
+        {
+            //ExStart:BuildingCrossTable
+            //GistDesc:How to build a cross table using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Cross Table Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Cross Table Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "ds");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Cross Table Report.docx");
+            //ExEnd:BuildingCrossTable
+
+            // Test the report.
+            CompareDocs("Cross Table Report.docx", "Cross Table Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingCrossTableWithTotals()
+        {
+            //ExStart:BuildingCrossTableWithTotals
+            //GistDesc:How to build a cross table with totals using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Cross Table with Totals Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Cross Table with Totals Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "ds");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Cross Table with Totals Report.docx");
+            //ExEnd:BuildingCrossTableWithTotals
+
+            // Test the report.
+            CompareDocs("Cross Table with Totals Report.docx", "Cross Table with Totals Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingCrossTableWithMergedCells()
+        {
+            //ExStart:BuildingCrossTableWithMergedCells
+            //GistDesc:How to build a cross table with merged cells using LINQ Reporting Engine in C#
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Cross Table with Merged Cells Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Cross Table with Merged Cells Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "ds");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Cross Table with Merged Cells Report.docx");
+            //ExEnd:BuildingCrossTableWithMergedCells
+
+            // Test the report.
+            CompareDocs("Cross Table with Merged Cells Report.docx", "Cross Table with Merged Cells Report Gold.docx");
+        }
+
         /// <summary>
         /// A helper method asserting that two files are equal.
         /// </summary>

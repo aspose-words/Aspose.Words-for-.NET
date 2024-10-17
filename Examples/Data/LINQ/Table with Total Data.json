@@ -1,0 +1,26 @@
+[
+  {
+    "month": "October",
+    "year": 2023,
+    "totalSales": 20000,
+    "topProduct": "Wireless Mouse"
+  },
+  {
+    "month": "November",
+    "year": 2023,
+    "totalSales": 30000,
+    "topProduct": "Mechanical Keyboard"
+  },
+  {
+    "month": "December",
+    "year": 2023,
+    "totalSales": 50000,
+    "topProduct": "USB-C Hub"
+  },
+  {
+    "month": "January",
+    "year": 2024,
+    "totalSales": 45000,
+    "topProduct": "Wireless Charger"
+  }
+]

@@ -1,0 +1,32 @@
+[
+  {
+    "project": "Project A",
+    "category": "Software",
+    "revenue": 98000,
+    "expenses": 75000
+  },
+  {
+    "project": "Project B",
+    "category": "Software",
+    "revenue": 89000,
+    "expenses": 56000
+  },
+  {
+    "project": "Project C",
+    "category": "Software",
+    "revenue": 78000,
+    "expenses": 49000
+  },
+  {
+    "project": "Project D",
+    "category": "Hardware",
+    "revenue": 72000,
+    "expenses": 40000
+  },
+  {
+    "project": "Project E",
+    "category": "Hardware",
+    "revenue": 65000,
+    "expenses": 37000
+  }
+]

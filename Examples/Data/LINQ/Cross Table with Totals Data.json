@@ -1,0 +1,43 @@
+{
+  "quarters": [
+    { "quarter": "Q1" },
+    { "quarter": "Q2" }
+  ],
+  "departments": [
+    {
+      "name": "Operations",
+      "revenue": [
+        { "quarter": "Q1", "value": 33000 },
+        { "quarter": "Q2", "value": 35000 }
+      ]
+    },
+    {
+      "name": "Customer Service",
+      "revenue": [
+        { "quarter": "Q1", "value": 38000 },
+        { "quarter": "Q2", "value": 43000 }
+      ]
+    },
+    {
+      "name": "Sales",
+      "revenue": [
+        { "quarter": "Q1", "value": 31000 },
+        { "quarter": "Q2", "value": 32000 }
+      ]
+    },
+    {
+      "name": "Finance",
+      "revenue": [
+        { "quarter": "Q1", "value": 39000 },
+        { "quarter": "Q2", "value": 45000 }
+      ]
+    },
+    {
+      "name": "Marketing",
+      "revenue": [
+        { "quarter": "Q1", "value": 29000 },
+        { "quarter": "Q2", "value": 32000 }
+      ]
+    }
+  ]
+}

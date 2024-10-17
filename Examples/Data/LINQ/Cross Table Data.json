@@ -1,0 +1,32 @@
+{
+  "regions": [
+    { "region": "North America" },
+    { "region": "Europe" },
+    { "region": "Asia" }
+  ],
+  "products": [
+    {
+      "name": "Product A",
+      "sales": [
+        { "region": "North America", "value": 112000 },
+        { "region": "Europe", "value": 230000 },
+        { "region": "Asia", "value": 153000 }
+      ]
+    },
+    {
+      "name": "Product B",
+      "sales": [
+        { "region": "Europe", "value": 150000 },
+        { "region": "Asia", "value": 133000 }
+      ]
+    },
+    {
+      "name": "Product C",
+      "sales": [
+        { "region": "North America", "value": 211000 },
+        { "region": "Europe", "value": 102000 },
+        { "region": "Asia", "value": 124000 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "productName": "Wireless Mouse",
+    "price": 25.99,
+    "supplierName": "A Company"
+  },
+  {
+    "productName": "Mechanical Keyboard",
+    "price": 79.99,
+    "supplierName": "A Company"
+  },
+  {
+    "productName": "USB-C Hub",
+    "price": 49.99,
+    "supplierName": "B Ltd."
+  },
+  {
+    "productName": "HDMI Cable",
+    "price": 15.99,
+    "supplierName": "C & D"
+  },
+  {
+    "productName": "Wireless Charger",
+    "price": 39.99,
+    "supplierName": "B Ltd."
+  },
+  {
+    "productName": "Bluetooth Speaker",
+    "price": 59.99,
+    "supplierName": "E Corp."
+  }
+]

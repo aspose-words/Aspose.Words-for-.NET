@@ -1,0 +1,32 @@
+[
+  {
+    "productName": "Wireless Mouse",
+    "location": "Warehouse A",
+    "quantity": 100,
+    "lastUpdated": "2023-10-01"
+  },
+  {
+    "productName": "USB-C Hub",
+    "location": "Warehouse A",
+    "quantity": 75,
+    "lastUpdated": "2023-10-03"
+  },
+  {
+    "productName": "Mechanical Keyboard",
+    "location": "Warehouse B",
+    "quantity": 50,
+    "lastUpdated": "2023-10-02"
+  },
+  {
+    "productName": "HDMI Cable",
+    "location": "Warehouse B",
+    "quantity": 200,
+    "lastUpdated": "2023-10-04"
+  },
+  {
+    "productName": "Wireless Charger",
+    "location": "Warehouse C",
+    "quantity": 150,
+    "lastUpdated": "2023-10-05"
+  }
+]

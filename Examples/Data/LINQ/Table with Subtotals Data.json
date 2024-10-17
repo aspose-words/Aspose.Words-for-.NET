@@ -1,0 +1,32 @@
+[
+  {
+    "customerName": "Alice Greenfield",
+    "transactionDate": "2023-10-10",
+    "amount": 75.50,
+    "paymentMethod": "Credit Card"
+  },
+  {
+    "customerName": "David Anderson",
+    "transactionDate": "2023-10-11",
+    "amount": 125.00,
+    "paymentMethod": "Debit Card"
+  },
+  {
+    "customerName": "Sophia Montgomery",
+    "transactionDate": "2023-10-12",
+    "amount": 99.99,
+    "paymentMethod": "Cash"
+  },
+  {
+    "customerName": "Emily Carter",
+    "transactionDate": "2023-10-13",
+    "amount": 45.00,
+    "paymentMethod": "Credit Card"
+  },
+  {
+    "customerName": "Daniel King",
+    "transactionDate": "2023-10-14",
+    "amount": 85.75,
+    "paymentMethod": "Cash"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "leadName": "F & Partners",
+    "contactPerson": "John Adams",
+    "status": "Qualified",
+    "potentialValue": 50000
+  },
+  {
+    "leadName": "G & Co.",
+    "contactPerson": "Sara Miller",
+    "status": "Contacted",
+    "potentialValue": 75000
+  },
+  {
+    "leadName": "H Group",
+    "contactPerson": "Tom Green",
+    "status": "New",
+    "potentialValue": 30000
+  },
+  {
+    "leadName": "I & Sons",
+    "contactPerson": "Anna Blue",
+    "status": "Follow-up",
+    "potentialValue": 60000
+  }
+]

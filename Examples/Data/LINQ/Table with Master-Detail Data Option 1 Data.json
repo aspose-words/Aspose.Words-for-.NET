@@ -1,0 +1,26 @@
+[
+  {
+    "manager": "John Smith",
+    "contracts": [
+      { "client": "A Company", "price": 1200000 },
+      { "client": "B Ltd.", "price": 750000 },
+      { "client": "C & D", "price": 350000 }
+    ]
+  },
+  {
+    "manager": "Tony Anderson",
+    "contracts": [
+      { "client": "E Corp.", "price": 650000 },
+      { "client": "F & Partners", "price": 550000 }
+    ]
+  },
+  {
+    "manager": "July James",
+    "contracts": [
+      { "client": "G & Co.", "price": 350000 },
+      { "client": "H Group", "price": 250000 },
+      { "client": "I & Sons", "price": 100000 },
+      { "client": "J Ent.", "price": 100000 }
+    ]
+  }
+]

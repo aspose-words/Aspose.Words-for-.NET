@@ -1,0 +1,26 @@
+[
+  {
+    "supplierName": "A Company",
+    "contactPerson": "Alice Thompson",
+    "phone": "555-6789",
+    "email": "alice@example.com"
+  },
+  {
+    "supplierName": "B Ltd.",
+    "contactPerson": "Tom Wilson",
+    "phone": "555-9876",
+    "email": "tom@example.com"
+  },
+  {
+    "supplierName": "C & D",
+    "contactPerson": "Emily Roberts",
+    "phone": "555-3456",
+    "email": "emily@example.com"
+  },
+  {
+    "supplierName": "E Corp.",
+    "contactPerson": "Henry Evans",
+    "phone": "555-6543",
+    "email": "henry@example.com"
+  }
+]

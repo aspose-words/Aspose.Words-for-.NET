@@ -1,0 +1,7 @@
+{
+  "customerName": "Alice Greenfield",
+  "email": "alice.greenfield@example.com",
+  "phone": "555-1234",
+  "loyaltyPoints": 1200,
+  "showContacts": false
+}

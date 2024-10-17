@@ -1,0 +1,31 @@
+{
+  "header2": "Q1 Revenue",
+  "header3": "Q1 Expenses",
+  "items": [
+    {
+      "region": "North",
+      "revenue": 120000,
+      "expenses": 80000
+    },
+    {
+      "region": "South",
+      "revenue": 85000,
+      "expenses": 55000
+    },
+    {
+      "region": "East",
+      "revenue": 75000,
+      "expenses": 45000
+    },
+    {
+      "region": "West",
+      "revenue": 90000,
+      "expenses": 65000
+    },
+    {
+      "region": "Central",
+      "revenue": 60000,
+      "expenses": 40000
+    }
+  ]
+}

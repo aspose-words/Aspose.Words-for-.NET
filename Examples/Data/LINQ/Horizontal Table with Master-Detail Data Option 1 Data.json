@@ -1,0 +1,20 @@
+[
+  {
+    "division": "Division A",
+    "orders": [
+      { "quarter": "Q1", "delivered": 995, "cancelled": 102 },
+      { "quarter": "Q2", "delivered": 1163, "cancelled": 113 },
+      { "quarter": "Q3", "delivered": 1321, "cancelled": 120 },
+      { "quarter": "Q4", "delivered": 1365, "cancelled": 126 }
+    ]
+  },
+  {
+    "division": "Division B",
+    "orders": [
+      { "quarter": "Q1", "delivered": 1554, "cancelled": 153 },
+      { "quarter": "Q2", "delivered": 1590, "cancelled": 161 },
+      { "quarter": "Q3", "delivered": 1643, "cancelled": 172 },
+      { "quarter": "Q4", "delivered": 1711, "cancelled": 189 }
+    ]
+  }
+]

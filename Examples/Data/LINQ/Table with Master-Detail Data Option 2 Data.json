@@ -1,0 +1,23 @@
+[
+  {
+    "region": "North America",
+    "countries": [
+      { "name": "USA", "sales": 45000 },
+      { "name": "Canada", "sales": 20000 }
+    ]
+  },
+  {
+    "region": "Europe",
+    "countries": [
+      { "name": "Germany", "sales": 27000 },
+      { "name": "France", "sales": 18000 }
+    ]
+  },
+  {
+    "region": "Asia",
+    "countries": [
+      { "name": "China", "sales": 35000 },
+      { "name": "Japan", "sales": 30000 }
+    ]
+  }
+]

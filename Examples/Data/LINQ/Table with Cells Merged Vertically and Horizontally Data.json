@@ -1,0 +1,32 @@
+[
+  {
+    "project": "Project A",
+    "category": "Other",
+    "subcategory": "Other",
+    "potentialValue": 150000
+  },
+  {
+    "project": "Project B",
+    "category": "Other",
+    "subcategory": "Other",
+    "potentialValue": 250000
+  },
+  {
+    "project": "Project C",
+    "category": "Software",
+    "subcategory": "Cloud Computing",
+    "potentialValue": 300000
+  },
+  {
+    "project": "Project D",
+    "category": "Software",
+    "subcategory": "Cybersecurity",
+    "potentialValue": 350000
+  },
+  {
+    "project": "Project E",
+    "category": "Hardware",
+    "subcategory": "Consumer Electronics",
+    "potentialValue": 400000
+  }
+]

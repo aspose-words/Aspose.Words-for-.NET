@@ -1,0 +1,35 @@
+{
+  "showStatus": true,
+  "items": [
+    {
+      "customerName": "Alice Greenfield",
+      "orderDate": "2023-02-15",
+      "totalAmount": 150.75,
+      "status": "Shipped"
+    },
+    {
+      "customerName": "David Anderson",
+      "orderDate": "2023-10-01",
+      "totalAmount": 200.00,
+      "status": "Processing"
+    },
+    {
+      "customerName": "Sophia Montgomery",
+      "orderDate": "2023-10-05",
+      "totalAmount": 99.99,
+      "status": "Delivered"
+    },
+    {
+      "customerName": "Emily Carter",
+      "orderDate": "2023-10-08",
+      "totalAmount": 250.00,
+      "status": "Cancelled"
+    },
+    {
+      "customerName": "Michael Johnson",
+      "orderDate": "2023-10-12",
+      "totalAmount": 175.30,
+      "status": "Shipped"
+    }
+  ]
+}

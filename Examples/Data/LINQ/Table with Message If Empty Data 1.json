@@ -1,0 +1,32 @@
+[
+  {
+    "productName": "Wireless Mouse",
+    "reviewDate": "2023-10-09",
+    "rating": 5,
+    "reviewText": "Excellent product!"
+  },
+  {
+    "productName": "Mechanical Keyboard",
+    "reviewDate": "2023-10-10",
+    "rating": 4,
+    "reviewText": "Very good, but a bit pricey."
+  },
+  {
+    "productName": "USB-C Hub",
+    "reviewDate": "2023-10-11",
+    "rating": 3,
+    "reviewText": "Average quality."
+  },
+  {
+    "productName": "HDMI Cable",
+    "reviewDate": "2023-10-12",
+    "rating": 5,
+    "reviewText": "Works perfectly!"
+  },
+  {
+    "productName": "Wireless Charger",
+    "reviewDate": "2023-10-13",
+    "rating": 4,
+    "reviewText": "Convenient and efficient."
+  }
+]

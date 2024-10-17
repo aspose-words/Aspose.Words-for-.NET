@@ -1,0 +1,26 @@
+[
+  {
+    "productName": "Wireless Mouse",
+    "adjustmentDate": "2023-10-10",
+    "adjustmentType": "Restock",
+    "quantityAdjusted": 50
+  },
+  {
+    "productName": "Mechanical Keyboard",
+    "adjustmentDate": "2023-10-12",
+    "adjustmentType": "Damage",
+    "quantityAdjusted": 10
+  },
+  {
+    "productName": "USB-C Hub",
+    "adjustmentDate": "2023-10-13",
+    "adjustmentType": "Restock",
+    "quantityAdjusted": 30
+  },
+  {
+    "productName": "HDMI Cable",
+    "adjustmentDate": "2023-10-14",
+    "adjustmentType": "Restock",
+    "quantityAdjusted": 20
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "ticketId": "TKT-001",
+    "customerName": "Alice Greenfield",
+    "issue": "Mouse not working",
+    "status": "Open",
+    "createdDate": "2023-10-10"
+  },
+  {
+    "ticketId": "TKT-002",
+    "customerName": "David Anderson",
+    "issue": "Keyboard malfunction",
+    "status": "Closed",
+    "createdDate": "2023-10-11"
+  },
+  {
+    "ticketId": "TKT-003",
+    "customerName": "Sophia Montgomery",
+    "issue": "Hub not recognized",
+    "status": "Pending",
+    "createdDate": "2023-10-12"
+  },
+  {
+    "ticketId": "TKT-004",
+    "customerName": "Emily Carter",
+    "issue": "Charger overheating",
+    "status": "Open",
+    "createdDate": "2023-10-13"
+  },
+  {
+    "ticketId": "TKT-005",
+    "customerName": "Michael Johnson",
+    "issue": "Speaker not connecting",
+    "status": "Open",
+    "createdDate": "2023-10-14"
+  }
+]

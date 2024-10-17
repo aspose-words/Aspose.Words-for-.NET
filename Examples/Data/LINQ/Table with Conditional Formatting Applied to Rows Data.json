@@ -1,0 +1,32 @@
+[
+  {
+    "date": "2023-10-01",
+    "visitors": 1500,
+    "pageViews": 3000,
+    "bounceRate": 40
+  },
+  {
+    "date": "2023-10-02",
+    "visitors": 1800,
+    "pageViews": 4000,
+    "bounceRate": 35
+  },
+  {
+    "date": "2023-10-03",
+    "visitors": 2200,
+    "pageViews": 4500,
+    "bounceRate": 30
+  },
+  {
+    "date": "2023-10-04",
+    "visitors": 2500,
+    "pageViews": 5000,
+    "bounceRate": 25
+  },
+  {
+    "date": "2023-10-05",
+    "visitors": 3000,
+    "pageViews": 6000,
+    "bounceRate": 20
+  }
+]

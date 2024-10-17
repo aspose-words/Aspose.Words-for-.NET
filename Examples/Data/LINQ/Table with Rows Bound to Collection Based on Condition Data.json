@@ -1,0 +1,32 @@
+[
+  {
+    "customerName": "Alice Greenfield",
+    "email": "alice.greenfield@example.com",
+    "phone": "555-1234",
+    "loyaltyPoints": 1200
+  },
+  {
+    "customerName": "David Anderson",
+    "email": "david.anderson@example.com",
+    "phone": "555-5678",
+    "loyaltyPoints": 800
+  },
+  {
+    "customerName": "Sophia Montgomery",
+    "email": "sophia.montgomery@example.com",
+    "phone": "555-8765",
+    "loyaltyPoints": 400
+  },
+  {
+    "customerName": "Emily Carter",
+    "email": "emily.carter@example.com",
+    "phone": "555-4321",
+    "loyaltyPoints": 600
+  },
+  {
+    "customerName": "Daniel King",
+    "email": "daniel.king@example.com",
+    "phone": "555-6789",
+    "loyaltyPoints": 900
+  }
+]

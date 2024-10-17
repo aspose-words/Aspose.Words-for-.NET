@@ -1,0 +1,32 @@
+[
+  {
+    "projectName": "Website Redesign",
+    "startDate": "2023-01-05",
+    "endDate": "2023-06-30",
+    "budget": 25000
+  },
+  {
+    "projectName": "Mobile App Development",
+    "startDate": "2023-03-15",
+    "endDate": "2023-09-15",
+    "budget": 35000
+  },
+  {
+    "projectName": "CRM Integration",
+    "startDate": "2023-06-01",
+    "endDate": "2023-12-31",
+    "budget": 20000
+  },
+  {
+    "projectName": "Data Migration",
+    "startDate": "2023-07-01",
+    "endDate": "2023-10-30",
+    "budget": 15000
+  },
+  {
+    "projectName": "E-commerce Platform Launch",
+    "startDate": "2023-08-01",
+    "endDate": "2024-01-15",
+    "budget": 50000
+  }
+]
