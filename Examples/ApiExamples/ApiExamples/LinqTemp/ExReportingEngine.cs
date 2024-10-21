@@ -642,7 +642,7 @@ namespace ApiExamples.LinqTemp
         public void BuildingTable()
         {
             //ExStart:BuildingTable
-            //GistDesc:How to build a table using LINQ Reporting Engine in C#
+            //GistId:1db755b118593b067e1de46ad5fbe550
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table Template.docx");
 
@@ -665,7 +665,7 @@ namespace ApiExamples.LinqTemp
         public void BindingTableRowsToCollection()
         {
             //ExStart:BindingTableRowsToCollection
-            //GistDesc:How to bind table rows to a collection using LINQ Reporting Engine in C#
+            //GistId:046e728500b12abd8ed5c68274657d55
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Rows Bound to Collection Template.docx");
 
@@ -690,7 +690,7 @@ namespace ApiExamples.LinqTemp
         public void ChangingTableHeaders()
         {
             //ExStart:ChangingTableHeaders
-            //GistDesc:How to change table headers using LINQ Reporting Engine in C#
+            //GistId:16ccc82dfb99f3489159a9462aa3daab
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Changing Headers Template.docx");
 
@@ -715,7 +715,7 @@ namespace ApiExamples.LinqTemp
         public void AddingTotalToTable()
         {
             //ExStart:AddingTotalToTable
-            //GistDesc:How to add a total to a table using LINQ Reporting Engine in C#
+            //GistId:a7c74dbddf71e28c54b1ae984081a37e
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Total Template.docx");
 
@@ -739,7 +739,7 @@ namespace ApiExamples.LinqTemp
         public void DisplayingMessageForEmptyTable1()
         {
             //ExStart:DisplayingMessageForEmptyTable
-            //GistDesc:How to display a message for an empty table using LINQ Reporting Engine in C#
+            //GistId:42c09d5494a9a9ba8bfe8ec5a13d8fff
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Message If Empty Template.docx");
 
@@ -788,7 +788,7 @@ namespace ApiExamples.LinqTemp
         public void ShowingTableRowBasedOnCondition1()
         {
             //ExStart:ShowingTableRowBasedOnCondition
-            //GistDesc:How to show a table row based on a condition using LINQ Reporting Engine in C#
+            //GistId:d8afeb97e4bbc5a447e225cd8a7da4cb
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Row Shown Based on Condition Template.docx");
 
@@ -835,7 +835,7 @@ namespace ApiExamples.LinqTemp
         public void BindingTableRowsToCollectionBasedOnCondition()
         {
             //ExStart:BindingTableRowsToCollectionBasedOnCondition
-            //GistDesc:How to bind table rows to a collection based on a condition using LINQ Reporting Engine in C#
+            //GistId:43148c116d8d92bfb9c1286ed68ddf23
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Rows Bound to Collection Based on Condition Template.docx");
 
@@ -861,7 +861,7 @@ namespace ApiExamples.LinqTemp
         public void ApplyingConditionalFormattingToTableRows()
         {
             //ExStart:ApplyingConditionalFormattingToTableRows
-            //GistDesc:How to apply conditional formatting to table rows using LINQ Reporting Engine in C#
+            //GistId:749070be98dfa2c3159257b4f3ea3401
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Conditional Formatting Applied to Rows Template.docx");
 
@@ -887,7 +887,7 @@ namespace ApiExamples.LinqTemp
         public void ApplyingBackgroundColorsToTableRows()
         {
             //ExStart:ApplyingBackgroundColorsToTableRows
-            //GistDesc:How to apply background colors to table rows using LINQ Reporting Engine in C#
+            //GistId:b1c9ffb0ed27ad32a33f4078b0b75231
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Background Colors Applied to Rows Template.docx");
 
@@ -913,7 +913,7 @@ namespace ApiExamples.LinqTemp
         public void ApplyingTextColorsToTableRows()
         {
             //ExStart:ApplyingTextColorsToTableRows
-            //GistDesc:How to apply text colors to table rows using LINQ Reporting Engine in C#
+            //GistId:2b490da2afa4b725e1b0ceefaec92b32
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Text Colors Applied to Rows Template.docx");
 
@@ -939,7 +939,7 @@ namespace ApiExamples.LinqTemp
         public void AddingRunningTotalToTable()
         {
             //ExStart:AddingRunningTotalToTable
-            //GistDesc:How to add a running total to a table using LINQ Reporting Engine in C#
+            //GistId:c7c5f2b0a30d1c83315c48a3c47639ec
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Running Total Template.docx");
 
@@ -963,7 +963,7 @@ namespace ApiExamples.LinqTemp
         public void DisplayingSeveralItemsPerTableRow()
         {
             //ExStart:DisplayingSeveralItemsPerTableRow
-            //GistDesc:How to display several items per table row using LINQ Reporting Engine in C#
+            //GistId:6d983652a385c662c3a60602d4e54f16
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Several Items Displayed per Row Template.docx");
 
@@ -988,7 +988,7 @@ namespace ApiExamples.LinqTemp
         public void DisplayingMasterDetailDataInOneTableOption1()
         {
             //ExStart:DisplayingMasterDetailDataInOneTableOption1
-            //GistDesc:How to display master-detail data in one table using LINQ Reporting Engine in C# (Option 1)
+            //GistId:e372647a722c7b3c2a0c8abd1d8fe572
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Master-Detail Data Option 1 Template.docx");
 
@@ -1013,7 +1013,7 @@ namespace ApiExamples.LinqTemp
         public void DisplayingMasterDetailDataInOneTableOption2()
         {
             //ExStart:DisplayingMasterDetailDataInOneTableOption2
-            //GistDesc:How to display master-detail data in one table using LINQ Reporting Engine in C# (Option 2)
+            //GistId:30e09bd0914ebed820339a602432e101
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Master-Detail Data Option 2 Template.docx");
 
@@ -1038,7 +1038,7 @@ namespace ApiExamples.LinqTemp
         public void AddingSubheaderToTable()
         {
             //ExStart:AddingSubheaderToTable
-            //GistDesc:How to add subheaders to a table using LINQ Reporting Engine in C#
+            //GistId:f1dae907de53577beb4989c7ae6b2cc8
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Subheaders Template.docx");
 
@@ -1062,7 +1062,7 @@ namespace ApiExamples.LinqTemp
         public void AddingSubtotalToTable()
         {
             //ExStart:AddingSubtotalToTable
-            //GistDesc:How to add subtotals to a table using LINQ Reporting Engine in C#
+            //GistId:b84b813cf9c0a0e91b1fad7e183ffc2f
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Subtotals Template.docx");
 
@@ -1086,7 +1086,7 @@ namespace ApiExamples.LinqTemp
         public void BuildingSingleColumnTable()
         {
             //ExStart:BuildingSingleColumnTable
-            //GistDesc:How to build a single-column table using LINQ Reporting Engine in C#
+            //GistId:da447f6a823cc5e5c0599122edba80cc
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Single-Column Table Template.docx");
 
@@ -1110,7 +1110,7 @@ namespace ApiExamples.LinqTemp
         public void ShowingSingleColumnTableRowBasedOnCondition1()
         {
             //ExStart:ShowingSingleColumnTableRowBasedOnCondition
-            //GistDesc:How to show a single-column table row based on a condition using LINQ Reporting Engine in C#
+            //GistId:b841d4c42cfcad6ede6feaaf84f485ad
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Single-Column Table with Row Shown Based on Condition Template.docx");
 
@@ -1159,7 +1159,7 @@ namespace ApiExamples.LinqTemp
         public void BindingSingleColumnTableRowsToCollectionBasedOnCondition()
         {
             //ExStart:BindingSingleColumnTableRowsToCollectionBasedOnCondition
-            //GistDesc:How to bind single-column table rows to a collection based on a condition using LINQ Reporting Engine in C#
+            //GistId:091dc5121b1d33ca66031aa3c04b72f9
             // Open the template document.
             Document doc = new Document(
                 MyLinqDir + "Single-Column Table with Rows Bound to Collection Based on Condition Template.docx");
@@ -1186,7 +1186,7 @@ namespace ApiExamples.LinqTemp
         public void BuildingHorizontalTable()
         {
             //ExStart:BuildingHorizontalTable
-            //GistDesc:How to build a horizontal table using LINQ Reporting Engine in C#
+            //GistId:babe28211ce3b225949a73ada8989ead
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Horizontal Table Template.docx");
 
@@ -1210,7 +1210,7 @@ namespace ApiExamples.LinqTemp
         public void AddingTotalToHorizontalTable()
         {
             //ExStart:AddingTotalToHorizontalTable
-            //GistDesc:How to add a total to a horizontal table using LINQ Reporting Engine in C#
+            //GistId:402615eda5e0a727e955e979d7b8790b
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Horizontal Table with Total Template.docx");
 
@@ -1234,7 +1234,7 @@ namespace ApiExamples.LinqTemp
         public void DisplayingMessageForEmptyHorizontalTable1()
         {
             //ExStart:DisplayingMessageForEmptyHorizontalTable
-            //GistDesc:How to display a message for an empty horizontal table using LINQ Reporting Engine in C#
+            //GistId:5bcd601ff2fbed17945d12700be84194
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Horizontal Table with Message If Empty Template.docx");
 
@@ -1283,7 +1283,7 @@ namespace ApiExamples.LinqTemp
         public void DisplayingMasterDetailDataInOneHorizontalTableOption1()
         {
             //ExStart:DisplayingMasterDetailDataInOneHorizontalTableOption1
-            //GistDesc:How to display master-detail data in one horizontal table using LINQ Reporting Engine in C# (Option 1)
+            //GistId:28c0c52d19a2a5ea35b9ae6bae0f9b36
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Horizontal Table with Master-Detail Data Option 1 Template.docx");
 
@@ -1309,7 +1309,7 @@ namespace ApiExamples.LinqTemp
         public void DisplayingMasterDetailDataInOneHorizontalTableOption2()
         {
             //ExStart:DisplayingMasterDetailDataInOneHorizontalTableOption2
-            //GistDesc:How to display master-detail data in one horizontal table using LINQ Reporting Engine in C# (Option 2)
+            //GistId:5626903685eaf2c1a5c640977da5f7e8
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Horizontal Table with Master-Detail Data Option 2 Template.docx");
 
@@ -1335,7 +1335,7 @@ namespace ApiExamples.LinqTemp
         public void ShowingTableColumnBasedOnCondition1()
         {
             //ExStart:ShowingTableColumnBasedOnCondition
-            //GistDesc:How to show a table column based on a condition using LINQ Reporting Engine in C#
+            //GistId:f3ef3b2284ff6716aae500ba6d82b68e
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Column Shown Based on Condition Template.docx");
 
@@ -1384,7 +1384,7 @@ namespace ApiExamples.LinqTemp
         public void ShowingColumnOfTableWithRowsBoundToCollectionBasedOnCondition1()
         {
             //ExStart:ShowingColumnOfTableWithRowsBoundToCollectionBasedOnCondition
-            //GistDesc:How to show a column of a table with rows bound to a collection based on a condition using LINQ Reporting Engine in C#
+            //GistId:25cc19f51209ad36cccab1d8bb4f4475
             // Open the template document.
             Document doc = new Document(
                 MyLinqDir + "Table with Column Shown Based on Condition and Rows Bound to Collection Template.docx");
@@ -1435,7 +1435,7 @@ namespace ApiExamples.LinqTemp
         public void BindingTableColumnsToCollectionBasedOnCondition()
         {
             //ExStart:BindingTableColumnsToCollectionBasedOnCondition
-            //GistDesc:How to bind table columns to a collection based on a condition using LINQ Reporting Engine in C#
+            //GistId:d30c7e45035ae070be2e511f87fce5db
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Columns Bound to Collection Based on Condition Template.docx");
 
@@ -1461,7 +1461,7 @@ namespace ApiExamples.LinqTemp
         public void ApplyingConditionalFormattingToTableColumns()
         {
             //ExStart:ApplyingConditionalFormattingToTableColumns
-            //GistDesc:How to apply conditional formatting to table columns using LINQ Reporting Engine in C#
+            //GistId:896a6e0853a7e706952eec3203954f4b
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Conditional Formatting Applied to Columns Template.docx");
 
@@ -1487,7 +1487,7 @@ namespace ApiExamples.LinqTemp
         public void ApplyingBackgroundColorsToTableColumns()
         {
             //ExStart:ApplyingBackgroundColorsToTableColumns
-            //GistDesc:How to apply background colors to table columns using LINQ Reporting Engine in C#
+            //GistId:aae874038596ea2e96371bb37b30b692
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Background Colors Applied to Columns Template.docx");
 
@@ -1513,7 +1513,7 @@ namespace ApiExamples.LinqTemp
         public void ApplyingTextColorsToTableColumns()
         {
             //ExStart:ApplyingTextColorsToTableColumns
-            //GistDesc:How to apply text colors to table columns using LINQ Reporting Engine in C#
+            //GistId:ad728469bf0d8b577d99b4d57004b59e
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Text Colors Applied to Columns Template.docx");
 
@@ -1539,7 +1539,7 @@ namespace ApiExamples.LinqTemp
         public void MergingTableCellsVertically()
         {
             //ExStart:MergingTableCellsVertically
-            //GistDesc:How to merge table cells vertically using LINQ Reporting Engine in C#
+            //GistId:0d477de87c617d7dbbe4b710a0271568
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Cells Merged Vertically Template.docx");
 
@@ -1564,7 +1564,7 @@ namespace ApiExamples.LinqTemp
         public void MergingTableCellsHorizontally()
         {
             //ExStart:MergingTableCellsHorizontally
-            //GistDesc:How to merge table cells horizontally using LINQ Reporting Engine in C#
+            //GistId:be43c7e51ac9138792a43c08d599e154
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Cells Merged Horizontally Template.docx");
 
@@ -1589,7 +1589,7 @@ namespace ApiExamples.LinqTemp
         public void MergingTableCellsVerticallyAndHorizontally()
         {
             //ExStart:MergingTableCellsVerticallyAndHorizontally
-            //GistDesc:How to merge table cells vertically and horizontally using LINQ Reporting Engine in C#
+            //GistId:fd21a16d172df2129f52303978551c5c
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Cells Merged Vertically and Horizontally Template.docx");
 
@@ -1615,7 +1615,7 @@ namespace ApiExamples.LinqTemp
         public void RestrictingTableCellMerging()
         {
             //ExStart:RestrictingTableCellMerging
-            //GistDesc:How to restrict table cell merging using LINQ Reporting Engine in C#
+            //GistId:ddf6b9088880b166c2619841b41bbc76
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Table with Cell Merging Restriction Template.docx");
 
@@ -1640,7 +1640,7 @@ namespace ApiExamples.LinqTemp
         public void BuildingCrossTable()
         {
             //ExStart:BuildingCrossTable
-            //GistDesc:How to build a cross table using LINQ Reporting Engine in C#
+            //GistId:7f70b373bd6cd2a7e6a3d2be56e8adce
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Cross Table Template.docx");
 
@@ -1664,7 +1664,7 @@ namespace ApiExamples.LinqTemp
         public void BuildingCrossTableWithTotals()
         {
             //ExStart:BuildingCrossTableWithTotals
-            //GistDesc:How to build a cross table with totals using LINQ Reporting Engine in C#
+            //GistId:7b543cd536b61ee8205f9d546b3230e9
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Cross Table with Totals Template.docx");
 
@@ -1688,7 +1688,7 @@ namespace ApiExamples.LinqTemp
         public void BuildingCrossTableWithMergedCells()
         {
             //ExStart:BuildingCrossTableWithMergedCells
-            //GistDesc:How to build a cross table with merged cells using LINQ Reporting Engine in C#
+            //GistId:634e8f47cd509bca96c2a8a7e834ef7e
             // Open the template document.
             Document doc = new Document(MyLinqDir + "Cross Table with Merged Cells Template.docx");
 
