@@ -1,4 +1,5 @@
 ﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -273,8 +274,9 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MarkdownSaveOptions.ExportTableAsHtml.md", saveOptions);
             //ExEnd:ExportTableAsHtml
 
+            string newLine = Environment.NewLine;
             string outDocContents = File.ReadAllText(ArtifactsDir + "MarkdownSaveOptions.ExportTableAsHtml.md");
-            Assert.AreEqual("Sample table:\r\n<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%; border:0.75pt solid #000000; border-collapse:collapse\">" +
+            Assert.AreEqual($"Sample table:{newLine}<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%; border:0.75pt solid #000000; border-collapse:collapse\">" +
                 "<tr><td style=\"border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">" +
                 "<p style=\"margin-top:0pt; margin-bottom:0pt; text-align:right; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Cell1</span></p>" +
                 "</td><td style=\"border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">" +

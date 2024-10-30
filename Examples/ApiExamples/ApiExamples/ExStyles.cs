@@ -341,16 +341,16 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Styles.LatentStyles.docx");
 
             TestUtil.DocPackageFileContainsString(
-                @"<w:lsdException w:name=""Mention"" w:semiHidden=""1"" w:unhideWhenUsed=""1"" />",
+                "<w:lsdException w:name=\"Mention\" w:semiHidden=\"1\" w:unhideWhenUsed=\"1\" />",
                 ArtifactsDir + "Styles.LatentStyles.docx", "styles.xml");
             TestUtil.DocPackageFileContainsString(
-                @"<w:lsdException w:name=""Smart Hyperlink"" w:semiHidden=""1"" w:unhideWhenUsed=""1"" />",
+                "<w:lsdException w:name=\"Smart Hyperlink\" w:semiHidden=\"1\" w:unhideWhenUsed=\"1\" />",
                 ArtifactsDir + "Styles.LatentStyles.docx", "styles.xml");
             TestUtil.DocPackageFileContainsString(
-                @"<w:lsdException w:name=""Hashtag"" w:semiHidden=""1"" w:unhideWhenUsed=""1"" />",
+                "<w:lsdException w:name=\"Hashtag\" w:semiHidden=\"1\" w:unhideWhenUsed=\"1\" />",
                 ArtifactsDir + "Styles.LatentStyles.docx", "styles.xml");
             TestUtil.DocPackageFileContainsString(
-                @"<w:lsdException w:name=""Unresolved Mention"" w:semiHidden=""1"" w:unhideWhenUsed=""1"" />",
+                "<w:lsdException w:name=\"Unresolved Mention\" w:semiHidden=\"1\" w:unhideWhenUsed=\"1\" />",
                 ArtifactsDir + "Styles.LatentStyles.docx", "styles.xml");
         }
 
