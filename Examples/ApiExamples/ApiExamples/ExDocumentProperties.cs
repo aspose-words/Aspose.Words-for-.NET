@@ -529,8 +529,8 @@ namespace ApiExamples
             Document doc = new Document();
 
             doc.CustomDocumentProperties.Add("AuthorizationDate", DateTime.Now);
-
-            Console.WriteLine($"Document authorized on {doc.CustomDocumentProperties["AuthorizationDate"].ToDateTime()}");
+            DateTime authorizationDate = doc.CustomDocumentProperties["AuthorizationDate"].ToDateTime();
+            Console.WriteLine($"Document authorized on {authorizationDate}");
             //ExEnd
 
             TestUtil.VerifyDate(DateTime.Now, 

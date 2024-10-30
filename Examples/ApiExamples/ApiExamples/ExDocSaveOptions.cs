@@ -110,7 +110,9 @@ namespace ApiExamples
             //ExFor:SaveOptions.UpdateLastPrintedProperty
             //ExSummary:Shows how to update a document's "Last printed" property when saving.
             Document doc = new Document();
-            doc.BuiltInDocumentProperties.LastPrinted = new DateTime(2019, 12, 20);
+
+            DateTime lastPrinted = new DateTime(2019, 12, 20);
+            doc.BuiltInDocumentProperties.LastPrinted = lastPrinted;
 
             // This flag determines whether the last printed date, which is a built-in property, is updated.
             // If so, then the date of the document's most recent save operation
@@ -125,7 +127,10 @@ namespace ApiExamples
             // Open the saved document, then verify the value of the property.
             doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.doc");
 
-            Assert.AreNotEqual(isUpdateLastPrintedProperty, new DateTime(2019, 12, 20) == doc.BuiltInDocumentProperties.LastPrinted);
+            if (isUpdateLastPrintedProperty)
+                Assert.AreNotEqual(lastPrinted, doc.BuiltInDocumentProperties.LastPrinted);
+            else
+                Assert.AreEqual(lastPrinted, doc.BuiltInDocumentProperties.LastPrinted);
             //ExEnd
         }
 
@@ -137,7 +142,9 @@ namespace ApiExamples
             //ExFor:SaveOptions.UpdateCreatedTimeProperty
             //ExSummary:Shows how to update a document's "CreatedTime" property when saving.
             Document doc = new Document();
-            doc.BuiltInDocumentProperties.CreatedTime = new DateTime(2019, 12, 20);
+
+            DateTime createdTime = new DateTime(2019, 12, 20);
+            doc.BuiltInDocumentProperties.CreatedTime = createdTime;
 
             // This flag determines whether the created time, which is a built-in property, is updated.
             // If so, then the date of the document's most recent save operation
@@ -150,7 +157,11 @@ namespace ApiExamples
             // Open the saved document, then verify the value of the property.
             doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateCreatedTimeProperty.docx");
 
-            Assert.AreNotEqual(isUpdateCreatedTimeProperty, new DateTime(2019, 12, 20) == doc.BuiltInDocumentProperties.CreatedTime);
+            if (isUpdateCreatedTimeProperty)
+                Assert.AreNotEqual(createdTime, doc.BuiltInDocumentProperties.CreatedTime);
+            else
+                Assert.AreEqual(createdTime, doc.BuiltInDocumentProperties.CreatedTime);
+
             //ExEnd
         }
 
