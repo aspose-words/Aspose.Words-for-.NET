@@ -2653,7 +2653,7 @@ namespace ApiExamples
         public void RenderChoiceFormFieldBorder()
         {
             //ExStart:RenderChoiceFormFieldBorder
-            //ReleaseVersion:24.11
+            //GistId:366eb64fd56dec3c2eaa40410e594182
             //ExFor:PdfSaveOptions.RenderChoiceFormFieldBorder
             //ExSummary:Shows how to render PDF choice form field border.
             Document doc = new Document(MyDir + "Legacy drop-down.docx");

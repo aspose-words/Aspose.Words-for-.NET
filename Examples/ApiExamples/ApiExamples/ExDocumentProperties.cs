@@ -677,7 +677,7 @@ namespace ApiExamples
         public void ExtendedProperties()
         {
             //ExStart:ExtendedProperties
-            //ReleaseVersion:24.11
+            //GistId:366eb64fd56dec3c2eaa40410e594182
             //ExFor:BuiltInDocumentProperties.ScaleCrop
             //ExFor:BuiltInDocumentProperties.SharedDocument
             //ExFor:BuiltInDocumentProperties.HyperlinksChanged

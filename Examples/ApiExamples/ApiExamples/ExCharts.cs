@@ -2303,7 +2303,7 @@ namespace ApiExamples
         public void FormatCode()
         {
             //ExStart:FormatCode
-            //ReleaseVersion:24.11
+            //GistId:366eb64fd56dec3c2eaa40410e594182
             //ExFor:ChartXValueCollection.FormatCode
             //ExFor:ChartYValueCollection.FormatCode
             //ExFor:BubbleSizeCollection.FormatCode

@@ -756,7 +756,7 @@ namespace ApiExamples
         public void RevisionCellColor()
         {
             //ExStart:RevisionCellColor
-            //ReleaseVersion:24.11
+            //GistId:366eb64fd56dec3c2eaa40410e594182
             //ExFor:RevisionOptions.InsertCellColor
             //ExFor:RevisionOptions.DeleteCellColor
             //ExSummary:Shows how to work with insert/delete cell revision color.

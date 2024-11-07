@@ -3469,7 +3469,7 @@ namespace ApiExamples
         public void CommandButtonCaption()
         {
             //ExStart:CommandButtonCaption
-            //ReleaseVersion:24.11
+            //GistId:366eb64fd56dec3c2eaa40410e594182
             //ExFor:Forms2OleControl.Caption
             //ExSummary:Shows how to set caption for ActiveX control.
             DocumentBuilder builder = new DocumentBuilder();

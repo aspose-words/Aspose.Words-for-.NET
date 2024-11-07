@@ -20,7 +20,7 @@ namespace ApiExamples
         public void AiSummarize()
         {
             //ExStart:AiSummarize
-            //ReleaseVersion:24.11
+            //GistId:366eb64fd56dec3c2eaa40410e594182
             //ExFor:GoogleAiModel
             //ExFor:OpenAiModel
             //ExFor:IAiModelText
