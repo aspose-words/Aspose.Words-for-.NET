@@ -9,7 +9,6 @@ using System.Drawing;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Threading;
-using Aspose.Drawing;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Fields;

@@ -60,14 +60,15 @@ namespace ApiExamples
         [Test]
         public void UsePdfDocumentForDictionary()
         {
+            const string unicodeOptionalHyphen = "\xad";
+
             Dictionary();
 
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Hyphenation.Dictionary.Registered.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
-            
-            Assert.True(textAbsorber.Text.Replace("  ", " ").Contains($"La ob storen an deinen am sachen. Dop-{Environment.NewLine}" +
-                $"pelte um da am spateren verlogen ge-{Environment.NewLine}" +
+            Assert.True(textAbsorber.Text.Replace("  ", " ").Contains($"La ob storen an deinen am sachen. Dop{unicodeOptionalHyphen}{Environment.NewLine}" +
+                $"pelte um da am spateren verlogen ge{unicodeOptionalHyphen}{Environment.NewLine}" +
                 $"kommen achtzehn blaulich."));
 
             pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Hyphenation.Dictionary.Unregistered.pdf");

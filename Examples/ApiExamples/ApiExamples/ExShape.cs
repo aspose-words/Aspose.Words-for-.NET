@@ -3464,5 +3464,20 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Shape.Hidden.docx");
             //ExEnd:Hidden
         }
+
+        [Test]
+        public void CommandButtonCaption()
+        {
+            //ExStart:CommandButtonCaption
+            //ReleaseVersion:24.11
+            //ExFor:Forms2OleControl.Caption
+            //ExSummary:Shows how to set caption for ActiveX control.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            CommandButtonControl button1 = new CommandButtonControl() { Caption = "Button caption" };
+            Shape shape = builder.InsertForms2OleControl(button1);
+            Assert.AreEqual("Button caption", ((Forms2OleControl)shape.OleFormat.OleControl).Caption);
+            //ExEnd:CommandButtonCaption
+        }
     }
 }

@@ -2648,5 +2648,22 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.SdtTagAsFormFieldName.pdf", saveOptions);
             //ExEnd:SdtTagAsFormFieldName
         }
+
+        [Test]
+        public void RenderChoiceFormFieldBorder()
+        {
+            //ExStart:RenderChoiceFormFieldBorder
+            //ReleaseVersion:24.11
+            //ExFor:PdfSaveOptions.RenderChoiceFormFieldBorder
+            //ExSummary:Shows how to render PDF choice form field border.
+            Document doc = new Document(MyDir + "Legacy drop-down.docx");
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.PreserveFormFields = true;
+            saveOptions.RenderChoiceFormFieldBorder = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.RenderChoiceFormFieldBorder.pdf", saveOptions);
+            //ExEnd:RenderChoiceFormFieldBorder
+        }
     }
 }
