@@ -3430,6 +3430,15 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.CombineGroupShape.docx");
             //ExEnd:CombineGroupShape
+
+            doc = new Document(ArtifactsDir + "Shape.CombineGroupShape.docx");
+
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+            foreach (Shape shape in shapes)
+            {
+                Assert.AreNotEqual(0, shape.Width);
+                Assert.AreNotEqual(0, shape.Height);
+            }
         }
 
         [Test]
