@@ -23,7 +23,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:Document.#ctor(String)
             //ExSummary:Shows how to load a PDF.
-            Aspose.Words.Document doc = new Aspose.Words.Document();
+            Document doc = new Aspose.Words.Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Write("Hello world!");
@@ -32,7 +32,7 @@ namespace ApiExamples
 
             // Below are two ways of loading PDF documents using Aspose products.
             // 1 -  Load as an Aspose.Words document:
-            Aspose.Words.Document asposeWordsDoc = new Aspose.Words.Document(ArtifactsDir + "PDF2Word.LoadPdf.pdf");
+            Document asposeWordsDoc = new Document(ArtifactsDir + "PDF2Word.LoadPdf.pdf");
 
             Assert.AreEqual("Hello world!", asposeWordsDoc.GetText().Trim());
 
@@ -93,40 +93,8 @@ namespace ApiExamples
         }
 
         [Test]
-        public static void LoadPdfUsingPlugin()
+        public static void LoadEncryptedPdf()
         {
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            builder.Write("Hello world!");
-
-            doc.Save(ArtifactsDir + "PDF2Word.LoadPdfUsingPlugin.pdf");
-
-            // Use the Pdf2Word plugin to open load a PDF document as an Aspose.Words document.
-            Document pdfDoc = new Document();
-
-            Aspose.Words.Pdf2Word.PdfDocumentReaderPlugin pdf2Word = new Aspose.Words.Pdf2Word.PdfDocumentReaderPlugin();
-            using (FileStream stream =
-                new FileStream(ArtifactsDir + "PDF2Word.LoadPdfUsingPlugin.pdf", FileMode.Open))
-            {
-                pdf2Word.Read(stream, new LoadOptions(), pdfDoc);
-            }
-
-            builder = new DocumentBuilder(pdfDoc);
-
-            builder.MoveToDocumentEnd();
-            builder.Writeln(" We are editing a PDF document that was loaded into Aspose.Words!");
-
-            Assert.AreEqual("Hello world! We are editing a PDF document that was loaded into Aspose.Words!", 
-                pdfDoc.GetText().Trim());
-        }
-
-        [Test]
-        public static void LoadEncryptedPdfUsingPlugin()
-        {
-            //ExStart
-            //ExFor:PdfEncryptionDetails.#ctor(String,String)
-            //ExSummary:Shows how to load encrypted pdf using plugin.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -143,25 +111,15 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "PDF2Word.LoadEncryptedPdfUsingPlugin.pdf", saveOptions);
 
-            Document pdfDoc = new Document();
-
             // To load a password encrypted document, we need to pass a LoadOptions object
             // with the correct password stored in its "Password" property.
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.Password = "MyPassword";
 
-            Aspose.Words.Pdf2Word.PdfDocumentReaderPlugin pdf2Word = new Aspose.Words.Pdf2Word.PdfDocumentReaderPlugin();
-            using (FileStream stream =
-                new FileStream(ArtifactsDir + "PDF2Word.LoadEncryptedPdfUsingPlugin.pdf", FileMode.Open))
-            {
-                // Pass the LoadOptions object into the Pdf2Word plugin's "Read" method
-                // the same way we would pass it into a document's "Load" method.
-                pdf2Word.Read(stream, new LoadOptions("MyPassword"), pdfDoc);
-            }
+            Document pdfDoc = new Document(ArtifactsDir + "PDF2Word.LoadEncryptedPdfUsingPlugin.pdf", loadOptions);
 
             Assert.AreEqual("Hello world! This is an encrypted PDF document.",
                 pdfDoc.GetText().Trim());
-            //ExEnd
         }
     }
 }

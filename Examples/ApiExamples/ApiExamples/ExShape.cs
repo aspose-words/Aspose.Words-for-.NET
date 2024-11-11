@@ -3430,6 +3430,15 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.CombineGroupShape.docx");
             //ExEnd:CombineGroupShape
+
+            doc = new Document(ArtifactsDir + "Shape.CombineGroupShape.docx");
+
+            NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
+            foreach (Shape shape in shapes)
+            {
+                Assert.AreNotEqual(0, shape.Width);
+                Assert.AreNotEqual(0, shape.Height);
+            }
         }
 
         [Test]
@@ -3463,6 +3472,21 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Shape.Hidden.docx");
             //ExEnd:Hidden
+        }
+
+        [Test]
+        public void CommandButtonCaption()
+        {
+            //ExStart:CommandButtonCaption
+            //GistId:366eb64fd56dec3c2eaa40410e594182
+            //ExFor:Forms2OleControl.Caption
+            //ExSummary:Shows how to set caption for ActiveX control.
+            DocumentBuilder builder = new DocumentBuilder();
+
+            CommandButtonControl button1 = new CommandButtonControl() { Caption = "Button caption" };
+            Shape shape = builder.InsertForms2OleControl(button1);
+            Assert.AreEqual("Button caption", ((Forms2OleControl)shape.OleFormat.OleControl).Caption);
+            //ExEnd:CommandButtonCaption
         }
     }
 }

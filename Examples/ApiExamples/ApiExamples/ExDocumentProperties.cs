@@ -57,7 +57,7 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.AreEqual(28, doc.BuiltInDocumentProperties.Count);
+            Assert.AreEqual(31, doc.BuiltInDocumentProperties.Count);
         }
 
         [Test]
@@ -671,6 +671,22 @@ namespace ApiExamples
             Assert.AreEqual(1, properties["Authorized Revision"].ToInt());
             Assert.AreEqual(123.45d, properties["Authorized Amount"].ToDouble());
             //ExEnd
+        }
+
+        [Test]
+        public void ExtendedProperties()
+        {
+            //ExStart:ExtendedProperties
+            //GistId:366eb64fd56dec3c2eaa40410e594182
+            //ExFor:BuiltInDocumentProperties.ScaleCrop
+            //ExFor:BuiltInDocumentProperties.SharedDocument
+            //ExFor:BuiltInDocumentProperties.HyperlinksChanged
+            //ExSummary:Shows how to get extended properties.
+            Document doc = new Document(MyDir + "Extended properties.docx");
+            Assert.IsTrue(doc.BuiltInDocumentProperties.ScaleCrop);
+            Assert.IsTrue(doc.BuiltInDocumentProperties.SharedDocument);
+            Assert.IsTrue(doc.BuiltInDocumentProperties.HyperlinksChanged);
+            //ExEnd:ExtendedProperties
         }
     }
 }

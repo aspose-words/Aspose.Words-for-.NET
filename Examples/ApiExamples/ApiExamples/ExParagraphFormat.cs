@@ -417,6 +417,8 @@ namespace ApiExamples
         [TestCase(true)]
         public void UsePdfDocumentForSuppressHyphens(bool suppressAutoHyphens)
         {
+            const string unicodeOptionalHyphen = "\xad";
+
             SuppressHyphens(suppressAutoHyphens);
 
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "ParagraphFormat.SuppressHyphens.pdf");
@@ -428,8 +430,8 @@ namespace ApiExamples
                                                        $"Doppelte um da am spateren verlogen {Environment.NewLine}" +
                                                        $"gekommen achtzehn blaulich."));
             else
-                Assert.True(textAbsorber.Text.Replace("  ", " ").Contains($"La ob storen an deinen am sachen. Dop-{Environment.NewLine}" +
-                                                       $"pelte um da am spateren verlogen ge-{Environment.NewLine}" +
+                Assert.True(textAbsorber.Text.Replace("  ", " ").Contains($"La ob storen an deinen am sachen. Dop{unicodeOptionalHyphen}{Environment.NewLine}" +
+                                                       $"pelte um da am spateren verlogen ge{unicodeOptionalHyphen}{Environment.NewLine}" +
                                                        $"kommen achtzehn blaulich."));
         }
 

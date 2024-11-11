@@ -751,5 +751,22 @@ namespace ApiExamples
             Assert.AreEqual(0, docA.Revisions.Count);
             //ExEnd:IgnoreStoreItemId
         }
+
+        [Test]
+        public void RevisionCellColor()
+        {
+            //ExStart:RevisionCellColor
+            //GistId:366eb64fd56dec3c2eaa40410e594182
+            //ExFor:RevisionOptions.InsertCellColor
+            //ExFor:RevisionOptions.DeleteCellColor
+            //ExSummary:Shows how to work with insert/delete cell revision color.
+            Document doc = new Document(MyDir + "Cell revisions.docx");
+
+            doc.LayoutOptions.RevisionOptions.InsertCellColor = RevisionColor.LightBlue;
+            doc.LayoutOptions.RevisionOptions.DeleteCellColor = RevisionColor.DarkRed;
+
+            doc.Save(ArtifactsDir + "Revision.RevisionCellColor.pdf");
+            //ExEnd:RevisionCellColor
+        }
     }
 }

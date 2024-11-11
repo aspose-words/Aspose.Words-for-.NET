@@ -122,13 +122,14 @@
     <Content Include="ExWordML2003SaveOptions.cs" />
     <Content Include="ExXlsxSaveOptions.cs" />
     <Content Include="ExLowCode.cs" />
+    <Content Include="ExAI.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="24.9.0" />
-    <PackageReference Include="Aspose.Page" Version="24.9.0" />
+    <PackageReference Include="Aspose.BarCode" Version="24.10.0" />
+    <PackageReference Include="Aspose.Page" Version="24.10.0" />
     <PackageReference Include="Aspose.PDF" Version="24.10.0" />
-    <PackageReference Include="Aspose.Words" Version="24.10.0" />
+    <PackageReference Include="Aspose.Words" Version="24.11.0" />
     <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="24.10.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
@@ -138,7 +139,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SkiaSharp" Version="2.88.8" />
+    <PackageReference Include="SkiaSharp" Version="2.88.9" />
     <PackageReference Include="System.Data.OleDb" Version="8.0.1" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
