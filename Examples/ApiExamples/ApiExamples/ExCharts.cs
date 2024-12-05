@@ -2350,5 +2350,145 @@ namespace ApiExamples
                 Assert.AreEqual("#,##0.0#", seriesProperties.BubbleSizes.FormatCode);
             }
         }
+
+        [Test]
+        public void DataLablePosition()
+        {
+            //ExStart:DataLablePosition
+            //GistId:695136dbbe4f541a8a0a17b3d3468689
+            //ExFor:ChartDataLabelCollection.Position
+            //ExFor:ChartDataLabel.Position
+            //ExFor:ChartDataLabelPosition
+            //ExSummary:Shows how to set the position of the data label.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert column chart.
+            Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
+            Chart chart = shape.Chart;
+            ChartSeriesCollection seriesColl = chart.Series;
+
+            // Delete default generated series.
+            seriesColl.Clear();
+
+            // Add series.
+            ChartSeries series = seriesColl.Add(
+                "Series 1",
+                new string[] { "Category 1", "Category 2", "Category 3" },
+                new double[] { 4, 5, 6 });
+
+            // Show data labels and set font color.
+            series.HasDataLabels = true;
+            ChartDataLabelCollection dataLabels = series.DataLabels;
+            dataLabels.ShowValue = true;
+            dataLabels.Font.Color = Color.White;
+
+            // Set data label position.
+            dataLabels.Position = ChartDataLabelPosition.InsideBase;
+            dataLabels[0].Position = ChartDataLabelPosition.OutsideEnd;
+            dataLabels[0].Font.Color = Color.DarkRed;
+
+            doc.Save(ArtifactsDir + "Charts.LabelPosition.docx");
+            //ExEnd:DataLablePosition
+        }
+
+        [Test]
+        public void DoughnutChartLabelPosition()
+        {
+            //ExStart:DoughnutChartLabelPosition
+            //GistId:695136dbbe4f541a8a0a17b3d3468689
+            //ExFor:ChartDataLabel.Left
+            //ExFor:ChartDataLabel.LeftMode
+            //ExFor:ChartDataLabel.Top
+            //ExFor:ChartDataLabel.TopMode
+            //ExFor:ChartDataLabelLocationMode
+            //ExSummary:Shows how to place data labels of doughnut chart outside doughnut.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            const int chartWidth = 432;
+            const int chartHeight = 252;
+            Shape shape = builder.InsertChart(ChartType.Doughnut, chartWidth, chartHeight);
+            Chart chart = shape.Chart;
+            ChartSeriesCollection seriesColl = chart.Series;
+            // Delete default generated series.
+            seriesColl.Clear();
+
+            // Hide the legend.
+            chart.Legend.Position = LegendPosition.None;
+
+            // Generate data.
+            const int dataLength = 20;
+            double totalValue = 0;
+            string[] categories = new string[dataLength];
+            double[] values = new double[dataLength];
+            for (int i = 0; i < dataLength; i++)
+            {
+                categories[i] = string.Format("Category {0}", i);
+                values[i] = dataLength - i;
+                totalValue += values[i];
+            }
+
+            ChartSeries series = seriesColl.Add("Series 1", categories, values);
+            series.HasDataLabels = true;
+
+            ChartDataLabelCollection dataLabels = series.DataLabels;
+            dataLabels.ShowValue = true;
+            dataLabels.ShowLeaderLines = true;
+
+            // The Position property cannot be used for doughnut charts. Let's place data labels using the Left and Top
+            // properties around a circle outside of the chart doughnut.
+            // The origin is in the upper left corner of the chart.
+
+            const double titleAreaHeight = 25.5; // This can be calculated using title text and font.
+            const double doughnutCenterY = titleAreaHeight + (chartHeight - titleAreaHeight) / 2;
+            const double doughnutCenterX = chartWidth / 2d;
+            const double labelHeight = 16.5; // This can be calculated using label font.
+            const double oneCharLabelWidth = 12.75; // This can be calculated for each label using its text and font.
+            const double twoCharLabelWidth = 17.25; // This can be calculated for each label using its text and font.
+            const double yMargin = 0.75;
+            const double labelMargin = 1.5;
+            const double labelCircleRadius = chartHeight - doughnutCenterY - yMargin - labelHeight / 2;
+
+            // Because the data points start at the top, the X coordinates used in the Left and Top properties of
+            // the data labels point to the right and the Y coordinates point down, the starting angle is -PI/2.
+            double totalAngle = -System.Math.PI / 2;
+            ChartDataLabel previousLabel = null;
+
+            for (int i = 0; i < series.YValues.Count; i++)
+            {
+                ChartDataLabel dataLabel = dataLabels[i];
+
+                double value = series.YValues[i].DoubleValue;
+                double labelWidth = (value < 10) ? oneCharLabelWidth : twoCharLabelWidth;
+                double labelSegmentAngle = value / totalValue * 2 * System.Math.PI;
+                double labelAngle = labelSegmentAngle / 2 + totalAngle;
+                double labelCenterX = labelCircleRadius * System.Math.Cos(labelAngle) + doughnutCenterX;
+                double labelCenterY = labelCircleRadius * System.Math.Sin(labelAngle) + doughnutCenterY;
+                double labelLeft = labelCenterX - labelWidth / 2;
+                double labelTop = labelCenterY - labelHeight / 2;
+
+                // If the current data label overlaps other labels, move it horizontally.
+                if ((previousLabel != null) &&
+                    (System.Math.Abs(previousLabel.Top - labelTop) < labelHeight) &&
+                    (System.Math.Abs(previousLabel.Left - labelLeft) < labelWidth))
+                {
+                    // Move right on the top, left on the bottom.
+                    bool isOnTop = (totalAngle < 0) || (totalAngle >= System.Math.PI);
+                    labelLeft = previousLabel.Left + labelWidth * (isOnTop ? 1 : -1) + labelMargin;
+                }
+
+                dataLabel.Left = labelLeft;
+                dataLabel.LeftMode = ChartDataLabelLocationMode.Absolute;
+                dataLabel.Top = labelTop;
+                dataLabel.TopMode = ChartDataLabelLocationMode.Absolute;
+
+                totalAngle += labelSegmentAngle;
+                previousLabel = dataLabel;
+            }
+
+            doc.Save(ArtifactsDir + "Charts.DoughnutChartLabelPosition.docx");
+            //ExEnd:DoughnutChartLabelPosition
+        }
     }
 }

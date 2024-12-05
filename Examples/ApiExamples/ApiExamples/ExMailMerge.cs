@@ -1891,5 +1891,35 @@ namespace ApiExamples
             }
             //ExEnd
         }
+
+        [Test]
+        public void RemoveEmptyTables()
+        {
+            //ExStart:RemoveEmptyTables
+            //GistId:695136dbbe4f541a8a0a17b3d3468689
+            //ExFor:MailMergeCleanupOptions
+            //ExSummary:Shows how to remove whole empty table during mail merge.
+            DataTable tableCustomers = new DataTable("A");
+            tableCustomers.Columns.Add("CustomerID");
+            tableCustomers.Columns.Add("CustomerName");
+            tableCustomers.Rows.Add(new object[] { 1, "John Doe" });
+            tableCustomers.Rows.Add(new object[] { 2, "Jane Doe" });
+
+            DataSet ds = new DataSet();
+            ds.Tables.Add(tableCustomers);
+
+            Document doc = new Document(MyDir + "Mail merge tables.docx");
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
+
+            doc.MailMerge.MergeDuplicateRegions = false;
+            doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyTables | MailMergeCleanupOptions.RemoveUnusedRegions;
+            doc.MailMerge.ExecuteWithRegions(ds.Tables["A"]);
+
+            doc.Save(ArtifactsDir + "MailMerge.RemoveEmptyTables.docx");
+
+            doc = new Document(ArtifactsDir + "MailMerge.RemoveEmptyTables.docx");
+            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
+            //ExEnd:RemoveEmptyTables
+        }
     }
 }

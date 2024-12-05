@@ -5,7 +5,6 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System.Text;
 using NUnit.Framework;
 using Aspose.Words;
 using System;
@@ -47,6 +46,24 @@ namespace ApiExamples
             Document multiDocumentSummary = model.Summarize(new Document[] { firstDoc, secondDoc }, new SummarizeOptions() { SummaryLength = SummaryLength.Long });
             multiDocumentSummary.Save(ArtifactsDir + "AI.AiSummarize.Multi.docx");
             //ExEnd:AiSummarize
+        }
+
+        [Test, Ignore("This test should be run manually to manage API requests amount")]
+        public void AiTranslate()
+        {
+            //ExStart:AiTranslate
+            //GistId:695136dbbe4f541a8a0a17b3d3468689
+            //ExFor:IAiModelText.Translate(Document, AI.Language)
+            //ExSummary:Shows how to translate text using Google models.
+            Document doc = new Document(MyDir + "Document.docx");
+
+            string apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            // Use Google generative language models.
+            IAiModelText model = (IAiModelText)AiModel.Create(AiModelType.Gemini15Flash).WithApiKey(apiKey);
+
+            Document translatedDoc = model.Translate(doc, Language.Arabic);
+            translatedDoc.Save(ArtifactsDir + "AI.AiTranslate.docx");
+            //ExEnd:AiTranslate
         }
     }
 }
