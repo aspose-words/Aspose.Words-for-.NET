@@ -836,7 +836,7 @@ namespace ApiExamples
             //ExEnd
 
             Assert.AreEqual(7, dstDoc.Styles.Count);
-            Assert.AreEqual(9, dstDoc.Sections.Count);
+            Assert.AreEqual(10, dstDoc.Sections.Count);
         }
 
         [Test]

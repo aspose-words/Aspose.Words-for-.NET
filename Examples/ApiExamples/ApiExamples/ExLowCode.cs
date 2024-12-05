@@ -29,7 +29,7 @@ using LoadOptions = Aspose.Words.Loading.LoadOptions;
 namespace ApiExamples
 {
     [TestFixture]
-    class ExLowCode : ApiExampleBase
+    public class ExLowCode : ApiExampleBase
     {
         [Test]
         public void MergeDocuments()
