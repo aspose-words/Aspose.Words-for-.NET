@@ -38,12 +38,16 @@ namespace ApiExamples
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use OpenAI or Google generative language models.
-            IAiModelText model = (IAiModelText)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
+            IAiModelText model = (OpenAiModel)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
 
-            Document oneDocumentSummary = model.Summarize(firstDoc, new SummarizeOptions() { SummaryLength = SummaryLength.Short });
+            SummarizeOptions options = new SummarizeOptions();
+
+            options.SummaryLength = SummaryLength.Short;
+            Document oneDocumentSummary = model.Summarize(firstDoc, options);
             oneDocumentSummary.Save(ArtifactsDir + "AI.AiSummarize.One.docx");
 
-            Document multiDocumentSummary = model.Summarize(new Document[] { firstDoc, secondDoc }, new SummarizeOptions() { SummaryLength = SummaryLength.Long });
+            options.SummaryLength = SummaryLength.Long;
+            Document multiDocumentSummary = model.Summarize(new Document[] { firstDoc, secondDoc }, options);
             multiDocumentSummary.Save(ArtifactsDir + "AI.AiSummarize.Multi.docx");
             //ExEnd:AiSummarize
         }
@@ -59,7 +63,7 @@ namespace ApiExamples
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use Google generative language models.
-            IAiModelText model = (IAiModelText)AiModel.Create(AiModelType.Gemini15Flash).WithApiKey(apiKey);
+            IAiModelText model = (GoogleAiModel)AiModel.Create(AiModelType.Gemini15Flash).WithApiKey(apiKey);
 
             Document translatedDoc = model.Translate(doc, Language.Arabic);
             translatedDoc.Save(ArtifactsDir + "AI.AiTranslate.docx");
