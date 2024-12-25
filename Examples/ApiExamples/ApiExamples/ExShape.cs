@@ -3447,13 +3447,15 @@ namespace ApiExamples
             //ExStart:InsertCommandButton
             //GistId:bb594993b5fe48692541e16f4d354ac2
             //ExFor:CommandButtonControl
+            //ExFor:CommandButtonControl.#ctor
+            //ExFor:CommandButtonControl.Type
             //ExFor:DocumentBuilder.InsertForms2OleControl(Forms2OleControl)
             //ExSummary:Shows how to insert ActiveX control.
             DocumentBuilder builder = new DocumentBuilder();
 
             CommandButtonControl button1 = new CommandButtonControl();
             Shape shape = builder.InsertForms2OleControl(button1);
-            Assert.AreEqual(Forms2OleControlType.CommandButton, ((Forms2OleControl)shape.OleFormat.OleControl).Type);
+            Assert.AreEqual(Forms2OleControlType.CommandButton, button1.Type);
             //ExEnd:InsertCommandButton
         }
 
@@ -3485,7 +3487,7 @@ namespace ApiExamples
 
             CommandButtonControl button1 = new CommandButtonControl() { Caption = "Button caption" };
             Shape shape = builder.InsertForms2OleControl(button1);
-            Assert.AreEqual("Button caption", ((Forms2OleControl)shape.OleFormat.OleControl).Caption);
+            Assert.AreEqual("Button caption", button1.Caption);
             //ExEnd:CommandButtonCaption
         }
     }

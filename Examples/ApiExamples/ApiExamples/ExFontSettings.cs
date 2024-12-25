@@ -742,6 +742,7 @@ namespace ApiExamples
             //ExFor:FontSettings.ResetFontSources
             //ExFor:FontSettings.SubstitutionSettings
             //ExFor:FontSubstitutionSettings
+            //ExFor:FontSubstitutionSettings.FontNameSubstitution
             //ExFor:SystemFontSource
             //ExFor:SystemFontSource.#ctor
             //ExFor:SystemFontSource.#ctor(Int32)
@@ -794,6 +795,7 @@ namespace ApiExamples
             Assert.AreEqual(FontSourceType.SystemFonts, doc.FontSettings.GetFontsSources()[0].Type);
             Assert.AreEqual(1,
                 doc.FontSettings.SubstitutionSettings.TableSubstitution.GetSubstitutes("Kreon-Regular").Count());
+            Assert.True(doc.FontSettings.SubstitutionSettings.FontNameSubstitution.Enabled);
             //ExEnd
         }
 

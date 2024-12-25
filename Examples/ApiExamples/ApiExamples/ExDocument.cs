@@ -46,6 +46,14 @@ namespace ApiExamples
     public class ExDocument : ApiExampleBase
     {
         [Test]
+        public void HtmlShapes()
+        {
+            Document doc = new Document(MyDir + "tmp2.pdf");
+
+            doc.Save(ArtifactsDir + "output.docx");
+        }
+
+        [Test]
         public void CreateSimpleDocument()
         {
             //ExStart:CreateSimpleDocument
@@ -2608,6 +2616,31 @@ namespace ApiExamples
             FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "Macro.docm");
             Assert.IsTrue(fileFormatInfo.HasMacros);
             //ExEnd:HasMacros
+        }
+
+        [Test]
+        public void PunctuationKerning()
+        {
+            //ExStart
+            //ExFor:Document.PunctuationKerning
+            //ExSummary:Shows how to work with kerning applies to both Latin text and punctuation.
+            Document doc = new Document(MyDir + "Document.docx");
+            Assert.True(doc.PunctuationKerning);
+            //ExEnd
+        }
+
+        [Test]
+        public void RemoveBlankPages()
+        {
+            //ExStart
+            //ExFor:Document.RemoveBlankPages
+            //ExSummary:Shows how to remove blank pages from the document.
+            Document doc = new Document(MyDir + "Blank pages.docx");
+            Assert.AreEqual(2, doc.PageCount);
+            doc.RemoveBlankPages();
+            doc.UpdatePageLayout();
+            Assert.AreEqual(1, doc.PageCount);
+            //ExEnd
         }
     }
 }

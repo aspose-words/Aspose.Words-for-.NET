@@ -75,6 +75,7 @@ namespace ApiExamples
             //ExFor:ChartDataLabelCollection.NumberFormat
             //ExFor:ChartDataLabelCollection.Font
             //ExFor:ChartNumberFormat.FormatCode
+            //ExFor:ChartSeries.HasDataLabels
             //ExSummary:Shows how to enable and configure data labels for a chart series.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -123,6 +124,9 @@ namespace ApiExamples
             //ExFor:ChartAxis.MinorTickMark
             //ExFor:ChartAxis.MajorUnit
             //ExFor:ChartAxis.MinorUnit
+            //ExFor:ChartAxis.Document
+            //ExFor:ChartAxis.TickLabels
+            //ExFor:ChartAxis.Format
             //ExFor:AxisTickLabels
             //ExFor:AxisTickLabels.Offset
             //ExFor:AxisTickLabels.Position
@@ -166,6 +170,8 @@ namespace ApiExamples
             xAxis.TickLabels.IsAutoSpacing = false;
             xAxis.TickMarkSpacing = 1;
 
+            Assert.AreEqual(doc, xAxis.Document);
+
             ChartAxis yAxis = chart.AxisY;
             yAxis.CategoryType = AxisCategoryType.Automatic;
             yAxis.Crosses = AxisCrosses.Maximum;
@@ -199,6 +205,7 @@ namespace ApiExamples
             Assert.AreEqual(AxisTickLabelPosition.Low, chart.AxisX.TickLabels.Position);
             Assert.False(chart.AxisX.TickLabels.IsAutoSpacing);
             Assert.AreEqual(1, chart.AxisX.TickMarkSpacing);
+            Assert.True(chart.AxisX.Format.IsDefined);
 
             Assert.AreEqual(AxisCategoryType.Category, chart.AxisY.CategoryType);
             Assert.AreEqual(AxisCrosses.Maximum, chart.AxisY.Crosses);
@@ -211,6 +218,7 @@ namespace ApiExamples
             Assert.AreEqual(ParagraphAlignment.Center, chart.AxisY.TickLabels.Alignment);
             Assert.AreEqual(Color.Red.ToArgb(), chart.AxisY.TickLabels.Font.Color.ToArgb());
             Assert.AreEqual(1, chart.AxisY.TickLabels.Spacing);
+            Assert.True(chart.AxisY.Format.IsDefined);
         }
 
         [Test]
@@ -410,7 +418,7 @@ namespace ApiExamples
             Shape shape = builder.InsertChart(chartType, 500, 300);
             Chart chart = shape.Chart;
             chart.Series.Clear();
-            
+
             chart.Series.Add("Aspose Test Series",
                 new[] { "Word", "PDF", "Excel", "GoogleDocs", "Note" },
                 new double[] { 1900000, 850000, 2100000, 600000, 1500000 });
@@ -538,6 +546,7 @@ namespace ApiExamples
         //ExFor:ChartSeries.DataLabels
         //ExFor:ChartSeries.DataPoints
         //ExFor:ChartSeries.Name
+        //ExFor:ChartSeries.Explosion
         //ExFor:ChartDataLabel
         //ExFor:ChartDataLabel.Index
         //ExFor:ChartDataLabel.IsVisible
@@ -551,7 +560,10 @@ namespace ApiExamples
         //ExFor:ChartDataLabel.ShowSeriesName
         //ExFor:ChartDataLabel.ShowValue
         //ExFor:ChartDataLabel.IsHidden
+        //ExFor:ChartDataLabel.Format
+        //ExFor:ChartDataLabel.ClearFormat
         //ExFor:ChartDataLabelCollection
+        //ExFor:ChartDataLabelCollection.ShowDataLabelsRange
         //ExFor:ChartDataLabelCollection.ClearFormat
         //ExFor:ChartDataLabelCollection.Count
         //ExFor:ChartDataLabelCollection.GetEnumerator
@@ -589,8 +601,11 @@ namespace ApiExamples
                 }
             }
 
+            ChartDataLabel dataLabel = chart.Series[1].DataLabels[2];
+            dataLabel.Format.Fill.Color = Color.Red;
+
             // For a cleaner looking graph, we can remove data labels individually.
-            chart.Series[1].DataLabels[2].ClearFormat();
+            dataLabel.ClearFormat();
 
             // We can also strip an entire series of its data labels at once.
             chart.Series[2].DataLabels.ClearFormat();
@@ -603,10 +618,11 @@ namespace ApiExamples
         /// </summary>
         private static void ApplyDataLabels(ChartSeries series, int labelsCount, string numberFormat, string separator)
         {
+            series.HasDataLabels = true;
+            series.Explosion = 40;
+
             for (int i = 0; i < labelsCount; i++)
             {
-                series.HasDataLabels = true;
-
                 Assert.False(series.DataLabels[i].IsVisible);
 
                 series.DataLabels[i].ShowCategoryName = true;
@@ -615,7 +631,7 @@ namespace ApiExamples
                 series.DataLabels[i].ShowLeaderLines = true;
                 series.DataLabels[i].ShowLegendKey = true;
                 series.DataLabels[i].ShowPercentage = false;
-                series.DataLabels[i].IsHidden = false;
+                Assert.False(series.DataLabels[i].IsHidden);
                 Assert.False(series.DataLabels[i].ShowDataLabelsRange);
 
                 series.DataLabels[i].NumberFormat.FormatCode = numberFormat;
@@ -630,7 +646,10 @@ namespace ApiExamples
 
         //ExStart
         //ExFor:ChartSeries.Smooth
+        //ExFor:ChartSeries.InvertIfNegative
         //ExFor:ChartDataPoint
+        //ExFor:ChartDataPoint.Format
+        //ExFor:ChartDataPoint.ClearFormat
         //ExFor:ChartDataPoint.Index
         //ExFor:ChartDataPointCollection
         //ExFor:ChartDataPointCollection.ClearFormat
@@ -642,6 +661,7 @@ namespace ApiExamples
         //ExFor:ChartMarker.Symbol
         //ExFor:IChartDataPoint
         //ExFor:IChartDataPoint.InvertIfNegative
+        //ExFor:ChartDataPoint.InvertIfNegative
         //ExFor:IChartDataPoint.Marker
         //ExFor:MarkerSymbol
         //ExSummary:Shows how to work with data points on a line chart.
@@ -665,6 +685,7 @@ namespace ApiExamples
 
             // Smooth out the line that represents the first data series.
             chart.Series[0].Smooth = true;
+            chart.Series[0].InvertIfNegative = true;
 
             // Verify that data points for the first series will not invert their colors if the value is negative.
             using (IEnumerator<ChartDataPoint> enumerator = chart.Series[0].DataPoints.GetEnumerator())
@@ -675,8 +696,11 @@ namespace ApiExamples
                 }
             }
 
+            ChartDataPoint dataPoint = chart.Series[1].DataPoints[2];
+            dataPoint.Format.Fill.Color = Color.Red;
+
             // For a cleaner looking graph, we can clear format individually.
-            chart.Series[1].DataPoints[2].ClearFormat();
+            dataPoint.ClearFormat();
 
             // We can also strip an entire series of data points at once.
             chart.Series[2].DataPoints.ClearFormat();
@@ -705,6 +729,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:IChartDataPoint.Explosion
+            //ExFor:ChartDataPoint.Explosion
             //ExSummary:Shows how to move the slices of a pie chart away from the center.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -742,6 +767,7 @@ namespace ApiExamples
             //ExFor:ChartDataLabel.ShowBubbleSize
             //ExFor:ChartDataLabel.Font
             //ExFor:IChartDataPoint.Bubble3D
+            //ExFor:ChartSeries.Bubble3D
             //ExSummary:Shows how to use 3D effects with bubble charts.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1139,6 +1165,7 @@ namespace ApiExamples
             //ExFor:AxisDisplayUnit
             //ExFor:AxisDisplayUnit.CustomUnit
             //ExFor:AxisDisplayUnit.Unit
+            //ExFor:AxisDisplayUnit.Document
             //ExSummary:Shows how to manipulate the tick marks and displayed values of a chart axis.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1180,6 +1207,7 @@ namespace ApiExamples
             axis.TickLabels.Alignment = ParagraphAlignment.Right;
 
             Assert.AreEqual(1, axis.TickLabels.Spacing);
+            Assert.AreEqual(doc, axis.DisplayUnit.Document);
 
             // Set the tick labels to display their value in millions.
             axis.DisplayUnit.Unit = AxisBuiltInUnit.Millions;
@@ -1224,8 +1252,10 @@ namespace ApiExamples
         public void MarkerFormatting()
         {
             //ExStart
+            //ExFor:ChartDataPoint.Marker
             //ExFor:ChartMarker.Format
             //ExFor:ChartFormat.Fill
+            //ExFor:ChartSeries.Marker
             //ExFor:ChartFormat.Stroke
             //ExFor:Stroke.ForeColor
             //ExFor:Stroke.BackColor
@@ -1369,6 +1399,7 @@ namespace ApiExamples
             //ExFor:ChartLegendEntry
             //ExFor:ChartLegendEntry.Font
             //ExFor:ChartLegend.Font
+            //ExFor:ChartSeries.LegendEntry
             //ExSummary:Shows how to work with a legend font.
             Document doc = new Document(MyDir + "Reporting engine template - Chart series.docx");
             Chart chart = ((Shape)doc.GetChild(NodeType.Shape, 0, true)).Chart;
@@ -1379,6 +1410,8 @@ namespace ApiExamples
             // Change font for specific legend entry.
             chartLegend.LegendEntries[1].Font.Italic = true;
             chartLegend.LegendEntries[1].Font.Size = 12;
+            // Get legend entry for chart series.
+            ChartLegendEntry legendEntry = chart.Series[0].LegendEntry;
 
             doc.Save(ArtifactsDir + "Charts.LegendFont.docx");
             //ExEnd:LegendFont
@@ -1417,10 +1450,14 @@ namespace ApiExamples
             //ExFor:ChartXValue
             //ExFor:ChartXValue.FromDouble(Double)
             //ExFor:ChartYValue.FromDouble(Double)
+            //ExFor:ChartSeries.Add(ChartXValue)
             //ExFor:ChartSeries.Add(ChartXValue, ChartYValue)
+            //ExFor:ChartSeries.Add(ChartXValue, ChartYValue, double)
+            //ExFor:ChartSeries.ClearValues
+            //ExFor:ChartSeries.Clear
             //ExSummary:Shows how to populate chart series with data.
             Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
             Chart chart = shape.Chart;
@@ -1430,15 +1467,14 @@ namespace ApiExamples
             series1.ClearValues();
 
             // Populate the series with data.
-            series1.Add(ChartXValue.FromDouble(3), ChartYValue.FromDouble(10));
+            series1.Add(ChartXValue.FromDouble(3), ChartYValue.FromDouble(10), 10);
             series1.Add(ChartXValue.FromDouble(5), ChartYValue.FromDouble(5));
             series1.Add(ChartXValue.FromDouble(7), ChartYValue.FromDouble(11));
-            series1.Add(ChartXValue.FromDouble(9), ChartYValue.FromDouble(17));
+            series1.Add(ChartXValue.FromDouble(9));
 
             ChartSeries series2 = chart.Series[1];
-
             // Clear X and Y values of the second series.
-            series2.ClearValues();
+            series2.Clear();
 
             // Populate the series with data.
             series2.Add(ChartXValue.FromDouble(2), ChartYValue.FromDouble(4));
@@ -1575,6 +1611,7 @@ namespace ApiExamples
         {
             //ExStart:ChartAxisTitle
             //GistId:3428e84add5beb0d46a8face6e5fc858
+            //ExFor:ChartAxis.Title
             //ExFor:ChartAxisTitle
             //ExFor:ChartAxisTitle.Text
             //ExFor:ChartAxisTitle.Show
@@ -1695,13 +1732,19 @@ namespace ApiExamples
             //ExFor:Chart.DataTable
             //ExFor:ChartDataTable
             //ExFor:ChartDataTable.Show
+            //ExFor:ChartDataTable.Format
+            //ExFor:ChartDataTable.Font
+            //ExFor:ChartDataTable.HasLegendKeys
+            //ExFor:ChartDataTable.HasHorizontalBorder
+            //ExFor:ChartDataTable.HasVerticalBorder
+            //ExFor:ChartDataTable.HasOutlineBorder
             //ExSummary:Shows how to show data table with chart series data.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Shape shape = builder.InsertChart(ChartType.Column, 432, 252);
             Chart chart = shape.Chart;
-            
+
             ChartSeriesCollection series = chart.Series;
             series.Clear();
             double[] xValues = new double[] { 2020, 2021, 2022, 2023 };
@@ -1715,6 +1758,7 @@ namespace ApiExamples
             dataTable.HasLegendKeys = false;
             dataTable.HasHorizontalBorder = false;
             dataTable.HasVerticalBorder = false;
+            dataTable.HasOutlineBorder = false;
 
             dataTable.Font.Italic = true;
             dataTable.Format.Stroke.Weight = 1;
@@ -1788,6 +1832,7 @@ namespace ApiExamples
             //ExStart:SecondaryAxis
             //GistId:6e4482e7434754c31c6f2f6e4bf48bb1
             //ExFor:ChartSeriesGroup
+            //ExFor:ChartSeriesGroup.SeriesType
             //ExFor:ChartSeriesGroup.AxisGroup
             //ExFor:ChartSeriesGroup.AxisX
             //ExFor:ChartSeriesGroup.AxisY
@@ -1819,6 +1864,8 @@ namespace ApiExamples
             // Define title of the secondary Y axis.
             newSeriesGroup.AxisY.Title.Show = true;
             newSeriesGroup.AxisY.Title.Text = "Secondary Y axis";
+
+            Assert.AreEqual(ChartSeriesType.Line, newSeriesGroup.SeriesType);
 
             // Add a series to the new series group.
             ChartSeries series3 =
@@ -2307,6 +2354,9 @@ namespace ApiExamples
             //ExFor:ChartXValueCollection.FormatCode
             //ExFor:ChartYValueCollection.FormatCode
             //ExFor:BubbleSizeCollection.FormatCode
+            //ExFor:ChartSeries.BubbleSizes
+            //ExFor:ChartSeries.XValues
+            //ExFor:ChartSeries.YValues
             //ExSummary:Shows how to work with the format code of the chart data.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -2489,6 +2539,33 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Charts.DoughnutChartLabelPosition.docx");
             //ExEnd:DoughnutChartLabelPosition
+        }
+
+        [Test]
+        public void InsertChartSeries()
+        {
+            //ExStart
+            //ExFor:ChartSeries.Insert(Int32, ChartXValue)
+            //ExFor:ChartSeries.Insert(Int32, ChartXValue, ChartYValue)
+            //ExFor:ChartSeries.Insert(Int32, ChartXValue, ChartYValue, double)
+            //ExSummary:Shows how to insert data into a chart series.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Shape shape = builder.InsertChart(ChartType.Line, 432, 252);
+            Chart chart = shape.Chart;
+            ChartSeries series1 = chart.Series[0];
+
+            // Clear X and Y values of the first series.
+            series1.ClearValues();
+            // Populate the series with data.
+            series1.Insert(0, ChartXValue.FromDouble(3));
+            series1.Insert(1, ChartXValue.FromDouble(3), ChartYValue.FromDouble(10));
+            series1.Insert(2, ChartXValue.FromDouble(3), ChartYValue.FromDouble(10));
+            series1.Insert(3, ChartXValue.FromDouble(3), ChartYValue.FromDouble(10), 10);
+
+            doc.Save(ArtifactsDir + "Charts.PopulateChartWithData.docx");
+            //ExEnd
         }
     }
 }
