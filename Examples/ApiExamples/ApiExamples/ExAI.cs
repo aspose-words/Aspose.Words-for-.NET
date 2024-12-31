@@ -74,7 +74,7 @@ namespace ApiExamples
         public void AiGrammar()
         {
             //ExStart:AiGrammar
-            //ReleaseVersion:25.1
+            //GistId:f86d49dc0e6781b93e576539a01e6ca2
             //ExFor:IAiModelText.CheckGrammar(Document, CheckGrammarOptions)
             //ExFor:CheckGrammarOptions
             //ExSummary:Shows how to check the grammar of a document.

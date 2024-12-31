@@ -129,7 +129,7 @@ namespace ApiExamples
         public void IdPrefixSvg()
         {
             //ExStart:IdPrefixSvg
-            //ReleaseVersion:25.1
+            //GistId:f86d49dc0e6781b93e576539a01e6ca2
             //ExFor:SvgSaveOptions.IdPrefix
             //ExSummary:Shows how to add a prefix that is prepended to all generated element IDs.
             Document doc = new Document(MyDir + "Id prefix.docx");
@@ -145,7 +145,7 @@ namespace ApiExamples
         public void RemoveJavaScriptFromLinksSvg()
         {
             //ExStart:RemoveJavaScriptFromLinksSvg
-            //ReleaseVersion:25.1
+            //GistId:f86d49dc0e6781b93e576539a01e6ca2
             //ExFor:SvgSaveOptions.RemoveJavaScriptFromLinks
             //ExSummary:Shows how to remove JavaScript from the links.
             Document doc = new Document(MyDir + "JavaScript in HREF.docx");

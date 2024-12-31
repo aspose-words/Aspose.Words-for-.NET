@@ -288,7 +288,7 @@ namespace ApiExamples
         public void ImageResolution()
         {
             //ExStart:ImageResolution
-            //ReleaseVersion:25.1
+            //GistId:f86d49dc0e6781b93e576539a01e6ca2
             //ExFor:MarkdownSaveOptions.ImageResolution
             //ExSummary:Shows how to set the output resolution for images.
             Document doc = new Document(MyDir + "Rendering.docx");
@@ -304,7 +304,7 @@ namespace ApiExamples
         public void OfficeMathExportMode()
         {
             //ExStart:OfficeMathExportMode
-            //ReleaseVersion:25.1
+            //GistId:f86d49dc0e6781b93e576539a01e6ca2
             //ExFor:MarkdownSaveOptions.OfficeMathExportMode
             //ExFor:MarkdownOfficeMathExportMode
             //ExSummary:Shows how to set the output resolution for images.
