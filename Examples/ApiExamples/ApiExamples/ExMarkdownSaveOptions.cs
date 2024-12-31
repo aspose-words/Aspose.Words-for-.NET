@@ -307,7 +307,7 @@ namespace ApiExamples
             //GistId:f86d49dc0e6781b93e576539a01e6ca2
             //ExFor:MarkdownSaveOptions.OfficeMathExportMode
             //ExFor:MarkdownOfficeMathExportMode
-            //ExSummary:Shows how to set the output resolution for images.
+            //ExSummary:Shows how OfficeMath will be written to the document.
             Document doc = new Document(MyDir + "Office math.docx");
 
             MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
