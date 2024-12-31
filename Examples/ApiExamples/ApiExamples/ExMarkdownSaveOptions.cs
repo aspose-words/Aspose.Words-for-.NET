@@ -283,6 +283,39 @@ namespace ApiExamples
                 "<p style=\"margin-top:0pt; margin-bottom:0pt; text-align:center; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Cell2</span></p>" +
                 "</td></tr></table>", outDocContents.Trim());
         }
+
+        [Test]
+        public void ImageResolution()
+        {
+            //ExStart:ImageResolution
+            //ReleaseVersion:25.1
+            //ExFor:MarkdownSaveOptions.ImageResolution
+            //ExSummary:Shows how to set the output resolution for images.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.ImageResolution = 300;
+
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.ImageResolution.md", saveOptions);
+            //ExEnd:ImageResolution
+        }
+
+        [Test]
+        public void OfficeMathExportMode()
+        {
+            //ExStart:OfficeMathExportMode
+            //ReleaseVersion:25.1
+            //ExFor:MarkdownSaveOptions.OfficeMathExportMode
+            //ExFor:MarkdownOfficeMathExportMode
+            //ExSummary:Shows how to set the output resolution for images.
+            Document doc = new Document(MyDir + "Office math.docx");
+
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.OfficeMathExportMode = MarkdownOfficeMathExportMode.Image;
+
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.OfficeMathExportMode.md", saveOptions);
+            //ExEnd:OfficeMathExportMode
+        }
     }
 }
 

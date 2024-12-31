@@ -69,5 +69,27 @@ namespace ApiExamples
             translatedDoc.Save(ArtifactsDir + "AI.AiTranslate.docx");
             //ExEnd:AiTranslate
         }
+
+        [Test, Ignore("This test should be run manually to manage API requests amount")]
+        public void AiGrammar()
+        {
+            //ExStart:AiGrammar
+            //ReleaseVersion:25.1
+            //ExFor:IAiModelText.CheckGrammar(Document, CheckGrammarOptions)
+            //ExFor:CheckGrammarOptions
+            //ExSummary:Shows how to check the grammar of a document.
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            string apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            // Use OpenAI generative language models.
+            IAiModelText model = (IAiModelText)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
+
+            CheckGrammarOptions grammarOptions = new CheckGrammarOptions();
+            grammarOptions.ImproveStylistics = true;
+
+            Document proofedDoc = model.CheckGrammar(doc, grammarOptions);
+            proofedDoc.Save("AI.AiGrammar.docx");
+            //ExEnd:AiGrammar
+        }
     }
 }
