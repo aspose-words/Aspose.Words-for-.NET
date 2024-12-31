@@ -685,7 +685,6 @@ namespace ApiExamples
 
             // Smooth out the line that represents the first data series.
             chart.Series[0].Smooth = true;
-            chart.Series[0].InvertIfNegative = true;
 
             // Verify that data points for the first series will not invert their colors if the value is negative.
             using (IEnumerator<ChartDataPoint> enumerator = chart.Series[0].DataPoints.GetEnumerator())

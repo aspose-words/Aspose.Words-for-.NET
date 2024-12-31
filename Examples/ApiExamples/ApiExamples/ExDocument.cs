@@ -46,14 +46,6 @@ namespace ApiExamples
     public class ExDocument : ApiExampleBase
     {
         [Test]
-        public void HtmlShapes()
-        {
-            Document doc = new Document(MyDir + "tmp2.pdf");
-
-            doc.Save(ArtifactsDir + "output.docx");
-        }
-
-        [Test]
         public void CreateSimpleDocument()
         {
             //ExStart:CreateSimpleDocument
