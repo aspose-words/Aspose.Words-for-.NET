@@ -2471,11 +2471,12 @@ namespace ApiExamples
             double totalValue = 0;
             string[] categories = new string[dataLength];
             double[] values = new double[dataLength];
+
             for (int i = 0; i < dataLength; i++)
             {
-                categories[i] = string.Format("Category {0}", i);
+                categories[i] = $"Category {i}";
                 values[i] = dataLength - i;
-                totalValue += values[i];
+                totalValue = totalValue + values[i];
             }
 
             ChartSeries series = seriesColl.Add("Series 1", categories, values);
@@ -2509,7 +2510,11 @@ namespace ApiExamples
                 ChartDataLabel dataLabel = dataLabels[i];
 
                 double value = series.YValues[i].DoubleValue;
-                double labelWidth = (value < 10) ? oneCharLabelWidth : twoCharLabelWidth;
+                double labelWidth;
+                if (value < 10)
+                    labelWidth = oneCharLabelWidth;
+                else
+                    labelWidth = twoCharLabelWidth;
                 double labelSegmentAngle = value / totalValue * 2 * System.Math.PI;
                 double labelAngle = labelSegmentAngle / 2 + totalAngle;
                 double labelCenterX = labelCircleRadius * System.Math.Cos(labelAngle) + doughnutCenterX;
@@ -2524,7 +2529,13 @@ namespace ApiExamples
                 {
                     // Move right on the top, left on the bottom.
                     bool isOnTop = (totalAngle < 0) || (totalAngle >= System.Math.PI);
-                    labelLeft = previousLabel.Left + labelWidth * (isOnTop ? 1 : -1) + labelMargin;
+                    int factor;
+                    if (isOnTop)
+                        factor = 1;
+                    else
+                        factor = -1;
+
+                    labelLeft = previousLabel.Left + labelWidth * factor + labelMargin;
                 }
 
                 dataLabel.Left = labelLeft;
@@ -2532,7 +2543,7 @@ namespace ApiExamples
                 dataLabel.Top = labelTop;
                 dataLabel.TopMode = ChartDataLabelLocationMode.Absolute;
 
-                totalAngle += labelSegmentAngle;
+                totalAngle = totalAngle + labelSegmentAngle;
                 previousLabel = dataLabel;
             }
 

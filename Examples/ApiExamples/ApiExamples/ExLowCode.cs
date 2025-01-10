@@ -408,8 +408,11 @@ namespace ApiExamples
 
             Comparer.Compare(firstDoc, secondDoc, ArtifactsDir + "LowCode.CompareDocuments.1.docx", "Author", new DateTime());
             Comparer.Compare(firstDoc, secondDoc, ArtifactsDir + "LowCode.CompareDocuments.2.docx", SaveFormat.Docx, "Author", new DateTime());
-            Comparer.Compare(firstDoc, secondDoc, ArtifactsDir + "LowCode.CompareDocuments.3.docx", "Author", new DateTime(), new CompareOptions() { IgnoreCaseChanges = true });
-            Comparer.Compare(firstDoc, secondDoc, ArtifactsDir + "LowCode.CompareDocuments.4.docx", SaveFormat.Docx, "Author", new DateTime(), new CompareOptions() { IgnoreCaseChanges = true });
+            
+            CompareOptions compareOptions = new CompareOptions();
+            compareOptions.IgnoreCaseChanges =true;
+            Comparer.Compare(firstDoc, secondDoc, ArtifactsDir + "LowCode.CompareDocuments.3.docx", "Author", new DateTime(), compareOptions);
+            Comparer.Compare(firstDoc, secondDoc, ArtifactsDir + "LowCode.CompareDocuments.4.docx", SaveFormat.Docx, "Author", new DateTime(), compareOptions);
             //ExEnd:CompareDocuments
         }
 
@@ -430,10 +433,14 @@ namespace ApiExamples
                         Comparer.Compare(firstStreamIn, secondStreamIn, streamOut, SaveFormat.Docx, "Author", new DateTime());
 
                     using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.CompareStreamDocuments.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                        Comparer.Compare(firstStreamIn, secondStreamIn, streamOut, SaveFormat.Docx, "Author", new DateTime(), new CompareOptions() { IgnoreCaseChanges = true });
+                    {
+                        CompareOptions compareOptions = new CompareOptions();
+                        compareOptions.IgnoreCaseChanges = true;
+                        Comparer.Compare(firstStreamIn, secondStreamIn, streamOut, SaveFormat.Docx, "Author", new DateTime(), compareOptions);
+                    }
                 }
+                //ExEnd:CompareStreamDocuments
             }
-            //ExEnd:CompareStreamDocuments
         }
 
         [Test]
@@ -455,7 +462,9 @@ namespace ApiExamples
 
             MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMerge.1.docx", fieldNames, fieldValues);
             MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMerge.2.docx", SaveFormat.Docx, fieldNames, fieldValues);
-            MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMerge.3.docx", SaveFormat.Docx, new MailMergeOptions() { TrimWhitespaces = true }, fieldNames, fieldValues);
+            MailMergeOptions mailMergeOptions = new MailMergeOptions();
+            mailMergeOptions.TrimWhitespaces = true;
+            MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMerge.3.docx", SaveFormat.Docx, mailMergeOptions, fieldNames, fieldValues);
             //ExEnd:MailMerge
         }
 
@@ -477,7 +486,11 @@ namespace ApiExamples
                     MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, fieldNames, fieldValues);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeStream.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, new MailMergeOptions() { TrimWhitespaces = true }, fieldNames, fieldValues);
+                {
+                    MailMergeOptions mailMergeOptions = new MailMergeOptions();
+                    mailMergeOptions.TrimWhitespaces = true;
+                    MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, mailMergeOptions, fieldNames, fieldValues);
+                }
             }
             //ExEnd:MailMergeStream
         }
@@ -728,9 +741,11 @@ namespace ApiExamples
             string pattern = "(C)2006 Aspose Pty Ltd.";
             string replacement = "Copyright (C) 2024 by Aspose Pty Ltd.";
 
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.FindWholeWordsOnly = false;
             Replacer.Replace(doc, ArtifactsDir + "LowCode.Replace.1.docx", pattern, replacement);
             Replacer.Replace(doc, ArtifactsDir + "LowCode.Replace.2.docx", SaveFormat.Docx, pattern, replacement);
-            Replacer.Replace(doc, ArtifactsDir + "LowCode.Replace.3.docx", SaveFormat.Docx, pattern, replacement, new FindReplaceOptions() { FindWholeWordsOnly = false });
+            Replacer.Replace(doc, ArtifactsDir + "LowCode.Replace.3.docx", SaveFormat.Docx, pattern, replacement, options);
             //ExEnd:Replace
         }
 
@@ -752,7 +767,11 @@ namespace ApiExamples
                     Replacer.Replace(streamIn, streamOut, SaveFormat.Docx, pattern, replacement);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ReplaceStream.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    Replacer.Replace(streamIn, streamOut, SaveFormat.Docx, pattern, replacement, new FindReplaceOptions() { FindWholeWordsOnly = false });
+                {
+                    FindReplaceOptions options = new FindReplaceOptions();
+                    options.FindWholeWordsOnly = false;
+                    Replacer.Replace(streamIn, streamOut, SaveFormat.Docx, pattern, replacement, options);
+                }
             }
             //ExEnd:ReplaceStream
         }
@@ -998,8 +1017,10 @@ namespace ApiExamples
             //ExSummary:Shows how to split document by pages.
             string doc = MyDir + "Big document.docx";
 
-            Splitter.Split(doc, ArtifactsDir + "LowCode.SplitDocument.1.docx", new SplitOptions() { SplitCriteria = SplitCriteria.Page });
-            Splitter.Split(doc, ArtifactsDir + "LowCode.SplitDocument.2.docx", SaveFormat.Docx, new SplitOptions() { SplitCriteria = SplitCriteria.Page });
+            SplitOptions options = new SplitOptions();
+            options.SplitCriteria = SplitCriteria.Page;
+            Splitter.Split(doc, ArtifactsDir + "LowCode.SplitDocument.1.docx", options);
+            Splitter.Split(doc, ArtifactsDir + "LowCode.SplitDocument.2.docx", SaveFormat.Docx, options);
             //ExEnd:SplitDocument
         }
 
@@ -1012,7 +1033,9 @@ namespace ApiExamples
             //ExSummary:Shows how to split document from the stream by pages.
             using (FileStream streamIn = new FileStream(MyDir + "Big document.docx", FileMode.Open, FileAccess.Read))
             {
-                Stream[] stream = Splitter.Split(streamIn, SaveFormat.Docx, new SplitOptions() { SplitCriteria = SplitCriteria.Page });
+                SplitOptions options = new SplitOptions();
+                options.SplitCriteria = SplitCriteria.Page;
+                Stream[] stream = Splitter.Split(streamIn, SaveFormat.Docx, options);
             }
             //ExEnd:SplitDocumentStream
         }
@@ -1032,8 +1055,10 @@ namespace ApiExamples
 
             Watermarker.SetText(doc, ArtifactsDir + "LowCode.WatermarkText.1.docx", watermarkText);
             Watermarker.SetText(doc, ArtifactsDir + "LowCode.WatermarkText.2.docx", SaveFormat.Docx, watermarkText);
-            Watermarker.SetText(doc, ArtifactsDir + "LowCode.WatermarkText.3.docx", watermarkText, new TextWatermarkOptions() { Color = Color.Red });
-            Watermarker.SetText(doc, ArtifactsDir + "LowCode.WatermarkText.4.docx", SaveFormat.Docx, watermarkText, new TextWatermarkOptions() { Color = Color.Red });
+            TextWatermarkOptions watermarkOptions = new TextWatermarkOptions();
+            watermarkOptions.Color = Color.Red;
+            Watermarker.SetText(doc, ArtifactsDir + "LowCode.WatermarkText.3.docx", watermarkText, watermarkOptions);
+            Watermarker.SetText(doc, ArtifactsDir + "LowCode.WatermarkText.4.docx", SaveFormat.Docx, watermarkText, watermarkOptions);
             //ExEnd:WatermarkText
         }
 
@@ -1053,7 +1078,11 @@ namespace ApiExamples
                     Watermarker.SetText(streamIn, streamOut, SaveFormat.Docx, watermarkText);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.WatermarkTextStream.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    Watermarker.SetText(streamIn, streamOut, SaveFormat.Docx, watermarkText, new TextWatermarkOptions() { Color = Color.Red });
+                {
+                    TextWatermarkOptions options = new TextWatermarkOptions();
+                    options.Color = Color.Red;
+                    Watermarker.SetText(streamIn, streamOut, SaveFormat.Docx, watermarkText, options);
+                }
             }
             //ExEnd:WatermarkTextStream
         }
@@ -1073,8 +1102,11 @@ namespace ApiExamples
 
             Watermarker.SetImage(doc, ArtifactsDir + "LowCode.SetWatermarkImage.1.docx", watermarkImage);
             Watermarker.SetImage(doc, ArtifactsDir + "LowCode.SetWatermarkText.2.docx", SaveFormat.Docx, watermarkImage);
-            Watermarker.SetImage(doc, ArtifactsDir + "LowCode.SetWatermarkText.3.docx", watermarkImage, new ImageWatermarkOptions() { Scale = 50 });
-            Watermarker.SetImage(doc, ArtifactsDir + "LowCode.SetWatermarkText.4.docx", SaveFormat.Docx, watermarkImage, new ImageWatermarkOptions() { Scale = 50 });
+
+            ImageWatermarkOptions options = new ImageWatermarkOptions();
+            options.Scale = 50;
+            Watermarker.SetImage(doc, ArtifactsDir + "LowCode.SetWatermarkText.3.docx", watermarkImage, options);
+            Watermarker.SetImage(doc, ArtifactsDir + "LowCode.SetWatermarkText.4.docx", SaveFormat.Docx, watermarkImage, options);
             //ExEnd:WatermarkImage
         }
 
