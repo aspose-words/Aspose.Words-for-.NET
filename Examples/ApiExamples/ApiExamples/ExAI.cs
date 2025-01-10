@@ -22,10 +22,13 @@ namespace ApiExamples
             //GistId:366eb64fd56dec3c2eaa40410e594182
             //ExFor:GoogleAiModel
             //ExFor:OpenAiModel
+            //ExFor:OpenAiModel.WithOrganization(String)
+            //ExFor:OpenAiModel.WithProject(String)
             //ExFor:IAiModelText
             //ExFor:IAiModelText.Summarize(Document, SummarizeOptions)
             //ExFor:IAiModelText.Summarize(Document[], SummarizeOptions)
             //ExFor:SummarizeOptions
+            //ExFor:SummarizeOptions.#ctor
             //ExFor:SummarizeOptions.SummaryLength
             //ExFor:SummaryLength
             //ExFor:AiModel
@@ -38,7 +41,7 @@ namespace ApiExamples
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use OpenAI or Google generative language models.
-            IAiModelText model = (OpenAiModel)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
+            IAiModelText model = ((OpenAiModel)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey)).WithOrganization("Organization").WithProject("Project");
 
             SummarizeOptions options = new SummarizeOptions();
 
@@ -58,6 +61,7 @@ namespace ApiExamples
             //ExStart:AiTranslate
             //GistId:695136dbbe4f541a8a0a17b3d3468689
             //ExFor:IAiModelText.Translate(Document, AI.Language)
+            //ExFor:AI.Language
             //ExSummary:Shows how to translate text using Google models.
             Document doc = new Document(MyDir + "Document.docx");
 

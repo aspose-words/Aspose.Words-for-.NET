@@ -1901,6 +1901,8 @@ namespace ApiExamples
         {
             //ExStart:ContextTableFormatting
             //GistId:e06aa7a168b57907a5598e823a22bf0a
+            //ExFor:DocumentBuilder.#ctor(Document, DocumentBuilderOptions)
+            //ExFor:DocumentBuilder.#ctor(DocumentBuilderOptions)
             //ExFor:DocumentBuilderOptions
             //ExFor:DocumentBuilderOptions.ContextTableFormatting
             //ExSummary:Shows how to ignore table formatting for content after.

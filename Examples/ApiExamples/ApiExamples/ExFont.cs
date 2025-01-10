@@ -1656,6 +1656,7 @@ namespace ApiExamples
             //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:FontInfo.EmbeddingLicensingRights
             //ExFor:FontEmbeddingUsagePermissions
+            //ExFor:FontEmbeddingLicensingRights
             //ExFor:FontEmbeddingLicensingRights.EmbeddingUsagePermissions
             //ExFor:FontEmbeddingLicensingRights.BitmapEmbeddingOnly
             //ExFor:FontEmbeddingLicensingRights.NoSubsetting

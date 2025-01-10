@@ -242,6 +242,7 @@ namespace ApiExamples
             //ExFor:Fill.FillType
             //ExFor:Fill.Solid
             //ExFor:Fill.Transparency
+            //ExFor:Fill.RotateWithObject
             //ExFor:Font.Fill
             //ExSummary:Shows how to convert any of the fills back to solid fill.
             Document doc = new Document(MyDir + "Two color gradient.docx");
@@ -253,6 +254,7 @@ namespace ApiExamples
             Console.WriteLine("The type of the fill is: {0}", fill.FillType);
             Console.WriteLine("The foreground color of the fill is: {0}", fill.ForeColor);
             Console.WriteLine("The fill is transparent at {0}%", fill.Transparency * 100);
+            Console.WriteLine("Rotate with object: {0}", fill.RotateWithObject);
 
             // Change type of the fill to Solid with uniform green color.
             fill.Solid();
@@ -260,6 +262,7 @@ namespace ApiExamples
             Console.WriteLine("The type of the fill is: {0}", fill.FillType);
             Console.WriteLine("The foreground color of the fill is: {0}", fill.ForeColor);
             Console.WriteLine("The fill transparency is {0}%", fill.Transparency * 100);
+            Console.WriteLine("Rotate with object: {0}", fill.RotateWithObject);
 
             doc.Save(ArtifactsDir + "Drawing.FillSolid.docx");
             //ExEnd

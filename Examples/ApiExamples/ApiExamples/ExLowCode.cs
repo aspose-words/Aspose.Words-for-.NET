@@ -37,21 +37,33 @@ namespace ApiExamples
             //ExStart
             //ExFor:Merger.Merge(String, String[])
             //ExFor:Merger.Merge(String[], MergeFormatMode)
+            //ExFor:Merger.Merge(String[], LoadOptions[], MergeFormatMode)
             //ExFor:Merger.Merge(String, String[], SaveOptions, MergeFormatMode)
             //ExFor:Merger.Merge(String, String[], SaveFormat, MergeFormatMode)
+            //ExFor:Merger.Merge(String, String[], LoadOptions[], SaveOptions, MergeFormatMode)
             //ExFor:LowCode.MergeFormatMode
             //ExFor:LowCode.Merger
             //ExSummary:Shows how to merge documents into a single output document.
             //There is a several ways to merge documents:
-            Merger.Merge(ArtifactsDir + "LowCode.MergeDocument.SimpleMerge.docx", new[] { MyDir + "Big document.docx", MyDir + "Tables.docx" });
+            string inputDoc1 = MyDir + "Big document.docx";
+            string inputDoc2 = MyDir + "Tables.docx";
+
+            Merger.Merge(ArtifactsDir + "LowCode.MergeDocument.1.docx", new[] { inputDoc1, inputDoc2 });
 
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
-            Merger.Merge(ArtifactsDir + "LowCode.MergeDocument.SaveOptions.docx", new[] { MyDir + "Big document.docx", MyDir + "Tables.docx" }, saveOptions, MergeFormatMode.KeepSourceFormatting);
+            Merger.Merge(ArtifactsDir + "LowCode.MergeDocument.2.docx", new[] { inputDoc1, inputDoc2 }, saveOptions, MergeFormatMode.KeepSourceFormatting);
 
-            Merger.Merge(ArtifactsDir + "LowCode.MergeDocument.SaveFormat.pdf", new[] { MyDir + "Big document.docx", MyDir + "Tables.docx" }, SaveFormat.Pdf, MergeFormatMode.KeepSourceLayout);
+            Merger.Merge(ArtifactsDir + "LowCode.MergeDocument.3.pdf", new[] { inputDoc1, inputDoc2 }, SaveFormat.Pdf, MergeFormatMode.KeepSourceLayout);
 
-            Document doc = Merger.Merge(new[] { MyDir + "Big document.docx", MyDir + "Tables.docx" }, MergeFormatMode.MergeFormatting);
-            doc.Save(ArtifactsDir + "LowCode.MergeDocument.DocumentInstance.docx");
+            LoadOptions firstLoadOptions = new LoadOptions() { IgnoreOleData = true };
+            LoadOptions secondLoadOptions = new LoadOptions() { IgnoreOleData = false };
+            Merger.Merge(ArtifactsDir + "LowCode.MergeDocument.4.docx", new[] { inputDoc1, inputDoc2 }, new[] { firstLoadOptions, secondLoadOptions }, saveOptions, MergeFormatMode.KeepSourceFormatting);
+
+            Document doc = Merger.Merge(new[] { inputDoc1, inputDoc2 }, MergeFormatMode.MergeFormatting);
+            doc.Save(ArtifactsDir + "LowCode.MergeDocument.5.docx");
+
+            doc = Merger.Merge(new[] { inputDoc1, inputDoc2 }, new[] { firstLoadOptions, secondLoadOptions }, MergeFormatMode.MergeFormatting);
+            doc.Save(ArtifactsDir + "LowCode.MergeDocument.6.docx");
             //ExEnd
         }
 
@@ -60,7 +72,9 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:Merger.Merge(Stream[], MergeFormatMode)
+            //ExFor:Merger.Merge(Stream[], LoadOptions[], MergeFormatMode)
             //ExFor:Merger.Merge(Stream, Stream[], SaveOptions, MergeFormatMode)
+            //ExFor:Merger.Merge(Stream, Stream[], LoadOptions[], SaveOptions, MergeFormatMode)
             //ExFor:Merger.Merge(Stream, Stream[], SaveFormat)
             //ExSummary:Shows how to merge documents from stream into a single output document.
             //There is a several ways to merge documents from stream:
@@ -69,14 +83,22 @@ namespace ApiExamples
                 using (FileStream secondStreamIn = new FileStream(MyDir + "Tables.docx", FileMode.Open, FileAccess.Read))
                 {
                     OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
-                    using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MergeStreamDocument.SaveOptions.docx", FileMode.Create, FileAccess.ReadWrite))
+                    using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MergeStreamDocument.1.docx", FileMode.Create, FileAccess.ReadWrite))
                         Merger.Merge(streamOut, new[] { firstStreamIn, secondStreamIn }, saveOptions, MergeFormatMode.KeepSourceFormatting);
 
-                    using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MergeStreamDocument.SaveFormat.docx", FileMode.Create, FileAccess.ReadWrite))
+                    using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MergeStreamDocument.2.docx", FileMode.Create, FileAccess.ReadWrite))
                         Merger.Merge(streamOut, new[] { firstStreamIn, secondStreamIn }, SaveFormat.Docx);
 
-                    Document doc = Merger.Merge(new[] { firstStreamIn, secondStreamIn }, MergeFormatMode.MergeFormatting);
-                    doc.Save(ArtifactsDir + "LowCode.MergeStreamDocument.DocumentInstance.docx");
+                    LoadOptions firstLoadOptions = new LoadOptions() { IgnoreOleData = true };
+                    LoadOptions secondLoadOptions = new LoadOptions() { IgnoreOleData = false };
+                    using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MergeStreamDocument.3.docx", FileMode.Create, FileAccess.ReadWrite))
+                        Merger.Merge(streamOut, new[] { firstStreamIn, secondStreamIn }, new[] { firstLoadOptions, secondLoadOptions }, saveOptions, MergeFormatMode.KeepSourceFormatting);
+
+                    Document firstDoc = Merger.Merge(new[] { firstStreamIn, secondStreamIn }, MergeFormatMode.MergeFormatting);
+                    firstDoc.Save(ArtifactsDir + "LowCode.MergeStreamDocument.4.docx");
+
+                    Document secondDoc = Merger.Merge(new[] { firstStreamIn, secondStreamIn }, new[] { firstLoadOptions, secondLoadOptions }, MergeFormatMode.MergeFormatting);
+                    secondDoc.Save(ArtifactsDir + "LowCode.MergeStreamDocument.5.docx");
                 }
             }
             //ExEnd
@@ -110,13 +132,19 @@ namespace ApiExamples
             //ExFor:Converter.Convert(String, String)
             //ExFor:Converter.Convert(String, String, SaveFormat)
             //ExFor:Converter.Convert(String, String, SaveOptions)
+            //ExFor:Converter.Convert(String, LoadOptions, String, SaveOptions)
             //ExSummary:Shows how to convert documents with a single line of code.
-            Converter.Convert(MyDir + "Document.docx", ArtifactsDir + "LowCode.Convert.pdf");
+            string doc = MyDir + "Document.docx";
 
-            Converter.Convert(MyDir + "Document.docx", ArtifactsDir + "LowCode.Convert.rtf", SaveFormat.Rtf);
+            Converter.Convert(doc, ArtifactsDir + "LowCode.Convert.pdf");
+
+            Converter.Convert(doc, ArtifactsDir + "LowCode.Convert.SaveFormat.rtf", SaveFormat.Rtf);
 
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
-            Converter.Convert(MyDir + "Document.doc", ArtifactsDir + "LowCode.Convert.docx", saveOptions);
+            LoadOptions loadOptions = new LoadOptions() { IgnoreOleData = true };
+            Converter.Convert(doc, loadOptions, ArtifactsDir + "LowCode.Convert.LoadOptions.docx", saveOptions);
+
+            Converter.Convert(doc, ArtifactsDir + "LowCode.Convert.SaveOptions.docx", saveOptions);
             //ExEnd:Convert
         }
 
@@ -127,14 +155,19 @@ namespace ApiExamples
             //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:Converter.Convert(Stream, Stream, SaveFormat)
             //ExFor:Converter.Convert(Stream, Stream, SaveOptions)
+            //ExFor:Converter.Convert(Stream, LoadOptions, Stream, SaveOptions)
             //ExSummary:Shows how to convert documents with a single line of code (Stream).
             using (FileStream streamIn = new FileStream(MyDir + "Big document.docx", FileMode.Open, FileAccess.Read))
             {
-                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ConvertStream.SaveFormat.docx", FileMode.Create, FileAccess.ReadWrite))
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ConvertStream.1.docx", FileMode.Create, FileAccess.ReadWrite))
                     Converter.Convert(streamIn, streamOut, SaveFormat.Docx);
 
                 OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
-                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ConvertStream.SaveOptions.docx", FileMode.Create, FileAccess.ReadWrite))
+                LoadOptions loadOptions = new LoadOptions() { IgnoreOleData = true };
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ConvertStream.2.docx", FileMode.Create, FileAccess.ReadWrite))
+                    Converter.Convert(streamIn, loadOptions, streamOut, saveOptions);
+
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ConvertStream.3.docx", FileMode.Create, FileAccess.ReadWrite))
                     Converter.Convert(streamIn, streamOut, saveOptions);
             }
             //ExEnd:ConvertStream
@@ -148,14 +181,20 @@ namespace ApiExamples
             //ExFor:Converter.ConvertToImages(String, String)
             //ExFor:Converter.ConvertToImages(String, String, SaveFormat)
             //ExFor:Converter.ConvertToImages(String, String, ImageSaveOptions)
+            //ExFor:Converter.ConvertToImages(String, LoadOptions, String, ImageSaveOptions)
             //ExSummary:Shows how to convert document to images.
-            Converter.ConvertToImages(MyDir + "Big document.docx", ArtifactsDir + "LowCode.ConvertToImages.png");
+            string doc = MyDir + "Big document.docx";
 
-            Converter.ConvertToImages(MyDir + "Big document.docx", ArtifactsDir + "LowCode.ConvertToImages.jpeg", SaveFormat.Jpeg);
+            Converter.ConvertToImages(doc, ArtifactsDir + "LowCode.ConvertToImages.1.png");
 
+            Converter.ConvertToImages(doc, ArtifactsDir + "LowCode.ConvertToImages.2.jpeg", SaveFormat.Jpeg);
+
+            LoadOptions loadOptions = new LoadOptions() { IgnoreOleData = false };
             ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
             imageSaveOptions.PageSet = new PageSet(1);
-            Converter.ConvertToImages(MyDir + "Big document.docx", ArtifactsDir + "LowCode.ConvertToImages.png", imageSaveOptions);
+            Converter.ConvertToImages(doc, loadOptions, ArtifactsDir + "LowCode.ConvertToImages.3.png", imageSaveOptions);
+
+            Converter.ConvertToImages(doc, ArtifactsDir + "LowCode.ConvertToImages.4.png", imageSaveOptions);
             //ExEnd:ConvertToImages
         }
 
@@ -169,15 +208,17 @@ namespace ApiExamples
             //ExFor:Converter.ConvertToImages(Document, SaveFormat)
             //ExFor:Converter.ConvertToImages(Document, ImageSaveOptions)
             //ExSummary:Shows how to convert document to images stream.
-            Stream[] streams = Converter.ConvertToImages(MyDir + "Big document.docx", SaveFormat.Png);
+            string doc = MyDir + "Big document.docx";
+
+            Stream[] streams = Converter.ConvertToImages(doc, SaveFormat.Png);
 
             ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
             imageSaveOptions.PageSet = new PageSet(1);
-            streams = Converter.ConvertToImages(MyDir + "Big document.docx", imageSaveOptions);
+            streams = Converter.ConvertToImages(doc, imageSaveOptions);
 
-            streams = Converter.ConvertToImages(new Document(MyDir + "Big document.docx"), SaveFormat.Png);
+            streams = Converter.ConvertToImages(new Document(doc), SaveFormat.Png);
 
-            streams = Converter.ConvertToImages(new Document(MyDir + "Big document.docx"), imageSaveOptions);
+            streams = Converter.ConvertToImages(new Document(doc), imageSaveOptions);
             //ExEnd:ConvertToImagesStream
         }
 
@@ -188,6 +229,7 @@ namespace ApiExamples
             //GistId:708ce40a68fac5003d46f6b4acfd5ff1
             //ExFor:Converter.ConvertToImages(Stream, SaveFormat)
             //ExFor:Converter.ConvertToImages(Stream, ImageSaveOptions)
+            //ExFor:Converter.ConvertToImages(Stream, LoadOptions, ImageSaveOptions)
             //ExSummary:Shows how to convert document to images from stream.
             using (FileStream streamIn = new FileStream(MyDir + "Big document.docx", FileMode.Open, FileAccess.Read))
             {
@@ -196,6 +238,9 @@ namespace ApiExamples
                 ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
                 imageSaveOptions.PageSet = new PageSet(1);
                 streams = Converter.ConvertToImages(streamIn, imageSaveOptions);
+
+                LoadOptions loadOptions = new LoadOptions() { IgnoreOleData = false };
+                Converter.ConvertToImages(streamIn, loadOptions, imageSaveOptions);
             }
             //ExEnd:ConvertToImagesFromStream
         }
@@ -406,6 +451,8 @@ namespace ApiExamples
         {
             //ExStart:MailMerge
             //GistId:695136dbbe4f541a8a0a17b3d3468689
+            //ExFor:MailMergeOptions
+            //ExFor:MailMergeOptions.TrimWhitespaces
             //ExFor:MailMerger.Execute(String, String, String[], Object[])
             //ExFor:MailMerger.Execute(String, String, SaveFormat, String[], Object[])
             //ExFor:MailMerger.Execute(String, String, SaveFormat, MailMergeOptions, String[], Object[])
@@ -777,6 +824,8 @@ namespace ApiExamples
 
         //ExStart:BuildReportData
         //GistId:695136dbbe4f541a8a0a17b3d3468689
+        //ExFor:ReportBuilderOptions
+        //ExFor:ReportBuilderOptions.Options
         //ExFor:ReportBuilder.BuildReport(String, String, Object)
         //ExFor:ReportBuilder.BuildReport(String, String, Object, ReportBuilderOptions)
         //ExFor:ReportBuilder.BuildReport(String, String, SaveFormat, Object)
@@ -809,6 +858,7 @@ namespace ApiExamples
             //GistId:695136dbbe4f541a8a0a17b3d3468689
             //ExFor:ReportBuilder.BuildReport(Stream, Stream, SaveFormat, Object)
             //ExFor:ReportBuilder.BuildReport(Stream, Stream, SaveFormat, Object, ReportBuilderOptions)
+            //ExFor:ReportBuilder.BuildReport(Stream, Stream, SaveFormat, Object[], String[], ReportBuilderOptions)
             //ExSummary:Shows how to populate document with data using documents from the stream.
             // There is a several ways to populate document with data using documents from the stream:
             AsposeData obj = new AsposeData { List = new List<string> { "abc" } };
@@ -820,6 +870,10 @@ namespace ApiExamples
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.BuildReportDataStream.2.docx", FileMode.Create, FileAccess.ReadWrite))
                     ReportBuilder.BuildReport(streamIn, streamOut, SaveFormat.Docx, obj, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+
+                MessageTestClass sender = new MessageTestClass("LINQ Reporting Engine", "Hello World");
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.BuildReportDataStream.3.docx", FileMode.Create, FileAccess.ReadWrite))
+                    ReportBuilder.BuildReport(streamIn, streamOut, SaveFormat.Docx, new object[] { sender }, new[] { "s" }, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
             }
             //ExEnd:BuildReportDataStream
         }
@@ -830,7 +884,10 @@ namespace ApiExamples
         //ExFor:ReportBuilder.BuildReport(String, String, Object[], String[])
         //ExFor:ReportBuilder.BuildReport(String, String, Object, String, ReportBuilderOptions)
         //ExFor:ReportBuilder.BuildReport(String, String, SaveFormat, Object, String)
+        //ExFor:ReportBuilder.BuildReport(String, String, SaveFormat, Object[], String[])
         //ExFor:ReportBuilder.BuildReport(String, String, SaveFormat, Object, String, ReportBuilderOptions)
+        //ExFor:ReportBuilder.BuildReport(String, String, Object[], String[], ReportBuilderOptions)
+        //ExFor:ReportBuilder.BuildReport(String, String, SaveFormat, Object[], String[], ReportBuilderOptions)
         //ExSummary:Shows how to populate document with data sources.
         [Test] //ExSkip
         public void BuildReportDataSource()
@@ -844,7 +901,10 @@ namespace ApiExamples
             ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.2.docx", new object[] { sender }, new[] { "s" });
             ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.3.docx", sender, "s", new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
             ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.4.docx", SaveFormat.Docx, sender, "s");
-            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.5.docx", SaveFormat.Docx, sender, "s", new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.5.docx", SaveFormat.Docx, new object[] { sender }, new[] { "s" });
+            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.6.docx", SaveFormat.Docx, sender, "s", new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.7.docx", SaveFormat.Docx, new object[] { sender }, new[] { "s" }, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+            ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.8.docx", new object[] { sender }, new[] { "s" }, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
         }
 
         public class MessageTestClass
@@ -953,6 +1013,8 @@ namespace ApiExamples
         {
             //ExStart:SplitDocument
             //GistId:695136dbbe4f541a8a0a17b3d3468689
+            //ExFor:SplitCriteria
+            //ExFor:SplitOptions.SplitCriteria
             //ExFor:Splitter.Split(String, String, SplitOptions)
             //ExFor:Splitter.Split(String, String, SaveFormat, SplitOptions)
             //ExSummary:Shows how to split document by pages.
