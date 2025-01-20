@@ -1813,6 +1813,7 @@ namespace ApiExamples
             //ExFor:FieldMergeField.IsVerticalFormatting
             //ExFor:FieldMergeField.TextAfter
             //ExFor:FieldMergeField.TextBefore
+            //ExFor:FieldMergeField.Type
             //ExSummary:Shows how to use MERGEFIELD fields to perform a mail merge.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1836,6 +1837,7 @@ namespace ApiExamples
             fieldMergeField.TextAfter = " ";
 
             Assert.AreEqual(" MERGEFIELD  \"Courtesy Title\" \\m \\b \"Dear \" \\f \" \"", fieldMergeField.GetFieldCode());
+            Assert.AreEqual(FieldType.FieldMergeField, fieldMergeField.Type);
 
             // Insert another MERGEFIELD for a different column in the data source.
             fieldMergeField = (FieldMergeField)builder.InsertField(FieldType.FieldMergeField, true);
@@ -2544,6 +2546,7 @@ namespace ApiExamples
         }
 
         //ExStart
+        //ExFor:Bibliography.BibliographyStyle
         //ExFor:IBibliographyStylesProvider
         //ExFor:IBibliographyStylesProvider.GetStyle(String)
         //ExFor:FieldOptions.BibliographyStylesProvider
@@ -2555,6 +2558,9 @@ namespace ApiExamples
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-nz", false); //ExSkip
 
             Document doc = new Document(MyDir + "Bibliography.docx");
+
+            // If the document already has a style you can change it with the following code:
+            // doc.Bibliography.BibliographyStyle = "Bibliography custom style.xsl";
 
             doc.FieldOptions.BibliographyStylesProvider = new BibliographyStylesProvider();
             doc.UpdateFields();
@@ -2897,6 +2903,7 @@ namespace ApiExamples
         //ExFor:ImageFieldMergingArgs.ImageFileName
         //ExFor:ImageFieldMergingArgs.ImageWidth
         //ExFor:ImageFieldMergingArgs.ImageHeight
+        //ExFor:ImageFieldMergingArgs.Shape
         //ExSummary:Shows how to set the dimensions of images as MERGEFIELDS accepts them during a mail merge.
         [Test] //ExSkip
         public void MergeFieldImageDimension()
@@ -2954,6 +2961,7 @@ namespace ApiExamples
                 Assert.AreEqual(mUnit, args.ImageWidth.Unit);
                 Assert.AreEqual(mImageHeight, args.ImageHeight.Value);
                 Assert.AreEqual(mUnit, args.ImageHeight.Unit);
+                Assert.Null(args.Shape);
             }
 
             private readonly double mImageWidth;
@@ -7640,6 +7648,7 @@ namespace ApiExamples
             //ExFor:Bibliography
             //ExFor:Bibliography.Sources
             //ExFor:Source
+            //ExFor:Source.#ctor(string, SourceType)
             //ExFor:Source.Title
             //ExFor:Source.AbbreviatedCaseNumber
             //ExFor:Source.AlbumTitle
@@ -7657,6 +7666,7 @@ namespace ApiExamples
             //ExFor:Source.DayAccessed
             //ExFor:Source.Department
             //ExFor:Source.Distributor
+            //ExFor:Source.Doi
             //ExFor:Source.Edition
             //ExFor:Source.Guid
             //ExFor:Source.Institution
@@ -7714,6 +7724,7 @@ namespace ApiExamples
             //ExFor:PersonCollection
             //ExFor:PersonCollection.Count
             //ExFor:PersonCollection.Item(Int32)
+            //ExFor:Person.#ctor(string, string, string)
             //ExFor:Person
             //ExFor:Person.First
             //ExFor:Person.Middle
@@ -7724,6 +7735,7 @@ namespace ApiExamples
             Bibliography bibliography = document.Bibliography;
             Assert.AreEqual(12, bibliography.Sources.Count);
 
+            // Get default data from bibliography sources.
             Source source = bibliography.Sources.FirstOrDefault();
             Assert.AreEqual("Book 0 (No LCID)", source.Title);
             Assert.AreEqual(SourceType.Book, source.SourceType);
@@ -7743,6 +7755,7 @@ namespace ApiExamples
             Assert.IsNull(source.DayAccessed);
             Assert.IsNull(source.Department);
             Assert.IsNull(source.Distributor);
+            Assert.IsNull(source.Doi);
             Assert.IsNull(source.Edition);
             Assert.IsNull(source.Guid);
             Assert.IsNull(source.Institution);
@@ -7777,6 +7790,9 @@ namespace ApiExamples
             Assert.IsNull(source.Year);
             Assert.IsNull(source.YearAccessed);
 
+            // Also, you can create a new source.
+            Source newSource = new Source("New source", SourceType.Misc);
+
             ContributorCollection contributors = source.Contributors;
             Assert.IsNull(contributors.Artist);
             Assert.IsNull(contributors.BookAuthor);
@@ -7793,10 +7809,10 @@ namespace ApiExamples
             Assert.IsNull(contributors.Producer);
             Assert.IsNotNull(contributors.Translator);
             Assert.IsNull(contributors.Writer);
-            
+
             Contributor editor  = contributors.Editor;
             Assert.AreEqual(2, ((PersonCollection)editor).Count());
-            
+
             PersonCollection authors = (PersonCollection)contributors.Author;
             Assert.AreEqual(2, authors.Count());
 
@@ -7805,6 +7821,58 @@ namespace ApiExamples
             Assert.AreEqual("Brielle", person.Middle);
             Assert.AreEqual("Tejeda", person.Last);
             //ExEnd:BibliographySources
+        }
+
+        [Test]
+        public void BibliographyPersons()
+        {
+            //ExStart
+            //ExFor:Person.#ctor(string, string, string)
+            //ExFor:PersonCollection.#ctor
+            //ExFor:PersonCollection.#ctor(Person[])
+            //ExFor:PersonCollection.Add(Person)
+            //ExFor:PersonCollection.Contains(Person)
+            //ExFor:PersonCollection.Clear
+            //ExFor:PersonCollection.Remove(Person)
+            //ExFor:PersonCollection.RemoveAt(Int32)
+            //ExSummary:Shows how to work with person collection.
+            // Create a new person collection.
+            PersonCollection persons = new PersonCollection();
+            Person person = new Person("Roxanne", "Brielle", "Tejeda_updated");
+            // Add new person to the collection.
+            persons.Add(person);
+            Assert.AreEqual(1, persons.Count);
+            // Remove person from the collection if it exists.
+            if (persons.Contains(person))
+                persons.Remove(person);
+            Assert.AreEqual(0, persons.Count);
+
+            // Create person collection with two persons.
+            persons = new PersonCollection(new Person[] { new Person("Roxanne_1", "Brielle_1", "Tejeda_1"), new Person("Roxanne_2", "Brielle_2", "Tejeda_2") });
+            Assert.AreEqual(2, persons.Count);
+            // Remove person from the collection by the index.
+            persons.RemoveAt(0);
+            Assert.AreEqual(1, persons.Count);
+            // Remove all persons from the collection.
+            persons.Clear();
+            Assert.AreEqual(0, persons.Count);
+            //ExEnd
+        }
+
+        [Test]
+        public void CaptionlessTableOfFiguresLabel()
+        {
+            //ExStart
+            //ExFor:FieldToc.CaptionlessTableOfFiguresLabel
+            //ExSummary:Shows how to set the name of the sequence identifier.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            FieldToc fieldToc = (FieldToc)builder.InsertField(FieldType.FieldTOC, true);
+            fieldToc.CaptionlessTableOfFiguresLabel = "Test";
+
+            Assert.AreEqual(" TOC  \\a Test", fieldToc.GetFieldCode());
+            //ExEnd
         }
     }
 }

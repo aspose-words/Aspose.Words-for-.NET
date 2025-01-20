@@ -549,5 +549,37 @@ namespace ApiExamples
         {
             Assert.AreEqual(16, Regex.Matches(callback.GetText(), "Resource #").Count);
         }
+
+        [Test]
+        public void IdPrefix()
+        {
+            //ExStart:IdPrefix
+            //GistId:f86d49dc0e6781b93e576539a01e6ca2
+            //ExFor:HtmlFixedSaveOptions.IdPrefix
+            //ExSummary:Shows how to add a prefix that is prepended to all generated element IDs.
+            Document doc = new Document(MyDir + "Id prefix.docx");
+
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+            saveOptions.IdPrefix = "pfx1_";
+
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.IdPrefix.html", saveOptions);
+            //ExEnd:IdPrefix
+        }
+
+        [Test]
+        public void RemoveJavaScriptFromLinks()
+        {
+            //ExStart:RemoveJavaScriptFromLinks
+            //GistId:f86d49dc0e6781b93e576539a01e6ca2
+            //ExFor:HtmlFixedSaveOptions.RemoveJavaScriptFromLinks
+            //ExSummary:Shows how to remove JavaScript from the links.
+            Document doc = new Document(MyDir + "JavaScript in HREF.docx");
+
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+            saveOptions.RemoveJavaScriptFromLinks = true;
+
+            doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.RemoveJavaScriptFromLinks.html", saveOptions);
+            //ExEnd:RemoveJavaScriptFromLinks
+        }
     }
 }

@@ -124,5 +124,37 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "SvgSaveOptions.MaxImageResolution.svg", saveOptions);
             //ExEnd:MaxImageResolution
         }
+
+        [Test]
+        public void IdPrefixSvg()
+        {
+            //ExStart:IdPrefixSvg
+            //GistId:f86d49dc0e6781b93e576539a01e6ca2
+            //ExFor:SvgSaveOptions.IdPrefix
+            //ExSummary:Shows how to add a prefix that is prepended to all generated element IDs (svg).
+            Document doc = new Document(MyDir + "Id prefix.docx");
+
+            SvgSaveOptions saveOptions = new SvgSaveOptions();
+            saveOptions.IdPrefix = "pfx1_";
+
+            doc.Save(ArtifactsDir + "SvgSaveOptions.IdPrefixSvg.html", saveOptions);
+            //ExEnd:IdPrefixSvg
+        }
+
+        [Test]
+        public void RemoveJavaScriptFromLinksSvg()
+        {
+            //ExStart:RemoveJavaScriptFromLinksSvg
+            //GistId:f86d49dc0e6781b93e576539a01e6ca2
+            //ExFor:SvgSaveOptions.RemoveJavaScriptFromLinks
+            //ExSummary:Shows how to remove JavaScript from the links (svg).
+            Document doc = new Document(MyDir + "JavaScript in HREF.docx");
+
+            SvgSaveOptions saveOptions = new SvgSaveOptions();
+            saveOptions.RemoveJavaScriptFromLinks = true;
+
+            doc.Save(ArtifactsDir + "SvgSaveOptions.RemoveJavaScriptFromLinksSvg.html", saveOptions);
+            //ExEnd:RemoveJavaScriptFromLinksSvg
+        }
     }
 }

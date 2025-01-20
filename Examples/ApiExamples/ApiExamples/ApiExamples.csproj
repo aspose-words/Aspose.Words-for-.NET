@@ -126,21 +126,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="24.10.0" />
-    <PackageReference Include="Aspose.Page" Version="24.10.0" />
-    <PackageReference Include="Aspose.PDF" Version="24.10.0" />
-    <PackageReference Include="Aspose.Words" Version="24.11.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="24.10.0" />
-    <PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="Aspose.BarCode" Version="24.12.0" />
+    <PackageReference Include="Aspose.Page" Version="24.12.0" />
+    <PackageReference Include="Aspose.PDF" Version="25.1.0" />
+    <PackageReference Include="Aspose.Words" Version="25.1.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.1.0" />
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.5.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
     <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.6.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SkiaSharp" Version="2.88.9" />
-    <PackageReference Include="System.Data.OleDb" Version="8.0.1" />
+    <PackageReference Include="SkiaSharp" Version="3.116.1" />
+    <PackageReference Include="System.Data.OleDb" Version="9.0.0" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>
