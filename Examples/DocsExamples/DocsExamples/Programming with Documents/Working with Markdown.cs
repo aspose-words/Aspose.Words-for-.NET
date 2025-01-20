@@ -11,6 +11,7 @@ namespace DocsExamples.Programming_with_Documents
         public void BoldText()
         {
             //ExStart:BoldText
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -24,6 +25,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ItalicText()
         {
             //ExStart:ItalicText
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -37,6 +39,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Strikethrough()
         {
             //ExStart:Strikethrough
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -70,6 +73,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Autolink()
         {
             //ExStart:Autolink
+            //GistDesc:Translate Markdown to DOM using C#
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -83,6 +87,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Link()
         {
             //ExStart:Link
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -95,6 +100,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Image()
         {
             //ExStart:Image
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -108,6 +114,7 @@ namespace DocsExamples.Programming_with_Documents
         public void HorizontalRule()
         {
             //ExStart:HorizontalRule
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -120,6 +127,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Heading()
         {
             //ExStart:Heading
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -137,6 +145,7 @@ namespace DocsExamples.Programming_with_Documents
         public void SetextHeading()
         {
             //ExStart:SetextHeading
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -174,6 +183,7 @@ namespace DocsExamples.Programming_with_Documents
         public void IndentedCode()
         {
             //ExStart:IndentedCode
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -187,6 +197,7 @@ namespace DocsExamples.Programming_with_Documents
         public void FencedCode()
         {
             //ExStart:FencedCode
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -204,6 +215,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Quote()
         {
             //ExStart:Quote
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -223,6 +235,7 @@ namespace DocsExamples.Programming_with_Documents
         public void BulletedList()
         {
             //ExStart:BulletedList
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -243,6 +256,7 @@ namespace DocsExamples.Programming_with_Documents
         public void OrderedList()
         {
             //ExStart:OrderedList
+            //GistId:0697355b7f872839932388d269ed6a63
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -262,6 +276,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Table()
         {
             //ExStart:Table
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
