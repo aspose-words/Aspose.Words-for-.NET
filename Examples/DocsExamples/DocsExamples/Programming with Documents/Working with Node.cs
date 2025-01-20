@@ -11,7 +11,7 @@ namespace DocsExamples.Programming_with_Documents
         public void GetNodeType()
         {
             //ExStart:GetNodeType
-            //GistDesc:Aspose.Words Document Object Model (DOM) using C#
+            //GistId:3e9d92093b2f5995f984791bfc10c944
             Document doc = new Document();
             NodeType type = doc.NodeType;
             //ExEnd:GetNodeType
@@ -21,11 +21,10 @@ namespace DocsExamples.Programming_with_Documents
         public void GetParentNode()
         {
             //ExStart:GetParentNode
-            //GistDesc:Aspose.Words Document Object Model (DOM) using C#
+            //GistId:3e9d92093b2f5995f984791bfc10c944
             Document doc = new Document();
             // The section is the first child node of the document.
             Node section = doc.FirstChild;
-
             // The section's parent node is the document.
             Console.WriteLine("Section parent is the document: " + (doc == section.ParentNode));
             //ExEnd:GetParentNode
@@ -35,7 +34,7 @@ namespace DocsExamples.Programming_with_Documents
         public void OwnerDocument()
         {
             //ExStart:OwnerDocument
-            //GistDesc:Aspose.Words Document Object Model (DOM) using C#
+            //GistId:3e9d92093b2f5995f984791bfc10c944
             Document doc = new Document();
 
             // Creating a new node of any type requires a document passed into the constructor.
@@ -49,7 +48,7 @@ namespace DocsExamples.Programming_with_Documents
             para.ParagraphFormat.StyleName = "Heading 1";
             // Now add the paragraph to the main text of the first section.
             doc.FirstSection.Body.AppendChild(para);
-
+            
             // The paragraph node is now a child of the Body node.
             Console.WriteLine("Paragraph has a parent node: " + (para.ParentNode != null));
             //ExEnd:OwnerDocument
@@ -59,7 +58,7 @@ namespace DocsExamples.Programming_with_Documents
         public void EnumerateChildNodes()
         {
             //ExStart:EnumerateChildNodes
-            //GistDesc:Aspose.Words Document Object Model (DOM) using C#
+            //GistId:3e9d92093b2f5995f984791bfc10c944
             Document doc = new Document();
             Paragraph paragraph = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
 
@@ -78,7 +77,7 @@ namespace DocsExamples.Programming_with_Documents
 
         [Test]
         //ExStart:RecurseAllNodes
-        //GistDesc:Aspose.Words Document Object Model (DOM) using C#
+        //GistId:3e9d92093b2f5995f984791bfc10c944
         public void RecurseAllNodes()
         {
             Document doc = new Document(MyDir + "Paragraphs.docx");
@@ -108,7 +107,7 @@ namespace DocsExamples.Programming_with_Documents
         public void TypedAccess()
         {
             //ExStart:TypedAccess
-            //GistDesc:Aspose.Words Document Object Model (DOM) using C#
+            //GistId:3e9d92093b2f5995f984791bfc10c944
             Document doc = new Document();
 
             Section section = doc.FirstSection;
