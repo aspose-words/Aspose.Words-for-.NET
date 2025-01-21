@@ -12,6 +12,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void GetVariables()
         {
             //ExStart:GetVariables
+            //GistId:0593a8803015363f3026f648332e7026
             Document doc = new Document(MyDir + "Document.docx");
             
             string variables = "";
@@ -28,15 +29,16 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
                     variables = variables + "Name: " + name + "," + "Value: {1}" + value;
                 }
             }
-            //ExEnd:GetVariables
 
             Console.WriteLine("\nDocument have following variables " + variables);
+            //ExEnd:GetVariables
         }
 
         [Test]
         public void EnumerateProperties()
         {
-            //ExStart:EnumerateProperties            
+            //ExStart:EnumerateProperties
+            //GistId:0593a8803015363f3026f648332e7026
             Document doc = new Document(MyDir + "Properties.docx");
             
             Console.WriteLine("1. Document name: {0}", doc.OriginalFileName);
@@ -53,9 +55,10 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         }
 
         [Test]
-        public void AddCustomDocumentProperties()
+        public void AddCustomProperties()
         {
-            //ExStart:AddCustomDocumentProperties            
+            //ExStart:AddCustomProperties
+            //GistId:0593a8803015363f3026f648332e7026
             Document doc = new Document(MyDir + "Properties.docx");
 
             CustomDocumentProperties customDocumentProperties = doc.CustomDocumentProperties;
@@ -67,22 +70,24 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             customDocumentProperties.Add("Authorized Date", DateTime.Today);
             customDocumentProperties.Add("Authorized Revision", doc.BuiltInDocumentProperties.RevisionNumber);
             customDocumentProperties.Add("Authorized Amount", 123.45);
-            //ExEnd:AddCustomDocumentProperties
+            //ExEnd:AddCustomProperties
         }
 
         [Test]
-        public void RemoveCustomDocumentProperties()
+        public void RemoveCustomProperties()
         {
-            //ExStart:CustomRemove            
+            //ExStart:RemoveCustomProperties
+            //GistId:0593a8803015363f3026f648332e7026
             Document doc = new Document(MyDir + "Properties.docx");
             doc.CustomDocumentProperties.Remove("Authorized Date");
-            //ExEnd:CustomRemove
+            //ExEnd:RemoveCustomProperties
         }
 
         [Test]
         public void RemovePersonalInformation()
         {
-            //ExStart:RemovePersonalInformation            
+            //ExStart:RemovePersonalInformation
+            //GistId:0593a8803015363f3026f648332e7026
             Document doc = new Document(MyDir + "Properties.docx") { RemovePersonalInformation = true };
 
             doc.Save(ArtifactsDir + "DocumentPropertiesAndVariables.RemovePersonalInformation.docx");
@@ -92,7 +97,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         [Test]
         public void ConfiguringLinkToContent()
         {
-            //ExStart:ConfiguringLinkToContent            
+            //ExStart:ConfiguringLinkToContent
+            //GistId:0593a8803015363f3026f648332e7026
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             

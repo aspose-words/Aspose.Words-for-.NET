@@ -73,7 +73,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Autolink()
         {
             //ExStart:Autolink
-            //GistDesc:Translate Markdown to DOM using C#
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
