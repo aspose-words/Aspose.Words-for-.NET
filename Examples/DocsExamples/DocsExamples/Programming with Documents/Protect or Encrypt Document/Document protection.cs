@@ -120,6 +120,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         public void ReadOnlyProtection()
         {
             //ExStart:ReadOnlyProtection
+            //GistId:7cf6735e83804ba8942663695b22ee42
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -141,6 +142,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         public void RemoveReadOnlyRestriction()
         {
             //ExStart:RemoveReadOnlyRestriction
+            //GistId:7cf6735e83804ba8942663695b22ee42
             Document doc = new Document();
             
             // Enter a password that's up to 15 characters long.
