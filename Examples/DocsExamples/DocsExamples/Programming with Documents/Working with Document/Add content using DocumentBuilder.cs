@@ -397,7 +397,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void MoveToNode()
         {
             //ExStart:MoveToNode
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             //ExStart:MoveToBookmark
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -435,6 +437,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void MoveToDocumentStartEnd()
         {
             //ExStart:MoveToDocumentStartEnd
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -452,6 +455,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void MoveToSection()
         {
             //ExStart:MoveToSection
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             Document doc = new Document();
             doc.AppendChild(new Section(doc));
 
@@ -475,13 +479,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Assert.AreEqual(2, paragraphs.IndexOf(builder.CurrentParagraph));
             builder.Writeln("This is a new third paragraph. ");
             Assert.AreEqual(3, paragraphs.IndexOf(builder.CurrentParagraph));
-            //ExEnd:MoveToSection               
+            //ExEnd:MoveToSection
         }
 
         [Test]
         public void MoveToHeadersFooters()
         {
             //ExStart:MoveToHeadersFooters
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -523,6 +528,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void MoveToTableCell()
         {
             //ExStart:MoveToTableCell
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             Document doc = new Document(MyDir + "Tables.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -553,6 +559,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void MoveToMergeField()
         {
             //ExStart:MoveToMergeField
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -571,6 +578,6 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Assert.AreEqual(field.End, builder.CurrentNode.PreviousSibling);
             builder.Write(" Text immediately after the field.");
             //ExEnd:MoveToMergeField
-        }        
+        }
     }
 }
