@@ -9,6 +9,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         public void PasswordProtection()
         {
             //ExStart:PasswordProtection
+            //GistId:856ba85fa704fa728b0ec20aafddd16b
             Document doc = new Document();
 
             // Apply document protection.
@@ -22,6 +23,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         public void AllowOnlyFormFieldsProtect()
         {
             //ExStart:AllowOnlyFormFieldsProtect
+            //GistId:856ba85fa704fa728b0ec20aafddd16b
             // Insert two sections with some text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -39,6 +41,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         public void RemoveDocumentProtection()
         {
             //ExStart:RemoveDocumentProtection
+            //GistId:856ba85fa704fa728b0ec20aafddd16b
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -57,6 +60,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         public void UnrestrictedEditableRegions()
         {
             //ExStart:UnrestrictedEditableRegions
+            //GistId:856ba85fa704fa728b0ec20aafddd16b
             // Upload a document and make it as read-only.
             Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -86,6 +90,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         public void UnrestrictedSection()
         {
             //ExStart:UnrestrictedSection
+            //GistId:856ba85fa704fa728b0ec20aafddd16b
             // Insert two sections with some text.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
