@@ -29,9 +29,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         }
 
         [Test]
-        public void DocumentBuilderInsertBookmark()
+        public void InsertBookmark()
         {
-            //ExStart:DocumentBuilderInsertBookmark
+            //ExStart:InsertBookmark
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -39,14 +39,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             builder.Writeln("This is just a fine bookmark.");
             builder.EndBookmark("FineBookmark");
 
-            doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.DocumentBuilderInsertBookmark.docx");
-            //ExEnd:DocumentBuilderInsertBookmark
+            doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.InsertBookmark.docx");
+            //ExEnd:InsertBookmark
         }
 
         [Test]
         public void BuildTable()
         {
-            //ExStart:BuildTable            
+            //ExStart:BuildTable
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -298,6 +298,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertParagraph()
         {
             //ExStart:InsertParagraph
+            //GistId:ecf2c438314e6c8318ca9833c7f62326
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -444,7 +445,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             // Move the cursor position to the end of your document.
             builder.MoveToDocumentEnd();
             Console.WriteLine("\nThis is the end of the document.");
-            //ExEnd:MoveToDocumentStartEnd            
+            //ExEnd:MoveToDocumentStartEnd
         }
 
         [Test]
@@ -515,7 +516,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             builder.MoveToParagraph(2, 0);
             builder.Writeln("This is the 3rd paragraph.");
-            //ExEnd:MoveToParagraph               
+            //ExEnd:MoveToParagraph
         }
 
         [Test]
@@ -532,19 +533,20 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             Assert.AreEqual(table.Rows[2].Cells[3], builder.CurrentNode.ParentNode.ParentNode);
             Assert.AreEqual("Cell contents added by DocumentBuilderCell 3 contents\a", table.Rows[2].Cells[3].GetText().Trim());
-            //ExEnd:MoveToTableCell               
+            //ExEnd:MoveToTableCell
         }
 
         [Test]
         public void MoveToBookmarkEnd()
         {
             //ExStart:MoveToBookmarkEnd
+            //GistId:ecf2c438314e6c8318ca9833c7f62326
             Document doc = new Document(MyDir + "Bookmarks.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToBookmark("MyBookmark1", false, true);
             builder.Writeln("This is a bookmark.");
-            //ExEnd:MoveToBookmarkEnd              
+            //ExEnd:MoveToBookmarkEnd
         }
 
         [Test]
@@ -568,7 +570,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             // we will need to move it to a field's FieldStart or FieldSeparator node using the DocumentBuilder.MoveTo() method.
             Assert.AreEqual(field.End, builder.CurrentNode.PreviousSibling);
             builder.Write(" Text immediately after the field.");
-            //ExEnd:MoveToMergeField              
+            //ExEnd:MoveToMergeField
         }        
     }
 }
