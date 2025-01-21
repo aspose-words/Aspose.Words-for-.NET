@@ -11,6 +11,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void CompareForEqual()
         {
             //ExStart:CompareForEqual
+            //GistId:66cba61d079d8ef1e676820633ba4586
             Document docA = new Document(MyDir + "Document.docx");
             Document docB = docA.Clone();
             
@@ -18,13 +19,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             docA.Compare(docB, "user", DateTime.Now);
 
             Console.WriteLine(docA.Revisions.Count == 0 ? "Documents are equal" : "Documents are not equal");
-            //ExEnd:CompareForEqual                     
+            //ExEnd:CompareForEqual
         }
 
         [Test]
         public void CompareOptions()
         {
             //ExStart:CompareOptions
+            //GistId:66cba61d079d8ef1e676820633ba4586
             Document docA = new Document(MyDir + "Document.docx");
             Document docB = docA.Clone();
 
@@ -43,7 +45,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             docA.Compare(docB, "user", DateTime.Now, options);
 
             Console.WriteLine(docA.Revisions.Count == 0 ? "Documents are equal" : "Documents are not equal");
-            //ExEnd:CompareOptions                     
+            //ExEnd:CompareOptions
         }
 
         [Test]
@@ -73,7 +75,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             CompareOptions compareOptions = new CompareOptions { Granularity = Granularity.CharLevel };
 
             builderA.Document.Compare(builderB.Document, "author", DateTime.Now, compareOptions);
-            //ExEnd:ComparisonGranularity      
+            //ExEnd:ComparisonGranularity
         }
     }
 }
