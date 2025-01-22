@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,14 +12,36 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
     internal class CloneAndCombineDocuments : DocsExamplesBase
     {
         [Test]
-        public void CloningDocument()
+        public void CloneDocument()
         {
-            //ExStart:CloningDocument
-            Document doc = new Document(MyDir + "Document.docx");
+            //ExStart:CloneDocument
+            //GistId:b2f62f736a2090163de7b0f221cf46d4
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("This is the original document before applying the clone method");
 
+            // Clone the document.
             Document clone = doc.Clone();
+
+            // Edit the cloned document.
+            builder = new DocumentBuilder(clone);
+            builder.Write("Section 1");
+            builder.InsertBreak(BreakType.SectionBreakNewPage);
+            builder.Write("Section 2");
+
+            // This shows what is in the document originally. The document has two sections.
+            Assert.AreEqual("Section 1\fSection 2This is the original document before applying the clone method", clone.GetText().Trim());
+
+            // Duplicate the last section and append the copy to the end of the document.
+            int lastSectionIdx = clone.Sections.Count - 1;
+            Section newSection = clone.Sections[lastSectionIdx].Clone();
+            clone.Sections.Add(newSection);
+
+            // Check what the document contains after we changed it.
+            Assert.AreEqual("Section 1\fSection 2This is the original document before applying the clone method" +
+                "\r\fSection 2This is the original document before applying the clone method", clone.GetText().Trim());
             clone.Save(ArtifactsDir + "CloneAndCombineDocuments.CloningDocument.docx");
-            //ExEnd:CloningDocument
+            //ExEnd:CloneDocument
         }
 
         [Test]
