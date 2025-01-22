@@ -214,6 +214,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertTableOfContents()
         {
             //ExStart:InsertTableOfContents
+            //GistId:db118a3e1559b9c88355356df9d7ea10
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -252,6 +253,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             builder.Writeln("Heading 3.3");
 
             //ExStart:UpdateFields
+            //GistId:db118a3e1559b9c88355356df9d7ea10
             // The newly inserted table of contents will be initially empty.
             // It needs to be populated by updating the fields in the document.
             doc.UpdateFields();
@@ -321,22 +323,24 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         }
 
         [Test]
-        public void InsertTCField()
+        public void InsertTcField()
         {
-            //ExStart:InsertTCField
+            //ExStart:InsertTcField
+            //GistId:db118a3e1559b9c88355356df9d7ea10
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertField("TC \"Entry Text\" \\f t");
 
-            doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.InsertTCField.docx");
-            //ExEnd:InsertTCField
+            doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.InsertTcField.docx");
+            //ExEnd:InsertTcField
         }
 
         [Test]
-        public void InsertTCFieldsAtText()
+        public void InsertTcFieldsAtText()
         {
-            //ExStart:InsertTCFieldsAtText
+            //ExStart:InsertTcFieldsAtText
+            //GistId:db118a3e1559b9c88355356df9d7ea10
             Document doc = new Document();
 
             FindReplaceOptions options = new FindReplaceOptions();
@@ -344,7 +348,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             options.ReplacingCallback = new InsertTCFieldHandler("Chapter 1", "\\l 1");
 
             doc.Range.Replace(new Regex("The Beginning"), "", options);
-            //ExEnd:InsertTCFieldsAtText
+            //ExEnd:InsertTcFieldsAtText
         }
 
         //ExStart:InsertTCFieldHandler
