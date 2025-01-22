@@ -80,6 +80,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void InsertStyleSeparator()
         {
             //ExStart:InsertStyleSeparator
+            //GistId:4b5526c3c0d9cad73e05fb4b18d2c3d2
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
