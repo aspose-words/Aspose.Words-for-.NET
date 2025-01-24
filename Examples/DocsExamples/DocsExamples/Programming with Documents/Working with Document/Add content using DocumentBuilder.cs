@@ -85,6 +85,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertHorizontalRule()
         {
             //ExStart:InsertHorizontalRule
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -99,6 +100,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void HorizontalRuleFormat()
         {
             //ExStart:HorizontalRuleFormat
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             DocumentBuilder builder = new DocumentBuilder();
 
             Shape shape = builder.InsertHorizontalRule();

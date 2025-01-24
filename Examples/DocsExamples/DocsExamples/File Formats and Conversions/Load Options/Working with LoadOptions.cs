@@ -53,6 +53,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         public void ConvertShapeToOfficeMath()
         {
             //ExStart:ConvertShapeToOfficeMath
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             LoadOptions loadOptions = new LoadOptions { ConvertShapeToOfficeMath = true };
 
             Document doc = new Document(MyDir + "Office math.docx", loadOptions);
