@@ -37,6 +37,7 @@ namespace DocsExamples.Programming_with_Documents
         public void GetFontLineSpacing()
         {
             //ExStart:GetFontLineSpacing
+            //GistId:7cb86f131b74afcbebc153f0039e3947
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -69,7 +70,8 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void SetFontFormatting()
         {
-            //ExStart:DocumentBuilderSetFontFormatting
+            //ExStart:SetFontFormatting
+            //GistId:7cb86f131b74afcbebc153f0039e3947
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -85,13 +87,14 @@ namespace DocsExamples.Programming_with_Documents
             builder.Writeln("I'm a very nice formatted string.");
             
             doc.Save(ArtifactsDir + "WorkingWithFonts.SetFontFormatting.docx");
-            //ExEnd:DocumentBuilderSetFontFormatting
+            //ExEnd:SetFontFormatting
         }
 
         [Test]
         public void SetFontEmphasisMark()
         {
             //ExStart:SetFontEmphasisMark
+            //GistId:7cb86f131b74afcbebc153f0039e3947
             Document document = new Document();
             DocumentBuilder builder = new DocumentBuilder(document);
 
