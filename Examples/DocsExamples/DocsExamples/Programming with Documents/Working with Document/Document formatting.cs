@@ -12,6 +12,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void SpaceBetweenAsianAndLatinText()
         {
             //ExStart:SpaceBetweenAsianAndLatinText
+            //GistId:4f54ffd5c7580f0d146b53e52d986f38
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -30,6 +31,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void AsianTypographyLineBreakGroup()
         {
             //ExStart:AsianTypographyLineBreakGroup
+            //GistId:4f54ffd5c7580f0d146b53e52d986f38
             Document doc = new Document(MyDir + "Asian typography.docx");
 
             ParagraphFormat format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
