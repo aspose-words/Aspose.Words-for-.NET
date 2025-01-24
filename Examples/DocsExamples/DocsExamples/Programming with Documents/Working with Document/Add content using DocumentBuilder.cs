@@ -269,6 +269,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertInlineImage()
         {
             //ExStart:InsertInlineImage
+            //GistId:6f849e51240635a6322ab0460938c922
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -282,6 +283,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertFloatingImage()
         {
             //ExStart:InsertFloatingImage
+            //GistId:6f849e51240635a6322ab0460938c922
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

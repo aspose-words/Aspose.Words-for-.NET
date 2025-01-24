@@ -15,6 +15,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void AddGroupShape()
         {
             //ExStart:AddGroupShape
+            //GistId:072edc4bbb0dd0eebf1f61f610bd8d36
             Document doc = new Document();
             doc.EnsureMinimum();
             
