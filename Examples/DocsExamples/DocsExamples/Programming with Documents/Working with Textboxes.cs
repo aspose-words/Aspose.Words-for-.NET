@@ -8,9 +8,10 @@ namespace DocsExamples.Programming_with_Documents
     internal class WorkingWithTextboxes
     {
         [Test]
-        public void CreateALink()
+        public void CreateLink()
         {
-            //ExStart:CreateALink
+            //ExStart:CreateLink
+            //GistId:68b6041746b3d6bf5137cff8e6385b5f
             Document doc = new Document();
 
             Shape shape1 = new Shape(doc, ShapeType.TextBox);
@@ -21,13 +22,14 @@ namespace DocsExamples.Programming_with_Documents
 
             if (textBox1.IsValidLinkTarget(textBox2))
                 textBox1.Next = textBox2;
-            //ExEnd:CreateALink
+            //ExEnd:CreateLink
         }
 
         [Test]
         public void CheckSequence()
         {
             //ExStart:CheckSequence
+            //GistId:68b6041746b3d6bf5137cff8e6385b5f
             Document doc = new Document();
 
             Shape shape = new Shape(doc, ShapeType.TextBox);
@@ -51,9 +53,10 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void BreakALink()
+        public void BreakLink()
         {
-            //ExStart:BreakALink
+            //ExStart:BreakLink
+            //GistId:68b6041746b3d6bf5137cff8e6385b5f
             Document doc = new Document();
 
             Shape shape = new Shape(doc, ShapeType.TextBox);
@@ -67,7 +70,7 @@ namespace DocsExamples.Programming_with_Documents
 
             // Break a link, which leads to this textbox.
             textBox.Previous?.BreakForwardLink();
-            //ExEnd:BreakALink
+            //ExEnd:BreakLink
         }
     }
 }
