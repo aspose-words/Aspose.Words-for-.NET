@@ -205,6 +205,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             Document doc = new Document(MyDir + "SmartArt.docx");
 
             //ExStart:UpdateSmartArtDrawing
+            //GistId:683cdbe52b97598d9d4ee4695b4f83c9
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
                 if (shape.HasSmartArt)
                     shape.UpdateSmartArtDrawing();
