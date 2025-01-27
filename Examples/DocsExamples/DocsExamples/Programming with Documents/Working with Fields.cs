@@ -50,14 +50,15 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void SpecifyLocaleAtFieldLevel()
         {
-            //ExStart:SpecifylocaleAtFieldlevel
+            //ExStart:SpecifyLocaleAtFieldLevel
+            //GistId:e19d5874b376b07466fd7a397d554648
             DocumentBuilder builder = new DocumentBuilder();
 
             Field field = builder.InsertField(FieldType.FieldDate, true);
             field.LocaleId = 1049;
             
-            builder.Document.Save(ArtifactsDir + "WorkingWithFields.SpecifylocaleAtFieldlevel.docx");
-            //ExEnd:SpecifylocaleAtFieldlevel
+            builder.Document.Save(ArtifactsDir + "WorkingWithFields.SpecifyLocaleAtFieldLevel.docx");
+            //ExEnd:SpecifyLocaleAtFieldLevel
         }
 
         [Test]
