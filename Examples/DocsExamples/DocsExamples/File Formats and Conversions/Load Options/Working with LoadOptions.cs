@@ -15,6 +15,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         public void UpdateDirtyFields()
         {
             //ExStart:UpdateDirtyFields
+            //GistId:08db64c4d86842c4afd1ecb925ed07c4
             LoadOptions loadOptions = new LoadOptions { UpdateDirtyFields = true };
 
             Document doc = new Document(MyDir + "Dirty field.docx", loadOptions);

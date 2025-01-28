@@ -518,6 +518,7 @@ namespace DocsExamples.Programming_with_Documents
             //ExStart:FieldDisplayResults
             //GistId:bf0f8a6b40b69a5274ab3553315e147f
             //ExStart:UpdateDocFields
+            //GistId:08db64c4d86842c4afd1ecb925ed07c4
             Document document = new Document(MyDir + "Various fields.docx");
 
             document.UpdateFields();
