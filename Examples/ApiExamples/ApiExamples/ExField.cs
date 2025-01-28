@@ -1401,7 +1401,7 @@ namespace ApiExamples
             // has reset the count for this level so that this field will display "2.2.1.".
             InsertNumberedClause(builder, "\tHeading 6", fillerText, StyleIdentifier.Heading3);
 
-            foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal))
+            foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal).ToList())
             {
                 // The separator character, which appears in the field result immediately after the number,
                 // is a full stop by default. If we leave this property null,
@@ -1440,7 +1440,7 @@ namespace ApiExamples
         {
             doc = DocumentHelper.SaveOpen(doc);
 
-            foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal))
+            foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal).ToList())
             {
                 TestUtil.VerifyField(FieldType.FieldAutoNumLegal, " AUTONUMLGL  \\s : \\e", string.Empty, field);
 
@@ -1471,7 +1471,7 @@ namespace ApiExamples
             builder.InsertField(FieldType.FieldAutoNumOutline, true);
             builder.Writeln("\tParagraph 2.");
 
-            foreach (FieldAutoNumOut field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumOutline))
+            foreach (FieldAutoNumOut field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumOutline).ToList())
                 Assert.AreEqual(" AUTONUMOUT ", field.GetFieldCode());
 
             doc.Save(ArtifactsDir + "Field.AUTONUMOUT.docx");
