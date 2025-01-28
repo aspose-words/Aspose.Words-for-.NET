@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Ole;
@@ -12,20 +13,22 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void InsertOleObject()
         {
-            //ExStart:DocumentBuilderInsertOleObject
+            //ExStart:InsertOleObject
+            //GistId:4996b573cf231d9f66ab0d1f3f981222
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertOleObject("http://www.aspose.com", "htmlfile", true, true, null);
 
             doc.Save(ArtifactsDir + "WorkingWithOleObjectsAndActiveX.InsertOleObject.docx");
-            //ExEnd:DocumentBuilderInsertOleObject
+            //ExEnd:InsertOleObject
         }
 
         [Test]
         public void InsertOleObjectWithOlePackage()
         {
             //ExStart:InsertOleObjectwithOlePackage
+            //GistId:4996b573cf231d9f66ab0d1f3f981222
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -41,16 +44,18 @@ namespace DocsExamples.Programming_with_Documents
             }
             //ExEnd:InsertOleObjectwithOlePackage
 
-            //ExStart:GetAccessToOLEObjectRawData
+            //ExStart:GetAccessToOleObjectRawData
+            //GistId:4996b573cf231d9f66ab0d1f3f981222
             Shape oleShape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             byte[] oleRawData = oleShape.OleFormat.GetRawData();
-            //ExEnd:GetAccessToOLEObjectRawData
+            //ExEnd:GetAccessToOleObjectRawData
         }
 
         [Test]
         public void InsertOleObjectAsIcon()
         {
-            //ExStart:InsertOLEObjectAsIcon
+            //ExStart:InsertOleObjectAsIcon
+            //GistId:4996b573cf231d9f66ab0d1f3f981222
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -58,13 +63,14 @@ namespace DocsExamples.Programming_with_Documents
                 "My embedded file");
 
             doc.Save(ArtifactsDir + "WorkingWithOleObjectsAndActiveX.InsertOleObjectAsIcon.docx");
-            //ExEnd:InsertOLEObjectAsIcon
+            //ExEnd:InsertOleObjectAsIcon
         }
 
         [Test]
         public void InsertOleObjectAsIconUsingStream()
         {
-            //ExStart:InsertOLEObjectAsIconUsingStream
+            //ExStart:InsertOleObjectAsIconUsingStream
+            //GistId:4996b573cf231d9f66ab0d1f3f981222
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -72,7 +78,7 @@ namespace DocsExamples.Programming_with_Documents
                 builder.InsertOleObjectAsIcon(stream, "Package", ImagesDir + "Logo icon.ico", "My embedded file");
 
             doc.Save(ArtifactsDir + "WorkingWithOleObjectsAndActiveX.InsertOleObjectAsIconUsingStream.docx");
-            //ExEnd:InsertOLEObjectAsIconUsingStream
+            //ExEnd:InsertOleObjectAsIconUsingStream
         }
 
         [Test]
@@ -104,6 +110,48 @@ namespace DocsExamples.Programming_with_Documents
 
             properties = properties + "\nTotal ActiveX Controls found: " + doc.GetChildNodes(NodeType.Shape, true).Count;
             Console.WriteLine("\n" + properties);
+        }
+
+        [Test]
+        public void InsertOnlineVideo()
+        {
+            //ExStart:InsertOnlineVideo
+            //GistId:4996b573cf231d9f66ab0d1f3f981222
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            string url = "https://youtu.be/t_1LYZ102RA";
+            double width = 360;
+            double height = 270;
+
+            Shape shape = builder.InsertOnlineVideo(url, width, height);
+
+            doc.Save(ArtifactsDir + "WorkingWithOleObjectsAndActiveX.InsertOnlineVideo.docx");
+            //ExEnd:InsertOnlineVideo
+        }
+
+        [Test]
+        public void InsertOnlineVideoWithEmbedHtml()
+        {
+            //ExStart:InsertOnlineVideoWithEmbedHtml
+            //GistId:4996b573cf231d9f66ab0d1f3f981222
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            double width = 360;
+            double height = 270;
+
+            string videoUrl = "https://vimeo.com/52477838";
+            string videoEmbedCode =
+                "<iframe src=\"https://player.vimeo.com/video/52477838\" width=\"640\" height=\"360\" frameborder=\"0\" " +
+                "title=\"Aspose\" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>";
+
+            byte[] thumbnailImageBytes = File.ReadAllBytes(ImagesDir + "Logo.jpg");
+
+            builder.InsertOnlineVideo(videoUrl, videoEmbedCode, thumbnailImageBytes, width, height);
+
+            doc.Save(ArtifactsDir + "WorkingWithOleObjectsAndActiveX.InsertOnlineVideoWithEmbedHtml.docx");
+            //ExEnd:InsertOnlineVideoWithEmbedHtml
         }
     }
 }
