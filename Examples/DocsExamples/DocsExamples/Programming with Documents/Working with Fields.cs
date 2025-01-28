@@ -51,7 +51,7 @@ namespace DocsExamples.Programming_with_Documents
         public void SpecifyLocaleAtFieldLevel()
         {
             //ExStart:SpecifyLocaleAtFieldLevel
-            //GistId:e19d5874b376b07466fd7a397d554648
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             DocumentBuilder builder = new DocumentBuilder();
 
             Field field = builder.InsertField(FieldType.FieldDate, true);
@@ -131,9 +131,10 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void InsertTOAFieldWithoutDocumentBuilder()
+        public void InsertToaFieldWithoutDocumentBuilder()
         {
-            //ExStart:InsertTOAFieldWithoutDocumentBuilder
+            //ExStart:InsertToaFieldWithoutDocumentBuilder
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
             Paragraph para = new Paragraph(doc);
 
@@ -155,14 +156,15 @@ namespace DocsExamples.Programming_with_Documents
 
             fieldToa.Update();
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.InsertTOAFieldWithoutDocumentBuilder.docx");
-            //ExEnd:InsertTOAFieldWithoutDocumentBuilder
+            doc.Save(ArtifactsDir + "WorkingWithFields.InsertToaFieldWithoutDocumentBuilder.docx");
+            //ExEnd:InsertToaFieldWithoutDocumentBuilder
         }
 
         [Test]
         public void InsertNestedFields()
         {
             //ExStart:InsertNestedFields
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -187,9 +189,10 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void InsertMergeFieldUsingDOM()
+        public void InsertMergeFieldUsingDom()
         {
-            //ExStart:InsertMergeFieldUsingDOM
+            //ExStart:InsertMergeFieldUsingDom
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -212,14 +215,15 @@ namespace DocsExamples.Programming_with_Documents
 
             field.Update();
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.InsertMergeFieldUsingDOM.docx");
-            //ExEnd:InsertMergeFieldUsingDOM
+            doc.Save(ArtifactsDir + "WorkingWithFields.InsertMergeFieldUsingDom.docx");
+            //ExEnd:InsertMergeFieldUsingDom
         }
 
         [Test]
-        public void InsertMailMergeAddressBlockFieldUsingDOM()
+        public void InsertAddressBlockFieldUsingDom()
         {
-            //ExStart:InsertMailMergeAddressBlockFieldUsingDOM
+            //ExStart:InsertAddressBlockFieldUsingDom
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -242,14 +246,15 @@ namespace DocsExamples.Programming_with_Documents
 
             field.Update();
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.InsertMailMergeAddressBlockFieldUsingDOM.docx");
-            //ExEnd:InsertMailMergeAddressBlockFieldUsingDOM
+            doc.Save(ArtifactsDir + "WorkingWithFields.InsertAddressBlockFieldUsingDom.docx");
+            //ExEnd:InsertAddressBlockFieldUsingDom
         }
 
         [Test]
         public void InsertFieldIncludeTextWithoutDocumentBuilder()
         {
             //ExStart:InsertFieldIncludeTextWithoutDocumentBuilder
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
 
             Paragraph para = new Paragraph(doc);
@@ -272,6 +277,7 @@ namespace DocsExamples.Programming_with_Documents
         public void InsertFieldNone()
         {
             //ExStart:InsertFieldNone
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -285,6 +291,7 @@ namespace DocsExamples.Programming_with_Documents
         public void InsertField()
         {
             //ExStart:InsertField
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -297,6 +304,8 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void InsertFieldUsingFieldBuilder()
         {
+            //ExStart:InsertFieldUsingFieldBuilder
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
 
             // Prepare IF field with two nested MERGEFIELD fields: { IF "left expression" = "right expression" "Firstname: { MERGEFIELD firstname }" "Lastname: { MERGEFIELD lastname }"}
@@ -313,17 +322,19 @@ namespace DocsExamples.Programming_with_Documents
                         .AddText("Lastname: ")
                         .AddField(new FieldBuilder(FieldType.FieldMergeField).AddArgument("lastname")));
 
-            // Insert IF field in exact location            
+            // Insert IF field in exact location
             Field field = fieldBuilder.BuildAndInsert(doc.FirstSection.Body.FirstParagraph);
             field.Update();
 
             doc.Save(ArtifactsDir + "Field.InsertFieldUsingFieldBuilder.docx");
+            //ExEnd:InsertFieldUsingFieldBuilder
         }
 
         [Test]
         public void InsertAuthorField()
         {
             //ExStart:InsertAuthorField
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
 
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
@@ -340,9 +351,10 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void InsertASKFieldWithOutDocumentBuilder()
+        public void InsertAskFieldWithoutDocumentBuilder()
         {
-            //ExStart:InsertASKFieldWithOutDocumentBuilder
+            //ExStart:InsertAskFieldWithoutDocumentBuilder
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
 
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
@@ -360,14 +372,15 @@ namespace DocsExamples.Programming_with_Documents
 
             field.Update();
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.InsertASKFieldWithOutDocumentBuilder.docx");
-            //ExEnd:InsertASKFieldWithOutDocumentBuilder
+            doc.Save(ArtifactsDir + "WorkingWithFields.InsertAskFieldWithoutDocumentBuilder.docx");
+            //ExEnd:InsertAskFieldWithoutDocumentBuilder
         }
 
         [Test]
-        public void InsertAdvanceFieldWithOutDocumentBuilder()
+        public void InsertAdvanceFieldWithoutDocumentBuilder()
         {
-            //ExStart:InsertAdvanceFieldWithOutDocumentBuilder
+            //ExStart:InsertAdvanceFieldWithoutDocumentBuilder
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
 
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
@@ -389,8 +402,8 @@ namespace DocsExamples.Programming_with_Documents
 
             field.Update();
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.InsertAdvanceFieldWithOutDocumentBuilder.docx");
-            //ExEnd:InsertAdvanceFieldWithOutDocumentBuilder
+            doc.Save(ArtifactsDir + "WorkingWithFields.InsertAdvanceFieldWithoutDocumentBuilder.docx");
+            //ExEnd:InsertAdvanceFieldWithoutDocumentBuilder
         }
 
         [Test]
