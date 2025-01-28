@@ -548,8 +548,8 @@ namespace ApiExamples
 
             string outDocText = new Document(ArtifactsDir + "Document.AppendDocument.docx").GetText();
 
-            Assert.True(outDocText.StartsWith(dstDoc.GetText(), StringComparison.Ordinal));
-            Assert.True(outDocText.EndsWith(srcDoc.GetText(), StringComparison.Ordinal));
+            Assert.True(outDocText.StartsWith(dstDoc.GetText()));
+            Assert.True(outDocText.EndsWith(srcDoc.GetText()));
         }
 
         [Test]

@@ -77,7 +77,7 @@ namespace ApiExamples
             // Every node has a parent document, which is the document that contains the node.
             // Inserting a node into a document that the node does not belong to will throw an exception.
             Assert.AreNotEqual(dstDoc, srcDoc.FirstSection.Document);
-            Assert.Throws<ArgumentException>(() => { dstDoc.AppendChild(srcDoc.FirstSection); });
+            Assert.Throws<ArgumentException>(() => dstDoc.AppendChild(srcDoc.FirstSection));
 
             // Use the ImportNode method to create a copy of a node, which will have the document
             // that called the ImportNode method set as its new owner document.

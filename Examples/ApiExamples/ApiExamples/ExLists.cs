@@ -517,7 +517,7 @@ namespace ApiExamples
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            foreach (Paragraph para in paras.OfType<Paragraph>().Where(p => p.ListFormat.IsListItem))
+            foreach (Paragraph para in paras.OfType<Paragraph>().Where(p => p.ListFormat.IsListItem).ToList())
             { 
                 Console.WriteLine($"This paragraph belongs to list ID# {para.ListFormat.List.ListId}, number style \"{para.ListFormat.ListLevel.NumberStyle}\"");
                 Console.WriteLine($"\t\"{para.GetText().Trim()}\"");
@@ -527,7 +527,7 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(6, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(6, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
         }
 
         [Test]
@@ -546,12 +546,12 @@ namespace ApiExamples
             builder.ListFormat.RemoveNumbers();
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
 
             foreach (Paragraph paragraph in paras)
                 paragraph.ListFormat.RemoveNumbers();
 
-            Assert.AreEqual(0, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(0, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
             //ExEnd
         }
 
@@ -570,7 +570,7 @@ namespace ApiExamples
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(0, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(0, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
 
             doc.Lists.Add(ListTemplate.NumberDefault);
             List list = doc.Lists[0];
@@ -581,14 +581,14 @@ namespace ApiExamples
                 paragraph.ListFormat.ListLevelNumber = 2;
             }
 
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
             paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.ListLevelNumber == 2));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.ListLevelNumber == 2));
         }
 
         [Test]
@@ -606,7 +606,7 @@ namespace ApiExamples
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(0, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(0, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
 
             List list = doc.Lists.Add(ListTemplate.NumberUppercaseLetterDot);
 
@@ -616,14 +616,14 @@ namespace ApiExamples
                 paragraph.ListFormat.ListLevelNumber = 1;
             }
 
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
             paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.ListLevelNumber == 1));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.ListLevelNumber == 1));
         }
 
         //ExStart
@@ -904,7 +904,7 @@ namespace ApiExamples
 
             // Find if we have the paragraph list. In our document, our list uses plain Arabic numbers,
             // which start at three and ends at six.
-            foreach (Paragraph paragraph in paras.OfType<Paragraph>().Where(p => p.ListFormat.IsListItem))
+            foreach (Paragraph paragraph in paras.OfType<Paragraph>().Where(p => p.ListFormat.IsListItem).ToList())
             {
                 Console.WriteLine($"List item paragraph #{paras.IndexOf(paragraph)}");
 
