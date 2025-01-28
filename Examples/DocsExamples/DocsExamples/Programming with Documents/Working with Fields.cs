@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Fields;
@@ -27,6 +26,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ChangeFieldUpdateCultureSource()
         {
             //ExStart:ChangeFieldUpdateCultureSource
+            //GistId:9e90defe4a7bcafb004f73a2ef236986
             //ExStart:DocumentBuilderInsertField
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -569,6 +569,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ChangeLocale()
         {
             //ExStart:ChangeLocale
+            //GistId:9e90defe4a7bcafb004f73a2ef236986
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
