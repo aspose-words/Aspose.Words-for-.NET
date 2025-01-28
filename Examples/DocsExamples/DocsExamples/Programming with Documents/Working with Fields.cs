@@ -93,6 +93,7 @@ namespace DocsExamples.Programming_with_Documents
         public void RenameMergeFields()
         {
             //ExStart:RenameMergeFields
+            //GistId:bf0f8a6b40b69a5274ab3553315e147f
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -515,6 +516,7 @@ namespace DocsExamples.Programming_with_Documents
         public void FieldDisplayResults()
         {
             //ExStart:FieldDisplayResults
+            //GistId:bf0f8a6b40b69a5274ab3553315e147f
             //ExStart:UpdateDocFields
             Document document = new Document(MyDir + "Various fields.docx");
 
