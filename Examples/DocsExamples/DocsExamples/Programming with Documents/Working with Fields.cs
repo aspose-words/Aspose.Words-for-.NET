@@ -13,6 +13,8 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void FieldCode()
         {
+            //ExStart:FieldCode
+            //GistId:7c2b7b650a88375b1d438746f78f0d64
             Document doc = new Document(MyDir + "Hyperlinks.docx");
 
             foreach (Field field in doc.Range.Fields)
@@ -20,6 +22,7 @@ namespace DocsExamples.Programming_with_Documents
                 string fieldCode = field.GetFieldCode();
                 string fieldResult = field.Result;
             }
+            //ExEnd:FieldCode
         }
 
         [Test]
