@@ -130,6 +130,7 @@ namespace DocsExamples.Programming_with_Documents
         public void UnlinkFields()
         {
             //ExStart:UnlinkFields
+            //GistId:f3592014d179ecb43905e37b2a68bc92
             Document doc = new Document(MyDir + "Various fields.docx");
             doc.UnlinkFields();
             //ExEnd:UnlinkFields
@@ -544,9 +545,10 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void ConvertFieldsInParagraph()
+        public void UnlinkFieldsInParagraph()
         {
-            //ExStart:ConvertFieldsInParagraph
+            //ExStart:UnlinkFieldsInParagraph
+            //GistId:f3592014d179ecb43905e37b2a68bc92
             Document doc = new Document(MyDir + "Linked fields.docx");
 
             // Pass the appropriate parameters to convert all IF fields to text that are encountered only in the last 
@@ -554,35 +556,37 @@ namespace DocsExamples.Programming_with_Documents
             doc.FirstSection.Body.LastParagraph.Range.Fields.Where(f => f.Type == FieldType.FieldIf).ToList()
                 .ForEach(f => f.Unlink());
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.TestFile.docx");
-            //ExEnd:ConvertFieldsInParagraph
+            doc.Save(ArtifactsDir + "WorkingWithFields.UnlinkFieldsInParagraph.docx");
+            //ExEnd:UnlinkFieldsInParagraph
         }
 
         [Test]
-        public void ConvertFieldsInDocument()
+        public void UnlinkFieldsInDocument()
         {
-            //ExStart:ConvertFieldsInDocument
+            //ExStart:UnlinkFieldsInDocument
+            //GistId:f3592014d179ecb43905e37b2a68bc92
             Document doc = new Document(MyDir + "Linked fields.docx");
 
             // Pass the appropriate parameters to convert all IF fields encountered in the document (including headers and footers) to text.
             doc.Range.Fields.Where(f => f.Type == FieldType.FieldIf).ToList().ForEach(f => f.Unlink());
 
             // Save the document with fields transformed to disk
-            doc.Save(ArtifactsDir + "WorkingWithFields.ConvertFieldsInDocument.docx");
-            //ExEnd:ConvertFieldsInDocument
+            doc.Save(ArtifactsDir + "WorkingWithFields.UnlinkFieldsInDocument.docx");
+            //ExEnd:UnlinkFieldsInDocument
         }
 
         [Test]
-        public void ConvertFieldsInBody()
+        public void UnlinkFieldsInBody()
         {
-            //ExStart:ConvertFieldsInBody
+            //ExStart:UnlinkFieldsInBody
+            //GistId:f3592014d179ecb43905e37b2a68bc92
             Document doc = new Document(MyDir + "Linked fields.docx");
 
             // Pass the appropriate parameters to convert PAGE fields encountered to text only in the body of the first section.
             doc.FirstSection.Body.Range.Fields.Where(f => f.Type == FieldType.FieldPage).ToList().ForEach(f => f.Unlink());
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.ConvertFieldsInBody.docx");
-            //ExEnd:ConvertFieldsInBody
+            doc.Save(ArtifactsDir + "WorkingWithFields.UnlinkFieldsInBody.docx");
+            //ExEnd:UnlinkFieldsInBody
         }
 
         [Test]
@@ -607,5 +611,18 @@ namespace DocsExamples.Programming_with_Documents
             doc.Save(ArtifactsDir + "WorkingWithFields.ChangeLocale.docx");
             //ExEnd:ChangeLocale
         }
+
+        //ExStart:ConvertFieldsToStaticText
+        //GistId:f3592014d179ecb43905e37b2a68bc92
+        /// <summary>
+        /// Converts any fields of the specified type found in the descendants of the node into static text.
+        /// </summary>
+        /// <param name="compositeNode">The node in which all descendants of the specified FieldType will be converted to static text.</param>
+        /// <param name="targetFieldType">The FieldType of the field to convert to static text.</param>
+        private void ConvertFieldsToStaticText(CompositeNode compositeNode, FieldType targetFieldType)
+        {
+            compositeNode.Range.Fields.Cast<Field>().Where(f => f.Type == targetFieldType).ToList().ForEach(f => f.Unlink());
+        }
+        //ExEnd:ConvertFieldsToStaticText
     }
 }
