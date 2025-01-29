@@ -197,6 +197,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertHyperlink()
         {
             //ExStart:InsertHyperlink
+            //GistId:0213851d47551e83af42233f4d075cf6
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

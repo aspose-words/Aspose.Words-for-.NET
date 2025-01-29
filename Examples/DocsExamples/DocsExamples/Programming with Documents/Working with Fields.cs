@@ -69,6 +69,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ReplaceHyperlinks()
         {
             //ExStart:ReplaceHyperlinks
+            //GistId:0213851d47551e83af42233f4d075cf6
             Document doc = new Document(MyDir + "Hyperlinks.docx");
 
             foreach (Field field in doc.Range.Fields)
