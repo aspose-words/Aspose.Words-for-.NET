@@ -118,6 +118,7 @@ namespace DocsExamples.Programming_with_Documents
         public void RemoveField()
         {
             //ExStart:RemoveField
+            //GistId:8c604665c1b97795df7a1e665f6b44ce
             Document doc = new Document(MyDir + "Various fields.docx");
             
             Field field = doc.Range.Fields[0];
