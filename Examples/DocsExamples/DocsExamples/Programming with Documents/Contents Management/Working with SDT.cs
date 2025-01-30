@@ -12,23 +12,25 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
     internal class WorkingWithSdt : DocsExamplesBase
     {
         [Test]
-        public void CheckBoxTypeContentControl()
+        public void SdtCheckBox()
         {
-            //ExStart:CheckBoxTypeContentControl
+            //ExStart:SdtCheckBox
+            //GistId:089defec1b191de967e6099effeabda7
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             StructuredDocumentTag sdtCheckBox = new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline);
             builder.InsertNode(sdtCheckBox);
             
-            doc.Save(ArtifactsDir + "WorkingWithSdt.CheckBoxTypeContentControl.docx", SaveFormat.Docx);
-            //ExEnd:CheckBoxTypeContentControl
+            doc.Save(ArtifactsDir + "WorkingWithSdt.SdtCheckBox.docx", SaveFormat.Docx);
+            //ExEnd:SdtCheckBox
         }
 
         [Test]
         public void CurrentStateOfCheckBox()
         {
-            //ExStart:SetCurrentStateOfCheckBox
+            //ExStart:CurrentStateOfCheckBox
+            //GistId:089defec1b191de967e6099effeabda7
             Document doc = new Document(MyDir + "Structured document tags.docx");
             
             // Get the first content control from the document.
@@ -39,13 +41,14 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
                 sdtCheckBox.Checked = true;
 
             doc.Save(ArtifactsDir + "WorkingWithSdt.CurrentStateOfCheckBox.docx");
-            //ExEnd:SetCurrentStateOfCheckBox
+            //ExEnd:CurrentStateOfCheckBox
         }
 
         [Test]
-        public void ModifyContentControls()
+        public void ModifySdt()
         {
-            //ExStart:ModifyContentControls
+            //ExStart:ModifySdt
+            //GistId:089defec1b191de967e6099effeabda7
             Document doc = new Document(MyDir + "Structured document tags.docx");
 
             foreach (StructuredDocumentTag sdt in doc.GetChildNodes(NodeType.StructuredDocumentTag, true))
@@ -79,14 +82,15 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
                 }
             }
             
-            doc.Save(ArtifactsDir + "WorkingWithSdt.ModifyContentControls.docx");
-            //ExEnd:ModifyContentControls
+            doc.Save(ArtifactsDir + "WorkingWithSdt.ModifySdt.docx");
+            //ExEnd:ModifySdt
         }
 
         [Test]
-        public void ComboBoxContentControl()
+        public void SdtComboBox()
         {
-            //ExStart:ComboBoxContentControl
+            //ExStart:SdtComboBox
+            //GistId:089defec1b191de967e6099effeabda7
             Document doc = new Document();
 
             StructuredDocumentTag sdt = new StructuredDocumentTag(doc, SdtType.ComboBox, MarkupLevel.Block);
@@ -95,14 +99,15 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             sdt.ListItems.Add(new SdtListItem("Item 2", "2"));
             doc.FirstSection.Body.AppendChild(sdt);
 
-            doc.Save(ArtifactsDir + "WorkingWithSdt.ComboBoxContentControl.docx");
-            //ExEnd:ComboBoxContentControl
+            doc.Save(ArtifactsDir + "WorkingWithSdt.SdtComboBox.docx");
+            //ExEnd:SdtComboBox
         }
 
         [Test]
-        public void RichTextBoxContentControl()
+        public void SdtRichTextBox()
         {
-            //ExStart:RichTextBoxContentControl
+            //ExStart:SdtRichTextBox
+            //GistId:089defec1b191de967e6099effeabda7
             Document doc = new Document();
 
             StructuredDocumentTag sdtRichText = new StructuredDocumentTag(doc, SdtType.RichText, MarkupLevel.Block);
@@ -115,40 +120,43 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             sdtRichText.GetChildNodes(NodeType.Any, false).Add(para);
             doc.FirstSection.Body.AppendChild(sdtRichText);
 
-            doc.Save(ArtifactsDir + "WorkingWithSdt.RichTextBoxContentControl.docx");
-            //ExEnd:RichTextBoxContentControl
+            doc.Save(ArtifactsDir + "WorkingWithSdt.SdtRichTextBox.docx");
+            //ExEnd:SdtRichTextBox
         }
 
         [Test]
-        public void SetContentControlColor()
+        public void SdtColor()
         {
-            //ExStart:SetContentControlColor
+            //ExStart:SdtColor
+            //GistId:089defec1b191de967e6099effeabda7
             Document doc = new Document(MyDir + "Structured document tags.docx");
 
             StructuredDocumentTag sdt = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
             sdt.Color = Color.Red;
 
-            doc.Save(ArtifactsDir + "WorkingWithSdt.SetContentControlColor.docx");
-            //ExEnd:SetContentControlColor
+            doc.Save(ArtifactsDir + "WorkingWithSdt.SdtColor.docx");
+            //ExEnd:SdtColor
         }
 
         [Test]
-        public void ClearContentsControl()
+        public void ClearSdt()
         {
-            //ExStart:ClearContentsControl
+            //ExStart:ClearSdt
+            //GistId:089defec1b191de967e6099effeabda7
             Document doc = new Document(MyDir + "Structured document tags.docx");
 
             StructuredDocumentTag sdt = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
             sdt.Clear();
 
-            doc.Save(ArtifactsDir + "WorkingWithSdt.ClearContentsControl.doc");
-            //ExEnd:ClearContentsControl
+            doc.Save(ArtifactsDir + "WorkingWithSdt.ClearSdt.doc");
+            //ExEnd:ClearSdt
         }
 
         [Test]
-        public void BindSdTtoCustomXmlPart()
+        public void BindSdtToCustomXmlPart()
         {
-            //ExStart:BindSDTtoCustomXmlPart
+            //ExStart:BindSdtToCustomXmlPart
+            //GistId:089defec1b191de967e6099effeabda7
             Document doc = new Document();
             CustomXmlPart xmlPart =
                 doc.CustomXmlParts.Add(Guid.NewGuid().ToString("B"), "<root><text>Hello, World!</text></root>");
@@ -158,28 +166,30 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             sdt.XmlMapping.SetMapping(xmlPart, "/root[1]/text[1]", "");
 
-            doc.Save(ArtifactsDir + "WorkingWithSdt.BindSDTtoCustomXmlPart.doc");
-            //ExEnd:BindSDTtoCustomXmlPart
+            doc.Save(ArtifactsDir + "WorkingWithSdt.BindSdtToCustomXmlPart.doc");
+            //ExEnd:BindSdtToCustomXmlPart
         }
 
         [Test]
-        public void SetContentControlStyle()
+        public void SdtStyle()
         {
-            //ExStart:SetContentControlStyle
+            //ExStart:SdtStyle
+            //GistId:089defec1b191de967e6099effeabda7
             Document doc = new Document(MyDir + "Structured document tags.docx");
 
             StructuredDocumentTag sdt = (StructuredDocumentTag) doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
             Style style = doc.Styles[StyleIdentifier.Quote];
             sdt.Style = style;
 
-            doc.Save(ArtifactsDir + "WorkingWithSdt.SetContentControlStyle.docx");
-            //ExEnd:SetContentControlStyle
+            doc.Save(ArtifactsDir + "WorkingWithSdt.SdtStyle.docx");
+            //ExEnd:SdtStyle
         }
 
         [Test]
-        public void CreatingTableRepeatingSectionMappedToCustomXmlPart()
+        public void RepeatingSectionMappedToCustomXmlPart()
         {
-            //ExStart:CreatingTableRepeatingSectionMappedToCustomXmlPart
+            //ExStart:RepeatingSectionMappedToCustomXmlPart
+            //GistId:089defec1b191de967e6099effeabda7
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -221,8 +231,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             authorSdt.XmlMapping.SetMapping(xmlPart, "/books[1]/book[1]/author[1]", "");
             row.AppendChild(authorSdt);
 
-            doc.Save(ArtifactsDir + "WorkingWithSdt.CreatingTableRepeatingSectionMappedToCustomXmlPart.docx");
-            //ExEnd:CreatingTableRepeatingSectionMappedToCustomXmlPart
+            doc.Save(ArtifactsDir + "WorkingWithSdt.RepeatingSectionMappedToCustomXmlPart.docx");
+            //ExEnd:RepeatingSectionMappedToCustomXmlPart
         }
 
         [Test]
@@ -239,9 +249,10 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         }
 
         [Test]
-        public void StructuredDocumentTagRangeStartXmlMapping()
+        public void SdtRangeStartXmlMapping()
         {
-            //ExStart:StructuredDocumentTagRangeStartXmlMapping
+            //ExStart:SdtRangeStartXmlMapping
+            //GistId:089defec1b191de967e6099effeabda7
             Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
 
             // Construct an XML part that contains data and add it to the document's CustomXmlPart collection.
@@ -258,8 +269,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             // This XPath will point to the contents second "<text>" element of the first "<root>" element of our CustomXmlPart.
             sdtRangeStart.XmlMapping.SetMapping(xmlPart, "/root[1]/text[2]", null);
 
-            doc.Save(ArtifactsDir + "WorkingWithSdt.StructuredDocumentTagRangeStartXmlMapping.docx");
-            //ExEnd:StructuredDocumentTagRangeStartXmlMapping
+            doc.Save(ArtifactsDir + "WorkingWithSdt.SdtRangeStartXmlMapping.docx");
+            //ExEnd:SdtRangeStartXmlMapping
         }
     }
 }
