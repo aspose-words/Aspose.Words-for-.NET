@@ -139,6 +139,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertTextInputFormField()
         {
             //ExStart:InsertTextInputFormField
+            //GistId:b09907fef4643433271e4e0e912921b0
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -152,6 +153,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertCheckBoxFormField()
         {
             //ExStart:InsertCheckBoxFormField
+            //GistId:b09907fef4643433271e4e0e912921b0
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -165,6 +167,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertComboBoxFormField()
         {
             //ExStart:InsertComboBoxFormField
+            //GistId:b09907fef4643433271e4e0e912921b0
             string[] items = { "One", "Two", "Three" };
 
             Document doc = new Document();
