@@ -12,6 +12,7 @@ namespace DocsExamples.Programming_with_Documents
         public void CreateVbaProject()
         {
             //ExStart:CreateVbaProject
+            //GistId:d9bac4ed890f81ea3de392ecfeedbc55
             Document doc = new Document();
 
             VbaProject project = new VbaProject();
@@ -35,6 +36,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ReadVbaMacros()
         {
             //ExStart:ReadVbaMacros
+            //GistId:d9bac4ed890f81ea3de392ecfeedbc55
             Document doc = new Document(MyDir + "VBA project.docm");
 
             if (doc.VbaProject != null)
@@ -51,6 +53,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ModifyVbaMacros()
         {
             //ExStart:ModifyVbaMacros
+            //GistId:d9bac4ed890f81ea3de392ecfeedbc55
             Document doc = new Document(MyDir + "VBA project.docm");
 
             VbaProject project = doc.VbaProject;
@@ -67,6 +70,7 @@ namespace DocsExamples.Programming_with_Documents
         public void CloneVbaProject()
         {
             //ExStart:CloneVbaProject
+            //GistId:d9bac4ed890f81ea3de392ecfeedbc55
             Document doc = new Document(MyDir + "VBA project.docm");
             Document destDoc = new Document { VbaProject = doc.VbaProject.Clone() };
 
@@ -78,6 +82,7 @@ namespace DocsExamples.Programming_with_Documents
         public void CloneVbaModule()
         {
             //ExStart:CloneVbaModule
+            //GistId:d9bac4ed890f81ea3de392ecfeedbc55
             Document doc = new Document(MyDir + "VBA project.docm");
             Document destDoc = new Document { VbaProject = new VbaProject() };
             
@@ -89,9 +94,10 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void RemoveBrokenRef()
+        public void RemoveVbaReferences()
         {
-            //ExStart:RemoveReferenceFromCollectionOfReferences
+            //ExStart:RemoveVbaReferences
+            //GistId:d9bac4ed890f81ea3de392ecfeedbc55
             Document doc = new Document(MyDir + "VBA project.docm");
 
             // Find and remove the reference with some LibId path.
@@ -106,10 +112,11 @@ namespace DocsExamples.Programming_with_Documents
                     references.RemoveAt(i);
             }
 
-            doc.Save(ArtifactsDir + "WorkingWithVba.RemoveBrokenRef.docm");
-            //ExEnd:RemoveReferenceFromCollectionOfReferences
+            doc.Save(ArtifactsDir + "WorkingWithVba.RemoveVbaReferences.docm");
+            //ExEnd:RemoveVbaReferences
         }
         //ExStart:GetLibIdAndReferencePath
+        //GistId:d9bac4ed890f81ea3de392ecfeedbc55
         /// <summary>
         /// Returns string representing LibId path of a specified reference. 
         /// </summary>
