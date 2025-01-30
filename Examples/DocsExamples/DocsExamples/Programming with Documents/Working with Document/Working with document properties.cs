@@ -142,6 +142,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void UseControlCharacters()
         {
             //ExStart:UseControlCharacters
+            //GistId:6269ddb6427f9ad20623d975774a615e
             const string text = "test\r";
             // Replace "\r" control character with "\r\n".
             string replace = text.Replace(ControlChar.Cr, ControlChar.CrLf);
