@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Text;
 using Aspose.Words;
 using Aspose.Words.Loading;
