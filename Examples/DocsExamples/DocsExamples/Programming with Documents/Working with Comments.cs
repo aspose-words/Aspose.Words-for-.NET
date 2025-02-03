@@ -150,7 +150,6 @@ namespace DocsExamples.Programming_with_Documents
         void RemoveComments(Document doc)
         {
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
-
             comments.Clear();
         }
         //ExEnd:RemoveComments

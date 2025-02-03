@@ -36,19 +36,13 @@ namespace DocsExamples.Programming_with_Documents
             TextBox textBox = shape.TextBox;
 
             if (textBox.Next != null && textBox.Previous == null)
-            {
                 Console.WriteLine("The head of the sequence");
-            }
 
             if (textBox.Next != null && textBox.Previous != null)
-            {
                 Console.WriteLine("The Middle of the sequence.");
-            }
 
             if (textBox.Next == null && textBox.Previous != null)
-            {
                 Console.WriteLine("The Tail of the sequence.");
-            }
             //ExEnd:CheckSequence
         }
 

@@ -599,9 +599,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            builder.Writeln("sad mad bad");
+            builder.Writeln("Hello _CustomerName_,");
 
-            doc.Range.Replace("sad", "bad", new FindReplaceOptions(FindReplaceDirection.Forward));
+            doc.Range.Replace("_CustomerName_", "James Bond", new FindReplaceOptions(FindReplaceDirection.Forward));
 
             doc.Save(ArtifactsDir + "FindAndReplace.ReplaceWithString.docx");
             //ExEnd:ReplaceWithString

@@ -21,13 +21,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
                 string name = entry.Key;
                 string value = entry.Value;
                 if (variables == "")
-                {
                     variables = "Name: " + name + "," + "Value: {1}" + value;
-                }
                 else
-                {
                     variables = variables + "Name: " + name + "," + "Value: {1}" + value;
-                }
             }
 
             Console.WriteLine("\nDocument have following variables " + variables);
@@ -113,9 +109,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             customProperty = customProperties["Bookmark"];
 
             bool isLinkedToContent = customProperty.IsLinkToContent;
-            
             string linkSource = customProperty.LinkSource;
-            
             string customPropertyValue = customProperty.Value.ToString();
             //ExEnd:ConfiguringLinkToContent
         }
