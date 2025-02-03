@@ -55,6 +55,7 @@ namespace DocsExamples.AI_powered_Features
         public void AiGrammar()
         {
             //ExStart:AiGrammar
+            //GistId:98a646d19cd7708ed0cd3d97b993a053
             Document doc = new Document(MyDir + "Big document.docx");
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
@@ -65,7 +66,7 @@ namespace DocsExamples.AI_powered_Features
             grammarOptions.ImproveStylistics = true;
 
             Document proofedDoc = model.CheckGrammar(doc, grammarOptions);
-            proofedDoc.Save("AI.AiGrammar.docx");
+            proofedDoc.Save(ArtifactsDir + "AI.AiGrammar.docx");
             //ExEnd:AiGrammar
         }
     }

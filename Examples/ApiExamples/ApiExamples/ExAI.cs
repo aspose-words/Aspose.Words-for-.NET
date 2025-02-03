@@ -92,7 +92,7 @@ namespace ApiExamples
             grammarOptions.ImproveStylistics = true;
 
             Document proofedDoc = model.CheckGrammar(doc, grammarOptions);
-            proofedDoc.Save("AI.AiGrammar.docx");
+            proofedDoc.Save(ArtifactsDir + "AI.AiGrammar.docx");
             //ExEnd:AiGrammar
         }
     }
