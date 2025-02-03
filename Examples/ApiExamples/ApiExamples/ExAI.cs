@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -55,7 +55,7 @@ namespace ApiExamples
             //ExEnd:AiSummarize
         }
 
-        [Test, Ignore("This test should be run manually to manage API requests amount")]
+        [Test, Explicit("This test should be run manually to manage API requests amount")]
         public void AiTranslate()
         {
             //ExStart:AiTranslate
@@ -74,7 +74,7 @@ namespace ApiExamples
             //ExEnd:AiTranslate
         }
 
-        [Test, Ignore("This test should be run manually to manage API requests amount")]
+        [Test, Explicit("This test should be run manually to manage API requests amount")]
         public void AiGrammar()
         {
             //ExStart:AiGrammar
