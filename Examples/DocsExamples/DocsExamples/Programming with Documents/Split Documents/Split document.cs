@@ -29,18 +29,20 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         public void BySectionsHtml()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
- 
+
             //ExStart:SplitDocumentBySectionsHtml
+            //GistId:6759a1a6b7f448798751d54922a8efcb
             HtmlSaveOptions options = new HtmlSaveOptions { DocumentSplitCriteria = DocumentSplitCriteria.SectionBreak };
             //ExEnd:SplitDocumentBySectionsHtml
-            
-            doc.Save(ArtifactsDir + "SplitDocument.BySectionsHtml.html", options);
+
+            doc.Save(ArtifactsDir + "SplitDocument.BySections.html", options);
         }
 
         [Test]
         public void BySections()
         {
             //ExStart:SplitDocumentBySections
+            //GistId:6759a1a6b7f448798751d54922a8efcb
             Document doc = new Document(MyDir + "Big document.docx");
 
             for (int i = 0; i < doc.Sections.Count; i++)
@@ -64,6 +66,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         public void PageByPage()
         {
             //ExStart:SplitDocumentPageByPage
+            //GistId:6759a1a6b7f448798751d54922a8efcb
             Document doc = new Document(MyDir + "Big document.docx");
 
             int pageCount = doc.PageCount;
@@ -80,6 +83,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         }
 
         //ExStart:MergeSplitDocuments
+        //GistId:6759a1a6b7f448798751d54922a8efcb
         private void MergeDocuments()
         {
             // Find documents using for merge.
@@ -114,6 +118,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
         public void ByPageRange()
         {
             //ExStart:SplitDocumentByPageRange
+            //GistId:6759a1a6b7f448798751d54922a8efcb
             Document doc = new Document(MyDir + "Big document.docx");
             
             // Get part of the document.

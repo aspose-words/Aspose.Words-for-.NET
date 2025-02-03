@@ -1,41 +1,21 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
-//
-// This file is part of Aspose.Words. The source code in this file
-// is only intended as a supplement to the documentation, and is provided
-// "as is", without warranty of any kind, either expressed or implied.
-//////////////////////////////////////////////////////////////////////////
-
-using NUnit.Framework;
+﻿using Aspose.Words.AI;
 using Aspose.Words;
+using NUnit.Framework;
 using System;
-using Aspose.Words.AI;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace ApiExamples
+namespace DocsExamples.AI_powered_Features
 {
-    [TestFixture]
-    public class ExAI : ApiExampleBase
+    public class Working_with_AI : DocsExamplesBase
     {
         [Test, Explicit("This test should be run manually to manage API requests amount")]
         public void AiSummarize()
         {
             //ExStart:AiSummarize
-            //GistId:366eb64fd56dec3c2eaa40410e594182
-            //ExFor:GoogleAiModel
-            //ExFor:OpenAiModel
-            //ExFor:OpenAiModel.WithOrganization(String)
-            //ExFor:OpenAiModel.WithProject(String)
-            //ExFor:IAiModelText
-            //ExFor:IAiModelText.Summarize(Document, SummarizeOptions)
-            //ExFor:IAiModelText.Summarize(Document[], SummarizeOptions)
-            //ExFor:SummarizeOptions
-            //ExFor:SummarizeOptions.#ctor
-            //ExFor:SummarizeOptions.SummaryLength
-            //ExFor:SummaryLength
-            //ExFor:AiModel
-            //ExFor:AiModel.Create(AiModelType)
-            //ExFor:AiModel.WithApiKey(String)
-            //ExFor:AiModelType
-            //ExSummary:Shows how to summarize text using OpenAI and Google models.
+            //GistId:1e379bedb2b759c1be24c64aad54d13d
             Document firstDoc = new Document(MyDir + "Big document.docx");
             Document secondDoc = new Document(MyDir + "Document.docx");
 
@@ -59,10 +39,7 @@ namespace ApiExamples
         public void AiTranslate()
         {
             //ExStart:AiTranslate
-            //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:IAiModelText.Translate(Document, AI.Language)
-            //ExFor:AI.Language
-            //ExSummary:Shows how to translate text using Google models.
+            //GistId:ea14b3e44c0233eecd663f783a21c4f6
             Document doc = new Document(MyDir + "Document.docx");
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
@@ -78,15 +55,12 @@ namespace ApiExamples
         public void AiGrammar()
         {
             //ExStart:AiGrammar
-            //GistId:f86d49dc0e6781b93e576539a01e6ca2
-            //ExFor:IAiModelText.CheckGrammar(Document, CheckGrammarOptions)
-            //ExFor:CheckGrammarOptions
-            //ExSummary:Shows how to check the grammar of a document.
+            //GistId:98a646d19cd7708ed0cd3d97b993a053
             Document doc = new Document(MyDir + "Big document.docx");
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use OpenAI generative language models.
-            IAiModelText model = (OpenAiModel)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
+            IAiModelText model = (IAiModelText)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
 
             CheckGrammarOptions grammarOptions = new CheckGrammarOptions();
             grammarOptions.ImproveStylistics = true;

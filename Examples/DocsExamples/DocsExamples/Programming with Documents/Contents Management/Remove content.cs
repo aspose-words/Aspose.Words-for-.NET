@@ -87,7 +87,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         }
 
         [Test]
-        //ExStart:RemoveTOCFromDocument
+        //ExStart:RemoveToc
+        //GistId:db118a3e1559b9c88355356df9d7ea10
         public void RemoveToc()
         {
             Document doc = new Document(MyDir + "Table of contents.docx");
@@ -146,6 +147,6 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
                 node.Remove();
             }
         }
-        //ExEnd:RemoveTOCFromDocument
+        //ExEnd:RemoveToc
     }
 }

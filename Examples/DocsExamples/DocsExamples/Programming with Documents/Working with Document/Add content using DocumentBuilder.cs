@@ -29,9 +29,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         }
 
         [Test]
-        public void DocumentBuilderInsertBookmark()
+        public void InsertBookmark()
         {
-            //ExStart:DocumentBuilderInsertBookmark
+            //ExStart:InsertBookmark
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -39,14 +39,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             builder.Writeln("This is just a fine bookmark.");
             builder.EndBookmark("FineBookmark");
 
-            doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.DocumentBuilderInsertBookmark.docx");
-            //ExEnd:DocumentBuilderInsertBookmark
+            doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.InsertBookmark.docx");
+            //ExEnd:InsertBookmark
         }
 
         [Test]
         public void BuildTable()
         {
-            //ExStart:BuildTable            
+            //ExStart:BuildTable
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -85,6 +85,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertHorizontalRule()
         {
             //ExStart:InsertHorizontalRule
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -99,6 +100,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void HorizontalRuleFormat()
         {
             //ExStart:HorizontalRuleFormat
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             DocumentBuilder builder = new DocumentBuilder();
 
             Shape shape = builder.InsertHorizontalRule();
@@ -137,6 +139,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertTextInputFormField()
         {
             //ExStart:InsertTextInputFormField
+            //GistId:b09907fef4643433271e4e0e912921b0
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -150,6 +153,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertCheckBoxFormField()
         {
             //ExStart:InsertCheckBoxFormField
+            //GistId:b09907fef4643433271e4e0e912921b0
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -163,6 +167,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertComboBoxFormField()
         {
             //ExStart:InsertComboBoxFormField
+            //GistId:b09907fef4643433271e4e0e912921b0
             string[] items = { "One", "Two", "Three" };
 
             Document doc = new Document();
@@ -195,6 +200,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertHyperlink()
         {
             //ExStart:InsertHyperlink
+            //GistId:0213851d47551e83af42233f4d075cf6
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -214,6 +220,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertTableOfContents()
         {
             //ExStart:InsertTableOfContents
+            //GistId:db118a3e1559b9c88355356df9d7ea10
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -252,6 +259,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             builder.Writeln("Heading 3.3");
 
             //ExStart:UpdateFields
+            //GistId:db118a3e1559b9c88355356df9d7ea10
             // The newly inserted table of contents will be initially empty.
             // It needs to be populated by updating the fields in the document.
             doc.UpdateFields();
@@ -265,6 +273,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertInlineImage()
         {
             //ExStart:InsertInlineImage
+            //GistId:6f849e51240635a6322ab0460938c922
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -278,6 +287,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertFloatingImage()
         {
             //ExStart:InsertFloatingImage
+            //GistId:6f849e51240635a6322ab0460938c922
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -298,6 +308,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void InsertParagraph()
         {
             //ExStart:InsertParagraph
+            //GistId:ecf2c438314e6c8318ca9833c7f62326
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -320,22 +331,24 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         }
 
         [Test]
-        public void InsertTCField()
+        public void InsertTcField()
         {
-            //ExStart:InsertTCField
+            //ExStart:InsertTcField
+            //GistId:db118a3e1559b9c88355356df9d7ea10
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertField("TC \"Entry Text\" \\f t");
 
-            doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.InsertTCField.docx");
-            //ExEnd:InsertTCField
+            doc.Save(ArtifactsDir + "AddContentUsingDocumentBuilder.InsertTcField.docx");
+            //ExEnd:InsertTcField
         }
 
         [Test]
-        public void InsertTCFieldsAtText()
+        public void InsertTcFieldsAtText()
         {
-            //ExStart:InsertTCFieldsAtText
+            //ExStart:InsertTcFieldsAtText
+            //GistId:db118a3e1559b9c88355356df9d7ea10
             Document doc = new Document();
 
             FindReplaceOptions options = new FindReplaceOptions();
@@ -343,7 +356,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             options.ReplacingCallback = new InsertTCFieldHandler("Chapter 1", "\\l 1");
 
             doc.Range.Replace(new Regex("The Beginning"), "", options);
-            //ExEnd:InsertTCFieldsAtText
+            //ExEnd:InsertTcFieldsAtText
         }
 
         //ExStart:InsertTCFieldHandler
@@ -396,7 +409,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void MoveToNode()
         {
             //ExStart:MoveToNode
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             //ExStart:MoveToBookmark
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -434,6 +449,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void MoveToDocumentStartEnd()
         {
             //ExStart:MoveToDocumentStartEnd
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -444,13 +460,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             // Move the cursor position to the end of your document.
             builder.MoveToDocumentEnd();
             Console.WriteLine("\nThis is the end of the document.");
-            //ExEnd:MoveToDocumentStartEnd            
+            //ExEnd:MoveToDocumentStartEnd
         }
 
         [Test]
         public void MoveToSection()
         {
             //ExStart:MoveToSection
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             Document doc = new Document();
             doc.AppendChild(new Section(doc));
 
@@ -474,13 +491,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Assert.AreEqual(2, paragraphs.IndexOf(builder.CurrentParagraph));
             builder.Writeln("This is a new third paragraph. ");
             Assert.AreEqual(3, paragraphs.IndexOf(builder.CurrentParagraph));
-            //ExEnd:MoveToSection               
+            //ExEnd:MoveToSection
         }
 
         [Test]
         public void MoveToHeadersFooters()
         {
             //ExStart:MoveToHeadersFooters
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -515,13 +533,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             builder.MoveToParagraph(2, 0);
             builder.Writeln("This is the 3rd paragraph.");
-            //ExEnd:MoveToParagraph               
+            //ExEnd:MoveToParagraph
         }
 
         [Test]
         public void MoveToTableCell()
         {
             //ExStart:MoveToTableCell
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             Document doc = new Document(MyDir + "Tables.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -532,25 +551,27 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             Assert.AreEqual(table.Rows[2].Cells[3], builder.CurrentNode.ParentNode.ParentNode);
             Assert.AreEqual("Cell contents added by DocumentBuilderCell 3 contents\a", table.Rows[2].Cells[3].GetText().Trim());
-            //ExEnd:MoveToTableCell               
+            //ExEnd:MoveToTableCell
         }
 
         [Test]
         public void MoveToBookmarkEnd()
         {
             //ExStart:MoveToBookmarkEnd
+            //GistId:ecf2c438314e6c8318ca9833c7f62326
             Document doc = new Document(MyDir + "Bookmarks.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.MoveToBookmark("MyBookmark1", false, true);
             builder.Writeln("This is a bookmark.");
-            //ExEnd:MoveToBookmarkEnd              
+            //ExEnd:MoveToBookmarkEnd
         }
 
         [Test]
         public void MoveToMergeField()
         {
             //ExStart:MoveToMergeField
+            //GistId:1a2c340d1a9dde6fe70c2733084d9aab
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -568,7 +589,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             // we will need to move it to a field's FieldStart or FieldSeparator node using the DocumentBuilder.MoveTo() method.
             Assert.AreEqual(field.End, builder.CurrentNode.PreviousSibling);
             builder.Write(" Text immediately after the field.");
-            //ExEnd:MoveToMergeField              
-        }        
+            //ExEnd:MoveToMergeField
+        }
     }
 }
