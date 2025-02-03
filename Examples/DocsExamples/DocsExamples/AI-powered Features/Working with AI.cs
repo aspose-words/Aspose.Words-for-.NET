@@ -39,6 +39,7 @@ namespace DocsExamples.AI_powered_Features
         public void AiTranslate()
         {
             //ExStart:AiTranslate
+            //GistId:ea14b3e44c0233eecd663f783a21c4f6
             Document doc = new Document(MyDir + "Document.docx");
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
