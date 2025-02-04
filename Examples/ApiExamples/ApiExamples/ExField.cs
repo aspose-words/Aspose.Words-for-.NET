@@ -4671,25 +4671,25 @@ namespace ApiExamples
 
             field = (FieldStyleRef)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\n", "b )", field);
+            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\n", "‎b )", field);
             Assert.AreEqual("Quote", field.StyleName);
             Assert.True(field.InsertParagraphNumber);
 
             field = (FieldStyleRef)doc.Range.Fields[3];
 
-            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\r", "b )", field);
+            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\r", "‎b )", field);
             Assert.AreEqual("Quote", field.StyleName);
             Assert.True(field.InsertParagraphNumberInRelativeContext);
 
             field = (FieldStyleRef)doc.Range.Fields[4];
 
-            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\w", "1.b )", field);
+            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\w", "‎1.b )", field);
             Assert.AreEqual("Quote", field.StyleName);
             Assert.True(field.InsertParagraphNumberInFullContext);
 
             field = (FieldStyleRef)doc.Range.Fields[5];
 
-            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\w \\t", "1.b)", field);
+            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\w \\t", "‎1.b)", field);
             Assert.AreEqual("Quote", field.StyleName);
             Assert.True(field.InsertParagraphNumberInFullContext);
             Assert.True(field.SuppressNonDelimiters);
@@ -6181,28 +6181,28 @@ namespace ApiExamples
 
             field = (FieldRef)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\n", ">>> i", field);
+            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\n", "‎>>> i", field);
             Assert.AreEqual("MyBookmark", field.BookmarkName);
             Assert.True(field.InsertParagraphNumber);
             Assert.AreEqual(" REF  MyBookmark \\n", field.GetFieldCode());
-            Assert.AreEqual(">>> i", field.Result);
+            Assert.AreEqual("‎>>> i", field.Result);
 
             field = (FieldRef)doc.Range.Fields[3];
 
-            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\n \\t", "i", field);
+            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\n \\t", "‎i", field);
             Assert.AreEqual("MyBookmark", field.BookmarkName);
             Assert.True(field.InsertParagraphNumber);
             Assert.True(field.SuppressNonDelimiters);
 
             field = (FieldRef)doc.Range.Fields[4];
 
-            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\w", "> 4>> c>>> i", field);
+            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\w", "‎> 4>> c>>> i", field);
             Assert.AreEqual("MyBookmark", field.BookmarkName);
             Assert.True(field.InsertParagraphNumberInFullContext);
 
             field = (FieldRef)doc.Range.Fields[5];
 
-            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\r", ">> c>>> i", field);
+            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\r", "‎>> c>>> i", field);
             Assert.AreEqual("MyBookmark", field.BookmarkName);
             Assert.True(field.InsertParagraphNumberInRelativeContext);
         }

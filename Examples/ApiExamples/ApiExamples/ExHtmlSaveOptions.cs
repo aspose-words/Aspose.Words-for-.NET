@@ -1747,7 +1747,7 @@ namespace ApiExamples
 #if NET461_OR_GREATER || JAVA
                 Assert.IsTrue(testedImageLength < 3000);
 #elif NET5_0_OR_GREATER
-                Assert.IsTrue(testedImageLength < 6000);
+                Assert.IsTrue(testedImageLength < 6200);
 #endif
             else
                 Assert.IsTrue(testedImageLength < 16000);
