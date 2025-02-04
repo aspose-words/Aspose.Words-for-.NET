@@ -1035,7 +1035,7 @@ namespace ApiExamples
         public void AddSingleLevelList()
         {
             //ExStart:AddSingleLevelList
-            //ReleaseVersion:25.2
+            //GistId:95fdae949cefbf2ce485acc95cccc495
             //ExFor:ListCollection.AddSingleLevelList(ListTemplate)
             //ExSummary:Shows how to create a new single level list based on the predefined template.
             Document doc = new Document();

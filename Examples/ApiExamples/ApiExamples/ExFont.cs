@@ -1706,7 +1706,7 @@ namespace ApiExamples
         public void NumberSpacing()
         {
             //ExStart:NumberSpacing
-            //ReleaseVersion:25.2
+            //GistId:95fdae949cefbf2ce485acc95cccc495
             //ExFor:Font.NumberSpacing
             //ExFor:NumSpacing
             //ExSummary:Shows how to set the spacing type of the numeral.
