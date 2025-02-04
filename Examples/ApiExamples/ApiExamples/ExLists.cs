@@ -1030,5 +1030,39 @@ namespace ApiExamples
             Assert.AreEqual("002.", paras[2].ListLabel.LabelString);
             //ExEnd:SetCustomNumberStyleFormat
         }
+
+        [Test]
+        public void AddSingleLevelList()
+        {
+            //ExStart:AddSingleLevelList
+            //ReleaseVersion:25.2
+            //ExFor:ListCollection.AddSingleLevelList(ListTemplate)
+            //ExSummary:Shows how to create a new single level list based on the predefined template.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            ListCollection listCollection = doc.Lists;
+
+            // Creates the bulleted list from BulletCircle template.
+            List bulletedList = listCollection.AddSingleLevelList(ListTemplate.BulletCircle);
+
+            // Writes the bulleted list to the resulting document.
+            builder.Writeln("Bulleted list starts below:");
+            builder.ListFormat.List = bulletedList;
+            builder.Writeln("Item 1");
+            builder.Writeln("Item 2");
+            builder.ListFormat.RemoveNumbers();
+
+            // Creates the numbered list from NumberUppercaseLetterDot template.
+            List numberedList = listCollection.AddSingleLevelList(ListTemplate.NumberUppercaseLetterDot);
+
+            // Writes the numbered list to the resulting document.
+            builder.Writeln("Numbered list starts below:");
+            builder.ListFormat.List = numberedList;
+            builder.Writeln("Item 1");
+            builder.Writeln("Item 2");
+
+            doc.Save(ArtifactsDir + "Lists.AddSingleLevelList.docx");
+            //ExEnd:AddSingleLevelList
+        }
     }
 }
