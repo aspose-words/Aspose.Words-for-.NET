@@ -197,9 +197,8 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document(MyDir + "Comments.docx");
 
             CommentRangeStart commentStart = (CommentRangeStart)doc.GetChild(NodeType.CommentRangeStart, 0, true);
-            CommentRangeEnd commentEnd = (CommentRangeEnd)doc.GetChild(NodeType.CommentRangeEnd, 0, true);
-
             Node currentNode = commentStart;
+
             bool isRemoving = true;
             while (currentNode != null && isRemoving)
             {
