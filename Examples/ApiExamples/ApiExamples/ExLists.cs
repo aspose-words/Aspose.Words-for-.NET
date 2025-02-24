@@ -573,11 +573,11 @@ namespace ApiExamples
             Assert.AreEqual(0, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
 
             doc.Lists.Add(ListTemplate.NumberDefault);
-            List list = doc.Lists[0];
+            List docList = doc.Lists[0];
 
             foreach (Paragraph paragraph in paras.OfType<Paragraph>())
             {
-                paragraph.ListFormat.List = list;
+                paragraph.ListFormat.List = docList;
                 paragraph.ListFormat.ListLevelNumber = 2;
             }
 
@@ -608,11 +608,11 @@ namespace ApiExamples
 
             Assert.AreEqual(0, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
 
-            List list = doc.Lists.Add(ListTemplate.NumberUppercaseLetterDot);
+            List docList = doc.Lists.Add(ListTemplate.NumberUppercaseLetterDot);
 
             foreach (Paragraph paragraph in paras.OfType<Paragraph>())
             {
-                paragraph.ListFormat.List = list;
+                paragraph.ListFormat.List = docList;
                 paragraph.ListFormat.ListLevelNumber = 1;
             }
 
