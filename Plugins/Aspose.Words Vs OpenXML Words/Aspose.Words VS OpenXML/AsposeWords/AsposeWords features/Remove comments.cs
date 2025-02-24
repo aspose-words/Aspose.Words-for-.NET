@@ -1,4 +1,9 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using Aspose.Words;
 using NUnit.Framework;
@@ -9,31 +14,23 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features
     public class DeleteCommentsByAllOrASpecificAuthor : TestUtil
     {
         [Test]
-        public void DeleteCommentsByAllOrASpecificAuthorFeature()
-        {
-            RemoveComments("");
-        }
-
-        private void RemoveComments(string authorName)
+        private void RemoveComments()
         {
             Document doc = new Document(MyDir + "Comments.docx");
 
             // Collect all comments in the document.
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
-            if (authorName == "")
-            {
+
+            string authorName = string.Empty;
+            if (authorName.Equals(string.Empty))
                 // Remove all comments.
                 comments.Clear();
-            }
             else
             {
-                // Look through all comments and remove those written by the authorName author.
-                for (int i = comments.Count - 1; i >= 0; i--)
-                {
-                    Comment comment = (Comment)comments[i];
-                    if (comment.Author == authorName)
+                // Remove comments by author name.
+                foreach (Comment comment in comments)
+                    if (comment.Author.Equals(authorName))
                         comment.Remove();
-                }
             }
 
             doc.Save(ArtifactsDir + "Remove comments - Aspose.Words.docx");

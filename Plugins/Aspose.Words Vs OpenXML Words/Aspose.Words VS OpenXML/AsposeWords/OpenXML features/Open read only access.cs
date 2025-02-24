@@ -11,7 +11,7 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
     public class OpenReadOnlyAccess : TestUtil
     {
         [Test]
-        public void OpenReadOnlyAccessFeature()
+        public void OpenReadOnly()
         {
             // Open a WordprocessingDocument based on a filepath.
             using (WordprocessingDocument wordDocument =
@@ -23,7 +23,7 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
                 // Attempt to add some text.
                 Paragraph para = body.AppendChild(new Paragraph());
                 Run run = para.AppendChild(new Run());
-                run.AppendChild(new Text("Append text in body, but text is not saved - Open wordprocessing document readonly"));
+                run.AppendChild(new Text("This is the text added to the end of the document."));
 
                 // Call the "Save" method to generate an exception and show that access is read-only.
                 using (Stream stream = File.Create(ArtifactsDir + "Open readonly access - OpenXML.docx"))

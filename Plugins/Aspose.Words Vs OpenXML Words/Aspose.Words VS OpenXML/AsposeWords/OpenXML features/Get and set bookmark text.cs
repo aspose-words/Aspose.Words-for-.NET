@@ -1,6 +1,13 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
-using System.Collections.Generic;
+using System;
+using System.Linq;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using NUnit.Framework;
@@ -11,23 +18,38 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
     public class GetAndSetBookmarkText : TestUtil
     {
         [Test]
-        public void GetAndSetBookmarkTextFeature()
+        public void BookmarkText()
         {
-            IDictionary<string, BookmarkStart> bookmarkMap = new Dictionary<string, BookmarkStart>();
-
-            using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(MyDir + "Get and set bookmark text.docx", true))
+            // Open the original Wordprocessing document.
+            using (WordprocessingDocument originalDocument = WordprocessingDocument.Open(MyDir + "Bookmark.docx", false))
             {
-                foreach (BookmarkStart bookmarkStart in wordDocument.MainDocumentPart.Document.Body.Descendants<BookmarkStart>())
+                // Create a new Wordprocessing document.
+                using (WordprocessingDocument newDocument = WordprocessingDocument.Create(ArtifactsDir + "Bookmark text - OpenXML.docx", WordprocessingDocumentType.Document))
                 {
-                    bookmarkMap[bookmarkStart.Name] = bookmarkStart;
+                    // Add a main document part to the new document.
+                    MainDocumentPart newMainPart = newDocument.AddMainDocumentPart();
+                    newMainPart.Document = new Document(new Body());
 
-                    foreach (BookmarkStart bookmark in bookmarkMap.Values)
-                    {
-                        Run bookmarkText = bookmark.NextSibling<Run>();
+                    // Copy content from the original document to the new document.
+                    MainDocumentPart originalMainPart = originalDocument.MainDocumentPart;
+                    newMainPart.Document.Body = (Body)originalMainPart.Document.Body.Clone();
 
-                        if (bookmarkText != null)
-                            bookmarkText.GetFirstChild<Text>().Text = "Test";
-                    }
+                    // Find the bookmark in the new document
+                    var bookmark = newMainPart.Document.Descendants<BookmarkStart>()
+                        .FirstOrDefault(b => b.Name == "MyBookmark");
+
+                    // Get the parent element of the bookmark
+                    var parentElement = bookmark.Parent;
+
+                    // Create a new run with the new text
+                    Run newRun = new Run(new Text("This is a new bookmarked text."));
+
+                    // Replace the bookmark with the new text
+                    parentElement.RemoveAllChildren(); // Remove existing content
+                    parentElement.Append(newRun); // Add new text
+
+                    // Save changes to the new document
+                    newMainPart.Document.Save();
                 }
             }
         }

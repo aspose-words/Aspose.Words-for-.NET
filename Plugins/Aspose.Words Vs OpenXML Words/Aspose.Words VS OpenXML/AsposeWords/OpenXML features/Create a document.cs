@@ -1,4 +1,9 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
@@ -11,21 +16,26 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
     public class CreateADocument : TestUtil
     {
         [Test]
-        public void CreateADocumentFeature()
+        public void CreateNewDocument()
         {
-            using (WordprocessingDocument wordDocument =
-                WordprocessingDocument.Create(ArtifactsDir + "Create a document - OpenXML.docx",
-                    WordprocessingDocumentType.Document))
+            // Create a Wordprocessing document.
+            using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(
+                ArtifactsDir + "Create new document - OpenXML.docx", 
+                WordprocessingDocumentType.Document))
             {
+                // Add a main document part.
                 MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
+
                 // Create the document structure and add some text.
                 mainPart.Document = new Document();
-                
-                Body body = mainPart.Document.AppendChild(new Body());
-                Paragraph para = body.AppendChild(new Paragraph());
-                
-                Run run = para.AppendChild(new Run());
-                run.AppendChild(new Text("Create text in body - Create wordprocessing document"));
+                Body body = new Body();
+                Paragraph paragraph = new Paragraph();
+                Run run = new Run();
+                run.Append(new Text("Hello, Open XML!"));
+                paragraph.Append(run);
+                body.Append(paragraph);
+                mainPart.Document.Append(body);
+                mainPart.Document.Save();
             }
         }
     }

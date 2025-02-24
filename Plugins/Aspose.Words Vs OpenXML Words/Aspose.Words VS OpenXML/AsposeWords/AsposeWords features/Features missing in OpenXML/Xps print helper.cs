@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using Aspose.Words;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -32,17 +33,20 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
         /// <param name="jobName">Job name. Can be null.</param>
         /// <param name="isWait">True to wait for the job to complete. False to return immediately after submitting the job.</param>
         /// <exception cref="Exception">Thrown if any error occurs.</exception>
-        public static void Print(Aspose.Words.Document document, string printerName, string jobName, bool isWait)
+        public static void Print(Document document, string printerName, string jobName, bool isWait)
         {
+            Console.WriteLine("Print");
             if (document == null)
-                throw new ArgumentNullException("document");
+                throw new ArgumentNullException(nameof(document));
 
-            // Use Aspose.Words to convert the document to XPS and store in a memory stream.
+            // Use Aspose.Words to convert the document to XPS and store it in a memory stream.
             MemoryStream stream = new MemoryStream();
-            document.Save(stream, Aspose.Words.SaveFormat.Xps);
-            stream.Position = 0;
+            document.Save(stream, SaveFormat.Xps);
 
+            stream.Position = 0;
+            Console.WriteLine("Saved as Xps");
             Print(stream, printerName, jobName, isWait);
+            Console.WriteLine("After Print");
         }
 
         /// <summary>
@@ -57,37 +61,38 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
         public static void Print(Stream stream, string printerName, string jobName, bool isWait)
         {
             if (stream == null)
-                throw new ArgumentNullException("stream");
+                throw new ArgumentNullException(nameof(stream));
             if (printerName == null)
-                throw new ArgumentNullException("printerName");
+                throw new ArgumentNullException(nameof(printerName));
 
             // Create an event that we will wait on until the job is complete.
             IntPtr completionEvent = CreateEvent(IntPtr.Zero, true, false, null);
             if (completionEvent == IntPtr.Zero)
                 throw new Win32Exception();
 
-            try
-            {
-                IXpsPrintJob job;
-                IXpsPrintJobStream jobStream;
-                StartJob(printerName, jobName, completionEvent, out job, out jobStream);
+            Console.WriteLine("StartJob");
+            StartJob(printerName, jobName, completionEvent, out IXpsPrintJob job, out IXpsPrintJobStream jobStream);
+            Console.WriteLine("Done StartJob");
 
-                CopyJob(stream, job, jobStream);
+            Console.WriteLine("Start CopyJob");
+            CopyJob(stream, jobStream);
+            Console.WriteLine("End CopyJob");
 
-                if (isWait)
-                {
-                    WaitForJob(completionEvent);
-                    CheckJobStatus(job);
-                }
-            }
-            finally
+            Console.WriteLine("Start Wait");
+            if (isWait)
             {
-                if (completionEvent != IntPtr.Zero)
-                    CloseHandle(completionEvent);
+                WaitForJob(completionEvent);
+                CheckJobStatus(job);
             }
+            Console.WriteLine("End Wait");
+
+            if (completionEvent != IntPtr.Zero)
+                CloseHandle(completionEvent);
+            Console.WriteLine("Close Handle");
         }
 
-        private static void StartJob(string printerName, string jobName, IntPtr completionEvent, out IXpsPrintJob job, out IXpsPrintJobStream jobStream)
+        private static void StartJob(string printerName, string jobName, IntPtr completionEvent, out IXpsPrintJob job,
+            out IXpsPrintJobStream jobStream)
         {
             int result = StartXpsPrintJob(printerName, jobName, null, IntPtr.Zero, completionEvent,
                 null, 0, out job, out jobStream, IntPtr.Zero);
@@ -95,39 +100,29 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
                 throw new Win32Exception(result);
         }
 
-        private static void CopyJob(Stream stream, IXpsPrintJob job, IXpsPrintJobStream jobStream)
+        private static void CopyJob(Stream stream, IXpsPrintJobStream jobStream)
         {
-            try
+            byte[] buff = new byte[4096];
+            while (true)
             {
-                byte[] buff = new byte[4096];
-                while (true)
-                {
-                    uint read = (uint)stream.Read(buff, 0, buff.Length);
-                    if (read == 0)
-                        break;
+                uint read = (uint)stream.Read(buff, 0, buff.Length);
+                if (read == 0)
+                    break;
 
-                    uint written;
-                    jobStream.Write(buff, read, out written);
+                jobStream.Write(buff, read, out uint written);
 
-                    if (read != written)
-                        throw new Exception("Failed to copy data to the print job stream.");
-                }
-
-                // Indicate that the entire document has been copied.
-                jobStream.Close();
+                if (read != written)
+                    throw new Exception("Failed to copy data to the print job stream.");
             }
-            catch (Exception)
-            {
-                // Cancel the job if we had any trouble submitting it.
-                job.Cancel();
-                throw;
-            }
+
+            // Indicate that the entire document has been copied.
+            jobStream.Close();
         }
 
         private static void WaitForJob(IntPtr completionEvent)
         {
-            const int INFINITE = -1;
-            switch (WaitForSingleObject(completionEvent, INFINITE))
+            const int infinite = -1;
+            switch (WaitForSingleObject(completionEvent, infinite))
             {
                 case WAIT_RESULT.WAIT_OBJECT_0:
                     // Expected result, do nothing.
@@ -141,8 +136,7 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
 
         private static void CheckJobStatus(IXpsPrintJob job)
         {
-            XPS_JOB_STATUS jobStatus;
-            job.GetJobStatus(out jobStatus);
+            job.GetJobStatus(out XPS_JOB_STATUS jobStatus);
             switch (jobStatus.completion)
             {
                 case XPS_JOB_COMPLETION.XPS_JOB_COMPLETED:
@@ -157,22 +151,23 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
 
         [DllImport("XpsPrint.dll", EntryPoint = "StartXpsPrintJob")]
         private static extern int StartXpsPrintJob(
-            [MarshalAs(UnmanagedType.LPWStr)] String printerName,
-            [MarshalAs(UnmanagedType.LPWStr)] String jobName,
-            [MarshalAs(UnmanagedType.LPWStr)] String outputFileName,
-            IntPtr progressEvent,   // HANDLE
-            IntPtr completionEvent, // HANDLE
+            [MarshalAs(UnmanagedType.LPWStr)] string printerName,
+            [MarshalAs(UnmanagedType.LPWStr)] string jobName,
+            [MarshalAs(UnmanagedType.LPWStr)] string outputFileName,
+            IntPtr progressEvent,
+            IntPtr completionEvent,
             [MarshalAs(UnmanagedType.LPArray)] byte[] printablePagesOn,
-            UInt32 printablePagesOnCount,
+            uint printablePagesOnCount,
             out IXpsPrintJob xpsPrintJob,
             out IXpsPrintJobStream documentStream,
-            IntPtr printTicketStream);  // This is actually "out IXpsPrintJobStream", but we don't use it and just want to pass null, hence IntPtr.
+            IntPtr printTicketStream); // "out IXpsPrintJobStream", we don't use it and just want to pass null, hence IntPtr.
 
         [DllImport("Kernel32.dll", SetLastError = true)]
-        private static extern IntPtr CreateEvent(IntPtr lpEventAttributes, bool bManualReset, bool bInitialState, string lpName);
+        private static extern IntPtr CreateEvent(IntPtr lpEventAttributes, bool bManualReset, bool bInitialState,
+            string lpName);
 
         [DllImport("Kernel32.dll", SetLastError = true, ExactSpelling = true)]
-        private static extern WAIT_RESULT WaitForSingleObject(IntPtr handle, Int32 milliseconds);
+        private static extern WAIT_RESULT WaitForSingleObject(IntPtr handle, int milliseconds);
 
         [DllImport("Kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -189,20 +184,22 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
     /// So the hack is that we obtain the ISequentialStream interface but work with it as 
     /// with the IXpsPrintJobStream interface. 
     /// </summary>
-    [Guid("0C733A30-2A1C-11CE-ADE5-00AA0044773D")]  // This is IID of ISequenatialSteam.
+    [Guid("0C733A30-2A1C-11CE-ADE5-00AA0044773D")] // This is IID of ISequenatialSteam.
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    interface IXpsPrintJobStream
+    internal interface IXpsPrintJobStream
     {
         // ISequentualStream methods.
         void Read([MarshalAs(UnmanagedType.LPArray)] byte[] pv, uint cb, out uint pcbRead);
+
         void Write([MarshalAs(UnmanagedType.LPArray)] byte[] pv, uint cb, out uint pcbWritten);
+
         // IXpsPrintJobStream methods.
         void Close();
     }
 
     [Guid("5ab89b06-8194-425f-ab3b-d7a96e350161")]
     [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    interface IXpsPrintJob
+    internal interface IXpsPrintJob
     {
         void Cancel();
         void GetJobStatus(out XPS_JOB_STATUS jobStatus);
@@ -211,12 +208,12 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
     [StructLayout(LayoutKind.Sequential)]
     struct XPS_JOB_STATUS
     {
-        public UInt32 jobId;
-        public Int32 currentDocument;
-        public Int32 currentPage;
-        public Int32 currentPageTotal;
+        public uint jobId;
+        public int currentDocument;
+        public int currentPage;
+        public int currentPageTotal;
         public XPS_JOB_COMPLETION completion;
-        public Int32 jobStatus; // UInt32
+        public int jobStatus;
     };
 
     enum XPS_JOB_COMPLETION
@@ -232,6 +229,6 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
         WAIT_OBJECT_0 = 0,
         WAIT_ABANDONED = 0x80,
         WAIT_TIMEOUT = 0x102,
-        WAIT_FAILED = -1 // 0xFFFFFFFF
+        WAIT_FAILED = -1
     }
 }

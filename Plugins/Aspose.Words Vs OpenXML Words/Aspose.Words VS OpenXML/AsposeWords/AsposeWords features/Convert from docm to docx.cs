@@ -1,4 +1,9 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using Aspose.Words;
 using NUnit.Framework;
@@ -9,10 +14,10 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features
     public class ConvertFromDocmToDocx : TestUtil
     {
         [Test]
-        public void ConvertFromDocmToDocxFeature()
+        public void DocmToDocxConversion()
         {
-            Document doc = new Document(MyDir + "Convert from docm to docx.docm");
-            doc.Save(ArtifactsDir + "Convert from docm to docx - Aspose.Words.docx", SaveFormat.Docx);
+            Document doc = new Document(MyDir + "Docm to Docx conversion.docm");
+            doc.Save(ArtifactsDir + "Docm to Docx conversion - Aspose.Words.docx");
         }
     }
 }

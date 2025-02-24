@@ -1,6 +1,12 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using System.IO;
+using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using NUnit.Framework;
@@ -11,17 +17,41 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
     public class OpenDocumentFromStream : TestUtil
     {
         [Test]
-        public void OpenDocumentFromStreamFeature()
+        public void AddTextStream()
         {
-            using (Stream stream = File.Open(MyDir + "Document.docx", FileMode.Open))
+            using (Stream inStream = File.Open(MyDir + "Document.docx", FileMode.Open))
             {
-                using (WordprocessingDocument wordprocessingDocument = WordprocessingDocument.Open(stream, true))
+                using (WordprocessingDocument originalDocument = WordprocessingDocument.Open(inStream, false))
                 {
-                    Body body = wordprocessingDocument.MainDocumentPart.Document.Body;
-                    Paragraph para = body.AppendChild(new Paragraph());
+                    using (Stream outStream = File.Create(ArtifactsDir + "Add text stream - OpenXML.docx"))
+                    {
+                        // Create a new Wordprocessing document.
+                        using (WordprocessingDocument newDocument = WordprocessingDocument.Create(outStream, WordprocessingDocumentType.Document))
+                        {
+                            // Add a main document part to the new document.
+                            MainDocumentPart newMainPart = newDocument.AddMainDocumentPart();
+                            newMainPart.Document = new Document(new Body());
 
-                    Run run = para.AppendChild(new Run());
-                    run.AppendChild(new Text("Append text in body - Open and add to wordprocessing stream"));
+                            // Copy content from the original document to the new document.
+                            MainDocumentPart originalMainPart = originalDocument.MainDocumentPart;
+                            newMainPart.Document.Body = (Body)originalMainPart.Document.Body.Clone();
+
+                            Body body = newMainPart.Document.Body;
+
+                            // Create a new paragraph with the text you want to add
+                            Paragraph newParagraph = new Paragraph();
+                            Run newRun = new Run();
+                            Text newText = new Text("This is the text added to the end of the document.");
+                            newRun.Append(newText);
+                            newParagraph.Append(newRun);
+
+                            // Append the new paragraph to the body
+                            body.Append(newParagraph);
+
+                            // Save the changes
+                            newMainPart.Document.Save();
+                        }
+                    }
                 }
             }
         }

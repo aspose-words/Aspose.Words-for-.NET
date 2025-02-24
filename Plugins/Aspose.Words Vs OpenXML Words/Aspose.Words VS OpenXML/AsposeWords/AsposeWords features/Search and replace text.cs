@@ -1,6 +1,10 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
-using System.Text.RegularExpressions;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -14,8 +18,7 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features
         {
             Document doc = new Document(MyDir + "Search and replace text.docx");
 
-            Regex regex = new Regex("Hello World!", RegexOptions.IgnoreCase);
-            doc.Range.Replace(regex, "Hi Everyone!");
+            doc.Range.Replace("Hello World!", "Hi Everyone!");
 
             doc.Save(ArtifactsDir + "Search and replace text - Aspose.Words.docx");
         }

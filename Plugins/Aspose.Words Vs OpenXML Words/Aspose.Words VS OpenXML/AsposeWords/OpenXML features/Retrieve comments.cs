@@ -1,4 +1,9 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using System;
 using DocumentFormat.OpenXml.Packaging;
@@ -13,9 +18,9 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
         [Test]
         public static void RetrieveCommentsFeature()
         {
-            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(MyDir + "Comments.docx", false))
+            using (WordprocessingDocument doc = WordprocessingDocument.Open(MyDir + "Comments.docx", false))
             {
-                WordprocessingCommentsPart commentsPart = wordDoc.MainDocumentPart.WordprocessingCommentsPart;
+                WordprocessingCommentsPart commentsPart = doc.MainDocumentPart.WordprocessingCommentsPart;
 
                 if (commentsPart?.Comments != null)
                     foreach (Comment comment in commentsPart.Comments.Elements<Comment>())

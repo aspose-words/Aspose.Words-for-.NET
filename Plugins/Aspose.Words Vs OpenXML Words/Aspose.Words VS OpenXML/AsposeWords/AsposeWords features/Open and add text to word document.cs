@@ -1,6 +1,10 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
-using System.Drawing;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -10,21 +14,16 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features
     public class OpenAndAddTextToWordDocument : TestUtil
     {
         [Test]
-        public void OpenAndAddTextToWordDocumentFeature()
+        public void AddText()
         {
             Document doc = new Document(MyDir + "Document.docx");
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            global::Aspose.Words.Font font = builder.Font;
-            font.Size = 16;
-            font.Bold = true;
-            font.Color = Color.Blue;
-            font.Name = "Arial";
-            font.Underline = Underline.Dash;
+            builder.MoveToDocumentEnd();
+            builder.Writeln();
+            builder.Write("This is the text added to the end of the document.");
 
-            builder.Write("Formatted text.");
-
-            doc.Save(ArtifactsDir + "Open and add text - Aspose.Words.docx");
+            doc.Save(ArtifactsDir + "Add text - Aspose.Words.docx");
         }
     }
 }

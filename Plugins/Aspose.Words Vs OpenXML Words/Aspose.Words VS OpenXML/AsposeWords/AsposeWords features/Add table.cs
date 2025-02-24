@@ -1,4 +1,9 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using Aspose.Words;
 using NUnit.Framework;
@@ -9,12 +14,11 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features
     public class AddTable : TestUtil
     {
         [Test]
-        public void AddTableFeature()
+        public void CreateTable()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            // Build a 2x2 table.
             builder.StartTable();
             builder.InsertCell();
             builder.Write("Row 1, Cell 1 Content.");
@@ -29,7 +33,7 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features
             builder.EndRow();
             builder.EndTable();
 
-            doc.Save(ArtifactsDir + "Add table - Aspose.Words.docx");
+            doc.Save(ArtifactsDir + "CreateTable - Aspose.Words.docx");
         }
     }
 }

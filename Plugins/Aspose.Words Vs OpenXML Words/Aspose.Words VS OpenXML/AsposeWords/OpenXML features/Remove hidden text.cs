@@ -1,8 +1,14 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using System.IO;
-using System.Xml;
+using System.Linq;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using NUnit.Framework;
 
 namespace AsposeWordsVSOpenXML.OpenXML_features
@@ -13,35 +19,24 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
         [Test]
         public void RemoveHiddenTextFeature()
         {
-            const string wordmlNamespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
+            File.Copy(MyDir + "Remove hidden text.docx", ArtifactsDir + "Remove hidden text - OpenXML.docx", true);
 
-            using (WordprocessingDocument wdDoc = WordprocessingDocument.Open(MyDir + "Remove hidden text.docx", true))
+            using WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Remove hidden text - OpenXML.docx", true);
+            foreach (var paragraph in doc.MainDocumentPart.Document.Body.Elements<Paragraph>())
             {
-                // Manage namespaces to perform XPath queries.
-                NameTable nt = new NameTable();
-                XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
-                nsManager.AddNamespace("w", wordmlNamespace);
-
-                // Get the document part from the package.
-                // Load the XML in the document part into an XmlDocument instance.
-                XmlDocument xdoc = new XmlDocument(nt);
-                xdoc.Load(wdDoc.MainDocumentPart.GetStream());
-
-                XmlNodeList hiddenNodes = xdoc.SelectNodes("//w:vanish", nsManager);
-
-                foreach (XmlNode hiddenNode in hiddenNodes)
+                // Iterate through all runs in the paragraph.
+                foreach (var run in paragraph.Elements<Run>())
                 {
-                    XmlNode topNode = hiddenNode.ParentNode.ParentNode;
-                    XmlNode topParentNode = topNode.ParentNode;
-
-                    topParentNode.RemoveChild(topNode);
-                    if (!(topParentNode.HasChildNodes))
-                        topParentNode.ParentNode.RemoveChild(topParentNode);
-                }
-
-                using (Stream stream = File.Create(ArtifactsDir + "Remove hidden text - OpenXML.docx"))
-                {
-                    xdoc.Save(stream);
+                    // Check if the run has properties
+                    var runProperties = run.RunProperties;
+                    if (runProperties != null)
+                    {
+                        // Check if the text is hidden.
+                        var hidden = runProperties.Elements<Vanish>().FirstOrDefault();
+                        if (hidden != null)
+                            // Remove the hidden property to unhide the text.
+                            hidden.Remove();
+                    }
                 }
             }
         }

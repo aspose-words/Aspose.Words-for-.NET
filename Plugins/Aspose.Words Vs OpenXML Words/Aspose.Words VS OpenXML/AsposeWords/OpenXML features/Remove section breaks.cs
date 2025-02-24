@@ -1,6 +1,10 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DocumentFormat.OpenXml.Packaging;
@@ -15,30 +19,19 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
         [Test]
         public void RemoveSectionBreaksFeature()
         {
-            using (WordprocessingDocument myDoc = WordprocessingDocument.Open(MyDir + "Remove section breaks.docx", true))
+            File.Copy(MyDir + "Remove section breaks.docx", ArtifactsDir + "Remove section breaks - OpenXML.docx", true);
+
+            using (WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Remove section breaks - OpenXML.docx", true))
             {
-                MainDocumentPart mainPart = myDoc.MainDocumentPart;
-                List<ParagraphProperties> paraProps = mainPart.Document.Descendants<ParagraphProperties>()
-                    .Where(IsSectionProps).ToList();
+                // Get the main document part.
+                var body = doc.MainDocumentPart.Document.Body;
 
-                foreach (ParagraphProperties pPr in paraProps)
-                    pPr.RemoveChild(pPr.GetFirstChild<SectionProperties>());
-
-                using (Stream stream = File.Create(ArtifactsDir + "Remove section breaks - OpenXML.docx"))
-                {
-                    mainPart.Document.Save(stream);
-                }
+                // Find all section breaks in the document.
+                var sectionProperties = body.Descendants<SectionProperties>().ToList();
+                // Remove each section properties element.
+                foreach (var section in sectionProperties)
+                    section.Remove();
             }
-        }
-
-        private static bool IsSectionProps(ParagraphProperties pPr)
-        {
-            SectionProperties sectPr = pPr.GetFirstChild<SectionProperties>();
-
-            if (sectPr == null)
-                return false;
-
-            return true;
         }
     }
 }

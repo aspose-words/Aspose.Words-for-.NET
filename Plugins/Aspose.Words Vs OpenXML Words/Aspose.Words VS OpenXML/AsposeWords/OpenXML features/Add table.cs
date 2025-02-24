@@ -1,4 +1,9 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
@@ -11,81 +16,80 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
     public class AddTable : TestUtil
     {
         [Test]
-        public void AddTableFeature()
+        public void CreateTable()
         {
-            string[,] data = {{"Mike", "Amy"}, {"Mary", "Albert"}};
+            string[,] data = { { "Mike", "Amy" }, { "Mary", "Albert" } };
 
-            using (WordprocessingDocument wordDocument =
-                WordprocessingDocument.Create(ArtifactsDir + "Add Table - OpenXML.docx",
-                    WordprocessingDocumentType.Document))
-            {
-                MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
-                mainPart.Document = new Document();
+            using WordprocessingDocument wordDocument = WordprocessingDocument.Create(
+                ArtifactsDir + "CreateTable - OpenXML.docx",
+                WordprocessingDocumentType.Document);
 
-                Body body = mainPart.Document.AppendChild(new Body());
-                Paragraph para = body.AppendChild(new Paragraph());
+            MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
+            mainPart.Document = new Document();
 
-                Run run = para.AppendChild(new Run());
-                run.AppendChild(new Text("Create text in body - Create wordprocessing document"));
+            Body body = mainPart.Document.AppendChild(new Body());
+            Paragraph para = body.AppendChild(new Paragraph());
 
-                Table table = new Table();
+            Run run = para.AppendChild(new Run());
+            run.AppendChild(new Text("Create text in body - Create wordprocessing document"));
 
-                TableProperties props = new TableProperties(
-                    new TableBorders(
-                        new TopBorder
-                        {
-                            Val = new EnumValue<BorderValues>(BorderValues.Single),
-                            Size = 12
-                        },
-                        new BottomBorder
-                        {
-                            Val = new EnumValue<BorderValues>(BorderValues.Single),
-                            Size = 12
-                        },
-                        new LeftBorder
-                        {
-                            Val = new EnumValue<BorderValues>(BorderValues.Single),
-                            Size = 12
-                        },
-                        new RightBorder
-                        {
-                            Val = new EnumValue<BorderValues>(BorderValues.Single),
-                            Size = 12
-                        },
-                        new InsideHorizontalBorder
-                        {
-                            Val = new EnumValue<BorderValues>(BorderValues.Single),
-                            Size = 12
-                        },
-                        new InsideVerticalBorder
-                        {
-                            Val = new EnumValue<BorderValues>(BorderValues.Single),
-                            Size = 12
-                        }));
+            Table table = new Table();
 
-                table.AppendChild(props);
-
-                for (var i = 0; i <= data.GetUpperBound(0); i++)
-                {
-                    var tr = new TableRow();
-                    for (var j = 0; j <= data.GetUpperBound(1); j++)
+            TableProperties props = new TableProperties(
+                new TableBorders(
+                    new TopBorder
                     {
-                        var tc = new TableCell();
-                        tc.Append(new Paragraph(new Run(new Text(data[i, j]))));
+                        Val = new EnumValue<BorderValues>(BorderValues.Single),
+                        Size = 12
+                    },
+                    new BottomBorder
+                    {
+                        Val = new EnumValue<BorderValues>(BorderValues.Single),
+                        Size = 12
+                    },
+                    new LeftBorder
+                    {
+                        Val = new EnumValue<BorderValues>(BorderValues.Single),
+                        Size = 12
+                    },
+                    new RightBorder
+                    {
+                        Val = new EnumValue<BorderValues>(BorderValues.Single),
+                        Size = 12
+                    },
+                    new InsideHorizontalBorder
+                    {
+                        Val = new EnumValue<BorderValues>(BorderValues.Single),
+                        Size = 12
+                    },
+                    new InsideVerticalBorder
+                    {
+                        Val = new EnumValue<BorderValues>(BorderValues.Single),
+                        Size = 12
+                    }));
 
-                        // Assume you want automatically sized columns.
-                        tc.Append(new TableCellProperties(
-                            new TableCellWidth {Type = TableWidthUnitValues.Auto}));
+            table.AppendChild(props);
 
-                        tr.Append(tc);
-                    }
+            for (var i = 0; i <= data.GetUpperBound(0); i++)
+            {
+                var tr = new TableRow();
+                for (var j = 0; j <= data.GetUpperBound(1); j++)
+                {
+                    var tc = new TableCell();
+                    tc.Append(new Paragraph(new Run(new Text(data[i, j]))));
 
-                    table.Append(tr);
+                    // Assume you want automatically sized columns.
+                    tc.Append(new TableCellProperties(
+                        new TableCellWidth { Type = TableWidthUnitValues.Auto }));
+
+                    tr.Append(tc);
                 }
 
-                mainPart.Document.Body.Append(table);
-                mainPart.Document.Save();
+                table.Append(tr);
             }
+
+            mainPart.Document.Body.Append(table);
+            mainPart.Document.Save();
         }
     }
 }

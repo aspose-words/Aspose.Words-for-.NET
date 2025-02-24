@@ -1,7 +1,13 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using Aspose.Words;
 using NUnit.Framework;
+using System;
 
 namespace AsposeWordsVSOpenXML.AsposeWords_features
 {
@@ -9,38 +15,27 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features
     public class InsertAComment : TestUtil
     {
         [Test]
-        public void InsertACommentFeature()
+        public void InsertComment()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Comment comment = new Comment(doc);
+            Comment newComment = new Comment(doc)
+            {
+                Author = "Aspose.Words",
+                Initial = "AW",
+                DateTime = DateTime.Now
+            };
+            newComment.SetText("Comment regarding text.");
 
-            // Insert some text into the comment.
-            Paragraph commentParagraph = new Paragraph(doc);
-            commentParagraph.AppendChild(new Run(doc, "This is comment!!!"));
-            comment.AppendChild(commentParagraph);
+            // Add text to the document, warp it in a comment range, and then add your comment.
+            Paragraph para = doc.FirstSection.Body.FirstParagraph;
+            para.AppendChild(new CommentRangeStart(doc, newComment.Id));
+            para.AppendChild(new Run(doc, "Commented text."));
+            para.AppendChild(new CommentRangeEnd(doc, newComment.Id));
+            para.AppendChild(newComment);
 
-            // Create a "CommentRangeStart" and "CommentRangeEnd".
-            int commentId = 0;
-            CommentRangeStart start = new CommentRangeStart(doc, commentId);
-            CommentRangeEnd end = new CommentRangeEnd(doc, commentId);
-
-            builder.Write("This text is before the comment. ");
-
-            // Insert comment and comment range start.
-            builder.InsertNode(comment);
-            builder.InsertNode(start);
-
-            // Insert some more text.
-            builder.Write("This text is commented. ");
-
-            // Insert end of comment range.
-            builder.InsertNode(end);
-
-            builder.Write("This text is after the comment.");
-
-            doc.Save(ArtifactsDir + "Insert a comment - Aspose.Words.docx");
+            doc.Save(ArtifactsDir + "Insert comment - Aspose.Words.docx");
         }
     }
 }

@@ -1,4 +1,9 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using Aspose.Words;
 using NUnit.Framework;
@@ -9,14 +14,14 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features
     public class CreateADocument : TestUtil
     {
         [Test]
-        public void CreateADocumentFeature()
+        public void CreateNewDocument()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.Writeln("Hello World!");
 
-            doc.Save(ArtifactsDir + "Create a document - Aspose.Words.docx");
+            doc.Save(ArtifactsDir + "Create new document - Aspose.Words.docx");
         }
     }
 }

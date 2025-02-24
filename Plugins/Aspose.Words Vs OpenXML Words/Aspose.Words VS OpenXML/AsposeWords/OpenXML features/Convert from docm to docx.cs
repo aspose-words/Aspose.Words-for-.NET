@@ -1,4 +1,9 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using System.IO;
 using DocumentFormat.OpenXml;
@@ -11,40 +16,27 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
     public class ConvertFromDocmToDocx : TestUtil
     {
         [Test]
-        public void ConvertFromDocmToDocxFeature()
+        public void DocmToDocxConversion()
         {
-            bool fileChanged = false;
+            string docmFilePath = MyDir + "Docm to Docx conversion.docm";
+            string docxFilePath = ArtifactsDir + "Docm to Docx conversion - OpenXML.docx";
 
-            using (WordprocessingDocument document =
-                WordprocessingDocument.Open(MyDir + "Convert from docm to docx.docm", true))
+            using (WordprocessingDocument docm = WordprocessingDocument.Open(docmFilePath, false))
             {
-                var docPart = document.MainDocumentPart;
+                // Create a copy of the .docm file as .docx.
+                File.Copy(docmFilePath, docxFilePath, true);
 
-                // Look for the vbaProject part. If it is there, delete it.
-                var vbaPart = docPart.VbaProjectPart;
-                if (vbaPart != null)
+                // Open the new .docx file and remove the macros.
+                using (WordprocessingDocument docx = WordprocessingDocument.Open(docxFilePath, true))
                 {
-                    // Delete the vbaProject part and then save the document.
-                    docPart.DeletePart(vbaPart);
-                    docPart.Document.Save();
+                    // Remove the VBA project part (macros).
+                    var vbaPart = docx.MainDocumentPart.VbaProjectPart;
+                    if (vbaPart != null)
+                        docx.MainDocumentPart.DeletePart(vbaPart);
 
-                    // Change the document type to not macro-enabled.
-                    document.ChangeDocumentType(
-                        WordprocessingDocumentType.Document);
-
-                    fileChanged = true;
+                    // Change the document type to .docx (no macros).
+                    docx.ChangeDocumentType(WordprocessingDocumentType.Document);
                 }
-            }
-
-            // If anything goes wrong in this file handling,
-            // the code will raise an exception back to the caller.
-            if (fileChanged)
-            {
-                if (File.Exists(ArtifactsDir + "Convert from docm to docx - OpenXML.docm"))
-                    File.Delete(ArtifactsDir + "Convert from docm to docx - OpenXML.docm");
-
-                File.Move(MyDir + "Convert from docm to docx.docm",
-                    ArtifactsDir + "Convert from docm to docx - OpenXML.docm");
             }
         }
     }

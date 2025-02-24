@@ -1,6 +1,10 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DocumentFormat.OpenXml.Packaging;
@@ -15,18 +19,17 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
         [Test]
         public void RemovePageBreaksFeature()
         {
-            using (WordprocessingDocument myDoc = WordprocessingDocument.Open(MyDir + "Remove page breaks.docx", true))
+            File.Copy(MyDir + "Remove page breaks.docx", ArtifactsDir + "Remove page breaks - OpenXML.docx", true);
+
+            using (WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Remove page breaks - OpenXML.docx", true))
             {
-                MainDocumentPart mainPart = myDoc.MainDocumentPart;
-                List<Break> breaks = mainPart.Document.Descendants<Break>().ToList();
-
-                foreach (Break b in breaks)
-                    b.Remove();
-
-                using (Stream stream = File.Create(ArtifactsDir + "Remove page breaks - OpenXML.docx"))
-                {
-                    mainPart.Document.Save(stream);
-                }
+                // Get the main document part.
+                var body = doc.MainDocumentPart.Document.Body;
+                
+                // Find all page breaks in the document.
+                var breaks = body.Descendants<Break>().ToList();
+                foreach (var pageBreak in breaks)
+                    pageBreak.Remove();
             }
         }
     }

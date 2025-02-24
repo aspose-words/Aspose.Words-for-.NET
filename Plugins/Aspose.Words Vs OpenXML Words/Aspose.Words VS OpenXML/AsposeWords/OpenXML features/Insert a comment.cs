@@ -1,7 +1,11 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Linq;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -13,60 +17,55 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
     public class InsertAComment : TestUtil
     {
         [Test]
-        public void InsertACommentFeature()
+        public void InsertComment()
         {
-            using (WordprocessingDocument document =
-                WordprocessingDocument.Create(ArtifactsDir + "Insert a comment - OpenXML.docx",
-                    WordprocessingDocumentType.Document))
+            using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(ArtifactsDir + "Insert a comment - OpenXML.docx", WordprocessingDocumentType.Document))
             {
-                // Locate the first paragraph in the document.
-                Paragraph firstParagraph =
-                    document.MainDocumentPart.Document.Descendants<Paragraph>().First();
-                Comments comments;
-                string id = "0";
+                // Add the main document part.
+                MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
+                mainPart.Document = new Document();
+                Body body = new Body();
 
-                // Verify that the document contains a 
-                // WordProcessingCommentsPart part; if not, add a new one.
-                if (document.MainDocumentPart.GetPartsOfType<WordprocessingCommentsPart>().Any())
-                {
-                    comments =
-                        document.MainDocumentPart.WordprocessingCommentsPart.Comments;
-                    if (comments.HasChildren)
-                        // Obtain an unused ID.
-                        id = comments.Descendants<Comment>().Select(e => e.Id.Value).Max();
-                }
-                else
-                {
-                    // No "WordprocessingCommentsPart" part exists, so add one to the package.
-                    WordprocessingCommentsPart commentPart =
-                        document.MainDocumentPart.AddNewPart<WordprocessingCommentsPart>();
-                    commentPart.Comments = new Comments();
-                    comments = commentPart.Comments;
-                }
+                // Add a paragraph with some text.
+                Paragraph paragraph = new Paragraph();
+                Run run = new Run();
+                run.AppendChild(new Text("Commented text."));
+                paragraph.AppendChild(run);
+                body.AppendChild(paragraph);
 
-                // Compose a new Comment and add it to the Comments part.
-                Paragraph p = new Paragraph(new Run(new Text("This is my comment.")));
-                Comment cmt = new Comment
+                // Add a comments part to the document.
+                WordprocessingCommentsPart commentsPart = mainPart.AddNewPart<WordprocessingCommentsPart>();
+                commentsPart.Comments = new Comments();
+
+                // Create a comment.
+                Comment comment = new Comment()
                 {
-                    Id = id,
-                    Author = "author",
-                    Initials = "initials",
+                    Id = "1",
+                    Author = "Aspose.Words",
                     Date = DateTime.Now
                 };
-                cmt.AppendChild(p);
-                comments.AppendChild(cmt);
-                comments.Save();
 
-                // Specify the text range for the Comment. 
-                // Insert the new CommentRangeStart before the first run of paragraph.
-                firstParagraph.InsertBefore(new CommentRangeStart {Id = id}, firstParagraph.GetFirstChild<Run>());
+                // Add text to the comment.
+                Paragraph commentParagraph = new Paragraph();
+                Run commentRun = new Run();
+                commentRun.AppendChild(new Text("Comment regarding text."));
+                commentParagraph.AppendChild(commentRun);
+                comment.AppendChild(commentParagraph);
 
-                // Insert the new CommentRangeEnd after last run of paragraph.
-                var cmtEnd = firstParagraph.InsertAfter(new CommentRangeEnd {Id = id},
-                    firstParagraph.Elements<Run>().Last());
+                // Add the comment to the comments part.
+                commentsPart.Comments.AppendChild(comment);
+                commentsPart.Comments.Save();
 
-                // Compose a run with CommentReference and insert it.
-                firstParagraph.InsertAfter(new Run(new CommentReference {Id = id}), cmtEnd);
+                // Add a reference to the comment in the document.
+                run.AppendChild(new CommentRangeStart { Id = "1" });
+                run.AppendChild(new CommentRangeEnd { Id = "1" });
+                run.AppendChild(new CommentReference { Id = "1" });
+
+                // Add the body to the document.
+                mainPart.Document.AppendChild(body);
+
+                // Save the document.
+                mainPart.Document.Save();
             }
         }
     }

@@ -1,10 +1,15 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
+using Aspose.Words.Layout;
 using Aspose.Words.Rendering;
 using Aspose.Words.Saving;
 using Aspose.Words.Tables;
@@ -19,19 +24,18 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
         public void RenderShapeAsEmf()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
-
             // Retrieve the target shape from the document.
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             //ExStart:RenderShapeAsEmf
+            //GistId:7fc867ac8ef1b729b6f70580fbc5b3f9
             ShapeRenderer render = shape.GetShapeRenderer();
-
             ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Emf)
             {
                 Scale = 1.5f
             };
 
-            render.Save(ArtifactsDir + "RenderShape.RenderShapeAsEmf - Aspose.Words.emf", imageOptions);
+            render.Save(ArtifactsDir + "RenderShape.RenderShapeAsEmf.emf", imageOptions);
             //ExEnd:RenderShapeAsEmf
         }
 
@@ -43,42 +47,40 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             //ExStart:RenderShapeAsJpeg
+            //GistId:7fc867ac8ef1b729b6f70580fbc5b3f9
             ShapeRenderer render = new ShapeRenderer(shape);
-
             ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg)
             {
                 // Output the image in gray scale
                 ImageColorMode = ImageColorMode.Grayscale,
-
                 // Reduce the brightness a bit (default is 0.5f)
                 ImageBrightness = 0.45f
             };
 
-            using (FileStream stream = new FileStream(ArtifactsDir + "RenderShape.RenderShapeAsJpeg - Aspose.Words.jpg", FileMode.Create))
+            using (FileStream stream = new FileStream(ArtifactsDir + "RenderShape.RenderShapeAsJpeg.jpg", FileMode.Create))
             {
                 render.Save(stream, imageOptions);
             }
             //ExEnd:RenderShapeAsJpeg
         }
-
+#if NET48 || JAVA
         [Test]
         //ExStart:RenderShapeToGraphics
+        //GistId:7fc867ac8ef1b729b6f70580fbc5b3f9
         public void RenderShapeToGraphics()
         {
             Document doc = new Document(MyDir + "Rendering.docx");
-
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-
+            
+            Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             ShapeRenderer render = shape.GetShapeRenderer();
 
             // Find the size that the shape will be rendered to at the specified scale and resolution.
             Size shapeSizeInPixels = render.GetSizeInPixels(1.0f, 96.0f);
-
             // Rotating the shape may result in clipping as the image canvas is too small. Find the longest side
             // and make sure that the graphics canvas is large enough to compensate for this.
             int maxSide = System.Math.Max(shapeSizeInPixels.Width, shapeSizeInPixels.Height);
 
-            using (Bitmap image = new Bitmap((int)(maxSide * 1.25), (int)(maxSide * 1.25)))
+            using (Bitmap image = new Bitmap((int) (maxSide * 1.25), (int) (maxSide * 1.25)))
             {
                 // Rendering to a graphics object means we can specify settings and transformations to be applied to the rendered shape.
                 // In our case we will rotate the rendered shape.
@@ -87,20 +89,43 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
                     // Clear the shape with the background color of the document.
                     graphics.Clear(shape.Document.PageColor);
                     // Center the rotation using the translation method below.
-                    graphics.TranslateTransform((float)image.Width / 8, (float)image.Height / 2);
+                    graphics.TranslateTransform((float) image.Width / 8, (float) image.Height / 2);
                     // Rotate the image by 45 degrees.
                     graphics.RotateTransform(45);
                     // Undo the translation.
-                    graphics.TranslateTransform(-(float)image.Width / 8, -(float)image.Height / 2);
+                    graphics.TranslateTransform(-(float) image.Width / 8, -(float) image.Height / 2);
 
                     // Render the shape onto the graphics object.
                     render.RenderToSize(graphics, 0, 0, shapeSizeInPixels.Width, shapeSizeInPixels.Height);
                 }
 
-                image.Save(ArtifactsDir + "RenderShape.RenderShapeToGraphics - Aspose.Words.png", ImageFormat.Png);
+                image.Save(ArtifactsDir + "RenderShape.RenderShapeToGraphics.png", ImageFormat.Png);
             }
         }
         //ExEnd:RenderShapeToGraphics
+
+        [Test]
+        public void FindShapeSizes()
+        {
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            //ExStart:FindShapeSizes
+            //GistId:7fc867ac8ef1b729b6f70580fbc5b3f9
+            Size shapeRenderedSize = shape.GetShapeRenderer().GetSizeInPixels(1.0f, 96.0f);
+
+            using (Bitmap image = new Bitmap(shapeRenderedSize.Width, shapeRenderedSize.Height))
+            {
+                using (Graphics graphics = Graphics.FromImage(image))
+                {
+                    // Render shape onto the graphics object using the RenderToScale
+                    // or RenderToSize methods of ShapeRenderer class.
+                }
+            }
+            //ExEnd:FindShapeSizes
+        }
+#endif
 
         [Test]
         public void RenderCellToImage()
@@ -109,7 +134,8 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
 
             //ExStart:RenderCellToImage
             Cell cell = (Cell)doc.GetChild(NodeType.Cell, 2, true);
-            RenderNode(cell, ArtifactsDir + "RenderShape.RenderCellToImage - Aspose.Words.png", null);
+            Document tmp = ConvertToImage(doc, cell);
+            tmp.Save(ArtifactsDir + "RenderShape.RenderCellToImage.png");
             //ExEnd:RenderCellToImage
         }
 
@@ -120,7 +146,8 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
 
             //ExStart:RenderRowToImage
             Row row = (Row)doc.GetChild(NodeType.Row, 0, true);
-            RenderNode(row, ArtifactsDir + "RenderShape.RenderRowToImage - Aspose.Words.png", null);
+            Document tmp = ConvertToImage(doc, row);
+            tmp.Save(ArtifactsDir + "RenderShape.RenderRowToImage.png");
             //ExEnd:RenderRowToImage
         }
 
@@ -141,28 +168,9 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
                 PaperColor = Color.LightPink
             };
 
-            RenderNode(textBoxShape.LastParagraph, ArtifactsDir + "RenderShape.RenderParagraphToImage - Aspose.Words.png", options);
+            Document tmp = ConvertToImage(doc, textBoxShape.LastParagraph);
+            tmp.Save(ArtifactsDir + "RenderShape.RenderParagraphToImage.png");
             //ExEnd:RenderParagraphToImage
-        }
-
-        [Test]
-        public void FindShapeSizes()
-        {
-            Document doc = new Document(MyDir + "Rendering.docx");
-
-            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-
-            //ExStart:FindShapeSizes
-            Size shapeRenderedSize = shape.GetShapeRenderer().GetSizeInPixels(1.0f, 96.0f);
-
-            using (Bitmap image = new Bitmap(shapeRenderedSize.Width, shapeRenderedSize.Height))
-            {
-                using (Graphics graphics = Graphics.FromImage(image))
-                {
-                    // Render shape onto the graphics object using the RenderToScale or RenderToSize methods of ShapeRenderer class.
-                }
-            }
-            //ExEnd:FindShapeSizes
         }
 
         [Test]
@@ -171,120 +179,97 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
             Document doc = new Document(MyDir + "Rendering.docx");
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-
             //ExStart:RenderShapeImage
-            shape.GetShapeRenderer().Save(ArtifactsDir + "RenderShape.RenderShapeImage - Aspose.Words.jpg", null);
+            //GistId:7fc867ac8ef1b729b6f70580fbc5b3f9
+            shape.GetShapeRenderer().Save(ArtifactsDir + "RenderShape.RenderShapeImage.jpg", new ImageSaveOptions(SaveFormat.Jpeg));
             //ExEnd:RenderShapeImage
         }
 
         /// <summary>
-        /// Renders any node in a document to the path specified using the image save options.
+        /// Renders any node in a document into an image.
         /// </summary>
+        /// <param name="doc">The current document.</param>
         /// <param name="node">The node to render.</param>
-        /// <param name="filePath">The path to save the rendered image to.</param>
-        /// <param name="imageOptions">The image options to use during rendering. This can be null.</param>
-        public void RenderNode(Node node, string filePath, ImageSaveOptions imageOptions)
+        private static Document ConvertToImage(Document doc, CompositeNode node)
         {
-            if (imageOptions == null)
-                imageOptions = new ImageSaveOptions(FileFormatUtil.ExtensionToSaveFormat(Path.GetExtension(filePath)));
-
-            // Store the paper color to be used on the final image and change to transparent.
-            // This will cause any content around the rendered node to be removed later on.
-            Color savePaperColor = imageOptions.PaperColor;
-            imageOptions.PaperColor = Color.Transparent;
-
-            // There a bug which affects the cache of a cloned node.
-            // To avoid this, we clone the entire document, including all nodes,
-            // finding the matching node in the cloned document and rendering that instead.
-            Document doc = (Document)node.Document.Clone(true);
-            node = doc.GetChild(NodeType.Any, node.Document.GetChildNodes(NodeType.Any, true).IndexOf(node), true);
-
-            // Create a temporary shape to store the target node in. This shape will be rendered to retrieve
-            // the rendered content of the node.
-            Shape shape = new Shape(doc, ShapeType.TextBox);
-            Section parentSection = (Section)node.GetAncestor(NodeType.Section);
-
-            // Assume that the node cannot be larger than the page in size.
-            shape.Width = parentSection.PageSetup.PageWidth;
-            shape.Height = parentSection.PageSetup.PageHeight;
-            shape.FillColor = Color.Transparent;
-
-            // Don't draw a surronding line on the shape.
-            shape.Stroked = false;
-
-            // Move up through the DOM until we find a suitable node to insert into a Shape
-            // (a node with a parent can contain paragraphs, tables the same as a shape). Each parent node is cloned
-            // on the way up so even a descendant node passed to this method can be rendered. Since we are working
-            // with the actual nodes of the document we need to clone the target node into the temporary shape.
-            Node currentNode = node;
-            while (!(currentNode.ParentNode is InlineStory || currentNode.ParentNode is Story ||
-                     currentNode.ParentNode is ShapeBase))
-            {
-                CompositeNode parent = (CompositeNode)currentNode.ParentNode.Clone(false);
-                currentNode = currentNode.ParentNode;
-                parent.AppendChild(node.Clone(true));
-                node = parent; // Store this new node to be inserted into the shape.
-            }
-
-            // We must add the shape to the document tree to have it rendered.
-            shape.AppendChild(node.Clone(true));
-            parentSection.Body.FirstParagraph.AppendChild(shape);
-
-            // Render the shape to stream so we can take advantage of the effects of the ImageSaveOptions class.
-            // Retrieve the rendered image and remove the shape from the document.
-            MemoryStream stream = new MemoryStream();
-            ShapeRenderer renderer = shape.GetShapeRenderer();
-            renderer.Save(stream, imageOptions);
-            shape.Remove();
-
-            Rectangle crop = renderer.GetOpaqueBoundsInPixels(imageOptions.Scale, imageOptions.HorizontalResolution,
-                imageOptions.VerticalResolution);
-
-            using (Bitmap renderedImage = new Bitmap(stream))
-            {
-                Bitmap croppedImage = new Bitmap(crop.Width, crop.Height);
-                croppedImage.SetResolution(imageOptions.HorizontalResolution, imageOptions.VerticalResolution);
-
-                // Create the final image with the proper background color.
-                using (Graphics g = Graphics.FromImage(croppedImage))
-                {
-                    g.Clear(savePaperColor);
-                    g.DrawImage(renderedImage, new Rectangle(0, 0, croppedImage.Width, croppedImage.Height), crop.X,
-                        crop.Y, crop.Width, crop.Height, GraphicsUnit.Pixel);
-
-                    croppedImage.Save(filePath);
-                }
-            }
+            Document tmp = CreateTemporaryDocument(doc, node);
+            AppendNodeContent(tmp, node);
+            AdjustDocumentLayout(tmp);
+            return tmp;
         }
 
         /// <summary>
-        /// Finds the minimum bounding box around non-transparent pixels in a Bitmap.
+        /// Creates a temporary document for further rendering.
         /// </summary>
-        public Rectangle FindBoundingBoxAroundNode(Bitmap originalBitmap)
+        private static Document CreateTemporaryDocument(Document doc, CompositeNode node)
         {
-            Point min = new Point(int.MaxValue, int.MaxValue);
-            Point max = new Point(int.MinValue, int.MinValue);
+            Document tmp = (Document)doc.Clone(false);
+            tmp.Sections.Add(tmp.ImportNode(node.GetAncestor(NodeType.Section), false, ImportFormatMode.UseDestinationStyles));
+            tmp.FirstSection.AppendChild(new Body(tmp));
+            tmp.FirstSection.PageSetup.TopMargin = 0;
+            tmp.FirstSection.PageSetup.BottomMargin = 0;
 
-            for (int x = 0; x < originalBitmap.Width; ++x)
+            return tmp;
+        }
+
+        /// <summary>
+        /// Adds a node to a temporary document.
+        /// </summary>
+        private static void AppendNodeContent(Document tmp, CompositeNode node)
+        {
+            if (node is HeaderFooter headerFooter)
+                foreach (Node hfNode in headerFooter.GetChildNodes(NodeType.Any, false))
+                    tmp.FirstSection.Body.AppendChild(tmp.ImportNode(hfNode, true, ImportFormatMode.UseDestinationStyles));
+            else
+                AppendNonHeaderFooterContent(tmp, node);
+        }
+
+        private static void AppendNonHeaderFooterContent(Document tmp, CompositeNode node)
+        {
+            Node parentNode = node.ParentNode;
+            while (!(parentNode is InlineStory || parentNode is Story || parentNode is ShapeBase))
             {
-                for (int y = 0; y < originalBitmap.Height; ++y)
-                {
-                    // Note that you can speed up this part of the algorithm using LockBits and unsafe code instead of GetPixel.
-                    Color pixelColor = originalBitmap.GetPixel(x, y);
+                CompositeNode parent = (CompositeNode)parentNode.Clone(false);
+                parent.AppendChild(node.Clone(true));
+                node = parent;
 
-                    // For each pixel that is not transparent, calculate the bounding box around it.
-                    if (pixelColor.ToArgb() != Color.Empty.ToArgb())
-                    {
-                        min.X = System.Math.Min(x, min.X);
-                        min.Y = System.Math.Min(y, min.Y);
-                        max.X = System.Math.Max(x, max.X);
-                        max.Y = System.Math.Max(y, max.Y);
-                    }
-                }
+                parentNode = parentNode.ParentNode;
             }
 
-            // Add one pixel to the width and height to avoid clipping.
-            return new Rectangle(min.X, min.Y, max.X - min.X + 1, max.Y - min.Y + 1);
+            tmp.FirstSection.Body.AppendChild(tmp.ImportNode(node, true, ImportFormatMode.UseDestinationStyles));
+        }
+
+        /// <summary>
+        /// Adjusts the layout of the document to fit the content area.
+        /// </summary>
+        private static void AdjustDocumentLayout(Document tmp)
+        {
+            LayoutEnumerator enumerator = new LayoutEnumerator(tmp);
+            RectangleF rect = RectangleF.Empty;
+            rect = CalculateVisibleRect(enumerator, rect);
+
+            tmp.FirstSection.PageSetup.PageHeight = rect.Height;
+            tmp.UpdatePageLayout();
+        }
+
+        /// <summary>
+        /// Calculates the visible area of the content.
+        /// </summary>
+        private static RectangleF CalculateVisibleRect(LayoutEnumerator enumerator, RectangleF rect)
+        {
+            RectangleF result = rect;
+            do
+            {
+                if (enumerator.MoveFirstChild())
+                {
+                    if (enumerator.Type == LayoutEntityType.Line || enumerator.Type == LayoutEntityType.Span)
+                        result = result.IsEmpty ? enumerator.Rectangle : RectangleF.Union(result, enumerator.Rectangle);
+                    result = CalculateVisibleRect(enumerator, result);
+                    enumerator.MoveParent();
+                }
+            } while (enumerator.MoveNext());
+
+            return result;
         }
     }
 }
