@@ -1,4 +1,9 @@
-﻿// Copyright (c) Aspose 2002-2021. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
+//
+// This file is part of Aspose.Words. The source code in this file
+// is only intended as a supplement to the documentation, and is provided
+// "as is", without warranty of any kind, either expressed or implied.
+//////////////////////////////////////////////////////////////////////////
 
 using System.IO;
 using DocumentFormat.OpenXml.Packaging;
@@ -13,22 +18,21 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
         [Test]
         public void OpenReadOnly()
         {
-            // Open a WordprocessingDocument based on a filepath.
-            using (WordprocessingDocument wordDocument =
-                WordprocessingDocument.Open(MyDir + "Open readonly access.docx", false))
+            using (var fileStream = new FileStream(MyDir + "Open readonly access.docx", FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                // Assign a reference to the existing document body.  
-                Body body = wordDocument.MainDocumentPart.Document.Body;
-
-                // Attempt to add some text.
-                Paragraph para = body.AppendChild(new Paragraph());
-                Run run = para.AppendChild(new Run());
-                run.AppendChild(new Text("This is the text added to the end of the document."));
-
-                // Call the "Save" method to generate an exception and show that access is read-only.
-                using (Stream stream = File.Create(ArtifactsDir + "Open readonly access - OpenXML.docx"))
+                using WordprocessingDocument doc = WordprocessingDocument.Open(fileStream, false);
                 {
-                    wordDocument.MainDocumentPart.Document.Save(stream);
+                    // Assign a reference to the existing document body.
+                    Body body = doc.MainDocumentPart.Document.Body;
+
+                    // Attempt to add some text.
+                    Paragraph para = body.AppendChild(new Paragraph());
+                    Run run = para.AppendChild(new Run());
+                    run.AppendChild(new Text("This is the text added to the end of the document."));
+
+                    // Call method to generate an exception and show that access is read-only.
+                    using (Stream stream = File.Create(ArtifactsDir + "Open readonly access - OpenXML.docx"))
+                        Assert.Throws(typeof(FileFormatException), () => doc.MainDocumentPart.Document.Save(stream));
                 }
             }
         }

@@ -16,10 +16,10 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
     public class ConvertFromDocmToDocx : TestUtil
     {
         [Test]
-        public void DocmToDocxConversion()
+        public void DocmToDocx()
         {
-            string docmFilePath = MyDir + "Docm to Docx conversion.docm";
-            string docxFilePath = ArtifactsDir + "Docm to Docx conversion - OpenXML.docx";
+            string docmFilePath = MyDir + "Docm to Docx.docm";
+            string docxFilePath = ArtifactsDir + "Docm to Docx - OpenXML.docx";
 
             using (WordprocessingDocument docm = WordprocessingDocument.Open(docmFilePath, false))
             {
@@ -30,7 +30,7 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
                 using (WordprocessingDocument docx = WordprocessingDocument.Open(docxFilePath, true))
                 {
                     // Remove the VBA project part (macros).
-                    var vbaPart = docx.MainDocumentPart.VbaProjectPart;
+                    VbaProjectPart vbaPart = docx.MainDocumentPart.VbaProjectPart;
                     if (vbaPart != null)
                         docx.MainDocumentPart.DeletePart(vbaPart);
 

@@ -13,16 +13,16 @@ using NUnit.Framework;
 namespace AsposeWordsVSOpenXML.OpenXML_features
 {
     [TestFixture]
-    public class SearchAndReplaceText : TestUtil
+    public class FindAndReplaceText : TestUtil
     {
         [Test]
-        public static void SearchAndReplaceTextFeature()
+        public static void FindAndReplaceTextFeature()
         {
-            File.Copy(MyDir + "Search and replace text.docx", ArtifactsDir + "Search and replace text - OpenXML.docx", true);
+            File.Copy(MyDir + "Find and replace text.docx", ArtifactsDir + "Find and replace text - OpenXML.docx", true);
 
-            using (WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Search and replace text - OpenXML.docx", true))
+            using (WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Find and replace text - OpenXML.docx", true))
             {
-                string? docText = null;
+                string docText = null;
                 using (StreamReader sr = new StreamReader(doc.MainDocumentPart.GetStream()))
                     docText = sr.ReadToEnd();
 

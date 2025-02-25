@@ -18,7 +18,6 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
         public static void NestedMailMergeRegionsFeature()
         {
             DataSet pizzaDs = new DataSet();
-
             // Note: The Datatable.TableNames and the DataSet.Relations are defined implicitly by .NET through ReadXml.
             // To see examples of how to set up relations manually check the corresponding documentation of this sample
             pizzaDs.ReadXml(MyDir + "Mail merge data - Orders.xml");

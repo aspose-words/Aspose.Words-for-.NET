@@ -14,10 +14,10 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features
     public class ConvertFromDocmToDocx : TestUtil
     {
         [Test]
-        public void DocmToDocxConversion()
+        public void DocmToDocx()
         {
-            Document doc = new Document(MyDir + "Docm to Docx conversion.docm");
-            doc.Save(ArtifactsDir + "Docm to Docx conversion - Aspose.Words.docx");
+            Document doc = new Document(MyDir + "Docm to Docx.docm");
+            doc.Save(ArtifactsDir + "Docm to Docx - Aspose.Words.docx");
         }
     }
 }

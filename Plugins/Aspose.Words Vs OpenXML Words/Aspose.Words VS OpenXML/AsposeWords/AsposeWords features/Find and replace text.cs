@@ -11,17 +11,16 @@ using NUnit.Framework;
 namespace AsposeWordsVSOpenXML.AsposeWords_features
 {
     [TestFixture]
-    public class RemoveHeaderFooter : TestUtil
+    public class FindAndReplaceText : TestUtil
     {
         [Test]
-        public void RemoveHeaderFooterFeature()
+        public static void FindAndReplaceTextFeature()
         {
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document(MyDir + "Search and replace text.docx");
 
-            foreach (HeaderFooter headerFooter in doc.GetChildNodes(NodeType.HeaderFooter, true))
-                headerFooter.Remove();
+            doc.Range.Replace("Hello World!", "Hi Everyone!");
 
-            doc.Save(ArtifactsDir + "Remove header and footer - Aspose.Words.docx");
+            doc.Save(ArtifactsDir + "Find and replace text - Aspose.Words.docx");
         }
     }
 }

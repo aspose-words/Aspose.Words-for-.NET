@@ -13,10 +13,10 @@ using NUnit.Framework;
 namespace AsposeWordsVSOpenXML.AsposeWords_features
 {
     [TestFixture]
-    public class ExtractImageFromWordDocument : TestUtil
+    public class ExtractImages : TestUtil
     {
         [Test]
-        public void ExtractImage()
+        public void ExtractDocumentImages()
         {
             Document doc = new Document(MyDir + "Extract image.docx");
 
@@ -32,7 +32,7 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features
                     // The image data of shapes may contain images of many possible image formats. 
                     // We can determine a file extension for each image automatically, based on its format.
                     string imageFileName =
-                        $"ExtractImage.{imageIndex}.Aspose.Words{FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType)}";
+                        $"ExtractDocumentImages.{imageIndex}.Aspose.Words{FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType)}";
                     shape.ImageData.Save(ArtifactsDir + imageFileName);
                     imageIndex++;
                 }

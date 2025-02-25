@@ -6,30 +6,34 @@
 //////////////////////////////////////////////////////////////////////////
 
 using Aspose.Words;
-using Aspose.Words.Drawing;
 using NUnit.Framework;
 
 namespace AsposeWordsVSOpenXML.AsposeWords_features
 {
     [TestFixture]
-    public class InsertPictureInWordDocument : TestUtil
+    public class CreateTable : TestUtil
     {
         [Test]
-        public void InsertPicture()
+        public void Table()
         {
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.InsertImage(MyDir + "Aspose.Words.png",
-                RelativeHorizontalPosition.Margin,
-                100,
-                RelativeVerticalPosition.Margin,
-                100,
-                200,
-                100,
-                WrapType.Square);
+            builder.StartTable();
+            builder.InsertCell();
+            builder.Write("Row 1, Cell 1 Content.");
+            builder.InsertCell();
+            builder.Write("Row 1, Cell 2 Content.");
+            builder.EndRow();
 
-            doc.Save(ArtifactsDir + "Insert picture - Aspose.Words.docx");
+            builder.InsertCell();
+            builder.Write("Row 2, Cell 1 Content");
+            builder.InsertCell();
+            builder.Write("Row 2, Cell 2 Content.");
+            builder.EndRow();
+            builder.EndTable();
+
+            doc.Save(ArtifactsDir + "Table - Aspose.Words.docx");
         }
     }
 }

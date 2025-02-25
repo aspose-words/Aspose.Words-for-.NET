@@ -5,7 +5,6 @@
 //// "as is", without warranty of any kind, either expressed or implied.
 ////////////////////////////////////////////////////////////////////////////
 
-using System;
 using System.IO;
 using DocumentFormat.OpenXml.Packaging;
 using NUnit.Framework;
@@ -13,10 +12,10 @@ using NUnit.Framework;
 namespace AsposeWordsVSOpenXML.OpenXML_features
 {
     [TestFixture]
-    public class ExtractImage : TestUtil
+    public class ExtractImages : TestUtil
     {
         [Test]
-        public void ExtractImageFromWordDocumentFeature()
+        public void ExtractDocumentImages()
         {
             // Open the Wordprocessing document.
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(MyDir + "Extract image.docx", false))
@@ -32,7 +31,7 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
                     if (imageExtension != null)
                     {
                         // Create a file name for the image.
-                        string imageFileName = Path.Combine(ArtifactsDir, $"ExtractImage.{imageIndex}.OpenXML{imageExtension}");
+                        string imageFileName = Path.Combine(ArtifactsDir, $"ExtractDocumentImages.{imageIndex}.OpenXML{imageExtension}");
 
                         // Save the image to the output directory.
                         using (var stream = imagePart.GetStream())

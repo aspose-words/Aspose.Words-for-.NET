@@ -18,7 +18,6 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features.Features_missing_in_OpenXML
         {
             // The document that the other documents will be appended to.
             Document dstDoc = new Document();
-
             // We should call this method to clear this document of any existing content.
             dstDoc.RemoveAllChildren();
 

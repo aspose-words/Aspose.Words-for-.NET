@@ -11,10 +11,10 @@ using NUnit.Framework;
 namespace AsposeWordsVSOpenXML.AsposeWords_features
 {
     [TestFixture]
-    public class DeleteCommentsByAllOrASpecificAuthor : TestUtil
+    public class RemoveSpecificComments : TestUtil
     {
         [Test]
-        private void RemoveComments()
+        public void RemoveComments()
         {
             Document doc = new Document(MyDir + "Comments.docx");
 

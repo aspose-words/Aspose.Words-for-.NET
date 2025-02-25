@@ -21,8 +21,7 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
         public void CreateHeaderFooter()
         {
             // Create a new Word document.
-            using WordprocessingDocument document = WordprocessingDocument.Create(
-                ArtifactsDir + "Create header footer - OpenXML.docx",
+            using WordprocessingDocument document = WordprocessingDocument.Create(ArtifactsDir + "Create header footer - OpenXML.docx",
                 WordprocessingDocumentType.Document);
 
             // Add a main document part.
@@ -46,13 +45,10 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
 
             // Ensure the document has at least one section.
             if (mainDocumentPart.Document.Body.Elements<SectionProperties>().Count() == 0)
-            {
                 mainDocumentPart.Document.Body.AppendChild(new SectionProperties());
-            }
 
             // Assign the header and footer to all sections.
             IEnumerable<SectionProperties> sections = mainDocumentPart.Document.Body.Elements<SectionProperties>();
-
             foreach (var section in sections)
             {
                 section.RemoveAllChildren<HeaderReference>();
@@ -62,7 +58,6 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
                 section.PrependChild(new FooterReference { Id = footerPartId });
             }
 
-            // Save the document.
             mainDocumentPart.Document.Save();
         }
 

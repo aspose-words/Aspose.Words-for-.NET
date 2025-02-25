@@ -11,16 +11,19 @@ using NUnit.Framework;
 namespace AsposeWordsVSOpenXML.AsposeWords_features
 {
     [TestFixture]
-    public class SearchAndReplaceText : TestUtil
+    public class AppendText: TestUtil
     {
         [Test]
-        public static void SearchAndReplaceTextFeature()
+        public void AddText()
         {
-            Document doc = new Document(MyDir + "Search and replace text.docx");
+            Document doc = new Document(MyDir + "Document.docx");
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
-            doc.Range.Replace("Hello World!", "Hi Everyone!");
+            builder.MoveToDocumentEnd();
+            builder.Writeln();
+            builder.Write("This is the text added to the end of the document.");
 
-            doc.Save(ArtifactsDir + "Search and replace text - Aspose.Words.docx");
+            doc.Save(ArtifactsDir + "Add text - Aspose.Words.docx");
         }
     }
 }

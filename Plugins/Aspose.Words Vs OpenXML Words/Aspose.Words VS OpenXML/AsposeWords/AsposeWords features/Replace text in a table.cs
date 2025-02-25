@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace AsposeWordsVSOpenXML.AsposeWords_features
 {
     [TestFixture]
-    class ChangeTextInATable : TestUtil
+    class ReplaceTextInATable : TestUtil
     {
         [Test]
         public void ReplaceText()

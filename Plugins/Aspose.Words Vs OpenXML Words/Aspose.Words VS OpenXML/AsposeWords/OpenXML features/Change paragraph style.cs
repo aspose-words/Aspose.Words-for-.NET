@@ -5,7 +5,6 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System.Linq;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
@@ -14,7 +13,7 @@ using NUnit.Framework;
 namespace AsposeWordsVSOpenXML.OpenXML_features
 {
     [TestFixture]
-    public class CreateAndAddAParagraphStyle : TestUtil
+    public class ChangeParagraphStyle : TestUtil
     {
         [Test]
         public void ParagraphCustomStyle()

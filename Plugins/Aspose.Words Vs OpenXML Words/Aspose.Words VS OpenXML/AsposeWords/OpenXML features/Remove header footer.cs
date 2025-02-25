@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DocumentFormat.OpenXml.Packaging;
@@ -20,32 +21,31 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
         public void RemoveHeaderFooterFeature()
         {
             File.Copy(MyDir + "Document.docx", ArtifactsDir + "Remove header and footer - OpenXML.docx", true);
-            using (WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Remove header and footer - OpenXML.docx", true))
+
+            using WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Remove header and footer - OpenXML.docx", true);
+
+            MainDocumentPart mainDocumentPart = doc.MainDocumentPart;
+            // Count the header and footer parts and continue if there are any.
+            if (mainDocumentPart.HeaderParts.Any() || mainDocumentPart.FooterParts.Any())
             {
-                var mainDocumentPart = doc.MainDocumentPart;
+                // Remove the header and footer parts.
+                mainDocumentPart.DeleteParts(mainDocumentPart.HeaderParts);
+                mainDocumentPart.DeleteParts(mainDocumentPart.FooterParts);
 
-                // Count the header and footer parts and continue if there are any.
-                if (mainDocumentPart.HeaderParts.Any() || mainDocumentPart.FooterParts.Any())
-                {
-                    // Remove the header and footer parts.
-                    mainDocumentPart.DeleteParts(mainDocumentPart.HeaderParts);
-                    mainDocumentPart.DeleteParts(mainDocumentPart.FooterParts);
+                // Get a reference to the root element of the main document part.
+                Document document = mainDocumentPart.Document;
 
-                    // Get a reference to the root element of the main document part.
-                    Document document = mainDocumentPart.Document;
+                // First, create a list of all descendants of type HeaderReference.
+                // Then, navigate the list and call remove on each item to delete the reference.
+                List<HeaderReference> headers = document.Descendants<HeaderReference>().ToList();
+                foreach (HeaderReference header in headers)
+                    header.Remove();
 
-                    // First, create a list of all descendants of type HeaderReference.
-                    // Then, navigate the list and call remove on each item to delete the reference.
-                    var headers = document.Descendants<HeaderReference>().ToList();
-                    foreach (var header in headers)
-                        header.Remove();
-
-                    // First, create a list of all descendants of type FooterReference.
-                    // Then, navigate the list and call remove on each item to delete the reference.
-                    var footers = document.Descendants<FooterReference>().ToList();
-                    foreach (var footer in footers)
-                        footer.Remove();
-                }
+                // First, create a list of all descendants of type FooterReference.
+                // Then, navigate the list and call remove on each item to delete the reference.
+                List<FooterReference> footers = document.Descendants<FooterReference>().ToList();
+                foreach (FooterReference footer in footers)
+                    footer.Remove();
             }
         }
     }

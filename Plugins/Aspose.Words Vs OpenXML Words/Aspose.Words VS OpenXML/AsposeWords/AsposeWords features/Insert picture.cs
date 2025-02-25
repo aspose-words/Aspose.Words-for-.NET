@@ -6,24 +6,30 @@
 //////////////////////////////////////////////////////////////////////////
 
 using Aspose.Words;
+using Aspose.Words.Drawing;
 using NUnit.Framework;
 
 namespace AsposeWordsVSOpenXML.AsposeWords_features
 {
     [TestFixture]
-    public class OpenAndAddTextToWordDocument : TestUtil
+    public class InsertPicture: TestUtil
     {
         [Test]
-        public void AddText()
+        public void InsertImage()
         {
-            Document doc = new Document(MyDir + "Document.docx");
+            Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.MoveToDocumentEnd();
-            builder.Writeln();
-            builder.Write("This is the text added to the end of the document.");
+            builder.InsertImage(MyDir + "Aspose.Words.png",
+                RelativeHorizontalPosition.Margin,
+                100,
+                RelativeVerticalPosition.Margin,
+                100,
+                200,
+                100,
+                WrapType.Square);
 
-            doc.Save(ArtifactsDir + "Add text - Aspose.Words.docx");
+            doc.Save(ArtifactsDir + "Insert image - Aspose.Words.docx");
         }
     }
 }

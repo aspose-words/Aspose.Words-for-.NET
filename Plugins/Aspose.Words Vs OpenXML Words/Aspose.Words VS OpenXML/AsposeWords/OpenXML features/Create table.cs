@@ -13,16 +13,14 @@ using NUnit.Framework;
 namespace AsposeWordsVSOpenXML.OpenXML_features
 {
     [TestFixture]
-    public class AddTable : TestUtil
+    public class CreateTable : TestUtil
     {
         [Test]
-        public void CreateTable()
+        public void Table()
         {
             string[,] data = { { "Mike", "Amy" }, { "Mary", "Albert" } };
 
-            using WordprocessingDocument wordDocument = WordprocessingDocument.Create(
-                ArtifactsDir + "CreateTable - OpenXML.docx",
-                WordprocessingDocumentType.Document);
+            using WordprocessingDocument wordDocument = WordprocessingDocument.Create(ArtifactsDir + "Table - OpenXML.docx", WordprocessingDocumentType.Document);
 
             MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
             mainPart.Document = new Document();
@@ -34,7 +32,6 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
             run.AppendChild(new Text("Create text in body - Create wordprocessing document"));
 
             Table table = new Table();
-
             TableProperties props = new TableProperties(
                 new TableBorders(
                     new TopBorder

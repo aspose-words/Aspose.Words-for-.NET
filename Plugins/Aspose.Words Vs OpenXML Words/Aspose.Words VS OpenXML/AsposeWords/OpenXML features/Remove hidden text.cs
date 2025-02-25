@@ -22,17 +22,17 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
             File.Copy(MyDir + "Remove hidden text.docx", ArtifactsDir + "Remove hidden text - OpenXML.docx", true);
 
             using WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Remove hidden text - OpenXML.docx", true);
-            foreach (var paragraph in doc.MainDocumentPart.Document.Body.Elements<Paragraph>())
+            foreach (Paragraph paragraph in doc.MainDocumentPart.Document.Body.Elements<Paragraph>())
             {
                 // Iterate through all runs in the paragraph.
-                foreach (var run in paragraph.Elements<Run>())
+                foreach (Run run in paragraph.Elements<Run>())
                 {
                     // Check if the run has properties
-                    var runProperties = run.RunProperties;
+                    RunProperties runProperties = run.RunProperties;
                     if (runProperties != null)
                     {
                         // Check if the text is hidden.
-                        var hidden = runProperties.Elements<Vanish>().FirstOrDefault();
+                        Vanish hidden = runProperties.Elements<Vanish>().FirstOrDefault();
                         if (hidden != null)
                             // Remove the hidden property to unhide the text.
                             hidden.Remove();

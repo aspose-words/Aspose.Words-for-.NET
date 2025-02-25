@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using Aspose.Words;
 using NUnit.Framework;
 
@@ -20,7 +20,7 @@ namespace AsposeWordsVSOpenXML.AsposeWords_features
         {
             Document doc = new Document(MyDir + "Comments.docx");
 
-            ArrayList collectedComments = new ArrayList();
+            List<string> collectedComments = new();
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
 
             // Look through all comments and gather information about them.

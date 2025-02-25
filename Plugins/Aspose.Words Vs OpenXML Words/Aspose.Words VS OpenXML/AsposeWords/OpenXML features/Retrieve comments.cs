@@ -18,14 +18,13 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
         [Test]
         public static void RetrieveCommentsFeature()
         {
-            using (WordprocessingDocument doc = WordprocessingDocument.Open(MyDir + "Comments.docx", false))
-            {
-                WordprocessingCommentsPart commentsPart = doc.MainDocumentPart.WordprocessingCommentsPart;
+            using WordprocessingDocument doc = WordprocessingDocument.Open(MyDir + "Comments.docx", false);
 
-                if (commentsPart?.Comments != null)
-                    foreach (Comment comment in commentsPart.Comments.Elements<Comment>())
-                        Console.WriteLine(comment.InnerText);
-            }
+            WordprocessingCommentsPart commentsPart = doc.MainDocumentPart.WordprocessingCommentsPart;
+
+            if (commentsPart?.Comments != null)
+                foreach (Comment comment in commentsPart.Comments.Elements<Comment>())
+                    Console.WriteLine(comment.InnerText);
         }
     }
 }

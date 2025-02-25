@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DocumentFormat.OpenXml.Packaging;
@@ -21,17 +22,15 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
         {
             File.Copy(MyDir + "Remove section breaks.docx", ArtifactsDir + "Remove section breaks - OpenXML.docx", true);
 
-            using (WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Remove section breaks - OpenXML.docx", true))
-            {
-                // Get the main document part.
-                var body = doc.MainDocumentPart.Document.Body;
+            using WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Remove section breaks - OpenXML.docx", true);
+            // Get the main document part.
+            Body body = doc.MainDocumentPart.Document.Body;
 
-                // Find all section breaks in the document.
-                var sectionProperties = body.Descendants<SectionProperties>().ToList();
-                // Remove each section properties element.
-                foreach (var section in sectionProperties)
-                    section.Remove();
-            }
+            // Find all section breaks in the document.
+            List<SectionProperties> sectionProperties = body.Descendants<SectionProperties>().ToList();
+            // Remove each section properties element.
+            foreach (var section in sectionProperties)
+                section.Remove();
         }
     }
 }

@@ -19,8 +19,7 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
         public void CreateNewDocument()
         {
             // Create a Wordprocessing document.
-            using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(
-                ArtifactsDir + "Create new document - OpenXML.docx", 
+            using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(ArtifactsDir + "Create new document - OpenXML.docx", 
                 WordprocessingDocumentType.Document))
             {
                 // Add a main document part.

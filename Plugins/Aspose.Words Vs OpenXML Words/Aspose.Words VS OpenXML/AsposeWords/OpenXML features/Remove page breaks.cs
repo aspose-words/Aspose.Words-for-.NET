@@ -5,6 +5,7 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DocumentFormat.OpenXml.Packaging;
@@ -21,16 +22,14 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
         {
             File.Copy(MyDir + "Remove page breaks.docx", ArtifactsDir + "Remove page breaks - OpenXML.docx", true);
 
-            using (WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Remove page breaks - OpenXML.docx", true))
-            {
-                // Get the main document part.
-                var body = doc.MainDocumentPart.Document.Body;
-                
-                // Find all page breaks in the document.
-                var breaks = body.Descendants<Break>().ToList();
-                foreach (var pageBreak in breaks)
-                    pageBreak.Remove();
-            }
+            using WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Remove page breaks - OpenXML.docx", true);
+            // Get the main document part.
+            Body body = doc.MainDocumentPart.Document.Body;
+
+            // Find all page breaks in the document.
+            List<Break> breaks = body.Descendants<Break>().ToList();
+            foreach (var pageBreak in breaks)
+                pageBreak.Remove();
         }
     }
 }

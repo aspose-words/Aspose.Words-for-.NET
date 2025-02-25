@@ -6,8 +6,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 using System;
+using System.IO;
 using System.Linq;
-using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using NUnit.Framework;
@@ -15,13 +15,15 @@ using NUnit.Framework;
 namespace AsposeWordsVSOpenXML.OpenXML_features
 {
     [TestFixture]
-    public class ChangeTextInATable : TestUtil
+    public class ReplaceTextInATable : TestUtil
     {
         [Test]
         public void ReplaceText()
         {
+            File.Copy(MyDir + "Replace text.docx", ArtifactsDir + "Replace text - OpenXML.docx", true);
+
             // Use the file name and path passed in as an argument to open an existing document.
-            using WordprocessingDocument doc = WordprocessingDocument.Open(MyDir + "Replace text.docx", true);
+            using WordprocessingDocument doc = WordprocessingDocument.Open(ArtifactsDir + "Replace text - OpenXML.docx", true);
 
             // Get the main document part.
             MainDocumentPart mainPart = doc.MainDocumentPart;
@@ -50,17 +52,6 @@ namespace AsposeWordsVSOpenXML.OpenXML_features
 
             // Set the text for the run.
             text.Text = "The text from the OpenXML API example";
-
-            using WordprocessingDocument destinationDoc = WordprocessingDocument.Create(
-                ArtifactsDir + "Replace text - OpenXML.docx", 
-                WordprocessingDocumentType.Document);
-
-            // Copy the content from the source document to the destination document.
-            destinationDoc.AddMainDocumentPart();
-            destinationDoc.MainDocumentPart.Document = (Document)doc.MainDocumentPart.Document.CloneNode(true);
-
-            // Save the destination document.
-            destinationDoc.MainDocumentPart.Document.Save();
         }
     }
 }

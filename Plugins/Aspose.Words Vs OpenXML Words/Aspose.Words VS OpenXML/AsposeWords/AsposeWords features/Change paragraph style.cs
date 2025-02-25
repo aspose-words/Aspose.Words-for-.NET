@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace AsposeWordsVSOpenXML.AsposeWords_features
 {
     [TestFixture]
-    public class CreateAndAddAParagraphStyle : TestUtil
+    public class ChangeParagraphStyle : TestUtil
     {
         [Test]
         public void ParagraphCustomStyle()
