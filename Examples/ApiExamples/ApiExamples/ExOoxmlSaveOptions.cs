@@ -431,5 +431,28 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.DigitalSignature.docx", saveOptions);
             //ExEnd:DigitalSignature
         }
+
+        [Test]
+        public void UpdateAmbiguousTextFont()
+        {
+            //ExStart:UpdateAmbiguousTextFont
+            //GistId:1a265b92fa0019b26277ecfef3c20330
+            //ExFor:OoxmlSaveOptions.UpdateAmbiguousTextFont
+            //ExSummary:Shows how to update the font to match the character code being used.
+            Document doc = new Document(MyDir + "Special symbol.docx");
+            Run run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+            Console.WriteLine(run.Text); // ฿
+            Console.WriteLine(run.Font.Name); // Arial
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.UpdateAmbiguousTextFont = true;
+            doc.Save(ArtifactsDir + "OoxmlSaveOptions.UpdateAmbiguousTextFont.docx", saveOptions);
+            
+            doc = new Document(ArtifactsDir + "OoxmlSaveOptions.UpdateAmbiguousTextFont.docx");
+            run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+            Console.WriteLine(run.Text); // ฿
+            Console.WriteLine(run.Font.Name); // Angsana New
+            //ExEnd:UpdateAmbiguousTextFont
+        }
     }
 }

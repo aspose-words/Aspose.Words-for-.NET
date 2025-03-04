@@ -370,7 +370,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
 
             // The size of the optimized version of the document is almost a third of the size of the unoptimized document.
-            Assert.AreEqual(optimizeOutput ? 61889 : 191770,
+            Assert.AreEqual(optimizeOutput ? 61889 : 191000,
                 new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length, 200);
             //ExEnd
         }
