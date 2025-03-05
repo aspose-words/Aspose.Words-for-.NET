@@ -437,7 +437,7 @@ namespace ApiExamples
         {
             //ExStart:UpdateAmbiguousTextFont
             //GistId:1a265b92fa0019b26277ecfef3c20330
-            //ExFor:OoxmlSaveOptions.UpdateAmbiguousTextFont
+            //ExFor:SaveOptions.UpdateAmbiguousTextFont
             //ExSummary:Shows how to update the font to match the character code being used.
             Document doc = new Document(MyDir + "Special symbol.docx");
             Run run = doc.FirstSection.Body.FirstParagraph.Runs[0];
