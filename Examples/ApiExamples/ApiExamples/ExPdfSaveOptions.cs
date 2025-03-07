@@ -468,6 +468,17 @@ namespace ApiExamples
             }
         }
 
+        [TestCase(PdfCompliance.PdfA2u)]
+        [TestCase(PdfCompliance.PdfA3a)]
+        [TestCase(PdfCompliance.PdfA3u)]
+        [TestCase(PdfCompliance.Pdf17)]
+        [TestCase(PdfCompliance.PdfA2a)]
+        [TestCase(PdfCompliance.PdfUa1)]
+        [TestCase(PdfCompliance.Pdf20)]
+        [TestCase(PdfCompliance.PdfA4)]
+        [TestCase(PdfCompliance.PdfA4f)]
+        [TestCase(PdfCompliance.PdfA4Ua2)]
+        [TestCase(PdfCompliance.PdfUa2)]
         public void Compliance(PdfCompliance pdfCompliance)
         {
             //ExStart
@@ -515,8 +526,6 @@ namespace ApiExamples
         [TestCase(PdfCompliance.PdfUa2)]
         public void UsePdfDocumentForCompliance(PdfCompliance pdfCompliance)
         {
-            Compliance(pdfCompliance);
-
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.Compliance.pdf");
 
             switch (pdfCompliance)
