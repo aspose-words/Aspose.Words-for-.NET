@@ -435,14 +435,14 @@ namespace ApiExamples
             };
 
             Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NET461_OR_GREATER || JAVA
+            #if NET461_OR_GREATER || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
-#elif NET5_0_OR_GREATER
+            #elif NET5_0_OR_GREATER
             using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg"))
             {
                 img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
             }
-#endif
+            #endif
             builder.InsertImage(img);
 
             // 2 -  EAN13 barcode:
@@ -456,14 +456,14 @@ namespace ApiExamples
             };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NET461_OR_GREATER || JAVA
+            #if NET461_OR_GREATER || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
-#elif NET5_0_OR_GREATER
+            #elif NET5_0_OR_GREATER
             using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg"))
             {
                 img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
             }
-#endif
+            #endif
             builder.InsertImage(img);
 
             // 3 -  CODE39 barcode:
@@ -475,14 +475,14 @@ namespace ApiExamples
             };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NET461_OR_GREATER || JAVA
+            #if NET461_OR_GREATER || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
-#elif NET5_0_OR_GREATER
+            #elif NET5_0_OR_GREATER
             using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg"))
             {
                 img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
             }
-#endif
+            #endif
             builder.InsertImage(img);
 
             // 4 -  ITF14 barcode:
@@ -494,14 +494,14 @@ namespace ApiExamples
             };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NET461_OR_GREATER || JAVA
+            #if NET461_OR_GREATER || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");
-#elif NET5_0_OR_GREATER
+            #elif NET5_0_OR_GREATER
             using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg"))
             {
                 img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
             }
-#endif            
+            #endif
             builder.InsertImage(img);
 
             doc.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.docx");
