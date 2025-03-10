@@ -14,6 +14,7 @@ namespace DocsExamples.Programming_with_Documents
         public void AcceptRevisions()
         {
             //ExStart:AcceptAllRevisions
+            //GistId:e8d71fde166d275d0fc9471c56c3ad39
             Document doc = new Document();
             Body body = doc.FirstSection.Body;
             Paragraph para = body.FirstParagraph;
@@ -172,6 +173,7 @@ namespace DocsExamples.Programming_with_Documents
         public void MoveNodeInTrackedDocument()
         {
             //ExStart:MoveNodeInTrackedDocument
+            //GistId:e8d71fde166d275d0fc9471c56c3ad39
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Paragraph 1");
@@ -210,6 +212,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ShapeRevision()
         {
             //ExStart:ShapeRevision
+            //GistId:e8d71fde166d275d0fc9471c56c3ad39
             Document doc = new Document();
 
             // Insert an inline shape without tracking revisions.

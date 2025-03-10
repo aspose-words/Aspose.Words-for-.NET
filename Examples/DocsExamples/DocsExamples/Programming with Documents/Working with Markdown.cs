@@ -11,6 +11,7 @@ namespace DocsExamples.Programming_with_Documents
         public void BoldText()
         {
             //ExStart:BoldText
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -24,6 +25,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ItalicText()
         {
             //ExStart:ItalicText
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -37,6 +39,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Strikethrough()
         {
             //ExStart:Strikethrough
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -70,6 +73,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Autolink()
         {
             //ExStart:Autolink
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -83,6 +87,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Link()
         {
             //ExStart:Link
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -95,6 +100,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Image()
         {
             //ExStart:Image
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -108,6 +114,7 @@ namespace DocsExamples.Programming_with_Documents
         public void HorizontalRule()
         {
             //ExStart:HorizontalRule
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -120,16 +127,36 @@ namespace DocsExamples.Programming_with_Documents
         public void Heading()
         {
             //ExStart:Heading
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // By default Heading styles in Word may have Bold and Italic formatting.
             //If we do not want to be emphasized, set these properties explicitly to false.
             builder.Font.Bold = false;
             builder.Font.Italic = false;
 
-            builder.ParagraphFormat.StyleName = "Heading 1";
-            builder.Writeln("This is an H1 tag");
+            builder.Writeln("The following produces headings:");
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Writeln("Heading1");
+            builder.ParagraphFormat.Style = doc.Styles["Heading 2"];
+            builder.Writeln("Heading2");
+            builder.ParagraphFormat.Style = doc.Styles["Heading 3"];
+            builder.Writeln("Heading3");
+            builder.ParagraphFormat.Style = doc.Styles["Heading 4"];
+            builder.Writeln("Heading4");
+            builder.ParagraphFormat.Style = doc.Styles["Heading 5"];
+            builder.Writeln("Heading5");
+            builder.ParagraphFormat.Style = doc.Styles["Heading 6"];
+            builder.Writeln("Heading6");
+
+            // Note, emphases are also allowed inside Headings:
+            builder.Font.Bold = true;
+            builder.ParagraphFormat.Style = doc.Styles["Heading 1"];
+            builder.Writeln("Bold Heading1");
+
+            doc.Save(ArtifactsDir + "WorkingWithMarkdown.Heading.md");
             //ExEnd:Heading
         }
 
@@ -137,6 +164,7 @@ namespace DocsExamples.Programming_with_Documents
         public void SetextHeading()
         {
             //ExStart:SetextHeading
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -167,13 +195,14 @@ namespace DocsExamples.Programming_with_Documents
             builder.Writeln("Setext Heading level 2");
             //ExEnd:SetextHeading
 
-            builder.Document.Save(ArtifactsDir + "Test.md");
+            builder.Document.Save(ArtifactsDir + "WorkingWithMarkdown.SetextHeading.md");
         }
 
         [Test]
         public void IndentedCode()
         {
             //ExStart:IndentedCode
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -187,6 +216,7 @@ namespace DocsExamples.Programming_with_Documents
         public void FencedCode()
         {
             //ExStart:FencedCode
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -204,8 +234,10 @@ namespace DocsExamples.Programming_with_Documents
         public void Quote()
         {
             //ExStart:Quote
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
-            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
 
             // By default a document stores blockquote style for the first level.
             builder.ParagraphFormat.StyleName = "Quote";
@@ -216,6 +248,8 @@ namespace DocsExamples.Programming_with_Documents
             builder.ParagraphFormat.Style = quoteLevel2;
             builder.Document.Styles["Quote1"].BaseStyleName = "Quote";
             builder.Writeln("1. Nested blockquote");
+
+            doc.Save(ArtifactsDir + "WorkingWithMarkdown.Quote.md");
             //ExEnd:Quote
         }
 
@@ -223,6 +257,7 @@ namespace DocsExamples.Programming_with_Documents
         public void BulletedList()
         {
             //ExStart:BulletedList
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -243,6 +278,7 @@ namespace DocsExamples.Programming_with_Documents
         public void OrderedList()
         {
             //ExStart:OrderedList
+            //GistId:0697355b7f872839932388d269ed6a63
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -262,6 +298,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Table()
         {
             //ExStart:Table
+            //GistId:0697355b7f872839932388d269ed6a63
             // Use a document builder to add content to the document.
             DocumentBuilder builder = new DocumentBuilder();
 
@@ -285,6 +322,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ReadMarkdownDocument()
         {
             //ExStart:ReadMarkdownDocument
+            //GistId:19de942ef8827201c1dca99f76c59133
             Document doc = new Document(MyDir + "Quotes.md");
 
             // Let's remove Heading formatting from a Quote in the very last paragraph.
@@ -299,6 +337,7 @@ namespace DocsExamples.Programming_with_Documents
         public void Emphases()
         {
             //ExStart:Emphases
+            //GistId:19de942ef8827201c1dca99f76c59133
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 

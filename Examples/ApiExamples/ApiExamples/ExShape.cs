@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -1253,9 +1253,6 @@ namespace ApiExamples
 
             var sourceFullName = shape.Chart.SourceFullName;
             Assert.True(sourceFullName.Contains("Examples\\Data\\Spreadsheet.xlsx"));
-
-            sourceFullName = "D:\\Documents\\ChartData.xlsx";
-            Assert.True(sourceFullName.Equals("D:\\Documents\\ChartData.xlsx", StringComparison.Ordinal));
             //ExEnd
         }
 
@@ -2329,7 +2326,6 @@ namespace ApiExamples
 
                 // Break the forward link between textBox2 and textBox3, and then verify that they are no longer linked.
                 textBox3.Previous.BreakForwardLink();
-
                 Assert.IsTrue(textBox2.Next == null);
                 Assert.IsTrue(textBox3.Previous == null);
             }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -77,7 +77,7 @@ namespace ApiExamples
 
             // If a comment has no ancestor, it is a "top-level" comment as opposed to a reply-type comment.
             // Print all top-level comments along with any replies they may have.
-            foreach (Comment comment in comments.OfType<Comment>().Where(c => c.Ancestor == null))
+            foreach (Comment comment in comments.OfType<Comment>().Where(c => c.Ancestor == null).ToList())
             {
                 Console.WriteLine("Top-level comment:");
                 Console.WriteLine($"\t\"{comment.GetText().Trim()}\", by {comment.Author}");
@@ -219,7 +219,7 @@ namespace ApiExamples
             CommentInfoPrinter commentVisitor = new CommentInfoPrinter();
 
             // Iterate over all top-level comments. Unlike reply-type comments, top-level comments have no ancestor.
-            foreach (Comment comment in comments.Where(c => ((Comment)c).Ancestor == null))
+            foreach (Comment comment in comments.Where(c => ((Comment)c).Ancestor == null).ToList())
             {
                 // First, visit the start of the comment range.
                 CommentRangeStart commentRangeStart = (CommentRangeStart)comment.PreviousSibling.PreviousSibling.PreviousSibling;

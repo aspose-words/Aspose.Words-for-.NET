@@ -11,6 +11,7 @@ namespace DocsExamples.Programming_with_Documents
         public void AddComments()
         {
             //ExStart:AddComments
+            //GistId:70902b20df8b1f6b0459f676e21623bb
             //ExStart:CreateSimpleDocumentUsingDocumentBuilder
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -31,6 +32,7 @@ namespace DocsExamples.Programming_with_Documents
         public void AnchorComment()
         {
             //ExStart:AnchorComment
+            //GistId:70902b20df8b1f6b0459f676e21623bb
             Document doc = new Document();
 
             Paragraph para1 = new Paragraph(doc);
@@ -66,6 +68,7 @@ namespace DocsExamples.Programming_with_Documents
         public void AddRemoveCommentReply()
         {
             //ExStart:AddRemoveCommentReply
+            //GistId:70902b20df8b1f6b0459f676e21623bb
             Document doc = new Document(MyDir + "Comments.docx");
 
             Comment comment = (Comment) doc.GetChild(NodeType.Comment, 0, true);
@@ -81,6 +84,7 @@ namespace DocsExamples.Programming_with_Documents
         public void ProcessComments()
         {
             //ExStart:ProcessComments
+            //GistId:70902b20df8b1f6b0459f676e21623bb
             Document doc = new Document(MyDir + "Comments.docx");
 
             // Extract the information about the comments of all the authors.
@@ -107,6 +111,7 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         //ExStart:ExtractComments
+        //GistId:70902b20df8b1f6b0459f676e21623bb
         List<string> ExtractComments(Document doc)
         {
             List<string> collectedComments = new List<string>();
@@ -123,6 +128,7 @@ namespace DocsExamples.Programming_with_Documents
         //ExEnd:ExtractComments
 
         //ExStart:ExtractCommentsByAuthor
+        //GistId:70902b20df8b1f6b0459f676e21623bb
         List<string> ExtractComments(Document doc, string authorName)
         {
             List<string> collectedComments = new List<string>();
@@ -140,15 +146,16 @@ namespace DocsExamples.Programming_with_Documents
         //ExEnd:ExtractCommentsByAuthor
 
         //ExStart:RemoveComments
+        //GistId:70902b20df8b1f6b0459f676e21623bb
         void RemoveComments(Document doc)
         {
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
-
             comments.Clear();
         }
         //ExEnd:RemoveComments
 
         //ExStart:RemoveCommentsByAuthor
+        //GistId:70902b20df8b1f6b0459f676e21623bb
         void RemoveComments(Document doc, string authorName)
         {
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
@@ -164,6 +171,7 @@ namespace DocsExamples.Programming_with_Documents
         //ExEnd:RemoveCommentsByAuthor
 
         //ExStart:CommentResolvedAndReplies
+        //GistId:70902b20df8b1f6b0459f676e21623bb
         void CommentResolvedAndReplies(Document doc)
         {
             NodeCollection comments = doc.GetChildNodes(NodeType.Comment, true);
@@ -180,5 +188,30 @@ namespace DocsExamples.Programming_with_Documents
             }
         }
         //ExEnd:CommentResolvedAndReplies
+
+        [Test]
+        public void RemoveRangeText()
+        {
+            //ExStart:RemoveRangeText
+            //GistId:70902b20df8b1f6b0459f676e21623bb
+            Document doc = new Document(MyDir + "Comments.docx");
+
+            CommentRangeStart commentStart = (CommentRangeStart)doc.GetChild(NodeType.CommentRangeStart, 0, true);
+            Node currentNode = commentStart;
+
+            bool isRemoving = true;
+            while (currentNode != null && isRemoving)
+            {
+                if (currentNode.NodeType == NodeType.CommentRangeEnd)
+                    isRemoving = false;
+
+                Node nextNode = currentNode.NextPreOrder(doc);
+                currentNode.Remove();
+                currentNode = nextNode;
+            }
+
+            doc.Save(ArtifactsDir + "WorkingWithComments.RemoveRangeText.docx");
+            //ExEnd:RemoveRangeText
+        }
     }
 }

@@ -15,6 +15,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void AddGroupShape()
         {
             //ExStart:AddGroupShape
+            //GistId:072edc4bbb0dd0eebf1f61f610bd8d36
             Document doc = new Document();
             doc.EnsureMinimum();
             
@@ -43,6 +44,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void InsertShape()
         {
             //ExStart:InsertShape
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -68,6 +70,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void AspectRatioLocked()
         {
             //ExStart:AspectRatioLocked
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -82,6 +85,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void LayoutInCell()
         {
             //ExStart:LayoutInCell
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -133,6 +137,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void AddCornersSnipped()
         {
             //ExStart:AddCornersSnipped
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -151,6 +156,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void GetActualShapeBoundsPoints()
         {
             //ExStart:GetActualShapeBoundsPoints
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -166,6 +172,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void VerticalAnchor()
         {
             //ExStart:VerticalAnchor
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -183,6 +190,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void DetectSmartArtShape()
         {
             //ExStart:DetectSmartArtShape
+            //GistId:ad463bf5f128fe6e6c1485df3c046a4c
             Document doc = new Document(MyDir + "SmartArt.docx");
 
             int count = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Count(shape => shape.HasSmartArt);
@@ -197,6 +205,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             Document doc = new Document(MyDir + "SmartArt.docx");
 
             //ExStart:UpdateSmartArtDrawing
+            //GistId:683cdbe52b97598d9d4ee4695b4f83c9
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
                 if (shape.HasSmartArt)
                     shape.UpdateSmartArtDrawing();

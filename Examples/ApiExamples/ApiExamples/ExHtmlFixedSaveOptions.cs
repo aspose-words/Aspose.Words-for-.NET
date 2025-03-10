@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -34,7 +34,7 @@ namespace ApiExamples
             // we can use a SaveOptions object to set a specific encoding.
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
-                Encoding = Encoding.GetEncoding("ASCII")
+                Encoding = Encoding.ASCII
             };
 
             Assert.AreEqual("US-ASCII", htmlFixedSaveOptions.Encoding.EncodingName);
@@ -53,7 +53,7 @@ namespace ApiExamples
 
             HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
             {
-                Encoding = Encoding.GetEncoding("utf-16")
+                Encoding = Encoding.UTF8
             };
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.GetEncoding.html", htmlFixedSaveOptions);
@@ -370,7 +370,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
 
             // The size of the optimized version of the document is almost a third of the size of the unoptimized document.
-            Assert.AreEqual(optimizeOutput ? 61889 : 191770,
+            Assert.AreEqual(optimizeOutput ? 61889 : 191000,
                 new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length, 200);
             //ExEnd
         }

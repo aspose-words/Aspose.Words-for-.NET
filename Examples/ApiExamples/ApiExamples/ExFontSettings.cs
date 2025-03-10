@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -170,7 +170,7 @@ namespace ApiExamples
             Assert.True(callback.FontSubstitutionWarnings[0].WarningType == WarningType.FontSubstitution);
             Assert.True(callback.FontSubstitutionWarnings[0].Description
                 .Equals(
-                    "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font.", StringComparison.Ordinal));
+                    "Font 'Times New Roman' has not been found. Using 'Fanwood' font instead. Reason: first available font."));
         }
 
         private class FontSubstitutionWarningCollector : IWarningCallback
@@ -303,7 +303,7 @@ namespace ApiExamples
 
             Assert.True(callback.FontWarnings[0].Description
                 .Equals(
-                    "Font \'SymbolPS\' has not been found. Using \'Wingdings\' font instead. Reason: font info substitution.", StringComparison.Ordinal));
+                    "Font \'SymbolPS\' has not been found. Using \'Wingdings\' font instead. Reason: font info substitution."));
         }
 
         [Test]

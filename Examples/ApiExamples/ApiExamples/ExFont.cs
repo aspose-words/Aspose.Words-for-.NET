@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -16,6 +16,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Fonts;
 using Aspose.Words.Notes;
+using Aspose.Words.Settings;
 using Aspose.Words.Tables;
 using Aspose.Words.Themes;
 using NUnit.Framework;
@@ -1699,6 +1700,36 @@ namespace ApiExamples
                 }
             }
             //ExEnd:PhysicalFontInfoEmbeddingLicensingRights
+        }
+
+        [Test]
+        public void NumberSpacing()
+        {
+            //ExStart:NumberSpacing
+            //GistId:95fdae949cefbf2ce485acc95cccc495
+            //ExFor:Font.NumberSpacing
+            //ExFor:NumSpacing
+            //ExSummary:Shows how to set the spacing type of the numeral.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // This effect is only supported in newer versions of MS Word.
+            doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2019);
+
+            builder.Write("1 ");
+            builder.Write("This is an example");
+
+            Run run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+            if (run.Font.NumberSpacing == NumSpacing.Default)
+                run.Font.NumberSpacing = NumSpacing.Proportional;
+
+            doc.Save(ArtifactsDir + "Fonts.NumberSpacing.docx");
+            //ExEnd:NumberSpacing
+
+            doc = new Document(ArtifactsDir + "Fonts.NumberSpacing.docx");
+
+            run = doc.FirstSection.Body.FirstParagraph.Runs[0];
+            Assert.AreEqual(NumSpacing.Proportional, run.Font.NumberSpacing);
         }
     }
 }

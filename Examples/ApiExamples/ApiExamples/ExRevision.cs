@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -400,7 +400,7 @@ namespace ApiExamples
             // We can accept/reject these revisions programmatically
             // by calling methods such as Document.AcceptAllRevisions, or each revision's Accept method.
             // In Microsoft Word, we can process them manually via "Review" -> "Changes".
-            doc.Save(ArtifactsDir + "Document.StartTrackRevisions.docx");
+            doc.Save(ArtifactsDir + "Revision.StartTrackRevisions.docx");
             //ExEnd
         }
 
@@ -600,10 +600,10 @@ namespace ApiExamples
             };
 
             docOriginal.Compare(docEdited, "John Doe", DateTime.Now, compareOptions);
-            docOriginal.Save(ArtifactsDir + "Document.CompareOptions.docx");
+            docOriginal.Save(ArtifactsDir + "Revision.CompareOptions.docx");
             //ExEnd
 
-            docOriginal = new Document(ArtifactsDir + "Document.CompareOptions.docx");
+            docOriginal = new Document(ArtifactsDir + "Revision.CompareOptions.docx");
 
             TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
                 "OriginalEdited endnote text.", (Footnote)docOriginal.GetChild(NodeType.Footnote, 0, true));
@@ -662,7 +662,7 @@ namespace ApiExamples
             doc.LayoutOptions.RevisionOptions.ShowRevisionBars = false;
             doc.LayoutOptions.RevisionOptions.RevisionBarsPosition = HorizontalAlignment.Right;
 
-            doc.Save(ArtifactsDir + "Document.LayoutOptionsRevisions.pdf");
+            doc.Save(ArtifactsDir + "Revision.LayoutOptionsRevisions.pdf");
             //ExEnd
         }
 

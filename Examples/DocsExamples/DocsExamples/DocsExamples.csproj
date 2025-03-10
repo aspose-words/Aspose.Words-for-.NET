@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;net6.0</TargetFrameworks>
+    <TargetFrameworks>net48;net9.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net462|AnyCPU'">
@@ -116,14 +116,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="24.9.0" />
-    <PackageReference Include="Aspose.Email" Version="24.9.0" />
-    <PackageReference Include="Aspose.Words" Version="24.10.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="24.10.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="Aspose.BarCode" Version="25.2.0" />
+    <PackageReference Include="Aspose.Email" Version="25.2.0" />
+    <PackageReference Include="Aspose.Words" Version="25.3.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.3.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="NUnit" Version="3.14.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
-    <PackageReference Include="System.Data.OleDb" Version="8.0.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+    <PackageReference Include="System.Data.OleDb" Version="9.0.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -144,28 +144,29 @@ namespace ApiExamples
 
             string docText = File.ReadAllText(ArtifactsDir + "TxtSaveOptions.ExportHeadersFooters.txt");
 
+            string newLine = Environment.NewLine;
             switch (txtExportHeadersFootersMode)
             {
                 case TxtExportHeadersFootersMode.AllAtEnd:
-                    Assert.AreEqual("Page 1\r\n" +
-                                    "Page 2\r\n" +
-                                    "Page 3\r\n" +
-                                    "Even header\r\n\r\n" +
-                                    "Primary header\r\n\r\n" +
-                                    "Even footer\r\n\r\n" +
-                                    "Primary footer\r\n\r\n", docText);
+                    Assert.AreEqual($"Page 1{newLine}" +
+                                    $"Page 2{newLine}" +
+                                    $"Page 3{newLine}" +
+                                    $"Even header{newLine}{newLine}" +
+                                    $"Primary header{newLine}{newLine}" +
+                                    $"Even footer{newLine}{newLine}" +
+                                    $"Primary footer{newLine}{newLine}", docText);
                     break;
                 case TxtExportHeadersFootersMode.PrimaryOnly:
-                    Assert.AreEqual("Primary header\r\n" +
-                                    "Page 1\r\n" +
-                                    "Page 2\r\n" +
-                                    "Page 3\r\n" +
-                                    "Primary footer\r\n", docText);
+                    Assert.AreEqual($"Primary header{newLine}" +
+                                    $"Page 1{newLine}" +
+                                    $"Page 2{newLine}" +
+                                    $"Page 3{newLine}" +
+                                    $"Primary footer{newLine}", docText);
                     break;
                 case TxtExportHeadersFootersMode.None:
-                    Assert.AreEqual("Page 1\r\n" +
-                                    "Page 2\r\n" +
-                                    "Page 3\r\n", docText);
+                    Assert.AreEqual($"Page 1{newLine}" +
+                                    $"Page 2{newLine}" +
+                                    $"Page 3{newLine}", docText);
                     break;
             }
             //ExEnd
@@ -249,18 +250,20 @@ namespace ApiExamples
 
             string docText = File.ReadAllText(ArtifactsDir + "TxtSaveOptions.SimplifyListLabels.txt");
 
+            string newLine = Environment.NewLine;
+
             if (simplifyListLabels)
-                Assert.AreEqual("* Item 1\r\n" +
-                                "  > Item 2\r\n" +
-                                "    + Item 3\r\n" +
-                                "      - Item 4\r\n" +
-                                "        o Item 5\r\n", docText);
+                Assert.AreEqual($"* Item 1{newLine}" +
+                                $"  > Item 2{newLine}" +
+                                $"    + Item 3{newLine}" +
+                                $"      - Item 4{newLine}" +
+                                $"        o Item 5{newLine}", docText);
             else
-                Assert.AreEqual("· Item 1\r\n" +
-                                "o Item 2\r\n" +
-                                "§ Item 3\r\n" +
-                                "· Item 4\r\n" +
-                                "o Item 5\r\n", docText);
+                Assert.AreEqual($"· Item 1{newLine}" +
+                                $"o Item 2{newLine}" +
+                                $"§ Item 3{newLine}" +
+                                $"· Item 4{newLine}" +
+                                $"o Item 5{newLine}", docText);
             //ExEnd
         }
 

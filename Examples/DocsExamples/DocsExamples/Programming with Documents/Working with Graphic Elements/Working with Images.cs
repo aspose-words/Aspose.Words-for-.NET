@@ -9,11 +9,12 @@ using System.IO;
 using Aspose.Words;
 using Aspose.Words.Drawing;
 using Aspose.Words.Layout;
+using Aspose.Words.Saving;
 using NUnit.Framework;
 
 namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
 {
-    internal class WorkingWithImages : DocsExamplesBase
+    public class WorkingWithImages : DocsExamplesBase
     {
         [Test]
         public void AddImageToEachPage()
@@ -86,6 +87,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         public void InsertBarcodeImage()
         {
             //ExStart:InsertBarcodeImage
+            //GistId:6f849e51240635a6322ab0460938c922
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -107,11 +109,12 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
 
             // Save the document as a PDF to disk
             // You can also save this directly to a stream
-            doc.Save(ArtifactsDir + "InsertBarcodeImage.docx");
+            doc.Save(ArtifactsDir + "WorkingWithImages.InsertBarcodeImage.docx");
             //ExEnd:InsertBarcodeImage
         }
 
         //ExStart:InsertBarcodeIntoFooter
+        //GistId:6f849e51240635a6322ab0460938c922
         private void InsertBarcodeIntoFooter(DocumentBuilder builder, Section section,
             HeaderFooterType footerType)
         {
@@ -160,15 +163,54 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             if (count != 1)
                 Console.WriteLine("We expected to have only 1 image resampled in this test document!");
 
-            doc.Save(ArtifactsDir + "CompressImages.docx");
+            doc.Save(ArtifactsDir + "WorkingWithImages.CompressImages.docx");
 
             // Verify that the first image was compressed by checking the new PPI.
-            doc = new Document(ArtifactsDir + "CompressImages.docx");
+            doc = new Document(ArtifactsDir + "WorkingWithImages.CompressImages.docx");
 
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             double imagePpi = shape.ImageData.ImageSize.WidthPixels / ConvertUtil.PointToInch(shape.SizeInPoints.Width);
 
             Debug.Assert(imagePpi < 150, "Image was not resampled successfully.");
+        }
+
+        [Test]
+        public void CropImages()
+        {
+            //ExStart:CropImages
+            //GistId:6f849e51240635a6322ab0460938c922
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            Image img = Image.FromFile(ImagesDir + "Logo.jpg");
+
+            int effectiveWidth = img.Width - 570;
+            int effectiveHeight = img.Height - 571;
+
+            Shape croppedImage = builder.InsertImage(img,
+                ConvertUtil.PixelToPoint(img.Width - effectiveWidth),
+                ConvertUtil.PixelToPoint(img.Height - effectiveHeight));
+
+            double widthRatio = croppedImage.Width / ConvertUtil.PixelToPoint(img.Width);
+            double heightRatio = croppedImage.Height / ConvertUtil.PixelToPoint(img.Height);
+
+            if (widthRatio < 1)
+                croppedImage.ImageData.CropRight = 1 - widthRatio;
+
+            if (heightRatio < 1)
+                croppedImage.ImageData.CropBottom = 1 - heightRatio;
+
+            float leftToWidth = (float)124 / img.Width;
+            float topToHeight = (float)90 / img.Height;
+
+            croppedImage.ImageData.CropLeft = leftToWidth;
+            croppedImage.ImageData.CropRight = croppedImage.ImageData.CropRight - leftToWidth;
+
+            croppedImage.ImageData.CropTop = topToHeight;
+            croppedImage.ImageData.CropBottom = croppedImage.ImageData.CropBottom - topToHeight;
+
+            croppedImage.GetShapeRenderer().Save(ArtifactsDir + "WorkingWithImages.CropImages.jpg", new ImageSaveOptions(SaveFormat.Jpeg));
+            //ExEnd:CropImages
         }
     }
 

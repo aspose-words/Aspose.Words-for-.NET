@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
 using System.Threading;
 using Aspose.Words;
 using Aspose.Words.Fields;
@@ -14,6 +14,8 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void FieldCode()
         {
+            //ExStart:FieldCode
+            //GistId:7c2b7b650a88375b1d438746f78f0d64
             Document doc = new Document(MyDir + "Hyperlinks.docx");
 
             foreach (Field field in doc.Range.Fields)
@@ -21,12 +23,14 @@ namespace DocsExamples.Programming_with_Documents
                 string fieldCode = field.GetFieldCode();
                 string fieldResult = field.Result;
             }
+            //ExEnd:FieldCode
         }
 
         [Test]
         public void ChangeFieldUpdateCultureSource()
         {
             //ExStart:ChangeFieldUpdateCultureSource
+            //GistId:9e90defe4a7bcafb004f73a2ef236986
             //ExStart:DocumentBuilderInsertField
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -50,20 +54,22 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void SpecifyLocaleAtFieldLevel()
         {
-            //ExStart:SpecifylocaleAtFieldlevel
+            //ExStart:SpecifyLocaleAtFieldLevel
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             DocumentBuilder builder = new DocumentBuilder();
 
             Field field = builder.InsertField(FieldType.FieldDate, true);
             field.LocaleId = 1049;
             
-            builder.Document.Save(ArtifactsDir + "WorkingWithFields.SpecifylocaleAtFieldlevel.docx");
-            //ExEnd:SpecifylocaleAtFieldlevel
+            builder.Document.Save(ArtifactsDir + "WorkingWithFields.SpecifyLocaleAtFieldLevel.docx");
+            //ExEnd:SpecifyLocaleAtFieldLevel
         }
 
         [Test]
         public void ReplaceHyperlinks()
         {
             //ExStart:ReplaceHyperlinks
+            //GistId:0213851d47551e83af42233f4d075cf6
             Document doc = new Document(MyDir + "Hyperlinks.docx");
 
             foreach (Field field in doc.Range.Fields)
@@ -89,6 +95,7 @@ namespace DocsExamples.Programming_with_Documents
         public void RenameMergeFields()
         {
             //ExStart:RenameMergeFields
+            //GistId:bf0f8a6b40b69a5274ab3553315e147f
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -113,6 +120,7 @@ namespace DocsExamples.Programming_with_Documents
         public void RemoveField()
         {
             //ExStart:RemoveField
+            //GistId:8c604665c1b97795df7a1e665f6b44ce
             Document doc = new Document(MyDir + "Various fields.docx");
             
             Field field = doc.Range.Fields[0];
@@ -124,15 +132,17 @@ namespace DocsExamples.Programming_with_Documents
         public void UnlinkFields()
         {
             //ExStart:UnlinkFields
+            //GistId:f3592014d179ecb43905e37b2a68bc92
             Document doc = new Document(MyDir + "Various fields.docx");
             doc.UnlinkFields();
             //ExEnd:UnlinkFields
         }
 
         [Test]
-        public void InsertTOAFieldWithoutDocumentBuilder()
+        public void InsertToaFieldWithoutDocumentBuilder()
         {
-            //ExStart:InsertTOAFieldWithoutDocumentBuilder
+            //ExStart:InsertToaFieldWithoutDocumentBuilder
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
             Paragraph para = new Paragraph(doc);
 
@@ -154,14 +164,15 @@ namespace DocsExamples.Programming_with_Documents
 
             fieldToa.Update();
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.InsertTOAFieldWithoutDocumentBuilder.docx");
-            //ExEnd:InsertTOAFieldWithoutDocumentBuilder
+            doc.Save(ArtifactsDir + "WorkingWithFields.InsertToaFieldWithoutDocumentBuilder.docx");
+            //ExEnd:InsertToaFieldWithoutDocumentBuilder
         }
 
         [Test]
         public void InsertNestedFields()
         {
             //ExStart:InsertNestedFields
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -186,9 +197,10 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void InsertMergeFieldUsingDOM()
+        public void InsertMergeFieldUsingDom()
         {
-            //ExStart:InsertMergeFieldUsingDOM
+            //ExStart:InsertMergeFieldUsingDom
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -211,14 +223,15 @@ namespace DocsExamples.Programming_with_Documents
 
             field.Update();
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.InsertMergeFieldUsingDOM.docx");
-            //ExEnd:InsertMergeFieldUsingDOM
+            doc.Save(ArtifactsDir + "WorkingWithFields.InsertMergeFieldUsingDom.docx");
+            //ExEnd:InsertMergeFieldUsingDom
         }
 
         [Test]
-        public void InsertMailMergeAddressBlockFieldUsingDOM()
+        public void InsertAddressBlockFieldUsingDom()
         {
-            //ExStart:InsertMailMergeAddressBlockFieldUsingDOM
+            //ExStart:InsertAddressBlockFieldUsingDom
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -241,14 +254,15 @@ namespace DocsExamples.Programming_with_Documents
 
             field.Update();
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.InsertMailMergeAddressBlockFieldUsingDOM.docx");
-            //ExEnd:InsertMailMergeAddressBlockFieldUsingDOM
+            doc.Save(ArtifactsDir + "WorkingWithFields.InsertAddressBlockFieldUsingDom.docx");
+            //ExEnd:InsertAddressBlockFieldUsingDom
         }
 
         [Test]
         public void InsertFieldIncludeTextWithoutDocumentBuilder()
         {
             //ExStart:InsertFieldIncludeTextWithoutDocumentBuilder
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
 
             Paragraph para = new Paragraph(doc);
@@ -271,6 +285,7 @@ namespace DocsExamples.Programming_with_Documents
         public void InsertFieldNone()
         {
             //ExStart:InsertFieldNone
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -284,6 +299,7 @@ namespace DocsExamples.Programming_with_Documents
         public void InsertField()
         {
             //ExStart:InsertField
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
@@ -296,6 +312,8 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void InsertFieldUsingFieldBuilder()
         {
+            //ExStart:InsertFieldUsingFieldBuilder
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
 
             // Prepare IF field with two nested MERGEFIELD fields: { IF "left expression" = "right expression" "Firstname: { MERGEFIELD firstname }" "Lastname: { MERGEFIELD lastname }"}
@@ -312,17 +330,19 @@ namespace DocsExamples.Programming_with_Documents
                         .AddText("Lastname: ")
                         .AddField(new FieldBuilder(FieldType.FieldMergeField).AddArgument("lastname")));
 
-            // Insert IF field in exact location            
+            // Insert IF field in exact location
             Field field = fieldBuilder.BuildAndInsert(doc.FirstSection.Body.FirstParagraph);
             field.Update();
 
             doc.Save(ArtifactsDir + "Field.InsertFieldUsingFieldBuilder.docx");
+            //ExEnd:InsertFieldUsingFieldBuilder
         }
 
         [Test]
         public void InsertAuthorField()
         {
             //ExStart:InsertAuthorField
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
 
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
@@ -339,9 +359,10 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void InsertASKFieldWithOutDocumentBuilder()
+        public void InsertAskFieldWithoutDocumentBuilder()
         {
-            //ExStart:InsertASKFieldWithOutDocumentBuilder
+            //ExStart:InsertAskFieldWithoutDocumentBuilder
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
 
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
@@ -359,14 +380,15 @@ namespace DocsExamples.Programming_with_Documents
 
             field.Update();
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.InsertASKFieldWithOutDocumentBuilder.docx");
-            //ExEnd:InsertASKFieldWithOutDocumentBuilder
+            doc.Save(ArtifactsDir + "WorkingWithFields.InsertAskFieldWithoutDocumentBuilder.docx");
+            //ExEnd:InsertAskFieldWithoutDocumentBuilder
         }
 
         [Test]
-        public void InsertAdvanceFieldWithOutDocumentBuilder()
+        public void InsertAdvanceFieldWithoutDocumentBuilder()
         {
-            //ExStart:InsertAdvanceFieldWithOutDocumentBuilder
+            //ExStart:InsertAdvanceFieldWithoutDocumentBuilder
+            //GistId:1cf07762df56f15067d6aef90b14b3db
             Document doc = new Document();
 
             Paragraph para = (Paragraph) doc.GetChild(NodeType.Paragraph, 0, true);
@@ -388,8 +410,8 @@ namespace DocsExamples.Programming_with_Documents
 
             field.Update();
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.InsertAdvanceFieldWithOutDocumentBuilder.docx");
-            //ExEnd:InsertAdvanceFieldWithOutDocumentBuilder
+            doc.Save(ArtifactsDir + "WorkingWithFields.InsertAdvanceFieldWithoutDocumentBuilder.docx");
+            //ExEnd:InsertAdvanceFieldWithoutDocumentBuilder
         }
 
         [Test]
@@ -429,7 +451,8 @@ namespace DocsExamples.Programming_with_Documents
         [Test]
         public void FieldUpdateCulture()
         {
-            //ExStart:FieldUpdateCultureProvider
+            //ExStart:FieldUpdateCulture
+            //GistId:79b46682fbfd7f02f64783b163ed95fc
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -439,10 +462,11 @@ namespace DocsExamples.Programming_with_Documents
             doc.FieldOptions.FieldUpdateCultureProvider = new FieldUpdateCultureProvider();
 
             doc.Save(ArtifactsDir + "WorkingWithFields.FieldUpdateCulture.pdf");
-            //ExEnd:FieldUpdateCultureProvider
+            //ExEnd:FieldUpdateCulture
         }
 
-        //ExStart:FieldUpdateCultureProviderGetCulture
+        //ExStart:FieldUpdateCultureProvider
+        //GistId:79b46682fbfd7f02f64783b163ed95fc
         class FieldUpdateCultureProvider : IFieldUpdateCultureProvider
         {
             public CultureInfo GetCulture(string name, Field field)
@@ -492,13 +516,15 @@ namespace DocsExamples.Programming_with_Documents
                 }
             }
         }
-        //ExEnd:FieldUpdateCultureProviderGetCulture
+        //ExEnd:FieldUpdateCultureProvider
 
         [Test]
         public void FieldDisplayResults()
         {
             //ExStart:FieldDisplayResults
+            //GistId:bf0f8a6b40b69a5274ab3553315e147f
             //ExStart:UpdateDocFields
+            //GistId:08db64c4d86842c4afd1ecb925ed07c4
             Document document = new Document(MyDir + "Various fields.docx");
 
             document.UpdateFields();
@@ -510,22 +536,24 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void EvaluateIFCondition()
+        public void EvaluateIfCondition()
         {
-            //ExStart:EvaluateIFCondition
+            //ExStart:EvaluateIfCondition
+            //GistId:79b46682fbfd7f02f64783b163ed95fc
             DocumentBuilder builder = new DocumentBuilder();
 
             FieldIf field = (FieldIf) builder.InsertField("IF 1 = 1", null);
             FieldIfComparisonResult actualResult = field.EvaluateCondition();
 
             Console.WriteLine(actualResult);
-            //ExEnd:EvaluateIFCondition
+            //ExEnd:EvaluateIfCondition
         }
 
         [Test]
-        public void ConvertFieldsInParagraph()
+        public void UnlinkFieldsInParagraph()
         {
-            //ExStart:ConvertFieldsInParagraph
+            //ExStart:UnlinkFieldsInParagraph
+            //GistId:f3592014d179ecb43905e37b2a68bc92
             Document doc = new Document(MyDir + "Linked fields.docx");
 
             // Pass the appropriate parameters to convert all IF fields to text that are encountered only in the last 
@@ -533,41 +561,44 @@ namespace DocsExamples.Programming_with_Documents
             doc.FirstSection.Body.LastParagraph.Range.Fields.Where(f => f.Type == FieldType.FieldIf).ToList()
                 .ForEach(f => f.Unlink());
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.TestFile.docx");
-            //ExEnd:ConvertFieldsInParagraph
+            doc.Save(ArtifactsDir + "WorkingWithFields.UnlinkFieldsInParagraph.docx");
+            //ExEnd:UnlinkFieldsInParagraph
         }
 
         [Test]
-        public void ConvertFieldsInDocument()
+        public void UnlinkFieldsInDocument()
         {
-            //ExStart:ConvertFieldsInDocument
+            //ExStart:UnlinkFieldsInDocument
+            //GistId:f3592014d179ecb43905e37b2a68bc92
             Document doc = new Document(MyDir + "Linked fields.docx");
 
             // Pass the appropriate parameters to convert all IF fields encountered in the document (including headers and footers) to text.
             doc.Range.Fields.Where(f => f.Type == FieldType.FieldIf).ToList().ForEach(f => f.Unlink());
 
             // Save the document with fields transformed to disk
-            doc.Save(ArtifactsDir + "WorkingWithFields.ConvertFieldsInDocument.docx");
-            //ExEnd:ConvertFieldsInDocument
+            doc.Save(ArtifactsDir + "WorkingWithFields.UnlinkFieldsInDocument.docx");
+            //ExEnd:UnlinkFieldsInDocument
         }
 
         [Test]
-        public void ConvertFieldsInBody()
+        public void UnlinkFieldsInBody()
         {
-            //ExStart:ConvertFieldsInBody
+            //ExStart:UnlinkFieldsInBody
+            //GistId:f3592014d179ecb43905e37b2a68bc92
             Document doc = new Document(MyDir + "Linked fields.docx");
 
             // Pass the appropriate parameters to convert PAGE fields encountered to text only in the body of the first section.
             doc.FirstSection.Body.Range.Fields.Where(f => f.Type == FieldType.FieldPage).ToList().ForEach(f => f.Unlink());
 
-            doc.Save(ArtifactsDir + "WorkingWithFields.ConvertFieldsInBody.docx");
-            //ExEnd:ConvertFieldsInBody
+            doc.Save(ArtifactsDir + "WorkingWithFields.UnlinkFieldsInBody.docx");
+            //ExEnd:UnlinkFieldsInBody
         }
 
         [Test]
         public void ChangeLocale()
         {
             //ExStart:ChangeLocale
+            //GistId:9e90defe4a7bcafb004f73a2ef236986
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -585,5 +616,152 @@ namespace DocsExamples.Programming_with_Documents
             doc.Save(ArtifactsDir + "WorkingWithFields.ChangeLocale.docx");
             //ExEnd:ChangeLocale
         }
+
+        //ExStart:ConvertFieldsToStaticText
+        //GistId:f3592014d179ecb43905e37b2a68bc92
+        /// <summary>
+        /// Converts any fields of the specified type found in the descendants of the node into static text.
+        /// </summary>
+        /// <param name="compositeNode">The node in which all descendants of the specified FieldType will be converted to static text.</param>
+        /// <param name="targetFieldType">The FieldType of the field to convert to static text.</param>
+        private void ConvertFieldsToStaticText(CompositeNode compositeNode, FieldType targetFieldType)
+        {
+            compositeNode.Range.Fields.Cast<Field>().Where(f => f.Type == targetFieldType).ToList().ForEach(f => f.Unlink());
+        }
+        //ExEnd:ConvertFieldsToStaticText
+
+        [Test]
+        public void FieldResultFormatting()
+        {
+            //ExStart:FieldResultFormatting
+            //GistId:79b46682fbfd7f02f64783b163ed95fc
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            FieldResultFormatter formatter = new FieldResultFormatter("${0}", "Date: {0}", "Item # {0}:");
+            doc.FieldOptions.ResultFormatter = formatter;
+
+            // Our field result formatter applies a custom format to newly created fields of three types of formats.
+            // Field result formatters apply new formatting to fields as they are updated,
+            // which happens as soon as we create them using this InsertField method overload.
+            // 1 -  Numeric:
+            builder.InsertField(" = 2 + 3 \\# $###");
+
+            Assert.AreEqual("$5", doc.Range.Fields[0].Result);
+            Assert.AreEqual(1, formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.Numeric));
+
+            // 2 -  Date/time:
+            builder.InsertField("DATE \\@ \"d MMMM yyyy\"");
+
+            Assert.IsTrue(doc.Range.Fields[1].Result.StartsWith("Date: "));
+            Assert.AreEqual(1, formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.DateTime));
+
+            // 3 -  General:
+            builder.InsertField("QUOTE \"2\" \\* Ordinal");
+
+            Assert.AreEqual("Item # 2:", doc.Range.Fields[2].Result);
+            Assert.AreEqual(1, formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.General));
+
+            formatter.PrintFormatInvocations();
+            //ExEnd:FieldResultFormatting
+        }
+
+        //ExStart:FieldResultFormatter
+        //GistId:79b46682fbfd7f02f64783b163ed95fc
+        /// <summary>
+        /// When fields with formatting are updated, this formatter will override their formatting
+        /// with a custom format, while tracking every invocation.
+        /// </summary>
+        private class FieldResultFormatter : IFieldResultFormatter
+        {
+            public FieldResultFormatter(string numberFormat, string dateFormat, string generalFormat)
+            {
+                mNumberFormat = numberFormat;
+                mDateFormat = dateFormat;
+                mGeneralFormat = generalFormat;
+            }
+
+            public string FormatNumeric(double value, string format)
+            {
+                if (string.IsNullOrEmpty(mNumberFormat))
+                    return null;
+
+                string newValue = String.Format(mNumberFormat, value);
+                FormatInvocations.Add(new FormatInvocation(FormatInvocationType.Numeric, value, format, newValue));
+                return newValue;
+            }
+
+            public string FormatDateTime(DateTime value, string format, CalendarType calendarType)
+            {
+                if (string.IsNullOrEmpty(mDateFormat))
+                    return null;
+
+                string newValue = String.Format(mDateFormat, value);
+                FormatInvocations.Add(new FormatInvocation(FormatInvocationType.DateTime, $"{value} ({calendarType})", format, newValue));
+                return newValue;
+            }
+
+            public string Format(string value, GeneralFormat format)
+            {
+                return Format((object)value, format);
+            }
+
+            public string Format(double value, GeneralFormat format)
+            {
+                return Format((object)value, format);
+            }
+
+            private string Format(object value, GeneralFormat format)
+            {
+                if (string.IsNullOrEmpty(mGeneralFormat))
+                    return null;
+
+                string newValue = String.Format(mGeneralFormat, value);
+                FormatInvocations.Add(new FormatInvocation(FormatInvocationType.General, value, format.ToString(), newValue));
+                return newValue;
+            }
+
+            public int CountFormatInvocations(FormatInvocationType formatInvocationType)
+            {
+                if (formatInvocationType == FormatInvocationType.All)
+                    return FormatInvocations.Count;
+                return FormatInvocations.Count(f => f.FormatInvocationType == formatInvocationType);
+            }
+
+            public void PrintFormatInvocations()
+            {
+                foreach (FormatInvocation f in FormatInvocations)
+                    Console.WriteLine($"Invocation type:\t{f.FormatInvocationType}\n" +
+                                      $"\tOriginal value:\t\t{f.Value}\n" +
+                                      $"\tOriginal format:\t{f.OriginalFormat}\n" +
+                                      $"\tNew value:\t\t\t{f.NewValue}\n");
+            }
+
+            private readonly string mNumberFormat;
+            private readonly string mDateFormat;
+            private readonly string mGeneralFormat;
+            private List<FormatInvocation> FormatInvocations { get; } = new List<FormatInvocation>();
+
+            private class FormatInvocation
+            {
+                public FormatInvocationType FormatInvocationType { get; }
+                public object Value { get; }
+                public string OriginalFormat { get; }
+                public string NewValue { get; }
+
+                public FormatInvocation(FormatInvocationType formatInvocationType, object value, string originalFormat, string newValue)
+                {
+                    Value = value;
+                    FormatInvocationType = formatInvocationType;
+                    OriginalFormat = originalFormat;
+                    NewValue = newValue;
+                }
+            }
+
+            public enum FormatInvocationType
+            {
+                Numeric, DateTime, General, All
+            }
+        }
+        //ExEnd:FieldResultFormatter
     }
 }

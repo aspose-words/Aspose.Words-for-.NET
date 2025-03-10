@@ -8,9 +8,10 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
     internal class WorkWithWatermark : DocsExamplesBase
     {
         [Test]
-        public void AddTextWatermarkWithSpecificOptions()
+        public void AddTextWatermark()
         {
-            //ExStart:AddTextWatermarkWithSpecificOptions
+            //ExStart:AddTextWatermark
+            //GistId:1f690a31c188a851d80d7aed4ff7e44c
             Document doc = new Document(MyDir + "Document.docx");
 
             TextWatermarkOptions options = new TextWatermarkOptions()
@@ -24,15 +25,16 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
 
             doc.Watermark.SetText("Test", options);
 
-            doc.Save(ArtifactsDir + "WorkWithWatermark.AddTextWatermarkWithSpecificOptions.docx");
-            //ExEnd:AddTextWatermarkWithSpecificOptions
+            doc.Save(ArtifactsDir + "WorkWithWatermark.AddTextWatermark.docx");
+            //ExEnd:AddTextWatermark
         }
 
 #if NET48
         [Test]
-        public void AddImageWatermarkWithSpecificOptions()
+        public void AddImageWatermark()
         {
-            //ExStart:AddImageWatermarkWithSpecificOptions
+            //ExStart:AddImageWatermark
+            //GistId:1f690a31c188a851d80d7aed4ff7e44c
             Document doc = new Document(MyDir + "Document.docx");
 
             ImageWatermarkOptions options = new ImageWatermarkOptions
@@ -44,13 +46,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             doc.Watermark.SetImage(Image.FromFile(ImagesDir + "Transparent background logo.png"), options);
 
             doc.Save(ArtifactsDir + "WorkWithWatermark.AddImageWatermark.docx");
-            //ExEnd:AddImageWatermarkWithSpecificOptions
+            //ExEnd:AddImageWatermark
         }
 
         [Test]
-        public void RemoveWatermarkFromDocument()
+        public void RemoveDocumentWatermark()
         {
-            //ExStart:RemoveWatermarkFromDocument
+            //ExStart:RemoveDocumentWatermark
+            //GistId:1f690a31c188a851d80d7aed4ff7e44c
             Document doc = new Document();
 
             // Add a plain text watermark.
@@ -73,12 +76,13 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             if (doc.Watermark.Type == WatermarkType.Text)
                 doc.Watermark.Remove();
 
-            doc.Save(ArtifactsDir + "WorkWithWatermark.RemoveWatermarkFromDocument.docx");
-            //ExEnd:RemoveWatermarkFromDocument
+            doc.Save(ArtifactsDir + "WorkWithWatermark.RemoveDocumentWatermark.docx");
+            //ExEnd:RemoveDocumentWatermark
         }
 #endif
 
-        //ExStart:AddWatermark
+        //ExStart:AddDocumentWatermark
+        //GistId:1f690a31c188a851d80d7aed4ff7e44c
         [Test]
         public void AddAndRemoveWatermark()
         {
@@ -87,7 +91,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             InsertWatermarkText(doc, "CONFIDENTIAL");
             doc.Save(ArtifactsDir + "WorkWithWatermark.AddWatermark.docx");
 
-            RemoveWatermarkText(doc);
+            RemoveWatermarkShape(doc);
             doc.Save(ArtifactsDir + "WorkWithWatermark.RemoveWatermark.docx");
         }
 
@@ -98,8 +102,11 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         /// <param name="watermarkText">Text of the watermark.</param>
         private void InsertWatermarkText(Document doc, string watermarkText)
         {
+            //ExStart:SetShapeName
+            //GistId:1f690a31c188a851d80d7aed4ff7e44c
             // Create a watermark shape, this will be a WordArt shape.
             Shape watermark = new Shape(doc, ShapeType.TextPlainText) { Name = "Watermark" };
+            //ExEnd:SetShapeName
 
             watermark.TextPath.Text = watermarkText;
             watermark.TextPath.FontFamily = "Arial";
@@ -150,22 +157,23 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             // Insert a clone of the watermark into the header.
             header.AppendChild(watermarkPara.Clone(true));
         }
-        //ExEnd:AddWatermark
-        
-        //ExStart:RemoveWatermark
-        private void RemoveWatermarkText(Document doc)
+        //ExEnd:AddDocumentWatermark
+
+        //ExStart:RemoveWatermarkShape
+        //GistId:1f690a31c188a851d80d7aed4ff7e44c
+        private void RemoveWatermarkShape(Document doc)
         {
             foreach (HeaderFooter hf in doc.GetChildNodes(NodeType.HeaderFooter, true))
             {
                 foreach (Shape shape in hf.GetChildNodes(NodeType.Shape, true))
                 {
-                    if (shape.Name.Contains("WaterMark"))
+                    if (shape.Name.Contains("Watermark"))
                     {
                         shape.Remove();
                     }
                 }
             }
         }
-        //ExEnd:RemoveWatermark
+        //ExEnd:RemoveWatermarkShape
     }
 }

@@ -10,15 +10,16 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
     internal class WorkingWithDocumentOptionsAndSettings : DocsExamplesBase
     {
         [Test]
-        public void OptimizeForMsWord()
+        public void OptimizeFor()
         {
-            //ExStart:OptimizeForMsWord
+            //ExStart:OptimizeFor
+            //GistId:5d2997d42c1f1fad79b18873f170855f
             Document doc = new Document(MyDir + "Document.docx");
 
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2016);
 
-            doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.OptimizeForMsWord.docx");
-            //ExEnd:OptimizeForMsWord
+            doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.OptimizeFor.docx");
+            //ExEnd:OptimizeFor
         }
 
         [Test]
@@ -37,7 +38,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         [Test]
         public void CleanupUnusedStylesAndLists()
         {
-            //ExStart:CleanupUnusedStylesandLists
+            //ExStart:CleanupUnusedStylesAndLists
+            //GistId:669f3d08f45b14f75f9d2cb17fa1056a
             Document doc = new Document(MyDir + "Unused styles.docx");
 
             // Combined with the built-in styles, the document now has eight styles.
@@ -54,13 +56,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
                               $"Count of lists after Cleanup is the same: {doc.Lists.Count}");
 
             doc.Save(ArtifactsDir + "WorkingWithDocumentOptionsAndSettings.CleanupUnusedStylesAndLists.docx");
-            //ExEnd:CleanupUnusedStylesandLists
+            //ExEnd:CleanupUnusedStylesAndLists
         }
 
         [Test]
         public void CleanupDuplicateStyle()
         {
             //ExStart:CleanupDuplicateStyle
+            //GistId:669f3d08f45b14f75f9d2cb17fa1056a
             Document doc = new Document(MyDir + "Document.docx");
 
             // Count of styles before Cleanup.
@@ -81,6 +84,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void ViewOptions()
         {
             //ExStart:SetViewOption
+            //GistId:5d2997d42c1f1fad79b18873f170855f
             Document doc = new Document(MyDir + "Document.docx");
             
             doc.ViewOptions.ViewType = ViewType.PageLayout;
@@ -94,6 +98,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void DocumentPageSetup()
         {
             //ExStart:DocumentPageSetup
+            //GistId:5d2997d42c1f1fad79b18873f170855f
             Document doc = new Document(MyDir + "Document.docx");
 
             // Set the layout mode for a section allowing to define the document grid behavior.
@@ -130,6 +135,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void SetRussianAsDefaultEditingLanguage()
         {
             //ExStart:SetRussianAsDefaultEditingLanguage
+            //GistId:5d2997d42c1f1fad79b18873f170855f
             LoadOptions loadOptions = new LoadOptions();
             loadOptions.LanguagePreferences.DefaultEditingLanguage = EditingLanguage.Russian;
 

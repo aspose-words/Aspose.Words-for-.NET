@@ -1,5 +1,7 @@
 ﻿using System;
 using Aspose.Words;
+using Aspose.Words.Layout;
+using Aspose.Words.Tables;
 using NUnit.Framework;
 
 namespace DocsExamples.Programming_with_Documents.Working_with_Document
@@ -10,6 +12,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void SpaceBetweenAsianAndLatinText()
         {
             //ExStart:SpaceBetweenAsianAndLatinText
+            //GistId:4f54ffd5c7580f0d146b53e52d986f38
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -28,6 +31,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void AsianTypographyLineBreakGroup()
         {
             //ExStart:AsianTypographyLineBreakGroup
+            //GistId:4f54ffd5c7580f0d146b53e52d986f38
             Document doc = new Document(MyDir + "Asian typography.docx");
 
             ParagraphFormat format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
@@ -43,6 +47,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void ParagraphFormatting()
         {
             //ExStart:ParagraphFormatting
+            //GistId:4b5526c3c0d9cad73e05fb4b18d2c3d2
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -65,6 +70,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void MultilevelListFormatting()
         {
             //ExStart:MultilevelListFormatting
+            //GistId:a1dfeba1e0480d5b277a61742c8921af
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -96,6 +102,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void ApplyParagraphStyle()
         {
             //ExStart:ApplyParagraphStyle
+            //GistId:4b5526c3c0d9cad73e05fb4b18d2c3d2
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -110,6 +117,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void ApplyBordersAndShadingToParagraph()
         {
             //ExStart:ApplyBordersAndShadingToParagraph
+            //GistId:4b5526c3c0d9cad73e05fb4b18d2c3d2
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -172,6 +180,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void GetParagraphStyleSeparator()
         {
             //ExStart:GetParagraphStyleSeparator
+            //GistId:4b5526c3c0d9cad73e05fb4b18d2c3d2
             Document doc = new Document(MyDir + "Document.docx");
 
             foreach (Paragraph paragraph in doc.GetChildNodes(NodeType.Paragraph, true))
@@ -183,5 +192,84 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             }
             //ExEnd:GetParagraphStyleSeparator
         }
+
+        [Test]
+        //ExStart:GetParagraphLines
+        //GistId:4b5526c3c0d9cad73e05fb4b18d2c3d2
+        public void GetParagraphLines()
+        {
+            Document doc = new Document(MyDir + "Properties.docx");
+
+            LayoutCollector collector = new LayoutCollector(doc);
+            LayoutEnumerator enumerator = new LayoutEnumerator(doc);
+            foreach (Paragraph paragraph in doc.GetChildNodes(NodeType.Paragraph, true))
+            {
+                ProcessParagraph(paragraph, collector, enumerator);
+            }
+        }
+
+        private static void ProcessParagraph(Paragraph paragraph, LayoutCollector collector, LayoutEnumerator enumerator)
+        {
+            object paragraphBreak = collector.GetEntity(paragraph);
+            if (paragraphBreak == null)
+                return;
+
+            object stopEntity = GetStopEntity(paragraph, collector, enumerator);
+
+            enumerator.Current = paragraphBreak;
+            enumerator.MoveParent();
+
+            int lineCount = CountLines(enumerator, stopEntity);
+
+            string paragraphText = GetTruncatedText(paragraph.GetText());
+            Console.WriteLine($"Paragraph '{paragraphText}' has {lineCount} line(-s).");
+        }
+
+        private static object GetStopEntity(Paragraph paragraph, LayoutCollector collector, LayoutEnumerator enumerator)
+        {
+            Node previousNode = paragraph.PreviousSibling;
+            if (previousNode == null)
+                return null;
+
+            if (previousNode is Paragraph prevParagraph)
+            {
+                enumerator.Current = collector.GetEntity(prevParagraph); // Para break.
+                enumerator.MoveParent(); // Last line.
+                return enumerator.Current;
+            }
+            else if (previousNode is Table table)
+            {
+                enumerator.Current = collector.GetEntity(table.LastRow.LastCell.LastParagraph); // Cell break.
+                enumerator.MoveParent(); // Cell.
+                enumerator.MoveParent(); // Row.
+                return enumerator.Current;
+            }
+            else
+            {
+                throw new InvalidOperationException("Unsupported node type encountered.");
+            }
+        }
+        /// <summary>
+        /// We move from line to line in a paragraph.
+        /// When paragraph spans multiple pages the we will follow across them.
+        /// </summary>
+        private static int CountLines(LayoutEnumerator enumerator, object stopEntity)
+        {
+            int count = 1;
+            while (enumerator.Current != stopEntity)
+            {
+                if (!enumerator.MovePreviousLogical())
+                    break;
+                count++;
+            }
+            return count;
+        }
+
+        private static string GetTruncatedText(string text)
+        {
+            int MaxChars = 16;
+            return text.Length > MaxChars ? $"{text.Substring(0, MaxChars)}..." : text;
+        }
+        //ExEnd:GetParagraphLines
     }
 }

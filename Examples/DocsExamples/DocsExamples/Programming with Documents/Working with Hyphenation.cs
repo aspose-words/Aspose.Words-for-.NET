@@ -8,33 +8,36 @@ namespace DocsExamples.Programming_with_Documents
     internal class WorkingWithHyphenation : DocsExamplesBase
     {
         [Test]
-        public void HyphenateWordsOfLanguages()
+        public void HyphenateWords()
         {
-            //ExStart:HyphenateWordsOfLanguages
+            //ExStart:HyphenateWords
+            //GistId:a52aacf87a36f7881ba29d25de92fb83
             Document doc = new Document(MyDir + "German text.docx");
 
             Hyphenation.RegisterDictionary("en-US", MyDir + "hyph_en_US.dic");
             Hyphenation.RegisterDictionary("de-CH", MyDir + "hyph_de_CH.dic");
 
-            doc.Save(ArtifactsDir + "WorkingWithHyphenation.HyphenateWordsOfLanguages.pdf");
-            //ExEnd:HyphenateWordsOfLanguages
+            doc.Save(ArtifactsDir + "WorkingWithHyphenation.HyphenateWords.pdf");
+            //ExEnd:HyphenateWords
         }
 
         [Test]
-        public void LoadHyphenationDictionaryForLanguage()
+        public void LoadHyphenationDictionary()
         {
-            //ExStart:LoadHyphenationDictionaryForLanguage
+            //ExStart:LoadHyphenationDictionary
+            //GistId:a52aacf87a36f7881ba29d25de92fb83
             Document doc = new Document(MyDir + "German text.docx");
             
             Stream stream = File.OpenRead(MyDir + "hyph_de_CH.dic");
             Hyphenation.RegisterDictionary("de-CH", stream);
 
-            doc.Save(ArtifactsDir + "WorkingWithHyphenation.LoadHyphenationDictionaryForLanguage.pdf");
-            //ExEnd:LoadHyphenationDictionaryForLanguage
+            doc.Save(ArtifactsDir + "WorkingWithHyphenation.LoadHyphenationDictionary.pdf");
+            //ExEnd:LoadHyphenationDictionary
         }
 
-        [Test] 
+        [Test]
         //ExStart:CustomHyphenation
+        //GistId:a52aacf87a36f7881ba29d25de92fb83
         public void HyphenationCallback()
         {
             try

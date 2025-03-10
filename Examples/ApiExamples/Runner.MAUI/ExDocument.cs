@@ -28,7 +28,6 @@ using Aspose.Words.WebExtensions;
 using Xunit;
 using Runner.MAUI;
 using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
-using Aspose.Words.Pdf2Word.FixedFormats;
 using Aspose.Page.XPS;
 using LoadOptions = Aspose.Words.Loading.LoadOptions;
 using Aspose.Page.XPS.XpsModel;
@@ -37,6 +36,7 @@ using Aspose.Words.Shaping.HarfBuzz;
 using Style = Aspose.Words.Style;
 using Color = System.Drawing.Color;
 using SkiaSharp;
+using Aspose.Words.LowCode;
 
 namespace ApiExamples
 {
@@ -199,68 +199,63 @@ namespace ApiExamples
         [InlineData("Images.pdf", "BMP")]
         public void PdfRenderer(string docName, string format)
         {
-            var pdfRenderer = new PdfFixedRenderer();
-            var options = new PdfFixedOptions();
-
-
             switch (format)
             {
                 case "PDF":
-                    options = new PdfFixedOptions() { Password = "{Asp0se}P@ssw0rd" };
-                    SaveTo(pdfRenderer, docName, options, "pdf");
+                    LoadOptions loadOptions = new LoadOptions() { Password = "{Asp0se}P@ssw0rd" };
+                    SaveTo(docName, loadOptions, new PdfSaveOptions(), "pdf");
                     AssertResult("pdf");
 
                     break;
 
                 case "HTML":
-                    options = new PdfFixedOptions() { PageIndex = 0, PageCount = 1 };
-                    SaveTo(pdfRenderer, docName, options, "html");
+                    HtmlFixedSaveOptions htmlSaveOptions = new HtmlFixedSaveOptions() { PageSet = new PageSet(0) };
+                    SaveTo(docName, new LoadOptions(), htmlSaveOptions, "html");
                     AssertResult("html");
 
                     break;
 
-                case "XPS":                    
-                    SaveTo(pdfRenderer, docName, options, "xps");
+                case "XPS":
+                    SaveTo(docName, new LoadOptions(), new XpsSaveOptions(), "xps");
                     AssertResult("xps");
 
                     break;
 
                 case "JPEG":
-                    options = new PdfFixedOptions() { JpegQuality = 10, ImageFormat = FixedImageFormat.Jpeg };
-                    SaveTo(pdfRenderer, docName, options, "jpeg");
+                    ImageSaveOptions jpegSaveOptions = new ImageSaveOptions(SaveFormat.Jpeg) { JpegQuality = 10 };
+                    SaveTo(docName, new LoadOptions(), jpegSaveOptions, "jpeg");
                     AssertResult("jpeg");
 
                     break;
 
                 case "PNG":
-                    options = new PdfFixedOptions() { 
-                        PageIndex = 0, 
-                        PageCount = 2, 
-                        JpegQuality = 50, 
-                        ImageFormat = FixedImageFormat.Png 
+                    ImageSaveOptions pngSaveOptions = new ImageSaveOptions(SaveFormat.Png)
+                    {
+                        PageSet = new PageSet(0, 1),
+                        JpegQuality = 50
                     };
-                    SaveTo(pdfRenderer, docName, options, "png");
+                    SaveTo(docName, new LoadOptions(), pngSaveOptions, "png");
                     AssertResult("png");
 
                     break;
 
                 case "TIFF":
-                    options = new PdfFixedOptions() { JpegQuality = 100, ImageFormat = FixedImageFormat.Tiff };
-                    SaveTo(pdfRenderer, docName, options, "tiff");
+                    ImageSaveOptions tiffSaveOptions = new ImageSaveOptions(SaveFormat.Tiff) { JpegQuality = 100 };
+                    SaveTo(docName, new LoadOptions(), tiffSaveOptions, "tiff");
                     AssertResult("tiff");
 
                     break;
 
                 case "BMP":
-                    options = new PdfFixedOptions() { ImageFormat = FixedImageFormat.Bmp };
-                    SaveTo(pdfRenderer, docName, options, "bmp");
+                    ImageSaveOptions bmpSaveOptions = new ImageSaveOptions(SaveFormat.Bmp);
+                    SaveTo(docName, new LoadOptions(), bmpSaveOptions, "bmp");
                     AssertResult("bmp");
 
                     break;
             }
         }
 
-        private void SaveTo(PdfFixedRenderer pdfRenderer, string docName, PdfFixedOptions fixedOptions, string fileExt)
+        private void SaveTo(string docName, LoadOptions loadOptions, SaveOptions saveOptions, string fileExt)
         {
             using (var pdfDoc = File.OpenRead(MyDir + docName))
             {
@@ -269,19 +264,19 @@ namespace ApiExamples
 
                 if (fileExt == "pdf")
                 {
-                    stream = pdfRenderer.SavePdfAsPdf(pdfDoc, fixedOptions);
+                    Converter.Convert(pdfDoc, loadOptions, stream, saveOptions);
                 }
                 else if (fileExt == "html")
                 {
-                    stream = pdfRenderer.SavePdfAsHtml(pdfDoc, fixedOptions);
+                    Converter.Convert(pdfDoc, loadOptions, stream, saveOptions);
                 }
                 else if (fileExt == "xps")
                 {
-                    stream = pdfRenderer.SavePdfAsXps(pdfDoc, fixedOptions);
+                    Converter.Convert(pdfDoc, loadOptions, stream, saveOptions);
                 }
                 else if (fileExt == "jpeg" || fileExt == "png" || fileExt == "tiff" || fileExt == "bmp")
                 {
-                    imagesStream = pdfRenderer.SavePdfAsImages(pdfDoc, fixedOptions);
+                    imagesStream = Converter.ConvertToImages(pdfDoc, loadOptions, (ImageSaveOptions)saveOptions);
                 }
 
                 if (imagesStream.Count != 0)
@@ -289,8 +284,8 @@ namespace ApiExamples
                     for (int i = 0; i < imagesStream.Count; i++)
                     {
                         using (FileStream resultDoc = new FileStream(ArtifactsDir + $"PdfRenderer_{i}.{fileExt}", FileMode.Create))
-                            imagesStream[i].CopyTo(resultDoc);                        
-                    }                    
+                            imagesStream[i].CopyTo(resultDoc);
+                    }
                 }
                 else
                 {
@@ -310,7 +305,7 @@ namespace ApiExamples
                                      .Where(path => reg.IsMatch(path))
                                      .ToList();
 
-                if(fileExt == "png")
+                if (fileExt == "png")
                     Assert.Equal(2, images.Count);
                 else
                     Assert.Equal(5, images.Count);
@@ -327,8 +322,8 @@ namespace ApiExamples
                     var doc = new Document(ArtifactsDir + $"PdfRenderer.{fileExt}");
                     var content = doc.GetText().Replace("\r", " ");
 
-                    Assert.Contains("Heading 1 Heading 1.1.1.1 Heading 1.1.1.2", content);
-                }               
+                    Assert.True(content.Contains("Heading 1 Heading 1.1.1.1 Heading 1.1.1.2"));
+                }
             }
         }
 
@@ -342,7 +337,7 @@ namespace ApiExamples
             for (int i = 0; i < element.Count; i++)
                 AssertXpsText(element[i]);
             if (element is XpsGlyphs)
-                Assert.Contains(new[] { "Heading 1", "Head", "ing 1" }, c => ((XpsGlyphs)element).UnicodeString.Contains(c));
+                Assert.True(new[] { "Heading 1", "Head", "ing 1" }.Any(c => ((XpsGlyphs)element).UnicodeString.Contains(c)));
         }
 
         [Fact]

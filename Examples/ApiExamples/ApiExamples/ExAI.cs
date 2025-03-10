@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -55,7 +55,7 @@ namespace ApiExamples
             //ExEnd:AiSummarize
         }
 
-        [Test, Ignore("This test should be run manually to manage API requests amount")]
+        [Test, Explicit("This test should be run manually to manage API requests amount")]
         public void AiTranslate()
         {
             //ExStart:AiTranslate
@@ -74,7 +74,7 @@ namespace ApiExamples
             //ExEnd:AiTranslate
         }
 
-        [Test, Ignore("This test should be run manually to manage API requests amount")]
+        [Test, Explicit("This test should be run manually to manage API requests amount")]
         public void AiGrammar()
         {
             //ExStart:AiGrammar
@@ -86,13 +86,13 @@ namespace ApiExamples
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use OpenAI generative language models.
-            IAiModelText model = (IAiModelText)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
+            IAiModelText model = (OpenAiModel)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
 
             CheckGrammarOptions grammarOptions = new CheckGrammarOptions();
             grammarOptions.ImproveStylistics = true;
 
             Document proofedDoc = model.CheckGrammar(doc, grammarOptions);
-            proofedDoc.Save("AI.AiGrammar.docx");
+            proofedDoc.Save(ArtifactsDir + "AI.AiGrammar.docx");
             //ExEnd:AiGrammar
         }
     }

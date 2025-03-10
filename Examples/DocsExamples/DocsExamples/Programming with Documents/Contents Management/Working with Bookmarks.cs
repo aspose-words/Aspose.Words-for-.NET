@@ -13,8 +13,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void AccessBookmarks()
         {
             //ExStart:AccessBookmarks
+            //GistId:c4555b1a088856e21394104faeb86e51
             Document doc = new Document(MyDir + "Bookmarks.docx");
-            
             // By index:
             Bookmark bookmark1 = doc.Range.Bookmarks[0];
             // By name:
@@ -26,6 +26,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void UpdateBookmarkData()
         {
             //ExStart:UpdateBookmarkData
+            //GistId:c4555b1a088856e21394104faeb86e51
             Document doc = new Document(MyDir + "Bookmarks.docx");
 
             Bookmark bookmark = doc.Range.Bookmarks["MyBookmark1"];
@@ -42,6 +43,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void BookmarkTableColumns()
         {
             //ExStart:BookmarkTable
+            //GistId:c4555b1a088856e21394104faeb86e51
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -71,6 +73,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             //ExEnd:BookmarkTable
 
             //ExStart:BookmarkTableColumns
+            //GistId:c4555b1a088856e21394104faeb86e51
             foreach (Bookmark bookmark in doc.Range.Bookmarks)
             {
                 Console.WriteLine("Bookmark: {0}{1}", bookmark.Name, bookmark.IsColumn ? " (Column)" : "");
@@ -148,6 +151,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void CreateBookmark()
         {
             //ExStart:CreateBookmark
+            //GistId:c4555b1a088856e21394104faeb86e51
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -173,6 +177,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ShowHideBookmarks()
         {
             //ExStart:ShowHideBookmarks
+            //GistId:c4555b1a088856e21394104faeb86e51
             Document doc = new Document(MyDir + "Bookmarks.docx");
 
             ShowHideBookmarkedContent(doc, "MyBookmark1", true);
@@ -182,6 +187,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         }
 
         //ExStart:ShowHideBookmarkedContent
+        //GistId:c4555b1a088856e21394104faeb86e51
         public void ShowHideBookmarkedContent(Document doc, string bookmarkName, bool isHidden)
         {
             Bookmark bm = doc.Range.Bookmarks[bookmarkName];

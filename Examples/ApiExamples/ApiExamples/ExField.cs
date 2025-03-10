@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -89,7 +89,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Field sample - Field with data.docx");
 
             Field field = doc.Range.Fields[2];
-            Console.WriteLine(Encoding.Default.GetString(field.Start.FieldData));
+            Console.WriteLine(Encoding.UTF8.GetString(field.Start.FieldData));
             //ExEnd
         }
 
@@ -1401,7 +1401,7 @@ namespace ApiExamples
             // has reset the count for this level so that this field will display "2.2.1.".
             InsertNumberedClause(builder, "\tHeading 6", fillerText, StyleIdentifier.Heading3);
 
-            foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal))
+            foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal).ToList())
             {
                 // The separator character, which appears in the field result immediately after the number,
                 // is a full stop by default. If we leave this property null,
@@ -1440,7 +1440,7 @@ namespace ApiExamples
         {
             doc = DocumentHelper.SaveOpen(doc);
 
-            foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal))
+            foreach (FieldAutoNumLgl field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumLegal).ToList())
             {
                 TestUtil.VerifyField(FieldType.FieldAutoNumLegal, " AUTONUMLGL  \\s : \\e", string.Empty, field);
 
@@ -1471,7 +1471,7 @@ namespace ApiExamples
             builder.InsertField(FieldType.FieldAutoNumOutline, true);
             builder.Writeln("\tParagraph 2.");
 
-            foreach (FieldAutoNumOut field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumOutline))
+            foreach (FieldAutoNumOut field in doc.Range.Fields.Where(f => f.Type == FieldType.FieldAutoNumOutline).ToList())
                 Assert.AreEqual(" AUTONUMOUT ", field.GetFieldCode());
 
             doc.Save(ArtifactsDir + "Field.AUTONUMOUT.docx");
@@ -4671,25 +4671,25 @@ namespace ApiExamples
 
             field = (FieldStyleRef)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\n", "b )", field);
+            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\n", "‎b )", field);
             Assert.AreEqual("Quote", field.StyleName);
             Assert.True(field.InsertParagraphNumber);
 
             field = (FieldStyleRef)doc.Range.Fields[3];
 
-            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\r", "b )", field);
+            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\r", "‎b )", field);
             Assert.AreEqual("Quote", field.StyleName);
             Assert.True(field.InsertParagraphNumberInRelativeContext);
 
             field = (FieldStyleRef)doc.Range.Fields[4];
 
-            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\w", "1.b )", field);
+            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\w", "‎1.b )", field);
             Assert.AreEqual("Quote", field.StyleName);
             Assert.True(field.InsertParagraphNumberInFullContext);
 
             field = (FieldStyleRef)doc.Range.Fields[5];
 
-            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\w \\t", "1.b)", field);
+            TestUtil.VerifyField(FieldType.FieldStyleRef, " STYLEREF  Quote \\w \\t", "‎1.b)", field);
             Assert.AreEqual("Quote", field.StyleName);
             Assert.True(field.InsertParagraphNumberInFullContext);
             Assert.True(field.SuppressNonDelimiters);
@@ -6181,28 +6181,28 @@ namespace ApiExamples
 
             field = (FieldRef)doc.Range.Fields[2];
 
-            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\n", ">>> i", field);
+            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\n", "‎>>> i", field);
             Assert.AreEqual("MyBookmark", field.BookmarkName);
             Assert.True(field.InsertParagraphNumber);
             Assert.AreEqual(" REF  MyBookmark \\n", field.GetFieldCode());
-            Assert.AreEqual(">>> i", field.Result);
+            Assert.AreEqual("‎>>> i", field.Result);
 
             field = (FieldRef)doc.Range.Fields[3];
 
-            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\n \\t", "i", field);
+            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\n \\t", "‎i", field);
             Assert.AreEqual("MyBookmark", field.BookmarkName);
             Assert.True(field.InsertParagraphNumber);
             Assert.True(field.SuppressNonDelimiters);
 
             field = (FieldRef)doc.Range.Fields[4];
 
-            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\w", "> 4>> c>>> i", field);
+            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\w", "‎> 4>> c>>> i", field);
             Assert.AreEqual("MyBookmark", field.BookmarkName);
             Assert.True(field.InsertParagraphNumberInFullContext);
 
             field = (FieldRef)doc.Range.Fields[5];
 
-            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\r", ">> c>>> i", field);
+            TestUtil.VerifyField(FieldType.FieldRef, " REF  MyBookmark \\r", "‎>> c>>> i", field);
             Assert.AreEqual("MyBookmark", field.BookmarkName);
             Assert.True(field.InsertParagraphNumberInRelativeContext);
         }

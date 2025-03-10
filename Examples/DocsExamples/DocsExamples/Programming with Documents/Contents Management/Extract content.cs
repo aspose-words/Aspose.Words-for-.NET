@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Aspose.Words;
@@ -387,6 +387,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public void ExtractContentBasedOnStyles()
         {
             //ExStart:ExtractContentBasedOnStyles
+            //GistId:a73b495f610523670f0847331ef4d6fc
             Document doc = new Document(MyDir + "Styles.docx");
 
             List<Paragraph> paragraphs = ParagraphsByStyleName(doc, "Heading 1");
@@ -404,6 +405,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         }
 
         //ExStart:RunsByStyleName
+        //GistId:a73b495f610523670f0847331ef4d6fc
         public List<Run> RunsByStyleName(Document doc, string styleName)
         {
             List<Run> runsWithStyle = new List<Run>();

@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -517,7 +517,7 @@ namespace ApiExamples
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            foreach (Paragraph para in paras.OfType<Paragraph>().Where(p => p.ListFormat.IsListItem))
+            foreach (Paragraph para in paras.OfType<Paragraph>().Where(p => p.ListFormat.IsListItem).ToList())
             { 
                 Console.WriteLine($"This paragraph belongs to list ID# {para.ListFormat.List.ListId}, number style \"{para.ListFormat.ListLevel.NumberStyle}\"");
                 Console.WriteLine($"\t\"{para.GetText().Trim()}\"");
@@ -527,7 +527,7 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(6, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(6, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
         }
 
         [Test]
@@ -546,12 +546,12 @@ namespace ApiExamples
             builder.ListFormat.RemoveNumbers();
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
 
             foreach (Paragraph paragraph in paras)
                 paragraph.ListFormat.RemoveNumbers();
 
-            Assert.AreEqual(0, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(0, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
             //ExEnd
         }
 
@@ -570,25 +570,25 @@ namespace ApiExamples
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(0, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(0, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
 
             doc.Lists.Add(ListTemplate.NumberDefault);
-            List list = doc.Lists[0];
+            List docList = doc.Lists[0];
 
             foreach (Paragraph paragraph in paras.OfType<Paragraph>())
             {
-                paragraph.ListFormat.List = list;
+                paragraph.ListFormat.List = docList;
                 paragraph.ListFormat.ListLevelNumber = 2;
             }
 
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
             paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.ListLevelNumber == 2));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.ListLevelNumber == 2));
         }
 
         [Test]
@@ -606,24 +606,24 @@ namespace ApiExamples
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(0, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(0, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
 
-            List list = doc.Lists.Add(ListTemplate.NumberUppercaseLetterDot);
+            List docList = doc.Lists.Add(ListTemplate.NumberUppercaseLetterDot);
 
             foreach (Paragraph paragraph in paras.OfType<Paragraph>())
             {
-                paragraph.ListFormat.List = list;
+                paragraph.ListFormat.List = docList;
                 paragraph.ListFormat.ListLevelNumber = 1;
             }
 
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
             paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.IsListItem));
-            Assert.AreEqual(3, paras.Count(n => (n as Paragraph).ListFormat.ListLevelNumber == 1));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
+            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.ListLevelNumber == 1));
         }
 
         //ExStart
@@ -904,7 +904,7 @@ namespace ApiExamples
 
             // Find if we have the paragraph list. In our document, our list uses plain Arabic numbers,
             // which start at three and ends at six.
-            foreach (Paragraph paragraph in paras.OfType<Paragraph>().Where(p => p.ListFormat.IsListItem))
+            foreach (Paragraph paragraph in paras.OfType<Paragraph>().Where(p => p.ListFormat.IsListItem).ToList())
             {
                 Console.WriteLine($"List item paragraph #{paras.IndexOf(paragraph)}");
 
@@ -1029,6 +1029,40 @@ namespace ApiExamples
             Assert.AreEqual("001.", paras[1].ListLabel.LabelString);
             Assert.AreEqual("002.", paras[2].ListLabel.LabelString);
             //ExEnd:SetCustomNumberStyleFormat
+        }
+
+        [Test]
+        public void AddSingleLevelList()
+        {
+            //ExStart:AddSingleLevelList
+            //GistId:95fdae949cefbf2ce485acc95cccc495
+            //ExFor:ListCollection.AddSingleLevelList(ListTemplate)
+            //ExSummary:Shows how to create a new single level list based on the predefined template.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            ListCollection listCollection = doc.Lists;
+
+            // Creates the bulleted list from BulletCircle template.
+            List bulletedList = listCollection.AddSingleLevelList(ListTemplate.BulletCircle);
+
+            // Writes the bulleted list to the resulting document.
+            builder.Writeln("Bulleted list starts below:");
+            builder.ListFormat.List = bulletedList;
+            builder.Writeln("Item 1");
+            builder.Writeln("Item 2");
+            builder.ListFormat.RemoveNumbers();
+
+            // Creates the numbered list from NumberUppercaseLetterDot template.
+            List numberedList = listCollection.AddSingleLevelList(ListTemplate.NumberUppercaseLetterDot);
+
+            // Writes the numbered list to the resulting document.
+            builder.Writeln("Numbered list starts below:");
+            builder.ListFormat.List = numberedList;
+            builder.Writeln("Item 1");
+            builder.Writeln("Item 2");
+
+            doc.Save(ArtifactsDir + "Lists.AddSingleLevelList.docx");
+            //ExEnd:AddSingleLevelList
         }
     }
 }

@@ -1,10 +1,11 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
+using System;
 using System.IO;
 using Aspose.Words;
 using Aspose.Words.Saving;
@@ -41,19 +42,20 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "WordML2003SaveOptions.PrettyFormat.xml", options);
 
             string fileContents = File.ReadAllText(ArtifactsDir + "WordML2003SaveOptions.PrettyFormat.xml");
+            string newLine = Environment.NewLine;
 
             if (prettyFormat)
                 Assert.True(fileContents.Contains(
-                    "<o:DocumentProperties>\r\n\t\t" +
-                        "<o:Revision>1</o:Revision>\r\n\t\t" +
-                        "<o:TotalTime>0</o:TotalTime>\r\n\t\t" +
-                        "<o:Pages>1</o:Pages>\r\n\t\t" +
-                        "<o:Words>0</o:Words>\r\n\t\t" +
-                        "<o:Characters>0</o:Characters>\r\n\t\t" +
-                        "<o:Lines>1</o:Lines>\r\n\t\t" +
-                        "<o:Paragraphs>1</o:Paragraphs>\r\n\t\t" +
-                        "<o:CharactersWithSpaces>0</o:CharactersWithSpaces>\r\n\t\t" +
-                        "<o:Version>11.5606</o:Version>\r\n\t" +
+                    $"<o:DocumentProperties>{newLine}\t\t" +
+                        $"<o:Revision>1</o:Revision>{newLine}\t\t" +
+                        $"<o:TotalTime>0</o:TotalTime>{newLine}\t\t" +
+                        $"<o:Pages>1</o:Pages>{newLine}\t\t" +
+                        $"<o:Words>0</o:Words>{newLine}\t\t" +
+                        $"<o:Characters>0</o:Characters>{newLine}\t\t" +
+                        $"<o:Lines>1</o:Lines>{newLine}\t\t" +
+                        $"<o:Paragraphs>1</o:Paragraphs>{newLine}\t\t" +
+                        $"<o:CharactersWithSpaces>0</o:CharactersWithSpaces>{newLine}\t\t" +
+                        $"<o:Version>11.5606</o:Version>{newLine}\t" +
                     "</o:DocumentProperties>"));
             else
                 Assert.True(fileContents.Contains(

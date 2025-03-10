@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2001-2024 Aspose Pty Ltd. All Rights Reserved.
+﻿// Copyright (c) 2001-2025 Aspose Pty Ltd. All Rights Reserved.
 //
 // This file is part of Aspose.Words. The source code in this file
 // is only intended as a supplement to the documentation, and is provided
@@ -469,11 +469,14 @@ namespace ApiExamples
         }
 
         [TestCase(PdfCompliance.PdfA2u)]
+        [TestCase(PdfCompliance.PdfA3a)]
+        [TestCase(PdfCompliance.PdfA3u)]
         [TestCase(PdfCompliance.Pdf17)]
         [TestCase(PdfCompliance.PdfA2a)]
         [TestCase(PdfCompliance.PdfUa1)]
         [TestCase(PdfCompliance.Pdf20)]
         [TestCase(PdfCompliance.PdfA4)]
+        [TestCase(PdfCompliance.PdfA4f)]
         [TestCase(PdfCompliance.PdfA4Ua2)]
         [TestCase(PdfCompliance.PdfUa2)]
         public void Compliance(PdfCompliance pdfCompliance)
@@ -511,11 +514,14 @@ namespace ApiExamples
         }
 
         [TestCase(PdfCompliance.PdfA2u)]
+        [TestCase(PdfCompliance.PdfA3a)]
+        [TestCase(PdfCompliance.PdfA3u)]
         [TestCase(PdfCompliance.Pdf17)]
         [TestCase(PdfCompliance.PdfA2a)]
         [TestCase(PdfCompliance.PdfUa1)]
         [TestCase(PdfCompliance.Pdf20)]
         [TestCase(PdfCompliance.PdfA4)]
+        [TestCase(PdfCompliance.PdfA4f)]
         [TestCase(PdfCompliance.PdfA4Ua2)]
         [TestCase(PdfCompliance.PdfUa2)]
         public void UsePdfDocumentForCompliance(PdfCompliance pdfCompliance)
@@ -538,6 +544,14 @@ namespace ApiExamples
                     Assert.AreEqual(PdfFormat.PDF_A_2U, pdfDocument.PdfFormat);
                     Assert.AreEqual("1.7", pdfDocument.Version);
                     break;
+                case PdfCompliance.PdfA3a:
+                    Assert.AreEqual(PdfFormat.PDF_A_3A, pdfDocument.PdfFormat);
+                    Assert.AreEqual("1.7", pdfDocument.Version);
+                    break;
+                case PdfCompliance.PdfA3u:
+                    Assert.AreEqual(PdfFormat.PDF_A_3U, pdfDocument.PdfFormat);
+                    Assert.AreEqual("1.7", pdfDocument.Version);
+                    break;
                 case PdfCompliance.PdfUa1:
                     Assert.AreEqual(PdfFormat.PDF_UA_1, pdfDocument.PdfFormat);
                     Assert.AreEqual("1.7", pdfDocument.Version);
@@ -548,6 +562,10 @@ namespace ApiExamples
                     break;
                 case PdfCompliance.PdfA4:
                     Assert.AreEqual(PdfFormat.PDF_A_4, pdfDocument.PdfFormat);
+                    Assert.AreEqual("2.0", pdfDocument.Version);
+                    break;
+                case PdfCompliance.PdfA4f:
+                    Assert.AreEqual(PdfFormat.PDF_A_4F, pdfDocument.PdfFormat);
                     Assert.AreEqual("2.0", pdfDocument.Version);
                     break;
                 case PdfCompliance.PdfA4Ua2:
@@ -2549,21 +2567,22 @@ namespace ApiExamples
         }
 
         [Test]
-        public void PdfEmbedAttachments()
+        public void AttachmentsEmbeddingMode()
         {
-            //ExStart
-            //ExFor:PdfSaveOptions.EmbedAttachments
+            //ExStart:AttachmentsEmbeddingMode
+            //GistId:1a265b92fa0019b26277ecfef3c20330
+            //ExFor:PdfSaveOptions.AttachmentsEmbeddingMode
             //ExSummary:Shows how to add embed attachments to the PDF document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, true, null);
 
-            PdfSaveOptions options = new PdfSaveOptions();
-            options.EmbedAttachments = true;
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.AttachmentsEmbeddingMode = PdfAttachmentsEmbeddingMode.Annotations;
 
-            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfEmbedAttachments.pdf", options);
-            //ExEnd
+            doc.Save(ArtifactsDir + "PdfSaveOptions.PdfEmbedAttachments.pdf", saveOptions);
+            //ExEnd:AttachmentsEmbeddingMode
         }
 
         [Test]
