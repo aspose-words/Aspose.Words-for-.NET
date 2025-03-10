@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net48;net7.0</TargetFrameworks>
+    <TargetFrameworks>net48;net9.0</TargetFrameworks>
     <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
@@ -126,11 +126,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="25.1.0" />
-    <PackageReference Include="Aspose.Page" Version="25.1.2" />
+    <PackageReference Include="Aspose.BarCode" Version="25.2.0" />
+    <PackageReference Include="Aspose.Page" Version="25.2.0" />
     <PackageReference Include="Aspose.PDF" Version="25.2.0" />
-    <PackageReference Include="Aspose.Words" Version="25.2.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.2.0" />
+    <PackageReference Include="Aspose.Words" Version="25.3.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.3.0" />
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.5.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
@@ -140,7 +140,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="SkiaSharp" Version="3.116.1" />
-    <PackageReference Include="System.Data.OleDb" Version="9.0.0" />
+    <PackageReference Include="System.Data.OleDb" Version="9.0.2" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
   </ItemGroup>

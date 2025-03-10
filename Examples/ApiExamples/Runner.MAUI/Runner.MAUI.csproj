@@ -49,10 +49,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Aspose.Page" Version="25.1.2" />
+	  <PackageReference Include="Aspose.Page" Version="25.2.0" />
 	  <PackageReference Include="Aspose.PDF" Version="25.2.0" />
-	  <PackageReference Include="Aspose.Words" Version="25.2.0" />
-	  <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.2.0" />
+	  <PackageReference Include="Aspose.Words" Version="25.3.0" />
+	  <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.3.0" />
 	  <PackageReference Include="Shiny.Xunit.Runners.Maui" Version="1.0.0" />
 	  <PackageReference Include="SkiaSharp" Version="3.116.1" />
 	</ItemGroup>

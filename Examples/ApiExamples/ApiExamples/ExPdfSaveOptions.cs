@@ -526,6 +526,8 @@ namespace ApiExamples
         [TestCase(PdfCompliance.PdfUa2)]
         public void UsePdfDocumentForCompliance(PdfCompliance pdfCompliance)
         {
+            Compliance(pdfCompliance);
+
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "PdfSaveOptions.Compliance.pdf");
 
             switch (pdfCompliance)
