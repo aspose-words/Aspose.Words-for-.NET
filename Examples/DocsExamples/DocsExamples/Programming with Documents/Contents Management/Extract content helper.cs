@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Aspose.Words;
 
 namespace DocsExamples.Programming_with_Documents.Contents_Management
@@ -13,6 +14,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             // Create a list to store the extracted nodes.
             List<Node> nodes = new List<Node>();
+
             // If either marker is part of a comment, including the comment itself, we need to move the pointer
             // forward to the Comment Node found after the CommentRangeEnd node.
             if (endNode.NodeType == NodeType.CommentRangeEnd && isInclusive)
@@ -42,6 +44,10 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             // in extracting using inline nodes, fields, bookmarks, etc. to make it useful.
             while (isExtracting)
             {
+                Node section = currNode.GetAncestor(NodeType.Section);
+                if (!nodes.Any(o => o.Range.Text.Equals(section.Range.Text)))
+                    nodes.Add(section.Clone(true));
+
                 // Clone the current node and its children to obtain a copy.
                 Node cloneNode = currNode.Clone(true);
                 bool isEndingNode = currNode.Equals(endNode);
@@ -78,9 +84,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
                     Section nextSection = (Section) currNode.GetAncestor(NodeType.Section).NextSibling;
                     currNode = nextSection.Body.FirstChild;
                 }
-                else                
+                else
                     // Move to the next node in the body.
-                    currNode = currNode.NextSibling;                
+                    currNode = currNode.NextSibling;
             }
 
             // For compatibility with mode with inline bookmarks, add the next paragraph (empty).
@@ -89,7 +95,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             // Return the nodes between the node markers.
             return nodes;
-        }        
+        }
 
         private static void VerifyParameterNodes(Node startNode, Node endNode)
         {
@@ -137,7 +143,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             }
 
             return FindNextNode(nodeType, fromNode.NextSibling);
-        }        
+        }
 
         private static void ProcessMarker(Node cloneNode, List<Node> nodes, Node node, Node blockLevelAncestor,
             bool isInclusive, bool isStartMarker, bool canAdd, bool forceAdd)
@@ -261,15 +267,30 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public static Document GenerateDocument(Document srcDoc, List<Node> nodes)
         {
             Document dstDoc = new Document();
-            // Remove the first paragraph from the empty document.
-            dstDoc.FirstSection.Body.RemoveAllChildren();
+            // Remove default section in the destination document.
+            dstDoc.FirstSection.Remove();
 
             // Import each node from the list into the new document. Keep the original formatting of the node.
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting);
+            Section importedSection = null;
             foreach (Node node in nodes)
             {
-                Node importNode = importer.ImportNode(node, true);
-                dstDoc.FirstSection.Body.AppendChild(importNode);
+                if (node.NodeType == NodeType.Section)
+                {
+                    // Import a section from the source document.
+                    Section srcSection = (Section)node;
+                    importedSection = (Section)importer.ImportNode(srcSection, false);
+                    importedSection.AppendChild(importer.ImportNode(srcSection.Body, false));
+                    foreach (HeaderFooter hf in srcSection.HeadersFooters)
+                        importedSection.HeadersFooters.Add(importer.ImportNode(hf, true));
+
+                    dstDoc.AppendChild(importedSection);
+                }
+                else
+                {
+                    Node importNode = importer.ImportNode(node, true);
+                    importedSection.Body.AppendChild(importNode);
+                }
             }
 
             return dstDoc;
