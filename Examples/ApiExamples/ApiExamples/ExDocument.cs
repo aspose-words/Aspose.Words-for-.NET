@@ -2244,7 +2244,7 @@ namespace ApiExamples
         public void ImageWatermarkStream()
         {
             //ExStart:ImageWatermarkStream
-            //ReleaseVersion:25.4
+            //GistId:12a3a3cfe30f3145220db88428a9f814
             //ExFor:Watermark.SetImage(Stream, ImageWatermarkOptions)
             //ExSummary:Shows how to create a watermark from an image stream.
             Document doc = new Document();
@@ -2254,7 +2254,7 @@ namespace ApiExamples
             ImageWatermarkOptions imageWatermarkOptions = new ImageWatermarkOptions();
             imageWatermarkOptions.Scale = 5;
 
-            using (FileStream imageStream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open))
+            using (FileStream imageStream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open, FileAccess.Read))
                 doc.Watermark.SetImage(imageStream, imageWatermarkOptions);
 
             doc.Save(ArtifactsDir + "Document.ImageWatermarkStream.docx");

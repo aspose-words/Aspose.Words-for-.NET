@@ -1107,7 +1107,7 @@ namespace ApiExamples
         public void JisbPaperSize()
         {
             //ExStart:JisbPaperSize
-            //ReleaseVersion:25.4
+            //GistId:12a3a3cfe30f3145220db88428a9f814
             //ExFor:PageSetup.PaperSize
             //ExSummary:Shows how to set the paper size of JisB4 or JisB5.
             Document doc = new Document(MyDir + "Big document.docx");

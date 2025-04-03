@@ -1989,7 +1989,7 @@ namespace ApiExamples
         public void RemoveJavaScriptFromLinks()
         {
             //ExStart:HtmlRemoveJavaScriptFromLinks
-            //ReleaseVersion:25.4
+            //GistId:12a3a3cfe30f3145220db88428a9f814
             //ExFor:HtmlFixedSaveOptions.RemoveJavaScriptFromLinks
             //ExSummary:Shows how to remove JavaScript from the links.
             Document doc = new Document(MyDir + "JavaScript in HREF.docx");
