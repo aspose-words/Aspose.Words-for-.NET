@@ -65,6 +65,48 @@ namespace ApiExamples
         }
 
         [Test]
+        public void MergeContextDocuments()
+        {
+            //ExStart:MergeContextDocuments
+            //ReleaseVersion:25.4
+            //ExFor:Processor
+            //ExFor:Processor.From(String)
+            //ExFor:Processor.From(String, LoadOptions)
+            //ExFor:Processor.To(String)
+            //ExFor:Processor.To(String, SaveOptions)
+            //ExFor:Processor.To(String, SaveFormat)
+            //ExFor:Processor.Execute
+            //ExFor:Merger.Create(MergerContext)
+            //ExFor:MergerContext
+            //ExSummary:Shows how to merge documents into a single output document using context.
+            //There is a several ways to merge documents:
+            string inputDoc1 = MyDir + "Big document.docx";
+            string inputDoc2 = MyDir + "Tables.docx";
+
+            Merger.Create(new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting })
+                .From(inputDoc1)
+                .From(inputDoc2)
+                .To(ArtifactsDir + "LowCode.MergeContextDocuments.1.docx")
+                .Execute();
+
+            LoadOptions firstLoadOptions = new LoadOptions() { IgnoreOleData = true };
+            LoadOptions secondLoadOptions = new LoadOptions() { IgnoreOleData = false };
+            Merger.Create(new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting })
+                .From(inputDoc1, firstLoadOptions)
+                .From(inputDoc2, secondLoadOptions)
+                .To(ArtifactsDir + "LowCode.MergeContextDocuments.2.docx", SaveFormat.Docx)
+                .Execute();
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
+            Merger.Create(new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting })
+                .From(inputDoc1)
+                .From(inputDoc2)
+                .To(ArtifactsDir + "LowCode.MergeContextDocuments.3.docx", saveOptions)
+                .Execute();
+            //ExEnd:MergeContextDocuments
+        }
+
+        [Test]
         public void MergeStreamDocument()
         {
             //ExStart
@@ -99,6 +141,49 @@ namespace ApiExamples
                 }
             }
             //ExEnd
+        }
+
+        [Test]
+        public void MergeStreamContextDocuments()
+        {
+            //ExStart:MergeStreamContextDocuments
+            //ReleaseVersion:25.4
+            //ExFor:Processor
+            //ExFor:Processor.From(Stream)
+            //ExFor:Processor.From(Stream, LoadOptions)
+            //ExFor:Processor.To(Stream, SaveFormat)
+            //ExFor:Processor.To(Stream, SaveOptions)
+            //ExFor:Processor.Execute
+            //ExFor:Merger.Create(MergerContext)
+            //ExFor:MergerContext
+            //ExSummary:Shows how to merge documents from stream into a single output document using context.
+            //There is a several ways to merge documents:
+            string inputDoc1 = MyDir + "Big document.docx";
+            string inputDoc2 = MyDir + "Tables.docx";
+
+            using (FileStream firstStreamIn = new FileStream(MyDir + "Big document.docx", FileMode.Open, FileAccess.Read))
+            {
+                using (FileStream secondStreamIn = new FileStream(MyDir + "Tables.docx", FileMode.Open, FileAccess.Read))
+                {
+                    OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
+                    using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MergeStreamContextDocuments.1.docx", FileMode.Create, FileAccess.ReadWrite))
+                        Merger.Create(new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting })
+                        .From(firstStreamIn)
+                        .From(secondStreamIn)
+                        .To(streamOut, saveOptions)
+                        .Execute();
+
+                    LoadOptions firstLoadOptions = new LoadOptions() { IgnoreOleData = true };
+                    LoadOptions secondLoadOptions = new LoadOptions() { IgnoreOleData = false };
+                    using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MergeStreamContextDocuments.2.docx", FileMode.Create, FileAccess.ReadWrite))
+                        Merger.Create(new MergerContext() { MergeFormatMode = MergeFormatMode.KeepSourceFormatting })
+                        .From(firstStreamIn, firstLoadOptions)
+                        .From(secondStreamIn, secondLoadOptions)
+                        .To(streamOut, SaveFormat.Docx)
+                        .Execute();
+                }
+            }
+            //ExEnd:MergeStreamContextDocuments
         }
 
         [Test]
@@ -146,6 +231,46 @@ namespace ApiExamples
         }
 
         [Test]
+        public void ConvertContext()
+        {
+            //ExStart:ConvertContext
+            //ReleaseVersion:25.4
+            //ExFor:Processor
+            //ExFor:Processor.From(String)
+            //ExFor:Processor.From(String, LoadOptions)
+            //ExFor:Processor.To(String)
+            //ExFor:Processor.To(String, SaveOptions)
+            //ExFor:Processor.Execute
+            //ExFor:Converter.Create(ConverterContext)
+            //ExFor:ConverterContext
+            //ExSummary:Shows how to convert documents with a single line of code using context.
+            string doc = MyDir + "Big document.docx";
+
+            Converter.Create(new ConverterContext())
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.ConvertContext.1.pdf")
+                .Execute();
+
+            Converter.Create(new ConverterContext())
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.ConvertContext.2.pdf", SaveFormat.Rtf)
+                .Execute();
+
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
+            LoadOptions loadOptions = new LoadOptions() { IgnoreOleData = true };
+            Converter.Create(new ConverterContext())
+                .From(doc, loadOptions)
+                .To(ArtifactsDir + "LowCode.ConvertContext.3.docx", saveOptions)
+                .Execute();
+
+            Converter.Create(new ConverterContext())
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.ConvertContext.4.png", new ImageSaveOptions(SaveFormat.Png))
+                .Execute();
+            //ExEnd:ConvertContext
+        }
+
+        [Test]
         public void ConvertStream()
         {
             //ExStart:ConvertStream
@@ -171,6 +296,47 @@ namespace ApiExamples
         }
 
         [Test]
+        public void ConvertContextStream()
+        {
+            //ExStart:ConvertContextStream
+            //ReleaseVersion:25.4
+            //ExFor:Processor
+            //ExFor:Processor.From(Stream)
+            //ExFor:Processor.From(Stream, LoadOptions)
+            //ExFor:Processor.To(Stream, SaveFormat)
+            //ExFor:Processor.To(Stream, SaveOptions)
+            //ExFor:Processor.To(List<Stream>, SaveOptions)
+            //ExFor:Processor.Execute
+            //ExFor:Converter.Create(ConverterContext)
+            //ExFor:ConverterContext
+            //ExSummary:Shows how to convert documents from a stream with a single line of code using context.
+            string doc = MyDir + "Document.docx";
+            using (FileStream streamIn = new FileStream(MyDir + "Big document.docx", FileMode.Open, FileAccess.Read))
+            {
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ConvertContextStream.1.docx", FileMode.Create, FileAccess.ReadWrite))
+                    Converter.Create(new ConverterContext())
+                        .From(streamIn)
+                        .To(streamOut, SaveFormat.Rtf)
+                        .Execute();
+
+                OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Password = "Aspose.Words" };
+                LoadOptions loadOptions = new LoadOptions() { IgnoreOleData = true };
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ConvertContextStream.2.docx", FileMode.Create, FileAccess.ReadWrite))
+                    Converter.Create(new ConverterContext())
+                        .From(streamIn, loadOptions)
+                        .To(streamOut, saveOptions)
+                        .Execute();
+
+                List<Stream> pages = new List<Stream>();
+                Converter.Create(new ConverterContext())
+                    .From(doc)
+                    .To(pages, new ImageSaveOptions(SaveFormat.Png))
+                    .Execute();
+            }
+            //ExEnd:ConvertContextStream
+        }
+
+        [Test]
         public void ConvertToImages()
         {
             //ExStart:ConvertToImages
@@ -182,16 +348,16 @@ namespace ApiExamples
             //ExSummary:Shows how to convert document to images.
             string doc = MyDir + "Big document.docx";
 
-            Converter.ConvertToImages(doc, ArtifactsDir + "LowCode.ConvertToImages.1.png");
+            Converter.Convert(doc, ArtifactsDir + "LowCode.ConvertToImages.1.png");
 
-            Converter.ConvertToImages(doc, ArtifactsDir + "LowCode.ConvertToImages.2.jpeg", SaveFormat.Jpeg);
+            Converter.Convert(doc, ArtifactsDir + "LowCode.ConvertToImages.2.jpeg", SaveFormat.Jpeg);
 
             LoadOptions loadOptions = new LoadOptions() { IgnoreOleData = false };
             ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
             imageSaveOptions.PageSet = new PageSet(1);
-            Converter.ConvertToImages(doc, loadOptions, ArtifactsDir + "LowCode.ConvertToImages.3.png", imageSaveOptions);
+            Converter.Convert(doc, loadOptions, ArtifactsDir + "LowCode.ConvertToImages.3.png", imageSaveOptions);
 
-            Converter.ConvertToImages(doc, ArtifactsDir + "LowCode.ConvertToImages.4.png", imageSaveOptions);
+            Converter.Convert(doc, ArtifactsDir + "LowCode.ConvertToImages.4.png", imageSaveOptions);
             //ExEnd:ConvertToImages
         }
 
@@ -261,7 +427,13 @@ namespace ApiExamples
                     break;
 
                 case "HTML":
-                    HtmlFixedSaveOptions htmlSaveOptions = new HtmlFixedSaveOptions() { PageSet = new PageSet(0) };
+                    HtmlFixedSaveOptions htmlSaveOptions = new HtmlFixedSaveOptions()
+                    {
+                        PageSet = new PageSet(0),
+                        PrettyFormat = true,
+                        ExportEmbeddedFonts = true,
+                        ExportEmbeddedCss = true,
+                    };
                     SaveTo(docName, new LoadOptions(), htmlSaveOptions, "html");
                     AssertResult("html");
 
@@ -311,7 +483,7 @@ namespace ApiExamples
         {
             using (var pdfDoc = File.OpenRead(MyDir + docName))
             {
-                Stream stream = new MemoryStream();
+                MemoryStream stream = new MemoryStream();
                 IReadOnlyList<Stream> imagesStream = new List<Stream>();
 
                 if (fileExt == "pdf")
@@ -331,6 +503,7 @@ namespace ApiExamples
                     imagesStream = Converter.ConvertToImages(pdfDoc, loadOptions, (ImageSaveOptions)saveOptions);
                 }
 
+                stream.Position = 0;
                 if (imagesStream.Count != 0)
                 {
                     for (int i = 0; i < imagesStream.Count; i++)
@@ -359,6 +532,8 @@ namespace ApiExamples
 
                 if (fileExt == "png")
                     Assert.AreEqual(2, images.Count);
+                else if (fileExt == "tiff")
+                    Assert.AreEqual(1, images.Count);
                 else
                     Assert.AreEqual(5, images.Count);
             }
@@ -369,12 +544,18 @@ namespace ApiExamples
                     var doc = new XpsDocument(ArtifactsDir + $"PdfRenderer.{fileExt}");
                     AssertXpsText(doc);
                 }
+                else if (fileExt == "pdf")
+                {
+                    Document doc = new Document(ArtifactsDir + $"PdfRenderer.{fileExt}");
+                    var content = doc.GetText();
+                    Console.WriteLine(content);
+                    Assert.True(content.Contains("Heading 1.1.1.2"));
+                }
                 else
                 {
-                    var doc = new Document(ArtifactsDir + $"PdfRenderer.{fileExt}");
-                    var content = doc.GetText().Replace("\r", " ");
-
-                    Assert.True(content.Contains("Heading 1 Heading 1.1.1.1 Heading 1.1.1.2"));
+                    var content = File.ReadAllText(ArtifactsDir + $"PdfRenderer.{fileExt}");
+                    Console.WriteLine(content);
+                    Assert.True(content.Contains("Heading 1.1.1.2"));
                 }
             }
         }
@@ -397,8 +578,6 @@ namespace ApiExamples
         {
             //ExStart:CompareDocuments
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:Comparer.Compare(String, String, String, String, DateTime)
-            //ExFor:Comparer.Compare(String, String, String, SaveFormat, String, DateTime)
             //ExFor:Comparer.Compare(String, String, String, String, DateTime, CompareOptions)
             //ExFor:Comparer.Compare(String, String, String, SaveFormat, String, DateTime, CompareOptions)
             //ExSummary:Shows how to simple compare documents.
@@ -408,12 +587,38 @@ namespace ApiExamples
 
             Comparer.Compare(firstDoc, secondDoc, ArtifactsDir + "LowCode.CompareDocuments.1.docx", "Author", new DateTime());
             Comparer.Compare(firstDoc, secondDoc, ArtifactsDir + "LowCode.CompareDocuments.2.docx", SaveFormat.Docx, "Author", new DateTime());
-            
+
             CompareOptions compareOptions = new CompareOptions();
-            compareOptions.IgnoreCaseChanges =true;
+            compareOptions.IgnoreCaseChanges = true;
             Comparer.Compare(firstDoc, secondDoc, ArtifactsDir + "LowCode.CompareDocuments.3.docx", "Author", new DateTime(), compareOptions);
             Comparer.Compare(firstDoc, secondDoc, ArtifactsDir + "LowCode.CompareDocuments.4.docx", SaveFormat.Docx, "Author", new DateTime(), compareOptions);
             //ExEnd:CompareDocuments
+        }
+
+        [Test]
+        public void CompareContextDocuments()
+        {
+            //ExStart:CompareContextDocuments
+            //ReleaseVersion:25.4
+            //ExFor:Comparer.Create(ComparerContext)
+            //ExFor:ComparerContext
+            //ExFor:ComparerContext.CompareOptions
+            //ExSummary:Shows how to simple compare documents using context.
+            // There is a several ways to compare documents:
+            string firstDoc = MyDir + "Table column bookmarks.docx";
+            string secondDoc = MyDir + "Table column bookmarks.doc";
+
+            ComparerContext comparerContext = new ComparerContext();
+            comparerContext.CompareOptions.IgnoreCaseChanges = true;
+            comparerContext.Author = "Author";
+            comparerContext.DateTime = new DateTime();
+
+            Comparer.Create(comparerContext)
+                .From(firstDoc)
+                .From(secondDoc)
+                .To(ArtifactsDir + "LowCode.CompareContextDocuments.docx")
+                .Execute();
+            //ExEnd:CompareContextDocuments
         }
 
         [Test]
@@ -421,7 +626,6 @@ namespace ApiExamples
         {
             //ExStart:CompareStreamDocuments
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:Comparer.Compare(Stream, Stream, Stream, SaveFormat, String, DateTime)
             //ExFor:Comparer.Compare(Stream, Stream, Stream, SaveFormat, String, DateTime, CompareOptions)
             //ExSummary:Shows how to compare documents from the stream.
             // There is a several ways to compare documents from the stream:
@@ -439,8 +643,61 @@ namespace ApiExamples
                         Comparer.Compare(firstStreamIn, secondStreamIn, streamOut, SaveFormat.Docx, "Author", new DateTime(), compareOptions);
                     }
                 }
-                //ExEnd:CompareStreamDocuments
             }
+            //ExEnd:CompareStreamDocuments
+        }
+
+        [Test]
+        public void CompareContextStreamDocuments()
+        {
+            //ExStart:CompareContextStreamDocuments
+            //ReleaseVersion:25.4
+            //ExFor:Comparer.Create(ComparerContext)
+            //ExFor:ComparerContext
+            //ExFor:ComparerContext.CompareOptions
+            //ExSummary:Shows how to compare documents from the stream using context.
+            // There is a several ways to compare documents from the stream:
+            using (FileStream firstStreamIn = new FileStream(MyDir + "Table column bookmarks.docx", FileMode.Open, FileAccess.Read))
+            {
+                using (FileStream secondStreamIn = new FileStream(MyDir + "Table column bookmarks.doc", FileMode.Open, FileAccess.Read))
+                {
+                    ComparerContext comparerContext = new ComparerContext();
+                    comparerContext.CompareOptions.IgnoreCaseChanges = true;
+                    comparerContext.Author = "Author";
+                    comparerContext.DateTime = new DateTime();
+
+                    using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.CompareContextStreamDocuments.docx", FileMode.Create, FileAccess.ReadWrite))
+                        Comparer.Create(comparerContext)
+                            .From(firstStreamIn)
+                            .From(secondStreamIn)
+                            .To(streamOut, SaveFormat.Docx)
+                            .Execute();
+                }
+            }
+            //ExEnd:CompareContextStreamDocuments
+        }
+
+        [Test]
+        public void CompareDocumentsToimages()
+        {
+            //ExStart:CompareDocumentsToimages
+            //ReleaseVersion:25.4
+            //ExFor:Comparer.CompareToImages(String, String, String, String, DateTime)
+            //ExSummary:Shows how to compare documents and save results as images.
+            // There is a several ways to compare documents:
+            string firstDoc = MyDir + "Table column bookmarks.docx";
+            string secondDoc = MyDir + "Table column bookmarks.doc";
+
+            Stream[] pages = Comparer.CompareToImages(firstDoc, secondDoc, new ImageSaveOptions(SaveFormat.Png), "Author", new DateTime());
+
+            using (FileStream firstStreamIn = new FileStream(firstDoc, FileMode.Open, FileAccess.Read))
+            {
+                using (FileStream secondStreamIn = new FileStream(secondDoc, FileMode.Open, FileAccess.Read))
+                {
+                    pages = Comparer.CompareToImages(firstStreamIn, secondStreamIn, new ImageSaveOptions(SaveFormat.Png), "Author", new DateTime());
+                }
+            }
+            //ExEnd:CompareDocumentsToimages
         }
 
         [Test]
@@ -451,8 +708,7 @@ namespace ApiExamples
             //ExFor:MailMergeOptions
             //ExFor:MailMergeOptions.TrimWhitespaces
             //ExFor:MailMerger.Execute(String, String, String[], Object[])
-            //ExFor:MailMerger.Execute(String, String, SaveFormat, String[], Object[])
-            //ExFor:MailMerger.Execute(String, String, SaveFormat, MailMergeOptions, String[], Object[])
+            //ExFor:MailMerger.Execute(String, String, SaveFormat, String[], Object[], MailMergeOptions)
             //ExSummary:Shows how to do mail merge operation for a single record.
             // There is a several ways to do mail merge operation:
             string doc = MyDir + "Mail merge.doc";
@@ -464,8 +720,55 @@ namespace ApiExamples
             MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMerge.2.docx", SaveFormat.Docx, fieldNames, fieldValues);
             MailMergeOptions mailMergeOptions = new MailMergeOptions();
             mailMergeOptions.TrimWhitespaces = true;
-            MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMerge.3.docx", SaveFormat.Docx, mailMergeOptions, fieldNames, fieldValues);
+            MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMerge.3.docx", SaveFormat.Docx, fieldNames, fieldValues, mailMergeOptions);
             //ExEnd:MailMerge
+        }
+
+        [Test]
+        public void MailMergeContext()
+        {
+            //ExStart:MailMergeContext
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.Create(MailMergerContext)
+            //ExFor:MailMergerContext
+            //ExFor:MailMergerContext.SetSimpleDataSource(String[], Object[])
+            //ExFor:MailMergerContext.MailMergeOptions
+            //ExSummary:Shows how to do mail merge operation for a single record using context.
+            // There is a several ways to do mail merge operation:
+            string doc = MyDir + "Mail merge.doc";
+
+            string[] fieldNames = new string[] { "FirstName", "Location", "SpecialCharsInName()" };
+            string[] fieldValues = new string[] { "James Bond", "London", "Classified" };
+
+            MailMergerContext mailMergerContext = new MailMergerContext();
+            mailMergerContext.SetSimpleDataSource(fieldNames, fieldValues);
+            mailMergerContext.MailMergeOptions.TrimWhitespaces = true;
+
+            MailMerger.Create(mailMergerContext)
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.MailMergeContext.docx")
+                .Execute();
+            //ExEnd:MailMergeContext
+        }
+
+        [Test]
+        public void MailMergeToImages()
+        {
+            //ExStart:MailMergeToImages
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.ExecuteToImages(String, ImageSaveOptions, String[], Object[], MailMergeOptions)
+            //ExSummary:Shows how to do mail merge operation for a single record and save result to images.
+            // There is a several ways to do mail merge operation:
+            string doc = MyDir + "Mail merge.doc";
+
+            string[] fieldNames = new string[] { "FirstName", "Location", "SpecialCharsInName()" };
+            string[] fieldValues = new string[] { "James Bond", "London", "Classified" };
+
+            Stream[] images = MailMerger.ExecuteToImages(doc, new ImageSaveOptions(SaveFormat.Png), fieldNames, fieldValues);
+            MailMergeOptions mailMergeOptions = new MailMergeOptions();
+            mailMergeOptions.TrimWhitespaces = true;
+            images = MailMerger.ExecuteToImages(doc, new ImageSaveOptions(SaveFormat.Png), fieldNames, fieldValues, mailMergeOptions);
+            //ExEnd:MailMergeToImages
         }
 
         [Test]
@@ -473,8 +776,7 @@ namespace ApiExamples
         {
             //ExStart:MailMergeStream
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:MailMerger.Execute(Stream, Stream, SaveFormat, String[], Object[])
-            //ExFor:MailMerger.Execute(Stream, Stream, SaveFormat, MailMergeOptions, String[], Object[])
+            //ExFor:MailMerger.Execute(Stream, Stream, SaveFormat, String[], Object[], MailMergeOptions)
             //ExSummary:Shows how to do mail merge operation for a single record from the stream.
             // There is a several ways to do mail merge operation using documents from the stream:
             string[] fieldNames = new string[] { "FirstName", "Location", "SpecialCharsInName()" };
@@ -489,10 +791,61 @@ namespace ApiExamples
                 {
                     MailMergeOptions mailMergeOptions = new MailMergeOptions();
                     mailMergeOptions.TrimWhitespaces = true;
-                    MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, mailMergeOptions, fieldNames, fieldValues);
+                    MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, fieldNames, fieldValues, mailMergeOptions);
                 }
             }
             //ExEnd:MailMergeStream
+        }
+
+        [Test]
+        public void MailMergeContextStream()
+        {
+            //ExStart:MailMergeContextStream
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.Create(MailMergerContext)
+            //ExFor:MailMergerContext
+            //ExFor:MailMergerContext.SetSimpleDataSource(String[], Object[])
+            //ExFor:MailMergerContext.MailMergeOptions
+            //ExSummary:Shows how to do mail merge operation for a single record from the stream using context.
+            // There is a several ways to do mail merge operation using documents from the stream:
+            string[] fieldNames = new string[] { "FirstName", "Location", "SpecialCharsInName()" };
+            string[] fieldValues = new string[] { "James Bond", "London", "Classified" };
+
+            using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
+            {
+                MailMergerContext mailMergerContext = new MailMergerContext();
+                mailMergerContext.SetSimpleDataSource(fieldNames, fieldValues);
+                mailMergerContext.MailMergeOptions.TrimWhitespaces = true;
+
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeContextStream.docx", FileMode.Create, FileAccess.ReadWrite))
+                    MailMerger.Create(mailMergerContext)
+                        .From(streamIn)
+                        .To(streamOut, SaveFormat.Docx)
+                        .Execute();
+            }
+            //ExEnd:MailMergeContextStream
+        }
+
+        [Test]
+        public void MailMergeStreamToImages()
+        {
+            //ExStart:MailMergeStreamToImages
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.ExecuteToImages(Stream, ImageSaveOptions, String[], Object[], MailMergeOptions)
+            //ExSummary:Shows how to do mail merge operation for a single record from the stream and save result to images.
+            // There is a several ways to do mail merge operation using documents from the stream:
+            string[] fieldNames = new string[] { "FirstName", "Location", "SpecialCharsInName()" };
+            string[] fieldValues = new string[] { "James Bond", "London", "Classified" };
+
+            using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
+            {
+                Stream[] images = MailMerger.ExecuteToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), fieldNames, fieldValues);
+
+                MailMergeOptions mailMergeOptions = new MailMergeOptions();
+                mailMergeOptions.TrimWhitespaces = true;
+                images = MailMerger.ExecuteToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), fieldNames, fieldValues, mailMergeOptions);
+            }
+            //ExEnd:MailMergeStreamToImages
         }
 
         [Test]
@@ -501,8 +854,7 @@ namespace ApiExamples
             //ExStart:MailMergeDataRow
             //GistId:695136dbbe4f541a8a0a17b3d3468689
             //ExFor:MailMerger.Execute(String, String, DataRow)
-            //ExFor:MailMerger.Execute(String, String, SaveFormat, DataRow)
-            //ExFor:MailMerger.Execute(String, String, SaveFormat, MailMergeOptions, DataRow)
+            //ExFor:MailMerger.Execute(String, String, SaveFormat, DataRow, MailMergeOptions)
             //ExSummary:Shows how to do mail merge operation from a DataRow.
             // There is a several ways to do mail merge operation from a DataRow:
             string doc = MyDir + "Mail merge.doc";
@@ -516,8 +868,60 @@ namespace ApiExamples
 
             MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataRow.1.docx", dataRow);
             MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataRow.2.docx", SaveFormat.Docx, dataRow);
-            MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataRow.3.docx", SaveFormat.Docx, new MailMergeOptions() { TrimWhitespaces = true }, dataRow);
+            MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataRow.3.docx", SaveFormat.Docx, dataRow, new MailMergeOptions() { TrimWhitespaces = true });
             //ExEnd:MailMergeDataRow
+        }
+
+        [Test]
+        public void MailMergeContextDataRow()
+        {
+            //ExStart:MailMergeContextDataRow
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.Create(MailMergerContext)
+            //ExFor:MailMergerContext
+            //ExFor:MailMergerContext.SetSimpleDataSource(DataRow)
+            //ExSummary:Shows how to do mail merge operation from a DataRow using context.
+            // There is a several ways to do mail merge operation from a DataRow:
+            string doc = MyDir + "Mail merge.doc";
+
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("Location");
+            dataTable.Columns.Add("SpecialCharsInName()");
+
+            DataRow dataRow = dataTable.Rows.Add(new string[] { "James Bond", "London", "Classified" });
+
+            MailMergerContext mailMergerContext = new MailMergerContext();
+            mailMergerContext.SetSimpleDataSource(dataRow);
+            mailMergerContext.MailMergeOptions.TrimWhitespaces = true;
+
+            MailMerger.Create(mailMergerContext)
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.MailMergeContextDataRow.docx")
+                .Execute();
+            //ExEnd:MailMergeContextDataRow
+        }
+
+        [Test]
+        public void MailMergeToImagesDataRow()
+        {
+            //ExStart:MailMergeToImagesDataRow
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.ExecuteToImages(String, ImageSaveOptions, DataRow, MailMergeOptions)
+            //ExSummary:Shows how to do mail merge operation from a DataRow and save result to images.
+            // There is a several ways to do mail merge operation from a DataRow:
+            string doc = MyDir + "Mail merge.doc";
+
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("Location");
+            dataTable.Columns.Add("SpecialCharsInName()");
+
+            DataRow dataRow = dataTable.Rows.Add(new string[] { "James Bond", "London", "Classified" });
+
+            Stream[] images = MailMerger.ExecuteToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataRow);
+            images = MailMerger.ExecuteToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataRow, new MailMergeOptions() { TrimWhitespaces = true });
+            //ExEnd:MailMergeToImagesDataRow
         }
 
         [Test]
@@ -525,8 +929,7 @@ namespace ApiExamples
         {
             //ExStart:MailMergeStreamDataRow
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:MailMerger.Execute(Stream, Stream, SaveFormat, DataRow)
-            //ExFor:MailMerger.Execute(Stream, Stream, SaveFormat, MailMergeOptions, DataRow)
+            //ExFor:MailMerger.Execute(Stream, Stream, SaveFormat, DataRow, MailMergeOptions)
             //ExSummary:Shows how to do mail merge operation from a DataRow using documents from the stream.
             // There is a several ways to do mail merge operation from a DataRow using documents from the stream:
             DataTable dataTable = new DataTable();
@@ -542,9 +945,64 @@ namespace ApiExamples
                     MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, dataRow);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeStreamDataRow.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, new MailMergeOptions() { TrimWhitespaces = true }, dataRow);
+                    MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, dataRow, new MailMergeOptions() { TrimWhitespaces = true });
             }
             //ExEnd:MailMergeStreamDataRow
+        }
+
+        [Test]
+        public void MailMergeContextStreamDataRow()
+        {
+            //ExStart:MailMergeContextStreamDataRow
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.Create(MailMergerContext)
+            //ExFor:MailMergerContext
+            //ExFor:MailMergerContext.SetSimpleDataSource(DataRow)
+            //ExSummary:Shows how to do mail merge operation from a DataRow using documents from the stream using context.
+            // There is a several ways to do mail merge operation from a DataRow using documents from the stream:
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("Location");
+            dataTable.Columns.Add("SpecialCharsInName()");
+
+            DataRow dataRow = dataTable.Rows.Add(new string[] { "James Bond", "London", "Classified" });
+
+            using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
+            {
+                MailMergerContext mailMergerContext = new MailMergerContext();
+                mailMergerContext.SetSimpleDataSource(dataRow);
+                mailMergerContext.MailMergeOptions.TrimWhitespaces = true;
+
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeContextStreamDataRow.docx", FileMode.Create, FileAccess.ReadWrite))
+                    MailMerger.Create(mailMergerContext)
+                        .From(streamIn)
+                        .To(streamOut, SaveFormat.Docx)
+                        .Execute();
+            }
+            //ExEnd:MailMergeContextStreamDataRow
+        }
+
+        [Test]
+        public void MailMergeStreamToImagesDataRow()
+        {
+            //ExStart:MailMergeStreamToImagesDataRow
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.Execute(Stream, ImageSaveOptions, DataRow, MailMergeOptions)
+            //ExSummary:Shows how to do mail merge operation from a DataRow using documents from the stream and save result to images.
+            // There is a several ways to do mail merge operation from a DataRow using documents from the stream:
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("Location");
+            dataTable.Columns.Add("SpecialCharsInName()");
+
+            DataRow dataRow = dataTable.Rows.Add(new string[] { "James Bond", "London", "Classified" });
+
+            using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
+            {
+                Stream[] images = MailMerger.ExecuteToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataRow);
+                images = MailMerger.ExecuteToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataRow, new MailMergeOptions() { TrimWhitespaces = true });
+            }
+            //ExEnd:MailMergeStreamToImagesDataRow
         }
 
         [Test]
@@ -553,8 +1011,7 @@ namespace ApiExamples
             //ExStart:MailMergeDataTable
             //GistId:695136dbbe4f541a8a0a17b3d3468689
             //ExFor:MailMerger.Execute(String, String, DataTable)
-            //ExFor:MailMerger.Execute(String, String, SaveFormat, DataTable)
-            //ExFor:MailMerger.Execute(String, String, SaveFormat, MailMergeOptions, DataTable)
+            //ExFor:MailMerger.Execute(String, String, SaveFormat, DataTable, MailMergeOptions)
             //ExSummary:Shows how to do mail merge operation from a DataTable.
             // There is a several ways to do mail merge operation from a DataTable:
             string doc = MyDir + "Mail merge.doc";
@@ -568,8 +1025,60 @@ namespace ApiExamples
 
             MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataTable.1.docx", dataTable);
             MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataTable.2.docx", SaveFormat.Docx, dataTable);
-            MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataTable.3.docx", SaveFormat.Docx, new MailMergeOptions() { TrimWhitespaces = true }, dataTable);
+            MailMerger.Execute(doc, ArtifactsDir + "LowCode.MailMergeDataTable.3.docx", SaveFormat.Docx, dataTable, new MailMergeOptions() { TrimWhitespaces = true });
             //ExEnd:MailMergeDataTable
+        }
+
+        [Test]
+        public void MailMergeContextDataTable()
+        {
+            //ExStart:MailMergeContextDataTable
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.Create(MailMergerContext)
+            //ExFor:MailMergerContext
+            //ExFor:MailMergerContext.SetSimpleDataSource(DataTable)
+            //ExSummary:Shows how to do mail merge operation from a DataTable using context.
+            // There is a several ways to do mail merge operation from a DataTable:
+            string doc = MyDir + "Mail merge.doc";
+
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("Location");
+            dataTable.Columns.Add("SpecialCharsInName()");
+
+            DataRow dataRow = dataTable.Rows.Add(new string[] { "James Bond", "London", "Classified" });
+
+            MailMergerContext mailMergerContext = new MailMergerContext();
+            mailMergerContext.SetSimpleDataSource(dataTable);
+            mailMergerContext.MailMergeOptions.TrimWhitespaces = true;
+
+            MailMerger.Create(mailMergerContext)
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.MailMergeContextDataTable.docx")
+                .Execute();
+            //ExEnd:MailMergeContextDataTable
+        }
+
+        [Test]
+        public void MailMergeToImagesDataTable()
+        {
+            //ExStart:MailMergeToImagesDataTable
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.Execute(String, ImageSaveOptions, DataTable, MailMergeOptions)
+            //ExSummary:Shows how to do mail merge operation from a DataTable and save result to images.
+            // There is a several ways to do mail merge operation from a DataTable:
+            string doc = MyDir + "Mail merge.doc";
+
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("Location");
+            dataTable.Columns.Add("SpecialCharsInName()");
+
+            DataRow dataRow = dataTable.Rows.Add(new string[] { "James Bond", "London", "Classified" });
+
+            Stream[] images = MailMerger.ExecuteToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataTable);
+            images = MailMerger.ExecuteToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataTable, new MailMergeOptions() { TrimWhitespaces = true });
+            //ExEnd:MailMergeToImagesDataTable
         }
 
         [Test]
@@ -577,8 +1086,7 @@ namespace ApiExamples
         {
             //ExStart:MailMergeStreamDataTable
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:MailMerger.Execute(Stream, Stream, SaveFormat, DataTable)
-            //ExFor:MailMerger.Execute(Stream, Stream, SaveFormat, MailMergeOptions, DataTable)
+            //ExFor:MailMerger.Execute(Stream, Stream, SaveFormat, DataTable, MailMergeOptions)
             //ExSummary:Shows how to do mail merge operation from a DataTable using documents from the stream.
             // There is a several ways to do mail merge operation from a DataTable using documents from the stream:
             DataTable dataTable = new DataTable();
@@ -594,9 +1102,65 @@ namespace ApiExamples
                     MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, dataTable);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeDataTable.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, new MailMergeOptions() { TrimWhitespaces = true }, dataTable);
+                    MailMerger.Execute(streamIn, streamOut, SaveFormat.Docx, dataTable, new MailMergeOptions() { TrimWhitespaces = true });
             }
             //ExEnd:MailMergeStreamDataTable
+        }
+
+        [Test]
+        public void MailMergeContextStreamDataTable()
+        {
+            //ExStart:MailMergeContextStreamDataTable
+            //ReleaseVersion:25.4
+            //ExFor:Processor
+            //ExFor:MailMerger.Create(MailMergerContext)
+            //ExFor:MailMergerContext
+            //ExFor:MailMergerContext.SetSimpleDataSource(DataTable)
+            //ExSummary:Shows how to do mail merge operation from a DataTable using documents from the stream using context.
+            // There is a several ways to do mail merge operation from a DataTable using documents from the stream:
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("Location");
+            dataTable.Columns.Add("SpecialCharsInName()");
+
+            DataRow dataRow = dataTable.Rows.Add(new string[] { "James Bond", "London", "Classified" });
+
+            using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
+            {
+                MailMergerContext mailMergerContext = new MailMergerContext();
+                mailMergerContext.SetSimpleDataSource(dataTable);
+                mailMergerContext.MailMergeOptions.TrimWhitespaces = true;
+
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeContextStreamDataTable.docx", FileMode.Create, FileAccess.ReadWrite))
+                    MailMerger.Create(mailMergerContext)
+                        .From(streamIn)
+                        .To(streamOut, SaveFormat.Docx)
+                        .Execute();
+            }
+            //ExEnd:MailMergeContextStreamDataTable
+        }
+
+        [Test]
+        public void MailMergeStreamToImagesDataTable()
+        {
+            //ExStart:MailMergeStreamToImagesDataTable
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.ExecuteToImages(Stream, ImageSaveOptions, DataTable, MailMergeOptions)
+            //ExSummary:Shows how to do mail merge operation from a DataTable using documents from the stream.
+            // There is a several ways to do mail merge operation from a DataTable using documents from the stream and save result to images:
+            DataTable dataTable = new DataTable();
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("Location");
+            dataTable.Columns.Add("SpecialCharsInName()");
+
+            DataRow dataRow = dataTable.Rows.Add(new string[] { "James Bond", "London", "Classified" });
+
+            using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
+            {
+                Stream[] images = MailMerger.ExecuteToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataTable);
+                images = MailMerger.ExecuteToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataTable, new MailMergeOptions() { TrimWhitespaces = true });
+            }
+            //ExEnd:MailMergeStreamToImagesDataTable
         }
 
         [Test]
@@ -605,8 +1169,7 @@ namespace ApiExamples
             //ExStart:MailMergeWithRegionsDataTable
             //GistId:695136dbbe4f541a8a0a17b3d3468689
             //ExFor:MailMerger.ExecuteWithRegions(String, String, DataTable)
-            //ExFor:MailMerger.ExecuteWithRegions(String, String, SaveFormat, DataTable)
-            //ExFor:MailMerger.ExecuteWithRegions(String, String, SaveFormat, MailMergeOptions, DataTable)
+            //ExFor:MailMerger.ExecuteWithRegions(String, String, SaveFormat, DataTable, MailMergeOptions)
             //ExSummary:Shows how to do mail merge with regions operation from a DataTable.
             // There is a several ways to do mail merge with regions operation from a DataTable:
             string doc = MyDir + "Mail merge with regions.docx";
@@ -620,8 +1183,60 @@ namespace ApiExamples
 
             MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataTable.1.docx", dataTable);
             MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataTable.2.docx", SaveFormat.Docx, dataTable);
-            MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataTable.3.docx", SaveFormat.Docx, new MailMergeOptions() { TrimWhitespaces = true }, dataTable);
+            MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataTable.3.docx", SaveFormat.Docx, dataTable, new MailMergeOptions() { TrimWhitespaces = true });
             //ExEnd:MailMergeWithRegionsDataTable
+        }
+
+        [Test]
+        public void MailMergeContextWithRegionsDataTable()
+        {
+            //ExStart:MailMergeContextWithRegionsDataTable
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.Create(MailMergerContext)
+            //ExFor:MailMergerContext
+            //ExFor:MailMergerContext.SetRegionsDataSource(DataTable)
+            //ExSummary:Shows how to do mail merge with regions operation from a DataTable using context.
+            // There is a several ways to do mail merge with regions operation from a DataTable:
+            string doc = MyDir + "Mail merge with regions.docx";
+
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("LastName");
+            dataTable.Rows.Add(new object[] { "John", "Doe" });
+            dataTable.Rows.Add(new object[] { "", "" });
+            dataTable.Rows.Add(new object[] { "Jane", "Doe" });
+
+            MailMergerContext mailMergerContext = new MailMergerContext();
+            mailMergerContext.SetRegionsDataSource(dataTable);
+            mailMergerContext.MailMergeOptions.TrimWhitespaces = true;
+
+            MailMerger.Create(mailMergerContext)
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.MailMergeContextWithRegionsDataTable.docx")
+                .Execute();
+            //ExEnd:MailMergeContextWithRegionsDataTable
+        }
+
+        [Test]
+        public void MailMergeWithRegionsToImagesDataTable()
+        {
+            //ExStart:MailMergeWithRegionsToImagesDataTable
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.ExecuteWithRegions(String, ImageSaveOptions, DataTable, MailMergeOptions)
+            //ExSummary:Shows how to do mail merge with regions operation from a DataTable and save result to images.
+            // There is a several ways to do mail merge with regions operation from a DataTable:
+            string doc = MyDir + "Mail merge with regions.docx";
+
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("LastName");
+            dataTable.Rows.Add(new object[] { "John", "Doe" });
+            dataTable.Rows.Add(new object[] { "", "" });
+            dataTable.Rows.Add(new object[] { "Jane", "Doe" });
+
+            Stream[] images = MailMerger.ExecuteWithRegionsToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataTable);
+            images = MailMerger.ExecuteWithRegionsToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataTable, new MailMergeOptions() { TrimWhitespaces = true });
+            //ExEnd:MailMergeWithRegionsToImagesDataTable
         }
 
         [Test]
@@ -629,8 +1244,7 @@ namespace ApiExamples
         {
             //ExStart:MailMergeStreamWithRegionsDataTable
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:MailMerger.ExecuteWithRegions(Stream, Stream, SaveFormat, DataTable)
-            //ExFor:MailMerger.ExecuteWithRegions(Stream, Stream, SaveFormat, MailMergeOptions, DataTable)
+            //ExFor:MailMerger.ExecuteWithRegions(Stream, Stream, SaveFormat, DataTable, MailMergeOptions)
             //ExSummary:Shows how to do mail merge with regions operation from a DataTable using documents from the stream.
             // There is a several ways to do mail merge with regions operation from a DataTable using documents from the stream:
             DataTable dataTable = new DataTable("MyTable");
@@ -646,9 +1260,64 @@ namespace ApiExamples
                     MailMerger.ExecuteWithRegions(streamIn, streamOut, SaveFormat.Docx, dataTable);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeStreamWithRegionsDataTable.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    MailMerger.ExecuteWithRegions(streamIn, streamOut, SaveFormat.Docx, new MailMergeOptions() { TrimWhitespaces = true }, dataTable);
+                    MailMerger.ExecuteWithRegions(streamIn, streamOut, SaveFormat.Docx, dataTable, new MailMergeOptions() { TrimWhitespaces = true });
             }
             //ExEnd:MailMergeStreamWithRegionsDataTable
+        }
+
+        [Test]
+        public void MailMergeContextStreamWithRegionsDataTable()
+        {
+            //ExStart:MailMergeContextStreamWithRegionsDataTable
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.Create(MailMergerContext)
+            //ExFor:MailMergerContext
+            //ExFor:MailMergerContext.SetRegionsDataSource(DataTable)
+            //ExSummary:Shows how to do mail merge with regions operation from a DataTable using documents from the stream using context.
+            // There is a several ways to do mail merge with regions operation from a DataTable using documents from the stream:
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("LastName");
+            dataTable.Rows.Add(new object[] { "John", "Doe" });
+            dataTable.Rows.Add(new object[] { "", "" });
+            dataTable.Rows.Add(new object[] { "Jane", "Doe" });
+
+            using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
+            {
+                MailMergerContext mailMergerContext = new MailMergerContext();
+                mailMergerContext.SetRegionsDataSource(dataTable);
+                mailMergerContext.MailMergeOptions.TrimWhitespaces = true;
+
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeContextStreamWithRegionsDataTable.docx", FileMode.Create, FileAccess.ReadWrite))
+                    MailMerger.Create(mailMergerContext)
+                        .From(streamIn)
+                        .To(streamOut, SaveFormat.Docx)
+                        .Execute();
+            }
+            //ExEnd:MailMergeContextStreamWithRegionsDataTable
+        }
+
+        [Test]
+        public void MailMergeStreamWithRegionsToImagesDataTable()
+        {
+            //ExStart:MailMergeStreamWithRegionsToImagesDataTable
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.ExecuteWithRegions(Stream, ImageSaveOptions, DataTable, MailMergeOptions)
+            //ExSummary:Shows how to do mail merge with regions operation from a DataTable using documents from the stream and save result to images.
+            // There is a several ways to do mail merge with regions operation from a DataTable using documents from the stream:
+            DataTable dataTable = new DataTable("MyTable");
+            dataTable.Columns.Add("FirstName");
+            dataTable.Columns.Add("LastName");
+            dataTable.Rows.Add(new object[] { "John", "Doe" });
+            dataTable.Rows.Add(new object[] { "", "" });
+            dataTable.Rows.Add(new object[] { "Jane", "Doe" });
+
+            using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
+            {
+                Stream[] images = MailMerger.ExecuteWithRegionsToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataTable);
+                images = MailMerger.ExecuteWithRegionsToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataTable, new MailMergeOptions() { TrimWhitespaces = true });
+            }
+            //ExEnd:MailMergeStreamWithRegionsToImagesDataTable
         }
 
         [Test]
@@ -657,8 +1326,7 @@ namespace ApiExamples
             //ExStart:MailMergeWithRegionsDataSet
             //GistId:695136dbbe4f541a8a0a17b3d3468689
             //ExFor:MailMerger.ExecuteWithRegions(String, String, DataSet)
-            //ExFor:MailMerger.ExecuteWithRegions(String, String, SaveFormat, DataSet)
-            //ExFor:MailMerger.ExecuteWithRegions(String, String, SaveFormat, MailMergeOptions, DataSet)
+            //ExFor:MailMerger.ExecuteWithRegions(String, String, SaveFormat, DataSet, MailMergeOptions)
             //ExSummary:Shows how to do mail merge with regions operation from a DataSet.
             // There is a several ways to do mail merge with regions operation from a DataSet:
             string doc = MyDir + "Mail merge with regions data set.docx";
@@ -684,8 +1352,84 @@ namespace ApiExamples
 
             MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataSet.1.docx", dataSet);
             MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataSet.2.docx", SaveFormat.Docx, dataSet);
-            MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataSet.3.docx", SaveFormat.Docx, new MailMergeOptions() { TrimWhitespaces = true }, dataSet);
+            MailMerger.ExecuteWithRegions(doc, ArtifactsDir + "LowCode.MailMergeWithRegionsDataSet.3.docx", SaveFormat.Docx, dataSet, new MailMergeOptions() { TrimWhitespaces = true });
             //ExEnd:MailMergeWithRegionsDataSet
+        }
+
+        [Test]
+        public void MailMergeContextWithRegionsDataSet()
+        {
+            //ExStart:MailMergeContextWithRegionsDataSet
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.Create(MailMergerContext)
+            //ExFor:MailMergerContext
+            //ExFor:MailMergerContext.SetRegionsDataSource(DataSet)
+            //ExSummary:Shows how to do mail merge with regions operation from a DataSet using context.
+            // There is a several ways to do mail merge with regions operation from a DataSet:
+            string doc = MyDir + "Mail merge with regions data set.docx";
+
+            DataTable tableCustomers = new DataTable("Customers");
+            tableCustomers.Columns.Add("CustomerID");
+            tableCustomers.Columns.Add("CustomerName");
+            tableCustomers.Rows.Add(new object[] { 1, "John Doe" });
+            tableCustomers.Rows.Add(new object[] { 2, "Jane Doe" });
+
+            DataTable tableOrders = new DataTable("Orders");
+            tableOrders.Columns.Add("CustomerID");
+            tableOrders.Columns.Add("ItemName");
+            tableOrders.Columns.Add("Quantity");
+            tableOrders.Rows.Add(new object[] { 1, "Hawaiian", 2 });
+            tableOrders.Rows.Add(new object[] { 2, "Pepperoni", 1 });
+            tableOrders.Rows.Add(new object[] { 2, "Chicago", 1 });
+
+            DataSet dataSet = new DataSet();
+            dataSet.Tables.Add(tableCustomers);
+            dataSet.Tables.Add(tableOrders);
+            dataSet.Relations.Add(tableCustomers.Columns["CustomerID"], tableOrders.Columns["CustomerID"]);
+
+            MailMergerContext mailMergerContext = new MailMergerContext();
+            mailMergerContext.SetRegionsDataSource(dataSet);
+            mailMergerContext.MailMergeOptions.TrimWhitespaces = true;
+
+            MailMerger.Create(mailMergerContext)
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.MailMergeContextWithRegionsDataTable.docx")
+                .Execute();
+            //ExEnd:MailMergeContextWithRegionsDataSet
+        }
+
+        [Test]
+        public void MailMergeWithRegionsToImagesDataSet()
+        {
+            //ExStart:MailMergeWithRegionsToImagesDataSet
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.ExecuteWithRegionsToImages(String, ImageSaveOptions, DataSet, MailMergeOptions)
+            //ExSummary:Shows how to do mail merge with regions operation from a DataSet and save result to images.
+            // There is a several ways to do mail merge with regions operation from a DataSet:
+            string doc = MyDir + "Mail merge with regions data set.docx";
+
+            DataTable tableCustomers = new DataTable("Customers");
+            tableCustomers.Columns.Add("CustomerID");
+            tableCustomers.Columns.Add("CustomerName");
+            tableCustomers.Rows.Add(new object[] { 1, "John Doe" });
+            tableCustomers.Rows.Add(new object[] { 2, "Jane Doe" });
+
+            DataTable tableOrders = new DataTable("Orders");
+            tableOrders.Columns.Add("CustomerID");
+            tableOrders.Columns.Add("ItemName");
+            tableOrders.Columns.Add("Quantity");
+            tableOrders.Rows.Add(new object[] { 1, "Hawaiian", 2 });
+            tableOrders.Rows.Add(new object[] { 2, "Pepperoni", 1 });
+            tableOrders.Rows.Add(new object[] { 2, "Chicago", 1 });
+
+            DataSet dataSet = new DataSet();
+            dataSet.Tables.Add(tableCustomers);
+            dataSet.Tables.Add(tableOrders);
+            dataSet.Relations.Add(tableCustomers.Columns["CustomerID"], tableOrders.Columns["CustomerID"]);
+
+            Stream[] images = MailMerger.ExecuteWithRegionsToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataSet);
+            images = MailMerger.ExecuteWithRegionsToImages(doc, new ImageSaveOptions(SaveFormat.Png), dataSet, new MailMergeOptions() { TrimWhitespaces = true });
+            //ExEnd:MailMergeWithRegionsToImagesDataSet
         }
 
         [Test]
@@ -693,8 +1437,7 @@ namespace ApiExamples
         {
             //ExStart:MailMergeStreamWithRegionsDataSet
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:MailMerger.ExecuteWithRegions(Stream, Stream, SaveFormat, DataSet)
-            //ExFor:MailMerger.ExecuteWithRegions(Stream, Stream, SaveFormat, MailMergeOptions, DataSet)
+            //ExFor:MailMerger.ExecuteWithRegions(Stream, Stream, SaveFormat, DataSet, MailMergeOptions)
             //ExSummary:Shows how to do mail merge with regions operation from a DataSet using documents from the stream.
             // There is a several ways to do mail merge with regions operation from a DataSet using documents from the stream:
             DataTable tableCustomers = new DataTable("Customers");
@@ -722,9 +1465,88 @@ namespace ApiExamples
                     MailMerger.ExecuteWithRegions(streamIn, streamOut, SaveFormat.Docx, dataSet);
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeStreamWithRegionsDataTable.2.docx", FileMode.Create, FileAccess.ReadWrite))
-                    MailMerger.ExecuteWithRegions(streamIn, streamOut, SaveFormat.Docx, new MailMergeOptions() { TrimWhitespaces = true }, dataSet);
+                    MailMerger.ExecuteWithRegions(streamIn, streamOut, SaveFormat.Docx, dataSet, new MailMergeOptions() { TrimWhitespaces = true });
             }
             //ExEnd:MailMergeStreamWithRegionsDataSet
+        }
+
+        [Test]
+        public void MailMergeContextStreamWithRegionsDataSet()
+        {
+            //ExStart:MailMergeContextStreamWithRegionsDataSet
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.Create(MailMergerContext)
+            //ExFor:MailMergerContext
+            //ExFor:MailMergerContext.SetRegionsDataSource(DataSet)
+            //ExSummary:Shows how to do mail merge with regions operation from a DataSet using documents from the stream using context.
+            // There is a several ways to do mail merge with regions operation from a DataSet using documents from the stream:
+            DataTable tableCustomers = new DataTable("Customers");
+            tableCustomers.Columns.Add("CustomerID");
+            tableCustomers.Columns.Add("CustomerName");
+            tableCustomers.Rows.Add(new object[] { 1, "John Doe" });
+            tableCustomers.Rows.Add(new object[] { 2, "Jane Doe" });
+
+            DataTable tableOrders = new DataTable("Orders");
+            tableOrders.Columns.Add("CustomerID");
+            tableOrders.Columns.Add("ItemName");
+            tableOrders.Columns.Add("Quantity");
+            tableOrders.Rows.Add(new object[] { 1, "Hawaiian", 2 });
+            tableOrders.Rows.Add(new object[] { 2, "Pepperoni", 1 });
+            tableOrders.Rows.Add(new object[] { 2, "Chicago", 1 });
+
+            DataSet dataSet = new DataSet();
+            dataSet.Tables.Add(tableCustomers);
+            dataSet.Tables.Add(tableOrders);
+            dataSet.Relations.Add(tableCustomers.Columns["CustomerID"], tableOrders.Columns["CustomerID"]);
+
+            using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
+            {
+                MailMergerContext mailMergerContext = new MailMergerContext();
+                mailMergerContext.SetRegionsDataSource(dataSet);
+                mailMergerContext.MailMergeOptions.TrimWhitespaces = true;
+
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.MailMergeContextStreamWithRegionsDataSet.docx", FileMode.Create, FileAccess.ReadWrite))
+                    MailMerger.Create(mailMergerContext)
+                    .From(streamIn)
+                    .To(streamOut, SaveFormat.Docx)
+                    .Execute();
+            }
+            //ExEnd:MailMergeContextStreamWithRegionsDataSet
+        }
+
+        [Test]
+        public void MailMergeStreamWithRegionsToImagesDataSet()
+        {
+            //ExStart:MailMergeStreamWithRegionsToImagesDataSet
+            //ReleaseVersion:25.4
+            //ExFor:MailMerger.ExecuteWithRegionsToImages(Stream, ImageSaveOptions, DataSet, MailMergeOptions)
+            //ExSummary:Shows how to do mail merge with regions operation from a DataSet using documents from the stream and save result to images.
+            // There is a several ways to do mail merge with regions operation from a DataSet using documents from the stream:
+            DataTable tableCustomers = new DataTable("Customers");
+            tableCustomers.Columns.Add("CustomerID");
+            tableCustomers.Columns.Add("CustomerName");
+            tableCustomers.Rows.Add(new object[] { 1, "John Doe" });
+            tableCustomers.Rows.Add(new object[] { 2, "Jane Doe" });
+
+            DataTable tableOrders = new DataTable("Orders");
+            tableOrders.Columns.Add("CustomerID");
+            tableOrders.Columns.Add("ItemName");
+            tableOrders.Columns.Add("Quantity");
+            tableOrders.Rows.Add(new object[] { 1, "Hawaiian", 2 });
+            tableOrders.Rows.Add(new object[] { 2, "Pepperoni", 1 });
+            tableOrders.Rows.Add(new object[] { 2, "Chicago", 1 });
+
+            DataSet dataSet = new DataSet();
+            dataSet.Tables.Add(tableCustomers);
+            dataSet.Tables.Add(tableOrders);
+            dataSet.Relations.Add(tableCustomers.Columns["CustomerID"], tableOrders.Columns["CustomerID"]);
+
+            using (FileStream streamIn = new FileStream(MyDir + "Mail merge.doc", FileMode.Open, FileAccess.Read))
+            {
+                Stream[] images = MailMerger.ExecuteWithRegionsToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataSet);
+                images = MailMerger.ExecuteWithRegionsToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), dataSet, new MailMergeOptions() { TrimWhitespaces = true });
+            }
+            //ExEnd:MailMergeStreamWithRegionsToImagesDataSet
         }
 
         [Test]
@@ -733,7 +1555,6 @@ namespace ApiExamples
             //ExStart:Replace
             //GistId:695136dbbe4f541a8a0a17b3d3468689
             //ExFor:Replacer.Replace(String, String, String, String)
-            //ExFor:Replacer.Replace(String, String, SaveFormat, String, String)
             //ExFor:Replacer.Replace(String, String, SaveFormat, String, String, FindReplaceOptions)
             //ExSummary:Shows how to replace string in the document.
             // There is a several ways to replace string in the document:
@@ -750,11 +1571,56 @@ namespace ApiExamples
         }
 
         [Test]
+        public void ReplaceContext()
+        {
+            //ExStart:ReplaceContext
+            //ReleaseVersion:25.4
+            //ExFor:Replacer.Create(MailMergerContext)
+            //ExFor:ReplacerContext
+            //ExFor:ReplacerContext.SetReplacement(String, String)
+            //ExFor:ReplacerContext.FindReplaceOptions
+            //ExSummary:Shows how to replace string in the document using context.
+            // There is a several ways to replace string in the document:
+            string doc = MyDir + "Footer.docx";
+            string pattern = "(C)2006 Aspose Pty Ltd.";
+            string replacement = "Copyright (C) 2024 by Aspose Pty Ltd.";
+
+            ReplacerContext replacerContext = new ReplacerContext();
+            replacerContext.SetReplacement(pattern, replacement);
+            replacerContext.FindReplaceOptions.FindWholeWordsOnly = false;
+
+            Replacer.Create(replacerContext)
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.ReplaceContext.docx")
+                .Execute();
+            //ExEnd:ReplaceContext
+        }
+
+        [Test]
+        public void ReplaceToImages()
+        {
+            //ExStart:ReplaceToImages
+            //ReleaseVersion:25.4
+            //ExFor:Replacer.ReplaceToImages(String, ImageSaveOptions, String, String, FindReplaceOptions)
+            //ExSummary:Shows how to replace string in the document and save result to images.
+            // There is a several ways to replace string in the document:
+            string doc = MyDir + "Footer.docx";
+            string pattern = "(C)2006 Aspose Pty Ltd.";
+            string replacement = "Copyright (C) 2024 by Aspose Pty Ltd.";
+
+            Stream[] images = Replacer.ReplaceToImages(doc, new ImageSaveOptions(SaveFormat.Png), pattern, replacement);
+
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.FindWholeWordsOnly = false;
+            images = Replacer.ReplaceToImages(doc, new ImageSaveOptions(SaveFormat.Png), pattern, replacement, options);
+            //ExEnd:ReplaceToImages
+        }
+
+        [Test]
         public void ReplaceStream()
         {
             //ExStart:ReplaceStream
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:Replacer.Replace(Stream, Stream, SaveFormat, String, String)
             //ExFor:Replacer.Replace(Stream, Stream, SaveFormat, String, String, FindReplaceOptions)
             //ExSummary:Shows how to replace string in the document using documents from the stream.
             // There is a several ways to replace string in the document using documents from the stream:
@@ -777,12 +1643,62 @@ namespace ApiExamples
         }
 
         [Test]
+        public void ReplaceContextStream()
+        {
+            //ExStart:ReplaceContextStream
+            //ReleaseVersion:25.4
+            //ExFor:Replacer.Create(MailMergerContext)
+            //ExFor:ReplacerContext
+            //ExFor:ReplacerContext.SetReplacement(String, String)
+            //ExFor:ReplacerContext.FindReplaceOptions
+            //ExSummary:Shows how to replace string in the document using documents from the stream using context.
+            // There is a several ways to replace string in the document using documents from the stream:
+            string pattern = "(C)2006 Aspose Pty Ltd.";
+            string replacement = "Copyright (C) 2024 by Aspose Pty Ltd.";
+
+            using (FileStream streamIn = new FileStream(MyDir + "Footer.docx", FileMode.Open, FileAccess.Read))
+            {
+                ReplacerContext replacerContext = new ReplacerContext();
+                replacerContext.SetReplacement(pattern, replacement);
+                replacerContext.FindReplaceOptions.FindWholeWordsOnly = false;
+
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ReplaceContextStream.docx", FileMode.Create, FileAccess.ReadWrite))
+                    Replacer.Create(replacerContext)
+                    .From(streamIn)
+                    .To(streamOut, SaveFormat.Docx)
+                    .Execute();
+            }
+            //ExEnd:ReplaceContextStream
+        }
+
+        [Test]
+        public void ReplaceToImagesStream()
+        {
+            //ExStart:ReplaceToImagesStream
+            //ReleaseVersion:25.4
+            //ExFor:Replacer.ReplaceToImages(Stream, ImageSaveOptions, String, String, FindReplaceOptions)
+            //ExSummary:Shows how to replace string in the document using documents from the stream and save result to images.
+            // There is a several ways to replace string in the document using documents from the stream:
+            string pattern = "(C)2006 Aspose Pty Ltd.";
+            string replacement = "Copyright (C) 2024 by Aspose Pty Ltd.";
+
+            using (FileStream streamIn = new FileStream(MyDir + "Footer.docx", FileMode.Open, FileAccess.Read))
+            {
+                Stream[] images = Replacer.ReplaceToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), pattern, replacement);
+
+                FindReplaceOptions options = new FindReplaceOptions();
+                options.FindWholeWordsOnly = false;
+                images = Replacer.ReplaceToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), pattern, replacement, options);
+            }
+            //ExEnd:ReplaceToImagesStream
+        }
+
+        [Test]
         public void ReplaceRegex()
         {
             //ExStart:ReplaceRegex
             //GistId:695136dbbe4f541a8a0a17b3d3468689
             //ExFor:Replacer.Replace(String, String, Regex, String)
-            //ExFor:Replacer.Replace(String, String, SaveFormat, Regex, String)
             //ExFor:Replacer.Replace(String, String, SaveFormat, Regex, String, FindReplaceOptions)
             //ExSummary:Shows how to replace string with regex in the document.
             // There is a several ways to replace string with regex in the document:
@@ -797,11 +1713,53 @@ namespace ApiExamples
         }
 
         [Test]
+        public void ReplaceContextRegex()
+        {
+            //ExStart:ReplaceContextRegex
+            //ReleaseVersion:25.4
+            //ExFor:Replacer.Create(MailMergerContext)
+            //ExFor:ReplacerContext
+            //ExFor:ReplacerContext.SetReplacement(Regex, String)
+            //ExFor:ReplacerContext.FindReplaceOptions
+            //ExSummary:Shows how to replace string with regex in the document using context.
+            // There is a several ways to replace string with regex in the document:
+            string doc = MyDir + "Footer.docx";
+            Regex pattern = new Regex("gr(a|e)y");
+            string replacement = "lavender";
+
+            ReplacerContext replacerContext = new ReplacerContext();
+            replacerContext.SetReplacement(pattern, replacement);
+            replacerContext.FindReplaceOptions.FindWholeWordsOnly = false;
+
+            Replacer.Create(replacerContext)
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.ReplaceContextRegex.docx")
+                .Execute();
+            //ExEnd:ReplaceContextRegex
+        }
+
+        [Test]
+        public void ReplaceToImagesRegex()
+        {
+            //ExStart:ReplaceToImagesRegex
+            //ReleaseVersion:25.4
+            //ExFor:Replacer.ReplaceToImages(String, ImageSaveOptions, Regex, String, FindReplaceOptions)
+            //ExSummary:Shows how to replace string with regex in the document and save result to images.
+            // There is a several ways to replace string with regex in the document:
+            string doc = MyDir + "Footer.docx";
+            Regex pattern = new Regex("gr(a|e)y");
+            string replacement = "lavender";
+
+            Stream[] images = Replacer.ReplaceToImages(doc, new ImageSaveOptions(SaveFormat.Png), pattern, replacement);
+            images = Replacer.ReplaceToImages(doc, new ImageSaveOptions(SaveFormat.Png), pattern, replacement, new FindReplaceOptions() { FindWholeWordsOnly = false });
+            //ExEnd:ReplaceToImagesRegex
+        }
+
+        [Test]
         public void ReplaceStreamRegex()
         {
             //ExStart:ReplaceStreamRegex
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:Replacer.Replace(Stream, Stream, SaveFormat, Regex, String)
             //ExFor:Replacer.Replace(Stream, Stream, SaveFormat, Regex, String, FindReplaceOptions)
             //ExSummary:Shows how to replace string with regex in the document using documents from the stream.
             // There is a several ways to replace string with regex in the document using documents from the stream:
@@ -819,13 +1777,59 @@ namespace ApiExamples
             //ExEnd:ReplaceStreamRegex
         }
 
+        [Test]
+        public void ReplaceContextStreamRegex()
+        {
+            //ExStart:ReplaceContextStreamRegex
+            //ReleaseVersion:25.4
+            //ExFor:Replacer.Create(MailMergerContext)
+            //ExFor:ReplacerContext
+            //ExFor:ReplacerContext.SetReplacement(Regex, String)
+            //ExFor:ReplacerContext.FindReplaceOptions
+            //ExSummary:Shows how to replace string with regex in the document using documents from the stream using context.
+            // There is a several ways to replace string with regex in the document using documents from the stream:
+            Regex pattern = new Regex("gr(a|e)y");
+            string replacement = "lavender";
+
+            using (FileStream streamIn = new FileStream(MyDir + "Replace regex.docx", FileMode.Open, FileAccess.Read))
+            {
+                ReplacerContext replacerContext = new ReplacerContext();
+                replacerContext.SetReplacement(pattern, replacement);
+                replacerContext.FindReplaceOptions.FindWholeWordsOnly = false;
+
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.ReplaceContextStreamRegex.docx", FileMode.Create, FileAccess.ReadWrite))
+                    Replacer.Create(replacerContext)
+                        .From(streamIn)
+                        .To(streamOut, SaveFormat.Docx)
+                        .Execute();
+            }
+            //ExEnd:ReplaceContextStreamRegex
+        }
+
+        [Test]
+        public void ReplaceToImagesStreamRegex()
+        {
+            //ExStart:ReplaceToImagesStreamRegex
+            //ReleaseVersion:25.4
+            //ExFor:Replacer.ReplaceToImages(Stream, ImageSaveOptions, Regex, String, FindReplaceOptions)
+            //ExSummary:Shows how to replace string with regex in the document using documents from the stream and save result to images.
+            // There is a several ways to replace string with regex in the document using documents from the stream:
+            Regex pattern = new Regex("gr(a|e)y");
+            string replacement = "lavender";
+
+            using (FileStream streamIn = new FileStream(MyDir + "Replace regex.docx", FileMode.Open, FileAccess.Read))
+            {
+                Stream[] images = Replacer.ReplaceToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), pattern, replacement);
+                images = Replacer.ReplaceToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), pattern, replacement, new FindReplaceOptions() { FindWholeWordsOnly = false });
+            }
+            //ExEnd:ReplaceToImagesStreamRegex
+        }
+
         //ExStart:BuildReportData
         //GistId:695136dbbe4f541a8a0a17b3d3468689
         //ExFor:ReportBuilderOptions
         //ExFor:ReportBuilderOptions.Options
-        //ExFor:ReportBuilder.BuildReport(String, String, Object)
         //ExFor:ReportBuilder.BuildReport(String, String, Object, ReportBuilderOptions)
-        //ExFor:ReportBuilder.BuildReport(String, String, SaveFormat, Object)
         //ExFor:ReportBuilder.BuildReport(String, String, SaveFormat, Object, ReportBuilderOptions)
         //ExSummary:Shows how to populate document with data.
         [Test] //ExSkip
@@ -853,7 +1857,6 @@ namespace ApiExamples
         {
             //ExStart:BuildReportDataStream
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:ReportBuilder.BuildReport(Stream, Stream, SaveFormat, Object)
             //ExFor:ReportBuilder.BuildReport(Stream, Stream, SaveFormat, Object, ReportBuilderOptions)
             //ExFor:ReportBuilder.BuildReport(Stream, Stream, SaveFormat, Object[], String[], ReportBuilderOptions)
             //ExSummary:Shows how to populate document with data using documents from the stream.
@@ -877,14 +1880,15 @@ namespace ApiExamples
 
         //ExStart:BuildReportDataSource
         //GistId:695136dbbe4f541a8a0a17b3d3468689
-        //ExFor:ReportBuilder.BuildReport(String, String, Object, String)
-        //ExFor:ReportBuilder.BuildReport(String, String, Object[], String[])
         //ExFor:ReportBuilder.BuildReport(String, String, Object, String, ReportBuilderOptions)
-        //ExFor:ReportBuilder.BuildReport(String, String, SaveFormat, Object, String)
-        //ExFor:ReportBuilder.BuildReport(String, String, SaveFormat, Object[], String[])
         //ExFor:ReportBuilder.BuildReport(String, String, SaveFormat, Object, String, ReportBuilderOptions)
         //ExFor:ReportBuilder.BuildReport(String, String, Object[], String[], ReportBuilderOptions)
         //ExFor:ReportBuilder.BuildReport(String, String, SaveFormat, Object[], String[], ReportBuilderOptions)
+        //ExFor:ReportBuilder.BuildReportToImages(String, ImageSaveOptions, Object[], String[], ReportBuilderOptions)
+        //ExFor:ReportBuilder.Create(ReportBuilderContext)
+        //ExFor:ReportBuilderContext
+        //ExFor:ReportBuilderContext.ReportBuilderOptions
+        //ExFor:ReportBuilderContext.DataSources
         //ExSummary:Shows how to populate document with data sources.
         [Test] //ExSkip
         public void BuildReportDataSource()
@@ -902,6 +1906,17 @@ namespace ApiExamples
             ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.6.docx", SaveFormat.Docx, sender, "s", new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
             ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.7.docx", SaveFormat.Docx, new object[] { sender }, new[] { "s" }, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
             ReportBuilder.BuildReport(doc, ArtifactsDir + "LowCode.BuildReportDataSource.8.docx", new object[] { sender }, new[] { "s" }, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+
+            Stream[] images = ReportBuilder.BuildReportToImages(doc, new ImageSaveOptions(SaveFormat.Png), new object[] { sender }, new[] { "s" }, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+
+            ReportBuilderContext reportBuilderContext = new ReportBuilderContext();
+            reportBuilderContext.ReportBuilderOptions.MissingMemberMessage = "Missed members";
+            reportBuilderContext.DataSources.Add(sender, "s");
+
+            ReportBuilder.Create(reportBuilderContext)
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.BuildReportDataSource.9.docx")
+                .Execute();
         }
 
         public class MessageTestClass
@@ -922,9 +1937,12 @@ namespace ApiExamples
         {
             //ExStart:BuildReportDataSourceStream
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:ReportBuilder.BuildReport(Stream, Stream, SaveFormat, Object[], String[])
-            //ExFor:ReportBuilder.BuildReport(Stream, Stream, SaveFormat, Object, String)
             //ExFor:ReportBuilder.BuildReport(Stream, Stream, SaveFormat, Object, String, ReportBuilderOptions)
+            //ExFor:ReportBuilder.BuildReportToImages(Stream, ImageSaveOptions, Object[], String[], ReportBuilderOptions)
+            //ExFor:ReportBuilder.Create(ReportBuilderContext)
+            //ExFor:ReportBuilderContext
+            //ExFor:ReportBuilderContext.ReportBuilderOptions
+            //ExFor:ReportBuilderContext.DataSources
             //ExSummary:Shows how to populate document with data sources using documents from the stream.
             // There is a several ways to populate document with data sources using documents from the stream:
             MessageTestClass sender = new MessageTestClass("LINQ Reporting Engine", "Hello World");
@@ -939,6 +1957,18 @@ namespace ApiExamples
 
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.BuildReportDataSourceStream.3.docx", FileMode.Create, FileAccess.ReadWrite))
                     ReportBuilder.BuildReport(streamIn, streamOut, SaveFormat.Docx, sender, "s", new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+
+                Stream[] images = ReportBuilder.BuildReportToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), new object[] { sender }, new[] { "s" }, new ReportBuilderOptions() { Options = ReportBuildOptions.AllowMissingMembers });
+
+                ReportBuilderContext reportBuilderContext = new ReportBuilderContext();
+                reportBuilderContext.ReportBuilderOptions.MissingMemberMessage = "Missed members";
+                reportBuilderContext.DataSources.Add(sender, "s");
+
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.BuildReportDataSourceStream.4.docx", FileMode.Create, FileAccess.ReadWrite))
+                    ReportBuilder.Create(reportBuilderContext)
+                        .From(streamIn)
+                        .To(streamOut, SaveFormat.Docx)
+                        .Execute();
             }
             //ExEnd:BuildReportDataSourceStream
         }
@@ -1025,6 +2055,27 @@ namespace ApiExamples
         }
 
         [Test]
+        public void SplitContextDocument()
+        {
+            //ExStart:SplitContextDocument
+            //ReleaseVersion:25.4
+            //ExFor:Splitter.Create(SplitterContext)
+            //ExFor:SplitterContext
+            //ExFor:SplitterContext.SplitOptions
+            //ExSummary:Shows how to split document by pages using context.
+            string doc = MyDir + "Big document.docx";
+
+            SplitterContext splitterContext = new SplitterContext();
+            splitterContext.SplitOptions.SplitCriteria = SplitCriteria.Page;
+
+            Splitter.Create(splitterContext)
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.SplitContextDocument.docx")
+                .Execute();
+            //ExEnd:SplitContextDocument
+        }
+
+        [Test]
         public void SplitDocumentStream()
         {
             //ExStart:SplitDocumentStream
@@ -1041,12 +2092,34 @@ namespace ApiExamples
         }
 
         [Test]
+        public void SplitContextDocumentStream()
+        {
+            //ExStart:SplitContextDocumentStream
+            //ReleaseVersion:25.4
+            //ExFor:Splitter.Create(SplitterContext)
+            //ExFor:SplitterContext
+            //ExFor:SplitterContext.SplitOptions
+            //ExSummary:Shows how to split document from the stream by pages using context.
+            using (FileStream streamIn = new FileStream(MyDir + "Big document.docx", FileMode.Open, FileAccess.Read))
+            {
+                SplitterContext splitterContext = new SplitterContext();
+                splitterContext.SplitOptions.SplitCriteria = SplitCriteria.Page;
+
+                List<Stream> pages = new List<Stream>();
+                Splitter.Create(splitterContext)
+                    .From(streamIn)
+                    .To(pages, SaveFormat.Docx)
+                    .Execute();
+            }
+            //ExEnd:SplitContextDocumentStream
+        }
+
+        [Test]
         public void WatermarkText()
         {
             //ExStart:WatermarkText
             //GistId:695136dbbe4f541a8a0a17b3d3468689
             //ExFor:Watermarker.SetText(String, String, String)
-            //ExFor:Watermarker.SetText(String, String, SaveFormat, String)
             //ExFor:Watermarker.SetText(String, String, String, TextWatermarkOptions)
             //ExFor:Watermarker.SetText(String, String, SaveFormat, String, TextWatermarkOptions)
             //ExSummary:Shows how to insert watermark text to the document.
@@ -1063,11 +2136,34 @@ namespace ApiExamples
         }
 
         [Test]
+        public void WatermarkContextText()
+        {
+            //ExStart:WatermarkContextText
+            //ReleaseVersion:25.4
+            //ExFor:Watermarker.Create(WatermarkerContext)
+            //ExFor:WatermarkerContext
+            //ExFor:WatermarkerContext.TextWatermark
+            //ExFor:WatermarkerContext.TextWatermarkOptions
+            //ExSummary:Shows how to insert watermark text to the document using context.
+            string doc = MyDir + "Big document.docx";
+            string watermarkText = "This is a watermark";
+
+            WatermarkerContext watermarkerContext = new WatermarkerContext();
+            watermarkerContext.TextWatermark = watermarkText;
+            watermarkerContext.TextWatermarkOptions.Color = Color.Red;
+
+            Watermarker.Create(watermarkerContext)
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.WatermarkContextText.docx")
+                .Execute();
+            //ExEnd:WatermarkContextText
+        }
+
+        [Test]
         public void WatermarkTextStream()
         {
             //ExStart:WatermarkTextStream
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:Watermarker.SetText(Stream, Stream, SaveFormat, String)
             //ExFor:Watermarker.SetText(Stream, Stream, SaveFormat, String, TextWatermarkOptions)
             //ExSummary:Shows how to insert watermark text to the document from the stream.
             string watermarkText = "This is a watermark";
@@ -1088,12 +2184,38 @@ namespace ApiExamples
         }
 
         [Test]
+        public void WatermarkContextTextStream()
+        {
+            //ExStart:WatermarkContextTextStream
+            //ReleaseVersion:25.4
+            //ExFor:Watermarker.Create(WatermarkerContext)
+            //ExFor:WatermarkerContext
+            //ExFor:WatermarkerContext.TextWatermark
+            //ExFor:WatermarkerContext.TextWatermarkOptions
+            //ExSummary:Shows how to insert watermark text to the document from the stream using context.
+            string watermarkText = "This is a watermark";
+
+            using (FileStream streamIn = new FileStream(MyDir + "Document.docx", FileMode.Open, FileAccess.Read))
+            {
+                WatermarkerContext watermarkerContext = new WatermarkerContext();
+                watermarkerContext.TextWatermark = watermarkText;
+                watermarkerContext.TextWatermarkOptions.Color = Color.Red;
+
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.WatermarkContextTextStream.docx", FileMode.Create, FileAccess.ReadWrite))
+                    Watermarker.Create(watermarkerContext)
+                        .From(streamIn)
+                        .To(streamOut, SaveFormat.Docx)
+                        .Execute();
+            }
+            //ExEnd:WatermarkContextTextStream
+        }
+
+        [Test]
         public void WatermarkImage()
         {
             //ExStart:WatermarkImage
             //GistId:695136dbbe4f541a8a0a17b3d3468689
             //ExFor:Watermarker.SetImage(String, String, String)
-            //ExFor:Watermarker.SetImage(String, String, SaveFormat, String)
             //ExFor:Watermarker.SetImage(String, String, String, ImageWatermarkOptions)
             //ExFor:Watermarker.SetImage(String, String, SaveFormat, String, ImageWatermarkOptions)
             //ExSummary:Shows how to insert watermark image to the document.
@@ -1111,11 +2233,34 @@ namespace ApiExamples
         }
 
         [Test]
+        public void WatermarkContextImage()
+        {
+            //ExStart:WatermarkContextImage
+            //ReleaseVersion:25.4
+            //ExFor:Watermarker.Create(WatermarkerContext)
+            //ExFor:WatermarkerContext
+            //ExFor:WatermarkerContext.ImageWatermark
+            //ExFor:WatermarkerContext.ImageWatermarkOptions
+            //ExSummary:Shows how to insert watermark image to the document using context.
+            string doc = MyDir + "Document.docx";
+            string watermarkImage = ImageDir + "Logo.jpg";
+
+            WatermarkerContext watermarkerContext = new WatermarkerContext();
+            watermarkerContext.ImageWatermark = File.ReadAllBytes(watermarkImage);
+            watermarkerContext.ImageWatermarkOptions.Scale = 50;
+
+            Watermarker.Create(watermarkerContext)
+                .From(doc)
+                .To(ArtifactsDir + "LowCode.WatermarkContextImage.docx")
+                .Execute();
+            //ExEnd:WatermarkContextImage
+        }
+
+        [Test]
         public void WatermarkImageStream()
         {
             //ExStart:WatermarkImageStream
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:Watermarker.SetImage(Stream, Stream, SaveFormat, Image)
             //ExFor:Watermarker.SetImage(Stream, Stream, SaveFormat, Image, ImageWatermarkOptions)
             //ExSummary:Shows how to insert watermark image to the document from a stream.
             using (FileStream streamIn = new FileStream(MyDir + "Document.docx", FileMode.Open, FileAccess.Read))
@@ -1131,6 +2276,109 @@ namespace ApiExamples
 #endif //ExSkip
             }
             //ExEnd:WatermarkImageStream
+        }
+
+        [Test]
+        public void WatermarkContextImageStream()
+        {
+            //ExStart:WatermarkContextImageStream
+            //ReleaseVersion:25.4
+            //ExFor:Watermarker.Create(WatermarkerContext)
+            //ExFor:WatermarkerContext
+            //ExFor:WatermarkerContext.ImageWatermark
+            //ExFor:WatermarkerContext.ImageWatermarkOptions
+            //ExSummary:Shows how to insert watermark image to the document from a stream using context.
+            string watermarkImage = ImageDir + "Logo.jpg";
+
+            using (FileStream streamIn = new FileStream(MyDir + "Document.docx", FileMode.Open, FileAccess.Read))
+            {
+                WatermarkerContext watermarkerContext = new WatermarkerContext();
+                watermarkerContext.ImageWatermark = File.ReadAllBytes(watermarkImage);
+                watermarkerContext.ImageWatermarkOptions.Scale = 50;
+
+                using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.WatermarkContextImageStream.docx", FileMode.Create, FileAccess.ReadWrite))
+                    Watermarker.Create(watermarkerContext)
+                        .From(streamIn)
+                        .To(streamOut, SaveFormat.Docx)
+                        .Execute();
+            }
+            //ExEnd:WatermarkContextImageStream
+        }
+
+        [Test]
+        public void WatermarkTextToImages()
+        {
+            //ExStart:WatermarkTextToImages
+            //ReleaseVersion:25.4
+            //ExFor:Watermarker.SetWatermarkToImages(String, ImageSaveOptions, String, TextWatermarkOptions)
+            //ExSummary:Shows how to insert watermark text to the document and save result to images.
+            string doc = MyDir + "Big document.docx";
+            string watermarkText = "This is a watermark";
+
+            Stream[] images = Watermarker.SetWatermarkToImages(doc, new ImageSaveOptions(SaveFormat.Png), watermarkText);
+
+            TextWatermarkOptions watermarkOptions = new TextWatermarkOptions();
+            watermarkOptions.Color = Color.Red;
+            images = Watermarker.SetWatermarkToImages(doc, new ImageSaveOptions(SaveFormat.Png), watermarkText, watermarkOptions);
+            //ExEnd:WatermarkTextToImages
+        }
+
+        [Test]
+        public void WatermarkTextToImagesStream()
+        {
+            //ExStart:WatermarkTextToImagesStream
+            //ReleaseVersion:25.4
+            //ExFor:Watermarker.SetWatermarkToImages(Stream, ImageSaveOptions, String, TextWatermarkOptions)
+            //ExSummary:Shows how to insert watermark text to the document from the stream and save result to images.
+            string watermarkText = "This is a watermark";
+
+            using (FileStream streamIn = new FileStream(MyDir + "Document.docx", FileMode.Open, FileAccess.Read))
+            {
+                Stream[] images = Watermarker.SetWatermarkToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), watermarkText);
+
+                TextWatermarkOptions watermarkOptions = new TextWatermarkOptions();
+                watermarkOptions.Color = Color.Red;
+                images = Watermarker.SetWatermarkToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), watermarkText, watermarkOptions);
+            }
+            //ExEnd:WatermarkTextToImagesStream
+        }
+
+        [Test]
+        public void WatermarkImageToImages()
+        {
+            //ExStart:WatermarkImageToImages
+            //ReleaseVersion:25.4
+            //ExFor:Watermarker.SetWatermarkToImages(String, ImageSaveOptions, String, ImageWatermarkOptions)
+            //ExSummary:Shows how to insert watermark image to the document and save result to images.
+            string doc = MyDir + "Document.docx";
+            string watermarkImage = ImageDir + "Logo.jpg";
+
+            Watermarker.SetWatermarkToImages(doc, new ImageSaveOptions(SaveFormat.Png), File.ReadAllBytes(watermarkImage));
+
+            ImageWatermarkOptions options = new ImageWatermarkOptions();
+            options.Scale = 50;
+            Watermarker.SetWatermarkToImages(doc, new ImageSaveOptions(SaveFormat.Png), File.ReadAllBytes(watermarkImage), options);
+            //ExEnd:WatermarkImageToImages
+        }
+
+        [Test]
+        public void WatermarkImageToImagesStream()
+        {
+            //ExStart:WatermarkImageToImagesStream
+            //ReleaseVersion:25.4
+            //ExFor:Watermarker.SetWatermarkToImages(Stream, ImageSaveOptions, Stream, ImageWatermarkOptions)
+            //ExSummary:Shows how to insert watermark image to the document from a stream and save result to images.
+            string watermarkImage = ImageDir + "Logo.jpg";
+
+            using (FileStream streamIn = new FileStream(MyDir + "Document.docx", FileMode.Open, FileAccess.Read))
+            {
+                using (FileStream imageStream = new FileStream(watermarkImage, FileMode.Open, FileAccess.Read))
+                {
+                    Watermarker.SetWatermarkToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), imageStream);
+                    Watermarker.SetWatermarkToImages(streamIn, new ImageSaveOptions(SaveFormat.Png), imageStream, new ImageWatermarkOptions() { Scale = 50 });
+                }
+            }
+            //ExEnd:WatermarkImageToImagesStream
         }
     }
 }
