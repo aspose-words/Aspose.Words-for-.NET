@@ -70,9 +70,7 @@ namespace ApiExamples
             //ExStart:MergeContextDocuments
             //GistId:12a3a3cfe30f3145220db88428a9f814
             //ExFor:Processor
-            //ExFor:Processor.From(String)
             //ExFor:Processor.From(String, LoadOptions)
-            //ExFor:Processor.To(String)
             //ExFor:Processor.To(String, SaveOptions)
             //ExFor:Processor.To(String, SaveFormat)
             //ExFor:Processor.Execute
@@ -149,7 +147,6 @@ namespace ApiExamples
             //ExStart:MergeStreamContextDocuments
             //GistId:12a3a3cfe30f3145220db88428a9f814
             //ExFor:Processor
-            //ExFor:Processor.From(Stream)
             //ExFor:Processor.From(Stream, LoadOptions)
             //ExFor:Processor.To(Stream, SaveFormat)
             //ExFor:Processor.To(Stream, SaveOptions)
@@ -236,9 +233,7 @@ namespace ApiExamples
             //ExStart:ConvertContext
             //GistId:12a3a3cfe30f3145220db88428a9f814
             //ExFor:Processor
-            //ExFor:Processor.From(String)
             //ExFor:Processor.From(String, LoadOptions)
-            //ExFor:Processor.To(String)
             //ExFor:Processor.To(String, SaveOptions)
             //ExFor:Processor.Execute
             //ExFor:Converter.Create(ConverterContext)
@@ -301,11 +296,9 @@ namespace ApiExamples
             //ExStart:ConvertContextStream
             //GistId:12a3a3cfe30f3145220db88428a9f814
             //ExFor:Processor
-            //ExFor:Processor.From(Stream)
             //ExFor:Processor.From(Stream, LoadOptions)
             //ExFor:Processor.To(Stream, SaveFormat)
             //ExFor:Processor.To(Stream, SaveOptions)
-            //ExFor:Processor.To(List<Stream>, SaveOptions)
             //ExFor:Processor.Execute
             //ExFor:Converter.Create(ConverterContext)
             //ExFor:ConverterContext
@@ -682,7 +675,7 @@ namespace ApiExamples
         {
             //ExStart:CompareDocumentsToimages
             //GistId:12a3a3cfe30f3145220db88428a9f814
-            //ExFor:Comparer.CompareToImages(String, String, String, String, DateTime)
+            //ExFor:Comparer.CompareToImages(Stream, Stream, ImageSaveOptions, String, DateTime, CompareOptions)
             //ExSummary:Shows how to compare documents and save results as images.
             // There is a several ways to compare documents:
             string firstDoc = MyDir + "Table column bookmarks.docx";
@@ -694,7 +687,9 @@ namespace ApiExamples
             {
                 using (FileStream secondStreamIn = new FileStream(secondDoc, FileMode.Open, FileAccess.Read))
                 {
-                    pages = Comparer.CompareToImages(firstStreamIn, secondStreamIn, new ImageSaveOptions(SaveFormat.Png), "Author", new DateTime());
+                    CompareOptions compareOptions = new CompareOptions();
+                    compareOptions.IgnoreCaseChanges = true;
+                    pages = Comparer.CompareToImages(firstStreamIn, secondStreamIn, new ImageSaveOptions(SaveFormat.Png), "Author", new DateTime(), compareOptions);
                 }
             }
             //ExEnd:CompareDocumentsToimages
@@ -987,7 +982,7 @@ namespace ApiExamples
         {
             //ExStart:MailMergeStreamToImagesDataRow
             //GistId:12a3a3cfe30f3145220db88428a9f814
-            //ExFor:MailMerger.Execute(Stream, ImageSaveOptions, DataRow, MailMergeOptions)
+            //ExFor:MailMerger.ExecuteToImages(Stream, ImageSaveOptions, DataRow, MailMergeOptions)
             //ExSummary:Shows how to do mail merge operation from a DataRow using documents from the stream and save result to images.
             // There is a several ways to do mail merge operation from a DataRow using documents from the stream:
             DataTable dataTable = new DataTable();
@@ -1064,7 +1059,7 @@ namespace ApiExamples
         {
             //ExStart:MailMergeToImagesDataTable
             //GistId:12a3a3cfe30f3145220db88428a9f814
-            //ExFor:MailMerger.Execute(String, ImageSaveOptions, DataTable, MailMergeOptions)
+            //ExFor:MailMerger.ExecuteToImages(String, ImageSaveOptions, DataTable, MailMergeOptions)
             //ExSummary:Shows how to do mail merge operation from a DataTable and save result to images.
             // There is a several ways to do mail merge operation from a DataTable:
             string doc = MyDir + "Mail merge.doc";
@@ -1146,7 +1141,7 @@ namespace ApiExamples
             //ExStart:MailMergeStreamToImagesDataTable
             //GistId:12a3a3cfe30f3145220db88428a9f814
             //ExFor:MailMerger.ExecuteToImages(Stream, ImageSaveOptions, DataTable, MailMergeOptions)
-            //ExSummary:Shows how to do mail merge operation from a DataTable using documents from the stream.
+            //ExSummary:Shows how to do mail merge operation from a DataTable using documents from the stream and save to images.
             // There is a several ways to do mail merge operation from a DataTable using documents from the stream and save result to images:
             DataTable dataTable = new DataTable();
             dataTable.Columns.Add("FirstName");
@@ -1222,7 +1217,7 @@ namespace ApiExamples
         {
             //ExStart:MailMergeWithRegionsToImagesDataTable
             //GistId:12a3a3cfe30f3145220db88428a9f814
-            //ExFor:MailMerger.ExecuteWithRegions(String, ImageSaveOptions, DataTable, MailMergeOptions)
+            //ExFor:MailMerger.ExecuteWithRegionsToImages(String, ImageSaveOptions, DataTable, MailMergeOptions)
             //ExSummary:Shows how to do mail merge with regions operation from a DataTable and save result to images.
             // There is a several ways to do mail merge with regions operation from a DataTable:
             string doc = MyDir + "Mail merge with regions.docx";
@@ -1302,7 +1297,7 @@ namespace ApiExamples
         {
             //ExStart:MailMergeStreamWithRegionsToImagesDataTable
             //GistId:12a3a3cfe30f3145220db88428a9f814
-            //ExFor:MailMerger.ExecuteWithRegions(Stream, ImageSaveOptions, DataTable, MailMergeOptions)
+            //ExFor:MailMerger.ExecuteWithRegionsToImages(Stream, ImageSaveOptions, DataTable, MailMergeOptions)
             //ExSummary:Shows how to do mail merge with regions operation from a DataTable using documents from the stream and save result to images.
             // There is a several ways to do mail merge with regions operation from a DataTable using documents from the stream:
             DataTable dataTable = new DataTable("MyTable");
@@ -1575,7 +1570,7 @@ namespace ApiExamples
         {
             //ExStart:ReplaceContext
             //GistId:12a3a3cfe30f3145220db88428a9f814
-            //ExFor:Replacer.Create(MailMergerContext)
+            //ExFor:Replacer.Create(ReplacerContext)
             //ExFor:ReplacerContext
             //ExFor:ReplacerContext.SetReplacement(String, String)
             //ExFor:ReplacerContext.FindReplaceOptions
@@ -1647,7 +1642,7 @@ namespace ApiExamples
         {
             //ExStart:ReplaceContextStream
             //GistId:12a3a3cfe30f3145220db88428a9f814
-            //ExFor:Replacer.Create(MailMergerContext)
+            //ExFor:Replacer.Create(ReplacerContext)
             //ExFor:ReplacerContext
             //ExFor:ReplacerContext.SetReplacement(String, String)
             //ExFor:ReplacerContext.FindReplaceOptions
@@ -1717,7 +1712,7 @@ namespace ApiExamples
         {
             //ExStart:ReplaceContextRegex
             //GistId:12a3a3cfe30f3145220db88428a9f814
-            //ExFor:Replacer.Create(MailMergerContext)
+            //ExFor:Replacer.Create(ReplacerContext)
             //ExFor:ReplacerContext
             //ExFor:ReplacerContext.SetReplacement(Regex, String)
             //ExFor:ReplacerContext.FindReplaceOptions
@@ -1782,7 +1777,7 @@ namespace ApiExamples
         {
             //ExStart:ReplaceContextStreamRegex
             //GistId:12a3a3cfe30f3145220db88428a9f814
-            //ExFor:Replacer.Create(MailMergerContext)
+            //ExFor:Replacer.Create(ReplacerContext)
             //ExFor:ReplacerContext
             //ExFor:ReplacerContext.SetReplacement(Regex, String)
             //ExFor:ReplacerContext.FindReplaceOptions
@@ -2361,7 +2356,7 @@ namespace ApiExamples
         {
             //ExStart:WatermarkImageToImages
             //GistId:12a3a3cfe30f3145220db88428a9f814
-            //ExFor:Watermarker.SetWatermarkToImages(String, ImageSaveOptions, String, ImageWatermarkOptions)
+            //ExFor:Watermarker.SetWatermarkToImages(String, ImageSaveOptions, Byte[], ImageWatermarkOptions)
             //ExSummary:Shows how to insert watermark image to the document and save result to images.
             string doc = MyDir + "Document.docx";
             string watermarkImage = ImageDir + "Logo.jpg";
