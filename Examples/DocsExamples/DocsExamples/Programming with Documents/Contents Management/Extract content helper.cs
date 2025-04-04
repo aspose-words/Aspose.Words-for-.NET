@@ -7,7 +7,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 {
     internal class ExtractContentHelper
     {
-        public static List<Node> ExtractContent(Node startNode, Node endNode, bool isInclusive)
+        public static List<Node> ExtractContent(Node startNode, Node endNode, bool isInclusive, bool copySection)
         {
             // First, check that the nodes passed to this method are valid for use.
             VerifyParameterNodes(startNode, endNode);
@@ -44,9 +44,12 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             // in extracting using inline nodes, fields, bookmarks, etc. to make it useful.
             while (isExtracting)
             {
-                Node section = currNode.GetAncestor(NodeType.Section);
-                if (!nodes.Any(o => o.Range.Text.Equals(section.Range.Text)))
-                    nodes.Add(section.Clone(true));
+                if (copySection)
+                {
+                    Node section = currNode.GetAncestor(NodeType.Section);
+                    if (!nodes.Any(o => o.Range.Text.Equals(section.Range.Text)))
+                        nodes.Add(section.Clone(true));
+                }
 
                 // Clone the current node and its children to obtain a copy.
                 Node cloneNode = currNode.Clone(true);

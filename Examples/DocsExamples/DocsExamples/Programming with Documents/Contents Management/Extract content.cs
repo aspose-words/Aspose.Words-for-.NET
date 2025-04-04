@@ -21,12 +21,12 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             Paragraph startPara = (Paragraph) doc.LastSection.GetChild(NodeType.Paragraph, 2, true);
             Table endTable = (Table) doc.LastSection.GetChild(NodeType.Table, 0, true);
             // Extract the content between these nodes in the document. Include these markers in the extraction.
-            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startPara, endTable, true);
+            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startPara, endTable, true, false);
 
             // Let's reverse the array to make inserting the content back into the document easier.
             extractedNodes.Reverse();
-            foreach (Node extractedNode in extractedNodes)                
-                endTable.ParentNode.InsertAfter(extractedNode, endTable);            
+            foreach (Node extractedNode in extractedNodes)
+                endTable.ParentNode.InsertAfter(extractedNode, endTable);
 
             doc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenBlockLevelNodes.docx");
             //ExEnd:ExtractContentBetweenBlockLevelNodes
@@ -37,20 +37,20 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         {
             //ExStart:ExtractContentBetweenBookmark
             //GistId:1f94e59ea4838ffac2f0edf921f67060
-            Document doc = new Document(MyDir + "Extract content.docx");            
+            Document doc = new Document(MyDir + "Extract content.docx");
 
-            Bookmark bookmark = doc.Range.Bookmarks["Bookmark1"];            
+            Bookmark bookmark = doc.Range.Bookmarks["Bookmark1"];
             BookmarkStart bookmarkStart = bookmark.BookmarkStart;
             BookmarkEnd bookmarkEnd = bookmark.BookmarkEnd;
 
             // Firstly, extract the content between these nodes, including the bookmark.
-            List<Node> extractedNodesInclusive = ExtractContentHelper.ExtractContent(bookmarkStart, bookmarkEnd, true);
+            List<Node> extractedNodesInclusive = ExtractContentHelper.ExtractContent(bookmarkStart, bookmarkEnd, true, true);
             
             Document dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodesInclusive);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenBookmark.IncludingBookmark.docx");
 
             // Secondly, extract the content between these nodes this time without including the bookmark.
-            List<Node> extractedNodesExclusive = ExtractContentHelper.ExtractContent(bookmarkStart, bookmarkEnd, false);
+            List<Node> extractedNodesExclusive = ExtractContentHelper.ExtractContent(bookmarkStart, bookmarkEnd, false, true);
             
             dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodesExclusive);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenBookmark.WithoutBookmark.docx");
@@ -68,13 +68,13 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             CommentRangeEnd commentEnd = (CommentRangeEnd) doc.GetChild(NodeType.CommentRangeEnd, 0, true);
 
             // Firstly, extract the content between these nodes including the comment as well.
-            List<Node> extractedNodesInclusive = ExtractContentHelper.ExtractContent(commentStart, commentEnd, true);
+            List<Node> extractedNodesInclusive = ExtractContentHelper.ExtractContent(commentStart, commentEnd, true, true);
             
             Document dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodesInclusive);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenCommentRange.IncludingComment.docx");
 
             // Secondly, extract the content between these nodes without the comment.
-            List<Node> extractedNodesExclusive = ExtractContentHelper.ExtractContent(commentStart, commentEnd, false);
+            List<Node> extractedNodesExclusive = ExtractContentHelper.ExtractContent(commentStart, commentEnd, false, true);
             
             dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodesExclusive);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenCommentRange.WithoutComment.docx");
@@ -91,7 +91,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             Paragraph startPara = (Paragraph) doc.FirstSection.Body.GetChild(NodeType.Paragraph, 6, true);
             Paragraph endPara = (Paragraph) doc.FirstSection.Body.GetChild(NodeType.Paragraph, 10, true);
             // Extract the content between these nodes in the document. Include these markers in the extraction.
-            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startPara, endPara, true);
+            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startPara, endPara, true, true);
 
             Document dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodes);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenParagraphs.docx");
@@ -114,7 +114,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             Node endPara = parasStyleHeading3[0];
 
             // Extract the content between these nodes in the document. Don't include these markers in the extraction.
-            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startPara, endPara, false);
+            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startPara, endPara, false, true);
 
             Document dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodes);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenParagraphStyles.docx");
@@ -152,7 +152,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             Run endRun = para.Runs[4];
 
             // Extract the content between these nodes in the document. Include these markers in the extraction.
-            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startRun, endRun, true);
+            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startRun, endRun, true, false);
             foreach (Node extractedNode in extractedNodes)
                 Console.WriteLine(extractedNode.ToString(SaveFormat.Text));
             //ExEnd:ExtractContentBetweenRuns
@@ -308,7 +308,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             FieldStart startField = (FieldStart) builder.CurrentNode;
             Paragraph endPara = (Paragraph) doc.FirstSection.GetChild(NodeType.Paragraph, 5, true);
             // Extract the content between these nodes in the document. Don't include these markers in the extraction.
-            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startField, endPara, false);
+            List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startField, endPara, false, true);
 
             Document dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodes);
             dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentUsingField.docx");
@@ -321,7 +321,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             //ExStart:SimpleExtractText
             //GistId:1f94e59ea4838ffac2f0edf921f67060
             Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);            
+            DocumentBuilder builder = new DocumentBuilder(doc);
             
             builder.InsertField("MERGEFIELD Field");
 
@@ -329,8 +329,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             // but will still contain some natural formatting characters such as paragraph markers etc. 
             // This is the same as "viewing" the document as if it was opened in a text editor.
             Console.WriteLine("Convert to text result: " + doc.ToString(SaveFormat.Text));
-            //ExEnd:SimpleExtractText            
-        }        
+            //ExEnd:SimpleExtractText
+        }
 
         [Test]
         public void ExtractPrintText()
