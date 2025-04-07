@@ -1102,5 +1102,27 @@ namespace ApiExamples
             pageSetup.HeadingLevelForChapter = 1;
             //ExEnd
         }
+
+        [Test]
+        public void JisbPaperSize()
+        {
+            //ExStart:JisbPaperSize
+            //GistId:12a3a3cfe30f3145220db88428a9f814
+            //ExFor:PageSetup.PaperSize
+            //ExSummary:Shows how to set the paper size of JisB4 or JisB5.
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            PageSetup pageSetup = doc.FirstSection.PageSetup;
+            // Set the paper size to JisB4 (257x364mm).
+            pageSetup.PaperSize = PaperSize.JisB4;
+            // Alternatively, set the paper size to JisB5. (182x257mm).
+            pageSetup.PaperSize = PaperSize.JisB5;
+            //ExEnd:JisbPaperSize
+
+            doc = DocumentHelper.SaveOpen(doc);
+            pageSetup = doc.FirstSection.PageSetup;
+
+            Assert.AreEqual(PaperSize.JisB5, pageSetup.PaperSize);
+        }
     }
 }

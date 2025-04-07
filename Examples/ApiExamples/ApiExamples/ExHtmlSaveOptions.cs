@@ -1984,5 +1984,21 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ReplaceBackslashWithYenSign.html", saveOptions);
             //ExEnd:HtmlReplaceBackslashWithYenSign
         }
+
+        [Test]
+        public void RemoveJavaScriptFromLinks()
+        {
+            //ExStart:HtmlRemoveJavaScriptFromLinks
+            //GistId:12a3a3cfe30f3145220db88428a9f814
+            //ExFor:HtmlFixedSaveOptions.RemoveJavaScriptFromLinks
+            //ExSummary:Shows how to remove JavaScript from the links.
+            Document doc = new Document(MyDir + "JavaScript in HREF.docx");
+
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.RemoveJavaScriptFromLinks = true;
+
+            doc.Save(ArtifactsDir + "HtmlSaveOptions.RemoveJavaScriptFromLinks.html", saveOptions);
+            //ExEnd:HtmlRemoveJavaScriptFromLinks
+        }
     }
 }

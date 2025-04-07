@@ -2240,6 +2240,30 @@ namespace ApiExamples
             Assert.AreEqual(WatermarkType.Image, doc.Watermark.Type);
         }
 
+        [Test]
+        public void ImageWatermarkStream()
+        {
+            //ExStart:ImageWatermarkStream
+            //GistId:12a3a3cfe30f3145220db88428a9f814
+            //ExFor:Watermark.SetImage(Stream, ImageWatermarkOptions)
+            //ExSummary:Shows how to create a watermark from an image stream.
+            Document doc = new Document();
+
+            // Modify the image watermark's appearance with an ImageWatermarkOptions object,
+            // then pass it while creating a watermark from an image file.
+            ImageWatermarkOptions imageWatermarkOptions = new ImageWatermarkOptions();
+            imageWatermarkOptions.Scale = 5;
+
+            using (FileStream imageStream = new FileStream(ImageDir + "Logo.jpg", FileMode.Open, FileAccess.Read))
+                doc.Watermark.SetImage(imageStream, imageWatermarkOptions);
+
+            doc.Save(ArtifactsDir + "Document.ImageWatermarkStream.docx");
+            //ExEnd:ImageWatermarkStream
+
+            doc = new Document(ArtifactsDir + "Document.ImageWatermarkStream.docx");
+            Assert.AreEqual(WatermarkType.Image, doc.Watermark.Type);
+        }
+
         [TestCase(false)]
         [TestCase(true)]
         public void SpellingAndGrammarErrors(bool showErrors)
