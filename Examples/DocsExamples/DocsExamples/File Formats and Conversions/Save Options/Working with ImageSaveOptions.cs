@@ -13,13 +13,11 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //GistId:b20a0ec0e1ff0556aa20d12f486e1963
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Tiff)
-            {
-                TiffCompression = TiffCompression.Ccitt3,
-                ImageColorMode = ImageColorMode.Grayscale,
-                TiffBinarizationMethod = ImageBinarizationMethod.FloydSteinbergDithering,
-                ThresholdForFloydSteinbergDithering = 254
-            };
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Tiff);
+            saveOptions.TiffCompression = TiffCompression.Ccitt3;
+            saveOptions.ImageColorMode = ImageColorMode.Grayscale;
+            saveOptions.TiffBinarizationMethod = ImageBinarizationMethod.FloydSteinbergDithering;
+            saveOptions.ThresholdForFloydSteinbergDithering = 254;
 
             doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.ExposeThresholdControl.tiff", saveOptions);
             //ExEnd:ExposeThresholdControl
@@ -37,10 +35,10 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //ExEnd:SaveAsTiff
 
             //ExStart:SaveAsTIFFUsingImageSaveOptions
-            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Tiff)
-            {
-                PageSet = new PageSet(new PageRange(0, 1)), TiffCompression = TiffCompression.Ccitt4, Resolution = 160
-            };
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Tiff);
+            saveOptions.PageSet = new PageSet(new PageRange(0, 1));
+            saveOptions.TiffCompression = TiffCompression.Ccitt4;
+            saveOptions.Resolution = 160;
 
             doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.GetTiffPageRange.tiff", saveOptions);
             //ExEnd:SaveAsTIFFUsingImageSaveOptions
@@ -54,12 +52,10 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //GistId:83e5c469d0e72b5114fb8a05a1d01977
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png)
-            {
-                PageSet = new PageSet(1),
-                ImageColorMode = ImageColorMode.BlackAndWhite,
-                PixelFormat = ImagePixelFormat.Format1bppIndexed
-            };
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png);
+            saveOptions.PageSet = new PageSet(1);
+            saveOptions.ImageColorMode = ImageColorMode.BlackAndWhite;
+            saveOptions.PixelFormat = ImagePixelFormat.Format1bppIndexed;
 
             doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.Format1BppIndexed.Png", saveOptions);
             //ExEnd:Format1BppIndexed
@@ -96,11 +92,9 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png)
-            {
-                PageSet = new PageSet(new PageRange(0, doc.PageCount - 1)),
-                PageSavingCallback = new HandlePageSavingCallback()
-            };
+            ImageSaveOptions imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
+            imageSaveOptions.PageSet = new PageSet(new PageRange(0, doc.PageCount - 1));
+            imageSaveOptions.PageSavingCallback = new HandlePageSavingCallback();
 
             doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.PageSavingCallback.png", imageSaveOptions);
         }

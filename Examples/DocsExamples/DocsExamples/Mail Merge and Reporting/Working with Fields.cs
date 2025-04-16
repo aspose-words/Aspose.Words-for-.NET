@@ -134,10 +134,10 @@ namespace DocsExamples.Mail_Merge_and_Reporting
 
             void IFieldMergingCallback.ImageFieldMerging(ImageFieldMergingArgs args)
             {
-                Shape shape = new Shape(args.Document, ShapeType.Image)
-                {
-                    Width = 126, Height = 126, WrapType = WrapType.Square
-                };
+                Shape shape = new Shape(args.Document, ShapeType.Image);
+                shape.Width = 126;
+                shape.Height = 126;
+                shape.WrapType = WrapType.Square;
 
                 shape.ImageData.SetImage(MyDir + "Mail merge image.png");
 

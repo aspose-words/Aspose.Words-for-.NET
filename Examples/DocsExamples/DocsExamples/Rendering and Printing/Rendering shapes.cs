@@ -23,10 +23,8 @@ namespace DocsExamples.Rendering_and_Printing
             //ExStart:RenderShapeAsEmf
             //GistId:7fc867ac8ef1b729b6f70580fbc5b3f9
             ShapeRenderer render = shape.GetShapeRenderer();
-            ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Emf)
-            {
-                Scale = 1.5f
-            };
+            ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Emf);
+            imageOptions.Scale = 1.5f;
 
             render.Save(ArtifactsDir + "RenderShape.RenderShapeAsEmf.emf", imageOptions);
             //ExEnd:RenderShapeAsEmf
@@ -42,13 +40,11 @@ namespace DocsExamples.Rendering_and_Printing
             //ExStart:RenderShapeAsJpeg
             //GistId:7fc867ac8ef1b729b6f70580fbc5b3f9
             ShapeRenderer render = new ShapeRenderer(shape);
-            ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg)
-            {
-                // Output the image in gray scale
-                ImageColorMode = ImageColorMode.Grayscale,
-                // Reduce the brightness a bit (default is 0.5f)
-                ImageBrightness = 0.45f
-            };
+            ImageSaveOptions imageOptions = new ImageSaveOptions(SaveFormat.Jpeg);
+            // Output the image in gray scale
+            imageOptions.ImageColorMode = ImageColorMode.Grayscale;
+            // Reduce the brightness a bit (default is 0.5f)
+            imageOptions.ImageBrightness = 0.45f;
 
             using (FileStream stream = new FileStream(ArtifactsDir + "RenderShape.RenderShapeAsJpeg.jpg", FileMode.Create))
             {
@@ -156,10 +152,8 @@ namespace DocsExamples.Rendering_and_Printing
             builder.MoveTo(textBoxShape.LastParagraph);
             builder.Write("Vertical text");
 
-            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png)
-            {
-                PaperColor = Color.LightPink
-            };
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
+            options.PaperColor = Color.LightPink;
 
             Document tmp = ConvertToImage(doc, textBoxShape.LastParagraph);
             tmp.Save(ArtifactsDir + "RenderShape.RenderParagraphToImage.png");

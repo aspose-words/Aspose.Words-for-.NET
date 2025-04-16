@@ -18,7 +18,9 @@ namespace DocsExamples.LINQ_Reporting_Engine
             
             builder.Write("<<[sender.Name]>> says: <<[sender.Message]>>");
 
-            Sender sender = new Sender { Name = "LINQ Reporting Engine", Message = "Hello World" };
+            Sender sender = new Sender();
+            sender.Name = "LINQ Reporting Engine";
+            sender.Message = "Hello World";
 
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(doc, sender, "sender");
@@ -71,13 +73,21 @@ namespace DocsExamples.LINQ_Reporting_Engine
         {
             //ExStart:SettingBackgroundColor
             Document doc = new Document(MyDir + "Reporting engine template - Background color.docx");
+            BackgroundColor initValue = new BackgroundColor();
+            initValue.Name = "Black";
+            initValue.Color = Color.Black;
+            BackgroundColor initValue2 = new BackgroundColor();
+            initValue2.Name = "Red";
+            initValue2.Color = Color.FromArgb(255, 0, 0);
+            BackgroundColor initValue3 = new BackgroundColor();
+            initValue3.Name = "Empty";
+            initValue3.Color = Color.Empty;
 
             List<BackgroundColor> colors = new List<BackgroundColor>
             {
-                new BackgroundColor {Name = "Black", Color = Color.Black},
-                new BackgroundColor {Name = "Red", Color = Color.FromArgb(255, 0, 0)},
-                new BackgroundColor {Name = "Empty", Color = Color.Empty}
-            };
+initValue,
+initValue2,
+initValue3            };
 
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(doc, colors, "Colors");

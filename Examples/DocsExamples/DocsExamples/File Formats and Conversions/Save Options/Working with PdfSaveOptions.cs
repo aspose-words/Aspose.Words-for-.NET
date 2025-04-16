@@ -16,7 +16,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //ExStart:DisplayDocTitleInWindowTitlebar
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { DisplayDocTitle = true };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.DisplayDocTitle = true;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.DisplayDocTitleInWindowTitlebar.pdf", saveOptions);
             //ExEnd:DisplayDocTitleInWindowTitlebar
@@ -29,12 +30,12 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
         {
             Document doc = new Document(MyDir + "WMF with image.docx");
 
-            MetafileRenderingOptions metafileRenderingOptions = new MetafileRenderingOptions
-            {
-                EmulateRasterOperations = false, RenderingMode = MetafileRenderingMode.VectorWithFallback
-            };
+            MetafileRenderingOptions metafileRenderingOptions = new MetafileRenderingOptions();
+            metafileRenderingOptions.EmulateRasterOperations = false;
+            metafileRenderingOptions.RenderingMode = MetafileRenderingMode.VectorWithFallback;
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { MetafileRenderingOptions = metafileRenderingOptions };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.MetafileRenderingOptions = metafileRenderingOptions;
 
             // If Aspose.Words cannot correctly render some of the metafile records
             // to vector graphics then Aspose.Words renders this metafile to a bitmap.
@@ -82,12 +83,10 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             
             builder.Writeln("Test Signed PDF.");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions
-            {
-                DigitalSignatureDetails = new PdfDigitalSignatureDetails(
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.DigitalSignatureDetails = new PdfDigitalSignatureDetails(
                     CertificateHolder.Create(MyDir + "morzal.pfx", "aw"), "reason", "location",
-                    DateTime.Now)
-            };
+                    DateTime.Now);
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.DigitallySignedPdfUsingCertificateHolder.pdf", saveOptions);
             //ExEnd:DigitallySignedPdfUsingCertificateHolder
@@ -101,7 +100,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // The output PDF will be embedded with all fonts found in the document.
-            PdfSaveOptions saveOptions = new PdfSaveOptions { EmbedFullFonts = true };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.EmbedFullFonts = true;
             
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EmbeddedAllFonts.pdf", saveOptions);
             //ExEnd:EmbeddedAllFonts
@@ -116,7 +116,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             // The output PDF will contain subsets of the fonts in the document.
             // Only the glyphs used in the document are included in the PDF fonts.
-            PdfSaveOptions saveOptions = new PdfSaveOptions { EmbedFullFonts = false };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.EmbedFullFonts = false;
             
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EmbeddedSubsetFonts.pdf", saveOptions);
             //ExEnd:EmbeddedSubsetFonts
@@ -130,7 +131,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // The output PDF will be saved without embedding standard windows fonts.
-            PdfSaveOptions saveOptions = new PdfSaveOptions { FontEmbeddingMode = PdfFontEmbeddingMode.EmbedNone };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.FontEmbeddingMode = PdfFontEmbeddingMode.EmbedNone;
             
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.DisableEmbedWindowsFonts.pdf", saveOptions);
             //ExEnd:DisableEmbedWindowsFonts
@@ -142,7 +144,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //ExStart:SkipEmbeddedArialAndTimesRomanFonts
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { FontEmbeddingMode = PdfFontEmbeddingMode.EmbedAll };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.FontEmbeddingMode = PdfFontEmbeddingMode.EmbedAll;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.SkipEmbeddedArialAndTimesRomanFonts.pdf", saveOptions);
             //ExEnd:SkipEmbeddedArialAndTimesRomanFonts
@@ -156,7 +159,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             Document doc = new Document(MyDir + "Rendering.docx");
 
             // The output PDF will not be embedded with core fonts such as Arial, Times New Roman etc.
-            PdfSaveOptions saveOptions = new PdfSaveOptions { UseCoreFonts = true };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.UseCoreFonts = true;
             
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.AvoidEmbeddingCoreFonts.pdf", saveOptions);
             //ExEnd:AvoidEmbeddingCoreFonts
@@ -197,14 +201,13 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //ExStart:EmulateRenderingToSizeOnPage
             Document doc = new Document(MyDir + "WMF with text.docx");
 
-            MetafileRenderingOptions metafileRenderingOptions = new MetafileRenderingOptions
-            {
-                EmulateRenderingToSizeOnPage = false
-            };
+            MetafileRenderingOptions metafileRenderingOptions = new MetafileRenderingOptions();
+            metafileRenderingOptions.EmulateRenderingToSizeOnPage = false;
 
             // If Aspose.Words cannot correctly render some of the metafile records to vector graphics
             // then Aspose.Words renders this metafile to a bitmap.
-            PdfSaveOptions saveOptions = new PdfSaveOptions { MetafileRenderingOptions = metafileRenderingOptions };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.MetafileRenderingOptions = metafileRenderingOptions;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.EmulateRenderingToSizeOnPage.pdf", saveOptions);
             //ExEnd:EmulateRenderingToSizeOnPage
@@ -216,7 +219,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //ExStart:AdditionalTextPositioning
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { AdditionalTextPositioning = true };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.AdditionalTextPositioning = true;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.AdditionalTextPositioning.pdf", saveOptions);
             //ExEnd:AdditionalTextPositioning
@@ -229,7 +233,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //GistId:a53bdaad548845275c1b9556ee21ae65
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { Compliance = PdfCompliance.Pdf17 };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.Compliance = PdfCompliance.Pdf17;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.ConversionToPdf17.pdf", saveOptions);
             //ExEnd:ConversionToPdf17
@@ -244,10 +249,9 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             // We can set a minimum threshold for downsampling.
             // This value will prevent the second image in the input document from being downsampled.
-            PdfSaveOptions saveOptions = new PdfSaveOptions
-            {
-                DownsampleOptions = { Resolution = 36, ResolutionThreshold = 128 }
-            };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.DownsampleOptions.Resolution = 36;
+            saveOptions.DownsampleOptions.ResolutionThreshold = 128;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.DownsamplingImages.pdf", saveOptions);
             //ExEnd:DownsamplingImages
@@ -276,7 +280,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             Document doc = new Document();
             doc.CustomDocumentProperties.Add("Company", "Aspose");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { CustomPropertiesExport = PdfCustomPropertiesExport.Standard };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.CustomPropertiesExport = PdfCustomPropertiesExport.Standard;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.CustomPropertiesExport.pdf", saveOptions);
             //ExEnd:CustomPropertiesExport
@@ -291,7 +296,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             // The file size will be increased and the structure will be visible in the "Content" navigation pane
             // of Adobe Acrobat Pro, while editing the .pdf.
-            PdfSaveOptions saveOptions = new PdfSaveOptions { ExportDocumentStructure = true };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.ExportDocumentStructure = true;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.ExportDocumentStructure.pdf", saveOptions);
             //ExEnd:ExportDocumentStructure
@@ -304,19 +310,16 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //GistId:6debb84fc15c7e5b8e35384d9c116215
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions
-            {
-                ImageCompression = PdfImageCompression.Jpeg, PreserveFormFields = true
-            };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.ImageCompression = PdfImageCompression.Jpeg;
+            saveOptions.PreserveFormFields = true;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.ImageCompression.pdf", saveOptions);
 
-            PdfSaveOptions saveOptionsA2U = new PdfSaveOptions
-            {
-                Compliance = PdfCompliance.PdfA2u,
-                ImageCompression = PdfImageCompression.Jpeg,
-                JpegQuality = 100, // Use JPEG compression at 50% quality to reduce file size.
-            };
+            PdfSaveOptions saveOptionsA2U = new PdfSaveOptions();
+            saveOptionsA2U.Compliance = PdfCompliance.PdfA2u;
+            saveOptionsA2U.ImageCompression = PdfImageCompression.Jpeg;
+            saveOptionsA2U.JpegQuality = 100; // Use JPEG compression at 50% quality to reduce file size.
 
             
 
@@ -331,7 +334,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //GistId:83e5c469d0e72b5114fb8a05a1d01977
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { UpdateLastPrintedProperty = true };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.UpdateLastPrintedProperty = true;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.UpdateLastPrinted.pdf", saveOptions);
             //ExEnd:UpdateLastPrinted
@@ -343,7 +347,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //ExStart:Dml3DEffectsRendering
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.Dml3DEffectsRenderingMode = Dml3DEffectsRenderingMode.Advanced;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.Dml3DEffectsRendering.pdf", saveOptions);
             //ExEnd:Dml3DEffectsRendering
@@ -355,7 +360,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //ExStart:SetImageInterpolation
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { InterpolateImages = true };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.InterpolateImages = true;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.InterpolateImages.pdf", saveOptions);
             //ExEnd:SetImageInterpolation
@@ -368,7 +374,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //GistId:a53bdaad548845275c1b9556ee21ae65
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions { OptimizeOutput = true };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.OptimizeOutput = true;
 
             doc.Save(ArtifactsDir + "WorkingWithPdfSaveOptions.OptimizeOutput.pdf", saveOptions);
             //ExEnd:OptimizeOutput
@@ -389,12 +396,10 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             foreach (FieldHyperlink link in tocHyperLinks)
                 link.ScreenTip = link.DisplayResult;
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions()
-            {
-                Compliance = PdfCompliance.PdfUa1,
-                DisplayDocTitle = true,
-                ExportDocumentStructure = true,
-            };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.Compliance = PdfCompliance.PdfUa1;
+            saveOptions.DisplayDocTitle = true;
+            saveOptions.ExportDocumentStructure = true;
             saveOptions.OutlineOptions.HeadingsOutlineLevels = 3;
             saveOptions.OutlineOptions.CreateMissingOutlineLevels = true;
 

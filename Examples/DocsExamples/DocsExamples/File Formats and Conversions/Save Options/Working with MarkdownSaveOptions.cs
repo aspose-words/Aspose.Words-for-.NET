@@ -23,10 +23,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             builder.Write("Cell2");
 
             // Makes all paragraphs inside the table to be aligned.
-            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions
-            {
-                TableContentAlignment = TableContentAlignment.Left
-            };
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.TableContentAlignment = TableContentAlignment.Left;
             doc.Save(ArtifactsDir + "WorkingWithMarkdownSaveOptions.LeftTableContentAlignment.md", saveOptions);
 
             saveOptions.TableContentAlignment = TableContentAlignment.Right;
@@ -48,7 +46,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //GistId:51b4cb9c451832f23527892e19c7bca6
             Document doc = new Document(MyDir + "Image bullet points.docx");
 
-            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions { ImagesFolder = ArtifactsDir + "Images" };
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.ImagesFolder = ArtifactsDir + "Images";
 
             using (MemoryStream stream = new MemoryStream())
                 doc.Save(stream, saveOptions);

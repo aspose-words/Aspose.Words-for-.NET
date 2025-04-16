@@ -39,10 +39,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             //ExStart:FindAndHighlight
             Document doc = new Document(MyDir + "Find and highlight.docx");
 
-            FindReplaceOptions options = new FindReplaceOptions
-            {
-                ReplacingCallback = new ReplaceEvaluatorFindAndHighlight(), Direction = FindReplaceDirection.Backward
-            };
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ReplacingCallback = new ReplaceEvaluatorFindAndHighlight();
+            options.Direction = FindReplaceDirection.Backward;
 
             Regex regex = new Regex("your document", RegexOptions.IgnoreCase);
             doc.Range.Replace(regex, "", options);
@@ -205,7 +204,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             // Insert field with text inside.
             builder.InsertField("INCLUDETEXT", "Text in field");
             
-            FindReplaceOptions options = new FindReplaceOptions { IgnoreFields = true };
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.IgnoreFields = true;
             
             Regex regex = new Regex("e");
             doc.Range.Replace(regex, "*", options);
@@ -236,7 +236,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             doc.FirstSection.Body.FirstParagraph.Remove();
             doc.StopTrackRevisions();
 
-            FindReplaceOptions options = new FindReplaceOptions { IgnoreDeleted = true };
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.IgnoreDeleted = true;
 
             Regex regex = new Regex("e");
             doc.Range.Replace(regex, "*", options);
@@ -265,7 +266,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             // Insert non-revised text.
             builder.Write("Text");
 
-            FindReplaceOptions options = new FindReplaceOptions { IgnoreInserted = true };
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.IgnoreInserted = true;
 
             Regex regex = new Regex("e");
             doc.Range.Replace(regex, "*", options);
@@ -288,7 +290,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             
             builder.Write("{PLACEHOLDER}");
 
-            FindReplaceOptions findReplaceOptions = new FindReplaceOptions { ReplacingCallback = new FindAndInsertHtml() };
+            FindReplaceOptions findReplaceOptions = new FindReplaceOptions();
+            findReplaceOptions.ReplacingCallback = new FindAndInsertHtml();
 
             doc.Range.Replace("{PLACEHOLDER}", "<p>&ldquo;Some Text&rdquo;</p>", findReplaceOptions);
 
@@ -324,7 +327,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             HeaderFooterCollection headersFooters = doc.FirstSection.HeadersFooters;
             HeaderFooter footer = headersFooters[HeaderFooterType.FooterPrimary];
 
-            FindReplaceOptions options = new FindReplaceOptions { MatchCase = false, FindWholeWordsOnly = false };
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.MatchCase = false;
+            options.FindWholeWordsOnly = false;
             footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", "Copyright (C) 2020 by Aspose Pty Ltd.", options);
 
             doc.Save(ArtifactsDir + "FindAndReplace.ReplaceTextInFooter.docx");
@@ -340,7 +345,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             Document doc = new Document(MyDir + "Footer.docx");
             Section firstPageSection = doc.FirstSection;
             
-            FindReplaceOptions options = new FindReplaceOptions { ReplacingCallback = logger };
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ReplacingCallback = logger;
 
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
             
@@ -375,10 +381,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         {
             Document doc = new Document(MyDir + "Replace text with fields.docx");
 
-            FindReplaceOptions options = new FindReplaceOptions
-            {
-                ReplacingCallback = new ReplaceTextWithFieldHandler(FieldType.FieldMergeField)
-            };
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ReplacingCallback = new ReplaceTextWithFieldHandler(FieldType.FieldMergeField);
 
             doc.Range.Replace(new Regex(@"PlaceHolder(\d+)"), "", options);
 
@@ -484,7 +488,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             
             builder.Writeln("sad mad bad");
 
-            FindReplaceOptions options = new FindReplaceOptions { ReplacingCallback = new MyReplaceEvaluator() };
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ReplacingCallback = new MyReplaceEvaluator();
 
             doc.Range.Replace(new Regex("[s|m]ad"), "", options);
 
@@ -585,7 +590,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             Regex regex = new Regex(@"([A-z]+) give money to ([A-z]+)");
 
-            FindReplaceOptions options = new FindReplaceOptions { UseSubstitutions = true };
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.UseSubstitutions = true;
 
             doc.Range.Replace(regex, @"$2 take money from $1", options);
             //ExEnd:RecognizeAndSubstitutionsWithinReplacementPatterns
@@ -621,10 +627,9 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             builder.MoveTo(textBox.FirstParagraph);
             builder.Write("[tag 2]");
 
-            FindReplaceOptions options = new FindReplaceOptions
-            {
-                ReplacingCallback = new ReplacingCallback(), UseLegacyOrder = true
-            };
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ReplacingCallback = new ReplacingCallback();
+            options.UseLegacyOrder = true;
 
             doc.Range.Replace(new Regex(@"\[(.*?)\]"), "", options);
 
@@ -670,7 +675,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             builder.Writeln("And last line");
 
             // Prepend each line with line number.
-            FindReplaceOptions opt = new FindReplaceOptions() { ReplacingCallback = new LineCounterCallback() };
+            FindReplaceOptions opt = new FindReplaceOptions();
+            opt.ReplacingCallback = new LineCounterCallback();
             doc.Range.Replace(new Regex("[^&p]*&p"), "", opt);
 
             doc.Save(ArtifactsDir + "FindAndReplace.LineCounter.docx");

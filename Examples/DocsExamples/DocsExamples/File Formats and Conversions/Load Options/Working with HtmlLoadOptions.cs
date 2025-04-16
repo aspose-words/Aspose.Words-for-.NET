@@ -21,7 +21,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
                 </html>
             ";
 
-            HtmlLoadOptions loadOptions = new HtmlLoadOptions { PreferredControlType = HtmlControlType.StructuredDocumentTag };
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions();
+            loadOptions.PreferredControlType = HtmlControlType.StructuredDocumentTag;
 
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), loadOptions);
 

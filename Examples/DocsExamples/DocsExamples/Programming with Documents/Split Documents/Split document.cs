@@ -15,11 +15,9 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
             //GistId:c0df00d37081f41a7683339fd7ef66c1
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions options = new HtmlSaveOptions
-            {
-                // Split a document into smaller parts, in this instance split by heading.
-                DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            // Split a document into smaller parts, in this instance split by heading.
+            options.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph;
             
             doc.Save(ArtifactsDir + "SplitDocument.ByHeadings.epub", options);
             //ExEnd:SplitDocumentByHeadings
@@ -32,7 +30,8 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
 
             //ExStart:SplitDocumentBySectionsHtml
             //GistId:6759a1a6b7f448798751d54922a8efcb
-            HtmlSaveOptions options = new HtmlSaveOptions { DocumentSplitCriteria = DocumentSplitCriteria.SectionBreak };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.DocumentSplitCriteria = DocumentSplitCriteria.SectionBreak;
             //ExEnd:SplitDocumentBySectionsHtml
 
             doc.Save(ArtifactsDir + "SplitDocument.BySections.html", options);

@@ -22,16 +22,15 @@ namespace DocsExamples.Rendering_and_Printing
 
             doc.UpdatePageLayout();
 
-            PrinterSettings settings = new PrinterSettings { PrinterName = "Microsoft XPS Document Writer" };
+            PrinterSettings settings = new PrinterSettings();
+            settings.PrinterName = "Microsoft XPS Document Writer";
 
             // The standard print controller comes with no UI.
             PrintController standardPrintController = new StandardPrintController();
 
-            AsposeWordsPrintDocument printDocument = new AsposeWordsPrintDocument(doc)
-            {
-                PrinterSettings = settings,
-                PrintController = standardPrintController
-            };
+            AsposeWordsPrintDocument printDocument = new AsposeWordsPrintDocument(doc);
+            printDocument.PrinterSettings = settings;
+            printDocument.PrintController = standardPrintController;
             printDocument.CachePrinterSettings();
 
             printDocument.Print();
@@ -45,14 +44,12 @@ namespace DocsExamples.Rendering_and_Printing
 
             //ExStart:PrintDialog
             // Initialize the print dialog with the number of pages in the document.
-            PrintDialog printDlg = new PrintDialog
-            {
-                AllowSomePages = true,
-                PrinterSettings =
-                {
-                    MinimumPage = 1, MaximumPage = doc.PageCount, FromPage = 1, ToPage = doc.PageCount
-                }
-            };
+            PrintDialog printDlg = new PrintDialog();
+            printDlg.AllowSomePages = true;
+            printDlg.PrinterSettings.MinimumPage = 1;
+            printDlg.PrinterSettings.MaximumPage = doc.PageCount;
+            printDlg.PrinterSettings.FromPage = 1;
+            printDlg.PrinterSettings.ToPage = doc.PageCount;
             //ExEnd:PrintDialog
 
             //ExStart:ShowDialog
@@ -62,18 +59,16 @@ namespace DocsExamples.Rendering_and_Printing
 
             //ExStart:AsposeWordsPrintDocument
             // Pass the printer settings from the dialog to the print document.
-            AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(doc)
-            {
-                PrinterSettings = printDlg.PrinterSettings
-            };
+            AsposeWordsPrintDocument awPrintDoc = new AsposeWordsPrintDocument(doc);
+            awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
             //ExEnd:AsposeWordsPrintDocument
 
             //ExStart:ActivePrintPreviewDialog
             // Pass the Aspose.Words print document to the Print Preview dialog.
-            ActivePrintPreviewDialog previewDlg = new ActivePrintPreviewDialog
-            {
-                Document = awPrintDoc, ShowInTaskbar = true, MinimizeBox = true
-            };
+            ActivePrintPreviewDialog previewDlg = new ActivePrintPreviewDialog();
+            previewDlg.Document = awPrintDoc;
+            previewDlg.ShowInTaskbar = true;
+            previewDlg.MinimizeBox = true;
             
             // Specify additional parameters of the Print Preview dialog.
             previewDlg.PrintPreviewControl.Zoom = 1;
@@ -91,14 +86,12 @@ namespace DocsExamples.Rendering_and_Printing
 
             //ExStart:PrintDialogSettings
             // Initialize the Print Dialog with the number of pages in the document.
-            PrintDialog printDlg = new PrintDialog
-            {
-                AllowSomePages = true,
-                PrinterSettings =
-                {
-                    MinimumPage = 1, MaximumPage = doc.PageCount, FromPage = 1, ToPage = doc.PageCount
-                }
-            };
+            PrintDialog printDlg = new PrintDialog();
+            printDlg.AllowSomePages = true;
+            printDlg.PrinterSettings.MinimumPage = 1;
+            printDlg.PrinterSettings.MaximumPage = doc.PageCount;
+            printDlg.PrinterSettings.FromPage = 1;
+            printDlg.PrinterSettings.ToPage = doc.PageCount;
             //ExEnd:PrintDialogSettings
 
             // Check if the user accepted the print settings and proceed to preview.
@@ -108,17 +101,15 @@ namespace DocsExamples.Rendering_and_Printing
             //ExEnd:CheckPrintSettings
 
             // Pass the printer settings from the dialog to the print document.
-            MultipagePrintDocument awPrintDoc = new MultipagePrintDocument(doc, 4, true)
-            {
-                PrinterSettings = printDlg.PrinterSettings
-            };
+            MultipagePrintDocument awPrintDoc = new MultipagePrintDocument(doc, 4, true);
+            awPrintDoc.PrinterSettings = printDlg.PrinterSettings;
 
             //ExStart:ActivePrintPreviewDialog
             // Create and configure the the ActivePrintPreviewDialog class.
-            ActivePrintPreviewDialog previewDlg = new ActivePrintPreviewDialog
-            {
-                Document = awPrintDoc, ShowInTaskbar = true, MinimizeBox = true
-            };
+            ActivePrintPreviewDialog previewDlg = new ActivePrintPreviewDialog();
+            previewDlg.Document = awPrintDoc;
+            previewDlg.ShowInTaskbar = true;
+            previewDlg.MinimizeBox = true;
 
             // Specify additional parameters of the Print Preview dialog.
             previewDlg.Document.DocumentName = "PrintDocuments.PrintMultiplePages.docx";

@@ -24,10 +24,8 @@ namespace DocsExamples.Programming_with_Documents
 
             // The "IsRestartAtEachSection" property will only be applicable when
             // the document's OOXML compliance level is to a standard that is newer than "OoxmlComplianceCore.Ecma376".
-            OoxmlSaveOptions options = new OoxmlSaveOptions
-            {
-                Compliance = OoxmlCompliance.Iso29500_2008_Transitional
-            };
+            OoxmlSaveOptions options = new OoxmlSaveOptions();
+            options.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
 
             builder.ListFormat.List = list;
 

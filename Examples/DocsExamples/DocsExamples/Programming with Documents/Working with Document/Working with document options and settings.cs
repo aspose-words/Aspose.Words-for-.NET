@@ -49,7 +49,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
                               $"Count of lists before Cleanup: {doc.Lists.Count}");
 
             // Cleans unused styles and lists from the document depending on given CleanupOptions. 
-            CleanupOptions cleanupOptions = new CleanupOptions { UnusedLists = false, UnusedStyles = true };
+            CleanupOptions cleanupOptions = new CleanupOptions();
+            cleanupOptions.UnusedLists = false;
+            cleanupOptions.UnusedStyles = true;
             doc.Cleanup(cleanupOptions);
 
             Console.WriteLine($"Count of styles after Cleanup was decreased: {doc.Styles.Count}\n" +
@@ -70,7 +72,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Console.WriteLine(doc.Styles.Count);
 
             // Cleans duplicate styles from the document.
-            CleanupOptions options = new CleanupOptions { DuplicateStyle = true };
+            CleanupOptions options = new CleanupOptions();
+            options.DuplicateStyle = true;
             doc.Cleanup(options);
 
             // Count of styles after Cleanup was decreased.

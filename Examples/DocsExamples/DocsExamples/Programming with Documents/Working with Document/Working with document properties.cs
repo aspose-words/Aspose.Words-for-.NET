@@ -84,7 +84,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         {
             //ExStart:RemovePersonalInformation
             //GistId:0593a8803015363f3026f648332e7026
-            Document doc = new Document(MyDir + "Properties.docx") { RemovePersonalInformation = true };
+            Document doc = new Document(MyDir + "Properties.docx");
+            doc.RemovePersonalInformation = true;
 
             doc.Save(ArtifactsDir + "DocumentPropertiesAndVariables.RemovePersonalInformation.docx");
             //ExEnd:RemovePersonalInformation

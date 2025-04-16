@@ -904,10 +904,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
                 // We will parse HTML to determine the rowspan and colspan of each cell.
                 MemoryStream htmlStream = new MemoryStream();
 
-                Aspose.Words.Saving.HtmlSaveOptions options = new Aspose.Words.Saving.HtmlSaveOptions
-                {
-                    ImagesFolder = Path.GetTempPath()
-                };
+                Aspose.Words.Saving.HtmlSaveOptions options = new Aspose.Words.Saving.HtmlSaveOptions();
+                options.ImagesFolder = Path.GetTempPath();
 
                 doc.Save(htmlStream, options);
 

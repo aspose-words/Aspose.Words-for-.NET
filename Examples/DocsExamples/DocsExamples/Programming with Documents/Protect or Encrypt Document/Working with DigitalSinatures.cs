@@ -25,7 +25,8 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         public void SigningEncryptedDocument()
         {
             //ExStart:SigningEncryptedDocument
-            SignOptions signOptions = new SignOptions { DecryptionPassword = "decryptionPassword" };
+            SignOptions signOptions = new SignOptions();
+            signOptions.DecryptionPassword = "decryptionPassword";
 
             CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
             
@@ -45,11 +46,9 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
             
             doc.Save(ArtifactsDir + "SignDocuments.SignatureLine.docx");
 
-            SignOptions signOptions = new SignOptions
-            {
-                SignatureLineId = signatureLine.Id,
-                SignatureLineImage = File.ReadAllBytes(ImagesDir + "Enhanced Windows MetaFile.emf")
-            };
+            SignOptions signOptions = new SignOptions();
+            signOptions.SignatureLineId = signatureLine.Id;
+            signOptions.SignatureLineImage = File.ReadAllBytes(ImagesDir + "Enhanced Windows MetaFile.emf");
 
             CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
             
@@ -67,11 +66,9 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
             SignatureLine signatureLine =
                 ((Shape) doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true)).SignatureLine;
 
-            SignOptions signOptions = new SignOptions
-            {
-                SignatureLineId = signatureLine.Id,
-                SignatureLineImage = File.ReadAllBytes(ImagesDir + "Enhanced Windows MetaFile.emf")
-            };
+            SignOptions signOptions = new SignOptions();
+            signOptions.SignatureLineId = signatureLine.Id;
+            signOptions.SignatureLineImage = File.ReadAllBytes(ImagesDir + "Enhanced Windows MetaFile.emf");
 
             CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
             
@@ -89,10 +86,9 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
             SignatureLine signatureLine =
                 ((Shape) doc.FirstSection.Body.GetChild(NodeType.Shape, 0, true)).SignatureLine;
 
-            SignOptions signOptions = new SignOptions
-            {
-                ProviderId = signatureLine.ProviderId, SignatureLineId = signatureLine.Id
-            };
+            SignOptions signOptions = new SignOptions();
+            signOptions.ProviderId = signatureLine.ProviderId;
+            signOptions.SignatureLineId = signatureLine.Id;
 
             CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
@@ -109,29 +105,25 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            SignatureLineOptions signatureLineOptions = new SignatureLineOptions
-            {
-                Signer = "yourname",
-                SignerTitle = "Worker",
-                Email = "yourname@aspose.com",
-                ShowDate = true,
-                DefaultInstructions = false,
-                Instructions = "Please sign here.",
-                AllowComments = true
-            };
+            SignatureLineOptions signatureLineOptions = new SignatureLineOptions();
+            signatureLineOptions.Signer = "yourname";
+            signatureLineOptions.SignerTitle = "Worker";
+            signatureLineOptions.Email = "yourname@aspose.com";
+            signatureLineOptions.ShowDate = true;
+            signatureLineOptions.DefaultInstructions = false;
+            signatureLineOptions.Instructions = "Please sign here.";
+            signatureLineOptions.AllowComments = true;
 
             SignatureLine signatureLine = builder.InsertSignatureLine(signatureLineOptions).SignatureLine;
             signatureLine.ProviderId = Guid.Parse("CF5A7BB4-8F3C-4756-9DF6-BEF7F13259A2");
             
             doc.Save(ArtifactsDir + "SignDocuments.SignatureLineProviderId.docx");
 
-            SignOptions signOptions = new SignOptions
-            {
-                SignatureLineId = signatureLine.Id,
-                ProviderId = signatureLine.ProviderId,
-                Comments = "Document was signed by Aspose",
-                SignTime = DateTime.Now
-            };
+            SignOptions signOptions = new SignOptions();
+            signOptions.SignatureLineId = signatureLine.Id;
+            signOptions.ProviderId = signatureLine.ProviderId;
+            signOptions.Comments = "Document was signed by Aspose";
+            signOptions.SignTime = DateTime.Now;
 
             CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 

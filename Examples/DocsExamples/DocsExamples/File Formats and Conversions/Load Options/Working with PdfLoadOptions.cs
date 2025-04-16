@@ -13,14 +13,14 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
             //ExStart:LoadEncryptedPdf  
             Document doc = new Document(MyDir + "Pdf Document.pdf");
 
-            PdfSaveOptions saveOptions = new PdfSaveOptions
-            {
-                EncryptionDetails = new PdfEncryptionDetails("Aspose", null)
-            };
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.EncryptionDetails = new PdfEncryptionDetails("Aspose", null);
 
             doc.Save(ArtifactsDir + "WorkingWithPdfLoadOptions.LoadEncryptedPdf.pdf", saveOptions);
 
-            PdfLoadOptions loadOptions = new PdfLoadOptions { Password = "Aspose", LoadFormat = LoadFormat.Pdf };
+            PdfLoadOptions loadOptions = new PdfLoadOptions();
+            loadOptions.Password = "Aspose";
+            loadOptions.LoadFormat = LoadFormat.Pdf;
 
             doc = new Document(ArtifactsDir + "WorkingWithPdfLoadOptions.LoadEncryptedPdf.pdf", loadOptions);
             //ExEnd:LoadEncryptedPdf
@@ -30,7 +30,9 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         public void LoadPageRangeOfPdf()
         {
             //ExStart:LoadPageRangeOfPdf  
-            PdfLoadOptions loadOptions = new PdfLoadOptions { PageIndex = 0, PageCount = 1 };
+            PdfLoadOptions loadOptions = new PdfLoadOptions();
+            loadOptions.PageIndex = 0;
+            loadOptions.PageCount = 1;
 
             //ExStart:LoadPDF
             Document doc = new Document(MyDir + "Pdf Document.pdf", loadOptions);

@@ -16,7 +16,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //GistId:c0df00d37081f41a7683339fd7ef66c1
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportRoundtripInformation = true };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.ExportRoundtripInformation = true;
 
             doc.Save(ArtifactsDir + "WorkingWithHtmlSaveOptions.ExportRoundtripInformation.html", saveOptions);
             //ExEnd:ExportRoundtripInformation
@@ -29,7 +30,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //GistId:c0df00d37081f41a7683339fd7ef66c1
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportFontsAsBase64 = true };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.ExportFontsAsBase64 = true;
 
             doc.Save(ArtifactsDir + "WorkingWithHtmlSaveOptions.ExportFontsAsBase64.html", saveOptions);
             //ExEnd:ExportFontsAsBase64
@@ -42,13 +44,11 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //GistId:c0df00d37081f41a7683339fd7ef66c1
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                CssStyleSheetType = CssStyleSheetType.External,
-                ExportFontResources = true,
-                ResourceFolder = ArtifactsDir + "Resources",
-                ResourceFolderAlias = "http://example.com/resources"
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.ExportFontResources = true;
+            saveOptions.ResourceFolder = ArtifactsDir + "Resources";
+            saveOptions.ResourceFolderAlias = "http://example.com/resources";
 
             doc.Save(ArtifactsDir + "WorkingWithHtmlSaveOptions.ExportResources.html", saveOptions);
             //ExEnd:ExportResources
@@ -69,10 +69,12 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             // where all SVG images loaded from an HTML document were converted to EMF.
             // Now SVG images are loaded without conversion
             // if the MS Word version specified in load options supports SVG images natively.
-            HtmlLoadOptions loadOptions = new HtmlLoadOptions { ConvertSvgToEmf = true };
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions();
+            loadOptions.ConvertSvgToEmf = true;
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), loadOptions);
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.MetafileFormat = HtmlMetafileFormat.Png;
 
             doc.Save(ArtifactsDir + "WorkingWithHtmlSaveOptions.ConvertMetafilesToPng.html", saveOptions);
             //ExEnd:ConvertMetafilesToPng
@@ -92,7 +94,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
                     style='fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;' />
             </svg> ");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Svg };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.MetafileFormat = HtmlMetafileFormat.Svg;
 
             doc.Save(ArtifactsDir + "WorkingWithHtmlSaveOptions.ConvertMetafilesToSvg.html", saveOptions);
             //ExEnd:ConvertMetafilesToSvg
@@ -104,10 +107,9 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //ExStart:AddCssClassNamePrefix
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                CssStyleSheetType = CssStyleSheetType.External, CssClassNamePrefix = "pfx_"
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.CssClassNamePrefix = "pfx_";
             
             doc.Save(ArtifactsDir + "WorkingWithHtmlSaveOptions.AddCssClassNamePrefix.html", saveOptions);
             //ExEnd:AddCssClassNamePrefix
@@ -119,10 +121,9 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //ExStart:ExportCidUrlsForMhtmlResources
             Document doc = new Document(MyDir + "Content-ID.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Mhtml)
-            {
-                PrettyFormat = true, ExportCidUrlsForMhtmlResources = true
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Mhtml);
+            saveOptions.PrettyFormat = true;
+            saveOptions.ExportCidUrlsForMhtmlResources = true;
 
             doc.Save(ArtifactsDir + "WorkingWithHtmlSaveOptions.ExportCidUrlsForMhtmlResources.mhtml", saveOptions);
             //ExEnd:ExportCidUrlsForMhtmlResources
@@ -134,10 +135,9 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //ExStart:ResolveFontNames
             Document doc = new Document(MyDir + "Missing font.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
-            {
-                PrettyFormat = true, ResolveFontNames = true
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
+            saveOptions.PrettyFormat = true;
+            saveOptions.ResolveFontNames = true;
 
             doc.Save(ArtifactsDir + "WorkingWithHtmlSaveOptions.ResolveFontNames.html", saveOptions);
             //ExEnd:ResolveFontNames
@@ -159,10 +159,9 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             Directory.CreateDirectory(imagesDir);
 
             // Set an option to export form fields as plain text, not as HTML input elements.
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
-            {
-                ExportTextInputFormFieldAsText = true, ImagesFolder = imagesDir
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
+            saveOptions.ExportTextInputFormFieldAsText = true;
+            saveOptions.ImagesFolder = imagesDir;
 
             doc.Save(ArtifactsDir + "WorkingWithHtmlSaveOptions.ExportTextInputFormFieldAsText.html", saveOptions);
             //ExEnd:ExportTextInputFormFieldAsText

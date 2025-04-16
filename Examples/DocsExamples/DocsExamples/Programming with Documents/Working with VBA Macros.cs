@@ -72,7 +72,8 @@ namespace DocsExamples.Programming_with_Documents
             //ExStart:CloneVbaProject
             //GistId:d9bac4ed890f81ea3de392ecfeedbc55
             Document doc = new Document(MyDir + "VBA project.docm");
-            Document destDoc = new Document { VbaProject = doc.VbaProject.Clone() };
+            Document destDoc = new Document();
+            destDoc.VbaProject = doc.VbaProject.Clone();
 
             destDoc.Save(ArtifactsDir + "WorkingWithVba.CloneVbaProject.docm");
             //ExEnd:CloneVbaProject
@@ -84,7 +85,8 @@ namespace DocsExamples.Programming_with_Documents
             //ExStart:CloneVbaModule
             //GistId:d9bac4ed890f81ea3de392ecfeedbc55
             Document doc = new Document(MyDir + "VBA project.docm");
-            Document destDoc = new Document { VbaProject = new VbaProject() };
+            Document destDoc = new Document();
+            destDoc.VbaProject = new VbaProject();
             
             VbaModule copyModule = doc.VbaProject.Modules["Module1"].Clone();
             destDoc.VbaProject.Modules.Add(copyModule);

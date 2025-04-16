@@ -219,7 +219,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             table.Title = "Test title";
             table.Description = "Test description";
 
-            OoxmlSaveOptions options = new OoxmlSaveOptions { Compliance = OoxmlCompliance.Iso29500_2008_Strict };
+            OoxmlSaveOptions options = new OoxmlSaveOptions();
+            options.Compliance = OoxmlCompliance.Iso29500_2008_Strict;
 
             doc.CompatibilityOptions.OptimizeFor(Aspose.Words.Settings.MsWordVersion.Word2016);
 

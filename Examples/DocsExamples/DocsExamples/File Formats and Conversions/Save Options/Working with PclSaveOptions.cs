@@ -13,10 +13,9 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             //GistId:7ee438947078cf070c5bc36a4e45a18c
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PclSaveOptions saveOptions = new PclSaveOptions
-            {
-                SaveFormat = SaveFormat.Pcl, RasterizeTransformedElements = false
-            };
+            PclSaveOptions saveOptions = new PclSaveOptions();
+            saveOptions.SaveFormat = SaveFormat.Pcl;
+            saveOptions.RasterizeTransformedElements = false;
 
             doc.Save(ArtifactsDir + "WorkingWithPclSaveOptions.RasterizeTransformedElements.pcl", saveOptions);
             //ExEnd:RasterizeTransformedElements

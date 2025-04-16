@@ -16,7 +16,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         {
             //ExStart:UpdateDirtyFields
             //GistId:08db64c4d86842c4afd1ecb925ed07c4
-            LoadOptions loadOptions = new LoadOptions { UpdateDirtyFields = true };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.UpdateDirtyFields = true;
 
             Document doc = new Document(MyDir + "Dirty field.docx", loadOptions);
 
@@ -55,7 +56,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         {
             //ExStart:ConvertShapeToOfficeMath
             //GistId:ad463bf5f128fe6e6c1485df3c046a4c
-            LoadOptions loadOptions = new LoadOptions { ConvertShapeToOfficeMath = true };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.ConvertShapeToOfficeMath = true;
 
             Document doc = new Document(MyDir + "Office math.docx", loadOptions);
 
@@ -70,7 +72,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
             //GistId:40be8275fc43f78f5e5877212e4e1bf3
             // Create a new LoadOptions object, which will load documents according to MS Word 2019 specification by default
             // and change the loading version to Microsoft Word 2010.
-            LoadOptions loadOptions = new LoadOptions { MswVersion = MsWordVersion.Word2010 };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.MswVersion = MsWordVersion.Word2010;
             
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
@@ -83,7 +86,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         {
             //ExStart:TempFolder
             //GistId:40be8275fc43f78f5e5877212e4e1bf3
-            LoadOptions loadOptions = new LoadOptions { TempFolder = ArtifactsDir };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.TempFolder = ArtifactsDir;
 
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
             //ExEnd:TempFolder
@@ -94,7 +98,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         {
             //ExStart:WarningCallback
             //GistId:40be8275fc43f78f5e5877212e4e1bf3
-            LoadOptions loadOptions = new LoadOptions { WarningCallback = new DocumentLoadingWarningCallback() };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.WarningCallback = new DocumentLoadingWarningCallback();
             
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
             //ExEnd:WarningCallback
@@ -119,7 +124,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         {
             //ExStart:ResourceLoadingCallback
             //GistId:40be8275fc43f78f5e5877212e4e1bf3
-            LoadOptions loadOptions = new LoadOptions { ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback() };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.ResourceLoadingCallback = new HtmlLinkedResourceLoadingCallback();
 
             // When we open an Html document, external resources such as references to CSS stylesheet files
             // and external images will be handled customarily by the loading callback as the document is loaded.
@@ -177,7 +183,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         {
             //ExStart:LoadWithEncoding
             //GistId:40be8275fc43f78f5e5877212e4e1bf3
-            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.ASCII };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.Encoding = Encoding.ASCII;
 
             // Load the document while passing the LoadOptions object, then verify the document's contents.
             Document doc = new Document(MyDir + "English text.txt", loadOptions);
@@ -188,7 +195,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         public void SkipPdfImages()
         {
             //ExStart:SkipPdfImages
-            PdfLoadOptions loadOptions = new PdfLoadOptions { SkipPdfImages = true };
+            PdfLoadOptions loadOptions = new PdfLoadOptions();
+            loadOptions.SkipPdfImages = true;
 
             Document doc = new Document(MyDir + "Pdf Document.pdf", loadOptions);
             //ExEnd:SkipPdfImages
@@ -198,7 +206,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         public void ConvertMetafilesToPng()
         {
             //ExStart:ConvertMetafilesToPng
-            LoadOptions loadOptions = new LoadOptions { ConvertMetafilesToPng = true };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.ConvertMetafilesToPng = true;
 
             Document doc = new Document(MyDir + "WMF with image.docx", loadOptions);
             //ExEnd:ConvertMetafilesToPng
@@ -208,7 +217,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         public void LoadChm()
         {
             //ExStart:LoadCHM
-            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.GetEncoding("windows-1251") };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.Encoding = Encoding.GetEncoding("windows-1251");
 
             Document doc = new Document(MyDir + "HTML help.chm", loadOptions);
             //ExEnd:LoadCHM

@@ -14,14 +14,12 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             //GistId:1f690a31c188a851d80d7aed4ff7e44c
             Document doc = new Document(MyDir + "Document.docx");
 
-            TextWatermarkOptions options = new TextWatermarkOptions()
-            {
-                FontFamily = "Arial",
-                FontSize = 36,
-                Color = Color.Black,
-                Layout = WatermarkLayout.Horizontal,
-                IsSemitrasparent = false
-            };
+            TextWatermarkOptions options = new TextWatermarkOptions();
+            options.FontFamily = "Arial";
+            options.FontSize = 36;
+            options.Color = Color.Black;
+            options.Layout = WatermarkLayout.Horizontal;
+            options.IsSemitrasparent = false;
 
             doc.Watermark.SetText("Test", options);
 
@@ -37,11 +35,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             //GistId:1f690a31c188a851d80d7aed4ff7e44c
             Document doc = new Document(MyDir + "Document.docx");
 
-            ImageWatermarkOptions options = new ImageWatermarkOptions
-            {
-                Scale = 5,
-                IsWashout = false
-            };
+            ImageWatermarkOptions options = new ImageWatermarkOptions();
+            options.Scale = 5;
+            options.IsWashout = false;
 
             doc.Watermark.SetImage(Image.FromFile(ImagesDir + "Transparent background logo.png"), options);
 
@@ -105,7 +101,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             //ExStart:SetShapeName
             //GistId:1f690a31c188a851d80d7aed4ff7e44c
             // Create a watermark shape, this will be a WordArt shape.
-            Shape watermark = new Shape(doc, ShapeType.TextPlainText) { Name = "Watermark" };
+            Shape watermark = new Shape(doc, ShapeType.TextPlainText);
+            watermark.Name = "Watermark";
             //ExEnd:SetShapeName
 
             watermark.TextPath.Text = watermarkText;

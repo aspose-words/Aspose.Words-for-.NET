@@ -19,7 +19,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             builder.Writeln("שלום עולם!");
             builder.Writeln("مرحبا بالعالم!");
 
-            TxtSaveOptions saveOptions = new TxtSaveOptions { AddBidiMarks = true };
+            TxtSaveOptions saveOptions = new TxtSaveOptions();
+            saveOptions.AddBidiMarks = true;
 
             doc.Save(ArtifactsDir + "WorkingWithTxtSaveOptions.AddBidiMarks.txt", saveOptions);
             //ExEnd:AddBidiMarks

@@ -74,7 +74,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             // Specify that if numbering clashes in source and destination documents,
             // then numbering from the source document will be used.
-            ImportFormatOptions options = new ImportFormatOptions { KeepSourceNumbering = true };
+            ImportFormatOptions options = new ImportFormatOptions();
+            options.KeepSourceNumbering = true;
             
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles, options);
             //ExEnd:AppendWithImportFormatOptions
@@ -560,7 +561,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Document dstDoc = new Document(MyDir + "Northwind traders.docx");
 
             // Keep the source text boxes formatting when importing.
-            ImportFormatOptions importFormatOptions = new ImportFormatOptions { IgnoreTextBoxes = false };
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
+            importFormatOptions.IgnoreTextBoxes = false;
             
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting,
                 importFormatOptions);
@@ -583,7 +585,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Document srcDocument = new Document(MyDir + "Document source.docx");
             Document dstDocument = new Document(MyDir + "Northwind traders.docx");
 
-            ImportFormatOptions importFormatOptions = new ImportFormatOptions { IgnoreHeaderFooter = false };
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
+            importFormatOptions.IgnoreHeaderFooter = false;
 
             dstDocument.AppendDocument(srcDocument, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
             

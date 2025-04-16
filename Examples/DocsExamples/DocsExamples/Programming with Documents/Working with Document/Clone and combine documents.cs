@@ -51,11 +51,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             //GistId:db2dfc4150d7c714bcac3782ae241d03
             Document mainDoc = new Document(MyDir + "Document insertion 1.docx");
                         
-            FindReplaceOptions options = new FindReplaceOptions
-            {
-                Direction = FindReplaceDirection.Backward, 
-                ReplacingCallback = new InsertDocumentAtReplaceHandler()
-            };
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.Direction = FindReplaceDirection.Backward;
+            options.ReplacingCallback = new InsertDocumentAtReplaceHandler();
 
             mainDoc.Range.Replace(new Regex("\\[MY_DOCUMENT\\]"), "", options);
             mainDoc.Save(ArtifactsDir + "CloneAndCombineDocuments.InsertDocumentAtReplace.docx");

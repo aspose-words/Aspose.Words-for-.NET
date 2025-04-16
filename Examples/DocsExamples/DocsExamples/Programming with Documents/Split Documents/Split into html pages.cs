@@ -162,12 +162,10 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
 
             dummyDoc.BuiltInDocumentProperties.Title = topic.Title;
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                PrettyFormat = true,
-                AllowNegativeIndent = true, // This is to allow headings to appear to the left of the main text.
-                ExportHeadersFootersMode = ExportHeadersFootersMode.None
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.PrettyFormat = true;
+            saveOptions.AllowNegativeIndent = true; // This is to allow headings to appear to the left of the main text.
+            saveOptions.ExportHeadersFootersMode = ExportHeadersFootersMode.None;
 
             dummyDoc.Save(topic.FileName, saveOptions);
         }

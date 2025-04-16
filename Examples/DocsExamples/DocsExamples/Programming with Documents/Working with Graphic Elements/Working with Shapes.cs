@@ -20,13 +20,15 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             doc.EnsureMinimum();
             
             GroupShape groupShape = new GroupShape(doc);
-            Shape accentBorderShape = new Shape(doc, ShapeType.AccentBorderCallout1) { Width = 100, Height = 100 };
+            Shape accentBorderShape = new Shape(doc, ShapeType.AccentBorderCallout1);
+            accentBorderShape.Width = 100;
+            accentBorderShape.Height = 100;
             groupShape.AppendChild(accentBorderShape);
 
-            Shape actionButtonShape = new Shape(doc, ShapeType.ActionButtonBeginning)
-            {
-                Left = 100, Width = 100, Height = 200
-            };
+            Shape actionButtonShape = new Shape(doc, ShapeType.ActionButtonBeginning);
+            actionButtonShape.Left = 100;
+            actionButtonShape.Width = 100;
+            actionButtonShape.Height = 200;
             groupShape.AppendChild(actionButtonShape);
 
             groupShape.Width = 200;
@@ -57,10 +59,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             shape = builder.InsertShape(ShapeType.TextBox, 50, 50);
             shape.Rotation = 30.0;
 
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx)
-            {
-                Compliance = OoxmlCompliance.Iso29500_2008_Transitional
-            };
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
+            saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
 
             doc.Save(ArtifactsDir + "WorkingWithShapes.InsertShape.docx", saveOptions);
             //ExEnd:InsertShape
@@ -102,17 +102,15 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
 
             builder.EndTable();
 
-            Shape watermark = new Shape(doc, ShapeType.TextPlainText)
-            {
-                RelativeHorizontalPosition = RelativeHorizontalPosition.Page,
-                RelativeVerticalPosition = RelativeVerticalPosition.Page,
-                IsLayoutInCell = true, // Display the shape outside of the table cell if it will be placed into a cell.
-                Width = 300,
-                Height = 70,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-                Rotation = -40
-            };
+            Shape watermark = new Shape(doc, ShapeType.TextPlainText);
+            watermark.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
+            watermark.RelativeVerticalPosition = RelativeVerticalPosition.Page;
+            watermark.IsLayoutInCell = true; // Display the shape outside of the table cell if it will be placed into a cell.
+            watermark.Width = 300;
+            watermark.Height = 70;
+            watermark.HorizontalAlignment = HorizontalAlignment.Center;
+            watermark.VerticalAlignment = VerticalAlignment.Center;
+            watermark.Rotation = -40;
 
             watermark.FillColor = Color.Gray;
             watermark.StrokeColor = Color.Gray;
@@ -143,10 +141,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
 
             builder.InsertShape(ShapeType.TopCornersSnipped, 50, 50);
 
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx)
-            {
-                Compliance = OoxmlCompliance.Iso29500_2008_Transitional
-            };
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
+            saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
 
             doc.Save(ArtifactsDir + "WorkingWithShapes.AddCornersSnipped.docx", saveOptions);
             //ExEnd:AddCornersSnipped

@@ -30,17 +30,15 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Document docA = new Document(MyDir + "Document.docx");
             Document docB = docA.Clone();
 
-            CompareOptions options = new CompareOptions
-            {
-                IgnoreFormatting = true,
-                IgnoreHeadersAndFooters = true,
-                IgnoreCaseChanges = true,
-                IgnoreTables = true,
-                IgnoreFields = true,
-                IgnoreComments = true,
-                IgnoreTextboxes = true,
-                IgnoreFootnotes = true
-            };
+            CompareOptions options = new CompareOptions();
+            options.IgnoreFormatting = true;
+            options.IgnoreHeadersAndFooters = true;
+            options.IgnoreCaseChanges = true;
+            options.IgnoreTables = true;
+            options.IgnoreFields = true;
+            options.IgnoreComments = true;
+            options.IgnoreTextboxes = true;
+            options.IgnoreFootnotes = true;
 
             docA.Compare(docB, "user", DateTime.Now, options);
 
@@ -56,7 +54,9 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             Document docB = docA.Clone();
 
             // Relates to Microsoft Word "Show changes in" option in "Compare Documents" dialog box.
-            CompareOptions options = new CompareOptions { IgnoreFormatting = true, Target = ComparisonTargetType.New };
+            CompareOptions options = new CompareOptions();
+            options.IgnoreFormatting = true;
+            options.Target = ComparisonTargetType.New;
 
             docA.Compare(docB, "user", DateTime.Now, options);
             //ExEnd:ComparisonTarget
@@ -72,7 +72,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             builderA.Writeln("This is A simple word");
             builderB.Writeln("This is B simple words");
 
-            CompareOptions compareOptions = new CompareOptions { Granularity = Granularity.CharLevel };
+            CompareOptions compareOptions = new CompareOptions();
+            compareOptions.Granularity = Granularity.CharLevel;
 
             builderA.Document.Compare(builderB.Document, "author", DateTime.Now, compareOptions);
             //ExEnd:ComparisonGranularity

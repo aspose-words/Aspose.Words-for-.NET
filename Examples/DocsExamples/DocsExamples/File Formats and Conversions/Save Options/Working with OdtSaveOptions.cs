@@ -14,7 +14,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 
             // Open Office uses centimeters when specifying lengths, widths and other measurable formatting
             // and content properties in documents whereas MS Office uses inches.
-            OdtSaveOptions saveOptions = new OdtSaveOptions { MeasureUnit = OdtSaveMeasureUnit.Inches };
+            OdtSaveOptions saveOptions = new OdtSaveOptions();
+            saveOptions.MeasureUnit = OdtSaveMeasureUnit.Inches;
 
             doc.Save(ArtifactsDir + "WorkingWithOdtSaveOptions.MeasureUnit.odt", saveOptions);
             //ExEnd:MeasureUnit
