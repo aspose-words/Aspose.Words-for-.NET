@@ -116,10 +116,18 @@ namespace DocsExamples.Programming_with_Documents
             TableCollection tables = body.Tables;
             foreach (Table table in tables)
             {
-                // Quick typed access to the first row of the table.
-                table.FirstRow?.Remove();
-                // Quick typed access to the last row of the table.
-                table.LastRow?.Remove();
+                Aspose.Words.Tables.Row condExpression = table.FirstRow;
+                if (condExpression != null)
+                {
+                    // Quick typed access to the first row of the table.
+                    condExpression.Remove();
+                }
+                Aspose.Words.Tables.Row condExpression2 = table.LastRow;
+                if (condExpression2 != null)
+                {
+                    // Quick typed access to the last row of the table.
+                    condExpression2.Remove();
+                }
             }
             //ExEnd:TypedAccess
         }

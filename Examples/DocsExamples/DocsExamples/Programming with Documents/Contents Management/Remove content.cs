@@ -72,14 +72,26 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
                 // Up to three different footers are possible in a section (for first, even and odd pages)
                 // we check and delete all of them.
                 HeaderFooter footer = section.HeadersFooters[HeaderFooterType.FooterFirst];
-                footer?.Remove();
+                Aspose.Words.HeaderFooter condExpression = footer;
+                if (condExpression != null)
+                {
+                    condExpression.Remove();
+                }
 
                 // Primary footer is the footer used for odd pages.
                 footer = section.HeadersFooters[HeaderFooterType.FooterPrimary];
-                footer?.Remove();
+                Aspose.Words.HeaderFooter condExpression2 = footer;
+                if (condExpression2 != null)
+                {
+                    condExpression2.Remove();
+                }
 
                 footer = section.HeadersFooters[HeaderFooterType.FooterEven];
-                footer?.Remove();
+                Aspose.Words.HeaderFooter condExpression3 = footer;
+                if (condExpression3 != null)
+                {
+                    condExpression3.Remove();
+                }
             }
 
             doc.Save(ArtifactsDir + "RemoveContent.RemoveFooters.docx");

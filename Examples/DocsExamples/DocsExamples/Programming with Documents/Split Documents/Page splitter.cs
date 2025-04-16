@@ -685,9 +685,13 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
             }
 
             Body lastBody = section.GetChildNodes(NodeType.Any, false).OfType<Body>().LastOrDefault();
-
-            Run run = lastBody?.GetChildNodes(NodeType.Run, true).OfType<Run>()
+            Run run = default(Run);
+            Aspose.Words.Body condExpression = lastBody;
+            if (condExpression != null)
+            {
+                run = condExpression.GetChildNodes(NodeType.Run, true).OfType<Run>()
                 .FirstOrDefault(p => p.Text.EndsWith(PageBreakStr));
+            }
 
             if (run != null)
             {

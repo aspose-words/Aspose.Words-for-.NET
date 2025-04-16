@@ -241,9 +241,19 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         private void DeleteRowByBookmark(Document doc, string bookmarkName)
         {
             Bookmark bookmark = doc.Range.Bookmarks[bookmarkName];
+            Aspose.Words.CompositeNode expression = default(Aspose.Words.CompositeNode);
+            Aspose.Words.Bookmark condExpression = bookmark;
+            if (condExpression != null)
+            {
+                expression = condExpression.BookmarkStart.GetAncestor(typeof(Row));
+            }
 
-            Row row = (Row) bookmark?.BookmarkStart.GetAncestor(typeof(Row));
-            row?.Remove();
+            Row row = (Row) expression;
+            Aspose.Words.Tables.Row condExpression2 = row;
+            if (condExpression2 != null)
+            {
+                condExpression2.Remove();
+            }
         }
     }
 }

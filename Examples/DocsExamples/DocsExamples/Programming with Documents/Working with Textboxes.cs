@@ -61,9 +61,12 @@ namespace DocsExamples.Programming_with_Documents
 
             // Break a forward link by setting a null.
             textBox.Next = null;
-
-            // Break a link, which leads to this textbox.
-            textBox.Previous?.BreakForwardLink();
+            Aspose.Words.Drawing.TextBox condExpression = textBox.Previous;
+            if (condExpression != null)
+            {
+                // Break a link, which leads to this textbox.
+                condExpression.BreakForwardLink();
+            }
             //ExEnd:BreakLink
         }
     }

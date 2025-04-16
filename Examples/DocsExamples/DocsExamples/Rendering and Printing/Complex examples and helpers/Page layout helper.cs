@@ -566,8 +566,19 @@ namespace DocsExamples.Complex_examples_and_helpers
         {
             get
             {
-                Paragraph para = Cells.First.Lines.First?.Paragraph;
-                return para?.GetAncestor(NodeType.Row);
+                Paragraph para = default(Paragraph);
+                DocsExamples.Complex_examples_and_helpers.RenderedLine condExpression = Cells.First.Lines.First;
+                if (condExpression != null)
+                {
+                    para = condExpression.Paragraph;
+                }
+                Aspose.Words.CompositeNode returnExpression = default(Aspose.Words.CompositeNode);
+                Aspose.Words.Paragraph condExpression2 = para;
+                if (condExpression2 != null)
+                {
+                    returnExpression = condExpression2.GetAncestor(NodeType.Row);
+                }
+                return returnExpression;
             }
         }
     }
