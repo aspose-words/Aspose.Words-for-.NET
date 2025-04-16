@@ -153,7 +153,7 @@ namespace DocsExamples.Rendering_and_Printing
         //ExStart:MultipagePrintDocumentConstructor 
         public MultipagePrintDocument(Document document, int pagesPerSheet, bool printPageBorders)
         {
-            mDocument = document ?? throw new ArgumentNullException(nameof(document));
+            mDocument = document ?? throw new ArgumentNullException("document");
             mPagesPerSheet = pagesPerSheet;
             mPrintPageBorders = printPageBorders;
         }
@@ -324,7 +324,7 @@ namespace DocsExamples.Rendering_and_Printing
         {
             Console.WriteLine("Print");
             if (document == null)
-                throw new ArgumentNullException(nameof(document));
+                throw new ArgumentNullException("document");
 
             // Use Aspose.Words to convert the document to XPS and store it in a memory stream.
             MemoryStream stream = new MemoryStream();
@@ -350,9 +350,9 @@ namespace DocsExamples.Rendering_and_Printing
         public static void Print(Stream stream, string printerName, string jobName, bool isWait)
         {
             if (stream == null)
-                throw new ArgumentNullException(nameof(stream));
+                throw new ArgumentNullException("stream");
             if (printerName == null)
-                throw new ArgumentNullException(nameof(printerName));
+                throw new ArgumentNullException("printerName");
 
             // Create an event that we will wait on until the job is complete.
             IntPtr completionEvent = CreateEvent(IntPtr.Zero, true, false, null);
