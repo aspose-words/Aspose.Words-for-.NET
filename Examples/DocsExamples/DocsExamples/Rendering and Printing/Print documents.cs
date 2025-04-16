@@ -227,8 +227,9 @@ namespace DocsExamples.Rendering_and_Printing
             // Loop through the selected pages from the stored current page to the calculated last page.
             for (int pageIndex = mCurrentPage; pageIndex <= pageTo; pageIndex++)
             {
+                int columnIdx;
                 // Calculate the column and row indices.
-                int rowIdx = Math.DivRem(pageIndex - mCurrentPage, thumbCount.Width, out int columnIdx);
+                int rowIdx = Math.DivRem(pageIndex - mCurrentPage, thumbCount.Width, out columnIdx);
 
                 // Define the thumbnail location in world coordinates (points in this case).
                 float thumbLeft = columnIdx * thumbSize.Width;
@@ -368,7 +369,9 @@ namespace DocsExamples.Rendering_and_Printing
                 throw new Win32Exception();
 
             Console.WriteLine("StartJob");
-            StartJob(printerName, jobName, completionEvent, out IXpsPrintJob job, out IXpsPrintJobStream jobStream);
+            IXpsPrintJob job;
+            IXpsPrintJobStream jobStream;
+            StartJob(printerName, jobName, completionEvent, out job, out jobStream);
             Console.WriteLine("Done StartJob");
 
             Console.WriteLine("Start CopyJob");
@@ -406,8 +409,9 @@ namespace DocsExamples.Rendering_and_Printing
                 uint read = (uint)stream.Read(buff, 0, buff.Length);
                 if (read == 0)
                     break;
+                uint written;
 
-                jobStream.Write(buff, read, out uint written);
+                jobStream.Write(buff, read, out written);
 
                 if (read != written)
                     throw new Exception("Failed to copy data to the print job stream.");
@@ -434,7 +438,8 @@ namespace DocsExamples.Rendering_and_Printing
 
         private static void CheckJobStatus(IXpsPrintJob job)
         {
-            job.GetJobStatus(out XPS_JOB_STATUS jobStatus);
+            XPS_JOB_STATUS jobStatus;
+            job.GetJobStatus(out jobStatus);
             switch (jobStatus.completion)
             {
                 case XPS_JOB_COMPLETION.XPS_JOB_COMPLETED:
