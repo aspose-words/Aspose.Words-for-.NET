@@ -102,7 +102,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         //ExStart:ExecuteWithRegionsDataTableMethods
         private DataTable GetTestOrder(int orderId)
         {
-            DataTable table = ExecuteDataTable($"SELECT * FROM AsposeWordOrders WHERE OrderId = {orderId}");
+            DataTable table = ExecuteDataTable(string.Format("SELECT * FROM AsposeWordOrders WHERE OrderId = {0}", orderId));
             table.TableName = "Orders";
             
             return table;
@@ -111,7 +111,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
         private DataTable GetTestOrderDetails(int orderId)
         {
             DataTable table = ExecuteDataTable(
-                $"SELECT * FROM AsposeWordOrderDetails WHERE OrderId = {orderId} ORDER BY ProductID");
+                string.Format("SELECT * FROM AsposeWordOrderDetails WHERE OrderId = {0} ORDER BY ProductID", orderId));
             table.TableName = "OrderDetails";
             
             return table;

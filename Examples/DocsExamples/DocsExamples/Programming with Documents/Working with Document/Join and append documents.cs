@@ -185,7 +185,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
                         builder.MoveTo(previousNode);
                         
                         Field newField = builder.InsertField(
-                            $" {pageRefFieldName} {bookmarkPrefix}{subDocumentCount} {fieldSwitches} ");
+                            string.Format(" {0} {1}{2} {3} ", pageRefFieldName, bookmarkPrefix, subDocumentCount, fieldSwitches));
 
                         // The field will be inserted before the referenced node. Move the node before the field instead.
                         previousNode.ParentNode.InsertBefore(previousNode, newField.Start);

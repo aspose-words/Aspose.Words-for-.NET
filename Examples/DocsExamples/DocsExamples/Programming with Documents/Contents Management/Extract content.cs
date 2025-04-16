@@ -372,7 +372,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
                 if (shape.HasImage)
                 {
                     string imageFileName =
-                        $"Image.ExportImages.{imageIndex}_{FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType)}";
+                        string.Format("Image.ExportImages.{0}_{1}", imageIndex, FileFormatUtil.ImageTypeToExtension(shape.ImageData.ImageType));
 
                     // Note, if you have only an image (not a shape with a text and the image),
                     // you can use shape.GetShapeRenderer().Save(...) method to save the image.
@@ -391,13 +391,13 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             Document doc = new Document(MyDir + "Styles.docx");
 
             List<Paragraph> paragraphs = ParagraphsByStyleName(doc, "Heading 1");
-            Console.WriteLine($"Paragraphs with \"Heading 1\" styles ({paragraphs.Count}):");
+            Console.WriteLine(string.Format("Paragraphs with \"Heading 1\" styles ({0}):", paragraphs.Count));
 
             foreach (Paragraph paragraph in paragraphs)
                 Console.Write(paragraph.ToString(SaveFormat.Text));
 
             List<Run> runs = RunsByStyleName(doc, "Intense Emphasis");
-            Console.WriteLine($"\nRuns with \"Intense Emphasis\" styles ({runs.Count}):");
+            Console.WriteLine(string.Format("\nRuns with \"Intense Emphasis\" styles ({0}):", runs.Count));
 
             foreach (Run run in runs)
                 Console.WriteLine(run.Range.Text);

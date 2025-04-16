@@ -124,7 +124,7 @@ namespace DocsExamples.File_Formats_and_Conversions
             if (info.HasDigitalSignature)
             {
                 Console.WriteLine(
-                    $"Document {Path.GetFileName(MyDir + "Digitally signed.docx")} has digital signatures, " +
+                    string.Format("Document {0} has digital signatures, ", Path.GetFileName(MyDir + "Digitally signed.docx")) +
                     "they will be lost if you open/save this document with Aspose.Words.");
             }
             //ExEnd:DetectDocumentSignatures

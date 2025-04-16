@@ -36,7 +36,7 @@ namespace DocsExamples
         [SetUp]
         public static void SetUp()
         {
-            Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
+            Console.WriteLine(string.Format("Clr: {0}\n", RuntimeInformation.FrameworkDescription));
         }
 
         [OneTimeTearDown]

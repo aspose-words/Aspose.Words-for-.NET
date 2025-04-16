@@ -112,8 +112,8 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
             public void Warning(WarningInfo info)
             {
                 // Prints warnings and their details as they arise during document loading.
-                Console.WriteLine($"WARNING: {info.WarningType}, source: {info.Source}");
-                Console.WriteLine($"\tDescription: {info.Description}");
+                Console.WriteLine(string.Format("WARNING: {0}, source: {1}", info.WarningType, info.Source));
+                Console.WriteLine(string.Format("\tDescription: {0}", info.Description));
             }
         }
         //ExEnd:IWarningCallback
@@ -145,7 +145,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
                 {
                     case ResourceType.CssStyleSheet:
                     {
-                        Console.WriteLine($"External CSS Stylesheet found upon loading: {args.OriginalUri}");
+                        Console.WriteLine(string.Format("External CSS Stylesheet found upon loading: {0}", args.OriginalUri));
  
                         // CSS file will don't used in the document.
                         return ResourceLoadingAction.Skip;
@@ -165,7 +165,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
                     }
                     case ResourceType.Document:
                     {
-                        Console.WriteLine($"External document found upon loading: {args.OriginalUri}");
+                        Console.WriteLine(string.Format("External document found upon loading: {0}", args.OriginalUri));
  
                         // Will be used as usual.
                         return ResourceLoadingAction.Default;

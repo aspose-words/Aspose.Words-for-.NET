@@ -73,7 +73,7 @@ namespace DocsExamples.Programming_with_Documents
                         dictionaryFullFileName = Path.Combine(dictionaryFolder, "hyph_de_CH.dic");
                         break;
                     default:
-                        throw new Exception($"Missing hyphenation dictionary for {language}.");
+                        throw new Exception(string.Format("Missing hyphenation dictionary for {0}.", language));
                 }
                 // Register dictionary for requested language.
                 Hyphenation.RegisterDictionary(language, dictionaryFullFileName);

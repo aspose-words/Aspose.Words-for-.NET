@@ -384,7 +384,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
                 // otherwise use the match string as the display text.
                 string insertText = !string.IsNullOrEmpty(mFieldText) ? mFieldText : args.Match.Value;
 
-                builder.InsertField($"TC \"{insertText}\" {mFieldSwitches}");
+                builder.InsertField(string.Format("TC \"{0}\" {1}", insertText, mFieldSwitches));
 
                 return ReplaceAction.Skip;
             }

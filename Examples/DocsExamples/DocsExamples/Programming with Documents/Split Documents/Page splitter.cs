@@ -35,7 +35,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
             {
                 Document pageDoc = splitter.GetDocumentOfPage(page);
                 pageDoc.Save(Path.Combine(ArtifactsDir,
-                    $"{fileName} - page{page} Out{extensionName}"));
+                    string.Format("{0} - page{1} Out{2}", fileName, page, extensionName)));
             }
         }
 

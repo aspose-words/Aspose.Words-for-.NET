@@ -696,7 +696,7 @@ namespace DocsExamples.Programming_with_Documents
                     return null;
 
                 string newValue = String.Format(mDateFormat, value);
-                FormatInvocations.Add(new FormatInvocation(FormatInvocationType.DateTime, $"{value} ({calendarType})", format, newValue));
+                FormatInvocations.Add(new FormatInvocation(FormatInvocationType.DateTime, string.Format("{0} ({1})", value, calendarType), format, newValue));
                 return newValue;
             }
 
@@ -730,10 +730,10 @@ namespace DocsExamples.Programming_with_Documents
             public void PrintFormatInvocations()
             {
                 foreach (FormatInvocation f in FormatInvocations)
-                    Console.WriteLine($"Invocation type:\t{f.FormatInvocationType}\n" +
-                                      $"\tOriginal value:\t\t{f.Value}\n" +
-                                      $"\tOriginal format:\t{f.OriginalFormat}\n" +
-                                      $"\tNew value:\t\t\t{f.NewValue}\n");
+                    Console.WriteLine(string.Format("Invocation type:\t{0}\n", f.FormatInvocationType) +
+                                      string.Format("\tOriginal value:\t\t{0}\n", f.Value) +
+                                      string.Format("\tOriginal format:\t{0}\n", f.OriginalFormat) +
+                                      string.Format("\tNew value:\t\t\t{0}\n", f.NewValue));
             }
 
             private readonly string mNumberFormat;

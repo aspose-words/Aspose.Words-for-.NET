@@ -65,7 +65,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Complex_examples_and_helpers
 
             if (dataTable.Rows.Count == 0)
                 throw new ArgumentException(
-                    $"Could not find any record matching the document \"{fileName}\" in the database.");
+                    string.Format("Could not find any record matching the document \"{0}\" in the database.", fileName));
 
             // The document is stored in byte form in the FileContent column.
             // Retrieve these bytes of the first matching record to a new buffer.

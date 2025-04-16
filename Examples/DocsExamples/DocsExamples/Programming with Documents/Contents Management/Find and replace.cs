@@ -410,7 +410,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
                 // Insert the field into the document using the specified field type and the matched text as the field name.
                 // If the fields you are inserting do not require this extra parameter, it can be removed from the string below.
-                builder.InsertField($"{fieldName} {args.Match.Groups[0]}");
+                builder.InsertField(string.Format("{0} {1}", fieldName, args.Match.Groups[0]));
 
                 foreach (Run run in runs)
                     run.Remove();

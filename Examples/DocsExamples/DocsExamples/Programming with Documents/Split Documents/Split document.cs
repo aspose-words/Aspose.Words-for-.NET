@@ -56,7 +56,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
                 newDoc.Sections.Add(newSection);
 
                 // Save each section as a separate document.
-                newDoc.Save(ArtifactsDir + $"SplitDocument.BySections_{i}.docx");
+                newDoc.Save(ArtifactsDir + string.Format("SplitDocument.BySections_{0}.docx", i));
             }
             //ExEnd:SplitDocumentBySections
         }
@@ -74,7 +74,7 @@ namespace DocsExamples.Programming_with_Documents.Split_Documents
             {
                 // Save each page as a separate document.
                 Document extractedPage = doc.ExtractPages(page, 1);
-                extractedPage.Save(ArtifactsDir + $"SplitDocument.PageByPage_{page + 1}.docx");
+                extractedPage.Save(ArtifactsDir + string.Format("SplitDocument.PageByPage_{0}.docx", page + 1));
             }
             //ExEnd:SplitDocumentPageByPage
 

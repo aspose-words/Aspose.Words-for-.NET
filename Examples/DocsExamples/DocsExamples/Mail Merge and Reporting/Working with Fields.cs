@@ -59,7 +59,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
                     // Move the "cursor" to the current merge field.
                     mBuilder.MoveToMergeField(e.FieldName);
 
-                    string checkBoxName = $"{e.FieldName}{e.RecordIndex}";
+                    string checkBoxName = string.Format("{0}{1}", e.FieldName, e.RecordIndex);
 
                     mBuilder.InsertCheckBox(checkBoxName, (bool) e.FieldValue, 0);
 
@@ -75,7 +75,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
                     case "Subject":
                     {
                         mBuilder.MoveToMergeField(e.FieldName);
-                        string textInputName = $"{e.FieldName}{e.RecordIndex}";
+                        string textInputName = string.Format("{0}{1}", e.FieldName, e.RecordIndex);
                         mBuilder.InsertTextInput(textInputName, TextFormFieldType.Regular, "", (string) e.FieldValue, 0);
                         break;
                     }

@@ -118,7 +118,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             watermark.TextPath.Text = "watermarkText";
             watermark.TextPath.FontFamily = "Arial";
 
-            watermark.Name = $"WaterMark_{Guid.NewGuid()}";
+            watermark.Name = string.Format("WaterMark_{0}", Guid.NewGuid());
             watermark.WrapType = WrapType.None;
 
             Run run = doc.GetChildNodes(NodeType.Run, true)[doc.GetChildNodes(NodeType.Run, true).Count - 1] as Run;

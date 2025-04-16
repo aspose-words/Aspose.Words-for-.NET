@@ -45,7 +45,7 @@ namespace DocsExamples.Programming_with_Documents
             builder.Writeln("qText");
 
             Font font = builder.Document.FirstSection.Body.FirstParagraph.Runs[0].Font;
-            Console.WriteLine($"lineSpacing = {font.LineSpacing}");
+            Console.WriteLine(string.Format("lineSpacing = {0}", font.LineSpacing));
             //ExEnd:GetFontLineSpacing
         }
 

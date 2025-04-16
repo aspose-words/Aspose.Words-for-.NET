@@ -105,7 +105,7 @@ namespace DocsExamples.Complex_examples_and_helpers
                         // Move the enumerator to the next page if there is one.
                         layoutEnumerator.MoveNext();
 
-                        img.Save(folderPath + $"EnumerateLayoutElements.Page_{pageIndex + 1}.png");
+                        img.Save(folderPath + string.Format("EnumerateLayoutElements.Page_{0}.png", pageIndex + 1));
                     }
                 }
             }

@@ -48,7 +48,7 @@ namespace DocsExamples.Complex_examples_and_helpers
             foreach (RenderedLine paragraphLine in layoutDoc.GetLayoutEntitiesOfNode(
                 doc.FirstSection.Body.Paragraphs[1]))
             {
-                Console.WriteLine($"\"{paragraphLine.Text.Trim()}\"");
+                Console.WriteLine(string.Format("\"{0}\"", paragraphLine.Text.Trim()));
                 Console.WriteLine(paragraphLine.Rectangle.ToString());
                 Console.WriteLine();
             }

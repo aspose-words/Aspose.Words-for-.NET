@@ -700,18 +700,18 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             bool isVerticallyMerged = cell.CellFormat.VerticalMerge != CellMerge.None;
             
             string cellLocation =
-                $"R{cell.ParentRow.ParentTable.IndexOf(cell.ParentRow) + 1}, C{cell.ParentRow.IndexOf(cell) + 1}";
+                string.Format("R{0}, C{1}", cell.ParentRow.ParentTable.IndexOf(cell.ParentRow) + 1, cell.ParentRow.IndexOf(cell) + 1);
 
             if (isHorizontallyMerged && isVerticallyMerged)
-                return $"The cell at {cellLocation} is both horizontally and vertically merged";
+                return string.Format("The cell at {0} is both horizontally and vertically merged", cellLocation);
             
             if (isHorizontallyMerged)
-                return $"The cell at {cellLocation} is horizontally merged.";
+                return string.Format("The cell at {0} is horizontally merged.", cellLocation);
             
             if (isVerticallyMerged)
-                return $"The cell at {cellLocation} is vertically merged";
+                return string.Format("The cell at {0} is vertically merged", cellLocation);
             
-            return $"The cell at {cellLocation} is not merged";
+            return string.Format("The cell at {0} is not merged", cellLocation);
         }
         //ExEnd:PrintCellMergeType
         

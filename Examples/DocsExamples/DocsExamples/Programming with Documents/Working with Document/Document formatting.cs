@@ -222,7 +222,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             int lineCount = CountLines(enumerator, stopEntity);
 
             string paragraphText = GetTruncatedText(paragraph.GetText());
-            Console.WriteLine($"Paragraph '{paragraphText}' has {lineCount} line(-s).");
+            Console.WriteLine(string.Format("Paragraph '{0}' has {1} line(-s).", paragraphText, lineCount));
         }
 
         private static object GetStopEntity(Paragraph paragraph, LayoutCollector collector, LayoutEnumerator enumerator)
@@ -268,7 +268,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         private static string GetTruncatedText(string text)
         {
             int MaxChars = 16;
-            return text.Length > MaxChars ? $"{text.Substring(0, MaxChars)}..." : text;
+            return text.Length > MaxChars ? string.Format("{0}...", text.Substring(0, MaxChars)) : text;
         }
         //ExEnd:GetParagraphLines
     }

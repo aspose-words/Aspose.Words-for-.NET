@@ -209,15 +209,15 @@ namespace DocsExamples.Programming_with_Documents
                             Body body = (Body)node;
 
                             Console.WriteLine("Body:");
-                            Console.WriteLine($"\t\"{body.GetText().Trim()}\"");
+                            Console.WriteLine(string.Format("\t\"{0}\"", body.GetText().Trim()));
                             break;
                         }
                     case NodeType.HeaderFooter:
                         {
                             HeaderFooter headerFooter = (HeaderFooter)node;
 
-                            Console.WriteLine($"HeaderFooter type: {headerFooter.HeaderFooterType}:");
-                            Console.WriteLine($"\t\"{headerFooter.GetText().Trim()}\"");
+                            Console.WriteLine(string.Format("HeaderFooter type: {0}:", headerFooter.HeaderFooterType));
+                            Console.WriteLine(string.Format("\t\"{0}\"", headerFooter.GetText().Trim()));
                             break;
                         }
                     default:

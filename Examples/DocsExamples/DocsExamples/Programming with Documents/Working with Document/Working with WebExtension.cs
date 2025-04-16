@@ -41,7 +41,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             foreach (TaskPane taskPaneInfo in doc.WebExtensionTaskPanes)
             {
                 WebExtensionReference reference = taskPaneInfo.WebExtension.Reference;
-                Console.WriteLine($"Provider: \"{reference.Store}\", version: \"{reference.Version}\", catalog identifier: \"{reference.Id}\";");
+                Console.WriteLine(string.Format("Provider: \"{0}\", version: \"{1}\", catalog identifier: \"{2}\";", reference.Store, reference.Version, reference.Id));
             }
             //ExEnd:GetListOfAddins
         }
