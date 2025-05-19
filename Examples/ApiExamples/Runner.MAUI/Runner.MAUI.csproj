@@ -49,20 +49,20 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Aspose.Page" Version="25.3.0" />
-	  <PackageReference Include="Aspose.PDF" Version="25.3.0" />
-	  <PackageReference Include="Aspose.Words" Version="25.4.0" />
-	  <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.4.0" />
+	  <PackageReference Include="Aspose.Page" Version="25.4.0" />
+	  <PackageReference Include="Aspose.PDF" Version="25.5.0" />
+	  <PackageReference Include="Aspose.Words" Version="25.5.0" />
+	  <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.5.0" />
 	  <PackageReference Include="Shiny.Xunit.Runners.Maui" Version="1.0.0" />
-	  <PackageReference Include="SkiaSharp" Version="3.116.1" />
+	  <PackageReference Include="SkiaSharp" Version="3.119.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls" Version="9.0.50" />
+	  <PackageReference Update="Microsoft.Maui.Controls" Version="9.0.70" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="9.0.50" />
+	  <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="9.0.70" />
 	</ItemGroup>
 
 </Project>

@@ -328,7 +328,8 @@ namespace ApiExamples
         [TestCase(MarkdownEmptyParagraphExportMode.MarkdownHardLineBreak)]
         public void EmptyParagraphExportMode(MarkdownEmptyParagraphExportMode exportMode)
         {
-            //ExStart
+            //ExStart:EmptyParagraphExportMode
+            //GistId:ad73e0dd58a8c2ae742bb64f8561df35
             //ExFor:MarkdownEmptyParagraphExportMode
             //ExFor:MarkdownSaveOptions.EmptyParagraphExportMode
             //ExSummary:Shows how to export empty paragraphs.
@@ -357,7 +358,7 @@ namespace ApiExamples
                     Assert.AreEqual("First\r\n\\\r\n\\\r\n\\\r\n\\\r\n\\\r\nLast\r\n<br>\r\n", result);
                     break;
             }
-            //ExEnd
+            //ExEnd:EmptyParagraphExportMode
         }
     }
 }

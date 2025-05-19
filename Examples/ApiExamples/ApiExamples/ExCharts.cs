@@ -2581,7 +2581,8 @@ namespace ApiExamples
         [Test]
         public void SetChartStyle()
         {
-            //ExStart
+            //ExStart:SetChartStyle
+            //GistId:ad73e0dd58a8c2ae742bb64f8561df35
             //ExFor:ChartStyle
             //ExSummary:Shows how to set and get chart style.
             Document doc = new Document();
@@ -2600,7 +2601,7 @@ namespace ApiExamples
 
             // Get the chart style.
             Assert.AreEqual(ChartStyle.Black, chart.Style);
-            //ExEnd
+            //ExEnd:SetChartStyle
         }
     }
 }
