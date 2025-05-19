@@ -322,6 +322,44 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MarkdownSaveOptions.OfficeMathExportMode.md", saveOptions);
             //ExEnd:OfficeMathExportMode
         }
+
+        [TestCase(MarkdownEmptyParagraphExportMode.None)]
+        [TestCase(MarkdownEmptyParagraphExportMode.EmptyLine)]
+        [TestCase(MarkdownEmptyParagraphExportMode.MarkdownHardLineBreak)]
+        public void EmptyParagraphExportMode(MarkdownEmptyParagraphExportMode exportMode)
+        {
+            //ExStart:EmptyParagraphExportMode
+            //GistId:ad73e0dd58a8c2ae742bb64f8561df35
+            //ExFor:MarkdownEmptyParagraphExportMode
+            //ExFor:MarkdownSaveOptions.EmptyParagraphExportMode
+            //ExSummary:Shows how to export empty paragraphs.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+            builder.Writeln("First");
+            builder.Writeln("\r\n\r\n\r\n");
+            builder.Writeln("Last");
+
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.EmptyParagraphExportMode = exportMode;
+
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.EmptyParagraphExportMode.md", saveOptions);
+
+            string result = File.ReadAllText(ArtifactsDir + "MarkdownSaveOptions.EmptyParagraphExportMode.md");
+
+            switch (exportMode)
+            {
+                case MarkdownEmptyParagraphExportMode.None:
+                    Assert.AreEqual("First\r\n\r\nLast\r\n", result);
+                    break;
+                case MarkdownEmptyParagraphExportMode.EmptyLine:
+                    Assert.AreEqual("First\r\n\r\n\r\n\r\n\r\nLast\r\n\r\n", result);
+                    break;
+                case MarkdownEmptyParagraphExportMode.MarkdownHardLineBreak:
+                    Assert.AreEqual("First\r\n\\\r\n\\\r\n\\\r\n\\\r\n\\\r\nLast\r\n<br>\r\n", result);
+                    break;
+            }
+            //ExEnd:EmptyParagraphExportMode
+        }
     }
 }
 

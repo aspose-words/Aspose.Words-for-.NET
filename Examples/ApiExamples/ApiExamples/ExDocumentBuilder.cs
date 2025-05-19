@@ -246,11 +246,15 @@ namespace ApiExamples
             FieldHyperlink hyperlink = (FieldHyperlink)doc.Range.Fields[0];
             Assert.AreEqual("https://www.google.com", hyperlink.Address);
 
-            Run fieldContents = (Run)hyperlink.Start.NextSibling;
+            // This field is written as w:hyperlink element therefore field code cannot have formatting.
+            Run fieldCode = (Run)hyperlink.Start.NextSibling;
+            Assert.AreEqual("HYPERLINK \"https://www.google.com\"", fieldCode.GetText().Trim());
 
-            Assert.AreEqual(Color.Blue.ToArgb(), fieldContents.Font.Color.ToArgb());
-            Assert.AreEqual(Underline.Single, fieldContents.Font.Underline);
-            Assert.AreEqual("HYPERLINK \"https://www.google.com\"", fieldContents.GetText().Trim());
+            Run fieldResult = (Run)hyperlink.Separator.NextSibling;
+
+            Assert.AreEqual(Color.Blue.ToArgb(), fieldResult.Font.Color.ToArgb());
+            Assert.AreEqual(Underline.Single, fieldResult.Font.Underline);
+            Assert.AreEqual("Google website", fieldResult.GetText().Trim());
         }
 
         [Test]

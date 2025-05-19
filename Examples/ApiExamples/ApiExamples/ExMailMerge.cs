@@ -130,7 +130,7 @@ namespace ApiExamples
 
             // To work with ADO DataSets, we will need to add a reference to the Microsoft ActiveX Data Objects library,
             // which is included in the .NET distribution and stored in "adodb.dll".
-            ADODB.Connection connection = new ADODB.Connection();
+            Interop.ADODB.Connection connection = new Interop.ADODB.Connection();
 
             // Create a connection string that points to the "Northwind" database file
             // in our local file system and open a connection.
@@ -142,7 +142,7 @@ namespace ApiExamples
             // to the values of the MERGEFIELDS that will accommodate our data.
             const string command = @"SELECT ProductName, QuantityPerUnit, UnitPrice FROM Products";
 
-            ADODB.Recordset recordset = new ADODB.Recordset();
+            Interop.ADODB.Recordset recordset = new Interop.ADODB.Recordset();
             recordset.Open(command, connection);
 
             // Execute the mail merge and save the document.
@@ -180,7 +180,7 @@ namespace ApiExamples
 
             // To work with ADO DataSets, we will need to add a reference to the Microsoft ActiveX Data Objects library,
             // which is included in the .NET distribution and stored in "adodb.dll".
-            ADODB.Connection connection = new ADODB.Connection();
+            Interop.ADODB.Connection connection = new Interop.ADODB.Connection();
 
             // Create a connection string that points to the "Northwind" database file
             // in our local file system and open a connection.
@@ -192,7 +192,7 @@ namespace ApiExamples
             // to the values of the MERGEFIELDS that will accommodate our data.
             string command = "SELECT FirstName, LastName, City FROM Employees";
 
-            ADODB.Recordset recordset = new ADODB.Recordset();
+            Interop.ADODB.Recordset recordset = new Interop.ADODB.Recordset();
             recordset.Open(command, connection);
 
             // Run a mail merge on just the first region, filling its MERGEFIELDS with data from the record set.

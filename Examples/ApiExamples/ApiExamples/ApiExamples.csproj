@@ -126,20 +126,20 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="25.3.0" />
-    <PackageReference Include="Aspose.Page" Version="25.3.0" />
-    <PackageReference Include="Aspose.PDF" Version="25.3.0" />
-    <PackageReference Include="Aspose.Words" Version="25.4.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.4.0" />
-    <PackageReference Include="BouncyCastle.Cryptography" Version="2.5.1" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.3" />
+    <PackageReference Include="Aspose.BarCode" Version="25.4.0" />
+    <PackageReference Include="Aspose.Page" Version="25.4.0" />
+    <PackageReference Include="Aspose.PDF" Version="25.5.0" />
+    <PackageReference Include="Aspose.Words" Version="25.5.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.5.0" />
+    <PackageReference Include="BouncyCastle.Cryptography" Version="2.6.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.5" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
     <PackageReference Include="NUnit" Version="3.14.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="5.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="SkiaSharp" Version="3.116.1" />
+    <PackageReference Include="SkiaSharp" Version="3.119.0" />
     <PackageReference Include="System.Data.OleDb" Version="9.0.2" />
     <PackageReference Include="System.IO.Compression" Version="4.3.0" />
     <PackageReference Include="System.Runtime.InteropServices.RuntimeInformation" Version="4.3.0" />
@@ -149,7 +149,7 @@
     <Reference Include="Interop.ADODB">
       <HintPath>..\..\Data\Dlls\Interop.ADODB.dll</HintPath>
     </Reference>    
-    <Reference Include="System.Web" Condition="'$(TargetFramework)' != 'net7.0'" />
+    <Reference Include="System.Web" Condition="'$(TargetFramework)' != 'net8.0'" />
     <Reference Include="System.Windows.Forms" Condition="$(TargetFramework.StartsWith('net4'))" />
   </ItemGroup>
 

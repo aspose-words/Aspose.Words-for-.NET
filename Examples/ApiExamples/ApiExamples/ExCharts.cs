@@ -2577,5 +2577,31 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Charts.PopulateChartWithData.docx");
             //ExEnd
         }
+
+        [Test]
+        public void SetChartStyle()
+        {
+            //ExStart:SetChartStyle
+            //GistId:ad73e0dd58a8c2ae742bb64f8561df35
+            //ExFor:ChartStyle
+            //ExSummary:Shows how to set and get chart style.
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Insert a chart in the Black style.
+            builder.InsertChart(ChartType.Column, 400, 250, ChartStyle.Black);
+
+            doc.Save(ArtifactsDir + "Charts.SetChartStyle.docx");
+
+            doc = new Document(ArtifactsDir + "Charts.SetChartStyle.docx");
+
+            // Get a chart to update.
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+            Chart chart = shape.Chart;
+
+            // Get the chart style.
+            Assert.AreEqual(ChartStyle.Black, chart.Style);
+            //ExEnd:SetChartStyle
+        }
     }
 }
