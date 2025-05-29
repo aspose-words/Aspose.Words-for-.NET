@@ -388,5 +388,37 @@ namespace DocsExamples.Programming_with_Documents
             }
             //ExEnd:UseWarningSourceMarkdown
         }
+
+        [Test]
+        public void SupportedFeatures()
+        {
+            //ExStart:SupportedFeatures
+            //GistId:51b4cb9c451832f23527892e19c7bca6
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            // Specify the "Heading 1" style for the paragraph.
+            builder.InsertParagraph();
+            builder.ParagraphFormat.StyleName = "Heading 1";
+            builder.Write("Heading 1");
+
+            // Specify the Italic emphasis for the paragraph.
+            builder.InsertParagraph();
+            // Reset styles from the previous paragraph to not combine styles between paragraphs.
+            builder.ParagraphFormat.StyleName = "Normal";
+            builder.Font.Italic = true;
+            builder.Write("Italic Text");
+            // Reset styles from the previous paragraph to not combine styles between paragraphs.
+            builder.Italic = false;
+
+            // Specify a Hyperlink for the desired text.
+            builder.InsertParagraph();
+            builder.InsertHyperlink("Aspose", "https://www.aspose.com", false);
+            builder.Write("Aspose");
+
+            // Save your document as a Markdown file.
+            doc.Save(ArtifactsDir + "WorkingWithMarkdown.SupportedFeatures.md");
+            //ExEnd:SupportedFeatures
+        }
     }
 }
