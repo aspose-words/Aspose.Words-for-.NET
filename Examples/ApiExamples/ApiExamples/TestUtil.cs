@@ -20,9 +20,11 @@ using Aspose.Words.Lists;
 using Aspose.Words.Notes;
 using NUnit.Framework;
 using Table = Aspose.Words.Tables.Table;
-using System.Drawing;
 using System.Collections.Generic;
 using Shape = Aspose.Words.Drawing.Shape;
+using SkiaSharp;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace ApiExamples
 {
@@ -39,13 +41,82 @@ namespace ApiExamples
         /// <param name="filename">Local file system filename of the image file.</param>
         internal static void VerifyImage(int expectedWidth, int expectedHeight, string filename)
         {
-            using (Image image = Image.FromFile(filename))
+            string ext = Path.GetExtension(filename).ToLower();
+            bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+            if (isWindows && (ext == ".emf" || ext == ".wmf"))
             {
-                Assert.Multiple(() =>
+                using (var metafile = new Metafile(filename))
                 {
-                    Assert.AreEqual(expectedWidth, image.Width, 1);
-                    Assert.AreEqual(expectedHeight, image.Height, 1);
-                });
+                    var bounds = metafile.GetMetafileHeader().Bounds;
+                    Assert.AreEqual(expectedWidth, bounds.Width, 1);
+                    Assert.AreEqual(expectedHeight, bounds.Height, 1);
+                }
+            }
+            else if (ext == ".emf")
+            {
+                var (w, h) = GetEmfDimensions(filename);
+                Assert.AreEqual(expectedWidth, w, 1);
+                Assert.AreEqual(expectedHeight, h, 1);
+            }
+            else if (ext == ".wmf")
+            {
+                var (w, h) = GetWmfDimensions(filename);
+                Assert.AreEqual(expectedWidth, w, 1);
+                Assert.AreEqual(expectedHeight, h, 1);
+            }
+            else
+            {
+                using (var image = SKBitmap.Decode(filename))
+                {
+                    Assert.Multiple(() =>
+                    {
+                        Assert.AreEqual(expectedWidth, image.Width, 1);
+                        Assert.AreEqual(expectedHeight, image.Height, 1);
+                    });
+                }
+            }
+        }
+
+        internal static (int Width, int Height) GetEmfDimensions(string filePath)
+        {
+            using (var stream = File.OpenRead(filePath))
+            using (var reader = new BinaryReader(stream))
+            {
+                // Skip EMF header (first 8 bytes).
+                stream.Position = 8;
+
+                // Read bounding rectangle (4 x Int32: left, top, right, bottom).
+                int left = reader.ReadInt32();
+                int top = reader.ReadInt32();
+                int right = reader.ReadInt32();
+                int bottom = reader.ReadInt32();
+
+                return (right - left, bottom - top);
+            }
+        }
+
+        internal static (int Width, int Height) GetWmfDimensions(string filePath)
+        {
+            using (var stream = File.OpenRead(filePath))
+            using (var reader = new BinaryReader(stream))
+            {
+                // WMF header (16 bytes).
+                // Skip first 10 bytes (header + version).
+                stream.Position = 10;
+
+                // Read dimensions in 16-bit integers (0.01mm units).
+                short left = reader.ReadInt16();
+                short top = reader.ReadInt16();
+                short right = reader.ReadInt16();
+                short bottom = reader.ReadInt16();
+
+                // Convert to pixels (96 DPI approximation).
+                const double unitsPerInch = 2540.0; // WMF uses 0.01mm units.
+                int width = (int)((right - left) / unitsPerInch * 96);
+                int height = (int)((bottom - top) / unitsPerInch * 96);
+
+                return (width, height);
             }
         }
 
@@ -55,10 +126,17 @@ namespace ApiExamples
         /// <param name="filename">Local file system filename of the image file.</param>
         internal static void ImageContainsTransparency(string filename)
         {
-            using (Bitmap bitmap = (Bitmap)Image.FromFile(filename))
+            using (var bitmap = SKBitmap.Decode(filename))
+            {
                 for (int x = 0; x < bitmap.Width; x++)
+                {
                     for (int y = 0; y < bitmap.Height; y++)
-                        if (bitmap.GetPixel(x, y).A != 255) return;
+                    {
+                        if (bitmap.GetPixel(x, y).Alpha != 255)
+                            return;
+                    }
+                }
+            }
 
             Assert.Fail($"The image from \"{filename}\" does not contain any transparency.");
         }

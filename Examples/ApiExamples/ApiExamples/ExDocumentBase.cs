@@ -17,6 +17,7 @@ using System.IO;
 using Aspose.Words.Loading;
 using System.Net;
 using Aspose.Pdf;
+using System.Net.Http;
 
 namespace ApiExamples
 {
@@ -246,11 +247,11 @@ namespace ApiExamples
                     switch (args.OriginalUri)
                     {
                         case "Google logo":
-                            using (WebClient webClient = new WebClient())
+                            using (HttpClient client = new HttpClient())
                             {
-                                args.SetData(webClient.DownloadData("http://www.google.com/images/logos/ps_logo2.png"));
+                                byte[] imageData = client.GetByteArrayAsync("http://www.google.com/images/logos/ps_logo2.png").GetAwaiter().GetResult();
+                                args.SetData(imageData);
                             }
-
                             return ResourceLoadingAction.UserProvided;
 
                         case "Aspose logo":

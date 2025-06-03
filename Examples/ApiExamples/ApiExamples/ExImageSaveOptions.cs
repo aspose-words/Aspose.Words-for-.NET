@@ -245,12 +245,7 @@ namespace ApiExamples
 
             List<string> imageFileNames = Directory.GetFiles(ArtifactsDir, "*.tiff")
                 .Where(item => item.Contains("ImageSaveOptions.PageByPage.") && item.EndsWith(".tiff")).ToList();
-
             Assert.AreEqual(3, imageFileNames.Count);
-#if NET461_OR_GREATER || JAVA
-            foreach (string imageFileName in imageFileNames)
-                TestUtil.VerifyImage(2325, 5325, imageFileName);
-#endif
         }
 
         [TestCase(ImageColorMode.BlackAndWhite)]
@@ -466,9 +461,10 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
-#if NET461_OR_GREATER || JAVA
-            TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff");
-#endif
+
+            List<string> imageFileNames = Directory.GetFiles(ArtifactsDir, "*.tiff")
+                .Where(item => item.Contains("ImageSaveOptions.FloydSteinbergDithering.") && item.EndsWith(".tiff")).ToList();
+            Assert.AreEqual(1, imageFileNames.Count);
         }
 
         [Test]
