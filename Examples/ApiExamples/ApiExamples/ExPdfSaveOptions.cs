@@ -1451,7 +1451,7 @@ namespace ApiExamples
 
             pdfDocument.Pages[1].Accept(textAbsorber);
 
-            SetGlyphsPositionShowText tjOperator = (SetGlyphsPositionShowText) textAbsorber.TextFragments[1].Page.Contents[83];
+            SetGlyphsPositionShowText tjOperator = (SetGlyphsPositionShowText) textAbsorber.TextFragments[1].Page.Contents[71];
 
             var testedFileLength = new FileInfo(ArtifactsDir + "PdfSaveOptions.AdditionalTextPositioning.pdf").Length;
             if (applyAdditionalTextPositioning)
