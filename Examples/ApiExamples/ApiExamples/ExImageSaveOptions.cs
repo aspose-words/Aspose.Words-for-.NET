@@ -676,5 +676,34 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageSaveOptions.RenderInkObject.jpeg", saveOptions);
             //ExEnd
         }
+
+        [Test]
+        public void GridLayout()
+        {
+            //ExStart:GridLayout
+            //GistId:70330eacdfc2e253f00a9adea8972975
+            //ExFor:ImageSaveOptions.PageLayout
+            //ExFor:MultiPageLayout
+            //ExSummary:Shows how to save the document into JPG image with multi-page layout settings.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
+            // Set up a grid layout with:
+            // - 3 columns per row.
+            // - 10pts spacing between pages (horizontal and vertical).
+            options.PageLayout = MultiPageLayout.Grid(3, 10, 10);
+
+            // Alternative layouts:
+            // options.MultiPageLayout = MultiPageLayout.Horizontal(10);
+            // options.MultiPageLayout = MultiPageLayout.Vertical(10);
+
+            // Customize the background and border.
+            options.PageLayout.BackColor = Color.LightGray;
+            options.PageLayout.BorderColor = Color.Blue;
+            options.PageLayout.BorderWidth = 2;
+
+            doc.Save(ArtifactsDir + "ImageSaveOptions.GridLayout.jpg", options);
+            //ExEnd:GridLayout
+        }
     }
 }
