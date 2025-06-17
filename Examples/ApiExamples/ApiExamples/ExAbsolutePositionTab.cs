@@ -38,7 +38,7 @@ namespace ApiExamples
             fisrtSection.Body.AcceptEnd(myDocTextExtractor);
 
             // The absolute position tab, which has no equivalent in string form, has been explicitly converted to a tab character.
-            Assert.AreEqual("Before AbsolutePositionTab\tAfter AbsolutePositionTab", myDocTextExtractor.GetText());
+            Assert.That(myDocTextExtractor.GetText(), Is.EqualTo("Before AbsolutePositionTab\tAfter AbsolutePositionTab"));
 
             // An AbsolutePositionTab can accept a DocumentVisitor by itself too.
             AbsolutePositionTab absPositionTab = (AbsolutePositionTab)doc.FirstSection.Body.FirstParagraph.GetChild(NodeType.SpecialChar, 0, true);
@@ -46,7 +46,7 @@ namespace ApiExamples
             myDocTextExtractor = new DocTextExtractor();
             absPositionTab.Accept(myDocTextExtractor);
 
-            Assert.AreEqual("\t", myDocTextExtractor.GetText());
+            Assert.That(myDocTextExtractor.GetText(), Is.EqualTo("\t"));
         }
 
         /// <summary>

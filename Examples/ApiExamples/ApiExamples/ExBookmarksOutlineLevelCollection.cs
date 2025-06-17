@@ -60,11 +60,11 @@ namespace ApiExamples
             outlineLevels.Add("Bookmark 2", 2);
             outlineLevels.Add("Bookmark 3", 3);
 
-            Assert.AreEqual(3, outlineLevels.Count);
-            Assert.True(outlineLevels.Contains("Bookmark 1"));
-            Assert.AreEqual(1, outlineLevels[0]);
-            Assert.AreEqual(2, outlineLevels["Bookmark 2"]);
-            Assert.AreEqual(2, outlineLevels.IndexOfKey("Bookmark 3"));
+            Assert.That(outlineLevels.Count, Is.EqualTo(3));
+            Assert.That(outlineLevels.Contains("Bookmark 1"), Is.True);
+            Assert.That(outlineLevels[0], Is.EqualTo(1));
+            Assert.That(outlineLevels["Bookmark 2"], Is.EqualTo(2));
+            Assert.That(outlineLevels.IndexOfKey("Bookmark 3"), Is.EqualTo(2));
 
             // We can remove two elements so that only the outline level designation for "Bookmark 1" is left.
             outlineLevels.RemoveAt(2);
@@ -92,10 +92,10 @@ namespace ApiExamples
 
             Bookmarks bookmarks = bookmarkEditor.ExtractBookmarks();
 
-            Assert.AreEqual(3, bookmarks.Count);
-            Assert.AreEqual("Bookmark 1", bookmarks[0].Title);
-            Assert.AreEqual("Bookmark 2", bookmarks[1].Title);
-            Assert.AreEqual("Bookmark 3", bookmarks[2].Title);
+            Assert.That(bookmarks.Count, Is.EqualTo(3));
+            Assert.That(bookmarks[0].Title, Is.EqualTo("Bookmark 1"));
+            Assert.That(bookmarks[1].Title, Is.EqualTo("Bookmark 2"));
+            Assert.That(bookmarks[2].Title, Is.EqualTo("Bookmark 3"));
         }
     }
 }

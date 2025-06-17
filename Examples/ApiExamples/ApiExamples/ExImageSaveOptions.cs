@@ -102,7 +102,7 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("This is page 3.");
 
-            Assert.AreEqual(3, doc.PageCount);
+            Assert.That(doc.PageCount, Is.EqualTo(3));
 
             // When we save the document as an image, Aspose.Words only renders the first page by default.
             // We can pass a SaveOptions object to specify a different page to render.
@@ -119,7 +119,7 @@ namespace ApiExamples
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.PageIndex.Page 1.gif");
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.PageIndex.Page 2.gif");
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.PageIndex.Page 3.gif");
-            Assert.False(File.Exists(ArtifactsDir + "ImageSaveOptions.PageIndex.Page 4.gif"));
+            Assert.That(File.Exists(ArtifactsDir + "ImageSaveOptions.PageIndex.Page 4.gif"), Is.False);
         }
 
 #if NET461_OR_GREATER || JAVA
@@ -245,7 +245,7 @@ namespace ApiExamples
 
             List<string> imageFileNames = Directory.GetFiles(ArtifactsDir, "*.tiff")
                 .Where(item => item.Contains("ImageSaveOptions.PageByPage.") && item.EndsWith(".tiff")).ToList();
-            Assert.AreEqual(3, imageFileNames.Count);
+            Assert.That(imageFileNames.Count, Is.EqualTo(3));
         }
 
         [TestCase(ImageColorMode.BlackAndWhite)]
@@ -284,26 +284,26 @@ namespace ApiExamples
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
-                    Assert.IsTrue(testedImageLength < 175000);
+                    Assert.That(testedImageLength < 175000, Is.True);
                     break;
                 case ImageColorMode.Grayscale:
-                    Assert.IsTrue(testedImageLength < 90000);
+                    Assert.That(testedImageLength < 90000, Is.True);
                     break;
                 case ImageColorMode.BlackAndWhite:
-                    Assert.IsTrue(testedImageLength < 15000);
+                    Assert.That(testedImageLength < 15000, Is.True);
                     break;
             }
 #elif NET5_0_OR_GREATER
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
-                    Assert.IsTrue(testedImageLength < 132000);
+                    Assert.That(testedImageLength < 132000, Is.True);
                     break;
                 case ImageColorMode.Grayscale:
-                    Assert.IsTrue(testedImageLength < 90000);
+                    Assert.That(testedImageLength < 90000, Is.True);
                     break;
                 case ImageColorMode.BlackAndWhite:
-                    Assert.IsTrue(testedImageLength < 11000);
+                    Assert.That(testedImageLength < 11000, Is.True);
                     break;
             }
 #endif            
@@ -377,7 +377,7 @@ namespace ApiExamples
             imageSaveOptions.PixelFormat = imagePixelFormat;
 
             // We can clone ImageSaveOptions instances.
-            Assert.AreNotEqual(imageSaveOptions, imageSaveOptions.Clone());
+            Assert.That(imageSaveOptions.Clone(), Is.Not.EqualTo(imageSaveOptions));
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.PixelFormat.png", imageSaveOptions);
             //ExEnd
@@ -388,37 +388,37 @@ namespace ApiExamples
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
-                    Assert.IsTrue(testedImageLength < 2500);
+                    Assert.That(testedImageLength < 2500, Is.True);
                     break;
                 case ImagePixelFormat.Format16BppRgb565:
-                    Assert.IsTrue(testedImageLength < 104000);
+                    Assert.That(testedImageLength < 104000, Is.True);
                     break;
                 case ImagePixelFormat.Format16BppRgb555:
-                    Assert.IsTrue(testedImageLength < 88000);
+                    Assert.That(testedImageLength < 88000, Is.True);
                     break;
                 case ImagePixelFormat.Format24BppRgb:
-                    Assert.IsTrue(testedImageLength < 160000);
+                    Assert.That(testedImageLength < 160000, Is.True);
                     break;
                 case ImagePixelFormat.Format32BppRgb:
                 case ImagePixelFormat.Format32BppArgb:
-                    Assert.IsTrue(testedImageLength < 175000);
+                    Assert.That(testedImageLength < 175000, Is.True);
                     break;
                 case ImagePixelFormat.Format48BppRgb:
-                    Assert.IsTrue(testedImageLength < 212000);
+                    Assert.That(testedImageLength < 212000, Is.True);
                     break;
                 case ImagePixelFormat.Format64BppArgb:
                 case ImagePixelFormat.Format64BppPArgb:
-                    Assert.IsTrue(testedImageLength < 239000);
+                    Assert.That(testedImageLength < 239000, Is.True);
                     break;
             }
 #elif NET5_0_OR_GREATER
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
-                    Assert.IsTrue(testedImageLength < 7500);
+                    Assert.That(testedImageLength < 7500, Is.True);
                     break;
                 case ImagePixelFormat.Format24BppRgb:
-                    Assert.IsTrue(testedImageLength < 77000);
+                    Assert.That(testedImageLength < 77000, Is.True);
                     break;
                 case ImagePixelFormat.Format16BppRgb565:
                 case ImagePixelFormat.Format16BppRgb555:
@@ -427,7 +427,7 @@ namespace ApiExamples
                 case ImagePixelFormat.Format48BppRgb:
                 case ImagePixelFormat.Format64BppArgb:
                 case ImagePixelFormat.Format64BppPArgb:
-                    Assert.IsTrue(testedImageLength < 132000);
+                    Assert.That(testedImageLength < 132000, Is.True);
                     break;
             }
 #endif
@@ -464,7 +464,7 @@ namespace ApiExamples
 
             List<string> imageFileNames = Directory.GetFiles(ArtifactsDir, "*.tiff")
                 .Where(item => item.Contains("ImageSaveOptions.FloydSteinbergDithering.") && item.EndsWith(".tiff")).ToList();
-            Assert.AreEqual(1, imageFileNames.Count);
+            Assert.That(imageFileNames.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -539,8 +539,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg", imageOptions);
             //ExEnd
 
-            Assert.IsTrue(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg").Length < 18000);
-            Assert.IsTrue(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg").Length < 75000);
+            Assert.That(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg").Length < 18000, Is.True);
+            Assert.That(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg").Length < 75000, Is.True);
         }
 
         [TestCase(TiffCompression.None), Category("SkipMono")]
@@ -578,27 +578,27 @@ namespace ApiExamples
             switch (tiffCompression)
             {
                 case TiffCompression.None:
-                    Assert.IsTrue(testedImageLength < 3450000);
+                    Assert.That(testedImageLength < 3450000, Is.True);
                     break;
                 case TiffCompression.Rle:
 #if NET5_0_OR_GREATER
-                    Assert.IsTrue(testedImageLength < 7500);
+                    Assert.That(testedImageLength < 7500, Is.True);
 #else
-                    Assert.IsTrue(testedImageLength < 687000);
+                    Assert.That(testedImageLength < 687000, Is.True);
 #endif
                     break;
                 case TiffCompression.Lzw:
-                    Assert.IsTrue(testedImageLength < 250000);
+                    Assert.That(testedImageLength < 250000, Is.True);
                     break;
                 case TiffCompression.Ccitt3:
 #if NET5_0_OR_GREATER
-                    Assert.IsTrue(testedImageLength < 6100);
+                    Assert.That(testedImageLength < 6100, Is.True);
 #else
-                    Assert.IsTrue(testedImageLength < 8300);
+                    Assert.That(testedImageLength < 8300, Is.True);
 #endif
                     break;
                 case TiffCompression.Ccitt4:
-                    Assert.IsTrue(testedImageLength < 1700);
+                    Assert.That(testedImageLength < 1700, Is.True);
                     break;
             }
         }
@@ -694,8 +694,8 @@ namespace ApiExamples
             options.PageLayout = MultiPageLayout.Grid(3, 10, 10);
 
             // Alternative layouts:
-            // options.MultiPageLayout = MultiPageLayout.Horizontal(10);
-            // options.MultiPageLayout = MultiPageLayout.Vertical(10);
+            // options.PageLayout = MultiPageLayout.Horizontal(10);
+            // options.PageLayout = MultiPageLayout.Vertical(10);
 
             // Customize the background and border.
             options.PageLayout.BackColor = Color.LightGray;

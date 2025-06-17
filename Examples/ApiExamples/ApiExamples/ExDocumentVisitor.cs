@@ -229,16 +229,16 @@ namespace ApiExamples
         {
             string visitorText = visitor.GetText();
 
-            Assert.True(visitorText.Contains("[Document start]"));
-            Assert.True(visitorText.Contains("[Document end]"));
-            Assert.True(visitorText.Contains("[Section start]"));
-            Assert.True(visitorText.Contains("[Section end]"));
-            Assert.True(visitorText.Contains("[Body start]"));
-            Assert.True(visitorText.Contains("[Body end]"));
-            Assert.True(visitorText.Contains("[Paragraph start]"));
-            Assert.True(visitorText.Contains("[Paragraph end]"));
-            Assert.True(visitorText.Contains("[Run]"));
-            Assert.True(visitorText.Contains("[SubDocument]"));
+            Assert.That(visitorText.Contains("[Document start]"), Is.True);
+            Assert.That(visitorText.Contains("[Document end]"), Is.True);
+            Assert.That(visitorText.Contains("[Section start]"), Is.True);
+            Assert.That(visitorText.Contains("[Section end]"), Is.True);
+            Assert.That(visitorText.Contains("[Body start]"), Is.True);
+            Assert.That(visitorText.Contains("[Body end]"), Is.True);
+            Assert.That(visitorText.Contains("[Paragraph start]"), Is.True);
+            Assert.That(visitorText.Contains("[Paragraph end]"), Is.True);
+            Assert.That(visitorText.Contains("[Run]"), Is.True);
+            Assert.That(visitorText.Contains("[SubDocument]"), Is.True);
         }
 
         //ExStart
@@ -423,13 +423,13 @@ namespace ApiExamples
         {
             string visitorText = visitor.GetText();
 
-            Assert.True(visitorText.Contains("[Table start]"));
-            Assert.True(visitorText.Contains("[Table end]"));
-            Assert.True(visitorText.Contains("[Row start]"));
-            Assert.True(visitorText.Contains("[Row end]"));
-            Assert.True(visitorText.Contains("[Cell start]"));
-            Assert.True(visitorText.Contains("[Cell end]"));
-            Assert.True(visitorText.Contains("[Run]"));
+            Assert.That(visitorText.Contains("[Table start]"), Is.True);
+            Assert.That(visitorText.Contains("[Table end]"), Is.True);
+            Assert.That(visitorText.Contains("[Row start]"), Is.True);
+            Assert.That(visitorText.Contains("[Row end]"), Is.True);
+            Assert.That(visitorText.Contains("[Cell start]"), Is.True);
+            Assert.That(visitorText.Contains("[Cell end]"), Is.True);
+            Assert.That(visitorText.Contains("[Run]"), Is.True);
         }
 
         //ExStart
@@ -555,11 +555,11 @@ namespace ApiExamples
         {
             string visitorText = visitor.GetText();
 
-            Assert.True(visitorText.Contains("[Comment range start]"));
-            Assert.True(visitorText.Contains("[Comment range end]"));
-            Assert.True(visitorText.Contains("[Comment start]"));
-            Assert.True(visitorText.Contains("[Comment end]"));
-            Assert.True(visitorText.Contains("[Run]"));
+            Assert.That(visitorText.Contains("[Comment range start]"), Is.True);
+            Assert.That(visitorText.Contains("[Comment range end]"), Is.True);
+            Assert.That(visitorText.Contains("[Comment start]"), Is.True);
+            Assert.That(visitorText.Contains("[Comment end]"), Is.True);
+            Assert.That(visitorText.Contains("[Run]"), Is.True);
         }
 
         //ExStart
@@ -668,10 +668,10 @@ namespace ApiExamples
         {
             string visitorText = visitor.GetText();
 
-            Assert.True(visitorText.Contains("[Field start]"));
-            Assert.True(visitorText.Contains("[Field end]"));
-            Assert.True(visitorText.Contains("[FieldSeparator]"));
-            Assert.True(visitorText.Contains("[Run]"));
+            Assert.That(visitorText.Contains("[Field start]"), Is.True);
+            Assert.That(visitorText.Contains("[Field end]"), Is.True);
+            Assert.That(visitorText.Contains("[FieldSeparator]"), Is.True);
+            Assert.That(visitorText.Contains("[Run]"), Is.True);
         }
 
         //ExStart
@@ -699,7 +699,7 @@ namespace ApiExamples
 
             // An alternative way of accessing a document's header/footers section-by-section is by accessing the collection.
             HeaderFooter[] headerFooters = doc.FirstSection.HeadersFooters.ToArray();
-            Assert.AreEqual(3, headerFooters.Length);
+            Assert.That(headerFooters.Length, Is.EqualTo(3));
             TestHeaderFooterToText(visitor); //ExSkip
         }
 
@@ -775,14 +775,14 @@ namespace ApiExamples
         {
             string visitorText = visitor.GetText();
 
-            Assert.True(visitorText.Contains("[HeaderFooter start] HeaderFooterType: HeaderPrimary"));
-            Assert.True(visitorText.Contains("[HeaderFooter end]"));
-            Assert.True(visitorText.Contains("[HeaderFooter start] HeaderFooterType: HeaderFirst"));
-            Assert.True(visitorText.Contains("[HeaderFooter start] HeaderFooterType: HeaderEven"));
-            Assert.True(visitorText.Contains("[HeaderFooter start] HeaderFooterType: FooterPrimary"));
-            Assert.True(visitorText.Contains("[HeaderFooter start] HeaderFooterType: FooterFirst"));
-            Assert.True(visitorText.Contains("[HeaderFooter start] HeaderFooterType: FooterEven"));
-            Assert.True(visitorText.Contains("[Run]"));
+            Assert.That(visitorText.Contains("[HeaderFooter start] HeaderFooterType: HeaderPrimary"), Is.True);
+            Assert.That(visitorText.Contains("[HeaderFooter end]"), Is.True);
+            Assert.That(visitorText.Contains("[HeaderFooter start] HeaderFooterType: HeaderFirst"), Is.True);
+            Assert.That(visitorText.Contains("[HeaderFooter start] HeaderFooterType: HeaderEven"), Is.True);
+            Assert.That(visitorText.Contains("[HeaderFooter start] HeaderFooterType: FooterPrimary"), Is.True);
+            Assert.That(visitorText.Contains("[HeaderFooter start] HeaderFooterType: FooterFirst"), Is.True);
+            Assert.That(visitorText.Contains("[HeaderFooter start] HeaderFooterType: FooterEven"), Is.True);
+            Assert.That(visitorText.Contains("[Run]"), Is.True);
         }
 
         //ExStart
@@ -881,9 +881,9 @@ namespace ApiExamples
         {
             string visitorText = visitor.GetText();
 
-            Assert.True(visitorText.Contains("[EditableRange start]"));
-            Assert.True(visitorText.Contains("[EditableRange end]"));
-            Assert.True(visitorText.Contains("[Run]"));
+            Assert.That(visitorText.Contains("[EditableRange start]"), Is.True);
+            Assert.That(visitorText.Contains("[EditableRange end]"), Is.True);
+            Assert.That(visitorText.Contains("[Run]"), Is.True);
         }
 
         //ExStart
@@ -983,9 +983,9 @@ namespace ApiExamples
         {
             string visitorText = visitor.GetText();
 
-            Assert.True(visitorText.Contains("[Footnote start] Type: Footnote"));
-            Assert.True(visitorText.Contains("[Footnote end]"));
-            Assert.True(visitorText.Contains("[Run]"));
+            Assert.That(visitorText.Contains("[Footnote start] Type: Footnote"), Is.True);
+            Assert.That(visitorText.Contains("[Footnote end]"), Is.True);
+            Assert.That(visitorText.Contains("[Run]"), Is.True);
         }
 
         //ExStart
@@ -1087,16 +1087,16 @@ namespace ApiExamples
         {
             string visitorText = visitor.GetText();
 
-            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: OMathPara"));
-            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: OMath"));
-            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: Argument"));
-            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: Supercript"));
-            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: SuperscriptPart"));
-            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: Fraction"));
-            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: Numerator"));
-            Assert.True(visitorText.Contains("[OfficeMath start] Math object type: Denominator"));
-            Assert.True(visitorText.Contains("[OfficeMath end]"));
-            Assert.True(visitorText.Contains("[Run]"));
+            Assert.That(visitorText.Contains("[OfficeMath start] Math object type: OMathPara"), Is.True);
+            Assert.That(visitorText.Contains("[OfficeMath start] Math object type: OMath"), Is.True);
+            Assert.That(visitorText.Contains("[OfficeMath start] Math object type: Argument"), Is.True);
+            Assert.That(visitorText.Contains("[OfficeMath start] Math object type: Supercript"), Is.True);
+            Assert.That(visitorText.Contains("[OfficeMath start] Math object type: SuperscriptPart"), Is.True);
+            Assert.That(visitorText.Contains("[OfficeMath start] Math object type: Fraction"), Is.True);
+            Assert.That(visitorText.Contains("[OfficeMath start] Math object type: Numerator"), Is.True);
+            Assert.That(visitorText.Contains("[OfficeMath start] Math object type: Denominator"), Is.True);
+            Assert.That(visitorText.Contains("[OfficeMath end]"), Is.True);
+            Assert.That(visitorText.Contains("[Run]"), Is.True);
         }
 
         //ExStart
@@ -1193,16 +1193,16 @@ namespace ApiExamples
         {
             string visitorText = visitor.GetText();
 
-            Assert.True(visitorText.Contains("[SmartTag start] Name: address"));
-            Assert.True(visitorText.Contains("[SmartTag start] Name: Street"));
-            Assert.True(visitorText.Contains("[SmartTag start] Name: PersonName"));
-            Assert.True(visitorText.Contains("[SmartTag start] Name: title"));
-            Assert.True(visitorText.Contains("[SmartTag start] Name: GivenName"));
-            Assert.True(visitorText.Contains("[SmartTag start] Name: Sn"));
-            Assert.True(visitorText.Contains("[SmartTag start] Name: stockticker"));
-            Assert.True(visitorText.Contains("[SmartTag start] Name: date"));
-            Assert.True(visitorText.Contains("[SmartTag end]"));
-            Assert.True(visitorText.Contains("[Run]"));
+            Assert.That(visitorText.Contains("[SmartTag start] Name: address"), Is.True);
+            Assert.That(visitorText.Contains("[SmartTag start] Name: Street"), Is.True);
+            Assert.That(visitorText.Contains("[SmartTag start] Name: PersonName"), Is.True);
+            Assert.That(visitorText.Contains("[SmartTag start] Name: title"), Is.True);
+            Assert.That(visitorText.Contains("[SmartTag start] Name: GivenName"), Is.True);
+            Assert.That(visitorText.Contains("[SmartTag start] Name: Sn"), Is.True);
+            Assert.That(visitorText.Contains("[SmartTag start] Name: stockticker"), Is.True);
+            Assert.That(visitorText.Contains("[SmartTag start] Name: date"), Is.True);
+            Assert.That(visitorText.Contains("[SmartTag end]"), Is.True);
+            Assert.That(visitorText.Contains("[Run]"), Is.True);
         }
 
         //ExStart
@@ -1300,8 +1300,8 @@ namespace ApiExamples
         {
             string visitorText = visitor.GetText();
 
-            Assert.True(visitorText.Contains("[StructuredDocumentTag start]"));
-            Assert.True(visitorText.Contains("[StructuredDocumentTag end]"));
+            Assert.That(visitorText.Contains("[StructuredDocumentTag start]"), Is.True);
+            Assert.That(visitorText.Contains("[StructuredDocumentTag end]"), Is.True);
         }
     }
 }

@@ -56,10 +56,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "CellFormat.VerticalMerge.docx");
             Table table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(CellMerge.First, table.Rows[0].Cells[0].CellFormat.VerticalMerge);
-            Assert.AreEqual(CellMerge.Previous, table.Rows[1].Cells[0].CellFormat.VerticalMerge);
-            Assert.AreEqual("Text in merged cells.", table.Rows[0].Cells[0].GetText().Trim('\a'));
-            Assert.AreNotEqual(table.Rows[0].Cells[0].GetText(), table.Rows[1].Cells[0].GetText());
+            Assert.That(table.Rows[0].Cells[0].CellFormat.VerticalMerge, Is.EqualTo(CellMerge.First));
+            Assert.That(table.Rows[1].Cells[0].CellFormat.VerticalMerge, Is.EqualTo(CellMerge.Previous));
+            Assert.That(table.Rows[0].Cells[0].GetText().Trim('\a'), Is.EqualTo("Text in merged cells."));
+            Assert.That(table.Rows[1].Cells[0].GetText(), Is.Not.EqualTo(table.Rows[0].Cells[0].GetText()));
         }
 
         [Test]
@@ -99,9 +99,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "CellFormat.HorizontalMerge.docx");
             Table table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(1, table.Rows[0].Cells.Count);
-            Assert.AreEqual(CellMerge.None, table.Rows[0].Cells[0].CellFormat.HorizontalMerge);
-            Assert.AreEqual("Text in merged cells.", table.Rows[0].Cells[0].GetText().Trim('\a'));
+            Assert.That(table.Rows[0].Cells.Count, Is.EqualTo(1));
+            Assert.That(table.Rows[0].Cells[0].CellFormat.HorizontalMerge, Is.EqualTo(CellMerge.None));
+            Assert.That(table.Rows[0].Cells[0].GetText().Trim('\a'), Is.EqualTo("Text in merged cells."));
         }
 
         [Test]
@@ -131,10 +131,10 @@ namespace ApiExamples
             Table table = doc.FirstSection.Body.Tables[0];
             Cell cell = table.Rows[0].Cells[0];
 
-            Assert.AreEqual(5, cell.CellFormat.LeftPadding);
-            Assert.AreEqual(10, cell.CellFormat.TopPadding);
-            Assert.AreEqual(40, cell.CellFormat.RightPadding);
-            Assert.AreEqual(50, cell.CellFormat.BottomPadding);
+            Assert.That(cell.CellFormat.LeftPadding, Is.EqualTo(5));
+            Assert.That(cell.CellFormat.TopPadding, Is.EqualTo(10));
+            Assert.That(cell.CellFormat.RightPadding, Is.EqualTo(40));
+            Assert.That(cell.CellFormat.BottomPadding, Is.EqualTo(50));
         }
     }
 }

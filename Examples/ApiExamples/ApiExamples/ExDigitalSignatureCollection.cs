@@ -36,30 +36,30 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.AreEqual(1, digitalSignatures.Count);
+            Assert.That(digitalSignatures.Count, Is.EqualTo(1));
 
             DigitalSignature signature = digitalSignatures[0];
 
-            Assert.True(signature.IsValid);
-            Assert.AreEqual(DigitalSignatureType.XmlDsig, signature.SignatureType);
-            Assert.AreEqual("12/23/2010 02:14:40 AM", signature.SignTime.ToString("MM/dd/yyyy hh:mm:ss tt"));
-            Assert.AreEqual("Test Sign", signature.Comments);
+            Assert.That(signature.IsValid, Is.True);
+            Assert.That(signature.SignatureType, Is.EqualTo(DigitalSignatureType.XmlDsig));
+            Assert.That(signature.SignTime.ToString("MM/dd/yyyy hh:mm:ss tt"), Is.EqualTo("12/23/2010 02:14:40 AM"));
+            Assert.That(signature.Comments, Is.EqualTo("Test Sign"));
 
-            Assert.AreEqual(signature.IssuerName, signature.CertificateHolder.Certificate.IssuerName.Name);
-            Assert.AreEqual(signature.SubjectName, signature.CertificateHolder.Certificate.SubjectName.Name);
+            Assert.That(signature.CertificateHolder.Certificate.IssuerName.Name, Is.EqualTo(signature.IssuerName));
+            Assert.That(signature.CertificateHolder.Certificate.SubjectName.Name, Is.EqualTo(signature.SubjectName));
 
-            Assert.AreEqual("CN=VeriSign Class 3 Code Signing 2009-2 CA, " +
+            Assert.That(signature.IssuerName, Is.EqualTo("CN=VeriSign Class 3 Code Signing 2009-2 CA, " +
                 "OU=Terms of use at https://www.verisign.com/rpa (c)09, " +
                 "OU=VeriSign Trust Network, " +
                 "O=\"VeriSign, Inc.\", " +
-                "C=US", signature.IssuerName);
+                "C=US"));
 
-            Assert.AreEqual("CN=Aspose Pty Ltd, " +
+            Assert.That(signature.SubjectName, Is.EqualTo("CN=Aspose Pty Ltd, " +
                 "OU=Digital ID Class 3 - Microsoft Software Validation v2, " +
                 "O=Aspose Pty Ltd, " +
                 "L=Lane Cove, " +
                 "S=New South Wales, " +
-                "C=AU", signature.SubjectName);
+                "C=AU"));
         }
     }
 }

@@ -60,12 +60,12 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(builder.Document);
             Run firstRun = doc.FirstSection.Body.Paragraphs[0].Runs[0];
 
-            Assert.AreEqual("Hello world!", firstRun.GetText().Trim());
-            Assert.AreEqual(16.0d, firstRun.Font.Size);
-            Assert.True(firstRun.Font.Bold);
-            Assert.AreEqual("Courier New", firstRun.Font.Name);
-            Assert.AreEqual(Color.Blue.ToArgb(), firstRun.Font.Color.ToArgb());
-            Assert.AreEqual(Underline.Dash, firstRun.Font.Underline);
+            Assert.That(firstRun.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.That(firstRun.Font.Size, Is.EqualTo(16.0d));
+            Assert.That(firstRun.Font.Bold, Is.True);
+            Assert.That(firstRun.Font.Name, Is.EqualTo("Courier New"));
+            Assert.That(firstRun.Font.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+            Assert.That(firstRun.Font.Underline, Is.EqualTo(Underline.Dash));
         }
 
         [Test]
@@ -108,13 +108,13 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.HeadersAndFooters.docx");
             //ExEnd
 
-            HeaderFooterCollection headersFooters = 
+            HeaderFooterCollection headersFooters =
                 new Document(ArtifactsDir + "DocumentBuilder.HeadersAndFooters.docx").FirstSection.HeadersFooters;
 
-            Assert.AreEqual(3, headersFooters.Count);
-            Assert.AreEqual("Header for the first page", headersFooters[HeaderFooterType.HeaderFirst].GetText().Trim());
-            Assert.AreEqual("Header for even pages", headersFooters[HeaderFooterType.HeaderEven].GetText().Trim());
-            Assert.AreEqual("Header for all other pages", headersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim());
+            Assert.That(headersFooters.Count, Is.EqualTo(3));
+            Assert.That(headersFooters[HeaderFooterType.HeaderFirst].GetText().Trim(), Is.EqualTo("Header for the first page"));
+            Assert.That(headersFooters[HeaderFooterType.HeaderEven].GetText().Trim(), Is.EqualTo("Header for even pages"));
+            Assert.That(headersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim(), Is.EqualTo("Header for all other pages"));
         }
 
         [Test]
@@ -133,8 +133,8 @@ namespace ApiExamples
             builder.MoveToMergeField("MyMergeField1", true, false);
 
             // Note that the cursor is placed immediately after the first MERGEFIELD, and before the second.
-            Assert.AreEqual(doc.Range.Fields[1].Start, builder.CurrentNode);
-            Assert.AreEqual(doc.Range.Fields[0].End, builder.CurrentNode.PreviousSibling);
+            Assert.That(builder.CurrentNode, Is.EqualTo(doc.Range.Fields[1].Start));
+            Assert.That(builder.CurrentNode.PreviousSibling, Is.EqualTo(doc.Range.Fields[0].End));
 
             // If we wish to edit the field's field code or contents using the builder,
             // its cursor would need to be inside a field.
@@ -147,13 +147,13 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.MergeFields.docx");
 
-            Assert.AreEqual("\u0013MERGEFIELD MyMergeField1 \\* MERGEFORMAT\u0014«MyMergeField1»\u0015" +
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("\u0013MERGEFIELD MyMergeField1 \\* MERGEFORMAT\u0014«MyMergeField1»\u0015" +
                             " Text between our merge fields. " +
-                            "\u0013MERGEFIELD MyMergeField2 \\* MERGEFORMAT\u0014«MyMergeField2»\u0015", doc.GetText().Trim());
-            Assert.AreEqual(2, doc.Range.Fields.Count);
-            TestUtil.VerifyField(FieldType.FieldMergeField, @"MERGEFIELD MyMergeField1 \* MERGEFORMAT", 
+                            "\u0013MERGEFIELD MyMergeField2 \\* MERGEFORMAT\u0014«MyMergeField2»\u0015"));
+            Assert.That(doc.Range.Fields.Count, Is.EqualTo(2));
+            TestUtil.VerifyField(FieldType.FieldMergeField, @"MERGEFIELD MyMergeField1 \* MERGEFORMAT",
                 "«MyMergeField1»", doc.Range.Fields[0]);
-            TestUtil.VerifyField(FieldType.FieldMergeField, @"MERGEFIELD MyMergeField2 \* MERGEFORMAT", 
+            TestUtil.VerifyField(FieldType.FieldMergeField, @"MERGEFIELD MyMergeField2 \* MERGEFORMAT",
                 "«MyMergeField2»", doc.Range.Fields[1]);
         }
 
@@ -183,17 +183,17 @@ namespace ApiExamples
             horizontalRuleFormat.Color = Color.Blue;
             horizontalRuleFormat.NoShade = true;
 
-            Assert.True(shape.IsHorizontalRule);
-            Assert.True(shape.HorizontalRuleFormat.NoShade);
+            Assert.That(shape.IsHorizontalRule, Is.True);
+            Assert.That(shape.HorizontalRuleFormat.NoShade, Is.True);
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual(HorizontalRuleAlignment.Center, shape.HorizontalRuleFormat.Alignment);
-            Assert.AreEqual(70, shape.HorizontalRuleFormat.WidthPercent);
-            Assert.AreEqual(3, shape.HorizontalRuleFormat.Height);
-            Assert.AreEqual(Color.Blue.ToArgb(), shape.HorizontalRuleFormat.Color.ToArgb());
+            Assert.That(shape.HorizontalRuleFormat.Alignment, Is.EqualTo(HorizontalRuleAlignment.Center));
+            Assert.That(shape.HorizontalRuleFormat.WidthPercent, Is.EqualTo(70));
+            Assert.That(shape.HorizontalRuleFormat.Height, Is.EqualTo(3));
+            Assert.That(shape.HorizontalRuleFormat.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
         }
 
         [Test(Description = "Checking the boundary conditions of WidthPercent and Height properties")]
@@ -244,17 +244,17 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertHyperlink.docx");
 
             FieldHyperlink hyperlink = (FieldHyperlink)doc.Range.Fields[0];
-            Assert.AreEqual("https://www.google.com", hyperlink.Address);
+            Assert.That(hyperlink.Address, Is.EqualTo("https://www.google.com"));
 
             // This field is written as w:hyperlink element therefore field code cannot have formatting.
             Run fieldCode = (Run)hyperlink.Start.NextSibling;
-            Assert.AreEqual("HYPERLINK \"https://www.google.com\"", fieldCode.GetText().Trim());
+            Assert.That(fieldCode.GetText().Trim(), Is.EqualTo("HYPERLINK \"https://www.google.com\""));
 
             Run fieldResult = (Run)hyperlink.Separator.NextSibling;
 
-            Assert.AreEqual(Color.Blue.ToArgb(), fieldResult.Font.Color.ToArgb());
-            Assert.AreEqual(Underline.Single, fieldResult.Font.Underline);
-            Assert.AreEqual("Google website", fieldResult.GetText().Trim());
+            Assert.That(fieldResult.Font.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+            Assert.That(fieldResult.Font.Underline, Is.EqualTo(Underline.Single));
+            Assert.That(fieldResult.GetText().Trim(), Is.EqualTo("Google website"));
         }
 
         [Test]
@@ -280,14 +280,14 @@ namespace ApiExamples
             builder.Font.StyleIdentifier = StyleIdentifier.Hyperlink;
             builder.InsertHyperlink("here", "http://www.google.com", false);
 
-            Assert.AreEqual(Color.Blue.ToArgb(), builder.Font.Color.ToArgb());
-            Assert.AreEqual(Underline.Single, builder.Font.Underline);
+            Assert.That(builder.Font.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+            Assert.That(builder.Font.Underline, Is.EqualTo(Underline.Single));
 
             // Restore the font formatting that we saved earlier and remove the element from the stack.
             builder.PopFont();
 
-            Assert.AreEqual(Color.Empty.ToArgb(), builder.Font.Color.ToArgb());
-            Assert.AreEqual(Underline.None, builder.Font.Underline);
+            Assert.That(builder.Font.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
+            Assert.That(builder.Font.Underline, Is.EqualTo(Underline.None));
 
             builder.Write(". We hope you enjoyed the example.");
 
@@ -297,20 +297,20 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.PushPopFont.docx");
             RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
 
-            Assert.AreEqual(4, runs.Count);
+            Assert.That(runs.Count, Is.EqualTo(4));
 
-            Assert.AreEqual("To visit Google, hold Ctrl and click", runs[0].GetText().Trim());
-            Assert.AreEqual(". We hope you enjoyed the example.", runs[3].GetText().Trim());
-            Assert.AreEqual(runs[0].Font.Color, runs[3].Font.Color);
-            Assert.AreEqual(runs[0].Font.Underline, runs[3].Font.Underline);
+            Assert.That(runs[0].GetText().Trim(), Is.EqualTo("To visit Google, hold Ctrl and click"));
+            Assert.That(runs[3].GetText().Trim(), Is.EqualTo(". We hope you enjoyed the example."));
+            Assert.That(runs[3].Font.Color, Is.EqualTo(runs[0].Font.Color));
+            Assert.That(runs[3].Font.Underline, Is.EqualTo(runs[0].Font.Underline));
 
-            Assert.AreEqual("here", runs[2].GetText().Trim());
-            Assert.AreEqual(Color.Blue.ToArgb(), runs[2].Font.Color.ToArgb());
-            Assert.AreEqual(Underline.Single, runs[2].Font.Underline);
-            Assert.AreNotEqual(runs[0].Font.Color, runs[2].Font.Color);
-            Assert.AreNotEqual(runs[0].Font.Underline, runs[2].Font.Underline);
+            Assert.That(runs[2].GetText().Trim(), Is.EqualTo("here"));
+            Assert.That(runs[2].Font.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+            Assert.That(runs[2].Font.Underline, Is.EqualTo(Underline.Single));
+            Assert.That(runs[2].Font.Color, Is.Not.EqualTo(runs[0].Font.Color));
+            Assert.That(runs[2].Font.Underline, Is.Not.EqualTo(runs[0].Font.Underline));
 
-            Assert.AreEqual("http://www.google.com", ((FieldHyperlink)doc.Range.Fields[0]).Address);
+            Assert.That(((FieldHyperlink)doc.Range.Fields[0]).Address, Is.EqualTo("http://www.google.com"));
         }
 
         [Test]
@@ -346,12 +346,12 @@ namespace ApiExamples
             shape = (Shape)doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Png, shape);
-            Assert.AreEqual(WrapType.None, shape.WrapType);
-            Assert.True(shape.BehindText);
-            Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Page, shape.RelativeVerticalPosition);
-            Assert.AreEqual((doc.FirstSection.PageSetup.PageWidth - shape.Width) / 2, shape.Left);
-            Assert.AreEqual((doc.FirstSection.PageSetup.PageHeight - shape.Height) / 2, shape.Top);
+            Assert.That(shape.WrapType, Is.EqualTo(WrapType.None));
+            Assert.That(shape.BehindText, Is.True);
+            Assert.That(shape.RelativeHorizontalPosition, Is.EqualTo(RelativeHorizontalPosition.Page));
+            Assert.That(shape.RelativeVerticalPosition, Is.EqualTo(RelativeVerticalPosition.Page));
+            Assert.That(shape.Left, Is.EqualTo((doc.FirstSection.PageSetup.PageWidth - shape.Width) / 2));
+            Assert.That(shape.Top, Is.EqualTo((doc.FirstSection.PageSetup.PageHeight - shape.Height) / 2));
         }
 
         [Test]
@@ -373,7 +373,7 @@ namespace ApiExamples
             {
                 // If 'presentation' is omitted and 'asIcon' is set, this overloaded method selects
                 // the icon according to the file extension and uses the filename for the icon caption.
-                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, imageStream); 
+                builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", false, false, imageStream);
             }
 
             // If 'presentation' is omitted and 'asIcon' is set, this overloaded method selects
@@ -393,21 +393,21 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOleObject.docx");
             Shape shape = (Shape)doc.GetChild(NodeType.Shape,0, true);
 
-            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
-            Assert.AreEqual("Excel.Sheet.12", shape.OleFormat.ProgId);
-            Assert.AreEqual(".xlsx", shape.OleFormat.SuggestedExtension);
+            Assert.That(shape.ShapeType, Is.EqualTo(ShapeType.OleObject));
+            Assert.That(shape.OleFormat.ProgId, Is.EqualTo("Excel.Sheet.12"));
+            Assert.That(shape.OleFormat.SuggestedExtension, Is.EqualTo(".xlsx"));
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
-            Assert.AreEqual("Package", shape.OleFormat.ProgId);
-            Assert.AreEqual(".xlsx", shape.OleFormat.SuggestedExtension);
+            Assert.That(shape.ShapeType, Is.EqualTo(ShapeType.OleObject));
+            Assert.That(shape.OleFormat.ProgId, Is.EqualTo("Package"));
+            Assert.That(shape.OleFormat.SuggestedExtension, Is.EqualTo(".xlsx"));
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
 
-            Assert.AreEqual(ShapeType.OleObject, shape.ShapeType);
-            Assert.AreEqual("PowerPoint.Show.12", shape.OleFormat.ProgId);
-            Assert.AreEqual(".pptx", shape.OleFormat.SuggestedExtension);
+            Assert.That(shape.ShapeType, Is.EqualTo(ShapeType.OleObject));
+            Assert.That(shape.OleFormat.ProgId, Is.EqualTo("PowerPoint.Show.12"));
+            Assert.That(shape.OleFormat.SuggestedExtension, Is.EqualTo(".pptx"));
         }
 
         [Test]
@@ -419,9 +419,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            const string html = "<p align='right'>Paragraph right</p>" + 
+            const string html = "<p align='right'>Paragraph right</p>" +
                                 "<b>Implicit paragraph left</b>" +
-                                "<div align='center'>Div center</div>" + 
+                                "<div align='center'>Div center</div>" +
                                 "<h1 align='left'>Heading 1 left.</h1>";
 
             builder.InsertHtml(html);
@@ -429,18 +429,18 @@ namespace ApiExamples
             // Inserting HTML code parses the formatting of each element into equivalent document text formatting.
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            Assert.AreEqual("Paragraph right", paragraphs[0].GetText().Trim());
-            Assert.AreEqual(ParagraphAlignment.Right, paragraphs[0].ParagraphFormat.Alignment);
+            Assert.That(paragraphs[0].GetText().Trim(), Is.EqualTo("Paragraph right"));
+            Assert.That(paragraphs[0].ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Right));
 
-            Assert.AreEqual("Implicit paragraph left", paragraphs[1].GetText().Trim());
-            Assert.AreEqual(ParagraphAlignment.Left, paragraphs[1].ParagraphFormat.Alignment);
-            Assert.True(paragraphs[1].Runs[0].Font.Bold);
+            Assert.That(paragraphs[1].GetText().Trim(), Is.EqualTo("Implicit paragraph left"));
+            Assert.That(paragraphs[1].ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Left));
+            Assert.That(paragraphs[1].Runs[0].Font.Bold, Is.True);
 
-            Assert.AreEqual("Div center", paragraphs[2].GetText().Trim());
-            Assert.AreEqual(ParagraphAlignment.Center, paragraphs[2].ParagraphFormat.Alignment);
+            Assert.That(paragraphs[2].GetText().Trim(), Is.EqualTo("Div center"));
+            Assert.That(paragraphs[2].ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
 
-            Assert.AreEqual("Heading 1 left.", paragraphs[3].GetText().Trim());
-            Assert.AreEqual("Heading 1", paragraphs[3].ParagraphFormat.Style.Name);
+            Assert.That(paragraphs[3].GetText().Trim(), Is.EqualTo("Heading 1 left."));
+            Assert.That(paragraphs[3].ParagraphFormat.Style.Name, Is.EqualTo("Heading 1"));
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtml.docx");
             //ExEnd
@@ -466,14 +466,13 @@ namespace ApiExamples
 
             // The first paragraph has an alignment specified. When InsertHtml parses the HTML code,
             // the paragraph alignment value found in the HTML code always supersedes the document builder's value.
-            Assert.AreEqual("Paragraph 1.", paragraphs[0].GetText().Trim());
-            Assert.AreEqual(ParagraphAlignment.Right, paragraphs[0].ParagraphFormat.Alignment);
+            Assert.That(paragraphs[0].GetText().Trim(), Is.EqualTo("Paragraph 1."));
+            Assert.That(paragraphs[0].ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Right));
 
             // The second paragraph has no alignment specified. It can have its alignment value filled in
             // by the builder's value depending on the flag we passed to the InsertHtml method.
-            Assert.AreEqual("Paragraph 2.", paragraphs[1].GetText().Trim());
-            Assert.AreEqual(useBuilderFormatting ? ParagraphAlignment.Distributed : ParagraphAlignment.Left,
-                paragraphs[1].ParagraphFormat.Alignment);
+            Assert.That(paragraphs[1].GetText().Trim(), Is.EqualTo("Paragraph 2."));
+            Assert.That(paragraphs[1].ParagraphFormat.Alignment, Is.EqualTo(useBuilderFormatting ? ParagraphAlignment.Distributed : ParagraphAlignment.Left));
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertHtmlWithFormatting.docx");
             //ExEnd
@@ -493,7 +492,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.MathML.docx");
             doc.Save(ArtifactsDir + "DocumentBuilder.MathML.pdf");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(GoldsDir + "DocumentBuilder.MathML Gold.docx", ArtifactsDir + "DocumentBuilder.MathML.docx"));
+            Assert.That(DocumentHelper.CompareDocs(GoldsDir + "DocumentBuilder.MathML Gold.docx", ArtifactsDir + "DocumentBuilder.MathML.docx"), Is.True);
         }
 
         [Test]
@@ -511,10 +510,10 @@ namespace ApiExamples
             builder.StartBookmark("MyBookmark");
             builder.Writeln("Hello world!");
             builder.EndBookmark("MyBookmark");
-            
-            Assert.AreEqual(1, doc.Range.Bookmarks.Count);
-            Assert.AreEqual("MyBookmark", doc.Range.Bookmarks[0].Name);
-            Assert.AreEqual("Hello world!", doc.Range.Bookmarks[0].Text.Trim());
+
+            Assert.That(doc.Range.Bookmarks.Count, Is.EqualTo(1));
+            Assert.That(doc.Range.Bookmarks[0].Name, Is.EqualTo("MyBookmark"));
+            Assert.That(doc.Range.Bookmarks[0].Text.Trim(), Is.EqualTo("Hello world!"));
             //ExEnd
         }
 
@@ -579,7 +578,7 @@ namespace ApiExamples
             // Form fields are objects in the document that the user can interact with by being prompted to enter values.
             // We can create them using a document builder, and below are two ways of doing so.
             // 1 -  Basic text input:
-            builder.InsertTextInput("My text input", TextFormFieldType.Regular, 
+            builder.InsertTextInput("My text input", TextFormFieldType.Regular,
                 "", "Enter your name here", 30);
 
             // 2 -  Combo box with prompt text, and a range of possible values:
@@ -597,20 +596,20 @@ namespace ApiExamples
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.CreateForm.docx");
             FormField formField = doc.Range.FormFields[0];
 
-            Assert.AreEqual("My text input", formField.Name);
-            Assert.AreEqual(TextFormFieldType.Regular, formField.TextInputType);
-            Assert.AreEqual("Enter your name here", formField.Result);
+            Assert.That(formField.Name, Is.EqualTo("My text input"));
+            Assert.That(formField.TextInputType, Is.EqualTo(TextFormFieldType.Regular));
+            Assert.That(formField.Result, Is.EqualTo("Enter your name here"));
 
             formField = doc.Range.FormFields[1];
 
-            Assert.AreEqual("My combo box", formField.Name);
-            Assert.AreEqual(TextFormFieldType.Regular, formField.TextInputType);
-            Assert.AreEqual("-- Select your favorite footwear --", formField.Result);
-            Assert.AreEqual(0, formField.DropDownSelectedIndex);
-            Assert.AreEqual(new[]
+            Assert.That(formField.Name, Is.EqualTo("My combo box"));
+            Assert.That(formField.TextInputType, Is.EqualTo(TextFormFieldType.Regular));
+            Assert.That(formField.Result, Is.EqualTo("-- Select your favorite footwear --"));
+            Assert.That(formField.DropDownSelectedIndex, Is.EqualTo(0));
+            Assert.That(formField.DropDownItems.ToArray(), Is.EqualTo(new[]
             {
                 "-- Select your favorite footwear --", "Sneakers", "Oxfords", "Flip-flops", "Other"
-            }, formField.DropDownItems.ToArray());
+            }));
         }
 
         [Test]
@@ -636,7 +635,7 @@ namespace ApiExamples
             builder.Write("Very large checked check box: ");
             builder.InsertCheckBox("CheckBox_OnlyCheckedValue", true, 100);
 
-            Assert.AreEqual("CheckBox_OnlyChecked", doc.Range.FormFields[2].Name);
+            Assert.That(doc.Range.FormFields[2].Name, Is.EqualTo("CheckBox_OnlyChecked"));
 
             // We can interact with these check boxes in Microsoft Word by double clicking them.
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertCheckBox.docx");
@@ -646,20 +645,20 @@ namespace ApiExamples
 
             FormFieldCollection formFields = doc.Range.FormFields;
 
-            Assert.AreEqual(string.Empty, formFields[0].Name);
-            Assert.AreEqual(false, formFields[0].Checked);
-            Assert.AreEqual(false, formFields[0].Default);
-            Assert.AreEqual(10, formFields[0].CheckBoxSize);
+            Assert.That(formFields[0].Name, Is.EqualTo(string.Empty));
+            Assert.That(formFields[0].Checked, Is.EqualTo(false));
+            Assert.That(formFields[0].Default, Is.EqualTo(false));
+            Assert.That(formFields[0].CheckBoxSize, Is.EqualTo(10));
 
-            Assert.AreEqual("CheckBox_Default", formFields[1].Name);
-            Assert.AreEqual(true, formFields[1].Checked);
-            Assert.AreEqual(true, formFields[1].Default);
-            Assert.AreEqual(50, formFields[1].CheckBoxSize);
+            Assert.That(formFields[1].Name, Is.EqualTo("CheckBox_Default"));
+            Assert.That(formFields[1].Checked, Is.EqualTo(true));
+            Assert.That(formFields[1].Default, Is.EqualTo(true));
+            Assert.That(formFields[1].CheckBoxSize, Is.EqualTo(50));
 
-            Assert.AreEqual("CheckBox_OnlyChecked", formFields[2].Name);
-            Assert.AreEqual(true, formFields[2].Checked);
-            Assert.AreEqual(true, formFields[2].Default);
-            Assert.AreEqual(100, formFields[2].CheckBoxSize);
+            Assert.That(formFields[2].Name, Is.EqualTo("CheckBox_OnlyChecked"));
+            Assert.That(formFields[2].Checked, Is.EqualTo(true));
+            Assert.That(formFields[2].Default, Is.EqualTo(true));
+            Assert.That(formFields[2].CheckBoxSize, Is.EqualTo(100));
         }
 
         [Test]
@@ -690,46 +689,46 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create a valid bookmark, an entity that consists of nodes enclosed by a bookmark start node,
-            // and a bookmark end node. 
+            // and a bookmark end node.
             builder.StartBookmark("MyBookmark");
             builder.Write("Bookmark contents.");
             builder.EndBookmark("MyBookmark");
 
             NodeCollection firstParagraphNodes = doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Any, false);
 
-            Assert.AreEqual(NodeType.BookmarkStart, firstParagraphNodes[0].NodeType);
-            Assert.AreEqual(NodeType.Run, firstParagraphNodes[1].NodeType);
-            Assert.AreEqual("Bookmark contents.", firstParagraphNodes[1].GetText().Trim());
-            Assert.AreEqual(NodeType.BookmarkEnd, firstParagraphNodes[2].NodeType);
+            Assert.That(firstParagraphNodes[0].NodeType, Is.EqualTo(NodeType.BookmarkStart));
+            Assert.That(firstParagraphNodes[1].NodeType, Is.EqualTo(NodeType.Run));
+            Assert.That(firstParagraphNodes[1].GetText().Trim(), Is.EqualTo("Bookmark contents."));
+            Assert.That(firstParagraphNodes[2].NodeType, Is.EqualTo(NodeType.BookmarkEnd));
 
             // The document builder's cursor is always ahead of the node that we last added with it.
             // If the builder's cursor is at the end of the document, its current node will be null.
             // The previous node is the bookmark end node that we last added.
             // Adding new nodes with the builder will append them to the last node.
-            Assert.Null(builder.CurrentNode);
+            Assert.That(builder.CurrentNode, Is.Null);
 
             // If we wish to edit a different part of the document with the builder,
             // we will need to bring its cursor to the node we wish to edit.
             builder.MoveToBookmark("MyBookmark");
 
             // Moving it to a bookmark will move it to the first node within the bookmark start and end nodes, the enclosed run.
-            Assert.AreEqual(firstParagraphNodes[1], builder.CurrentNode);
+            Assert.That(builder.CurrentNode, Is.EqualTo(firstParagraphNodes[1]));
 
             // We can also move the cursor to an individual node like this.
             builder.MoveTo(doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Any, false)[0]);
 
-            Assert.AreEqual(NodeType.BookmarkStart, builder.CurrentNode.NodeType);
-            Assert.AreEqual(doc.FirstSection.Body.FirstParagraph, builder.CurrentParagraph);
-            Assert.IsTrue(builder.IsAtStartOfParagraph);
+            Assert.That(builder.CurrentNode.NodeType, Is.EqualTo(NodeType.BookmarkStart));
+            Assert.That(builder.CurrentParagraph, Is.EqualTo(doc.FirstSection.Body.FirstParagraph));
+            Assert.That(builder.IsAtStartOfParagraph, Is.True);
 
             // We can use specific methods to move to the start/end of a document.
             builder.MoveToDocumentEnd();
 
-            Assert.IsTrue(builder.IsAtEndOfParagraph);
+            Assert.That(builder.IsAtEndOfParagraph, Is.True);
 
             builder.MoveToDocumentStart();
 
-            Assert.IsTrue(builder.IsAtStartOfParagraph);
+            Assert.That(builder.IsAtStartOfParagraph, Is.True);
             //ExEnd
         }
 
@@ -768,14 +767,14 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.FillMergeFields.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            Assert.True(paragraphs[0].Runs[0].Font.Bold);
-            Assert.AreEqual("John Doe", paragraphs[0].Runs[0].GetText().Trim());
+            Assert.That(paragraphs[0].Runs[0].Font.Bold, Is.True);
+            Assert.That(paragraphs[0].Runs[0].GetText().Trim(), Is.EqualTo("John Doe"));
 
-            Assert.True(paragraphs[1].Runs[0].Font.Italic);
-            Assert.AreEqual("Jane Doe", paragraphs[1].Runs[0].GetText().Trim());
+            Assert.That(paragraphs[1].Runs[0].Font.Italic, Is.True);
+            Assert.That(paragraphs[1].Runs[0].GetText().Trim(), Is.EqualTo("Jane Doe"));
 
-            Assert.True(paragraphs[2].Runs[0].Font.Italic);
-            Assert.AreEqual("John Bloggs", paragraphs[2].Runs[0].GetText().Trim());
+            Assert.That(paragraphs[2].Runs[0].Font.Italic, Is.True);
+            Assert.That(paragraphs[2].Runs[0].GetText().Trim(), Is.EqualTo("John Bloggs"));
         }
 
         [Test]
@@ -836,10 +835,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertToc.docx");
             FieldToc tableOfContents = (FieldToc)doc.Range.Fields[0];
 
-            Assert.AreEqual("1-3", tableOfContents.HeadingLevelRange);
-            Assert.IsTrue(tableOfContents.InsertHyperlinks);
-            Assert.IsTrue(tableOfContents.HideInWebLayout);
-            Assert.IsTrue(tableOfContents.UseParagraphOutlineLevel);
+            Assert.That(tableOfContents.HeadingLevelRange, Is.EqualTo("1-3"));
+            Assert.That(tableOfContents.InsertHyperlinks, Is.True);
+            Assert.That(tableOfContents.HideInWebLayout, Is.True);
+            Assert.That(tableOfContents.UseParagraphOutlineLevel, Is.True);
         }
 
         [Test]
@@ -927,48 +926,48 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTable.docx");
             Table table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual("Row 1, Col 1\a", table.Rows[0].Cells[0].GetText().Trim());
-            Assert.AreEqual("Row 1, Col 2\a", table.Rows[0].Cells[1].GetText().Trim());
-            Assert.AreEqual(HeightRule.Exactly, table.Rows[0].RowFormat.HeightRule);
-            Assert.AreEqual(50.0d, table.Rows[0].RowFormat.Height);
-            Assert.AreEqual(LineStyle.Engrave3D, table.Rows[0].RowFormat.Borders.LineStyle);
-            Assert.AreEqual(Color.Orange.ToArgb(), table.Rows[0].RowFormat.Borders.Color.ToArgb());
+            Assert.That(table.Rows[0].Cells[0].GetText().Trim(), Is.EqualTo("Row 1, Col 1\a"));
+            Assert.That(table.Rows[0].Cells[1].GetText().Trim(), Is.EqualTo("Row 1, Col 2\a"));
+            Assert.That(table.Rows[0].RowFormat.HeightRule, Is.EqualTo(HeightRule.Exactly));
+            Assert.That(table.Rows[0].RowFormat.Height, Is.EqualTo(50.0d));
+            Assert.That(table.Rows[0].RowFormat.Borders.LineStyle, Is.EqualTo(LineStyle.Engrave3D));
+            Assert.That(table.Rows[0].RowFormat.Borders.Color.ToArgb(), Is.EqualTo(Color.Orange.ToArgb()));
 
             foreach (Cell c in table.Rows[0].Cells)
             {
-                Assert.AreEqual(150, c.CellFormat.Width);
-                Assert.AreEqual(CellVerticalAlignment.Center, c.CellFormat.VerticalAlignment);
-                Assert.AreEqual(Color.GreenYellow.ToArgb(), c.CellFormat.Shading.BackgroundPatternColor.ToArgb());
-                Assert.IsFalse(c.CellFormat.WrapText);
-                Assert.IsTrue(c.CellFormat.FitText);
+                Assert.That(c.CellFormat.Width, Is.EqualTo(150));
+                Assert.That(c.CellFormat.VerticalAlignment, Is.EqualTo(CellVerticalAlignment.Center));
+                Assert.That(c.CellFormat.Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.GreenYellow.ToArgb()));
+                Assert.That(c.CellFormat.WrapText, Is.False);
+                Assert.That(c.CellFormat.FitText, Is.True);
 
-                Assert.AreEqual(ParagraphAlignment.Center, c.FirstParagraph.ParagraphFormat.Alignment);
+                Assert.That(c.FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
             }
 
-            Assert.AreEqual("Row 2, Col 1\a", table.Rows[1].Cells[0].GetText().Trim());
-            Assert.AreEqual("Row 2, Col 2\a", table.Rows[1].Cells[1].GetText().Trim());
+            Assert.That(table.Rows[1].Cells[0].GetText().Trim(), Is.EqualTo("Row 2, Col 1\a"));
+            Assert.That(table.Rows[1].Cells[1].GetText().Trim(), Is.EqualTo("Row 2, Col 2\a"));
 
 
             foreach (Cell c in table.Rows[1].Cells)
             {
-                Assert.AreEqual(150, c.CellFormat.Width);
-                Assert.AreEqual(CellVerticalAlignment.Center, c.CellFormat.VerticalAlignment);
-                Assert.AreEqual(Color.Empty.ToArgb(), c.CellFormat.Shading.BackgroundPatternColor.ToArgb());
-                Assert.IsFalse(c.CellFormat.WrapText);
-                Assert.IsTrue(c.CellFormat.FitText);
+                Assert.That(c.CellFormat.Width, Is.EqualTo(150));
+                Assert.That(c.CellFormat.VerticalAlignment, Is.EqualTo(CellVerticalAlignment.Center));
+                Assert.That(c.CellFormat.Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
+                Assert.That(c.CellFormat.WrapText, Is.False);
+                Assert.That(c.CellFormat.FitText, Is.True);
 
-                Assert.AreEqual(ParagraphAlignment.Center, c.FirstParagraph.ParagraphFormat.Alignment);
+                Assert.That(c.FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
             }
 
-            Assert.AreEqual(150, table.Rows[2].RowFormat.Height);
+            Assert.That(table.Rows[2].RowFormat.Height, Is.EqualTo(150));
 
-            Assert.AreEqual("Row 3, Col 1\a", table.Rows[2].Cells[0].GetText().Trim());
-            Assert.AreEqual(TextOrientation.Upward, table.Rows[2].Cells[0].CellFormat.Orientation);
-            Assert.AreEqual(ParagraphAlignment.Center, table.Rows[2].Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+            Assert.That(table.Rows[2].Cells[0].GetText().Trim(), Is.EqualTo("Row 3, Col 1\a"));
+            Assert.That(table.Rows[2].Cells[0].CellFormat.Orientation, Is.EqualTo(TextOrientation.Upward));
+            Assert.That(table.Rows[2].Cells[0].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
 
-            Assert.AreEqual("Row 3, Col 2\a", table.Rows[2].Cells[1].GetText().Trim());
-            Assert.AreEqual(TextOrientation.Downward, table.Rows[2].Cells[1].CellFormat.Orientation);
-            Assert.AreEqual(ParagraphAlignment.Center, table.Rows[2].Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+            Assert.That(table.Rows[2].Cells[1].GetText().Trim(), Is.EqualTo("Row 3, Col 2\a"));
+            Assert.That(table.Rows[2].Cells[1].CellFormat.Orientation, Is.EqualTo(TextOrientation.Downward));
+            Assert.That(table.Rows[2].Cells[1].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
         }
 
         [Test]
@@ -1028,14 +1027,12 @@ namespace ApiExamples
 
             doc.ExpandTableStylesToDirectFormatting();
 
-            Assert.AreEqual("Medium Shading 1 Accent 1", table.Style.Name);
-            Assert.AreEqual(TableStyleOptions.FirstColumn | TableStyleOptions.RowBands | TableStyleOptions.FirstRow,
-                table.StyleOptions);
-            Assert.AreEqual(189, table.FirstRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.B);
-            Assert.AreEqual(Color.White.ToArgb(), table.FirstRow.FirstCell.FirstParagraph.Runs[0].Font.Color.ToArgb());
-            Assert.AreNotEqual(Color.LightBlue.ToArgb(),
-                table.LastRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.B);
-            Assert.AreEqual(Color.Empty.ToArgb(), table.LastRow.FirstCell.FirstParagraph.Runs[0].Font.Color.ToArgb());
+            Assert.That(table.Style.Name, Is.EqualTo("Medium Shading 1 Accent 1"));
+            Assert.That(table.StyleOptions, Is.EqualTo(TableStyleOptions.FirstColumn | TableStyleOptions.RowBands | TableStyleOptions.FirstRow));
+            Assert.That(table.FirstRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.B, Is.EqualTo(189));
+            Assert.That(table.FirstRow.FirstCell.FirstParagraph.Runs[0].Font.Color.ToArgb(), Is.EqualTo(Color.White.ToArgb()));
+            Assert.That(table.LastRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.B, Is.Not.EqualTo(Color.LightBlue.ToArgb()));
+            Assert.That(table.LastRow.FirstCell.FirstParagraph.Runs[0].Font.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
         }
 
         [Test]
@@ -1043,7 +1040,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:RowFormat.HeadingFormat
-            //ExSummary:Shows how to build a table with rows that repeat on every page. 
+            //ExSummary:Shows how to build a table with rows that repeat on every page.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -1082,7 +1079,7 @@ namespace ApiExamples
             table = doc.FirstSection.Body.Tables[0];
 
             for (int i = 0; i < table.Rows.Count; i++)
-                Assert.AreEqual(i < 2, table.Rows[i].RowFormat.HeadingFormat);
+                Assert.That(table.Rows[i].RowFormat.HeadingFormat, Is.EqualTo(i < 2));
         }
 
         [Test]
@@ -1112,8 +1109,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableWithPreferredWidth.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(PreferredWidthType.Percent, table.PreferredWidth.Type);
-            Assert.AreEqual(50, table.PreferredWidth.Value);
+            Assert.That(table.PreferredWidth.Type, Is.EqualTo(PreferredWidthType.Percent));
+            Assert.That(table.PreferredWidth.Value, Is.EqualTo(50));
         }
 
         [Test]
@@ -1153,8 +1150,7 @@ namespace ApiExamples
             builder.CellFormat.PreferredWidth = PreferredWidth.Auto;
 
             // Each configuration of the "PreferredWidth" property creates a new object.
-            Assert.AreNotEqual(table.FirstRow.Cells[1].CellFormat.PreferredWidth.GetHashCode(),
-                builder.CellFormat.PreferredWidth.GetHashCode());
+            Assert.That(builder.CellFormat.PreferredWidth.GetHashCode(), Is.Not.EqualTo(table.FirstRow.Cells[1].CellFormat.PreferredWidth.GetHashCode()));
 
             builder.CellFormat.Shading.BackgroundPatternColor = Color.LightGreen;
             builder.Writeln("Automatically sized cell.");
@@ -1162,23 +1158,23 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertCellsWithPreferredWidths.docx");
             //ExEnd
 
-            Assert.AreEqual(100.0d, PreferredWidth.FromPercent(100).Value);
-            Assert.AreEqual(100.0d, PreferredWidth.FromPoints(100).Value);
+            Assert.That(PreferredWidth.FromPercent(100).Value, Is.EqualTo(100.0d));
+            Assert.That(PreferredWidth.FromPoints(100).Value, Is.EqualTo(100.0d));
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertCellsWithPreferredWidths.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(PreferredWidthType.Points, table.FirstRow.Cells[0].CellFormat.PreferredWidth.Type);
-            Assert.AreEqual(40.0d, table.FirstRow.Cells[0].CellFormat.PreferredWidth.Value);
-            Assert.AreEqual("Cell with a width of 800.\r\a", table.FirstRow.Cells[0].GetText().Trim());
+            Assert.That(table.FirstRow.Cells[0].CellFormat.PreferredWidth.Type, Is.EqualTo(PreferredWidthType.Points));
+            Assert.That(table.FirstRow.Cells[0].CellFormat.PreferredWidth.Value, Is.EqualTo(40.0d));
+            Assert.That(table.FirstRow.Cells[0].GetText().Trim(), Is.EqualTo("Cell with a width of 800.\r\a"));
 
-            Assert.AreEqual(PreferredWidthType.Percent, table.FirstRow.Cells[1].CellFormat.PreferredWidth.Type);
-            Assert.AreEqual(20.0d, table.FirstRow.Cells[1].CellFormat.PreferredWidth.Value);
-            Assert.AreEqual("Cell with a width of 20%.\r\a", table.FirstRow.Cells[1].GetText().Trim());
+            Assert.That(table.FirstRow.Cells[1].CellFormat.PreferredWidth.Type, Is.EqualTo(PreferredWidthType.Percent));
+            Assert.That(table.FirstRow.Cells[1].CellFormat.PreferredWidth.Value, Is.EqualTo(20.0d));
+            Assert.That(table.FirstRow.Cells[1].GetText().Trim(), Is.EqualTo("Cell with a width of 20%.\r\a"));
 
-            Assert.AreEqual(PreferredWidthType.Auto, table.FirstRow.Cells[2].CellFormat.PreferredWidth.Type);
-            Assert.AreEqual(0.0d, table.FirstRow.Cells[2].CellFormat.PreferredWidth.Value);
-            Assert.AreEqual("Automatically sized cell.\r\a", table.FirstRow.Cells[2].GetText().Trim());
+            Assert.That(table.FirstRow.Cells[2].CellFormat.PreferredWidth.Type, Is.EqualTo(PreferredWidthType.Auto));
+            Assert.That(table.FirstRow.Cells[2].CellFormat.PreferredWidth.Value, Is.EqualTo(0.0d));
+            Assert.That(table.FirstRow.Cells[2].GetText().Trim(), Is.EqualTo("Automatically sized cell.\r\a"));
         }
 
         [Test]
@@ -1196,9 +1192,9 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTableFromHtml.docx");
 
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Row, true).Count);
-            Assert.AreEqual(4, doc.GetChildNodes(NodeType.Cell, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.Table, true).Count, Is.EqualTo(1));
+            Assert.That(doc.GetChildNodes(NodeType.Row, true).Count, Is.EqualTo(2));
+            Assert.That(doc.GetChildNodes(NodeType.Cell, true).Count, Is.EqualTo(4));
         }
 
         [Test]
@@ -1230,10 +1226,10 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertNestedTable.docx");
 
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
-            Assert.AreEqual(4, doc.GetChildNodes(NodeType.Cell, true).Count);
-            Assert.AreEqual(1, cell.Tables[0].Count);
-            Assert.AreEqual(2, cell.Tables[0].FirstRow.Cells.Count);
+            Assert.That(doc.GetChildNodes(NodeType.Table, true).Count, Is.EqualTo(2));
+            Assert.That(doc.GetChildNodes(NodeType.Cell, true).Count, Is.EqualTo(4));
+            Assert.That(cell.Tables[0].Count, Is.EqualTo(1));
+            Assert.That(cell.Tables[0].FirstRow.Cells.Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -1268,12 +1264,12 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.CreateTable.docx");
             Table table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(4, table.GetChildNodes(NodeType.Cell, true).Count);
+            Assert.That(table.GetChildNodes(NodeType.Cell, true).Count, Is.EqualTo(4));
 
-            Assert.AreEqual("Row 1, Cell 1.\a", table.Rows[0].Cells[0].GetText().Trim());
-            Assert.AreEqual("Row 1, Cell 2.\a", table.Rows[0].Cells[1].GetText().Trim());
-            Assert.AreEqual("Row 2, Cell 1.\a", table.Rows[1].Cells[0].GetText().Trim());
-            Assert.AreEqual("Row 2, Cell 2.\a", table.Rows[1].Cells[1].GetText().Trim());
+            Assert.That(table.Rows[0].Cells[0].GetText().Trim(), Is.EqualTo("Row 1, Cell 1.\a"));
+            Assert.That(table.Rows[0].Cells[1].GetText().Trim(), Is.EqualTo("Row 1, Cell 2.\a"));
+            Assert.That(table.Rows[1].Cells[0].GetText().Trim(), Is.EqualTo("Row 2, Cell 1.\a"));
+            Assert.That(table.Rows[1].Cells[1].GetText().Trim(), Is.EqualTo("Row 2, Cell 2.\a"));
         }
 
         [Test]
@@ -1344,28 +1340,28 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.CreateFormattedTable.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(20.0d, table.LeftIndent);
+            Assert.That(table.LeftIndent, Is.EqualTo(20.0d));
 
-            Assert.AreEqual(HeightRule.AtLeast, table.Rows[0].RowFormat.HeightRule);
-            Assert.AreEqual(40.0d, table.Rows[0].RowFormat.Height);
+            Assert.That(table.Rows[0].RowFormat.HeightRule, Is.EqualTo(HeightRule.AtLeast));
+            Assert.That(table.Rows[0].RowFormat.Height, Is.EqualTo(40.0d));
 
             foreach (Cell c in doc.GetChildNodes(NodeType.Cell, true))
             {
-                Assert.AreEqual(ParagraphAlignment.Center, c.FirstParagraph.ParagraphFormat.Alignment);
+                Assert.That(c.FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
 
                 foreach (Run r in c.FirstParagraph.Runs)
                 {
-                    Assert.AreEqual("Arial", r.Font.Name);
+                    Assert.That(r.Font.Name, Is.EqualTo("Arial"));
 
                     if (c.ParentRow == table.FirstRow)
                     {
-                        Assert.AreEqual(16, r.Font.Size);
-                        Assert.True(r.Font.Bold);
+                        Assert.That(r.Font.Size, Is.EqualTo(16));
+                        Assert.That(r.Font.Bold, Is.True);
                     }
                     else
                     {
-                        Assert.AreEqual(12, r.Font.Size);
-                        Assert.False(r.Font.Bold);
+                        Assert.That(r.Font.Size, Is.EqualTo(12));
+                        Assert.That(r.Font.Bold, Is.False);
                     }
                 }
             }
@@ -1420,30 +1416,28 @@ namespace ApiExamples
 
             foreach (Cell c in table.FirstRow)
             {
-                Assert.AreEqual(0.5d, c.CellFormat.Borders.Top.LineWidth);
-                Assert.AreEqual(0.5d, c.CellFormat.Borders.Bottom.LineWidth);
-                Assert.AreEqual(0.5d, c.CellFormat.Borders.Left.LineWidth);
-                Assert.AreEqual(0.5d, c.CellFormat.Borders.Right.LineWidth);
+                Assert.That(c.CellFormat.Borders.Top.LineWidth, Is.EqualTo(0.5d));
+                Assert.That(c.CellFormat.Borders.Bottom.LineWidth, Is.EqualTo(0.5d));
+                Assert.That(c.CellFormat.Borders.Left.LineWidth, Is.EqualTo(0.5d));
+                Assert.That(c.CellFormat.Borders.Right.LineWidth, Is.EqualTo(0.5d));
 
-                Assert.AreEqual(Color.Empty.ToArgb(), c.CellFormat.Borders.Left.Color.ToArgb());
-                Assert.AreEqual(LineStyle.Single, c.CellFormat.Borders.Left.LineStyle);
+                Assert.That(c.CellFormat.Borders.Left.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
+                Assert.That(c.CellFormat.Borders.Left.LineStyle, Is.EqualTo(LineStyle.Single));
             }
 
-            Assert.AreEqual(Color.LightSkyBlue.ToArgb(),
-                table.FirstRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(Color.Orange.ToArgb(),
-                table.FirstRow.Cells[1].CellFormat.Shading.BackgroundPatternColor.ToArgb());
+            Assert.That(table.FirstRow.FirstCell.CellFormat.Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.LightSkyBlue.ToArgb()));
+            Assert.That(table.FirstRow.Cells[1].CellFormat.Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.Orange.ToArgb()));
 
             foreach (Cell c in table.LastRow)
             {
-                Assert.AreEqual(4.0d, c.CellFormat.Borders.Top.LineWidth);
-                Assert.AreEqual(4.0d, c.CellFormat.Borders.Bottom.LineWidth);
-                Assert.AreEqual(4.0d, c.CellFormat.Borders.Left.LineWidth);
-                Assert.AreEqual(4.0d, c.CellFormat.Borders.Right.LineWidth);
+                Assert.That(c.CellFormat.Borders.Top.LineWidth, Is.EqualTo(4.0d));
+                Assert.That(c.CellFormat.Borders.Bottom.LineWidth, Is.EqualTo(4.0d));
+                Assert.That(c.CellFormat.Borders.Left.LineWidth, Is.EqualTo(4.0d));
+                Assert.That(c.CellFormat.Borders.Right.LineWidth, Is.EqualTo(4.0d));
 
-                Assert.AreEqual(Color.Empty.ToArgb(), c.CellFormat.Borders.Left.Color.ToArgb());
-                Assert.AreEqual(LineStyle.Single, c.CellFormat.Borders.Left.LineStyle);
-                Assert.AreEqual(Color.Empty.ToArgb(), c.CellFormat.Shading.BackgroundPatternColor.ToArgb());
+                Assert.That(c.CellFormat.Borders.Left.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
+                Assert.That(c.CellFormat.Borders.Left.LineStyle, Is.EqualTo(LineStyle.Single));
+                Assert.That(c.CellFormat.Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
             }
         }
 
@@ -1460,7 +1454,7 @@ namespace ApiExamples
             builder.CellFormat.PreferredWidth = PreferredWidth.FromPoints(ConvertUtil.InchToPoint(3));
             builder.InsertCell();
 
-            Assert.AreEqual(216.0d, table.FirstRow.FirstCell.CellFormat.PreferredWidth.Value);
+            Assert.That(table.FirstRow.FirstCell.CellFormat.PreferredWidth.Value, Is.EqualTo(216.0d));
             //ExEnd
         }
 
@@ -1494,9 +1488,9 @@ namespace ApiExamples
             hyperlink = (FieldHyperlink)doc.Range.Fields[0];
 
             TestUtil.VerifyField(FieldType.FieldHyperlink, " HYPERLINK \\l \"Bookmark1\" \\o \"Hyperlink Tip\" ", "Link to Bookmark1", hyperlink);
-            Assert.AreEqual("Bookmark1", hyperlink.SubAddress);
-            Assert.AreEqual("Hyperlink Tip", hyperlink.ScreenTip);
-            Assert.IsTrue(doc.Range.Bookmarks.Any(b => b.Name == "Bookmark1"));
+            Assert.That(hyperlink.SubAddress, Is.EqualTo("Bookmark1"));
+            Assert.That(hyperlink.ScreenTip, Is.EqualTo("Hyperlink Tip"));
+            Assert.That(doc.Range.Bookmarks.Any(b => b.Name == "Bookmark1"), Is.True);
         }
 
         [Test]
@@ -1508,13 +1502,13 @@ namespace ApiExamples
 
             // If the builder's cursor is at the end of the document,
             // there will be no nodes in front of it so that the current node will be null.
-            Assert.Null(builder.CurrentNode);
+            Assert.That(builder.CurrentNode, Is.Null);
 
-            Assert.AreEqual("Hello world!", builder.CurrentParagraph.GetText().Trim());
+            Assert.That(builder.CurrentParagraph.GetText().Trim(), Is.EqualTo("Hello world!"));
 
             // Move to the beginning of the document and place the cursor at an existing node.
             builder.MoveToDocumentStart();
-            Assert.AreEqual(NodeType.Run, builder.CurrentNode.NodeType);
+            Assert.That(builder.CurrentNode.NodeType, Is.EqualTo(NodeType.Run));
         }
 
         [Test]
@@ -1534,22 +1528,22 @@ namespace ApiExamples
             // and it also always ends up immediately after any node that the builder just inserted.
             // To append content to a different part of the document,
             // we can move the cursor to a different node with the "MoveTo" method.
-            Assert.AreEqual(doc.FirstSection.Body.LastParagraph, builder.CurrentParagraph); //ExSkip
+            Assert.That(builder.CurrentParagraph, Is.EqualTo(doc.FirstSection.Body.LastParagraph)); //ExSkip
             builder.MoveTo(doc.FirstSection.Body.FirstParagraph.Runs[0]);
-            Assert.AreEqual(doc.FirstSection.Body.FirstParagraph, builder.CurrentParagraph); //ExSkip
+            Assert.That(builder.CurrentParagraph, Is.EqualTo(doc.FirstSection.Body.FirstParagraph)); //ExSkip
 
             // The cursor is now in front of the node that we moved it to.
             // Adding a second run will insert it in front of the first run.
             builder.Writeln("Run 2. ");
 
-            Assert.AreEqual("Run 2. \rRun 1.", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Run 2. \rRun 1."));
 
             // Move the cursor to the end of the document to continue appending text to the end as before.
             builder.MoveTo(doc.LastSection.Body.LastParagraph);
             builder.Writeln("Run 3. ");
 
-            Assert.AreEqual("Run 2. \rRun 1. \rRun 3.", doc.GetText().Trim());
-            Assert.AreEqual(doc.FirstSection.Body.LastParagraph, builder.CurrentParagraph); //ExSkip
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Run 2. \rRun 1. \rRun 3."));
+            Assert.That(builder.CurrentParagraph, Is.EqualTo(doc.FirstSection.Body.LastParagraph)); //ExSkip
 
             //ExEnd
         }
@@ -1563,28 +1557,28 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Paragraphs.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            Assert.AreEqual(22, paragraphs.Count);
+            Assert.That(paragraphs.Count, Is.EqualTo(22));
 
             // Create document builder to edit the document. The builder's cursor,
             // which is the point where it will insert new nodes when we call its document construction methods,
             // is currently at the beginning of the document.
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Assert.AreEqual(0, paragraphs.IndexOf(builder.CurrentParagraph));
+            Assert.That(paragraphs.IndexOf(builder.CurrentParagraph), Is.EqualTo(0));
 
             // Move that cursor to a different paragraph will place that cursor in front of that paragraph.
             builder.MoveToParagraph(2, 0);
-            Assert.AreEqual(2, paragraphs.IndexOf(builder.CurrentParagraph)); //ExSkip
+            Assert.That(paragraphs.IndexOf(builder.CurrentParagraph), Is.EqualTo(2)); //ExSkip
 
             // Any new content that we add will be inserted at that point.
             builder.Writeln("This is a new third paragraph. ");
             //ExEnd
 
-            Assert.AreEqual(3, paragraphs.IndexOf(builder.CurrentParagraph));
+            Assert.That(paragraphs.IndexOf(builder.CurrentParagraph), Is.EqualTo(3));
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.AreEqual("This is a new third paragraph.", doc.FirstSection.Body.Paragraphs[2].GetText().Trim());
+            Assert.That(doc.FirstSection.Body.Paragraphs[2].GetText().Trim(), Is.EqualTo("This is a new third paragraph."));
         }
 
         [Test]
@@ -1620,7 +1614,7 @@ namespace ApiExamples
 
             Table table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual("Column 2, cell 2.\a", table.Rows[1].Cells[1].GetText().Trim());
+            Assert.That(table.Rows[1].Cells[1].GetText().Trim(), Is.EqualTo("Column 2, cell 2.\a"));
         }
 
         [Test]
@@ -1642,32 +1636,32 @@ namespace ApiExamples
             // If we are between the BookmarkStart and BookmarkEnd nodes, the cursor will be inside the bookmark.
             // This means that any text added by the builder will become a part of the bookmark.
             // 1 -  Outside of the bookmark, in front of the BookmarkStart node:
-            Assert.True(builder.MoveToBookmark("MyBookmark", true, false));
+            Assert.That(builder.MoveToBookmark("MyBookmark", true, false), Is.True);
             builder.Write("1. ");
 
-            Assert.AreEqual("Hello world! ", doc.Range.Bookmarks["MyBookmark"].Text);
-            Assert.AreEqual("1. Hello world!", doc.GetText().Trim());
+            Assert.That(doc.Range.Bookmarks["MyBookmark"].Text, Is.EqualTo("Hello world! "));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("1. Hello world!"));
 
             // 2 -  Inside the bookmark, right after the BookmarkStart node:
-            Assert.True(builder.MoveToBookmark("MyBookmark", true, true));
+            Assert.That(builder.MoveToBookmark("MyBookmark", true, true), Is.True);
             builder.Write("2. ");
 
-            Assert.AreEqual("2. Hello world! ", doc.Range.Bookmarks["MyBookmark"].Text);
-            Assert.AreEqual("1. 2. Hello world!", doc.GetText().Trim());
+            Assert.That(doc.Range.Bookmarks["MyBookmark"].Text, Is.EqualTo("2. Hello world! "));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("1. 2. Hello world!"));
 
             // 2 -  Inside the bookmark, right in front of the BookmarkEnd node:
-            Assert.True(builder.MoveToBookmark("MyBookmark", false, false));
+            Assert.That(builder.MoveToBookmark("MyBookmark", false, false), Is.True);
             builder.Write("3. ");
 
-            Assert.AreEqual("2. Hello world! 3. ", doc.Range.Bookmarks["MyBookmark"].Text);
-            Assert.AreEqual("1. 2. Hello world! 3.", doc.GetText().Trim());
+            Assert.That(doc.Range.Bookmarks["MyBookmark"].Text, Is.EqualTo("2. Hello world! 3. "));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("1. 2. Hello world! 3."));
 
             // 4 -  Outside of the bookmark, after the BookmarkEnd node:
-            Assert.True(builder.MoveToBookmark("MyBookmark", false, true));
+            Assert.That(builder.MoveToBookmark("MyBookmark", false, true), Is.True);
             builder.Write("4.");
 
-            Assert.AreEqual("2. Hello world! 3. ", doc.Range.Bookmarks["MyBookmark"].Text);
-            Assert.AreEqual("1. 2. Hello world! 3. 4.", doc.GetText().Trim());
+            Assert.That(doc.Range.Bookmarks["MyBookmark"].Text, Is.EqualTo("2. Hello world! 3. "));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("1. 2. Hello world! 3. 4."));
             //ExEnd
         }
 
@@ -1701,8 +1695,8 @@ namespace ApiExamples
 
             // While building the table, the document builder will apply its current RowFormat/CellFormat property values
             // to the current row/cell that its cursor is in and any new rows/cells as it creates them.
-            Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[0].CellFormat.VerticalAlignment);
-            Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[1].CellFormat.VerticalAlignment);
+            Assert.That(table.Rows[0].Cells[0].CellFormat.VerticalAlignment, Is.EqualTo(CellVerticalAlignment.Center));
+            Assert.That(table.Rows[0].Cells[1].CellFormat.VerticalAlignment, Is.EqualTo(CellVerticalAlignment.Center));
 
             builder.InsertCell();
             builder.RowFormat.Height = 100;
@@ -1716,12 +1710,12 @@ namespace ApiExamples
             builder.EndTable();
 
             // Previously added rows and cells are not retroactively affected by changes to the builder's formatting.
-            Assert.AreEqual(0, table.Rows[0].RowFormat.Height);
-            Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
-            Assert.AreEqual(100, table.Rows[1].RowFormat.Height);
-            Assert.AreEqual(HeightRule.Exactly, table.Rows[1].RowFormat.HeightRule);
-            Assert.AreEqual(TextOrientation.Upward, table.Rows[1].Cells[0].CellFormat.Orientation);
-            Assert.AreEqual(TextOrientation.Downward, table.Rows[1].Cells[1].CellFormat.Orientation);
+            Assert.That(table.Rows[0].RowFormat.Height, Is.EqualTo(0));
+            Assert.That(table.Rows[0].RowFormat.HeightRule, Is.EqualTo(HeightRule.Auto));
+            Assert.That(table.Rows[1].RowFormat.Height, Is.EqualTo(100));
+            Assert.That(table.Rows[1].RowFormat.HeightRule, Is.EqualTo(HeightRule.Exactly));
+            Assert.That(table.Rows[1].Cells[0].CellFormat.Orientation, Is.EqualTo(TextOrientation.Upward));
+            Assert.That(table.Rows[1].Cells[1].CellFormat.Orientation, Is.EqualTo(TextOrientation.Downward));
 
             doc.Save(ArtifactsDir + "DocumentBuilder.BuildTable.docx");
             //ExEnd
@@ -1729,25 +1723,25 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.BuildTable.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(2, table.Rows.Count);
-            Assert.AreEqual(2, table.Rows[0].Cells.Count);
-            Assert.AreEqual(2, table.Rows[1].Cells.Count);
+            Assert.That(table.Rows.Count, Is.EqualTo(2));
+            Assert.That(table.Rows[0].Cells.Count, Is.EqualTo(2));
+            Assert.That(table.Rows[1].Cells.Count, Is.EqualTo(2));
 
-            Assert.AreEqual(0, table.Rows[0].RowFormat.Height);
-            Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
-            Assert.AreEqual(100, table.Rows[1].RowFormat.Height);
-            Assert.AreEqual(HeightRule.Exactly, table.Rows[1].RowFormat.HeightRule);
+            Assert.That(table.Rows[0].RowFormat.Height, Is.EqualTo(0));
+            Assert.That(table.Rows[0].RowFormat.HeightRule, Is.EqualTo(HeightRule.Auto));
+            Assert.That(table.Rows[1].RowFormat.Height, Is.EqualTo(100));
+            Assert.That(table.Rows[1].RowFormat.HeightRule, Is.EqualTo(HeightRule.Exactly));
 
-            Assert.AreEqual("Row 1, cell 1.\a", table.Rows[0].Cells[0].GetText().Trim());
-            Assert.AreEqual(CellVerticalAlignment.Center, table.Rows[0].Cells[0].CellFormat.VerticalAlignment);
+            Assert.That(table.Rows[0].Cells[0].GetText().Trim(), Is.EqualTo("Row 1, cell 1.\a"));
+            Assert.That(table.Rows[0].Cells[0].CellFormat.VerticalAlignment, Is.EqualTo(CellVerticalAlignment.Center));
 
-            Assert.AreEqual("Row 1, cell 2.\a", table.Rows[0].Cells[1].GetText().Trim());
+            Assert.That(table.Rows[0].Cells[1].GetText().Trim(), Is.EqualTo("Row 1, cell 2.\a"));
 
-            Assert.AreEqual("Row 2, cell 1.\a", table.Rows[1].Cells[0].GetText().Trim());
-            Assert.AreEqual(TextOrientation.Upward, table.Rows[1].Cells[0].CellFormat.Orientation);
+            Assert.That(table.Rows[1].Cells[0].GetText().Trim(), Is.EqualTo("Row 2, cell 1.\a"));
+            Assert.That(table.Rows[1].Cells[0].CellFormat.Orientation, Is.EqualTo(TextOrientation.Upward));
 
-            Assert.AreEqual("Row 2, cell 2.\a", table.Rows[1].Cells[1].GetText().Trim());
-            Assert.AreEqual(TextOrientation.Downward, table.Rows[1].Cells[1].CellFormat.Orientation);
+            Assert.That(table.Rows[1].Cells[1].GetText().Trim(), Is.EqualTo("Row 2, cell 2.\a"));
+            Assert.That(table.Rows[1].Cells[1].CellFormat.Orientation, Is.EqualTo(TextOrientation.Downward));
         }
 
         [Test]
@@ -1758,14 +1752,14 @@ namespace ApiExamples
             Table table = doc.FirstSection.Body.Tables[0];
             Cell cell = table.FirstRow.FirstCell;
 
-            Assert.AreEqual(TextOrientation.VerticalRotatedFarEast, cell.CellFormat.Orientation);
+            Assert.That(cell.CellFormat.Orientation, Is.EqualTo(TextOrientation.VerticalRotatedFarEast));
 
             doc = DocumentHelper.SaveOpen(doc);
 
             table = doc.FirstSection.Body.Tables[0];
             cell = table.FirstRow.FirstCell;
 
-            Assert.AreEqual(TextOrientation.VerticalRotatedFarEast, cell.CellFormat.Orientation);
+            Assert.That(cell.CellFormat.Orientation, Is.EqualTo(TextOrientation.VerticalRotatedFarEast));
         }
 
         [Test]
@@ -1793,24 +1787,24 @@ namespace ApiExamples
             Shape image = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Png, image);
-            Assert.AreEqual(100.0d, image.Left);
-            Assert.AreEqual(0.0d, image.Top);
-            Assert.AreEqual(200.0d, image.Width);
-            Assert.AreEqual(200.0d, image.Height);
-            Assert.AreEqual(WrapType.Square, image.WrapType);
-            Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
+            Assert.That(image.Left, Is.EqualTo(100.0d));
+            Assert.That(image.Top, Is.EqualTo(0.0d));
+            Assert.That(image.Width, Is.EqualTo(200.0d));
+            Assert.That(image.Height, Is.EqualTo(200.0d));
+            Assert.That(image.WrapType, Is.EqualTo(WrapType.Square));
+            Assert.That(image.RelativeHorizontalPosition, Is.EqualTo(RelativeHorizontalPosition.Margin));
+            Assert.That(image.RelativeVerticalPosition, Is.EqualTo(RelativeVerticalPosition.Margin));
 
             image = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyImageInShape(272, 92, ImageType.Png, image);
-            Assert.AreEqual(100.0d, image.Left);
-            Assert.AreEqual(250.0d, image.Top);
-            Assert.AreEqual(200.0d, image.Width);
-            Assert.AreEqual(200.0d, image.Height);
-            Assert.AreEqual(WrapType.Square, image.WrapType);
-            Assert.AreEqual(RelativeHorizontalPosition.Margin, image.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Margin, image.RelativeVerticalPosition);
+            Assert.That(image.Left, Is.EqualTo(100.0d));
+            Assert.That(image.Top, Is.EqualTo(250.0d));
+            Assert.That(image.Width, Is.EqualTo(200.0d));
+            Assert.That(image.Height, Is.EqualTo(200.0d));
+            Assert.That(image.WrapType, Is.EqualTo(WrapType.Square));
+            Assert.That(image.RelativeHorizontalPosition, Is.EqualTo(RelativeHorizontalPosition.Margin));
+            Assert.That(image.RelativeVerticalPosition, Is.EqualTo(RelativeVerticalPosition.Margin));
         }
 
         [Test]
@@ -1829,8 +1823,8 @@ namespace ApiExamples
 
             // Passing negative values as the intended dimensions will automatically define
             // the shape's dimensions based on the dimensions of its image.
-            Assert.AreEqual(300.0d, imageShape.Width);
-            Assert.AreEqual(300.0d, imageShape.Height);
+            Assert.That(imageShape.Width, Is.EqualTo(300.0d));
+            Assert.That(imageShape.Height, Is.EqualTo(300.0d));
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertImageOriginalSize.docx");
             //ExEnd
@@ -1839,13 +1833,13 @@ namespace ApiExamples
             imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, imageShape);
-            Assert.AreEqual(0.0d, imageShape.Left);
-            Assert.AreEqual(0.0d, imageShape.Top);
-            Assert.AreEqual(300.0d, imageShape.Width);
-            Assert.AreEqual(300.0d, imageShape.Height);
-            Assert.AreEqual(WrapType.Square, imageShape.WrapType);
-            Assert.AreEqual(RelativeHorizontalPosition.Margin, imageShape.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Margin, imageShape.RelativeVerticalPosition);
+            Assert.That(imageShape.Left, Is.EqualTo(0.0d));
+            Assert.That(imageShape.Top, Is.EqualTo(0.0d));
+            Assert.That(imageShape.Width, Is.EqualTo(300.0d));
+            Assert.That(imageShape.Height, Is.EqualTo(300.0d));
+            Assert.That(imageShape.WrapType, Is.EqualTo(WrapType.Square));
+            Assert.That(imageShape.RelativeHorizontalPosition, Is.EqualTo(RelativeHorizontalPosition.Margin));
+            Assert.That(imageShape.RelativeVerticalPosition, Is.EqualTo(RelativeVerticalPosition.Margin));
         }
 
         [Test]
@@ -1866,13 +1860,13 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertTextInput.docx");
             FormField formField = doc.Range.FormFields[0];
 
-            Assert.True(formField.Enabled);
-            Assert.AreEqual("TextInput", formField.Name);
-            Assert.AreEqual(0, formField.MaxLength);
-            Assert.AreEqual("Enter your text here", formField.Result);
-            Assert.AreEqual(FieldType.FieldFormTextInput, formField.Type);
-            Assert.AreEqual("", formField.TextInputFormat);
-            Assert.AreEqual(TextFormFieldType.Regular, formField.TextInputType);
+            Assert.That(formField.Enabled, Is.True);
+            Assert.That(formField.Name, Is.EqualTo("TextInput"));
+            Assert.That(formField.MaxLength, Is.EqualTo(0));
+            Assert.That(formField.Result, Is.EqualTo("Enter your text here"));
+            Assert.That(formField.Type, Is.EqualTo(FieldType.FieldFormTextInput));
+            Assert.That(formField.TextInputFormat, Is.EqualTo(""));
+            Assert.That(formField.TextInputType, Is.EqualTo(TextFormFieldType.Regular));
         }
 
         [Test]
@@ -1895,11 +1889,11 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertComboBox.docx");
             FormField formField = doc.Range.FormFields[0];
 
-            Assert.True(formField.Enabled);
-            Assert.AreEqual("DropDown", formField.Name);
-            Assert.AreEqual(0, formField.DropDownSelectedIndex);
-            Assert.AreEqual(items, formField.DropDownItems);
-            Assert.AreEqual(FieldType.FieldFormDropDown, formField.Type);
+            Assert.That(formField.Enabled, Is.True);
+            Assert.That(formField.Name, Is.EqualTo("DropDown"));
+            Assert.That(formField.DropDownSelectedIndex, Is.EqualTo(0));
+            Assert.That(formField.DropDownItems, Is.EqualTo(items));
+            Assert.That(formField.Type, Is.EqualTo(FieldType.FieldFormDropDown));
         }
 
         [Test]
@@ -1936,8 +1930,8 @@ namespace ApiExamples
             SignatureLine signatureLine = builder.InsertSignatureLine(signatureLineOptions).SignatureLine;
             signatureLine.ProviderId = Guid.Parse("CF5A7BB4-8F3C-4756-9DF6-BEF7F13259A2");
 
-            Assert.False(signatureLine.IsSigned);
-            Assert.False(signatureLine.IsValid);
+            Assert.That(signatureLine.IsSigned, Is.False);
+            Assert.That(signatureLine.IsValid, Is.False);
 
             doc.Save(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.docx");
 
@@ -1951,7 +1945,7 @@ namespace ApiExamples
 
             CertificateHolder certHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
-            DigitalSignatureUtil.Sign(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.docx", 
+            DigitalSignatureUtil.Sign(ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.docx",
                 ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx", certHolder, signOptions);
 
             // Re-open our saved document, and verify that the "IsSigned" and "IsValid" properties both equal "true",
@@ -1960,29 +1954,29 @@ namespace ApiExamples
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             signatureLine = shape.SignatureLine;
 
-            Assert.True(signatureLine.IsSigned);
-            Assert.True(signatureLine.IsValid);
+            Assert.That(signatureLine.IsSigned, Is.True);
+            Assert.That(signatureLine.IsValid, Is.True);
             //ExEnd
 
-            Assert.AreEqual("vderyushev", signatureLine.Signer);
-            Assert.AreEqual("QA", signatureLine.SignerTitle);
-            Assert.AreEqual("vderyushev@aspose.com", signatureLine.Email);
-            Assert.True(signatureLine.ShowDate);
-            Assert.False(signatureLine.DefaultInstructions);
-            Assert.AreEqual("Please sign here.", signatureLine.Instructions);
-            Assert.True(signatureLine.AllowComments);
-            Assert.True(signatureLine.IsSigned);
-            Assert.True(signatureLine.IsValid);
+            Assert.That(signatureLine.Signer, Is.EqualTo("vderyushev"));
+            Assert.That(signatureLine.SignerTitle, Is.EqualTo("QA"));
+            Assert.That(signatureLine.Email, Is.EqualTo("vderyushev@aspose.com"));
+            Assert.That(signatureLine.ShowDate, Is.True);
+            Assert.That(signatureLine.DefaultInstructions, Is.False);
+            Assert.That(signatureLine.Instructions, Is.EqualTo("Please sign here."));
+            Assert.That(signatureLine.AllowComments, Is.True);
+            Assert.That(signatureLine.IsSigned, Is.True);
+            Assert.That(signatureLine.IsValid, Is.True);
 
             DigitalSignatureCollection signatures = DigitalSignatureUtil.LoadSignatures(
                 ArtifactsDir + "DocumentBuilder.SignatureLineProviderId.Signed.docx");
 
-            Assert.AreEqual(1, signatures.Count);
-            Assert.True(signatures[0].IsValid);
-            Assert.AreEqual("Document was signed by vderyushev", signatures[0].Comments);
-            Assert.AreEqual(DateTime.Today, signatures[0].SignTime.Date);
-            Assert.AreEqual("CN=Morzal.Me", signatures[0].IssuerName);
-            Assert.AreEqual(DigitalSignatureType.XmlDsig, signatures[0].SignatureType);
+            Assert.That(signatures.Count, Is.EqualTo(1));
+            Assert.That(signatures[0].IsValid, Is.True);
+            Assert.That(signatures[0].Comments, Is.EqualTo("Document was signed by vderyushev"));
+            Assert.That(signatures[0].SignTime.Date, Is.EqualTo(DateTime.Today));
+            Assert.That(signatures[0].IssuerName, Is.EqualTo("CN=Morzal.Me"));
+            Assert.That(signatures[0].SignatureType, Is.EqualTo(DigitalSignatureType.XmlDsig));
         }
 
         [Test]
@@ -2017,15 +2011,15 @@ namespace ApiExamples
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
             SignatureLine signatureLine = shape.SignatureLine;
 
-            Assert.AreEqual("John Doe", signatureLine.Signer);
-            Assert.AreEqual("Manager", signatureLine.SignerTitle);
-            Assert.AreEqual("johndoe@aspose.com", signatureLine.Email);
-            Assert.True(signatureLine.ShowDate);
-            Assert.False(signatureLine.DefaultInstructions);
-            Assert.AreEqual("Please sign here.", signatureLine.Instructions);
-            Assert.True(signatureLine.AllowComments);
-            Assert.False(signatureLine.IsSigned);
-            Assert.False(signatureLine.IsValid);
+            Assert.That(signatureLine.Signer, Is.EqualTo("John Doe"));
+            Assert.That(signatureLine.SignerTitle, Is.EqualTo("Manager"));
+            Assert.That(signatureLine.Email, Is.EqualTo("johndoe@aspose.com"));
+            Assert.That(signatureLine.ShowDate, Is.True);
+            Assert.That(signatureLine.DefaultInstructions, Is.False);
+            Assert.That(signatureLine.Instructions, Is.EqualTo("Please sign here."));
+            Assert.That(signatureLine.AllowComments, Is.True);
+            Assert.That(signatureLine.IsSigned, Is.False);
+            Assert.That(signatureLine.IsValid, Is.False);
         }
 
         [Test]
@@ -2059,10 +2053,10 @@ namespace ApiExamples
 
             foreach (Paragraph paragraph in doc.FirstSection.Body.Paragraphs)
             {
-                Assert.AreEqual(ParagraphAlignment.Center, paragraph.ParagraphFormat.Alignment);
-                Assert.AreEqual(100.0d, paragraph.ParagraphFormat.LeftIndent);
-                Assert.AreEqual(50.0d, paragraph.ParagraphFormat.RightIndent);
-                Assert.AreEqual(25.0d, paragraph.ParagraphFormat.SpaceAfter);
+                Assert.That(paragraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
+                Assert.That(paragraph.ParagraphFormat.LeftIndent, Is.EqualTo(100.0d));
+                Assert.That(paragraph.ParagraphFormat.RightIndent, Is.EqualTo(50.0d));
+                Assert.That(paragraph.ParagraphFormat.SpaceAfter, Is.EqualTo(25.0d));
             }
         }
 
@@ -2102,17 +2096,17 @@ namespace ApiExamples
             builder.EndTable();
 
             // The first cell was unaffected by the padding reconfiguration, and still holds the default values.
-            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.Width);
-            Assert.AreEqual(5.4d, table.FirstRow.Cells[0].CellFormat.LeftPadding);
-            Assert.AreEqual(5.4d, table.FirstRow.Cells[0].CellFormat.RightPadding);
-            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.TopPadding);
-            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.BottomPadding);
+            Assert.That(table.FirstRow.Cells[0].CellFormat.Width, Is.EqualTo(0.0d));
+            Assert.That(table.FirstRow.Cells[0].CellFormat.LeftPadding, Is.EqualTo(5.4d));
+            Assert.That(table.FirstRow.Cells[0].CellFormat.RightPadding, Is.EqualTo(5.4d));
+            Assert.That(table.FirstRow.Cells[0].CellFormat.TopPadding, Is.EqualTo(0.0d));
+            Assert.That(table.FirstRow.Cells[0].CellFormat.BottomPadding, Is.EqualTo(0.0d));
 
-            Assert.AreEqual(250.0d, table.FirstRow.Cells[1].CellFormat.Width);
-            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.LeftPadding);
-            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.RightPadding);
-            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.TopPadding);
-            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.BottomPadding);
+            Assert.That(table.FirstRow.Cells[1].CellFormat.Width, Is.EqualTo(250.0d));
+            Assert.That(table.FirstRow.Cells[1].CellFormat.LeftPadding, Is.EqualTo(30.0d));
+            Assert.That(table.FirstRow.Cells[1].CellFormat.RightPadding, Is.EqualTo(30.0d));
+            Assert.That(table.FirstRow.Cells[1].CellFormat.TopPadding, Is.EqualTo(30.0d));
+            Assert.That(table.FirstRow.Cells[1].CellFormat.BottomPadding, Is.EqualTo(30.0d));
 
             // The first cell will still grow in the output document to match the size of its neighboring cell.
             doc.Save(ArtifactsDir + "DocumentBuilder.SetCellFormatting.docx");
@@ -2121,17 +2115,17 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.SetCellFormatting.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(159.3d, table.FirstRow.Cells[0].CellFormat.Width);
-            Assert.AreEqual(5.4d, table.FirstRow.Cells[0].CellFormat.LeftPadding);
-            Assert.AreEqual(5.4d, table.FirstRow.Cells[0].CellFormat.RightPadding);
-            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.TopPadding);
-            Assert.AreEqual(0.0d, table.FirstRow.Cells[0].CellFormat.BottomPadding);
+            Assert.That(table.FirstRow.Cells[0].CellFormat.Width, Is.EqualTo(159.3d));
+            Assert.That(table.FirstRow.Cells[0].CellFormat.LeftPadding, Is.EqualTo(5.4d));
+            Assert.That(table.FirstRow.Cells[0].CellFormat.RightPadding, Is.EqualTo(5.4d));
+            Assert.That(table.FirstRow.Cells[0].CellFormat.TopPadding, Is.EqualTo(0.0d));
+            Assert.That(table.FirstRow.Cells[0].CellFormat.BottomPadding, Is.EqualTo(0.0d));
 
-            Assert.AreEqual(310.0d, table.FirstRow.Cells[1].CellFormat.Width);
-            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.LeftPadding);
-            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.RightPadding);
-            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.TopPadding);
-            Assert.AreEqual(30.0d, table.FirstRow.Cells[1].CellFormat.BottomPadding);
+            Assert.That(table.FirstRow.Cells[1].CellFormat.Width, Is.EqualTo(310.0d));
+            Assert.That(table.FirstRow.Cells[1].CellFormat.LeftPadding, Is.EqualTo(30.0d));
+            Assert.That(table.FirstRow.Cells[1].CellFormat.RightPadding, Is.EqualTo(30.0d));
+            Assert.That(table.FirstRow.Cells[1].CellFormat.TopPadding, Is.EqualTo(30.0d));
+            Assert.That(table.FirstRow.Cells[1].CellFormat.BottomPadding, Is.EqualTo(30.0d));
         }
 
         [Test]
@@ -2163,11 +2157,11 @@ namespace ApiExamples
             builder.EndTable();
 
             // The first row was unaffected by the padding reconfiguration and still holds the default values.
-            Assert.AreEqual(0.0d, table.Rows[0].RowFormat.Height);
-            Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
+            Assert.That(table.Rows[0].RowFormat.Height, Is.EqualTo(0.0d));
+            Assert.That(table.Rows[0].RowFormat.HeightRule, Is.EqualTo(HeightRule.Auto));
 
-            Assert.AreEqual(100.0d, table.Rows[1].RowFormat.Height);
-            Assert.AreEqual(HeightRule.Exactly, table.Rows[1].RowFormat.HeightRule);
+            Assert.That(table.Rows[1].RowFormat.Height, Is.EqualTo(100.0d));
+            Assert.That(table.Rows[1].RowFormat.HeightRule, Is.EqualTo(HeightRule.Exactly));
 
             doc.Save(ArtifactsDir + "DocumentBuilder.SetRowFormatting.docx");
             //ExEnd
@@ -2175,11 +2169,11 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.SetRowFormatting.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(0.0d, table.Rows[0].RowFormat.Height);
-            Assert.AreEqual(HeightRule.Auto, table.Rows[0].RowFormat.HeightRule);
+            Assert.That(table.Rows[0].RowFormat.Height, Is.EqualTo(0.0d));
+            Assert.That(table.Rows[0].RowFormat.HeightRule, Is.EqualTo(HeightRule.Auto));
 
-            Assert.AreEqual(100.0d, table.Rows[1].RowFormat.Height);
-            Assert.AreEqual(HeightRule.Exactly, table.Rows[1].RowFormat.HeightRule);
+            Assert.That(table.Rows[1].RowFormat.Height, Is.EqualTo(100.0d));
+            Assert.That(table.Rows[1].RowFormat.HeightRule, Is.EqualTo(HeightRule.Exactly));
         }
 
         [Test]
@@ -2255,15 +2249,15 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.ApplyBordersAndShading.docx");
             borders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
 
-            Assert.AreEqual(20.0d, borders.DistanceFromText);
-            Assert.AreEqual(LineStyle.Double, borders[BorderType.Left].LineStyle);
-            Assert.AreEqual(LineStyle.Double, borders[BorderType.Right].LineStyle);
-            Assert.AreEqual(LineStyle.Double, borders[BorderType.Top].LineStyle);
-            Assert.AreEqual(LineStyle.Double, borders[BorderType.Bottom].LineStyle);
+            Assert.That(borders.DistanceFromText, Is.EqualTo(20.0d));
+            Assert.That(borders[BorderType.Left].LineStyle, Is.EqualTo(LineStyle.Double));
+            Assert.That(borders[BorderType.Right].LineStyle, Is.EqualTo(LineStyle.Double));
+            Assert.That(borders[BorderType.Top].LineStyle, Is.EqualTo(LineStyle.Double));
+            Assert.That(borders[BorderType.Bottom].LineStyle, Is.EqualTo(LineStyle.Double));
 
-            Assert.AreEqual(TextureIndex.TextureDiagonalCross, shading.Texture);
-            Assert.AreEqual(Color.LightCoral.ToArgb(), shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(Color.LightSalmon.ToArgb(), shading.ForegroundPatternColor.ToArgb());
+            Assert.That(shading.Texture, Is.EqualTo(TextureIndex.TextureDiagonalCross));
+            Assert.That(shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.LightCoral.ToArgb()));
+            Assert.That(shading.ForegroundPatternColor.ToArgb(), Is.EqualTo(Color.LightSalmon.ToArgb()));
         }
 
         [Test]
@@ -2287,13 +2281,13 @@ namespace ApiExamples
             builder.Write("Row 2, cell 2.");
             builder.EndTable();
 
-            Assert.AreEqual(2, table.Rows.Count);
+            Assert.That(table.Rows.Count, Is.EqualTo(2));
 
             // Delete the first row of the first table in the document.
             builder.DeleteRow(0, 0);
 
-            Assert.AreEqual(1, table.Rows.Count);
-            Assert.AreEqual("Row 2, cell 1.\aRow 2, cell 2.\a\a", table.GetText().Trim());
+            Assert.That(table.Rows.Count, Is.EqualTo(1));
+            Assert.That(table.GetText().Trim(), Is.EqualTo("Row 2, cell 1.\aRow 2, cell 2.\a\a"));
             //ExEnd
         }
 
@@ -2425,13 +2419,13 @@ namespace ApiExamples
 
             if (ignoreTextBoxes)
             {
-                Assert.AreEqual(12.0d, importedTextBox.FirstParagraph.Runs[0].Font.Size);
-                Assert.AreEqual("Times New Roman", importedTextBox.FirstParagraph.Runs[0].Font.Name);
+                Assert.That(importedTextBox.FirstParagraph.Runs[0].Font.Size, Is.EqualTo(12.0d));
+                Assert.That(importedTextBox.FirstParagraph.Runs[0].Font.Name, Is.EqualTo("Times New Roman"));
             }
             else
             {
-                Assert.AreEqual(24.0d, importedTextBox.FirstParagraph.Runs[0].Font.Size);
-                Assert.AreEqual("Courier New", importedTextBox.FirstParagraph.Runs[0].Font.Name);
+                Assert.That(importedTextBox.FirstParagraph.Runs[0].Font.Size, Is.EqualTo(24.0d));
+                Assert.That(importedTextBox.FirstParagraph.Runs[0].Font.Name, Is.EqualTo("Courier New"));
             }
 
             dstDoc.Save(ArtifactsDir + "DocumentBuilder.IgnoreTextBoxes.docx");
@@ -2452,7 +2446,7 @@ namespace ApiExamples
             Field field = builder.InsertField(" AUTHOR \"John Doe\" ");
 
             // The builder's cursor is currently at end of the document.
-            Assert.Null(builder.CurrentNode);
+            Assert.That(builder.CurrentNode, Is.Null);
 
             // Move the cursor to the field while specifying whether to place that cursor before or after the field.
             builder.MoveToField(field, moveCursorToAfterTheField);
@@ -2463,19 +2457,17 @@ namespace ApiExamples
             // or FieldSeparator node to place the cursor inside.
             if (moveCursorToAfterTheField)
             {
-                Assert.Null(builder.CurrentNode);
+                Assert.That(builder.CurrentNode, Is.Null);
                 builder.Write(" Text immediately after the field.");
 
-                Assert.AreEqual("\u0013 AUTHOR \"John Doe\" \u0014John Doe\u0015 Text immediately after the field.", 
-                    doc.GetText().Trim());
+                Assert.That(doc.GetText().Trim(), Is.EqualTo("\u0013 AUTHOR \"John Doe\" \u0014John Doe\u0015 Text immediately after the field."));
             }
             else
             {
-                Assert.AreEqual(field.Start, builder.CurrentNode);
+                Assert.That(builder.CurrentNode, Is.EqualTo(field.Start));
                 builder.Write("Text immediately before the field. ");
 
-                Assert.AreEqual("Text immediately before the field. \u0013 AUTHOR \"John Doe\" \u0014John Doe\u0015", 
-                    doc.GetText().Trim());
+                Assert.That(doc.GetText().Trim(), Is.EqualTo("Text immediately before the field. \u0013 AUTHOR \"John Doe\" \u0014John Doe\u0015"));
             }
             //ExEnd
         }
@@ -2498,9 +2490,9 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Chart chart = builder.InsertChart(ChartType.Pie, ConvertUtil.PixelToPoint(300), 
+            Chart chart = builder.InsertChart(ChartType.Pie, ConvertUtil.PixelToPoint(300),
                 ConvertUtil.PixelToPoint(300)).Chart;
-            Assert.AreEqual(225.0d, ConvertUtil.PixelToPoint(300)); //ExSkip
+            Assert.That(ConvertUtil.PixelToPoint(300), Is.EqualTo(225.0d)); //ExSkip
             chart.Series.Clear();
             chart.Series.Add("My fruit",
                 new[] { "Apples", "Bananas", "Cherries" },
@@ -2512,9 +2504,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertPieChart.docx");
             Shape chartShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual("Chart Title", chartShape.Chart.Title.Text);
-            Assert.AreEqual(225.0d, chartShape.Width);
-            Assert.AreEqual(225.0d, chartShape.Height);
+            Assert.That(chartShape.Chart.Title.Text, Is.EqualTo("Chart Title"));
+            Assert.That(chartShape.Width, Is.EqualTo(225.0d));
+            Assert.That(chartShape.Height, Is.EqualTo(225.0d));
         }
 
         [Test]
@@ -2535,13 +2527,13 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertedChartRelativePosition.docx");
             Shape chartShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual(100.0d, chartShape.Top);
-            Assert.AreEqual(100.0d, chartShape.Left);
-            Assert.AreEqual(200.0d, chartShape.Width);
-            Assert.AreEqual(100.0d, chartShape.Height);
-            Assert.AreEqual(WrapType.Square, chartShape.WrapType);
-            Assert.AreEqual(RelativeHorizontalPosition.Margin, chartShape.RelativeHorizontalPosition);
-            Assert.AreEqual(RelativeVerticalPosition.Margin, chartShape.RelativeVerticalPosition);
+            Assert.That(chartShape.Top, Is.EqualTo(100.0d));
+            Assert.That(chartShape.Left, Is.EqualTo(100.0d));
+            Assert.That(chartShape.Width, Is.EqualTo(200.0d));
+            Assert.That(chartShape.Height, Is.EqualTo(100.0d));
+            Assert.That(chartShape.WrapType, Is.EqualTo(WrapType.Square));
+            Assert.That(chartShape.RelativeHorizontalPosition, Is.EqualTo(RelativeHorizontalPosition.Margin));
+            Assert.That(chartShape.RelativeVerticalPosition, Is.EqualTo(RelativeVerticalPosition.Margin));
         }
 
         [Test]
@@ -2560,11 +2552,11 @@ namespace ApiExamples
 
             Field field = builder.InsertField("DATE \\@ \"dddd, MMMM dd, yyyy\"");
 
-            Assert.AreEqual(FieldType.FieldDate, field.Type);
-            Assert.AreEqual("DATE \\@ \"dddd, MMMM dd, yyyy\"", field.GetFieldCode());
+            Assert.That(field.Type, Is.EqualTo(FieldType.FieldDate));
+            Assert.That(field.GetFieldCode(), Is.EqualTo("DATE \\@ \"dddd, MMMM dd, yyyy\""));
 
             // This overload of the InsertField method automatically updates inserted fields.
-            Assert.True((DateTime.Today - DateTime.Parse(field.Result)).Days <= 1);
+            Assert.That((DateTime.Today - DateTime.Parse(field.Result)).Days <= 1, Is.True);
             //ExEnd
         }
 
@@ -2589,34 +2581,34 @@ namespace ApiExamples
             builder.Write("\nThis is page ");
             builder.InsertField(FieldType.FieldPage, updateInsertedFieldsImmediately);
 
-            Assert.AreEqual(" AUTHOR ", doc.Range.Fields[0].GetFieldCode());
-            Assert.AreEqual(" PAGE ", doc.Range.Fields[1].GetFieldCode());
+            Assert.That(doc.Range.Fields[0].GetFieldCode(), Is.EqualTo(" AUTHOR "));
+            Assert.That(doc.Range.Fields[1].GetFieldCode(), Is.EqualTo(" PAGE "));
 
             if (updateInsertedFieldsImmediately)
             {
-                Assert.AreEqual("John Doe", doc.Range.Fields[0].Result);
-                Assert.AreEqual("1", doc.Range.Fields[1].Result);
+                Assert.That(doc.Range.Fields[0].Result, Is.EqualTo("John Doe"));
+                Assert.That(doc.Range.Fields[1].Result, Is.EqualTo("1"));
             }
             else
             {
-                Assert.AreEqual(string.Empty, doc.Range.Fields[0].Result);
-                Assert.AreEqual(string.Empty, doc.Range.Fields[1].Result);
+                Assert.That(doc.Range.Fields[0].Result, Is.EqualTo(string.Empty));
+                Assert.That(doc.Range.Fields[1].Result, Is.EqualTo(string.Empty));
 
                 // We will need to update these fields using the update methods manually.
                 doc.Range.Fields[0].Update();
 
-                Assert.AreEqual("John Doe", doc.Range.Fields[0].Result);
+                Assert.That(doc.Range.Fields[0].Result, Is.EqualTo("John Doe"));
 
                 doc.UpdateFields();
 
-                Assert.AreEqual("1", doc.Range.Fields[1].Result);
+                Assert.That(doc.Range.Fields[1].Result, Is.EqualTo("1"));
             }
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.AreEqual("This document was written by \u0013 AUTHOR \u0014John Doe\u0015" +
-                            "\r\rThis is page \u0013 PAGE \u00141\u0015", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("This document was written by \u0013 AUTHOR \u0014John Doe\u0015" +
+                            "\r\rThis is page \u0013 PAGE \u00141\u0015"));
 
             TestUtil.VerifyField(FieldType.FieldAuthor, " AUTHOR ", "John Doe", doc.Range.Fields[0]);
             TestUtil.VerifyField(FieldType.FieldPage, " PAGE ", "1", doc.Range.Fields[1]);
@@ -2645,20 +2637,20 @@ namespace ApiExamples
             // 1 -  Numeric:
             builder.InsertField(" = 2 + 3 \\# $###");
 
-            Assert.AreEqual("$5", doc.Range.Fields[0].Result);
-            Assert.AreEqual(1, formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.Numeric));
+            Assert.That(doc.Range.Fields[0].Result, Is.EqualTo("$5"));
+            Assert.That(formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.Numeric), Is.EqualTo(1));
 
             // 2 -  Date/time:
             builder.InsertField("DATE \\@ \"d MMMM yyyy\"");
 
-            Assert.IsTrue(doc.Range.Fields[1].Result.StartsWith("Date: "));
-            Assert.AreEqual(1, formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.DateTime));
+            Assert.That(doc.Range.Fields[1].Result.StartsWith("Date: "), Is.True);
+            Assert.That(formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.DateTime), Is.EqualTo(1));
 
             // 3 -  General:
             builder.InsertField("QUOTE \"2\" \\* Ordinal");
 
-            Assert.AreEqual("Item # 2:", doc.Range.Fields[2].Result);
-            Assert.AreEqual(1, formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.General));
+            Assert.That(doc.Range.Fields[2].Result, Is.EqualTo("Item # 2:"));
+            Assert.That(formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.General), Is.EqualTo(1));
 
             formatter.PrintFormatInvocations();
         }
@@ -2779,10 +2771,10 @@ namespace ApiExamples
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(480, 360, ImageType.Jpeg, shape);
-            Assert.AreEqual("https://youtu.be/t_1LYZ102RA", shape.HRef);
+            Assert.That(shape.HRef, Is.EqualTo("https://youtu.be/t_1LYZ102RA"));
 
-            Assert.AreEqual(360.0d, shape.Width);
-            Assert.AreEqual(270.0d, shape.Height);
+            Assert.That(shape.Width, Is.EqualTo(360.0d));
+            Assert.That(shape.Height, Is.EqualTo(270.0d));
         }
 
         [Test]
@@ -2807,10 +2799,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertUnderline.docx");
             Run firstRun = doc.FirstSection.Body.FirstParagraph.Runs[0];
 
-            Assert.AreEqual("Large, blue, and underlined text.", firstRun.GetText().Trim());
-            Assert.AreEqual(Underline.Dash, firstRun.Font.Underline);
-            Assert.AreEqual(Color.Blue.ToArgb(), firstRun.Font.Color.ToArgb());
-            Assert.AreEqual(32.0d, firstRun.Font.Size);
+            Assert.That(firstRun.GetText().Trim(), Is.EqualTo("Large, blue, and underlined text."));
+            Assert.That(firstRun.Font.Underline, Is.EqualTo(Underline.Dash));
+            Assert.That(firstRun.Font.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+            Assert.That(firstRun.Font.Size, Is.EqualTo(32.0d));
         }
 
         [Test]
@@ -2823,9 +2815,9 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // A Story is a type of node that has child Paragraph nodes, such as a Body.
-            Assert.AreEqual(builder.CurrentStory, doc.FirstSection.Body);
-            Assert.AreEqual(builder.CurrentStory, builder.CurrentParagraph.ParentNode);
-            Assert.AreEqual(StoryType.MainText, builder.CurrentStory.StoryType);
+            Assert.That(doc.FirstSection.Body, Is.EqualTo(builder.CurrentStory));
+            Assert.That(builder.CurrentParagraph.ParentNode, Is.EqualTo(builder.CurrentStory));
+            Assert.That(builder.CurrentStory.StoryType, Is.EqualTo(StoryType.MainText));
 
             builder.CurrentStory.AppendParagraph("Text added to current Story.");
 
@@ -2837,12 +2829,12 @@ namespace ApiExamples
             builder.Write("Row 1, cell 2");
             builder.EndTable();
 
-            Assert.IsTrue(builder.CurrentStory.Tables.Contains(table));
+            Assert.That(builder.CurrentStory.Tables.Contains(table), Is.True);
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
-            Assert.AreEqual(1, doc.FirstSection.Body.Tables.Count);
-            Assert.AreEqual("Row 1, cell 1\aRow 1, cell 2\a\a\rText added to current Story.", doc.FirstSection.Body.GetText().Trim());
+            Assert.That(doc.FirstSection.Body.Tables.Count, Is.EqualTo(1));
+            Assert.That(doc.FirstSection.Body.GetText().Trim(), Is.EqualTo("Row 1, cell 1\aRow 1, cell 2\a\a\rText added to current Story."));
         }
 
         [Test]
@@ -2885,15 +2877,15 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertOleObjects.docx");
 
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(2));
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            Assert.AreEqual("", shape.OleFormat.IconCaption);
-            Assert.False(shape.OleFormat.OleIcon);
+            Assert.That(shape.OleFormat.IconCaption, Is.EqualTo(""));
+            Assert.That(shape.OleFormat.OleIcon, Is.False);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
-            Assert.AreEqual("Unknown", shape.OleFormat.IconCaption);
-            Assert.True(shape.OleFormat.OleIcon);
+            Assert.That(shape.OleFormat.IconCaption, Is.EqualTo("Unknown"));
+            Assert.That(shape.OleFormat.OleIcon, Is.True);
         }
 
         [Test]
@@ -2922,24 +2914,23 @@ namespace ApiExamples
             // Calling the InsertStyleSeparator method creates another paragraph,
             // which can have a different style to the previous. There will be no break between paragraphs.
             // The text in the output document will look like one paragraph with two styles.
-            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
-            Assert.AreEqual("Heading 1", doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style.Name);
-            Assert.AreEqual("MyParaStyle", doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style.Name);
+            Assert.That(doc.FirstSection.Body.Paragraphs.Count, Is.EqualTo(2));
+            Assert.That(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style.Name, Is.EqualTo("Heading 1"));
+            Assert.That(doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style.Name, Is.EqualTo("MyParaStyle"));
 
             doc.Save(ArtifactsDir + "DocumentBuilder.InsertStyleSeparator.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "DocumentBuilder.InsertStyleSeparator.docx");
 
-            Assert.AreEqual(2, doc.FirstSection.Body.Paragraphs.Count);
-            Assert.AreEqual("This text is in a Heading style. \r This text is in a custom style.",
-                doc.GetText().Trim());
-            Assert.AreEqual("Heading 1", doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style.Name);
-            Assert.AreEqual("MyParaStyle", doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style.Name);
-            Assert.AreEqual(" ", doc.FirstSection.Body.Paragraphs[1].Runs[0].GetText());
-            TestUtil.DocPackageFileContainsString("w:rPr><w:vanish /><w:specVanish /></w:rPr>", 
+            Assert.That(doc.FirstSection.Body.Paragraphs.Count, Is.EqualTo(2));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("This text is in a Heading style. \r This text is in a custom style."));
+            Assert.That(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style.Name, Is.EqualTo("Heading 1"));
+            Assert.That(doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style.Name, Is.EqualTo("MyParaStyle"));
+            Assert.That(doc.FirstSection.Body.Paragraphs[1].Runs[0].GetText(), Is.EqualTo(" "));
+            TestUtil.DocPackageFileContainsString("w:rPr><w:vanish /><w:specVanish /></w:rPr>",
                 ArtifactsDir + "DocumentBuilder.InsertStyleSeparator.docx", "document.xml");
-            TestUtil.DocPackageFileContainsString("<w:t xml:space=\"preserve\"> </w:t>", 
+            TestUtil.DocPackageFileContainsString("<w:t xml:space=\"preserve\"> </w:t>",
                 ArtifactsDir + "DocumentBuilder.InsertStyleSeparator.docx", "document.xml");
         }
 
@@ -2963,9 +2954,9 @@ namespace ApiExamples
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.InsertDocument.docx");
             //ExEnd
 
-            Assert.AreEqual(29, doc.Styles.Count);
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "DocumentBuilder.InsertDocument.docx",
-                GoldsDir + "DocumentBuilder.InsertDocument Gold.docx"));
+            Assert.That(doc.Styles.Count, Is.EqualTo(29));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "DocumentBuilder.InsertDocument.docx",
+                GoldsDir + "DocumentBuilder.InsertDocument Gold.docx"), Is.True);
         }
 
         [Test]
@@ -3005,13 +2996,13 @@ namespace ApiExamples
 
             dstDoc = new Document(ArtifactsDir + "DocumentBuilder.SmartStyleBehavior.docx");
 
-            Assert.AreEqual(Color.Blue.ToArgb(), dstDoc.Styles["MyStyle"].Font.Color.ToArgb());
-            Assert.AreEqual("MyStyle", dstDoc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style.Name);
+            Assert.That(dstDoc.Styles["MyStyle"].Font.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+            Assert.That(dstDoc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style.Name, Is.EqualTo("MyStyle"));
 
-            Assert.AreEqual("Normal", dstDoc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style.Name);
-            Assert.AreEqual(14, dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Size);
-            Assert.AreEqual("Courier New", dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Name);
-            Assert.AreEqual(Color.Red.ToArgb(), dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Color.ToArgb());
+            Assert.That(dstDoc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style.Name, Is.EqualTo("Normal"));
+            Assert.That(dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Size, Is.EqualTo(14));
+            Assert.That(dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Name, Is.EqualTo("Courier New"));
+            Assert.That(dstDoc.FirstSection.Body.Paragraphs[1].Runs[0].Font.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
         }
 
         [Test]
@@ -3022,15 +3013,15 @@ namespace ApiExamples
             //ExFor:WarningSource
             //ExSummary:Shows how to work with the warning source.
             Document doc = new Document(MyDir + "Emphases markdown warning.docx");
-            
+
             WarningInfoCollection warnings = new WarningInfoCollection();
             doc.WarningCallback = warnings;
             doc.Save(ArtifactsDir + "DocumentBuilder.EmphasesWarningSourceMarkdown.md");
- 
+
             foreach (WarningInfo warningInfo in warnings)
             {
                 if (warningInfo.Source == WarningSource.Markdown)
-                    Assert.AreEqual("The (*, 0:11) cannot be properly written into Markdown.", warningInfo.Description);
+                    Assert.That(warningInfo.Description, Is.EqualTo("The (*, 0:11) cannot be properly written into Markdown."));
             }
             //ExEnd
         }
@@ -3050,7 +3041,7 @@ namespace ApiExamples
             // from "Document.docx" will be used.
             ImportFormatOptions importFormatOptions = new ImportFormatOptions();
             importFormatOptions.IgnoreHeaderFooter = false;
- 
+
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, importFormatOptions);
 
             dstDoc.Save(ArtifactsDir + "DocumentBuilder.DoNotIgnoreHeaderFooter.docx");
@@ -3067,7 +3058,7 @@ namespace ApiExamples
 
             // Use clear formatting if we don't want to combine styles between paragraphs.
             builder.Font.ClearFormatting();
-            
+
             builder.Font.Bold = true;
             builder.Writeln("This text will be bold");
 
@@ -3088,7 +3079,7 @@ namespace ApiExamples
             // Markdown treats asterisks (*), underscores (_) and tilde (~) as indicators of emphasis.
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
-        
+
         public void MarkdownDocumentInlineCode()
         {
             Document doc = new Document(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
@@ -3295,7 +3286,7 @@ namespace ApiExamples
 
             // Insert HorizontalRule that will be present in .md file as '-----'.
             builder.InsertHorizontalRule();
- 
+
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
@@ -3321,7 +3312,7 @@ namespace ApiExamples
             builder.ListFormat.ListIndent();
             builder.Writeln("Item 2a");
             builder.Writeln("Item 2b");
- 
+
             builder.Document.Save(ArtifactsDir + "DocumentBuilder.MarkdownDocument.md");
         }
 
@@ -3373,13 +3364,13 @@ namespace ApiExamples
                     // Check that all document text has the necessary styles.
                     if (paragraph.Runs[0].Text == text && !text.Contains("InlineCode"))
                     {
-                        Assert.AreEqual(styleName, paragraph.ParagraphFormat.Style.Name);
-                        Assert.AreEqual(isItalic, paragraph.Runs[0].Font.Italic);
-                        Assert.AreEqual(isBold, paragraph.Runs[0].Font.Bold);
+                        Assert.That(paragraph.ParagraphFormat.Style.Name, Is.EqualTo(styleName));
+                        Assert.That(paragraph.Runs[0].Font.Italic, Is.EqualTo(isItalic));
+                        Assert.That(paragraph.Runs[0].Font.Bold, Is.EqualTo(isBold));
                     }
                     else if (paragraph.Runs[0].Text == text && text.Contains("InlineCode"))
                     {
-                        Assert.AreEqual(styleName, paragraph.Runs[0].Font.StyleName);
+                        Assert.That(paragraph.Runs[0].Font.StyleName, Is.EqualTo(styleName));
                     }
                 }
 
@@ -3387,8 +3378,8 @@ namespace ApiExamples
                 NodeCollection shapesCollection = doc.FirstSection.Body.GetChildNodes(NodeType.Shape, true);
                 Shape horizontalRuleShape = (Shape) shapesCollection[0];
 
-                Assert.IsTrue(shapesCollection.Count == 1);
-                Assert.IsTrue(horizontalRuleShape.IsHorizontalRule);
+                Assert.That(shapesCollection.Count == 1, Is.True);
+                Assert.That(horizontalRuleShape.IsHorizontalRule, Is.True);
             }
         }
 
@@ -3418,15 +3409,15 @@ namespace ApiExamples
 
             TestUtil.VerifyImageInShape(640, 360, ImageType.Jpeg, shape);
 
-            Assert.AreEqual(320.0d, shape.Width);
-            Assert.AreEqual(180.0d, shape.Height);
-            Assert.AreEqual(0.0d, shape.Left);
-            Assert.AreEqual(0.0d, shape.Top);
-            Assert.AreEqual(WrapType.Square, shape.WrapType);
-            Assert.AreEqual(RelativeVerticalPosition.TopMargin, shape.RelativeVerticalPosition);
-            Assert.AreEqual(RelativeHorizontalPosition.LeftMargin, shape.RelativeHorizontalPosition);
+            Assert.That(shape.Width, Is.EqualTo(320.0d));
+            Assert.That(shape.Height, Is.EqualTo(180.0d));
+            Assert.That(shape.Left, Is.EqualTo(0.0d));
+            Assert.That(shape.Top, Is.EqualTo(0.0d));
+            Assert.That(shape.WrapType, Is.EqualTo(WrapType.Square));
+            Assert.That(shape.RelativeVerticalPosition, Is.EqualTo(RelativeVerticalPosition.TopMargin));
+            Assert.That(shape.RelativeHorizontalPosition, Is.EqualTo(RelativeHorizontalPosition.LeftMargin));
 
-            Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
+            Assert.That(shape.HRef, Is.EqualTo("https://vimeo.com/52477838"));
         }
 
         [Test]
@@ -3474,28 +3465,28 @@ namespace ApiExamples
             Shape shape = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
-            Assert.AreEqual(400.0d, shape.Width);
-            Assert.AreEqual(400.0d, shape.Height);
-            Assert.AreEqual(0.0d, shape.Left);
-            Assert.AreEqual(0.0d, shape.Top);
-            Assert.AreEqual(WrapType.Inline, shape.WrapType);
-            Assert.AreEqual(RelativeVerticalPosition.Paragraph, shape.RelativeVerticalPosition);
-            Assert.AreEqual(RelativeHorizontalPosition.Column, shape.RelativeHorizontalPosition);
+            Assert.That(shape.Width, Is.EqualTo(400.0d));
+            Assert.That(shape.Height, Is.EqualTo(400.0d));
+            Assert.That(shape.Left, Is.EqualTo(0.0d));
+            Assert.That(shape.Top, Is.EqualTo(0.0d));
+            Assert.That(shape.WrapType, Is.EqualTo(WrapType.Inline));
+            Assert.That(shape.RelativeVerticalPosition, Is.EqualTo(RelativeVerticalPosition.Paragraph));
+            Assert.That(shape.RelativeHorizontalPosition, Is.EqualTo(RelativeHorizontalPosition.Column));
 
-            Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
+            Assert.That(shape.HRef, Is.EqualTo("https://vimeo.com/52477838"));
 
             shape = (Shape) doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
-            Assert.AreEqual(400.0d, shape.Width);
-            Assert.AreEqual(400.0d, shape.Height);
-            Assert.AreEqual(-329.15d, shape.Left);
-            Assert.AreEqual(-329.15d, shape.Top);
-            Assert.AreEqual(WrapType.Square, shape.WrapType);
-            Assert.AreEqual(RelativeVerticalPosition.BottomMargin, shape.RelativeVerticalPosition);
-            Assert.AreEqual(RelativeHorizontalPosition.RightMargin, shape.RelativeHorizontalPosition);
+            Assert.That(shape.Width, Is.EqualTo(400.0d));
+            Assert.That(shape.Height, Is.EqualTo(400.0d));
+            Assert.That(shape.Left, Is.EqualTo(-329.15d));
+            Assert.That(shape.Top, Is.EqualTo(-329.15d));
+            Assert.That(shape.WrapType, Is.EqualTo(WrapType.Square));
+            Assert.That(shape.RelativeVerticalPosition, Is.EqualTo(RelativeVerticalPosition.BottomMargin));
+            Assert.That(shape.RelativeHorizontalPosition, Is.EqualTo(RelativeHorizontalPosition.RightMargin));
 
-            Assert.AreEqual("https://vimeo.com/52477838", shape.HRef);
+            Assert.That(shape.HRef, Is.EqualTo("https://vimeo.com/52477838"));
         }
 
         [Test]
@@ -3561,7 +3552,6 @@ namespace ApiExamples
             //ExStart
             //ExFor:Run.IsPhoneticGuide
             //ExFor:Run.PhoneticGuide
-            //ExFor:PhoneticGuide
             //ExFor:PhoneticGuide.BaseText
             //ExFor:PhoneticGuide.RubyText
             //ExSummary:Shows how to get properties of the phonetic guide.
@@ -3569,11 +3559,9 @@ namespace ApiExamples
 
             RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
             // Use phonetic guide in the Asian text.
-            Assert.AreEqual(true, runs[0].IsPhoneticGuide);
-
-            PhoneticGuide phoneticGuide = runs[0].PhoneticGuide;
-            Assert.AreEqual("base", phoneticGuide.BaseText);
-            Assert.AreEqual("ruby", phoneticGuide.RubyText);
+            Assert.That(runs[0].IsPhoneticGuide, Is.EqualTo(true));
+            Assert.That(runs[0].PhoneticGuide.BaseText, Is.EqualTo("base"));
+            Assert.That(runs[0].PhoneticGuide.RubyText, Is.EqualTo("ruby"));
             //ExEnd
         }
     }

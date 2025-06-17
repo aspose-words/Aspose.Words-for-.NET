@@ -49,19 +49,19 @@ namespace ApiExamples
             // These nodes have matching IDs and encompass editable nodes.
             EditableRange editableRange = editableRangeStart.EditableRange;
 
-            Assert.AreEqual(editableRangeStart.Id, editableRange.Id);
-            Assert.AreEqual(editableRangeEnd.Id, editableRange.Id);
+            Assert.That(editableRange.Id, Is.EqualTo(editableRangeStart.Id));
+            Assert.That(editableRange.Id, Is.EqualTo(editableRangeEnd.Id));
             
             // Different parts of the editable range link to each other.
-            Assert.AreEqual(editableRangeStart.Id, editableRange.EditableRangeStart.Id);
-            Assert.AreEqual(editableRangeStart.Id, editableRangeEnd.EditableRangeStart.Id);
-            Assert.AreEqual(editableRange.Id, editableRangeStart.EditableRange.Id);
-            Assert.AreEqual(editableRangeEnd.Id, editableRange.EditableRangeEnd.Id);
+            Assert.That(editableRange.EditableRangeStart.Id, Is.EqualTo(editableRangeStart.Id));
+            Assert.That(editableRangeEnd.EditableRangeStart.Id, Is.EqualTo(editableRangeStart.Id));
+            Assert.That(editableRangeStart.EditableRange.Id, Is.EqualTo(editableRange.Id));
+            Assert.That(editableRange.EditableRangeEnd.Id, Is.EqualTo(editableRangeEnd.Id));
 
             // We can access the node types of each part like this. The editable range itself is not a node,
             // but an entity which consists of a start, an end, and their enclosed contents.
-            Assert.AreEqual(NodeType.EditableRangeStart, editableRangeStart.NodeType);
-            Assert.AreEqual(NodeType.EditableRangeEnd, editableRangeEnd.NodeType);
+            Assert.That(editableRangeStart.NodeType, Is.EqualTo(NodeType.EditableRangeStart));
+            Assert.That(editableRangeEnd.NodeType, Is.EqualTo(NodeType.EditableRangeEnd));
 
             builder.Writeln("This paragraph is outside the editable range, and cannot be edited.");
 
@@ -71,17 +71,17 @@ namespace ApiExamples
             editableRange.Remove();
             //ExEnd
 
-            Assert.AreEqual("Hello world! Since we have set the document's protection level to read-only, we cannot edit this paragraph without the password.\r" +
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world! Since we have set the document's protection level to read-only, we cannot edit this paragraph without the password.\r" +
                             "This paragraph is inside an editable range, and can be edited.\r" +
-                            "This paragraph is outside the editable range, and cannot be edited.", doc.GetText().Trim());
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.EditableRangeStart, true).Count);
+                            "This paragraph is outside the editable range, and cannot be edited."));
+            Assert.That(doc.GetChildNodes(NodeType.EditableRangeStart, true).Count, Is.EqualTo(0));
 
             doc = new Document(ArtifactsDir + "EditableRange.CreateAndRemove.docx");
 
-            Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType);
-            Assert.AreEqual("Hello world! Since we have set the document's protection level to read-only, we cannot edit this paragraph without the password.\r" +
+            Assert.That(doc.ProtectionType, Is.EqualTo(ProtectionType.ReadOnly));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world! Since we have set the document's protection level to read-only, we cannot edit this paragraph without the password.\r" +
                             "This paragraph is inside an editable range, and can be edited.\r" +
-                            "This paragraph is outside the editable range, and cannot be edited.", doc.GetText().Trim());
+                            "This paragraph is outside the editable range, and cannot be edited."));
 
             editableRange = ((EditableRangeStart)doc.GetChild(NodeType.EditableRangeStart, 0, true)).EditableRange;
 
@@ -132,11 +132,11 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "EditableRange.Nested.docx");
 
-            Assert.AreEqual("Hello world! Since we have set the document's protection level to read-only, we cannot edit this paragraph without the password.\r" +
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world! Since we have set the document's protection level to read-only, we cannot edit this paragraph without the password.\r" +
                             "This paragraph inside the outer editable range and can be edited.\r" +
                             "This paragraph inside both the outer and inner editable ranges and can be edited.\r" +
                             "This paragraph inside the outer editable range and can be edited.\r" +
-                            "This paragraph is outside any editable ranges, and cannot be edited.", doc.GetText().Trim());
+                            "This paragraph is outside any editable ranges, and cannot be edited."));
 
             EditableRange editableRange = ((EditableRangeStart)doc.GetChild(NodeType.EditableRangeStart, 0, true)).EditableRange;
 
@@ -176,7 +176,7 @@ namespace ApiExamples
             builder.Writeln($"This paragraph is inside the first editable range, can only be edited by {editableRange.SingleUser}.");
             builder.EndEditableRange();
 
-            Assert.AreEqual(EditorType.Unspecified, editableRange.EditorGroup);
+            Assert.That(editableRange.EditorGroup, Is.EqualTo(EditorType.Unspecified));
 
             // 2 -  Specify a group that allowed users are associated with:
             editableRange = builder.StartEditableRange().EditableRange;
@@ -184,7 +184,7 @@ namespace ApiExamples
             builder.Writeln($"This paragraph is inside the first editable range, can only be edited by {editableRange.EditorGroup}.");
             builder.EndEditableRange();
 
-            Assert.AreEqual(string.Empty, editableRange.SingleUser);
+            Assert.That(editableRange.SingleUser, Is.EqualTo(string.Empty));
 
             builder.Writeln("This paragraph is outside the editable range, and cannot be edited by anybody.");
 
@@ -291,10 +291,10 @@ namespace ApiExamples
 
             // Assert that it's not valid structure and editable ranges aren't added to the current document.
             NodeCollection startNodes = doc.GetChildNodes(NodeType.EditableRangeStart, true);
-            Assert.AreEqual(0, startNodes.Count);
+            Assert.That(startNodes.Count, Is.EqualTo(0));
 
             NodeCollection endNodes = doc.GetChildNodes(NodeType.EditableRangeEnd, true);
-            Assert.AreEqual(0, endNodes.Count);
+            Assert.That(endNodes.Count, Is.EqualTo(0));
         }
     }
 }
