@@ -265,16 +265,16 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             //ExEnd:GetRegionsHierarchy
 
             IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName("Region1");
-            Assert.AreEqual(1, doc.MailMerge.GetRegionsByName("Region1").Count);
-            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("Region1", region.Name);
+            Assert.That(doc.MailMerge.GetRegionsByName("Region1").Count, Is.EqualTo(1));
+            foreach (MailMergeRegionInfo region in regions) Assert.That(region.Name, Is.EqualTo("Region1"));
 
             regions = doc.MailMerge.GetRegionsByName("Region2");
-            Assert.AreEqual(1, doc.MailMerge.GetRegionsByName("Region2").Count);
-            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("Region2", region.Name);
+            Assert.That(doc.MailMerge.GetRegionsByName("Region2").Count, Is.EqualTo(1));
+            foreach (MailMergeRegionInfo region in regions) Assert.That(region.Name, Is.EqualTo("Region2"));
 
             regions = doc.MailMerge.GetRegionsByName("NestedRegion1");
-            Assert.AreEqual(2, doc.MailMerge.GetRegionsByName("NestedRegion1").Count);
-            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("NestedRegion1", region.Name);
+            Assert.That(doc.MailMerge.GetRegionsByName("NestedRegion1").Count, Is.EqualTo(2));
+            foreach (MailMergeRegionInfo region in regions) Assert.That(region.Name, Is.EqualTo("NestedRegion1"));
             //ExEnd:GetRegionsByName
         }
     }

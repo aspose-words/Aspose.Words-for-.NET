@@ -31,22 +31,22 @@ namespace DocsExamples.Programming_with_Documents
 
             // This paragraph is a revision and will have the according "IsInsertRevision" flag set.
             para = body.AppendParagraph("Paragraph 4. ");
-            Assert.True(para.IsInsertRevision);
+            Assert.That(para.IsInsertRevision, Is.True);
 
             // Get the document's paragraph collection and remove a paragraph.
             ParagraphCollection paragraphs = body.Paragraphs;
-            Assert.AreEqual(4, paragraphs.Count);
+            Assert.That(paragraphs.Count, Is.EqualTo(4));
             para = paragraphs[2];
             para.Remove();
 
             // Since we are tracking revisions, the paragraph still exists in the document, will have the "IsDeleteRevision" set
             // and will be displayed as a revision in Microsoft Word, until we accept or reject all revisions.
-            Assert.AreEqual(4, paragraphs.Count);
-            Assert.True(para.IsDeleteRevision);
+            Assert.That(paragraphs.Count, Is.EqualTo(4));
+            Assert.That(para.IsDeleteRevision, Is.True);
 
             // The delete revision paragraph is removed once we accept changes.
             doc.AcceptAllRevisions();
-            Assert.AreEqual(3, paragraphs.Count);
+            Assert.That(paragraphs.Count, Is.EqualTo(3));
             Assert.That(para, Is.Empty);
 
             // Stopping the tracking of revisions makes this text appear as normal text.
@@ -216,7 +216,7 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document();
 
             // Insert an inline shape without tracking revisions.
-            Assert.False(doc.TrackRevisions);
+            Assert.That(doc.TrackRevisions, Is.False);
             Shape shape = new Shape(doc, ShapeType.Cube);
             shape.WrapType = WrapType.Inline;
             shape.Width = 100.0;
@@ -233,33 +233,33 @@ namespace DocsExamples.Programming_with_Documents
 
             // Get the document's shape collection which includes just the two shapes we added.
             List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(2, shapes.Count);
+            Assert.That(shapes.Count, Is.EqualTo(2));
 
             // Remove the first shape.
             shapes[0].Remove();
 
             // Because we removed that shape while changes were being tracked, the shape counts as a delete revision.
-            Assert.AreEqual(ShapeType.Cube, shapes[0].ShapeType);
-            Assert.True(shapes[0].IsDeleteRevision);
+            Assert.That(shapes[0].ShapeType, Is.EqualTo(ShapeType.Cube));
+            Assert.That(shapes[0].IsDeleteRevision, Is.True);
 
             // And we inserted another shape while tracking changes, so that shape will count as an insert revision.
-            Assert.AreEqual(ShapeType.Sun, shapes[1].ShapeType);
-            Assert.True(shapes[1].IsInsertRevision);
+            Assert.That(shapes[1].ShapeType, Is.EqualTo(ShapeType.Sun));
+            Assert.That(shapes[1].IsInsertRevision, Is.True);
 
             // The document has one shape that was moved, but shape move revisions will have two instances of that shape.
             // One will be the shape at its arrival destination and the other will be the shape at its original location.
             doc = new Document(MyDir + "Revision shape.docx");
             
             shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
-            Assert.AreEqual(2, shapes.Count);
+            Assert.That(shapes.Count, Is.EqualTo(2));
 
             // This is the move to revision, also the shape at its arrival destination.
-            Assert.False(shapes[0].IsMoveFromRevision);
-            Assert.True(shapes[0].IsMoveToRevision);
+            Assert.That(shapes[0].IsMoveFromRevision, Is.False);
+            Assert.That(shapes[0].IsMoveToRevision, Is.True);
 
             // This is the move from revision, which is the shape at its original location.
-            Assert.True(shapes[1].IsMoveFromRevision);
-            Assert.False(shapes[1].IsMoveToRevision);
+            Assert.That(shapes[1].IsMoveFromRevision, Is.True);
+            Assert.That(shapes[1].IsMoveToRevision, Is.False);
             //ExEnd:ShapeRevision
         }
     }

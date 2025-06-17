@@ -118,8 +118,8 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
 
             // The imported style has an appearance identical to its source style.
-            Assert.AreEqual("MyStyle", newStyle.Name);
-            Assert.AreEqual(Color.Red.ToArgb(), newStyle.Font.Color.ToArgb());
+            Assert.That(newStyle.Name, Is.EqualTo("MyStyle"));
+            Assert.That(newStyle.Font.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
             //ExEnd:CopyStyleDifferentDocument
         }
     }

@@ -459,9 +459,7 @@ namespace DocsExamples.Programming_with_Documents
 
             doc.Save(ArtifactsDir + "WorkingWithFonts.GetSubstitutionWithoutSuffixes.pdf");
 
-            Assert.AreEqual(
-                "Font 'DINOT-Regular' has not been found. Using 'DINOT' font instead. Reason: font name substitution.",
-                substitutionWarningHandler.FontWarnings[0].Description);
+            Assert.That(substitutionWarningHandler.FontWarnings[0].Description, Is.EqualTo("Font 'DINOT-Regular' has not been found. Using 'DINOT' font instead. Reason: font name substitution."));
         }
 
         public class DocumentSubstitutionWarnings : IWarningCallback
