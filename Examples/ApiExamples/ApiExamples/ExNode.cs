@@ -41,14 +41,14 @@ namespace ApiExamples
             // 1 -  Create a clone of a node, and create a clone of each of its child nodes as well.
             Node cloneWithChildren = para.Clone(true);
 
-            Assert.IsTrue(((CompositeNode)cloneWithChildren).HasChildNodes);
-            Assert.AreEqual("Hello world!", cloneWithChildren.GetText().Trim());
+            Assert.That(((CompositeNode)cloneWithChildren).HasChildNodes, Is.True);
+            Assert.That(cloneWithChildren.GetText().Trim(), Is.EqualTo("Hello world!"));
 
             // 2 -  Create a clone of a node just by itself without any children.
             Node cloneWithoutChildren = para.Clone(false);
 
-            Assert.IsFalse(((CompositeNode)cloneWithoutChildren).HasChildNodes);
-            Assert.AreEqual(string.Empty, cloneWithoutChildren.GetText().Trim());
+            Assert.That(((CompositeNode)cloneWithoutChildren).HasChildNodes, Is.False);
+            Assert.That(cloneWithoutChildren.GetText().Trim(), Is.EqualTo(string.Empty));
             //ExEnd
         }
 
@@ -67,10 +67,10 @@ namespace ApiExamples
 
             // The paragraph is the parent node of the run node. We can trace this lineage
             // all the way to the document node, which is the root of the document's node tree.
-            Assert.AreEqual(para, run.ParentNode);
-            Assert.AreEqual(doc.FirstSection.Body, para.ParentNode);
-            Assert.AreEqual(doc.FirstSection, doc.FirstSection.Body.ParentNode);
-            Assert.AreEqual(doc, doc.FirstSection.ParentNode);
+            Assert.That(run.ParentNode, Is.EqualTo(para));
+            Assert.That(para.ParentNode, Is.EqualTo(doc.FirstSection.Body));
+            Assert.That(doc.FirstSection.Body.ParentNode, Is.EqualTo(doc.FirstSection));
+            Assert.That(doc.FirstSection.ParentNode, Is.EqualTo(doc));
             //ExEnd
         }
 
@@ -86,14 +86,14 @@ namespace ApiExamples
             para.AppendChild(new Run(doc, "Hello world!"));
 
             // We have not yet appended this paragraph as a child to any composite node.
-            Assert.IsNull(para.ParentNode);
+            Assert.That(para.ParentNode, Is.Null);
 
             // If a node is an appropriate child node type of another composite node,
             // we can attach it as a child only if both nodes have the same owner document.
             // The owner document is the document we passed to the node's constructor.
             // We have not attached this paragraph to the document, so the document does not contain its text.
-            Assert.AreEqual(para.Document, doc);
-            Assert.AreEqual(string.Empty, doc.GetText().Trim());
+            Assert.That(doc, Is.EqualTo(para.Document));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo(string.Empty));
 
             // Since the document owns this paragraph, we can apply one of its styles to the paragraph's contents.
             para.ParagraphFormat.Style = doc.Styles["Heading 1"];
@@ -101,12 +101,12 @@ namespace ApiExamples
             // Add this node to the document, and then verify its contents.
             doc.FirstSection.Body.AppendChild(para);
 
-            Assert.AreEqual(doc.FirstSection.Body, para.ParentNode);
-            Assert.AreEqual("Hello world!", doc.GetText().Trim());
+            Assert.That(para.ParentNode, Is.EqualTo(doc.FirstSection.Body));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!"));
             //ExEnd
 
-            Assert.AreEqual(doc, para.Document);
-            Assert.IsNotNull(para.ParentNode);
+            Assert.That(para.Document, Is.EqualTo(doc));
+            Assert.That(para.ParentNode, Is.Not.Null);
         }
 
         [Test]
@@ -142,7 +142,7 @@ namespace ApiExamples
             // and print any runs or shapes that we find within.
             NodeCollection children = paragraph.GetChildNodes(NodeType.Any, false);
 
-            Assert.AreEqual(3, paragraph.GetChildNodes(NodeType.Any, false).Count);
+            Assert.That(paragraph.GetChildNodes(NodeType.Any, false).Count, Is.EqualTo(3));
 
             foreach (Node child in children)
                 switch (child.NodeType)
@@ -155,13 +155,13 @@ namespace ApiExamples
                         Shape childShape = (Shape)child;
                         Console.WriteLine("Shape:");
                         Console.WriteLine($"\t{childShape.ShapeType}, {childShape.Width}x{childShape.Height}");
-                        Assert.AreEqual(100, shape.CustomNodeId); //ExSkip
+                        Assert.That(shape.CustomNodeId, Is.EqualTo(100)); //ExSkip
                         break;
                 }
             //ExEnd
 
-            Assert.AreEqual(NodeType.Run, paragraph.GetChild(NodeType.Run, 0, true).NodeType);
-            Assert.AreEqual("Hello world! Hello again!", doc.GetText().Trim());
+            Assert.That(paragraph.GetChild(NodeType.Run, 0, true).NodeType, Is.EqualTo(NodeType.Run));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world! Hello again!"));
         }
 
         //ExStart
@@ -201,7 +201,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
             // Any node that can contain child nodes, such as the document itself, is composite.
-            Assert.True(doc.IsComposite);
+            Assert.That(doc.IsComposite, Is.True);
 
             // Invoke the recursive function that will go through and print all the child nodes of a composite node.
             TraverseAllNodes(doc, 0);
@@ -246,7 +246,7 @@ namespace ApiExamples
             //ExSummary:Shows how to remove all child nodes of a specific type from a composite node.
             Document doc = new Document(MyDir + "Tables.docx");
 
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.Table, true).Count, Is.EqualTo(2));
 
             Node curNode = doc.FirstSection.Body.FirstChild;
 
@@ -263,7 +263,7 @@ namespace ApiExamples
                 curNode = nextNode;
             }
 
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Table, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.Table, true).Count, Is.EqualTo(0));
             //ExEnd
         }
 
@@ -303,8 +303,8 @@ namespace ApiExamples
 
             TableCollection tables = doc.FirstSection.Body.Tables;
 
-            Assert.AreEqual(5, tables[0].Rows.Count);
-            Assert.AreEqual(4, tables[1].Rows.Count);
+            Assert.That(tables[0].Rows.Count, Is.EqualTo(5));
+            Assert.That(tables[1].Rows.Count, Is.EqualTo(4));
 
             foreach (Table table in tables.OfType<Table>())
             {
@@ -312,8 +312,8 @@ namespace ApiExamples
                 table.LastRow?.Remove();
             }
 
-            Assert.AreEqual(3, tables[0].Rows.Count);
-            Assert.AreEqual(2, tables[1].Rows.Count);
+            Assert.That(tables[0].Rows.Count, Is.EqualTo(3));
+            Assert.That(tables[1].Rows.Count, Is.EqualTo(2));
             //ExEnd
         }
 
@@ -341,7 +341,7 @@ namespace ApiExamples
                 doc.RemoveChild(firstSection);
 
             // The section we removed was the first one, leaving the document with only the second.
-            Assert.AreEqual("Section 2 text.", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Section 2 text."));
             //ExEnd
         }
 
@@ -371,12 +371,12 @@ namespace ApiExamples
             nodeList = doc.SelectNodes("//Body/Paragraph");
 
             // We can treat the list as an array.
-            Assert.AreEqual(4, nodeList.ToArray().Length);
+            Assert.That(nodeList.ToArray().Length, Is.EqualTo(4));
 
             // Use SelectSingleNode to select the first result of the same expression as above.
             Node node = doc.SelectSingleNode("//Body/Paragraph");
 
-            Assert.AreEqual(typeof(Paragraph), node.GetType());
+            Assert.That(node.GetType(), Is.EqualTo(typeof(Paragraph)));
             //ExEnd
         }
 
@@ -418,11 +418,11 @@ namespace ApiExamples
             //ExSummary:Removes all smart tags from descendant nodes of a composite node.
             Document doc = new Document(MyDir + "Smart tags.doc");
 
-            Assert.AreEqual(8, doc.GetChildNodes(NodeType.SmartTag, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.SmartTag, true).Count, Is.EqualTo(8));
 
             doc.RemoveSmartTags();
 
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.SmartTag, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.SmartTag, true).Count, Is.EqualTo(0));
             //ExEnd
         }
 
@@ -437,7 +437,7 @@ namespace ApiExamples
             Body body = doc.FirstSection.Body;
 
             // Retrieve the index of the last paragraph in the body of the first section.
-            Assert.AreEqual(24, body.GetChildNodes(NodeType.Any, false).IndexOf(body.LastParagraph));
+            Assert.That(body.GetChildNodes(NodeType.Any, false).IndexOf(body.LastParagraph), Is.EqualTo(24));
             //ExEnd
         }
 
@@ -454,17 +454,17 @@ namespace ApiExamples
 
             // When we call the ToString method using the html SaveFormat overload,
             // it converts the node's contents to their raw html representation.
-            Assert.AreEqual("<p style=\"margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt\">" +
+            Assert.That(node.ToString(SaveFormat.Html), Is.EqualTo("<p style=\"margin-top:0pt; margin-bottom:8pt; line-height:108%; font-size:12pt\">" +
                             "<span style=\"font-family:'Times New Roman'\">Hello World!</span>" +
-                            "</p>", node.ToString(SaveFormat.Html));
+                            "</p>"));
 
             // We can also modify the result of this conversion using a SaveOptions object.
             HtmlSaveOptions saveOptions = new HtmlSaveOptions();
             saveOptions.ExportRelativeFontSize = true;
 
-            Assert.AreEqual("<p style=\"margin-top:0pt; margin-bottom:8pt; line-height:108%\">" +
+            Assert.That(node.ToString(saveOptions), Is.EqualTo("<p style=\"margin-top:0pt; margin-bottom:8pt; line-height:108%\">" +
                             "<span style=\"font-family:'Times New Roman'\">Hello World!</span>" +
-                            "</p>", node.ToString(saveOptions));
+                            "</p>"));
             //ExEnd
         }
 
@@ -478,7 +478,7 @@ namespace ApiExamples
 
             Paragraph[] paras = doc.FirstSection.Body.Paragraphs.ToArray();
 
-            Assert.AreEqual(22, paras.Length);
+            Assert.That(paras.Length, Is.EqualTo(22));
             //ExEnd
         }
 
@@ -501,7 +501,7 @@ namespace ApiExamples
                 if (para.Range.Text.Contains("third"))
                     para.Remove();
 
-            Assert.False(doc.GetText().Contains("The third paragraph"));
+            Assert.That(doc.GetText().Contains("The third paragraph"), Is.False);
             //ExEnd
         }
 
@@ -516,9 +516,9 @@ namespace ApiExamples
 
             if (navigator != null)
             {
-                Assert.AreEqual("Document", navigator.Name);
-                Assert.AreEqual(false, navigator.MoveToNext());
-                Assert.AreEqual(1, navigator.SelectChildren(XPathNodeType.All).Count);
+                Assert.That(navigator.Name, Is.EqualTo("Document"));
+                Assert.That(navigator.MoveToNext(), Is.EqualTo(false));
+                Assert.That(navigator.SelectChildren(XPathNodeType.All).Count, Is.EqualTo(1));
 
                 // The document tree has the document, first section,
                 // body, and first paragraph as nodes, with each being an only child of the previous.
@@ -571,7 +571,7 @@ namespace ApiExamples
         private void TestNodeXPathNavigator(string navigatorResult, Document doc)
         {
             foreach (Run run in doc.GetChildNodes(NodeType.Run, true).ToArray().OfType<Run>())
-                Assert.True(navigatorResult.Contains(run.GetText().Trim()));
+                Assert.That(navigatorResult.Contains(run.GetText().Trim()), Is.True);
         }
 
         //ExStart
@@ -607,14 +607,14 @@ namespace ApiExamples
         {
             void INodeChangingCallback.NodeInserting(NodeChangingArgs args)
             {
-                Assert.AreEqual(NodeChangingAction.Insert, args.Action);
-                Assert.AreEqual(null, args.OldParent);
+                Assert.That(args.Action, Is.EqualTo(NodeChangingAction.Insert));
+                Assert.That(args.OldParent, Is.EqualTo(null));
             }
 
             void INodeChangingCallback.NodeInserted(NodeChangingArgs args)
             {
-                Assert.AreEqual(NodeChangingAction.Insert, args.Action);
-                Assert.NotNull(args.NewParent);
+                Assert.That(args.Action, Is.EqualTo(NodeChangingAction.Insert));
+                Assert.That(args.NewParent, Is.Not.Null);
 
                 Console.WriteLine("Inserted node:");
                 Console.WriteLine($"\tType:\t{args.Node.NodeType}");
@@ -630,13 +630,13 @@ namespace ApiExamples
 
             void INodeChangingCallback.NodeRemoving(NodeChangingArgs args)
             {
-                Assert.AreEqual(NodeChangingAction.Remove, args.Action);
+                Assert.That(args.Action, Is.EqualTo(NodeChangingAction.Remove));
             }
 
             void INodeChangingCallback.NodeRemoved(NodeChangingArgs args)
             {
-                Assert.AreEqual(NodeChangingAction.Remove, args.Action);
-                Assert.Null(args.NewParent);
+                Assert.That(args.Action, Is.EqualTo(NodeChangingAction.Remove));
+                Assert.That(args.NewParent, Is.Null);
 
                 Console.WriteLine($"Removed node: {args.Node.NodeType} ({args.Node.GetHashCode()})");
             }
@@ -662,22 +662,22 @@ namespace ApiExamples
             // which then appears in the parent Paragraph's RunCollection.
             RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
 
-            Assert.AreEqual(2, runs.Count);
+            Assert.That(runs.Count, Is.EqualTo(2));
 
             // We can also insert a node into the RunCollection manually.
             Run newRun = new Run(doc, "Run 3. ");
             runs.Insert(3, newRun);
 
-            Assert.True(runs.Contains(newRun));
-            Assert.AreEqual("Run 1. Run 2. Run 3.", doc.GetText().Trim());
+            Assert.That(runs.Contains(newRun), Is.True);
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Run 1. Run 2. Run 3."));
 
             // Access individual runs and remove them to remove their text from the document.
             Run run = runs[1];
             runs.Remove(run);
 
-            Assert.AreEqual("Run 1. Run 3.", doc.GetText().Trim());
-            Assert.NotNull(run);
-            Assert.False(runs.Contains(run));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Run 1. Run 3."));
+            Assert.That(run, Is.Not.Null);
+            Assert.That(runs.Contains(run), Is.False);
             //ExEnd
         }
 
@@ -706,31 +706,30 @@ namespace ApiExamples
             // Our document contains three Run nodes.
             NodeList nodeList = doc.SelectNodes("//Run");
 
-            Assert.AreEqual(3, nodeList.Count);
-            Assert.True(nodeList.Any(n => n.GetText().Trim() == "Hello world!"));
-            Assert.True(nodeList.Any(n => n.GetText().Trim() == "Cell 1"));
-            Assert.True(nodeList.Any(n => n.GetText().Trim() == "Cell 2"));
+            Assert.That(nodeList.Count, Is.EqualTo(3));
+            Assert.That(nodeList.Any(n => n.GetText().Trim() == "Hello world!"), Is.True);
+            Assert.That(nodeList.Any(n => n.GetText().Trim() == "Cell 1"), Is.True);
+            Assert.That(nodeList.Any(n => n.GetText().Trim() == "Cell 2"), Is.True);
 
             // Use a double forward slash to select all Run nodes
             // that are indirect descendants of a Table node, which would be the runs inside the two cells we inserted.
             nodeList = doc.SelectNodes("//Table//Run");
 
-            Assert.AreEqual(2, nodeList.Count);
-            Assert.True(nodeList.Any(n => n.GetText().Trim() == "Cell 1"));
-            Assert.True(nodeList.Any(n => n.GetText().Trim() == "Cell 2"));
+            Assert.That(nodeList.Count, Is.EqualTo(2));
+            Assert.That(nodeList.Any(n => n.GetText().Trim() == "Cell 1"), Is.True);
+            Assert.That(nodeList.Any(n => n.GetText().Trim() == "Cell 2"), Is.True);
 
             // Single forward slashes specify direct descendant relationships,
             // which we skipped when we used double slashes.
-            Assert.AreEqual(doc.SelectNodes("//Table//Run"), 
-                doc.SelectNodes("//Table/Row/Cell/Paragraph/Run"));
+            Assert.That(doc.SelectNodes("//Table/Row/Cell/Paragraph/Run"), Is.EqualTo(doc.SelectNodes("//Table//Run")));
 
             // Access the shape that contains the image we inserted.
             nodeList = doc.SelectNodes("//Shape");
 
-            Assert.AreEqual(1, nodeList.Count);
+            Assert.That(nodeList.Count, Is.EqualTo(1));
 
             Shape shape = (Shape)nodeList[0];
-            Assert.True(shape.HasImage);
+            Assert.That(shape.HasImage, Is.True);
             //ExEnd
         }
     }

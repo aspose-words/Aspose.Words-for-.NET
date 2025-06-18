@@ -37,7 +37,7 @@ namespace ApiExamples
             // to modify how we save the document to the XAML save format.
             XamlFlowSaveOptions options = new XamlFlowSaveOptions();
 
-            Assert.AreEqual(SaveFormat.XamlFlow, options.SaveFormat);
+            Assert.That(options.SaveFormat, Is.EqualTo(SaveFormat.XamlFlow));
 
             // Use the "ImagesFolder" property to assign a folder in the local file system into which
             // Aspose.Words will save all the document's linked images.
@@ -88,9 +88,9 @@ namespace ApiExamples
 
         private void TestImageFolder(ImageUriPrinter callback)
         {
-            Assert.AreEqual(9, callback.Resources.Count);
+            Assert.That(callback.Resources.Count, Is.EqualTo(9));
             foreach (string resource in callback.Resources)
-                Assert.True(File.Exists($"{callback.ImagesFolderAlias}/{resource}"));
+                Assert.That(File.Exists($"{callback.ImagesFolderAlias}/{resource}"), Is.True);
         }
 
         [TestCase(SaveFormat.XamlFlow, "xamlflow")]
@@ -113,7 +113,7 @@ namespace ApiExamples
 
             var exception = Assert.Throws<OperationCanceledException>(() =>
                 doc.Save(ArtifactsDir + $"XamlFlowSaveOptions.ProgressCallback.{ext}", saveOptions));
-            Assert.True(exception?.Message.Contains("EstimatedProgress"));
+            Assert.That(exception?.Message.Contains("EstimatedProgress"), Is.True);
         }
 
         /// <summary>

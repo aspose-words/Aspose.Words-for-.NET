@@ -62,13 +62,13 @@ namespace ApiExamples
             // This paragraph is the first item. The first item of a numbered list will have a "1." as its list item symbol.
             builder.Writeln("Opening documents from different formats:");
 
-            Assert.AreEqual(0, builder.ListFormat.ListLevelNumber);
+            Assert.That(builder.ListFormat.ListLevelNumber, Is.EqualTo(0));
 
             // Call the "ListIndent" method to increase the current list level,
             // which will start a new self-contained list, with a deeper indent, at the current item of the first list level.
             builder.ListFormat.ListIndent();
 
-            Assert.AreEqual(1, builder.ListFormat.ListLevelNumber);
+            Assert.That(builder.ListFormat.ListLevelNumber, Is.EqualTo(1));
 
             // These are the first three list items of the second list level, which will maintain a count
             // independent of the count of the first list level. According to the current list format,
@@ -80,7 +80,7 @@ namespace ApiExamples
             // Call the "ListOutdent" method to return to the previous list level.
             builder.ListFormat.ListOutdent();
 
-            Assert.AreEqual(0, builder.ListFormat.ListLevelNumber);
+            Assert.That(builder.ListFormat.ListLevelNumber, Is.EqualTo(0));
 
             // These two paragraphs will continue the count of the first list level.
             // These items will have symbols of "2.", and "3."
@@ -131,7 +131,7 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Assert.False(builder.ListFormat.IsListItem);
+            Assert.That(builder.ListFormat.IsListItem, Is.False);
 
             // A list allows us to organize and decorate sets of paragraphs with prefix symbols and indents.
             // We can create nested lists by increasing the indent level. 
@@ -142,7 +142,7 @@ namespace ApiExamples
             // Numbered lists create a logical order for their paragraphs by numbering each item.
             builder.ListFormat.List = doc.Lists.Add(ListTemplate.NumberDefault);
 
-            Assert.True(builder.ListFormat.IsListItem);
+            Assert.That(builder.ListFormat.IsListItem, Is.True);
 
             // By setting the "ListLevelNumber" property, we can increase the list level
             // to begin a self-contained sub-list at the current list item.
@@ -168,7 +168,7 @@ namespace ApiExamples
             // We can disable list formatting to not format any subsequent paragraphs as lists by un-setting the "List" flag.
             builder.ListFormat.List = null;
 
-            Assert.False(builder.ListFormat.IsListItem);
+            Assert.That(builder.ListFormat.IsListItem, Is.False);
 
             doc.Save(ArtifactsDir + "Lists.SpecifyListLevel.docx");
             //ExEnd
@@ -208,8 +208,8 @@ namespace ApiExamples
             builder.Writeln("Numbered list item 1.");
 
             // Every paragraph that comprises a list will have this flag.
-            Assert.True(builder.CurrentParagraph.IsListItem);
-            Assert.True(builder.ParagraphFormat.IsListItem);
+            Assert.That(builder.CurrentParagraph.IsListItem, Is.True);
+            Assert.That(builder.ParagraphFormat.IsListItem, Is.True);
 
             // Create a bulleted list.
             List bulletedList = doc.Lists.Add(ListTemplate.BulletDefault);
@@ -320,17 +320,17 @@ namespace ApiExamples
             listLevel = doc.Lists[0].ListLevels[0];
 
             TestUtil.VerifyListLevel("\0", -36.0d, NumberStyle.OrdinalText, listLevel);
-            Assert.AreEqual(Color.Red.ToArgb(), listLevel.Font.Color.ToArgb());
-            Assert.AreEqual(24.0d, listLevel.Font.Size);
-            Assert.AreEqual(21, listLevel.StartAt);
+            Assert.That(listLevel.Font.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
+            Assert.That(listLevel.Font.Size, Is.EqualTo(24.0d));
+            Assert.That(listLevel.StartAt, Is.EqualTo(21));
 
             listLevel = doc.Lists[0].ListLevels[1];
 
             TestUtil.VerifyListLevel("\xf0af", 144.0d, NumberStyle.Bullet, listLevel);
-            Assert.AreEqual(Color.Blue.ToArgb(), listLevel.Font.Color.ToArgb());
-            Assert.AreEqual(24.0d, listLevel.Font.Size);
-            Assert.AreEqual(1, listLevel.StartAt);
-            Assert.AreEqual(ListTrailingCharacter.Space, listLevel.TrailingCharacter);
+            Assert.That(listLevel.Font.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+            Assert.That(listLevel.Font.Size, Is.EqualTo(24.0d));
+            Assert.That(listLevel.StartAt, Is.EqualTo(1));
+            Assert.That(listLevel.TrailingCharacter, Is.EqualTo(ListTrailingCharacter.Space));
         }
 
         [Test]
@@ -384,15 +384,15 @@ namespace ApiExamples
 
             list1 = doc.Lists[0];
             TestUtil.VerifyListLevel("\0)", 18.0d, NumberStyle.Arabic, list1.ListLevels[0]);
-            Assert.AreEqual(Color.Red.ToArgb(), list1.ListLevels[0].Font.Color.ToArgb());
-            Assert.AreEqual(10.0d, list1.ListLevels[0].Font.Size);
-            Assert.AreEqual(1, list1.ListLevels[0].StartAt);
+            Assert.That(list1.ListLevels[0].Font.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
+            Assert.That(list1.ListLevels[0].Font.Size, Is.EqualTo(10.0d));
+            Assert.That(list1.ListLevels[0].StartAt, Is.EqualTo(1));
 
             list2 = doc.Lists[1];
             TestUtil.VerifyListLevel("\0)", 18.0d, NumberStyle.Arabic, list2.ListLevels[0]);
-            Assert.AreEqual(Color.Blue.ToArgb(), list2.ListLevels[0].Font.Color.ToArgb());
-            Assert.AreEqual(10.0d, list2.ListLevels[0].Font.Size);
-            Assert.AreEqual(10, list2.ListLevels[0].StartAt);
+            Assert.That(list2.ListLevels[0].Font.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+            Assert.That(list2.ListLevels[0].Font.Size, Is.EqualTo(10.0d));
+            Assert.That(list2.ListLevels[0].StartAt, Is.EqualTo(10));
         }
 
         [Test]
@@ -422,10 +422,10 @@ namespace ApiExamples
 
             List list1 = listStyle.List;
 
-            Assert.True(list1.IsListStyleDefinition);
-            Assert.False(list1.IsListStyleReference);
-            Assert.True(list1.IsMultiLevel);
-            Assert.AreEqual(listStyle, list1.Style);
+            Assert.That(list1.IsListStyleDefinition, Is.True);
+            Assert.That(list1.IsListStyleReference, Is.False);
+            Assert.That(list1.IsMultiLevel, Is.True);
+            Assert.That(list1.Style, Is.EqualTo(listStyle));
 
             // Change the appearance of all list levels in our list.
             foreach (ListLevel level in list1.ListLevels)
@@ -442,9 +442,9 @@ namespace ApiExamples
             // Create another list from a list within a style.
             List list2 = doc.Lists.Add(listStyle);
 
-            Assert.False(list2.IsListStyleDefinition);
-            Assert.True(list2.IsListStyleReference);
-            Assert.AreEqual(listStyle, list2.Style);
+            Assert.That(list2.IsListStyleDefinition, Is.False);
+            Assert.That(list2.IsListStyleReference, Is.True);
+            Assert.That(list2.Style, Is.EqualTo(listStyle));
 
             // Add some list items that our list will format.
             builder.ListFormat.List = list2;
@@ -469,26 +469,26 @@ namespace ApiExamples
             list1 = doc.Lists[0];
 
             TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, list1.ListLevels[0]);
-            Assert.True(list1.IsListStyleDefinition);
-            Assert.False(list1.IsListStyleReference);
-            Assert.True(list1.IsMultiLevel);
-            Assert.AreEqual(Color.Blue.ToArgb(), list1.ListLevels[0].Font.Color.ToArgb());
-            Assert.AreEqual("Verdana", list1.ListLevels[0].Font.Name);
-            Assert.True(list1.ListLevels[0].Font.Bold);
+            Assert.That(list1.IsListStyleDefinition, Is.True);
+            Assert.That(list1.IsListStyleReference, Is.False);
+            Assert.That(list1.IsMultiLevel, Is.True);
+            Assert.That(list1.ListLevels[0].Font.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+            Assert.That(list1.ListLevels[0].Font.Name, Is.EqualTo("Verdana"));
+            Assert.That(list1.ListLevels[0].Font.Bold, Is.True);
 
             list2 = doc.Lists[1];
 
             TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, list2.ListLevels[0]);
-            Assert.False(list2.IsListStyleDefinition);
-            Assert.True(list2.IsListStyleReference);
-            Assert.True(list2.IsMultiLevel);
+            Assert.That(list2.IsListStyleDefinition, Is.False);
+            Assert.That(list2.IsListStyleReference, Is.True);
+            Assert.That(list2.IsMultiLevel, Is.True);
 
             list3 = doc.Lists[2];
 
             TestUtil.VerifyListLevel("\0.", 18.0d, NumberStyle.Arabic, list3.ListLevels[0]);
-            Assert.False(list3.IsListStyleDefinition);
-            Assert.True(list3.IsListStyleReference);
-            Assert.True(list3.IsMultiLevel);
+            Assert.That(list3.IsListStyleDefinition, Is.False);
+            Assert.That(list3.IsListStyleReference, Is.True);
+            Assert.That(list3.IsMultiLevel, Is.True);
         }
 
         [Test]
@@ -527,7 +527,7 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(6, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
+            Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.IsListItem), Is.EqualTo(6));
         }
 
         [Test]
@@ -546,12 +546,12 @@ namespace ApiExamples
             builder.ListFormat.RemoveNumbers();
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
-            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
+            Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.IsListItem), Is.EqualTo(3));
 
             foreach (Paragraph paragraph in paras)
                 paragraph.ListFormat.RemoveNumbers();
 
-            Assert.AreEqual(0, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
+            Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.IsListItem), Is.EqualTo(0));
             //ExEnd
         }
 
@@ -570,25 +570,25 @@ namespace ApiExamples
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(0, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
+            Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.IsListItem), Is.EqualTo(0));
 
             doc.Lists.Add(ListTemplate.NumberDefault);
-            List docList = doc.Lists[0];
+            List list = doc.Lists[0];
 
             foreach (Paragraph paragraph in paras.OfType<Paragraph>())
             {
-                paragraph.ListFormat.List = docList;
+                paragraph.ListFormat.List = list;
                 paragraph.ListFormat.ListLevelNumber = 2;
             }
 
-            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
+            Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.IsListItem), Is.EqualTo(3));
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
             paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
-            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.ListLevelNumber == 2));
+            Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.IsListItem), Is.EqualTo(3));
+            Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.ListLevelNumber == 2), Is.EqualTo(3));
         }
 
         [Test]
@@ -606,24 +606,24 @@ namespace ApiExamples
 
             NodeCollection paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(0, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
+            Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.IsListItem), Is.EqualTo(0));
 
-            List docList = doc.Lists.Add(ListTemplate.NumberUppercaseLetterDot);
+            List list = doc.Lists.Add(ListTemplate.NumberUppercaseLetterDot);
 
             foreach (Paragraph paragraph in paras.OfType<Paragraph>())
             {
-                paragraph.ListFormat.List = docList;
+                paragraph.ListFormat.List = list;
                 paragraph.ListFormat.ListLevelNumber = 1;
             }
 
-            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
+            Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.IsListItem), Is.EqualTo(3));
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
             paras = doc.GetChildNodes(NodeType.Paragraph, true);
 
-            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.IsListItem));
-            Assert.AreEqual(3, paras.Count(n => ((Paragraph)n).ListFormat.ListLevelNumber == 1));
+            Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.IsListItem), Is.EqualTo(3));
+            Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.ListLevelNumber == 1), Is.EqualTo(3));
         }
 
         //ExStart
@@ -766,9 +766,9 @@ namespace ApiExamples
                 for (int i = 0; i < list.ListLevels.Count; i++)
                 {
                     ListLevel expectedListLevel = listSourceDoc.Lists.First(l => l.ListId == list.ListId).ListLevels[i];
-                    Assert.AreEqual(expectedListLevel.NumberFormat, list.ListLevels[i].NumberFormat);
-                    Assert.AreEqual(expectedListLevel.NumberPosition, list.ListLevels[i].NumberPosition);
-                    Assert.AreEqual(expectedListLevel.NumberStyle, list.ListLevels[i].NumberStyle);
+                    Assert.That(list.ListLevels[i].NumberFormat, Is.EqualTo(expectedListLevel.NumberFormat));
+                    Assert.That(list.ListLevels[i].NumberPosition, Is.EqualTo(expectedListLevel.NumberPosition));
+                    Assert.That(list.ListLevels[i].NumberStyle, Is.EqualTo(expectedListLevel.NumberStyle));
                 }
         }
 
@@ -786,10 +786,10 @@ namespace ApiExamples
             Document doc = new Document();
 
             ListCollection lists = doc.Lists;
-            Assert.AreEqual(doc, lists.Document);
+            Assert.That(lists.Document, Is.EqualTo(doc));
 
             List list = lists.Add(ListTemplate.BulletDefault);
-            Assert.AreEqual(doc, list.Document);
+            Assert.That(list.Document, Is.EqualTo(doc));
 
             Console.WriteLine("Current list count: " + lists.Count);
             Console.WriteLine("Is the first document list: " + (lists[0].Equals(list)));
@@ -800,10 +800,10 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             lists = doc.Lists;
             
-            Assert.AreEqual(doc, lists.Document);
-            Assert.AreEqual(1, lists.Count);
-            Assert.AreEqual(1, lists[0].ListId);
-            Assert.AreEqual(lists[0], lists.GetListByListId(1));
+            Assert.That(lists.Document, Is.EqualTo(doc));
+            Assert.That(lists.Count, Is.EqualTo(1));
+            Assert.That(lists[0].ListId, Is.EqualTo(1));
+            Assert.That(lists.GetListByListId(1), Is.EqualTo(lists[0]));
         }
         
         [Test]
@@ -874,16 +874,16 @@ namespace ApiExamples
             ListLevel listLevel = doc.Lists[0].ListLevels[0];
 
             TestUtil.VerifyListLevel("Appendix \0", 18.0d, NumberStyle.UppercaseLetter, listLevel);
-            Assert.False(listLevel.IsLegal);
-            Assert.AreEqual(-1, listLevel.RestartAfterLevel);
-            Assert.AreEqual("Heading 1", listLevel.LinkedStyle.Name);
+            Assert.That(listLevel.IsLegal, Is.False);
+            Assert.That(listLevel.RestartAfterLevel, Is.EqualTo(-1));
+            Assert.That(listLevel.LinkedStyle.Name, Is.EqualTo("Heading 1"));
 
             listLevel = doc.Lists[0].ListLevels[1];
 
             TestUtil.VerifyListLevel("Section (\0.\u0001)", 54.0d, NumberStyle.LeadingZero, listLevel);
-            Assert.True(listLevel.IsLegal);
-            Assert.AreEqual(0, listLevel.RestartAfterLevel);
-            Assert.Null(listLevel.LinkedStyle);
+            Assert.That(listLevel.IsLegal, Is.True);
+            Assert.That(listLevel.RestartAfterLevel, Is.EqualTo(0));
+            Assert.That(listLevel.LinkedStyle, Is.Null);
         }
 
         [Test]
@@ -924,7 +924,7 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.AreEqual(10, paras.OfType<Paragraph>().Count(p => p.ListFormat.IsListItem));
+            Assert.That(paras.OfType<Paragraph>().Count(p => p.ListFormat.IsListItem), Is.EqualTo(10));
         }
 
         [Test, Category("IgnoreOnJenkins")]
@@ -943,7 +943,7 @@ namespace ApiExamples
             list.ListLevels[0].CreatePictureBullet();
             list.ListLevels[0].ImageData.SetImage(ImageDir + "Logo icon.ico");
 
-            Assert.IsTrue(list.ListLevels[0].ImageData.HasImage);
+            Assert.That(list.ListLevels[0].ImageData.HasImage, Is.True);
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -955,12 +955,12 @@ namespace ApiExamples
 
             list.ListLevels[0].DeletePictureBullet();
 
-            Assert.IsNull(list.ListLevels[0].ImageData);
+            Assert.That(list.ListLevels[0].ImageData, Is.Null);
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Lists.CreatePictureBullet.docx");
 
-            Assert.IsTrue(doc.Lists[0].ListLevels[0].ImageData.HasImage);
+            Assert.That(doc.Lists[0].ListLevels[0].ImageData.HasImage, Is.True);
         }
 
         [Test]
@@ -979,11 +979,11 @@ namespace ApiExamples
             if (listLevel.NumberStyle == NumberStyle.Custom)
                 customNumberStyleFormat = listLevel.CustomNumberStyleFormat;
 
-            Assert.AreEqual("001, 002, 003, ...", customNumberStyleFormat);
+            Assert.That(customNumberStyleFormat, Is.EqualTo("001, 002, 003, ..."));
 
             // We can get value for the specified index of the list item.
-            Assert.AreEqual("iv", ListLevel.GetEffectiveValue(4, NumberStyle.LowercaseRoman, null));
-            Assert.AreEqual("005", ListLevel.GetEffectiveValue(5, NumberStyle.Custom, customNumberStyleFormat));
+            Assert.That(ListLevel.GetEffectiveValue(4, NumberStyle.LowercaseRoman, null), Is.EqualTo("iv"));
+            Assert.That(ListLevel.GetEffectiveValue(5, NumberStyle.Custom, customNumberStyleFormat), Is.EqualTo("005"));
             //ExEnd
 
             Assert.Throws<ArgumentException>(
@@ -1000,8 +1000,8 @@ namespace ApiExamples
             //ExSummary:Shows how to define lists with the same ListDefId.
             Document doc = new Document(MyDir + "Different lists.docx");
 
-            Assert.True(doc.Lists[0].HasSameTemplate(doc.Lists[1]));
-            Assert.False(doc.Lists[1].HasSameTemplate(doc.Lists[2]));
+            Assert.That(doc.Lists[0].HasSameTemplate(doc.Lists[1]), Is.True);
+            Assert.That(doc.Lists[1].HasSameTemplate(doc.Lists[2]), Is.False);
             //ExEnd
         }
 
@@ -1017,17 +1017,17 @@ namespace ApiExamples
             doc.UpdateListLabels();
 
             ParagraphCollection paras = doc.FirstSection.Body.Paragraphs;
-            Assert.AreEqual("001.", paras[0].ListLabel.LabelString);
-            Assert.AreEqual("0001.", paras[1].ListLabel.LabelString);
-            Assert.AreEqual("0002.", paras[2].ListLabel.LabelString);
+            Assert.That(paras[0].ListLabel.LabelString, Is.EqualTo("001."));
+            Assert.That(paras[1].ListLabel.LabelString, Is.EqualTo("0001."));
+            Assert.That(paras[2].ListLabel.LabelString, Is.EqualTo("0002."));
 
             paras[1].ListFormat.ListLevel.CustomNumberStyleFormat = "001, 002, 003, ...";
 
             doc.UpdateListLabels();
 
-            Assert.AreEqual("001.", paras[0].ListLabel.LabelString);
-            Assert.AreEqual("001.", paras[1].ListLabel.LabelString);
-            Assert.AreEqual("002.", paras[2].ListLabel.LabelString);
+            Assert.That(paras[0].ListLabel.LabelString, Is.EqualTo("001."));
+            Assert.That(paras[1].ListLabel.LabelString, Is.EqualTo("001."));
+            Assert.That(paras[2].ListLabel.LabelString, Is.EqualTo("002."));
             //ExEnd:SetCustomNumberStyleFormat
         }
 

@@ -46,14 +46,14 @@ namespace ApiExamples
             // it will inherit the builder's current page setup properties.
             builder.InsertBreak(BreakType.SectionBreakNewPage);
 
-            Assert.AreEqual(Orientation.Landscape, doc.Sections[1].PageSetup.Orientation);
-            Assert.AreEqual(PageVerticalAlignment.Center, doc.Sections[1].PageSetup.VerticalAlignment);
+            Assert.That(doc.Sections[1].PageSetup.Orientation, Is.EqualTo(Orientation.Landscape));
+            Assert.That(doc.Sections[1].PageSetup.VerticalAlignment, Is.EqualTo(PageVerticalAlignment.Center));
 
             // We can revert its page setup properties to their default values using the "ClearFormatting" method.
             builder.PageSetup.ClearFormatting();
 
-            Assert.AreEqual(Orientation.Portrait, doc.Sections[1].PageSetup.Orientation);
-            Assert.AreEqual(PageVerticalAlignment.Top, doc.Sections[1].PageSetup.VerticalAlignment);
+            Assert.That(doc.Sections[1].PageSetup.Orientation, Is.EqualTo(Orientation.Portrait));
+            Assert.That(doc.Sections[1].PageSetup.VerticalAlignment, Is.EqualTo(PageVerticalAlignment.Top));
 
             builder.Writeln("This is the second section, which is in default Letter paper size, portrait orientation and top alignment.");
 
@@ -62,11 +62,11 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "PageSetup.ClearFormatting.docx");
 
-            Assert.AreEqual(Orientation.Landscape, doc.Sections[0].PageSetup.Orientation);
-            Assert.AreEqual(PageVerticalAlignment.Center, doc.Sections[0].PageSetup.VerticalAlignment);
+            Assert.That(doc.Sections[0].PageSetup.Orientation, Is.EqualTo(Orientation.Landscape));
+            Assert.That(doc.Sections[0].PageSetup.VerticalAlignment, Is.EqualTo(PageVerticalAlignment.Center));
 
-            Assert.AreEqual(Orientation.Portrait, doc.Sections[1].PageSetup.Orientation);
-            Assert.AreEqual(PageVerticalAlignment.Top, doc.Sections[1].PageSetup.VerticalAlignment);
+            Assert.That(doc.Sections[1].PageSetup.Orientation, Is.EqualTo(Orientation.Portrait));
+            Assert.That(doc.Sections[1].PageSetup.VerticalAlignment, Is.EqualTo(PageVerticalAlignment.Top));
         }
 
         [TestCase(false)]
@@ -114,7 +114,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "PageSetup.DifferentFirstPageHeaderFooter.docx");
 
-            Assert.AreEqual(differentFirstPageHeaderFooter, doc.FirstSection.PageSetup.DifferentFirstPageHeaderFooter);
+            Assert.That(doc.FirstSection.PageSetup.DifferentFirstPageHeaderFooter, Is.EqualTo(differentFirstPageHeaderFooter));
         }
 
         [TestCase(false)]
@@ -163,7 +163,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "PageSetup.OddAndEvenPagesHeaderFooter.docx");
 
-            Assert.AreEqual(oddAndEvenPagesHeaderFooter, doc.FirstSection.PageSetup.OddAndEvenPagesHeaderFooter);
+            Assert.That(doc.FirstSection.PageSetup.OddAndEvenPagesHeaderFooter, Is.EqualTo(oddAndEvenPagesHeaderFooter));
         }
 
         [Test]
@@ -184,7 +184,7 @@ namespace ApiExamples
             // The number of characters also depends on the size of the font.
             doc.Styles["Normal"].Font.Size = 20;
 
-            Assert.AreEqual(8, doc.FirstSection.PageSetup.CharactersPerLine);
+            Assert.That(doc.FirstSection.PageSetup.CharactersPerLine, Is.EqualTo(8));
 
             builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
 
@@ -193,8 +193,8 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "PageSetup.CharactersPerLine.docx");
 
-            Assert.AreEqual(SectionLayoutMode.Grid, doc.FirstSection.PageSetup.LayoutMode);
-            Assert.AreEqual(8, doc.FirstSection.PageSetup.CharactersPerLine);
+            Assert.That(doc.FirstSection.PageSetup.LayoutMode, Is.EqualTo(SectionLayoutMode.Grid));
+            Assert.That(doc.FirstSection.PageSetup.CharactersPerLine, Is.EqualTo(8));
         }
 
         [Test]
@@ -224,11 +224,11 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "PageSetup.LinesPerPage.docx");
 
-            Assert.AreEqual(SectionLayoutMode.LineGrid, doc.FirstSection.PageSetup.LayoutMode);
-            Assert.AreEqual(15, doc.FirstSection.PageSetup.LinesPerPage);
+            Assert.That(doc.FirstSection.PageSetup.LayoutMode, Is.EqualTo(SectionLayoutMode.LineGrid));
+            Assert.That(doc.FirstSection.PageSetup.LinesPerPage, Is.EqualTo(15));
 
             foreach (Paragraph paragraph in doc.FirstSection.Body.Paragraphs)
-                Assert.True(paragraph.ParagraphFormat.SnapToGrid);
+                Assert.That(paragraph.ParagraphFormat.SnapToGrid, Is.True);
         }
 
         [Test]
@@ -249,25 +249,25 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.SectionBreakNewPage);
             builder.Writeln("This text is in section 2.");
 
-            Assert.AreEqual(SectionStart.NewPage, doc.Sections[1].PageSetup.SectionStart);
+            Assert.That(doc.Sections[1].PageSetup.SectionStart, Is.EqualTo(SectionStart.NewPage));
 
             // 2 -  Starts the next section on the current page:
             builder.InsertBreak(BreakType.SectionBreakContinuous);
             builder.Writeln("This text is in section 3.");
 
-            Assert.AreEqual(SectionStart.Continuous, doc.Sections[2].PageSetup.SectionStart);
+            Assert.That(doc.Sections[2].PageSetup.SectionStart, Is.EqualTo(SectionStart.Continuous));
 
             // 3 -  Starts the next section on a new even page:
             builder.InsertBreak(BreakType.SectionBreakEvenPage);
             builder.Writeln("This text is in section 4.");
 
-            Assert.AreEqual(SectionStart.EvenPage, doc.Sections[3].PageSetup.SectionStart);
+            Assert.That(doc.Sections[3].PageSetup.SectionStart, Is.EqualTo(SectionStart.EvenPage));
 
             // 4 -  Starts the next section on a new odd page:
             builder.InsertBreak(BreakType.SectionBreakOddPage);
             builder.Writeln("This text is in section 5.");
 
-            Assert.AreEqual(SectionStart.OddPage, doc.Sections[4].PageSetup.SectionStart);
+            Assert.That(doc.Sections[4].PageSetup.SectionStart, Is.EqualTo(SectionStart.OddPage));
 
             // 5 -  Starts the next section on a new column:
             TextColumnCollection columns = builder.PageSetup.TextColumns;
@@ -276,19 +276,19 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.SectionBreakNewColumn);
             builder.Writeln("This text is in section 6.");
 
-            Assert.AreEqual(SectionStart.NewColumn, doc.Sections[5].PageSetup.SectionStart);
+            Assert.That(doc.Sections[5].PageSetup.SectionStart, Is.EqualTo(SectionStart.NewColumn));
 
             doc.Save(ArtifactsDir + "PageSetup.SetSectionStart.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "PageSetup.SetSectionStart.docx");
 
-            Assert.AreEqual(SectionStart.NewPage, doc.Sections[0].PageSetup.SectionStart);
-            Assert.AreEqual(SectionStart.NewPage, doc.Sections[1].PageSetup.SectionStart);
-            Assert.AreEqual(SectionStart.Continuous, doc.Sections[2].PageSetup.SectionStart);
-            Assert.AreEqual(SectionStart.EvenPage, doc.Sections[3].PageSetup.SectionStart);
-            Assert.AreEqual(SectionStart.OddPage, doc.Sections[4].PageSetup.SectionStart);
-            Assert.AreEqual(SectionStart.NewColumn, doc.Sections[5].PageSetup.SectionStart);
+            Assert.That(doc.Sections[0].PageSetup.SectionStart, Is.EqualTo(SectionStart.NewPage));
+            Assert.That(doc.Sections[1].PageSetup.SectionStart, Is.EqualTo(SectionStart.NewPage));
+            Assert.That(doc.Sections[2].PageSetup.SectionStart, Is.EqualTo(SectionStart.Continuous));
+            Assert.That(doc.Sections[3].PageSetup.SectionStart, Is.EqualTo(SectionStart.EvenPage));
+            Assert.That(doc.Sections[4].PageSetup.SectionStart, Is.EqualTo(SectionStart.OddPage));
+            Assert.That(doc.Sections[5].PageSetup.SectionStart, Is.EqualTo(SectionStart.NewColumn));
         }
 
         [Test]
@@ -317,8 +317,8 @@ namespace ApiExamples
 
             foreach (Section section in DocumentHelper.SaveOpen(doc).Sections.OfType<Section>())
             {
-                Assert.AreEqual(settings.DefaultPageSettings.PaperSource.RawKind, section.PageSetup.FirstPageTray);
-                Assert.AreEqual(settings.DefaultPageSettings.PaperSource.RawKind, section.PageSetup.OtherPagesTray);
+                Assert.That(section.PageSetup.FirstPageTray, Is.EqualTo(settings.DefaultPageSettings.PaperSource.RawKind));
+                Assert.That(section.PageSetup.OtherPagesTray, Is.EqualTo(settings.DefaultPageSettings.PaperSource.RawKind));
             }
         }
 
@@ -363,13 +363,13 @@ namespace ApiExamples
             {
                 if (section.PageSetup.PaperSize == Aspose.Words.PaperSize.Letter)
                 {
-                    Assert.AreEqual(printerTrayForLetter, section.PageSetup.FirstPageTray);
-                    Assert.AreEqual(printerTrayForLetter, section.PageSetup.OtherPagesTray);
+                    Assert.That(section.PageSetup.FirstPageTray, Is.EqualTo(printerTrayForLetter));
+                    Assert.That(section.PageSetup.OtherPagesTray, Is.EqualTo(printerTrayForLetter));
                 }
                 else if (section.PageSetup.PaperSize == Aspose.Words.PaperSize.A4)
                 {
-                    Assert.AreEqual(printerTrayForA4, section.PageSetup.FirstPageTray);
-                    Assert.AreEqual(printerTrayForA4, section.PageSetup.OtherPagesTray);
+                    Assert.That(section.PageSetup.FirstPageTray, Is.EqualTo(printerTrayForA4));
+                    Assert.That(section.PageSetup.OtherPagesTray, Is.EqualTo(printerTrayForA4));
                 }
             }
         }
@@ -409,16 +409,16 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "PageSetup.PageMargins.docx");
 
-            Assert.AreEqual(PaperSize.Legal, doc.FirstSection.PageSetup.PaperSize);
-            Assert.AreEqual(1008.0d, doc.FirstSection.PageSetup.PageWidth);
-            Assert.AreEqual(612.0d, doc.FirstSection.PageSetup.PageHeight);
-            Assert.AreEqual(Orientation.Landscape, doc.FirstSection.PageSetup.Orientation);
-            Assert.AreEqual(72.0d, doc.FirstSection.PageSetup.TopMargin);
-            Assert.AreEqual(72.0d, doc.FirstSection.PageSetup.BottomMargin);
-            Assert.AreEqual(108.0d, doc.FirstSection.PageSetup.LeftMargin);
-            Assert.AreEqual(108.0d, doc.FirstSection.PageSetup.RightMargin);
-            Assert.AreEqual(14.4d, doc.FirstSection.PageSetup.HeaderDistance);
-            Assert.AreEqual(14.4d, doc.FirstSection.PageSetup.FooterDistance);
+            Assert.That(doc.FirstSection.PageSetup.PaperSize, Is.EqualTo(PaperSize.Legal));
+            Assert.That(doc.FirstSection.PageSetup.PageWidth, Is.EqualTo(1008.0d));
+            Assert.That(doc.FirstSection.PageSetup.PageHeight, Is.EqualTo(612.0d));
+            Assert.That(doc.FirstSection.PageSetup.Orientation, Is.EqualTo(Orientation.Landscape));
+            Assert.That(doc.FirstSection.PageSetup.TopMargin, Is.EqualTo(72.0d));
+            Assert.That(doc.FirstSection.PageSetup.BottomMargin, Is.EqualTo(72.0d));
+            Assert.That(doc.FirstSection.PageSetup.LeftMargin, Is.EqualTo(108.0d));
+            Assert.That(doc.FirstSection.PageSetup.RightMargin, Is.EqualTo(108.0d));
+            Assert.That(doc.FirstSection.PageSetup.HeaderDistance, Is.EqualTo(14.4d));
+            Assert.That(doc.FirstSection.PageSetup.FooterDistance, Is.EqualTo(14.4d));
         }
 
         [Test]
@@ -435,8 +435,8 @@ namespace ApiExamples
             // by using the "PaperSize" property of this section's PageSetup object.
             builder.PageSetup.PaperSize = PaperSize.Tabloid;
 
-            Assert.AreEqual(792.0d, builder.PageSetup.PageWidth);
-            Assert.AreEqual(1224.0d, builder.PageSetup.PageHeight);
+            Assert.That(builder.PageSetup.PageWidth, Is.EqualTo(792.0d));
+            Assert.That(builder.PageSetup.PageHeight, Is.EqualTo(1224.0d));
 
             builder.Writeln($"This page is {builder.PageSetup.PageWidth}x{builder.PageSetup.PageHeight}.");
 
@@ -444,13 +444,13 @@ namespace ApiExamples
             // that section's PageSetup object inherits all the previous section's PageSetup object's values.
             builder.InsertBreak(BreakType.SectionBreakEvenPage);
 
-            Assert.AreEqual(PaperSize.Tabloid, builder.PageSetup.PaperSize);
+            Assert.That(builder.PageSetup.PaperSize, Is.EqualTo(PaperSize.Tabloid));
 
             builder.PageSetup.PaperSize = PaperSize.A5;
             builder.Writeln($"This page is {builder.PageSetup.PageWidth}x{builder.PageSetup.PageHeight}.");
 
-            Assert.AreEqual(419.55d, builder.PageSetup.PageWidth);
-            Assert.AreEqual(595.30d, builder.PageSetup.PageHeight);
+            Assert.That(builder.PageSetup.PageWidth, Is.EqualTo(419.55d));
+            Assert.That(builder.PageSetup.PageHeight, Is.EqualTo(595.30d));
 
             builder.InsertBreak(BreakType.SectionBreakEvenPage);
 
@@ -458,7 +458,7 @@ namespace ApiExamples
             builder.PageSetup.PageWidth = 620;
             builder.PageSetup.PageHeight = 480;
 
-            Assert.AreEqual(PaperSize.Custom, builder.PageSetup.PaperSize);
+            Assert.That(builder.PageSetup.PaperSize, Is.EqualTo(PaperSize.Custom));
 
             builder.Writeln($"This page is {builder.PageSetup.PageWidth}x{builder.PageSetup.PageHeight}.");
 
@@ -467,15 +467,15 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "PageSetup.PaperSizes.docx");
 
-            Assert.AreEqual(PaperSize.Tabloid, doc.Sections[0].PageSetup.PaperSize);
-            Assert.AreEqual(792.0d, doc.Sections[0].PageSetup.PageWidth);
-            Assert.AreEqual(1224.0d, doc.Sections[0].PageSetup.PageHeight);
-            Assert.AreEqual(PaperSize.A5, doc.Sections[1].PageSetup.PaperSize);
-            Assert.AreEqual(419.55d, doc.Sections[1].PageSetup.PageWidth);
-            Assert.AreEqual(595.30d, doc.Sections[1].PageSetup.PageHeight);
-            Assert.AreEqual(PaperSize.Custom, doc.Sections[2].PageSetup.PaperSize);
-            Assert.AreEqual(620.0d, doc.Sections[2].PageSetup.PageWidth);
-            Assert.AreEqual(480.0d, doc.Sections[2].PageSetup.PageHeight);
+            Assert.That(doc.Sections[0].PageSetup.PaperSize, Is.EqualTo(PaperSize.Tabloid));
+            Assert.That(doc.Sections[0].PageSetup.PageWidth, Is.EqualTo(792.0d));
+            Assert.That(doc.Sections[0].PageSetup.PageHeight, Is.EqualTo(1224.0d));
+            Assert.That(doc.Sections[1].PageSetup.PaperSize, Is.EqualTo(PaperSize.A5));
+            Assert.That(doc.Sections[1].PageSetup.PageWidth, Is.EqualTo(419.55d));
+            Assert.That(doc.Sections[1].PageSetup.PageHeight, Is.EqualTo(595.30d));
+            Assert.That(doc.Sections[2].PageSetup.PaperSize, Is.EqualTo(PaperSize.Custom));
+            Assert.That(doc.Sections[2].PageSetup.PageWidth, Is.EqualTo(620.0d));
+            Assert.That(doc.Sections[2].PageSetup.PageHeight, Is.EqualTo(480.0d));
         }
 
         [Test]
@@ -505,9 +505,9 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "PageSetup.ColumnsSameWidth.docx");
 
-            Assert.AreEqual(100.0d, doc.FirstSection.PageSetup.TextColumns.Spacing);
-            Assert.AreEqual(2, doc.FirstSection.PageSetup.TextColumns.Count);
-            Assert.AreEqual(185.15, doc.FirstSection.PageSetup.TextColumns.Width, 0.01);
+            Assert.That(doc.FirstSection.PageSetup.TextColumns.Spacing, Is.EqualTo(100.0d));
+            Assert.That(doc.FirstSection.PageSetup.TextColumns.Count, Is.EqualTo(2));
+            Assert.That(doc.FirstSection.PageSetup.TextColumns.Width, Is.EqualTo(185.15).Within(0.01));
         }
 
         [Test]
@@ -531,7 +531,7 @@ namespace ApiExamples
             // Determine the amount of room that we have available for arranging columns.
             double contentWidth = pageSetup.PageWidth - pageSetup.LeftMargin - pageSetup.RightMargin;
 
-            Assert.AreEqual(470.30d, contentWidth, 0.01d);
+            Assert.That(contentWidth, Is.EqualTo(470.30d).Within(0.01d));
 
             // Set the first column to be narrow.
             TextColumn column = columns[0];
@@ -552,12 +552,12 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.CustomColumnWidth.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.False(pageSetup.TextColumns.EvenlySpaced);
-            Assert.AreEqual(2, pageSetup.TextColumns.Count);
-            Assert.AreEqual(100.0d, pageSetup.TextColumns[0].Width);
-            Assert.AreEqual(20.0d, pageSetup.TextColumns[0].SpaceAfter);
-            Assert.AreEqual(470.3d, pageSetup.TextColumns[1].Width);
-            Assert.AreEqual(0.0d, pageSetup.TextColumns[1].SpaceAfter);
+            Assert.That(pageSetup.TextColumns.EvenlySpaced, Is.False);
+            Assert.That(pageSetup.TextColumns.Count, Is.EqualTo(2));
+            Assert.That(pageSetup.TextColumns[0].Width, Is.EqualTo(100.0d));
+            Assert.That(pageSetup.TextColumns[0].SpaceAfter, Is.EqualTo(20.0d));
+            Assert.That(pageSetup.TextColumns[1].Width, Is.EqualTo(470.3d));
+            Assert.That(pageSetup.TextColumns[1].SpaceAfter, Is.EqualTo(0.0d));
         }
 
         [TestCase(false)]
@@ -588,7 +588,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "PageSetup.VerticalLineBetweenColumns.docx");
 
-            Assert.AreEqual(lineBetween, doc.FirstSection.PageSetup.TextColumns.LineBetween);
+            Assert.That(doc.FirstSection.PageSetup.TextColumns.LineBetween, Is.EqualTo(lineBetween));
         }
 
         [Test]
@@ -631,10 +631,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.LineNumbers.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.AreEqual(1, pageSetup.LineStartingNumber);
-            Assert.AreEqual(3, pageSetup.LineNumberCountBy);
-            Assert.AreEqual(LineNumberRestartMode.RestartPage, pageSetup.LineNumberRestartMode);
-            Assert.AreEqual(50.0d, pageSetup.LineNumberDistanceFromText);
+            Assert.That(pageSetup.LineStartingNumber, Is.EqualTo(1));
+            Assert.That(pageSetup.LineNumberCountBy, Is.EqualTo(3));
+            Assert.That(pageSetup.LineNumberRestartMode, Is.EqualTo(LineNumberRestartMode.RestartPage));
+            Assert.That(pageSetup.LineNumberDistanceFromText, Is.EqualTo(50.0d));
         }
 
         [Test]
@@ -668,16 +668,16 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.PageBorderProperties.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.False(pageSetup.BorderAlwaysInFront);
-            Assert.AreEqual(PageBorderDistanceFrom.PageEdge, pageSetup.BorderDistanceFrom);
-            Assert.AreEqual(PageBorderAppliesTo.FirstPage, pageSetup.BorderAppliesTo);
+            Assert.That(pageSetup.BorderAlwaysInFront, Is.False);
+            Assert.That(pageSetup.BorderDistanceFrom, Is.EqualTo(PageBorderDistanceFrom.PageEdge));
+            Assert.That(pageSetup.BorderAppliesTo, Is.EqualTo(PageBorderAppliesTo.FirstPage));
 
             border = pageSetup.Borders[BorderType.Top];
 
-            Assert.AreEqual(LineStyle.Single, border.LineStyle);
-            Assert.AreEqual(30.0d, border.LineWidth);
-            Assert.AreEqual(Color.Blue.ToArgb(), border.Color.ToArgb());
-            Assert.AreEqual(0.0d, border.DistanceFromText);
+            Assert.That(border.LineStyle, Is.EqualTo(LineStyle.Single));
+            Assert.That(border.LineWidth, Is.EqualTo(30.0d));
+            Assert.That(border.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+            Assert.That(border.DistanceFromText, Is.EqualTo(0.0d));
         }
 
         [Test]
@@ -709,11 +709,11 @@ namespace ApiExamples
 
             foreach (Border border in pageSetup.Borders)
             {
-                Assert.AreEqual(LineStyle.DoubleWave, border.LineStyle);
-                Assert.AreEqual(2.0d, border.LineWidth);
-                Assert.AreEqual(Color.Green.ToArgb(), border.Color.ToArgb());
-                Assert.AreEqual(24.0d, border.DistanceFromText);
-                Assert.True(border.Shadow);
+                Assert.That(border.LineStyle, Is.EqualTo(LineStyle.DoubleWave));
+                Assert.That(border.LineWidth, Is.EqualTo(2.0d));
+                Assert.That(border.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+                Assert.That(border.DistanceFromText, Is.EqualTo(24.0d));
+                Assert.That(border.Shadow, Is.True);
             }
         }
 
@@ -778,15 +778,15 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.PageNumbering.docx");
             pageSetup = doc.Sections[0].PageSetup;
 
-            Assert.True(pageSetup.RestartPageNumbering);
-            Assert.AreEqual(5, pageSetup.PageStartingNumber);
-            Assert.AreEqual(NumberStyle.UppercaseRoman, pageSetup.PageNumberStyle);
+            Assert.That(pageSetup.RestartPageNumbering, Is.True);
+            Assert.That(pageSetup.PageStartingNumber, Is.EqualTo(5));
+            Assert.That(pageSetup.PageNumberStyle, Is.EqualTo(NumberStyle.UppercaseRoman));
 
             pageSetup = doc.Sections[1].PageSetup;
 
-            Assert.True(pageSetup.RestartPageNumbering);
-            Assert.AreEqual(10, pageSetup.PageStartingNumber);
-            Assert.AreEqual(NumberStyle.Arabic, pageSetup.PageNumberStyle);
+            Assert.That(pageSetup.RestartPageNumbering, Is.True);
+            Assert.That(pageSetup.PageStartingNumber, Is.EqualTo(10));
+            Assert.That(pageSetup.PageNumberStyle, Is.EqualTo(NumberStyle.Arabic));
         }
 
         [Test]
@@ -825,15 +825,15 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.FootnoteOptions.docx");
             footnoteOptions = doc.FirstSection.PageSetup.FootnoteOptions;
 
-            Assert.AreEqual(FootnotePosition.BeneathText, footnoteOptions.Position);
-            Assert.AreEqual(FootnoteNumberingRule.RestartPage, footnoteOptions.RestartRule);
-            Assert.AreEqual(1, footnoteOptions.StartNumber);
+            Assert.That(footnoteOptions.Position, Is.EqualTo(FootnotePosition.BeneathText));
+            Assert.That(footnoteOptions.RestartRule, Is.EqualTo(FootnoteNumberingRule.RestartPage));
+            Assert.That(footnoteOptions.StartNumber, Is.EqualTo(1));
 
             endnoteOptions = doc.FirstSection.PageSetup.EndnoteOptions;
 
-            Assert.AreEqual(EndnotePosition.EndOfDocument, endnoteOptions.Position);
-            Assert.AreEqual(FootnoteNumberingRule.Continuous, endnoteOptions.RestartRule);
-            Assert.AreEqual(1, endnoteOptions.StartNumber);
+            Assert.That(endnoteOptions.Position, Is.EqualTo(EndnotePosition.EndOfDocument));
+            Assert.That(endnoteOptions.RestartRule, Is.EqualTo(FootnoteNumberingRule.Continuous));
+            Assert.That(endnoteOptions.StartNumber, Is.EqualTo(1));
         }
 
         [TestCase(false)]
@@ -867,8 +867,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.Bidi.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.AreEqual(3, pageSetup.TextColumns.Count);
-            Assert.AreEqual(reverseColumns, pageSetup.Bidi);
+            Assert.That(pageSetup.TextColumns.Count, Is.EqualTo(3));
+            Assert.That(pageSetup.Bidi, Is.EqualTo(reverseColumns));
         }
 
         [Test]
@@ -906,8 +906,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.PageBorder.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.True(pageSetup.BorderSurroundsHeader);
-            Assert.False(pageSetup.BorderSurroundsFooter);
+            Assert.That(pageSetup.BorderSurroundsHeader, Is.True);
+            Assert.That(pageSetup.BorderSurroundsFooter, Is.False);
         }
 
         [Test]
@@ -934,7 +934,7 @@ namespace ApiExamples
             PageSetup pageSetup = doc.Sections[0].PageSetup;
 
             // Determine how much space our pages have for text within the margins and then add an amount to pad a margin. 
-            Assert.AreEqual(470.30d, pageSetup.PageWidth - pageSetup.LeftMargin - pageSetup.RightMargin, 0.01d);
+            Assert.That(pageSetup.PageWidth - pageSetup.LeftMargin - pageSetup.RightMargin, Is.EqualTo(470.30d).Within(0.01d));
 
             pageSetup.Gutter = 100.0d;
 
@@ -951,9 +951,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.Gutter.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.AreEqual(100.0d, pageSetup.Gutter);
-            Assert.True(pageSetup.RtlGutter);
-            Assert.AreEqual(MultiplePagesType.MirrorMargins, pageSetup.MultiplePages);
+            Assert.That(pageSetup.Gutter, Is.EqualTo(100.0d));
+            Assert.That(pageSetup.RtlGutter, Is.True);
+            Assert.That(pageSetup.MultiplePages, Is.EqualTo(MultiplePagesType.MirrorMargins));
         }
 
         [Test]
@@ -992,8 +992,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.Booklet.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.AreEqual(MultiplePagesType.BookFoldPrinting, pageSetup.MultiplePages);
-            Assert.AreEqual(4, pageSetup.SheetsPerBooklet);
+            Assert.That(pageSetup.MultiplePages, Is.EqualTo(MultiplePagesType.BookFoldPrinting));
+            Assert.That(pageSetup.SheetsPerBooklet, Is.EqualTo(4));
         }
 
         [Test]
@@ -1018,7 +1018,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "PageSetup.SetTextOrientation.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.AreEqual(TextOrientation.Upward, pageSetup.TextOrientation);
+            Assert.That(pageSetup.TextOrientation, Is.EqualTo(TextOrientation.Upward));
         }
 
         //ExStart
@@ -1032,7 +1032,7 @@ namespace ApiExamples
             doc.RemoveAllChildren();
 
             // By default, a document compiles all endnotes at its end. 
-            Assert.AreEqual(EndnotePosition.EndOfDocument, doc.EndnoteOptions.Position);
+            Assert.That(doc.EndnoteOptions.Position, Is.EqualTo(EndnotePosition.EndOfDocument));
 
             // We use the "Position" property of the document's "EndnoteOptions" object
             // to collect endnotes at the end of each section instead. 
@@ -1064,12 +1064,12 @@ namespace ApiExamples
             Body body = new Body(doc);
             section.AppendChild(body);
 
-            Assert.AreEqual(section, body.ParentNode);
+            Assert.That(body.ParentNode, Is.EqualTo(section));
 
             Paragraph para = new Paragraph(doc);
             body.AppendChild(para);
 
-            Assert.AreEqual(body, para.ParentNode);
+            Assert.That(para.ParentNode, Is.EqualTo(body));
 
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveTo(para);
@@ -1082,7 +1082,7 @@ namespace ApiExamples
         {
             PageSetup pageSetup = doc.Sections[1].PageSetup;
 
-            Assert.True(pageSetup.SuppressEndnotes);
+            Assert.That(pageSetup.SuppressEndnotes, Is.True);
         }
 
         [Test]
@@ -1122,7 +1122,7 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.AreEqual(PaperSize.JisB5, pageSetup.PaperSize);
+            Assert.That(pageSetup.PaperSize, Is.EqualTo(PaperSize.JisB5));
         }
     }
 }

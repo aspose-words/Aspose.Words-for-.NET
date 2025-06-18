@@ -37,13 +37,13 @@ namespace ApiExamples
                 Encoding = Encoding.ASCII
             };
 
-            Assert.AreEqual("US-ASCII", htmlFixedSaveOptions.Encoding.EncodingName);
+            Assert.That(htmlFixedSaveOptions.Encoding.EncodingName, Is.EqualTo("US-ASCII"));
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.UseEncoding.html", htmlFixedSaveOptions);
             //ExEnd
 
-            Assert.True(Regex.Match(File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.UseEncoding.html"),
-                "content=\"text/html; charset=us-ascii\"").Success);
+            Assert.That(Regex.Match(File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.UseEncoding.html"),
+                "content=\"text/html; charset=us-ascii\"").Success, Is.True);
         }
 
         [Test]
@@ -84,14 +84,14 @@ namespace ApiExamples
 
             if (exportEmbeddedCss)
             {
-                Assert.True(Regex.Match(outDocContents, "<style type=\"text/css\">").Success);
-                Assert.False(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCss/styles.css"));
+                Assert.That(Regex.Match(outDocContents, "<style type=\"text/css\">").Success, Is.True);
+                Assert.That(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCss/styles.css"), Is.False);
             }
             else
             {
-                Assert.True(Regex.Match(outDocContents,
-                    "<link rel=\"stylesheet\" type=\"text/css\" href=\"HtmlFixedSaveOptions[.]ExportEmbeddedCss/styles[.]css\" media=\"all\" />").Success);
-                Assert.True(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCss/styles.css"));
+                Assert.That(Regex.Match(outDocContents,
+                    "<link rel=\"stylesheet\" type=\"text/css\" href=\"HtmlFixedSaveOptions[.]ExportEmbeddedCss/styles[.]css\" media=\"all\" />").Success, Is.True);
+                Assert.That(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCss/styles.css"), Is.True);
             }
             //ExEnd
         }
@@ -123,15 +123,15 @@ namespace ApiExamples
 
             if (exportEmbeddedFonts)
             {
-                Assert.True(Regex.Match(outDocContents,
-                    "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], url[(].+[)] format[(]'woff'[)]; }").Success);
-                Assert.AreEqual(0, Directory.GetFiles(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts").Count(f => f.EndsWith(".woff")));
+                Assert.That(Regex.Match(outDocContents,
+                    "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], url[(].+[)] format[(]'woff'[)]; }").Success, Is.True);
+                Assert.That(Directory.GetFiles(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts").Count(f => f.EndsWith(".woff")), Is.EqualTo(0));
             }
             else
             {
-                Assert.True(Regex.Match(outDocContents,
-                    "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], url[(]'font001[.]woff'[)] format[(]'woff'[)]; }").Success);
-                Assert.AreEqual(2, Directory.GetFiles(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts").Count(f => f.EndsWith(".woff")));
+                Assert.That(Regex.Match(outDocContents,
+                    "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], url[(]'font001[.]woff'[)] format[(]'woff'[)]; }").Success, Is.True);
+                Assert.That(Directory.GetFiles(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts").Count(f => f.EndsWith(".woff")), Is.EqualTo(2));
             }
             //ExEnd
         }
@@ -162,16 +162,16 @@ namespace ApiExamples
 
             if (exportImages)
             {
-                Assert.False(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages/image001.jpeg"));
-                Assert.True(Regex.Match(outDocContents,
-                    "<img class=\"awimg\" style=\"left:0pt; top:0pt; width:493.1pt; height:300.55pt;\" src=\".+\" />").Success);
+                Assert.That(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages/image001.jpeg"), Is.False);
+                Assert.That(Regex.Match(outDocContents,
+                    "<img class=\"awimg\" style=\"left:0pt; top:0pt; width:493.1pt; height:300.55pt;\" src=\".+\" />").Success, Is.True);
             }
             else
             {
-                Assert.True(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages/image001.jpeg"));
-                Assert.True(Regex.Match(outDocContents,
+                Assert.That(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages/image001.jpeg"), Is.True);
+                Assert.That(Regex.Match(outDocContents,
                     "<img class=\"awimg\" style=\"left:0pt; top:0pt; width:493.1pt; height:300.55pt;\" " +
-                    "src=\"HtmlFixedSaveOptions[.]ExportEmbeddedImages/image001[.]jpeg\" />").Success);
+                    "src=\"HtmlFixedSaveOptions[.]ExportEmbeddedImages/image001[.]jpeg\" />").Success, Is.True);
             }
             //ExEnd
         }
@@ -202,15 +202,15 @@ namespace ApiExamples
 
             if (exportSvgs)
             {
-                Assert.False(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001.svg"));
-                Assert.True(Regex.Match(outDocContents,
-                    "<image id=\"image004\" xlink:href=.+/>").Success);
+                Assert.That(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001.svg"), Is.False);
+                Assert.That(Regex.Match(outDocContents,
+                    "<image id=\"image004\" xlink:href=.+/>").Success, Is.True);
             }
             else
             {
-                Assert.True(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001.svg"));
-                Assert.True(Regex.Match(outDocContents,
-                    "<object type=\"image/svg[+]xml\" data=\"HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001[.]svg\"></object>").Success);
+                Assert.That(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001.svg"), Is.True);
+                Assert.That(Regex.Match(outDocContents,
+                    "<object type=\"image/svg[+]xml\" data=\"HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001[.]svg\"></object>").Success, Is.True);
             }
             //ExEnd
         }
@@ -244,15 +244,15 @@ namespace ApiExamples
 
             if (exportFormFields)
             {
-                Assert.True(Regex.Match(outDocContents,
+                Assert.That(Regex.Match(outDocContents,
                     "<a name=\"CheckBox\" style=\"left:0pt; top:0pt;\"></a>" +
-                    "<input style=\"position:absolute; left:0pt; top:0pt;\" type=\"checkbox\" name=\"CheckBox\" />").Success);
+                    "<input style=\"position:absolute; left:0pt; top:0pt;\" type=\"checkbox\" name=\"CheckBox\" />").Success, Is.True);
             }
             else
             {
-                Assert.True(Regex.Match(outDocContents,
+                Assert.That(Regex.Match(outDocContents,
                     "<a name=\"CheckBox\" style=\"left:0pt; top:0pt;\"></a>" +
-                    "<div class=\"awdiv\" style=\"left:0.8pt; top:0.8pt; width:14.25pt; height:14.25pt; border:solid 0.75pt #000000;\"").Success);
+                    "<div class=\"awdiv\" style=\"left:0.8pt; top:0.8pt; width:14.25pt; height:14.25pt; border:solid 0.75pt #000000;\"").Success, Is.True);
             }
             //ExEnd
         }
@@ -276,16 +276,16 @@ namespace ApiExamples
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.AddCssClassNamesPrefix.html");
 
-            Assert.True(Regex.Match(outDocContents,
+            Assert.That(Regex.Match(outDocContents,
                 "<div class=\"myprefixdiv myprefixpage\" style=\"width:595[.]3pt; height:841[.]9pt;\">" +
                 "<div class=\"myprefixdiv\" style=\"left:85[.]05pt; top:36pt; clip:rect[(]0pt,510[.]25pt,74[.]95pt,-85.05pt[)];\">" +
-                "<span class=\"myprefixspan myprefixtext001\" style=\"font-size:11pt; left:294[.]73pt; top:0[.]36pt; line-height:12[.]29pt;\">").Success);
+                "<span class=\"myprefixspan myprefixtext001\" style=\"font-size:11pt; left:294[.]73pt; top:0[.]36pt; line-height:12[.]29pt;\">").Success, Is.True);
 
             outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.AddCssClassNamesPrefix/styles.css");
 
-            Assert.True(Regex.Match(outDocContents,
+            Assert.That(Regex.Match(outDocContents,
                 ".myprefixdiv { position:absolute; } " +
-                ".myprefixspan { position:absolute; white-space:pre; color:#000000; font-size:12pt; }").Success);
+                ".myprefixspan { position:absolute; white-space:pre; color:#000000; font-size:12pt; }").Success, Is.True);
             //ExEnd
         }
 
@@ -312,16 +312,16 @@ namespace ApiExamples
             switch (pageHorizontalAlignment)
             {
                 case HtmlFixedPageHorizontalAlignment.Center:
-                    Assert.True(Regex.Match(outDocContents,
-                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt auto; overflow:hidden; }").Success);
+                    Assert.That(Regex.Match(outDocContents,
+                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt auto; overflow:hidden; }").Success, Is.True);
                     break;
                 case HtmlFixedPageHorizontalAlignment.Left:
-                    Assert.True(Regex.Match(outDocContents,
-                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt 10pt; overflow:hidden; }").Success);
+                    Assert.That(Regex.Match(outDocContents,
+                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt 10pt; overflow:hidden; }").Success, Is.True);
                     break;
                 case HtmlFixedPageHorizontalAlignment.Right:
-                    Assert.True(Regex.Match(outDocContents,
-                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt 10pt 10pt auto; overflow:hidden; }").Success);
+                    Assert.That(Regex.Match(outDocContents,
+                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt 10pt 10pt auto; overflow:hidden; }").Success, Is.True);
                     break;
             }
             //ExEnd
@@ -344,8 +344,8 @@ namespace ApiExamples
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.PageMargins/styles.css");
 
-            Assert.True(Regex.Match(outDocContents,
-                "[.]awpage { position:relative; border:solid 1pt black; margin:15pt auto 15pt auto; overflow:hidden; }").Success);
+            Assert.That(Regex.Match(outDocContents,
+                "[.]awpage { position:relative; border:solid 1pt black; margin:15pt auto 15pt auto; overflow:hidden; }").Success, Is.True);
             //ExEnd
         }
 
@@ -370,8 +370,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
 
             // The size of the optimized version of the document is almost a third of the size of the unoptimized document.
-            Assert.AreEqual(optimizeOutput ? 60385 : 191000,
-                new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length, 200);
+            Assert.That(new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length, Is.EqualTo(optimizeOutput ? 60385 : 191000).Within(200));
             //ExEnd
         }
 
@@ -399,11 +398,11 @@ namespace ApiExamples
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.UsingMachineFonts.html");
 
             if (useTargetMachineFonts)
-                Assert.False(Regex.Match(outDocContents, "@font-face").Success);
+                Assert.That(Regex.Match(outDocContents, "@font-face").Success, Is.False);
             else
-                Assert.True(Regex.Match(outDocContents,
+                Assert.That(Regex.Match(outDocContents,
                     "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], " +
-                    "url[(]'HtmlFixedSaveOptions.UsingMachineFonts/font001.ttf'[)] format[(]'truetype'[)]; }").Success);
+                    "url[(]'HtmlFixedSaveOptions.UsingMachineFonts/font001.ttf'[)] format[(]'truetype'[)]; }").Success, Is.True);
             //ExEnd
         }
 
@@ -456,8 +455,8 @@ namespace ApiExamples
 
         private void TestResourceSavingCallback(FontSavingCallback callback)
         {
-            Assert.True(callback.GetText().Contains("font001.woff"));
-            Assert.True(callback.GetText().Contains("styles.css"));
+            Assert.That(callback.GetText().Contains("font001.woff"), Is.True);
+            Assert.That(callback.GetText().Contains("styles.css"), Is.True);
         }
 
         //ExStart
@@ -499,8 +498,8 @@ namespace ApiExamples
 
             string[] resourceFiles = Directory.GetFiles(ArtifactsDir + "HtmlFixedResourceFolderAlias");
 
-            Assert.False(Directory.Exists(ArtifactsDir + "HtmlFixedResourceFolder"));
-            Assert.AreEqual(6, resourceFiles.Count(f => f.EndsWith(".jpeg") || f.EndsWith(".png") || f.EndsWith(".css")));
+            Assert.That(Directory.Exists(ArtifactsDir + "HtmlFixedResourceFolder"), Is.False);
+            Assert.That(resourceFiles.Count(f => f.EndsWith(".jpeg") || f.EndsWith(".png") || f.EndsWith(".css")), Is.EqualTo(6));
             TestHtmlFixedResourceFolder(callback); //ExSkip
         }
 
@@ -547,7 +546,7 @@ namespace ApiExamples
 
         private void TestHtmlFixedResourceFolder(ResourceUriPrinter callback)
         {
-            Assert.AreEqual(16, Regex.Matches(callback.GetText(), "Resource #").Count);
+            Assert.That(Regex.Matches(callback.GetText(), "Resource #").Count, Is.EqualTo(16));
         }
 
         [Test]

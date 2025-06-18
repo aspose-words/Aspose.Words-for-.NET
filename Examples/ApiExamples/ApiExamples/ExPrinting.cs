@@ -229,7 +229,7 @@ namespace ApiExamples
             // 2 -  Specify a printer that we wish to print the document with by name:
             string myPrinter = PrinterSettings.InstalledPrinters[4];
 
-            Assert.AreEqual("HPDAAB96 (HP ENVY 5000 series)", myPrinter);
+            Assert.That(myPrinter, Is.EqualTo("HPDAAB96 (HP ENVY 5000 series)"));
 
             doc.Print(myPrinter);
             //ExEnd

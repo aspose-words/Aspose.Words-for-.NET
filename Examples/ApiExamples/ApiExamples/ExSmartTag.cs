@@ -77,11 +77,11 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "SmartTag.Create.doc");
 
             // Use the "RemoveSmartTags" method to remove all smart tags from a document.
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.SmartTag, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.SmartTag, true).Count, Is.EqualTo(2));
 
             doc.RemoveSmartTags();
 
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.SmartTag, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.SmartTag, true).Count, Is.EqualTo(0));
             TestCreate(new Document(ArtifactsDir + "SmartTag.Create.doc")); //ExSkip
         }
 
@@ -131,26 +131,26 @@ namespace ApiExamples
         {
             SmartTag smartTag = (SmartTag)doc.GetChild(NodeType.SmartTag, 0, true);
 
-            Assert.AreEqual("date", smartTag.Element);
-            Assert.AreEqual("May 29, 2019", smartTag.GetText());
-            Assert.AreEqual("urn:schemas-microsoft-com:office:smarttags", smartTag.Uri);
+            Assert.That(smartTag.Element, Is.EqualTo("date"));
+            Assert.That(smartTag.GetText(), Is.EqualTo("May 29, 2019"));
+            Assert.That(smartTag.Uri, Is.EqualTo("urn:schemas-microsoft-com:office:smarttags"));
 
-            Assert.AreEqual("Day", smartTag.Properties[0].Name);
-            Assert.AreEqual(string.Empty, smartTag.Properties[0].Uri);
-            Assert.AreEqual("29", smartTag.Properties[0].Value);
-            Assert.AreEqual("Month", smartTag.Properties[1].Name);
-            Assert.AreEqual(string.Empty, smartTag.Properties[1].Uri);
-            Assert.AreEqual("5", smartTag.Properties[1].Value);
-            Assert.AreEqual("Year", smartTag.Properties[2].Name);
-            Assert.AreEqual(string.Empty, smartTag.Properties[2].Uri);
-            Assert.AreEqual("2019", smartTag.Properties[2].Value);
+            Assert.That(smartTag.Properties[0].Name, Is.EqualTo("Day"));
+            Assert.That(smartTag.Properties[0].Uri, Is.EqualTo(string.Empty));
+            Assert.That(smartTag.Properties[0].Value, Is.EqualTo("29"));
+            Assert.That(smartTag.Properties[1].Name, Is.EqualTo("Month"));
+            Assert.That(smartTag.Properties[1].Uri, Is.EqualTo(string.Empty));
+            Assert.That(smartTag.Properties[1].Value, Is.EqualTo("5"));
+            Assert.That(smartTag.Properties[2].Name, Is.EqualTo("Year"));
+            Assert.That(smartTag.Properties[2].Uri, Is.EqualTo(string.Empty));
+            Assert.That(smartTag.Properties[2].Value, Is.EqualTo("2019"));
 
             smartTag = (SmartTag)doc.GetChild(NodeType.SmartTag, 1, true);
 
-            Assert.AreEqual("stockticker", smartTag.Element);
-            Assert.AreEqual("MSFT", smartTag.GetText());
-            Assert.AreEqual("urn:schemas-microsoft-com:office:smarttags", smartTag.Uri);
-            Assert.AreEqual(0, smartTag.Properties.Count);
+            Assert.That(smartTag.Element, Is.EqualTo("stockticker"));
+            Assert.That(smartTag.GetText(), Is.EqualTo("MSFT"));
+            Assert.That(smartTag.Uri, Is.EqualTo("urn:schemas-microsoft-com:office:smarttags"));
+            Assert.That(smartTag.Properties.Count, Is.EqualTo(0));
         }
 
         [Test]
@@ -179,44 +179,44 @@ namespace ApiExamples
             // Smart tags may be nested, so this collection contains more.
             SmartTag[] smartTags = doc.GetChildNodes(NodeType.SmartTag, true).OfType<SmartTag>().ToArray();
 
-            Assert.AreEqual(8, smartTags.Length);
+            Assert.That(smartTags.Length, Is.EqualTo(8));
 
             // The "Properties" member of a smart tag contains its metadata, which will be different for each type of smart tag.
             // The properties of a "date"-type smart tag contain its year, month, and day.
             CustomXmlPropertyCollection properties = smartTags[7].Properties;
 
-            Assert.AreEqual(4, properties.Count);
+            Assert.That(properties.Count, Is.EqualTo(4));
 
             using (IEnumerator<CustomXmlProperty> enumerator = properties.GetEnumerator())
             {
                 while (enumerator.MoveNext())
                 {
                     Console.WriteLine($"Property name: {enumerator.Current.Name}, value: {enumerator.Current.Value}");
-                    Assert.AreEqual("", enumerator.Current.Uri);
+                    Assert.That(enumerator.Current.Uri, Is.EqualTo(""));
                 }
             }
 
             // We can also access the properties in various ways, such as a key-value pair.
-            Assert.True(properties.Contains("Day"));
-            Assert.AreEqual("22", properties["Day"].Value);
-            Assert.AreEqual("2003", properties[2].Value);
-            Assert.AreEqual(1, properties.IndexOfKey("Month"));
+            Assert.That(properties.Contains("Day"), Is.True);
+            Assert.That(properties["Day"].Value, Is.EqualTo("22"));
+            Assert.That(properties[2].Value, Is.EqualTo("2003"));
+            Assert.That(properties.IndexOfKey("Month"), Is.EqualTo(1));
 
             // Below are three ways of removing elements from the properties collection.
             // 1 -  Remove by index:
             properties.RemoveAt(3);
 
-            Assert.AreEqual(3, properties.Count);
+            Assert.That(properties.Count, Is.EqualTo(3));
 
             // 2 -  Remove by name:
             properties.Remove("Year");
 
-            Assert.AreEqual(2, properties.Count);
+            Assert.That(properties.Count, Is.EqualTo(2));
 
             // 3 -  Clear the entire collection at once:
             properties.Clear();
 
-            Assert.AreEqual(0, properties.Count);
+            Assert.That(properties.Count, Is.EqualTo(0));
             //ExEnd
         }
     }

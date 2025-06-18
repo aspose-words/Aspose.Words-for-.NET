@@ -48,17 +48,17 @@ namespace ApiExamples
             //ExSummary:Shows how to detect encoding in an html file.
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.html");
 
-            Assert.AreEqual(LoadFormat.Html, info.LoadFormat);
+            Assert.That(info.LoadFormat, Is.EqualTo(LoadFormat.Html));
 
             // The Encoding property is used only when we create a FileFormatInfo object for an html document.
-            Assert.AreEqual("Western European (Windows)", info.Encoding.EncodingName);
-            Assert.AreEqual(1252, info.Encoding.CodePage);
+            Assert.That(info.Encoding.EncodingName, Is.EqualTo("Western European (Windows)"));
+            Assert.That(info.Encoding.CodePage, Is.EqualTo(1252));
             //ExEnd
 
             info = FileFormatUtil.DetectFileFormat(MyDir + "Document.docx");
 
-            Assert.AreEqual(LoadFormat.Docx, info.LoadFormat);
-            Assert.IsNull(info.Encoding);
+            Assert.That(info.LoadFormat, Is.EqualTo(LoadFormat.Docx));
+            Assert.That(info.Encoding, Is.Null);
         }
 
         [Test]
@@ -80,38 +80,36 @@ namespace ApiExamples
             // Files of the types listed below can be saved, but not loaded using Aspose.Words.
             Assert.Throws<ArgumentException>(() => FileFormatUtil.ContentTypeToLoadFormat("image/jpeg"));
 
-            Assert.AreEqual(SaveFormat.Jpeg, FileFormatUtil.ContentTypeToSaveFormat("image/jpeg"));
-            Assert.AreEqual(SaveFormat.Png, FileFormatUtil.ContentTypeToSaveFormat("image/png"));
-            Assert.AreEqual(SaveFormat.Tiff, FileFormatUtil.ContentTypeToSaveFormat("image/tiff"));
-            Assert.AreEqual(SaveFormat.Gif, FileFormatUtil.ContentTypeToSaveFormat("image/gif"));
-            Assert.AreEqual(SaveFormat.Emf, FileFormatUtil.ContentTypeToSaveFormat("image/x-emf"));
-            Assert.AreEqual(SaveFormat.Xps, FileFormatUtil.ContentTypeToSaveFormat("application/vnd.ms-xpsdocument"));
-            Assert.AreEqual(SaveFormat.Pdf, FileFormatUtil.ContentTypeToSaveFormat("application/pdf"));
-            Assert.AreEqual(SaveFormat.Svg, FileFormatUtil.ContentTypeToSaveFormat("image/svg+xml"));
-            Assert.AreEqual(SaveFormat.Epub, FileFormatUtil.ContentTypeToSaveFormat("application/epub+zip"));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("image/jpeg"), Is.EqualTo(SaveFormat.Jpeg));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("image/png"), Is.EqualTo(SaveFormat.Png));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("image/tiff"), Is.EqualTo(SaveFormat.Tiff));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("image/gif"), Is.EqualTo(SaveFormat.Gif));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("image/x-emf"), Is.EqualTo(SaveFormat.Emf));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("application/vnd.ms-xpsdocument"), Is.EqualTo(SaveFormat.Xps));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("application/pdf"), Is.EqualTo(SaveFormat.Pdf));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("image/svg+xml"), Is.EqualTo(SaveFormat.Svg));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("application/epub+zip"), Is.EqualTo(SaveFormat.Epub));
 
             // For file types that can be saved and loaded, we can match a media type to both a load format and a save format.
-            Assert.AreEqual(LoadFormat.Doc, FileFormatUtil.ContentTypeToLoadFormat("application/msword"));
-            Assert.AreEqual(SaveFormat.Doc, FileFormatUtil.ContentTypeToSaveFormat("application/msword"));
+            Assert.That(FileFormatUtil.ContentTypeToLoadFormat("application/msword"), Is.EqualTo(LoadFormat.Doc));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("application/msword"), Is.EqualTo(SaveFormat.Doc));
 
-            Assert.AreEqual(LoadFormat.Docx,
-                FileFormatUtil.ContentTypeToLoadFormat(
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
-            Assert.AreEqual(SaveFormat.Docx,
-                FileFormatUtil.ContentTypeToSaveFormat(
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
+            Assert.That(FileFormatUtil.ContentTypeToLoadFormat(
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"), Is.EqualTo(LoadFormat.Docx));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat(
+                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"), Is.EqualTo(SaveFormat.Docx));
 
-            Assert.AreEqual(LoadFormat.Text, FileFormatUtil.ContentTypeToLoadFormat("text/plain"));
-            Assert.AreEqual(SaveFormat.Text, FileFormatUtil.ContentTypeToSaveFormat("text/plain"));
+            Assert.That(FileFormatUtil.ContentTypeToLoadFormat("text/plain"), Is.EqualTo(LoadFormat.Text));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("text/plain"), Is.EqualTo(SaveFormat.Text));
 
-            Assert.AreEqual(LoadFormat.Rtf, FileFormatUtil.ContentTypeToLoadFormat("application/rtf"));
-            Assert.AreEqual(SaveFormat.Rtf, FileFormatUtil.ContentTypeToSaveFormat("application/rtf"));
+            Assert.That(FileFormatUtil.ContentTypeToLoadFormat("application/rtf"), Is.EqualTo(LoadFormat.Rtf));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("application/rtf"), Is.EqualTo(SaveFormat.Rtf));
 
-            Assert.AreEqual(LoadFormat.Html, FileFormatUtil.ContentTypeToLoadFormat("text/html"));
-            Assert.AreEqual(SaveFormat.Html, FileFormatUtil.ContentTypeToSaveFormat("text/html"));
+            Assert.That(FileFormatUtil.ContentTypeToLoadFormat("text/html"), Is.EqualTo(LoadFormat.Html));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("text/html"), Is.EqualTo(SaveFormat.Html));
 
-            Assert.AreEqual(LoadFormat.Mhtml, FileFormatUtil.ContentTypeToLoadFormat("multipart/related"));
-            Assert.AreEqual(SaveFormat.Mhtml, FileFormatUtil.ContentTypeToSaveFormat("multipart/related"));
+            Assert.That(FileFormatUtil.ContentTypeToLoadFormat("multipart/related"), Is.EqualTo(LoadFormat.Mhtml));
+            Assert.That(FileFormatUtil.ContentTypeToSaveFormat("multipart/related"), Is.EqualTo(SaveFormat.Mhtml));
             //ExEnd
         }
 
@@ -136,8 +134,8 @@ namespace ApiExamples
             // Verify the file type of our document, and its encryption status.
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(ArtifactsDir + "File.DetectDocumentEncryption.odt");
 
-            Assert.AreEqual(".odt", FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
-            Assert.True(info.IsEncrypted);
+            Assert.That(FileFormatUtil.LoadFormatToExtension(info.LoadFormat), Is.EqualTo(".odt"));
+            Assert.That(info.IsEncrypted, Is.True);
             //ExEnd
         }
 
@@ -153,8 +151,8 @@ namespace ApiExamples
             // Use a FileFormatInfo instance to verify that a document is not digitally signed.
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.docx");
 
-            Assert.AreEqual(".docx", FileFormatUtil.LoadFormatToExtension(info.LoadFormat));
-            Assert.False(info.HasDigitalSignature);
+            Assert.That(FileFormatUtil.LoadFormatToExtension(info.LoadFormat), Is.EqualTo(".docx"));
+            Assert.That(info.HasDigitalSignature, Is.False);
 
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
             SignOptions signOptions = new SignOptions() { SignTime = DateTime.Now };
@@ -164,10 +162,10 @@ namespace ApiExamples
             // Use a new FileFormatInstance to confirm that it is signed.
             info = FileFormatUtil.DetectFileFormat(ArtifactsDir + "File.DetectDigitalSignatures.docx");
 
-            Assert.True(info.HasDigitalSignature);
+            Assert.That(info.HasDigitalSignature, Is.True);
 
             // We can load and access the signatures of a signed document in a collection like this.
-            Assert.AreEqual(1, DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "File.DetectDigitalSignatures.docx").Count);
+            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "File.DetectDigitalSignatures.docx").Count, Is.EqualTo(1));
             //ExEnd
         }
 
@@ -190,7 +188,7 @@ namespace ApiExamples
                 FileFormatInfo info = FileFormatUtil.DetectFileFormat(docStream);
                 LoadFormat loadFormat = info.LoadFormat;
 
-                Assert.AreEqual(LoadFormat.Doc, loadFormat);
+                Assert.That(loadFormat, Is.EqualTo(LoadFormat.Doc));
 
                 // Below are two methods of converting a LoadFormat to its corresponding SaveFormat.
                 // 1 -  Get the file extension string for the LoadFormat, then get the corresponding SaveFormat from that string:
@@ -203,7 +201,7 @@ namespace ApiExamples
                 // Load a document from the stream, and then save it to the automatically detected file extension.
                 Document doc = new Document(docStream);
 
-                Assert.AreEqual(".doc", FileFormatUtil.SaveFormatToExtension(saveFormat));
+                Assert.That(FileFormatUtil.SaveFormatToExtension(saveFormat), Is.EqualTo(".doc"));
 
                 doc.Save(ArtifactsDir + "File.SaveToDetectedFileFormat" + FileFormatUtil.SaveFormatToExtension(saveFormat));
             }
@@ -216,7 +214,7 @@ namespace ApiExamples
             //ExStart
             //ExFor:FileFormatUtil.SaveFormatToLoadFormat(SaveFormat)
             //ExSummary:Shows how to convert a save format to its corresponding load format.
-            Assert.AreEqual(LoadFormat.Html, FileFormatUtil.SaveFormatToLoadFormat(SaveFormat.Html));
+            Assert.That(FileFormatUtil.SaveFormatToLoadFormat(SaveFormat.Html), Is.EqualTo(LoadFormat.Html));
 
             // Some file types can have documents saved to, but not loaded from using Aspose.Words.
             // If we attempt to convert a save format of such a type to a load format, an exception will be thrown.
@@ -244,7 +242,7 @@ namespace ApiExamples
             // and save the image data of every shape with an image as a file to the local file system.
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
-            Assert.AreEqual(9, shapes.Count(s => ((Shape)s).HasImage));
+            Assert.That(shapes.Count(s => ((Shape)s).HasImage), Is.EqualTo(9));
 
             int imageIndex = 0;
             foreach (Shape shape in shapes.OfType<Shape>())
@@ -261,8 +259,8 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.AreEqual(9,Directory.GetFiles(ArtifactsDir).
-                Count(s => Regex.IsMatch(s, @"^.+\.(jpeg|png|emf|wmf)$") && s.StartsWith(ArtifactsDir + "File.ExtractImages")));
+            Assert.That(Directory.GetFiles(ArtifactsDir).
+                Count(s => Regex.IsMatch(s, @"^.+\.(jpeg|png|emf|wmf)$") && s.StartsWith(ArtifactsDir + "File.ExtractImages")), Is.EqualTo(9));
         }
     }
 }

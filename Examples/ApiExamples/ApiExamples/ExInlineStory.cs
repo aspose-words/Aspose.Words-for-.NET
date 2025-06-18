@@ -55,7 +55,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "InlineStory.PositionFootnote.docx");
 
-            Assert.AreEqual(footnotePosition, doc.FootnoteOptions.Position);
+            Assert.That(doc.FootnoteOptions.Position, Is.EqualTo(footnotePosition));
 
             TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
                 "Footnote contents.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
@@ -98,7 +98,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "InlineStory.PositionEndnote.docx");
 
-            Assert.AreEqual(endnotePosition, doc.EndnoteOptions.Position);
+            Assert.That(doc.EndnoteOptions.Position, Is.EqualTo(endnotePosition));
 
             TestUtil.VerifyFootnote(FootnoteType.Endnote, true, string.Empty,
                 "Endnote contents.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
@@ -146,8 +146,8 @@ namespace ApiExamples
             // among all the document's footnotes/endnotes. Each document maintains separate counts
             // for footnotes and for endnotes. By default, footnotes display their numbers using Arabic numerals,
             // and endnotes display their numbers in lowercase Roman numerals.
-            Assert.AreEqual(NumberStyle.Arabic, doc.FootnoteOptions.NumberStyle);
-            Assert.AreEqual(NumberStyle.LowercaseRoman, doc.EndnoteOptions.NumberStyle);
+            Assert.That(doc.FootnoteOptions.NumberStyle, Is.EqualTo(NumberStyle.Arabic));
+            Assert.That(doc.EndnoteOptions.NumberStyle, Is.EqualTo(NumberStyle.LowercaseRoman));
 
             // We can use the "NumberStyle" property to apply custom numbering styles to footnotes and endnotes.
             // This will not affect footnotes/endnotes with custom reference marks.
@@ -159,8 +159,8 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "InlineStory.RefMarkNumberStyle.docx");
 
-            Assert.AreEqual(NumberStyle.UppercaseRoman, doc.FootnoteOptions.NumberStyle);
-            Assert.AreEqual(NumberStyle.UppercaseLetter, doc.EndnoteOptions.NumberStyle);
+            Assert.That(doc.FootnoteOptions.NumberStyle, Is.EqualTo(NumberStyle.UppercaseRoman));
+            Assert.That(doc.EndnoteOptions.NumberStyle, Is.EqualTo(NumberStyle.UppercaseLetter));
 
             TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
                 "Footnote 1.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
@@ -224,8 +224,8 @@ namespace ApiExamples
             // By default, the reference symbol for each footnote and endnote is its index
             // among all the document's footnotes/endnotes. Each document maintains separate counts
             // for footnotes and endnotes and does not restart these counts at any point.
-            Assert.AreEqual(doc.FootnoteOptions.RestartRule, FootnoteNumberingRule.Default);
-            Assert.AreEqual(FootnoteNumberingRule.Default, FootnoteNumberingRule.Continuous);
+            Assert.That(FootnoteNumberingRule.Default, Is.EqualTo(doc.FootnoteOptions.RestartRule));
+            Assert.That(FootnoteNumberingRule.Continuous, Is.EqualTo(FootnoteNumberingRule.Default));
 
             // We can use the "RestartRule" property to get the document to restart
             // the footnote/endnote counts at a new page or section.
@@ -237,8 +237,8 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "InlineStory.NumberingRule.docx");
 
-            Assert.AreEqual(FootnoteNumberingRule.RestartPage, doc.FootnoteOptions.RestartRule);
-            Assert.AreEqual(FootnoteNumberingRule.RestartSection, doc.EndnoteOptions.RestartRule);
+            Assert.That(doc.FootnoteOptions.RestartRule, Is.EqualTo(FootnoteNumberingRule.RestartPage));
+            Assert.That(doc.EndnoteOptions.RestartRule, Is.EqualTo(FootnoteNumberingRule.RestartSection));
 
             TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
                 "Footnote 1.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
@@ -300,8 +300,8 @@ namespace ApiExamples
             // By default, the reference symbol for each footnote and endnote is its index
             // among all the document's footnotes/endnotes. Each document maintains separate counts
             // for footnotes and for endnotes, which both begin at 1.
-            Assert.AreEqual(1, doc.FootnoteOptions.StartNumber);
-            Assert.AreEqual(1, doc.EndnoteOptions.StartNumber);
+            Assert.That(doc.FootnoteOptions.StartNumber, Is.EqualTo(1));
+            Assert.That(doc.EndnoteOptions.StartNumber, Is.EqualTo(1));
 
             // We can use the "StartNumber" property to get the document to
             // begin a footnote or endnote count at a different number.
@@ -313,10 +313,10 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "InlineStory.StartNumber.docx");
 
-            Assert.AreEqual(1, doc.FootnoteOptions.StartNumber);
-            Assert.AreEqual(50, doc.EndnoteOptions.StartNumber);
-            Assert.AreEqual(NumberStyle.Arabic, doc.FootnoteOptions.NumberStyle);
-            Assert.AreEqual(NumberStyle.Arabic, doc.EndnoteOptions.NumberStyle);
+            Assert.That(doc.FootnoteOptions.StartNumber, Is.EqualTo(1));
+            Assert.That(doc.EndnoteOptions.StartNumber, Is.EqualTo(50));
+            Assert.That(doc.FootnoteOptions.NumberStyle, Is.EqualTo(NumberStyle.Arabic));
+            Assert.That(doc.EndnoteOptions.NumberStyle, Is.EqualTo(NumberStyle.Arabic));
 
             TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty,
                 "Footnote 1.", (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
@@ -358,14 +358,14 @@ namespace ApiExamples
             // If this property is set to "true", then our footnote's reference mark
             // will be its index among all the section's footnotes.
             // This is the first footnote, so the reference mark will be "1".
-            Assert.True(footnote.IsAuto);
+            Assert.That(footnote.IsAuto, Is.True);
 
             // We can move the document builder inside the footnote to edit its reference text. 
             builder.MoveTo(footnote.FirstParagraph);
             builder.Write(" More text added by a DocumentBuilder.");
             builder.MoveToDocumentEnd();
 
-            Assert.AreEqual("\u0002 Footnote text. More text added by a DocumentBuilder.", footnote.GetText().Trim());
+            Assert.That(footnote.GetText().Trim(), Is.EqualTo("\u0002 Footnote text. More text added by a DocumentBuilder."));
 
             builder.Write(" More main body text.");
             footnote = builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.");
@@ -373,14 +373,14 @@ namespace ApiExamples
             // We can set a custom reference mark which the footnote will use instead of its index number.
             footnote.ReferenceMark = "RefMark";
 
-            Assert.False(footnote.IsAuto);
+            Assert.That(footnote.IsAuto, Is.False);
 
             // A bookmark with the "IsAuto" flag set to true will still show its real index
             // even if previous bookmarks display custom reference marks, so this bookmark's reference mark will be a "3".
             builder.Write(" More main body text.");
             footnote = builder.InsertFootnote(FootnoteType.Footnote, "Footnote text.");
 
-            Assert.True(footnote.IsAuto);
+            Assert.That(footnote.IsAuto, Is.True);
 
             doc.Save(ArtifactsDir + "InlineStory.AddFootnote.docx");
             //ExEnd
@@ -422,8 +422,8 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.SectionBreakNewPage);
             builder.InsertBreak(BreakType.SectionBreakNewPage);
 
-            Assert.AreEqual(FootnoteType.Footnote, footnote.FootnoteType);
-            Assert.AreEqual(FootnoteType.Endnote, endnote.FootnoteType);
+            Assert.That(footnote.FootnoteType, Is.EqualTo(FootnoteType.Footnote));
+            Assert.That(endnote.FootnoteType, Is.EqualTo(FootnoteType.Endnote));
 
             doc.Save(ArtifactsDir + "InlineStory.FootnoteEndnote.docx");
             //ExEnd
@@ -455,7 +455,7 @@ namespace ApiExamples
             builder.MoveTo(comment.AppendChild(new Paragraph(doc)));
             builder.Write("Comment text.");
 
-            Assert.AreEqual(DateTime.Today, comment.DateTime);
+            Assert.That(comment.DateTime, Is.EqualTo(DateTime.Today));
 
             // In Microsoft Word, we can right-click this comment in the document body to edit it, or reply to it. 
             doc.Save(ArtifactsDir + "InlineStory.AddComment.docx");
@@ -464,10 +464,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "InlineStory.AddComment.docx");
             comment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
             
-            Assert.AreEqual("Comment text.\r", comment.GetText());
-            Assert.AreEqual("John Doe", comment.Author);
-            Assert.AreEqual("JD", comment.Initial);
-            Assert.AreEqual(DateTime.Today, comment.DateTime);
+            Assert.That(comment.GetText(), Is.EqualTo("Comment text.\r"));
+            Assert.That(comment.Author, Is.EqualTo("John Doe"));
+            Assert.That(comment.Initial, Is.EqualTo("JD"));
+            Assert.That(comment.DateTime, Is.EqualTo(DateTime.Today));
         }
 
         [Test]
@@ -487,22 +487,22 @@ namespace ApiExamples
             // invoking the document's "StartTrackRevisions" method and stop tracking by using the "StopTrackRevisions" method.
             // We can either accept revisions to assimilate them into the document
             // or reject them to undo and discard the proposed change.
-            Assert.IsTrue(doc.HasRevisions);
+            Assert.That(doc.HasRevisions, Is.True);
 
             List<Footnote> footnotes = doc.GetChildNodes(NodeType.Footnote, true).Cast<Footnote>().ToList();
 
-            Assert.AreEqual(5, footnotes.Count);
+            Assert.That(footnotes.Count, Is.EqualTo(5));
 
             // Below are five types of revisions that can flag an InlineStory node.
             // 1 -  An "insert" revision:
             // This revision occurs when we insert text while tracking changes.
-            Assert.IsTrue(footnotes[2].IsInsertRevision);
+            Assert.That(footnotes[2].IsInsertRevision, Is.True);
 
             // 2 -  A "move from" revision:
             // When we highlight text in Microsoft Word, and then drag it to a different place in the document
             // while tracking changes, two revisions appear.
             // The "move from" revision is a copy of the text originally before we moved it.
-            Assert.IsTrue(footnotes[4].IsMoveFromRevision);
+            Assert.That(footnotes[4].IsMoveFromRevision, Is.True);
 
             // 3 -  A "move to" revision:
             // The "move to" revision is the text that we moved in its new position in the document.
@@ -510,13 +510,13 @@ namespace ApiExamples
             // Accepting a move revision deletes the "move from" revision and its text,
             // and keeps the text from the "move to" revision.
             // Rejecting a move revision conversely keeps the "move from" revision and deletes the "move to" revision.
-            Assert.IsTrue(footnotes[1].IsMoveToRevision);
+            Assert.That(footnotes[1].IsMoveToRevision, Is.True);
 
             // 4 -  A "delete" revision:
             // This revision occurs when we delete text while tracking changes. When we delete text like this,
             // it will stay in the document as a revision until we either accept the revision,
             // which will delete the text for good, or reject the revision, which will keep the text we deleted where it was.
-            Assert.IsTrue(footnotes[3].IsDeleteRevision);
+            Assert.That(footnotes[3].IsDeleteRevision, Is.True);
             //ExEnd
         }
 
@@ -542,16 +542,16 @@ namespace ApiExamples
             table.EnsureMinimum();
 
             // We can place a table inside a footnote, which will make it appear at the referencing page's footer.
-            Assert.AreEqual(0, footnote.Tables.Count);
+            Assert.That(footnote.Tables.Count, Is.EqualTo(0));
             footnote.AppendChild(table);
-            Assert.AreEqual(1, footnote.Tables.Count);
-            Assert.AreEqual(NodeType.Table, footnote.LastChild.NodeType);
+            Assert.That(footnote.Tables.Count, Is.EqualTo(1));
+            Assert.That(footnote.LastChild.NodeType, Is.EqualTo(NodeType.Table));
 
             // An InlineStory has an "EnsureMinimum()" method as well, but in this case,
             // it makes sure the last child of the node is a paragraph,
             // for us to be able to click and write text easily in Microsoft Word.
             footnote.EnsureMinimum();
-            Assert.AreEqual(NodeType.Paragraph, footnote.LastChild.NodeType);
+            Assert.That(footnote.LastChild.NodeType, Is.EqualTo(NodeType.Paragraph));
 
             // Edit the appearance of the anchor, which is the small superscript number
             // in the main text that points to the footnote.
@@ -559,27 +559,27 @@ namespace ApiExamples
             footnote.Font.Color = Color.Green;
 
             // All inline story nodes have their respective story types.
-            Assert.AreEqual(StoryType.Footnotes, footnote.StoryType);
+            Assert.That(footnote.StoryType, Is.EqualTo(StoryType.Footnotes));
 
             // A comment is another type of inline story.
             Comment comment = (Comment)builder.CurrentParagraph.AppendChild(new Comment(doc, "John Doe", "J. D.", DateTime.Now));
 
             // The parent paragraph of an inline story node will be the one from the main document body.
-            Assert.AreEqual(doc.FirstSection.Body.FirstParagraph, comment.ParentParagraph);
+            Assert.That(comment.ParentParagraph, Is.EqualTo(doc.FirstSection.Body.FirstParagraph));
 
             // However, the last paragraph is the one from the comment text contents,
             // which will be outside the main document body in a speech bubble.
             // A comment will not have any child nodes by default,
             // so we can apply the EnsureMinimum() method to place a paragraph here as well.
-            Assert.Null(comment.LastParagraph);
+            Assert.That(comment.LastParagraph, Is.Null);
             comment.EnsureMinimum();
-            Assert.AreEqual(NodeType.Paragraph, comment.LastChild.NodeType);
+            Assert.That(comment.LastChild.NodeType, Is.EqualTo(NodeType.Paragraph));
 
             // Once we have a paragraph, we can move the builder to do it and write our comment.
             builder.MoveTo(comment.LastParagraph);
             builder.Write("My comment.");
 
-            Assert.AreEqual(StoryType.Comments, comment.StoryType);
+            Assert.That(comment.StoryType, Is.EqualTo(StoryType.Comments));
 
             doc.Save(ArtifactsDir + "InlineStory.InsertInlineStoryNodes.docx");
             //ExEnd
@@ -590,12 +590,12 @@ namespace ApiExamples
 
             TestUtil.VerifyFootnote(FootnoteType.Footnote, true, string.Empty, string.Empty, 
                 (Footnote)doc.GetChild(NodeType.Footnote, 0, true));
-            Assert.AreEqual("Arial", footnote.Font.Name);
-            Assert.AreEqual(Color.Green.ToArgb(), footnote.Font.Color.ToArgb());
+            Assert.That(footnote.Font.Name, Is.EqualTo("Arial"));
+            Assert.That(footnote.Font.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
 
             comment = (Comment)doc.GetChild(NodeType.Comment, 0, true);
 
-            Assert.AreEqual("My comment.", comment.ToString(SaveFormat.Text).Trim());
+            Assert.That(comment.ToString(SaveFormat.Text).Trim(), Is.EqualTo("My comment."));
         }
 
         [Test]
@@ -614,13 +614,13 @@ namespace ApiExamples
             // which has a parent Paragraph, which is a child node of the first section's Body.
             builder.InsertShape(ShapeType.Cube, 100.0, 100.0);
 
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Shape, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(1));
 
             // We can delete all shapes from the child paragraphs of this Body.
-            Assert.AreEqual(StoryType.MainText, doc.FirstSection.Body.StoryType);
+            Assert.That(doc.FirstSection.Body.StoryType, Is.EqualTo(StoryType.MainText));
             doc.FirstSection.Body.DeleteShapes();
 
-            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(0));
             //ExEnd
         }
 
@@ -638,7 +638,7 @@ namespace ApiExamples
             doc.UpdateFields();
             doc.UpdateActualReferenceMarks();
 
-            Assert.AreEqual("1", footnote.ActualReferenceMark);
+            Assert.That(footnote.ActualReferenceMark, Is.EqualTo("1"));
             //ExEnd:UpdateActualReferenceMarks
         }
 

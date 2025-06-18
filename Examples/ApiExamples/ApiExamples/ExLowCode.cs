@@ -199,7 +199,7 @@ namespace ApiExamples
             secondDoc.Write("Hello second word!");
 
             Document mergedDoc = Merger.Merge(new Document[] { firstDoc.Document, secondDoc.Document }, MergeFormatMode.KeepSourceLayout);
-            Assert.AreEqual("Hello first word!\fHello second word!\f", mergedDoc.GetText());
+            Assert.That(mergedDoc.GetText(), Is.EqualTo("Hello first word!\fHello second word!\f"));
             //ExEnd:MergeDocumentInstances
         }
 
@@ -524,11 +524,11 @@ namespace ApiExamples
                                      .ToList();
 
                 if (fileExt == "png")
-                    Assert.AreEqual(2, images.Count);
+                    Assert.That(images.Count, Is.EqualTo(2));
                 else if (fileExt == "tiff")
-                    Assert.AreEqual(1, images.Count);
+                    Assert.That(images.Count, Is.EqualTo(1));
                 else
-                    Assert.AreEqual(5, images.Count);
+                    Assert.That(images.Count, Is.EqualTo(5));
             }
             else
             {
@@ -542,13 +542,13 @@ namespace ApiExamples
                     Document doc = new Document(ArtifactsDir + $"PdfRenderer.{fileExt}");
                     var content = doc.GetText();
                     Console.WriteLine(content);
-                    Assert.True(content.Contains("Heading 1.1.1.2"));
+                    Assert.That(content.Contains("Heading 1.1.1.2"), Is.True);
                 }
                 else
                 {
                     var content = File.ReadAllText(ArtifactsDir + $"PdfRenderer.{fileExt}");
                     Console.WriteLine(content);
-                    Assert.True(content.Contains("Heading 1.1.1.2"));
+                    Assert.That(content.Contains("Heading 1.1.1.2"), Is.True);
                 }
             }
         }
@@ -563,7 +563,7 @@ namespace ApiExamples
             for (int i = 0; i < element.Count; i++)
                 AssertXpsText(element[i]);
             if (element is XpsGlyphs)
-                Assert.True(new[] { "Heading 1", "Head", "ing 1" }.Any(c => ((XpsGlyphs)element).UnicodeString.Contains(c)));
+                Assert.That(new[] { "Heading 1", "Head", "ing 1" }.Any(c => ((XpsGlyphs)element).UnicodeString.Contains(c)), Is.True);
         }
 
         [Test]

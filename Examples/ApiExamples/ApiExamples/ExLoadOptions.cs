@@ -85,13 +85,13 @@ namespace ApiExamples
 
             if (isConvertShapeToOfficeMath)
             {
-                Assert.AreEqual(16, doc.GetChildNodes(NodeType.Shape, true).Count);
-                Assert.AreEqual(34, doc.GetChildNodes(NodeType.OfficeMath, true).Count);
+                Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(16));
+                Assert.That(doc.GetChildNodes(NodeType.OfficeMath, true).Count, Is.EqualTo(34));
             }
             else
             {
-                Assert.AreEqual(24, doc.GetChildNodes(NodeType.Shape, true).Count);
-                Assert.AreEqual(0, doc.GetChildNodes(NodeType.OfficeMath, true).Count);
+                Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(24));
+                Assert.That(doc.GetChildNodes(NodeType.OfficeMath, true).Count, Is.EqualTo(0));
             }
             //ExEnd
         }
@@ -110,7 +110,7 @@ namespace ApiExamples
             // Load the document while passing the LoadOptions object, then verify the document's contents.
             Document doc = new Document(MyDir + "English text.txt", loadOptions);
 
-            Assert.True(doc.ToString(SaveFormat.Text).Contains("This is a sample text in English."));
+            Assert.That(doc.ToString(SaveFormat.Text).Contains("This is a sample text in English."), Is.True);
             //ExEnd
         }
 
@@ -146,7 +146,7 @@ namespace ApiExamples
             // By default, Aspose.Words load documents according to Microsoft Word 2019 specification.
             LoadOptions loadOptions = new LoadOptions();
 
-            Assert.AreEqual(MsWordVersion.Word2019, loadOptions.MswVersion);
+            Assert.That(loadOptions.MswVersion, Is.EqualTo(MsWordVersion.Word2019));
 
             // This document is missing the default paragraph formatting style.
             // This default style will be regenerated when we load the document either with Microsoft Word or Aspose.Words.
@@ -154,7 +154,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
             // The style's line spacing will have this value when loaded by Microsoft Word 2007 specification.
-            Assert.AreEqual(12.95d, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.01d);
+            Assert.That(doc.Styles.DefaultParagraphFormat.LineSpacing, Is.EqualTo(12.95d).Within(0.01d));
             //ExEnd
         }
 
@@ -173,7 +173,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
             List<WarningInfo> warnings = ((DocumentLoadingWarningCallback)loadOptions.WarningCallback).GetWarnings();
-            Assert.AreEqual(3, warnings.Count);
+            Assert.That(warnings.Count, Is.EqualTo(3));
             TestLoadOptionsWarningCallback(warnings); //ExSkip
         }
 
@@ -201,17 +201,17 @@ namespace ApiExamples
 
         private static void TestLoadOptionsWarningCallback(List<WarningInfo> warnings)
         {
-            Assert.AreEqual(WarningType.UnexpectedContent, warnings[0].WarningType);
-            Assert.AreEqual(WarningSource.Docx, warnings[0].Source);
-            Assert.AreEqual("3F01", warnings[0].Description);
+            Assert.That(warnings[0].WarningType, Is.EqualTo(WarningType.UnexpectedContent));
+            Assert.That(warnings[0].Source, Is.EqualTo(WarningSource.Docx));
+            Assert.That(warnings[0].Description, Is.EqualTo("3F01"));
 
-            Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[1].WarningType);
-            Assert.AreEqual(WarningSource.Docx, warnings[1].Source);
-            Assert.AreEqual("Import of element 'shapedefaults' is not supported in Docx format by Aspose.Words.", warnings[1].Description);
+            Assert.That(warnings[1].WarningType, Is.EqualTo(WarningType.MinorFormattingLoss));
+            Assert.That(warnings[1].Source, Is.EqualTo(WarningSource.Docx));
+            Assert.That(warnings[1].Description, Is.EqualTo("Import of element 'shapedefaults' is not supported in Docx format by Aspose.Words."));
 
-            Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[2].WarningType);
-            Assert.AreEqual(WarningSource.Docx, warnings[2].Source);
-            Assert.AreEqual("Import of element 'extraClrSchemeLst' is not supported in Docx format by Aspose.Words.", warnings[2].Description);
+            Assert.That(warnings[2].WarningType, Is.EqualTo(WarningType.MinorFormattingLoss));
+            Assert.That(warnings[2].Source, Is.EqualTo(WarningSource.Docx));
+            Assert.That(warnings[2].Description, Is.EqualTo("Import of element 'extraClrSchemeLst' is not supported in Docx format by Aspose.Words."));
         }
 
         [Test]
@@ -232,7 +232,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx", options);
 
             // The folder will persist with no residual contents from the load operation.
-            Assert.AreEqual(0, Directory.GetFiles(options.TempFolder).Length);
+            Assert.That(Directory.GetFiles(options.TempFolder).Length, Is.EqualTo(0));
             //ExEnd
         }
 
@@ -256,11 +256,11 @@ namespace ApiExamples
                 : "The document default FarEast language was set to another than Japanese language originally, so it is not overridden.");
             //ExEnd
 
-            Assert.AreEqual((int)EditingLanguage.Japanese, doc.Styles.DefaultFont.LocaleIdFarEast);
+            Assert.That(doc.Styles.DefaultFont.LocaleIdFarEast, Is.EqualTo((int)EditingLanguage.Japanese));
 
             doc = new Document(MyDir + "No default editing language.docx");
 
-            Assert.AreEqual((int)EditingLanguage.EnglishUS, doc.Styles.DefaultFont.LocaleIdFarEast);
+            Assert.That(doc.Styles.DefaultFont.LocaleIdFarEast, Is.EqualTo((int)EditingLanguage.EnglishUS));
         }
 
         [Test]
@@ -280,11 +280,11 @@ namespace ApiExamples
                 : "The document default language was set to another than Russian language originally, so it is not overridden.");
             //ExEnd
 
-            Assert.AreEqual((int)EditingLanguage.Russian, doc.Styles.DefaultFont.LocaleId);
+            Assert.That(doc.Styles.DefaultFont.LocaleId, Is.EqualTo((int)EditingLanguage.Russian));
 
             doc = new Document(MyDir + "No default editing language.docx");
 
-            Assert.AreEqual((int)EditingLanguage.EnglishUS, doc.Styles.DefaultFont.LocaleId);
+            Assert.That(doc.Styles.DefaultFont.LocaleId, Is.EqualTo((int)EditingLanguage.EnglishUS));
         }
 
         [Test]
@@ -322,7 +322,7 @@ namespace ApiExamples
         public void OpenChmFile()
         {
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "HTML help.chm");
-            Assert.AreEqual(info.LoadFormat, LoadFormat.Chm);
+            Assert.That(LoadFormat.Chm, Is.EqualTo(info.LoadFormat));
 
             LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.GetEncoding("windows-1251") };
 

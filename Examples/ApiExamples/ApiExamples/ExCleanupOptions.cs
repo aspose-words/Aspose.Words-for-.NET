@@ -34,7 +34,7 @@ namespace ApiExamples
             // Combined with the built-in styles, the document now has eight styles.
             // A custom style is marked as "used" while there is any text within the document
             // formatted in that style. This means that the 4 styles we added are currently unused.
-            Assert.AreEqual(8, doc.Styles.Count);
+            Assert.That(doc.Styles.Count, Is.EqualTo(8));
 
             // Apply a custom character style, and then a custom list style. Doing so will mark them as "used".
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -55,14 +55,14 @@ namespace ApiExamples
 
             doc.Cleanup(cleanupOptions);
 
-            Assert.AreEqual(4, doc.Styles.Count);
+            Assert.That(doc.Styles.Count, Is.EqualTo(4));
 
             // Removing every node that a custom style is applied to marks it as "unused" again. 
             // Rerun the Cleanup method to remove them.
             doc.FirstSection.Body.RemoveAllChildren();
             doc.Cleanup(cleanupOptions);
 
-            Assert.AreEqual(2, doc.Styles.Count);
+            Assert.That(doc.Styles.Count, Is.EqualTo(2));
             //ExEnd
         }
 
@@ -86,7 +86,7 @@ namespace ApiExamples
             duplicateStyle.Font.Name = "Courier New";
             duplicateStyle.Font.Color = Color.Blue;
 
-            Assert.AreEqual(6, doc.Styles.Count);
+            Assert.That(doc.Styles.Count, Is.EqualTo(6));
 
             // Apply both styles to different paragraphs within the document.
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -98,8 +98,8 @@ namespace ApiExamples
 
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            Assert.AreEqual(myStyle, paragraphs[0].ParagraphFormat.Style);
-            Assert.AreEqual(duplicateStyle, paragraphs[1].ParagraphFormat.Style);
+            Assert.That(paragraphs[0].ParagraphFormat.Style, Is.EqualTo(myStyle));
+            Assert.That(paragraphs[1].ParagraphFormat.Style, Is.EqualTo(duplicateStyle));
 
             // Configure a CleanOptions object, then call the Cleanup method to substitute all duplicate styles
             // with the original and remove the duplicates from the document.
@@ -107,9 +107,9 @@ namespace ApiExamples
 
             doc.Cleanup(cleanupOptions);
 
-            Assert.AreEqual(5, doc.Styles.Count);
-            Assert.AreEqual(myStyle, paragraphs[0].ParagraphFormat.Style);
-            Assert.AreEqual(myStyle, paragraphs[1].ParagraphFormat.Style);
+            Assert.That(doc.Styles.Count, Is.EqualTo(5));
+            Assert.That(paragraphs[0].ParagraphFormat.Style, Is.EqualTo(myStyle));
+            Assert.That(paragraphs[1].ParagraphFormat.Style, Is.EqualTo(myStyle));
             //ExEnd
         }
     }

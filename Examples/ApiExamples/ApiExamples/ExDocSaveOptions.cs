@@ -51,7 +51,7 @@ namespace ApiExamples
             LoadOptions loadOptions = new LoadOptions("MyPassword");
             doc = new Document(ArtifactsDir + "DocSaveOptions.SaveAsDoc.doc", loadOptions);
 
-            Assert.AreEqual("Hello world!", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!"));
             //ExEnd
         }
 
@@ -75,7 +75,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "DocSaveOptions.TempFolder.doc", options);
 
             // The folder will persist with no residual contents from the load operation.
-            Assert.AreEqual(0, Directory.GetFiles(options.TempFolder).Length);
+            Assert.That(Directory.GetFiles(options.TempFolder).Length, Is.EqualTo(0));
             //ExEnd
         }
 
@@ -86,7 +86,7 @@ namespace ApiExamples
             //ExFor:DocSaveOptions.SavePictureBullet
             //ExSummary:Shows how to omit PictureBullet data from the document when saving.
             Document doc = new Document(MyDir + "Image bullet points.docx");
-            Assert.NotNull(doc.Lists[0].ListLevels[0].ImageData); //ExSkip
+            Assert.That(doc.Lists[0].ListLevels[0].ImageData, Is.Not.Null); //ExSkip
 
             // Some word processors, such as Microsoft Word 97, are incompatible with PictureBullet data.
             // By setting a flag in the SaveOptions object,
@@ -99,7 +99,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocSaveOptions.PictureBullets.doc");
 
-            Assert.Null(doc.Lists[0].ListLevels[0].ImageData);
+            Assert.That(doc.Lists[0].ListLevels[0].ImageData, Is.Null);
         }
 
         [TestCase(true)]
@@ -128,9 +128,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateLastPrintedProperty.doc");
 
             if (isUpdateLastPrintedProperty)
-                Assert.AreNotEqual(lastPrinted, doc.BuiltInDocumentProperties.LastPrinted);
+                Assert.That(doc.BuiltInDocumentProperties.LastPrinted, Is.Not.EqualTo(lastPrinted));
             else
-                Assert.AreEqual(lastPrinted, doc.BuiltInDocumentProperties.LastPrinted);
+                Assert.That(doc.BuiltInDocumentProperties.LastPrinted, Is.EqualTo(lastPrinted));
             //ExEnd
         }
 
@@ -158,9 +158,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocSaveOptions.UpdateCreatedTimeProperty.docx");
 
             if (isUpdateCreatedTimeProperty)
-                Assert.AreNotEqual(createdTime, doc.BuiltInDocumentProperties.CreatedTime);
+                Assert.That(doc.BuiltInDocumentProperties.CreatedTime, Is.Not.EqualTo(createdTime));
             else
-                Assert.AreEqual(createdTime, doc.BuiltInDocumentProperties.CreatedTime);
+                Assert.That(doc.BuiltInDocumentProperties.CreatedTime, Is.EqualTo(createdTime));
 
             //ExEnd
         }
@@ -187,9 +187,9 @@ namespace ApiExamples
             var testedFileLength = new FileInfo(ArtifactsDir + "DocSaveOptions.AlwaysCompressMetafiles.docx").Length;
 
             if (compressAllMetafiles)
-                Assert.IsTrue(testedFileLength < 14000);
+                Assert.That(testedFileLength < 14000, Is.True);
             else
-                Assert.IsTrue(testedFileLength < 22000);
+                Assert.That(testedFileLength < 22000, Is.True);
         }
     }
 }

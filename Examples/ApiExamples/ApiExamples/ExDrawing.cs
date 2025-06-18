@@ -68,7 +68,7 @@ namespace ApiExamples
             arrow.Stroke.DashStyle = DashStyle.Dash;
             arrow.Stroke.Opacity = 0.5;
 
-            Assert.AreEqual(JoinStyle.Miter, arrow.Stroke.JoinStyle);
+            Assert.That(arrow.Stroke.JoinStyle, Is.EqualTo(JoinStyle.Miter));
 
             builder.InsertNode(arrow);
 
@@ -119,47 +119,47 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Drawing.VariousShapes.docx");
 
-            Assert.AreEqual(4, doc.GetChildNodes(NodeType.Shape, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(4));
 
             arrow = (Shape) doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual(ShapeType.Line, arrow.ShapeType);
-            Assert.AreEqual(200.0d, arrow.Width);
-            Assert.AreEqual(Color.Red.ToArgb(), arrow.Stroke.Color.ToArgb());
-            Assert.AreEqual(ArrowType.Arrow, arrow.Stroke.StartArrowType);
-            Assert.AreEqual(ArrowLength.Long, arrow.Stroke.StartArrowLength);
-            Assert.AreEqual(ArrowWidth.Wide, arrow.Stroke.StartArrowWidth);
-            Assert.AreEqual(ArrowType.Diamond, arrow.Stroke.EndArrowType);
-            Assert.AreEqual(ArrowLength.Long, arrow.Stroke.EndArrowLength);
-            Assert.AreEqual(ArrowWidth.Wide, arrow.Stroke.EndArrowWidth);
-            Assert.AreEqual(DashStyle.Dash, arrow.Stroke.DashStyle);
-            Assert.AreEqual(0.5d, arrow.Stroke.Opacity);
+            Assert.That(arrow.ShapeType, Is.EqualTo(ShapeType.Line));
+            Assert.That(arrow.Width, Is.EqualTo(200.0d));
+            Assert.That(arrow.Stroke.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
+            Assert.That(arrow.Stroke.StartArrowType, Is.EqualTo(ArrowType.Arrow));
+            Assert.That(arrow.Stroke.StartArrowLength, Is.EqualTo(ArrowLength.Long));
+            Assert.That(arrow.Stroke.StartArrowWidth, Is.EqualTo(ArrowWidth.Wide));
+            Assert.That(arrow.Stroke.EndArrowType, Is.EqualTo(ArrowType.Diamond));
+            Assert.That(arrow.Stroke.EndArrowLength, Is.EqualTo(ArrowLength.Long));
+            Assert.That(arrow.Stroke.EndArrowWidth, Is.EqualTo(ArrowWidth.Wide));
+            Assert.That(arrow.Stroke.DashStyle, Is.EqualTo(DashStyle.Dash));
+            Assert.That(arrow.Stroke.Opacity, Is.EqualTo(0.5d));
 
             line = (Shape) doc.GetChild(NodeType.Shape, 1, true);
 
-            Assert.AreEqual(ShapeType.Line, line.ShapeType);
-            Assert.AreEqual(40.0d, line.Top);
-            Assert.AreEqual(200.0d, line.Width);
-            Assert.AreEqual(20.0d, line.Height);
-            Assert.AreEqual(5.0d, line.StrokeWeight);
-            Assert.AreEqual(EndCap.Round, line.Stroke.EndCap);
+            Assert.That(line.ShapeType, Is.EqualTo(ShapeType.Line));
+            Assert.That(line.Top, Is.EqualTo(40.0d));
+            Assert.That(line.Width, Is.EqualTo(200.0d));
+            Assert.That(line.Height, Is.EqualTo(20.0d));
+            Assert.That(line.StrokeWeight, Is.EqualTo(5.0d));
+            Assert.That(line.Stroke.EndCap, Is.EqualTo(EndCap.Round));
 
             filledInArrow = (Shape) doc.GetChild(NodeType.Shape, 2, true);
 
-            Assert.AreEqual(ShapeType.Arrow, filledInArrow.ShapeType);
-            Assert.AreEqual(200.0d, filledInArrow.Width);
-            Assert.AreEqual(40.0d, filledInArrow.Height);
-            Assert.AreEqual(100.0d, filledInArrow.Top);
-            Assert.AreEqual(Color.Green.ToArgb(), filledInArrow.Fill.ForeColor.ToArgb());
-            Assert.True(filledInArrow.Fill.Visible);
+            Assert.That(filledInArrow.ShapeType, Is.EqualTo(ShapeType.Arrow));
+            Assert.That(filledInArrow.Width, Is.EqualTo(200.0d));
+            Assert.That(filledInArrow.Height, Is.EqualTo(40.0d));
+            Assert.That(filledInArrow.Top, Is.EqualTo(100.0d));
+            Assert.That(filledInArrow.Fill.ForeColor.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+            Assert.That(filledInArrow.Fill.Visible, Is.True);
 
             filledInArrowImg = (Shape) doc.GetChild(NodeType.Shape, 3, true);
 
-            Assert.AreEqual(ShapeType.Arrow, filledInArrowImg.ShapeType);
-            Assert.AreEqual(200.0d, filledInArrowImg.Width);
-            Assert.AreEqual(40.0d, filledInArrowImg.Height);
-            Assert.AreEqual(160.0d, filledInArrowImg.Top);
-            Assert.AreEqual(FlipOrientation.Both, filledInArrowImg.FlipOrientation);
+            Assert.That(filledInArrowImg.ShapeType, Is.EqualTo(ShapeType.Arrow));
+            Assert.That(filledInArrowImg.Width, Is.EqualTo(200.0d));
+            Assert.That(filledInArrowImg.Height, Is.EqualTo(40.0d));
+            Assert.That(filledInArrowImg.Top, Is.EqualTo(160.0d));
+            Assert.That(filledInArrowImg.FlipOrientation, Is.EqualTo(FlipOrientation.Both));
         }
 
         [Test]
@@ -198,24 +198,24 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Drawing.ImportImage.docx");
 
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(2));
 
             imgShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, imgShape);
-            Assert.AreEqual(0.0d, imgShape.Left);
-            Assert.AreEqual(0.0d, imgShape.Top);
-            Assert.AreEqual(300.0d, imgShape.Height);
-            Assert.AreEqual(300.0d, imgShape.Width);
+            Assert.That(imgShape.Left, Is.EqualTo(0.0d));
+            Assert.That(imgShape.Top, Is.EqualTo(0.0d));
+            Assert.That(imgShape.Height, Is.EqualTo(300.0d));
+            Assert.That(imgShape.Width, Is.EqualTo(300.0d));
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, imgShape);
 
             imgShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, imgShape);
-            Assert.AreEqual(150.0d, imgShape.Left);
-            Assert.AreEqual(0.0d, imgShape.Top);
-            Assert.AreEqual(300.0d, imgShape.Height);
-            Assert.AreEqual(300.0d, imgShape.Width);
+            Assert.That(imgShape.Left, Is.EqualTo(150.0d));
+            Assert.That(imgShape.Top, Is.EqualTo(0.0d));
+            Assert.That(imgShape.Height, Is.EqualTo(300.0d));
+            Assert.That(imgShape.Width, Is.EqualTo(300.0d));
         }
 #endif
 
@@ -229,7 +229,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             Shape imgShape = builder.InsertImage(ImageDir + "Logo.jpg");
-            Assert.AreEqual(ImageType.Jpeg, imgShape.ImageData.ImageType);
+            Assert.That(imgShape.ImageData.ImageType, Is.EqualTo(ImageType.Jpeg));
             //ExEnd
         }
 
@@ -292,25 +292,25 @@ namespace ApiExamples
             List<FileInfo> fileInfos = imageFileNames.Select(s => new FileInfo(s)).ToList();
             
             TestUtil.VerifyImage(2467, 1500, fileInfos[0].FullName);
-            Assert.AreEqual(".Jpeg", fileInfos[0].Extension);
+            Assert.That(fileInfos[0].Extension, Is.EqualTo(".Jpeg"));
             TestUtil.VerifyImage(400, 400, fileInfos[1].FullName);
-            Assert.AreEqual(".Png", fileInfos[1].Extension);
+            Assert.That(fileInfos[1].Extension, Is.EqualTo(".Png"));
 #if NET461_OR_GREATER || JAVA
             TestUtil.VerifyImage(382, 138, fileInfos[2].FullName);
-            Assert.AreEqual(".Emf", fileInfos[2].Extension);
+            Assert.That(fileInfos[2].Extension, Is.EqualTo(".Emf"));
             TestUtil.VerifyImage(1600, 1600, fileInfos[3].FullName);
-            Assert.AreEqual(".Wmf", fileInfos[3].Extension);
+            Assert.That(fileInfos[3].Extension, Is.EqualTo(".Wmf"));
             TestUtil.VerifyImage(534, 534, fileInfos[4].FullName);
-            Assert.AreEqual(".Emf", fileInfos[4].Extension);
+            Assert.That(fileInfos[4].Extension, Is.EqualTo(".Emf"));
 #endif
             TestUtil.VerifyImage(1260, 660, fileInfos[5].FullName);
-            Assert.AreEqual(".Jpeg", fileInfos[5].Extension);
+            Assert.That(fileInfos[5].Extension, Is.EqualTo(".Jpeg"));
             TestUtil.VerifyImage(1125, 1500, fileInfos[6].FullName);
-            Assert.AreEqual(".Jpeg", fileInfos[6].Extension);
+            Assert.That(fileInfos[6].Extension, Is.EqualTo(".Jpeg"));
             TestUtil.VerifyImage(1027, 1500, fileInfos[7].FullName);
-            Assert.AreEqual(".Jpeg", fileInfos[7].Extension);
+            Assert.That(fileInfos[7].Extension, Is.EqualTo(".Jpeg"));
             TestUtil.VerifyImage(1200, 1500, fileInfos[8].FullName);
-            Assert.AreEqual(".Jpeg", fileInfos[8].Extension);
+            Assert.That(fileInfos[8].Extension, Is.EqualTo(".Jpeg"));
         }
 
         [Test]
@@ -326,10 +326,10 @@ namespace ApiExamples
 
             // Strokes can have two colors, which are used to create a pattern defined by two-tone image data.
             // Strokes with a single color do not use the Color2 property.
-            Assert.AreEqual(Color.FromArgb(255, 128, 0, 0), stroke.Color);
-            Assert.AreEqual(Color.FromArgb(255, 255, 255, 0), stroke.Color2);
+            Assert.That(stroke.Color, Is.EqualTo(Color.FromArgb(255, 128, 0, 0)));
+            Assert.That(stroke.Color2, Is.EqualTo(Color.FromArgb(255, 255, 255, 0)));
 
-            Assert.NotNull(stroke.ImageBytes);
+            Assert.That(stroke.ImageBytes, Is.Not.Null);
             File.WriteAllBytes(ArtifactsDir + "Drawing.StrokePattern.png", stroke.ImageBytes);
             //ExEnd
 
@@ -376,7 +376,7 @@ namespace ApiExamples
             group.AppendChild(balloon);
             group.AppendChild(cube);
 
-            Assert.True(group.IsGroup);
+            Assert.That(group.IsGroup, Is.True);
 
             builder.InsertNode(group);
 
@@ -439,21 +439,21 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             GroupShape shapes = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
 
-            Assert.AreEqual(2, shapes.GetChildNodes(NodeType.Any, false).Count);
+            Assert.That(shapes.GetChildNodes(NodeType.Any, false).Count, Is.EqualTo(2));
 
             Shape shape = (Shape)shapes.GetChildNodes(NodeType.Any, false)[0];
 
-            Assert.AreEqual(ShapeType.Balloon, shape.ShapeType);
-            Assert.AreEqual(200.0d, shape.Width);
-            Assert.AreEqual(200.0d, shape.Height);
-            Assert.AreEqual(Color.Red.ToArgb(), shape.StrokeColor.ToArgb());
+            Assert.That(shape.ShapeType, Is.EqualTo(ShapeType.Balloon));
+            Assert.That(shape.Width, Is.EqualTo(200.0d));
+            Assert.That(shape.Height, Is.EqualTo(200.0d));
+            Assert.That(shape.StrokeColor.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
 
             shape = (Shape)shapes.GetChildNodes(NodeType.Any, false)[1];
 
-            Assert.AreEqual(ShapeType.Cube, shape.ShapeType);
-            Assert.AreEqual(100.0d, shape.Width);
-            Assert.AreEqual(100.0d, shape.Height);
-            Assert.AreEqual(Color.Blue.ToArgb(), shape.StrokeColor.ToArgb());
+            Assert.That(shape.ShapeType, Is.EqualTo(ShapeType.Cube));
+            Assert.That(shape.Width, Is.EqualTo(100.0d));
+            Assert.That(shape.Height, Is.EqualTo(100.0d));
+            Assert.That(shape.StrokeColor.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
         }
 
         [Test]
@@ -484,11 +484,11 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Drawing.TextBox.docx");
             textbox = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.AreEqual(ShapeType.TextBox, textbox.ShapeType);
-            Assert.AreEqual(100.0d, textbox.Width);
-            Assert.AreEqual(100.0d, textbox.Height);
-            Assert.AreEqual(LayoutFlow.BottomToTop, textbox.TextBox.LayoutFlow);
-            Assert.AreEqual("This text is flipped 90 degrees to the left.", textbox.GetText().Trim());
+            Assert.That(textbox.ShapeType, Is.EqualTo(ShapeType.TextBox));
+            Assert.That(textbox.Width, Is.EqualTo(100.0d));
+            Assert.That(textbox.Height, Is.EqualTo(100.0d));
+            Assert.That(textbox.TextBox.LayoutFlow, Is.EqualTo(LayoutFlow.BottomToTop));
+            Assert.That(textbox.GetText().Trim(), Is.EqualTo("This text is flipped 90 degrees to the left."));
         }
 
         [Test]
@@ -500,14 +500,14 @@ namespace ApiExamples
             //ExFor:ImageData.ToStream
             //ExSummary:Shows how to create an image file from a shape's raw image data.
             Document imgSourceDoc = new Document(MyDir + "Images.docx");
-            Assert.AreEqual(10, imgSourceDoc.GetChildNodes(NodeType.Shape, true).Count); //ExSkip
+            Assert.That(imgSourceDoc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(10)); //ExSkip
 
             Shape imgShape = (Shape) imgSourceDoc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.True(imgShape.HasImage);
+            Assert.That(imgShape.HasImage, Is.True);
 
             // ToByteArray() returns the array stored in the ImageBytes property.
-            Assert.AreEqual(imgShape.ImageData.ImageBytes, imgShape.ImageData.ToByteArray());
+            Assert.That(imgShape.ImageData.ToByteArray(), Is.EqualTo(imgShape.ImageData.ImageBytes));
 
             // Save the shape's image data to an image file in the local file system.
             using (Stream imgStream = imgShape.ImageData.ToStream())
@@ -554,15 +554,15 @@ namespace ApiExamples
             ImageData imageData = importedShape.ImageData;
             imageData.Title = "Imported Image";
 
-            Assert.True(imageData.HasImage);
+            Assert.That(imageData.HasImage, Is.True);
 
             // If an image has no borders, its ImageData object will define the border color as empty.
-            Assert.AreEqual(4, imageData.Borders.Count);
-            Assert.AreEqual(Color.Empty, imageData.Borders[0].Color);
+            Assert.That(imageData.Borders.Count, Is.EqualTo(4));
+            Assert.That(imageData.Borders[0].Color, Is.EqualTo(Color.Empty));
 
             // This image does not link to another shape or image file in the local file system.
-            Assert.False(imageData.IsLink);
-            Assert.False(imageData.IsLinkOnly);
+            Assert.That(imageData.IsLink, Is.False);
+            Assert.That(imageData.IsLinkOnly, Is.False);
 
             // The "Brightness" and "Contrast" properties define image brightness and contrast
             // on a 0-1 scale, with the default value at 0.5.
@@ -600,24 +600,24 @@ namespace ApiExamples
             sourceShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(2467, 1500, ImageType.Jpeg, sourceShape);
-            Assert.AreEqual("Imported Image", sourceShape.ImageData.Title);
-            Assert.AreEqual(0.8d, sourceShape.ImageData.Brightness, 0.1d);
-            Assert.AreEqual(1.0d, sourceShape.ImageData.Contrast, 0.1d);
-            Assert.AreEqual(Color.White.ToArgb(), sourceShape.ImageData.ChromaKey.ToArgb());
+            Assert.That(sourceShape.ImageData.Title, Is.EqualTo("Imported Image"));
+            Assert.That(sourceShape.ImageData.Brightness, Is.EqualTo(0.8d).Within(0.1d));
+            Assert.That(sourceShape.ImageData.Contrast, Is.EqualTo(1.0d).Within(0.1d));
+            Assert.That(sourceShape.ImageData.ChromaKey.ToArgb(), Is.EqualTo(Color.White.ToArgb()));
 
             sourceShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyImageInShape(2467, 1500, ImageType.Jpeg, sourceShape);
-            Assert.True(sourceShape.ImageData.GrayScale);
+            Assert.That(sourceShape.ImageData.GrayScale, Is.True);
 
             sourceShape = (Shape)imgSourceDoc.GetChild(NodeType.Shape, 2, true);
 
             TestUtil.VerifyImageInShape(2467, 1500, ImageType.Jpeg, sourceShape);
-            Assert.True(sourceShape.ImageData.BiLevel);
-            Assert.AreEqual(0.3d, sourceShape.ImageData.CropBottom, 0.1d);
-            Assert.AreEqual(0.3d, sourceShape.ImageData.CropLeft, 0.1d);
-            Assert.AreEqual(0.3d, sourceShape.ImageData.CropTop, 0.1d);
-            Assert.AreEqual(0.3d, sourceShape.ImageData.CropRight, 0.1d);
+            Assert.That(sourceShape.ImageData.BiLevel, Is.True);
+            Assert.That(sourceShape.ImageData.CropBottom, Is.EqualTo(0.3d).Within(0.1d));
+            Assert.That(sourceShape.ImageData.CropLeft, Is.EqualTo(0.3d).Within(0.1d));
+            Assert.That(sourceShape.ImageData.CropTop, Is.EqualTo(0.3d).Within(0.1d));
+            Assert.That(sourceShape.ImageData.CropRight, Is.EqualTo(0.3d).Within(0.1d));
         }
 
         [Test]
@@ -640,12 +640,12 @@ namespace ApiExamples
             ImageSize imageSize = shape.ImageData.ImageSize;
 
             // The ImageSize object contains read-only information about the image within the shape.
-            Assert.AreEqual(400, imageSize.HeightPixels);
-            Assert.AreEqual(400, imageSize.WidthPixels);
+            Assert.That(imageSize.HeightPixels, Is.EqualTo(400));
+            Assert.That(imageSize.WidthPixels, Is.EqualTo(400));
 
             const double delta = 0.05;
-            Assert.AreEqual(95.98d, imageSize.HorizontalResolution, delta);
-            Assert.AreEqual(95.98d, imageSize.VerticalResolution, delta);
+            Assert.That(imageSize.HorizontalResolution, Is.EqualTo(95.98d).Within(delta));
+            Assert.That(imageSize.VerticalResolution, Is.EqualTo(95.98d).Within(delta));
 
             // We can base the size of the shape on the size of its image to avoid stretching the image.
             shape.Width = imageSize.WidthPoints * 2;
@@ -658,15 +658,15 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
-            Assert.AreEqual(600.0d, shape.Width);
-            Assert.AreEqual(600.0d, shape.Height);
+            Assert.That(shape.Width, Is.EqualTo(600.0d));
+            Assert.That(shape.Height, Is.EqualTo(600.0d));
 
             imageSize = shape.ImageData.ImageSize;
 
-            Assert.AreEqual(400, imageSize.HeightPixels);
-            Assert.AreEqual(400, imageSize.WidthPixels);
-            Assert.AreEqual(95.98d, imageSize.HorizontalResolution, delta);
-            Assert.AreEqual(95.98d, imageSize.VerticalResolution, delta);
+            Assert.That(imageSize.HeightPixels, Is.EqualTo(400));
+            Assert.That(imageSize.WidthPixels, Is.EqualTo(400));
+            Assert.That(imageSize.HorizontalResolution, Is.EqualTo(95.98d).Within(delta));
+            Assert.That(imageSize.VerticalResolution, Is.EqualTo(95.98d).Within(delta));
         }
     }
 }

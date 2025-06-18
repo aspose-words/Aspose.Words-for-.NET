@@ -42,7 +42,7 @@ namespace ApiExamples
             variables.Add("City", "London");
             variables.Add("Bedrooms", "3");
 
-            Assert.AreEqual(3, variables.Count);
+            Assert.That(variables.Count, Is.EqualTo(3));
 
             // We can display the values of variables in the document body using DOCVARIABLE fields.
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -50,29 +50,29 @@ namespace ApiExamples
             field.VariableName = "Home address";
             field.Update();
 
-            Assert.AreEqual("123 Main St.", field.Result);
+            Assert.That(field.Result, Is.EqualTo("123 Main St."));
 
             // Assigning values to existing keys will update them.
             variables.Add("Home address", "456 Queen St.");
 
             // We will then have to update DOCVARIABLE fields to ensure they display an up-to-date value.
-            Assert.AreEqual("123 Main St.", field.Result);
+            Assert.That(field.Result, Is.EqualTo("123 Main St."));
 
             field.Update();
 
-            Assert.AreEqual("456 Queen St.", field.Result);
+            Assert.That(field.Result, Is.EqualTo("456 Queen St."));
 
             // Verify that the document variables with a certain name or value exist.
-            Assert.True(variables.Contains("City"));
-            Assert.True(variables.Any(v => v.Value == "London"));
+            Assert.That(variables.Contains("City"), Is.True);
+            Assert.That(variables.Any(v => v.Value == "London"), Is.True);
 
             // The collection of variables automatically sorts variables alphabetically by name.
-            Assert.AreEqual(0, variables.IndexOfKey("Bedrooms"));
-            Assert.AreEqual(1, variables.IndexOfKey("City"));
-            Assert.AreEqual(2, variables.IndexOfKey("Home address"));
+            Assert.That(variables.IndexOfKey("Bedrooms"), Is.EqualTo(0));
+            Assert.That(variables.IndexOfKey("City"), Is.EqualTo(1));
+            Assert.That(variables.IndexOfKey("Home address"), Is.EqualTo(2));
 
-            Assert.AreEqual("3", variables[0]);
-            Assert.AreEqual("London", variables["City"]);
+            Assert.That(variables[0], Is.EqualTo("3"));
+            Assert.That(variables["City"], Is.EqualTo("London"));
 
             // Enumerate over the collection of variables.
             using (IEnumerator<KeyValuePair<string, string>> enumerator = doc.Variables.GetEnumerator())
@@ -83,17 +83,17 @@ namespace ApiExamples
             // 1 -  By name:
             variables.Remove("City");
 
-            Assert.False(variables.Contains("City"));
+            Assert.That(variables.Contains("City"), Is.False);
 
             // 2 -  By index:
             variables.RemoveAt(1);
 
-            Assert.False(variables.Contains("Home address"));
+            Assert.That(variables.Contains("Home address"), Is.False);
 
             // 3 -  Clear the whole collection at once:
             variables.Clear();
 
-            Assert.AreEqual(0, variables.Count);
+            Assert.That(variables.Count, Is.EqualTo(0));
             //ExEnd
         }
     }

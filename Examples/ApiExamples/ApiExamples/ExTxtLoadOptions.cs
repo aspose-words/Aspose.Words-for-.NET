@@ -62,13 +62,13 @@ namespace ApiExamples
 
             if (detectNumberingWithWhitespaces)
             {
-                Assert.AreEqual(4, doc.Lists.Count);
-                Assert.True(doc.FirstSection.Body.Paragraphs.Any(p => p.GetText().Contains("Fourth list") && ((Paragraph)p).IsListItem));
+                Assert.That(doc.Lists.Count, Is.EqualTo(4));
+                Assert.That(doc.FirstSection.Body.Paragraphs.Any(p => p.GetText().Contains("Fourth list") && ((Paragraph)p).IsListItem), Is.True);
             }
             else
             {
-                Assert.AreEqual(3, doc.Lists.Count);
-                Assert.False(doc.FirstSection.Body.Paragraphs.Any(p => p.GetText().Contains("Fourth list") && ((Paragraph)p).IsListItem));
+                Assert.That(doc.Lists.Count, Is.EqualTo(3));
+                Assert.That(doc.FirstSection.Body.Paragraphs.Any(p => p.GetText().Contains("Fourth list") && ((Paragraph)p).IsListItem), Is.False);
             }
             //ExEnd
         }
@@ -113,41 +113,41 @@ namespace ApiExamples
             switch (txtLeadingSpacesOptions)
             {
                 case TxtLeadingSpacesOptions.ConvertToIndent:
-                    Assert.AreEqual(37.8d, paragraphs[0].ParagraphFormat.FirstLineIndent);
-                    Assert.AreEqual(25.2d, paragraphs[1].ParagraphFormat.FirstLineIndent);
-                    Assert.AreEqual(6.3d, paragraphs[2].ParagraphFormat.FirstLineIndent);
+                    Assert.That(paragraphs[0].ParagraphFormat.FirstLineIndent, Is.EqualTo(37.8d));
+                    Assert.That(paragraphs[1].ParagraphFormat.FirstLineIndent, Is.EqualTo(25.2d));
+                    Assert.That(paragraphs[2].ParagraphFormat.FirstLineIndent, Is.EqualTo(6.3d));
 
-                    Assert.True(paragraphs[0].GetText().StartsWith("Line 1"));
-                    Assert.True(paragraphs[1].GetText().StartsWith("Line 2"));
-                    Assert.True(paragraphs[2].GetText().StartsWith("Line 3"));
+                    Assert.That(paragraphs[0].GetText().StartsWith("Line 1"), Is.True);
+                    Assert.That(paragraphs[1].GetText().StartsWith("Line 2"), Is.True);
+                    Assert.That(paragraphs[2].GetText().StartsWith("Line 3"), Is.True);
                     break;
                 case TxtLeadingSpacesOptions.Preserve:
-                    Assert.True(paragraphs.All(p => ((Paragraph)p).ParagraphFormat.FirstLineIndent == 0.0d));
+                    Assert.That(paragraphs.All(p => ((Paragraph)p).ParagraphFormat.FirstLineIndent == 0.0d), Is.True);
 
-                    Assert.True(paragraphs[0].GetText().StartsWith("      Line 1"));
-                    Assert.True(paragraphs[1].GetText().StartsWith("    Line 2"));
-                    Assert.True(paragraphs[2].GetText().StartsWith(" Line 3"));
+                    Assert.That(paragraphs[0].GetText().StartsWith("      Line 1"), Is.True);
+                    Assert.That(paragraphs[1].GetText().StartsWith("    Line 2"), Is.True);
+                    Assert.That(paragraphs[2].GetText().StartsWith(" Line 3"), Is.True);
                     break;
                 case TxtLeadingSpacesOptions.Trim:
-                    Assert.True(paragraphs.All(p => ((Paragraph)p).ParagraphFormat.FirstLineIndent == 0.0d));
+                    Assert.That(paragraphs.All(p => ((Paragraph)p).ParagraphFormat.FirstLineIndent == 0.0d), Is.True);
 
-                    Assert.True(paragraphs[0].GetText().StartsWith("Line 1"));
-                    Assert.True(paragraphs[1].GetText().StartsWith("Line 2"));
-                    Assert.True(paragraphs[2].GetText().StartsWith("Line 3"));
+                    Assert.That(paragraphs[0].GetText().StartsWith("Line 1"), Is.True);
+                    Assert.That(paragraphs[1].GetText().StartsWith("Line 2"), Is.True);
+                    Assert.That(paragraphs[2].GetText().StartsWith("Line 3"), Is.True);
                     break;
             }
 
             switch (txtTrailingSpacesOptions)
             {
                 case TxtTrailingSpacesOptions.Preserve:
-                    Assert.True(paragraphs[0].GetText().EndsWith("Line 1 \r"));
-                    Assert.True(paragraphs[1].GetText().EndsWith("Line 2   \r"));
-                    Assert.True(paragraphs[2].GetText().EndsWith("Line 3       \f"));
+                    Assert.That(paragraphs[0].GetText().EndsWith("Line 1 \r"), Is.True);
+                    Assert.That(paragraphs[1].GetText().EndsWith("Line 2   \r"), Is.True);
+                    Assert.That(paragraphs[2].GetText().EndsWith("Line 3       \f"), Is.True);
                     break;
                 case TxtTrailingSpacesOptions.Trim:
-                    Assert.True(paragraphs[0].GetText().EndsWith("Line 1\r"));
-                    Assert.True(paragraphs[1].GetText().EndsWith("Line 2\r"));
-                    Assert.True(paragraphs[2].GetText().EndsWith("Line 3\f"));
+                    Assert.That(paragraphs[0].GetText().EndsWith("Line 1\r"), Is.True);
+                    Assert.That(paragraphs[1].GetText().EndsWith("Line 2\r"), Is.True);
+                    Assert.That(paragraphs[2].GetText().EndsWith("Line 3\f"), Is.True);
                     break;
             }
             //ExEnd
@@ -173,12 +173,12 @@ namespace ApiExamples
             // Detect Hebrew text as right-to-left.
             Document doc = new Document(MyDir + "Hebrew text.txt", loadOptions);
 
-            Assert.True(doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Bidi);
+            Assert.That(doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Bidi, Is.True);
 
             // Detect English text as right-to-left.
             doc = new Document(MyDir + "English text.txt", loadOptions);
 
-            Assert.False(doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Bidi);
+            Assert.That(doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Bidi, Is.False);
             //ExEnd
         }
 
@@ -199,7 +199,7 @@ namespace ApiExamples
                     listItemsCount++;
             }
 
-            Assert.AreEqual(0, listItemsCount);
+            Assert.That(listItemsCount, Is.EqualTo(0));
         }
 
         [Test]
@@ -227,8 +227,8 @@ namespace ApiExamples
                 foreach (Field field in doc.Range.Fields)
                     Console.WriteLine(field.Result);
 
-                Assert.AreEqual(doc.Range.Fields[0].Result.Trim(), "https://www.aspose.com/");
-                Assert.AreEqual(doc.Range.Fields[1].Result.Trim(), "https://docs.aspose.com/words/net/");
+                Assert.That("https://www.aspose.com/", Is.EqualTo(doc.Range.Fields[0].Result.Trim()));
+                Assert.That("https://docs.aspose.com/words/net/", Is.EqualTo(doc.Range.Fields[1].Result.Trim()));
             }
             //ExEnd:DetectHyperlinks
         }
