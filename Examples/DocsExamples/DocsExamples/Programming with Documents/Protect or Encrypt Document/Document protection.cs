@@ -107,8 +107,8 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
             doc.Save(ArtifactsDir + "DocumentProtection.UnrestrictedSection.docx");
 
             doc = new Document(ArtifactsDir + "DocumentProtection.UnrestrictedSection.docx");
-            Assert.False(doc.Sections[0].ProtectedForForms);
-            Assert.True(doc.Sections[1].ProtectedForForms);
+            Assert.That(doc.Sections[0].ProtectedForForms, Is.False);
+            Assert.That(doc.Sections[1].ProtectedForForms, Is.True);
             //ExEnd:UnrestrictedSection
         }
 
