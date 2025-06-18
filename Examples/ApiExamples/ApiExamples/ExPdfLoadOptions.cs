@@ -33,9 +33,9 @@ namespace ApiExamples
             NodeCollection shapeCollection = doc.GetChildNodes(NodeType.Shape, true);
 
             if (isSkipPdfImages)
-                Assert.AreEqual(shapeCollection.Count, 0);
+                Assert.That(0, Is.EqualTo(shapeCollection.Count));
             else
-                Assert.AreNotEqual(shapeCollection.Count, 0);
+                Assert.That(0, Is.Not.EqualTo(shapeCollection.Count));
             //ExEnd
         }
     }

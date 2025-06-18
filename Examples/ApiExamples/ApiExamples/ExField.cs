@@ -7698,7 +7698,7 @@ namespace ApiExamples
             //ExSummary:Shows how to get bibliography sources available in the document.
             Document document = new Document(MyDir + "Bibliography sources.docx");
 
-            Bibliography.Bibliography bibliography = document.Bibliography;
+            Bibliography bibliography = document.Bibliography;
             Assert.That(bibliography.Sources.Count, Is.EqualTo(12));
 
             // Get default data from bibliography sources.

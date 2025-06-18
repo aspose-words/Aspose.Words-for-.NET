@@ -37,8 +37,8 @@ namespace ApiExamples
 
             // Call the "GetNumPagesSpanned" method to count how many pages the content of our document spans.
             // Since the document is empty, that number of pages is currently zero.
-            Assert.AreEqual(doc, layoutCollector.Document);
-            Assert.AreEqual(0, layoutCollector.GetNumPagesSpanned(doc));
+            Assert.That(layoutCollector.Document, Is.EqualTo(doc));
+            Assert.That(layoutCollector.GetNumPagesSpanned(doc), Is.EqualTo(0));
 
             // Populate the document with 5 pages of content.
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -52,12 +52,12 @@ namespace ApiExamples
 
             // Before the layout collector, we need to call the "UpdatePageLayout" method to give us
             // an accurate figure for any layout-related metric, such as the page count.
-            Assert.AreEqual(0, layoutCollector.GetNumPagesSpanned(doc));
+            Assert.That(layoutCollector.GetNumPagesSpanned(doc), Is.EqualTo(0));
 
             layoutCollector.Clear();
             doc.UpdatePageLayout();
 
-            Assert.AreEqual(5, layoutCollector.GetNumPagesSpanned(doc));
+            Assert.That(layoutCollector.GetNumPagesSpanned(doc), Is.EqualTo(5));
 
             // We can see the numbers of the start and end pages of any node and their overall page spans.
             NodeCollection nodes = doc.GetChildNodes(NodeType.Any, true);
@@ -72,14 +72,14 @@ namespace ApiExamples
             // We can iterate over the layout entities using a LayoutEnumerator.
             LayoutEnumerator layoutEnumerator = new LayoutEnumerator(doc);
 
-            Assert.AreEqual(LayoutEntityType.Page, layoutEnumerator.Type);
+            Assert.That(layoutEnumerator.Type, Is.EqualTo(LayoutEntityType.Page));
 
             // The LayoutEnumerator can traverse the collection of layout entities like a tree.
             // We can also apply it to any node's corresponding layout entity.
             layoutEnumerator.Current = layoutCollector.GetEntity(doc.GetChild(NodeType.Paragraph, 1, true));
 
-            Assert.AreEqual(LayoutEntityType.Span, layoutEnumerator.Type);
-            Assert.AreEqual("¶", layoutEnumerator.Text);
+            Assert.That(layoutEnumerator.Type, Is.EqualTo(LayoutEntityType.Span));
+            Assert.That(layoutEnumerator.Text, Is.EqualTo("¶"));
             //ExEnd
         }
 
@@ -114,11 +114,11 @@ namespace ApiExamples
             // Create an enumerator that can traverse these entities like a tree.
             LayoutEnumerator layoutEnumerator = new LayoutEnumerator(doc);
 
-            Assert.AreEqual(doc, layoutEnumerator.Document);
+            Assert.That(layoutEnumerator.Document, Is.EqualTo(doc));
 
             layoutEnumerator.MoveParent(LayoutEntityType.Page);
 
-            Assert.AreEqual(LayoutEntityType.Page, layoutEnumerator.Type);
+            Assert.That(layoutEnumerator.Type, Is.EqualTo(LayoutEntityType.Page));
             Assert.Throws<InvalidOperationException>(() => Console.WriteLine(layoutEnumerator.Text));
 
             // We can call this method to make sure that the enumerator will be at the first layout entity.

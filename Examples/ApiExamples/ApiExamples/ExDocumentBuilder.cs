@@ -3016,6 +3016,7 @@ namespace ApiExamples
 
             WarningInfoCollection warnings = new WarningInfoCollection();
             doc.WarningCallback = warnings;
+
             doc.Save(ArtifactsDir + "DocumentBuilder.EmphasesWarningSourceMarkdown.md");
 
             foreach (WarningInfo warningInfo in warnings)

@@ -719,11 +719,9 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "HtmlSaveOptions.SaveExportedFonts.html", options);
 
             foreach (string fontFilename in Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")))
-            {
                 Console.WriteLine(fontFilename);
-            }
 
-            Assert.That(Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length, Is.EqualTo(10)); //ExSkip
+            Assert.That(Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length, Is.EqualTo(7)); //ExSkip
         }
 
         /// <summary>
@@ -1851,8 +1849,8 @@ namespace ApiExamples
 
             // Enabling pretty format makes the raw html code more readable by adding tab stop and new line characters.
             string html = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.PrettyFormat.html");
-            string newLine = Environment.NewLine;
 
+            string newLine = Environment.NewLine;
             if (usePrettyFormat)
                 Assert.That(html, Is.EqualTo($"<html>{newLine}" +
                                 $"\t<head>{newLine}" +

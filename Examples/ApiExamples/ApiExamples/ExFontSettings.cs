@@ -222,36 +222,35 @@ namespace ApiExamples
         }
         //ExEnd
 
-        //ExStart
-        //ExFor:FontInfoSubstitutionRule
-        //ExFor:FontSubstitutionSettings.FontInfoSubstitution
-        //ExFor:LayoutOptions.KeepOriginalFontMetrics
-        //ExFor:IWarningCallback
-        //ExFor:IWarningCallback.Warning(WarningInfo)
-        //ExFor:WarningInfo
-        //ExFor:WarningInfo.Description
-        //ExFor:WarningInfo.WarningType
-        //ExFor:WarningInfoCollection
-        //ExFor:WarningInfoCollection.Warning(WarningInfo)
-        //ExFor:WarningInfoCollection.GetEnumerator
-        //ExFor:WarningInfoCollection.Clear
-        //ExFor:WarningType
-        //ExFor:DocumentBase.WarningCallback
-        //ExSummary:Shows how to set the property for finding the closest match for a missing font from the available font sources.
-        [Test]//ExSkip
+        
+        [Test]
         public void EnableFontSubstitution()
         {
+            //ExStart
+            //ExFor:FontInfoSubstitutionRule
+            //ExFor:FontSubstitutionSettings.FontInfoSubstitution
+            //ExFor:LayoutOptions.KeepOriginalFontMetrics
+            //ExFor:IWarningCallback
+            //ExFor:IWarningCallback.Warning(WarningInfo)
+            //ExFor:WarningInfo
+            //ExFor:WarningInfo.Description
+            //ExFor:WarningInfo.WarningType
+            //ExFor:WarningInfoCollection
+            //ExFor:WarningInfoCollection.Warning(WarningInfo)
+            //ExFor:WarningInfoCollection.Clear
+            //ExFor:WarningType
+            //ExFor:DocumentBase.WarningCallback
+            //ExSummary:Shows how to set the property for finding the closest match for a missing font from the available font sources.
             // Open a document that contains text formatted with a font that does not exist in any of our font sources.
             Document doc = new Document(MyDir + "Missing font.docx");
 
             // Assign a callback for handling font substitution warnings.
-            HandleDocumentSubstitutionWarnings substitutionWarningHandler = new HandleDocumentSubstitutionWarnings();
-            doc.WarningCallback = substitutionWarningHandler;
+            WarningInfoCollection warningCollector = new WarningInfoCollection();
+            doc.WarningCallback = warningCollector;
 
             // Set a default font name and enable font substitution.
             FontSettings fontSettings = new FontSettings();
             fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
-            ;
             fontSettings.SubstitutionSettings.FontInfoSubstitution.Enabled = true;
 
             // Original font metrics should be used after font substitution.
@@ -261,45 +260,34 @@ namespace ApiExamples
             doc.FontSettings = fontSettings;
             doc.Save(ArtifactsDir + "FontSettings.EnableFontSubstitution.pdf");
 
-            using (IEnumerator<WarningInfo> warnings = substitutionWarningHandler.FontWarnings.GetEnumerator())
-                while (warnings.MoveNext())
-                    Console.WriteLine(warnings.Current.Description);
-
-            // We can also verify warnings in the collection and clear them.
-            Assert.That(substitutionWarningHandler.FontWarnings[0].Source, Is.EqualTo(WarningSource.Layout));
-            Assert.That(substitutionWarningHandler.FontWarnings[0].Description, Is.EqualTo("Font '28 Days Later' has not been found. Using 'Calibri' font instead. Reason: alternative name from document."));
-
-            substitutionWarningHandler.FontWarnings.Clear();
-
-            Assert.That(substitutionWarningHandler.FontWarnings.Count, Is.EqualTo(0));
-        }
-
-        public class HandleDocumentSubstitutionWarnings : IWarningCallback
-        {
-            /// <summary>
-            /// Called every time a warning occurs during loading/saving.
-            /// </summary>
-            public void Warning(WarningInfo info)
+            foreach (WarningInfo info in warningCollector)
             {
                 if (info.WarningType == WarningType.FontSubstitution)
-                    FontWarnings.Warning(info);
+                    Console.WriteLine(info.Description);
             }
+            //ExEnd
 
-            public WarningInfoCollection FontWarnings = new WarningInfoCollection();
+            // We can also verify warnings in the collection and clear them.
+            Assert.That(warningCollector[0].Source, Is.EqualTo(WarningSource.Layout));
+            Assert.That(warningCollector[0].Description, Is.EqualTo("Font '28 Days Later' has not been found. Using 'Calibri' font instead. Reason: alternative name from document."));
+
+            warningCollector.Clear();
+
+            Assert.That(warningCollector.Count, Is.EqualTo(0));
         }
-        //ExEnd
+        
 
         [Test]
         public void SubstitutionWarningsClosestMatch()
         {
             Document doc = new Document(MyDir + "Bullet points with alternative font.docx");
 
-            HandleDocumentSubstitutionWarnings callback = new HandleDocumentSubstitutionWarnings();
+            WarningInfoCollection callback = new WarningInfoCollection();
             doc.WarningCallback = callback;
 
             doc.Save(ArtifactsDir + "FontSettings.SubstitutionWarningsClosestMatch.pdf");
 
-            Assert.That(callback.FontWarnings[0].Description
+            Assert.That(callback[0].Description
                 .Equals(
                     "Font \'SymbolPS\' has not been found. Using \'Wingdings\' font instead. Reason: font info substitution."), Is.True);
         }
@@ -309,7 +297,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Missing font.docx");
 
-            HandleDocumentSubstitutionWarnings callback = new HandleDocumentSubstitutionWarnings();
+            WarningInfoCollection callback = new WarningInfoCollection();
             doc.WarningCallback = callback;
 
             FontSettings fontSettings = new FontSettings();
@@ -322,7 +310,7 @@ namespace ApiExamples
             Regex reg = new Regex(
                 "Font '28 Days Later' has not been found. Using (.*) font instead. Reason: default font setting.");
 
-            foreach (WarningInfo fontWarning in callback.FontWarnings)
+            foreach (WarningInfo fontWarning in callback)
             {
                 Match match = reg.Match(fontWarning.Description);
                 if (match.Success)
@@ -338,7 +326,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HandleDocumentSubstitutionWarnings callback = new HandleDocumentSubstitutionWarnings();
+            WarningInfoCollection callback = new WarningInfoCollection();
             doc.WarningCallback = callback;
 
             FontSettings fontSettings = new FontSettings();
@@ -349,8 +337,8 @@ namespace ApiExamples
             doc.FontSettings = fontSettings;
             doc.Save(ArtifactsDir + "FontSettings.SubstitutionWarnings.pdf");
 
-            Assert.That(callback.FontWarnings[0].Description, Is.EqualTo("Font \'Arial\' has not been found. Using \'Arvo\' font instead. Reason: table substitution."));
-            Assert.That(callback.FontWarnings[1].Description, Is.EqualTo("Font \'Times New Roman\' has not been found. Using \'M+ 2m\' font instead. Reason: font info substitution."));
+            Assert.That(callback[0].Description, Is.EqualTo("Font \'Arial\' has not been found. Using \'Arvo\' font instead. Reason: table substitution."));
+            Assert.That(callback[1].Description, Is.EqualTo("Font \'Times New Roman\' has not been found. Using \'M+ 2m\' font instead. Reason: font info substitution."));
         }
 
         [Test]
@@ -360,7 +348,7 @@ namespace ApiExamples
 
             FontSourceBase[] originalFontSources = FontSettings.DefaultInstance.GetFontsSources();
 
-            HandleDocumentSubstitutionWarnings substitutionWarningHandler = new HandleDocumentSubstitutionWarnings();
+            WarningInfoCollection substitutionWarningHandler = new WarningInfoCollection();
             doc.WarningCallback = substitutionWarningHandler;
 
             List<FontSourceBase> fontSources = new List<FontSourceBase>(FontSettings.DefaultInstance.GetFontsSources());
@@ -372,7 +360,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Font.GetSubstitutionWithoutSuffixes.pdf");
 
-            Assert.That(substitutionWarningHandler.FontWarnings[0].Description, Is.EqualTo("Font 'DINOT-Regular' has not been found. Using 'DINOT' font instead. Reason: font name substitution."));
+            Assert.That(substitutionWarningHandler[0].Description, Is.EqualTo("Font 'DINOT-Regular' has not been found. Using 'DINOT' font instead. Reason: font name substitution."));
 
             FontSettings.DefaultInstance.SetFontsSources(originalFontSources);
         }

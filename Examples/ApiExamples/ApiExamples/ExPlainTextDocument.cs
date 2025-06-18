@@ -32,7 +32,7 @@ namespace ApiExamples
 
             PlainTextDocument plaintext = new PlainTextDocument(ArtifactsDir + "PlainTextDocument.Load.docx");
 
-            Assert.AreEqual("Hello world!", plaintext.Text.Trim());
+            Assert.That(plaintext.Text.Trim(), Is.EqualTo("Hello world!"));
             //ExEnd
         }
 
@@ -52,7 +52,7 @@ namespace ApiExamples
             {
                 PlainTextDocument plaintext = new PlainTextDocument(stream);
 
-                Assert.AreEqual("Hello world!", plaintext.Text.Trim());
+                Assert.That(plaintext.Text.Trim(), Is.EqualTo("Hello world!"));
             }
             //ExEnd
         }
@@ -77,7 +77,7 @@ namespace ApiExamples
 
             PlainTextDocument plaintext = new PlainTextDocument(ArtifactsDir + "PlainTextDocument.LoadEncrypted.docx", loadOptions);
 
-            Assert.AreEqual("Hello world!", plaintext.Text.Trim());
+            Assert.That(plaintext.Text.Trim(), Is.EqualTo("Hello world!"));
             //ExEnd
         }
 
@@ -104,7 +104,7 @@ namespace ApiExamples
             {
                 PlainTextDocument plaintext = new PlainTextDocument(stream, loadOptions);
 
-                Assert.AreEqual("Hello world!", plaintext.Text.Trim());
+                Assert.That(plaintext.Text.Trim(), Is.EqualTo("Hello world!"));
             }
             //ExEnd
         }
@@ -125,8 +125,8 @@ namespace ApiExamples
 
             PlainTextDocument plaintext = new PlainTextDocument(ArtifactsDir + "PlainTextDocument.BuiltInProperties.docx");
 
-            Assert.AreEqual("Hello world!", plaintext.Text.Trim());
-            Assert.AreEqual("John Doe", plaintext.BuiltInDocumentProperties.Author);
+            Assert.That(plaintext.Text.Trim(), Is.EqualTo("Hello world!"));
+            Assert.That(plaintext.BuiltInDocumentProperties.Author, Is.EqualTo("John Doe"));
             //ExEnd
         }
 
@@ -146,8 +146,8 @@ namespace ApiExamples
 
             PlainTextDocument plaintext = new PlainTextDocument(ArtifactsDir + "PlainTextDocument.CustomDocumentProperties.docx");
 
-            Assert.AreEqual("Hello world!", plaintext.Text.Trim());
-            Assert.AreEqual("123 Main St, London, UK", plaintext.CustomDocumentProperties["Location of writing"].Value);
+            Assert.That(plaintext.Text.Trim(), Is.EqualTo("Hello world!"));
+            Assert.That(plaintext.CustomDocumentProperties["Location of writing"].Value, Is.EqualTo("123 Main St, London, UK"));
             //ExEnd
         }
     }

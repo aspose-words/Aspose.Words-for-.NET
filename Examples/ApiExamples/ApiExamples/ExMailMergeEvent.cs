@@ -114,7 +114,7 @@ namespace ApiExamples
                 new string[] { "text_Field1", "text_Field2", "numeric_Field1" },
                 new object[] { "Field 1", "Field 2", 10 });
             string t = doc.GetText().Trim();
-            Assert.AreEqual("Merge Value For \"Text_Field1\": Field 1, MERGE VALUE FOR \"TEXT_FIELD2\": FIELD 2, 10000.0", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Merge Value For \"Text_Field1\": Field 1, MERGE VALUE FOR \"TEXT_FIELD2\": FIELD 2, 10000.0"));
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace ApiExamples
             {
                 if (args.DocumentFieldName == "CourseName")
                 {
-                    Assert.AreEqual("StudentCourse", args.TableName);
+                    Assert.That(args.TableName, Is.EqualTo("StudentCourse"));
 
                     DocumentBuilder builder = new DocumentBuilder(args.Document);
                     builder.MoveToMergeField(args.FieldName);
@@ -194,7 +194,7 @@ namespace ApiExamples
                     string fieldValue = args.FieldValue.ToString();
 
                     // In this case, for every record index 'n', the corresponding field value is "Course n".
-                    Assert.AreEqual(char.GetNumericValue(fieldValue[7]), args.RecordIndex);
+                    Assert.That(args.RecordIndex, Is.EqualTo(char.GetNumericValue(fieldValue[7])));
 
                     builder.Write(fieldValue);
                     mCheckBoxCount++;

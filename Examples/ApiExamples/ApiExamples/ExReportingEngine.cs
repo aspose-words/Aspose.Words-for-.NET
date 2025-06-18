@@ -39,7 +39,7 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.AreEqual("LINQ Reporting Engine says: Hello World\f", doc.GetText());
+            Assert.That(doc.GetText(), Is.EqualTo("LINQ Reporting Engine says: Hello World\f"));
         }
 
         [Test]
@@ -53,7 +53,7 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.AreEqual("linq reporting engine says: HELLO WORLD, Hello World, Hello world\f", doc.GetText());
+            Assert.That(doc.GetText(), Is.EqualTo("linq reporting engine says: HELLO WORLD, Hello World, Hello world\f"));
         }
 
         [Test]
@@ -69,7 +69,7 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.AreEqual("A : ii, 200th, FIRST, Two, C8, - 200 -\f", doc.GetText());
+            Assert.That(doc.GetText(), Is.EqualTo("A : ii, 200th, FIRST, Two, C8, - 200 -\f"));
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.TestDataTable.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestDataTable.docx", GoldsDir + "ReportingEngine.TestDataTable Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestDataTable.docx", GoldsDir + "ReportingEngine.TestDataTable Gold.docx"), Is.True);
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.Total.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.Total.docx", GoldsDir + "ReportingEngine.Total Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.Total.docx", GoldsDir + "ReportingEngine.Total Gold.docx"), Is.True);
         }
 
         [Test]
@@ -105,7 +105,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.TestNestedDataTable.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestNestedDataTable.docx", GoldsDir + "ReportingEngine.TestNestedDataTable Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestNestedDataTable.docx", GoldsDir + "ReportingEngine.TestNestedDataTable Gold.docx"), Is.True);
         }
 
         [Test]
@@ -117,7 +117,7 @@ namespace ApiExamples
 
             template.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamically Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamically Gold.docx"), Is.True);
         }
 
         [Test]
@@ -132,7 +132,7 @@ namespace ApiExamples
 
             template.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically Gold.docx"), Is.True);
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace ApiExamples
 
             mainTemplate.Save(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDynamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileMultipleInsertionsDocumentDynamically.docx", GoldsDir + "ReportingEngine.RestartingListNumberingDynamicallyWhileInsertingDocumentDynamically Gold.docx"), Is.True);
         }
 
         [Test]
@@ -161,7 +161,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.TestChart.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestChart.docx", GoldsDir + "ReportingEngine.TestChart Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestChart.docx", GoldsDir + "ReportingEngine.TestChart Gold.docx"), Is.True);
         }
 
         [Test]
@@ -173,7 +173,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.TestBubbleChart.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestBubbleChart.docx", GoldsDir + "ReportingEngine.TestBubbleChart Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestBubbleChart.docx", GoldsDir + "ReportingEngine.TestBubbleChart Gold.docx"), Is.True);
         }
 
         [Test]
@@ -185,7 +185,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.SetChartSeriesColorDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetChartSeriesColorDynamically.docx", GoldsDir + "ReportingEngine.SetChartSeriesColorDynamically Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetChartSeriesColorDynamically.docx", GoldsDir + "ReportingEngine.SetChartSeriesColorDynamically Gold.docx"), Is.True);
         }
 
         [Test]
@@ -207,7 +207,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.SetPointColorDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetPointColorDynamically.docx", GoldsDir + "ReportingEngine.SetPointColorDynamically Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetPointColorDynamically.docx", GoldsDir + "ReportingEngine.SetPointColorDynamically Gold.docx"), Is.True);
         }
 
         [Test]
@@ -220,7 +220,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.TestLeaveChartSeries.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestLeaveChartSeries.docx", GoldsDir + "ReportingEngine.TestLeaveChartSeries Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestLeaveChartSeries.docx", GoldsDir + "ReportingEngine.TestLeaveChartSeries Gold.docx"), Is.True);
         }
 
         [Test, Ignore("WORDSNET-20810")]
@@ -233,7 +233,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.TestRemoveChartSeries.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestRemoveChartSeries.docx", GoldsDir + "ReportingEngine.TestRemoveChartSeries Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.TestRemoveChartSeries.docx", GoldsDir + "ReportingEngine.TestRemoveChartSeries Gold.docx"), Is.True);
         }
 
         [Test]
@@ -245,7 +245,7 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.AreEqual("The names are: John Smith, Tony Anderson, July James\f", doc.GetText());
+            Assert.That(doc.GetText(), Is.EqualTo("The names are: John Smith, Tony Anderson, July James\f"));
         }
 
         [Test]
@@ -257,7 +257,7 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.AreEqual("You have chosen 3 item(s).\f", doc.GetText());
+            Assert.That(doc.GetText(), Is.EqualTo("You have chosen 3 item(s).\f"));
         }
 
         [Test]
@@ -269,7 +269,7 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.AreEqual("You have chosen no items.\f", doc.GetText());
+            Assert.That(doc.GetText(), Is.EqualTo("You have chosen no items.\f"));
         }
 
         [Test]
@@ -281,7 +281,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.ExtensionMethods.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.ExtensionMethods.docx", GoldsDir + "ReportingEngine.ExtensionMethods Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.ExtensionMethods.docx", GoldsDir + "ReportingEngine.ExtensionMethods Gold.docx"), Is.True);
         }
 
         [Test]
@@ -297,7 +297,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.Operators.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.Operators.docx", GoldsDir + "ReportingEngine.Operators Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.Operators.docx", GoldsDir + "ReportingEngine.Operators Gold.docx"), Is.True);
         }
 
         [Test]
@@ -309,7 +309,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.HeaderVariable.docx");
 
-            Assert.AreEqual("Value of myHeaderVariable is: I am header variable", doc.FirstSection.Body.FirstParagraph.GetText().Trim());
+            Assert.That(doc.FirstSection.Body.FirstParagraph.GetText().Trim(), Is.EqualTo("Value of myHeaderVariable is: I am header variable"));
         }
 
         [Test]
@@ -321,7 +321,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.ContextualObjectMemberAccess.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.ContextualObjectMemberAccess.docx", GoldsDir + "ReportingEngine.ContextualObjectMemberAccess Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.ContextualObjectMemberAccess.docx", GoldsDir + "ReportingEngine.ContextualObjectMemberAccess Gold.docx"), Is.True);
         }
 
         [Test]
@@ -337,11 +337,9 @@ namespace ApiExamples
             template.Save(
                 ArtifactsDir + "ReportingEngine.InsertDocumentDynamicallyWithAdditionalTemplateChecking.docx");
 
-            Assert.IsTrue(
-                DocumentHelper.CompareDocs(
+            Assert.That(DocumentHelper.CompareDocs(
                     ArtifactsDir + "ReportingEngine.InsertDocumentDynamicallyWithAdditionalTemplateChecking.docx",
-                    GoldsDir + "ReportingEngine.InsertDocumentDynamicallyWithAdditionalTemplateChecking Gold.docx"),
-                "Fail inserting document by document");
+                    GoldsDir + "ReportingEngine.InsertDocumentDynamicallyWithAdditionalTemplateChecking Gold.docx"), Is.True, "Fail inserting document by document");
         }
 
         [Test]
@@ -355,7 +353,7 @@ namespace ApiExamples
             BuildReport(template, doc, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by document");
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), Is.True, "Fail inserting document by document");
         }
 
         [Test]
@@ -370,7 +368,7 @@ namespace ApiExamples
             template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
 
             template = new Document(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
-            Assert.AreEqual(1, template.FirstSection.Body.Paragraphs.Count);
+            Assert.That(template.FirstSection.Body.Paragraphs.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -393,7 +391,7 @@ namespace ApiExamples
             template.Save(ArtifactsDir + "ReportingEngine.SourseListNumbering.docx");
             //ExEnd:SourseListNumbering
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SourseListNumbering.docx", GoldsDir + "ReportingEngine.SourseListNumbering Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SourseListNumbering.docx", GoldsDir + "ReportingEngine.SourseListNumbering Gold.docx"), Is.True);
         }
 
         [Test]
@@ -407,7 +405,7 @@ namespace ApiExamples
             BuildReport(template, docStream, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by stream");
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), Is.True, "Fail inserting document by stream");
         }
 
         [Test]
@@ -421,7 +419,7 @@ namespace ApiExamples
             BuildReport(template, docBytes, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), Is.True, "Fail inserting document by bytes");
         }
 
         [Test]
@@ -435,7 +433,7 @@ namespace ApiExamples
             BuildReport(template, docUri, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(uri) Gold.docx"), "Fail inserting document by uri");
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(uri) Gold.docx"), Is.True, "Fail inserting document by uri");
         }
 
         [Test]
@@ -449,7 +447,7 @@ namespace ApiExamples
             BuildReport(template, docBase64, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by uri");
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertDocumentDynamically.docx", GoldsDir + "ReportingEngine.InsertDocumentDynamically(stream,doc,bytes) Gold.docx"), Is.True, "Fail inserting document by uri");
         }
 
         [Test]
@@ -463,7 +461,7 @@ namespace ApiExamples
             BuildReport(template, image, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx", GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx", GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"), Is.True, "Fail inserting document by bytes");
         }
 
         [Test]
@@ -477,7 +475,7 @@ namespace ApiExamples
             BuildReport(template, imageStream, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx", GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx", GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"), Is.True, "Fail inserting document by bytes");
         }
 
         [Test]
@@ -490,7 +488,7 @@ namespace ApiExamples
             BuildReport(template, imageBytes, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx", GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"), "Fail inserting document by bytes");
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx", GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"), Is.True, "Fail inserting document by bytes");
         }
 
         [Test]
@@ -499,17 +497,14 @@ namespace ApiExamples
             Document template =
                 DocumentHelper.CreateTemplateDocumentWithDrawObjects("<<image [src.ImageString]>>", ShapeType.TextBox);
             ImageTestClass imageUri = new ImageTestBuilder()
-                .WithImageString(
-                    "https://metrics.aspose.com/img/headergraphics.svg")
+                .WithImageString("https://metrics.aspose.com/img/headergraphics.svg")
                 .Build();
 
             BuildReport(template, imageUri, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
 
-            Assert.IsTrue(
-                DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx",
-                    GoldsDir + "ReportingEngine.InsertImageDynamically(uri) Gold.docx"),
-                "Fail inserting document by bytes");
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx",
+                    GoldsDir + "ReportingEngine.InsertImageDynamically(uri) Gold.docx"), Is.True, "Fail inserting document by bytes");
         }
 
         [Test]
@@ -524,10 +519,8 @@ namespace ApiExamples
             BuildReport(template, imageBase64, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx");
 
-            Assert.IsTrue(
-                DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx",
-                    GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"),
-                "Fail inserting document by bytes");
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.InsertImageDynamically.docx",
+                    GoldsDir + "ReportingEngine.InsertImageDynamically(stream,doc,bytes) Gold.docx"), Is.True, "Fail inserting document by bytes");
 
         }
 
@@ -569,9 +562,8 @@ namespace ApiExamples
             BuildReport(template, image, "src", ReportBuildOptions.None);
             template.Save(ArtifactsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox.docx");
 
-            Assert.IsTrue(
-                DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox.docx",
-                    GoldsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox.docx",
+                    GoldsDir + "ReportingEngine.DynamicStretchingImageWithinTextBox Gold.docx"), Is.True);
         }
 
         [TestCase("https://auckland.dynabic.com/wiki/display/org/Supported+dynamic+insertion+of+hyperlinks+for+LINQ+Reporting+Engine")]
@@ -635,7 +627,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.KnownTypes.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.KnownTypes.docx", GoldsDir + "ReportingEngine.KnownTypes Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.KnownTypes.docx", GoldsDir + "ReportingEngine.KnownTypes Gold.docx"), Is.True);
         }
 
         [Test]
@@ -738,11 +730,11 @@ namespace ApiExamples
             foreach (Shape shape in shapes.OfType<Shape>())
             {
                 // Assert that the image is really insert in textbox.
-                Assert.IsNotNull(shape.Fill.ImageBytes);
+                Assert.That(shape.Fill.ImageBytes, Is.Not.Null);
 
                 // Assert that the width is preserved, and the height is changed.
-                Assert.AreNotEqual(346.35, shape.Height);
-                Assert.AreEqual(431.5, shape.Width);
+                Assert.That(shape.Height, Is.Not.EqualTo(346.35));
+                Assert.That(shape.Width, Is.EqualTo(431.5));
             }
         }
 
@@ -763,11 +755,11 @@ namespace ApiExamples
 
             foreach (Shape shape in shapes.OfType<Shape>())
             {
-                Assert.IsNotNull(shape.Fill.ImageBytes);
+                Assert.That(shape.Fill.ImageBytes, Is.Not.Null);
 
                 // Assert that the height is preserved, and the width is changed.
-                Assert.AreNotEqual(431.5, shape.Width);
-                Assert.AreEqual(346.35, shape.Height);
+                Assert.That(shape.Width, Is.Not.EqualTo(431.5));
+                Assert.That(shape.Height, Is.EqualTo(346.35));
             }
         }
 
@@ -788,11 +780,11 @@ namespace ApiExamples
 
             foreach (Shape shape in shapes.OfType<Shape>())
             {
-                Assert.IsNotNull(shape.Fill.ImageBytes);
+                Assert.That(shape.Fill.ImageBytes, Is.Not.Null);
                 
                 // Assert that the height and the width are changed.
-                Assert.AreNotEqual(346.35, shape.Height);
-                Assert.AreNotEqual(431.5, shape.Width);
+                Assert.That(shape.Height, Is.Not.EqualTo(346.35));
+                Assert.That(shape.Width, Is.Not.EqualTo(431.5));
             }
         }
 
@@ -813,11 +805,11 @@ namespace ApiExamples
 
             foreach (Shape shape in shapes.OfType<Shape>())
             {
-                Assert.IsNotNull(shape.Fill.ImageBytes);
+                Assert.That(shape.Fill.ImageBytes, Is.Not.Null);
 
                 // Assert that textbox size are equal image size.
-                Assert.AreEqual(300.0d, shape.Height);
-                Assert.AreEqual(300.0d, shape.Width);
+                Assert.That(shape.Height, Is.EqualTo(300.0d));
+                Assert.That(shape.Width, Is.EqualTo(300.0d));
             }
         }
 
@@ -854,7 +846,7 @@ namespace ApiExamples
             //ExEnd:MissingMembers
 
             // Assert that build report success with "ReportBuildOptions.AllowMissingMembers".
-            Assert.AreEqual("Missed", builder.Document.GetText().Trim());
+            Assert.That(builder.Document.GetText().Trim(), Is.EqualTo("Missed"));
         }
 
         [TestCase("<<[missingObject.First().id]>>", "<<[missingObject.First( Error! Can not get the value of member 'missingObject' on type 'System.Data.DataSet'. ).id]>>", TestName = "Can not get the value of member")]
@@ -869,7 +861,7 @@ namespace ApiExamples
 
             BuildReport(builder.Document, new DataSet(), "", ReportBuildOptions.InlineErrorMessages);
 
-            Assert.AreEqual(result, builder.Document.FirstSection.Body.Paragraphs[0].GetText().TrimEnd());
+            Assert.That(builder.Document.FirstSection.Body.Paragraphs[0].GetText().TrimEnd(), Is.EqualTo(result));
         }
 
         [Test]
@@ -888,8 +880,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.SetBackgroundColorDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetBackgroundColorDynamically.docx",
-                GoldsDir + "ReportingEngine.SetBackgroundColorDynamically Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetBackgroundColorDynamically.docx",
+                GoldsDir + "ReportingEngine.SetBackgroundColorDynamically Gold.docx"), Is.True);
         }
 
         [Test]
@@ -908,8 +900,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.SetTextColorDynamically.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetTextColorDynamically.docx",
-                GoldsDir + "ReportingEngine.SetTextColorDynamically Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SetTextColorDynamically.docx",
+                GoldsDir + "ReportingEngine.SetTextColorDynamically Gold.docx"), Is.True);
         }
 
         [Test]
@@ -921,8 +913,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.DoNotRemoveEmptyParagraphs.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.DoNotRemoveEmptyParagraphs.docx",
-                GoldsDir + "ReportingEngine.DoNotRemoveEmptyParagraphs Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.DoNotRemoveEmptyParagraphs.docx",
+                GoldsDir + "ReportingEngine.DoNotRemoveEmptyParagraphs Gold.docx"), Is.True);
         }
 
         [Test]
@@ -934,8 +926,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.RemoveEmptyParagraphs.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RemoveEmptyParagraphs.docx",
-                GoldsDir + "ReportingEngine.RemoveEmptyParagraphs Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.RemoveEmptyParagraphs.docx",
+                GoldsDir + "ReportingEngine.RemoveEmptyParagraphs Gold.docx"), Is.True);
         }
 
         [TestCase("Hello", "Hello", "ReportingEngine.MergingTableCellsDynamically.Merged", TestName = "Cells in the first two tables must be merged")]
@@ -974,7 +966,7 @@ namespace ApiExamples
             BuildReport(doc, new object[] { value1, value2, clients }, new [] { "value1", "value2", "clients" });
             doc.Save(artifactPath);
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(artifactPath, goldPath));
+            Assert.That(DocumentHelper.CompareDocs(artifactPath, goldPath), Is.True);
         }
 
         [Test]
@@ -992,8 +984,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ReportingEngine.XmlDataString.docx");
             //ExEnd
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataString.docx",
-                GoldsDir + "ReportingEngine.DataSource Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataString.docx",
+                GoldsDir + "ReportingEngine.DataSource Gold.docx"), Is.True);
         }
 
         [Test]
@@ -1014,8 +1006,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ReportingEngine.XmlDataStream.docx");
             //ExEnd
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataStream.docx",
-                GoldsDir + "ReportingEngine.DataSource Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataStream.docx",
+                GoldsDir + "ReportingEngine.DataSource Gold.docx"), Is.True);
         }
 
         [Test]
@@ -1028,8 +1020,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.XmlDataWithNestedElements.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataWithNestedElements.docx",
-                GoldsDir + "ReportingEngine.DataSourceWithNestedElements Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.XmlDataWithNestedElements.docx",
+                GoldsDir + "ReportingEngine.DataSourceWithNestedElements Gold.docx"), Is.True);
         }
 
         [Test]
@@ -1062,8 +1054,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataString.docx");
             //ExEnd
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataString.docx",
-                GoldsDir + "ReportingEngine.JsonDataString Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataString.docx",
+                GoldsDir + "ReportingEngine.JsonDataString Gold.docx"), Is.True);
         }
 
         [Test]
@@ -1100,8 +1092,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataStream.docx");
             //ExEnd
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataStream.docx",
-                GoldsDir + "ReportingEngine.JsonDataString Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataStream.docx",
+                GoldsDir + "ReportingEngine.JsonDataString Gold.docx"), Is.True);
         }
 
         [Test]
@@ -1114,8 +1106,8 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ReportingEngine.JsonDataWithNestedElements.docx");
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataWithNestedElements.docx",
-                GoldsDir + "ReportingEngine.DataSourceWithNestedElements Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.JsonDataWithNestedElements.docx",
+                GoldsDir + "ReportingEngine.DataSourceWithNestedElements Gold.docx"), Is.True);
         }
 
         [Test]
@@ -1142,7 +1134,7 @@ namespace ApiExamples
 
                 BuildReport(builder.Document, dataSource, "ds");
 
-                Assert.AreEqual(expectedResult + ControlChar.SectionBreak, builder.Document.GetText());
+                Assert.That(builder.Document.GetText(), Is.EqualTo(expectedResult + ControlChar.SectionBreak));
             }
         }
 
@@ -1174,8 +1166,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ReportingEngine.CsvDataString.docx");
             //ExEnd
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataString.docx",
-                GoldsDir + "ReportingEngine.CsvData Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataString.docx",
+                GoldsDir + "ReportingEngine.CsvData Gold.docx"), Is.True);
         }
 
         [Test]
@@ -1199,8 +1191,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ReportingEngine.CsvDataStream.docx");
             //ExEnd
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataStream.docx",
-                GoldsDir + "ReportingEngine.CsvData Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.CsvDataStream.docx",
+                GoldsDir + "ReportingEngine.CsvData Gold.docx"), Is.True);
         }
 
         [TestCase(SdtType.ComboBox)]
@@ -1244,12 +1236,12 @@ namespace ApiExamples
                 new SdtListItem("5", "five")
             };
 
-            Assert.AreEqual(expectedItems.Length, sdt.ListItems.Count);
+            Assert.That(sdt.ListItems.Count, Is.EqualTo(expectedItems.Length));
 
             for (int i = 0; i < expectedItems.Length; i++)
             {
-                Assert.AreEqual(expectedItems[i].Value, sdt.ListItems[i].Value);
-                Assert.AreEqual(expectedItems[i].DisplayText, sdt.ListItems[i].DisplayText);
+                Assert.That(sdt.ListItems[i].Value, Is.EqualTo(expectedItems[i].Value));
+                Assert.That(sdt.ListItems[i].DisplayText, Is.EqualTo(expectedItems[i].DisplayText));
             }
         }
 
@@ -1287,7 +1279,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ReportingEngine.DollarTextFormat.docx");
             //ExEnd:DollarTextFormat
 
-            Assert.AreEqual("one thousand two hundred thirty-four and 00/100\rfive million six hundred twenty-one thousand seven hundred eighteen and 59/100\r\f", doc.GetText());
+            Assert.That(doc.GetText(), Is.EqualTo("one thousand two hundred thirty-four and 00/100\rfive million six hundred twenty-one thousand seven hundred eighteen and 59/100\r\f"));
         }
 
         [Test,Ignore("To avoid exception with 'SetRestrictedTypes' after execution other tests.")]
@@ -1308,7 +1300,7 @@ namespace ApiExamples
             engine.BuildReport(doc, new object());
 
             // We get an empty string because we can't access the GetType() method.
-            Assert.AreEqual(string.Empty, doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo(string.Empty));
             //ExEnd:RestrictedTypes
         }
 
@@ -1345,7 +1337,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ReportingEngine.SelectiveDeletionOfParagraphs.docx");
             //ExEnd:RemoveParagraphsSelectively
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SelectiveDeletionOfParagraphs.docx", GoldsDir + "ReportingEngine.SelectiveDeletionOfParagraphs Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "ReportingEngine.SelectiveDeletionOfParagraphs.docx", GoldsDir + "ReportingEngine.SelectiveDeletionOfParagraphs Gold.docx"), Is.True);
         }
 
         private static void BuildReport(Document document, object dataSource, ReportBuildOptions reportBuildOptions)

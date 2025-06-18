@@ -172,7 +172,7 @@ namespace ApiExamples
                     float returnedScale = doc.RenderToSize(0, gr, 0f, 0f, 3f, 3f);
 
                     // This is the scaling factor that the RenderToSize method applied to the first page to fit the specified size.
-                    Assert.AreEqual(0.2566f, returnedScale, 0.0001f);
+                    Assert.That(returnedScale, Is.EqualTo(0.2566f).Within(0.0001f));
 
                     // Set the "PageUnit" property to "GraphicsUnit.Millimeter" to use millimeters as the
                     // measurement unit for any transformations and dimensions that we will define.

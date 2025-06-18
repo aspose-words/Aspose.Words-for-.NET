@@ -52,28 +52,20 @@ namespace ApiExamples
             switch (tableContentAlignment)
             {
                 case TableContentAlignment.Auto:
-                    Assert.AreEqual(ParagraphAlignment.Right,
-                        table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
-                    Assert.AreEqual(ParagraphAlignment.Center,
-                        table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.That(table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Right));
+                    Assert.That(table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
                     break;
                 case TableContentAlignment.Left:
-                    Assert.AreEqual(ParagraphAlignment.Left,
-                        table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
-                    Assert.AreEqual(ParagraphAlignment.Left,
-                        table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.That(table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Left));
+                    Assert.That(table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Left));
                     break;
                 case TableContentAlignment.Center:
-                    Assert.AreEqual(ParagraphAlignment.Center,
-                        table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
-                    Assert.AreEqual(ParagraphAlignment.Center,
-                        table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.That(table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
+                    Assert.That(table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
                     break;
                 case TableContentAlignment.Right:
-                    Assert.AreEqual(ParagraphAlignment.Right,
-                        table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
-                    Assert.AreEqual(ParagraphAlignment.Right,
-                        table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.That(table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Right));
+                    Assert.That(table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Right));
                     break;
             }
             //ExEnd
@@ -101,14 +93,12 @@ namespace ApiExamples
             // The ImageSaving() method of our callback will be run at this time.
             doc.Save(ArtifactsDir + "MarkdownSaveOptions.HandleDocument.md", saveOptions);
 
-            Assert.AreEqual(1,
-                Directory.GetFiles(ArtifactsDir)
+            Assert.That(Directory.GetFiles(ArtifactsDir)
                     .Where(s => s.StartsWith(ArtifactsDir + "MarkdownSaveOptions.HandleDocument.md shape"))
-                    .Count(f => f.EndsWith(".jpeg")));
-            Assert.AreEqual(8,
-                Directory.GetFiles(ArtifactsDir)
+                    .Count(f => f.EndsWith(".jpeg")), Is.EqualTo(1));
+            Assert.That(Directory.GetFiles(ArtifactsDir)
                     .Where(s => s.StartsWith(ArtifactsDir + "MarkdownSaveOptions.HandleDocument.md shape"))
-                    .Count(f => f.EndsWith(".png")));
+                    .Count(f => f.EndsWith(".png")), Is.EqualTo(8));
         }
 
         /// <summary>
@@ -128,9 +118,9 @@ namespace ApiExamples
                 args.ImageFileName = imageFileName;
                 args.ImageStream = new FileStream(ArtifactsDir + imageFileName, FileMode.Create);
 
-                Assert.True(args.ImageStream.CanWrite);
-                Assert.True(args.IsImageAvailable);
-                Assert.False(args.KeepImageStreamOpen);
+                Assert.That(args.ImageStream.CanWrite, Is.True);
+                Assert.That(args.IsImageAvailable, Is.True);
+                Assert.That(args.KeepImageStreamOpen, Is.False);
             }
 
             private int mCount;
@@ -153,9 +143,9 @@ namespace ApiExamples
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "MarkdownSaveOptions.ExportImagesAsBase64.md");
 
-            Assert.True(exportImagesAsBase64
+            Assert.That(exportImagesAsBase64
                 ? outDocContents.Contains("data:image/jpeg;base64")
-                : outDocContents.Contains("MarkdownSaveOptions.ExportImagesAsBase64.001.jpeg"));
+                : outDocContents.Contains("MarkdownSaveOptions.ExportImagesAsBase64.001.jpeg"), Is.True);
             //ExEnd
         }
 
@@ -200,7 +190,7 @@ namespace ApiExamples
             //ExEnd
 
             string[] dirFiles = Directory.GetFiles(imagesFolder, "MarkdownSaveOptions.ImagesFolder.001.jpeg");
-            Assert.AreEqual(1, dirFiles.Length);
+            Assert.That(dirFiles.Length, Is.EqualTo(1));
             Document doc = new Document(ArtifactsDir + "MarkdownSaveOptions.ImagesFolder.md");
             doc.GetText().Contains("http://example.com/images/MarkdownSaveOptions.ImagesFolder.001.jpeg");
         }
@@ -250,7 +240,7 @@ namespace ApiExamples
             //ExEnd:LinkExportMode
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "MarkdownSaveOptions.LinkExportMode.Inline.md");
-            Assert.AreEqual("![](MarkdownSaveOptions.LinkExportMode.Inline.001.png)", outDocContents.Trim());
+            Assert.That(outDocContents.Trim(), Is.EqualTo("![](MarkdownSaveOptions.LinkExportMode.Inline.001.png)"));
         }
 
         [Test]
@@ -282,12 +272,12 @@ namespace ApiExamples
 
             string newLine = Environment.NewLine;
             string outDocContents = File.ReadAllText(ArtifactsDir + "MarkdownSaveOptions.ExportTableAsHtml.md");
-            Assert.AreEqual($"Sample table:{newLine}<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%; border:0.75pt solid #000000; border-collapse:collapse\">" +
+            Assert.That(outDocContents.Trim(), Is.EqualTo($"Sample table:{newLine}<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%; border:0.75pt solid #000000; border-collapse:collapse\">" +
                 "<tr><td style=\"border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">" +
                 "<p style=\"margin-top:0pt; margin-bottom:0pt; text-align:right; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Cell1</span></p>" +
                 "</td><td style=\"border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">" +
                 "<p style=\"margin-top:0pt; margin-bottom:0pt; text-align:center; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Cell2</span></p>" +
-                "</td></tr></table>", outDocContents.Trim());
+                "</td></tr></table>"));
         }
 
         [Test]
@@ -349,13 +339,13 @@ namespace ApiExamples
             switch (exportMode)
             {
                 case MarkdownEmptyParagraphExportMode.None:
-                    Assert.AreEqual("First\r\n\r\nLast\r\n", result);
+                    Assert.That(result, Is.EqualTo("First\r\n\r\nLast\r\n"));
                     break;
                 case MarkdownEmptyParagraphExportMode.EmptyLine:
-                    Assert.AreEqual("First\r\n\r\n\r\n\r\n\r\nLast\r\n\r\n", result);
+                    Assert.That(result, Is.EqualTo("First\r\n\r\n\r\n\r\n\r\nLast\r\n\r\n"));
                     break;
                 case MarkdownEmptyParagraphExportMode.MarkdownHardLineBreak:
-                    Assert.AreEqual("First\r\n\\\r\n\\\r\n\\\r\n\\\r\n\\\r\nLast\r\n<br>\r\n", result);
+                    Assert.That(result, Is.EqualTo("First\r\n\\\r\n\\\r\n\\\r\n\\\r\n\\\r\nLast\r\n<br>\r\n"));
                     break;
             }
             //ExEnd:EmptyParagraphExportMode

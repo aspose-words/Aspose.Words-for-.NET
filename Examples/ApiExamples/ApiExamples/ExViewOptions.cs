@@ -35,17 +35,17 @@ namespace ApiExamples
             doc.ViewOptions.ViewType = ViewType.PageLayout;
             doc.ViewOptions.ZoomPercent = 50;
 
-            Assert.AreEqual(ZoomType.Custom, doc.ViewOptions.ZoomType);
-            Assert.AreEqual(ZoomType.None, doc.ViewOptions.ZoomType);
+            Assert.That(doc.ViewOptions.ZoomType, Is.EqualTo(ZoomType.Custom));
+            Assert.That(doc.ViewOptions.ZoomType, Is.EqualTo(ZoomType.None));
 
             doc.Save(ArtifactsDir + "ViewOptions.SetZoomPercentage.doc");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "ViewOptions.SetZoomPercentage.doc");
 
-            Assert.AreEqual(ViewType.PageLayout, doc.ViewOptions.ViewType);
-            Assert.AreEqual(50.0d, doc.ViewOptions.ZoomPercent);
-            Assert.AreEqual(ZoomType.None, doc.ViewOptions.ZoomType);
+            Assert.That(doc.ViewOptions.ViewType, Is.EqualTo(ViewType.PageLayout));
+            Assert.That(doc.ViewOptions.ZoomPercent, Is.EqualTo(50.0d));
+            Assert.That(doc.ViewOptions.ZoomType, Is.EqualTo(ZoomType.None));
         }
 
         [TestCase(ZoomType.PageWidth)]
@@ -75,7 +75,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "ViewOptions.SetZoomType.doc");
 
-            Assert.AreEqual(zoomType, doc.ViewOptions.ZoomType);
+            Assert.That(doc.ViewOptions.ZoomType, Is.EqualTo(zoomType));
         }
 
         [TestCase(false)]
@@ -97,7 +97,7 @@ namespace ApiExamples
 
             // The source for the document has a flat color background,
             // the presence of which will set the "DisplayBackgroundShape" flag to "true".
-            Assert.True(doc.ViewOptions.DisplayBackgroundShape);
+            Assert.That(doc.ViewOptions.DisplayBackgroundShape, Is.True);
 
             // Keep the "DisplayBackgroundShape" as "true" to get the document to display the background color.
             // This may affect some text colors to improve visibility.
@@ -109,7 +109,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "ViewOptions.DisplayBackgroundShape.docx");
 
-            Assert.AreEqual(displayBackgroundShape, doc.ViewOptions.DisplayBackgroundShape);
+            Assert.That(doc.ViewOptions.DisplayBackgroundShape, Is.EqualTo(displayBackgroundShape));
         }
 
         [TestCase(false)]
@@ -147,7 +147,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "ViewOptions.DisplayPageBoundaries.doc");
 
-            Assert.AreEqual(doNotDisplayPageBoundaries, doc.ViewOptions.DoNotDisplayPageBoundaries);
+            Assert.That(doc.ViewOptions.DoNotDisplayPageBoundaries, Is.EqualTo(doNotDisplayPageBoundaries));
         }
 
         [TestCase(false)]
@@ -167,8 +167,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "ViewOptions.FormsDesign.xml");
 
-            Assert.AreEqual(useFormsDesign,
-                File.ReadAllText(ArtifactsDir + "ViewOptions.FormsDesign.xml").Contains("<w:formsDesign />"));
+            Assert.That(File.ReadAllText(ArtifactsDir + "ViewOptions.FormsDesign.xml").Contains("<w:formsDesign />"), Is.EqualTo(useFormsDesign));
             //ExEnd
         }
     }
