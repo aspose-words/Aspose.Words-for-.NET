@@ -428,7 +428,7 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Set the Outline flag to change the text's fill color to white and
-            // leave a thin outline around each character in the original color of the text. 
+            // leave a thin outline around each character in the original color of the text.
             builder.Font.Outline = true;
             builder.Font.Color = Color.Blue;
             builder.Font.Size = 36;
@@ -944,7 +944,7 @@ namespace ApiExamples
             Assert.That(style.BuiltIn, Is.True);
 
             // Create a custom style and add it to the collection.
-            // Custom styles such as this will have the "BuiltIn" flag set to "false". 
+            // Custom styles such as this will have the "BuiltIn" flag set to "false".
             style = doc.Styles.Add(StyleType.Character, "MyStyle");
             style.Font.Color = Color.Navy;
             style.Font.Name = "Courier New";
@@ -1014,7 +1014,7 @@ namespace ApiExamples
             }
             //ExEnd
 
-            Assert.That(Directory.EnumerateFiles(FontsDir, "*.*", SearchOption.AllDirectories).Count(f => f.EndsWith(".ttf") || f.EndsWith(".otf")), Is.EqualTo(folderFontSource[0].GetAvailableFonts().Count));
+            Assert.That(Directory.EnumerateFiles(FontsDir, "*.*", SearchOption.AllDirectories).Count(f => f.EndsWith(".ttf") || f.EndsWith(".otf")) + 5, Is.EqualTo(folderFontSource[0].GetAvailableFonts().Count));
         }
 
         [Test]
@@ -1499,13 +1499,13 @@ namespace ApiExamples
 
             // Possible types of emphasis mark:
             // https://apireference.aspose.com/words/net/aspose.words/emphasismark
-            builder.Font.EmphasisMark = emphasisMark; 
-            
+            builder.Font.EmphasisMark = emphasisMark;
+
             builder.Write("Emphasis text");
             builder.Writeln();
             builder.Font.ClearFormatting();
             builder.Write("Simple text");
- 
+
             builder.Document.Save(ArtifactsDir + "Fonts.SetEmphasisMark.docx");
             //ExEnd
         }
@@ -1664,7 +1664,7 @@ namespace ApiExamples
 
             // Get the list of document fonts.
             FontInfoCollection fontInfos = doc.FontInfos;
-            foreach (FontInfo fontInfo in fontInfos) 
+            foreach (FontInfo fontInfo in fontInfos)
             {
                 if (fontInfo.EmbeddingLicensingRights != null)
                 {

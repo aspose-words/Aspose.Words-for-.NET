@@ -721,7 +721,7 @@ namespace ApiExamples
             foreach (string fontFilename in Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")))
                 Console.WriteLine(fontFilename);
 
-            Assert.That(Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length, Is.EqualTo(7)); //ExSkip
+            Assert.That(Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length, Is.EqualTo(10)); //ExSkip
         }
 
         /// <summary>

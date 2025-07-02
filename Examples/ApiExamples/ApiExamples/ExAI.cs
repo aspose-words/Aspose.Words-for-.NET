@@ -24,9 +24,9 @@ namespace ApiExamples
             //ExFor:OpenAiModel
             //ExFor:OpenAiModel.WithOrganization(String)
             //ExFor:OpenAiModel.WithProject(String)
-            //ExFor:IAiModelText
-            //ExFor:IAiModelText.Summarize(Document, SummarizeOptions)
-            //ExFor:IAiModelText.Summarize(Document[], SummarizeOptions)
+            //ExFor:AiModel
+            //ExFor:AiModel.Summarize(Document, SummarizeOptions)
+            //ExFor:AiModel.Summarize(Document[], SummarizeOptions)
             //ExFor:SummarizeOptions
             //ExFor:SummarizeOptions.#ctor
             //ExFor:SummarizeOptions.SummaryLength
@@ -41,7 +41,7 @@ namespace ApiExamples
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use OpenAI or Google generative language models.
-            IAiModelText model = ((OpenAiModel)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey)).WithOrganization("Organization").WithProject("Project");
+            AiModel model = ((OpenAiModel)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey)).WithOrganization("Organization").WithProject("Project");
 
             SummarizeOptions options = new SummarizeOptions();
 
@@ -60,14 +60,14 @@ namespace ApiExamples
         {
             //ExStart:AiTranslate
             //GistId:695136dbbe4f541a8a0a17b3d3468689
-            //ExFor:IAiModelText.Translate(Document, AI.Language)
+            //ExFor:AiModel.Translate(Document, AI.Language)
             //ExFor:AI.Language
             //ExSummary:Shows how to translate text using Google models.
             Document doc = new Document(MyDir + "Document.docx");
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use Google generative language models.
-            IAiModelText model = (GoogleAiModel)AiModel.Create(AiModelType.Gemini15Flash).WithApiKey(apiKey);
+            AiModel model = AiModel.Create(AiModelType.Gemini15Flash).WithApiKey(apiKey);
 
             Document translatedDoc = model.Translate(doc, Language.Arabic);
             translatedDoc.Save(ArtifactsDir + "AI.AiTranslate.docx");
@@ -79,14 +79,14 @@ namespace ApiExamples
         {
             //ExStart:AiGrammar
             //GistId:f86d49dc0e6781b93e576539a01e6ca2
-            //ExFor:IAiModelText.CheckGrammar(Document, CheckGrammarOptions)
+            //ExFor:AiModel.CheckGrammar(Document, CheckGrammarOptions)
             //ExFor:CheckGrammarOptions
             //ExSummary:Shows how to check the grammar of a document.
             Document doc = new Document(MyDir + "Big document.docx");
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use OpenAI generative language models.
-            IAiModelText model = (OpenAiModel)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
+            AiModel model = AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
 
             CheckGrammarOptions grammarOptions = new CheckGrammarOptions();
             grammarOptions.ImproveStylistics = true;
@@ -95,5 +95,45 @@ namespace ApiExamples
             proofedDoc.Save(ArtifactsDir + "AI.AiGrammar.docx");
             //ExEnd:AiGrammar
         }
+
+        //ExStart:SelfHostedModel
+        //GistId:67c1d01ce69d189983b497fd497a7768
+        //ExFor:OpenAiModel
+        //ExSummary:Shows how to use self-hosted AI model based on OpenAiModel.
+        [Test, Ignore("This test should be run manually when you are configuring your model")] //ExSkip
+        public void SelfHostedModel()
+        {
+            Document doc = new Document(MyDir + "Big document.docx");
+
+            string apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            // Use OpenAI generative language models.
+            AiModel model = new CustomAiModel().WithApiKey(apiKey);
+
+            Document translatedDoc = model.Translate(doc, Language.Russian);
+            translatedDoc.Save(ArtifactsDir + "AI.SelfHostedModel.docx");
+        }
+
+        /// <summary>
+        /// Custom self-hosted AI model.
+        /// </summary>
+        internal class CustomAiModel : OpenAiModel
+        {
+            /// <summary>
+            /// Gets custom URL of the model.
+            /// </summary>
+            protected override string Url
+            {
+                get { return "https://localhost/"; }
+            }
+
+            /// <summary>
+            /// Gets model name.
+            /// </summary>
+            protected override string Name
+            {
+                get { return "my-model-24b"; }
+            }
+        }
+        //ExEnd:SelfHostedModel
     }
 }

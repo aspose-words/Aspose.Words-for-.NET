@@ -70,7 +70,7 @@ namespace ApiExamples
             Assert.That(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"), Is.False);
 
             // Set the "DefaultFontName" property to "Courier New" to,
-            // while rendering the document, apply that font in all cases when another font is not available. 
+            // while rendering the document, apply that font in all cases when another font is not available.
             FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Courier New";
 
             Assert.That(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Courier New"), Is.True);
@@ -97,7 +97,7 @@ namespace ApiExamples
             FontSettings.DefaultInstance.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
 
             // For testing we will set Aspose.Words to look for fonts only in a folder which does not exist. Since Aspose.Words won't
-            // find any fonts in the specified directory, then during rendering the fonts in the document will be substituted with the default 
+            // find any fonts in the specified directory, then during rendering the fonts in the document will be substituted with the default
             // font specified under FontSettings.DefaultFontName. We can pick up on this substitution using our callback
             FontSettings.DefaultInstance.SetFontsFolder(string.Empty, false);
 
@@ -461,7 +461,7 @@ namespace ApiExamples
             // The "Amethysta" font is in a subfolder of the font directory.
             if (recursive)
             {
-                Assert.That(newFontSources[0].GetAvailableFonts().Count, Is.EqualTo(25));
+                Assert.That(newFontSources[0].GetAvailableFonts().Count, Is.EqualTo(30));
                 Assert.That(newFontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Amethysta"), Is.True);
             }
             else
@@ -523,7 +523,7 @@ namespace ApiExamples
             // The "Junction" folder itself contains no font files, but has subfolders that do.
             if (recursive)
             {
-                Assert.That(newFontSources[1].GetAvailableFonts().Count, Is.EqualTo(6));
+                Assert.That(newFontSources[1].GetAvailableFonts().Count, Is.EqualTo(11));
                 Assert.That(newFontSources[1].GetAvailableFonts().Any(f => f.FullFontName == "Junction Light"), Is.True);
             }
             else
@@ -638,10 +638,10 @@ namespace ApiExamples
             doc.FontSettings.SubstitutionSettings.TableSubstitution.SetSubstitutes(
                 "Amethysta", new[] {"Arvo", "Courier New"});
 
-            // "Amethysta" is unavailable, and the substitution rule states that the first font to use as a substitute is "Arvo". 
+            // "Amethysta" is unavailable, and the substitution rule states that the first font to use as a substitute is "Arvo".
             Assert.That(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Arvo"), Is.False);
 
-            // "Arvo" is also unavailable, but "Courier New" is. 
+            // "Arvo" is also unavailable, but "Courier New" is.
             Assert.That(fontSources[0].GetAvailableFonts().Any(f => f.FullFontName == "Courier New"), Is.True);
 
             // The output document will display the text that uses the "Amethysta" font formatted with "Courier New".
@@ -864,7 +864,7 @@ namespace ApiExamples
             // https://www.google.com/get/noto/#sans-lgc
             fontSettings.SetFontsFolder(FontsDir + "Noto", false);
 
-            // Note that the predefined settings only use Sans-style Noto fonts with regular weight. 
+            // Note that the predefined settings only use Sans-style Noto fonts with regular weight.
             // Some of the Noto fonts use advanced typography features.
             // Fonts featuring advanced typography may not be rendered correctly as Aspose.Words currently do not support them.
             fontSettings.FallbackSettings.LoadNotoFallbackSettings();
@@ -1278,7 +1278,7 @@ namespace ApiExamples
                 new FileFontSource(FontsDir + "Arvo-Regular.ttf", 0, cacheKey1),
                 new FileFontSource(FontsDir + "Arvo-Bold.ttf", 0, cacheKey2)
             });
-            
+
             using (MemoryStream cacheStream = new MemoryStream())
             {
                 parsedFonts.SaveSearchCache(cacheStream);

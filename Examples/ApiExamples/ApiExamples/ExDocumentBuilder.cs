@@ -2670,9 +2670,9 @@ namespace ApiExamples
 
             public string FormatNumeric(double value, string format)
             {
-                if (string.IsNullOrEmpty(mNumberFormat)) 
+                if (string.IsNullOrEmpty(mNumberFormat))
                     return null;
-                
+
                 string newValue = String.Format(mNumberFormat, value);
                 FormatInvocations.Add(new FormatInvocation(FormatInvocationType.Numeric, value, format, newValue));
                 return newValue;
@@ -2726,9 +2726,9 @@ namespace ApiExamples
 
             private readonly string mNumberFormat;
             private readonly string mDateFormat;
-            private readonly string mGeneralFormat; 
+            private readonly string mGeneralFormat;
             private List<FormatInvocation> FormatInvocations { get; } = new List<FormatInvocation>();
-            
+
             private class FormatInvocation
             {
                 public FormatInvocationType FormatInvocationType { get; }
@@ -3016,7 +3016,6 @@ namespace ApiExamples
 
             WarningInfoCollection warnings = new WarningInfoCollection();
             doc.WarningCallback = warnings;
-
             doc.Save(ArtifactsDir + "DocumentBuilder.EmphasesWarningSourceMarkdown.md");
 
             foreach (WarningInfo warningInfo in warnings)

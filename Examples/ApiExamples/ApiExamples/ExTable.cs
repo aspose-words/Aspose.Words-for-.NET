@@ -1251,7 +1251,7 @@ namespace ApiExamples
             builder.EndTable();
             table.PreferredWidth = PreferredWidth.FromPoints(300);
 
-            // We can also set a horizontal and vertical offset in points from the paragraph's location where we inserted the table. 
+            // We can also set a horizontal and vertical offset in points from the paragraph's location where we inserted the table.
             table.AbsoluteVerticalDistance = 50;
             table.AbsoluteHorizontalDistance = 100;
 
@@ -1377,7 +1377,7 @@ namespace ApiExamples
             builder.Write("Aligned to the center of the page");
             builder.EndTable();
             table.PreferredWidth = PreferredWidth.FromPoints(300);
-            
+
             table.Style = tableStyle;
 
             // 2 -  Use the "LeftIndent" to specify an indent from the left margin of the page:
@@ -1954,6 +1954,36 @@ namespace ApiExamples
                     i++;
                 }
             }
+        }
+
+        [Test]
+        public void HiddenRow()
+        {
+            //ExStart:HiddenRow
+            //GistId:67c1d01ce69d189983b497fd497a7768
+            //ExFor:Row.Hidden
+            //ExSummary:Shows how to hide a table row.
+            Document doc = new Document(MyDir + "Tables.docx");
+
+            Row row = doc.FirstSection.Body.Tables[0].FirstRow;
+            row.Hidden = true;
+
+            doc.Save(ArtifactsDir + "Table.HiddenRow.docx");
+
+            doc = new Document(ArtifactsDir + "Table.HiddenRow.docx");
+
+            row = doc.FirstSection.Body.Tables[0].FirstRow;
+            Assert.That(row.Hidden, Is.True);
+
+            foreach (Cell cell in row.Cells)
+            {
+                foreach (Paragraph para in cell.Paragraphs)
+                {
+                    foreach (Run run in para.Runs)
+                        Assert.That(run.Font.Hidden, Is.True);
+                }
+            }
+            //ExEnd:HiddenRow
         }
     }
 }
