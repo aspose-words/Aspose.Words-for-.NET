@@ -27,14 +27,13 @@ namespace ApiExamples
             //ExFor:AiModel
             //ExFor:AiModel.Summarize(Document, SummarizeOptions)
             //ExFor:AiModel.Summarize(Document[], SummarizeOptions)
+            //ExFor:AiModel.Create(AiModelType)
+            //ExFor:AiModel.WithApiKey(String)
+            //ExFor:AiModelType
             //ExFor:SummarizeOptions
             //ExFor:SummarizeOptions.#ctor
             //ExFor:SummarizeOptions.SummaryLength
             //ExFor:SummaryLength
-            //ExFor:AiModel
-            //ExFor:AiModel.Create(AiModelType)
-            //ExFor:AiModel.WithApiKey(String)
-            //ExFor:AiModelType
             //ExSummary:Shows how to summarize text using OpenAI and Google models.
             Document firstDoc = new Document(MyDir + "Big document.docx");
             Document secondDoc = new Document(MyDir + "Document.docx");
