@@ -102,7 +102,7 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.PageBreak);
             builder.Writeln("This is page 3.");
 
-            Assert.That(doc.PageCount, Is.EqualTo(3));
+            Assert.AreEqual(3, doc.PageCount);
 
             // When we save the document as an image, Aspose.Words only renders the first page by default.
             // We can pass a SaveOptions object to specify a different page to render.
@@ -112,14 +112,14 @@ namespace ApiExamples
             {
                 saveOptions.PageSet = new PageSet(1);
 
-                doc.Save(ArtifactsDir + $"ImageSaveOptions.PageIndex.Page {i}.gif", saveOptions);
+                doc.Save(ArtifactsDir + string.Format("ImageSaveOptions.PageIndex.Page {0}.gif", i), saveOptions);
             }
             //ExEnd
 
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.PageIndex.Page 1.gif");
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.PageIndex.Page 2.gif");
             TestUtil.VerifyImage(816, 1056, ArtifactsDir + "ImageSaveOptions.PageIndex.Page 3.gif");
-            Assert.That(File.Exists(ArtifactsDir + "ImageSaveOptions.PageIndex.Page 4.gif"), Is.False);
+            Assert.IsFalse(File.Exists(ArtifactsDir + "ImageSaveOptions.PageIndex.Page 4.gif"));
         }
 
 #if NET461_OR_GREATER || JAVA
@@ -138,15 +138,13 @@ namespace ApiExamples
             //ExSummary:Shows how to set render quality options while converting documents to image formats. 
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            GraphicsQualityOptions qualityOptions = new GraphicsQualityOptions
-            {
-                SmoothingMode = SmoothingMode.AntiAlias,
-                TextRenderingHint = TextRenderingHint.ClearTypeGridFit,
-                CompositingMode = CompositingMode.SourceOver,
-                CompositingQuality = CompositingQuality.HighQuality,
-                InterpolationMode = InterpolationMode.High,
-                StringFormat = StringFormat.GenericTypographic
-            };
+            GraphicsQualityOptions qualityOptions = new GraphicsQualityOptions();
+            qualityOptions.SmoothingMode = SmoothingMode.AntiAlias;
+            qualityOptions.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+            qualityOptions.CompositingMode = CompositingMode.SourceOver;
+            qualityOptions.CompositingQuality = CompositingQuality.HighQuality;
+            qualityOptions.InterpolationMode = InterpolationMode.High;
+            qualityOptions.StringFormat = StringFormat.GenericTypographic;
 
             ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
             saveOptions.GraphicsQualityOptions = qualityOptions;
@@ -168,10 +166,10 @@ namespace ApiExamples
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             ShapeRenderer renderer = shape.GetShapeRenderer();
 
-            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png)
-            {
-                Resolution = 500, GraphicsQualityOptions = new GraphicsQualityOptions { UseTileFlipMode = true }
-            };
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png);
+            saveOptions.Resolution = 500;
+            saveOptions.GraphicsQualityOptions = new GraphicsQualityOptions();
+            saveOptions.GraphicsQualityOptions.UseTileFlipMode = true;
             renderer.Save(ArtifactsDir + "ImageSaveOptions.UseTileFlipMode.png", saveOptions);
             //ExEnd
         }
@@ -239,13 +237,13 @@ namespace ApiExamples
                 options.Resolution = 600;
                 options.ImageSize = new Size(2325, 5325);
 
-                doc.Save(ArtifactsDir + $"ImageSaveOptions.PageByPage.{i + 1}.tiff", options);
+                doc.Save(ArtifactsDir + string.Format("ImageSaveOptions.PageByPage.{0}.tiff", i + 1), options);
             }
             //ExEnd
 
             List<string> imageFileNames = Directory.GetFiles(ArtifactsDir, "*.tiff")
                 .Where(item => item.Contains("ImageSaveOptions.PageByPage.") && item.EndsWith(".tiff")).ToList();
-            Assert.That(imageFileNames.Count, Is.EqualTo(3));
+            Assert.AreEqual(3, imageFileNames.Count);
         }
 
         [TestCase(ImageColorMode.BlackAndWhite)]
@@ -284,13 +282,13 @@ namespace ApiExamples
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
-                    Assert.That(testedImageLength < 175000, Is.True);
+                    Assert.IsTrue(testedImageLength < 175000);
                     break;
                 case ImageColorMode.Grayscale:
-                    Assert.That(testedImageLength < 90000, Is.True);
+                    Assert.IsTrue(testedImageLength < 90000);
                     break;
                 case ImageColorMode.BlackAndWhite:
-                    Assert.That(testedImageLength < 15000, Is.True);
+                    Assert.IsTrue(testedImageLength < 15000);
                     break;
             }
 #elif NET5_0_OR_GREATER
@@ -377,7 +375,7 @@ namespace ApiExamples
             imageSaveOptions.PixelFormat = imagePixelFormat;
 
             // We can clone ImageSaveOptions instances.
-            Assert.That(imageSaveOptions.Clone(), Is.Not.EqualTo(imageSaveOptions));
+            Assert.AreNotEqual(imageSaveOptions, imageSaveOptions.Clone());
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.PixelFormat.png", imageSaveOptions);
             //ExEnd
@@ -388,27 +386,27 @@ namespace ApiExamples
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
-                    Assert.That(testedImageLength < 2500, Is.True);
+                    Assert.IsTrue(testedImageLength < 2500);
                     break;
                 case ImagePixelFormat.Format16BppRgb565:
-                    Assert.That(testedImageLength < 104000, Is.True);
+                    Assert.IsTrue(testedImageLength < 104000);
                     break;
                 case ImagePixelFormat.Format16BppRgb555:
-                    Assert.That(testedImageLength < 88000, Is.True);
+                    Assert.IsTrue(testedImageLength < 88000);
                     break;
                 case ImagePixelFormat.Format24BppRgb:
-                    Assert.That(testedImageLength < 160000, Is.True);
+                    Assert.IsTrue(testedImageLength < 160000);
                     break;
                 case ImagePixelFormat.Format32BppRgb:
                 case ImagePixelFormat.Format32BppArgb:
-                    Assert.That(testedImageLength < 175000, Is.True);
+                    Assert.IsTrue(testedImageLength < 175000);
                     break;
                 case ImagePixelFormat.Format48BppRgb:
-                    Assert.That(testedImageLength < 212000, Is.True);
+                    Assert.IsTrue(testedImageLength < 212000);
                     break;
                 case ImagePixelFormat.Format64BppArgb:
                 case ImagePixelFormat.Format64BppPArgb:
-                    Assert.That(testedImageLength < 239000, Is.True);
+                    Assert.IsTrue(testedImageLength < 239000);
                     break;
             }
 #elif NET5_0_OR_GREATER
@@ -452,19 +450,17 @@ namespace ApiExamples
             // adjust the dithering that Aspose.Words will apply when rendering this image.
             // The default value of the "ThresholdForFloydSteinbergDithering" property is 128.
             // Higher values tend to produce darker images.
-            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff)
-            {
-                TiffCompression = TiffCompression.Ccitt3,
-                TiffBinarizationMethod = ImageBinarizationMethod.FloydSteinbergDithering,
-                ThresholdForFloydSteinbergDithering = 240
-            };
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Tiff);
+            options.TiffCompression = TiffCompression.Ccitt3;
+            options.TiffBinarizationMethod = ImageBinarizationMethod.FloydSteinbergDithering;
+            options.ThresholdForFloydSteinbergDithering = 240;
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.FloydSteinbergDithering.tiff", options);
             //ExEnd
 
             List<string> imageFileNames = Directory.GetFiles(ArtifactsDir, "*.tiff")
                 .Where(item => item.Contains("ImageSaveOptions.FloydSteinbergDithering.") && item.EndsWith(".tiff")).ToList();
-            Assert.That(imageFileNames.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, imageFileNames.Count);
         }
 
         [Test]
@@ -487,23 +483,19 @@ namespace ApiExamples
 
             // When we save the document as an image, we can pass a SaveOptions object to
             // edit the image while the saving operation renders it.
-            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png)
-            {
-                // We can adjust these properties to change the image's brightness and contrast.
-                // Both are on a 0-1 scale and are at 0.5 by default.
-                ImageBrightness = 0.3f,
-                ImageContrast = 0.7f,
-
-                // We can adjust horizontal and vertical resolution with these properties.
-                // This will affect the dimensions of the image.
-                // The default value for these properties is 96.0, for a resolution of 96dpi.
-                HorizontalResolution = 72f,
-                VerticalResolution = 72f,
-
-                // We can scale the image using this property. The default value is 1.0, for scaling of 100%.
-                // We can use this property to negate any changes in image dimensions that changing the resolution would cause.
-                Scale = 96f / 72f
-            };
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
+            // We can adjust these properties to change the image's brightness and contrast.
+            // Both are on a 0-1 scale and are at 0.5 by default.
+            options.ImageBrightness = 0.3f;
+            options.ImageContrast = 0.7f;
+            // We can adjust horizontal and vertical resolution with these properties.
+            // This will affect the dimensions of the image.
+            // The default value for these properties is 96.0, for a resolution of 96dpi.
+            options.HorizontalResolution = 72f;
+            options.VerticalResolution = 72f;
+            // We can scale the image using this property. The default value is 1.0, for scaling of 100%.
+            // We can use this property to negate any changes in image dimensions that changing the resolution would cause.
+            options.Scale = 96f / 72f;
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.EditImage.png", options);
             //ExEnd
@@ -539,8 +531,8 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg", imageOptions);
             //ExEnd
 
-            Assert.That(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg").Length < 18000, Is.True);
-            Assert.That(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg").Length < 75000, Is.True);
+            Assert.IsTrue(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighCompression.jpg").Length < 18000);
+            Assert.IsTrue(new FileInfo(ArtifactsDir + "ImageSaveOptions.JpegQuality.HighQuality.jpg").Length < 75000);
         }
 
         [TestCase(TiffCompression.None), Category("SkipMono")]
@@ -578,27 +570,27 @@ namespace ApiExamples
             switch (tiffCompression)
             {
                 case TiffCompression.None:
-                    Assert.That(testedImageLength < 3450000, Is.True);
+                    Assert.IsTrue(testedImageLength < 3450000);
                     break;
                 case TiffCompression.Rle:
 #if NET5_0_OR_GREATER
                     Assert.That(testedImageLength < 7500, Is.True);
 #else
-                    Assert.That(testedImageLength < 687000, Is.True);
+                    Assert.IsTrue(testedImageLength < 687000);
 #endif
                     break;
                 case TiffCompression.Lzw:
-                    Assert.That(testedImageLength < 250000, Is.True);
+                    Assert.IsTrue(testedImageLength < 250000);
                     break;
                 case TiffCompression.Ccitt3:
 #if NET5_0_OR_GREATER
                     Assert.That(testedImageLength < 6100, Is.True);
 #else
-                    Assert.That(testedImageLength < 8300, Is.True);
+                    Assert.IsTrue(testedImageLength < 8300);
 #endif
                     break;
                 case TiffCompression.Ccitt4:
-                    Assert.That(testedImageLength < 1700, Is.True);
+                    Assert.IsTrue(testedImageLength < 1700);
                     break;
             }
         }
@@ -668,10 +660,8 @@ namespace ApiExamples
             // Set 'ImlRenderingMode.InkML' ignores fall-back shape of ink (InkML) object and renders InkML itself.
             // If the rendering result is unsatisfactory,
             // please use 'ImlRenderingMode.Fallback' to get a result similar to previous versions.
-            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg)
-            {
-                ImlRenderingMode = ImlRenderingMode.InkML
-            };
+            ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Jpeg);
+            saveOptions.ImlRenderingMode = ImlRenderingMode.InkML;
 
             doc.Save(ArtifactsDir + "ImageSaveOptions.RenderInkObject.jpeg", saveOptions);
             //ExEnd

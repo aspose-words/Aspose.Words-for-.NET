@@ -84,13 +84,13 @@ namespace ApiExamples
             doc = new Document(MyDir + "Document.docx");
 
             // Loaded documents will have contents that we can access and edit.
-            Assert.That(doc.FirstSection.Body.FirstParagraph.GetText().Trim(), Is.EqualTo("Hello World!"));
+            Assert.AreEqual("Hello World!", doc.FirstSection.Body.FirstParagraph.GetText().Trim());
 
             // Some operations that need to occur during loading, such as using a password to decrypt a document,
             // can be done by passing a LoadOptions object when loading the document.
             doc = new Document(MyDir + "Encrypted.docx", new LoadOptions("docPassword"));
 
-            Assert.That(doc.FirstSection.Body.FirstParagraph.GetText().Trim(), Is.EqualTo("Test encrypted document."));
+            Assert.AreEqual("Test encrypted document.", doc.FirstSection.Body.FirstParagraph.GetText().Trim());
             //ExEnd
         }
 
@@ -104,7 +104,7 @@ namespace ApiExamples
             {
                 Document doc = new Document(stream);
 
-                Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello World!\r\rHello Word!\r\r\rHello World!"));
+                Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
             }
             //ExEnd
         }
@@ -129,9 +129,9 @@ namespace ApiExamples
                     Document doc = new Document(byteStream);
 
                     // At this stage, we can read and edit the document's contents and then save it to the local file system.
-                    Assert.That(doc.FirstSection.Body.Paragraphs[3].GetText().Trim(), Is.EqualTo("There are eight section headings in this document. At the beginning, \"Sample Document\" is a level 1 heading. " +
+                    Assert.AreEqual("There are eight section headings in this document. At the beginning, \"Sample Document\" is a level 1 heading. " +
                                   "The main section headings, such as \"Headings\" and \"Lists\" are level 2 headings. " +
-                                    "The Tables section contains two sub-headings, \"Simple Table\" and \"Complex Table,\" which are both level 3 headings."));
+                                    "The Tables section contains two sub-headings, \"Simple Table\" and \"Complex Table,\" which are both level 3 headings.", doc.FirstSection.Body.Paragraphs[3].GetText().Trim());
 
                     doc.Save(ArtifactsDir + "Document.LoadFromWeb.docx");
                 }
@@ -177,9 +177,9 @@ namespace ApiExamples
                 // Read the stream back into an image.
                 using (Image image = Image.FromStream(stream))
                 {
-                    Assert.That(image.RawFormat, Is.EqualTo(ImageFormat.Bmp));
-                    Assert.That(image.Width, Is.EqualTo(816));
-                    Assert.That(image.Height, Is.EqualTo(1056));
+                    Assert.AreEqual(ImageFormat.Bmp, image.RawFormat);
+                    Assert.AreEqual(816, image.Width);
+                    Assert.AreEqual(1056, image.Height);
                 }
             }
 #elif NET5_0_OR_GREATER
@@ -228,14 +228,14 @@ namespace ApiExamples
         public void DetectMobiDocumentFormat()
         {
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Document.mobi");
-            Assert.That(LoadFormat.Mobi, Is.EqualTo(info.LoadFormat));
+            Assert.AreEqual(info.LoadFormat, LoadFormat.Mobi);
         }
 
         [Test]
         public void DetectPdfDocumentFormat()
         {
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Pdf Document.pdf");
-            Assert.That(LoadFormat.Pdf, Is.EqualTo(info.LoadFormat));
+            Assert.AreEqual(info.LoadFormat, LoadFormat.Pdf);
         }
 
         [Test]
@@ -243,7 +243,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Pdf Document.pdf");
 
-            Assert.That(doc.Range.Text, Is.EqualTo("Heading 1\rHeading 1.1.1.1 Heading 1.1.1.2\rHeading 1.1.1.1.1.1.1.1.1 Heading 1.1.1.1.1.1.1.1.2\u000c"));
+            Assert.AreEqual("Heading 1\rHeading 1.1.1.1 Heading 1.1.1.2\rHeading 1.1.1.1.1.1.1.1.1 Heading 1.1.1.1.1.1.1.1.2\u000c", doc.Range.Text);
         }
 
         [Test]
@@ -284,10 +284,10 @@ namespace ApiExamples
                 // Verify that the first shape of the document contains a valid image.
                 Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-                Assert.That(shape.IsImage, Is.True);
-                Assert.That(shape.ImageData.ImageBytes, Is.Not.Null);
-                Assert.That(ConvertUtil.PointToPixel(shape.Width), Is.EqualTo(32.0).Within(0.01));
-                Assert.That(ConvertUtil.PointToPixel(shape.Height), Is.EqualTo(32.0).Within(0.01));
+                Assert.IsTrue(shape.IsImage);
+                Assert.IsNotNull(shape.ImageData.ImageBytes);
+                Assert.AreEqual(32.0, ConvertUtil.PointToPixel(shape.Width), 0.01);
+                Assert.AreEqual(32.0, ConvertUtil.PointToPixel(shape.Height), 0.01);
             }
             //ExEnd
         }
@@ -315,7 +315,7 @@ namespace ApiExamples
                     Document doc = new Document(stream, options);
 
                     // At this stage, we can read and edit the document's contents and then save it to the local file system.
-                    Assert.That(doc.GetText().Contains("HYPERLINK \"https://products.aspose.com/words/net/\" \\o \"Aspose.Words\""), Is.True); //ExSkip
+                    Assert.IsTrue(doc.GetText().Contains("HYPERLINK \"https://products.aspose.com/words/net/\" \\o \"Aspose.Words\"")); //ExSkip
 
                     doc.Save(ArtifactsDir + "Document.InsertHtmlFromWebPage.docx");
                 }
@@ -343,13 +343,13 @@ namespace ApiExamples
             // There are two ways of loading an encrypted document with a LoadOptions object.
             // 1 -  Load the document from the local file system by filename:
             doc = new Document(MyDir + "Encrypted.docx", options);
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Test encrypted document.")); //ExSkip
+            Assert.AreEqual("Test encrypted document.", doc.GetText().Trim()); //ExSkip
 
             // 2 -  Load the document from a stream:
             using (Stream stream = File.OpenRead(MyDir + "Encrypted.docx"))
             {
                 doc = new Document(stream, options);
-                Assert.That(doc.GetText().Trim(), Is.EqualTo("Test encrypted document.")); //ExSkip
+                Assert.AreEqual("Test encrypted document.", doc.GetText().Trim()); //ExSkip
             }
             //ExEnd
         }
@@ -362,10 +362,12 @@ namespace ApiExamples
             //ExFor:WarningInfoCollection.Item(Int32)
             //ExSummary:Shows how to get warnings about unsupported formats.
             WarningInfoCollection warnings = new WarningInfoCollection();
-            Document doc = new Document(MyDir + "FB2 document.fb2", new LoadOptions { WarningCallback = warnings });
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.WarningCallback = warnings;
+            Document doc = new Document(MyDir + "FB2 document.fb2", loadOptions);
 
-            Assert.That(warnings[0].Description, Is.EqualTo("The original file load format is FB2, which is not supported by Aspose.Words. The file is loaded as an XML document."));
-            Assert.That(warnings.Count, Is.EqualTo(1));
+            Assert.AreEqual("The original file load format is FB2, which is not supported by Aspose.Words. The file is loaded as an XML document.", warnings[0].Description);
+            Assert.AreEqual(1, warnings.Count);
             //ExEnd
         }
 
@@ -433,7 +435,7 @@ namespace ApiExamples
                 doc.Save(dstStream, SaveFormat.Docx);
 
                 // Verify that the stream contains the document.
-                Assert.That(new Document(dstStream).GetText().Trim(), Is.EqualTo("Hello World!\r\rHello Word!\r\r\rHello World!"));
+                Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", new Document(dstStream).GetText().Trim());
             }
             //ExEnd
         }
@@ -479,36 +481,36 @@ namespace ApiExamples
         {
             void INodeChangingCallback.NodeInserted(NodeChangingArgs args)
             {
-                mLog.AppendLine($"\tType:\t{args.Node.NodeType}");
-                mLog.AppendLine($"\tHash:\t{args.Node.GetHashCode()}");
+                mLog.AppendLine(string.Format("\tType:\t{0}", args.Node.NodeType));
+                mLog.AppendLine(string.Format("\tHash:\t{0}", args.Node.GetHashCode()));
 
                 if (args.Node.NodeType == NodeType.Run)
                 {
                     Aspose.Words.Font font = ((Run)args.Node).Font;
-                    mLog.Append($"\tFont:\tChanged from \"{font.Name}\" {font.Size}pt");
+                    mLog.Append(string.Format("\tFont:\tChanged from \"{0}\" {1}pt", font.Name, font.Size));
 
                     font.Size = 24;
                     font.Name = "Arial";
 
-                    mLog.AppendLine($" to \"{font.Name}\" {font.Size}pt");
-                    mLog.AppendLine($"\tContents:\n\t\t\"{args.Node.GetText()}\"");
+                    mLog.AppendLine(string.Format(" to \"{0}\" {1}pt", font.Name, font.Size));
+                    mLog.AppendLine(string.Format("\tContents:\n\t\t\"{0}\"", args.Node.GetText()));
                 }
             }
 
             void INodeChangingCallback.NodeInserting(NodeChangingArgs args)
             {
-                mLog.AppendLine($"\n{DateTime.Now:dd/MM/yyyy HH:mm:ss:fff}\tNode insertion:");
+                mLog.AppendLine(string.Format("\n{0:dd/MM/yyyy HH:mm:ss:fff}\tNode insertion:", DateTime.Now));
             }
 
             void INodeChangingCallback.NodeRemoved(NodeChangingArgs args)
             {
-                mLog.AppendLine($"\tType:\t{args.Node.NodeType}");
-                mLog.AppendLine($"\tHash code:\t{args.Node.GetHashCode()}");
+                mLog.AppendLine(string.Format("\tType:\t{0}", args.Node.NodeType));
+                mLog.AppendLine(string.Format("\tHash code:\t{0}", args.Node.GetHashCode()));
             }
 
             void INodeChangingCallback.NodeRemoving(NodeChangingArgs args)
             {
-                mLog.AppendLine($"\n{DateTime.Now:dd/MM/yyyy HH:mm:ss:fff}\tNode removal:");
+                mLog.AppendLine(string.Format("\n{0:dd/MM/yyyy HH:mm:ss:fff}\tNode removal:", DateTime.Now));
             }
 
             public string GetLog()
@@ -522,8 +524,8 @@ namespace ApiExamples
 
         private static void TestFontChangeViaCallback(string log)
         {
-            Assert.That(Regex.Matches(log, "insertion").Count, Is.EqualTo(10));
-            Assert.That(Regex.Matches(log, "removal").Count, Is.EqualTo(5));
+            Assert.AreEqual(10, Regex.Matches(log, "insertion").Count);
+            Assert.AreEqual(5, Regex.Matches(log, "removal").Count);
         }
 
         [Test]
@@ -541,15 +543,15 @@ namespace ApiExamples
             // Append the source document to the destination document while preserving its formatting,
             // then save the source document to the local file system.
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting);
-            Assert.That(dstDoc.Sections.Count, Is.EqualTo(2)); //ExSkip
+            Assert.AreEqual(2, dstDoc.Sections.Count); //ExSkip
 
             dstDoc.Save(ArtifactsDir + "Document.AppendDocument.docx");
             //ExEnd
 
             string outDocText = new Document(ArtifactsDir + "Document.AppendDocument.docx").GetText();
 
-            Assert.That(outDocText.StartsWith(dstDoc.GetText()), Is.True);
-            Assert.That(outDocText.EndsWith(srcDoc.GetText()), Is.True);
+            Assert.IsTrue(outDocText.StartsWith(dstDoc.GetText()));
+            Assert.IsTrue(outDocText.EndsWith(srcDoc.GetText()));
         }
 
         [Test]
@@ -591,7 +593,7 @@ namespace ApiExamples
             Document srcDoc = new Document(MyDir + "List source.docx");
             Document dstDoc = new Document(MyDir + "List destination.docx");
 
-            Assert.That(dstDoc.Lists.Count, Is.EqualTo(4));
+            Assert.AreEqual(4, dstDoc.Lists.Count);
 
             ImportFormatOptions options = new ImportFormatOptions();
 
@@ -604,7 +606,7 @@ namespace ApiExamples
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
             dstDoc.UpdateListLabels();
 
-            Assert.That(dstDoc.Lists.Count, Is.EqualTo(isKeepSourceNumbering ? 5 : 4));
+            Assert.AreEqual(isKeepSourceNumbering ? 5 : 4, dstDoc.Lists.Count);
             //ExEnd
         }
 
@@ -620,7 +622,8 @@ namespace ApiExamples
 
             // Set the "KeepSourceNumbering" property to "true" to apply a different list definition ID
             // to identical styles as Aspose.Words imports them into destination documents.
-            ImportFormatOptions importFormatOptions = new ImportFormatOptions { KeepSourceNumbering = true };
+            ImportFormatOptions importFormatOptions = new ImportFormatOptions();
+            importFormatOptions.KeepSourceNumbering = true;
 
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles, importFormatOptions);
             dstDoc.UpdateListLabels();
@@ -628,8 +631,8 @@ namespace ApiExamples
 
             string paraText = dstDoc.Sections[1].Body.LastParagraph.GetText();
 
-            Assert.That(paraText.StartsWith("13->13"), Is.True, paraText);
-            Assert.That(dstDoc.Sections[1].Body.LastParagraph.ListLabel.LabelString, Is.EqualTo("1."));
+            Assert.IsTrue(paraText.StartsWith("13->13"), paraText);
+            Assert.AreEqual("1.", dstDoc.Sections[1].Body.LastParagraph.ListLabel.LabelString);
         }
 
         [Test]
@@ -641,7 +644,8 @@ namespace ApiExamples
             Document srcDoc = new Document(MyDir + "List item.docx");
             Document dstDoc = new Document(MyDir + "List destination.docx");
 
-            ImportFormatOptions options = new ImportFormatOptions { MergePastedLists = true };
+            ImportFormatOptions options = new ImportFormatOptions();
+            options.MergePastedLists = true;
 
             // Set the "MergePastedLists" property to "true" pasted lists will be merged with surrounding lists.
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.UseDestinationStyles, options);
@@ -660,14 +664,15 @@ namespace ApiExamples
             Document srcDoc = new Document(MyDir + "Styles source.docx");
             Document dstDoc = new Document(MyDir + "Styles destination.docx");
 
-            ImportFormatOptions options = new ImportFormatOptions { ForceCopyStyles = true };
+            ImportFormatOptions options = new ImportFormatOptions();
+            options.ForceCopyStyles = true;
             dstDoc.AppendDocument(srcDoc, ImportFormatMode.KeepSourceFormatting, options);
 
             ParagraphCollection paras = dstDoc.Sections[1].Body.Paragraphs;
 
-            Assert.That("MyStyle1_0", Is.EqualTo(paras[0].ParagraphFormat.Style.Name));
-            Assert.That("MyStyle2_0", Is.EqualTo(paras[1].ParagraphFormat.Style.Name));
-            Assert.That("MyStyle3", Is.EqualTo(paras[2].ParagraphFormat.Style.Name));
+            Assert.AreEqual(paras[0].ParagraphFormat.Style.Name, "MyStyle1_0");
+            Assert.AreEqual(paras[1].ParagraphFormat.Style.Name, "MyStyle2_0");
+            Assert.AreEqual(paras[2].ParagraphFormat.Style.Name, "MyStyle3");
             //ExEnd
         }
 
@@ -686,10 +691,11 @@ namespace ApiExamples
             builder = new DocumentBuilder(dstDoc);
             builder.Write("Lorem ipsum.");
 
-            ImportFormatOptions options = new ImportFormatOptions() { AdjustSentenceAndWordSpacing = true };
+            ImportFormatOptions options = new ImportFormatOptions();
+            options.AdjustSentenceAndWordSpacing = true;
             builder.InsertDocument(srcDoc, ImportFormatMode.UseDestinationStyles, options);
 
-            Assert.That(dstDoc.FirstSection.Body.FirstParagraph.GetText().Trim(), Is.EqualTo("Lorem ipsum. Dolor sit amet."));
+            Assert.AreEqual("Lorem ipsum. Dolor sit amet.", dstDoc.FirstSection.Body.FirstParagraph.GetText().Trim());
             //ExEnd
         }
 
@@ -710,26 +716,26 @@ namespace ApiExamples
 
             foreach (DigitalSignature signature in doc.DigitalSignatures)
             {
-                Console.WriteLine($"{(signature.IsValid ? "Valid" : "Invalid")} signature: ");
-                Console.WriteLine($"\tReason:\t{signature.Comments}");
-                Console.WriteLine($"\tType:\t{signature.SignatureType}");
-                Console.WriteLine($"\tSign time:\t{signature.SignTime}");
-                Console.WriteLine($"\tSubject name:\t{signature.CertificateHolder.Certificate.SubjectName}");
-                Console.WriteLine($"\tIssuer name:\t{signature.CertificateHolder.Certificate.IssuerName.Name}");
+                Console.WriteLine(string.Format("{0} signature: ", (signature.IsValid ? "Valid" : "Invalid")));
+                Console.WriteLine(string.Format("\tReason:\t{0}", signature.Comments));
+                Console.WriteLine(string.Format("\tType:\t{0}", signature.SignatureType));
+                Console.WriteLine(string.Format("\tSign time:\t{0}", signature.SignTime));
+                Console.WriteLine(string.Format("\tSubject name:\t{0}", signature.CertificateHolder.Certificate.SubjectName));
+                Console.WriteLine(string.Format("\tIssuer name:\t{0}", signature.CertificateHolder.Certificate.IssuerName.Name));
                 Console.WriteLine();
             }
             //ExEnd
 
-            Assert.That(doc.DigitalSignatures.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, doc.DigitalSignatures.Count);
 
             DigitalSignature digitalSig = doc.DigitalSignatures[0];
 
-            Assert.That(digitalSig.IsValid, Is.True);
-            Assert.That(digitalSig.Comments, Is.EqualTo("Test Sign"));
-            Assert.That(digitalSig.SignatureType.ToString(), Is.EqualTo("XmlDsig"));
-            Assert.That(digitalSig.CertificateHolder.Certificate.Subject.Contains("Aspose Pty Ltd"), Is.True);
-            Assert.That(digitalSig.CertificateHolder.Certificate.IssuerName.Name != null &&
-                        digitalSig.CertificateHolder.Certificate.IssuerName.Name.Contains("VeriSign"), Is.True);
+            Assert.IsTrue(digitalSig.IsValid);
+            Assert.AreEqual("Test Sign", digitalSig.Comments);
+            Assert.AreEqual("XmlDsig", digitalSig.SignatureType.ToString());
+            Assert.IsTrue(digitalSig.CertificateHolder.Certificate.Subject.Contains("Aspose Pty Ltd"));
+            Assert.IsTrue(digitalSig.CertificateHolder.Certificate.IssuerName.Name != null &&
+                        digitalSig.CertificateHolder.Certificate.IssuerName.Name.Contains("VeriSign"));
         }
 
         [Test]
@@ -749,18 +755,19 @@ namespace ApiExamples
             //ExFor:Document.DigitalSignatures
             //ExSummary:Shows how to sign documents with X.509 certificates.
             // Verify that a document is not signed.
-            Assert.That(FileFormatUtil.DetectFileFormat(MyDir + "Document.docx").HasDigitalSignature, Is.False);
+            Assert.IsFalse(FileFormatUtil.DetectFileFormat(MyDir + "Document.docx").HasDigitalSignature);
 
             // Create a CertificateHolder object from a PKCS12 file, which we will use to sign the document.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw", null);
 
             // There are two ways of saving a signed copy of a document to the local file system:
             // 1 - Designate a document by a local system filename and save a signed copy at a location specified by another filename.
-            SignOptions signOptions = new SignOptions { SignTime = DateTime.Now };
+            SignOptions signOptions = new SignOptions();
+            signOptions.SignTime = DateTime.Now;
             DigitalSignatureUtil.Sign(MyDir + "Document.docx", ArtifactsDir + "Document.DigitalSignature.docx",
                 certificateHolder, signOptions);
 
-            Assert.That(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature, Is.True);
+            Assert.IsTrue(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
 
             // 2 - Take a document from a stream and save a signed copy to another stream.
             using (FileStream inDoc = new FileStream(MyDir + "Document.docx", FileMode.Open))
@@ -771,17 +778,17 @@ namespace ApiExamples
                 }
             }
 
-            Assert.That(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature, Is.True);
+            Assert.IsTrue(FileFormatUtil.DetectFileFormat(ArtifactsDir + "Document.DigitalSignature.docx").HasDigitalSignature);
 
             // Please verify that all of the document's digital signatures are valid and check their details.
             Document signedDoc = new Document(ArtifactsDir + "Document.DigitalSignature.docx");
             DigitalSignatureCollection digitalSignatureCollection = signedDoc.DigitalSignatures;
 
-            Assert.That(digitalSignatureCollection.IsValid, Is.True);
-            Assert.That(digitalSignatureCollection.Count, Is.EqualTo(1));
-            Assert.That(digitalSignatureCollection[0].SignatureType, Is.EqualTo(DigitalSignatureType.XmlDsig));
-            Assert.That(signedDoc.DigitalSignatures[0].IssuerName, Is.EqualTo("CN=Morzal.Me"));
-            Assert.That(signedDoc.DigitalSignatures[0].SubjectName, Is.EqualTo("CN=Morzal.Me"));
+            Assert.IsTrue(digitalSignatureCollection.IsValid);
+            Assert.AreEqual(1, digitalSignatureCollection.Count);
+            Assert.AreEqual(DigitalSignatureType.XmlDsig, digitalSignatureCollection[0].SignatureType);
+            Assert.AreEqual("CN=Morzal.Me", signedDoc.DigitalSignatures[0].IssuerName);
+            Assert.AreEqual("CN=Morzal.Me", signedDoc.DigitalSignatures[0].SubjectName);
             //ExEnd
         }
 
@@ -796,9 +803,9 @@ namespace ApiExamples
             foreach (DigitalSignature digitalSignature in doc.DigitalSignatures)
             {
                 string signatureValue = Convert.ToBase64String(digitalSignature.SignatureValue);
-                Assert.That(signatureValue, Is.EqualTo("K1cVLLg2kbJRAzT5WK+m++G8eEO+l7S+5ENdjMxxTXkFzGUfvwxREuJdSFj9AbD" +
+                Assert.AreEqual("K1cVLLg2kbJRAzT5WK+m++G8eEO+l7S+5ENdjMxxTXkFzGUfvwxREuJdSFj9AbD" +
                     "MhnGvDURv9KEhC25DDF1al8NRVR71TF3CjHVZXpYu7edQS5/yLw/k5CiFZzCp1+MmhOdYPcVO+Fm" +
-                    "+9fKr2iNLeyYB+fgEeZHfTqTFM2WwAqo="));
+                    "+9fKr2iNLeyYB+fgEeZHfTqTFM2WwAqo=", signatureValue);
             }
             //ExEnd
         }
@@ -816,8 +823,8 @@ namespace ApiExamples
             builder.Writeln("Template Document");
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Normal;
             builder.Writeln("Some content here");
-            Assert.That(dstDoc.Styles.Count, Is.EqualTo(5)); //ExSkip
-            Assert.That(dstDoc.Sections.Count, Is.EqualTo(1)); //ExSkip
+            Assert.AreEqual(5, dstDoc.Styles.Count); //ExSkip
+            Assert.AreEqual(1, dstDoc.Sections.Count); //ExSkip
 
             // Append all unencrypted documents with the .doc extension
             // from our local file system directory to the base document.
@@ -835,8 +842,8 @@ namespace ApiExamples
             dstDoc.Save(ArtifactsDir + "Document.AppendAllDocumentsInFolder.doc");
             //ExEnd
 
-            Assert.That(dstDoc.Styles.Count, Is.EqualTo(7));
-            Assert.That(dstDoc.Sections.Count, Is.EqualTo(10));
+            Assert.AreEqual(7, dstDoc.Styles.Count);
+            Assert.AreEqual(10, dstDoc.Sections.Count);
         }
 
         [Test]
@@ -851,14 +858,14 @@ namespace ApiExamples
 
             // If any number of these runs are adjacent with identical formatting,
             // then the document may be simplified.
-            Assert.That(doc.GetChildNodes(NodeType.Run, true).Count, Is.EqualTo(317));
+            Assert.AreEqual(317, doc.GetChildNodes(NodeType.Run, true).Count);
 
             // Combine such runs with this method and verify the number of run joins that will take place.
-            Assert.That(doc.JoinRunsWithSameFormatting(), Is.EqualTo(121));
+            Assert.AreEqual(121, doc.JoinRunsWithSameFormatting());
 
             // The number of joins and the number of runs we have after the join
             // should add up the number of runs we had initially.
-            Assert.That(doc.GetChildNodes(NodeType.Run, true).Count, Is.EqualTo(196));
+            Assert.AreEqual(196, doc.GetChildNodes(NodeType.Run, true).Count);
             //ExEnd
         }
 
@@ -882,7 +889,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
-            Assert.That(doc.DefaultTabStop, Is.EqualTo(72));
+            Assert.AreEqual(72, doc.DefaultTabStop);
         }
 
         [Test]
@@ -900,8 +907,8 @@ namespace ApiExamples
             // but with a unique copy of each of the original document's nodes.
             Document clone = doc.Clone();
 
-            Assert.That(clone.FirstSection.Body.FirstParagraph.Runs[0].Text, Is.EqualTo(doc.FirstSection.Body.FirstParagraph.Runs[0].GetText()));
-            Assert.That(clone.FirstSection.Body.FirstParagraph.Runs[0].GetHashCode(), Is.Not.EqualTo(doc.FirstSection.Body.FirstParagraph.Runs[0].GetHashCode()));
+            Assert.AreEqual(doc.FirstSection.Body.FirstParagraph.Runs[0].GetText(), clone.FirstSection.Body.FirstParagraph.Runs[0].Text);
+            Assert.AreNotEqual(doc.FirstSection.Body.FirstParagraph.Runs[0].GetHashCode(), clone.FirstSection.Body.FirstParagraph.Runs[0].GetHashCode());
             //ExEnd
         }
 
@@ -918,10 +925,10 @@ namespace ApiExamples
             builder.InsertField("MERGEFIELD Field");
 
             // GetText will retrieve the visible text as well as field codes and special characters.
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("\u0013MERGEFIELD Field\u0014«Field»\u0015"));
+            Assert.AreEqual("\u0013MERGEFIELD Field\u0014«Field»\u0015", doc.GetText().Trim());
 
             // ToString will give us the document's appearance if saved to a passed save format.
-            Assert.That(doc.ToString(SaveFormat.Text).Trim(), Is.EqualTo("«Field»"));
+            Assert.AreEqual("«Field»", doc.ToString(SaveFormat.Text).Trim());
             //ExEnd
         }
 
@@ -937,7 +944,7 @@ namespace ApiExamples
             Document doc = new Document();
             doc.Protect(ProtectionType.ReadOnly, "password");
 
-            Assert.That(doc.ProtectionType, Is.EqualTo(ProtectionType.ReadOnly));
+            Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType);
 
             // If we open this document with Microsoft Word intending to edit it,
             // we will need to apply the password to get through the protection.
@@ -947,30 +954,30 @@ namespace ApiExamples
             // We have not encrypted the document in any way, and we do not need the password to open and edit it programmatically.
             Document protectedDoc = new Document(ArtifactsDir + "Document.Protect.docx");
 
-            Assert.That(protectedDoc.ProtectionType, Is.EqualTo(ProtectionType.ReadOnly));
+            Assert.AreEqual(ProtectionType.ReadOnly, protectedDoc.ProtectionType);
 
             DocumentBuilder builder = new DocumentBuilder(protectedDoc);
             builder.Writeln("Text added to a protected document.");
-            Assert.That(protectedDoc.Range.Text.Trim(), Is.EqualTo("Text added to a protected document.")); //ExSkip
+            Assert.AreEqual("Text added to a protected document.", protectedDoc.Range.Text.Trim()); //ExSkip
 
             // There are two ways of removing protection from a document.
             // 1 - With no password:
             doc.Unprotect();
 
-            Assert.That(doc.ProtectionType, Is.EqualTo(ProtectionType.NoProtection));
+            Assert.AreEqual(ProtectionType.NoProtection, doc.ProtectionType);
 
             doc.Protect(ProtectionType.ReadOnly, "NewPassword");
 
-            Assert.That(doc.ProtectionType, Is.EqualTo(ProtectionType.ReadOnly));
+            Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType);
 
             doc.Unprotect("WrongPassword");
 
-            Assert.That(doc.ProtectionType, Is.EqualTo(ProtectionType.ReadOnly));
+            Assert.AreEqual(ProtectionType.ReadOnly, doc.ProtectionType);
 
             // 2 - With the correct password:
             doc.Unprotect("NewPassword");
 
-            Assert.That(doc.ProtectionType, Is.EqualTo(ProtectionType.NoProtection));
+            Assert.AreEqual(ProtectionType.NoProtection, doc.ProtectionType);
             //ExEnd
         }
 
@@ -985,32 +992,32 @@ namespace ApiExamples
             Document doc = new Document();
             NodeCollection nodes = doc.GetChildNodes(NodeType.Any, true);
 
-            Assert.That(nodes[0].NodeType, Is.EqualTo(NodeType.Section));
-            Assert.That(nodes[0].ParentNode, Is.EqualTo(doc));
+            Assert.AreEqual(NodeType.Section, nodes[0].NodeType);
+            CollectionAssert.AreEqual(doc, nodes[0].ParentNode);
 
-            Assert.That(nodes[1].NodeType, Is.EqualTo(NodeType.Body));
-            Assert.That(nodes[1].ParentNode, Is.EqualTo(nodes[0]));
+            Assert.AreEqual(NodeType.Body, nodes[1].NodeType);
+            Assert.AreEqual(nodes[0], nodes[1].ParentNode);
 
-            Assert.That(nodes[2].NodeType, Is.EqualTo(NodeType.Paragraph));
-            Assert.That(nodes[2].ParentNode, Is.EqualTo(nodes[1]));
+            Assert.AreEqual(NodeType.Paragraph, nodes[2].NodeType);
+            Assert.AreEqual(nodes[1], nodes[2].ParentNode);
 
             // This is the minimal set of nodes that we need to be able to edit the document.
             // We will no longer be able to edit the document if we remove any of them.
             doc.RemoveAllChildren();
 
-            Assert.That(doc.GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(0));
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Any, true).Count);
 
             // Call this method to make sure that the document has at least those three nodes so we can edit it again.
             doc.EnsureMinimum();
 
-            Assert.That(nodes[0].NodeType, Is.EqualTo(NodeType.Section));
-            Assert.That(nodes[1].NodeType, Is.EqualTo(NodeType.Body));
-            Assert.That(nodes[2].NodeType, Is.EqualTo(NodeType.Paragraph));
+            Assert.AreEqual(NodeType.Section, nodes[0].NodeType);
+            Assert.AreEqual(NodeType.Body, nodes[1].NodeType);
+            Assert.AreEqual(NodeType.Paragraph, nodes[2].NodeType);
 
             ((Paragraph)nodes[2]).Runs.Add(new Run(doc, "Hello world!"));
             //ExEnd
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
         }
 
         [Test]
@@ -1021,14 +1028,14 @@ namespace ApiExamples
             //ExSummary:Shows how to remove all macros from a document.
             Document doc = new Document(MyDir + "Macro.docm");
 
-            Assert.That(doc.HasMacros, Is.True);
-            Assert.That(doc.VbaProject.Name, Is.EqualTo("Project"));
+            Assert.IsTrue(doc.HasMacros);
+            Assert.AreEqual("Project", doc.VbaProject.Name);
 
             // Remove the document's VBA project, along with all its macros.
             doc.RemoveMacros();
 
-            Assert.That(doc.HasMacros, Is.False);
-            Assert.That(doc.VbaProject, Is.Null);
+            Assert.IsFalse(doc.HasMacros);
+            Assert.IsNull(doc.VbaProject);
             //ExEnd
         }
 
@@ -1048,7 +1055,7 @@ namespace ApiExamples
             builder.Write("Page 3");
 
             // Verify the expected page count of the document.
-            Assert.That(doc.PageCount, Is.EqualTo(3));
+            Assert.AreEqual(3, doc.PageCount);
 
             // Getting the PageCount property invoked the document's page layout to calculate the value.
             // This operation will not need to be re-done when rendering the document to a fixed page save format,
@@ -1077,24 +1084,24 @@ namespace ApiExamples
                             "quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
 
             // Aspose.Words does not track document metrics like these in real time.
-            Assert.That(doc.BuiltInDocumentProperties.Characters, Is.EqualTo(0));
-            Assert.That(doc.BuiltInDocumentProperties.Words, Is.EqualTo(0));
-            Assert.That(doc.BuiltInDocumentProperties.Paragraphs, Is.EqualTo(1));
-            Assert.That(doc.BuiltInDocumentProperties.Lines, Is.EqualTo(1));
+            Assert.AreEqual(0, doc.BuiltInDocumentProperties.Characters);
+            Assert.AreEqual(0, doc.BuiltInDocumentProperties.Words);
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Paragraphs);
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
 
             // To get accurate values for three of these properties, we will need to update them manually.
             doc.UpdateWordCount();
 
-            Assert.That(doc.BuiltInDocumentProperties.Characters, Is.EqualTo(196));
-            Assert.That(doc.BuiltInDocumentProperties.Words, Is.EqualTo(36));
-            Assert.That(doc.BuiltInDocumentProperties.Paragraphs, Is.EqualTo(2));
+            Assert.AreEqual(196, doc.BuiltInDocumentProperties.Characters);
+            Assert.AreEqual(36, doc.BuiltInDocumentProperties.Words);
+            Assert.AreEqual(2, doc.BuiltInDocumentProperties.Paragraphs);
 
             // For the line count, we will need to call a specific overload of the updating method.
-            Assert.That(doc.BuiltInDocumentProperties.Lines, Is.EqualTo(1));
+            Assert.AreEqual(1, doc.BuiltInDocumentProperties.Lines);
 
             doc.UpdateWordCount(true);
 
-            Assert.That(doc.BuiltInDocumentProperties.Lines, Is.EqualTo(4));
+            Assert.AreEqual(4, doc.BuiltInDocumentProperties.Lines);
             //ExEnd
         }
 
@@ -1145,8 +1152,8 @@ namespace ApiExamples
             //ExSummary:Shows how to retrieve details of a document's load operation.
             Document doc = new Document(MyDir + "Document.docx");
 
-            Assert.That(doc.OriginalFileName, Is.EqualTo(MyDir + "Document.docx"));
-            Assert.That(doc.OriginalLoadFormat, Is.EqualTo(LoadFormat.Docx));
+            Assert.AreEqual(MyDir + "Document.docx", doc.OriginalFileName);
+            Assert.AreEqual(LoadFormat.Docx, doc.OriginalLoadFormat);
             //ExEnd
         }
 
@@ -1159,7 +1166,7 @@ namespace ApiExamples
             //ExFor:FootnoteOptions.Columns
             //ExSummary:Shows how to split the footnote section into a given number of columns.
             Document doc = new Document(MyDir + "Footnotes and endnotes.docx");
-            Assert.That(doc.FootnoteOptions.Columns, Is.EqualTo(0)); //ExSkip
+            Assert.AreEqual(0, doc.FootnoteOptions.Columns); //ExSkip
 
             doc.FootnoteOptions.Columns = 2;
             doc.Save(ArtifactsDir + "Document.FootnoteColumns.docx");
@@ -1167,7 +1174,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.FootnoteColumns.docx");
 
-            Assert.That(doc.FirstSection.PageSetup.FootnoteOptions.Columns, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.FirstSection.PageSetup.FootnoteOptions.Columns);
         }
 
         [Test]
@@ -1205,8 +1212,8 @@ namespace ApiExamples
 
             // 2 -  Use the first image found in the document:
             ThumbnailGeneratingOptions options = new ThumbnailGeneratingOptions();
-            Assert.That(options.ThumbnailSize, Is.EqualTo(new Size(600, 900))); //ExSkip
-            Assert.That(options.GenerateFromFirstPage, Is.True); //ExSkip
+            Assert.AreEqual(new Size(600, 900), options.ThumbnailSize); //ExSkip
+            Assert.IsTrue(options.GenerateFromFirstPage); //ExSkip
             options.ThumbnailSize = new Size(400, 400);
             options.GenerateFromFirstPage = false;
 
@@ -1241,13 +1248,13 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.HyphenationOptions.docx");
             //ExEnd
 
-            Assert.That(doc.HyphenationOptions.AutoHyphenation, Is.EqualTo(true));
-            Assert.That(doc.HyphenationOptions.ConsecutiveHyphenLimit, Is.EqualTo(2));
-            Assert.That(doc.HyphenationOptions.HyphenationZone, Is.EqualTo(720));
-            Assert.That(doc.HyphenationOptions.HyphenateCaps, Is.EqualTo(true));
+            Assert.AreEqual(true, doc.HyphenationOptions.AutoHyphenation);
+            Assert.AreEqual(2, doc.HyphenationOptions.ConsecutiveHyphenLimit);
+            Assert.AreEqual(720, doc.HyphenationOptions.HyphenationZone);
+            Assert.AreEqual(true, doc.HyphenationOptions.HyphenateCaps);
 
-            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "Document.HyphenationOptions.docx",
-                GoldsDir + "Document.HyphenationOptions Gold.docx"), Is.True);
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "Document.HyphenationOptions.docx",
+                GoldsDir + "Document.HyphenationOptions Gold.docx"));
         }
 
         [Test]
@@ -1256,10 +1263,10 @@ namespace ApiExamples
             Document doc = new Document();
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.That(doc.HyphenationOptions.AutoHyphenation, Is.EqualTo(false));
-            Assert.That(doc.HyphenationOptions.ConsecutiveHyphenLimit, Is.EqualTo(0));
-            Assert.That(doc.HyphenationOptions.HyphenationZone, Is.EqualTo(360)); // 0.25 inch
-            Assert.That(doc.HyphenationOptions.HyphenateCaps, Is.EqualTo(true));
+            Assert.AreEqual(false, doc.HyphenationOptions.AutoHyphenation);
+            Assert.AreEqual(0, doc.HyphenationOptions.ConsecutiveHyphenLimit);
+            Assert.AreEqual(360, doc.HyphenationOptions.HyphenationZone); // 0.25 inch
+            Assert.AreEqual(true, doc.HyphenationOptions.HyphenateCaps);
         }
 
         [Test]
@@ -1278,10 +1285,10 @@ namespace ApiExamples
             //ExSummary:Shows how to read a loaded document's Open Office XML compliance version.
             // The compliance version varies between documents created by different versions of Microsoft Word.
             Document doc = new Document(MyDir + "Document.doc");
-            Assert.That(OoxmlCompliance.Ecma376_2006, Is.EqualTo(doc.Compliance));
+            Assert.AreEqual(doc.Compliance, OoxmlCompliance.Ecma376_2006);
 
             doc = new Document(MyDir + "Document.docx");
-            Assert.That(OoxmlCompliance.Iso29500_2008_Transitional, Is.EqualTo(doc.Compliance));
+            Assert.AreEqual(doc.Compliance, OoxmlCompliance.Iso29500_2008_Transitional);
             //ExEnd
         }
 
@@ -1301,8 +1308,8 @@ namespace ApiExamples
             builder.Writeln("Some text.");
 
             SaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
-            Assert.That(options.UseAntiAliasing, Is.False); //ExSkip
-            Assert.That(options.UseHighQualityRendering, Is.False); //ExSkip
+            Assert.IsFalse(options.UseAntiAliasing); //ExSkip
+            Assert.IsFalse(options.UseHighQualityRendering); //ExSkip
 
             doc.Save(ArtifactsDir + "Document.ImageSaveOptions.Default.jpg", options);
 
@@ -1332,7 +1339,7 @@ namespace ApiExamples
             // Combined with the built-in styles, the document now has eight styles.
             // A custom style counts as "used" while applied to some part of the document,
             // which means that the four styles we added are currently unused.
-            Assert.That(doc.Styles.Count, Is.EqualTo(8));
+            Assert.AreEqual(8, doc.Styles.Count);
 
             // Apply a custom character style, and then a custom list style. Doing so will mark the styles as "used".
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -1346,14 +1353,14 @@ namespace ApiExamples
 
             doc.Cleanup();
 
-            Assert.That(doc.Styles.Count, Is.EqualTo(6));
+            Assert.AreEqual(6, doc.Styles.Count);
 
             // Removing every node that a custom style is applied to marks it as "unused" again.
             // Run the Cleanup method again to remove them.
             doc.FirstSection.Body.RemoveAllChildren();
             doc.Cleanup();
 
-            Assert.That(doc.Styles.Count, Is.EqualTo(4));
+            Assert.AreEqual(4, doc.Styles.Count);
             //ExEnd
         }
 
@@ -1367,7 +1374,7 @@ namespace ApiExamples
 
             // Microsoft Word documents by default come with an attached template called "Normal.dotm".
             // There is no default template for blank Aspose.Words documents.
-            Assert.That(doc.AttachedTemplate, Is.EqualTo(string.Empty));
+            Assert.AreEqual(string.Empty, doc.AttachedTemplate);
 
             // Attach a template, then set the flag to apply style changes
             // within the template to styles in our document.
@@ -1379,9 +1386,9 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.AutomaticallyUpdateStyles.docx");
 
-            Assert.That(doc.AutomaticallyUpdateStyles, Is.True);
-            Assert.That(doc.AttachedTemplate, Is.EqualTo(MyDir + "Business brochure.dotx"));
-            Assert.That(File.Exists(doc.AttachedTemplate), Is.True);
+            Assert.IsTrue(doc.AutomaticallyUpdateStyles);
+            Assert.AreEqual(MyDir + "Business brochure.dotx", doc.AttachedTemplate);
+            Assert.IsTrue(File.Exists(doc.AttachedTemplate));
         }
 
         [Test]
@@ -1398,7 +1405,7 @@ namespace ApiExamples
             // Enable automatic style updating, but do not attach a template document.
             doc.AutomaticallyUpdateStyles = true;
 
-            Assert.That(doc.AttachedTemplate, Is.EqualTo(string.Empty));
+            Assert.AreEqual(string.Empty, doc.AttachedTemplate);
 
             // Since there is no template document, the document had nowhere to track style changes.
             // Use a SaveOptions object to automatically set a template
@@ -1409,7 +1416,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.DefaultTemplate.docx", options);
             //ExEnd
 
-            Assert.That(File.Exists(options.DefaultTemplate), Is.True);
+            Assert.IsTrue(File.Exists(options.DefaultTemplate));
         }
 
         [Test]
@@ -1435,7 +1442,7 @@ namespace ApiExamples
 
             doc.Range.Replace(regex, @"$2 took money from $1", options);
 
-            Assert.That("Paul took money from Jason.\f", Is.EqualTo(doc.GetText()));
+            Assert.AreEqual(doc.GetText(), "Paul took money from Jason.\f");
             //ExEnd
         }
 
@@ -1452,28 +1459,28 @@ namespace ApiExamples
             Field field = builder.InsertField("DATE", null);
 
             // Aspose.Words automatically detects field types based on field codes.
-            Assert.That(field.Type, Is.EqualTo(FieldType.FieldDate));
+            Assert.AreEqual(FieldType.FieldDate, field.Type);
 
             // Manually change the raw text of the field, which determines the field code.
             Run fieldText = (Run)doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Run, true)[0];
-            Assert.That(fieldText.Text, Is.EqualTo("DATE")); //ExSkip
+            Assert.AreEqual("DATE", fieldText.Text); //ExSkip
             fieldText.Text = "PAGE";
 
             // Changing the field code has changed this field to one of a different type,
             // but the field's type properties still display the old type.
-            Assert.That(field.GetFieldCode(), Is.EqualTo("PAGE"));
-            Assert.That(field.Type, Is.EqualTo(FieldType.FieldDate));
-            Assert.That(field.Start.FieldType, Is.EqualTo(FieldType.FieldDate));
-            Assert.That(field.Separator.FieldType, Is.EqualTo(FieldType.FieldDate));
-            Assert.That(field.End.FieldType, Is.EqualTo(FieldType.FieldDate));
+            Assert.AreEqual("PAGE", field.GetFieldCode());
+            Assert.AreEqual(FieldType.FieldDate, field.Type);
+            Assert.AreEqual(FieldType.FieldDate, field.Start.FieldType);
+            Assert.AreEqual(FieldType.FieldDate, field.Separator.FieldType);
+            Assert.AreEqual(FieldType.FieldDate, field.End.FieldType);
 
             // Update those properties with this method to display current value.
             doc.NormalizeFieldTypes();
 
-            Assert.That(field.Type, Is.EqualTo(FieldType.FieldPage));
-            Assert.That(field.Start.FieldType, Is.EqualTo(FieldType.FieldPage));
-            Assert.That(field.Separator.FieldType, Is.EqualTo(FieldType.FieldPage));
-            Assert.That(field.End.FieldType, Is.EqualTo(FieldType.FieldPage));
+            Assert.AreEqual(FieldType.FieldPage, field.Type);
+            Assert.AreEqual(FieldType.FieldPage, field.Start.FieldType);
+            Assert.AreEqual(FieldType.FieldPage, field.Separator.FieldType);
+            Assert.AreEqual(FieldType.FieldPage, field.End.FieldType);
             //ExEnd
         }
 
@@ -1488,7 +1495,7 @@ namespace ApiExamples
             //ExSummary:Shows how to hide text in a rendered output document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            Assert.That(doc.LayoutOptions.ShowHiddenText, Is.False); //ExSkip
+            Assert.IsFalse(doc.LayoutOptions.ShowHiddenText); //ExSkip
 
             // Insert hidden text, then specify whether we wish to omit it from a rendered document.
             builder.Writeln("This text is not hidden.");
@@ -1511,9 +1518,9 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.That(textAbsorber.Text, Is.EqualTo(showHiddenText ?
-                    $"This text is not hidden.{Environment.NewLine}This text is hidden." :
-                    "This text is not hidden."));
+            Assert.AreEqual(showHiddenText ?
+                    string.Format("This text is not hidden.{0}This text is hidden.", Environment.NewLine) :
+                    "This text is not hidden.", textAbsorber.Text);
         }
 
         [TestCase(false)]
@@ -1527,7 +1534,7 @@ namespace ApiExamples
             //ExSummary:Shows how to show paragraph marks in a rendered output document.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            Assert.That(doc.LayoutOptions.ShowParagraphMarks, Is.False); //ExSkip
+            Assert.IsFalse(doc.LayoutOptions.ShowParagraphMarks); //ExSkip
 
             // Add some paragraphs, then enable paragraph marks to show the ends of paragraphs
             // with a pilcrow (¶) symbol when we render the document.
@@ -1550,9 +1557,9 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.That(textAbsorber.Text.Trim(), Is.EqualTo(showParagraphMarks ?
-                    $"Hello world!¶{Environment.NewLine}Hello again!¶{Environment.NewLine}¶" :
-                    $"Hello world!{Environment.NewLine}Hello again!"));
+            Assert.AreEqual(showParagraphMarks ?
+                    string.Format("Hello world!¶{0}Hello again!¶{1}¶", Environment.NewLine, Environment.NewLine) :
+                    string.Format("Hello world!{0}Hello again!", Environment.NewLine), textAbsorber.Text.Trim());
         }
 
         [Test]
@@ -1608,14 +1615,14 @@ namespace ApiExamples
             //ExSummary:Shows how to access a document's arbitrary custom parts collection.
             Document doc = new Document(MyDir + "Custom parts OOXML package.docx");
 
-            Assert.That(doc.PackageCustomParts.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.PackageCustomParts.Count);
 
             // Clone the second part, then add the clone to the collection.
             CustomPart clonedPart = doc.PackageCustomParts[1].Clone();
             doc.PackageCustomParts.Add(clonedPart);
             TestDocPackageCustomParts(doc.PackageCustomParts); //ExSkip
 
-            Assert.That(doc.PackageCustomParts.Count, Is.EqualTo(3));
+            Assert.AreEqual(3, doc.PackageCustomParts.Count);
 
             // Enumerate over the collection and print every part.
             using (IEnumerator<CustomPart> enumerator = doc.PackageCustomParts.GetEnumerator())
@@ -1623,13 +1630,13 @@ namespace ApiExamples
                 int index = 0;
                 while (enumerator.MoveNext())
                 {
-                    Console.WriteLine($"Part index {index}:");
-                    Console.WriteLine($"\tName:\t\t\t\t{enumerator.Current.Name}");
-                    Console.WriteLine($"\tContent type:\t\t{enumerator.Current.ContentType}");
-                    Console.WriteLine($"\tRelationship type:\t{enumerator.Current.RelationshipType}");
+                    Console.WriteLine(string.Format("Part index {0}:", index));
+                    Console.WriteLine(string.Format("\tName:\t\t\t\t{0}", enumerator.Current.Name));
+                    Console.WriteLine(string.Format("\tContent type:\t\t{0}", enumerator.Current.ContentType));
+                    Console.WriteLine(string.Format("\tRelationship type:\t{0}", enumerator.Current.RelationshipType));
                     Console.WriteLine(enumerator.Current.IsExternal ?
                         "\tSourced from outside the document" :
-                        $"\tStored within the document, length: {enumerator.Current.Data.Length} bytes");
+                        string.Format("\tStored within the document, length: {0} bytes", enumerator.Current.Data.Length));
                     index++;
                 }
             }
@@ -1637,35 +1644,35 @@ namespace ApiExamples
             // We can remove elements from this collection individually, or all at once.
             doc.PackageCustomParts.RemoveAt(2);
 
-            Assert.That(doc.PackageCustomParts.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.PackageCustomParts.Count);
 
             doc.PackageCustomParts.Clear();
 
-            Assert.That(doc.PackageCustomParts.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, doc.PackageCustomParts.Count);
             //ExEnd
         }
 
         private static void TestDocPackageCustomParts(CustomPartCollection parts)
         {
-            Assert.That(parts.Count, Is.EqualTo(3));
+            Assert.AreEqual(3, parts.Count);
 
-            Assert.That(parts[0].Name, Is.EqualTo("/payload/payload_on_package.test"));
-            Assert.That(parts[0].ContentType, Is.EqualTo("mytest/somedata"));
-            Assert.That(parts[0].RelationshipType, Is.EqualTo("http://mytest.payload.internal"));
-            Assert.That(parts[0].IsExternal, Is.EqualTo(false));
-            Assert.That(parts[0].Data.Length, Is.EqualTo(18));
+            Assert.AreEqual("/payload/payload_on_package.test", parts[0].Name);
+            Assert.AreEqual("mytest/somedata", parts[0].ContentType);
+            Assert.AreEqual("http://mytest.payload.internal", parts[0].RelationshipType);
+            Assert.AreEqual(false, parts[0].IsExternal);
+            Assert.AreEqual(18, parts[0].Data.Length);
 
-            Assert.That(parts[1].Name, Is.EqualTo("http://www.aspose.com/Images/aspose-logo.jpg"));
-            Assert.That(parts[1].ContentType, Is.EqualTo(""));
-            Assert.That(parts[1].RelationshipType, Is.EqualTo("http://mytest.payload.external"));
-            Assert.That(parts[1].IsExternal, Is.EqualTo(true));
-            Assert.That(parts[1].Data.Length, Is.EqualTo(0));
+            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", parts[1].Name);
+            Assert.AreEqual("", parts[1].ContentType);
+            Assert.AreEqual("http://mytest.payload.external", parts[1].RelationshipType);
+            Assert.AreEqual(true, parts[1].IsExternal);
+            Assert.AreEqual(0, parts[1].Data.Length);
 
-            Assert.That(parts[2].Name, Is.EqualTo("http://www.aspose.com/Images/aspose-logo.jpg"));
-            Assert.That(parts[2].ContentType, Is.EqualTo(""));
-            Assert.That(parts[2].RelationshipType, Is.EqualTo("http://mytest.payload.external"));
-            Assert.That(parts[2].IsExternal, Is.EqualTo(true));
-            Assert.That(parts[2].Data.Length, Is.EqualTo(0));
+            Assert.AreEqual("http://www.aspose.com/Images/aspose-logo.jpg", parts[2].Name);
+            Assert.AreEqual("", parts[2].ContentType);
+            Assert.AreEqual("http://mytest.payload.external", parts[2].RelationshipType);
+            Assert.AreEqual(true, parts[2].IsExternal);
+            Assert.AreEqual(0, parts[2].Data.Length);
         }
 
         [TestCase(false)]
@@ -1677,7 +1684,7 @@ namespace ApiExamples
             //ExSummary:Shows how to apply gray shading to form fields.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            Assert.That(doc.ShadeFormData, Is.True); //ExSkip
+            Assert.IsTrue(doc.ShadeFormData); //ExSkip
 
             builder.Write("Hello world! ");
             builder.InsertTextInput("My form field", TextFormFieldType.Regular, "",
@@ -1698,12 +1705,12 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Versions.doc");
 
             // We can read this property of a document, but we cannot preserve it while saving.
-            Assert.That(doc.VersionsCount, Is.EqualTo(4));
+            Assert.AreEqual(4, doc.VersionsCount);
 
             doc.Save(ArtifactsDir + "Document.VersionsCount.doc");
             doc = new Document(ArtifactsDir + "Document.VersionsCount.doc");
 
-            Assert.That(doc.VersionsCount, Is.EqualTo(0));
+            Assert.AreEqual(0, doc.VersionsCount);
             //ExEnd
         }
 
@@ -1721,32 +1728,32 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world! This document is protected.");
-            Assert.That(doc.WriteProtection.IsWriteProtected, Is.False); //ExSkip
-            Assert.That(doc.WriteProtection.ReadOnlyRecommended, Is.False); //ExSkip
+            Assert.IsFalse(doc.WriteProtection.IsWriteProtected); //ExSkip
+            Assert.IsFalse(doc.WriteProtection.ReadOnlyRecommended); //ExSkip
 
             // Enter a password up to 15 characters in length, and then verify the document's protection status.
             doc.WriteProtection.SetPassword("MyPassword");
             doc.WriteProtection.ReadOnlyRecommended = true;
 
-            Assert.That(doc.WriteProtection.IsWriteProtected, Is.True);
-            Assert.That(doc.WriteProtection.ValidatePassword("MyPassword"), Is.True);
+            Assert.IsTrue(doc.WriteProtection.IsWriteProtected);
+            Assert.IsTrue(doc.WriteProtection.ValidatePassword("MyPassword"));
 
             // Protection does not prevent the document from being edited programmatically, nor does it encrypt the contents.
             doc.Save(ArtifactsDir + "Document.WriteProtection.docx");
             doc = new Document(ArtifactsDir + "Document.WriteProtection.docx");
 
-            Assert.That(doc.WriteProtection.IsWriteProtected, Is.True);
+            Assert.IsTrue(doc.WriteProtection.IsWriteProtected);
 
             builder = new DocumentBuilder(doc);
             builder.MoveToDocumentEnd();
             builder.Writeln("Writing text in a protected document.");
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world! This document is protected." +
-                            "\rWriting text in a protected document."));
+            Assert.AreEqual("Hello world! This document is protected." +
+                            "\rWriting text in a protected document.", doc.GetText().Trim());
             //ExEnd
-            Assert.That(doc.WriteProtection.ReadOnlyRecommended, Is.True);
-            Assert.That(doc.WriteProtection.ValidatePassword("MyPassword"), Is.True);
-            Assert.That(doc.WriteProtection.ValidatePassword("wrongpassword"), Is.False);
+            Assert.IsTrue(doc.WriteProtection.ReadOnlyRecommended);
+            Assert.IsTrue(doc.WriteProtection.ValidatePassword("MyPassword"));
+            Assert.IsFalse(doc.WriteProtection.ValidatePassword("wrongpassword"));
         }
 
         [TestCase(false)]
@@ -1776,10 +1783,10 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Document.RemovePersonalInformation.docx");
             doc = new Document(ArtifactsDir + "Document.RemovePersonalInformation.docx");
 
-            Assert.That(doc.RemovePersonalInformation, Is.EqualTo(saveWithoutPersonalInfo));
-            Assert.That(doc.BuiltInDocumentProperties.Author, Is.EqualTo("John Doe"));
-            Assert.That(doc.BuiltInDocumentProperties.Company, Is.EqualTo("Placeholder Inc."));
-            Assert.That(doc.Revisions[0].Author, Is.EqualTo("John Doe"));
+            Assert.AreEqual(saveWithoutPersonalInfo, doc.RemovePersonalInformation);
+            Assert.AreEqual("John Doe", doc.BuiltInDocumentProperties.Author);
+            Assert.AreEqual("Placeholder Inc.", doc.BuiltInDocumentProperties.Company);
+            Assert.AreEqual("John Doe", doc.Revisions[0].Author);
             //ExEnd
         }
 
@@ -1823,7 +1830,7 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.That(textAbsorber.Text, Is.EqualTo("Hello world!                                                                    Commented [J.D.1]:  My comment."));
+            Assert.AreEqual("Hello world!                                                                    Commented [J.D.1]:  My comment.", textAbsorber.Text);
         }
 
         [Test]
@@ -1835,11 +1842,11 @@ namespace ApiExamples
             Document template = new Document(MyDir + "Rendering.docx");
             Document target = new Document(MyDir + "Document.docx");
 
-            Assert.That(template.Styles.Count, Is.EqualTo(18)); //ExSkip
-            Assert.That(target.Styles.Count, Is.EqualTo(12)); //ExSkip
+            Assert.AreEqual(18, template.Styles.Count); //ExSkip
+            Assert.AreEqual(12, target.Styles.Count); //ExSkip
 
             target.CopyStylesFromTemplate(template);
-            Assert.That(target.Styles.Count, Is.EqualTo(22)); //ExSkip
+            Assert.AreEqual(22, target.Styles.Count); //ExSkip
 
             //ExEnd
         }
@@ -1866,7 +1873,7 @@ namespace ApiExamples
             style.Font.Name = "Courier New";
             style.Font.Color = Color.RoyalBlue;
 
-            Assert.That(template.Styles.Count, Is.EqualTo(7));
+            Assert.AreEqual(7, template.Styles.Count);
 
             // Create a document which we will copy the styles to.
             Document target = new Document();
@@ -1876,7 +1883,7 @@ namespace ApiExamples
             style.Font.Name = "Calibri";
             style.Font.Color = Color.Orange;
 
-            Assert.That(target.Styles.Count, Is.EqualTo(5));
+            Assert.AreEqual(5, target.Styles.Count);
 
             // There are two ways of calling the method to copy all the styles from one document to another.
             // 1 -  Passing the template document object:
@@ -1884,15 +1891,15 @@ namespace ApiExamples
 
             // Copying styles adds all styles from the template document to the target
             // and overwrites existing styles with the same name.
-            Assert.That(target.Styles.Count, Is.EqualTo(7));
+            Assert.AreEqual(7, target.Styles.Count);
 
-            Assert.That(target.Styles["TemplateStyle3"].Font.Name, Is.EqualTo("Courier New"));
-            Assert.That(target.Styles["TemplateStyle3"].Font.Color.ToArgb(), Is.EqualTo(Color.RoyalBlue.ToArgb()));
+            Assert.AreEqual("Courier New", target.Styles["TemplateStyle3"].Font.Name);
+            Assert.AreEqual(Color.RoyalBlue.ToArgb(), target.Styles["TemplateStyle3"].Font.Color.ToArgb());
 
             // 2 -  Passing the local system filename of a template document:
             target.CopyStylesFromTemplate(MyDir + "Rendering.docx");
 
-            Assert.That(target.Styles.Count, Is.EqualTo(21));
+            Assert.AreEqual(21, target.Styles.Count);
             //ExEnd
         }
 
@@ -1919,17 +1926,17 @@ namespace ApiExamples
 
             // A VBA project contains a collection of VBA modules.
             VbaProject vbaProject = doc.VbaProject;
-            Assert.That(vbaProject.IsSigned, Is.True); //ExSkip
+            Assert.IsTrue(vbaProject.IsSigned); //ExSkip
             Console.WriteLine(vbaProject.IsSigned
-                ? $"Project name: {vbaProject.Name} signed; Project code page: {vbaProject.CodePage}; Modules count: {vbaProject.Modules.Count()}\n"
-                : $"Project name: {vbaProject.Name} not signed; Project code page: {vbaProject.CodePage}; Modules count: {vbaProject.Modules.Count()}\n");
+                ? string.Format("Project name: {0} signed; Project code page: {1}; Modules count: {2}\n", vbaProject.Name, vbaProject.CodePage, vbaProject.Modules.Count())
+                : string.Format("Project name: {0} not signed; Project code page: {1}; Modules count: {2}\n", vbaProject.Name, vbaProject.CodePage, vbaProject.Modules.Count()));
 
             VbaModuleCollection vbaModules = doc.VbaProject.Modules;
 
-            Assert.That(3, Is.EqualTo(vbaModules.Count()));
+            Assert.AreEqual(vbaModules.Count(), 3);
 
             foreach (VbaModule module in vbaModules)
-                Console.WriteLine($"Module name: {module.Name};\nModule code:\n{module.SourceCode}\n");
+                Console.WriteLine(string.Format("Module name: {0};\nModule code:\n{1}\n", module.Name, module.SourceCode));
 
             // Set new source code for VBA module. You can access VBA modules in the collection either by index or by name.
             vbaModules[0].SourceCode = "Your VBA code...";
@@ -1939,16 +1946,16 @@ namespace ApiExamples
             vbaModules.Remove(vbaModules[2]);
             //ExEnd
 
-            Assert.That(vbaProject.Name, Is.EqualTo("AsposeVBAtest"));
-            Assert.That(vbaProject.Modules.Count(), Is.EqualTo(2));
-            Assert.That(vbaProject.CodePage, Is.EqualTo(1251));
-            Assert.That(vbaProject.IsSigned, Is.False);
+            Assert.AreEqual("AsposeVBAtest", vbaProject.Name);
+            Assert.AreEqual(2, vbaProject.Modules.Count());
+            Assert.AreEqual(1251, vbaProject.CodePage);
+            Assert.IsFalse(vbaProject.IsSigned);
 
-            Assert.That(vbaModules[0].Name, Is.EqualTo("ThisDocument"));
-            Assert.That(vbaModules[0].SourceCode, Is.EqualTo("Your VBA code..."));
+            Assert.AreEqual("ThisDocument", vbaModules[0].Name);
+            Assert.AreEqual("Your VBA code...", vbaModules[0].SourceCode);
 
-            Assert.That(vbaModules[1].Name, Is.EqualTo("Module1"));
-            Assert.That(vbaModules[1].SourceCode, Is.EqualTo("Your VBA code..."));
+            Assert.AreEqual("Module1", vbaModules[1].Name);
+            Assert.AreEqual("Your VBA code...", vbaModules[1].SourceCode);
         }
 
         [Test]
@@ -1965,12 +1972,12 @@ namespace ApiExamples
             // After we save a document, we can access the Internet Media Type (MIME type) of the newly created output document.
             SaveOutputParameters parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.doc");
 
-            Assert.That(parameters.ContentType, Is.EqualTo("application/msword"));
+            Assert.AreEqual("application/msword", parameters.ContentType);
 
             // This property changes depending on the save format.
             parameters = doc.Save(ArtifactsDir + "Document.SaveOutputParameters.pdf");
 
-            Assert.That(parameters.ContentType, Is.EqualTo("application/pdf"));
+            Assert.AreEqual("application/pdf", parameters.ContentType);
             //ExEnd
         }
 
@@ -1984,12 +1991,12 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Master document.docx");
 
             NodeCollection subDocuments = doc.GetChildNodes(NodeType.SubDocument, true);
-            Assert.That(subDocuments.Count, Is.EqualTo(1)); //ExSkip
+            Assert.AreEqual(1, subDocuments.Count); //ExSkip
 
             // This node serves as a reference to an external document, and its contents cannot be accessed.
             SubDocument subDocument = (SubDocument)subDocuments[0];
 
-            Assert.That(subDocument.IsComposite, Is.False);
+            Assert.IsFalse(subDocument.IsComposite);
             //ExEnd
         }
 
@@ -2067,34 +2074,34 @@ namespace ApiExamples
             // Remove all web extension task panes at once like this.
             doc.WebExtensionTaskPanes.Clear();
 
-            Assert.That(doc.WebExtensionTaskPanes.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, doc.WebExtensionTaskPanes.Count);
 
             doc = new Document(ArtifactsDir + "Document.WebExtension.docx");
             
             myScriptTaskPane = doc.WebExtensionTaskPanes[0];
-            Assert.That(myScriptTaskPane.DockState, Is.EqualTo(TaskPaneDockState.Right));
-            Assert.That(myScriptTaskPane.IsVisible, Is.True);
-            Assert.That(myScriptTaskPane.Width, Is.EqualTo(300.0d));
-            Assert.That(myScriptTaskPane.IsLocked, Is.True);
-            Assert.That(myScriptTaskPane.Row, Is.EqualTo(1));
+            Assert.AreEqual(TaskPaneDockState.Right, myScriptTaskPane.DockState);
+            Assert.IsTrue(myScriptTaskPane.IsVisible);
+            Assert.AreEqual(300.0d, myScriptTaskPane.Width);
+            Assert.IsTrue(myScriptTaskPane.IsLocked);
+            Assert.AreEqual(1, myScriptTaskPane.Row);
 
             webExtension = myScriptTaskPane.WebExtension;
-            Assert.That(webExtension.Id, Is.EqualTo(string.Empty));
+            Assert.AreEqual(string.Empty, webExtension.Id);
 
-            Assert.That(webExtension.Reference.Id, Is.EqualTo("WA104380646"));
-            Assert.That(webExtension.Reference.Version, Is.EqualTo("1.0.0.0"));
-            Assert.That(webExtension.Reference.StoreType, Is.EqualTo(WebExtensionStoreType.OMEX));
-            Assert.That(webExtension.Reference.Store, Is.EqualTo(CultureInfo.CurrentCulture.Name));
-            Assert.That(webExtension.AlternateReferences.Count, Is.EqualTo(0));
+            Assert.AreEqual("WA104380646", webExtension.Reference.Id);
+            Assert.AreEqual("1.0.0.0", webExtension.Reference.Version);
+            Assert.AreEqual(WebExtensionStoreType.OMEX, webExtension.Reference.StoreType);
+            Assert.AreEqual(CultureInfo.CurrentCulture.Name, webExtension.Reference.Store);
+            Assert.AreEqual(0, webExtension.AlternateReferences.Count);
 
-            Assert.That(webExtension.Properties[0].Name, Is.EqualTo("MyScript"));
-            Assert.That(webExtension.Properties[0].Value, Is.EqualTo("MyScript Math Sample"));
+            Assert.AreEqual("MyScript", webExtension.Properties[0].Name);
+            Assert.AreEqual("MyScript Math Sample", webExtension.Properties[0].Value);
 
-            Assert.That(webExtension.Bindings[0].Id, Is.EqualTo("MyScript"));
-            Assert.That(webExtension.Bindings[0].BindingType, Is.EqualTo(WebExtensionBindingType.Text));
-            Assert.That(webExtension.Bindings[0].AppRef, Is.EqualTo("104380646"));
+            Assert.AreEqual("MyScript", webExtension.Bindings[0].Id);
+            Assert.AreEqual(WebExtensionBindingType.Text, webExtension.Bindings[0].BindingType);
+            Assert.AreEqual("104380646", webExtension.Bindings[0].AppRef);
 
-            Assert.That(webExtension.IsFrozen, Is.False);
+            Assert.IsFalse(webExtension.IsFrozen);
             //ExEnd
         }
 
@@ -2110,7 +2117,7 @@ namespace ApiExamples
             //ExSummary:Shows how to work with a document's collection of web extensions.
             Document doc = new Document(MyDir + "Web extension.docx");
 
-            Assert.That(doc.WebExtensionTaskPanes.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, doc.WebExtensionTaskPanes.Count);
 
             // Print all properties of the document's web extension.
             WebExtensionPropertyCollection webExtensionPropertyCollection = doc.WebExtensionTaskPanes[0].WebExtension.Properties;
@@ -2119,14 +2126,14 @@ namespace ApiExamples
                 while (enumerator.MoveNext())
                 {
                     WebExtensionProperty webExtensionProperty = enumerator.Current;
-                    Console.WriteLine($"Binding name: {webExtensionProperty.Name}; Binding value: {webExtensionProperty.Value}");
+                    Console.WriteLine(string.Format("Binding name: {0}; Binding value: {1}", webExtensionProperty.Name, webExtensionProperty.Value));
                 }
             }
 
             // Remove the web extension.
             doc.WebExtensionTaskPanes.Remove(0);
 
-            Assert.That(doc.WebExtensionTaskPanes.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, doc.WebExtensionTaskPanes.Count);
             //ExEnd
         }
 
@@ -2192,7 +2199,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.TextWatermark.docx");
 
-            Assert.That(doc.Watermark.Type, Is.EqualTo(WatermarkType.Text));
+            Assert.AreEqual(WatermarkType.Text, doc.Watermark.Type);
         }
 
         [Test]
@@ -2232,7 +2239,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Document.ImageWatermark.docx");
-            Assert.That(doc.Watermark.Type, Is.EqualTo(WatermarkType.Image));
+            Assert.AreEqual(WatermarkType.Image, doc.Watermark.Type);
         }
 
         [Test]
@@ -2256,7 +2263,7 @@ namespace ApiExamples
             //ExEnd:ImageWatermarkStream
 
             doc = new Document(ArtifactsDir + "Document.ImageWatermarkStream.docx");
-            Assert.That(doc.Watermark.Type, Is.EqualTo(WatermarkType.Image));
+            Assert.AreEqual(WatermarkType.Image, doc.Watermark.Type);
         }
 
         [TestCase(false)]
@@ -2285,8 +2292,8 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Document.SpellingAndGrammarErrors.docx");
 
-            Assert.That(doc.ShowGrammaticalErrors, Is.EqualTo(showErrors));
-            Assert.That(doc.ShowSpellingErrors, Is.EqualTo(showErrors));
+            Assert.AreEqual(showErrors, doc.ShowGrammaticalErrors);
+            Assert.AreEqual(showErrors, doc.ShowSpellingErrors);
         }
 
         [Test]
@@ -2317,7 +2324,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Document.ExtractPages.docx");
-            Assert.That(2, Is.EqualTo(doc.PageCount));
+            Assert.AreEqual(doc.PageCount, 2);
         }
 
         [TestCase(true)]
@@ -2388,13 +2395,13 @@ namespace ApiExamples
             // Document contains several frames with links to other documents.
             Document doc = new Document(MyDir + "Frameset.docx");
 
-            Assert.That(doc.Frameset.ChildFramesets.Count, Is.EqualTo(3));
+            Assert.AreEqual(3, doc.Frameset.ChildFramesets.Count);
             // We can check the default URL (a web page URL or local document) or if the frame is an external resource.
-            Assert.That(doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl, Is.EqualTo("https://file-examples-com.github.io/uploads/2017/02/file-sample_100kB.docx"));
-            Assert.That(doc.Frameset.ChildFramesets[0].ChildFramesets[0].IsFrameLinkToFile, Is.True);
+            Assert.AreEqual("https://file-examples-com.github.io/uploads/2017/02/file-sample_100kB.docx", doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl);
+            Assert.IsTrue(doc.Frameset.ChildFramesets[0].ChildFramesets[0].IsFrameLinkToFile);
 
-            Assert.That(doc.Frameset.ChildFramesets[1].FrameDefaultUrl, Is.EqualTo("Document.docx"));
-            Assert.That(doc.Frameset.ChildFramesets[1].IsFrameLinkToFile, Is.False);
+            Assert.AreEqual("Document.docx", doc.Frameset.ChildFramesets[1].FrameDefaultUrl);
+            Assert.IsFalse(doc.Frameset.ChildFramesets[1].IsFrameLinkToFile);
 
             // Change properties for one of our frames.
             doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl =
@@ -2404,38 +2411,38 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.That(doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl, Is.EqualTo("https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/Examples/Data/Absolute%20position%20tab.docx"));
-            Assert.That(doc.Frameset.ChildFramesets[0].ChildFramesets[0].IsFrameLinkToFile, Is.False);
+            Assert.AreEqual("https://github.com/aspose-words/Aspose.Words-for-.NET/blob/master/Examples/Data/Absolute%20position%20tab.docx", doc.Frameset.ChildFramesets[0].ChildFramesets[0].FrameDefaultUrl);
+            Assert.IsFalse(doc.Frameset.ChildFramesets[0].ChildFramesets[0].IsFrameLinkToFile);
         }
 
         [Test]
         public void OpenAzw()
         {
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Azw3 document.azw3");
-            Assert.That(LoadFormat.Azw3, Is.EqualTo(info.LoadFormat));
+            Assert.AreEqual(info.LoadFormat, LoadFormat.Azw3);
 
             Document doc = new Document(MyDir + "Azw3 document.azw3");
-            Assert.That(doc.GetText().Contains("Hachette Book Group USA"), Is.True);
+            Assert.IsTrue(doc.GetText().Contains("Hachette Book Group USA"));
         }
 
         [Test]
         public void OpenEpub()
         {
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Epub document.epub");
-            Assert.That(LoadFormat.Epub, Is.EqualTo(info.LoadFormat));
+            Assert.AreEqual(info.LoadFormat, LoadFormat.Epub);
 
             Document doc = new Document(MyDir + "Epub document.epub");
-            Assert.That(doc.GetText().Contains("Down the Rabbit-Hole"), Is.True);
+            Assert.IsTrue(doc.GetText().Contains("Down the Rabbit-Hole"));
         }
 
         [Test]
         public void OpenXml()
         {
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "Mail merge data - Customers.xml");
-            Assert.That(LoadFormat.Xml, Is.EqualTo(info.LoadFormat));
+            Assert.AreEqual(info.LoadFormat, LoadFormat.Xml);
 
             Document doc = new Document(MyDir + "Mail merge data - Purchase order.xml");
-            Assert.That(doc.GetText().Contains("Ellen Adams\r123 Maple Street"), Is.True);
+            Assert.IsTrue(doc.GetText().Contains("Ellen Adams\r123 Maple Street"));
         }
 
         [Test]
@@ -2459,11 +2466,11 @@ namespace ApiExamples
             builder.MoveToStructuredDocumentTag(tag, 1);
             builder.Write(" New text.");
 
-            Assert.That(tag.GetText().Trim(), Is.EqualTo("R New text.ichText"));
+            Assert.AreEqual("R New text.ichText", tag.GetText().Trim());
 
             // 3 -  Move to the end of the second structured document tag.
             builder.MoveToStructuredDocumentTag(1, -1);
-            Assert.That(builder.IsAtEndOfStructuredDocumentTag, Is.True);
+            Assert.IsTrue(builder.IsAtEndOfStructuredDocumentTag);
 
             // Get currently selected structured document tag.
             builder.CurrentStructuredDocumentTag.Color = Color.Green;
@@ -2486,12 +2493,12 @@ namespace ApiExamples
             // By default option is set to 'false'.
             doc.UpdateWordCount();
             // Words count without textboxes, footnotes and endnotes.
-            Assert.That(doc.BuiltInDocumentProperties.Words, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.BuiltInDocumentProperties.Words);
 
             doc.IncludeTextboxesFootnotesEndnotesInStat = true;
             doc.UpdateWordCount();
             // Words count with textboxes, footnotes and endnotes.
-            Assert.That(doc.BuiltInDocumentProperties.Words, Is.EqualTo(4));
+            Assert.AreEqual(4, doc.BuiltInDocumentProperties.Words);
             //ExEnd
         }
 
@@ -2522,7 +2529,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx");
 
             // Check that the first page of the document is not colored.
-            Assert.That(doc.GetPageInfo(0).Colored, Is.False);
+            Assert.IsFalse(doc.GetPageInfo(0).Colored);
             //ExEnd
         }
 
@@ -2543,13 +2550,13 @@ namespace ApiExamples
             dstDoc.InsertNode(new BookmarkEnd(dstDoc.Document, "src_place"));
             dstDoc.Write(" after");
 
-            Assert.That(dstDoc.Document.GetText().TrimEnd(), Is.EqualTo("Before  after"));
+            Assert.AreEqual("Before  after", dstDoc.Document.GetText().TrimEnd());
 
             // Insert source document into destination inline.
             dstDoc.MoveToBookmark("src_place");
             dstDoc.InsertDocumentInline(srcDoc.Document, ImportFormatMode.UseDestinationStyles, new ImportFormatOptions());
 
-            Assert.That(dstDoc.Document.GetText().TrimEnd(), Is.EqualTo("Before [src content] after"));
+            Assert.AreEqual("Before [src content] after", dstDoc.Document.GetText().TrimEnd());
             //ExEnd:InsertDocumentInline
         }
 
@@ -2630,7 +2637,7 @@ namespace ApiExamples
             //ExFor:FileFormatInfo.HasMacros
             //ExSummary:Shows how to check VBA macro presence without loading document.
             FileFormatInfo fileFormatInfo = FileFormatUtil.DetectFileFormat(MyDir + "Macro.docm");
-            Assert.That(fileFormatInfo.HasMacros, Is.True);
+            Assert.IsTrue(fileFormatInfo.HasMacros);
             //ExEnd:HasMacros
         }
 
@@ -2641,7 +2648,7 @@ namespace ApiExamples
             //ExFor:Document.PunctuationKerning
             //ExSummary:Shows how to work with kerning applies to both Latin text and punctuation.
             Document doc = new Document(MyDir + "Document.docx");
-            Assert.That(doc.PunctuationKerning, Is.True);
+            Assert.IsTrue(doc.PunctuationKerning);
             //ExEnd
         }
 
@@ -2652,10 +2659,10 @@ namespace ApiExamples
             //ExFor:Document.RemoveBlankPages
             //ExSummary:Shows how to remove blank pages from the document.
             Document doc = new Document(MyDir + "Blank pages.docx");
-            Assert.That(doc.PageCount, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.PageCount);
             doc.RemoveBlankPages();
             doc.UpdatePageLayout();
-            Assert.That(doc.PageCount, Is.EqualTo(1));
+            Assert.AreEqual(1, doc.PageCount);
             //ExEnd
         }
     }

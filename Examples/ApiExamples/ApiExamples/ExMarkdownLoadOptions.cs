@@ -26,13 +26,14 @@ namespace ApiExamples
             //ExFor:MarkdownLoadOptions.#ctor
             //ExFor:MarkdownLoadOptions.PreserveEmptyLines
             //ExSummary:Shows how to preserve empty line while load a document.
-            string mdText = $"{Environment.NewLine}Line1{Environment.NewLine}{Environment.NewLine}Line2{Environment.NewLine}{Environment.NewLine}";
+            string mdText = string.Format("{0}Line1{1}{2}Line2{3}{4}", Environment.NewLine, Environment.NewLine, Environment.NewLine, Environment.NewLine, Environment.NewLine);
             using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes(mdText)))
             {
-                MarkdownLoadOptions loadOptions = new MarkdownLoadOptions() { PreserveEmptyLines = true };
+                MarkdownLoadOptions loadOptions = new MarkdownLoadOptions();
+                loadOptions.PreserveEmptyLines = true;
                 Document doc = new Document(stream, loadOptions);
 
-                Assert.That(doc.GetText(), Is.EqualTo("\rLine1\r\rLine2\r\f"));
+                Assert.AreEqual("\rLine1\r\rLine2\r\f", doc.GetText());
             }
             //ExEnd:PreserveEmptyLines
         }
@@ -46,17 +47,19 @@ namespace ApiExamples
             //ExSummary:Shows how to recognize plus characters "++" as underline text formatting.
             using (MemoryStream stream = new MemoryStream(Encoding.ASCII.GetBytes("++12 and B++")))
             {
-                MarkdownLoadOptions loadOptions = new MarkdownLoadOptions() { ImportUnderlineFormatting = true };
+                MarkdownLoadOptions loadOptions = new MarkdownLoadOptions();
+                loadOptions.ImportUnderlineFormatting = true;
                 Document doc = new Document(stream, loadOptions);
 
                 Paragraph para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
-                Assert.That(para.Runs[0].Font.Underline, Is.EqualTo(Underline.Single));
+                Assert.AreEqual(Underline.Single, para.Runs[0].Font.Underline);
 
-                loadOptions = new MarkdownLoadOptions() { ImportUnderlineFormatting = false };
+                loadOptions = new MarkdownLoadOptions();
+                loadOptions.ImportUnderlineFormatting = false;
                 doc = new Document(stream, loadOptions);
 
                 para = (Paragraph)doc.GetChild(NodeType.Paragraph, 0, true);
-                Assert.That(para.Runs[0].Font.Underline, Is.EqualTo(Underline.None));
+                Assert.AreEqual(Underline.None, para.Runs[0].Font.Underline);
             }
             //ExEnd:ImportUnderlineFormatting
         }

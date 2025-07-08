@@ -34,7 +34,7 @@ namespace ApiExamples
             // to modify how we save the document to the XAML save format.
             XamlFixedSaveOptions options = new XamlFixedSaveOptions();
 
-            Assert.That(options.SaveFormat, Is.EqualTo(SaveFormat.XamlFixed));
+            Assert.AreEqual(SaveFormat.XamlFixed, options.SaveFormat);
 
             // Use the "ResourcesFolder" property to assign a folder in the local file system into which
             // Aspose.Words will save all the document's linked resources, such as images and fonts.
@@ -69,7 +69,7 @@ namespace ApiExamples
 
             void IResourceSavingCallback.ResourceSaving(ResourceSavingArgs args)
             {
-                Resources.Add($"Resource \"{args.ResourceFileName}\"\n\t{args.ResourceFileUri}");
+                Resources.Add(string.Format("Resource \"{0}\"\n\t{1}", args.ResourceFileName, args.ResourceFileUri));
 
                 // If we specified a resource folder alias, we would also need
                 // to redirect each stream to put its resource in the alias folder.
@@ -83,9 +83,9 @@ namespace ApiExamples
 
         private void TestResourceFolder(ResourceUriPrinter callback)
         {
-            Assert.That(callback.Resources.Count, Is.EqualTo(15));
+            Assert.AreEqual(15, callback.Resources.Count);
             foreach (string resource in callback.Resources)
-                Assert.That(File.Exists(resource.Split('\t')[1]), Is.True);
+                Assert.IsTrue(File.Exists(resource.Split('\t')[1]));
         }
     }
 }

@@ -336,8 +336,10 @@ namespace ApiExamples
                 EmployeeListMailMergeSource source = (EmployeeListMailMergeSource)sourceRoot.GetDataSource(registeredSources[i]);
                 while (source.MoveNext())
                 {
-                    source.GetValue("FullName", out object fullName);
-                    source.GetValue("Department", out object department);
+                    object fullName;
+                    source.GetValue("FullName", out fullName);
+                    object department;
+                    source.GetValue("Department", out department);
 
                     dataTable.Rows.Add(new[] { fullName, department });
                 }

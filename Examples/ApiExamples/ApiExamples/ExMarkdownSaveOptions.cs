@@ -42,7 +42,8 @@ namespace ApiExamples
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
             builder.Write("Cell2");
 
-            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions { TableContentAlignment = tableContentAlignment };
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.TableContentAlignment = tableContentAlignment;
 
             builder.Document.Save(ArtifactsDir + "MarkdownSaveOptions.MarkdownDocumentTableContentAlignment.md", saveOptions);
 
@@ -52,20 +53,20 @@ namespace ApiExamples
             switch (tableContentAlignment)
             {
                 case TableContentAlignment.Auto:
-                    Assert.That(table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Right));
-                    Assert.That(table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
+                    Assert.AreEqual(ParagraphAlignment.Right, table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.AreEqual(ParagraphAlignment.Center, table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
                     break;
                 case TableContentAlignment.Left:
-                    Assert.That(table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Left));
-                    Assert.That(table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Left));
+                    Assert.AreEqual(ParagraphAlignment.Left, table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.AreEqual(ParagraphAlignment.Left, table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
                     break;
                 case TableContentAlignment.Center:
-                    Assert.That(table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
-                    Assert.That(table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
+                    Assert.AreEqual(ParagraphAlignment.Center, table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.AreEqual(ParagraphAlignment.Center, table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
                     break;
                 case TableContentAlignment.Right:
-                    Assert.That(table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Right));
-                    Assert.That(table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Right));
+                    Assert.AreEqual(ParagraphAlignment.Right, table.FirstRow.Cells[0].FirstParagraph.ParagraphFormat.Alignment);
+                    Assert.AreEqual(ParagraphAlignment.Right, table.FirstRow.Cells[1].FirstParagraph.ParagraphFormat.Alignment);
                     break;
             }
             //ExEnd
@@ -93,12 +94,12 @@ namespace ApiExamples
             // The ImageSaving() method of our callback will be run at this time.
             doc.Save(ArtifactsDir + "MarkdownSaveOptions.HandleDocument.md", saveOptions);
 
-            Assert.That(Directory.GetFiles(ArtifactsDir)
+            Assert.AreEqual(1, Directory.GetFiles(ArtifactsDir)
                     .Where(s => s.StartsWith(ArtifactsDir + "MarkdownSaveOptions.HandleDocument.md shape"))
-                    .Count(f => f.EndsWith(".jpeg")), Is.EqualTo(1));
-            Assert.That(Directory.GetFiles(ArtifactsDir)
+                    .Count(f => f.EndsWith(".jpeg")));
+            Assert.AreEqual(8, Directory.GetFiles(ArtifactsDir)
                     .Where(s => s.StartsWith(ArtifactsDir + "MarkdownSaveOptions.HandleDocument.md shape"))
-                    .Count(f => f.EndsWith(".png")), Is.EqualTo(8));
+                    .Count(f => f.EndsWith(".png")));
         }
 
         /// <summary>
@@ -113,14 +114,14 @@ namespace ApiExamples
 
             void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
             {
-                string imageFileName = $"{mOutFileName} shape {++mCount}, of type {args.CurrentShape.ShapeType}{Path.GetExtension(args.ImageFileName)}";
+                string imageFileName = string.Format("{0} shape {1}, of type {2}{3}", mOutFileName, ++mCount, args.CurrentShape.ShapeType, Path.GetExtension(args.ImageFileName));
 
                 args.ImageFileName = imageFileName;
                 args.ImageStream = new FileStream(ArtifactsDir + imageFileName, FileMode.Create);
 
-                Assert.That(args.ImageStream.CanWrite, Is.True);
-                Assert.That(args.IsImageAvailable, Is.True);
-                Assert.That(args.KeepImageStreamOpen, Is.False);
+                Assert.IsTrue(args.ImageStream.CanWrite);
+                Assert.IsTrue(args.IsImageAvailable);
+                Assert.IsFalse(args.KeepImageStreamOpen);
             }
 
             private int mCount;
@@ -137,15 +138,16 @@ namespace ApiExamples
             //ExSummary:Shows how to save a .md document with images embedded inside it.
             Document doc = new Document(MyDir + "Images.docx");
 
-            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions { ExportImagesAsBase64 = exportImagesAsBase64 };
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.ExportImagesAsBase64 = exportImagesAsBase64;
 
             doc.Save(ArtifactsDir + "MarkdownSaveOptions.ExportImagesAsBase64.md", saveOptions);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "MarkdownSaveOptions.ExportImagesAsBase64.md");
 
-            Assert.That(exportImagesAsBase64
+            Assert.IsTrue(exportImagesAsBase64
                 ? outDocContents.Contains("data:image/jpeg;base64")
-                : outDocContents.Contains("MarkdownSaveOptions.ExportImagesAsBase64.001.jpeg"), Is.True);
+                : outDocContents.Contains("MarkdownSaveOptions.ExportImagesAsBase64.001.jpeg"));
             //ExEnd
         }
 
@@ -160,7 +162,8 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "List item.docx");
 
             // Use MarkdownListExportMode.PlainText or MarkdownListExportMode.MarkdownSyntax to export list.
-            MarkdownSaveOptions options = new MarkdownSaveOptions { ListExportMode = markdownListExportMode };
+            MarkdownSaveOptions options = new MarkdownSaveOptions();
+            options.ListExportMode = markdownListExportMode;
             doc.Save(ArtifactsDir + "MarkdownSaveOptions.ListExportMode.md", options);
             //ExEnd
         }
@@ -190,7 +193,7 @@ namespace ApiExamples
             //ExEnd
 
             string[] dirFiles = Directory.GetFiles(imagesFolder, "MarkdownSaveOptions.ImagesFolder.001.jpeg");
-            Assert.That(dirFiles.Length, Is.EqualTo(1));
+            Assert.AreEqual(1, dirFiles.Length);
             Document doc = new Document(ArtifactsDir + "MarkdownSaveOptions.ImagesFolder.md");
             doc.GetText().Contains("http://example.com/images/MarkdownSaveOptions.ImagesFolder.001.jpeg");
         }
@@ -208,7 +211,8 @@ namespace ApiExamples
             builder.Underline = Underline.Single;
             builder.Write("Lorem ipsum. Dolor sit amet.");
 
-            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions() { ExportUnderlineFormatting = true };
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.ExportUnderlineFormatting = true;
             doc.Save(ArtifactsDir + "MarkdownSaveOptions.ExportUnderlineFormatting.md", saveOptions);
             //ExEnd:ExportUnderlineFormatting
         }
@@ -240,7 +244,7 @@ namespace ApiExamples
             //ExEnd:LinkExportMode
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "MarkdownSaveOptions.LinkExportMode.Inline.md");
-            Assert.That(outDocContents.Trim(), Is.EqualTo("![](MarkdownSaveOptions.LinkExportMode.Inline.001.png)"));
+            Assert.AreEqual("![](MarkdownSaveOptions.LinkExportMode.Inline.001.png)", outDocContents.Trim());
         }
 
         [Test]
@@ -272,12 +276,12 @@ namespace ApiExamples
 
             string newLine = Environment.NewLine;
             string outDocContents = File.ReadAllText(ArtifactsDir + "MarkdownSaveOptions.ExportTableAsHtml.md");
-            Assert.That(outDocContents.Trim(), Is.EqualTo($"Sample table:{newLine}<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%; border:0.75pt solid #000000; border-collapse:collapse\">" +
+            Assert.AreEqual(string.Format("Sample table:{0}<table cellspacing=\"0\" cellpadding=\"0\" style=\"width:100%; border:0.75pt solid #000000; border-collapse:collapse\">", newLine) +
                 "<tr><td style=\"border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">" +
                 "<p style=\"margin-top:0pt; margin-bottom:0pt; text-align:right; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Cell1</span></p>" +
                 "</td><td style=\"border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top\">" +
                 "<p style=\"margin-top:0pt; margin-bottom:0pt; text-align:center; font-size:12pt\"><span style=\"font-family:'Times New Roman'\">Cell2</span></p>" +
-                "</td></tr></table>"));
+                "</td></tr></table>", outDocContents.Trim());
         }
 
         [Test]
@@ -339,13 +343,13 @@ namespace ApiExamples
             switch (exportMode)
             {
                 case MarkdownEmptyParagraphExportMode.None:
-                    Assert.That(result, Is.EqualTo("First\r\n\r\nLast\r\n"));
+                    Assert.AreEqual("First\r\n\r\nLast\r\n", result);
                     break;
                 case MarkdownEmptyParagraphExportMode.EmptyLine:
-                    Assert.That(result, Is.EqualTo("First\r\n\r\n\r\n\r\n\r\nLast\r\n\r\n"));
+                    Assert.AreEqual("First\r\n\r\n\r\n\r\n\r\nLast\r\n\r\n", result);
                     break;
                 case MarkdownEmptyParagraphExportMode.MarkdownHardLineBreak:
-                    Assert.That(result, Is.EqualTo("First\r\n\\\r\n\\\r\n\\\r\n\\\r\n\\\r\nLast\r\n<br>\r\n"));
+                    Assert.AreEqual("First\r\n\\\r\n\\\r\n\\\r\n\\\r\n\\\r\nLast\r\n<br>\r\n", result);
                     break;
             }
             //ExEnd:EmptyParagraphExportMode

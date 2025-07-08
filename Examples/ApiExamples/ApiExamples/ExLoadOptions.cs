@@ -46,13 +46,13 @@ namespace ApiExamples
                 switch (args.ResourceType)
                 {
                     case ResourceType.CssStyleSheet:
-                        Console.WriteLine($"External CSS Stylesheet found upon loading: {args.OriginalUri}");
+                        Console.WriteLine(string.Format("External CSS Stylesheet found upon loading: {0}", args.OriginalUri));
                         return ResourceLoadingAction.Default;
                     case ResourceType.Image:
-                        Console.WriteLine($"External Image found upon loading: {args.OriginalUri}");
+                        Console.WriteLine(string.Format("External Image found upon loading: {0}", args.OriginalUri));
 
                         const string newImageFilename = "Logo.jpg";
-                        Console.WriteLine($"\tImage will be substituted with: {newImageFilename}");
+                        Console.WriteLine(string.Format("\tImage will be substituted with: {0}", newImageFilename));
 
                         Image newImage = Image.FromFile(ImageDir + newImageFilename);
 
@@ -85,13 +85,13 @@ namespace ApiExamples
 
             if (isConvertShapeToOfficeMath)
             {
-                Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(16));
-                Assert.That(doc.GetChildNodes(NodeType.OfficeMath, true).Count, Is.EqualTo(34));
+                Assert.AreEqual(16, doc.GetChildNodes(NodeType.Shape, true).Count);
+                Assert.AreEqual(34, doc.GetChildNodes(NodeType.OfficeMath, true).Count);
             }
             else
             {
-                Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(24));
-                Assert.That(doc.GetChildNodes(NodeType.OfficeMath, true).Count, Is.EqualTo(0));
+                Assert.AreEqual(24, doc.GetChildNodes(NodeType.Shape, true).Count);
+                Assert.AreEqual(0, doc.GetChildNodes(NodeType.OfficeMath, true).Count);
             }
             //ExEnd
         }
@@ -102,15 +102,13 @@ namespace ApiExamples
             //ExStart
             //ExFor:LoadOptions.Encoding
             //ExSummary:Shows how to set the encoding with which to open a document.
-            LoadOptions loadOptions = new LoadOptions
-            {
-                Encoding = Encoding.ASCII
-            };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.Encoding = Encoding.ASCII;
 
             // Load the document while passing the LoadOptions object, then verify the document's contents.
             Document doc = new Document(MyDir + "English text.txt", loadOptions);
 
-            Assert.That(doc.ToString(SaveFormat.Text).Contains("This is a sample text in English."), Is.True);
+            Assert.IsTrue(doc.ToString(SaveFormat.Text).Contains("This is a sample text in English."));
             //ExEnd
         }
 
@@ -146,7 +144,7 @@ namespace ApiExamples
             // By default, Aspose.Words load documents according to Microsoft Word 2019 specification.
             LoadOptions loadOptions = new LoadOptions();
 
-            Assert.That(loadOptions.MswVersion, Is.EqualTo(MsWordVersion.Word2019));
+            Assert.AreEqual(MsWordVersion.Word2019, loadOptions.MswVersion);
 
             // This document is missing the default paragraph formatting style.
             // This default style will be regenerated when we load the document either with Microsoft Word or Aspose.Words.
@@ -154,7 +152,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
             // The style's line spacing will have this value when loaded by Microsoft Word 2007 specification.
-            Assert.That(doc.Styles.DefaultParagraphFormat.LineSpacing, Is.EqualTo(12.95d).Within(0.01d));
+            Assert.AreEqual(12.95d, doc.Styles.DefaultParagraphFormat.LineSpacing, 0.01d);
             //ExEnd
         }
 
@@ -173,7 +171,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx", loadOptions);
 
             List<WarningInfo> warnings = ((DocumentLoadingWarningCallback)loadOptions.WarningCallback).GetWarnings();
-            Assert.That(warnings.Count, Is.EqualTo(3));
+            Assert.AreEqual(3, warnings.Count);
             TestLoadOptionsWarningCallback(warnings); //ExSkip
         }
 
@@ -184,9 +182,9 @@ namespace ApiExamples
         {
             public void Warning(WarningInfo info)
             {
-                Console.WriteLine($"Warning: {info.WarningType}");
-                Console.WriteLine($"\tSource: {info.Source}");
-                Console.WriteLine($"\tDescription: {info.Description}");
+                Console.WriteLine(string.Format("Warning: {0}", info.WarningType));
+                Console.WriteLine(string.Format("\tSource: {0}", info.Source));
+                Console.WriteLine(string.Format("\tDescription: {0}", info.Description));
                 mWarnings.Add(info);
             }
 
@@ -201,17 +199,17 @@ namespace ApiExamples
 
         private static void TestLoadOptionsWarningCallback(List<WarningInfo> warnings)
         {
-            Assert.That(warnings[0].WarningType, Is.EqualTo(WarningType.UnexpectedContent));
-            Assert.That(warnings[0].Source, Is.EqualTo(WarningSource.Docx));
-            Assert.That(warnings[0].Description, Is.EqualTo("3F01"));
+            Assert.AreEqual(WarningType.UnexpectedContent, warnings[0].WarningType);
+            Assert.AreEqual(WarningSource.Docx, warnings[0].Source);
+            Assert.AreEqual("3F01", warnings[0].Description);
 
-            Assert.That(warnings[1].WarningType, Is.EqualTo(WarningType.MinorFormattingLoss));
-            Assert.That(warnings[1].Source, Is.EqualTo(WarningSource.Docx));
-            Assert.That(warnings[1].Description, Is.EqualTo("Import of element 'shapedefaults' is not supported in Docx format by Aspose.Words."));
+            Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[1].WarningType);
+            Assert.AreEqual(WarningSource.Docx, warnings[1].Source);
+            Assert.AreEqual("Import of element 'shapedefaults' is not supported in Docx format by Aspose.Words.", warnings[1].Description);
 
-            Assert.That(warnings[2].WarningType, Is.EqualTo(WarningType.MinorFormattingLoss));
-            Assert.That(warnings[2].Source, Is.EqualTo(WarningSource.Docx));
-            Assert.That(warnings[2].Description, Is.EqualTo("Import of element 'extraClrSchemeLst' is not supported in Docx format by Aspose.Words."));
+            Assert.AreEqual(WarningType.MinorFormattingLoss, warnings[2].WarningType);
+            Assert.AreEqual(WarningSource.Docx, warnings[2].Source);
+            Assert.AreEqual("Import of element 'extraClrSchemeLst' is not supported in Docx format by Aspose.Words.", warnings[2].Description);
         }
 
         [Test]
@@ -232,7 +230,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx", options);
 
             // The folder will persist with no residual contents from the load operation.
-            Assert.That(Directory.GetFiles(options.TempFolder).Length, Is.EqualTo(0));
+            Assert.AreEqual(0, Directory.GetFiles(options.TempFolder).Length);
             //ExEnd
         }
 
@@ -256,11 +254,11 @@ namespace ApiExamples
                 : "The document default FarEast language was set to another than Japanese language originally, so it is not overridden.");
             //ExEnd
 
-            Assert.That(doc.Styles.DefaultFont.LocaleIdFarEast, Is.EqualTo((int)EditingLanguage.Japanese));
+            Assert.AreEqual((int)EditingLanguage.Japanese, doc.Styles.DefaultFont.LocaleIdFarEast);
 
             doc = new Document(MyDir + "No default editing language.docx");
 
-            Assert.That(doc.Styles.DefaultFont.LocaleIdFarEast, Is.EqualTo((int)EditingLanguage.EnglishUS));
+            Assert.AreEqual((int)EditingLanguage.EnglishUS, doc.Styles.DefaultFont.LocaleIdFarEast);
         }
 
         [Test]
@@ -280,11 +278,11 @@ namespace ApiExamples
                 : "The document default language was set to another than Russian language originally, so it is not overridden.");
             //ExEnd
 
-            Assert.That(doc.Styles.DefaultFont.LocaleId, Is.EqualTo((int)EditingLanguage.Russian));
+            Assert.AreEqual((int)EditingLanguage.Russian, doc.Styles.DefaultFont.LocaleId);
 
             doc = new Document(MyDir + "No default editing language.docx");
 
-            Assert.That(doc.Styles.DefaultFont.LocaleId, Is.EqualTo((int)EditingLanguage.EnglishUS));
+            Assert.AreEqual((int)EditingLanguage.EnglishUS, doc.Styles.DefaultFont.LocaleId);
         }
 
         [Test]
@@ -322,9 +320,10 @@ namespace ApiExamples
         public void OpenChmFile()
         {
             FileFormatInfo info = FileFormatUtil.DetectFileFormat(MyDir + "HTML help.chm");
-            Assert.That(LoadFormat.Chm, Is.EqualTo(info.LoadFormat));
+            Assert.AreEqual(info.LoadFormat, LoadFormat.Chm);
 
-            LoadOptions loadOptions = new LoadOptions { Encoding = Encoding.GetEncoding("windows-1251") };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.Encoding = Encoding.GetEncoding("windows-1251");
 
             Document doc = new Document(MyDir + "HTML help.chm", loadOptions);
         }
@@ -341,7 +340,8 @@ namespace ApiExamples
         {
             LoadingProgressCallback progressCallback = new LoadingProgressCallback();
 
-            LoadOptions loadOptions = new LoadOptions { ProgressCallback = progressCallback };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.ProgressCallback = progressCallback;
 
             try
             {
@@ -378,7 +378,7 @@ namespace ApiExamples
                 double ellapsedSeconds = (canceledAt - mLoadingStartedAt).TotalSeconds;
 
                 if (ellapsedSeconds > MaxDuration)
-                    throw new OperationCanceledException($"EstimatedProgress = {args.EstimatedProgress}; CanceledAt = {canceledAt}");
+                    throw new OperationCanceledException(string.Format("EstimatedProgress = {0}; CanceledAt = {1}", args.EstimatedProgress, canceledAt));
             }
 
             /// <summary>
@@ -401,7 +401,8 @@ namespace ApiExamples
             //ExSummary:Shows how to ingore OLE data while loading.
             // Ignoring OLE data may reduce memory consumption and increase performance
             // without data lost in a case when destination format does not support OLE objects.
-            LoadOptions loadOptions = new LoadOptions() { IgnoreOleData = true };
+            LoadOptions loadOptions = new LoadOptions();
+            loadOptions.IgnoreOleData = true;
             Document doc = new Document(MyDir + "OLE objects.docx", loadOptions);
 
             doc.Save(ArtifactsDir + "LoadOptions.IgnoreOleData.docx");

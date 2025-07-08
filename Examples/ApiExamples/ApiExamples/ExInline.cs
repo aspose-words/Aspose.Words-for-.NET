@@ -38,7 +38,7 @@ namespace ApiExamples
             // invoking the document's "StartTrackRevisions" method and stop tracking by using the "StopTrackRevisions" method.
             // We can either accept revisions to assimilate them into the document
             // or reject them to change the proposed change effectively.
-            Assert.That(doc.Revisions.Count, Is.EqualTo(6));
+            Assert.AreEqual(6, doc.Revisions.Count);
 
             // The parent node of a revision is the run that the revision concerns. A Run is an Inline node.
             Run run = (Run)doc.Revisions[0].ParentNode;
@@ -46,22 +46,22 @@ namespace ApiExamples
             Paragraph firstParagraph = run.ParentParagraph;
             RunCollection runs = firstParagraph.Runs;
 
-            Assert.That(runs.ToArray().Length, Is.EqualTo(6));
+            Assert.AreEqual(6, runs.ToArray().Length);
 
             // Below are five types of revisions that can flag an Inline node.
             // 1 -  An "insert" revision:
             // This revision occurs when we insert text while tracking changes.
-            Assert.That(runs[2].IsInsertRevision, Is.True);
+            Assert.IsTrue(runs[2].IsInsertRevision);
 
             // 2 -  A "format" revision:
             // This revision occurs when we change the formatting of text while tracking changes.
-            Assert.That(runs[2].IsFormatRevision, Is.True);
+            Assert.IsTrue(runs[2].IsFormatRevision);
 
             // 3 -  A "move from" revision:
             // When we highlight text in Microsoft Word, and then drag it to a different place in the document
             // while tracking changes, two revisions appear.
             // The "move from" revision is a copy of the text originally before we moved it.
-            Assert.That(runs[4].IsMoveFromRevision, Is.True);
+            Assert.IsTrue(runs[4].IsMoveFromRevision);
 
             // 4 -  A "move to" revision:
             // The "move to" revision is the text that we moved in its new position in the document.
@@ -69,13 +69,13 @@ namespace ApiExamples
             // Accepting a move revision deletes the "move from" revision and its text,
             // and keeps the text from the "move to" revision.
             // Rejecting a move revision conversely keeps the "move from" revision and deletes the "move to" revision.
-            Assert.That(runs[1].IsMoveToRevision, Is.True);
+            Assert.IsTrue(runs[1].IsMoveToRevision);
 
             // 5 -  A "delete" revision:
             // This revision occurs when we delete text while tracking changes. When we delete text like this,
             // it will stay in the document as a revision until we either accept the revision,
             // which will delete the text for good, or reject the revision, which will keep the text we deleted where it was.
-            Assert.That(runs[5].IsDeleteRevision, Is.True);
+            Assert.IsTrue(runs[5].IsDeleteRevision);
             //ExEnd
         }
     }

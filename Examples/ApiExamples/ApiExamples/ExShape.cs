@@ -54,7 +54,7 @@ namespace ApiExamples
             // Save the document to HTML, and then delete the linked image that belongs to our shape.
             // The browser that is reading our HTML will display the alt text in place of the missing image.
             doc.Save(ArtifactsDir + "Shape.AltText.html");
-            Assert.That(File.Exists(ArtifactsDir + "Shape.AltText.001.png"), Is.True); //ExSkip
+            Assert.IsTrue(File.Exists(ArtifactsDir + "Shape.AltText.001.png")); //ExSkip
             File.Delete(ArtifactsDir + "Shape.AltText.001.png");
             //ExEnd
 
@@ -62,14 +62,14 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyShape(ShapeType.Cube, "MyCube", 150.0d, 150.0d, 0, 0, shape);
-            Assert.That(shape.AlternativeText, Is.EqualTo("Alt text for MyCube."));
-            Assert.That(shape.Font.Name, Is.EqualTo("Times New Roman"));
+            Assert.AreEqual("Alt text for MyCube.", shape.AlternativeText);
+            Assert.AreEqual("Times New Roman", shape.Font.Name);
 
             doc = new Document(ArtifactsDir + "Shape.AltText.html");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyShape(ShapeType.Image, string.Empty, 151.5d, 151.5d, 0, 0, shape);
-            Assert.That(shape.AlternativeText, Is.EqualTo("Alt text for MyCube."));
+            Assert.AreEqual("Alt text for MyCube.", shape.AlternativeText);
 
             TestUtil.FileContainsString(
                 "<img src=\"Shape.AltText.001.png\" width=\"202\" height=\"202\" alt=\"Alt text for MyCube.\" " +
@@ -118,24 +118,24 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.Font.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(shape.Font.Hidden, Is.EqualTo(hideShape));
+            Assert.AreEqual(hideShape, shape.Font.Hidden);
 
             if (hideShape)
             {
-                Assert.That(shape.Font.HighlightColor.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
-                Assert.That(shape.Font.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
-                Assert.That(shape.Font.Underline, Is.EqualTo(Underline.None));
+                Assert.AreEqual(Color.Empty.ToArgb(), shape.Font.HighlightColor.ToArgb());
+                Assert.AreEqual(Color.Empty.ToArgb(), shape.Font.Color.ToArgb());
+                Assert.AreEqual(Underline.None, shape.Font.Underline);
             }
             else
             {
-                Assert.That(shape.Font.HighlightColor.ToArgb(), Is.EqualTo(Color.Silver.ToArgb()));
-                Assert.That(shape.Font.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
-                Assert.That(shape.Font.Underline, Is.EqualTo(Underline.Dash));
+                Assert.AreEqual(Color.Silver.ToArgb(), shape.Font.HighlightColor.ToArgb());
+                Assert.AreEqual(Color.Red.ToArgb(), shape.Font.Color.ToArgb());
+                Assert.AreEqual(Underline.Dash, shape.Font.Underline);
             }
 
             TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 300.0d, 50.0d, 0, 0, shape);
-            Assert.That(shape.GetText().Trim(), Is.EqualTo("This text is inside the text box."));
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!\rThis text is inside the text box.\r\rThis text is outside the text box."));
+            Assert.AreEqual("This text is inside the text box.", shape.GetText().Trim());
+            Assert.AreEqual("Hello world!\rThis text is inside the text box.\r\rThis text is outside the text box.", doc.GetText().Trim());
         }
 
         [Test]
@@ -150,8 +150,8 @@ namespace ApiExamples
 
             // Insert a shape with an image.
             Shape shape = builder.InsertImage(ImageDir + "Logo.jpg");
-            Assert.That(shape.CanHaveImage, Is.True);
-            Assert.That(shape.HasImage, Is.True);
+            Assert.IsTrue(shape.CanHaveImage);
+            Assert.IsTrue(shape.HasImage);
 
             // Rotate the image 45 degrees clockwise.
             shape.Rotation = 45;
@@ -163,9 +163,9 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyShape(ShapeType.Image, string.Empty, 300.0d, 300.0d, 0, 0, shape);
-            Assert.That(shape.CanHaveImage, Is.True);
-            Assert.That(shape.HasImage, Is.True);
-            Assert.That(shape.Rotation, Is.EqualTo(45.0d));
+            Assert.IsTrue(shape.CanHaveImage);
+            Assert.IsTrue(shape.HasImage);
+            Assert.AreEqual(45.0d, shape.Rotation);
         }
 
         [Test]
@@ -207,11 +207,11 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100002", 150.0d, 150.0d, 75.0d, 150.0d, shape);
-            Assert.That(shape.DistanceBottom, Is.EqualTo(40.0d));
-            Assert.That(shape.DistanceLeft, Is.EqualTo(40.0d));
-            Assert.That(shape.DistanceRight, Is.EqualTo(40.0d));
-            Assert.That(shape.DistanceTop, Is.EqualTo(40.0d));
-            Assert.That(shape.Rotation, Is.EqualTo(60.0d));
+            Assert.AreEqual(40.0d, shape.DistanceBottom);
+            Assert.AreEqual(40.0d, shape.DistanceLeft);
+            Assert.AreEqual(40.0d, shape.DistanceRight);
+            Assert.AreEqual(40.0d, shape.DistanceTop);
+            Assert.AreEqual(60.0d, shape.Rotation);
         }
 
         [Test]
@@ -229,7 +229,7 @@ namespace ApiExamples
             // select all the other child shapes within this group and allow us to scale and move all the shapes at once.
             GroupShape group = new GroupShape(doc);
 
-            Assert.That(group.WrapType, Is.EqualTo(WrapType.None));
+            Assert.AreEqual(WrapType.None, group.WrapType);
 
             // Create a 400pt x 400pt group shape and place it at the document's floating shape coordinate origin.
             group.Bounds = new RectangleF(0, 0, 400, 400);
@@ -245,13 +245,11 @@ namespace ApiExamples
             group.CoordOrigin = new Point(-250, -250);
 
             // Create a rectangle that will display the boundary of this group shape and add it to the group.
-            Shape child1 = new Shape(doc, ShapeType.Rectangle)
-            {
-                Width = group.CoordSize.Width,
-                Height = group.CoordSize.Height,
-                Left = group.CoordOrigin.X,
-                Top = group.CoordOrigin.Y
-            };
+            Shape child1 = new Shape(doc, ShapeType.Rectangle);
+            child1.Width = group.CoordSize.Width;
+            child1.Height = group.CoordSize.Height;
+            child1.Left = group.CoordOrigin.X;
+            child1.Top = group.CoordOrigin.Y;
             group.AppendChild(child1);
 
             // Once a shape is a part of a group shape, we can access it as a child node and then modify it.
@@ -259,37 +257,31 @@ namespace ApiExamples
 
             // Create a small red star and insert it into the group.
             // Line up the shape with the group's coordinate origin, which we have moved to the center.
-            Shape child2 = new Shape(doc, ShapeType.Star)
-            {
-                Width = 20,
-                Height = 20,
-                Left = -10,
-                Top = -10,
-                FillColor = Color.Red
-            };
+            Shape child2 = new Shape(doc, ShapeType.Star);
+            child2.Width = 20;
+            child2.Height = 20;
+            child2.Left = -10;
+            child2.Top = -10;
+            child2.FillColor = Color.Red;
             group.AppendChild(child2);
 
             // Insert a rectangle, and then insert a slightly smaller rectangle in the same place with an image.
             // Newer shapes that we add to the group overlap older shapes. The light blue rectangle will partially overlap the red star,
             // and then the shape with the image will overlap the light blue rectangle, using it as a frame.
             // We cannot use the "ZOrder" properties of shapes to manipulate their arrangement within a group shape.
-            Shape child3 = new Shape(doc, ShapeType.Rectangle)
-            {
-                Width = 250,
-                Height = 250,
-                Left = -250,
-                Top = -250,
-                FillColor = Color.LightBlue
-            };
+            Shape child3 = new Shape(doc, ShapeType.Rectangle);
+            child3.Width = 250;
+            child3.Height = 250;
+            child3.Left = -250;
+            child3.Top = -250;
+            child3.FillColor = Color.LightBlue;
             group.AppendChild(child3);
 
-            Shape child4 = new Shape(doc, ShapeType.Image)
-            {
-                Width = 200,
-                Height = 200,
-                Left = -225,
-                Top = -225
-            };
+            Shape child4 = new Shape(doc, ShapeType.Image);
+            child4.Width = 200;
+            child4.Height = 200;
+            child4.Left = -225;
+            child4.Top = -225;
             group.AppendChild(child4);
 
             ((Shape)group.GetChild(NodeType.Shape, 3, true)).ImageData.SetImage(ImageDir + "Logo.jpg");
@@ -297,13 +289,11 @@ namespace ApiExamples
             // Insert a text box into the group shape. Set the "Left" property so that the text box's right edge
             // touches the right boundary of the group shape. Set the "Top" property so that the text box sits outside
             // the boundary of the group shape, with its top size lined up along the group shape's bottom margin.
-            Shape child5 = new Shape(doc, ShapeType.TextBox)
-            {
-                Width = 200,
-                Height = 50,
-                Left = group.CoordSize.Width + group.CoordOrigin.X - 200,
-                Top = group.CoordSize.Height + group.CoordOrigin.Y
-            };
+            Shape child5 = new Shape(doc, ShapeType.TextBox);
+            child5.Width = 200;
+            child5.Height = 50;
+            child5.Left = group.CoordSize.Width + group.CoordOrigin.X - 200;
+            child5.Top = group.CoordSize.Height + group.CoordOrigin.Y;
             group.AppendChild(child5);
 
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -317,9 +307,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.GroupShape.docx");
             group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
 
-            Assert.That(group.Bounds, Is.EqualTo(new RectangleF(0, 0, 400, 400)));
-            Assert.That(group.CoordSize, Is.EqualTo(new Size(500, 500)));
-            Assert.That(group.CoordOrigin, Is.EqualTo(new Point(-250, -250)));
+            Assert.AreEqual(new RectangleF(0, 0, 400, 400), group.Bounds);
+            Assert.AreEqual(new Size(500, 500), group.CoordSize);
+            Assert.AreEqual(new Point(-250, -250), group.CoordOrigin);
 
             TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 500.0d, 500.0d, -250.0d, -250.0d, (Shape)group.GetChild(NodeType.Shape, 0, true));
             TestUtil.VerifyShape(ShapeType.Star, string.Empty, 20.0d, 20.0d, -10.0d, -10.0d, (Shape)group.GetChild(NodeType.Shape, 1, true));
@@ -342,13 +332,13 @@ namespace ApiExamples
             shape.WrapType = WrapType.None;
 
             // A shape by default is not part of any group shape, and therefore has the "IsTopLevel" property set to "true".
-            Assert.That(shape.IsTopLevel, Is.True);
+            Assert.IsTrue(shape.IsTopLevel);
 
             GroupShape group = new GroupShape(doc);
             group.AppendChild(shape);
 
             // Once we assimilate a shape into a group shape, the "IsTopLevel" property changes to "false".
-            Assert.That(shape.IsTopLevel, Is.False);
+            Assert.IsFalse(shape.IsTopLevel);
             //ExEnd
         }
 
@@ -369,38 +359,36 @@ namespace ApiExamples
 
             // Use the "LocalToParent" method to determine that (0, 0) on the group's internal x and y coordinates
             // lies on (100, 100) of its parent shape's coordinate system. The group shape's parent is the document itself.
-            Assert.That(group.LocalToParent(new PointF(0, 0)), Is.EqualTo(new PointF(100, 100)));
+            Assert.AreEqual(new PointF(100, 100), group.LocalToParent(new PointF(0, 0)));
 
             // By default, a shape's internal coordinate plane has the top left corner at (0, 0),
             // and the bottom right corner at (1000, 1000). Due to its size, our group shape covers an area of 500pt x 500pt
             // in the document's plane. This means that a movement of 1pt on the document's coordinate plane will translate
             // to a movement of 2pts on the group shape's coordinate plane.
-            Assert.That(group.LocalToParent(new PointF(100, 100)), Is.EqualTo(new PointF(150, 150)));
-            Assert.That(group.LocalToParent(new PointF(200, 200)), Is.EqualTo(new PointF(200, 200)));
-            Assert.That(group.LocalToParent(new PointF(300, 300)), Is.EqualTo(new PointF(250, 250)));
+            Assert.AreEqual(new PointF(150, 150), group.LocalToParent(new PointF(100, 100)));
+            Assert.AreEqual(new PointF(200, 200), group.LocalToParent(new PointF(200, 200)));
+            Assert.AreEqual(new PointF(250, 250), group.LocalToParent(new PointF(300, 300)));
 
             // Move the group shape's x and y axis origin from the top left corner to the center.
             // This will offset the group's internal coordinates relative to the document's coordinates even further.
             group.CoordOrigin = new Point(-250, -250);
 
-            Assert.That(group.LocalToParent(new PointF(300, 300)), Is.EqualTo(new PointF(375, 375)));
+            Assert.AreEqual(new PointF(375, 375), group.LocalToParent(new PointF(300, 300)));
 
             // Changing the scale of the coordinate plane will also affect relative locations.
             group.CoordSize = new Size(500, 500);
 
-            Assert.That(group.LocalToParent(new PointF(300, 300)), Is.EqualTo(new PointF(650, 650)));
+            Assert.AreEqual(new PointF(650, 650), group.LocalToParent(new PointF(300, 300)));
 
             // If we wish to add a shape to this group while defining its location based on a location in the document,
             // we will need to first confirm a location in the group shape that will match the document's location.
-            Assert.That(group.LocalToParent(new PointF(350, 350)), Is.EqualTo(new PointF(700, 700)));
+            Assert.AreEqual(new PointF(700, 700), group.LocalToParent(new PointF(350, 350)));
 
-            Shape shape = new Shape(doc, ShapeType.Rectangle)
-            {
-                Width = 100,
-                Height = 100,
-                Left = 700,
-                Top = 700
-            };
+            Shape shape = new Shape(doc, ShapeType.Rectangle);
+            shape.Width = 100;
+            shape.Height = 100;
+            shape.Left = 700;
+            shape.Top = 700;
 
             group.AppendChild(shape);
             doc.FirstSection.Body.FirstParagraph.AppendChild(group);
@@ -411,9 +399,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.LocalToParent.docx");
             group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
 
-            Assert.That(group.Bounds, Is.EqualTo(new RectangleF(100, 100, 500, 500)));
-            Assert.That(group.CoordSize, Is.EqualTo(new Size(500, 500)));
-            Assert.That(group.CoordOrigin, Is.EqualTo(new Point(-250, -250)));
+            Assert.AreEqual(new RectangleF(100, 100, 500, 500), group.Bounds);
+            Assert.AreEqual(new Size(500, 500), group.CoordSize);
+            Assert.AreEqual(new Point(-250, -250), group.CoordOrigin);
         }
 
         [TestCase(false)]
@@ -449,7 +437,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.AnchorLocked.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(shape.AnchorLocked, Is.EqualTo(anchorLocked));
+            Assert.AreEqual(anchorLocked, shape.AnchorLocked);
         }
 
         [Test]
@@ -478,23 +466,23 @@ namespace ApiExamples
             group.AppendChild(subShape);
             builder.InsertNode(group);
 
-            Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(3));
-            Assert.That(doc.GetChildNodes(NodeType.GroupShape, true).Count, Is.EqualTo(1));
+            Assert.AreEqual(3, doc.GetChildNodes(NodeType.Shape, true).Count);
+            Assert.AreEqual(1, doc.GetChildNodes(NodeType.GroupShape, true).Count);
 
             // Remove all Shape nodes from the document.
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             shapes.Clear();
 
             // All shapes are gone, but the group shape is still in the document.
-            Assert.That(doc.GetChildNodes(NodeType.GroupShape, true).Count, Is.EqualTo(1));
-            Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(0));
+            Assert.AreEqual(1, doc.GetChildNodes(NodeType.GroupShape, true).Count);
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             // Remove all group shapes separately.
             NodeCollection groupShapes = doc.GetChildNodes(NodeType.GroupShape, true);
             groupShapes.Clear();
 
-            Assert.That(doc.GetChildNodes(NodeType.GroupShape, true).Count, Is.EqualTo(0));
-            Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(0));
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.GroupShape, true).Count);
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).Count);
             //ExEnd
         }
 
@@ -518,8 +506,8 @@ namespace ApiExamples
             // In Microsoft Word, we may click and drag the shape to any paragraph as if it is a character.
             // If the shape is large, it will affect vertical paragraph spacing.
             // We cannot move this shape to a place with no paragraph.
-            Assert.That(shape.WrapType, Is.EqualTo(WrapType.Inline));
-            Assert.That(shape.IsInline, Is.True);
+            Assert.AreEqual(WrapType.Inline, shape.WrapType);
+            Assert.IsTrue(shape.IsInline);
 
             // 2 -  Floating:
             shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 200,
@@ -531,8 +519,8 @@ namespace ApiExamples
             // If the shape does not have a visible anchor symbol to its left,
             // we will need to enable visible anchors via "Options" -> "Display" -> "Object Anchors".
             // In Microsoft Word, we may left click and drag this shape freely to any location.
-            Assert.That(shape.WrapType, Is.EqualTo(WrapType.None));
-            Assert.That(shape.IsInline, Is.False);
+            Assert.AreEqual(WrapType.None, shape.WrapType);
+            Assert.IsFalse(shape.IsInline);
 
             doc.Save(ArtifactsDir + "Shape.IsInline.docx");
             //ExEnd
@@ -541,16 +529,16 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100002", 100, 100, 0, 0, shape);
-            Assert.That(shape.FillColor.ToArgb(), Is.EqualTo(Color.LightBlue.ToArgb()));
-            Assert.That(shape.WrapType, Is.EqualTo(WrapType.Inline));
-            Assert.That(shape.IsInline, Is.True);
+            Assert.AreEqual(Color.LightBlue.ToArgb(), shape.FillColor.ToArgb());
+            Assert.AreEqual(WrapType.Inline, shape.WrapType);
+            Assert.IsTrue(shape.IsInline);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100004", 100, 100, 200, 200, shape);
-            Assert.That(shape.FillColor.ToArgb(), Is.EqualTo(Color.Orange.ToArgb()));
-            Assert.That(shape.WrapType, Is.EqualTo(WrapType.None));
-            Assert.That(shape.IsInline, Is.False);
+            Assert.AreEqual(Color.Orange.ToArgb(), shape.FillColor.ToArgb());
+            Assert.AreEqual(WrapType.None, shape.WrapType);
+            Assert.IsFalse(shape.IsInline);
         }
 
         [Test]
@@ -569,25 +557,23 @@ namespace ApiExamples
 
             // Even though the line itself takes up little space on the document page,
             // it occupies a rectangular containing block, the size of which we can determine using the "Bounds" properties.
-            Assert.That(shape.Bounds, Is.EqualTo(new RectangleF(50, 50, 100, 100)));
-            Assert.That(shape.BoundsInPoints, Is.EqualTo(new RectangleF(50, 50, 100, 100)));
+            Assert.AreEqual(new RectangleF(50, 50, 100, 100), shape.Bounds);
+            Assert.AreEqual(new RectangleF(50, 50, 100, 100), shape.BoundsInPoints);
 
             // Create a group shape, and then set the size of its containing block using the "Bounds" property.
             GroupShape group = new GroupShape(doc);
             group.Bounds = new RectangleF(0, 100, 250, 250);
 
-            Assert.That(group.BoundsInPoints, Is.EqualTo(new RectangleF(0, 100, 250, 250)));
+            Assert.AreEqual(new RectangleF(0, 100, 250, 250), group.BoundsInPoints);
 
             // Create a rectangle, verify the size of its bounding block, and then add it to the group shape.
-            shape = new Shape(doc, ShapeType.Rectangle)
-            {
-                Width = 100,
-                Height = 100,
-                Left = 700,
-                Top = 700
-            };
+            shape = new Shape(doc, ShapeType.Rectangle);
+            shape.Width = 100;
+            shape.Height = 100;
+            shape.Left = 700;
+            shape.Top = 700;
 
-            Assert.That(shape.BoundsInPoints, Is.EqualTo(new RectangleF(700, 700, 100, 100)));
+            Assert.AreEqual(new RectangleF(700, 700, 100, 100), shape.BoundsInPoints);
 
             group.AppendChild(shape);
 
@@ -597,24 +583,22 @@ namespace ApiExamples
             // translates to 1pt in the document body's coordinate plane.
             // Every shape that we insert will also shrink in size by a factor of 4.
             // The change in the shape's "BoundsInPoints" property will reflect this.
-            Assert.That(shape.BoundsInPoints, Is.EqualTo(new RectangleF(175, 275, 25, 25)));
+            Assert.AreEqual(new RectangleF(175, 275, 25, 25), shape.BoundsInPoints);
 
             doc.FirstSection.Body.FirstParagraph.AppendChild(group);
 
             // Insert a shape and place it outside of the bounds of the group shape's containing block.
-            shape = new Shape(doc, ShapeType.Rectangle)
-            {
-                Width = 100,
-                Height = 100,
-                Left = 1000,
-                Top = 1000
-            };
+            shape = new Shape(doc, ShapeType.Rectangle);
+            shape.Width = 100;
+            shape.Height = 100;
+            shape.Left = 1000;
+            shape.Top = 1000;
 
             group.AppendChild(shape);
 
             // The group shape's footprint in the document body has increased, but the containing block remains the same.
-            Assert.That(group.BoundsInPoints, Is.EqualTo(new RectangleF(0, 100, 250, 250)));
-            Assert.That(shape.BoundsInPoints, Is.EqualTo(new RectangleF(250, 350, 25, 25)));
+            Assert.AreEqual(new RectangleF(0, 100, 250, 250), group.BoundsInPoints);
+            Assert.AreEqual(new RectangleF(250, 350, 25, 25), shape.BoundsInPoints);
 
             doc.Save(ArtifactsDir + "Shape.Bounds.docx");
             //ExEnd
@@ -623,25 +607,25 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyShape(ShapeType.Line, "Line 100002", 100, 100, 50, 50, shape);
-            Assert.That(shape.StrokeColor.ToArgb(), Is.EqualTo(Color.Orange.ToArgb()));
-            Assert.That(shape.BoundsInPoints, Is.EqualTo(new RectangleF(50, 50, 100, 100)));
+            Assert.AreEqual(Color.Orange.ToArgb(), shape.StrokeColor.ToArgb());
+            Assert.AreEqual(new RectangleF(50, 50, 100, 100), shape.BoundsInPoints);
 
             group = (GroupShape)doc.GetChild(NodeType.GroupShape, 0, true);
 
-            Assert.That(group.Bounds, Is.EqualTo(new RectangleF(0, 100, 250, 250)));
-            Assert.That(group.BoundsInPoints, Is.EqualTo(new RectangleF(0, 100, 250, 250)));
-            Assert.That(group.CoordSize, Is.EqualTo(new Size(1000, 1000)));
-            Assert.That(group.CoordOrigin, Is.EqualTo(new Point(0, 0)));
+            Assert.AreEqual(new RectangleF(0, 100, 250, 250), group.Bounds);
+            Assert.AreEqual(new RectangleF(0, 100, 250, 250), group.BoundsInPoints);
+            Assert.AreEqual(new Size(1000, 1000), group.CoordSize);
+            Assert.AreEqual(new Point(0, 0), group.CoordOrigin);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 100, 100, 700, 700, shape);
-            Assert.That(shape.BoundsInPoints, Is.EqualTo(new RectangleF(175, 275, 25, 25)));
+            Assert.AreEqual(new RectangleF(175, 275, 25, 25), shape.BoundsInPoints);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
 
             TestUtil.VerifyShape(ShapeType.Rectangle, string.Empty, 100, 100, 1000, 1000, shape);
-            Assert.That(shape.BoundsInPoints, Is.EqualTo(new RectangleF(250, 350, 25, 25)));
+            Assert.AreEqual(new RectangleF(250, 350, 25, 25), shape.BoundsInPoints);
         }
 
         [Test]
@@ -659,7 +643,7 @@ namespace ApiExamples
                 RelativeVerticalPosition.TopMargin, 100, 100, 100, WrapType.None);
             shape.ImageData.SetImage(ImageDir + "Logo.jpg");
 
-            Assert.That(shape.FlipOrientation, Is.EqualTo(FlipOrientation.None));
+            Assert.AreEqual(FlipOrientation.None, shape.FlipOrientation);
 
             shape = builder.InsertShape(ShapeType.Rectangle, RelativeHorizontalPosition.LeftMargin, 250,
                 RelativeVerticalPosition.TopMargin, 100, 100, 100, WrapType.None);
@@ -692,22 +676,22 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100002", 100, 100, 100, 100, shape);
-            Assert.That(shape.FlipOrientation, Is.EqualTo(FlipOrientation.None));
+            Assert.AreEqual(FlipOrientation.None, shape.FlipOrientation);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
             TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100004", 100, 100, 100, 250, shape);
-            Assert.That(shape.FlipOrientation, Is.EqualTo(FlipOrientation.Horizontal));
+            Assert.AreEqual(FlipOrientation.Horizontal, shape.FlipOrientation);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 2, true);
 
             TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100006", 100, 100, 250, 100, shape);
-            Assert.That(shape.FlipOrientation, Is.EqualTo(FlipOrientation.Vertical));
+            Assert.AreEqual(FlipOrientation.Vertical, shape.FlipOrientation);
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 3, true);
 
             TestUtil.VerifyShape(ShapeType.Rectangle, "Rectangle 100008", 100, 100, 250, 250, shape);
-            Assert.That(shape.FlipOrientation, Is.EqualTo(FlipOrientation.Both));
+            Assert.AreEqual(FlipOrientation.Both, shape.FlipOrientation);
         }
 
         [Test]
@@ -739,7 +723,7 @@ namespace ApiExamples
             // The "Opacity" property determines how transparent the color is on a 0-1 scale,
             // with 1 being fully opaque, and 0 being invisible.
             // The shape fill by default is fully opaque, so we cannot see the text that this shape is on top of.
-            Assert.That(shape.Fill.Opacity, Is.EqualTo(1.0d));
+            Assert.AreEqual(1.0d, shape.Fill.Opacity);
 
             // Set the shape fill color's opacity to a lower value so that we can see the text underneath it.
             shape.Fill.Opacity = 0.3;
@@ -752,9 +736,9 @@ namespace ApiExamples
 
             TestUtil.VerifyShape(ShapeType.CloudCallout, "CloudCallout 100002", 250.0d, 150.0d, 25.0d, 25.0d, shape);
             Color colorWithOpacity = Color.FromArgb(Convert.ToInt32(255 * shape.Fill.Opacity), Color.LightBlue.R, Color.LightBlue.G, Color.LightBlue.B);
-            Assert.That(shape.FillColor.ToArgb(), Is.EqualTo(colorWithOpacity.ToArgb()));
-            Assert.That(shape.StrokeColor.ToArgb(), Is.EqualTo(Color.CadetBlue.ToArgb()));
-            Assert.That(shape.Fill.Opacity, Is.EqualTo(0.3d).Within(0.01d));
+            Assert.AreEqual(colorWithOpacity.ToArgb(), shape.FillColor.ToArgb());
+            Assert.AreEqual(Color.CadetBlue.ToArgb(), shape.StrokeColor.ToArgb());
+            Assert.AreEqual(0.3d, shape.Fill.Opacity, 0.01d);
         }
 
         [Test]
@@ -776,15 +760,16 @@ namespace ApiExamples
 
             // Use the compliance option to define the shape using DML if you want to get "TextureAlignment"
             // property after the document saves.
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Compliance = OoxmlCompliance.Iso29500_2008_Strict };
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Strict;
 
             doc.Save(ArtifactsDir + "Shape.TextureFill.docx", saveOptions);
 
             doc = new Document(ArtifactsDir + "Shape.TextureFill.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(shape.Fill.TextureAlignment, Is.EqualTo(TextureAlignment.TopRight));
-            Assert.That(shape.Fill.PresetTexture, Is.EqualTo(PresetTexture.Canvas));
+            Assert.AreEqual(TextureAlignment.TopRight, shape.Fill.TextureAlignment);
+            Assert.AreEqual(PresetTexture.Canvas, shape.Fill.PresetTexture);
             //ExEnd
         }
 
@@ -810,10 +795,10 @@ namespace ApiExamples
             // Apply One-color gradient fill to the shape with ForeColor of gradient fill.
             shape.Fill.OneColorGradient(Color.Red, GradientStyle.Horizontal, GradientVariant.Variant2, 0.1);
 
-            Assert.That(shape.Fill.ForeColor.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
-            Assert.That(shape.Fill.GradientStyle, Is.EqualTo(GradientStyle.Horizontal));
-            Assert.That(shape.Fill.GradientVariant, Is.EqualTo(GradientVariant.Variant2));
-            Assert.That(shape.Fill.GradientAngle, Is.EqualTo(270));
+            Assert.AreEqual(Color.Red.ToArgb(), shape.Fill.ForeColor.ToArgb());
+            Assert.AreEqual(GradientStyle.Horizontal, shape.Fill.GradientStyle);
+            Assert.AreEqual(GradientVariant.Variant2, shape.Fill.GradientVariant);
+            Assert.AreEqual(270, shape.Fill.GradientAngle);
 
             shape = builder.InsertShape(ShapeType.Rectangle, 80, 80);
             // Apply Two-color gradient fill to the shape.
@@ -824,14 +809,15 @@ namespace ApiExamples
             // gradient fill don't get any effect, it will work only for linear gradient.
             shape.Fill.GradientAngle = 15;
 
-            Assert.That(shape.Fill.BackColor.ToArgb(), Is.EqualTo(Color.Yellow.ToArgb()));
-            Assert.That(shape.Fill.GradientStyle, Is.EqualTo(GradientStyle.FromCorner));
-            Assert.That(shape.Fill.GradientVariant, Is.EqualTo(GradientVariant.Variant4));
-            Assert.That(shape.Fill.GradientAngle, Is.EqualTo(0));
+            Assert.AreEqual(Color.Yellow.ToArgb(), shape.Fill.BackColor.ToArgb());
+            Assert.AreEqual(GradientStyle.FromCorner, shape.Fill.GradientStyle);
+            Assert.AreEqual(GradientVariant.Variant4, shape.Fill.GradientVariant);
+            Assert.AreEqual(0, shape.Fill.GradientAngle);
 
             // Use the compliance option to define the shape using DML if you want to get "GradientStyle",
             // "GradientVariant" and "GradientAngle" properties after the document saves.
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Compliance = OoxmlCompliance.Iso29500_2008_Strict };
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Strict;
 
             doc.Save(ArtifactsDir + "Shape.GradientFill.docx", saveOptions);
             //ExEnd
@@ -839,17 +825,17 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.GradientFill.docx");
             Shape firstShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(firstShape.Fill.ForeColor.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
-            Assert.That(firstShape.Fill.GradientStyle, Is.EqualTo(GradientStyle.Horizontal));
-            Assert.That(firstShape.Fill.GradientVariant, Is.EqualTo(GradientVariant.Variant2));
-            Assert.That(firstShape.Fill.GradientAngle, Is.EqualTo(270));
+            Assert.AreEqual(Color.Red.ToArgb(), firstShape.Fill.ForeColor.ToArgb());
+            Assert.AreEqual(GradientStyle.Horizontal, firstShape.Fill.GradientStyle);
+            Assert.AreEqual(GradientVariant.Variant2, firstShape.Fill.GradientVariant);
+            Assert.AreEqual(270, firstShape.Fill.GradientAngle);
 
             Shape secondShape = (Shape)doc.GetChild(NodeType.Shape, 1, true);
 
-            Assert.That(secondShape.Fill.BackColor.ToArgb(), Is.EqualTo(Color.Yellow.ToArgb()));
-            Assert.That(secondShape.Fill.GradientStyle, Is.EqualTo(GradientStyle.FromCorner));
-            Assert.That(secondShape.Fill.GradientVariant, Is.EqualTo(GradientVariant.Variant4));
-            Assert.That(secondShape.Fill.GradientAngle, Is.EqualTo(0));
+            Assert.AreEqual(Color.Yellow.ToArgb(), secondShape.Fill.BackColor.ToArgb());
+            Assert.AreEqual(GradientStyle.FromCorner, secondShape.Fill.GradientStyle);
+            Assert.AreEqual(GradientVariant.Variant4, secondShape.Fill.GradientVariant);
+            Assert.AreEqual(0, secondShape.Fill.GradientAngle);
         }
 
         [Test]
@@ -900,20 +886,21 @@ namespace ApiExamples
             gradientStop = gradientStops[2];
             gradientStops.Remove(gradientStop);
 
-            Assert.That(gradientStops.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, gradientStops.Count);
 
-            Assert.That(gradientStops[0].BaseColor, Is.EqualTo(Color.FromArgb(255, 0, 255, 255)));
-            Assert.That(gradientStops[0].Color.ToArgb(), Is.EqualTo(Color.Aqua.ToArgb()));
-            Assert.That(gradientStops[0].Position, Is.EqualTo(0.1d).Within(0.01d));
-            Assert.That(gradientStops[0].Transparency, Is.EqualTo(0.25d).Within(0.01d));
+            Assert.AreEqual(Color.FromArgb(255, 0, 255, 255), gradientStops[0].BaseColor);
+            Assert.AreEqual(Color.Aqua.ToArgb(), gradientStops[0].Color.ToArgb());
+            Assert.AreEqual(0.1d, gradientStops[0].Position, 0.01d);
+            Assert.AreEqual(0.25d, gradientStops[0].Transparency, 0.01d);
 
-            Assert.That(gradientStops[1].Color.ToArgb(), Is.EqualTo(Color.Chocolate.ToArgb()));
-            Assert.That(gradientStops[1].Position, Is.EqualTo(0.75d).Within(0.01d));
-            Assert.That(gradientStops[1].Transparency, Is.EqualTo(0.3d).Within(0.01d));
+            Assert.AreEqual(Color.Chocolate.ToArgb(), gradientStops[1].Color.ToArgb());
+            Assert.AreEqual(0.75d, gradientStops[1].Position, 0.01d);
+            Assert.AreEqual(0.3d, gradientStops[1].Transparency, 0.01d);
 
             // Use the compliance option to define the shape using DML
             // if you want to get "GradientStops" property after the document saves.
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { Compliance = OoxmlCompliance.Iso29500_2008_Strict };
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Strict;
 
             doc.Save(ArtifactsDir + "Shape.GradientStops.docx", saveOptions);
             //ExEnd
@@ -923,15 +910,15 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             gradientStops = shape.Fill.GradientStops;
 
-            Assert.That(gradientStops.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, gradientStops.Count);
 
-            Assert.That(gradientStops[0].Color.ToArgb(), Is.EqualTo(Color.Aqua.ToArgb()));
-            Assert.That(gradientStops[0].Position, Is.EqualTo(0.1d).Within(0.01d));
-            Assert.That(gradientStops[0].Transparency, Is.EqualTo(0.25d).Within(0.01d));
+            Assert.AreEqual(Color.Aqua.ToArgb(), gradientStops[0].Color.ToArgb());
+            Assert.AreEqual(0.1d, gradientStops[0].Position, 0.01d);
+            Assert.AreEqual(0.25d, gradientStops[0].Transparency, 0.01d);
 
-            Assert.That(gradientStops[1].Color.ToArgb(), Is.EqualTo(Color.Chocolate.ToArgb()));
-            Assert.That(gradientStops[1].Position, Is.EqualTo(0.75d).Within(0.01d));
-            Assert.That(gradientStops[1].Transparency, Is.EqualTo(0.3d).Within(0.01d));
+            Assert.AreEqual(Color.Chocolate.ToArgb(), gradientStops[1].Color.ToArgb());
+            Assert.AreEqual(0.75d, gradientStops[1].Position, 0.01d);
+            Assert.AreEqual(0.3d, gradientStops[1].Transparency, 0.01d);
         }
 
         [Test]
@@ -1027,8 +1014,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.Title.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(shape.Title, Is.EqualTo(string.Empty));
-            Assert.That(shape.AlternativeText, Is.EqualTo("Title: My cube"));
+            Assert.AreEqual(string.Empty, shape.Title);
+            Assert.AreEqual("Title: My cube", shape.AlternativeText);
             //ExEnd
 
             TestUtil.VerifyShape(ShapeType.Cube, string.Empty, 200.0d, 200.0d, 0.0d, 0.0d, shape);
@@ -1048,8 +1035,8 @@ namespace ApiExamples
 
             Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
-            Assert.That(shapes.Count(s => s.ShapeType == ShapeType.TextBox), Is.EqualTo(3));
-            Assert.That(shapes.Count(s => s.ShapeType == ShapeType.Image), Is.EqualTo(1));
+            Assert.AreEqual(3, shapes.Count(s => s.ShapeType == ShapeType.TextBox));
+            Assert.AreEqual(1, shapes.Count(s => s.ShapeType == ShapeType.Image));
 
             foreach (Shape shape in shapes)
             {
@@ -1075,8 +1062,8 @@ namespace ApiExamples
 
             shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
-            Assert.That(shapes.Count(s => s.ShapeType == ShapeType.TextBox), Is.EqualTo(0));
-            Assert.That(shapes.Count(s => s.ShapeType == ShapeType.Image), Is.EqualTo(4));
+            Assert.AreEqual(0, shapes.Count(s => s.ShapeType == ShapeType.TextBox));
+            Assert.AreEqual(4, shapes.Count(s => s.ShapeType == ShapeType.Image));
 
             doc.Save(ArtifactsDir + "Shape.ReplaceTextboxesWithImages.docx");
             //ExEnd
@@ -1084,7 +1071,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.ReplaceTextboxesWithImages.docx");
             Shape outShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(outShape.WrapSide, Is.EqualTo(WrapSide.Both));
+            Assert.AreEqual(WrapSide.Both, outShape.WrapSide);
         }
 
         [Test]
@@ -1125,10 +1112,10 @@ namespace ApiExamples
             textBox = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyShape(ShapeType.TextBox, string.Empty, 200.0d, 50.0d, 0.0d, 0.0d, textBox);
-            Assert.That(textBox.WrapType, Is.EqualTo(WrapType.None));
-            Assert.That(textBox.HorizontalAlignment, Is.EqualTo(HorizontalAlignment.Center));
-            Assert.That(textBox.VerticalAlignment, Is.EqualTo(VerticalAlignment.Top));
-            Assert.That(textBox.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.AreEqual(WrapType.None, textBox.WrapType);
+            Assert.AreEqual(HorizontalAlignment.Center, textBox.HorizontalAlignment);
+            Assert.AreEqual(VerticalAlignment.Top, textBox.VerticalAlignment);
+            Assert.AreEqual("Hello world!", textBox.GetText().Trim());
         }
 
         [Test]
@@ -1193,17 +1180,17 @@ namespace ApiExamples
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             OleControl oleControl = shape.OleFormat.OleControl;
 
-            Assert.That(oleControl.Name, Is.EqualTo("CheckBox1"));
+            Assert.AreEqual("CheckBox1", oleControl.Name);
 
             if (oleControl.IsForms2OleControl)
             {
                 Forms2OleControl checkBox = (Forms2OleControl)oleControl;
-                Assert.That(checkBox.Caption, Is.EqualTo("First"));
-                Assert.That(checkBox.Value, Is.EqualTo("0"));
-                Assert.That(checkBox.Enabled, Is.EqualTo(true));
-                Assert.That(checkBox.Type, Is.EqualTo(Forms2OleControlType.CheckBox));
-                Assert.That(checkBox.ChildNodes, Is.EqualTo(null));
-                Assert.That(checkBox.GroupName, Is.EqualTo(string.Empty));
+                Assert.AreEqual("First", checkBox.Caption);
+                Assert.AreEqual("0", checkBox.Value);
+                Assert.AreEqual(true, checkBox.Enabled);
+                Assert.AreEqual(Forms2OleControlType.CheckBox, checkBox.Type);
+                Assert.AreEqual(null, checkBox.ChildNodes);
+                Assert.AreEqual(string.Empty, checkBox.GroupName);
 
                 // Note, that you can't set GroupName for a Frame.
                 checkBox.GroupName = "Aspose group name";
@@ -1216,7 +1203,7 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             Forms2OleControl forms2OleControl = (Forms2OleControl)shape.OleFormat.OleControl;
 
-            Assert.That(forms2OleControl.GroupName, Is.EqualTo("Aspose group name"));
+            Assert.AreEqual("Aspose group name", forms2OleControl.GroupName);
         }
 
         [Test]
@@ -1232,10 +1219,10 @@ namespace ApiExamples
                 OleFormat oleFormat = shape.OleFormat;
                 if (oleFormat != null)
                 {
-                    Console.WriteLine($"This is {(oleFormat.IsLink ? "a linked" : "an embedded")} object");
+                    Console.WriteLine(string.Format("This is {0} object", (oleFormat.IsLink ? "a linked" : "an embedded")));
                     byte[] oleRawData = oleFormat.GetRawData();
 
-                    Assert.That(oleRawData.Length, Is.EqualTo(24576));
+                    Assert.AreEqual(24576, oleRawData.Length);
                 }
             }
             //ExEnd
@@ -1252,7 +1239,7 @@ namespace ApiExamples
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             var sourceFullName = shape.Chart.SourceFullName;
-            Assert.That(sourceFullName.Contains("Examples\\Data\\Spreadsheet.xlsx"), Is.True);
+            Assert.IsTrue(sourceFullName.Contains("Examples\\Data\\Spreadsheet.xlsx"));
             //ExEnd
         }
 
@@ -1274,15 +1261,15 @@ namespace ApiExamples
             // The OLE object in the first shape is a Microsoft Excel spreadsheet.
             OleFormat oleFormat = shape.OleFormat;
 
-            Assert.That(oleFormat.ProgId, Is.EqualTo("Excel.Sheet.12"));
+            Assert.AreEqual("Excel.Sheet.12", oleFormat.ProgId);
 
             // Our object is neither auto updating nor locked from updates.
-            Assert.That(oleFormat.AutoUpdate, Is.False);
-            Assert.That(oleFormat.IsLocked, Is.EqualTo(false));
+            Assert.IsFalse(oleFormat.AutoUpdate);
+            Assert.AreEqual(false, oleFormat.IsLocked);
 
             // If we plan on saving the OLE object to a file in the local file system,
             // we can use the "SuggestedExtension" property to determine which file extension to apply to the file.
-            Assert.That(oleFormat.SuggestedExtension, Is.EqualTo(".xlsx"));
+            Assert.AreEqual(".xlsx", oleFormat.SuggestedExtension);
 
             // Below are two ways of saving an OLE object to a file in the local file system.
             // 1 -  Save it via a stream:
@@ -1295,8 +1282,8 @@ namespace ApiExamples
             oleFormat.Save(ArtifactsDir + "OLE spreadsheet saved directly" + oleFormat.SuggestedExtension);
             //ExEnd
 
-            Assert.That(new FileInfo(ArtifactsDir + "OLE spreadsheet extracted via stream.xlsx").Length < 8400, Is.True);
-            Assert.That(new FileInfo(ArtifactsDir + "OLE spreadsheet saved directly.xlsx").Length < 8400, Is.True);
+            Assert.IsTrue(new FileInfo(ArtifactsDir + "OLE spreadsheet extracted via stream.xlsx").Length < 8400);
+            Assert.IsTrue(new FileInfo(ArtifactsDir + "OLE spreadsheet saved directly.xlsx").Length < 8400);
         }
 
         [Test]
@@ -1322,25 +1309,25 @@ namespace ApiExamples
             // Inserting OLE objects creates shapes that store these objects.
             Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
-            Assert.That(shapes.Length, Is.EqualTo(2));
-            Assert.That(shapes.Count(s => s.ShapeType == ShapeType.OleObject), Is.EqualTo(2));
+            Assert.AreEqual(2, shapes.Length);
+            Assert.AreEqual(2, shapes.Count(s => s.ShapeType == ShapeType.OleObject));
 
             // If a shape contains an OLE object, it will have a valid "OleFormat" property,
             // which we can use to verify some aspects of the shape.
             OleFormat oleFormat = shapes[0].OleFormat;
 
-            Assert.That(oleFormat.IsLink, Is.EqualTo(false));
-            Assert.That(oleFormat.OleIcon, Is.EqualTo(false));
+            Assert.AreEqual(false, oleFormat.IsLink);
+            Assert.AreEqual(false, oleFormat.OleIcon);
 
             oleFormat = shapes[1].OleFormat;
 
-            Assert.That(oleFormat.IsLink, Is.EqualTo(true));
-            Assert.That(oleFormat.OleIcon, Is.EqualTo(true));
+            Assert.AreEqual(true, oleFormat.IsLink);
+            Assert.AreEqual(true, oleFormat.OleIcon);
 
-            Assert.That(oleFormat.SourceFullName.EndsWith(@"Images" + Path.DirectorySeparatorChar + "Microsoft Visio drawing.vsd"), Is.True);
-            Assert.That(oleFormat.SourceItem, Is.EqualTo(""));
+            Assert.IsTrue(oleFormat.SourceFullName.EndsWith(@"Images" + Path.DirectorySeparatorChar + "Microsoft Visio drawing.vsd"));
+            Assert.AreEqual("", oleFormat.SourceItem);
 
-            Assert.That(oleFormat.IconCaption, Is.EqualTo("Microsoft Visio drawing.vsd"));
+            Assert.AreEqual("Microsoft Visio drawing.vsd", oleFormat.IconCaption);
 
             doc.Save(ArtifactsDir + "Shape.OleLinks.docx");
 
@@ -1348,7 +1335,7 @@ namespace ApiExamples
             using (MemoryStream stream = oleFormat.GetOleEntry("\x0001CompObj"))
             {
                 byte[] oleEntryBytes = stream.ToArray();
-                Assert.That(oleEntryBytes.Length, Is.EqualTo(76));
+                Assert.AreEqual(76, oleEntryBytes.Length);
             }
             //ExEnd
         }
@@ -1367,23 +1354,23 @@ namespace ApiExamples
             // Shapes store and display OLE objects in the document's body.
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(shape.OleFormat.Clsid.ToString(), Is.EqualTo("6e182020-f460-11ce-9bcd-00aa00608e01"));
+            Assert.AreEqual("6e182020-f460-11ce-9bcd-00aa00608e01", shape.OleFormat.Clsid.ToString());
 
             Forms2OleControl oleControl = (Forms2OleControl)shape.OleFormat.OleControl;
 
             // Some OLE controls may contain child controls, such as the one in this document with three options buttons.
             Forms2OleControlCollection oleControlCollection = oleControl.ChildNodes;
 
-            Assert.That(oleControlCollection.Count, Is.EqualTo(3));
+            Assert.AreEqual(3, oleControlCollection.Count);
 
-            Assert.That(oleControlCollection[0].Caption, Is.EqualTo("C#"));
-            Assert.That(oleControlCollection[0].Value, Is.EqualTo("1"));
+            Assert.AreEqual("C#", oleControlCollection[0].Caption);
+            Assert.AreEqual("1", oleControlCollection[0].Value);
 
-            Assert.That(oleControlCollection[1].Caption, Is.EqualTo("Visual Basic"));
-            Assert.That(oleControlCollection[1].Value, Is.EqualTo("0"));
+            Assert.AreEqual("Visual Basic", oleControlCollection[1].Caption);
+            Assert.AreEqual("0", oleControlCollection[1].Value);
 
-            Assert.That(oleControlCollection[2].Caption, Is.EqualTo("Delphi"));
-            Assert.That(oleControlCollection[2].Value, Is.EqualTo("0"));
+            Assert.AreEqual("Delphi", oleControlCollection[2].Caption);
+            Assert.AreEqual("0", oleControlCollection[2].Value);
             //ExEnd
         }
 
@@ -1401,7 +1388,7 @@ namespace ApiExamples
             // which we can use when saving the object's contents into a file in the local file system.
             string suggestedFileName = oleShape.OleFormat.SuggestedFileName;
 
-            Assert.That(suggestedFileName, Is.EqualTo("CSV.csv"));
+            Assert.AreEqual("CSV.csv", suggestedFileName);
 
             using (FileStream fileStream = new FileStream(ArtifactsDir + suggestedFileName, FileMode.Create))
             {
@@ -1416,7 +1403,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "ActiveX controls.docx");
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            Assert.That(shape.OleFormat.SuggestedFileName, Is.EqualTo(string.Empty));
+            Assert.AreEqual(string.Empty, shape.OleFormat.SuggestedFileName);
         }
 
         [Test]
@@ -1465,8 +1452,8 @@ namespace ApiExamples
 
             OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 6, true);
 
-            Assert.That(officeMath.DisplayType, Is.EqualTo(OfficeMathDisplayType.Inline));
-            Assert.That(officeMath.Justification, Is.EqualTo(OfficeMathJustification.Inline));
+            Assert.AreEqual(OfficeMathDisplayType.Inline, officeMath.DisplayType);
+            Assert.AreEqual(OfficeMathJustification.Inline, officeMath.Justification);
         }
 
         [Test]
@@ -1487,9 +1474,9 @@ namespace ApiExamples
 
             // OfficeMath nodes that are children of other OfficeMath nodes are always inline.
             // The node we are working with is the base node to change its location and display type.
-            Assert.That(officeMath.MathObjectType, Is.EqualTo(MathObjectType.OMathPara));
-            Assert.That(officeMath.NodeType, Is.EqualTo(NodeType.OfficeMath));
-            Assert.That(officeMath.ParentParagraph, Is.EqualTo(officeMath.ParentNode));
+            Assert.AreEqual(MathObjectType.OMathPara, officeMath.MathObjectType);
+            Assert.AreEqual(NodeType.OfficeMath, officeMath.NodeType);
+            CollectionAssert.AreEqual(officeMath.ParentNode, officeMath.ParentParagraph);
 
             // Change the location and display type of the OfficeMath node.
             officeMath.DisplayType = OfficeMathDisplayType.Display;
@@ -1498,7 +1485,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Shape.OfficeMath.docx");
             //ExEnd
 
-            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "Shape.OfficeMath.docx", GoldsDir + "Shape.OfficeMath Gold.docx"), Is.True);
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "Shape.OfficeMath.docx", GoldsDir + "Shape.OfficeMath Gold.docx"));
         }
 
         [Test]
@@ -1530,8 +1517,8 @@ namespace ApiExamples
 
             OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, 0, true);
 
-            Assert.That(officeMath.DisplayType, Is.EqualTo(OfficeMathDisplayType.Display));
-            Assert.That(officeMath.Justification, Is.EqualTo(OfficeMathJustification.Center));
+            Assert.AreEqual(OfficeMathDisplayType.Display, officeMath.DisplayType);
+            Assert.AreEqual(OfficeMathJustification.Center, officeMath.Justification);
         }
 
         [TestCase(0, MathObjectType.OMathPara)]
@@ -1544,7 +1531,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Office math.docx");
 
             OfficeMath officeMath = (OfficeMath)doc.GetChild(NodeType.OfficeMath, index, true);
-            Assert.That(officeMath.MathObjectType, Is.EqualTo(objectType));
+            Assert.AreEqual(objectType, officeMath.MathObjectType);
         }
 
         [TestCase(true)]
@@ -1574,7 +1561,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.AspectRatio.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(shape.AspectRatioLocked, Is.EqualTo(lockAspectRatio));
+            Assert.AreEqual(lockAspectRatio, shape.AspectRatioLocked);
         }
 
         [Test]
@@ -1589,8 +1576,8 @@ namespace ApiExamples
 
             Shape shape = builder.InsertImage(ImageDir + "Transparent background logo.png");
 
-            Assert.That(shape.MarkupLanguage, Is.EqualTo(ShapeMarkupLanguage.Dml));
-            Assert.That(shape.SizeInPoints, Is.EqualTo(new SizeF(300, 300)));
+            Assert.AreEqual(ShapeMarkupLanguage.Dml, shape.MarkupLanguage);
+            Assert.AreEqual(new SizeF(300, 300), shape.SizeInPoints);
             //ExEnd
         }
 
@@ -1612,7 +1599,7 @@ namespace ApiExamples
 
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>())
             {
-                Assert.That(shape.MarkupLanguage, Is.EqualTo(shapeMarkupLanguage));
+                Assert.AreEqual(shapeMarkupLanguage, shape.MarkupLanguage);
             }
         }
 
@@ -1657,13 +1644,13 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             stroke = shape.Stroke;
 
-            Assert.That(stroke.On, Is.EqualTo(true));
-            Assert.That(stroke.Weight, Is.EqualTo(5));
-            Assert.That(stroke.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
-            Assert.That(stroke.DashStyle, Is.EqualTo(DashStyle.ShortDashDotDot));
-            Assert.That(stroke.JoinStyle, Is.EqualTo(JoinStyle.Miter));
-            Assert.That(stroke.EndCap, Is.EqualTo(EndCap.Square));
-            Assert.That(stroke.LineStyle, Is.EqualTo(ShapeLineStyle.Triple));
+            Assert.AreEqual(true, stroke.On);
+            Assert.AreEqual(5, stroke.Weight);
+            Assert.AreEqual(Color.Red.ToArgb(), stroke.Color.ToArgb());
+            Assert.AreEqual(DashStyle.ShortDashDotDot, stroke.DashStyle);
+            Assert.AreEqual(JoinStyle.Miter, stroke.JoinStyle);
+            Assert.AreEqual(EndCap.Square, stroke.EndCap);
+            Assert.AreEqual(ShapeLineStyle.Triple, stroke.LineStyle);
         }
 
         [Test, Description("WORDSNET-16067")]
@@ -1708,8 +1695,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.InsertOlePackage.docx");
             Shape getShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(getShape.OleFormat.OlePackage.FileName, Is.EqualTo("Package file name.zip"));
-            Assert.That(getShape.OleFormat.OlePackage.DisplayName, Is.EqualTo("Package display name.zip"));
+            Assert.AreEqual("Package file name.zip", getShape.OleFormat.OlePackage.FileName);
+            Assert.AreEqual("Package display name.zip", getShape.OleFormat.OlePackage.DisplayName);
         }
 
         [Test]
@@ -1722,8 +1709,8 @@ namespace ApiExamples
             Shape oleObjectAsOlePackage =
                 builder.InsertOleObject(MyDir + "Spreadsheet.xlsx", "Excel.Sheet", false, false, null);
 
-            Assert.That(oleObject.OleFormat.OlePackage, Is.EqualTo(null));
-            Assert.That(oleObjectAsOlePackage.OleFormat.OlePackage.GetType(), Is.EqualTo(typeof(OlePackage)));
+            Assert.AreEqual(null, oleObject.OleFormat.OlePackage);
+            Assert.AreEqual(typeof(OlePackage), oleObjectAsOlePackage.OleFormat.OlePackage.GetType());
         }
 
         [Test]
@@ -1764,16 +1751,14 @@ namespace ApiExamples
 
             foreach (Run run in runs.OfType<Run>())
             {
-                Shape watermark = new Shape(doc, ShapeType.TextPlainText)
-                {
-                    RelativeHorizontalPosition = RelativeHorizontalPosition.Page,
-                    RelativeVerticalPosition = RelativeVerticalPosition.Page,
-                    Width = 30,
-                    Height = 30,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Rotation = -40
-                };
+                Shape watermark = new Shape(doc, ShapeType.TextPlainText);
+                watermark.RelativeHorizontalPosition = RelativeHorizontalPosition.Page;
+                watermark.RelativeVerticalPosition = RelativeVerticalPosition.Page;
+                watermark.Width = 30;
+                watermark.Height = 30;
+                watermark.HorizontalAlignment = HorizontalAlignment.Center;
+                watermark.VerticalAlignment = VerticalAlignment.Center;
+                watermark.Rotation = -40;
 
 
                 watermark.Fill.ForeColor = Color.Gainsboro;
@@ -1782,7 +1767,7 @@ namespace ApiExamples
                 watermark.TextPath.Text = string.Format("{0}", num);
                 watermark.TextPath.FontFamily = "Arial";
 
-                watermark.Name = $"Watermark_{num++}";
+                watermark.Name = string.Format("Watermark_{0}", num++);
 
                 watermark.BehindText = true;
 
@@ -1795,10 +1780,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.Calendar.docx");
             List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().ToList();
 
-            Assert.That(shapes.Count, Is.EqualTo(31));
+            Assert.AreEqual(31, shapes.Count);
 
             foreach (Shape shape in shapes)
-                TestUtil.VerifyShape(ShapeType.TextPlainText, $"Watermark_{shapes.IndexOf(shape) + 1}",
+                TestUtil.VerifyShape(ShapeType.TextPlainText, string.Format("Watermark_{0}", shapes.IndexOf(shape) + 1),
                     30.0d, 30.0d, 0.0d, 0.0d, shape);
         }
 
@@ -1850,7 +1835,7 @@ namespace ApiExamples
             table = doc.FirstSection.Body.Tables[0];
             shape = (Shape)table.FirstRow.FirstCell.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(shape.IsLayoutInCell, Is.EqualTo(isLayoutInCell));
+            Assert.AreEqual(isLayoutInCell, shape.IsLayoutInCell);
         }
 
         [Test]
@@ -1908,7 +1893,7 @@ namespace ApiExamples
         public void VisitShapes()
         {
             Document doc = new Document(MyDir + "Revision shape.docx");
-            Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(2)); //ExSkip
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Shape, true).Count); //ExSkip
 
             ShapeAppearancePrinter visitor = new ShapeAppearancePrinter();
             doc.Accept(visitor);
@@ -1943,7 +1928,7 @@ namespace ApiExamples
             /// </summary>
             public string GetText()
             {
-                return $"Shapes visited: {mShapesVisited}\n{mStringBuilder}";
+                return string.Format("Shapes visited: {0}\n{1}", mShapesVisited, mStringBuilder);
             }
 
             /// <summary>
@@ -1951,32 +1936,32 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitShapeStart(Shape shape)
             {
-                AppendLine($"Shape found: {shape.ShapeType}");
+                AppendLine(string.Format("Shape found: {0}", shape.ShapeType));
 
                 mTextIndentLevel++;
 
                 if (shape.HasChart)
-                    AppendLine($"Has chart: {shape.Chart.Title.Text}");
+                    AppendLine(string.Format("Has chart: {0}", shape.Chart.Title.Text));
 
-                AppendLine($"Extrusion enabled: {shape.ExtrusionEnabled}");
-                AppendLine($"Shadow enabled: {shape.ShadowEnabled}");
-                AppendLine($"StoryType: {shape.StoryType}");
+                AppendLine(string.Format("Extrusion enabled: {0}", shape.ExtrusionEnabled));
+                AppendLine(string.Format("Shadow enabled: {0}", shape.ShadowEnabled));
+                AppendLine(string.Format("StoryType: {0}", shape.StoryType));
 
                 if (shape.Stroked)
                 {
-                    Assert.That(shape.StrokeColor, Is.EqualTo(shape.Stroke.Color));
-                    AppendLine($"Stroke colors: {shape.Stroke.Color}, {shape.Stroke.Color2}");
-                    AppendLine($"Stroke weight: {shape.StrokeWeight}");
+                    Assert.AreEqual(shape.Stroke.Color, shape.StrokeColor);
+                    AppendLine(string.Format("Stroke colors: {0}, {1}", shape.Stroke.Color, shape.Stroke.Color2));
+                    AppendLine(string.Format("Stroke weight: {0}", shape.StrokeWeight));
                 }
 
                 if (shape.Filled)
-                    AppendLine($"Filled: {shape.FillColor}");
+                    AppendLine(string.Format("Filled: {0}", shape.FillColor));
 
                 if (shape.OleFormat != null)
-                    AppendLine($"Ole found of type: {shape.OleFormat.ProgId}");
+                    AppendLine(string.Format("Ole found of type: {0}", shape.OleFormat.ProgId));
 
                 if (shape.SignatureLine != null)
-                    AppendLine($"Found signature line for: {shape.SignatureLine.Signer}, {shape.SignatureLine.SignerTitle}");
+                    AppendLine(string.Format("Found signature line for: {0}, {1}", shape.SignatureLine.Signer, shape.SignatureLine.SignerTitle));
 
                 return VisitorAction.Continue;
             }
@@ -1988,7 +1973,7 @@ namespace ApiExamples
             {
                 mTextIndentLevel--;
                 mShapesVisited++;
-                AppendLine($"End of {shape.ShapeType}");
+                AppendLine(string.Format("End of {0}", shape.ShapeType));
 
                 return VisitorAction.Continue;
             }
@@ -1998,7 +1983,7 @@ namespace ApiExamples
             /// </summary>
             public override VisitorAction VisitGroupShapeStart(GroupShape groupShape)
             {
-                AppendLine($"Shape group found: {groupShape.ShapeType}");
+                AppendLine(string.Format("Shape group found: {0}", groupShape.ShapeType));
                 mTextIndentLevel++;
 
                 return VisitorAction.Continue;
@@ -2010,7 +1995,7 @@ namespace ApiExamples
             public override VisitorAction VisitGroupShapeEnd(GroupShape groupShape)
             {
                 mTextIndentLevel--;
-                AppendLine($"End of {groupShape.ShapeType}");
+                AppendLine(string.Format("End of {0}", groupShape.ShapeType));
 
                 return VisitorAction.Continue;
             }
@@ -2039,16 +2024,14 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            SignatureLineOptions options = new SignatureLineOptions
-            {
-                AllowComments = true,
-                DefaultInstructions = true,
-                Email = "john.doe@management.com",
-                Instructions = "Please sign here",
-                ShowDate = true,
-                Signer = "John Doe",
-                SignerTitle = "Senior Manager"
-            };
+            SignatureLineOptions options = new SignatureLineOptions();
+            options.AllowComments = true;
+            options.DefaultInstructions = true;
+            options.Email = "john.doe@management.com";
+            options.Instructions = "Please sign here";
+            options.ShowDate = true;
+            options.Signer = "John Doe";
+            options.SignerTitle = "Senior Manager";
 
             // Insert a shape that will contain a signature line, whose appearance we will
             // customize using the "SignatureLineOptions" object we have created above.
@@ -2057,18 +2040,18 @@ namespace ApiExamples
             Shape shape = builder.InsertSignatureLine(options, RelativeHorizontalPosition.RightMargin, -170.0,
                     RelativeVerticalPosition.BottomMargin, -60.0, WrapType.None);
 
-            Assert.That(shape.IsSignatureLine, Is.True);
+            Assert.IsTrue(shape.IsSignatureLine);
 
             // Verify the properties of our signature line via its Shape object.
             SignatureLine signatureLine = shape.SignatureLine;
 
-            Assert.That(signatureLine.Email, Is.EqualTo("john.doe@management.com"));
-            Assert.That(signatureLine.Signer, Is.EqualTo("John Doe"));
-            Assert.That(signatureLine.SignerTitle, Is.EqualTo("Senior Manager"));
-            Assert.That(signatureLine.Instructions, Is.EqualTo("Please sign here"));
-            Assert.That(signatureLine.ShowDate, Is.True);
-            Assert.That(signatureLine.AllowComments, Is.True);
-            Assert.That(signatureLine.DefaultInstructions, Is.True);
+            Assert.AreEqual("john.doe@management.com", signatureLine.Email);
+            Assert.AreEqual("John Doe", signatureLine.Signer);
+            Assert.AreEqual("Senior Manager", signatureLine.SignerTitle);
+            Assert.AreEqual("Please sign here", signatureLine.Instructions);
+            Assert.IsTrue(signatureLine.ShowDate);
+            Assert.IsTrue(signatureLine.AllowComments);
+            Assert.IsTrue(signatureLine.DefaultInstructions);
 
             doc.Save(ArtifactsDir + "Shape.SignatureLine.docx");
             //ExEnd
@@ -2077,19 +2060,19 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyShape(ShapeType.Image, string.Empty, 192.75d, 96.75d, -60.0d, -170.0d, shape);
-            Assert.That(shape.IsSignatureLine, Is.True);
+            Assert.IsTrue(shape.IsSignatureLine);
 
             signatureLine = shape.SignatureLine;
 
-            Assert.That(signatureLine.Email, Is.EqualTo("john.doe@management.com"));
-            Assert.That(signatureLine.Signer, Is.EqualTo("John Doe"));
-            Assert.That(signatureLine.SignerTitle, Is.EqualTo("Senior Manager"));
-            Assert.That(signatureLine.Instructions, Is.EqualTo("Please sign here"));
-            Assert.That(signatureLine.ShowDate, Is.True);
-            Assert.That(signatureLine.AllowComments, Is.True);
-            Assert.That(signatureLine.DefaultInstructions, Is.True);
-            Assert.That(signatureLine.IsSigned, Is.False);
-            Assert.That(signatureLine.IsValid, Is.False);
+            Assert.AreEqual("john.doe@management.com", signatureLine.Email);
+            Assert.AreEqual("John Doe", signatureLine.Signer);
+            Assert.AreEqual("Senior Manager", signatureLine.SignerTitle);
+            Assert.AreEqual("Please sign here", signatureLine.Instructions);
+            Assert.IsTrue(signatureLine.ShowDate);
+            Assert.IsTrue(signatureLine.AllowComments);
+            Assert.IsTrue(signatureLine.DefaultInstructions);
+            Assert.IsFalse(signatureLine.IsSigned);
+            Assert.IsFalse(signatureLine.IsValid);
         }
 
         [TestCase(LayoutFlow.Vertical)]
@@ -2147,7 +2130,7 @@ namespace ApiExamples
             }
 
             TestUtil.VerifyTextBox(expectedLayoutFlow, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, textBoxShape.TextBox);
-            Assert.That(textBoxShape.GetText().Trim(), Is.EqualTo("Hello world!\rHello again!"));
+            Assert.AreEqual("Hello world!\rHello again!", textBoxShape.GetText().Trim());
         }
 
         [Test]
@@ -2179,7 +2162,7 @@ namespace ApiExamples
 
             TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 150.0d, 100.0d, 0.0d, 0.0d, textBoxShape);
             TestUtil.VerifyTextBox(LayoutFlow.Horizontal, true, TextBoxWrapMode.None, 3.6d, 3.6d, 7.2d, 7.2d, textBoxShape.TextBox);
-            Assert.That(textBoxShape.GetText().Trim(), Is.EqualTo("Text fit tightly inside textbox."));
+            Assert.AreEqual("Text fit tightly inside textbox.", textBoxShape.GetText().Trim());
         }
 
         [Test]
@@ -2214,7 +2197,7 @@ namespace ApiExamples
 
             TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 100.0d, 100.0d, 0.0d, 0.0d, textBoxShape);
             TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 15.0d, 15.0d, 15.0d, 15.0d, textBoxShape.TextBox);
-            Assert.That(textBoxShape.GetText().Trim(), Is.EqualTo("Text placed according to textbox margins."));
+            Assert.AreEqual("Text placed according to textbox margins.", textBoxShape.GetText().Trim());
         }
 
         [TestCase(TextBoxWrapMode.None)]
@@ -2249,7 +2232,7 @@ namespace ApiExamples
 
             TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 300.0d, 300.0d, 0.0d, 0.0d, textBoxShape);
             TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, textBoxWrapMode, 3.6d, 3.6d, 7.2d, 7.2d, textBoxShape.TextBox);
-            Assert.That(textBoxShape.GetText().Trim(), Is.EqualTo("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."));
+            Assert.AreEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", textBoxShape.GetText().Trim());
         }
 
         [Test]
@@ -2307,12 +2290,12 @@ namespace ApiExamples
                 textBox2.Next = textBox3;
 
             // Only an empty text box may have a link.
-            Assert.That(textBox3.IsValidLinkTarget(textBox4), Is.True);
+            Assert.IsTrue(textBox3.IsValidLinkTarget(textBox4));
 
             builder.MoveTo(textBoxShape4.LastParagraph);
             builder.Write("Hello world!");
 
-            Assert.That(textBox3.IsValidLinkTarget(textBox4), Is.False);
+            Assert.IsFalse(textBox3.IsValidLinkTarget(textBox4));
 
             if (textBox1.Next != null && textBox1.Previous == null)
                 Console.WriteLine("This TextBox is the head of the sequence");
@@ -2326,8 +2309,8 @@ namespace ApiExamples
 
                 // Break the forward link between textBox2 and textBox3, and then verify that they are no longer linked.
                 textBox3.Previous.BreakForwardLink();
-                Assert.That(textBox2.Next == null, Is.True);
-                Assert.That(textBox3.Previous == null, Is.True);
+                Assert.IsTrue(textBox2.Next == null);
+                Assert.IsTrue(textBox3.Previous == null);
             }
 
             doc.Save(ArtifactsDir + "Shape.CreateLinkBetweenTextBoxes.docx");
@@ -2338,19 +2321,19 @@ namespace ApiExamples
 
             TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 100.0d, 100.0d, 0.0d, 0.0d, shapes[0]);
             TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[0].TextBox);
-            Assert.That(shapes[0].GetText().Trim(), Is.EqualTo(string.Empty));
+            Assert.AreEqual(string.Empty, shapes[0].GetText().Trim());
 
             TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100004", 100.0d, 100.0d, 0.0d, 0.0d, shapes[1]);
             TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[1].TextBox);
-            Assert.That(shapes[1].GetText().Trim(), Is.EqualTo(string.Empty));
+            Assert.AreEqual(string.Empty, shapes[1].GetText().Trim());
 
             TestUtil.VerifyShape(ShapeType.Rectangle, "TextBox 100006", 100.0d, 100.0d, 0.0d, 0.0d, shapes[2]);
             TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[2].TextBox);
-            Assert.That(shapes[2].GetText().Trim(), Is.EqualTo(string.Empty));
+            Assert.AreEqual(string.Empty, shapes[2].GetText().Trim());
 
             TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100008", 100.0d, 100.0d, 0.0d, 0.0d, shapes[3]);
             TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shapes[3].TextBox);
-            Assert.That(shapes[3].GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.AreEqual("Hello world!", shapes[3].GetText().Trim());
         }
 
         [TestCase(TextBoxAnchor.Top)]
@@ -2390,8 +2373,8 @@ namespace ApiExamples
 
             TestUtil.VerifyShape(ShapeType.TextBox, "TextBox 100002", 200.0d, 200.0d, 0.0d, 0.0d, shape);
             TestUtil.VerifyTextBox(LayoutFlow.Horizontal, false, TextBoxWrapMode.Square, 3.6d, 3.6d, 7.2d, 7.2d, shape.TextBox);
-            Assert.That(shape.TextBox.VerticalAnchor, Is.EqualTo(verticalAnchor));
-            Assert.That(shape.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.AreEqual(verticalAnchor, shape.TextBox.VerticalAnchor);
+            Assert.AreEqual("Hello world!", shape.GetText().Trim());
         }
 
         //ExStart
@@ -2435,17 +2418,17 @@ namespace ApiExamples
             shape.TextPath.Italic = true;
 
             // Below are various other text formatting-related properties.
-            Assert.That(shape.TextPath.Underline, Is.False);
-            Assert.That(shape.TextPath.Shadow, Is.False);
-            Assert.That(shape.TextPath.StrikeThrough, Is.False);
-            Assert.That(shape.TextPath.ReverseRows, Is.False);
-            Assert.That(shape.TextPath.XScale, Is.False);
-            Assert.That(shape.TextPath.Trim, Is.False);
-            Assert.That(shape.TextPath.SmallCaps, Is.False);
+            Assert.IsFalse(shape.TextPath.Underline);
+            Assert.IsFalse(shape.TextPath.Shadow);
+            Assert.IsFalse(shape.TextPath.StrikeThrough);
+            Assert.IsFalse(shape.TextPath.ReverseRows);
+            Assert.IsFalse(shape.TextPath.XScale);
+            Assert.IsFalse(shape.TextPath.Trim);
+            Assert.IsFalse(shape.TextPath.SmallCaps);
 
-            Assert.That(shape.TextPath.Size, Is.EqualTo(36.0));
-            Assert.That(shape.TextPath.Text, Is.EqualTo("Hello World! This text is bold, and italic."));
-            Assert.That(shape.ShapeType, Is.EqualTo(ShapeType.TextPlainText));
+            Assert.AreEqual(36.0, shape.TextPath.Size);
+            Assert.AreEqual("Hello World! This text is bold, and italic.", shape.TextPath.Text);
+            Assert.AreEqual(ShapeType.TextPlainText, shape.ShapeType);
 
             // Use the "On" property to show/hide the text.
             shape = AppendWordArt(doc, "On set to \"true\"", "Calibri", 150, 24, Color.Yellow, Color.Red, ShapeType.TextPlainText);
@@ -2475,7 +2458,7 @@ namespace ApiExamples
 
             // By default, the text's size will always scale to fit the containing shape's size, overriding the text size setting.
             shape = AppendWordArt(doc, "FitShape on", "Calibri", 160, 24, Color.LightBlue, Color.Blue, ShapeType.TextPlainText);
-            Assert.That(shape.TextPath.FitShape, Is.True);
+            Assert.IsTrue(shape.TextPath.FitShape);
             shape.TextPath.Size = 24.0;
 
             // If we set the "FitShape: property to "false", the text will keep the size
@@ -2499,14 +2482,12 @@ namespace ApiExamples
             // The shape can only be a valid WordArt shape if we assign a WordArt-designated ShapeType to it.
             // These types will have "WordArt object" in the description,
             // and their enumerator constant names will all start with "Text".
-            Shape shape = new Shape(doc, wordArtShapeType)
-            {
-                WrapType = WrapType.Inline,
-                Width = shapeWidth,
-                Height = shapeHeight,
-                FillColor = wordArtFill,
-                StrokeColor = line
-            };
+            Shape shape = new Shape(doc, wordArtShapeType);
+            shape.WrapType = WrapType.Inline;
+            shape.Width = shapeWidth;
+            shape.Height = shapeHeight;
+            shape.FillColor = wordArtFill;
+            shape.StrokeColor = line;
 
             shape.TextPath.Text = text;
             shape.TextPath.FontFamily = textFontFamily;
@@ -2523,38 +2504,38 @@ namespace ApiExamples
             List<Shape> shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToList();
 
             TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 480, 24, 0.0d, 0.0d, shapes[0]);
-            Assert.That(shapes[0].TextPath.Bold, Is.True);
-            Assert.That(shapes[0].TextPath.Italic, Is.True);
+            Assert.IsTrue(shapes[0].TextPath.Bold);
+            Assert.IsTrue(shapes[0].TextPath.Italic);
 
             TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 150, 24, 0.0d, 0.0d, shapes[1]);
-            Assert.That(shapes[1].TextPath.On, Is.True);
+            Assert.IsTrue(shapes[1].TextPath.On);
 
             TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 150, 24, 0.0d, 0.0d, shapes[2]);
-            Assert.That(shapes[2].TextPath.On, Is.False);
+            Assert.IsFalse(shapes[2].TextPath.On);
 
             TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 90, 24, 0.0d, 0.0d, shapes[3]);
-            Assert.That(shapes[3].TextPath.Kerning, Is.True);
+            Assert.IsTrue(shapes[3].TextPath.Kerning);
 
             TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 100, 24, 0.0d, 0.0d, shapes[4]);
-            Assert.That(shapes[4].TextPath.Kerning, Is.False);
+            Assert.IsFalse(shapes[4].TextPath.Kerning);
 
             TestUtil.VerifyShape(ShapeType.TextCascadeDown, string.Empty, 120, 24, 0.0d, 0.0d, shapes[5]);
-            Assert.That(shapes[5].TextPath.Spacing, Is.EqualTo(0.1d).Within(0.01d));
+            Assert.AreEqual(0.1d, shapes[5].TextPath.Spacing, 0.01d);
 
             TestUtil.VerifyShape(ShapeType.TextWave, string.Empty, 200, 36, 0.0d, 0.0d, shapes[6]);
-            Assert.That(shapes[6].TextPath.RotateLetters, Is.True);
+            Assert.IsTrue(shapes[6].TextPath.RotateLetters);
 
             TestUtil.VerifyShape(ShapeType.TextSlantUp, string.Empty, 300, 24, 0.0d, 0.0d, shapes[7]);
-            Assert.That(shapes[7].TextPath.SameLetterHeights, Is.True);
+            Assert.IsTrue(shapes[7].TextPath.SameLetterHeights);
 
             TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 160, 24, 0.0d, 0.0d, shapes[8]);
-            Assert.That(shapes[8].TextPath.FitShape, Is.True);
-            Assert.That(shapes[8].TextPath.Size, Is.EqualTo(24.0d));
+            Assert.IsTrue(shapes[8].TextPath.FitShape);
+            Assert.AreEqual(24.0d, shapes[8].TextPath.Size);
 
             TestUtil.VerifyShape(ShapeType.TextPlainText, string.Empty, 160, 24, 0.0d, 0.0d, shapes[9]);
-            Assert.That(shapes[9].TextPath.FitShape, Is.False);
-            Assert.That(shapes[9].TextPath.Size, Is.EqualTo(24.0d));
-            Assert.That(shapes[9].TextPath.TextPathAlignment, Is.EqualTo(TextPathAlignment.Right));
+            Assert.IsFalse(shapes[9].TextPath.FitShape);
+            Assert.AreEqual(24.0d, shapes[9].TextPath.Size);
+            Assert.AreEqual(TextPathAlignment.Right, shapes[9].TextPath.TextPathAlignment);
         }
 
         [Test]
@@ -2566,7 +2547,7 @@ namespace ApiExamples
             //ExSummary:Shows how to work with revision shapes.
             Document doc = new Document();
 
-            Assert.That(doc.TrackRevisions, Is.False);
+            Assert.IsFalse(doc.TrackRevisions);
 
             // Insert an inline shape without tracking revisions, which will make this shape not a revision of any kind.
             Shape shape = new Shape(doc, ShapeType.Cube);
@@ -2586,21 +2567,21 @@ namespace ApiExamples
 
             Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
-            Assert.That(shapes.Length, Is.EqualTo(2));
+            Assert.AreEqual(2, shapes.Length);
 
             shapes[0].Remove();
 
             // Since we removed that shape while we were tracking changes,
             // the shape persists in the document and counts as a delete revision.
             // Accepting this revision will remove the shape permanently, and rejecting it will keep it in the document.
-            Assert.That(shapes[0].ShapeType, Is.EqualTo(ShapeType.Cube));
-            Assert.That(shapes[0].IsDeleteRevision, Is.True);
+            Assert.AreEqual(ShapeType.Cube, shapes[0].ShapeType);
+            Assert.IsTrue(shapes[0].IsDeleteRevision);
 
             // And we inserted another shape while tracking changes, so that shape will count as an insert revision.
             // Accepting this revision will assimilate this shape into the document as a non-revision,
             // and rejecting the revision will remove this shape permanently.
-            Assert.That(shapes[1].ShapeType, Is.EqualTo(ShapeType.Sun));
-            Assert.That(shapes[1].IsInsertRevision, Is.True);
+            Assert.AreEqual(ShapeType.Sun, shapes[1].ShapeType);
+            Assert.IsTrue(shapes[1].IsInsertRevision);
             //ExEnd
         }
 
@@ -2620,19 +2601,19 @@ namespace ApiExamples
             // but until we accept or reject the move revision, there will be two instances of that shape.
             Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
-            Assert.That(shapes.Length, Is.EqualTo(2));
+            Assert.AreEqual(2, shapes.Length);
 
             // This is the "Move to" revision, which is the shape at its arrival destination.
             // If we accept the revision, this "Move to" revision shape will disappear,
             // and the "Move from" revision shape will remain.
-            Assert.That(shapes[0].IsMoveFromRevision, Is.False);
-            Assert.That(shapes[0].IsMoveToRevision, Is.True);
+            Assert.IsFalse(shapes[0].IsMoveFromRevision);
+            Assert.IsTrue(shapes[0].IsMoveToRevision);
 
             // This is the "Move from" revision, which is the shape at its original location.
             // If we accept the revision, this "Move from" revision shape will disappear,
             // and the "Move to" revision shape will remain.
-            Assert.That(shapes[1].IsMoveFromRevision, Is.True);
-            Assert.That(shapes[1].IsMoveToRevision, Is.False);
+            Assert.IsTrue(shapes[1].IsMoveFromRevision);
+            Assert.IsFalse(shapes[1].IsMoveToRevision);
             //ExEnd
         }
 
@@ -2647,22 +2628,22 @@ namespace ApiExamples
 
             Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
-            Assert.That(shapes.Length, Is.EqualTo(2));
+            Assert.AreEqual(2, shapes.Length);
 
             // The two shapes are identical in terms of dimensions and shape type.
-            Assert.That(shapes[1].Width, Is.EqualTo(shapes[0].Width));
-            Assert.That(shapes[1].Height, Is.EqualTo(shapes[0].Height));
-            Assert.That(shapes[1].ShapeType, Is.EqualTo(shapes[0].ShapeType));
+            Assert.AreEqual(shapes[0].Width, shapes[1].Width);
+            Assert.AreEqual(shapes[0].Height, shapes[1].Height);
+            Assert.AreEqual(shapes[0].ShapeType, shapes[1].ShapeType);
 
             // The first shape has no effects, and the second one has a shadow and thick outline.
             // These effects make the size of the second shape's silhouette bigger than that of the first.
             // Even though the rectangle's size shows up when we click on these shapes in Microsoft Word,
             // the visible outer bounds of the second shape are affected by the shadow and outline and thus are bigger.
             // We can use the "AdjustWithEffects" method to see the true size of the shape.
-            Assert.That(shapes[0].StrokeWeight, Is.EqualTo(0.0));
-            Assert.That(shapes[1].StrokeWeight, Is.EqualTo(20.0));
-            Assert.That(shapes[0].ShadowEnabled, Is.False);
-            Assert.That(shapes[1].ShadowEnabled, Is.True);
+            Assert.AreEqual(0.0, shapes[0].StrokeWeight);
+            Assert.AreEqual(20.0, shapes[1].StrokeWeight);
+            Assert.IsFalse(shapes[0].ShadowEnabled);
+            Assert.IsTrue(shapes[1].ShadowEnabled);
 
             Shape shape = shapes[0];
 
@@ -2674,34 +2655,34 @@ namespace ApiExamples
             RectangleF rectangleFOut = shape.AdjustWithEffects(rectangleF);
 
             // Since the shape has no border-changing effects, its boundary dimensions are unaffected.
-            Assert.That(rectangleFOut.X, Is.EqualTo(200));
-            Assert.That(rectangleFOut.Y, Is.EqualTo(200));
-            Assert.That(rectangleFOut.Width, Is.EqualTo(1000));
-            Assert.That(rectangleFOut.Height, Is.EqualTo(1000));
+            Assert.AreEqual(200, rectangleFOut.X);
+            Assert.AreEqual(200, rectangleFOut.Y);
+            Assert.AreEqual(1000, rectangleFOut.Width);
+            Assert.AreEqual(1000, rectangleFOut.Height);
 
             // Verify the final extent of the first shape, in points.
-            Assert.That(shape.BoundsWithEffects.X, Is.EqualTo(0));
-            Assert.That(shape.BoundsWithEffects.Y, Is.EqualTo(0));
-            Assert.That(shape.BoundsWithEffects.Width, Is.EqualTo(147));
-            Assert.That(shape.BoundsWithEffects.Height, Is.EqualTo(147));
+            Assert.AreEqual(0, shape.BoundsWithEffects.X);
+            Assert.AreEqual(0, shape.BoundsWithEffects.Y);
+            Assert.AreEqual(147, shape.BoundsWithEffects.Width);
+            Assert.AreEqual(147, shape.BoundsWithEffects.Height);
 
             shape = shapes[1];
             rectangleF = new RectangleF(200, 200, 1000, 1000);
             rectangleFOut = shape.AdjustWithEffects(rectangleF);
 
             // The shape effects have moved the apparent top left corner of the shape slightly.
-            Assert.That(rectangleFOut.X, Is.EqualTo(171.5));
-            Assert.That(rectangleFOut.Y, Is.EqualTo(167));
+            Assert.AreEqual(171.5, rectangleFOut.X);
+            Assert.AreEqual(167, rectangleFOut.Y);
 
             // The effects have also affected the visible dimensions of the shape.
-            Assert.That(rectangleFOut.Width, Is.EqualTo(1045));
-            Assert.That(rectangleFOut.Height, Is.EqualTo(1133.5));
+            Assert.AreEqual(1045, rectangleFOut.Width);
+            Assert.AreEqual(1133.5, rectangleFOut.Height);
 
             // The effects have also affected the visible bounds of the shape.
-            Assert.That(shape.BoundsWithEffects.X, Is.EqualTo(-28.5));
-            Assert.That(shape.BoundsWithEffects.Y, Is.EqualTo(-33));
-            Assert.That(shape.BoundsWithEffects.Width, Is.EqualTo(192));
-            Assert.That(shape.BoundsWithEffects.Height, Is.EqualTo(280.5));
+            Assert.AreEqual(-28.5, shape.BoundsWithEffects.X);
+            Assert.AreEqual(-33, shape.BoundsWithEffects.Y);
+            Assert.AreEqual(192, shape.BoundsWithEffects.Width);
+            Assert.AreEqual(280.5, shape.BoundsWithEffects.Height);
             //ExEnd
         }
 
@@ -2715,7 +2696,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Various shapes.docx");
             Shape[] shapes = doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().ToArray();
 
-            Assert.That(shapes.Length, Is.EqualTo(7));
+            Assert.AreEqual(7, shapes.Length);
 
             // There are 7 shapes in the document, including one group shape with 2 child shapes.
             // We will render every shape to an image file in the local file system
@@ -2725,7 +2706,7 @@ namespace ApiExamples
             {
                 ShapeRenderer renderer = shape.GetShapeRenderer();
                 ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Png);
-                renderer.Save(ArtifactsDir + $"Shape.RenderAllShapes.{shape.Name}.png", options);
+                renderer.Save(ArtifactsDir + string.Format("Shape.RenderAllShapes.{0}.png", shape.Name), options);
             }
             //ExEnd
         }
@@ -2740,7 +2721,7 @@ namespace ApiExamples
 
             int numberOfSmartArtShapes = doc.GetChildNodes(NodeType.Shape, true).Cast<Shape>().Count(shape => shape.HasSmartArt);
 
-            Assert.That(numberOfSmartArtShapes, Is.EqualTo(2));
+            Assert.AreEqual(2, numberOfSmartArtShapes);
             //ExEnd
 
         }
@@ -2768,37 +2749,37 @@ namespace ApiExamples
             OfficeMathRenderer renderer = new OfficeMathRenderer(officeMath);
 
             // Verify the size of the image that the OfficeMath object will create when we render it.
-            Assert.That(renderer.SizeInPoints.Width, Is.EqualTo(122.0f).Within(0.25f));
-            Assert.That(renderer.SizeInPoints.Height, Is.EqualTo(13.0f).Within(0.15f));
+            Assert.AreEqual(122.0f, renderer.SizeInPoints.Width, 0.25f);
+            Assert.AreEqual(13.0f, renderer.SizeInPoints.Height, 0.15f);
 
-            Assert.That(renderer.BoundsInPoints.Width, Is.EqualTo(122.0f).Within(0.25f));
-            Assert.That(renderer.BoundsInPoints.Height, Is.EqualTo(13.0f).Within(0.15f));
+            Assert.AreEqual(122.0f, renderer.BoundsInPoints.Width, 0.25f);
+            Assert.AreEqual(13.0f, renderer.BoundsInPoints.Height, 0.15f);
 
             // Shapes with transparent parts may contain different values in the "OpaqueBoundsInPoints" properties.
-            Assert.That(renderer.OpaqueBoundsInPoints.Width, Is.EqualTo(122.0f).Within(0.25f));
-            Assert.That(renderer.OpaqueBoundsInPoints.Height, Is.EqualTo(14.2f).Within(0.1f));
+            Assert.AreEqual(122.0f, renderer.OpaqueBoundsInPoints.Width, 0.25f);
+            Assert.AreEqual(14.2f, renderer.OpaqueBoundsInPoints.Height, 0.1f);
 
             // Get the shape size in pixels, with linear scaling to a specific DPI.
             Rectangle bounds = renderer.GetBoundsInPixels(1.0f, 96.0f);
 
-            Assert.That(bounds.Width, Is.EqualTo(163));
-            Assert.That(bounds.Height, Is.EqualTo(18));
+            Assert.AreEqual(163, bounds.Width);
+            Assert.AreEqual(18, bounds.Height);
 
             // Get the shape size in pixels, but with a different DPI for the horizontal and vertical dimensions.
             bounds = renderer.GetBoundsInPixels(1.0f, 96.0f, 150.0f);
-            Assert.That(bounds.Width, Is.EqualTo(163));
-            Assert.That(bounds.Height, Is.EqualTo(27));
+            Assert.AreEqual(163, bounds.Width);
+            Assert.AreEqual(27, bounds.Height);
 
             // The opaque bounds may vary here also.
             bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f);
 
-            Assert.That(bounds.Width, Is.EqualTo(163));
-            Assert.That(bounds.Height, Is.EqualTo(19));
+            Assert.AreEqual(163, bounds.Width);
+            Assert.AreEqual(19, bounds.Height);
 
             bounds = renderer.GetOpaqueBoundsInPixels(1.0f, 96.0f, 150.0f);
 
-            Assert.That(bounds.Width, Is.EqualTo(163));
-            Assert.That(bounds.Height, Is.EqualTo(29));
+            Assert.AreEqual(163, bounds.Width);
+            Assert.AreEqual(29, bounds.Height);
             //ExEnd
         }
 
@@ -2821,11 +2802,9 @@ namespace ApiExamples
                 RelativeVerticalPosition.Page, 0, 0, 0, WrapType.None);
 
             // To correct identify shape types you need to work with shapes as DML.
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx)
-            {
-                // "Strict" or "Transitional" compliance allows to save shape as DML.
-                Compliance = OoxmlCompliance.Iso29500_2008_Transitional
-            };
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(SaveFormat.Docx);
+            // "Strict" or "Transitional" compliance allows to save shape as DML.
+            saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
 
             doc.Save(ArtifactsDir + "Shape.ShapeTypes.docx", saveOptions);
             doc = new Document(ArtifactsDir + "Shape.ShapeTypes.docx");
@@ -2848,12 +2827,12 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Decorative shapes.docx");
 
             Shape shape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
-            Assert.That(shape.IsDecorative, Is.True);
+            Assert.IsTrue(shape.IsDecorative);
 
             // If "AlternativeText" is not empty, the shape cannot be decorative.
             // That's why our value has changed to 'false'.
             shape.AlternativeText = "Alternative text.";
-            Assert.That(shape.IsDecorative, Is.False);
+            Assert.IsFalse(shape.IsDecorative);
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -2931,7 +2910,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.NoTextRotation.docx");
             shape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
 
-            Assert.That(shape.TextBox.NoTextRotation, Is.EqualTo(true));
+            Assert.AreEqual(true, shape.TextBox.NoTextRotation);
         }
 
         [Test]
@@ -3012,14 +2991,14 @@ namespace ApiExamples
             shape.Stroke.Fill.ForeColor = Color.Green;
             shape.Stroke.Fill.Transparency = 0.5;
 
-            Assert.That(shape.Fill.ForeColor.ToArgb(), Is.EqualTo(Color.FromArgb(255, 255, 188, 188).ToArgb()));
-            Assert.That(shape.Fill.BaseForeColor.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
+            Assert.AreEqual(Color.FromArgb(255, 255, 188, 188).ToArgb(), shape.Fill.ForeColor.ToArgb());
+            Assert.AreEqual(Color.Red.ToArgb(), shape.Fill.BaseForeColor.ToArgb());
 
-            Assert.That(shape.Stroke.ForeColor.ToArgb(), Is.EqualTo(Color.FromArgb(128, 0, 128, 0).ToArgb()));
-            Assert.That(shape.Stroke.BaseForeColor.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+            Assert.AreEqual(Color.FromArgb(128, 0, 128, 0).ToArgb(), shape.Stroke.ForeColor.ToArgb());
+            Assert.AreEqual(Color.Green.ToArgb(), shape.Stroke.BaseForeColor.ToArgb());
 
-            Assert.That(shape.Stroke.Fill.ForeColor.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
-            Assert.That(shape.Stroke.Fill.BaseForeColor.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+            Assert.AreEqual(Color.Green.ToArgb(), shape.Stroke.Fill.ForeColor.ToArgb());
+            Assert.AreEqual(Color.Green.ToArgb(), shape.Stroke.Fill.BaseForeColor.ToArgb());
             //ExEnd:FillBaseColor
         }
 
@@ -3064,8 +3043,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.StrokeForeThemeColors.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(shape.Stroke.ForeThemeColor, Is.EqualTo(ThemeColor.Dark1));
-            Assert.That(shape.Stroke.ForeTintAndShade, Is.EqualTo(0.5));
+            Assert.AreEqual(ThemeColor.Dark1, shape.Stroke.ForeThemeColor);
+            Assert.AreEqual(0.5, shape.Stroke.ForeTintAndShade);
         }
 
         [Test]
@@ -3089,9 +3068,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.StrokeBackThemeColors.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(shape.Stroke.BackThemeColor, Is.EqualTo(ThemeColor.Dark2));
+            Assert.AreEqual(ThemeColor.Dark2, shape.Stroke.BackThemeColor);
             double precision = 1e-6;
-            Assert.That(shape.Stroke.BackTintAndShade, Is.EqualTo(0.2d).Within(precision));
+            Assert.AreEqual(0.2d, shape.Stroke.BackTintAndShade, precision);
         }
 
         [Test]
@@ -3107,11 +3086,11 @@ namespace ApiExamples
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             TextBoxControl textBoxControl = (TextBoxControl)shape.OleFormat.OleControl;
-            Assert.That(textBoxControl.Text, Is.EqualTo("Aspose.Words test"));
+            Assert.AreEqual("Aspose.Words test", textBoxControl.Text);
 
             textBoxControl.Text = "Updated text";
-            Assert.That(textBoxControl.Text, Is.EqualTo("Updated text"));
-            Assert.That(textBoxControl.Type, Is.EqualTo(Forms2OleControlType.Textbox));
+            Assert.AreEqual("Updated text", textBoxControl.Text);
+            Assert.AreEqual(Forms2OleControlType.Textbox, textBoxControl.Type);
             //ExEnd:TextBoxOleControl
         }
 
@@ -3139,15 +3118,15 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Shape.Glow.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(shape.Glow.Color.ToArgb(), Is.EqualTo(Color.FromArgb(217, 250, 128, 114).ToArgb()));
-            Assert.That(shape.Glow.Radius, Is.EqualTo(30));
-            Assert.That(shape.Glow.Transparency, Is.EqualTo(0.15d).Within(0.01d));
+            Assert.AreEqual(Color.FromArgb(217, 250, 128, 114).ToArgb(), shape.Glow.Color.ToArgb());
+            Assert.AreEqual(30, shape.Glow.Radius);
+            Assert.AreEqual(0.15d, shape.Glow.Transparency, 0.01d);
 
             shape.Glow.Remove();
 
-            Assert.That(shape.Glow.Color.ToArgb(), Is.EqualTo(Color.Black.ToArgb()));
-            Assert.That(shape.Glow.Radius, Is.EqualTo(0));
-            Assert.That(shape.Glow.Transparency, Is.EqualTo(0));
+            Assert.AreEqual(Color.Black.ToArgb(), shape.Glow.Color.ToArgb());
+            Assert.AreEqual(0, shape.Glow.Radius);
+            Assert.AreEqual(0, shape.Glow.Transparency);
             //ExEnd:Glow
         }
 
@@ -3179,17 +3158,17 @@ namespace ApiExamples
 
             ReflectionFormat reflectionFormat = shape.Reflection;
 
-            Assert.That(reflectionFormat.Transparency, Is.EqualTo(0.37d).Within(0.01d));
-            Assert.That(reflectionFormat.Size, Is.EqualTo(0.48d).Within(0.01d));
-            Assert.That(reflectionFormat.Blur, Is.EqualTo(17.5d).Within(0.01d));
-            Assert.That(reflectionFormat.Distance, Is.EqualTo(9.2d).Within(0.01d));
+            Assert.AreEqual(0.37d, reflectionFormat.Transparency, 0.01d);
+            Assert.AreEqual(0.48d, reflectionFormat.Size, 0.01d);
+            Assert.AreEqual(17.5d, reflectionFormat.Blur, 0.01d);
+            Assert.AreEqual(9.2d, reflectionFormat.Distance, 0.01d);
 
             reflectionFormat.Remove();
 
-            Assert.That(reflectionFormat.Transparency, Is.EqualTo(0));
-            Assert.That(reflectionFormat.Size, Is.EqualTo(0));
-            Assert.That(reflectionFormat.Blur, Is.EqualTo(0));
-            Assert.That(reflectionFormat.Distance, Is.EqualTo(0));
+            Assert.AreEqual(0, reflectionFormat.Transparency);
+            Assert.AreEqual(0, reflectionFormat.Size);
+            Assert.AreEqual(0, reflectionFormat.Blur);
+            Assert.AreEqual(0, reflectionFormat.Distance);
             //ExEnd:Reflection
         }
 
@@ -3217,13 +3196,13 @@ namespace ApiExamples
             SoftEdgeFormat softEdgeFormat = shape.SoftEdge;
 
             // Check soft edge radius.
-            Assert.That(softEdgeFormat.Radius, Is.EqualTo(30));
+            Assert.AreEqual(30, softEdgeFormat.Radius);
 
             // Remove soft edge from the shape.
             softEdgeFormat.Remove();
 
             // Check radius of the removed soft edge.
-            Assert.That(softEdgeFormat.Radius, Is.EqualTo(0));
+            Assert.AreEqual(0, softEdgeFormat.Radius);
             //ExEnd:SoftEdge
         }
 
@@ -3244,11 +3223,11 @@ namespace ApiExamples
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             AdjustmentCollection adjustments = shape.Adjustments;
-            Assert.That(adjustments.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, adjustments.Count);
 
             Adjustment adjustment = adjustments[0];
-            Assert.That(adjustment.Name, Is.EqualTo("adj"));
-            Assert.That(adjustment.Value, Is.EqualTo(16667));
+            Assert.AreEqual("adj", adjustment.Name);
+            Assert.AreEqual(16667, adjustment.Value);
 
             adjustment.Value = 30000;
 
@@ -3259,11 +3238,11 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             adjustments = shape.Adjustments;
-            Assert.That(adjustments.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, adjustments.Count);
 
             adjustment = adjustments[0];
-            Assert.That(adjustment.Name, Is.EqualTo("adj"));
-            Assert.That(adjustment.Value, Is.EqualTo(30000));
+            Assert.AreEqual("adj", adjustment.Name);
+            Assert.AreEqual(30000, adjustment.Value);
         }
 
         [Test]
@@ -3280,8 +3259,8 @@ namespace ApiExamples
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
             ShadowFormat shadowFormat = shape.ShadowFormat;
 
-            Assert.That(shadowFormat.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
-            Assert.That(shadowFormat.Type, Is.EqualTo(ShadowType.ShadowMixed));
+            Assert.AreEqual(Color.Red.ToArgb(), shadowFormat.Color.ToArgb());
+            Assert.AreEqual(ShadowType.ShadowMixed, shadowFormat.Type);
             //ExEnd:ShadowFormatColor
         }
 
@@ -3305,10 +3284,10 @@ namespace ApiExamples
             oleControl.Width = 201.06;
             //ExEnd:SetActiveXProperties
 
-            Assert.That(oleControl.ForeColor.ToArgb(), Is.EqualTo(Color.FromArgb(0x17, 0xE1, 0x35).ToArgb()));
-            Assert.That(oleControl.BackColor.ToArgb(), Is.EqualTo(Color.FromArgb(0x33, 0x97, 0xF4).ToArgb()));
-            Assert.That(oleControl.Height, Is.EqualTo(100.54));
-            Assert.That(oleControl.Width, Is.EqualTo(201.06));
+            Assert.AreEqual(Color.FromArgb(0x17, 0xE1, 0x35).ToArgb(), oleControl.ForeColor.ToArgb());
+            Assert.AreEqual(Color.FromArgb(0x33, 0x97, 0xF4).ToArgb(), oleControl.BackColor.ToArgb());
+            Assert.AreEqual(100.54, oleControl.Height);
+            Assert.AreEqual(201.06, oleControl.Width);
         }
 
         [Test]
@@ -3332,8 +3311,8 @@ namespace ApiExamples
             // Select second option button.
             optionButton2.Selected = true;
 
-            Assert.That(optionButton1.Type, Is.EqualTo(Forms2OleControlType.OptionButton));
-            Assert.That(optionButton2.Type, Is.EqualTo(Forms2OleControlType.OptionButton));
+            Assert.AreEqual(Forms2OleControlType.OptionButton, optionButton1.Type);
+            Assert.AreEqual(Forms2OleControlType.OptionButton, optionButton2.Type);
 
             doc.Save(ArtifactsDir + "Shape.SelectRadioControl.docx");
             //ExEnd:SelectRadioControl
@@ -3355,8 +3334,8 @@ namespace ApiExamples
             CheckBoxControl checkBoxControl = (CheckBoxControl)shape.OleFormat.OleControl;
             checkBoxControl.Checked = true;
             
-            Assert.That(checkBoxControl.Checked, Is.EqualTo(true));
-            Assert.That(checkBoxControl.Type, Is.EqualTo(Forms2OleControlType.CheckBox));
+            Assert.AreEqual(true, checkBoxControl.Checked);
+            Assert.AreEqual(Forms2OleControlType.CheckBox, checkBoxControl.Type);
             //ExEnd:CheckedCheckBox
         }
 
@@ -3432,8 +3411,8 @@ namespace ApiExamples
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
             foreach (Shape shape in shapes)
             {
-                Assert.That(shape.Width, Is.Not.EqualTo(0));
-                Assert.That(shape.Height, Is.Not.EqualTo(0));
+                Assert.AreNotEqual(0, shape.Width);
+                Assert.AreNotEqual(0, shape.Height);
             }
         }
 
@@ -3451,7 +3430,7 @@ namespace ApiExamples
 
             CommandButtonControl button1 = new CommandButtonControl();
             Shape shape = builder.InsertForms2OleControl(button1);
-            Assert.That(button1.Type, Is.EqualTo(Forms2OleControlType.CommandButton));
+            Assert.AreEqual(Forms2OleControlType.CommandButton, button1.Type);
             //ExEnd:InsertCommandButton
         }
 
@@ -3481,9 +3460,10 @@ namespace ApiExamples
             //ExSummary:Shows how to set caption for ActiveX control.
             DocumentBuilder builder = new DocumentBuilder();
 
-            CommandButtonControl button1 = new CommandButtonControl() { Caption = "Button caption" };
+            CommandButtonControl button1 = new CommandButtonControl();
+            button1.Caption = "Button caption";
             Shape shape = builder.InsertForms2OleControl(button1);
-            Assert.That(button1.Caption, Is.EqualTo("Button caption"));
+            Assert.AreEqual("Button caption", button1.Caption);
             //ExEnd:CommandButtonCaption
         }
     }

@@ -161,16 +161,16 @@ namespace ApiExamples
                 PageInfo pageInfo = doc.GetPageInfo(i);
 
                 // Print the page's orientation and dimensions.
-                Console.WriteLine($"Page {i + 1}:");
-                Console.WriteLine($"\tOrientation:\t{(pageInfo.Landscape ? "Landscape" : "Portrait")}");
-                Console.WriteLine($"\tPaper size:\t\t{pageInfo.PaperSize} ({pageInfo.WidthInPoints:F0}x{pageInfo.HeightInPoints:F0}pt)");
-                Console.WriteLine($"\tSize in points:\t{pageInfo.SizeInPoints}");
-                Console.WriteLine($"\tSize in pixels:\t{pageInfo.GetSizeInPixels(1.0f, 96)} at {scale * 100}% scale, {dpi} dpi");
+                Console.WriteLine(string.Format("Page {0}:", i + 1));
+                Console.WriteLine(string.Format("\tOrientation:\t{0}", (pageInfo.Landscape ? "Landscape" : "Portrait")));
+                Console.WriteLine(string.Format("\tPaper size:\t\t{0} ({1:F0}x{2:F0}pt)", pageInfo.PaperSize, pageInfo.WidthInPoints, pageInfo.HeightInPoints));
+                Console.WriteLine(string.Format("\tSize in points:\t{0}", pageInfo.SizeInPoints));
+                Console.WriteLine(string.Format("\tSize in pixels:\t{0} at {1}% scale, {2} dpi", pageInfo.GetSizeInPixels(1.0f, 96), scale * 100, dpi));
 
                 // Print the source tray information.
-                Console.WriteLine($"\tTray:\t{pageInfo.PaperTray}");
+                Console.WriteLine(string.Format("\tTray:\t{0}", pageInfo.PaperTray));
                 PaperSource source = pageInfo.GetSpecifiedPrinterPaperSource(paperSources, paperSources[0]);
-                Console.WriteLine($"\tSuitable print source:\t{source.SourceName}, kind: {source.Kind}");
+                Console.WriteLine(string.Format("\tSuitable print source:\t{0}, kind: {1}", source.SourceName, source.Kind));
             }
             //ExEnd
         }
@@ -189,12 +189,12 @@ namespace ApiExamples
             // which contains unique data for different printer drivers.
             PrinterSettingsContainer container = new PrinterSettingsContainer(new PrinterSettings());
 
-            Console.WriteLine($"This printer contains {container.PaperSources.Count} printer paper sources:");
+            Console.WriteLine(string.Format("This printer contains {0} printer paper sources:", container.PaperSources.Count));
             foreach (PaperSource paperSource in container.PaperSources)
             {
                 bool isDefault = container.DefaultPageSettingsPaperSource.SourceName == paperSource.SourceName;
-                Console.WriteLine($"\t{paperSource.SourceName}, " +
-                                  $"RawKind: {paperSource.RawKind} {(isDefault ? "(Default)" : "")}");
+                Console.WriteLine(string.Format("\t{0}, ", paperSource.SourceName) +
+                                  string.Format("RawKind: {0} {1}", paperSource.RawKind, (isDefault ? "(Default)" : "")));
             }
 
             // The "PaperSizes" property contains the list of paper sizes to instruct the printer to use.
@@ -203,10 +203,10 @@ namespace ApiExamples
             // If there is a paper source with the same "RawKind" value as that of the printing page,
             // the printer will print the page using the provided paper source and size.
             // Otherwise, the printer will default to the source designated by the "DefaultPageSettingsPaperSource" property.
-            Console.WriteLine($"{container.PaperSizes.Count} paper sizes:");
+            Console.WriteLine(string.Format("{0} paper sizes:", container.PaperSizes.Count));
             foreach (System.Drawing.Printing.PaperSize paperSize in container.PaperSizes)
             {
-                Console.WriteLine($"\t{paperSize}, RawKind: {paperSize.RawKind}");
+                Console.WriteLine(string.Format("\t{0}, RawKind: {1}", paperSize, paperSize.RawKind));
             }
             //ExEnd
         }
@@ -229,7 +229,7 @@ namespace ApiExamples
             // 2 -  Specify a printer that we wish to print the document with by name:
             string myPrinter = PrinterSettings.InstalledPrinters[4];
 
-            Assert.That(myPrinter, Is.EqualTo("HPDAAB96 (HP ENVY 5000 series)"));
+            Assert.AreEqual("HPDAAB96 (HP ENVY 5000 series)", myPrinter);
 
             doc.Print(myPrinter);
             //ExEnd
@@ -315,7 +315,7 @@ namespace ApiExamples
             previewDlg.ShowDialog();
 
             awPrintDoc.Print();
-            Console.WriteLine($"The numer of pages printed in color are {awPrintDoc.ColorPagesPrinted}.");
+            Console.WriteLine(string.Format("The numer of pages printed in color are {0}.", awPrintDoc.ColorPagesPrinted));
             //ExEnd
         }
 #endif

@@ -29,31 +29,29 @@ namespace ApiExamples
             //ExSummary:Shows how to make a saved document conform to an older ODT schema.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            OdtSaveOptions saveOptions = new OdtSaveOptions
-            {
-                MeasureUnit = OdtSaveMeasureUnit.Centimeters,
-                IsStrictSchema11 = exportToOdt11Specs
-            };
+            OdtSaveOptions saveOptions = new OdtSaveOptions();
+            saveOptions.MeasureUnit = OdtSaveMeasureUnit.Centimeters;
+            saveOptions.IsStrictSchema11 = exportToOdt11Specs;
 
             doc.Save(ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", saveOptions);
             //ExEnd
 
             doc = new Document(ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt");
 
-            Assert.That(doc.LayoutOptions.RevisionOptions.MeasurementUnit, Is.EqualTo(Aspose.Words.MeasurementUnits.Centimeters));
+            Assert.AreEqual(Aspose.Words.MeasurementUnits.Centimeters, doc.LayoutOptions.RevisionOptions.MeasurementUnit);
 
             if (exportToOdt11Specs)
             {
-                Assert.That(doc.Range.FormFields.Count, Is.EqualTo(2));
-                Assert.That(doc.Range.FormFields[0].Type, Is.EqualTo(FieldType.FieldFormTextInput));
-                Assert.That(doc.Range.FormFields[1].Type, Is.EqualTo(FieldType.FieldFormCheckBox));
+                Assert.AreEqual(2, doc.Range.FormFields.Count);
+                Assert.AreEqual(FieldType.FieldFormTextInput, doc.Range.FormFields[0].Type);
+                Assert.AreEqual(FieldType.FieldFormCheckBox, doc.Range.FormFields[1].Type);
             }
             else
             {
-                Assert.That(doc.Range.FormFields.Count, Is.EqualTo(3));
-                Assert.That(doc.Range.FormFields[0].Type, Is.EqualTo(FieldType.FieldFormTextInput));
-                Assert.That(doc.Range.FormFields[1].Type, Is.EqualTo(FieldType.FieldFormCheckBox));
-                Assert.That(doc.Range.FormFields[2].Type, Is.EqualTo(FieldType.FieldFormDropDown));
+                Assert.AreEqual(3, doc.Range.FormFields.Count);
+                Assert.AreEqual(FieldType.FieldFormTextInput, doc.Range.FormFields[0].Type);
+                Assert.AreEqual(FieldType.FieldFormCheckBox, doc.Range.FormFields[1].Type);
+                Assert.AreEqual(FieldType.FieldFormDropDown, doc.Range.FormFields[2].Type);
             }
         }
 
@@ -73,10 +71,8 @@ namespace ApiExamples
             // to define content such as style parameters using the metric system, which Open Office uses. 
             // We can set the "MeasureUnit" property to "OdtSaveMeasureUnit.Inches"
             // to define content such as style parameters using the imperial system, which Microsoft Word uses.
-            OdtSaveOptions saveOptions = new OdtSaveOptions
-            {
-                MeasureUnit = odtSaveMeasureUnit
-            };
+            OdtSaveOptions saveOptions = new OdtSaveOptions();
+            saveOptions.MeasureUnit = odtSaveMeasureUnit;
 
             doc.Save(ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", saveOptions);
             //ExEnd
@@ -120,14 +116,14 @@ namespace ApiExamples
 
             FileFormatInfo docInfo = FileFormatUtil.DetectFileFormat(ArtifactsDir + "OdtSaveOptions.Encrypt" + extensionString);
 
-            Assert.That(docInfo.IsEncrypted, Is.True);
+            Assert.IsTrue(docInfo.IsEncrypted);
 
             // If we wish to open or edit this document again using Aspose.Words,
             // we will have to provide a LoadOptions object with the correct password to the loading constructor.
             doc = new Document(ArtifactsDir + "OdtSaveOptions.Encrypt" + extensionString,
                 new LoadOptions("@sposeEncrypted_1145"));
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
             //ExEnd
         }
     }

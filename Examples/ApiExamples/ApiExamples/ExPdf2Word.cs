@@ -34,7 +34,7 @@ namespace ApiExamples
             // 1 -  Load as an Aspose.Words document:
             Document asposeWordsDoc = new Document(ArtifactsDir + "PDF2Word.LoadPdf.pdf");
 
-            Assert.That(asposeWordsDoc.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.AreEqual("Hello world!", asposeWordsDoc.GetText().Trim());
 
             // 2 -  Load as an Aspose.Pdf document:
             Aspose.Pdf.Document asposePdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "PDF2Word.LoadPdf.pdf");
@@ -42,7 +42,7 @@ namespace ApiExamples
             TextFragmentAbsorber textFragmentAbsorber = new TextFragmentAbsorber();
             asposePdfDoc.Pages.Accept(textFragmentAbsorber);
 
-            Assert.That(textFragmentAbsorber.Text.Trim(), Is.EqualTo("Hello world!"));
+            Assert.AreEqual("Hello world!", textFragmentAbsorber.Text.Trim());
             //ExEnd
         }
 
@@ -104,7 +104,7 @@ namespace ApiExamples
             PdfEncryptionDetails encryptionDetails =
                 new PdfEncryptionDetails("MyPassword", string.Empty);
 
-            Assert.That(encryptionDetails.Permissions, Is.EqualTo(PdfPermissions.DisallowAll));
+            Assert.AreEqual(PdfPermissions.DisallowAll, encryptionDetails.Permissions);
 
             PdfSaveOptions saveOptions = new PdfSaveOptions();
             saveOptions.EncryptionDetails = encryptionDetails;
@@ -118,7 +118,7 @@ namespace ApiExamples
 
             Document pdfDoc = new Document(ArtifactsDir + "PDF2Word.LoadEncryptedPdfUsingPlugin.pdf", loadOptions);
 
-            Assert.That(pdfDoc.GetText().Trim(), Is.EqualTo("Hello world! This is an encrypted PDF document."));
+            Assert.AreEqual("Hello world! This is an encrypted PDF document.", pdfDoc.GetText().Trim());
         }
     }
 }

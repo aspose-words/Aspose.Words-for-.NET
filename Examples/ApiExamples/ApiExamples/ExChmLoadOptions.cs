@@ -26,7 +26,8 @@ namespace ApiExamples
             // Our document contains URLs like "ms-its:amhelp.chm::....htm", but it has a different name,
             // so file links don't work after saving it to HTML.
             // We need to define the original filename in 'ChmLoadOptions' to avoid this behavior.
-            ChmLoadOptions loadOptions = new ChmLoadOptions { OriginalFileName = "amhelp.chm" };
+            ChmLoadOptions loadOptions = new ChmLoadOptions();
+            loadOptions.OriginalFileName = "amhelp.chm";
 
             Document doc = new Document(new MemoryStream(File.ReadAllBytes(MyDir + "Document with ms-its links.chm")),
                 loadOptions);

@@ -46,48 +46,48 @@ namespace ApiExamples
             // Normal editing of the document does not count as a revision.
             builder.Write("This does not count as a revision. ");
 
-            Assert.That(doc.HasRevisions, Is.False);
+            Assert.IsFalse(doc.HasRevisions);
 
             // To register our edits as revisions, we need to declare an author, and then start tracking them.
             doc.StartTrackRevisions("John Doe", DateTime.Now);
 
             builder.Write("This is revision #1. ");
 
-            Assert.That(doc.HasRevisions, Is.True);
-            Assert.That(doc.Revisions.Count, Is.EqualTo(1));
+            Assert.IsTrue(doc.HasRevisions);
+            Assert.AreEqual(1, doc.Revisions.Count);
 
             // This flag corresponds to the "Review" -> "Tracking" -> "Track Changes" option in Microsoft Word.
             // The "StartTrackRevisions" method does not affect its value,
             // and the document is tracking revisions programmatically despite it having a value of "false".
             // If we open this document using Microsoft Word, it will not be tracking revisions.
-            Assert.That(doc.TrackRevisions, Is.False);
+            Assert.IsFalse(doc.TrackRevisions);
 
             // We have added text using the document builder, so the first revision is an insertion-type revision.
             Revision revision = doc.Revisions[0];
-            Assert.That(revision.Author, Is.EqualTo("John Doe"));
-            Assert.That(revision.ParentNode.GetText(), Is.EqualTo("This is revision #1. "));
-            Assert.That(revision.RevisionType, Is.EqualTo(RevisionType.Insertion));
-            Assert.That(DateTime.Now.Date, Is.EqualTo(revision.DateTime.Date));
-            Assert.That(revision.Group, Is.EqualTo(doc.Revisions.Groups[0]));
+            Assert.AreEqual("John Doe", revision.Author);
+            Assert.AreEqual("This is revision #1. ", revision.ParentNode.GetText());
+            Assert.AreEqual(RevisionType.Insertion, revision.RevisionType);
+            Assert.AreEqual(revision.DateTime.Date, DateTime.Now.Date);
+            Assert.AreEqual(doc.Revisions.Groups[0], revision.Group);
 
             // Remove a run to create a deletion-type revision.
             doc.FirstSection.Body.FirstParagraph.Runs[0].Remove();
 
             // Adding a new revision places it at the beginning of the revision collection.
-            Assert.That(doc.Revisions[0].RevisionType, Is.EqualTo(RevisionType.Deletion));
-            Assert.That(doc.Revisions.Count, Is.EqualTo(2));
+            Assert.AreEqual(RevisionType.Deletion, doc.Revisions[0].RevisionType);
+            Assert.AreEqual(2, doc.Revisions.Count);
 
             // Insert revisions show up in the document body even before we accept/reject the revision.
             // Rejecting the revision will remove its nodes from the body. Conversely, nodes that make up delete revisions
             // also linger in the document until we accept the revision.
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("This does not count as a revision. This is revision #1."));
+            Assert.AreEqual("This does not count as a revision. This is revision #1.", doc.GetText().Trim());
 
             // Accepting the delete revision will remove its parent node from the paragraph text
             // and then remove the collection's revision itself.
             doc.Revisions[0].Accept();
 
-            Assert.That(doc.Revisions.Count, Is.EqualTo(1));
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("This is revision #1."));
+            Assert.AreEqual(1, doc.Revisions.Count);
+            Assert.AreEqual("This is revision #1.", doc.GetText().Trim());
 
             builder.Writeln("");
             builder.Write("This is revision #2.");
@@ -104,15 +104,15 @@ namespace ApiExamples
                 node = nextNode;
             }
 
-            Assert.That(doc.Revisions[0].RevisionType, Is.EqualTo(RevisionType.Moving));
-            Assert.That(doc.Revisions.Count, Is.EqualTo(8));
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("This is revision #2.\rThis is revision #1. \rThis is revision #2."));
+            Assert.AreEqual(RevisionType.Moving, doc.Revisions[0].RevisionType);
+            Assert.AreEqual(8, doc.Revisions.Count);
+            Assert.AreEqual("This is revision #2.\rThis is revision #1. \rThis is revision #2.", doc.GetText().Trim());
 
             // The moving revision is now at index 1. Reject the revision to discard its contents.
             doc.Revisions[1].Reject();
 
-            Assert.That(doc.Revisions.Count, Is.EqualTo(6));
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("This is revision #1. \rThis is revision #2."));
+            Assert.AreEqual(6, doc.Revisions.Count);
+            Assert.AreEqual("This is revision #1. \rThis is revision #2.", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -131,24 +131,24 @@ namespace ApiExamples
 
             // This collection itself has a collection of revision groups.
             // Each group is a sequence of adjacent revisions.
-            Assert.That(revisions.Groups.Count, Is.EqualTo(7)); //ExSkip
-            Console.WriteLine($"{revisions.Groups.Count} revision groups:");
+            Assert.AreEqual(7, revisions.Groups.Count); //ExSkip
+            Console.WriteLine(string.Format("{0} revision groups:", revisions.Groups.Count));
 
             // Iterate over the collection of groups and print the text that the revision concerns.
             using (IEnumerator<RevisionGroup> e = revisions.Groups.GetEnumerator())
             {
                 while (e.MoveNext())
                 {
-                    Console.WriteLine($"\tGroup type \"{e.Current.RevisionType}\", " +
-                                      $"author: {e.Current.Author}, contents: [{e.Current.Text.Trim()}]");
+                    Console.WriteLine(string.Format("\tGroup type \"{0}\", ", e.Current.RevisionType) +
+                                      string.Format("author: {0}, contents: [{1}]", e.Current.Author, e.Current.Text.Trim()));
                 }
             }
 
             // Each Run that a revision affects gets a corresponding Revision object.
             // The revisions' collection is considerably larger than the condensed form we printed above,
             // depending on how many Runs we have segmented the document into during Microsoft Word editing.
-            Assert.That(revisions.Count, Is.EqualTo(11)); //ExSkip
-            Console.WriteLine($"\n{revisions.Count} revisions:");
+            Assert.AreEqual(11, revisions.Count); //ExSkip
+            Console.WriteLine(string.Format("\n{0} revisions:", revisions.Count));
 
             using (IEnumerator<Revision> e = revisions.GetEnumerator())
             {
@@ -159,13 +159,13 @@ namespace ApiExamples
                     // Since all other changes affect nodes, ParentNode will conversely be in use, and ParentStyle will be null.
                     if (e.Current.RevisionType == RevisionType.StyleDefinitionChange)
                     {
-                        Console.WriteLine($"\tRevision type \"{e.Current.RevisionType}\", " +
-                                          $"author: {e.Current.Author}, style: [{e.Current.ParentStyle.Name}]");
+                        Console.WriteLine(string.Format("\tRevision type \"{0}\", ", e.Current.RevisionType) +
+                                          string.Format("author: {0}, style: [{1}]", e.Current.Author, e.Current.ParentStyle.Name));
                     }
                     else
                     {
-                        Console.WriteLine($"\tRevision type \"{e.Current.RevisionType}\", " +
-                                          $"author: {e.Current.Author}, contents: [{e.Current.ParentNode.GetText().Trim()}]");
+                        Console.WriteLine(string.Format("\tRevision type \"{0}\", ", e.Current.RevisionType) +
+                                          string.Format("author: {0}, contents: [{1}]", e.Current.Author, e.Current.ParentNode.GetText().Trim()));
                     }
                 }
             }
@@ -173,7 +173,7 @@ namespace ApiExamples
             // Reject all revisions via the collection, reverting the document to its original form.
             revisions.RejectAll();
 
-            Assert.That(revisions.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, revisions.Count);
             //ExEnd
         }
 
@@ -190,12 +190,12 @@ namespace ApiExamples
             //ExSummary:Shows how to print info about a group of revisions in a document.
             Document doc = new Document(MyDir + "Revisions.docx");
 
-            Assert.That(doc.Revisions.Groups.Count, Is.EqualTo(7));
+            Assert.AreEqual(7, doc.Revisions.Groups.Count);
 
             foreach (RevisionGroup group in doc.Revisions.Groups)
             {
                 Console.WriteLine(
-                    $"Revision author: {group.Author}; Revision type: {group.RevisionType} \n\tRevision text: {group.Text}");
+                    string.Format("Revision author: {0}; Revision type: {1} \n\tRevision text: {2}", group.Author, group.RevisionType, group.Text));
             }
             //ExEnd
         }
@@ -212,8 +212,8 @@ namespace ApiExamples
             RevisionGroup revisionGroup = doc.Revisions.Groups[0];
             //ExEnd
 
-            Assert.That(revisionGroup.RevisionType, Is.EqualTo(RevisionType.Deletion));
-            Assert.That(revisionGroup.Text, Is.EqualTo("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "));
+            Assert.AreEqual(RevisionType.Deletion, revisionGroup.RevisionType);
+            Assert.AreEqual("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ", revisionGroup.Text);
         }
 
         [Test]
@@ -322,13 +322,13 @@ namespace ApiExamples
             doc.FirstSection.Body.FirstParagraph.Runs[0].Remove();
             doc.StopTrackRevisions();
 
-            Assert.That(doc.Revisions.Count, Is.EqualTo(3));
+            Assert.AreEqual(3, doc.Revisions.Count);
             // We have two revisions from different authors, so we need to accept only one.
             doc.Revisions.Accept(new RevisionCriteria("John Doe", RevisionType.Insertion));
-            Assert.That(doc.Revisions.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.Revisions.Count);
             // Reject revision with different author name and revision type.
             doc.Revisions.Reject(new RevisionCriteria("Jane Doe", RevisionType.Deletion));
-            Assert.That(doc.Revisions.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, doc.Revisions.Count);
 
             doc.Save(ArtifactsDir + "Revision.RevisionSpecifiedCriteria.docx");
         }
@@ -368,33 +368,33 @@ namespace ApiExamples
             // Editing a document usually does not count as a revision until we begin tracking them.
             builder.Write("Hello world! ");
 
-            Assert.That(doc.Revisions.Count, Is.EqualTo(0));
-            Assert.That(doc.FirstSection.Body.Paragraphs[0].Runs[0].IsInsertRevision, Is.False);
+            Assert.AreEqual(0, doc.Revisions.Count);
+            Assert.IsFalse(doc.FirstSection.Body.Paragraphs[0].Runs[0].IsInsertRevision);
 
             doc.StartTrackRevisions("John Doe");
 
             builder.Write("Hello again! ");
 
-            Assert.That(doc.Revisions.Count, Is.EqualTo(1));
-            Assert.That(doc.FirstSection.Body.Paragraphs[0].Runs[1].IsInsertRevision, Is.True);
-            Assert.That(doc.Revisions[0].Author, Is.EqualTo("John Doe"));
-            Assert.That((DateTime.Now - doc.Revisions[0].DateTime).Milliseconds <= 10, Is.True);
+            Assert.AreEqual(1, doc.Revisions.Count);
+            Assert.IsTrue(doc.FirstSection.Body.Paragraphs[0].Runs[1].IsInsertRevision);
+            Assert.AreEqual("John Doe", doc.Revisions[0].Author);
+            Assert.IsTrue((DateTime.Now - doc.Revisions[0].DateTime).Milliseconds <= 10);
 
             // Stop tracking revisions to not count any future edits as revisions.
             doc.StopTrackRevisions();
             builder.Write("Hello again! ");
 
-            Assert.That(doc.Revisions.Count, Is.EqualTo(1));
-            Assert.That(doc.FirstSection.Body.Paragraphs[0].Runs[2].IsInsertRevision, Is.False);
+            Assert.AreEqual(1, doc.Revisions.Count);
+            Assert.IsFalse(doc.FirstSection.Body.Paragraphs[0].Runs[2].IsInsertRevision);
 
             // Creating revisions gives them a date and time of the operation.
             // We can disable this by passing DateTime.MinValue when we start tracking revisions.
             doc.StartTrackRevisions("John Doe", DateTime.MinValue);
             builder.Write("Hello again! ");
 
-            Assert.That(doc.Revisions.Count, Is.EqualTo(2));
-            Assert.That(doc.Revisions[1].Author, Is.EqualTo("John Doe"));
-            Assert.That(doc.Revisions[1].DateTime, Is.EqualTo(DateTime.MinValue));
+            Assert.AreEqual(2, doc.Revisions.Count);
+            Assert.AreEqual("John Doe", doc.Revisions[1].Author);
+            Assert.AreEqual(DateTime.MinValue, doc.Revisions[1].DateTime);
 
             // We can accept/reject these revisions programmatically
             // by calling methods such as Document.AcceptAllRevisions, or each revision's Accept method.
@@ -419,14 +419,14 @@ namespace ApiExamples
             builder.Write("This is another revision.");
             doc.StopTrackRevisions();
 
-            Assert.That(doc.Revisions.Count, Is.EqualTo(3));
+            Assert.AreEqual(3, doc.Revisions.Count);
 
             // We can iterate through every revision and accept/reject it as a part of our document.
             // If we know we wish to accept every revision, we can do it more straightforwardly so by calling this method.
             doc.AcceptAllRevisions();
 
-            Assert.That(doc.Revisions.Count, Is.EqualTo(0));
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world! Hello again! This is another revision."));
+            Assert.AreEqual(0, doc.Revisions.Count);
+            Assert.AreEqual("Hello world! Hello again! This is another revision.", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -441,24 +441,24 @@ namespace ApiExamples
             doc.UpdateListLabels();
 
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-            Assert.That(paragraphs[0].ListLabel.LabelString, Is.EqualTo("1."));
-            Assert.That(paragraphs[1].ListLabel.LabelString, Is.EqualTo("a."));
-            Assert.That(paragraphs[2].ListLabel.LabelString, Is.EqualTo(string.Empty));
+            Assert.AreEqual("1.", paragraphs[0].ListLabel.LabelString);
+            Assert.AreEqual("a.", paragraphs[1].ListLabel.LabelString);
+            Assert.AreEqual(string.Empty, paragraphs[2].ListLabel.LabelString);
 
             // View the document object as if all the revisions are accepted. Currently supports list labels.
             doc.RevisionsView = RevisionsView.Final;
 
-            Assert.That(paragraphs[0].ListLabel.LabelString, Is.EqualTo(string.Empty));
-            Assert.That(paragraphs[1].ListLabel.LabelString, Is.EqualTo("1."));
-            Assert.That(paragraphs[2].ListLabel.LabelString, Is.EqualTo("a."));
+            Assert.AreEqual(string.Empty, paragraphs[0].ListLabel.LabelString);
+            Assert.AreEqual("1.", paragraphs[1].ListLabel.LabelString);
+            Assert.AreEqual("a.", paragraphs[2].ListLabel.LabelString);
             //ExEnd
 
             doc.RevisionsView = RevisionsView.Original;
             doc.AcceptAllRevisions();
 
-            Assert.That(paragraphs[0].ListLabel.LabelString, Is.EqualTo("a."));
-            Assert.That(paragraphs[1].ListLabel.LabelString, Is.EqualTo(string.Empty));
-            Assert.That(paragraphs[2].ListLabel.LabelString, Is.EqualTo("b."));
+            Assert.AreEqual("a.", paragraphs[0].ListLabel.LabelString);
+            Assert.AreEqual(string.Empty, paragraphs[1].ListLabel.LabelString);
+            Assert.AreEqual("b.", paragraphs[2].ListLabel.LabelString);
         }
 
         [Test]
@@ -482,21 +482,21 @@ namespace ApiExamples
 
             // After the comparison, the original document will gain a new revision
             // for every element that is different in the edited document.
-            Assert.That(docOriginal.Revisions.Count, Is.EqualTo(2)); //ExSkip
+            Assert.AreEqual(2, docOriginal.Revisions.Count); //ExSkip
             foreach (Revision r in docOriginal.Revisions)
             {
-                Console.WriteLine($"Revision type: {r.RevisionType}, on a node of type \"{r.ParentNode.NodeType}\"");
-                Console.WriteLine($"\tChanged text: \"{r.ParentNode.GetText()}\"");
+                Console.WriteLine(string.Format("Revision type: {0}, on a node of type \"{1}\"", r.RevisionType, r.ParentNode.NodeType));
+                Console.WriteLine(string.Format("\tChanged text: \"{0}\"", r.ParentNode.GetText()));
             }
 
             // Accepting these revisions will transform the original document into the edited document.
             docOriginal.Revisions.AcceptAll();
 
-            Assert.That(docEdited.GetText(), Is.EqualTo(docOriginal.GetText()));
+            Assert.AreEqual(docOriginal.GetText(), docEdited.GetText());
             //ExEnd
 
             docOriginal = DocumentHelper.SaveOpen(docOriginal);
-            Assert.That(docOriginal.Revisions.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, docOriginal.Revisions.Count);
         }
 
         [Test]
@@ -584,19 +584,17 @@ namespace ApiExamples
             // Comparing documents creates a revision for every edit in the edited document.
             // A CompareOptions object has a series of flags that can suppress revisions
             // on each respective type of element, effectively ignoring their change.
-            CompareOptions compareOptions = new CompareOptions
-            {
-                CompareMoves = false,
-                IgnoreFormatting = false,
-                IgnoreCaseChanges = false,
-                IgnoreComments = false,
-                IgnoreTables = false,
-                IgnoreFields = false,
-                IgnoreFootnotes = false,
-                IgnoreTextboxes = false,
-                IgnoreHeadersAndFooters = false,
-                Target = ComparisonTargetType.New
-            };
+            CompareOptions compareOptions = new CompareOptions();
+            compareOptions.CompareMoves = false;
+            compareOptions.IgnoreFormatting = false;
+            compareOptions.IgnoreCaseChanges = false;
+            compareOptions.IgnoreComments = false;
+            compareOptions.IgnoreTables = false;
+            compareOptions.IgnoreFields = false;
+            compareOptions.IgnoreFootnotes = false;
+            compareOptions.IgnoreTextboxes = false;
+            compareOptions.IgnoreHeadersAndFooters = false;
+            compareOptions.Target = ComparisonTargetType.New;
 
             docOriginal.Compare(docEdited, "John Doe", DateTime.Now, compareOptions);
             docOriginal.Save(ArtifactsDir + "Revision.CompareOptions.docx");
@@ -627,7 +625,7 @@ namespace ApiExamples
 
             docA.Compare(docB, "Aspose.Words", DateTime.Now, compareOptions);
 
-            Assert.That(docA.Revisions.Count, Is.EqualTo(isIgnoreDmlUniqueId ? 0 : 2));
+            Assert.AreEqual(isIgnoreDmlUniqueId ? 0 : 2, docA.Revisions.Count);
             //ExEnd
         }
 
@@ -650,8 +648,8 @@ namespace ApiExamples
             // Insert a revision, then change the color of all revisions to green.
             builder.Writeln("This is not a revision.");
             doc.StartTrackRevisions("John Doe", DateTime.Now);
-            Assert.That(doc.LayoutOptions.RevisionOptions.InsertedTextColor, Is.EqualTo(RevisionColor.ByAuthor)); //ExSkip
-            Assert.That(doc.LayoutOptions.RevisionOptions.ShowRevisionBars, Is.True); //ExSkip
+            Assert.AreEqual(RevisionColor.ByAuthor, doc.LayoutOptions.RevisionOptions.InsertedTextColor); //ExSkip
+            Assert.IsTrue(doc.LayoutOptions.RevisionOptions.ShowRevisionBars); //ExSkip
             builder.Writeln("This is a revision.");
             doc.StopTrackRevisions();
             builder.Writeln("This is not a revision.");
@@ -690,42 +688,42 @@ namespace ApiExamples
 
             // The first document's collection of revision groups contains all the differences between documents.
             RevisionGroupCollection groups = docA.Revisions.Groups;
-            Assert.That(groups.Count, Is.EqualTo(5));
+            Assert.AreEqual(5, groups.Count);
             //ExEnd
 
             if (granularity == Granularity.CharLevel)
             {
-                Assert.That(groups[0].RevisionType, Is.EqualTo(RevisionType.Deletion));
-                Assert.That(groups[0].Text, Is.EqualTo("Alpha "));
+                Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
+                Assert.AreEqual("Alpha ", groups[0].Text);
 
-                Assert.That(groups[1].RevisionType, Is.EqualTo(RevisionType.Deletion));
-                Assert.That(groups[1].Text, Is.EqualTo(","));
+                Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
+                Assert.AreEqual(",", groups[1].Text);
 
-                Assert.That(groups[2].RevisionType, Is.EqualTo(RevisionType.Insertion));
-                Assert.That(groups[2].Text, Is.EqualTo("s"));
+                Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
+                Assert.AreEqual("s", groups[2].Text);
 
-                Assert.That(groups[3].RevisionType, Is.EqualTo(RevisionType.Insertion));
-                Assert.That(groups[3].Text, Is.EqualTo("- \""));
+                Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
+                Assert.AreEqual("- \"", groups[3].Text);
 
-                Assert.That(groups[4].RevisionType, Is.EqualTo(RevisionType.Insertion));
-                Assert.That(groups[4].Text, Is.EqualTo("\""));
+                Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
+                Assert.AreEqual("\"", groups[4].Text);
             }
             else
             {
-                Assert.That(groups[0].RevisionType, Is.EqualTo(RevisionType.Deletion));
-                Assert.That(groups[0].Text, Is.EqualTo("Alpha Lorem"));
+                Assert.AreEqual(RevisionType.Deletion, groups[0].RevisionType);
+                Assert.AreEqual("Alpha Lorem", groups[0].Text);
 
-                Assert.That(groups[1].RevisionType, Is.EqualTo(RevisionType.Deletion));
-                Assert.That(groups[1].Text, Is.EqualTo(","));
+                Assert.AreEqual(RevisionType.Deletion, groups[1].RevisionType);
+                Assert.AreEqual(",", groups[1].Text);
 
-                Assert.That(groups[2].RevisionType, Is.EqualTo(RevisionType.Insertion));
-                Assert.That(groups[2].Text, Is.EqualTo("Lorems"));
+                Assert.AreEqual(RevisionType.Insertion, groups[2].RevisionType);
+                Assert.AreEqual("Lorems", groups[2].Text);
 
-                Assert.That(groups[3].RevisionType, Is.EqualTo(RevisionType.Insertion));
-                Assert.That(groups[3].Text, Is.EqualTo("- \""));
+                Assert.AreEqual(RevisionType.Insertion, groups[3].RevisionType);
+                Assert.AreEqual("- \"", groups[3].Text);
 
-                Assert.That(groups[4].RevisionType, Is.EqualTo(RevisionType.Insertion));
-                Assert.That(groups[4].Text, Is.EqualTo("\""));
+                Assert.AreEqual(RevisionType.Insertion, groups[4].RevisionType);
+                Assert.AreEqual("\"", groups[4].Text);
             }
         }
 
@@ -745,13 +743,13 @@ namespace ApiExamples
             compareOptions.AdvancedOptions.IgnoreStoreItemId = false;
 
             docA.Compare(docB, "user", DateTime.Now, compareOptions);
-            Assert.That(docA.Revisions.Count, Is.EqualTo(8));
+            Assert.AreEqual(8, docA.Revisions.Count);
 
             compareOptions.AdvancedOptions.IgnoreStoreItemId = true;
 
             docA.Revisions.RejectAll();
             docA.Compare(docB, "user", DateTime.Now, compareOptions);
-            Assert.That(docA.Revisions.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, docA.Revisions.Count);
             //ExEnd:IgnoreStoreItemId
         }
 

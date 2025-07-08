@@ -45,9 +45,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Border.FontBorder.docx");
             Border border = doc.FirstSection.Body.FirstParagraph.Runs[0].Font.Border;
 
-            Assert.That(border.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
-            Assert.That(border.LineWidth, Is.EqualTo(2.5d));
-            Assert.That(border.LineStyle, Is.EqualTo(LineStyle.DashDotStroker));
+            Assert.AreEqual(Color.Green.ToArgb(), border.Color.ToArgb());
+            Assert.AreEqual(2.5d, border.LineWidth);
+            Assert.AreEqual(LineStyle.DashDotStroker, border.LineStyle);
         }
 
         [Test]
@@ -79,10 +79,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Border.ParagraphTopBorder.docx");
             Border border = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders.Top;
 
-            Assert.That(border.LineWidth, Is.EqualTo(4.0d));
-            Assert.That(border.LineStyle, Is.EqualTo(LineStyle.DashSmallGap));
-            Assert.That(border.ThemeColor, Is.EqualTo(ThemeColor.Accent1));
-            Assert.That(border.TintAndShade, Is.EqualTo(0.25d).Within(0.01));
+            Assert.AreEqual(4.0d, border.LineWidth);
+            Assert.AreEqual(LineStyle.DashSmallGap, border.LineStyle);
+            Assert.AreEqual(ThemeColor.Accent1, border.ThemeColor);
+            Assert.AreEqual(0.25d, border.TintAndShade, 0.01);
         }
 
         [Test]
@@ -98,20 +98,20 @@ namespace ApiExamples
             // We can access the settings for the appearance of these borders via the paragraph format object.
             BorderCollection borders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
 
-            Assert.That(borders[0].Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
-            Assert.That(borders[0].LineWidth, Is.EqualTo(3.0d));
-            Assert.That(borders[0].LineStyle, Is.EqualTo(LineStyle.Single));
-            Assert.That(borders[0].IsVisible, Is.True);
+            Assert.AreEqual(Color.Red.ToArgb(), borders[0].Color.ToArgb());
+            Assert.AreEqual(3.0d, borders[0].LineWidth);
+            Assert.AreEqual(LineStyle.Single, borders[0].LineStyle);
+            Assert.IsTrue(borders[0].IsVisible);
 
             // We can remove a border at once by running the ClearFormatting method. 
             // Running this method on every border of a paragraph will remove all its borders.
             foreach (Border border in borders)
                 border.ClearFormatting();
 
-            Assert.That(borders[0].Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
-            Assert.That(borders[0].LineWidth, Is.EqualTo(0.0d));
-            Assert.That(borders[0].LineStyle, Is.EqualTo(LineStyle.None));
-            Assert.That(borders[0].IsVisible, Is.False);
+            Assert.AreEqual(Color.Empty.ToArgb(), borders[0].Color.ToArgb());
+            Assert.AreEqual(0.0d, borders[0].LineWidth);
+            Assert.AreEqual(LineStyle.None, borders[0].LineStyle);
+            Assert.IsFalse(borders[0].IsVisible);
 
             doc.Save(ArtifactsDir + "Border.ClearFormatting.docx");
             //ExEnd
@@ -120,9 +120,9 @@ namespace ApiExamples
 
             foreach (Border testBorder in doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders)
             {
-                Assert.That(testBorder.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
-                Assert.That(testBorder.LineWidth, Is.EqualTo(0.0d));
-                Assert.That(testBorder.LineStyle, Is.EqualTo(LineStyle.None));
+                Assert.AreEqual(Color.Empty.ToArgb(), testBorder.Color.ToArgb());
+                Assert.AreEqual(0.0d, testBorder.LineWidth);
+                Assert.AreEqual(LineStyle.None, testBorder.LineStyle);
             }
         }
 
@@ -147,13 +147,13 @@ namespace ApiExamples
             // these paragraphs, their border collections share the same elements.
             BorderCollection firstParagraphBorders = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Borders;
             BorderCollection secondParagraphBorders = builder.CurrentParagraph.ParagraphFormat.Borders;
-            Assert.That(firstParagraphBorders.Count, Is.EqualTo(6)); //ExSkip
+            Assert.AreEqual(6, firstParagraphBorders.Count); //ExSkip
 
             for (int i = 0; i < firstParagraphBorders.Count; i++)
             {
-                Assert.That(firstParagraphBorders[i].Equals(secondParagraphBorders[i]), Is.True);
-                Assert.That(secondParagraphBorders[i].GetHashCode(), Is.EqualTo(firstParagraphBorders[i].GetHashCode()));
-                Assert.That(firstParagraphBorders[i].IsVisible, Is.False);
+                Assert.IsTrue(firstParagraphBorders[i].Equals(secondParagraphBorders[i]));
+                Assert.AreEqual(firstParagraphBorders[i].GetHashCode(), secondParagraphBorders[i].GetHashCode());
+                Assert.IsFalse(firstParagraphBorders[i].IsVisible);
             }
 
             foreach (Border border in secondParagraphBorders)
@@ -163,11 +163,11 @@ namespace ApiExamples
             // the border collections no longer share the same elements.
             for (int i = 0; i < firstParagraphBorders.Count; i++)
             {
-                Assert.That(firstParagraphBorders[i].Equals(secondParagraphBorders[i]), Is.False);
-                Assert.That(secondParagraphBorders[i].GetHashCode(), Is.Not.EqualTo(firstParagraphBorders[i].GetHashCode()));
+                Assert.IsFalse(firstParagraphBorders[i].Equals(secondParagraphBorders[i]));
+                Assert.AreNotEqual(firstParagraphBorders[i].GetHashCode(), secondParagraphBorders[i].GetHashCode());
 
                 // Changing the appearance of an empty border makes it visible.
-                Assert.That(secondParagraphBorders[i].IsVisible, Is.True);
+                Assert.IsTrue(secondParagraphBorders[i].IsVisible);
             }
 
             doc.Save(ArtifactsDir + "Border.SharedElements.docx");
@@ -177,10 +177,10 @@ namespace ApiExamples
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
             foreach (Border testBorder in paragraphs[0].ParagraphFormat.Borders)
-                Assert.That(testBorder.LineStyle, Is.EqualTo(LineStyle.None));
+                Assert.AreEqual(LineStyle.None, testBorder.LineStyle);
 
             foreach (Border testBorder in paragraphs[1].ParagraphFormat.Borders)
-                Assert.That(testBorder.LineStyle, Is.EqualTo(LineStyle.DotDash));
+                Assert.AreEqual(LineStyle.DotDash, testBorder.LineStyle);
         }
 
         [Test]
@@ -212,8 +212,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Border.HorizontalBorders.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            Assert.That(paragraphs[0].ParagraphFormat.Borders[BorderType.Horizontal].LineStyle, Is.EqualTo(LineStyle.DashSmallGap));
-            Assert.That(paragraphs[1].ParagraphFormat.Borders[BorderType.Horizontal].LineStyle, Is.EqualTo(LineStyle.DashSmallGap));
+            Assert.AreEqual(LineStyle.DashSmallGap, paragraphs[0].ParagraphFormat.Borders[BorderType.Horizontal].LineStyle);
+            Assert.AreEqual(LineStyle.DashSmallGap, paragraphs[1].ParagraphFormat.Borders[BorderType.Horizontal].LineStyle);
         }
 
         [Test]
@@ -233,9 +233,9 @@ namespace ApiExamples
             for (int i = 0; i < 3; i++)
             {
                 builder.InsertCell();
-                builder.Write($"Row {i + 1}, Column 1");
+                builder.Write(string.Format("Row {0}, Column 1", i + 1));
                 builder.InsertCell();
-                builder.Write($"Row {i + 1}, Column 2");
+                builder.Write(string.Format("Row {0}, Column 2", i + 1));
 
                 Row row = builder.EndRow();
                 BorderCollection borders = row.RowFormat.Borders;
@@ -254,9 +254,9 @@ namespace ApiExamples
             // A row format, and a cell's inner paragraph use different border settings.
             Border border = table.FirstRow.FirstCell.LastParagraph.ParagraphFormat.Borders.Vertical;
 
-            Assert.That(border.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
-            Assert.That(border.LineWidth, Is.EqualTo(0.0d));
-            Assert.That(border.LineStyle, Is.EqualTo(LineStyle.None));
+            Assert.AreEqual(Color.Empty.ToArgb(), border.Color.ToArgb());
+            Assert.AreEqual(0.0d, border.LineWidth);
+            Assert.AreEqual(LineStyle.None, border.LineStyle);
 
             doc.Save(ArtifactsDir + "Border.VerticalBorders.docx");
             //ExEnd
@@ -266,13 +266,13 @@ namespace ApiExamples
 
             foreach (Row row in table.GetChildNodes(NodeType.Row, true))
             {
-                Assert.That(row.RowFormat.Borders.Horizontal.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
-                Assert.That(row.RowFormat.Borders.Horizontal.LineStyle, Is.EqualTo(LineStyle.Dot));
-                Assert.That(row.RowFormat.Borders.Horizontal.LineWidth, Is.EqualTo(2.0d));
+                Assert.AreEqual(Color.Red.ToArgb(), row.RowFormat.Borders.Horizontal.Color.ToArgb());
+                Assert.AreEqual(LineStyle.Dot, row.RowFormat.Borders.Horizontal.LineStyle);
+                Assert.AreEqual(2.0d, row.RowFormat.Borders.Horizontal.LineWidth);
 
-                Assert.That(row.RowFormat.Borders.Vertical.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
-                Assert.That(row.RowFormat.Borders.Vertical.LineStyle, Is.EqualTo(LineStyle.Dot));
-                Assert.That(row.RowFormat.Borders.Vertical.LineWidth, Is.EqualTo(2.0d));
+                Assert.AreEqual(Color.Blue.ToArgb(), row.RowFormat.Borders.Vertical.Color.ToArgb());
+                Assert.AreEqual(LineStyle.Dot, row.RowFormat.Borders.Vertical.LineStyle);
+                Assert.AreEqual(2.0d, row.RowFormat.Borders.Vertical.LineWidth);
             }
         }
     }

@@ -61,11 +61,9 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(document);
 
             // Configure and insert a signature line, an object in the document that will display a signature that we sign it with.
-            SignatureLineOptions signatureLineOptions = new SignatureLineOptions
-            {
-                Signer = signeeInfo.Name, 
-                SignerTitle = signeeInfo.Position
-            };
+            SignatureLineOptions signatureLineOptions = new SignatureLineOptions();
+            signatureLineOptions.Signer = signeeInfo.Name;
+            signatureLineOptions.SignerTitle = signeeInfo.Position;
 
             SignatureLine signatureLine = builder.InsertSignatureLine(signatureLineOptions).SignatureLine;
             signatureLine.Id = signeeInfo.PersonId;
@@ -75,11 +73,9 @@ namespace ApiExamples
 
             CertificateHolder certificateHolder = CertificateHolder.Create(certificatePath, certificatePassword);
             
-            SignOptions signOptions = new SignOptions
-            {
-                SignatureLineId = signeeInfo.PersonId,
-                SignatureLineImage = signeeInfo.Image
-            };
+            SignOptions signOptions = new SignOptions();
+            signOptions.SignatureLineId = signeeInfo.PersonId;
+            signOptions.SignatureLineImage = signeeInfo.Image;
 
             // Overwrite the unsigned document we saved above with a version signed using the certificate.
             DigitalSignatureUtil.Sign(dstDocumentPath, dstDocumentPath, certificateHolder, signOptions);

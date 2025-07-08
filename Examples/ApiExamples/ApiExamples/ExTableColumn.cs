@@ -25,7 +25,12 @@ namespace ApiExamples
         {
             private Column(Table table, int columnIndex)
             {
-                mTable = table ?? throw new ArgumentException("table");
+                mTable = table;
+                if (mTable == null)
+                {
+                    throw new ArgumentException("table");
+                }
+
                 mColumnIndex = columnIndex;
             }
 
@@ -121,28 +126,28 @@ namespace ApiExamples
             private int mColumnIndex;
             private readonly Table mTable;
         }
-        
+
         [Test]
         public void RemoveColumnFromTable()
         {
             Document doc = new Document(MyDir + "Tables.docx");
-            Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
+            Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
 
             Column column = Column.FromIndex(table, 2);
             column.Remove();
 
             doc.Save(ArtifactsDir + "TableColumn.RemoveColumn.doc");
 
-            Assert.That(table.GetChildNodes(NodeType.Cell, true).Count, Is.EqualTo(16));
-            Assert.That(table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim(), Is.EqualTo("Cell 7 contents"));
-            Assert.That(table.LastRow.Cells[2].ToString(SaveFormat.Text).Trim(), Is.EqualTo("Cell 11 contents"));
+            Assert.AreEqual(16, table.GetChildNodes(NodeType.Cell, true).Count);
+            Assert.AreEqual("Cell 7 contents", table.Rows[2].Cells[2].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("Cell 11 contents", table.LastRow.Cells[2].ToString(SaveFormat.Text).Trim());
         }
 
         [Test]
         public void Insert()
         {
             Document doc = new Document(MyDir + "Tables.docx");
-            Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
+            Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
 
             Column column = Column.FromIndex(table, 1);
 
@@ -156,21 +161,21 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "TableColumn.Insert.doc");
 
-            Assert.That(table.GetChildNodes(NodeType.Cell, true).Count, Is.EqualTo(24));
-            Assert.That(table.FirstRow.Cells[1].ToString(SaveFormat.Text).Trim(), Is.EqualTo("Column Text 0"));
-            Assert.That(table.LastRow.Cells[1].ToString(SaveFormat.Text).Trim(), Is.EqualTo("Column Text 3"));
+            Assert.AreEqual(24, table.GetChildNodes(NodeType.Cell, true).Count);
+            Assert.AreEqual("Column Text 0", table.FirstRow.Cells[1].ToString(SaveFormat.Text).Trim());
+            Assert.AreEqual("Column Text 3", table.LastRow.Cells[1].ToString(SaveFormat.Text).Trim());
         }
 
         [Test]
         public void TableColumnToTxt()
         {
             Document doc = new Document(MyDir + "Tables.docx");
-            Table table = (Table) doc.GetChild(NodeType.Table, 1, true);
+            Table table = (Table)doc.GetChild(NodeType.Table, 1, true);
 
             Column column = Column.FromIndex(table, 0);
             Console.WriteLine(column.ToTxt());
 
-            Assert.That(column.ToTxt(), Is.EqualTo("\rRow 1\rRow 2\rRow 3\r"));
+            Assert.AreEqual("\rRow 1\rRow 2\rRow 3\r", column.ToTxt());
         }
     }
 }

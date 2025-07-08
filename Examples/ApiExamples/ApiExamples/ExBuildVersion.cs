@@ -23,11 +23,11 @@ namespace ApiExamples
             //ExFor:BuildVersionInfo.Product
             //ExFor:BuildVersionInfo.Version
             //ExSummary:Shows how to display information about your installed version of Aspose.Words.
-            Console.WriteLine($"I am currently using {BuildVersionInfo.Product}, version number {BuildVersionInfo.Version}!");
+            Console.WriteLine(string.Format("I am currently using {0}, version number {1}!", BuildVersionInfo.Product, BuildVersionInfo.Version));
             //ExEnd
 
-            Assert.That(BuildVersionInfo.Product, Is.EqualTo("Aspose.Words for .NET"));
-            Assert.That(Regex.IsMatch(BuildVersionInfo.Version, "[0-9]{2}.[0-9]{1,2}"), Is.True);
+            Assert.AreEqual("Aspose.Words for .NET", BuildVersionInfo.Product);
+            Assert.IsTrue(Regex.IsMatch(BuildVersionInfo.Version, "[0-9]{2}.[0-9]{1,2}"));
         }
     }
 }

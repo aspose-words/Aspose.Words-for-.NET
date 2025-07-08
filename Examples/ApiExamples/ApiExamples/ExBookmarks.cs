@@ -36,14 +36,14 @@ namespace ApiExamples
             builder.EndBookmark("My Bookmark");
 
             // Bookmarks are stored in this collection.
-            Assert.That(doc.Range.Bookmarks[0].Name, Is.EqualTo("My Bookmark"));
+            Assert.AreEqual("My Bookmark", doc.Range.Bookmarks[0].Name);
 
             doc.Save(ArtifactsDir + "Bookmarks.Insert.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Bookmarks.Insert.docx");
 
-            Assert.That(doc.Range.Bookmarks[0].Name, Is.EqualTo("My Bookmark"));
+            Assert.AreEqual("My Bookmark", doc.Range.Bookmarks[0].Name);
         }
 
         //ExStart
@@ -76,13 +76,13 @@ namespace ApiExamples
             // Create a document with three bookmarks, then use a custom document visitor implementation to print their contents.
             Document doc = CreateDocumentWithBookmarks(3);
             BookmarkCollection bookmarks = doc.Range.Bookmarks;
-            Assert.That(bookmarks.Count, Is.EqualTo(3)); //ExSkip
+            Assert.AreEqual(3, bookmarks.Count); //ExSkip
 
             PrintAllBookmarkInfo(bookmarks);
             
             // Bookmarks can be accessed in the bookmark collection by index or name, and their names can be updated.
-            bookmarks[0].Name = $"{bookmarks[0].Name}_NewName";
-            bookmarks["MyBookmark_2"].Text = $"Updated text contents of {bookmarks[1].Name}";
+            bookmarks[0].Name = string.Format("{0}_NewName", bookmarks[0].Name);
+            bookmarks["MyBookmark_2"].Text = string.Format("Updated text contents of {0}", bookmarks[1].Name);
 
             // Print all bookmarks again to see updated values.
             PrintAllBookmarkInfo(bookmarks);
@@ -102,7 +102,7 @@ namespace ApiExamples
 
                 builder.Write("Text before bookmark.");
                 builder.StartBookmark(bookmarkName);
-                builder.Write($"Text inside {bookmarkName}.");
+                builder.Write(string.Format("Text inside {0}.", bookmarkName));
                 builder.EndBookmark(bookmarkName);
                 builder.Writeln("Text after bookmark.");
             }
@@ -142,13 +142,13 @@ namespace ApiExamples
         {
             public override VisitorAction VisitBookmarkStart(BookmarkStart bookmarkStart)
             {
-                Console.WriteLine($"BookmarkStart name: \"{bookmarkStart.Name}\", Contents: \"{bookmarkStart.Bookmark.Text}\"");
+                Console.WriteLine(string.Format("BookmarkStart name: \"{0}\", Contents: \"{1}\"", bookmarkStart.Name, bookmarkStart.Bookmark.Text));
                 return VisitorAction.Continue;
             }
 
             public override VisitorAction VisitBookmarkEnd(BookmarkEnd bookmarkEnd)
             {
-                Console.WriteLine($"BookmarkEnd name: \"{bookmarkEnd.Name}\"");
+                Console.WriteLine(string.Format("BookmarkEnd name: \"{0}\"", bookmarkEnd.Name));
                 return VisitorAction.Continue;
             }
         }
@@ -167,10 +167,11 @@ namespace ApiExamples
             foreach (Bookmark bookmark in doc.Range.Bookmarks)
             {
                 // If a bookmark encloses columns of a table, it is a table column bookmark, and its IsColumn flag set to true.
-                Console.WriteLine($"Bookmark: {bookmark.Name}{(bookmark.IsColumn ? " (Column)" : "")}");
+                Console.WriteLine(string.Format("Bookmark: {0}{1}", bookmark.Name, (bookmark.IsColumn ? " (Column)" : "")));
                 if (bookmark.IsColumn)
                 {
-                    if (bookmark.BookmarkStart.GetAncestor(NodeType.Row) is Row row &&
+                    Row row = bookmark.BookmarkStart.GetAncestor(NodeType.Row) as Row;
+                    if (row != null &&
                         bookmark.FirstColumn < row.Cells.Count)
                     {
                         // Print the contents of the first and last columns enclosed by the bookmark.
@@ -186,13 +187,13 @@ namespace ApiExamples
             Bookmark firstTableColumnBookmark = doc.Range.Bookmarks["FirstTableColumnBookmark"];
             Bookmark secondTableColumnBookmark = doc.Range.Bookmarks["SecondTableColumnBookmark"];
 
-            Assert.That(firstTableColumnBookmark.IsColumn, Is.True);
-            Assert.That(firstTableColumnBookmark.FirstColumn, Is.EqualTo(1));
-            Assert.That(firstTableColumnBookmark.LastColumn, Is.EqualTo(3));
+            Assert.IsTrue(firstTableColumnBookmark.IsColumn);
+            Assert.AreEqual(1, firstTableColumnBookmark.FirstColumn);
+            Assert.AreEqual(3, firstTableColumnBookmark.LastColumn);
 
-            Assert.That(secondTableColumnBookmark.IsColumn, Is.True);
-            Assert.That(secondTableColumnBookmark.FirstColumn, Is.EqualTo(0));
-            Assert.That(secondTableColumnBookmark.LastColumn, Is.EqualTo(3));
+            Assert.IsTrue(secondTableColumnBookmark.IsColumn);
+            Assert.AreEqual(0, secondTableColumnBookmark.FirstColumn);
+            Assert.AreEqual(3, secondTableColumnBookmark.LastColumn);
         }
 
         [Test]
@@ -215,7 +216,7 @@ namespace ApiExamples
                 string bookmarkName = "MyBookmark_" + i;
 
                 builder.StartBookmark(bookmarkName);
-                builder.Write($"Text inside {bookmarkName}.");
+                builder.Write(string.Format("Text inside {0}.", bookmarkName));
                 builder.EndBookmark(bookmarkName);
                 builder.InsertBreak(BreakType.ParagraphBreak);
             }
@@ -223,40 +224,40 @@ namespace ApiExamples
             // This collection stores bookmarks.
             BookmarkCollection bookmarks = doc.Range.Bookmarks;
 
-            Assert.That(bookmarks.Count, Is.EqualTo(5));
+            Assert.AreEqual(5, bookmarks.Count);
 
             // There are several ways of removing bookmarks.
             // 1 -  Calling the bookmark's Remove method:
             bookmarks["MyBookmark_1"].Remove();
 
-            Assert.That(bookmarks.Any(b => b.Name == "MyBookmark_1"), Is.False);
+            Assert.IsFalse(bookmarks.Any(b => b.Name == "MyBookmark_1"));
 
             // 2 -  Passing the bookmark to the collection's Remove method:
             Bookmark bookmark = doc.Range.Bookmarks[0];
             doc.Range.Bookmarks.Remove(bookmark);
 
-            Assert.That(bookmarks.Any(b => b.Name == "MyBookmark_2"), Is.False);
+            Assert.IsFalse(bookmarks.Any(b => b.Name == "MyBookmark_2"));
             
             // 3 -  Removing a bookmark from the collection by name:
             doc.Range.Bookmarks.Remove("MyBookmark_3");
 
-            Assert.That(bookmarks.Any(b => b.Name == "MyBookmark_3"), Is.False);
+            Assert.IsFalse(bookmarks.Any(b => b.Name == "MyBookmark_3"));
 
             // 4 -  Removing a bookmark at an index in the bookmark collection:
             doc.Range.Bookmarks.RemoveAt(0);
 
-            Assert.That(bookmarks.Any(b => b.Name == "MyBookmark_4"), Is.False);
+            Assert.IsFalse(bookmarks.Any(b => b.Name == "MyBookmark_4"));
 
             // We can clear the entire bookmark collection.
             bookmarks.Clear();
 
             // The text that was inside the bookmarks is still present in the document.
-            Assert.That(bookmarks.Count, Is.EqualTo(0));
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Text inside MyBookmark_1.\r" +
+            Assert.AreEqual(0, bookmarks.Count);
+            Assert.AreEqual("Text inside MyBookmark_1.\r" +
                             "Text inside MyBookmark_2.\r" +
                             "Text inside MyBookmark_3.\r" +
                             "Text inside MyBookmark_4.\r" +
-                            "Text inside MyBookmark_5."));
+                            "Text inside MyBookmark_5.", doc.GetText().Trim());
             //ExEnd
         }
     }

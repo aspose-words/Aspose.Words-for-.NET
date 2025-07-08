@@ -40,19 +40,17 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create a UserInformation object and set it as the data source for fields that display user information.
-            UserInformation userInformation = new UserInformation
-            {
-                Name = "John Doe",
-                Initials = "J. D.",
-                Address = "123 Main Street"
-            };
+            UserInformation userInformation = new UserInformation();
+            userInformation.Name = "John Doe";
+            userInformation.Initials = "J. D.";
+            userInformation.Address = "123 Main Street";
             doc.FieldOptions.CurrentUser = userInformation;
 
             // Insert USERNAME, USERINITIALS, and USERADDRESS fields, which display values of
             // the respective properties of the UserInformation object that we have created above. 
-            Assert.That(builder.InsertField(" USERNAME ").Result, Is.EqualTo(userInformation.Name));
-            Assert.That(builder.InsertField(" USERINITIALS ").Result, Is.EqualTo(userInformation.Initials));
-            Assert.That(builder.InsertField(" USERADDRESS ").Result, Is.EqualTo(userInformation.Address));
+            Assert.AreEqual(userInformation.Name, builder.InsertField(" USERNAME ").Result);
+            Assert.AreEqual(userInformation.Initials, builder.InsertField(" USERINITIALS ").Result);
+            Assert.AreEqual(userInformation.Address, builder.InsertField(" USERADDRESS ").Result);
 
             // The field options object also has a static default user that fields from all documents can refer to.
             UserInformation.DefaultUser.Name = "Default User";
@@ -60,9 +58,9 @@ namespace ApiExamples
             UserInformation.DefaultUser.Address = "One Microsoft Way";
             doc.FieldOptions.CurrentUser = UserInformation.DefaultUser;
 
-            Assert.That(builder.InsertField(" USERNAME ").Result, Is.EqualTo("Default User"));
-            Assert.That(builder.InsertField(" USERINITIALS ").Result, Is.EqualTo("D. U."));
-            Assert.That(builder.InsertField(" USERADDRESS ").Result, Is.EqualTo("One Microsoft Way"));
+            Assert.AreEqual("Default User", builder.InsertField(" USERNAME ").Result);
+            Assert.AreEqual("D. U.", builder.InsertField(" USERINITIALS ").Result);
+            Assert.AreEqual("One Microsoft Way", builder.InsertField(" USERADDRESS ").Result);
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "FieldOptions.CurrentUser.docx");
@@ -70,22 +68,22 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "FieldOptions.CurrentUser.docx");
 
-            Assert.That(doc.FieldOptions.CurrentUser, Is.Null);
+            Assert.IsNull(doc.FieldOptions.CurrentUser);
 
             FieldUserName fieldUserName = (FieldUserName)doc.Range.Fields[0];
 
-            Assert.That(fieldUserName.UserName, Is.Null);
-            Assert.That(fieldUserName.Result, Is.EqualTo("Default User"));
+            Assert.IsNull(fieldUserName.UserName);
+            Assert.AreEqual("Default User", fieldUserName.Result);
 
             FieldUserInitials fieldUserInitials = (FieldUserInitials)doc.Range.Fields[1];
 
-            Assert.That(fieldUserInitials.UserInitials, Is.Null);
-            Assert.That(fieldUserInitials.Result, Is.EqualTo("D. U."));
+            Assert.IsNull(fieldUserInitials.UserInitials);
+            Assert.AreEqual("D. U.", fieldUserInitials.Result);
 
             FieldUserAddress fieldUserAddress = (FieldUserAddress)doc.Range.Fields[2];
 
-            Assert.That(fieldUserAddress.UserAddress, Is.Null);
-            Assert.That(fieldUserAddress.Result, Is.EqualTo("One Microsoft Way"));
+            Assert.IsNull(fieldUserAddress.UserAddress);
+            Assert.AreEqual("One Microsoft Way", fieldUserAddress.Result);
         }
 
         [Test]
@@ -106,8 +104,8 @@ namespace ApiExamples
             FieldFileName field = (FieldFileName)builder.InsertField(FieldType.FieldFileName, true);
             field.Update();
 
-            Assert.That(field.GetFieldCode(), Is.EqualTo(" FILENAME "));
-            Assert.That(field.Result, Is.EqualTo("Document.docx"));
+            Assert.AreEqual(" FILENAME ", field.GetFieldCode());
+            Assert.AreEqual("Document.docx", field.Result);
 
             builder.Writeln();
 
@@ -117,15 +115,15 @@ namespace ApiExamples
             field.IncludeFullPath = true;
             field.Update();
 
-            Assert.That(field.Result, Is.EqualTo(MyDir + "Document.docx"));
+            Assert.AreEqual(MyDir + "Document.docx", field.Result);
 
             // We can also set a value for this property to
             // override the value that the FILENAME field displays.
             doc.FieldOptions.FileName = "FieldOptions.FILENAME.docx";
             field.Update();
 
-            Assert.That(field.GetFieldCode(), Is.EqualTo(" FILENAME  \\p"));
-            Assert.That(field.Result, Is.EqualTo("FieldOptions.FILENAME.docx"));
+            Assert.AreEqual(" FILENAME  \\p", field.GetFieldCode());
+            Assert.AreEqual("FieldOptions.FILENAME.docx", field.Result);
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + doc.FieldOptions.FileName);
@@ -133,7 +131,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "FieldOptions.FILENAME.docx");
 
-            Assert.That(doc.FieldOptions.FileName, Is.Null);
+            Assert.IsNull(doc.FieldOptions.FileName);
             TestUtil.VerifyField(FieldType.FieldFileName, " FILENAME ", "FieldOptions.FILENAME.docx", doc.Range.Fields[0]);
         }
 
@@ -159,11 +157,11 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "FieldOptions.Bidi.docx");
 
-            Assert.That(doc.FieldOptions.IsBidiTextSupportedOnUpdate, Is.False);
+            Assert.IsFalse(doc.FieldOptions.IsBidiTextSupportedOnUpdate);
 
             comboBox = doc.Range.FormFields[0];
 
-            Assert.That(comboBox.Result, Is.EqualTo("עֶשְׂרִים"));
+            Assert.AreEqual("עֶשְׂרִים", comboBox.Result);
         }
 
         [Test]
@@ -177,17 +175,17 @@ namespace ApiExamples
 
             Field field = builder.InsertField("= 2 + 3 \\# $##");
 
-            Assert.That(field.Result, Is.EqualTo("$ 5"));
+            Assert.AreEqual("$ 5", field.Result);
 
             doc.FieldOptions.LegacyNumberFormat = true;
             field.Update();
 
-            Assert.That(field.Result, Is.EqualTo("$5"));
+            Assert.AreEqual("$5", field.Result);
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.That(doc.FieldOptions.LegacyNumberFormat, Is.False);
+            Assert.IsFalse(doc.FieldOptions.LegacyNumberFormat);
             TestUtil.VerifyField(FieldType.FieldFormula, "= 2 + 3 \\# $##", "$5", doc.Range.Fields[0]);
         }
 
@@ -207,19 +205,19 @@ namespace ApiExamples
 
             // The DOCPROPERTY field will display its result formatted according to the preprocess culture
             // we have set to German. The field will display the date/time using the "dd.mm.yyyy hh:mm" format.
-            Assert.That(Regex.Match(field.Result, @"\d{2}[.]\d{2}[.]\d{4} \d{2}[:]\d{2}").Success, Is.True);
+            Assert.IsTrue(Regex.Match(field.Result, @"\d{2}[.]\d{2}[.]\d{4} \d{2}[:]\d{2}").Success);
 
             doc.FieldOptions.PreProcessCulture = CultureInfo.InvariantCulture;
             field.Update();
 
             // After switching to the invariant culture, the DOCPROPERTY field will use the "mm/dd/yyyy hh:mm" format.
-            Assert.That(Regex.Match(field.Result, @"\d{2}[/]\d{2}[/]\d{4} \d{2}[:]\d{2}").Success, Is.True);
+            Assert.IsTrue(Regex.Match(field.Result, @"\d{2}[/]\d{2}[/]\d{4} \d{2}[:]\d{2}").Success);
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.That(doc.FieldOptions.PreProcessCulture, Is.Null);
-            Assert.That(Regex.Match(doc.Range.Fields[0].Result, @"\d{2}[/]\d{2}[/]\d{4} \d{2}[:]\d{2}").Success, Is.True);
+            Assert.IsNull(doc.FieldOptions.PreProcessCulture);
+            Assert.IsTrue(Regex.Match(doc.Range.Fields[0].Result, @"\d{2}[/]\d{2}[/]\d{4} \d{2}[:]\d{2}").Success);
         }
 
         [Test]
@@ -239,15 +237,15 @@ namespace ApiExamples
             doc.FieldOptions.ToaCategories = toaCategories;
 
             // This collection of categories comes with default values, which we can overwrite with custom values.
-            Assert.That(toaCategories[1], Is.EqualTo("Cases"));
-            Assert.That(toaCategories[2], Is.EqualTo("Statutes"));
+            Assert.AreEqual("Cases", toaCategories[1]);
+            Assert.AreEqual("Statutes", toaCategories[2]);
 
             toaCategories[1] = "My Category 1";
             toaCategories[2] = "My Category 2";
 
             // We can always access the default values via this collection.
-            Assert.That(ToaCategories.DefaultCategories[1], Is.EqualTo("Cases"));
-            Assert.That(ToaCategories.DefaultCategories[2], Is.EqualTo("Statutes"));
+            Assert.AreEqual("Cases", ToaCategories.DefaultCategories[1]);
+            Assert.AreEqual("Statutes", ToaCategories.DefaultCategories[2]);
 
             // Insert 2 TOA fields. TOA fields create an entry for each TA field in the document.
             // Use the "\c" switch to select the index of a category from our collection.
@@ -273,7 +271,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "FieldOptions.TOA.Categories.docx");
 
-            Assert.That(doc.FieldOptions.ToaCategories, Is.Null);
+            Assert.IsNull(doc.FieldOptions.ToaCategories);
 
             TestUtil.VerifyField(FieldType.FieldTOA, "TOA \\c 1 \\h", "My Category 1\rentry 2\t3\r", doc.Range.Fields[0]);
             TestUtil.VerifyField(FieldType.FieldTOA, "TOA \\c 2 \\h",
@@ -296,8 +294,8 @@ namespace ApiExamples
             field.Update();
 
             // Sometimes, fields may not format their numbers correctly under certain cultures. 
-            Assert.That(doc.FieldOptions.UseInvariantCultureNumberFormat, Is.False);
-            Assert.That(field.Result, Is.EqualTo("$1.234.567,89 ,     "));
+            Assert.IsFalse(doc.FieldOptions.UseInvariantCultureNumberFormat);
+            Assert.AreEqual("$1.234.567,89 ,     ", field.Result);
 
             // To fix this, we could change the culture for the entire thread.
             // Another way to fix this is to set this flag,
@@ -305,12 +303,12 @@ namespace ApiExamples
             // This way allows us to avoid changing the culture for the entire thread.
             doc.FieldOptions.UseInvariantCultureNumberFormat = true;
             field.Update();
-            Assert.That(field.Result, Is.EqualTo("$1.234.567,89"));
+            Assert.AreEqual("$1.234.567,89", field.Result);
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.That(doc.FieldOptions.UseInvariantCultureNumberFormat, Is.False);
+            Assert.IsFalse(doc.FieldOptions.UseInvariantCultureNumberFormat);
             TestUtil.VerifyField(FieldType.FieldFormula, " = 1234567,89 \\# $#,###,###.##", "$1.234.567,89", doc.Range.Fields[0]);
         }
 
@@ -412,7 +410,7 @@ namespace ApiExamples
             //ExSummary:Shows how to use a barcode generator.
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
-            Assert.That(doc.FieldOptions.BarcodeGenerator, Is.Null); //ExSkip
+            Assert.IsNull(doc.FieldOptions.BarcodeGenerator); //ExSkip
 
             // We can use a custom IBarcodeGenerator implementation to generate barcodes,
             // and then insert them into the document as images.
@@ -422,17 +420,15 @@ namespace ApiExamples
             // For each barcode, we specify a new set of barcode parameters, and then generate the image.
             // Afterwards, we can insert the image into the document, or save it to the local file system.
             // 1 -  QR code:
-            BarcodeParameters barcodeParameters = new BarcodeParameters
-            {
-                BarcodeType = "QR",
-                BarcodeValue = "ABC123",
-                BackgroundColor = "0xF8BD69",
-                ForegroundColor = "0xB5413B",
-                ErrorCorrectionLevel = "3",
-                ScalingFactor = "250",
-                SymbolHeight = "1000",
-                SymbolRotation = "0"
-            };
+            BarcodeParameters barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "QR";
+            barcodeParameters.BarcodeValue = "ABC123";
+            barcodeParameters.BackgroundColor = "0xF8BD69";
+            barcodeParameters.ForegroundColor = "0xB5413B";
+            barcodeParameters.ErrorCorrectionLevel = "3";
+            barcodeParameters.ScalingFactor = "250";
+            barcodeParameters.SymbolHeight = "1000";
+            barcodeParameters.SymbolRotation = "0";
 
             Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
 #if NET461_OR_GREATER || JAVA
@@ -446,14 +442,12 @@ namespace ApiExamples
             builder.InsertImage(img);
 
             // 2 -  EAN13 barcode:
-            barcodeParameters = new BarcodeParameters
-            {
-                BarcodeType = "EAN13",
-                BarcodeValue = "501234567890",
-                DisplayText = true,
-                PosCodeStyle = "CASE",
-                FixCheckDigit = true
-            };
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "EAN13";
+            barcodeParameters.BarcodeValue = "501234567890";
+            barcodeParameters.DisplayText = true;
+            barcodeParameters.PosCodeStyle = "CASE";
+            barcodeParameters.FixCheckDigit = true;
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
 #if NET461_OR_GREATER || JAVA
@@ -467,12 +461,10 @@ namespace ApiExamples
             builder.InsertImage(img);
 
             // 3 -  CODE39 barcode:
-            barcodeParameters = new BarcodeParameters
-            {
-                BarcodeType = "CODE39",
-                BarcodeValue = "12345ABCDE",
-                AddStartStopChar = true
-            };
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "CODE39";
+            barcodeParameters.BarcodeValue = "12345ABCDE";
+            barcodeParameters.AddStartStopChar = true;
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
 #if NET461_OR_GREATER || JAVA
@@ -486,12 +478,10 @@ namespace ApiExamples
             builder.InsertImage(img);
 
             // 4 -  ITF14 barcode:
-            barcodeParameters = new BarcodeParameters
-            {
-                BarcodeType = "ITF14",
-                BarcodeValue = "09312345678907",
-                CaseCodeStyle = "STD"
-            };
+            barcodeParameters = new BarcodeParameters();
+            barcodeParameters.BarcodeType = "ITF14";
+            barcodeParameters.BarcodeValue = "09312345678907";
+            barcodeParameters.CaseCodeStyle = "STD";
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
 #if NET461_OR_GREATER || JAVA
@@ -515,7 +505,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "FieldOptions.BarcodeGenerator.docx");
             Shape barcode = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(barcode.HasImage, Is.True);
+            Assert.IsTrue(barcode.HasImage);
         }
     }
 }

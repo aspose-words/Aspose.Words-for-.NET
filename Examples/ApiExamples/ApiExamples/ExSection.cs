@@ -51,8 +51,8 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Section.Protect.docx");
 
-            Assert.That(doc.Sections[0].ProtectedForForms, Is.False);
-            Assert.That(doc.Sections[1].ProtectedForForms, Is.True);
+            Assert.IsFalse(doc.Sections[0].ProtectedForForms);
+            Assert.IsTrue(doc.Sections[1].ProtectedForForms);
         }
 
         [Test]
@@ -71,19 +71,19 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.SectionBreakNewPage);
             builder.Write("Section 2");
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Section 1\x000cSection 2"));
+            Assert.AreEqual("Section 1\x000cSection 2", doc.GetText().Trim());
 
             // Delete the first section from the document.
             doc.Sections.RemoveAt(0);
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Section 2"));
+            Assert.AreEqual("Section 2", doc.GetText().Trim());
 
             // Append a copy of what is now the first section to the end of the document.
             int lastSectionIdx = doc.Sections.Count - 1;
             Section newSection = doc.Sections[lastSectionIdx].Clone();
             doc.Sections.Add(newSection);
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Section 2\x000cSection 2"));
+            Assert.AreEqual("Section 2\x000cSection 2", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -98,7 +98,7 @@ namespace ApiExamples
 
             // A blank document contains one section by default,
             // which contains child nodes that we can edit.
-            Assert.That(doc.Sections.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, doc.Sections.Count);
 
             // Use a document builder to add text to the first section.
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -107,7 +107,7 @@ namespace ApiExamples
             // Create a second section by inserting a section break.
             builder.InsertBreak(BreakType.SectionBreakNewPage);
 
-            Assert.That(doc.Sections.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.Sections.Count);
 
             // Each section has its own page setup settings.
             // We can split the text in the second section into two columns.
@@ -117,16 +117,16 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.ColumnBreak);
             builder.Writeln("Column 2.");
 
-            Assert.That(doc.FirstSection.PageSetup.TextColumns.Count, Is.EqualTo(1));
-            Assert.That(doc.LastSection.PageSetup.TextColumns.Count, Is.EqualTo(2));
+            Assert.AreEqual(1, doc.FirstSection.PageSetup.TextColumns.Count);
+            Assert.AreEqual(2, doc.LastSection.PageSetup.TextColumns.Count);
 
             doc.Save(ArtifactsDir + "Section.Create.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Section.Create.docx");
 
-            Assert.That(doc.FirstSection.PageSetup.TextColumns.Count, Is.EqualTo(1));
-            Assert.That(doc.LastSection.PageSetup.TextColumns.Count, Is.EqualTo(2));
+            Assert.AreEqual(1, doc.FirstSection.PageSetup.TextColumns.Count);
+            Assert.AreEqual(2, doc.LastSection.PageSetup.TextColumns.Count);
         }
 
         [Test]
@@ -194,7 +194,7 @@ namespace ApiExamples
             run.Font.Color = Color.Red;
             para.AppendChild(run);
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello World!"));
+            Assert.AreEqual("Hello World!", doc.GetText().Trim());
 
             doc.Save(ArtifactsDir + "Section.CreateManually.docx");
             //ExEnd
@@ -212,24 +212,24 @@ namespace ApiExamples
 
             // A blank document comes with a section, which has a body, which in turn has a paragraph.
             // We can add contents to this document by adding elements such as text runs, shapes, or tables to that paragraph.
-            Assert.That(doc.GetChild(NodeType.Any, 0, true).NodeType, Is.EqualTo(NodeType.Section));
-            Assert.That(doc.Sections[0].GetChild(NodeType.Any, 0, true).NodeType, Is.EqualTo(NodeType.Body));
-            Assert.That(doc.Sections[0].Body.GetChild(NodeType.Any, 0, true).NodeType, Is.EqualTo(NodeType.Paragraph));
+            Assert.AreEqual(NodeType.Section, doc.GetChild(NodeType.Any, 0, true).NodeType);
+            Assert.AreEqual(NodeType.Body, doc.Sections[0].GetChild(NodeType.Any, 0, true).NodeType);
+            Assert.AreEqual(NodeType.Paragraph, doc.Sections[0].Body.GetChild(NodeType.Any, 0, true).NodeType);
 
             // If we add a new section like this, it will not have a body, or any other child nodes.
             doc.Sections.Add(new Section(doc));
 
-            Assert.That(doc.Sections[1].GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(0));
+            Assert.AreEqual(0, doc.Sections[1].GetChildNodes(NodeType.Any, true).Count);
 
             // Run the "EnsureMinimum" method to add a body and a paragraph to this section to begin editing it.
             doc.LastSection.EnsureMinimum();
 
-            Assert.That(doc.Sections[1].GetChild(NodeType.Any, 0, true).NodeType, Is.EqualTo(NodeType.Body));
-            Assert.That(doc.Sections[1].Body.GetChild(NodeType.Any, 0, true).NodeType, Is.EqualTo(NodeType.Paragraph));
+            Assert.AreEqual(NodeType.Body, doc.Sections[1].GetChild(NodeType.Any, 0, true).NodeType);
+            Assert.AreEqual(NodeType.Paragraph, doc.Sections[1].Body.GetChild(NodeType.Any, 0, true).NodeType);
 
             doc.Sections[0].Body.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -259,7 +259,7 @@ namespace ApiExamples
             section.AppendChild(body);
 
             // This body has no children, so we cannot add runs to it yet.
-            Assert.That(doc.FirstSection.Body.GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(0));
+            Assert.AreEqual(0, doc.FirstSection.Body.GetChildNodes(NodeType.Any, true).Count);
 
             // Call the "EnsureMinimum" to make sure that this body contains at least one empty paragraph. 
             body.EnsureMinimum();
@@ -267,7 +267,7 @@ namespace ApiExamples
             // Now, we can add runs to the body, and get the document to display them.
             body.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -301,15 +301,15 @@ namespace ApiExamples
                         Body body = (Body)node;
 
                         Console.WriteLine("Body:");
-                        Console.WriteLine($"\t\"{body.GetText().Trim()}\"");
+                        Console.WriteLine(string.Format("\t\"{0}\"", body.GetText().Trim()));
                         break;
                     }
                     case NodeType.HeaderFooter:
                     {
                         HeaderFooter headerFooter = (HeaderFooter)node;
 
-                        Console.WriteLine($"HeaderFooter type: {headerFooter.HeaderFooterType}:");
-                        Console.WriteLine($"\t\"{headerFooter.GetText().Trim()}\"");
+                        Console.WriteLine(string.Format("HeaderFooter type: {0}:", headerFooter.HeaderFooterType));
+                        Console.WriteLine(string.Format("\t\"{0}\"", headerFooter.GetText().Trim()));
                         break;
                     }
                     default:
@@ -330,15 +330,15 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx");
 
             // This document has one section with a few child nodes containing and displaying all the document's contents.
-            Assert.That(doc.Sections.Count, Is.EqualTo(1));
-            Assert.That(doc.Sections[0].GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(17));
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello World!\r\rHello Word!\r\r\rHello World!"));
+            Assert.AreEqual(1, doc.Sections.Count);
+            Assert.AreEqual(17, doc.Sections[0].GetChildNodes(NodeType.Any, true).Count);
+            Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
 
             // Clear the collection of sections, which will remove all of the document's children.
             doc.Sections.Clear();
 
-            Assert.That(doc.GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(0));
-            Assert.That(doc.GetText().Trim(), Is.EqualTo(string.Empty));
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Any, true).Count);
+            Assert.AreEqual(string.Empty, doc.GetText().Trim());
             //ExEnd
         }
 
@@ -360,7 +360,7 @@ namespace ApiExamples
 
             Section section = doc.Sections[2];
 
-            Assert.That(section.GetText(), Is.EqualTo("Section 3" + ControlChar.SectionBreak));
+            Assert.AreEqual("Section 3" + ControlChar.SectionBreak, section.GetText());
 
             // Insert the contents of the first section to the beginning of the third section.
             Section sectionToPrepend = doc.Sections[0];
@@ -371,10 +371,10 @@ namespace ApiExamples
             section.AppendContent(sectionToAppend);
 
             // The "PrependContent" and "AppendContent" methods did not create any new sections.
-            Assert.That(doc.Sections.Count, Is.EqualTo(3));
-            Assert.That(section.GetText(), Is.EqualTo("Section 1" + ControlChar.ParagraphBreak +
+            Assert.AreEqual(3, doc.Sections.Count);
+            Assert.AreEqual("Section 1" + ControlChar.ParagraphBreak +
                             "Section 3" + ControlChar.ParagraphBreak +
-                            "Section 2" + ControlChar.SectionBreak));
+                            "Section 2" + ControlChar.SectionBreak, section.GetText());
             //ExEnd
         }
 
@@ -389,15 +389,15 @@ namespace ApiExamples
 
             builder.Write("Hello world!");
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!"));
-            Assert.That(doc.FirstSection.Body.Paragraphs.Count, Is.EqualTo(1));
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
+            Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
 
             // Running the "ClearContent" method will remove all the section contents
             // but leave a blank paragraph to add content again.
             doc.FirstSection.ClearContent();
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo(string.Empty));
-            Assert.That(doc.FirstSection.Body.Paragraphs.Count, Is.EqualTo(1));
+            Assert.AreEqual(string.Empty, doc.GetText().Trim());
+            Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
             //ExEnd
         }
 
@@ -409,7 +409,7 @@ namespace ApiExamples
             //ExSummary:Shows how to clear the contents of all headers and footers in a section.
             Document doc = new Document();
 
-            Assert.That(doc.FirstSection.HeadersFooters.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, doc.FirstSection.HeadersFooters.Count);
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
@@ -418,19 +418,19 @@ namespace ApiExamples
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
             builder.Writeln("This is the primary footer.");
 
-            Assert.That(doc.FirstSection.HeadersFooters.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.FirstSection.HeadersFooters.Count);
 
-            Assert.That(doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim(), Is.EqualTo("This is the primary header."));
-            Assert.That(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Trim(), Is.EqualTo("This is the primary footer."));
+            Assert.AreEqual("This is the primary header.", doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim());
+            Assert.AreEqual("This is the primary footer.", doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Trim());
 
             // Empty all the headers and footers in this section of all their contents.
             // The headers and footers themselves will still be present but will have nothing to display.
             doc.FirstSection.ClearHeadersFooters();
 
-            Assert.That(doc.FirstSection.HeadersFooters.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.FirstSection.HeadersFooters.Count);
 
-            Assert.That(doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim(), Is.EqualTo(string.Empty));
-            Assert.That(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Trim(), Is.EqualTo(string.Empty));
+            Assert.AreEqual(string.Empty, doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim());
+            Assert.AreEqual(string.Empty, doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetText().Trim());
             //ExEnd
         }
 
@@ -451,14 +451,14 @@ namespace ApiExamples
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
             builder.InsertImage(ImageDir + "Logo icon.ico");
 
-            Assert.That(doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(1));
-            Assert.That(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(1));
+            Assert.AreEqual(1, doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChildNodes(NodeType.Shape, true).Count);
+            Assert.AreEqual(1, doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetChildNodes(NodeType.Shape, true).Count);
 
             // Remove all shapes from the headers and footers in the first section.
             doc.FirstSection.DeleteHeaderFooterShapes();
 
-            Assert.That(doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(0));
-            Assert.That(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(0));
+            Assert.AreEqual(0, doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].GetChildNodes(NodeType.Shape, true).Count);
+            Assert.AreEqual(0, doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].GetChildNodes(NodeType.Shape, true).Count);
             //ExEnd
         }
 
@@ -518,13 +518,13 @@ namespace ApiExamples
 
             // Assert that page defaults comply with current culture info.
             Section sectionEn = docEn.Sections[0];
-            Assert.That(sectionEn.PageSetup.LeftMargin, Is.EqualTo(72.0)); // 2.54 cm
-            Assert.That(sectionEn.PageSetup.RightMargin, Is.EqualTo(72.0)); // 2.54 cm
-            Assert.That(sectionEn.PageSetup.TopMargin, Is.EqualTo(72.0)); // 2.54 cm
-            Assert.That(sectionEn.PageSetup.BottomMargin, Is.EqualTo(72.0)); // 2.54 cm
-            Assert.That(sectionEn.PageSetup.HeaderDistance, Is.EqualTo(36.0)); // 1.27 cm
-            Assert.That(sectionEn.PageSetup.FooterDistance, Is.EqualTo(36.0)); // 1.27 cm
-            Assert.That(sectionEn.PageSetup.TextColumns.Spacing, Is.EqualTo(36.0)); // 1.27 cm
+            Assert.AreEqual(72.0, sectionEn.PageSetup.LeftMargin); // 2.54 cm
+            Assert.AreEqual(72.0, sectionEn.PageSetup.RightMargin); // 2.54 cm
+            Assert.AreEqual(72.0, sectionEn.PageSetup.TopMargin); // 2.54 cm
+            Assert.AreEqual(72.0, sectionEn.PageSetup.BottomMargin); // 2.54 cm
+            Assert.AreEqual(36.0, sectionEn.PageSetup.HeaderDistance); // 1.27 cm
+            Assert.AreEqual(36.0, sectionEn.PageSetup.FooterDistance); // 1.27 cm
+            Assert.AreEqual(36.0, sectionEn.PageSetup.TextColumns.Spacing); // 1.27 cm
 
             // Change the culture and assert that the page defaults are changed.
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-de");
@@ -532,13 +532,13 @@ namespace ApiExamples
             Document docDe = new Document();
 
             Section sectionDe = docDe.Sections[0];
-            Assert.That(sectionDe.PageSetup.LeftMargin, Is.EqualTo(70.85)); // 2.5 cm
-            Assert.That(sectionDe.PageSetup.RightMargin, Is.EqualTo(70.85)); // 2.5 cm
-            Assert.That(sectionDe.PageSetup.TopMargin, Is.EqualTo(70.85)); // 2.5 cm
-            Assert.That(sectionDe.PageSetup.BottomMargin, Is.EqualTo(56.7)); // 2 cm
-            Assert.That(sectionDe.PageSetup.HeaderDistance, Is.EqualTo(35.4)); // 1.25 cm
-            Assert.That(sectionDe.PageSetup.FooterDistance, Is.EqualTo(35.4)); // 1.25 cm
-            Assert.That(sectionDe.PageSetup.TextColumns.Spacing, Is.EqualTo(35.4)); // 1.25 cm
+            Assert.AreEqual(70.85, sectionDe.PageSetup.LeftMargin); // 2.5 cm
+            Assert.AreEqual(70.85, sectionDe.PageSetup.RightMargin); // 2.5 cm
+            Assert.AreEqual(70.85, sectionDe.PageSetup.TopMargin); // 2.5 cm
+            Assert.AreEqual(56.7, sectionDe.PageSetup.BottomMargin); // 2 cm
+            Assert.AreEqual(35.4, sectionDe.PageSetup.HeaderDistance); // 1.25 cm
+            Assert.AreEqual(35.4, sectionDe.PageSetup.FooterDistance); // 1.25 cm
+            Assert.AreEqual(35.4, sectionDe.PageSetup.TextColumns.Spacing); // 1.25 cm
 
             // Change page defaults.
             sectionDe.PageSetup.LeftMargin = 90; // 3.17 cm
@@ -552,13 +552,13 @@ namespace ApiExamples
             docDe = DocumentHelper.SaveOpen(docDe);
 
             Section sectionDeAfter = docDe.Sections[0];
-            Assert.That(sectionDeAfter.PageSetup.LeftMargin, Is.EqualTo(90.0)); // 3.17 cm
-            Assert.That(sectionDeAfter.PageSetup.RightMargin, Is.EqualTo(90.0)); // 3.17 cm
-            Assert.That(sectionDeAfter.PageSetup.TopMargin, Is.EqualTo(72.0)); // 2.54 cm
-            Assert.That(sectionDeAfter.PageSetup.BottomMargin, Is.EqualTo(72.0)); // 2.54 cm
-            Assert.That(sectionDeAfter.PageSetup.HeaderDistance, Is.EqualTo(35.4)); // 1.25 cm
-            Assert.That(sectionDeAfter.PageSetup.FooterDistance, Is.EqualTo(35.4)); // 1.25 cm
-            Assert.That(sectionDeAfter.PageSetup.TextColumns.Spacing, Is.EqualTo(35.4)); // 1.25 cm
+            Assert.AreEqual(90.0, sectionDeAfter.PageSetup.LeftMargin); // 3.17 cm
+            Assert.AreEqual(90.0, sectionDeAfter.PageSetup.RightMargin); // 3.17 cm
+            Assert.AreEqual(72.0, sectionDeAfter.PageSetup.TopMargin); // 2.54 cm
+            Assert.AreEqual(72.0, sectionDeAfter.PageSetup.BottomMargin); // 2.54 cm
+            Assert.AreEqual(35.4, sectionDeAfter.PageSetup.HeaderDistance); // 1.25 cm
+            Assert.AreEqual(35.4, sectionDeAfter.PageSetup.FooterDistance); // 1.25 cm
+            Assert.AreEqual(35.4, sectionDeAfter.PageSetup.TextColumns.Spacing); // 1.25 cm
         }
 
         [Test]
@@ -575,28 +575,28 @@ namespace ApiExamples
 
             // Make sure the headers and footers have content.
             HeaderFooterCollection headersFooters = doc.FirstSection.HeadersFooters;
-            Assert.That(headersFooters[HeaderFooterType.HeaderFirst].GetText().Trim(), Is.EqualTo("First header"));
-            Assert.That(headersFooters[HeaderFooterType.HeaderEven].GetText().Trim(), Is.EqualTo("Second header"));
-            Assert.That(headersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim(), Is.EqualTo("Third header"));
-            Assert.That(headersFooters[HeaderFooterType.FooterFirst].GetText().Trim(), Is.EqualTo("First footer"));
-            Assert.That(headersFooters[HeaderFooterType.FooterEven].GetText().Trim(), Is.EqualTo("Second footer"));
-            Assert.That(headersFooters[HeaderFooterType.FooterPrimary].GetText().Trim(), Is.EqualTo("Third footer"));
+            Assert.AreEqual("First header", headersFooters[HeaderFooterType.HeaderFirst].GetText().Trim());
+            Assert.AreEqual("Second header", headersFooters[HeaderFooterType.HeaderEven].GetText().Trim());
+            Assert.AreEqual("Third header", headersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim());
+            Assert.AreEqual("First footer", headersFooters[HeaderFooterType.FooterFirst].GetText().Trim());
+            Assert.AreEqual("Second footer", headersFooters[HeaderFooterType.FooterEven].GetText().Trim());
+            Assert.AreEqual("Third footer", headersFooters[HeaderFooterType.FooterPrimary].GetText().Trim());
 
             // Removes all header and footer content except watermarks.
             doc.FirstSection.ClearHeadersFooters(true);
 
             headersFooters = doc.FirstSection.HeadersFooters;
-            Assert.That(headersFooters[HeaderFooterType.HeaderFirst].GetText().Trim(), Is.EqualTo(""));
-            Assert.That(headersFooters[HeaderFooterType.HeaderEven].GetText().Trim(), Is.EqualTo(""));
-            Assert.That(headersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim(), Is.EqualTo(""));
-            Assert.That(headersFooters[HeaderFooterType.FooterFirst].GetText().Trim(), Is.EqualTo(""));
-            Assert.That(headersFooters[HeaderFooterType.FooterEven].GetText().Trim(), Is.EqualTo(""));
-            Assert.That(headersFooters[HeaderFooterType.FooterPrimary].GetText().Trim(), Is.EqualTo(""));
-            Assert.That(doc.Watermark.Type, Is.EqualTo(WatermarkType.Text));
+            Assert.AreEqual("", headersFooters[HeaderFooterType.HeaderFirst].GetText().Trim());
+            Assert.AreEqual("", headersFooters[HeaderFooterType.HeaderEven].GetText().Trim());
+            Assert.AreEqual("", headersFooters[HeaderFooterType.HeaderPrimary].GetText().Trim());
+            Assert.AreEqual("", headersFooters[HeaderFooterType.FooterFirst].GetText().Trim());
+            Assert.AreEqual("", headersFooters[HeaderFooterType.FooterEven].GetText().Trim());
+            Assert.AreEqual("", headersFooters[HeaderFooterType.FooterPrimary].GetText().Trim());
+            Assert.AreEqual(WatermarkType.Text, doc.Watermark.Type);
 
             // Removes all header and footer content including watermarks.
             doc.FirstSection.ClearHeadersFooters(false);
-            Assert.That(doc.Watermark.Type, Is.EqualTo(WatermarkType.None));
+            Assert.AreEqual(WatermarkType.None, doc.Watermark.Type);
             //ExEnd:PreserveWatermarks
         }
     }

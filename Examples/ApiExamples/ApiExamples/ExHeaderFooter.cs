@@ -44,8 +44,8 @@ namespace ApiExamples
 
             Paragraph para = header.AppendParagraph("My header.");
 
-            Assert.That(header.IsHeader, Is.True);
-            Assert.That(para.IsEndOfHeaderFooter, Is.True);
+            Assert.IsTrue(header.IsHeader);
+            Assert.IsTrue(para.IsEndOfHeaderFooter);
 
             // Create a footer and append a paragraph to it. The text in that paragraph
             // will appear at the bottom of every page of this section, below the main body text.
@@ -54,22 +54,22 @@ namespace ApiExamples
 
             para = footer.AppendParagraph("My footer.");
 
-            Assert.That(footer.IsHeader, Is.False);
-            Assert.That(para.IsEndOfHeaderFooter, Is.True);
+            Assert.IsFalse(footer.IsHeader);
+            Assert.IsTrue(para.IsEndOfHeaderFooter);
 
-            Assert.That(para.ParentStory, Is.EqualTo(footer));
-            Assert.That(para.ParentSection, Is.EqualTo(footer.ParentSection));
-            Assert.That(header.ParentSection, Is.EqualTo(footer.ParentSection));
+            CollectionAssert.AreEqual(footer, para.ParentStory);
+            CollectionAssert.AreEqual(footer.ParentSection, para.ParentSection);
+            CollectionAssert.AreEqual(footer.ParentSection, header.ParentSection);
 
             doc.Save(ArtifactsDir + "HeaderFooter.Create.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "HeaderFooter.Create.docx");
 
-            Assert.That(doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].Range.Text
-                .Contains("My header."), Is.True);
-            Assert.That(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].Range.Text
-                .Contains("My footer."), Is.True);
+            Assert.IsTrue(doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderPrimary].Range.Text
+                .Contains("My header."));
+            Assert.IsTrue(doc.FirstSection.HeadersFooters[HeaderFooterType.FooterPrimary].Range.Text
+                .Contains("My footer."));
         }
 
         [Test]
@@ -107,8 +107,8 @@ namespace ApiExamples
 
             // Each section will still have its own header/footer objects. When we link sections,
             // the linking section will display the linked section's header/footers while keeping its own.
-            Assert.That(doc.Sections[1].HeadersFooters[0], Is.Not.EqualTo(doc.Sections[0].HeadersFooters[0]));
-            Assert.That(doc.Sections[1].HeadersFooters[0].ParentSection, Is.Not.EqualTo(doc.Sections[0].HeadersFooters[0].ParentSection));
+            CollectionAssert.AreNotEqual(doc.Sections[0].HeadersFooters[0], doc.Sections[1].HeadersFooters[0]);
+            CollectionAssert.AreNotEqual(doc.Sections[0].HeadersFooters[0].ParentSection, doc.Sections[1].HeadersFooters[0].ParentSection);
 
             // Link the headers/footers of the third section to the headers/footers of the second section.
             // The second section already links to the first section's header/footers,
@@ -124,31 +124,31 @@ namespace ApiExamples
             doc.Sections[2].HeadersFooters.LinkToPrevious(HeaderFooterType.FooterPrimary, true);
 
             // The first section's header/footers cannot link themselves to anything because there is no previous section.
-            Assert.That(doc.Sections[0].HeadersFooters.Count, Is.EqualTo(2));
-            Assert.That(doc.Sections[0].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious), Is.EqualTo(2));
-            
+            Assert.AreEqual(2, doc.Sections[0].HeadersFooters.Count);
+            Assert.AreEqual(2, doc.Sections[0].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious));
+
             // All the second section's header/footers are linked to the first section's headers/footers.
-            Assert.That(doc.Sections[1].HeadersFooters.Count, Is.EqualTo(6));
-            Assert.That(doc.Sections[1].HeadersFooters.Count(hf => ((HeaderFooter)hf).IsLinkedToPrevious), Is.EqualTo(6));
+            Assert.AreEqual(6, doc.Sections[1].HeadersFooters.Count);
+            Assert.AreEqual(6, doc.Sections[1].HeadersFooters.Count(hf => ((HeaderFooter)hf).IsLinkedToPrevious));
 
             // In the third section, only the footer is linked to the first section's footer via the second section.
-            Assert.That(doc.Sections[2].HeadersFooters.Count, Is.EqualTo(6));
-            Assert.That(doc.Sections[2].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious), Is.EqualTo(5));
-            Assert.That(doc.Sections[2].HeadersFooters[3].IsLinkedToPrevious, Is.True);
+            Assert.AreEqual(6, doc.Sections[2].HeadersFooters.Count);
+            Assert.AreEqual(5, doc.Sections[2].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious));
+            Assert.IsTrue(doc.Sections[2].HeadersFooters[3].IsLinkedToPrevious);
 
             doc.Save(ArtifactsDir + "HeaderFooter.Link.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "HeaderFooter.Link.docx");
 
-            Assert.That(doc.Sections[0].HeadersFooters.Count, Is.EqualTo(2));
-            Assert.That(doc.Sections[0].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious), Is.EqualTo(2));
+            Assert.AreEqual(2, doc.Sections[0].HeadersFooters.Count);
+            Assert.AreEqual(2, doc.Sections[0].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious));
 
-            Assert.That(doc.Sections[1].HeadersFooters.Count, Is.EqualTo(0));
-            Assert.That(doc.Sections[1].HeadersFooters.Count(hf => ((HeaderFooter)hf).IsLinkedToPrevious), Is.EqualTo(0));
+            Assert.AreEqual(0, doc.Sections[1].HeadersFooters.Count);
+            Assert.AreEqual(0, doc.Sections[1].HeadersFooters.Count(hf => ((HeaderFooter)hf).IsLinkedToPrevious));
 
-            Assert.That(doc.Sections[2].HeadersFooters.Count, Is.EqualTo(5));
-            Assert.That(doc.Sections[2].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious), Is.EqualTo(5));
+            Assert.AreEqual(5, doc.Sections[2].HeadersFooters.Count);
+            Assert.AreEqual(5, doc.Sections[2].HeadersFooters.Count(hf => !((HeaderFooter)hf).IsLinkedToPrevious));
         }
 
         [Test]
@@ -168,17 +168,29 @@ namespace ApiExamples
                 // There are three kinds of footer and header types.
                 // 1 -  The "First" header/footer, which only appears on the first page of a section.
                 HeaderFooter footer = section.HeadersFooters[HeaderFooterType.FooterFirst];
-                footer?.Remove();
+                Aspose.Words.HeaderFooter condExpression = footer;
+                if (condExpression != null)
+                {
+                    condExpression.Remove();
+                }
 
                 // 2 -  The "Primary" header/footer, which appears on odd pages.
                 footer = section.HeadersFooters[HeaderFooterType.FooterPrimary];
-                footer?.Remove();
+                Aspose.Words.HeaderFooter condExpression2 = footer;
+                if (condExpression2 != null)
+                {
+                    condExpression2.Remove();
+                }
 
                 // 3 -  The "Even" header/footer, which appears on even pages. 
                 footer = section.HeadersFooters[HeaderFooterType.FooterEven];
-                footer?.Remove();
+                Aspose.Words.HeaderFooter condExpression3 = footer;
+                if (condExpression3 != null)
+                {
+                    condExpression3.Remove();
+                }
 
-                Assert.That(section.HeadersFooters.Count(hf => !((HeaderFooter)hf).IsHeader), Is.EqualTo(0));
+                Assert.AreEqual(0, section.HeadersFooters.Count(hf => !((HeaderFooter)hf).IsHeader));
             }
 
             doc.Save(ArtifactsDir + "HeaderFooter.RemoveFooters.docx");
@@ -186,9 +198,9 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "HeaderFooter.RemoveFooters.docx");
 
-            Assert.That(doc.Sections.Count, Is.EqualTo(1));
-            Assert.That(doc.FirstSection.HeadersFooters.Count(hf => !((HeaderFooter)hf).IsHeader), Is.EqualTo(0));
-            Assert.That(doc.FirstSection.HeadersFooters.Count(hf => ((HeaderFooter)hf).IsHeader), Is.EqualTo(3));
+            Assert.AreEqual(1, doc.Sections.Count);
+            Assert.AreEqual(0, doc.FirstSection.HeadersFooters.Count(hf => !((HeaderFooter)hf).IsHeader));
+            Assert.AreEqual(3, doc.FirstSection.HeadersFooters.Count(hf => ((HeaderFooter)hf).IsHeader));
         }
 
         [Test]
@@ -201,21 +213,22 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Header and footer types.docx");
 
             // This document contains headers and footers. We can access them via the "HeadersFooters" collection.
-            Assert.That(doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderFirst].GetText().Trim(), Is.EqualTo("First header"));
+            Assert.AreEqual("First header", doc.FirstSection.HeadersFooters[HeaderFooterType.HeaderFirst].GetText().Trim());
 
             // Formats such as .html do not split the document into pages, so headers/footers will not function the same way
             // they would when we open the document as a .docx using Microsoft Word.
             // If we convert a document with headers/footers to html, the conversion will assimilate the headers/footers into body text.
             // We can use a SaveOptions object to omit headers/footers while converting to html.
             HtmlSaveOptions saveOptions =
-                new HtmlSaveOptions(SaveFormat.Html) { ExportHeadersFootersMode = ExportHeadersFootersMode.None };
+new HtmlSaveOptions(SaveFormat.Html);
+            saveOptions.ExportHeadersFootersMode = ExportHeadersFootersMode.None;
 
             doc.Save(ArtifactsDir + "HeaderFooter.ExportMode.html", saveOptions);
 
             // Open our saved document and verify that it does not contain the header's text
             doc = new Document(ArtifactsDir + "HeaderFooter.ExportMode.html");
 
-            Assert.That(doc.Range.Text.Contains("First header"), Is.False);
+            Assert.IsFalse(doc.Range.Text.Contains("First header"));
             //ExEnd
         }
 
@@ -233,22 +246,19 @@ namespace ApiExamples
 
             HeaderFooterCollection headersFooters = doc.FirstSection.HeadersFooters;
             HeaderFooter footer = headersFooters[HeaderFooterType.FooterPrimary];
-
-            FindReplaceOptions options = new FindReplaceOptions
-            {
-                MatchCase = false,
-                FindWholeWordsOnly = false
-            };
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.MatchCase = false;
+            options.FindWholeWordsOnly = false;
 
             int currentYear = DateTime.Now.Year;
-            footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", $"Copyright (C) {currentYear} by Aspose Pty Ltd.", options);
+            footer.Range.Replace("(C) 2006 Aspose Pty Ltd.", string.Format("Copyright (C) {0} by Aspose Pty Ltd.", currentYear), options);
 
             doc.Save(ArtifactsDir + "HeaderFooter.ReplaceText.docx");
             //ExEnd
 
             doc = new Document(ArtifactsDir + "HeaderFooter.ReplaceText.docx");
 
-            Assert.That(doc.Range.Text.Contains($"Copyright (C) {currentYear} by Aspose Pty Ltd."), Is.True);
+            Assert.IsTrue(doc.Range.Text.Contains(string.Format("Copyright (C) {0} by Aspose Pty Ltd.", currentYear)));
         }
 
         //ExStart
@@ -272,9 +282,9 @@ namespace ApiExamples
             doc.Range.Replace(new Regex("(header|footer)"), "", options);
 
             if (differentFirstPageHeaderFooter)
-                Assert.That(logger.Text.Replace("\r", ""), Is.EqualTo("First header\nFirst footer\nSecond header\nSecond footer\nThird header\nThird footer\n"));
+                Assert.AreEqual("First header\nFirst footer\nSecond header\nSecond footer\nThird header\nThird footer\n", logger.Text.Replace("\r", ""));
             else
-                Assert.That(logger.Text.Replace("\r", ""), Is.EqualTo("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\nSecond footer\n"));
+                Assert.AreEqual("Third header\nFirst header\nThird footer\nFirst footer\nSecond header\nSecond footer\n", logger.Text.Replace("\r", ""));
         }
 
         /// <summary>
@@ -290,7 +300,13 @@ namespace ApiExamples
                 return ReplaceAction.Skip;
             }
 
-            internal string Text => mTextBuilder.ToString();
+            internal string Text
+            {
+                get
+                {
+                    return mTextBuilder.ToString();
+                }
+            }
 
             private readonly StringBuilder mTextBuilder = new StringBuilder();
         }

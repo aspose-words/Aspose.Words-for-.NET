@@ -31,13 +31,13 @@ namespace ApiExamples
                 DigitalSignatureUtil.LoadSignatures(MyDir + "Digitally signed.docx");
 
             // If this collection is nonempty, then we can verify that the document is digitally signed.
-            Assert.That(digitalSignatures.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, digitalSignatures.Count);
 
             // 2 -  Load from a document from a FileStream:
             using (Stream stream = new FileStream(MyDir + "Digitally signed.docx", FileMode.Open))
             {
                 digitalSignatures = DigitalSignatureUtil.LoadSignatures(stream);
-                Assert.That(digitalSignatures.Count, Is.EqualTo(1));
+                Assert.AreEqual(1, digitalSignatures.Count);
             }
             //ExEnd
         }
@@ -67,8 +67,8 @@ namespace ApiExamples
             }
 
             // Verify that both our output documents have no digital signatures.
-            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx").Count, Is.EqualTo(0));
-            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx").Count, Is.EqualTo(0));
+            Assert.AreEqual(0, DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromString.docx").Count);
+            Assert.AreEqual(0, DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.LoadAndRemove.FromStream.docx").Count);
             //ExEnd
         }
 
@@ -78,7 +78,7 @@ namespace ApiExamples
             DigitalSignatureUtil.RemoveAllSignatures(MyDir + "Digitally signed.odt",
                 ArtifactsDir + "DigitalSignatureUtil.RemoveSignatures.odt");
 
-            Assert.That(DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.RemoveSignatures.odt").Count, Is.EqualTo(0));
+            Assert.AreEqual(0, DigitalSignatureUtil.LoadSignatures(ArtifactsDir + "DigitalSignatureUtil.RemoveSignatures.odt").Count);
         }
 
         [Test]
@@ -97,11 +97,9 @@ namespace ApiExamples
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
             // Create a comment and date which will be applied with our new digital signature.
-            SignOptions signOptions = new SignOptions
-            {
-                Comments = "My comment", 
-                SignTime = DateTime.Now
-            };
+            SignOptions signOptions = new SignOptions();
+            signOptions.Comments = "My comment";
+            signOptions.SignTime = DateTime.Now;
 
             // Take an unsigned document from the local file system via a file stream,
             // then create a signed copy of it determined by the filename of the output file stream.
@@ -117,14 +115,14 @@ namespace ApiExamples
             using (Stream stream = new FileStream(ArtifactsDir + "DigitalSignatureUtil.SignDocument.docx", FileMode.Open))
             {
                 DigitalSignatureCollection digitalSignatures = DigitalSignatureUtil.LoadSignatures(stream);
-                Assert.That(digitalSignatures.Count, Is.EqualTo(1));
+                Assert.AreEqual(1, digitalSignatures.Count);
 
                 DigitalSignature signature = digitalSignatures[0];
 
-                Assert.That(signature.IsValid, Is.True);
-                Assert.That(signature.SignatureType, Is.EqualTo(DigitalSignatureType.XmlDsig));
-                Assert.That(signature.SignTime.ToString(), Is.EqualTo(signOptions.SignTime.ToString()));
-                Assert.That(signature.Comments, Is.EqualTo("My comment"));
+                Assert.IsTrue(signature.IsValid);
+                Assert.AreEqual(DigitalSignatureType.XmlDsig, signature.SignatureType);
+                Assert.AreEqual(signOptions.SignTime.ToString(), signature.SignTime.ToString());
+                Assert.AreEqual("My comment", signature.Comments);
             }
         }
 
@@ -141,12 +139,10 @@ namespace ApiExamples
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
             // Create a comment, date, and decryption password which will be applied with our new digital signature.
-            SignOptions signOptions = new SignOptions
-            {
-                Comments = "Comment",
-                SignTime = DateTime.Now,
-                DecryptionPassword = "docPassword"
-            };
+            SignOptions signOptions = new SignOptions();
+            signOptions.Comments = "Comment";
+            signOptions.SignTime = DateTime.Now;
+            signOptions.DecryptionPassword = "docPassword";
 
             // Set a local system filename for the unsigned input document, and an output filename for its new digitally signed copy.
             string inputFileName = MyDir + "Encrypted.docx";
@@ -157,14 +153,14 @@ namespace ApiExamples
 
             // Open encrypted document from a file.
             LoadOptions loadOptions = new LoadOptions("docPassword");
-            Assert.That(loadOptions.Password, Is.EqualTo(signOptions.DecryptionPassword));
+            Assert.AreEqual(signOptions.DecryptionPassword, loadOptions.Password);
 
             // Check that encrypted document was successfully signed.
             Document signedDoc = new Document(outputFileName, loadOptions);
             DigitalSignatureCollection signatures = signedDoc.DigitalSignatures;
 
-            Assert.That(signatures.Count, Is.EqualTo(1));
-            Assert.That(signatures.IsValid, Is.True);
+            Assert.AreEqual(1, signatures.Count);
+            Assert.IsTrue(signatures.IsValid);
         }
 
         [Test]
@@ -176,7 +172,9 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Structured document tags.docx");
             string outputFileName = ArtifactsDir + "DigitalSignatureUtil.SignDocumentObfuscationBug.doc";
 
-            SignOptions signOptions = new SignOptions { Comments = "Comment", SignTime = DateTime.Now };
+            SignOptions signOptions = new SignOptions();
+            signOptions.Comments = "Comment";
+            signOptions.SignTime = DateTime.Now;
 
             DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, ch, signOptions);
         }
@@ -190,12 +188,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Encrypted.docx", new LoadOptions("docPassword"));
             string outputFileName = ArtifactsDir + "DigitalSignatureUtil.IncorrectDecryptionPassword.docx";
 
-            SignOptions signOptions = new SignOptions
-            {
-                Comments = "Comment",
-                SignTime = DateTime.Now,
-                DecryptionPassword = "docPassword1"
-            };
+            SignOptions signOptions = new SignOptions();
+            signOptions.Comments = "Comment";
+            signOptions.SignTime = DateTime.Now;
+            signOptions.DecryptionPassword = "docPassword1";
 
             Assert.Throws<IncorrectPasswordException>(
                 () => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, certificateHolder, signOptions),
@@ -205,12 +201,10 @@ namespace ApiExamples
         [Test]
         public void NoArgumentsForSing()
         {
-            SignOptions signOptions = new SignOptions
-            {
-                Comments = string.Empty,
-                SignTime = DateTime.Now,
-                DecryptionPassword = string.Empty
-            };
+            SignOptions signOptions = new SignOptions();
+            signOptions.Comments = string.Empty;
+            signOptions.SignTime = DateTime.Now;
+            signOptions.DecryptionPassword = string.Empty;
 
             Assert.Throws<ArgumentException>(
                 () => DigitalSignatureUtil.Sign(string.Empty, string.Empty, null, signOptions));
@@ -222,12 +216,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Digitally signed.docx");
             string outputFileName = ArtifactsDir + "DigitalSignatureUtil.NoCertificateForSign.docx";
 
-            SignOptions signOptions = new SignOptions
-            {
-                Comments = "Comment",
-                SignTime = DateTime.Now,
-                DecryptionPassword = "docPassword"
-            };
+            SignOptions signOptions = new SignOptions();
+            signOptions.Comments = "Comment";
+            signOptions.SignTime = DateTime.Now;
+            signOptions.DecryptionPassword = "docPassword";
 
             Assert.Throws<ArgumentNullException>(
                 () => DigitalSignatureUtil.Sign(doc.OriginalFileName, outputFileName, null, signOptions));
@@ -242,7 +234,8 @@ namespace ApiExamples
             //ExFor:XmlDsigLevel
             //ExSummary:Shows how to sign document based on XML-DSig standard.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
-            SignOptions signOptions = new SignOptions { XmlDsigLevel = XmlDsigLevel.XAdEsEpes };
+            SignOptions signOptions = new SignOptions();
+            signOptions.XmlDsigLevel = XmlDsigLevel.XAdEsEpes;
 
             string inputFileName = MyDir + "Document.docx";
             string outputFileName = ArtifactsDir + "DigitalSignatureUtil.XmlDsig.docx";

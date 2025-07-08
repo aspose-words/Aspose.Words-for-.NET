@@ -501,8 +501,8 @@ namespace ApiExamples
 
             // "TableStart" and "TableEnd" tags, which go inside MERGEFIELDs,
             // denote the strings that signify the starts and ends of mail merge regions.
-            Assert.That(doc.MailMerge.RegionStartTag, Is.EqualTo("TableStart"));
-            Assert.That(doc.MailMerge.RegionEndTag, Is.EqualTo("TableEnd"));
+            Assert.AreEqual("TableStart", doc.MailMerge.RegionStartTag);
+            Assert.AreEqual("TableEnd", doc.MailMerge.RegionEndTag);
 
             // Use these tags to start and end a mail merge region named "MailMergeRegion1",
             // which will contain MERGEFIELDs for two columns.
@@ -515,13 +515,13 @@ namespace ApiExamples
             // We can keep track of merge regions and their columns by looking at these collections.
             IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName("MailMergeRegion1");
 
-            Assert.That(regions.Count, Is.EqualTo(1));
-            Assert.That(regions[0].Name, Is.EqualTo("MailMergeRegion1"));
+            Assert.AreEqual(1, regions.Count);
+            Assert.AreEqual("MailMergeRegion1", regions[0].Name);
 
             string[] mergeFieldNames = doc.MailMerge.GetFieldNamesForRegion("MailMergeRegion1");
 
-            Assert.That(mergeFieldNames[0], Is.EqualTo("Column1"));
-            Assert.That(mergeFieldNames[1], Is.EqualTo("Column2"));
+            Assert.AreEqual("Column1", mergeFieldNames[0]);
+            Assert.AreEqual("Column2", mergeFieldNames[1]);
 
             // Insert a region with the same name inside the existing region, which will make it a parent.
             // Now a "Column2" field will be inside a new region.
@@ -534,13 +534,13 @@ namespace ApiExamples
             // it will return all such regions in a collection.
             regions = doc.MailMerge.GetRegionsByName("MailMergeRegion1");
 
-            Assert.That(regions.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, regions.Count);
             // Check that the second region now has a parent region.
-            Assert.That(regions[1].ParentRegion.Name, Is.EqualTo("MailMergeRegion1"));
+            Assert.AreEqual("MailMergeRegion1", regions[1].ParentRegion.Name);
 
             mergeFieldNames = doc.MailMerge.GetFieldNamesForRegion("MailMergeRegion1", 1);
 
-            Assert.That(mergeFieldNames[0], Is.EqualTo("Column2"));
+            Assert.AreEqual("Column2", mergeFieldNames[0]);
             //ExEnd
         }
 
@@ -635,12 +635,12 @@ namespace ApiExamples
 
             // Our document has a tag for a column named "Column2", which does not exist in the table.
             // If we set the "PreserveUnusedTags" flag to "false", then the mail merge will convert this tag into a MERGEFIELD.
-            Assert.That(preserveUnusedTags, Is.EqualTo(doc.GetText().Contains("{{ Column2 }}")));
+            Assert.AreEqual(doc.GetText().Contains("{{ Column2 }}"), preserveUnusedTags);
 
             if (preserveUnusedTags)
-                Assert.That(doc.Range.Fields.Count(f => f.Type == FieldType.FieldMergeField), Is.EqualTo(0));
+                Assert.AreEqual(0, doc.Range.Fields.Count(f => f.Type == FieldType.FieldMergeField));
             else
-                Assert.That(doc.Range.Fields.Count(f => f.Type == FieldType.FieldMergeField), Is.EqualTo(1));
+                Assert.AreEqual(1, doc.Range.Fields.Count(f => f.Type == FieldType.FieldMergeField));
             TestUtil.MailMergeMatchesDataTable(dataTable, doc, true); //ExSkip
         }
 
@@ -695,8 +695,8 @@ namespace ApiExamples
             // if we set the "MergeWholeDocument" flag to "true".
             doc.Save(ArtifactsDir + "MailMerge.MergeWholeDocument.docx");
 
-            Assert.That(doc.GetText().Contains("This QUOTE field is inside the \"MyTable\" merge region."), Is.True);
-            Assert.That(doc.GetText().Contains("This QUOTE field is outside of the \"MyTable\" merge region."), Is.EqualTo(mergeWholeDocument));
+            Assert.IsTrue(doc.GetText().Contains("This QUOTE field is inside the \"MyTable\" merge region."));
+            Assert.AreEqual(mergeWholeDocument, doc.GetText().Contains("This QUOTE field is outside of the \"MyTable\" merge region."));
             TestUtil.MailMergeMatchesDataTable(dataTable, doc, true); //ExSkip
         }
 
@@ -819,7 +819,7 @@ namespace ApiExamples
             doc.MailMerge.TrimWhitespaces = trimWhitespaces;
             doc.MailMerge.Execute(new[] { "myMergeField" }, new object[] { "\t hello world! " });
 
-            Assert.That(doc.GetText(), Is.EqualTo(trimWhitespaces ? "hello world!\f" : "\t hello world! \f"));
+            Assert.AreEqual(trimWhitespaces ? "hello world!\f" : "\t hello world! \f", doc.GetText());
             //ExEnd
         }
 
@@ -849,10 +849,10 @@ namespace ApiExamples
             // with the same name, and then execute the mail merge. 
             string[] fieldNames = doc.MailMerge.GetFieldNames();
 
-            Assert.That(fieldNames.Length, Is.EqualTo(3));
+            Assert.AreEqual(3, fieldNames.Length);
 
             foreach (string fieldName in fieldNames)
-                Assert.That(dataTable.Columns.Contains(fieldName), Is.True);
+                Assert.IsTrue(dataTable.Columns.Contains(fieldName));
 
             doc.MailMerge.Execute(dataTable);
             //ExEnd
@@ -876,11 +876,11 @@ namespace ApiExamples
             builder.Writeln(",");
             builder.Writeln("Greetings!");
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Dear \u0013 MERGEFIELD FirstName \u0014«FirstName»\u0015 \u0013 MERGEFIELD LastName \u0014«LastName»\u0015,\rGreetings!"));
+            Assert.AreEqual("Dear \u0013 MERGEFIELD FirstName \u0014«FirstName»\u0015 \u0013 MERGEFIELD LastName \u0014«LastName»\u0015,\rGreetings!", doc.GetText().Trim());
 
             doc.MailMerge.DeleteFields();
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Dear  ,\rGreetings!"));
+            Assert.AreEqual("Dear  ,\rGreetings!", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -923,9 +923,9 @@ namespace ApiExamples
 
             if (mailMergeCleanupOptions == MailMergeCleanupOptions.RemoveUnusedFields || 
                 mailMergeCleanupOptions == MailMergeCleanupOptions.RemoveStaticFields)
-                Assert.That(doc.Range.Fields.Count, Is.EqualTo(0));
+                Assert.AreEqual(0, doc.Range.Fields.Count);
             else
-                Assert.That(doc.Range.Fields.Count, Is.EqualTo(2));
+                Assert.AreEqual(2, doc.Range.Fields.Count);
             //ExEnd
 
             TestUtil.MailMergeMatchesDataTable(dataTable, doc, true);
@@ -964,12 +964,12 @@ namespace ApiExamples
             doc.MailMerge.ExecuteWithRegions(dataTable);
 
             if (doc.MailMerge.CleanupOptions == MailMergeCleanupOptions.RemoveEmptyParagraphs) 
-                Assert.That(doc.GetText().Trim(), Is.EqualTo("John Doe\r" +
-                    "Jane Doe"));
+                Assert.AreEqual("John Doe\r" +
+                    "Jane Doe", doc.GetText().Trim());
             else
-                Assert.That(doc.GetText().Trim(), Is.EqualTo("John Doe\r" +
+                Assert.AreEqual("John Doe\r" +
                     " \r" +
-                    "Jane Doe"));
+                    "Jane Doe", doc.GetText().Trim());
             //ExEnd
 
             TestUtil.MailMergeMatchesDataTable(dataTable, doc, false);
@@ -1024,7 +1024,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.RemoveColonBetweenEmptyMergeFields.docx");
             //ExEnd
 
-            Assert.That(doc.GetText(), Is.EqualTo(resultText));
+            Assert.AreEqual(resultText, doc.GetText());
         }
 
         //ExStart
@@ -1058,9 +1058,9 @@ namespace ApiExamples
             mappedDataFields.Add("Column3", "Column2");
 
             // The MERGEFIELD name is the "key" to the respective data source column name "value".
-            Assert.That(mappedDataFields["MergeFieldName"], Is.EqualTo("DataSourceColumnName"));
-            Assert.That(mappedDataFields.ContainsKey("MergeFieldName"), Is.True);
-            Assert.That(mappedDataFields.ContainsValue("DataSourceColumnName"), Is.True);
+            Assert.AreEqual("DataSourceColumnName", mappedDataFields["MergeFieldName"]);
+            Assert.IsTrue(mappedDataFields.ContainsKey("MergeFieldName"));
+            Assert.IsTrue(mappedDataFields.ContainsValue("DataSourceColumnName"));
 
             // Now if we run this mail merge, the "Column3" MERGEFIELDs will take data from "Column2" of the table.
             doc.MailMerge.Execute(dataTable);
@@ -1068,22 +1068,22 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx");
 
             // We can iterate over the elements in this collection.
-            Assert.That(mappedDataFields.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, mappedDataFields.Count);
 
             using (IEnumerator<KeyValuePair<string, string>> enumerator = mappedDataFields.GetEnumerator())
                 while (enumerator.MoveNext())
                     Console.WriteLine(
-                        $"Column named {enumerator.Current.Value} is mapped to MERGEFIELDs named {enumerator.Current.Key}");
+                        string.Format("Column named {0} is mapped to MERGEFIELDs named {1}", enumerator.Current.Value, enumerator.Current.Key));
 
             // We can also remove elements from the collection.
             mappedDataFields.Remove("MergeFieldName");
 
-            Assert.That(mappedDataFields.ContainsKey("MergeFieldName"), Is.False);
-            Assert.That(mappedDataFields.ContainsValue("DataSourceColumnName"), Is.False);
+            Assert.IsFalse(mappedDataFields.ContainsKey("MergeFieldName"));
+            Assert.IsFalse(mappedDataFields.ContainsValue("DataSourceColumnName"));
 
             mappedDataFields.Clear();
 
-            Assert.That(mappedDataFields.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, mappedDataFields.Count);
             TestUtil.MailMergeMatchesDataTable(dataTable, new Document(ArtifactsDir + "MailMerge.MappedDataFieldCollection.docx"), true); //ExSkip
         }
 
@@ -1137,14 +1137,14 @@ namespace ApiExamples
             string[] addressBlockFieldNames = addressBlockField.GetFieldNames();
             //ExEnd
 
-            Assert.That(addressBlockFieldNames, Is.EqualTo(addressFieldsExpect));
+            CollectionAssert.AreEqual(addressFieldsExpect, addressBlockFieldNames);
 
             string[] greetingFieldsExpect = { "Courtesy Title", "Last Name" };
 
             FieldGreetingLine greetingLineField = (FieldGreetingLine) doc.Range.Fields[1];
             string[] greetingLineFieldNames = greetingLineField.GetFieldNames();
 
-            Assert.That(greetingLineFieldNames, Is.EqualTo(greetingFieldsExpect));
+            CollectionAssert.AreEqual(greetingFieldsExpect, greetingLineFieldNames);
         }
 
         /// <summary>
@@ -1170,7 +1170,7 @@ namespace ApiExamples
 
             string paraText = DocumentHelper.GetParagraphText(doc, 0);
 
-            Assert.That(paraText, Is.EqualTo("{{ testfield1 }}value 1{{ testfield3 }}\f"));
+            Assert.AreEqual("{{ testfield1 }}value 1{{ testfield3 }}\f", paraText);
         }
 
         [Test]
@@ -1193,7 +1193,7 @@ namespace ApiExamples
 
             string paraText = DocumentHelper.GetParagraphText(doc, 0);
 
-            Assert.That(paraText, Is.EqualTo("\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f"));
+            Assert.AreEqual("\u0013MERGEFIELD \"testfield1\"\u0014«testfield1»\u0015value 1\u0013MERGEFIELD \"testfield3\"\u0014«testfield3»\u0015\f", paraText);
         }
 
         [Test]
@@ -1218,34 +1218,34 @@ namespace ApiExamples
             // Get top regions in the document.
             IList<MailMergeRegionInfo> topRegions = regionInfo.Regions;
 
-            Assert.That(topRegions.Count, Is.EqualTo(2));
-            Assert.That(topRegions[0].Name, Is.EqualTo("Region1"));
-            Assert.That(topRegions[1].Name, Is.EqualTo("Region2"));
-            Assert.That(topRegions[0].Level, Is.EqualTo(1));
-            Assert.That(topRegions[1].Level, Is.EqualTo(1));
+            Assert.AreEqual(2, topRegions.Count);
+            Assert.AreEqual("Region1", topRegions[0].Name);
+            Assert.AreEqual("Region2", topRegions[1].Name);
+            Assert.AreEqual(1, topRegions[0].Level);
+            Assert.AreEqual(1, topRegions[1].Level);
 
             // Get nested region in first top region.
             IList<MailMergeRegionInfo> nestedRegions = topRegions[0].Regions;
 
-            Assert.That(nestedRegions.Count, Is.EqualTo(2));
-            Assert.That(nestedRegions[0].Name, Is.EqualTo("NestedRegion1"));
-            Assert.That(nestedRegions[1].Name, Is.EqualTo("NestedRegion2"));
-            Assert.That(nestedRegions[0].Level, Is.EqualTo(2));
-            Assert.That(nestedRegions[1].Level, Is.EqualTo(2));
-            Assert.That(nestedRegions[1].MustacheTags.Count, Is.EqualTo(0));
+            Assert.AreEqual(2, nestedRegions.Count);
+            Assert.AreEqual("NestedRegion1", nestedRegions[0].Name);
+            Assert.AreEqual("NestedRegion2", nestedRegions[1].Name);
+            Assert.AreEqual(2, nestedRegions[0].Level);
+            Assert.AreEqual(2, nestedRegions[1].Level);
+            Assert.AreEqual(0, nestedRegions[1].MustacheTags.Count);
 
             // Get list of fields inside the first top region.
             IList<Field> fieldList = topRegions[0].Fields;
 
-            Assert.That(fieldList.Count, Is.EqualTo(4));
+            Assert.AreEqual(4, fieldList.Count);
 
             FieldMergeField startFieldMergeField = nestedRegions[0].StartField;
 
-            Assert.That(startFieldMergeField.FieldName, Is.EqualTo("TableStart:NestedRegion1"));
+            Assert.AreEqual("TableStart:NestedRegion1", startFieldMergeField.FieldName);
 
             FieldMergeField endFieldMergeField = nestedRegions[0].EndField;
 
-            Assert.That(endFieldMergeField.FieldName, Is.EqualTo("TableEnd:NestedRegion1"));
+            Assert.AreEqual("TableEnd:NestedRegion1", endFieldMergeField.FieldName);
             //ExEnd
         }
 
@@ -1281,7 +1281,7 @@ namespace ApiExamples
             doc.MailMerge.MailMergeCallback = counter;
             doc.MailMerge.Execute(table);
 
-            Assert.That(counter.TagsReplacedCount, Is.EqualTo(1));
+            Assert.AreEqual(1, counter.TagsReplacedCount);
         }
 
         /// <summary>
@@ -1304,16 +1304,16 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Mail merge regions.docx");
 
             IList<MailMergeRegionInfo> regions = doc.MailMerge.GetRegionsByName("Region1");
-            Assert.That(doc.MailMerge.GetRegionsByName("Region1").Count, Is.EqualTo(1));
-            foreach (MailMergeRegionInfo region in regions) Assert.That(region.Name, Is.EqualTo("Region1"));
+            Assert.AreEqual(1, doc.MailMerge.GetRegionsByName("Region1").Count);
+            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("Region1", region.Name);
 
             regions = doc.MailMerge.GetRegionsByName("Region2");
-            Assert.That(doc.MailMerge.GetRegionsByName("Region2").Count, Is.EqualTo(1));
-            foreach (MailMergeRegionInfo region in regions) Assert.That(region.Name, Is.EqualTo("Region2"));
+            Assert.AreEqual(1, doc.MailMerge.GetRegionsByName("Region2").Count);
+            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("Region2", region.Name);
 
             regions = doc.MailMerge.GetRegionsByName("NestedRegion1");
-            Assert.That(doc.MailMerge.GetRegionsByName("NestedRegion1").Count, Is.EqualTo(2));
-            foreach (MailMergeRegionInfo region in regions) Assert.That(region.Name, Is.EqualTo("NestedRegion1"));
+            Assert.AreEqual(2, doc.MailMerge.GetRegionsByName("NestedRegion1").Count);
+            foreach (MailMergeRegionInfo region in regions) Assert.AreEqual("NestedRegion1", region.Name);
         }
 
         [Test]
@@ -1337,7 +1337,7 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "MailMerge.CleanupOptions.docx");
 
-            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "MailMerge.CleanupOptions.docx", GoldsDir + "MailMerge.CleanupOptions Gold.docx"), Is.True);
+            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "MailMerge.CleanupOptions.docx", GoldsDir + "MailMerge.CleanupOptions Gold.docx"));
         }
 
         /// <summary>
@@ -1393,9 +1393,9 @@ namespace ApiExamples
             
             doc.Save(ArtifactsDir + "MailMerge.UnconditionalMergeFieldsAndRegions.docx");
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo(countAllMergeFields
+            Assert.AreEqual(countAllMergeFields
                     ? "\u0013 IF 1 = 2 \"James Bond\"\u0014\u0015"
-                    : "\u0013 IF 1 = 2 \u0013 MERGEFIELD  FullName \u0014«FullName»\u0015\u0014\u0015"));
+                    : "\u0013 IF 1 = 2 \u0013 MERGEFIELD  FullName \u0014«FullName»\u0015\u0014\u0015", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -1426,7 +1426,7 @@ namespace ApiExamples
             doc.MailMerge.Execute(dataTable);
 
             foreach (Section section in doc.Sections)
-                Assert.That(section.PageSetup.SectionStart, Is.EqualTo(expected));
+                Assert.AreEqual(expected, section.PageSetup.SectionStart);
         }
 
         [Test]
@@ -1485,8 +1485,8 @@ namespace ApiExamples
             settings.LinkToQuery = true;
             settings.ViewMergedData = true;
 
-            Assert.That(settings.Destination, Is.EqualTo(MailMergeDestination.Default));
-            Assert.That(settings.DoNotSupressBlankLines, Is.False);
+            Assert.AreEqual(MailMergeDestination.Default, settings.Destination);
+            Assert.IsFalse(settings.DoNotSupressBlankLines);
 
             Odso odso = settings.Odso;
             odso.DataSource = dataSrcFilename;
@@ -1494,8 +1494,8 @@ namespace ApiExamples
             odso.ColumnDelimiter = '|';
             odso.FirstRowContainsColumnNames = true;
 
-            Assert.That(odso.Clone(), Is.Not.SameAs(odso));
-            Assert.That(settings.Clone(), Is.Not.SameAs(settings));
+            Assert.AreNotSame(odso, odso.Clone());
+            Assert.AreNotSame(settings, settings.Clone());
 
             // Opening this document in Microsoft Word will execute the mail merge before displaying the contents. 
             doc.Save(ArtifactsDir + "MailMerge.MailMergeSettings.docx");
@@ -1503,19 +1503,19 @@ namespace ApiExamples
 
             settings = new Document(ArtifactsDir + "MailMerge.MailMergeSettings.docx").MailMergeSettings;
 
-            Assert.That(settings.MainDocumentType, Is.EqualTo(MailMergeMainDocumentType.MailingLabels));
-            Assert.That(settings.CheckErrors, Is.EqualTo(MailMergeCheckErrors.Simulate));
-            Assert.That(settings.DataType, Is.EqualTo(MailMergeDataType.Native));
-            Assert.That(settings.DataSource, Is.EqualTo(ArtifactsDir + "MailMerge.MailMergeSettings.DataSource.txt"));
-            Assert.That(settings.Query, Is.EqualTo("SELECT * FROM " + doc.MailMergeSettings.DataSource));
-            Assert.That(settings.LinkToQuery, Is.True);
-            Assert.That(settings.ViewMergedData, Is.True);
+            Assert.AreEqual(MailMergeMainDocumentType.MailingLabels, settings.MainDocumentType);
+            Assert.AreEqual(MailMergeCheckErrors.Simulate, settings.CheckErrors);
+            Assert.AreEqual(MailMergeDataType.Native, settings.DataType);
+            Assert.AreEqual(ArtifactsDir + "MailMerge.MailMergeSettings.DataSource.txt", settings.DataSource);
+            Assert.AreEqual("SELECT * FROM " + doc.MailMergeSettings.DataSource, settings.Query);
+            Assert.IsTrue(settings.LinkToQuery);
+            Assert.IsTrue(settings.ViewMergedData);
 
             odso = settings.Odso;
-            Assert.That(odso.DataSource, Is.EqualTo(ArtifactsDir + "MailMerge.MailMergeSettings.DataSource.txt"));
-            Assert.That(odso.DataSourceType, Is.EqualTo(OdsoDataSourceType.Text));
-            Assert.That(odso.ColumnDelimiter, Is.EqualTo('|'));
-            Assert.That(odso.FirstRowContainsColumnNames, Is.True);
+            Assert.AreEqual(ArtifactsDir + "MailMerge.MailMergeSettings.DataSource.txt", odso.DataSource);
+            Assert.AreEqual(OdsoDataSourceType.Text, odso.DataSourceType);
+            Assert.AreEqual('|', odso.ColumnDelimiter);
+            Assert.IsTrue(odso.FirstRowContainsColumnNames);
         }
 
         [Test]
@@ -1535,19 +1535,19 @@ namespace ApiExamples
             TestOdsoEmail(doc); //ExSkip
             MailMergeSettings settings = doc.MailMergeSettings;
 
-            Console.WriteLine($"Connection string:\n\t{settings.ConnectString}");
-            Console.WriteLine($"Mail merge docs as attachment:\n\t{settings.MailAsAttachment}");
-            Console.WriteLine($"Mail merge doc e-mail subject:\n\t{settings.MailSubject}");
-            Console.WriteLine($"Column that contains e-mail addresses:\n\t{settings.AddressFieldName}");
-            Console.WriteLine($"Active record:\n\t{settings.ActiveRecord}");
+            Console.WriteLine(string.Format("Connection string:\n\t{0}", settings.ConnectString));
+            Console.WriteLine(string.Format("Mail merge docs as attachment:\n\t{0}", settings.MailAsAttachment));
+            Console.WriteLine(string.Format("Mail merge doc e-mail subject:\n\t{0}", settings.MailSubject));
+            Console.WriteLine(string.Format("Column that contains e-mail addresses:\n\t{0}", settings.AddressFieldName));
+            Console.WriteLine(string.Format("Active record:\n\t{0}", settings.ActiveRecord));
 
             Odso odso = settings.Odso;
 
-            Console.WriteLine($"File will connect to data source located in:\n\t\"{odso.DataSource}\"");
-            Console.WriteLine($"Source type:\n\t{odso.DataSourceType}");
-            Console.WriteLine($"UDL connection string:\n\t{odso.UdlConnectString}");
-            Console.WriteLine($"Table:\n\t{odso.TableName}");
-            Console.WriteLine($"Query:\n\t{doc.MailMergeSettings.Query}");
+            Console.WriteLine(string.Format("File will connect to data source located in:\n\t\"{0}\"", odso.DataSource));
+            Console.WriteLine(string.Format("Source type:\n\t{0}", odso.DataSourceType));
+            Console.WriteLine(string.Format("UDL connection string:\n\t{0}", odso.UdlConnectString));
+            Console.WriteLine(string.Format("Table:\n\t{0}", odso.TableName));
+            Console.WriteLine(string.Format("Query:\n\t{0}", doc.MailMergeSettings.Query));
 
             // We can reset these settings by clearing them. Once we do that and save the document,
             // Microsoft Word will no longer execute a mail merge when we use it to load the document.
@@ -1557,25 +1557,25 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "MailMerge.OdsoEmail.docx");
-            Assert.That(doc.MailMergeSettings.ConnectString, Is.EqualTo(string.Empty));
+            Assert.AreEqual(string.Empty, doc.MailMergeSettings.ConnectString);
         }
 
         private void TestOdsoEmail(Document doc)
         {
             MailMergeSettings settings = doc.MailMergeSettings;
 
-            Assert.That(settings.MailAsAttachment, Is.False);
-            Assert.That(settings.MailSubject, Is.EqualTo("test subject"));
-            Assert.That(settings.AddressFieldName, Is.EqualTo("Email_Address"));
-            Assert.That(settings.ActiveRecord, Is.EqualTo(66));
-            Assert.That(settings.Query, Is.EqualTo("SELECT * FROM `Contacts` "));
+            Assert.IsFalse(settings.MailAsAttachment);
+            Assert.AreEqual("test subject", settings.MailSubject);
+            Assert.AreEqual("Email_Address", settings.AddressFieldName);
+            Assert.AreEqual(66, settings.ActiveRecord);
+            Assert.AreEqual("SELECT * FROM `Contacts` ", settings.Query);
 
             Odso odso = settings.Odso;
 
-            Assert.That(odso.UdlConnectString, Is.EqualTo(settings.ConnectString));
-            Assert.That(odso.DataSource, Is.EqualTo("Personal Folders|"));
-            Assert.That(odso.DataSourceType, Is.EqualTo(OdsoDataSourceType.Email));
-            Assert.That(odso.TableName, Is.EqualTo("Contacts"));
+            Assert.AreEqual(settings.ConnectString, odso.UdlConnectString);
+            Assert.AreEqual("Personal Folders|", odso.DataSource);
+            Assert.AreEqual(OdsoDataSourceType.Email, odso.DataSourceType);
+            Assert.AreEqual("Contacts", odso.TableName);
         }
 
         [Test]
@@ -1642,25 +1642,25 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.MailingLabelMerge.docx");
             //ExEnd
 
-            Assert.That(new Document(ArtifactsDir + "MailMerge.MailingLabelMerge.Header.docx").
-                    GetChild(NodeType.Table, 0, true).GetText().Trim(), Is.EqualTo("FirstName\aLastName\a\a"));
+            Assert.AreEqual("FirstName\aLastName\a\a", new Document(ArtifactsDir + "MailMerge.MailingLabelMerge.Header.docx").
+                    GetChild(NodeType.Table, 0, true).GetText().Trim());
 
-            Assert.That(new Document(ArtifactsDir + "MailMerge.MailingLabelMerge.Data.docx").
-                    GetChild(NodeType.Table, 0, true).GetText().Trim(), Is.EqualTo("John\aDoe\a\a"));
+            Assert.AreEqual("John\aDoe\a\a", new Document(ArtifactsDir + "MailMerge.MailingLabelMerge.Data.docx").
+                    GetChild(NodeType.Table, 0, true).GetText().Trim());
 
             doc = new Document(ArtifactsDir + "MailMerge.MailingLabelMerge.docx");
 
-            Assert.That(doc.Range.Fields.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.Range.Fields.Count);
 
             settings = doc.MailMergeSettings;
 
-            Assert.That(settings.HeaderSource, Is.EqualTo(ArtifactsDir + "MailMerge.MailingLabelMerge.Header.docx"));
-            Assert.That(settings.DataSource, Is.EqualTo(ArtifactsDir + "MailMerge.MailingLabelMerge.Data.docx"));
-            Assert.That(settings.Query, Is.EqualTo("SELECT * FROM " + settings.DataSource));
-            Assert.That(settings.MainDocumentType, Is.EqualTo(MailMergeMainDocumentType.MailingLabels));
-            Assert.That(settings.DataType, Is.EqualTo(MailMergeDataType.TextFile));
-            Assert.That(settings.LinkToQuery, Is.True);
-            Assert.That(settings.ViewMergedData, Is.True);
+            Assert.AreEqual(ArtifactsDir + "MailMerge.MailingLabelMerge.Header.docx", settings.HeaderSource);
+            Assert.AreEqual(ArtifactsDir + "MailMerge.MailingLabelMerge.Data.docx", settings.DataSource);
+            Assert.AreEqual("SELECT * FROM " + settings.DataSource, settings.Query);
+            Assert.AreEqual(MailMergeMainDocumentType.MailingLabels, settings.MainDocumentType);
+            Assert.AreEqual(MailMergeDataType.TextFile, settings.DataType);
+            Assert.IsTrue(settings.LinkToQuery);
+            Assert.IsTrue(settings.ViewMergedData);
         }
 
         [Test]
@@ -1688,34 +1688,34 @@ namespace ApiExamples
             // This collection defines how a mail merge will map columns from a data source
             // to predefined MERGEFIELD, ADDRESSBLOCK and GREETINGLINE fields.
             OdsoFieldMapDataCollection dataCollection = doc.MailMergeSettings.Odso.FieldMapDatas;
-            Assert.That(dataCollection.Count, Is.EqualTo(30));
+            Assert.AreEqual(30, dataCollection.Count);
 
             using (IEnumerator<OdsoFieldMapData> enumerator = dataCollection.GetEnumerator())
             {
                 int index = 0;
                 while (enumerator.MoveNext())
                 {
-                    Console.WriteLine($"Field map data index {index++}, type \"{enumerator.Current.Type}\":");
+                    Console.WriteLine(string.Format("Field map data index {0}, type \"{1}\":", index++, enumerator.Current.Type));
 
                     Console.WriteLine(
                         enumerator.Current.Type != OdsoFieldMappingType.Null
-                            ? $"\tColumn \"{enumerator.Current.Name}\", number {enumerator.Current.Column} mapped to merge field \"{enumerator.Current.MappedName}\"."
+                            ? string.Format("\tColumn \"{0}\", number {1} mapped to merge field \"{2}\".", enumerator.Current.Name, enumerator.Current.Column, enumerator.Current.MappedName)
                             : "\tNo valid column to field mapping data present.");
                 }
             }
 
             // Clone the elements in this collection.
-            Assert.That(dataCollection[0].Clone(), Is.Not.EqualTo(dataCollection[0]));
+            Assert.AreNotEqual(dataCollection[0], dataCollection[0].Clone());
 
             // Use the "RemoveAt" method elements individually by index.
             dataCollection.RemoveAt(0);
 
-            Assert.That(dataCollection.Count, Is.EqualTo(29));
+            Assert.AreEqual(29, dataCollection.Count);
 
             // Use the "Clear" method to clear the entire collection at once.
             dataCollection.Clear();
 
-            Assert.That(dataCollection.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, dataCollection.Count);
             //ExEnd
         }
 
@@ -1742,7 +1742,7 @@ namespace ApiExamples
 
             OdsoRecipientDataCollection dataCollection = doc.MailMergeSettings.Odso.RecipientDatas;
 
-            Assert.That(dataCollection.Count, Is.EqualTo(70));
+            Assert.AreEqual(70, dataCollection.Count);
 
             using (IEnumerator<OdsoRecipientData> enumerator = dataCollection.GetEnumerator())
             {
@@ -1750,24 +1750,24 @@ namespace ApiExamples
                 while (enumerator.MoveNext())
                 {
                     Console.WriteLine(
-                        $"Odso recipient data index {index++} will {(enumerator.Current.Active ? "" : "not ")}be imported upon mail merge.");
-                    Console.WriteLine($"\tColumn #{enumerator.Current.Column}");
-                    Console.WriteLine($"\tHash code: {enumerator.Current.Hash}");
-                    Console.WriteLine($"\tContents array length: {enumerator.Current.UniqueTag.Length}");
+                        string.Format("Odso recipient data index {0} will {1}be imported upon mail merge.", index++, (enumerator.Current.Active ? "" : "not ")));
+                    Console.WriteLine(string.Format("\tColumn #{0}", enumerator.Current.Column));
+                    Console.WriteLine(string.Format("\tHash code: {0}", enumerator.Current.Hash));
+                    Console.WriteLine(string.Format("\tContents array length: {0}", enumerator.Current.UniqueTag.Length));
                 }
             }
 
             // We can clone the elements in this collection.
-            Assert.That(dataCollection[0].Clone(), Is.Not.EqualTo(dataCollection[0]));
+            Assert.AreNotEqual(dataCollection[0], dataCollection[0].Clone());
 
             // We can also remove elements individually, or clear the entire collection at once.
             dataCollection.RemoveAt(0);
 
-            Assert.That(dataCollection.Count, Is.EqualTo(69));
+            Assert.AreEqual(69, dataCollection.Count);
 
             dataCollection.Clear();
 
-            Assert.That(dataCollection.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, dataCollection.Count);
             //ExEnd
         }
 
@@ -1801,7 +1801,7 @@ namespace ApiExamples
             doc.MailMerge.Execute(new[] { "Date2" }, new object[] { new DateTime(2020, 1, 01) });
 
             // The first merge result contains a date formatted in English, while the second one is in German.
-            Assert.That(doc.Range.Text.Trim(), Is.EqualTo("Wednesday, 1 January 2020 - Mittwoch, 1 Januar 2020"));
+            Assert.AreEqual("Wednesday, 1 January 2020 - Mittwoch, 1 Januar 2020", doc.Range.Text.Trim());
 
             // Restore the thread's original culture.
             Thread.CurrentThread.CurrentCulture = currentCulture;
@@ -1849,7 +1849,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.RemoveLastEmptyParagraph.docx");
             //ExEnd
 
-            Assert.That(doc.FirstSection.Body.Paragraphs.Count, Is.EqualTo(4));
+            Assert.AreEqual(4, doc.FirstSection.Body.Paragraphs.Count);
         }
 
         [Test]
@@ -1900,7 +1900,7 @@ namespace ApiExamples
             ds.Tables.Add(tableCustomers);
 
             Document doc = new Document(MyDir + "Mail merge tables.docx");
-            Assert.That(doc.GetChildNodes(NodeType.Table, true).Count, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
 
             doc.MailMerge.MergeDuplicateRegions = false;
             doc.MailMerge.CleanupOptions = MailMergeCleanupOptions.RemoveEmptyTables | MailMergeCleanupOptions.RemoveUnusedRegions;
@@ -1909,7 +1909,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "MailMerge.RemoveEmptyTables.docx");
 
             doc = new Document(ArtifactsDir + "MailMerge.RemoveEmptyTables.docx");
-            Assert.That(doc.GetChildNodes(NodeType.Table, true).Count, Is.EqualTo(1));
+            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
             //ExEnd:RemoveEmptyTables
         }
     }

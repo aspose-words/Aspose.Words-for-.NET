@@ -52,26 +52,26 @@ namespace ApiExamples
             // and then starts a new line, adding a new paragraph.
             builder.Writeln("Hello world!");
 
-            Assert.That(builder.CurrentParagraph.IsEndOfDocument, Is.True);
+            Assert.IsTrue(builder.CurrentParagraph.IsEndOfDocument);
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
             Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
 
-            Assert.That(paragraph.ParagraphFormat.FirstLineIndent, Is.EqualTo(8));
-            Assert.That(paragraph.ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Justify));
-            Assert.That(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndAlpha, Is.True);
-            Assert.That(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndDigit, Is.True);
-            Assert.That(paragraph.ParagraphFormat.KeepTogether, Is.True);
-            Assert.That(paragraph.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.AreEqual(8, paragraph.ParagraphFormat.FirstLineIndent);
+            Assert.AreEqual(ParagraphAlignment.Justify, paragraph.ParagraphFormat.Alignment);
+            Assert.IsTrue(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndAlpha);
+            Assert.IsTrue(paragraph.ParagraphFormat.AddSpaceBetweenFarEastAndDigit);
+            Assert.IsTrue(paragraph.ParagraphFormat.KeepTogether);
+            Assert.AreEqual("Hello world!", paragraph.GetText().Trim());
 
             Font runFont = paragraph.Runs[0].Font;
 
-            Assert.That(runFont.Size, Is.EqualTo(16.0d));
-            Assert.That(runFont.Bold, Is.True);
-            Assert.That(runFont.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
-            Assert.That(runFont.Name, Is.EqualTo("Arial"));
-            Assert.That(runFont.Underline, Is.EqualTo(Underline.Dash));
+            Assert.AreEqual(16.0d, runFont.Size);
+            Assert.IsTrue(runFont.Bold);
+            Assert.AreEqual(Color.Blue.ToArgb(), runFont.Color.ToArgb());
+            Assert.AreEqual("Arial", runFont.Name);
+            Assert.AreEqual(Underline.Dash, runFont.Underline);
         }
 
         [Test]
@@ -95,12 +95,12 @@ namespace ApiExamples
             // 3 -  Append a QUOTE field using a field code, and get it to display a placeholder value:
             paragraph.AppendField(" QUOTE \"Real value\"", "Placeholder value");
 
-            Assert.That(doc.Range.Fields[2].Result, Is.EqualTo("Placeholder value"));
+            Assert.AreEqual("Placeholder value", doc.Range.Fields[2].Result);
 
             // This field will display its placeholder value until we update it.
             doc.UpdateFields();
 
-            Assert.That(doc.Range.Fields[2].Result, Is.EqualTo("Real value"));
+            Assert.AreEqual("Real value", doc.Range.Fields[2].Result);
 
             doc.Save(ArtifactsDir + "Paragraph.AppendField.docx");
             //ExEnd
@@ -125,14 +125,16 @@ namespace ApiExamples
 
             // Below are three ways of inserting a field into a paragraph.
             // 1 -  Insert an AUTHOR field into a paragraph after one of the paragraph's child nodes:
-            Run run = new Run(doc) { Text = "This run was written by " };
+            Run run = new Run(doc);
+            run.Text = "This run was written by ";
             para.AppendChild(run);
 
             doc.BuiltInDocumentProperties["Author"].Value = "John Doe";
             para.InsertField(FieldType.FieldAuthor, true, run, true);
 
             // 2 -  Insert a QUOTE field after one of the paragraph's child nodes:
-            run = new Run(doc) { Text = "." };
+            run = new Run(doc);
+            run.Text = ".";
             para.AppendChild(run);
 
             Field field = para.InsertField(" QUOTE \" Real value\" ", run, true);
@@ -141,12 +143,12 @@ namespace ApiExamples
             // and get it to display a placeholder value:
             para.InsertField(" QUOTE \" Real value.\"", " Placeholder value.", field.Start, false);
 
-            Assert.That(doc.Range.Fields[1].Result, Is.EqualTo(" Placeholder value."));
+            Assert.AreEqual(" Placeholder value.", doc.Range.Fields[1].Result);
 
             // This field will display its placeholder value until we update it.
             doc.UpdateFields();
 
-            Assert.That(doc.Range.Fields[1].Result, Is.EqualTo(" Real value."));
+            Assert.AreEqual(" Real value.", doc.Range.Fields[1].Result);
 
             doc.Save(ArtifactsDir + "Paragraph.InsertField.docx");
             //ExEnd
@@ -165,7 +167,7 @@ namespace ApiExamples
 
             InsertFieldUsingFieldCode(doc, " AUTHOR ", null, false, 1);
 
-            Assert.That(DocumentHelper.GetParagraphText(doc, 1), Is.EqualTo("\u0013 AUTHOR \u0014Test Author\u0015Hello World!\r"));
+            Assert.AreEqual("\u0013 AUTHOR \u0014Test Author\u0015Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -177,7 +179,7 @@ namespace ApiExamples
 
             InsertFieldUsingFieldCode(doc, " DATE ", null, true, 1);
 
-            Assert.That(DocumentHelper.GetParagraphText(doc, 1), Is.EqualTo(string.Format("Hello World!\u0013 DATE \u0014{0}\u0015\r", date)));
+            Assert.AreEqual(string.Format("Hello World!\u0013 DATE \u0014{0}\u0015\r", date), DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -187,7 +189,7 @@ namespace ApiExamples
 
             InsertFieldUsingFieldType(doc, FieldType.FieldAuthor, false, null, false, 1);
 
-            Assert.That(DocumentHelper.GetParagraphText(doc, 1), Is.EqualTo("\u0013 AUTHOR \u0014\u0015Hello World!\r"));
+            Assert.AreEqual("\u0013 AUTHOR \u0014\u0015Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -197,7 +199,7 @@ namespace ApiExamples
 
             InsertFieldUsingFieldType(doc, FieldType.FieldAuthor, false, null, true, 1);
 
-            Assert.That(DocumentHelper.GetParagraphText(doc, 1), Is.EqualTo("Hello World!\u0013 AUTHOR \u0014\u0015\r"));
+            Assert.AreEqual("Hello World!\u0013 AUTHOR \u0014\u0015\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -207,7 +209,7 @@ namespace ApiExamples
 
             InsertFieldUsingFieldType(doc, FieldType.FieldListNum, true, null, false, 1);
 
-            Assert.That(DocumentHelper.GetParagraphText(doc, 1), Is.EqualTo("\u0013 LISTNUM \u0015Hello World!\r"));
+            Assert.AreEqual("\u0013 LISTNUM \u0015Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -218,7 +220,7 @@ namespace ApiExamples
 
             InsertFieldUsingFieldCodeFieldString(doc, " AUTHOR ", null, null, false, 1);
 
-            Assert.That(DocumentHelper.GetParagraphText(doc, 1), Is.EqualTo("\u0013 AUTHOR \u0014\u0015Hello World!\r"));
+            Assert.AreEqual("\u0013 AUTHOR \u0014\u0015Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -228,7 +230,7 @@ namespace ApiExamples
 
             InsertFieldUsingFieldCodeFieldString(doc, " AUTHOR ", null, null, true, 1);
 
-            Assert.That(DocumentHelper.GetParagraphText(doc, 1), Is.EqualTo("Hello World!\u0013 AUTHOR \u0014\u0015\r"));
+            Assert.AreEqual("Hello World!\u0013 AUTHOR \u0014\u0015\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -241,7 +243,7 @@ namespace ApiExamples
 
             InsertFieldUsingFieldCodeFieldString(doc, " AUTHOR ", "Test Field Value", run, false, 1);
 
-            Assert.That(DocumentHelper.GetParagraphText(doc, 1), Is.EqualTo("Hello World!\u0013 AUTHOR \u0014Test Field Value\u0015 Hello World!\r"));
+            Assert.AreEqual("Hello World!\u0013 AUTHOR \u0014Test Field Value\u0015 Hello World!\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -254,7 +256,7 @@ namespace ApiExamples
 
             InsertFieldUsingFieldCodeFieldString(doc, " AUTHOR ", "", run, true, 1);
 
-            Assert.That(DocumentHelper.GetParagraphText(doc, 1), Is.EqualTo("Hello World! Hello World!\u0013 AUTHOR \u0014\u0015\r"));
+            Assert.AreEqual("Hello World! Hello World!\u0013 AUTHOR \u0014\u0015\r", DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -265,7 +267,7 @@ namespace ApiExamples
 
             InsertFieldUsingFieldType(doc, FieldType.FieldAuthor, false, null, false, 1);
 
-            Assert.That(DocumentHelper.GetParagraphText(doc, 1), Is.EqualTo("\u0013 AUTHOR \u0014\u0015\f"));
+            Assert.AreEqual("\u0013 AUTHOR \u0014\u0015\f", DocumentHelper.GetParagraphText(doc, 1));
         }
 
         [Test]
@@ -276,7 +278,7 @@ namespace ApiExamples
 
             InsertFieldUsingFieldType(doc, FieldType.FieldAuthor, true, null, false, 0);
 
-            Assert.That(DocumentHelper.GetParagraphText(doc, 0), Is.EqualTo("\u0013 AUTHOR \u0014Test Author\u0015\r"));
+            Assert.AreEqual("\u0013 AUTHOR \u0014Test Author\u0015\r", DocumentHelper.GetParagraphText(doc, 0));
         }
 
         [Test]
@@ -294,7 +296,7 @@ namespace ApiExamples
             Document doc = new Document();
 
             // An empty document, by default, has one paragraph.
-            Assert.That(doc.FirstSection.Body.Paragraphs.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, doc.FirstSection.Body.Paragraphs.Count);
 
             // Composite nodes such as our paragraph can contain other composite and inline nodes as children.
             Paragraph paragraph = doc.FirstSection.Body.FirstParagraph;
@@ -310,30 +312,30 @@ namespace ApiExamples
             // that itself is a part of the document's node tree, as we did with the first run.
             // We can determine where the text contents of nodes that we insert
             // appears in the document by specifying an insertion location relative to another node in the paragraph.
-            Assert.That(paragraph.GetText().Trim(), Is.EqualTo("Initial text."));
+            Assert.AreEqual("Initial text.", paragraph.GetText().Trim());
 
             // Insert the second run into the paragraph in front of the initial run.
             paragraph.InsertBefore(run2, paragraphText);
 
-            Assert.That(paragraph.GetText().Trim(), Is.EqualTo("Run 2. Initial text."));
+            Assert.AreEqual("Run 2. Initial text.", paragraph.GetText().Trim());
 
             // Insert the third run after the initial run.
             paragraph.InsertAfter(run3, paragraphText);
 
-            Assert.That(paragraph.GetText().Trim(), Is.EqualTo("Run 2. Initial text. Run 3."));
+            Assert.AreEqual("Run 2. Initial text. Run 3.", paragraph.GetText().Trim());
 
             // Insert the first run to the start of the paragraph's child nodes collection.
             paragraph.PrependChild(run1);
 
-            Assert.That(paragraph.GetText().Trim(), Is.EqualTo("Run 1. Run 2. Initial text. Run 3."));
-            Assert.That(paragraph.GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(4));
+            Assert.AreEqual("Run 1. Run 2. Initial text. Run 3.", paragraph.GetText().Trim());
+            Assert.AreEqual(4, paragraph.GetChildNodes(NodeType.Any, true).Count);
 
             // We can modify the contents of the run by editing and deleting existing child nodes.
             ((Run)paragraph.GetChildNodes(NodeType.Run, true)[1]).Text = "Updated run 2. ";
             paragraph.GetChildNodes(NodeType.Run, true).Remove(paragraphText);
 
-            Assert.That(paragraph.GetText().Trim(), Is.EqualTo("Run 1. Updated run 2. Run 3."));
-            Assert.That(paragraph.GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(3));
+            Assert.AreEqual("Run 1. Updated run 2. Run 3.", paragraph.GetText().Trim());
+            Assert.AreEqual(3, paragraph.GetChildNodes(NodeType.Any, true).Count);
             //ExEnd
         }
 
@@ -352,7 +354,7 @@ namespace ApiExamples
             // This document contains "Move" revisions, which appear when we highlight text with the cursor,
             // and then drag it to move it to another location
             // while tracking revisions in Microsoft Word via "Review" -> "Track changes".
-            Assert.That(doc.Revisions.Count(r => r.RevisionType == RevisionType.Moving), Is.EqualTo(6));
+            Assert.AreEqual(6, doc.Revisions.Count(r => r.RevisionType == RevisionType.Moving));
 
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
@@ -361,16 +363,16 @@ namespace ApiExamples
             // Before we accept/reject a move revision, the document
             // must keep track of both the departure and arrival destinations of the text.
             // The second and the fourth paragraph define one such revision, and thus both have the same contents.
-            Assert.That(paragraphs[3].GetText(), Is.EqualTo(paragraphs[1].GetText()));
+            Assert.AreEqual(paragraphs[1].GetText(), paragraphs[3].GetText());
 
             // The "Move from" revision is the paragraph where we dragged the text from.
             // If we accept the revision, this paragraph will disappear,
             // and the other will remain and no longer be a revision.
-            Assert.That(paragraphs[1].IsMoveFromRevision, Is.True);
+            Assert.IsTrue(paragraphs[1].IsMoveFromRevision);
 
             // The "Move to" revision is the paragraph where we dragged the text to.
             // If we reject the revision, this paragraph instead will disappear, and the other will remain.
-            Assert.That(paragraphs[3].IsMoveToRevision, Is.True);
+            Assert.IsTrue(paragraphs[3].IsMoveToRevision);
             //ExEnd
         }
 
@@ -404,7 +406,7 @@ namespace ApiExamples
 
             // This paragraph is a "Format" revision, which occurs when we change the formatting of existing text
             // while tracking revisions in Microsoft Word via "Review" -> "Track changes".
-            Assert.That(doc.FirstSection.Body.FirstParagraph.IsFormatRevision, Is.True);
+            Assert.IsTrue(doc.FirstSection.Body.FirstParagraph.IsFormatRevision);
             //ExEnd
         }
 
@@ -431,17 +433,17 @@ namespace ApiExamples
 
             Paragraph paragraphFrame = doc.FirstSection.Body.Paragraphs.OfType<Paragraph>().First(p => p.FrameFormat.IsFrame);
 
-            Assert.That(paragraphFrame.FrameFormat.Width, Is.EqualTo(233.3d));
-            Assert.That(paragraphFrame.FrameFormat.Height, Is.EqualTo(138.8d));
-            Assert.That(paragraphFrame.FrameFormat.HeightRule, Is.EqualTo(HeightRule.AtLeast));
-            Assert.That(paragraphFrame.FrameFormat.HorizontalAlignment, Is.EqualTo(HorizontalAlignment.Default));
-            Assert.That(paragraphFrame.FrameFormat.VerticalAlignment, Is.EqualTo(VerticalAlignment.Default));
-            Assert.That(paragraphFrame.FrameFormat.HorizontalPosition, Is.EqualTo(34.05d));
-            Assert.That(paragraphFrame.FrameFormat.RelativeHorizontalPosition, Is.EqualTo(RelativeHorizontalPosition.Page));
-            Assert.That(paragraphFrame.FrameFormat.HorizontalDistanceFromText, Is.EqualTo(9.0d));
-            Assert.That(paragraphFrame.FrameFormat.VerticalPosition, Is.EqualTo(20.5d));
-            Assert.That(paragraphFrame.FrameFormat.RelativeVerticalPosition, Is.EqualTo(RelativeVerticalPosition.Paragraph));
-            Assert.That(paragraphFrame.FrameFormat.VerticalDistanceFromText, Is.EqualTo(0.0d));
+            Assert.AreEqual(233.3d, paragraphFrame.FrameFormat.Width);
+            Assert.AreEqual(138.8d, paragraphFrame.FrameFormat.Height);
+            Assert.AreEqual(HeightRule.AtLeast, paragraphFrame.FrameFormat.HeightRule);
+            Assert.AreEqual(HorizontalAlignment.Default, paragraphFrame.FrameFormat.HorizontalAlignment);
+            Assert.AreEqual(VerticalAlignment.Default, paragraphFrame.FrameFormat.VerticalAlignment);
+            Assert.AreEqual(34.05d, paragraphFrame.FrameFormat.HorizontalPosition);
+            Assert.AreEqual(RelativeHorizontalPosition.Page, paragraphFrame.FrameFormat.RelativeHorizontalPosition);
+            Assert.AreEqual(9.0d, paragraphFrame.FrameFormat.HorizontalDistanceFromText);
+            Assert.AreEqual(20.5d, paragraphFrame.FrameFormat.VerticalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Paragraph, paragraphFrame.FrameFormat.RelativeVerticalPosition);
+            Assert.AreEqual(0.0d, paragraphFrame.FrameFormat.VerticalDistanceFromText);
             //ExEnd
         }
 
@@ -496,12 +498,12 @@ namespace ApiExamples
 
             para = body.AppendParagraph("Paragraph 4. ");
 
-            Assert.That(para.IsInsertRevision, Is.True);
+            Assert.IsTrue(para.IsInsertRevision);
 
             // Paragraphs that we remove after starting revision tracking will register as "Delete" revisions.
             ParagraphCollection paragraphs = body.Paragraphs;
 
-            Assert.That(paragraphs.Count, Is.EqualTo(4));
+            Assert.AreEqual(4, paragraphs.Count);
 
             para = paragraphs[2];
             para.Remove();
@@ -509,17 +511,17 @@ namespace ApiExamples
             // Such paragraphs will remain until we either accept or reject the delete revision.
             // Accepting the revision will remove the paragraph for good,
             // and rejecting the revision will leave it in the document as if we never deleted it.
-            Assert.That(paragraphs.Count, Is.EqualTo(4));
-            Assert.That(para.IsDeleteRevision, Is.True);
+            Assert.AreEqual(4, paragraphs.Count);
+            Assert.IsTrue(para.IsDeleteRevision);
 
             // Accept the revision, and then verify that the paragraph is gone.
             doc.AcceptAllRevisions();
 
-            Assert.That(paragraphs.Count, Is.EqualTo(3));
-            Assert.That(para.Count, Is.EqualTo(0));
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Paragraph 1. \r" +
+            Assert.AreEqual(3, paragraphs.Count);
+            Assert.AreEqual(0, para.Count);
+            Assert.AreEqual("Paragraph 1. \r" +
                 "Paragraph 2. \r" +
-                "Paragraph 4."));
+                "Paragraph 4.", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -549,7 +551,7 @@ namespace ApiExamples
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Quote;
             builder.Write("Won't appear in the TOC. ");
 
-            Assert.That(doc.FirstSection.Body.FirstParagraph.BreakIsStyleSeparator, Is.True);
+            Assert.IsTrue(doc.FirstSection.Body.FirstParagraph.BreakIsStyleSeparator);
 
             doc.UpdateFields();
             doc.Save(ArtifactsDir + "Paragraph.BreakIsStyleSeparator.docx");
@@ -559,7 +561,7 @@ namespace ApiExamples
 
             TestUtil.VerifyField(FieldType.FieldTOC, "TOC \\o \\h \\z \\u", 
                 "\u0013 HYPERLINK \\l \"_Toc256000000\" \u0014Heading 1. Will appear in the TOC.\t\u0013 PAGEREF _Toc256000000 \\h \u00142\u0015\u0015\r", doc.Range.Fields[0]);
-            Assert.That(doc.FirstSection.Body.FirstParagraph.BreakIsStyleSeparator, Is.False);
+            Assert.IsFalse(doc.FirstSection.Body.FirstParagraph.BreakIsStyleSeparator);
         }
 
         [Test]
@@ -575,7 +577,7 @@ namespace ApiExamples
 
             // If we are in a paragraph with no tab stops in this collection,
             // the cursor will jump 36 points each time we press the Tab key in Microsoft Word.
-            Assert.That(doc.FirstSection.Body.FirstParagraph.GetEffectiveTabStops().Length, Is.EqualTo(0));
+            Assert.AreEqual(0, doc.FirstSection.Body.FirstParagraph.GetEffectiveTabStops().Length);
 
             // We can add custom tab stops in Microsoft Word if we enable the ruler via the "View" tab.
             // Each unit on this ruler is two default tab stops, which is 72 points.
@@ -586,7 +588,7 @@ namespace ApiExamples
             tabStops.Add(360, TabAlignment.Right, TabLeader.Line);
 
             // We can see these tab stops in Microsoft Word by enabling the ruler via "View" -> "Show" -> "Ruler".
-            Assert.That(para.GetEffectiveTabStops().Length, Is.EqualTo(3));
+            Assert.AreEqual(3, para.GetEffectiveTabStops().Length);
 
             // Any tab characters we add will make use of the tab stops on the ruler and may,
             // depending on the tab leader's value, leave a line between the tab departure and arrival destinations.
@@ -623,7 +625,7 @@ namespace ApiExamples
             // may occur when we manually edit parts of one paragraph many times in Microsoft Word.
             Paragraph para = builder.CurrentParagraph;
 
-            Assert.That(para.Runs.Count, Is.EqualTo(4));
+            Assert.AreEqual(4, para.Runs.Count);
 
             // Change the style of the last run to set it apart from the first three.
             para.Runs[3].Font.StyleIdentifier = StyleIdentifier.Emphasis;
@@ -633,13 +635,13 @@ namespace ApiExamples
             // This method also returns the number of runs that this method merged.
             // These two merges occurred to combine Runs #1, #2, and #3,
             // while leaving out Run #4 because it has an incompatible style.
-            Assert.That(para.JoinRunsWithSameFormatting(), Is.EqualTo(2));
+            Assert.AreEqual(2, para.JoinRunsWithSameFormatting());
 
             // The number of runs left will equal the original count
             // minus the number of run merges that the "JoinRunsWithSameFormatting" method carried out.
-            Assert.That(para.Runs.Count, Is.EqualTo(2));
-            Assert.That(para.Runs[0].Text, Is.EqualTo("Run 1. Run 2. Run 3. "));
-            Assert.That(para.Runs[1].Text, Is.EqualTo("Run 4. "));
+            Assert.AreEqual(2, para.Runs.Count);
+            Assert.AreEqual("Run 1. Run 2. Run 3. ", para.Runs[0].Text);
+            Assert.AreEqual("Run 4. ", para.Runs[1].Text);
             //ExEnd
         }
     }

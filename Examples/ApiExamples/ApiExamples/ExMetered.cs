@@ -35,10 +35,10 @@ namespace ApiExamples
             Metered metered = new Metered();
             metered.SetMeteredKey("MyPublicKey", "MyPrivateKey");
 
-            Console.WriteLine($"Is metered license accepted: {Metered.IsMeteredLicensed()}");
-            Console.WriteLine($"Product name: {metered.GetProductName()}");
-            Console.WriteLine($"Credit before operation: {Metered.GetConsumptionCredit()}");
-            Console.WriteLine($"Consumption quantity before operation: {Metered.GetConsumptionQuantity()}");
+            Console.WriteLine(string.Format("Is metered license accepted: {0}", Metered.IsMeteredLicensed()));
+            Console.WriteLine(string.Format("Product name: {0}", metered.GetProductName()));
+            Console.WriteLine(string.Format("Credit before operation: {0}", Metered.GetConsumptionCredit()));
+            Console.WriteLine(string.Format("Consumption quantity before operation: {0}", Metered.GetConsumptionQuantity()));
 
             // Operate using Aspose.Words, and then print our metered stats again to see how much we spent.
             Document doc = new Document(MyDir + "Document.docx");
@@ -48,8 +48,8 @@ namespace ApiExamples
             // you need to use waiting.
             System.Threading.Thread.Sleep(10000);
 
-            Console.WriteLine($"Credit after operation: {Metered.GetConsumptionCredit()}");
-            Console.WriteLine($"Consumption quantity after operation: {Metered.GetConsumptionQuantity()}");
+            Console.WriteLine(string.Format("Credit after operation: {0}", Metered.GetConsumptionCredit()));
+            Console.WriteLine(string.Format("Consumption quantity after operation: {0}", Metered.GetConsumptionQuantity()));
             //ExEnd
         }
     }

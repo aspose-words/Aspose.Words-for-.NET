@@ -46,7 +46,7 @@ namespace ApiExamples
             // Open the encrypted document by passing the correct password in a LoadOptions object.
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.Password.docx", new LoadOptions("MyPassword"));
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.AreEqual("Hello world!", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -71,23 +71,21 @@ namespace ApiExamples
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2003);
             builder.InsertImage(ImageDir + "Transparent background logo.png");
 
-            Assert.That(((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage, Is.EqualTo(ShapeMarkupLanguage.Vml));
+            Assert.AreEqual(ShapeMarkupLanguage.Vml, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage);
 
             // The "ISO/IEC 29500:2008" OOXML standard does not support VML shapes.
             // If we set the "Compliance" property of the SaveOptions object to "OoxmlCompliance.Iso29500_2008_Strict",
             // any document we save while passing this object will have to follow that standard. 
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions
-            {
-                Compliance = OoxmlCompliance.Iso29500_2008_Strict,
-                SaveFormat = SaveFormat.Docx
-            };
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.Compliance = OoxmlCompliance.Iso29500_2008_Strict;
+            saveOptions.SaveFormat = SaveFormat.Docx;
 
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.Iso29500Strict.docx", saveOptions);
 
             // Our saved document defines the shape using DML to adhere to the "ISO/IEC 29500:2008" OOXML standard.
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.Iso29500Strict.docx");
             
-            Assert.That(((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage, Is.EqualTo(ShapeMarkupLanguage.Dml));
+            Assert.AreEqual(ShapeMarkupLanguage.Dml, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage);
             //ExEnd
         }
 
@@ -110,10 +108,8 @@ namespace ApiExamples
 
             // The "IsRestartAtEachSection" property will only be applicable when
             // the document's OOXML compliance level is to a standard that is newer than "OoxmlComplianceCore.Ecma376".
-            OoxmlSaveOptions options = new OoxmlSaveOptions
-            {
-                Compliance = OoxmlCompliance.Iso29500_2008_Transitional
-            };
+            OoxmlSaveOptions options = new OoxmlSaveOptions();
+            options.Compliance = OoxmlCompliance.Iso29500_2008_Transitional;
 
             builder.ListFormat.List = list;
 
@@ -127,7 +123,7 @@ namespace ApiExamples
             
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.RestartingDocumentList.docx");
 
-            Assert.That(doc.Lists[0].IsRestartAtEachSection, Is.EqualTo(restartListAtEachSection));
+            Assert.AreEqual(restartListAtEachSection, doc.Lists[0].IsRestartAtEachSection);
             //ExEnd
         }
 
@@ -140,7 +136,7 @@ namespace ApiExamples
             //ExSummary:Shows how to determine whether to preserve the document's "Last saved time" property when saving.
             Document doc = new Document(MyDir + "Document.docx");
 
-            Assert.That(doc.BuiltInDocumentProperties.LastSavedTime, Is.EqualTo(new DateTime(2021, 5, 11, 6, 32, 0)));
+            Assert.AreEqual(new DateTime(2021, 5, 11, 6, 32, 0), doc.BuiltInDocumentProperties.LastSavedTime);
 
             // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object
             // and then pass it to the document's saving method to modify how we save the document.
@@ -157,9 +153,9 @@ namespace ApiExamples
             DateTime lastSavedTimeNew = doc.BuiltInDocumentProperties.LastSavedTime;
 
             if (updateLastSavedTimeProperty)
-                Assert.That((DateTime.Now - lastSavedTimeNew).Days < 1, Is.True);
+                Assert.IsTrue((DateTime.Now - lastSavedTimeNew).Days < 1);
             else
-                Assert.That(lastSavedTimeNew, Is.EqualTo(new DateTime(2021, 5, 11, 6, 32, 0)));
+                Assert.AreEqual(new DateTime(2021, 5, 11, 6, 32, 0), lastSavedTimeNew);
             //ExEnd
         }
 
@@ -186,7 +182,7 @@ namespace ApiExamples
             
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.KeepLegacyControlChars.docx");
 
-            Assert.That(doc.FirstSection.Body.GetText(), Is.EqualTo(keepLegacyControlChars ? "\u0013date \\@ \"MM/dd/yyyy\"\u0014\u0015\f" : "\u001e\f"));
+            Assert.AreEqual(keepLegacyControlChars ? "\u0013date \\@ \"MM/dd/yyyy\"\u0014\u0015\f" : "\u001e\f", doc.FirstSection.Body.GetText());
             //ExEnd
         }
 
@@ -219,9 +215,9 @@ namespace ApiExamples
 
             FileInfo fileInfo = new FileInfo(ArtifactsDir + "OoxmlSaveOptions.DocumentCompression.docx");
 
-            Console.WriteLine($"Saving operation done using the \"{compressionLevel}\" compression level:");
-            Console.WriteLine($"\tDuration:\t{st.ElapsedMilliseconds} ms");
-            Console.WriteLine($"\tFile Size:\t{fileInfo.Length} bytes");
+            Console.WriteLine(string.Format("Saving operation done using the \"{0}\" compression level:", compressionLevel));
+            Console.WriteLine(string.Format("\tDuration:\t{0} ms", st.ElapsedMilliseconds));
+            Console.WriteLine(string.Format("\tFile Size:\t{0} bytes", fileInfo.Length));
             //ExEnd
 
             var testedFileLength = fileInfo.Length;
@@ -229,16 +225,16 @@ namespace ApiExamples
             switch (compressionLevel)
             {
                 case CompressionLevel.Maximum:
-                    Assert.That(testedFileLength < 1269000, Is.True);
+                    Assert.IsTrue(testedFileLength < 1269000);
                     break;
                 case CompressionLevel.Normal:
-                    Assert.That(testedFileLength < 1271000, Is.True);
+                    Assert.IsTrue(testedFileLength < 1271000);
                     break;
                 case CompressionLevel.Fast:
-                    Assert.That(testedFileLength < 1280000, Is.True);
+                    Assert.IsTrue(testedFileLength < 1280000);
                     break;
                 case CompressionLevel.SuperFast:
-                    Assert.That(testedFileLength < 1276000, Is.True);
+                    Assert.IsTrue(testedFileLength < 1276000);
                     break;
             }
         }
@@ -283,10 +279,10 @@ namespace ApiExamples
                 using (FileStream outputFileStream = File.Open(ArtifactsDir + "OoxmlSaveOptions.CheckFileSignatures.docx", FileMode.Open))
                 {
                     long fileSize = outputFileStream.Length;
-                    Assert.That(prevFileSize < fileSize, Is.True);
+                    Assert.IsTrue(prevFileSize < fileSize);
 
                     TestUtil.CopyStream(outputFileStream, stream);
-                    Assert.That(TestUtil.DumpArray(stream.ToArray(), 0, 10), Is.EqualTo(fileSignatures[i]));
+                    Assert.AreEqual(fileSignatures[i], TestUtil.DumpArray(stream.ToArray(), 0, 10));
 
                     prevFileSize = fileSize;
                 }
@@ -302,7 +298,8 @@ namespace ApiExamples
             Document doc = new Document();
 
             // Use https://docs.aspose.com/words/net/generator-or-producer-name-included-in-output-documents/ to know how to check the result.
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions { ExportGeneratorName = false };
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.ExportGeneratorName = false;
 
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.ExportGeneratorName.docx", saveOptions);
             //ExEnd
@@ -324,14 +321,18 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Big document.docx");
 
             // Following formats are supported: Docx, FlatOpc, Docm, Dotm, Dotx.
-            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(saveFormat)
-            {
-                ProgressCallback = new SavingProgressCallback()
-            };
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions(saveFormat);
+            saveOptions.ProgressCallback = new SavingProgressCallback();
 
             var exception = Assert.Throws<OperationCanceledException>(() =>
-                doc.Save(ArtifactsDir + $"OoxmlSaveOptions.ProgressCallback.{ext}", saveOptions));
-            Assert.That(exception?.Message.Contains("EstimatedProgress"), Is.True);
+                doc.Save(ArtifactsDir + string.Format("OoxmlSaveOptions.ProgressCallback.{0}", ext), saveOptions));
+            bool? actual = default(bool?);
+            System.OperationCanceledException condExpression = exception;
+            if (condExpression != null)
+            {
+                actual = condExpression.Message.Contains("EstimatedProgress");
+            }
+            Assert.IsTrue(actual);
         }
 
         /// <summary>
@@ -356,7 +357,7 @@ namespace ApiExamples
                 DateTime canceledAt = DateTime.Now;
                 double ellapsedSeconds = (canceledAt - mSavingStartedAt).TotalSeconds;
                 if (ellapsedSeconds > MaxDuration)
-                    throw new OperationCanceledException($"EstimatedProgress = {args.EstimatedProgress}; CanceledAt = {canceledAt}");
+                    throw new OperationCanceledException(string.Format("EstimatedProgress = {0}; CanceledAt = {1}", args.EstimatedProgress, canceledAt));
             }
 
             /// <summary>
@@ -395,9 +396,11 @@ namespace ApiExamples
                     }
                 }
             }
+            OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
+            saveOptions.Zip64Mode = Zip64Mode.Always;
 
             builder.Document.Save(ArtifactsDir + "OoxmlSaveOptions.Zip64ModeOption.docx", 
-                new OoxmlSaveOptions { Zip64Mode = Zip64Mode.Always });
+saveOptions);
             //ExEnd:Zip64ModeOption
         }
 
@@ -415,15 +418,18 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx");
 
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
+            SignOptions signOptions = new SignOptions();
+            signOptions.Comments = "Some comments";
+            signOptions.SignTime = DateTime.Now;
             DigitalSignatureDetails digitalSignatureDetails = new DigitalSignatureDetails(
                 certificateHolder,
-                new SignOptions() { Comments = "Some comments", SignTime = DateTime.Now });
+signOptions);
 
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
             saveOptions.DigitalSignatureDetails = digitalSignatureDetails;
 
-            Assert.That(digitalSignatureDetails.CertificateHolder, Is.EqualTo(certificateHolder));
-            Assert.That(digitalSignatureDetails.SignOptions.Comments, Is.EqualTo("Some comments"));
+            Assert.AreEqual(certificateHolder, digitalSignatureDetails.CertificateHolder);
+            Assert.AreEqual("Some comments", digitalSignatureDetails.SignOptions.Comments);
 
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.DigitalSignature.docx", saveOptions);
             //ExEnd:DigitalSignature

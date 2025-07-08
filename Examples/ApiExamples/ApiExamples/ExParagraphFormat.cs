@@ -37,9 +37,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "ParagraphFormat.AsianTypographyProperties.docx");
             format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
 
-            Assert.That(format.FarEastLineBreakControl, Is.True);
-            Assert.That(format.WordWrap, Is.False);
-            Assert.That(format.HangingPunctuation, Is.True);
+            Assert.IsTrue(format.FarEastLineBreakControl);
+            Assert.IsFalse(format.WordWrap);
+            Assert.IsTrue(format.HangingPunctuation);
         }
 
         [TestCase(DropCapPosition.Margin)]
@@ -78,8 +78,8 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "ParagraphFormat.DropCap.docx");
 
-            Assert.That(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.DropCapPosition, Is.EqualTo(dropCapPosition));
-            Assert.That(doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.DropCapPosition, Is.EqualTo(DropCapPosition.None));
+            Assert.AreEqual(dropCapPosition, doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.DropCapPosition);
+            Assert.AreEqual(DropCapPosition.None, doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.DropCapPosition);
         }
 
         [Test]
@@ -126,20 +126,20 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "ParagraphFormat.LineSpacing.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            Assert.That(paragraphs[0].ParagraphFormat.LineSpacingRule, Is.EqualTo(LineSpacingRule.AtLeast));
-            Assert.That(paragraphs[0].ParagraphFormat.LineSpacing, Is.EqualTo(20.0d));
-            Assert.That(paragraphs[1].ParagraphFormat.LineSpacingRule, Is.EqualTo(LineSpacingRule.AtLeast));
-            Assert.That(paragraphs[1].ParagraphFormat.LineSpacing, Is.EqualTo(20.0d));
+            Assert.AreEqual(LineSpacingRule.AtLeast, paragraphs[0].ParagraphFormat.LineSpacingRule);
+            Assert.AreEqual(20.0d, paragraphs[0].ParagraphFormat.LineSpacing);
+            Assert.AreEqual(LineSpacingRule.AtLeast, paragraphs[1].ParagraphFormat.LineSpacingRule);
+            Assert.AreEqual(20.0d, paragraphs[1].ParagraphFormat.LineSpacing);
 
-            Assert.That(paragraphs[2].ParagraphFormat.LineSpacingRule, Is.EqualTo(LineSpacingRule.Exactly));
-            Assert.That(paragraphs[2].ParagraphFormat.LineSpacing, Is.EqualTo(5.0d));
-            Assert.That(paragraphs[3].ParagraphFormat.LineSpacingRule, Is.EqualTo(LineSpacingRule.Exactly));
-            Assert.That(paragraphs[3].ParagraphFormat.LineSpacing, Is.EqualTo(5.0d));
+            Assert.AreEqual(LineSpacingRule.Exactly, paragraphs[2].ParagraphFormat.LineSpacingRule);
+            Assert.AreEqual(5.0d, paragraphs[2].ParagraphFormat.LineSpacing);
+            Assert.AreEqual(LineSpacingRule.Exactly, paragraphs[3].ParagraphFormat.LineSpacingRule);
+            Assert.AreEqual(5.0d, paragraphs[3].ParagraphFormat.LineSpacing);
 
-            Assert.That(paragraphs[4].ParagraphFormat.LineSpacingRule, Is.EqualTo(LineSpacingRule.Multiple));
-            Assert.That(paragraphs[4].ParagraphFormat.LineSpacing, Is.EqualTo(18.0d));
-            Assert.That(paragraphs[5].ParagraphFormat.LineSpacingRule, Is.EqualTo(LineSpacingRule.Multiple));
-            Assert.That(paragraphs[5].ParagraphFormat.LineSpacing, Is.EqualTo(18.0d));
+            Assert.AreEqual(LineSpacingRule.Multiple, paragraphs[4].ParagraphFormat.LineSpacingRule);
+            Assert.AreEqual(18.0d, paragraphs[4].ParagraphFormat.LineSpacing);
+            Assert.AreEqual(LineSpacingRule.Multiple, paragraphs[5].ParagraphFormat.LineSpacingRule);
+            Assert.AreEqual(18.0d, paragraphs[5].ParagraphFormat.LineSpacing);
         }
 
         [TestCase(false)]
@@ -175,17 +175,17 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "ParagraphFormat.ParagraphSpacingAuto.docx");
             ParagraphFormat format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
 
-            Assert.That(format.SpaceBefore, Is.EqualTo(24.0d));
-            Assert.That(format.SpaceAfter, Is.EqualTo(24.0d));
-            Assert.That(format.SpaceAfterAuto, Is.EqualTo(autoSpacing));
-            Assert.That(format.SpaceBeforeAuto, Is.EqualTo(autoSpacing));
+            Assert.AreEqual(24.0d, format.SpaceBefore);
+            Assert.AreEqual(24.0d, format.SpaceAfter);
+            Assert.AreEqual(autoSpacing, format.SpaceAfterAuto);
+            Assert.AreEqual(autoSpacing, format.SpaceBeforeAuto);
 
             format = doc.FirstSection.Body.Paragraphs[1].ParagraphFormat;
 
-            Assert.That(format.SpaceBefore, Is.EqualTo(24.0d));
-            Assert.That(format.SpaceAfter, Is.EqualTo(24.0d));
-            Assert.That(format.SpaceAfterAuto, Is.EqualTo(autoSpacing));
-            Assert.That(format.SpaceBeforeAuto, Is.EqualTo(autoSpacing));
+            Assert.AreEqual(24.0d, format.SpaceBefore);
+            Assert.AreEqual(24.0d, format.SpaceAfter);
+            Assert.AreEqual(autoSpacing, format.SpaceAfterAuto);
+            Assert.AreEqual(autoSpacing, format.SpaceBeforeAuto);
         }
 
         [TestCase(false)]
@@ -211,15 +211,15 @@ namespace ApiExamples
             builder.ParagraphFormat.NoSpaceBetweenParagraphsOfSameStyle = noSpaceBetweenParagraphsOfSameStyle;
 
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
-            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
-            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
-            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
+            builder.Writeln(string.Format("Paragraph in the \"{0}\" style.", builder.ParagraphFormat.Style.Name));
+            builder.Writeln(string.Format("Paragraph in the \"{0}\" style.", builder.ParagraphFormat.Style.Name));
+            builder.Writeln(string.Format("Paragraph in the \"{0}\" style.", builder.ParagraphFormat.Style.Name));
             builder.ParagraphFormat.Style = doc.Styles["Quote"];
-            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
-            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
+            builder.Writeln(string.Format("Paragraph in the \"{0}\" style.", builder.ParagraphFormat.Style.Name));
+            builder.Writeln(string.Format("Paragraph in the \"{0}\" style.", builder.ParagraphFormat.Style.Name));
             builder.ParagraphFormat.Style = doc.Styles["Normal"];
-            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
-            builder.Writeln($"Paragraph in the \"{builder.ParagraphFormat.Style.Name}\" style.");
+            builder.Writeln(string.Format("Paragraph in the \"{0}\" style.", builder.ParagraphFormat.Style.Name));
+            builder.Writeln(string.Format("Paragraph in the \"{0}\" style.", builder.ParagraphFormat.Style.Name));
 
             doc.Save(ArtifactsDir + "ParagraphFormat.ParagraphSpacingSameStyle.docx");
             //ExEnd
@@ -230,9 +230,9 @@ namespace ApiExamples
             {
                 ParagraphFormat format = paragraph.ParagraphFormat;
 
-                Assert.That(format.SpaceBefore, Is.EqualTo(24.0d));
-                Assert.That(format.SpaceAfter, Is.EqualTo(24.0d));
-                Assert.That(format.NoSpaceBetweenParagraphsOfSameStyle, Is.EqualTo(noSpaceBetweenParagraphsOfSameStyle));
+                Assert.AreEqual(24.0d, format.SpaceBefore);
+                Assert.AreEqual(24.0d, format.SpaceAfter);
+                Assert.AreEqual(noSpaceBetweenParagraphsOfSameStyle, format.NoSpaceBetweenParagraphsOfSameStyle);
             }
         }
 
@@ -273,11 +273,11 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "ParagraphFormat.ParagraphOutlineLevel.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            Assert.That(paragraphs[0].ParagraphFormat.OutlineLevel, Is.EqualTo(OutlineLevel.Level1));
-            Assert.That(paragraphs[1].ParagraphFormat.OutlineLevel, Is.EqualTo(OutlineLevel.Level2));
-            Assert.That(paragraphs[2].ParagraphFormat.OutlineLevel, Is.EqualTo(OutlineLevel.Level3));
-            Assert.That(paragraphs[3].ParagraphFormat.OutlineLevel, Is.EqualTo(OutlineLevel.Level3));
-            Assert.That(paragraphs[4].ParagraphFormat.OutlineLevel, Is.EqualTo(OutlineLevel.BodyText));
+            Assert.AreEqual(OutlineLevel.Level1, paragraphs[0].ParagraphFormat.OutlineLevel);
+            Assert.AreEqual(OutlineLevel.Level2, paragraphs[1].ParagraphFormat.OutlineLevel);
+            Assert.AreEqual(OutlineLevel.Level3, paragraphs[2].ParagraphFormat.OutlineLevel);
+            Assert.AreEqual(OutlineLevel.Level3, paragraphs[3].ParagraphFormat.OutlineLevel);
+            Assert.AreEqual(OutlineLevel.BodyText, paragraphs[4].ParagraphFormat.OutlineLevel);
         }
 
         [TestCase(false)]
@@ -305,13 +305,13 @@ namespace ApiExamples
             
             if (pageBreakBefore)
             {
-                Assert.That(layoutCollector.GetStartPageIndex(paragraphs[0]), Is.EqualTo(1));
-                Assert.That(layoutCollector.GetStartPageIndex(paragraphs[1]), Is.EqualTo(2));
+                Assert.AreEqual(1, layoutCollector.GetStartPageIndex(paragraphs[0]));
+                Assert.AreEqual(2, layoutCollector.GetStartPageIndex(paragraphs[1]));
             }
             else
             {
-                Assert.That(layoutCollector.GetStartPageIndex(paragraphs[0]), Is.EqualTo(1));
-                Assert.That(layoutCollector.GetStartPageIndex(paragraphs[1]), Is.EqualTo(1));
+                Assert.AreEqual(1, layoutCollector.GetStartPageIndex(paragraphs[0]));
+                Assert.AreEqual(1, layoutCollector.GetStartPageIndex(paragraphs[1]));
             }
 
             doc.Save(ArtifactsDir + "ParagraphFormat.PageBreakBefore.docx");
@@ -320,8 +320,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "ParagraphFormat.PageBreakBefore.docx");
             paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            Assert.That(paragraphs[0].ParagraphFormat.PageBreakBefore, Is.EqualTo(pageBreakBefore));
-            Assert.That(paragraphs[1].ParagraphFormat.PageBreakBefore, Is.EqualTo(pageBreakBefore));
+            Assert.AreEqual(pageBreakBefore, paragraphs[0].ParagraphFormat.PageBreakBefore);
+            Assert.AreEqual(pageBreakBefore, paragraphs[1].ParagraphFormat.PageBreakBefore);
         }
 
         [TestCase(false)]
@@ -355,7 +355,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "ParagraphFormat.WidowControl.docx");
 
-            Assert.That(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.WidowControl, Is.EqualTo(widowControl));
+            Assert.AreEqual(widowControl, doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.WidowControl);
         }
 
         [Test]
@@ -384,8 +384,8 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "ParagraphFormat.LinesToDrop.odt");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            Assert.That(paragraphs[0].ParagraphFormat.LinesToDrop, Is.EqualTo(4));
-            Assert.That(paragraphs[1].ParagraphFormat.LinesToDrop, Is.EqualTo(0));
+            Assert.AreEqual(4, paragraphs[0].ParagraphFormat.LinesToDrop);
+            Assert.AreEqual(0, paragraphs[1].ParagraphFormat.LinesToDrop);
         }
 
         [TestCase(false)]
@@ -397,7 +397,7 @@ namespace ApiExamples
             //ExSummary:Shows how to suppress hyphenation for a paragraph.
             Hyphenation.RegisterDictionary("de-CH", MyDir + "hyph_de_CH.dic");
 
-            Assert.That(Hyphenation.IsDictionaryRegistered("de-CH"), Is.True);
+            Assert.IsTrue(Hyphenation.IsDictionaryRegistered("de-CH"));
 
             // Open a document containing text with a locale matching that of our dictionary.
             // When we save this document to a fixed page save format, its text will have hyphenation.
@@ -426,13 +426,13 @@ namespace ApiExamples
             textAbsorber.Visit(pdfDoc);
 
             if (suppressAutoHyphens)
-                Assert.That(textAbsorber.Text.Replace("  ", " ").Contains($"La ob storen an deinen am sachen. {Environment.NewLine}" +
-                                                       $"Doppelte um da am spateren verlogen {Environment.NewLine}" +
-                                                       $"gekommen achtzehn blaulich."), Is.True);
+                Assert.IsTrue(textAbsorber.Text.Replace("  ", " ").Contains(string.Format("La ob storen an deinen am sachen. {0}", Environment.NewLine) +
+                                                       string.Format("Doppelte um da am spateren verlogen {0}", Environment.NewLine) +
+                                                       string.Format("gekommen achtzehn blaulich.")));
             else
-                Assert.That(textAbsorber.Text.Replace("  ", " ").Contains($"La ob storen an deinen am sachen. Dop{unicodeOptionalHyphen}{Environment.NewLine}" +
-                                                       $"pelte um da am spateren verlogen ge{unicodeOptionalHyphen}{Environment.NewLine}" +
-                                                       $"kommen achtzehn blaulich."), Is.True);
+                Assert.IsTrue(textAbsorber.Text.Replace("  ", " ").Contains(string.Format("La ob storen an deinen am sachen. Dop{0}{1}", unicodeOptionalHyphen, Environment.NewLine) +
+                                                       string.Format("pelte um da am spateren verlogen ge{0}{1}", unicodeOptionalHyphen, Environment.NewLine) +
+                                                       string.Format("kommen achtzehn blaulich.")));
         }
 
         [Test]
@@ -451,39 +451,39 @@ namespace ApiExamples
 
             // Below are five different spacing options, along with the properties that their configuration indirectly affects.
             // 1 -  Left indent:
-            Assert.That(0.0d, Is.EqualTo(format.LeftIndent));
+            Assert.AreEqual(format.LeftIndent, 0.0d);
 
             format.CharacterUnitLeftIndent = 10.0;
 
-            Assert.That(120.0d, Is.EqualTo(format.LeftIndent));
+            Assert.AreEqual(format.LeftIndent, 120.0d);
 
             // 2 -  Right indent:
-            Assert.That(0.0d, Is.EqualTo(format.RightIndent)); 
+            Assert.AreEqual(format.RightIndent, 0.0d); 
 
             format.CharacterUnitRightIndent = -5.5;
 
-            Assert.That(-66.0d, Is.EqualTo(format.RightIndent));
+            Assert.AreEqual(format.RightIndent, -66.0d);
 
             // 3 -  Hanging indent:
-            Assert.That(0.0d, Is.EqualTo(format.FirstLineIndent));
+            Assert.AreEqual(format.FirstLineIndent, 0.0d);
 
             format.CharacterUnitFirstLineIndent = 20.3;
 
-            Assert.That(243.59d, Is.EqualTo(format.FirstLineIndent).Within(0.1d));
+            Assert.AreEqual(format.FirstLineIndent, 243.59d, 0.1d);
 
             // 4 -  Line spacing before paragraphs:
-            Assert.That(0.0d, Is.EqualTo(format.SpaceBefore));
+            Assert.AreEqual(format.SpaceBefore, 0.0d);
 
             format.LineUnitBefore = 5.1;
 
-            Assert.That(61.1d, Is.EqualTo(format.SpaceBefore).Within(0.1d));
+            Assert.AreEqual(format.SpaceBefore, 61.1d, 0.1d);
 
             // 5 -  Line spacing after paragraphs:
-            Assert.That(0.0d, Is.EqualTo(format.SpaceAfter));
+            Assert.AreEqual(format.SpaceAfter, 0.0d);
 
             format.LineUnitAfter = 10.9;
 
-            Assert.That(130.8d, Is.EqualTo(format.SpaceAfter).Within(0.1d));
+            Assert.AreEqual(format.SpaceAfter, 130.8d, 0.1d);
 
             builder.Writeln("Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
                             "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
@@ -494,20 +494,20 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             format = doc.FirstSection.Body.FirstParagraph.ParagraphFormat;
 
-            Assert.That(10.0d, Is.EqualTo(format.CharacterUnitLeftIndent));
-            Assert.That(120.0d, Is.EqualTo(format.LeftIndent));
+            Assert.AreEqual(format.CharacterUnitLeftIndent, 10.0d);
+            Assert.AreEqual(format.LeftIndent, 120.0d);
             
-            Assert.That(-5.5d, Is.EqualTo(format.CharacterUnitRightIndent));
-            Assert.That(-66.0d, Is.EqualTo(format.RightIndent));
+            Assert.AreEqual(format.CharacterUnitRightIndent, -5.5d);
+            Assert.AreEqual(format.RightIndent, -66.0d);
 
-            Assert.That(20.3d, Is.EqualTo(format.CharacterUnitFirstLineIndent));
-            Assert.That(243.59d, Is.EqualTo(format.FirstLineIndent).Within(0.1d));
+            Assert.AreEqual(format.CharacterUnitFirstLineIndent, 20.3d);
+            Assert.AreEqual(format.FirstLineIndent, 243.59d, 0.1d);
             
-            Assert.That(5.1d, Is.EqualTo(format.LineUnitBefore).Within(0.1d));
-            Assert.That(61.1d, Is.EqualTo(format.SpaceBefore).Within(0.1d));
+            Assert.AreEqual(format.LineUnitBefore, 5.1d, 0.1d);
+            Assert.AreEqual(format.SpaceBefore, 61.1d, 0.1d);
 
-            Assert.That(10.9d, Is.EqualTo(format.LineUnitAfter));
-            Assert.That(130.8d, Is.EqualTo(format.SpaceAfter).Within(0.1d));
+            Assert.AreEqual(format.LineUnitAfter, 10.9d);
+            Assert.AreEqual(format.SpaceAfter, 130.8d, 0.1d);
         }
 
         [Test]
@@ -530,7 +530,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "ParagraphFormat.ParagraphBaselineAlignment.docx");
             format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
-            Assert.That(format.BaselineAlignment, Is.EqualTo(BaselineAlignment.Top));
+            Assert.AreEqual(BaselineAlignment.Top, format.BaselineAlignment);
         }
 
         [Test]
@@ -551,7 +551,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "ParagraphFormat.MirrorIndents.docx");
             format = doc.FirstSection.Body.Paragraphs[0].ParagraphFormat;
 
-            Assert.That(format.MirrorIndents, Is.EqualTo(true));
+            Assert.AreEqual(true, format.MirrorIndents);
         }
     }
 }

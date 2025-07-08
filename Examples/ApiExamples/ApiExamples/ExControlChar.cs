@@ -31,14 +31,14 @@ namespace ApiExamples
 
             // Converting the document to text form reveals that control characters
             // represent some of the document's structural elements, such as page breaks.
-            Assert.That(doc.GetText(), Is.EqualTo($"Hello world!{ControlChar.Cr}" +
-                            $"Hello again!{ControlChar.Cr}" +
-                            ControlChar.PageBreak));
+            Assert.AreEqual(string.Format("Hello world!{0}", ControlChar.Cr) +
+                            string.Format("Hello again!{0}", ControlChar.Cr) +
+                            ControlChar.PageBreak, doc.GetText());
 
             // When converting a document to string form,
             // we can omit some of the control characters with the Trim method.
-            Assert.That(doc.GetText().Trim(), Is.EqualTo($"Hello world!{ControlChar.Cr}" +
-                            "Hello again!"));
+            Assert.AreEqual(string.Format("Hello world!{0}", ControlChar.Cr) +
+                            "Hello again!", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -89,30 +89,30 @@ namespace ApiExamples
             builder.Write("Before line break." + ControlChar.LineBreak + "After line break.");
 
             // Add a new line and starts a new paragraph.
-            Assert.That(doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count, Is.EqualTo(1));
+            Assert.AreEqual(1, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
             builder.Write("Before line feed." + ControlChar.LineFeed + "After line feed.");
-            Assert.That(doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
 
             // The line feed character has two versions.
-            Assert.That(ControlChar.Lf, Is.EqualTo(ControlChar.LineFeed));
+            Assert.AreEqual(ControlChar.LineFeed, ControlChar.Lf);
 
             // Carriage returns and line feeds can be represented together by one character.
-            Assert.That(ControlChar.Cr + ControlChar.Lf, Is.EqualTo(ControlChar.CrLf));
+            Assert.AreEqual(ControlChar.CrLf, ControlChar.Cr + ControlChar.Lf);
 
             // Add a paragraph break, which will start a new paragraph.
             builder.Write("Before paragraph break." + ControlChar.ParagraphBreak + "After paragraph break.");
-            Assert.That(doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count, Is.EqualTo(3));
+            Assert.AreEqual(3, doc.FirstSection.Body.GetChildNodes(NodeType.Paragraph, true).Count);
 
             // Add a section break. This does not make a new section or paragraph.
-            Assert.That(doc.Sections.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, doc.Sections.Count);
             builder.Write("Before section break." + ControlChar.SectionBreak + "After section break.");
-            Assert.That(doc.Sections.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, doc.Sections.Count);
 
             // Add a page break.
             builder.Write("Before page break." + ControlChar.PageBreak + "After page break.");
 
             // A page break is the same value as a section break.
-            Assert.That(ControlChar.SectionBreak, Is.EqualTo(ControlChar.PageBreak));
+            Assert.AreEqual(ControlChar.PageBreak, ControlChar.SectionBreak);
 
             // Insert a new section, and then set its column count to two.
             doc.AppendChild(new Section(doc));
@@ -125,15 +125,15 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "ControlChar.InsertControlChars.docx");
 
             // There are char and string counterparts for most characters.
-            Assert.That(ControlChar.CellChar, Is.EqualTo(Convert.ToChar(ControlChar.Cell)));
-            Assert.That(ControlChar.NonBreakingSpaceChar, Is.EqualTo(Convert.ToChar(ControlChar.NonBreakingSpace)));
-            Assert.That(ControlChar.TabChar, Is.EqualTo(Convert.ToChar(ControlChar.Tab)));
-            Assert.That(ControlChar.LineBreakChar, Is.EqualTo(Convert.ToChar(ControlChar.LineBreak)));
-            Assert.That(ControlChar.LineFeedChar, Is.EqualTo(Convert.ToChar(ControlChar.LineFeed)));
-            Assert.That(ControlChar.ParagraphBreakChar, Is.EqualTo(Convert.ToChar(ControlChar.ParagraphBreak)));
-            Assert.That(ControlChar.SectionBreakChar, Is.EqualTo(Convert.ToChar(ControlChar.SectionBreak)));
-            Assert.That(ControlChar.SectionBreakChar, Is.EqualTo(Convert.ToChar(ControlChar.PageBreak)));
-            Assert.That(ControlChar.ColumnBreakChar, Is.EqualTo(Convert.ToChar(ControlChar.ColumnBreak)));
+            Assert.AreEqual(Convert.ToChar(ControlChar.Cell), ControlChar.CellChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.NonBreakingSpace), ControlChar.NonBreakingSpaceChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.Tab), ControlChar.TabChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.LineBreak), ControlChar.LineBreakChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.LineFeed), ControlChar.LineFeedChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.ParagraphBreak), ControlChar.ParagraphBreakChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.SectionBreak), ControlChar.SectionBreakChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.PageBreak), ControlChar.SectionBreakChar);
+            Assert.AreEqual(Convert.ToChar(ControlChar.ColumnBreak), ControlChar.ColumnBreakChar);
             //ExEnd
         }
     }

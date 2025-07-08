@@ -200,10 +200,10 @@ namespace ApiExamples
             AddOptionName(options.WrapTrailSpaces, "WrapTrailSpaces", enabledOptions, disabledOptions);
             Console.WriteLine("\tEnabled options:");
             foreach (string optionName in enabledOptions)
-                Console.WriteLine($"\t\t{optionName}");
+                Console.WriteLine(string.Format("\t\t{0}", optionName));
             Console.WriteLine("\tDisabled options:");
             foreach (string optionName in disabledOptions)
-                Console.WriteLine($"\t\t{optionName}");
+                Console.WriteLine(string.Format("\t\t{0}", optionName));
         }
 
         private static void AddOptionName(Boolean option, String optionName, IList<string> enabledOptions, IList<string> disabledOptions)
@@ -223,24 +223,24 @@ namespace ApiExamples
             CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
             compatibilityOptions.OptimizeFor(MsWordVersion.Word2002);
 
-            Assert.That(compatibilityOptions.AdjustLineHeightInTable, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.AlignTablesRowByRow, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.AllowSpaceOfSameStyleInTable, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.DoNotAutofitConstrainedTables, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.DoNotBreakConstrainedForcedTable, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.DoNotBreakWrappedTables, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.DoNotSnapToGridInCell, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.DoNotUseHTMLParagraphAutoSpacing, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.DoNotVertAlignCellWithSp, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.ForgetLastTabAlignment, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.GrowAutofit, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.LayoutRawTableWidth, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.LayoutTableRowsApart, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.NoColumnBalance, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.OverrideTableStyleFontSizeAndJustification, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.UseSingleBorderforContiguousCells, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.UseWord2002TableStyleRules, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.UseWord2010TableStyleRules, Is.EqualTo(false));
+            Assert.AreEqual(false, compatibilityOptions.AdjustLineHeightInTable);
+            Assert.AreEqual(false, compatibilityOptions.AlignTablesRowByRow);
+            Assert.AreEqual(true, compatibilityOptions.AllowSpaceOfSameStyleInTable);
+            Assert.AreEqual(true, compatibilityOptions.DoNotAutofitConstrainedTables);
+            Assert.AreEqual(true, compatibilityOptions.DoNotBreakConstrainedForcedTable);
+            Assert.AreEqual(false, compatibilityOptions.DoNotBreakWrappedTables);
+            Assert.AreEqual(false, compatibilityOptions.DoNotSnapToGridInCell);
+            Assert.AreEqual(false, compatibilityOptions.DoNotUseHTMLParagraphAutoSpacing);
+            Assert.AreEqual(true, compatibilityOptions.DoNotVertAlignCellWithSp);
+            Assert.AreEqual(false, compatibilityOptions.ForgetLastTabAlignment);
+            Assert.AreEqual(true, compatibilityOptions.GrowAutofit);
+            Assert.AreEqual(false, compatibilityOptions.LayoutRawTableWidth);
+            Assert.AreEqual(false, compatibilityOptions.LayoutTableRowsApart);
+            Assert.AreEqual(false, compatibilityOptions.NoColumnBalance);
+            Assert.AreEqual(false, compatibilityOptions.OverrideTableStyleFontSizeAndJustification);
+            Assert.AreEqual(false, compatibilityOptions.UseSingleBorderforContiguousCells);
+            Assert.AreEqual(true, compatibilityOptions.UseWord2002TableStyleRules);
+            Assert.AreEqual(false, compatibilityOptions.UseWord2010TableStyleRules);
 
             // In the output document, these settings can be accessed in Microsoft Word via
             // File -> Options -> Advanced -> Compatibility options for...
@@ -255,12 +255,12 @@ namespace ApiExamples
             CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
             compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.That(compatibilityOptions.ApplyBreakingRules, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.DoNotUseEastAsianBreakRules, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.ShowBreaksInFrames, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.SplitPgBreakAndParaMark, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.UseAltKinsokuLineBreakRules, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.UseWord97LineBreakRules, Is.EqualTo(false));
+            Assert.AreEqual(false, compatibilityOptions.ApplyBreakingRules);
+            Assert.AreEqual(true, compatibilityOptions.DoNotUseEastAsianBreakRules);
+            Assert.AreEqual(false, compatibilityOptions.ShowBreaksInFrames);
+            Assert.AreEqual(true, compatibilityOptions.SplitPgBreakAndParaMark);
+            Assert.AreEqual(true, compatibilityOptions.UseAltKinsokuLineBreakRules);
+            Assert.AreEqual(false, compatibilityOptions.UseWord97LineBreakRules);
 
             // In the output document, these settings can be accessed in Microsoft Word via
             // File -> Options -> Advanced -> Compatibility options for...
@@ -275,18 +275,18 @@ namespace ApiExamples
             CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
             compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.That(compatibilityOptions.AutoSpaceLikeWord95, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.DisplayHangulFixedWidth, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.NoExtraLineSpacing, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.NoLeading, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.NoSpaceRaiseLower, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.SpaceForUL, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.SpacingInWholePoints, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.SuppressBottomSpacing, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.SuppressSpBfAfterPgBrk, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.SuppressSpacingAtTopOfPage, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.SuppressTopSpacing, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.UlTrailSpace, Is.EqualTo(false));
+            Assert.AreEqual(false, compatibilityOptions.AutoSpaceLikeWord95);
+            Assert.AreEqual(true, compatibilityOptions.DisplayHangulFixedWidth);
+            Assert.AreEqual(false, compatibilityOptions.NoExtraLineSpacing);
+            Assert.AreEqual(false, compatibilityOptions.NoLeading);
+            Assert.AreEqual(false, compatibilityOptions.NoSpaceRaiseLower);
+            Assert.AreEqual(false, compatibilityOptions.SpaceForUL);
+            Assert.AreEqual(false, compatibilityOptions.SpacingInWholePoints);
+            Assert.AreEqual(false, compatibilityOptions.SuppressBottomSpacing);
+            Assert.AreEqual(false, compatibilityOptions.SuppressSpBfAfterPgBrk);
+            Assert.AreEqual(false, compatibilityOptions.SuppressSpacingAtTopOfPage);
+            Assert.AreEqual(false, compatibilityOptions.SuppressTopSpacing);
+            Assert.AreEqual(false, compatibilityOptions.UlTrailSpace);
 
             // In the output document, these settings can be accessed in Microsoft Word via
             // File -> Options -> Advanced -> Compatibility options for...
@@ -301,11 +301,11 @@ namespace ApiExamples
             CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
             compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.That(compatibilityOptions.SuppressTopSpacingWP, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.TruncateFontHeightsLikeWP6, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.WPJustification, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.WPSpaceWidth, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.WrapTrailSpaces, Is.EqualTo(false));
+            Assert.AreEqual(false, compatibilityOptions.SuppressTopSpacingWP);
+            Assert.AreEqual(false, compatibilityOptions.TruncateFontHeightsLikeWP6);
+            Assert.AreEqual(false, compatibilityOptions.WPJustification);
+            Assert.AreEqual(false, compatibilityOptions.WPSpaceWidth);
+            Assert.AreEqual(false, compatibilityOptions.WrapTrailSpaces);
 
             // In the output document, these settings can be accessed in Microsoft Word via
             // File -> Options -> Advanced -> Compatibility options for...
@@ -320,10 +320,10 @@ namespace ApiExamples
             CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
             compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.That(compatibilityOptions.CachedColBalance, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.DoNotVertAlignInTxbx, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.DoNotWrapTextWithPunct, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.NoTabHangInd, Is.EqualTo(false));
+            Assert.AreEqual(true, compatibilityOptions.CachedColBalance);
+            Assert.AreEqual(true, compatibilityOptions.DoNotVertAlignInTxbx);
+            Assert.AreEqual(true, compatibilityOptions.DoNotWrapTextWithPunct);
+            Assert.AreEqual(false, compatibilityOptions.NoTabHangInd);
 
             // In the output document, these settings can be accessed in Microsoft Word via
             // File -> Options -> Advanced -> Compatibility options for...
@@ -338,11 +338,11 @@ namespace ApiExamples
             CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
             compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.That(compatibilityOptions.FootnoteLayoutLikeWW8, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.LineWrapLikeWord6, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.MWSmallCaps, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.ShapeLayoutLikeWW8, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.UICompat97To2003, Is.EqualTo(false));
+            Assert.AreEqual(false, compatibilityOptions.FootnoteLayoutLikeWW8);
+            Assert.AreEqual(false, compatibilityOptions.LineWrapLikeWord6);
+            Assert.AreEqual(false, compatibilityOptions.MWSmallCaps);
+            Assert.AreEqual(false, compatibilityOptions.ShapeLayoutLikeWW8);
+            Assert.AreEqual(false, compatibilityOptions.UICompat97To2003);
 
             // In the output document, these settings can be accessed in Microsoft Word via
             // File -> Options -> Advanced -> Compatibility options for...
@@ -357,8 +357,8 @@ namespace ApiExamples
             CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
             compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.That(compatibilityOptions.UnderlineTabInNumList, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.UseNormalStyleForList, Is.EqualTo(true));
+            Assert.AreEqual(true, compatibilityOptions.UnderlineTabInNumList);
+            Assert.AreEqual(true, compatibilityOptions.UseNormalStyleForList);
 
             // In the output document, these settings can be accessed in Microsoft Word via
             // File -> Options -> Advanced -> Compatibility options for...
@@ -373,21 +373,21 @@ namespace ApiExamples
             CompatibilityOptions compatibilityOptions = doc.CompatibilityOptions;
             compatibilityOptions.OptimizeFor(MsWordVersion.Word2000);
 
-            Assert.That(compatibilityOptions.BalanceSingleByteDoubleByteWidth, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.ConvMailMergeEsc, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.DoNotExpandShiftReturn, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.DoNotLeaveBackslashAlone, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.DoNotSuppressParagraphBorders, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.DoNotUseIndentAsNumberingTabStop, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.PrintBodyTextBeforeHeader, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.PrintColBlack, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.SelectFldWithFirstOrLastChar, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.SubFontBySize, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.SwapBordersFacingPgs, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.TransparentMetafiles, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.UseAnsiKerningPairs, Is.EqualTo(true));
-            Assert.That(compatibilityOptions.UseFELayout, Is.EqualTo(false));
-            Assert.That(compatibilityOptions.UsePrinterMetrics, Is.EqualTo(false));
+            Assert.AreEqual(false, compatibilityOptions.BalanceSingleByteDoubleByteWidth);
+            Assert.AreEqual(false, compatibilityOptions.ConvMailMergeEsc);
+            Assert.AreEqual(false, compatibilityOptions.DoNotExpandShiftReturn);
+            Assert.AreEqual(false, compatibilityOptions.DoNotLeaveBackslashAlone);
+            Assert.AreEqual(false, compatibilityOptions.DoNotSuppressParagraphBorders);
+            Assert.AreEqual(true, compatibilityOptions.DoNotUseIndentAsNumberingTabStop);
+            Assert.AreEqual(false, compatibilityOptions.PrintBodyTextBeforeHeader);
+            Assert.AreEqual(false, compatibilityOptions.PrintColBlack);
+            Assert.AreEqual(true, compatibilityOptions.SelectFldWithFirstOrLastChar);
+            Assert.AreEqual(false, compatibilityOptions.SubFontBySize);
+            Assert.AreEqual(false, compatibilityOptions.SwapBordersFacingPgs);
+            Assert.AreEqual(false, compatibilityOptions.TransparentMetafiles);
+            Assert.AreEqual(true, compatibilityOptions.UseAnsiKerningPairs);
+            Assert.AreEqual(false, compatibilityOptions.UseFELayout);
+            Assert.AreEqual(false, compatibilityOptions.UsePrinterMetrics);
 
             // In the output document, these settings can be accessed in Microsoft Word via
             // File -> Options -> Advanced -> Compatibility options for...
