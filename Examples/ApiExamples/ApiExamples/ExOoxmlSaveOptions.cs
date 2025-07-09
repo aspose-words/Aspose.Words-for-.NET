@@ -105,8 +105,8 @@ namespace ApiExamples
 
             doc.Lists.Add(ListTemplate.NumberDefault);
 
-            Aspose.Words.Lists.List list = doc.Lists[0];
-            list.IsRestartAtEachSection = restartListAtEachSection;
+            Aspose.Words.Lists.List docList = doc.Lists[0];
+            docList.IsRestartAtEachSection = restartListAtEachSection;
 
             // The "IsRestartAtEachSection" property will only be applicable when
             // the document's OOXML compliance level is to a standard that is newer than "OoxmlComplianceCore.Ecma376".
@@ -115,7 +115,7 @@ namespace ApiExamples
                 Compliance = OoxmlCompliance.Iso29500_2008_Transitional
             };
 
-            builder.ListFormat.List = list;
+            builder.ListFormat.List = docList;
 
             builder.Writeln("List item 1");
             builder.Writeln("List item 2");
