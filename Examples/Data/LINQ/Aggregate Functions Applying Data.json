@@ -1,0 +1,38 @@
+[
+  {
+    "client": "A Company",
+    "contractValue": 1200000
+  },
+  {
+    "client": "B Ltd.",
+    "contractValue": 750000
+  },
+  {
+    "client": "C & D",
+    "contractValue": 350000
+  },
+  {
+    "client": "E Corp.",
+    "contractValue": 650000
+  },
+  {
+    "client": "F & Partners",
+    "contractValue": 550000
+  },
+  {
+    "client": "G & Co.",
+    "contractValue": 350000
+  },
+  {
+    "client": "H Group",
+    "contractValue": 250000
+  },
+  {
+    "client": "I & Sons",
+    "contractValue": 100000
+  },
+  {
+    "client": "J Ent.",
+    "contractValue": 100000
+  }
+]

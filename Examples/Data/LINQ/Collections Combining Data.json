@@ -1,0 +1,24 @@
+{
+  "developers": [
+    {
+      "employee": "James Atkins",
+      "platform": ".NET"
+    },
+    {
+      "employee": "John Lee",
+      "platform": "Java"
+    },
+    {
+      "employee": "Thelma Green",
+      "platform": "Python"
+    }
+  ],
+  "testers": [
+    {
+      "name": "Thelma Green"
+    },
+    {
+      "name": "Ted LeMark"
+    }
+  ]
+}

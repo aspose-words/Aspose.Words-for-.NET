@@ -1,0 +1,53 @@
+[
+  {
+    "projectName": "Website Redesign",
+    "tasks": [
+      {
+        "taskName": "Gather Requirements",
+        "status": "Completed"
+      },
+      {
+        "taskName": "Design Mockups",
+        "status": "In Progress"
+      },
+      {
+        "taskName": "Develop Frontend",
+        "status": "Not Started"
+      }
+    ]
+  },
+  {
+    "projectName": "Mobile App Development",
+    "tasks": [
+      {
+        "taskName": "Market Research",
+        "status": "Completed"
+      },
+      {
+        "taskName": "Create User Stories",
+        "status": "In Progress"
+      },
+      {
+        "taskName": "Develop Backend",
+        "status": "Not Started"
+      }
+    ]
+  },
+  {
+    "projectName": "Data Analysis Project",
+    "tasks": [
+      {
+        "taskName": "Collect Data",
+        "status": "In Progress"
+      },
+      {
+        "taskName": "Data Cleaning",
+        "status": "Not Started"
+      },
+      {
+        "taskName": "Generate Reports",
+        "status": "Not Started"
+      }
+    ]
+  }
+]

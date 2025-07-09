@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Wireless Mouse",
+    "price": 25.99,
+    "stock": 150
+  },
+  {
+    "name": "Bluetooth Headphones",
+    "price": 49.99,
+    "stock": 75
+  },
+  {
+    "name": "Yoga Mat",
+    "price": 15.99,
+    "stock": 200
+  },
+  {
+    "name": "Electric Kettle",
+    "price": 39.99,
+    "stock": 100
+  },
+  {
+    "name": "Desk Lamp",
+    "price": 39.99,
+    "stock": 60
+  },
+  {
+    "name": "Smartphone Stand",
+    "price": 15.99,
+    "stock": 300
+  }
+]

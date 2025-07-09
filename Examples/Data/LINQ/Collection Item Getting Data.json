@@ -1,0 +1,32 @@
+[
+  {
+    "division": "Division A",
+    "ordersDelivered": 1165,
+    "ordersCancelled": 118
+  },
+  {
+    "division": "Division B",
+    "ordersDelivered": 1327,
+    "ordersCancelled": 130
+  },
+  {
+    "division": "Division C",
+    "ordersDelivered": 998,
+    "ordersCancelled": 104
+  },
+  {
+    "division": "Division D",
+    "ordersDelivered": 1723,
+    "ordersCancelled": 192
+  },
+  {
+    "division": "Division E",
+    "ordersDelivered": 1599,
+    "ordersCancelled": 163,
+    "subdivisions": [
+      {
+        "name": "Subdivision E1"
+      }
+    ]
+  }
+]

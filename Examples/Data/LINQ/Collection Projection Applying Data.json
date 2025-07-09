@@ -1,0 +1,38 @@
+[
+  {
+    "customerName": "Alice Greenfield",
+    "productName": "Wireless Mouse",
+    "quantity": 2,
+    "price": 25.99
+  },
+  {
+    "customerName": "David Anderson",
+    "productName": "Yoga Mat",
+    "quantity": 1,
+    "price": 15.99
+  },
+  {
+    "customerName": "Sophia Montgomery",
+    "productName": "Bluetooth Headphones",
+    "quantity": 1,
+    "price": 49.99
+  },
+  {
+    "customerName": "Emily Carter",
+    "productName": "Office Chair",
+    "quantity": 1,
+    "price": 199.99
+  },
+  {
+    "customerName": "Daniel King",
+    "productName": "Desk Lamp",
+    "quantity": 2,
+    "price": 39.99
+  },
+  {
+    "customerName": "Michael Johnson",
+    "productName": "Smartphone Stand",
+    "quantity": 4,
+    "price": 15.99
+  }
+]

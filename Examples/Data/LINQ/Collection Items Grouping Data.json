@@ -1,0 +1,50 @@
+[
+  {
+    "division": "Division A",
+    "quarter": "Q1",
+    "region": "North America",
+    "sales": 190000
+  },
+  {
+    "division": "Division A",
+    "quarter": "Q2",
+    "region": "North America",
+    "sales": 210000
+  },
+  {
+    "division": "Division A",
+    "quarter": "Q1",
+    "region": "South America",
+    "sales": 130000
+  },
+  {
+    "division": "Division A",
+    "quarter": "Q2",
+    "region": "South America",
+    "sales": 145000
+  },
+  {
+    "division": "Division B",
+    "quarter": "Q1",
+    "region": "Europe",
+    "sales": 170000
+  },
+  {
+    "division": "Division B",
+    "quarter": "Q2",
+    "region": "Europe",
+    "sales": 185000
+  },
+  {
+    "division": "Division B",
+    "quarter": "Q1",
+    "region": "Asia",
+    "sales": 150000
+  },
+  {
+    "division": "Division B",
+    "quarter": "Q2",
+    "region": "Asia",
+    "sales": 155000
+  }
+]

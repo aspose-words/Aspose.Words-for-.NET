@@ -1,0 +1,47 @@
+[
+  {
+    "name": "A Company",
+    "industry": "Healthcare",
+    "revenue": 20000000
+  },
+  {
+    "name": "B Ltd.",
+    "industry": "Retail",
+    "revenue": 15000000
+  },
+  {
+    "name": "C & D",
+    "industry": "Finance",
+    "revenue": 10000000
+  },
+  {
+    "name": "E Corp.",
+    "industry": "Technology",
+    "revenue": 8500000
+  },
+  {
+    "name": "F & Partners",
+    "industry": "Education",
+    "revenue": 7500000
+  },
+  {
+    "name": "G & Co.",
+    "industry": "Food & Beverage",
+    "revenue": 6000000
+  },
+  {
+    "name": "H Group",
+    "industry": "Technology",
+    "revenue": 5000000
+  },
+  {
+    "name": "I & Sons",
+    "industry": "Travel",
+    "revenue": 4000000
+  },
+  {
+    "name": "J Ent.",
+    "industry": "Environmental Services",
+    "revenue": 3000000
+  }
+]

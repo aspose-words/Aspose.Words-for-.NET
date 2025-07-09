@@ -17,625 +17,241 @@ namespace ApiExamples.LinqTemp
     public class ExReportingEngine : ApiExampleBase
     {
         [Test]
-        public void BuildingColumnChart()
+        public void FilteringCollection()
         {
-            //ExStart:BuildingColumnChart
-            //GistId:a9bfce4e06620c7bb2f1f0af6d166f0e
+            //ExStart:FilteringCollection
+            //GistId:2a372b3e0a32f6ecd34fccdfdc786d6f
             // Open the template document.
-            Document doc = new Document(MyLinqDir + "Column Chart Template.docx");
+            Document doc = new Document(MyLinqDir + "Collection Filtering Template.docx");
 
             // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Column Chart Data.json");
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Collection Filtering Data.json");
 
             // Build a report. The name of the data source should match the one used in the template.
             ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
             engine.BuildReport(doc, dataSource, "items");
 
             // Save the report.
-            doc.Save(ArtifactsDir + "Column Chart Report.docx");
-            //ExEnd:BuildingColumnChart
+            doc.Save(ArtifactsDir + "Collection Filtering Report.docx");
+            //ExEnd:FilteringCollection
 
             // Test the report.
-            CompareDocs("Column Chart Report.docx", "Column Chart Report Gold.docx");
+            CompareDocs("Collection Filtering Report.docx", "Collection Filtering Report Gold.docx");
         }
 
         [Test]
-        public void BuildingLineChart()
+        public void SortingCollection()
         {
-            //ExStart:BuildingLineChart
-            //GistId:2dcdbb630b51b99c6bd65a6603dfd982
+            //ExStart:SortingCollection
+            //GistId:a1447498e89384885b576b3d9ac6a54c
             // Open the template document.
-            Document doc = new Document(MyLinqDir + "Line Chart Template.docx");
+            Document doc = new Document(MyLinqDir + "Collection Sorting Template.docx");
 
             // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Line Chart Data.json");
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Collection Sorting Data.json");
 
             // Build a report. The name of the data source should match the one used in the template.
             ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
             engine.BuildReport(doc, dataSource, "items");
 
             // Save the report.
-            doc.Save(ArtifactsDir + "Line Chart Report.docx");
-            //ExEnd:BuildingLineChart
+            doc.Save(ArtifactsDir + "Collection Sorting Report.docx");
+            //ExEnd:SortingCollection
 
             // Test the report.
-            CompareDocs("Line Chart Report.docx", "Line Chart Report Gold.docx");
+            CompareDocs("Collection Sorting Report.docx", "Collection Sorting Report Gold.docx");
         }
 
         [Test]
-        public void BuildingPieChart()
+        public void GroupingCollectionItems()
         {
-            //ExStart:BuildingPieChart
-            //GistId:a42494e6d04efdee2f0d39807dadb5d6
+            //ExStart:GroupingCollectionItems
+            //GistId:33a1a11b80298cf4e826181f5c1fb430
             // Open the template document.
-            Document doc = new Document(MyLinqDir + "Pie Chart Template.docx");
+            Document doc = new Document(MyLinqDir + "Collection Items Grouping Template.docx");
 
             // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Pie Chart Data.json");
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Collection Items Grouping Data.json");
 
             // Build a report. The name of the data source should match the one used in the template.
             ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
             engine.BuildReport(doc, dataSource, "items");
 
             // Save the report.
-            doc.Save(ArtifactsDir + "Pie Chart Report.docx");
-            //ExEnd:BuildingPieChart
+            doc.Save(ArtifactsDir + "Collection Items Grouping Report.docx");
+            //ExEnd:GroupingCollectionItems
 
             // Test the report.
-            CompareDocs("Pie Chart Report.docx", "Pie Chart Report Gold.docx");
+            CompareDocs("Collection Items Grouping Report.docx", "Collection Items Grouping Report Gold.docx");
         }
 
         [Test]
-        public void BuildingDonutChart()
+        public void ApplyingCollectionProjection()
         {
-            //ExStart:BuildingDonutChart
-            //GistId:d34c252777a718d0a7c2867f71bf0888
+            //ExStart:ApplyingCollectionProjection
+            //GistId:32d20dc2b90295e3c3b2d026e5dd14fe
             // Open the template document.
-            Document doc = new Document(MyLinqDir + "Donut Chart Template.docx");
+            Document doc = new Document(MyLinqDir + "Collection Projection Applying Template.docx");
 
             // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Donut Chart Data.json");
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Collection Projection Applying Data.json");
 
             // Build a report. The name of the data source should match the one used in the template.
             ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
             engine.BuildReport(doc, dataSource, "items");
 
             // Save the report.
-            doc.Save(ArtifactsDir + "Donut Chart Report.docx");
-            //ExEnd:BuildingDonutChart
+            doc.Save(ArtifactsDir + "Collection Projection Applying Report.docx");
+            //ExEnd:ApplyingCollectionProjection
 
             // Test the report.
-            CompareDocs("Donut Chart Report.docx", "Donut Chart Report Gold.docx");
+            CompareDocs("Collection Projection Applying Report.docx", "Collection Projection Applying Report Gold.docx");
         }
 
         [Test]
-        public void BuildingBarChart()
+        public void FlatteningCollections()
         {
-            //ExStart:BuildingBarChart
-            //GistId:b28dd058a87a3f9ce67a797e9132bdf6
+            //ExStart:FlatteningCollections
+            //GistId:121fbe0c8200dd148034587b3010aa92
             // Open the template document.
-            Document doc = new Document(MyLinqDir + "Bar Chart Template.docx");
+            Document doc = new Document(MyLinqDir + "Collections Flattening Template.docx");
 
             // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Bar Chart Data.json");
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Collections Flattening Data.json");
 
             // Build a report. The name of the data source should match the one used in the template.
             ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
             engine.BuildReport(doc, dataSource, "items");
 
             // Save the report.
-            doc.Save(ArtifactsDir + "Bar Chart Report.docx");
-            //ExEnd:BuildingBarChart
+            doc.Save(ArtifactsDir + "Collections Flattening Report.docx");
+            //ExEnd:FlatteningCollections
 
             // Test the report.
-            CompareDocs("Bar Chart Report.docx", "Bar Chart Report Gold.docx");
+            CompareDocs("Collections Flattening Report.docx", "Collections Flattening Report Gold.docx");
         }
 
         [Test]
-        public void BuildingAreaChart()
+        public void ApplyingAggregateFunctions()
         {
-            //ExStart:BuildingAreaChart
-            //GistId:bc0e095ec0072a1e1e704777334b5023
+            //ExStart:ApplyingAggregateFunctions
+            //GistId:6754912b3a92f42e8532c7fb8a24f08d
             // Open the template document.
-            Document doc = new Document(MyLinqDir + "Area Chart Template.docx");
+            Document doc = new Document(MyLinqDir + "Aggregate Functions Applying Template.docx");
 
             // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Area Chart Data.json");
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Aggregate Functions Applying Data.json");
 
             // Build a report. The name of the data source should match the one used in the template.
             ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
             engine.BuildReport(doc, dataSource, "items");
 
             // Save the report.
-            doc.Save(ArtifactsDir + "Area Chart Report.docx");
-            //ExEnd:BuildingAreaChart
+            doc.Save(ArtifactsDir + "Aggregate Functions Applying Report.docx");
+            //ExEnd:ApplyingAggregateFunctions
 
             // Test the report.
-            CompareDocs("Area Chart Report.docx", "Area Chart Report Gold.docx");
+            CompareDocs("Aggregate Functions Applying Report.docx", "Aggregate Functions Applying Report Gold.docx");
         }
 
         [Test]
-        public void BuildingScatterChart()
+        public void CombiningCollections()
         {
-            //ExStart:BuildingScatterChart
-            //GistId:afe1b02e007250935be30b9456295e21
+            //ExStart:CombiningCollections
+            //GistId:41abcd2ddc09d682fe2a67397b83781b
             // Open the template document.
-            Document doc = new Document(MyLinqDir + "Scatter Chart Template.docx");
+            Document doc = new Document(MyLinqDir + "Collections Combining Template.docx");
 
             // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Scatter Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Scatter Chart Report.docx");
-            //ExEnd:BuildingScatterChart
-
-            // Test the report.
-            CompareDocs("Scatter Chart Report.docx", "Scatter Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingBubbleChart()
-        {
-            //ExStart:BuildingBubbleChart
-            //GistId:595f34976fce9c39136e0a8ccf5241fd
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Bubble Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Bubble Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Bubble Chart Report.docx");
-            //ExEnd:BuildingBubbleChart
-
-            // Test the report.
-            CompareDocs("Bubble Chart Report.docx", "Bubble Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingSurfaceChart()
-        {
-            //ExStart:BuildingSurfaceChart
-            //GistId:2fcc8b5e3ad0fd49a3528563331cbe66
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Surface Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Surface Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Surface Chart Report.docx");
-            //ExEnd:BuildingSurfaceChart
-
-            // Test the report.
-            CompareDocs("Surface Chart Report.docx", "Surface Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingRadarChart()
-        {
-            //ExStart:BuildingRadarChart
-            //GistId:96bd2aea26f54c0ddfd32a6301cfd32e
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Radar Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Radar Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Radar Chart Report.docx");
-            //ExEnd:BuildingRadarChart
-
-            // Test the report.
-            CompareDocs("Radar Chart Report.docx", "Radar Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingTreemapChart()
-        {
-            //ExStart:BuildingTreemapChart
-            //GistId:0564a1c00008d6da73c2a1fc9c744794
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Treemap Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Treemap Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Treemap Chart Report.docx");
-            //ExEnd:BuildingTreemapChart
-
-            // Test the report.
-            CompareDocs("Treemap Chart Report.docx", "Treemap Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingSunburstChart()
-        {
-            //ExStart:BuildingSunburstChart
-            //GistId:ae0d2a688336922adc838a9a7225d1cc
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Sunburst Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Sunburst Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Sunburst Chart Report.docx");
-            //ExEnd:BuildingSunburstChart
-
-            // Test the report.
-            CompareDocs("Sunburst Chart Report.docx", "Sunburst Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingHistogramChart()
-        {
-            //ExStart:BuildingHistogramChart
-            //GistId:edfb65be6c8467ae3fef7574f138218f
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Histogram Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Histogram Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Histogram Chart Report.docx");
-            //ExEnd:BuildingHistogramChart
-
-            // Test the report.
-            CompareDocs("Histogram Chart Report.docx", "Histogram Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingParetoChart()
-        {
-            //ExStart:BuildingParetoChart
-            //GistId:45210245bf418e3146e39dd905818695
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Pareto Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Pareto Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Pareto Chart Report.docx");
-            //ExEnd:BuildingParetoChart
-
-            // Test the report.
-            CompareDocs("Pareto Chart Report.docx", "Pareto Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingBoxAndWhiskerChart()
-        {
-            //ExStart:BuildingBoxAndWhiskerChart
-            //GistId:a0b8163b5ecc129f8c439cc0b44a85d3
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Box and Whisker Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Box and Whisker Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Box and Whisker Chart Report.docx");
-            //ExEnd:BuildingBoxAndWhiskerChart
-
-            // Test the report.
-            CompareDocs("Box and Whisker Chart Report.docx", "Box and Whisker Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingWaterfallChart()
-        {
-            //ExStart:BuildingWaterfallChart
-            //GistId:3100394ea4660bad51382db4da276d4a
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Waterfall Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Waterfall Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Waterfall Chart Report.docx");
-            //ExEnd:BuildingWaterfallChart
-
-            // Test the report.
-            CompareDocs("Waterfall Chart Report.docx", "Waterfall Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingFunnelChart()
-        {
-            //ExStart:BuildingFunnelChart
-            //GistId:407b901cd82f93eabd84bdc6dd2cb5b7
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Funnel Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Funnel Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Funnel Chart Report.docx");
-            //ExEnd:BuildingFunnelChart
-
-            // Test the report.
-            CompareDocs("Funnel Chart Report.docx", "Funnel Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingStockChart()
-        {
-            //ExStart:BuildingStockChart
-            //GistId:bbcd237a7d0afc8f48f2e9d39ced30e7
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Stock Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Stock Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Stock Chart Report.docx");
-            //ExEnd:BuildingStockChart
-
-            // Test the report.
-            CompareDocs("Stock Chart Report.docx", "Stock Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingComboChart()
-        {
-            //ExStart:BuildingComboChart
-            //GistId:ce435eace52f0504985b9f10e7203e3d
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Combo Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Combo Chart Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "items");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Combo Chart Report.docx");
-            //ExEnd:BuildingComboChart
-
-            // Test the report.
-            CompareDocs("Combo Chart Report.docx", "Combo Chart Report Gold.docx");
-        }
-
-        [Test]
-        public void BuildingGaugeChart()
-        {
-            //ExStart:BuildingGaugeChart
-            //GistId:45e82d351f10b65ceca440d95d72aa5a
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Gauge Chart Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Gauge Chart Data.json");
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Collections Combining Data.json");
 
             // Build a report.
             ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
             engine.BuildReport(doc, dataSource);
 
             // Save the report.
-            doc.Save(ArtifactsDir + "Gauge Chart Report.docx");
-            //ExEnd:BuildingGaugeChart
+            doc.Save(ArtifactsDir + "Collections Combining Report.docx");
+            //ExEnd:CombiningCollections
 
             // Test the report.
-            CompareDocs("Gauge Chart Report.docx", "Gauge Chart Report Gold.docx");
+            CompareDocs("Collections Combining Report.docx", "Collections Combining Report Gold.docx");
         }
 
         [Test]
-        public void BuildingChartWithVariableNumberOfSeries1()
+        public void GettingUniqueCollectionItems()
         {
-            //ExStart:BuildingChartWithVariableNumberOfSeries
-            //GistId:2f7a15f32189afa4c8a2195926cedf7d
+            //ExStart:GettingUniqueCollectionItems
+            //GistId:fed41697c49040e617f232ff128a2c21
             // Open the template document.
-            Document doc = new Document(MyLinqDir + "Chart with Variable Number of Series Template.docx");
+            Document doc = new Document(MyLinqDir + "Unique Collection Items Getting Template.docx");
 
             // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Variable Number of Series Data 1.json");
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Unique Collection Items Getting Data.json");
 
             // Build a report. The name of the data source should match the one used in the template.
             ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "data");
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
 
             // Save the report.
-            doc.Save(ArtifactsDir + "Chart with Variable Number of Series Report 1.docx");
-            //ExEnd:BuildingChartWithVariableNumberOfSeries
+            doc.Save(ArtifactsDir + "Unique Collection Items Getting Report.docx");
+            //ExEnd:GettingUniqueCollectionItems
 
             // Test the report.
-            CompareDocs("Chart with Variable Number of Series Report 1.docx",
-                "Chart with Variable Number of Series Report 1 Gold.docx");
+            CompareDocs("Unique Collection Items Getting Report.docx", "Unique Collection Items Getting Report Gold.docx");
         }
 
         [Test]
-        public void BuildingChartWithVariableNumberOfSeries2()
+        public void GettingCollectionItem()
         {
+            //ExStart:GettingCollectionItem
+            //GistId:9bf7bf0f8aab16fec51e577ce64d8634
             // Open the template document.
-            Document doc = new Document(MyLinqDir + "Chart with Variable Number of Series Template.docx");
+            Document doc = new Document(MyLinqDir + "Collection Item Getting Template.docx");
 
             // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Variable Number of Series Data 2.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "data");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Chart with Variable Number of Series Report 2.docx");
-            
-            // Test the report.
-            CompareDocs("Chart with Variable Number of Series Report 2.docx",
-                "Chart with Variable Number of Series Report 2 Gold.docx");
-        }
-
-        [Test]
-        public void ChangingChartTitle()
-        {
-            //ExStart:ChangingChartTitle
-            //GistId:86abd6970b9db97fa6b8a1a5852ac2fc
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Chart with Changing Title Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Title Data.json");
-
-            // Build a report.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource);
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Chart with Changing Title Report.docx");
-            //ExEnd:ChangingChartTitle
-
-            // Test the report.
-            CompareDocs("Chart with Changing Title Report.docx", "Chart with Changing Title Report Gold.docx");
-        }
-
-        [Test]
-        public void ChangingChartLegendEntry()
-        {
-            //ExStart:ChangingChartLegendEntry
-            //GistId:ad4fcc877c14e6d4bd7346fce06d027a
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Chart with Changing Legend Entries Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Legend Entries Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "data");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Chart with Changing Legend Entries Report.docx");
-            //ExEnd:ChangingChartLegendEntry
-
-            // Test the report.
-            CompareDocs("Chart with Changing Legend Entries Report.docx",
-                "Chart with Changing Legend Entries Report Gold.docx");
-        }
-
-        [Test]
-        public void ChangingChartAxisTitle()
-        {
-            //ExStart:ChangingChartAxisTitle
-            //GistId:e9668c5d7f03033c56bea98921f80e72
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Chart with Changing Axis Titles Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Axis Titles Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "data");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Chart with Changing Axis Titles Report.docx");
-            //ExEnd:ChangingChartAxisTitle
-
-            // Test the report.
-            CompareDocs("Chart with Changing Axis Titles Report.docx", "Chart with Changing Axis Titles Report Gold.docx");
-        }
-
-        [Test]
-        public void ChangingChartSeriesColor()
-        {
-            //ExStart:ChangingChartSeriesColor
-            //GistId:f9a631509dab79e8cc36f2905c8e17d2
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Chart with Changing Series Colors Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Series Colors Data.json");
-
-            // Build a report. The name of the data source should match the one used in the template.
-            ReportingEngine engine = new ReportingEngine();
-            engine.BuildReport(doc, dataSource, "data");
-
-            // Save the report.
-            doc.Save(ArtifactsDir + "Chart with Changing Series Colors Report.docx");
-            //ExEnd:ChangingChartSeriesColor
-
-            // Test the report.
-            CompareDocs("Chart with Changing Series Colors Report.docx", "Chart with Changing Series Colors Report Gold.docx");
-        }
-
-        [Test]
-        public void ChangingChartSeriesPointColor()
-        {
-            //ExStart:ChangingChartSeriesPointColor
-            //GistId:efa74853ed5a592fa775479b0b480651
-            // Open the template document.
-            Document doc = new Document(MyLinqDir + "Chart with Changing Series Point Colors Template.docx");
-
-            // Open the data source file.
-            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Series Point Colors Data.json");
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Collection Item Getting Data.json");
 
             // Build a report. The name of the data source should match the one used in the template.
             ReportingEngine engine = new ReportingEngine();
             engine.BuildReport(doc, dataSource, "items");
 
             // Save the report.
-            doc.Save(ArtifactsDir + "Chart with Changing Series Point Colors Report.docx");
-            //ExEnd:ChangingChartSeriesPointColor
+            doc.Save(ArtifactsDir + "Collection Item Getting Report.docx");
+            //ExEnd:GettingCollectionItem
 
             // Test the report.
-            CompareDocs("Chart with Changing Series Point Colors Report.docx",
-                "Chart with Changing Series Point Colors Report Gold.docx");
+            CompareDocs("Collection Item Getting Report.docx", "Collection Item Getting Report Gold.docx");
+        }
+
+        [Test]
+        public void GettingItemIndex()
+        {
+            //ExStart:GettingItemIndex
+            //GistId:a6348021ab8793af95dee0d864fa2a6a
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Item Index Getting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Item Index Getting Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Item Index Getting Report.docx");
+            //ExEnd:GettingItemIndex
+
+            // Test the report.
+            CompareDocs("Item Index Getting Report.docx", "Item Index Getting Report Gold.docx");
         }
 
         [Test]
@@ -1706,6 +1322,628 @@ namespace ApiExamples.LinqTemp
 
             // Test the report.
             CompareDocs("Cross Table with Merged Cells Report.docx", "Cross Table with Merged Cells Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingColumnChart()
+        {
+            //ExStart:BuildingColumnChart
+            //GistId:a9bfce4e06620c7bb2f1f0af6d166f0e
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Column Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Column Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Column Chart Report.docx");
+            //ExEnd:BuildingColumnChart
+
+            // Test the report.
+            CompareDocs("Column Chart Report.docx", "Column Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingLineChart()
+        {
+            //ExStart:BuildingLineChart
+            //GistId:2dcdbb630b51b99c6bd65a6603dfd982
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Line Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Line Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Line Chart Report.docx");
+            //ExEnd:BuildingLineChart
+
+            // Test the report.
+            CompareDocs("Line Chart Report.docx", "Line Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingPieChart()
+        {
+            //ExStart:BuildingPieChart
+            //GistId:a42494e6d04efdee2f0d39807dadb5d6
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Pie Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Pie Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Pie Chart Report.docx");
+            //ExEnd:BuildingPieChart
+
+            // Test the report.
+            CompareDocs("Pie Chart Report.docx", "Pie Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingDonutChart()
+        {
+            //ExStart:BuildingDonutChart
+            //GistId:d34c252777a718d0a7c2867f71bf0888
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Donut Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Donut Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Donut Chart Report.docx");
+            //ExEnd:BuildingDonutChart
+
+            // Test the report.
+            CompareDocs("Donut Chart Report.docx", "Donut Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingBarChart()
+        {
+            //ExStart:BuildingBarChart
+            //GistId:b28dd058a87a3f9ce67a797e9132bdf6
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Bar Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Bar Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Bar Chart Report.docx");
+            //ExEnd:BuildingBarChart
+
+            // Test the report.
+            CompareDocs("Bar Chart Report.docx", "Bar Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingAreaChart()
+        {
+            //ExStart:BuildingAreaChart
+            //GistId:bc0e095ec0072a1e1e704777334b5023
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Area Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Area Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Area Chart Report.docx");
+            //ExEnd:BuildingAreaChart
+
+            // Test the report.
+            CompareDocs("Area Chart Report.docx", "Area Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingScatterChart()
+        {
+            //ExStart:BuildingScatterChart
+            //GistId:afe1b02e007250935be30b9456295e21
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Scatter Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Scatter Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Scatter Chart Report.docx");
+            //ExEnd:BuildingScatterChart
+
+            // Test the report.
+            CompareDocs("Scatter Chart Report.docx", "Scatter Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingBubbleChart()
+        {
+            //ExStart:BuildingBubbleChart
+            //GistId:595f34976fce9c39136e0a8ccf5241fd
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Bubble Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Bubble Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Bubble Chart Report.docx");
+            //ExEnd:BuildingBubbleChart
+
+            // Test the report.
+            CompareDocs("Bubble Chart Report.docx", "Bubble Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingSurfaceChart()
+        {
+            //ExStart:BuildingSurfaceChart
+            //GistId:2fcc8b5e3ad0fd49a3528563331cbe66
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Surface Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Surface Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Surface Chart Report.docx");
+            //ExEnd:BuildingSurfaceChart
+
+            // Test the report.
+            CompareDocs("Surface Chart Report.docx", "Surface Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingRadarChart()
+        {
+            //ExStart:BuildingRadarChart
+            //GistId:96bd2aea26f54c0ddfd32a6301cfd32e
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Radar Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Radar Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Radar Chart Report.docx");
+            //ExEnd:BuildingRadarChart
+
+            // Test the report.
+            CompareDocs("Radar Chart Report.docx", "Radar Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingTreemapChart()
+        {
+            //ExStart:BuildingTreemapChart
+            //GistId:0564a1c00008d6da73c2a1fc9c744794
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Treemap Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Treemap Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Treemap Chart Report.docx");
+            //ExEnd:BuildingTreemapChart
+
+            // Test the report.
+            CompareDocs("Treemap Chart Report.docx", "Treemap Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingSunburstChart()
+        {
+            //ExStart:BuildingSunburstChart
+            //GistId:ae0d2a688336922adc838a9a7225d1cc
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Sunburst Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Sunburst Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Sunburst Chart Report.docx");
+            //ExEnd:BuildingSunburstChart
+
+            // Test the report.
+            CompareDocs("Sunburst Chart Report.docx", "Sunburst Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingHistogramChart()
+        {
+            //ExStart:BuildingHistogramChart
+            //GistId:edfb65be6c8467ae3fef7574f138218f
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Histogram Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Histogram Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Histogram Chart Report.docx");
+            //ExEnd:BuildingHistogramChart
+
+            // Test the report.
+            CompareDocs("Histogram Chart Report.docx", "Histogram Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingParetoChart()
+        {
+            //ExStart:BuildingParetoChart
+            //GistId:45210245bf418e3146e39dd905818695
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Pareto Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Pareto Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Pareto Chart Report.docx");
+            //ExEnd:BuildingParetoChart
+
+            // Test the report.
+            CompareDocs("Pareto Chart Report.docx", "Pareto Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingBoxAndWhiskerChart()
+        {
+            //ExStart:BuildingBoxAndWhiskerChart
+            //GistId:a0b8163b5ecc129f8c439cc0b44a85d3
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Box and Whisker Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Box and Whisker Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Box and Whisker Chart Report.docx");
+            //ExEnd:BuildingBoxAndWhiskerChart
+
+            // Test the report.
+            CompareDocs("Box and Whisker Chart Report.docx", "Box and Whisker Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingWaterfallChart()
+        {
+            //ExStart:BuildingWaterfallChart
+            //GistId:3100394ea4660bad51382db4da276d4a
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Waterfall Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Waterfall Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Waterfall Chart Report.docx");
+            //ExEnd:BuildingWaterfallChart
+
+            // Test the report.
+            CompareDocs("Waterfall Chart Report.docx", "Waterfall Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingFunnelChart()
+        {
+            //ExStart:BuildingFunnelChart
+            //GistId:407b901cd82f93eabd84bdc6dd2cb5b7
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Funnel Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Funnel Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Funnel Chart Report.docx");
+            //ExEnd:BuildingFunnelChart
+
+            // Test the report.
+            CompareDocs("Funnel Chart Report.docx", "Funnel Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingStockChart()
+        {
+            //ExStart:BuildingStockChart
+            //GistId:bbcd237a7d0afc8f48f2e9d39ced30e7
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Stock Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Stock Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Stock Chart Report.docx");
+            //ExEnd:BuildingStockChart
+
+            // Test the report.
+            CompareDocs("Stock Chart Report.docx", "Stock Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingComboChart()
+        {
+            //ExStart:BuildingComboChart
+            //GistId:ce435eace52f0504985b9f10e7203e3d
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Combo Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Combo Chart Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Combo Chart Report.docx");
+            //ExEnd:BuildingComboChart
+
+            // Test the report.
+            CompareDocs("Combo Chart Report.docx", "Combo Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingGaugeChart()
+        {
+            //ExStart:BuildingGaugeChart
+            //GistId:45e82d351f10b65ceca440d95d72aa5a
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Gauge Chart Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Gauge Chart Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Gauge Chart Report.docx");
+            //ExEnd:BuildingGaugeChart
+
+            // Test the report.
+            CompareDocs("Gauge Chart Report.docx", "Gauge Chart Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingChartWithVariableNumberOfSeries1()
+        {
+            //ExStart:BuildingChartWithVariableNumberOfSeries
+            //GistId:2f7a15f32189afa4c8a2195926cedf7d
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Variable Number of Series Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Variable Number of Series Data 1.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "data");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Variable Number of Series Report 1.docx");
+            //ExEnd:BuildingChartWithVariableNumberOfSeries
+
+            // Test the report.
+            CompareDocs("Chart with Variable Number of Series Report 1.docx",
+                "Chart with Variable Number of Series Report 1 Gold.docx");
+        }
+
+        [Test]
+        public void BuildingChartWithVariableNumberOfSeries2()
+        {
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Variable Number of Series Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Variable Number of Series Data 2.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "data");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Variable Number of Series Report 2.docx");
+
+            // Test the report.
+            CompareDocs("Chart with Variable Number of Series Report 2.docx",
+                "Chart with Variable Number of Series Report 2 Gold.docx");
+        }
+
+        [Test]
+        public void ChangingChartTitle()
+        {
+            //ExStart:ChangingChartTitle
+            //GistId:86abd6970b9db97fa6b8a1a5852ac2fc
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Changing Title Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Title Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Changing Title Report.docx");
+            //ExEnd:ChangingChartTitle
+
+            // Test the report.
+            CompareDocs("Chart with Changing Title Report.docx", "Chart with Changing Title Report Gold.docx");
+        }
+
+        [Test]
+        public void ChangingChartLegendEntry()
+        {
+            //ExStart:ChangingChartLegendEntry
+            //GistId:ad4fcc877c14e6d4bd7346fce06d027a
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Changing Legend Entries Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Legend Entries Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "data");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Changing Legend Entries Report.docx");
+            //ExEnd:ChangingChartLegendEntry
+
+            // Test the report.
+            CompareDocs("Chart with Changing Legend Entries Report.docx",
+                "Chart with Changing Legend Entries Report Gold.docx");
+        }
+
+        [Test]
+        public void ChangingChartAxisTitle()
+        {
+            //ExStart:ChangingChartAxisTitle
+            //GistId:e9668c5d7f03033c56bea98921f80e72
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Changing Axis Titles Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Axis Titles Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "data");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Changing Axis Titles Report.docx");
+            //ExEnd:ChangingChartAxisTitle
+
+            // Test the report.
+            CompareDocs("Chart with Changing Axis Titles Report.docx", "Chart with Changing Axis Titles Report Gold.docx");
+        }
+
+        [Test]
+        public void ChangingChartSeriesColor()
+        {
+            //ExStart:ChangingChartSeriesColor
+            //GistId:f9a631509dab79e8cc36f2905c8e17d2
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Changing Series Colors Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Series Colors Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "data");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Changing Series Colors Report.docx");
+            //ExEnd:ChangingChartSeriesColor
+
+            // Test the report.
+            CompareDocs("Chart with Changing Series Colors Report.docx", "Chart with Changing Series Colors Report Gold.docx");
+        }
+
+        [Test]
+        public void ChangingChartSeriesPointColor()
+        {
+            //ExStart:ChangingChartSeriesPointColor
+            //GistId:efa74853ed5a592fa775479b0b480651
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Chart with Changing Series Point Colors Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Chart with Changing Series Point Colors Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Chart with Changing Series Point Colors Report.docx");
+            //ExEnd:ChangingChartSeriesPointColor
+
+            // Test the report.
+            CompareDocs("Chart with Changing Series Point Colors Report.docx",
+                "Chart with Changing Series Point Colors Report Gold.docx");
         }
 
         /// <summary>

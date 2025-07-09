@@ -1,0 +1,22 @@
+[
+  {
+    "amount": 75.50,
+    "paymentMethod": "Credit Card"
+  },
+  {
+    "amount": 125.00,
+    "paymentMethod": "Debit Card"
+  },
+  {
+    "amount": 99.99,
+    "paymentMethod": "Cash"
+  },
+  {
+    "amount": 45.00,
+    "paymentMethod": "Credit Card"
+  },
+  {
+    "amount": 85.75,
+    "paymentMethod": "Cash"
+  }
+]
