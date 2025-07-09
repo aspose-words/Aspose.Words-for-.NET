@@ -271,9 +271,9 @@ namespace ApiExamples
             // We can begin and end a list by using a document builder's "ListFormat" property. 
             // Each paragraph that we add between a list's start and the end will become an item in the list.
             // Create a list from a Microsoft Word template, and customize the first two of its list levels.
-            List list = doc.Lists.Add(ListTemplate.NumberDefault);
+            List docList = doc.Lists.Add(ListTemplate.NumberDefault);
 
-            ListLevel listLevel = list.ListLevels[0];
+            ListLevel listLevel = docList.ListLevels[0];
             listLevel.Font.Color = Color.Red;
             listLevel.Font.Size = 24;
             listLevel.NumberStyle = NumberStyle.OrdinalText;
@@ -284,7 +284,7 @@ namespace ApiExamples
             listLevel.TextPosition = 144;
             listLevel.TabPosition = 144;
 
-            listLevel = list.ListLevels[1];
+            listLevel = docList.ListLevels[1];
             listLevel.Alignment = ListLevelAlignment.Right;
             listLevel.NumberStyle = NumberStyle.Bullet;
             listLevel.Font.Name = "Wingdings";
@@ -299,7 +299,7 @@ namespace ApiExamples
             // Create paragraphs and apply both list levels of our custom list formatting to them.
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.ListFormat.List = list;
+            builder.ListFormat.List = docList;
             builder.Writeln("The quick brown fox...");
             builder.Writeln("The quick brown fox...");
 
@@ -573,11 +573,11 @@ namespace ApiExamples
             Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.IsListItem), Is.EqualTo(0));
 
             doc.Lists.Add(ListTemplate.NumberDefault);
-            List list = doc.Lists[0];
+            List docList = doc.Lists[0];
 
             foreach (Paragraph paragraph in paras.OfType<Paragraph>())
             {
-                paragraph.ListFormat.List = list;
+                paragraph.ListFormat.List = docList;
                 paragraph.ListFormat.ListLevelNumber = 2;
             }
 
@@ -608,11 +608,11 @@ namespace ApiExamples
 
             Assert.That(paras.Count(n => ((Paragraph)n).ListFormat.IsListItem), Is.EqualTo(0));
 
-            List list = doc.Lists.Add(ListTemplate.NumberUppercaseLetterDot);
+            List docList = doc.Lists.Add(ListTemplate.NumberUppercaseLetterDot);
 
             foreach (Paragraph paragraph in paras.OfType<Paragraph>())
             {
-                paragraph.ListFormat.List = list;
+                paragraph.ListFormat.List = docList;
                 paragraph.ListFormat.ListLevelNumber = 1;
             }
 
@@ -635,32 +635,32 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            List list = doc.Lists.Add(ListTemplate.OutlineHeadingsArticleSection);
-            AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline - \"Article Section\"");
+            List docList = doc.Lists.Add(ListTemplate.OutlineHeadingsArticleSection);
+            AddOutlineHeadingParagraphs(builder, docList, "Aspose.Words Outline - \"Article Section\"");
 
-            list = doc.Lists.Add(ListTemplate.OutlineHeadingsLegal);
-            AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline - \"Legal\"");
+            docList = doc.Lists.Add(ListTemplate.OutlineHeadingsLegal);
+            AddOutlineHeadingParagraphs(builder, docList, "Aspose.Words Outline - \"Legal\"");
 
             builder.InsertBreak(BreakType.PageBreak);
 
-            list = doc.Lists.Add(ListTemplate.OutlineHeadingsNumbers);
-            AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline - \"Numbers\"");
+            docList = doc.Lists.Add(ListTemplate.OutlineHeadingsNumbers);
+            AddOutlineHeadingParagraphs(builder, docList, "Aspose.Words Outline - \"Numbers\"");
 
-            list = doc.Lists.Add(ListTemplate.OutlineHeadingsChapter);
-            AddOutlineHeadingParagraphs(builder, list, "Aspose.Words Outline - \"Chapters\"");
+            docList = doc.Lists.Add(ListTemplate.OutlineHeadingsChapter);
+            AddOutlineHeadingParagraphs(builder, docList, "Aspose.Words Outline - \"Chapters\"");
 
             doc.Save(ArtifactsDir + "Lists.OutlineHeadingTemplates.docx");
             TestOutlineHeadingTemplates(new Document(ArtifactsDir + "Lists.OutlineHeadingTemplates.docx")); //ExSkip
         }
 
-        private static void AddOutlineHeadingParagraphs(DocumentBuilder builder, List list, string title)
+        private static void AddOutlineHeadingParagraphs(DocumentBuilder builder, List docList, string title)
         {
             builder.ParagraphFormat.ClearFormatting();
             builder.Writeln(title);
 
             for (int i = 0; i < 9; i++)
             {
-                builder.ListFormat.List = list;
+                builder.ListFormat.List = docList;
                 builder.ListFormat.ListLevelNumber = i;
 
                 string styleName = "Heading " + (i + 1);
@@ -674,53 +674,53 @@ namespace ApiExamples
 
         private void TestOutlineHeadingTemplates(Document doc)
         {
-            List list = doc.Lists[0]; // Article section list template.
+            List docList = doc.Lists[0]; // Article section list template.
 
-            TestUtil.VerifyListLevel("Article \0.", 0.0d, NumberStyle.UppercaseRoman, list.ListLevels[0]);
-            TestUtil.VerifyListLevel("Section \0.\u0001", 0.0d, NumberStyle.LeadingZero, list.ListLevels[1]);
-            TestUtil.VerifyListLevel("(\u0002)", 14.4d, NumberStyle.LowercaseLetter, list.ListLevels[2]);
-            TestUtil.VerifyListLevel("(\u0003)", 36.0d, NumberStyle.LowercaseRoman, list.ListLevels[3]);
-            TestUtil.VerifyListLevel("\u0004)", 28.8d, NumberStyle.Arabic, list.ListLevels[4]);
-            TestUtil.VerifyListLevel("\u0005)", 36.0d, NumberStyle.LowercaseLetter, list.ListLevels[5]);
-            TestUtil.VerifyListLevel("\u0006)", 50.4d, NumberStyle.LowercaseRoman, list.ListLevels[6]);
-            TestUtil.VerifyListLevel("\a.", 50.4d, NumberStyle.LowercaseLetter, list.ListLevels[7]);
-            TestUtil.VerifyListLevel("\b.", 72.0d, NumberStyle.LowercaseRoman, list.ListLevels[8]);
+            TestUtil.VerifyListLevel("Article \0.", 0.0d, NumberStyle.UppercaseRoman, docList.ListLevels[0]);
+            TestUtil.VerifyListLevel("Section \0.\u0001", 0.0d, NumberStyle.LeadingZero, docList.ListLevels[1]);
+            TestUtil.VerifyListLevel("(\u0002)", 14.4d, NumberStyle.LowercaseLetter, docList.ListLevels[2]);
+            TestUtil.VerifyListLevel("(\u0003)", 36.0d, NumberStyle.LowercaseRoman, docList.ListLevels[3]);
+            TestUtil.VerifyListLevel("\u0004)", 28.8d, NumberStyle.Arabic, docList.ListLevels[4]);
+            TestUtil.VerifyListLevel("\u0005)", 36.0d, NumberStyle.LowercaseLetter, docList.ListLevels[5]);
+            TestUtil.VerifyListLevel("\u0006)", 50.4d, NumberStyle.LowercaseRoman, docList.ListLevels[6]);
+            TestUtil.VerifyListLevel("\a.", 50.4d, NumberStyle.LowercaseLetter, docList.ListLevels[7]);
+            TestUtil.VerifyListLevel("\b.", 72.0d, NumberStyle.LowercaseRoman, docList.ListLevels[8]);
 
-            list = doc.Lists[1]; // Legal list template.
+            docList = doc.Lists[1]; // Legal list template.
 
-            TestUtil.VerifyListLevel("\0", 0.0d, NumberStyle.Arabic, list.ListLevels[0]);
-            TestUtil.VerifyListLevel("\0.\u0001", 0.0d, NumberStyle.Arabic, list.ListLevels[1]);
-            TestUtil.VerifyListLevel("\0.\u0001.\u0002", 0.0d, NumberStyle.Arabic, list.ListLevels[2]);
-            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003", 0.0d, NumberStyle.Arabic, list.ListLevels[3]);
-            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004", 0.0d, NumberStyle.Arabic, list.ListLevels[4]);
-            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005", 0.0d, NumberStyle.Arabic, list.ListLevels[5]);
-            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005.\u0006", 0.0d, NumberStyle.Arabic, list.ListLevels[6]);
-            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005.\u0006.\a", 0.0d, NumberStyle.Arabic, list.ListLevels[7]);
-            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005.\u0006.\a.\b", 0.0d, NumberStyle.Arabic, list.ListLevels[8]);
+            TestUtil.VerifyListLevel("\0", 0.0d, NumberStyle.Arabic, docList.ListLevels[0]);
+            TestUtil.VerifyListLevel("\0.\u0001", 0.0d, NumberStyle.Arabic, docList.ListLevels[1]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002", 0.0d, NumberStyle.Arabic, docList.ListLevels[2]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003", 0.0d, NumberStyle.Arabic, docList.ListLevels[3]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004", 0.0d, NumberStyle.Arabic, docList.ListLevels[4]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005", 0.0d, NumberStyle.Arabic, docList.ListLevels[5]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005.\u0006", 0.0d, NumberStyle.Arabic, docList.ListLevels[6]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005.\u0006.\a", 0.0d, NumberStyle.Arabic, docList.ListLevels[7]);
+            TestUtil.VerifyListLevel("\0.\u0001.\u0002.\u0003.\u0004.\u0005.\u0006.\a.\b", 0.0d, NumberStyle.Arabic, docList.ListLevels[8]);
 
-            list = doc.Lists[2]; // Numbered list template.
+            docList = doc.Lists[2]; // Numbered list template.
 
-            TestUtil.VerifyListLevel("\0.", 0.0d, NumberStyle.UppercaseRoman, list.ListLevels[0]);
-            TestUtil.VerifyListLevel("\u0001.", 36.0d, NumberStyle.UppercaseLetter, list.ListLevels[1]);
-            TestUtil.VerifyListLevel("\u0002.", 72.0d, NumberStyle.Arabic, list.ListLevels[2]);
-            TestUtil.VerifyListLevel("\u0003)", 108.0d, NumberStyle.LowercaseLetter, list.ListLevels[3]);
-            TestUtil.VerifyListLevel("(\u0004)", 144.0d, NumberStyle.Arabic, list.ListLevels[4]);
-            TestUtil.VerifyListLevel("(\u0005)", 180.0d, NumberStyle.LowercaseLetter, list.ListLevels[5]);
-            TestUtil.VerifyListLevel("(\u0006)", 216.0d, NumberStyle.LowercaseRoman, list.ListLevels[6]);
-            TestUtil.VerifyListLevel("(\a)", 252.0d, NumberStyle.LowercaseLetter, list.ListLevels[7]);
-            TestUtil.VerifyListLevel("(\b)", 288.0d, NumberStyle.LowercaseRoman, list.ListLevels[8]);
+            TestUtil.VerifyListLevel("\0.", 0.0d, NumberStyle.UppercaseRoman, docList.ListLevels[0]);
+            TestUtil.VerifyListLevel("\u0001.", 36.0d, NumberStyle.UppercaseLetter, docList.ListLevels[1]);
+            TestUtil.VerifyListLevel("\u0002.", 72.0d, NumberStyle.Arabic, docList.ListLevels[2]);
+            TestUtil.VerifyListLevel("\u0003)", 108.0d, NumberStyle.LowercaseLetter, docList.ListLevels[3]);
+            TestUtil.VerifyListLevel("(\u0004)", 144.0d, NumberStyle.Arabic, docList.ListLevels[4]);
+            TestUtil.VerifyListLevel("(\u0005)", 180.0d, NumberStyle.LowercaseLetter, docList.ListLevels[5]);
+            TestUtil.VerifyListLevel("(\u0006)", 216.0d, NumberStyle.LowercaseRoman, docList.ListLevels[6]);
+            TestUtil.VerifyListLevel("(\a)", 252.0d, NumberStyle.LowercaseLetter, docList.ListLevels[7]);
+            TestUtil.VerifyListLevel("(\b)", 288.0d, NumberStyle.LowercaseRoman, docList.ListLevels[8]);
 
-            list = doc.Lists[3]; // Chapter list template.
+            docList = doc.Lists[3]; // Chapter list template.
 
-            TestUtil.VerifyListLevel("Chapter \0", 0.0d, NumberStyle.Arabic, list.ListLevels[0]);
-            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[1]);
-            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[2]);
-            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[3]);
-            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[4]);
-            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[5]);
-            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[6]);
-            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[7]);
-            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, list.ListLevels[8]);
+            TestUtil.VerifyListLevel("Chapter \0", 0.0d, NumberStyle.Arabic, docList.ListLevels[0]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, docList.ListLevels[1]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, docList.ListLevels[2]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, docList.ListLevels[3]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, docList.ListLevels[4]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, docList.ListLevels[5]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, docList.ListLevels[6]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, docList.ListLevels[7]);
+            TestUtil.VerifyListLevel("", 0.0d, NumberStyle.None, docList.ListLevels[8]);
         }
 
         //ExStart
@@ -745,11 +745,11 @@ namespace ApiExamples
             TestPrintOutAllLists(srcDoc, new Document(ArtifactsDir + "Lists.PrintOutAllLists.docx")); //ExSkip
         }
 
-        private static void AddListSample(DocumentBuilder builder, List list)
+        private static void AddListSample(DocumentBuilder builder, List docList)
         {
-            builder.Writeln("Sample formatting of list with ListId:" + list.ListId);
-            builder.ListFormat.List = list;
-            for (int i = 0; i < list.ListLevels.Count; i++)
+            builder.Writeln("Sample formatting of list with ListId:" + docList.ListId);
+            builder.ListFormat.List = docList;
+            for (int i = 0; i < docList.ListLevels.Count; i++)
             {
                 builder.ListFormat.ListLevelNumber = i;
                 builder.Writeln("Level " + i);
@@ -762,13 +762,13 @@ namespace ApiExamples
 
         private void TestPrintOutAllLists(Document listSourceDoc, Document outDoc)
         {
-            foreach (List list in outDoc.Lists)
-                for (int i = 0; i < list.ListLevels.Count; i++)
+            foreach (List docList in outDoc.Lists)
+                for (int i = 0; i < docList.ListLevels.Count; i++)
                 {
-                    ListLevel expectedListLevel = listSourceDoc.Lists.First(l => l.ListId == list.ListId).ListLevels[i];
-                    Assert.That(list.ListLevels[i].NumberFormat, Is.EqualTo(expectedListLevel.NumberFormat));
-                    Assert.That(list.ListLevels[i].NumberPosition, Is.EqualTo(expectedListLevel.NumberPosition));
-                    Assert.That(list.ListLevels[i].NumberStyle, Is.EqualTo(expectedListLevel.NumberStyle));
+                    ListLevel expectedListLevel = listSourceDoc.Lists.First(l => l.ListId == docList.ListId).ListLevels[i];
+                    Assert.That(docList.ListLevels[i].NumberFormat, Is.EqualTo(expectedListLevel.NumberFormat));
+                    Assert.That(docList.ListLevels[i].NumberPosition, Is.EqualTo(expectedListLevel.NumberPosition));
+                    Assert.That(docList.ListLevels[i].NumberStyle, Is.EqualTo(expectedListLevel.NumberStyle));
                 }
         }
 
@@ -788,13 +788,13 @@ namespace ApiExamples
             ListCollection lists = doc.Lists;
             Assert.That(lists.Document, Is.EqualTo(doc));
 
-            List list = lists.Add(ListTemplate.BulletDefault);
+            List docList = lists.Add(ListTemplate.BulletDefault);
             Assert.That(list.Document, Is.EqualTo(doc));
 
             Console.WriteLine("Current list count: " + lists.Count);
-            Console.WriteLine("Is the first document list: " + (lists[0].Equals(list)));
-            Console.WriteLine("ListId: " + list.ListId);
-            Console.WriteLine("List is the same by ListId: " + (lists.GetListByListId(1).Equals(list)));
+            Console.WriteLine("Is the first document list: " + (lists[0].Equals(docList)));
+            Console.WriteLine("ListId: " + docList.ListId);
+            Console.WriteLine("List is the same by ListId: " + (lists.GetListByListId(1).Equals(docList)));
             //ExEnd
 
             doc = DocumentHelper.SaveOpen(doc);
@@ -823,36 +823,36 @@ namespace ApiExamples
             // We can create nested lists by increasing the indent level. 
             // We can begin and end a list by using a document builder's "ListFormat" property. 
             // Each paragraph that we add between a list's start and the end will become an item in the list.
-            List list = doc.Lists.Add(ListTemplate.NumberDefault);
+            List docList = doc.Lists.Add(ListTemplate.NumberDefault);
 
             // Level 1 labels will be formatted according to the "Heading 1" paragraph style and will have a prefix.
             // These will look like "Appendix A", "Appendix B"...
-            list.ListLevels[0].NumberFormat = "Appendix \x0000";
-            list.ListLevels[0].NumberStyle = NumberStyle.UppercaseLetter;
-            list.ListLevels[0].LinkedStyle = doc.Styles["Heading 1"];
+            docList.ListLevels[0].NumberFormat = "Appendix \x0000";
+            docList.ListLevels[0].NumberStyle = NumberStyle.UppercaseLetter;
+            docList.ListLevels[0].LinkedStyle = doc.Styles["Heading 1"];
 
             // Level 2 labels will display the current numbers of the first and the second list levels and have leading zeroes.
             // If the first list level is at 1, then the list labels from these will look like "Section (1.01)", "Section (1.02)"...
-            list.ListLevels[1].NumberFormat = "Section (\x0000.\x0001)";
-            list.ListLevels[1].NumberStyle = NumberStyle.LeadingZero;
+            docList.ListLevels[1].NumberFormat = "Section (\x0000.\x0001)";
+            docList.ListLevels[1].NumberStyle = NumberStyle.LeadingZero;
 
             // Note that the higher-level uses UppercaseLetter numbering.
             // We can set the "IsLegal" property to use Arabic numbers for the higher list levels.
-            list.ListLevels[1].IsLegal = true;
-            list.ListLevels[1].RestartAfterLevel = 0;
+            docList.ListLevels[1].IsLegal = true;
+            docList.ListLevels[1].RestartAfterLevel = 0;
 
             // Level 3 labels will be upper case Roman numerals with a prefix and a suffix and will restart at each List level 1 item.
             // These list labels will look like "-I-", "-II-"...
-            list.ListLevels[2].NumberFormat = "-\x0002-";
-            list.ListLevels[2].NumberStyle = NumberStyle.UppercaseRoman;
-            list.ListLevels[2].RestartAfterLevel = 1;
+            docList.ListLevels[2].NumberFormat = "-\x0002-";
+            docList.ListLevels[2].NumberStyle = NumberStyle.UppercaseRoman;
+            docList.ListLevels[2].RestartAfterLevel = 1;
 
             // Make labels of all list levels bold.
-            foreach (ListLevel level in list.ListLevels)
+            foreach (ListLevel level in docList.ListLevels)
                 level.Font.Bold = true;
 
             // Apply list formatting to the current paragraph.
-            builder.ListFormat.List = list;
+            builder.ListFormat.List = docList;
 
             // Create list items that will display all three of our list levels.
             for (int n = 0; n < 2; n++)
@@ -936,26 +936,26 @@ namespace ApiExamples
             //ExSummary:Shows how to set a custom image icon for list item labels.
             Document doc = new Document();
 
-            List list = doc.Lists.Add(ListTemplate.BulletCircle);
+            List docList = doc.Lists.Add(ListTemplate.BulletCircle);
 
             // Create a picture bullet for the current list level, and set an image from a local file system
             // as the icon that the bullets for this list level will display.
-            list.ListLevels[0].CreatePictureBullet();
-            list.ListLevels[0].ImageData.SetImage(ImageDir + "Logo icon.ico");
+            docList.ListLevels[0].CreatePictureBullet();
+            docList.ListLevels[0].ImageData.SetImage(ImageDir + "Logo icon.ico");
 
-            Assert.That(list.ListLevels[0].ImageData.HasImage, Is.True);
+            Assert.That(docList.ListLevels[0].ImageData.HasImage, Is.True);
 
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.ListFormat.List = list;
+            builder.ListFormat.List = docList;
             builder.Writeln("Hello world!");
             builder.Write("Hello again!");
 
             doc.Save(ArtifactsDir + "Lists.CreatePictureBullet.docx");
 
-            list.ListLevels[0].DeletePictureBullet();
+            docList.ListLevels[0].DeletePictureBullet();
 
-            Assert.That(list.ListLevels[0].ImageData, Is.Null);
+            Assert.That(docList.ListLevels[0].ImageData, Is.Null);
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Lists.CreatePictureBullet.docx");

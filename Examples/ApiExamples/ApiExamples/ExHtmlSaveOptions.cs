@@ -1110,8 +1110,8 @@ namespace ApiExamples
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            Aspose.Words.Lists.List list = doc.Lists.Add(ListTemplate.NumberDefault);
-            builder.ListFormat.List = list;
+            Aspose.Words.Lists.List docList = doc.Lists.Add(ListTemplate.NumberDefault);
+            builder.ListFormat.List = docList;
             
             builder.Writeln("Default numbered list item 1.");
             builder.Writeln("Default numbered list item 2.");
@@ -1119,8 +1119,8 @@ namespace ApiExamples
             builder.Writeln("Default numbered list item 3.");
             builder.ListFormat.RemoveNumbers();
 
-            list = doc.Lists.Add(ListTemplate.OutlineHeadingsLegal);
-            builder.ListFormat.List = list;
+            docList = doc.Lists.Add(ListTemplate.OutlineHeadingsLegal);
+            builder.ListFormat.List = docList;
 
             builder.Writeln("Outline legal heading list item 1.");
             builder.Writeln("Outline legal heading list item 2.");

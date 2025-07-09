@@ -2334,9 +2334,9 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.ParagraphBreak);
 
             dstDoc.Lists.Add(ListTemplate.NumberDefault);
-            Aspose.Words.Lists.List list = dstDoc.Lists[0];
+            Aspose.Words.Lists.List docList = dstDoc.Lists[0];
 
-            builder.ListFormat.List = list;
+            builder.ListFormat.List = docList;
 
             for (int i = 1; i <= 15; i++)
                 builder.Write($"List Item {i}\n");

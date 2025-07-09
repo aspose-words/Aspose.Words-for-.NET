@@ -4570,15 +4570,15 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
 
             // Create a list based using a Microsoft Word list template.
-            Aspose.Words.Lists.List list = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.NumberDefault);
+            Aspose.Words.Lists.List docList = doc.Lists.Add(Aspose.Words.Lists.ListTemplate.NumberDefault);
 
             // This generated list will display "1.a )".
             // Space before the bracket is a non-delimiter character, which we can suppress. 
-            list.ListLevels[0].NumberFormat = "\x0000.";
-            list.ListLevels[1].NumberFormat = "\x0001 )";
+            docList.ListLevels[0].NumberFormat = "\x0000.";
+            docList.ListLevels[1].NumberFormat = "\x0001 )";
 
             // Add text and apply paragraph styles that STYLEREF fields will reference.
-            builder.ListFormat.List = list;
+            builder.ListFormat.List = docList;
             builder.ListFormat.ListIndent();
             builder.ParagraphFormat.Style = doc.Styles["List Paragraph"];
             builder.Writeln("Item 1");

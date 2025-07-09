@@ -1339,8 +1339,8 @@ namespace ApiExamples
             builder.Font.Style = doc.Styles["MyParagraphStyle1"];
             builder.Writeln("Hello world!");
 
-            Aspose.Words.Lists.List list = doc.Lists.Add(doc.Styles["MyListStyle1"]);
-            builder.ListFormat.List = list;
+            Aspose.Words.Lists.List docList = doc.Lists.Add(doc.Styles["MyListStyle1"]);
+            builder.ListFormat.List = docList;
             builder.Writeln("Item 1");
             builder.Writeln("Item 2");
 
