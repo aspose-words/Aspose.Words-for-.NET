@@ -1658,7 +1658,7 @@ namespace ApiExamples
             seriesColl.Clear();
 
             string[] categories = { "Word", null, "Excel", "GoogleDocs", "Note", null };
-            if (exception is null)
+            if (exception == null)
                 seriesColl.Add("AW Series", categories, seriesValue);
             else
                 Assert.Throws(exception, () => seriesColl.Add("AW Series", categories, seriesValue));

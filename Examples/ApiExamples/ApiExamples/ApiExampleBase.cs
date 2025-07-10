@@ -28,9 +28,9 @@ namespace ApiExamples
         public void OneTimeSetUp()
         {
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
+#if !CPLUSPLUS
             ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
-
+#endif
             SetUnlimitedLicense();
 
             if (!Directory.Exists(ArtifactsDir))
@@ -40,6 +40,7 @@ namespace ApiExamples
         [SetUp]
         public void SetUp()
         {
+#if !CPLUSPLUS
             if (CheckForSkipMono() && IsRunningOnMono())
             {
                 Assert.Ignore("Test skipped on mono");
@@ -50,16 +51,25 @@ namespace ApiExamples
                 Assert.Ignore("Test skipped on GitHub");
             }
 
-            Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");            
+            Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
+#endif
         }
 
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
+#if !CPLUSPLUS
             ServicePointManager.ServerCertificateValidationCallback = delegate { return false; };
-
+#endif
+            // Do not delete the artifacts folder so that you can use a symbolic link to another drive.
             if (Directory.Exists(ArtifactsDir))
-                Directory.Delete(ArtifactsDir, true);
+            {
+                foreach (string file in Directory.GetFiles(ArtifactsDir, "*.*", SearchOption.AllDirectories))
+                    File.Delete(file);
+
+                foreach (string subDir in Directory.GetDirectories(ArtifactsDir, "*", SearchOption.AllDirectories))
+                    Directory.Delete(subDir, true);
+            }
         }
 
         /// <summary>
@@ -106,25 +116,31 @@ namespace ApiExamples
         internal static void SetUnlimitedLicense()
         {
             // This is where the test license is on my development machine.
-            string testLicenseFileName = Path.Combine(LicenseDir, "Aspose.Total.NET.lic");
+#if CPLUSPLUS
+            string testLicenseFileName = "Aspose.Total.C++.lic";
+#else
+            string testLicenseFileName = "Aspose.Total.NET.lic";
+#endif
+            string testLicenseFilePath = Path.Combine(LicenseDir, testLicenseFileName);
 
-            if (File.Exists(testLicenseFileName))
+            if (File.Exists(testLicenseFilePath))
             {
                 // This shows how to use an Aspose.Words license when you have purchased one.
                 // You don't have to specify full path as shown here. You can specify just the 
                 // file name if you copy the license file into the same folder as your application
                 // binaries or you add the license to your project as an embedded resource.
                 License wordsLicense = new License();
-                wordsLicense.SetLicense(testLicenseFileName);
-
+                wordsLicense.SetLicense(testLicenseFilePath);
+#if !CPLUSPLUS
                 Aspose.Pdf.License pdfLicense = new Aspose.Pdf.License();
-                pdfLicense.SetLicense(testLicenseFileName);
+                pdfLicense.SetLicense(testLicenseFilePath);
 
                 Aspose.BarCode.License barcodeLicense = new Aspose.BarCode.License();
-                barcodeLicense.SetLicense(testLicenseFileName);
+                barcodeLicense.SetLicense(testLicenseFilePath);
 
                 Aspose.Page.License pageLicense = new Aspose.Page.License();
-                pageLicense.SetLicense(testLicenseFileName);
+                pageLicense.SetLicense(testLicenseFilePath);
+#endif
             }
         }
 

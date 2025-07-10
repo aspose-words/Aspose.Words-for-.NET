@@ -52,13 +52,16 @@ namespace ApiExamples
             }
             else
             {
-                if (!IsRunningOnMono())
+#if !CPLUSPLUS
+                if (IsRunningOnMono())
                 {
+                    return;
+                }
                     Assert.Throws<AssertionException>(() =>
                         TestUtil.FileContainsString("nonshppict", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
                     Assert.Throws<AssertionException>(() =>
                         TestUtil.FileContainsString("shprslt", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
-                }
+#endif
             }
         }
 

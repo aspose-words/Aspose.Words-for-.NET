@@ -149,6 +149,7 @@ namespace ApiExamples
         /// </remarks>
         /// <param name="expectedHttpStatusCode">Expected result status code of a request HTTP "HEAD" method performed on the web address.</param>
         /// <param name="webAddress">URL where the request will be sent.</param>
+#if !CPLUSPLUS
         internal static async System.Threading.Tasks.Task VerifyWebResponseStatusCodeAsync(HttpStatusCode expectedHttpStatusCode, string webAddress)
         {
             var myClient = new System.Net.Http.HttpClient();
@@ -156,7 +157,7 @@ namespace ApiExamples
 
             Assert.That(response.StatusCode, Is.EqualTo(expectedHttpStatusCode));
         }
-
+#endif
         /// <summary>
         /// Checks whether an SQL query performed on a database file stored in the local file system
         /// produces a result that resembles the contents of an Aspose.Words table.
@@ -354,14 +355,17 @@ namespace ApiExamples
         /// <param name="filename">Local system filename of a file which, when read from the beginning, should contain the string.</param>
         internal static void FileContainsString(string expected, string filename)
         {
-            if (!IsRunningOnMono())
+#if !CPLUSPLUS
+            if (IsRunningOnMono())
             {
+                return;
+            }
+#endif
                 using (Stream stream = new FileStream(filename, FileMode.Open))
                 {
                     StreamContainsString(expected, stream);
                 }
             }
-        }
 
         /// <summary>
         /// Checks whether a stream contains a string.

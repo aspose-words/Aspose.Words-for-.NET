@@ -554,7 +554,9 @@ namespace ApiExamples
 
             // Clear the borders of all cells in the table, and then save the document.
             table.ClearBorders();
+#if !CPLUSPLUS
             Assert.Throws<AssertionException>(() => Assert.That(topBorder.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()))); //ExSkip
+#endif
             doc.Save(ArtifactsDir + "Table.ClearBorders.docx");
 
             // Verify the values of the table's properties after re-opening the document.

@@ -789,7 +789,7 @@ namespace ApiExamples
             Assert.That(lists.Document, Is.EqualTo(doc));
 
             List docList = lists.Add(ListTemplate.BulletDefault);
-            Assert.That(list.Document, Is.EqualTo(doc));
+            Assert.That(docList.Document, Is.EqualTo(doc));
 
             Console.WriteLine("Current list count: " + lists.Count);
             Console.WriteLine("Is the first document list: " + (lists[0].Equals(docList)));

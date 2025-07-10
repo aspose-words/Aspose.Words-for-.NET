@@ -182,7 +182,7 @@ namespace ApiExamples
                     Assert.That(image.Height, Is.EqualTo(1056));
                 }
             }
-#elif NET5_0_OR_GREATER
+#elif NET6_0_OR_GREATER
             using (MemoryStream stream = new MemoryStream())
             {
                 doc.Save(stream, SaveFormat.Bmp);
@@ -1416,7 +1416,7 @@ namespace ApiExamples
         public void UseSubstitutions()
         {
             //ExStart
-            //ExFor:FindReplaceOptions.#ctor
+            //ExFor:FindReplaceOptions.#ctor()
             //ExFor:FindReplaceOptions.UseSubstitutions
             //ExFor:FindReplaceOptions.LegacyMode
             //ExSummary:Shows how to recognize and use substitutions within replacement patterns.
@@ -2214,7 +2214,7 @@ namespace ApiExamples
             imageWatermarkOptions.Scale = 5;
             imageWatermarkOptions.IsWashout = false;
 
-#if NET461_OR_GREATER || JAVA
+#if NET461_OR_GREATER || JAVA || CPLUSPLUS
             // We have a different options to insert image.
             // Use on of the following methods to add image watermark.
             doc.Watermark.SetImage(Image.FromFile(ImageDir + "Logo.jpg"));
@@ -2223,7 +2223,7 @@ namespace ApiExamples
 
             doc.Watermark.SetImage(ImageDir + "Logo.jpg", imageWatermarkOptions);
 
-#elif NET5_0_OR_GREATER
+#elif NET6_0_OR_GREATER
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
                 doc.Watermark.SetImage(image, imageWatermarkOptions);
 #endif

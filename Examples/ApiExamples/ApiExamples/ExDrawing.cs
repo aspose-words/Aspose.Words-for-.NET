@@ -237,7 +237,7 @@ namespace ApiExamples
         public void FillSolid()
         {
             //ExStart
-            //ExFor:Fill.Color()
+            //ExFor:Fill.Color
             //ExFor:FillType
             //ExFor:Fill.FillType
             //ExFor:Fill.Solid

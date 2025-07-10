@@ -122,7 +122,7 @@ namespace ApiExamples
             Assert.That(File.Exists(ArtifactsDir + "ImageSaveOptions.PageIndex.Page 4.gif"), Is.False);
         }
 
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
         [Test]
         public void GraphicsQuality()
         {
@@ -280,7 +280,7 @@ namespace ApiExamples
 
             var testedImageLength = new FileInfo(ArtifactsDir + "ImageSaveOptions.ColorMode.png").Length;
 
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
@@ -293,7 +293,7 @@ namespace ApiExamples
                     Assert.That(testedImageLength < 15000, Is.True);
                     break;
             }
-#elif NET5_0_OR_GREATER
+#elif NET6_0_OR_GREATER
             switch (imageColorMode)
             {
                 case ImageColorMode.None:
@@ -342,8 +342,10 @@ namespace ApiExamples
             //ExEnd
 
             TestUtil.ImageContainsTransparency(ArtifactsDir + "ImageSaveOptions.PaperColor.Transparent.png");
+#if !CPLUSPLUS
             Assert.Throws<AssertionException>(() =>
                 TestUtil.ImageContainsTransparency(ArtifactsDir + "ImageSaveOptions.PaperColor.LightCoral.png"));
+#endif
         }
 
         [TestCase(ImagePixelFormat.Format1bppIndexed)]
@@ -384,7 +386,7 @@ namespace ApiExamples
 
             var testedImageLength = new FileInfo(ArtifactsDir + "ImageSaveOptions.PixelFormat.png").Length;
 
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
@@ -411,7 +413,7 @@ namespace ApiExamples
                     Assert.That(testedImageLength < 239000, Is.True);
                     break;
             }
-#elif NET5_0_OR_GREATER
+#elif NET6_0_OR_GREATER
             switch (imagePixelFormat)
             {
                 case ImagePixelFormat.Format1bppIndexed:
@@ -581,7 +583,7 @@ namespace ApiExamples
                     Assert.That(testedImageLength < 3450000, Is.True);
                     break;
                 case TiffCompression.Rle:
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
                     Assert.That(testedImageLength < 7500, Is.True);
 #else
                     Assert.That(testedImageLength < 687000, Is.True);
@@ -591,7 +593,7 @@ namespace ApiExamples
                     Assert.That(testedImageLength < 250000, Is.True);
                     break;
                 case TiffCompression.Ccitt3:
-#if NET5_0_OR_GREATER
+#if NET6_0_OR_GREATER
                     Assert.That(testedImageLength < 6100, Is.True);
 #else
                     Assert.That(testedImageLength < 8300, Is.True);

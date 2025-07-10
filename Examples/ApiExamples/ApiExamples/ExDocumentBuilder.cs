@@ -846,7 +846,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder
-            //ExFor:DocumentBuilder.Write
+            //ExFor:DocumentBuilder.Write(String)
             //ExFor:DocumentBuilder.StartTable
             //ExFor:DocumentBuilder.InsertCell
             //ExFor:DocumentBuilder.EndRow
@@ -1237,7 +1237,7 @@ namespace ApiExamples
         {
             //ExStart
             //ExFor:DocumentBuilder
-            //ExFor:DocumentBuilder.Write
+            //ExFor:DocumentBuilder.Write(String)
             //ExFor:DocumentBuilder.InsertCell
             //ExSummary:Shows how to use a document builder to create a table.
             Document doc = new Document();

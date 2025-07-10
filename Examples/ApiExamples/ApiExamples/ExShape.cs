@@ -1440,11 +1440,12 @@ namespace ApiExamples
 
             math.GetMathRenderer().Save(ArtifactsDir + "Shape.RenderOfficeMath.png", saveOptions);
             //ExEnd
-
-            if (!IsRunningOnMono())
-                TestUtil.VerifyImage(813, 87, ArtifactsDir + "Shape.RenderOfficeMath.png");
-            else
+#if !CPLUSPLUS
+            if (IsRunningOnMono())
                 TestUtil.VerifyImage(735, 128, ArtifactsDir + "Shape.RenderOfficeMath.png");
+            else
+#endif
+                TestUtil.VerifyImage(813, 87, ArtifactsDir + "Shape.RenderOfficeMath.png");
         }
 
         [Test]

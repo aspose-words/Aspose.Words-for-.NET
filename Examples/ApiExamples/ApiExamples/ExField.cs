@@ -3036,7 +3036,7 @@ namespace ApiExamples
                 {
                     #if NET461_OR_GREATER || JAVA
                     args.Image = Image.FromFile(mImageFilenames[args.FieldValue.ToString()]);
-                    #elif NET5_0_OR_GREATER
+                    #elif NET6_0_OR_GREATER
                     args.Image = SKBitmap.Decode(mImageFilenames[args.FieldValue.ToString()]);
                     args.ImageFileName = mImageFilenames[args.FieldValue.ToString()];
                     #endif
@@ -4986,9 +4986,9 @@ namespace ApiExamples
                 "\"True, both expressions amount to \u0013 = 2 + 3 \u0014\u0015\" " +
                 "\"False, \u0013 = 2 + 3 \u00145\u0015 does not equal \u0013 = 2.5 * 5.2 \u001413\u0015\" ",
                 "False, 5 does not equal 13", doc.Range.Fields[3]);
-
+#if !CPLUSPLUS
             Assert.Throws<AssertionException>(() => TestUtil.FieldsAreNested(doc.Range.Fields[2], doc.Range.Fields[3]));
-
+#endif
             TestUtil.VerifyField(FieldType.FieldFormula, " = 2 + 3 ", "5", doc.Range.Fields[4]);
             TestUtil.FieldsAreNested(doc.Range.Fields[4], doc.Range.Fields[3]);
 
