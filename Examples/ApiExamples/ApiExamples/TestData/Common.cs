@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ApiExamples.TestData.TestClasses;
-using Aspose.Words.ApiExamples.HelperClasses.TestClasses;
 
 namespace ApiExamples.TestData
 {
