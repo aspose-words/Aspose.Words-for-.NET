@@ -31,7 +31,7 @@ using System.Data.OleDb;
 using Aspose.Words.Math;
 using Aspose.BarCode.BarCodeRecognition;
 using Aspose.Words.Bibliography;
-#if NET5_0_OR_GREATER
+#if !NETFRAMEWORK
 using SkiaSharp;
 #endif
 
@@ -3034,7 +3034,7 @@ namespace ApiExamples
             {
                 if (mImageFilenames.ContainsKey(args.FieldValue.ToString()))
                 {
-                    #if NET461_OR_GREATER || JAVA
+                    #if NETFRAMEWORK || JAVA
                     args.Image = Image.FromFile(mImageFilenames[args.FieldValue.ToString()]);
                     #elif NET6_0_OR_GREATER
                     args.Image = SKBitmap.Decode(mImageFilenames[args.FieldValue.ToString()]);

@@ -37,7 +37,7 @@ using Aspose.Words.Settings;
 using Aspose.Pdf.Text;
 using Aspose.Words.Shaping.HarfBuzz;
 using System.Net.Http;
-#if NET5_0_OR_GREATER || __MOBILE__
+#if NET6_0_OR_GREATER
 using SkiaSharp;
 #endif
 

@@ -14,7 +14,7 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Fields;
 using Aspose.Words.Loading;
 using NUnit.Framework;
-#if NET5_0_OR_GREATER || __MOBILE__
+#if !NETFRAMEWORK
 using SkiaSharp;
 using Image = SkiaSharp.SKBitmap;
 #endif
@@ -435,9 +435,9 @@ namespace ApiExamples
             };
 
             Image img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg");
-#elif NET5_0_OR_GREATER
+#elif NET6_0_OR_GREATER
             using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.QR.jpg"))
             {
                 img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
@@ -456,9 +456,9 @@ namespace ApiExamples
             };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg");
-#elif NET5_0_OR_GREATER
+#elif NET6_0_OR_GREATER
             using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.EAN13.jpg"))
             {
                 img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
@@ -475,9 +475,9 @@ namespace ApiExamples
             };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg");
-#elif NET5_0_OR_GREATER
+#elif NET6_0_OR_GREATER
             using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.CODE39.jpg"))
             {
                 img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);
@@ -494,9 +494,9 @@ namespace ApiExamples
             };
 
             img = doc.FieldOptions.BarcodeGenerator.GetBarcodeImage(barcodeParameters);
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
             img.Save(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg");
-#elif NET5_0_OR_GREATER
+#elif NET6_0_OR_GREATER
             using (SKFileWStream fs = new SKFileWStream(ArtifactsDir + "FieldOptions.BarcodeGenerator.ITF14.jpg"))
             {
                 img.Encode(fs, SKEncodedImageFormat.Jpeg, 100);

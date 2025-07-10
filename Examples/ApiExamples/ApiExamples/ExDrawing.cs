@@ -295,7 +295,7 @@ namespace ApiExamples
             Assert.That(fileInfos[0].Extension, Is.EqualTo(".Jpeg"));
             TestUtil.VerifyImage(400, 400, fileInfos[1].FullName);
             Assert.That(fileInfos[1].Extension, Is.EqualTo(".Png"));
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
             TestUtil.VerifyImage(382, 138, fileInfos[2].FullName);
             Assert.That(fileInfos[2].Extension, Is.EqualTo(".Emf"));
             TestUtil.VerifyImage(1600, 1600, fileInfos[3].FullName);

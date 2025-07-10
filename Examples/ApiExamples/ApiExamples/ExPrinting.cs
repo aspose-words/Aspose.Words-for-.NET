@@ -19,7 +19,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExPrinting : ApiExampleBase
     {
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
         [Test, Ignore("Run only when the printer driver is installed.")]
         public void CustomPrint()
         {

@@ -2264,12 +2264,12 @@ namespace ApiExamples
             //ExSummary:Shows how to insert watermark image to the document from a stream.
             using (FileStream streamIn = new FileStream(MyDir + "Document.docx", FileMode.Open, FileAccess.Read))
             {
-#if NET461_OR_GREATER || JAVA //ExSkip
+#if NETFRAMEWORK || JAVA //ExSkip
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.SetWatermarkText.1.docx", FileMode.Create, FileAccess.ReadWrite))
                     Watermarker.SetImage(streamIn, streamOut, SaveFormat.Docx, System.Drawing.Image.FromFile(ImageDir + "Logo.jpg"));
 #endif //ExSkip
 
-#if NET461_OR_GREATER || JAVA //ExSkip
+#if NETFRAMEWORK || JAVA //ExSkip
                 using (FileStream streamOut = new FileStream(ArtifactsDir + "LowCode.SetWatermarkText.2.docx", FileMode.Create, FileAccess.ReadWrite))
                     Watermarker.SetImage(streamIn, streamOut, SaveFormat.Docx, System.Drawing.Image.FromFile(ImageDir + "Logo.jpg"), new ImageWatermarkOptions() { Scale = 50 });
 #endif //ExSkip

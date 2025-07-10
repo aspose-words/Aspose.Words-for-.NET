@@ -2117,7 +2117,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.Dml3DEffectsRenderingModeTest.pdf", saveOptions);
             //ExEnd
 
-#if NET5_0_OR_GREATER
+#if !NETFRAMEWORK
             Assert.That(48, Is.EqualTo(warningCallback.Count));
 #else
             Assert.That(warningCallback.Count, Is.EqualTo(38));

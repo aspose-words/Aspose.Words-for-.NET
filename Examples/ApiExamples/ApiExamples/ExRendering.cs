@@ -12,11 +12,11 @@ using Aspose.Words.Drawing;
 using Aspose.Words.Drawing.Charts;
 using Aspose.Words.Rendering;
 using NUnit.Framework;
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing.Text;
-#elif NET5_0_OR_GREATER || __MOBILE__
+#elif NET6_0_OR_GREATER
 using SkiaSharp;
 #endif
 
@@ -25,7 +25,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExRendering : ApiExampleBase
     {
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
         //ExStart
         //ExFor:NodeRendererBase.RenderToScale(Graphics, Single, Single, Single)
         //ExFor:NodeRendererBase.RenderToSize(Graphics, Single, Single, Single, Single)
@@ -248,7 +248,7 @@ namespace ApiExamples
             }
             //ExEnd
         }
-#elif NET5_0_OR_GREATER || __MOBILE__
+#elif NET6_0_OR_GREATER
         [Test]
         public void RenderToSizeNetStandard2()
         {
