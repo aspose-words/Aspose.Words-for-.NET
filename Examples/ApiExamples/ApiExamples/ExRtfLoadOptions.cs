@@ -33,11 +33,11 @@ namespace ApiExamples
 
             Document doc = new Document(MyDir + "UTF-8 characters.rtf", loadOptions);
 
-            Assert.That(doc.FirstSection.Body.GetText().Trim(), Is.EqualTo(recognizeUtf8Text
+            Assert.AreEqual(recognizeUtf8Text
                     ? "“John Doe´s list of currency symbols”™\r" +
                       "€, ¢, £, ¥, ¤"
                     : "â€œJohn DoeÂ´s list of currency symbolsâ€\u009dâ„¢\r" +
-                      "â‚¬, Â¢, Â£, Â¥, Â¤"));
+                      "â‚¬, Â¢, Â£, Â¥, Â¤", doc.FirstSection.Body.GetText().Trim());
             //ExEnd
         }
     }

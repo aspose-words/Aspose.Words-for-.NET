@@ -29,14 +29,14 @@ namespace ApiExamples
             // 1 -  Using a local system filename:
             Document doc = comHelper.Open(MyDir + "Document.docx");
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello World!\r\rHello Word!\r\r\rHello World!"));
+            Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
 
             // 2 -  From a stream:
             using (FileStream stream = new FileStream(MyDir + "Document.docx", FileMode.Open))
             {
                 doc = comHelper.Open(stream);
 
-                Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello World!\r\rHello Word!\r\r\rHello World!"));
+                Assert.AreEqual("Hello World!\r\rHello Word!\r\r\rHello World!", doc.GetText().Trim());
             }
             //ExEnd
         }

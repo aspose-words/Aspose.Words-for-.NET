@@ -34,14 +34,14 @@ namespace ApiExamples
             pageSetup.RightMargin = ConvertUtil.InchToPoint(1.5);
 
             // An inch is 72 points.
-            Assert.That(ConvertUtil.InchToPoint(1), Is.EqualTo(72.0d));
-            Assert.That(ConvertUtil.PointToInch(72), Is.EqualTo(1.0d));
+            Assert.AreEqual(72.0d, ConvertUtil.InchToPoint(1));
+            Assert.AreEqual(1.0d, ConvertUtil.PointToInch(72));
 
             // Add content to demonstrate the new margins.
-            builder.Writeln($"This Text is {pageSetup.LeftMargin} points/{ConvertUtil.PointToInch(pageSetup.LeftMargin)} inches from the left, " +
-                            $"{pageSetup.RightMargin} points/{ConvertUtil.PointToInch(pageSetup.RightMargin)} inches from the right, " +
-                            $"{pageSetup.TopMargin} points/{ConvertUtil.PointToInch(pageSetup.TopMargin)} inches from the top, " +
-                            $"and {pageSetup.BottomMargin} points/{ConvertUtil.PointToInch(pageSetup.BottomMargin)} inches from the bottom of the page.");
+            builder.Writeln(string.Format("This Text is {0} points/{1} inches from the left, ", pageSetup.LeftMargin, ConvertUtil.PointToInch(pageSetup.LeftMargin)) +
+                            string.Format("{0} points/{1} inches from the right, ", pageSetup.RightMargin, ConvertUtil.PointToInch(pageSetup.RightMargin)) +
+                            string.Format("{0} points/{1} inches from the top, ", pageSetup.TopMargin, ConvertUtil.PointToInch(pageSetup.TopMargin)) +
+                            string.Format("and {0} points/{1} inches from the bottom of the page.", pageSetup.BottomMargin, ConvertUtil.PointToInch(pageSetup.BottomMargin)));
 
             doc.Save(ArtifactsDir + "UtilityClasses.PointsAndInches.docx");
             //ExEnd
@@ -49,14 +49,14 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "UtilityClasses.PointsAndInches.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.That(pageSetup.TopMargin, Is.EqualTo(72.0d).Within(0.01d));
-            Assert.That(ConvertUtil.PointToInch(pageSetup.TopMargin), Is.EqualTo(1.0d).Within(0.01d));
-            Assert.That(pageSetup.BottomMargin, Is.EqualTo(144.0d).Within(0.01d));
-            Assert.That(ConvertUtil.PointToInch(pageSetup.BottomMargin), Is.EqualTo(2.0d).Within(0.01d));
-            Assert.That(pageSetup.LeftMargin, Is.EqualTo(180.0d).Within(0.01d));
-            Assert.That(ConvertUtil.PointToInch(pageSetup.LeftMargin), Is.EqualTo(2.5d).Within(0.01d));
-            Assert.That(pageSetup.RightMargin, Is.EqualTo(108.0d).Within(0.01d));
-            Assert.That(ConvertUtil.PointToInch(pageSetup.RightMargin), Is.EqualTo(1.5d).Within(0.01d));
+            Assert.AreEqual(72.0d, pageSetup.TopMargin, 0.01d);
+            Assert.AreEqual(1.0d, ConvertUtil.PointToInch(pageSetup.TopMargin), 0.01d);
+            Assert.AreEqual(144.0d, pageSetup.BottomMargin, 0.01d);
+            Assert.AreEqual(2.0d, ConvertUtil.PointToInch(pageSetup.BottomMargin), 0.01d);
+            Assert.AreEqual(180.0d, pageSetup.LeftMargin, 0.01d);
+            Assert.AreEqual(2.5d, ConvertUtil.PointToInch(pageSetup.LeftMargin), 0.01d);
+            Assert.AreEqual(108.0d, pageSetup.RightMargin, 0.01d);
+            Assert.AreEqual(1.5d, ConvertUtil.PointToInch(pageSetup.RightMargin), 0.01d);
         }
 
         [Test]
@@ -78,13 +78,13 @@ namespace ApiExamples
             pageSetup.RightMargin = ConvertUtil.MillimeterToPoint(40);
 
             // A centimeter is approximately 28.3 points.
-            Assert.That(ConvertUtil.MillimeterToPoint(10), Is.EqualTo(28.34d).Within(0.01d));
+            Assert.AreEqual(28.34d, ConvertUtil.MillimeterToPoint(10), 0.01d);
 
             // Add content to demonstrate the new margins.
-            builder.Writeln($"This Text is {pageSetup.LeftMargin} points from the left, " +
-                            $"{pageSetup.RightMargin} points from the right, " +
-                            $"{pageSetup.TopMargin} points from the top, " +
-                            $"and {pageSetup.BottomMargin} points from the bottom of the page.");
+            builder.Writeln(string.Format("This Text is {0} points from the left, ", pageSetup.LeftMargin) +
+                            string.Format("{0} points from the right, ", pageSetup.RightMargin) +
+                            string.Format("{0} points from the top, ", pageSetup.TopMargin) +
+                            string.Format("and {0} points from the bottom of the page.", pageSetup.BottomMargin));
 
             doc.Save(ArtifactsDir + "UtilityClasses.PointsAndMillimeters.docx");
             //ExEnd
@@ -92,10 +92,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "UtilityClasses.PointsAndMillimeters.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.That(pageSetup.TopMargin, Is.EqualTo(85.05d).Within(0.01d));
-            Assert.That(pageSetup.BottomMargin, Is.EqualTo(141.75d).Within(0.01d));
-            Assert.That(pageSetup.LeftMargin, Is.EqualTo(226.75d).Within(0.01d));
-            Assert.That(pageSetup.RightMargin, Is.EqualTo(113.4d).Within(0.01d));
+            Assert.AreEqual(85.05d, pageSetup.TopMargin, 0.01d);
+            Assert.AreEqual(141.75d, pageSetup.BottomMargin, 0.01d);
+            Assert.AreEqual(226.75d, pageSetup.LeftMargin, 0.01d);
+            Assert.AreEqual(113.4d, pageSetup.RightMargin, 0.01d);
         }
 
         [Test]
@@ -118,17 +118,17 @@ namespace ApiExamples
             pageSetup.RightMargin = ConvertUtil.PixelToPoint(125);
 
             // A pixel is 0.75 points.
-            Assert.That(ConvertUtil.PixelToPoint(1), Is.EqualTo(0.75d));
-            Assert.That(ConvertUtil.PointToPixel(0.75), Is.EqualTo(1.0d));
+            Assert.AreEqual(0.75d, ConvertUtil.PixelToPoint(1));
+            Assert.AreEqual(1.0d, ConvertUtil.PointToPixel(0.75));
 
             // The default DPI value used is 96.
-            Assert.That(ConvertUtil.PixelToPoint(1, 96), Is.EqualTo(0.75d));
+            Assert.AreEqual(0.75d, ConvertUtil.PixelToPoint(1, 96));
 
             // Add content to demonstrate the new margins.
-            builder.Writeln($"This Text is {pageSetup.LeftMargin} points/{ConvertUtil.PointToPixel(pageSetup.LeftMargin)} pixels from the left, " +
-                            $"{pageSetup.RightMargin} points/{ConvertUtil.PointToPixel(pageSetup.RightMargin)} pixels from the right, " +
-                            $"{pageSetup.TopMargin} points/{ConvertUtil.PointToPixel(pageSetup.TopMargin)} pixels from the top, " +
-                            $"and {pageSetup.BottomMargin} points/{ConvertUtil.PointToPixel(pageSetup.BottomMargin)} pixels from the bottom of the page.");
+            builder.Writeln(string.Format("This Text is {0} points/{1} pixels from the left, ", pageSetup.LeftMargin, ConvertUtil.PointToPixel(pageSetup.LeftMargin)) +
+                            string.Format("{0} points/{1} pixels from the right, ", pageSetup.RightMargin, ConvertUtil.PointToPixel(pageSetup.RightMargin)) +
+                            string.Format("{0} points/{1} pixels from the top, ", pageSetup.TopMargin, ConvertUtil.PointToPixel(pageSetup.TopMargin)) +
+                            string.Format("and {0} points/{1} pixels from the bottom of the page.", pageSetup.BottomMargin, ConvertUtil.PointToPixel(pageSetup.BottomMargin)));
 
             doc.Save(ArtifactsDir + "UtilityClasses.PointsAndPixels.docx");
             //ExEnd
@@ -136,14 +136,14 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "UtilityClasses.PointsAndPixels.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.That(pageSetup.TopMargin, Is.EqualTo(75.0d).Within(0.01d));
-            Assert.That(ConvertUtil.PointToPixel(pageSetup.TopMargin), Is.EqualTo(100.0d).Within(0.01d));
-            Assert.That(pageSetup.BottomMargin, Is.EqualTo(150.0d).Within(0.01d));
-            Assert.That(ConvertUtil.PointToPixel(pageSetup.BottomMargin), Is.EqualTo(200.0d).Within(0.01d));
-            Assert.That(pageSetup.LeftMargin, Is.EqualTo(168.75d).Within(0.01d));
-            Assert.That(ConvertUtil.PointToPixel(pageSetup.LeftMargin), Is.EqualTo(225.0d).Within(0.01d));
-            Assert.That(pageSetup.RightMargin, Is.EqualTo(93.75d).Within(0.01d));
-            Assert.That(ConvertUtil.PointToPixel(pageSetup.RightMargin), Is.EqualTo(125.0d).Within(0.01d));
+            Assert.AreEqual(75.0d, pageSetup.TopMargin, 0.01d);
+            Assert.AreEqual(100.0d, ConvertUtil.PointToPixel(pageSetup.TopMargin), 0.01d);
+            Assert.AreEqual(150.0d, pageSetup.BottomMargin, 0.01d);
+            Assert.AreEqual(200.0d, ConvertUtil.PointToPixel(pageSetup.BottomMargin), 0.01d);
+            Assert.AreEqual(168.75d, pageSetup.LeftMargin, 0.01d);
+            Assert.AreEqual(225.0d, ConvertUtil.PointToPixel(pageSetup.LeftMargin), 0.01d);
+            Assert.AreEqual(93.75d, pageSetup.RightMargin, 0.01d);
+            Assert.AreEqual(125.0d, ConvertUtil.PointToPixel(pageSetup.RightMargin), 0.01d);
         }
 
         [Test]
@@ -163,20 +163,20 @@ namespace ApiExamples
             PageSetup pageSetup = builder.PageSetup;
             pageSetup.TopMargin = ConvertUtil.PixelToPoint(100, myDpi);
 
-            Assert.That(pageSetup.TopMargin, Is.EqualTo(37.5d).Within(0.01d));
+            Assert.AreEqual(37.5d, pageSetup.TopMargin, 0.01d);
 
             // At the default DPI of 96, a pixel is 0.75 points.
-            Assert.That(ConvertUtil.PixelToPoint(1), Is.EqualTo(0.75d));
+            Assert.AreEqual(0.75d, ConvertUtil.PixelToPoint(1));
 
-            builder.Writeln($"This Text is {pageSetup.TopMargin} points/{ConvertUtil.PointToPixel(pageSetup.TopMargin, myDpi)} " +
-                            $"pixels (at a DPI of {myDpi}) from the top of the page.");
+            builder.Writeln(string.Format("This Text is {0} points/{1} ", pageSetup.TopMargin, ConvertUtil.PointToPixel(pageSetup.TopMargin, myDpi)) +
+                            string.Format("pixels (at a DPI of {0}) from the top of the page.", myDpi));
 
             // Set a new DPI and adjust the top margin value accordingly.
             const double newDpi = 300;
             pageSetup.TopMargin = ConvertUtil.PixelToNewDpi(pageSetup.TopMargin, myDpi, newDpi);
-            Assert.That(pageSetup.TopMargin, Is.EqualTo(59.0d).Within(0.01d));
+            Assert.AreEqual(59.0d, pageSetup.TopMargin, 0.01d);
 
-            builder.Writeln($"At a DPI of {newDpi}, the text is now {pageSetup.TopMargin} points/{ConvertUtil.PointToPixel(pageSetup.TopMargin, myDpi)} " +
+            builder.Writeln(string.Format("At a DPI of {0}, the text is now {1} points/{2} ", newDpi, pageSetup.TopMargin, ConvertUtil.PointToPixel(pageSetup.TopMargin, myDpi)) +
                             "pixels from the top of the page.");
 
             doc.Save(ArtifactsDir + "UtilityClasses.PointsAndPixelsDpi.docx");
@@ -185,11 +185,11 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "UtilityClasses.PointsAndPixelsDpi.docx");
             pageSetup = doc.FirstSection.PageSetup;
 
-            Assert.That(pageSetup.TopMargin, Is.EqualTo(59.0d).Within(0.01d));
-            Assert.That(ConvertUtil.PointToPixel(pageSetup.TopMargin), Is.EqualTo(78.66).Within(0.01d));
-            Assert.That(ConvertUtil.PointToPixel(pageSetup.TopMargin, myDpi), Is.EqualTo(157.33).Within(0.01d));
-            Assert.That(ConvertUtil.PointToPixel(100), Is.EqualTo(133.33d).Within(0.01d));
-            Assert.That(ConvertUtil.PointToPixel(100, myDpi), Is.EqualTo(266.66d).Within(0.01d));
+            Assert.AreEqual(59.0d, pageSetup.TopMargin, 0.01d);
+            Assert.AreEqual(78.66, ConvertUtil.PointToPixel(pageSetup.TopMargin), 0.01d);
+            Assert.AreEqual(157.33, ConvertUtil.PointToPixel(pageSetup.TopMargin, myDpi), 0.01d);
+            Assert.AreEqual(133.33d, ConvertUtil.PointToPixel(100), 0.01d);
+            Assert.AreEqual(266.66d, ConvertUtil.PointToPixel(100, myDpi), 0.01d);
         }
     }
 }

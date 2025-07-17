@@ -25,11 +25,9 @@ namespace ApiExamples
             //ExSummary:Shows how to rasterize complex elements while saving a document to PCL.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            PclSaveOptions saveOptions = new PclSaveOptions
-            {
-                SaveFormat = SaveFormat.Pcl,
-                RasterizeTransformedElements = true
-            };
+            PclSaveOptions saveOptions = new PclSaveOptions();
+            saveOptions.SaveFormat = SaveFormat.Pcl;
+            saveOptions.RasterizeTransformedElements = true;
 
             doc.Save(ArtifactsDir + "PclSaveOptions.RasterizeElements.pcl", saveOptions);
             //ExEnd

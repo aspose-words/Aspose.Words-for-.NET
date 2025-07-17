@@ -48,7 +48,7 @@ namespace ApiExamples
                         (pkcs12Store.IsKeyEntry(currentAlias) &&
                          pkcs12Store.GetKey(currentAlias).Key.IsPrivate))
                     {
-                        Console.WriteLine($"Valid alias found: {currentAlias}");
+                        Console.WriteLine(string.Format("Valid alias found: {0}", currentAlias));
                     }
                 }
             }

@@ -31,11 +31,9 @@ namespace ApiExamples
             // Set the "UseBookFoldPrintingSettings" property to "true" to arrange the contents
             // in the output Postscript document in a way that helps us make a booklet out of it.
             // Set the "UseBookFoldPrintingSettings" property to "false" to save the document normally.
-            PsSaveOptions saveOptions = new PsSaveOptions
-            {
-                SaveFormat = SaveFormat.Ps,
-                UseBookFoldPrintingSettings = renderTextAsBookFold
-            };
+            PsSaveOptions saveOptions = new PsSaveOptions();
+            saveOptions.SaveFormat = SaveFormat.Ps;
+            saveOptions.UseBookFoldPrintingSettings = renderTextAsBookFold;
 
             // If we are rendering the document as a booklet, we must set the "MultiplePages"
             // properties of the page setup objects of all sections to "MultiplePagesType.BookFoldPrinting".

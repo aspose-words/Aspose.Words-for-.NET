@@ -29,12 +29,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document.docx");
 
             // Configure the SvgSaveOptions object to save with no page borders or selectable text.
-            SvgSaveOptions options = new SvgSaveOptions
-            {
-                FitToViewPort = true,
-                ShowPageBorder = false,
-                TextOutputMode = SvgTextOutputMode.UsePlacedGlyphs
-            };
+            SvgSaveOptions options = new SvgSaveOptions();
+            options.FitToViewPort = true;
+            options.ShowPageBorder = false;
+            options.TextOutputMode = SvgTextOutputMode.UsePlacedGlyphs;
 
             doc.Save(ArtifactsDir + "SvgSaveOptions.SaveLikeImage.svg", options);
             //ExEnd
@@ -53,16 +51,13 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            SvgSaveOptions options = new SvgSaveOptions
-            {
-                SaveFormat = SaveFormat.Svg,
-                ExportEmbeddedImages = false,
-                ResourcesFolder = ArtifactsDir + "SvgResourceFolder",
-                ResourcesFolderAlias = ArtifactsDir + "SvgResourceFolderAlias",
-                ShowPageBorder = false,
-
-                ResourceSavingCallback = new ResourceUriPrinter()
-            };
+            SvgSaveOptions options = new SvgSaveOptions();
+            options.SaveFormat = SaveFormat.Svg;
+            options.ExportEmbeddedImages = false;
+            options.ResourcesFolder = ArtifactsDir + "SvgResourceFolder";
+            options.ResourcesFolderAlias = ArtifactsDir + "SvgResourceFolderAlias";
+            options.ShowPageBorder = false;
+            options.ResourceSavingCallback = new ResourceUriPrinter();
 
             Directory.CreateDirectory(options.ResourcesFolderAlias);
 
@@ -76,7 +71,7 @@ namespace ApiExamples
         {
             void IResourceSavingCallback.ResourceSaving(ResourceSavingArgs args)
             {
-                Console.WriteLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
+                Console.WriteLine(string.Format("Resource #{0} \"{1}\"", ++mSavedResourceCount, args.ResourceFileName));
                 Console.WriteLine("\t" + args.ResourceFileUri);
             }
 

@@ -163,7 +163,8 @@ namespace ApiExamples
         {
             Paragraph para = GetParagraph(doc, paraIndex);
 
-            Run run = new Run(doc) { Text = text };
+            Run run = new Run(doc);
+            run.Text = text;
 
             para.AppendChild(run);
 

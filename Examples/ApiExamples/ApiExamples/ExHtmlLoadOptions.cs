@@ -45,9 +45,9 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "VML conditional.htm", loadOptions);
 
             if (supportVml)
-                Assert.That(((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageType, Is.EqualTo(ImageType.Jpeg));
+                Assert.AreEqual(ImageType.Jpeg, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageType);
             else
-                Assert.That(((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageType, Is.EqualTo(ImageType.Png));
+                Assert.AreEqual(ImageType.Png, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageType);
             //ExEnd
 
             Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
@@ -69,7 +69,7 @@ namespace ApiExamples
 
             // When loading an Html document with resources externally linked by a web address URL,
             // Aspose.Words will abort web requests that fail to fetch the resources within this time limit, in milliseconds.
-            Assert.That(options.WebRequestTimeout, Is.EqualTo(100000));
+            Assert.AreEqual(100000, options.WebRequestTimeout);
 
             // Set a WarningCallback that will record all warnings that occur during loading.
             ListDocumentWarnings warningCallback = new ListDocumentWarnings();
@@ -77,30 +77,30 @@ namespace ApiExamples
 
             // Load such a document and verify that a shape with image data has been created.
             // This linked image will require a web request to load, which will have to complete within our time limit.
-            string html = $@"
+            string html = string.Format(@"
                 <html>
-                    <img src=""{ImageUrl}"" alt=""Aspose logo"" style=""width:400px;height:400px;"">
+                    <img src=""{0}"" alt=""Aspose logo"" style=""width:400px;height:400px;"">
                 </html>
-            ";
+            ", ImageUrl);
 
             // Set an unreasonable timeout limit and try load the document again.
             options.WebRequestTimeout = 0;
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), options);
-            Assert.That(warningCallback.Warnings().Count, Is.EqualTo(2));
+            Assert.AreEqual(2, warningCallback.Warnings().Count);
 
             // A web request that fails to obtain an image within the time limit will still produce an image.
             // However, the image will be the red 'x' that commonly signifies missing images.
             Shape imageShape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            Assert.That(imageShape.ImageData.ImageBytes.Length, Is.EqualTo(924));
+            Assert.AreEqual(924, imageShape.ImageData.ImageBytes.Length);
 
             // We can also configure a custom callback to pick up any warnings from timed out web requests.
-            Assert.That(warningCallback.Warnings()[0].Source, Is.EqualTo(WarningSource.Html));
-            Assert.That(warningCallback.Warnings()[0].WarningType, Is.EqualTo(WarningType.DataLoss));
-            Assert.That(warningCallback.Warnings()[0].Description, Is.EqualTo($"Couldn't load a resource from \'{ImageUrl}\'."));
+            Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[0].Source);
+            Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[0].WarningType);
+            Assert.AreEqual(string.Format("Couldn't load a resource from \'{0}\'.", ImageUrl), warningCallback.Warnings()[0].Description);
 
-            Assert.That(warningCallback.Warnings()[1].Source, Is.EqualTo(WarningSource.Html));
-            Assert.That(warningCallback.Warnings()[1].WarningType, Is.EqualTo(WarningType.DataLoss));
-            Assert.That(warningCallback.Warnings()[1].Description, Is.EqualTo("Image has been replaced with a placeholder."));
+            Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[1].Source);
+            Assert.AreEqual(WarningType.DataLoss, warningCallback.Warnings()[1].WarningType);
+            Assert.AreEqual("Image has been replaced with a placeholder.", warningCallback.Warnings()[1].Description);
 
             doc.Save(ArtifactsDir + "HtmlLoadOptions.WebRequestTimeout.docx");
         }
@@ -128,7 +128,8 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { SaveFormat = SaveFormat.HtmlFixed };
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+            saveOptions.SaveFormat = SaveFormat.HtmlFixed;
 
             doc.Save(ArtifactsDir + "HtmlLoadOptions.Fixed.html", saveOptions);
 
@@ -138,11 +139,11 @@ namespace ApiExamples
             loadOptions.WarningCallback = warningCallback;
 
             doc = new Document(ArtifactsDir + "HtmlLoadOptions.Fixed.html", loadOptions);
-            Assert.That(warningCallback.Warnings().Count, Is.EqualTo(1));
+            Assert.AreEqual(1, warningCallback.Warnings().Count);
 
-            Assert.That(warningCallback.Warnings()[0].Source, Is.EqualTo(WarningSource.Html));
-            Assert.That(warningCallback.Warnings()[0].WarningType, Is.EqualTo(WarningType.MajorFormattingLoss));
-            Assert.That(warningCallback.Warnings()[0].Description, Is.EqualTo("The document is fixed-page HTML. Its structure may not be loaded correctly."));
+            Assert.AreEqual(WarningSource.Html, warningCallback.Warnings()[0].Source);
+            Assert.AreEqual(WarningType.MajorFormattingLoss, warningCallback.Warnings()[0].WarningType);
+            Assert.AreEqual("The document is fixed-page HTML. Its structure may not be loaded correctly.", warningCallback.Warnings()[0].Description);
         }
 
         [Test]
@@ -154,12 +155,10 @@ namespace ApiExamples
             // Create and sign an encrypted HTML document from an encrypted .docx.
             CertificateHolder certificateHolder = CertificateHolder.Create(MyDir + "morzal.pfx", "aw");
 
-            SignOptions signOptions = new SignOptions
-            {
-                Comments = "Comment",
-                SignTime = DateTime.Now,
-                DecryptionPassword = "docPassword"
-            };
+            SignOptions signOptions = new SignOptions();
+            signOptions.Comments = "Comment";
+            signOptions.SignTime = DateTime.Now;
+            signOptions.DecryptionPassword = "docPassword";
 
             string inputFileName = MyDir + "Encrypted.docx";
             string outputFileName = ArtifactsDir + "HtmlLoadOptions.EncryptedHtml.html";
@@ -169,11 +168,11 @@ namespace ApiExamples
             // password using a HtmlLoadOptions object.
             HtmlLoadOptions loadOptions = new HtmlLoadOptions("docPassword");
 
-            Assert.That(loadOptions.Password, Is.EqualTo(signOptions.DecryptionPassword));
+            Assert.AreEqual(signOptions.DecryptionPassword, loadOptions.Password);
 
             Document doc = new Document(outputFileName, loadOptions);
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Test encrypted document."));
+            Assert.AreEqual("Test encrypted document.", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -191,13 +190,13 @@ namespace ApiExamples
             // We can provide a base URI using an HtmlLoadOptions object. 
             HtmlLoadOptions loadOptions = new HtmlLoadOptions(LoadFormat.Html, "", ImageDir);
 
-            Assert.That(loadOptions.LoadFormat, Is.EqualTo(LoadFormat.Html));
+            Assert.AreEqual(LoadFormat.Html, loadOptions.LoadFormat);
 
             Document doc = new Document(MyDir + "Missing image.html", loadOptions);
 
             // While the image was broken in the input .html, our custom base URI helped us repair the link.
             Shape imageShape = (Shape)doc.GetChildNodes(NodeType.Shape, true)[0];
-            Assert.That(imageShape.IsImage, Is.True);
+            Assert.IsTrue(imageShape.IsImage);
 
             // This output document will display the image that was missing.
             doc.Save(ArtifactsDir + "HtmlLoadOptions.BaseUri.docx");
@@ -205,7 +204,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "HtmlLoadOptions.BaseUri.docx");
 
-            Assert.That(((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageBytes.Length > 0, Is.True);
+            Assert.IsTrue(((Shape)doc.GetChild(NodeType.Shape, 0, true)).ImageData.ImageBytes.Length > 0);
         }
 
         [Test]
@@ -233,10 +232,10 @@ namespace ApiExamples
             StructuredDocumentTag tag = (StructuredDocumentTag) nodes[0];
             //ExEnd
 
-            Assert.That(tag.ListItems.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, tag.ListItems.Count);
 
-            Assert.That(tag.ListItems[0].Value, Is.EqualTo("val1"));
-            Assert.That(tag.ListItems[1].Value, Is.EqualTo("val2"));
+            Assert.AreEqual("val1", tag.ListItems[0].Value);
+            Assert.AreEqual("val2", tag.ListItems[1].Value);
         }
 
         [Test]
@@ -255,10 +254,10 @@ namespace ApiExamples
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), htmlLoadOptions);
             NodeCollection nodes = doc.GetChildNodes(NodeType.FormField, true);
 
-            Assert.That(nodes.Count, Is.EqualTo(1));
+            Assert.AreEqual(1, nodes.Count);
 
             FormField formField = (FormField) nodes[0];
-            Assert.That(formField.Result, Is.EqualTo("Input value text"));
+            Assert.AreEqual("Input value text", formField.Result);
         }
 
         [TestCase(true)]
@@ -300,7 +299,7 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.That(textAbsorber.Text, Is.EqualTo(ignoreNoscriptElements ? "" : "Your browser does not support JavaScript!"));
+            Assert.AreEqual(ignoreNoscriptElements ? "" : "Your browser does not support JavaScript!", textAbsorber.Text);
         }
 
         [TestCase(BlockImportMode.Preserve)]
@@ -342,7 +341,7 @@ namespace ApiExamples
             loadOptions.SupportFontFaceRules = true;
             Document doc = new Document(MyDir + "Html with FontFace.html", loadOptions);
 
-            Assert.That(doc.FontInfos[0].Name, Is.EqualTo("Squarish Sans CT Regular"));
+            Assert.AreEqual("Squarish Sans CT Regular", doc.FontInfos[0].Name);
             //ExEnd:FontFaceRules
         }
     }

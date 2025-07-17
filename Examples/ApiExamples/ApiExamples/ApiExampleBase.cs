@@ -51,7 +51,7 @@ namespace ApiExamples
                 Assert.Ignore("Test skipped on GitHub");
             }
 
-            Console.WriteLine($"Clr: {RuntimeInformation.FrameworkDescription}\n");
+            Console.WriteLine(string.Format("Clr: {0}\n", RuntimeInformation.FrameworkDescription));
 #endif
         }
 
@@ -151,8 +151,12 @@ namespace ApiExamples
         {
             // CodeBase is a full URI, such as file:///x:\blahblah.
             Uri uri = new Uri(assembly.Location);
-            string mainFolder = Path.GetDirectoryName(uri.LocalPath)
-                ?.Substring(0, uri.LocalPath.IndexOf("ApiExamples", StringComparison.Ordinal));
+            string mainFolder = default(string);
+            string condExpression = Path.GetDirectoryName(uri.LocalPath);
+            if (condExpression != null)
+            {
+                mainFolder = condExpression.Substring(0, uri.LocalPath.IndexOf("ApiExamples", StringComparison.Ordinal));
+            }
             return mainFolder;
         }
 

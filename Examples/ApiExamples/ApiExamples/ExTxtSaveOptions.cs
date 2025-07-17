@@ -48,7 +48,7 @@ namespace ApiExamples
             // the "Document" object will use them to split the body into pages.
             doc = new Document(ArtifactsDir + "TxtSaveOptions.PageBreaks.txt");
 
-            Assert.That(doc.PageCount, Is.EqualTo(forcePageBreaks ? 3 : 1));
+            Assert.AreEqual(forcePageBreaks ? 3 : 1, doc.PageCount);
             //ExEnd
 
             TestUtil.FileContainsString(
@@ -73,7 +73,8 @@ namespace ApiExamples
 
             // Create a "TxtSaveOptions" object, which we can pass to the document's "Save" method
             // to modify how we save the document to plaintext.
-            TxtSaveOptions saveOptions = new TxtSaveOptions { Encoding = System.Text.Encoding.Unicode};
+            TxtSaveOptions saveOptions = new TxtSaveOptions();
+            saveOptions.Encoding = System.Text.Encoding.Unicode;
 
             // Set the "AddBidiMarks" property to "true" to add marks before runs
             // with right-to-left text to indicate the fact.
@@ -87,13 +88,13 @@ namespace ApiExamples
 
             if (addBidiMarks)
             {
-                Assert.That(docText, Is.EqualTo("\uFEFFHello world!‎\r\nשלום עולם!‏\r\nمرحبا بالعالم!‏\r\n\r\n"));
-                Assert.That(docText.Contains("\u200f"), Is.True);
+                Assert.AreEqual("\uFEFFHello world!‎\r\nשלום עולם!‏\r\nمرحبا بالعالم!‏\r\n\r\n", docText);
+                Assert.IsTrue(docText.Contains("\u200f"));
             }
             else
             {
-                Assert.That(docText, Is.EqualTo("\uFEFFHello world!\r\nשלום עולם!\r\nمرحبا بالعالم!\r\n\r\n"));
-                Assert.That(docText.Contains("\u200f"), Is.False);
+                Assert.AreEqual("\uFEFFHello world!\r\nשלום עולם!\r\nمرحبا بالعالم!\r\n\r\n", docText);
+                Assert.IsFalse(docText.Contains("\u200f"));
             }
             //ExEnd
         }
@@ -148,25 +149,25 @@ namespace ApiExamples
             switch (txtExportHeadersFootersMode)
             {
                 case TxtExportHeadersFootersMode.AllAtEnd:
-                    Assert.That(docText, Is.EqualTo($"Page 1{newLine}" +
-                                    $"Page 2{newLine}" +
-                                    $"Page 3{newLine}" +
-                                    $"Even header{newLine}{newLine}" +
-                                    $"Primary header{newLine}{newLine}" +
-                                    $"Even footer{newLine}{newLine}" +
-                                    $"Primary footer{newLine}{newLine}"));
+                    Assert.AreEqual(string.Format("Page 1{0}", newLine) +
+                                    string.Format("Page 2{0}", newLine) +
+                                    string.Format("Page 3{0}", newLine) +
+                                    string.Format("Even header{0}{1}", newLine, newLine) +
+                                    string.Format("Primary header{0}{1}", newLine, newLine) +
+                                    string.Format("Even footer{0}{1}", newLine, newLine) +
+                                    string.Format("Primary footer{0}{1}", newLine, newLine), docText);
                     break;
                 case TxtExportHeadersFootersMode.PrimaryOnly:
-                    Assert.That(docText, Is.EqualTo($"Primary header{newLine}" +
-                                    $"Page 1{newLine}" +
-                                    $"Page 2{newLine}" +
-                                    $"Page 3{newLine}" +
-                                    $"Primary footer{newLine}"));
+                    Assert.AreEqual(string.Format("Primary header{0}", newLine) +
+                                    string.Format("Page 1{0}", newLine) +
+                                    string.Format("Page 2{0}", newLine) +
+                                    string.Format("Page 3{0}", newLine) +
+                                    string.Format("Primary footer{0}", newLine), docText);
                     break;
                 case TxtExportHeadersFootersMode.None:
-                    Assert.That(docText, Is.EqualTo($"Page 1{newLine}" +
-                                    $"Page 2{newLine}" +
-                                    $"Page 3{newLine}"));
+                    Assert.AreEqual(string.Format("Page 1{0}", newLine) +
+                                    string.Format("Page 2{0}", newLine) +
+                                    string.Format("Page 3{0}", newLine), docText);
                     break;
             }
             //ExEnd
@@ -209,9 +210,9 @@ namespace ApiExamples
             string docText = File.ReadAllText(ArtifactsDir + "TxtSaveOptions.TxtListIndentation.txt");
             string newLine= Environment.NewLine;
 
-            Assert.That(docText, Is.EqualTo($"1. Item 1{newLine}" +
-                            $"   a. Item 2{newLine}" +
-                            $"      i. Item 3{newLine}"));
+            Assert.AreEqual(string.Format("1. Item 1{0}", newLine) +
+                            string.Format("   a. Item 2{0}", newLine) +
+                            string.Format("      i. Item 3{0}", newLine), docText);
             //ExEnd
         }
 
@@ -252,17 +253,17 @@ namespace ApiExamples
 
             string newLine = Environment.NewLine;
             if (simplifyListLabels)
-                Assert.That(docText, Is.EqualTo($"* Item 1{newLine}" +
-                                $"  > Item 2{newLine}" +
-                                $"    + Item 3{newLine}" +
-                                $"      - Item 4{newLine}" +
-                                $"        o Item 5{newLine}"));
+                Assert.AreEqual(string.Format("* Item 1{0}", newLine) +
+                                string.Format("  > Item 2{0}", newLine) +
+                                string.Format("    + Item 3{0}", newLine) +
+                                string.Format("      - Item 4{0}", newLine) +
+                                string.Format("        o Item 5{0}", newLine), docText);
             else
-                Assert.That(docText, Is.EqualTo($"· Item 1{newLine}" +
-                                $"o Item 2{newLine}" +
-                                $"§ Item 3{newLine}" +
-                                $"· Item 4{newLine}" +
-                                $"o Item 5{newLine}"));
+                Assert.AreEqual(string.Format("· Item 1{0}", newLine) +
+                                string.Format("o Item 2{0}", newLine) +
+                                string.Format("§ Item 3{0}", newLine) +
+                                string.Format("· Item 4{0}", newLine) +
+                                string.Format("o Item 5{0}", newLine), docText);
             //ExEnd
         }
 
@@ -286,7 +287,7 @@ namespace ApiExamples
             // to modify how we save the document to plaintext.
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
 
-            Assert.That(txtSaveOptions.SaveFormat, Is.EqualTo(SaveFormat.Text));
+            Assert.AreEqual(SaveFormat.Text, txtSaveOptions.SaveFormat);
 
             // Set the "ParagraphBreak" to a custom value that we wish to put at the end of every paragraph.
             txtSaveOptions.ParagraphBreak = " End of paragraph.\n\n\t";
@@ -295,9 +296,9 @@ namespace ApiExamples
 
             string docText = File.ReadAllText(ArtifactsDir + "TxtSaveOptions.ParagraphBreak.txt");
 
-            Assert.That(docText, Is.EqualTo("Paragraph 1. End of paragraph.\n\n\t" +
+            Assert.AreEqual("Paragraph 1. End of paragraph.\n\n\t" +
                             "Paragraph 2. End of paragraph.\n\n\t" +
-                            "Paragraph 3. End of paragraph.\n\n\t"));
+                            "Paragraph 3. End of paragraph.\n\n\t", docText);
             //ExEnd
         }
 
@@ -318,20 +319,20 @@ namespace ApiExamples
             TxtSaveOptions txtSaveOptions = new TxtSaveOptions();
 
             // Verify that the "Encoding" property contains the appropriate encoding for our document's contents.
-            Assert.That(txtSaveOptions.Encoding, Is.EqualTo(System.Text.Encoding.UTF8));
+            Assert.AreEqual(System.Text.Encoding.UTF8, txtSaveOptions.Encoding);
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.Encoding.UTF8.txt", txtSaveOptions);
 
             string docText = System.Text.Encoding.UTF8.GetString(File.ReadAllBytes(ArtifactsDir + "TxtSaveOptions.Encoding.UTF8.txt"));
 
-            Assert.That(docText, Is.EqualTo("\uFEFFÀ È Ì Ò Ù.\r\n"));
+            Assert.AreEqual("\uFEFFÀ È Ì Ò Ù.\r\n", docText);
 
             // Using an unsuitable encoding may result in a loss of document contents.
             txtSaveOptions.Encoding = System.Text.Encoding.ASCII;
             doc.Save(ArtifactsDir + "TxtSaveOptions.Encoding.ASCII.txt", txtSaveOptions);
             docText = System.Text.Encoding.ASCII.GetString(File.ReadAllBytes(ArtifactsDir + "TxtSaveOptions.Encoding.ASCII.txt"));
 
-            Assert.That(docText, Is.EqualTo("? ? ? ? ?.\r\n"));
+            Assert.AreEqual("? ? ? ? ?.\r\n", docText);
             //ExEnd
         }
 
@@ -372,13 +373,13 @@ namespace ApiExamples
             string docText = File.ReadAllText(ArtifactsDir + "TxtSaveOptions.PreserveTableLayout.txt");
 
             if (preserveTableLayout)
-                Assert.That(docText, Is.EqualTo("Row 1, cell 1                                            Row 1, cell 2\r\n" +
-                                "Row 2, cell 1                                            Row 2, cell 2\r\n\r\n"));
+                Assert.AreEqual("Row 1, cell 1                                            Row 1, cell 2\r\n" +
+                                "Row 2, cell 1                                            Row 2, cell 2\r\n\r\n", docText);
             else
-                Assert.That(docText, Is.EqualTo("Row 1, cell 1\r" +
+                Assert.AreEqual("Row 1, cell 1\r" +
                                 "Row 1, cell 2\r" +
                                 "Row 2, cell 1\r" +
-                                "Row 2, cell 2\r\r\n"));
+                                "Row 2, cell 2\r\r\n", docText);
             //ExEnd
         }
 
@@ -395,7 +396,8 @@ namespace ApiExamples
                           "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
 
             // Set 30 characters as maximum allowed per one line.
-            TxtSaveOptions saveOptions = new TxtSaveOptions { MaxCharactersPerLine = 30 };
+            TxtSaveOptions saveOptions = new TxtSaveOptions();
+            saveOptions.MaxCharactersPerLine = 30;
 
             doc.Save(ArtifactsDir + "TxtSaveOptions.MaxCharactersPerLine.txt", saveOptions);
             //ExEnd

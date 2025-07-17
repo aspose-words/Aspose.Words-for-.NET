@@ -30,7 +30,7 @@ namespace ApiExamples
             // Create an "RtfSaveOptions" object to pass to the document's "Save" method to modify how we save it to an RTF.
             RtfSaveOptions options = new RtfSaveOptions();
 
-            Assert.That(options.SaveFormat, Is.EqualTo(SaveFormat.Rtf));
+            Assert.AreEqual(SaveFormat.Rtf, options.SaveFormat);
 
             // Set the "ExportCompactSize" property to "true" to
             // reduce the saved document's size at the cost of right-to-left text compatibility.
@@ -78,13 +78,13 @@ namespace ApiExamples
             builder.Writeln("Jpeg image:");
             Shape imageShape = builder.InsertImage(ImageDir + "Logo.jpg");
 
-            Assert.That(imageShape.ImageData.ImageType, Is.EqualTo(ImageType.Jpeg));
+            Assert.AreEqual(ImageType.Jpeg, imageShape.ImageData.ImageType);
 
             builder.InsertParagraph();
             builder.Writeln("Png image:");
             imageShape = builder.InsertImage(ImageDir + "Transparent background logo.png");
 
-            Assert.That(imageShape.ImageData.ImageType, Is.EqualTo(ImageType.Png));
+            Assert.AreEqual(ImageType.Png, imageShape.ImageData.ImageType);
 
             // Create an "RtfSaveOptions" object to pass to the document's "Save" method to modify how we save it to an RTF.
             RtfSaveOptions rtfSaveOptions = new RtfSaveOptions();
@@ -103,13 +103,13 @@ namespace ApiExamples
 
             if (saveImagesAsWmf)
             {
-                Assert.That(((Shape)shapes[0]).ImageData.ImageType, Is.EqualTo(ImageType.Wmf));
-                Assert.That(((Shape)shapes[1]).ImageData.ImageType, Is.EqualTo(ImageType.Wmf));
+                Assert.AreEqual(ImageType.Wmf, ((Shape)shapes[0]).ImageData.ImageType);
+                Assert.AreEqual(ImageType.Wmf, ((Shape)shapes[1]).ImageData.ImageType);
             }
             else
             {
-                Assert.That(((Shape)shapes[0]).ImageData.ImageType, Is.EqualTo(ImageType.Jpeg));
-                Assert.That(((Shape)shapes[1]).ImageData.ImageType, Is.EqualTo(ImageType.Png));
+                Assert.AreEqual(ImageType.Jpeg, ((Shape)shapes[0]).ImageData.ImageType);
+                Assert.AreEqual(ImageType.Png, ((Shape)shapes[1]).ImageData.ImageType);
             }
             //ExEnd
         }

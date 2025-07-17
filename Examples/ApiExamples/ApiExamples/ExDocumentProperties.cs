@@ -34,7 +34,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Properties.docx");
 
             // The "Document" object contains some of its metadata in its members.
-            Console.WriteLine($"Document filename:\n\t \"{doc.OriginalFileName}\"");
+            Console.WriteLine(string.Format("Document filename:\n\t \"{0}\"", doc.OriginalFileName));
 
             // The document also stores metadata in its built-in properties.
             // Each built-in property is a member of the document's "BuiltInDocumentProperties" object.
@@ -42,22 +42,22 @@ namespace ApiExamples
             foreach (DocumentProperty docProperty in doc.BuiltInDocumentProperties)
             {
                 Console.WriteLine(docProperty.Name);
-                Console.WriteLine($"\tType:\t{docProperty.Type}");
+                Console.WriteLine(string.Format("\tType:\t{0}", docProperty.Type));
 
                 // Some properties may store multiple values.
                 if (docProperty.Value is ICollection<object>)
                 {
                     foreach (object value in docProperty.Value as ICollection<object>)
-                        Console.WriteLine($"\tValue:\t\"{value}\"");
+                        Console.WriteLine(string.Format("\tValue:\t\"{0}\"", value));
                 }
                 else
                 {
-                    Console.WriteLine($"\tValue:\t\"{docProperty.Value}\"");
+                    Console.WriteLine(string.Format("\tValue:\t\"{0}\"", docProperty.Value));
                 }
             }
             //ExEnd
 
-            Assert.That(doc.BuiltInDocumentProperties.Count, Is.EqualTo(31));
+            Assert.AreEqual(31, doc.BuiltInDocumentProperties.Count);
         }
 
         [Test]
@@ -74,7 +74,7 @@ namespace ApiExamples
 
             // Every document contains a collection of custom properties, which, like the built-in properties, are key-value pairs.
             // The document has a fixed list of built-in properties. The user creates all of the custom properties. 
-            Assert.That(doc.CustomDocumentProperties["CustomProperty"].ToString(), Is.EqualTo("Value of custom document property"));
+            Assert.AreEqual("Value of custom document property", doc.CustomDocumentProperties["CustomProperty"].ToString());
 
             doc.CustomDocumentProperties.Add("CustomProperty2", "Value of custom document property #2");
 
@@ -82,12 +82,12 @@ namespace ApiExamples
             foreach (var customDocumentProperty in doc.CustomDocumentProperties)
             {
                 Console.WriteLine(customDocumentProperty.Name);
-                Console.WriteLine($"\tType:\t{customDocumentProperty.Type}");
-                Console.WriteLine($"\tValue:\t\"{customDocumentProperty.Value}\"");
+                Console.WriteLine(string.Format("\tType:\t{0}", customDocumentProperty.Type));
+                Console.WriteLine(string.Format("\tValue:\t\"{0}\"", customDocumentProperty.Value));
             }
             //ExEnd
 
-            Assert.That(doc.CustomDocumentProperties.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, doc.CustomDocumentProperties.Count);
         }
 
         [Test]
@@ -122,7 +122,7 @@ namespace ApiExamples
             builder.InsertField(FieldType.FieldSubject, true);
 
             // 4 -  "Comments" property, which we can display using a COMMENTS field:
-            properties.Comments = $"This is {properties.Author}'s document about {properties.Subject}";
+            properties.Comments = string.Format("This is {0}'s document about {1}", properties.Author, properties.Subject);
             builder.Write("\nComments:\t\"");
             builder.InsertField(FieldType.FieldComments, true);
             builder.Write("\"");
@@ -142,16 +142,16 @@ namespace ApiExamples
 
             properties = doc.BuiltInDocumentProperties;
 
-            Assert.That(properties.Author, Is.EqualTo("John Doe"));
-            Assert.That(properties.Category, Is.EqualTo("My category"));
-            Assert.That(properties.Comments, Is.EqualTo($"This is {properties.Author}'s document about {properties.Subject}"));
-            Assert.That(properties.Keywords, Is.EqualTo("Tag 1; Tag 2; Tag 3"));
-            Assert.That(properties.Subject, Is.EqualTo("My subject"));
-            Assert.That(properties.Title, Is.EqualTo("John's Document"));
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Author:\t\u0013 AUTHOR \u0014John Doe\u0015\r" +
+            Assert.AreEqual("John Doe", properties.Author);
+            Assert.AreEqual("My category", properties.Category);
+            Assert.AreEqual(string.Format("This is {0}'s document about {1}", properties.Author, properties.Subject), properties.Comments);
+            Assert.AreEqual("Tag 1; Tag 2; Tag 3", properties.Keywords);
+            Assert.AreEqual("My subject", properties.Subject);
+            Assert.AreEqual("John's Document", properties.Title);
+            Assert.AreEqual("Author:\t\u0013 AUTHOR \u0014John Doe\u0015\r" +
                             "Doc title:\t\u0013 TITLE \u0014John's Document\u0015\r" +
                             "Subject:\t\u0013 SUBJECT \u0014My subject\u0015\r" +
-                            "Comments:\t\"\u0013 COMMENTS \u0014This is John Doe's document about My subject\u0015\""));
+                            "Comments:\t\"\u0013 COMMENTS \u0014This is John Doe's document about My subject\u0015\"", doc.GetText().Trim());
         }
 
         [Test]
@@ -178,10 +178,10 @@ namespace ApiExamples
             // We can right-click this document in Windows Explorer and find
             // these properties via "Properties" -> "Details" -> "Origin" category.
             // Fields such as PRINTDATE and EDITTIME can display these values in the document body.
-            Console.WriteLine($"Created using {properties.NameOfApplication}, on {properties.CreatedTime}");
-            Console.WriteLine($"Minutes spent editing: {properties.TotalEditingTime}");
-            Console.WriteLine($"Date/time last printed: {properties.LastPrinted}");
-            Console.WriteLine($"Template document: {properties.Template}");
+            Console.WriteLine(string.Format("Created using {0}, on {1}", properties.NameOfApplication, properties.CreatedTime));
+            Console.WriteLine(string.Format("Minutes spent editing: {0}", properties.TotalEditingTime));
+            Console.WriteLine(string.Format("Date/time last printed: {0}", properties.LastPrinted));
+            Console.WriteLine(string.Format("Template document: {0}", properties.Template));
 
             // We can also change the values of built-in properties.
             properties.Company = "Doe Ltd.";
@@ -200,17 +200,17 @@ namespace ApiExamples
 
             properties = new Document(ArtifactsDir + "DocumentProperties.Origin.docx").BuiltInDocumentProperties;
 
-            Assert.That(properties.Company, Is.EqualTo("Doe Ltd."));
-            Assert.That(properties.CreatedTime, Is.EqualTo(new DateTime(2006, 4, 25, 10, 10, 0)));
-            Assert.That(properties.LastPrinted, Is.EqualTo(new DateTime(2019, 4, 21, 10, 0, 0)));
-            Assert.That(properties.LastSavedBy, Is.EqualTo("John Doe"));
+            Assert.AreEqual("Doe Ltd.", properties.Company);
+            Assert.AreEqual(new DateTime(2006, 4, 25, 10, 10, 0), properties.CreatedTime);
+            Assert.AreEqual(new DateTime(2019, 4, 21, 10, 0, 0), properties.LastPrinted);
+            Assert.AreEqual("John Doe", properties.LastSavedBy);
             TestUtil.VerifyDate(DateTime.Now, properties.LastSavedTime, TimeSpan.FromSeconds(5));
-            Assert.That(properties.Manager, Is.EqualTo("Jane Doe"));
-            Assert.That(properties.NameOfApplication, Is.EqualTo("Microsoft Office Word"));
-            Assert.That(properties.RevisionNumber, Is.EqualTo(12));
-            Assert.That(properties.Template, Is.EqualTo("Normal"));
-            Assert.That(properties.TotalEditingTime, Is.EqualTo(8));
-            Assert.That(properties.Version, Is.EqualTo(786432));
+            Assert.AreEqual("Jane Doe", properties.Manager);
+            Assert.AreEqual("Microsoft Office Word", properties.NameOfApplication);
+            Assert.AreEqual(12, properties.RevisionNumber);
+            Assert.AreEqual("Normal", properties.Template);
+            Assert.AreEqual(8, properties.TotalEditingTime);
+            Assert.AreEqual(786432, properties.Version);
         }
 
         //ExStart
@@ -239,36 +239,36 @@ namespace ApiExamples
             // Page count: The PageCount property shows the page count in real time and its value can be assigned to the Pages property
 
             // The "Pages" property stores the page count of the document. 
-            Assert.That(properties.Pages, Is.EqualTo(6));
+            Assert.AreEqual(6, properties.Pages);
 
             // The "Words", "Characters", and "CharactersWithSpaces" built-in properties also display various document statistics,
             // but we need to call the "UpdateWordCount" method on the whole document before we can expect them to contain accurate values.
-            Assert.That(properties.Words, Is.EqualTo(1054)); //ExSkip
-            Assert.That(properties.Characters, Is.EqualTo(6009)); //ExSkip
-            Assert.That(properties.CharactersWithSpaces, Is.EqualTo(7049)); //ExSkip
+            Assert.AreEqual(1054, properties.Words); //ExSkip
+            Assert.AreEqual(6009, properties.Characters); //ExSkip
+            Assert.AreEqual(7049, properties.CharactersWithSpaces); //ExSkip
             doc.UpdateWordCount();
 
-            Assert.That(properties.Words, Is.EqualTo(1035));
-            Assert.That(properties.Characters, Is.EqualTo(6026));
-            Assert.That(properties.CharactersWithSpaces, Is.EqualTo(7041));
+            Assert.AreEqual(1035, properties.Words);
+            Assert.AreEqual(6026, properties.Characters);
+            Assert.AreEqual(7041, properties.CharactersWithSpaces);
 
             // Count the number of lines in the document, and then assign the result to the "Lines" built-in property.
             LineCounter lineCounter = new LineCounter(doc);
             properties.Lines = lineCounter.GetLineCount();
 
-            Assert.That(properties.Lines, Is.EqualTo(142));
+            Assert.AreEqual(142, properties.Lines);
 
             // Assign the number of Paragraph nodes in the document to the "Paragraphs" built-in property.
             properties.Paragraphs = doc.GetChildNodes(NodeType.Paragraph, true).Count;
-            Assert.That(properties.Paragraphs, Is.EqualTo(29));
+            Assert.AreEqual(29, properties.Paragraphs);
 
             // Get an estimate of the file size of our document via the "Bytes" built-in property.
-            Assert.That(properties.Bytes, Is.EqualTo(20310));
+            Assert.AreEqual(20310, properties.Bytes);
 
             // Set a different template for our document, and then update the "Template" built-in property manually to reflect this change.
             doc.AttachedTemplate = MyDir + "Business brochure.dotx";
 
-            Assert.That(properties.Template, Is.EqualTo("Normal"));
+            Assert.AreEqual("Normal", properties.Template);
 
             properties.Template = doc.AttachedTemplate;
 
@@ -276,10 +276,10 @@ namespace ApiExamples
             properties.ContentStatus = "Draft";
 
             // Upon saving, the "ContentType" built-in property will contain the MIME type of the output save format.
-            Assert.That(properties.ContentType, Is.EqualTo(string.Empty));
+            Assert.AreEqual(string.Empty, properties.ContentType);
 
             // If the document contains links, and they are all up to date, we can set the "LinksUpToDate" property to "true".
-            Assert.That(properties.LinksUpToDate, Is.False);
+            Assert.IsFalse(properties.LinksUpToDate);
 
             doc.Save(ArtifactsDir + "DocumentProperties.Content.docx");
             TestContent(new Document(ArtifactsDir + "DocumentProperties.Content.docx")); //ExSkip
@@ -336,18 +336,18 @@ namespace ApiExamples
         {
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
 
-            Assert.That(properties.Pages, Is.EqualTo(6));
+            Assert.AreEqual(6, properties.Pages);
 
-            Assert.That(properties.Words, Is.EqualTo(1035));
-            Assert.That(properties.Characters, Is.EqualTo(6026));
-            Assert.That(properties.CharactersWithSpaces, Is.EqualTo(7041));
-            Assert.That(properties.Lines, Is.EqualTo(142));
-            Assert.That(properties.Paragraphs, Is.EqualTo(29));
-            Assert.That(properties.Bytes, Is.EqualTo(15500).Within(200));
-            Assert.That(properties.Template, Is.EqualTo(MyDir.Replace("\\\\", "\\") + "Business brochure.dotx"));
-            Assert.That(properties.ContentStatus, Is.EqualTo("Draft"));
-            Assert.That(properties.ContentType, Is.EqualTo(string.Empty));
-            Assert.That(properties.LinksUpToDate, Is.False);
+            Assert.AreEqual(1035, properties.Words);
+            Assert.AreEqual(6026, properties.Characters);
+            Assert.AreEqual(7041, properties.CharactersWithSpaces);
+            Assert.AreEqual(142, properties.Lines);
+            Assert.AreEqual(29, properties.Paragraphs);
+            Assert.AreEqual(15500, properties.Bytes, 200);
+            Assert.AreEqual(MyDir.Replace("\\\\", "\\") + "Business brochure.dotx", properties.Template);
+            Assert.AreEqual("Draft", properties.ContentStatus);
+            Assert.AreEqual(string.Empty, properties.ContentType);
+            Assert.IsFalse(properties.LinksUpToDate);
         }
 
         [Test]
@@ -393,7 +393,7 @@ namespace ApiExamples
 
             // This link is relative. If there is no "Document.docx" in the same folder
             // as the document that contains this link, the link will be broken.
-            Assert.That(File.Exists(ArtifactsDir + "Document.docx"), Is.False);
+            Assert.IsFalse(File.Exists(ArtifactsDir + "Document.docx"));
             doc.Save(ArtifactsDir + "DocumentProperties.HyperlinkBase.BrokenLink.docx");
 
             // The document we are trying to link to is in a different directory to the one we are planning to save the document in.
@@ -403,7 +403,7 @@ namespace ApiExamples
             BuiltInDocumentProperties properties = doc.BuiltInDocumentProperties;
             properties.HyperlinkBase = MyDir;
 
-            Assert.That(File.Exists(properties.HyperlinkBase + ((FieldHyperlink)doc.Range.Fields[0]).Address), Is.True);
+            Assert.IsTrue(File.Exists(properties.HyperlinkBase + ((FieldHyperlink)doc.Range.Fields[0]).Address));
 
             doc.Save(ArtifactsDir + "DocumentProperties.HyperlinkBase.WorkingLink.docx");
             //ExEnd
@@ -411,13 +411,13 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentProperties.HyperlinkBase.BrokenLink.docx");
             properties = doc.BuiltInDocumentProperties;
 
-            Assert.That(properties.HyperlinkBase, Is.EqualTo(string.Empty));
+            Assert.AreEqual(string.Empty, properties.HyperlinkBase);
 
             doc = new Document(ArtifactsDir + "DocumentProperties.HyperlinkBase.WorkingLink.docx");
             properties = doc.BuiltInDocumentProperties;
 
-            Assert.That(properties.HyperlinkBase, Is.EqualTo(MyDir));
-            Assert.That(File.Exists(properties.HyperlinkBase + ((FieldHyperlink)doc.Range.Fields[0]).Address), Is.True);
+            Assert.AreEqual(MyDir, properties.HyperlinkBase);
+            Assert.IsTrue(File.Exists(properties.HyperlinkBase + ((FieldHyperlink)doc.Range.Fields[0]).Address));
         }
 
         [Test]
@@ -442,35 +442,35 @@ namespace ApiExamples
             int titlesOfPartsIndex = 0;
             while (headingPairsIndex < headingPairs.Length)
             {
-                Console.WriteLine($"Parts for {headingPairs[headingPairsIndex++]}:");
+                Console.WriteLine(string.Format("Parts for {0}:", headingPairs[headingPairsIndex++]));
                 int partsCount = Convert.ToInt32(headingPairs[headingPairsIndex++]);
 
                 for (int i = 0; i < partsCount; i++)
-                    Console.WriteLine($"\t\"{titlesOfParts[titlesOfPartsIndex++]}\"");
+                    Console.WriteLine(string.Format("\t\"{0}\"", titlesOfParts[titlesOfPartsIndex++]));
             }
             //ExEnd
 
             // There are 6 array elements designating 3 heading/part count pairs
-            Assert.That(headingPairs.Length, Is.EqualTo(6));
-            Assert.That(headingPairs[0].ToString(), Is.EqualTo("Title"));
-            Assert.That(headingPairs[1].ToString(), Is.EqualTo("1"));
-            Assert.That(headingPairs[2].ToString(), Is.EqualTo("Heading 1"));
-            Assert.That(headingPairs[3].ToString(), Is.EqualTo("5"));
-            Assert.That(headingPairs[4].ToString(), Is.EqualTo("Heading 2"));
-            Assert.That(headingPairs[5].ToString(), Is.EqualTo("2"));
+            Assert.AreEqual(6, headingPairs.Length);
+            Assert.AreEqual("Title", headingPairs[0].ToString());
+            Assert.AreEqual("1", headingPairs[1].ToString());
+            Assert.AreEqual("Heading 1", headingPairs[2].ToString());
+            Assert.AreEqual("5", headingPairs[3].ToString());
+            Assert.AreEqual("Heading 2", headingPairs[4].ToString());
+            Assert.AreEqual("2", headingPairs[5].ToString());
 
-            Assert.That(titlesOfParts.Length, Is.EqualTo(8));
+            Assert.AreEqual(8, titlesOfParts.Length);
             // "Title"
-            Assert.That(titlesOfParts[0], Is.EqualTo(""));
+            Assert.AreEqual("", titlesOfParts[0]);
             // "Heading 1"
-            Assert.That(titlesOfParts[1], Is.EqualTo("Part1"));
-            Assert.That(titlesOfParts[2], Is.EqualTo("Part2"));
-            Assert.That(titlesOfParts[3], Is.EqualTo("Part3"));
-            Assert.That(titlesOfParts[4], Is.EqualTo("Part4"));
-            Assert.That(titlesOfParts[5], Is.EqualTo("Part5"));
+            Assert.AreEqual("Part1", titlesOfParts[1]);
+            Assert.AreEqual("Part2", titlesOfParts[2]);
+            Assert.AreEqual("Part3", titlesOfParts[3]);
+            Assert.AreEqual("Part4", titlesOfParts[4]);
+            Assert.AreEqual("Part5", titlesOfParts[5]);
             // "Heading 2"
-            Assert.That(titlesOfParts[6], Is.EqualTo("Part6"));
-            Assert.That(titlesOfParts[7], Is.EqualTo("Part7"));
+            Assert.AreEqual("Part6", titlesOfParts[6]);
+            Assert.AreEqual("Part7", titlesOfParts[7]);
         }
 
         [Test]
@@ -482,27 +482,27 @@ namespace ApiExamples
             //ExSummary:Shows how to use document properties to display the security level of a document.
             Document doc = new Document();
 
-            Assert.That(doc.BuiltInDocumentProperties.Security, Is.EqualTo(DocumentSecurity.None));
+            Assert.AreEqual(DocumentSecurity.None, doc.BuiltInDocumentProperties.Security);
 
             // If we configure a document to be read-only, it will display this status using the "Security" built-in property.
             doc.WriteProtection.ReadOnlyRecommended = true;
             doc.Save(ArtifactsDir + "DocumentProperties.Security.ReadOnlyRecommended.docx");
 
-            Assert.That(new Document(ArtifactsDir + "DocumentProperties.Security.ReadOnlyRecommended.docx").BuiltInDocumentProperties.Security, Is.EqualTo(DocumentSecurity.ReadOnlyRecommended));
+            Assert.AreEqual(DocumentSecurity.ReadOnlyRecommended, new Document(ArtifactsDir + "DocumentProperties.Security.ReadOnlyRecommended.docx").BuiltInDocumentProperties.Security);
 
             // Write-protect a document, and then verify its security level.
             doc = new Document();
 
-            Assert.That(doc.WriteProtection.IsWriteProtected, Is.False);
+            Assert.IsFalse(doc.WriteProtection.IsWriteProtected);
 
             doc.WriteProtection.SetPassword("MyPassword");
 
-            Assert.That(doc.WriteProtection.ValidatePassword("MyPassword"), Is.True);
-            Assert.That(doc.WriteProtection.IsWriteProtected, Is.True);
+            Assert.IsTrue(doc.WriteProtection.ValidatePassword("MyPassword"));
+            Assert.IsTrue(doc.WriteProtection.IsWriteProtected);
 
             doc.Save(ArtifactsDir + "DocumentProperties.Security.ReadOnlyEnforced.docx");
             
-            Assert.That(new Document(ArtifactsDir + "DocumentProperties.Security.ReadOnlyEnforced.docx").BuiltInDocumentProperties.Security, Is.EqualTo(DocumentSecurity.ReadOnlyEnforced));
+            Assert.AreEqual(DocumentSecurity.ReadOnlyEnforced, new Document(ArtifactsDir + "DocumentProperties.Security.ReadOnlyEnforced.docx").BuiltInDocumentProperties.Security);
 
             // "Security" is a descriptive property. We can edit its value manually.
             doc = new Document();
@@ -511,7 +511,7 @@ namespace ApiExamples
             doc.BuiltInDocumentProperties.Security = DocumentSecurity.ReadOnlyExceptAnnotations;
             doc.Save(ArtifactsDir + "DocumentProperties.Security.ReadOnlyExceptAnnotations.docx");
 
-            Assert.That(new Document(ArtifactsDir + "DocumentProperties.Security.ReadOnlyExceptAnnotations.docx").BuiltInDocumentProperties.Security, Is.EqualTo(DocumentSecurity.ReadOnlyExceptAnnotations));
+            Assert.AreEqual(DocumentSecurity.ReadOnlyExceptAnnotations, new Document(ArtifactsDir + "DocumentProperties.Security.ReadOnlyExceptAnnotations.docx").BuiltInDocumentProperties.Security);
             //ExEnd
         }
 
@@ -527,7 +527,7 @@ namespace ApiExamples
 
             doc.CustomDocumentProperties.Add("AuthorizationDate", DateTime.Now);
             DateTime authorizationDate = doc.CustomDocumentProperties["AuthorizationDate"].ToDateTime();
-            Console.WriteLine($"Document authorized on {authorizationDate}");
+            Console.WriteLine(string.Format("Document authorized on {0}", authorizationDate));
             //ExEnd
 
             TestUtil.VerifyDate(DateTime.Now, 
@@ -555,9 +555,9 @@ namespace ApiExamples
             CustomDocumentProperties customProperties = doc.CustomDocumentProperties;
             DocumentProperty customProperty = customProperties.AddLinkToContent("Bookmark", "MyBookmark");
 
-            Assert.That(customProperty.IsLinkToContent, Is.EqualTo(true));
-            Assert.That(customProperty.LinkSource, Is.EqualTo("MyBookmark"));
-            Assert.That(customProperty.Value, Is.EqualTo("Hello world!"));
+            Assert.AreEqual(true, customProperty.IsLinkToContent);
+            Assert.AreEqual("MyBookmark", customProperty.LinkSource);
+            Assert.AreEqual("Hello world!", customProperty.Value);
 
             doc.Save(ArtifactsDir + "DocumentProperties.LinkCustomDocumentPropertiesToBookmark.docx");
             //ExEnd
@@ -565,9 +565,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentProperties.LinkCustomDocumentPropertiesToBookmark.docx");
             customProperty = doc.CustomDocumentProperties["Bookmark"];
 
-            Assert.That(customProperty.IsLinkToContent, Is.EqualTo(true));
-            Assert.That(customProperty.LinkSource, Is.EqualTo("MyBookmark"));
-            Assert.That(customProperty.Value, Is.EqualTo("Hello world!"));
+            Assert.AreEqual(true, customProperty.IsLinkToContent);
+            Assert.AreEqual("MyBookmark", customProperty.LinkSource);
+            Assert.AreEqual("Hello world!", customProperty.Value);
         }
 
         [Test]
@@ -592,7 +592,7 @@ namespace ApiExamples
             Document doc = new Document();
             CustomDocumentProperties properties = doc.CustomDocumentProperties;
 
-            Assert.That(properties.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, properties.Count);
 
             // Custom document properties are key-value pairs that we can add to the document.
             properties.Add("Authorized", true);
@@ -602,14 +602,14 @@ namespace ApiExamples
             properties.Add("Authorized Amount", 123.45);
 
             // The collection sorts the custom properties in alphabetic order.
-            Assert.That(properties.IndexOf("Authorized Amount"), Is.EqualTo(1));
-            Assert.That(properties.Count, Is.EqualTo(5));
+            Assert.AreEqual(1, properties.IndexOf("Authorized Amount"));
+            Assert.AreEqual(5, properties.Count);
 
             // Print every custom property in the document.
             using (IEnumerator<DocumentProperty> enumerator = properties.GetEnumerator())
             {
                 while (enumerator.MoveNext())
-                    Console.WriteLine($"Name: \"{enumerator.Current.Name}\"\n\tType: \"{enumerator.Current.Type}\"\n\tValue: \"{enumerator.Current.Value}\"");
+                    Console.WriteLine(string.Format("Name: \"{0}\"\n\tType: \"{1}\"\n\tValue: \"{2}\"", enumerator.Current.Name, enumerator.Current.Type, enumerator.Current.Value));
             }
 
             // Display the value of a custom property using a DOCPROPERTY field.
@@ -617,7 +617,7 @@ namespace ApiExamples
             FieldDocProperty field = (FieldDocProperty)builder.InsertField(" DOCPROPERTY \"Authorized By\"");
             field.Update();
 
-            Assert.That(field.Result, Is.EqualTo("John Doe"));
+            Assert.AreEqual("John Doe", field.Result);
 
             // We can find these custom properties in Microsoft Word via "File" -> "Properties" > "Advanced Properties" > "Custom".
             doc.Save(ArtifactsDir + "DocumentProperties.DocumentPropertyCollection.docx");
@@ -626,19 +626,19 @@ namespace ApiExamples
             // 1 -  Remove by index:
             properties.RemoveAt(1);
 
-            Assert.That(properties.Contains("Authorized Amount"), Is.False);
-            Assert.That(properties.Count, Is.EqualTo(4));
+            Assert.IsFalse(properties.Contains("Authorized Amount"));
+            Assert.AreEqual(4, properties.Count);
 
             // 2 -  Remove by name:
             properties.Remove("Authorized Revision");
 
-            Assert.That(properties.Contains("Authorized Revision"), Is.False);
-            Assert.That(properties.Count, Is.EqualTo(3));
+            Assert.IsFalse(properties.Contains("Authorized Revision"));
+            Assert.AreEqual(3, properties.Count);
 
             // 3 -  Empty the entire collection at once:
             properties.Clear();
 
-            Assert.That(properties.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, properties.Count);
             //ExEnd
         }
 
@@ -662,11 +662,11 @@ namespace ApiExamples
             properties.Add("Authorized Revision", doc.BuiltInDocumentProperties.RevisionNumber);
             properties.Add("Authorized Amount", 123.45);
 
-            Assert.That(properties["Authorized"].ToBool(), Is.EqualTo(true));
-            Assert.That(properties["Authorized By"].ToString(), Is.EqualTo("John Doe"));
-            Assert.That(properties["Authorized Date"].ToDateTime(), Is.EqualTo(authDate));
-            Assert.That(properties["Authorized Revision"].ToInt(), Is.EqualTo(1));
-            Assert.That(properties["Authorized Amount"].ToDouble(), Is.EqualTo(123.45d));
+            Assert.AreEqual(true, properties["Authorized"].ToBool());
+            Assert.AreEqual("John Doe", properties["Authorized By"].ToString());
+            Assert.AreEqual(authDate, properties["Authorized Date"].ToDateTime());
+            Assert.AreEqual(1, properties["Authorized Revision"].ToInt());
+            Assert.AreEqual(123.45d, properties["Authorized Amount"].ToDouble());
             //ExEnd
         }
 
@@ -680,9 +680,9 @@ namespace ApiExamples
             //ExFor:BuiltInDocumentProperties.HyperlinksChanged
             //ExSummary:Shows how to get extended properties.
             Document doc = new Document(MyDir + "Extended properties.docx");
-            Assert.That(doc.BuiltInDocumentProperties.ScaleCrop, Is.True);
-            Assert.That(doc.BuiltInDocumentProperties.SharedDocument, Is.True);
-            Assert.That(doc.BuiltInDocumentProperties.HyperlinksChanged, Is.True);
+            Assert.IsTrue(doc.BuiltInDocumentProperties.ScaleCrop);
+            Assert.IsTrue(doc.BuiltInDocumentProperties.SharedDocument);
+            Assert.IsTrue(doc.BuiltInDocumentProperties.HyperlinksChanged);
             //ExEnd:ExtendedProperties
         }
     }

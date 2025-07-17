@@ -90,7 +90,7 @@ namespace ApiExamples
                 // Merge field name is stored in the field result which is a Run 
                 // node between field separator and field end.
                 Run fieldResult = (Run) mFieldSeparator.NextSibling;
-                fieldResult.Text = $"«{value}»";
+                fieldResult.Text = string.Format("«{0}»", value);
 
                 // But sometimes the field result can consist of more than one run, delete these runs.
                 RemoveSameParent(fieldResult.NextSibling, mFieldEnd);
@@ -105,7 +105,7 @@ namespace ApiExamples
             Run fieldCode = (Run) mFieldStart.NextSibling;
             Match match = gRegex.Match(fieldCode.Text);
 
-            string newFieldCode = $" {match.Groups["start"].Value}{fieldName} ";
+            string newFieldCode = string.Format(" {0}{1} ", match.Groups["start"].Value, fieldName);
             fieldCode.Text = newFieldCode;
 
             // But sometimes the field code can consist of more than one run, delete these runs.

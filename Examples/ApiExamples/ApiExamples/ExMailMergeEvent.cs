@@ -114,7 +114,7 @@ namespace ApiExamples
                 new string[] { "text_Field1", "text_Field2", "numeric_Field1" },
                 new object[] { "Field 1", "Field 2", 10 });
             string t = doc.GetText().Trim();
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Merge Value For \"Text_Field1\": Field 1, MERGE VALUE FOR \"TEXT_FIELD2\": FIELD 2, 10000.0"));
+            Assert.AreEqual("Merge Value For \"Text_Field1\": Field 1, MERGE VALUE FOR \"TEXT_FIELD2\": FIELD 2, 10000.0", doc.GetText().Trim());
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace ApiExamples
             void IFieldMergingCallback.FieldMerging(FieldMergingArgs e)
             {
                 if (e.FieldName.StartsWith("text_"))
-                    e.FieldValue = $"Merge value for \"{e.FieldName}\": {(string)e.FieldValue}";
+                    e.FieldValue = string.Format("Merge value for \"{0}\": {1}", e.FieldName, (string)e.FieldValue);
                 else if (e.FieldName.StartsWith("numeric_"))
                     e.FieldValue = (int)e.FieldValue * 1000;
             }
@@ -185,7 +185,7 @@ namespace ApiExamples
             {
                 if (args.DocumentFieldName == "CourseName")
                 {
-                    Assert.That(args.TableName, Is.EqualTo("StudentCourse"));
+                    Assert.AreEqual("StudentCourse", args.TableName);
 
                     DocumentBuilder builder = new DocumentBuilder(args.Document);
                     builder.MoveToMergeField(args.FieldName);
@@ -194,7 +194,7 @@ namespace ApiExamples
                     string fieldValue = args.FieldValue.ToString();
 
                     // In this case, for every record index 'n', the corresponding field value is "Course n".
-                    Assert.That(args.RecordIndex, Is.EqualTo(char.GetNumericValue(fieldValue[7])));
+                    Assert.AreEqual(char.GetNumericValue(fieldValue[7]), args.RecordIndex);
 
                     builder.Write(fieldValue);
                     mCheckBoxCount++;
@@ -362,7 +362,7 @@ namespace ApiExamples
 
             doc.MailMerge.FieldMergingCallback = new HandleMergeImageFieldFromBlob();
 
-            string connString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={DatabaseDir + "Northwind.accdb"};";
+            string connString = string.Format("Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};", DatabaseDir + "Northwind.accdb");
             string query = "SELECT FirstName, LastName, Title, Address, City, Region, Country, PhotoBLOB FROM Employees";
 
             using (OleDbConnection conn = new OleDbConnection(connString))

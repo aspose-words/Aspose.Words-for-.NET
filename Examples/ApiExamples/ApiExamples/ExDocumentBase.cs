@@ -32,12 +32,12 @@ namespace ApiExamples
             //ExSummary:Shows how to initialize the subclasses of DocumentBase.
             Document doc = new Document();
 
-            Assert.That(doc.GetType().BaseType, Is.EqualTo(typeof(DocumentBase)));
+            Assert.AreEqual(typeof(DocumentBase), doc.GetType().BaseType);
 
             GlossaryDocument glossaryDoc = new GlossaryDocument();
             doc.GlossaryDocument = glossaryDoc;
 
-            Assert.That(glossaryDoc.GetType().BaseType, Is.EqualTo(typeof(DocumentBase)));
+            Assert.AreEqual(typeof(DocumentBase), glossaryDoc.GetType().BaseType);
             //ExEnd
         }
 
@@ -58,7 +58,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocumentBase.SetPageColor.docx");
 
-            Assert.That(doc.PageColor.ToArgb(), Is.EqualTo(System.Drawing.Color.LightGray.ToArgb()));
+            Assert.AreEqual(System.Drawing.Color.LightGray.ToArgb(), doc.PageColor.ToArgb());
         }
 
         [Test]
@@ -77,24 +77,24 @@ namespace ApiExamples
 
             // Every node has a parent document, which is the document that contains the node.
             // Inserting a node into a document that the node does not belong to will throw an exception.
-            Assert.That(srcDoc.FirstSection.Document, Is.Not.EqualTo(dstDoc));
+            CollectionAssert.AreNotEqual(dstDoc, srcDoc.FirstSection.Document);
             Assert.Throws<ArgumentException>(() => dstDoc.AppendChild(srcDoc.FirstSection));
 
             // Use the ImportNode method to create a copy of a node, which will have the document
             // that called the ImportNode method set as its new owner document.
             Section importedSection = (Section)dstDoc.ImportNode(srcDoc.FirstSection, true);
 
-            Assert.That(importedSection.Document, Is.EqualTo(dstDoc));
+            CollectionAssert.AreEqual(dstDoc, importedSection.Document);
 
             // We can now insert the node into the document.
             dstDoc.AppendChild(importedSection);
 
-            Assert.That(dstDoc.ToString(SaveFormat.Text), Is.EqualTo("Destination document first paragraph text.\r\nSource document first paragraph text.\r\n"));
+            Assert.AreEqual("Destination document first paragraph text.\r\nSource document first paragraph text.\r\n", dstDoc.ToString(SaveFormat.Text));
             //ExEnd
 
-            Assert.That(srcDoc.FirstSection, Is.Not.EqualTo(importedSection));
-            Assert.That(srcDoc.FirstSection.Document, Is.Not.EqualTo(importedSection.Document));
-            Assert.That(srcDoc.FirstSection.Body.FirstParagraph.GetText(), Is.EqualTo(importedSection.Body.FirstParagraph.GetText()));
+            CollectionAssert.AreNotEqual(importedSection, srcDoc.FirstSection);
+            CollectionAssert.AreNotEqual(importedSection.Document, srcDoc.FirstSection.Document);
+            Assert.AreEqual(importedSection.Body.FirstParagraph.GetText(), srcDoc.FirstSection.Body.FirstParagraph.GetText());
         }
 
         [Test]
@@ -123,16 +123,16 @@ namespace ApiExamples
             // If we use destination styles, then the imported source text with the same style name
             // as destination text will adopt the destination style.
             Section importedSection = (Section)dstDoc.ImportNode(srcDoc.FirstSection, true, ImportFormatMode.UseDestinationStyles);
-            Assert.That(importedSection.Body.Paragraphs[0].Runs[0].GetText().Trim(), Is.EqualTo("Source document text.")); //ExSkip
-            Assert.That(dstDoc.Styles["My style_0"], Is.Null); //ExSkip
-            Assert.That(importedSection.Body.FirstParagraph.Runs[0].Font.Name, Is.EqualTo(dstStyle.Font.Name));
-            Assert.That(importedSection.Body.FirstParagraph.Runs[0].Font.StyleName, Is.EqualTo(dstStyle.Name));
+            Assert.AreEqual("Source document text.", importedSection.Body.Paragraphs[0].Runs[0].GetText().Trim()); //ExSkip
+            Assert.IsNull(dstDoc.Styles["My style_0"]); //ExSkip
+            Assert.AreEqual(dstStyle.Font.Name, importedSection.Body.FirstParagraph.Runs[0].Font.Name);
+            Assert.AreEqual(dstStyle.Name, importedSection.Body.FirstParagraph.Runs[0].Font.StyleName);
 
             // If we use ImportFormatMode.KeepDifferentStyles, the source style is preserved,
             // and the naming clash resolves by adding a suffix.
             dstDoc.ImportNode(srcDoc.FirstSection, true, ImportFormatMode.KeepDifferentStyles);
-            Assert.That(dstDoc.Styles["My style"].Font.Name, Is.EqualTo(dstStyle.Font.Name));
-            Assert.That(dstDoc.Styles["My style_0"].Font.Name, Is.EqualTo(srcStyle.Font.Name));
+            Assert.AreEqual(dstStyle.Font.Name, dstDoc.Styles["My style"].Font.Name);
+            Assert.AreEqual(srcStyle.Font.Name, dstDoc.Styles["My style_0"].Font.Name);
             //ExEnd
         }
 
@@ -144,7 +144,7 @@ namespace ApiExamples
             //ExSummary:Shows how to set a background shape for every page of a document.
             Document doc = new Document();
 
-            Assert.That(doc.BackgroundShape, Is.Null);
+            Assert.IsNull(doc.BackgroundShape);
 
             // The only shape type that we can use as a background is a rectangle.
             Shape shapeRectangle = new Shape(doc, ShapeType.Rectangle);
@@ -166,12 +166,10 @@ namespace ApiExamples
 
             doc.BackgroundShape = shapeRectangle;
 
-            Assert.That(doc.BackgroundShape.HasImage, Is.True);
+            Assert.IsTrue(doc.BackgroundShape.HasImage);
 
-            Aspose.Words.Saving.PdfSaveOptions saveOptions = new Aspose.Words.Saving.PdfSaveOptions
-            {
-                CacheBackgroundGraphics = false
-            };
+            Aspose.Words.Saving.PdfSaveOptions saveOptions = new Aspose.Words.Saving.PdfSaveOptions();
+            saveOptions.CacheBackgroundGraphics = false;
 
             // Microsoft Word does not support shapes with images as backgrounds,
             // but we can still see these backgrounds in other save formats such as .pdf.
@@ -180,7 +178,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "DocumentBase.BackgroundShape.FlatColor.docx");
 
-            Assert.That(doc.BackgroundShape.FillColor.ToArgb(), Is.EqualTo(System.Drawing.Color.LightBlue.ToArgb()));
+            Assert.AreEqual(System.Drawing.Color.LightBlue.ToArgb(), doc.BackgroundShape.FillColor.ToArgb());
             Assert.Throws<ArgumentException>(() =>
             {
                 doc.BackgroundShape = new Shape(doc, ShapeType.Triangle);
@@ -195,9 +193,9 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDocument = new Aspose.Pdf.Document(ArtifactsDir + "DocumentBase.BackgroundShape.Image.pdf");
             XImage pdfDocImage = pdfDocument.Pages[1].Resources.Images[1];
 
-            Assert.That(pdfDocImage.Width, Is.EqualTo(400));
-            Assert.That(pdfDocImage.Height, Is.EqualTo(400));
-            Assert.That(pdfDocImage.GetColorType(), Is.EqualTo(ColorType.Rgb));
+            Assert.AreEqual(400, pdfDocImage.Width);
+            Assert.AreEqual(400, pdfDocImage.Height);
+            Assert.AreEqual(ColorType.Rgb, pdfDocImage.GetColorType());
         }
 
         //ExStart
@@ -225,7 +223,7 @@ namespace ApiExamples
             builder.InsertImage("Aspose logo");
             builder.InsertImage("Watermark");
 
-            Assert.That(doc.GetChildNodes(NodeType.Shape, true).Count, Is.EqualTo(3));
+            Assert.AreEqual(3, doc.GetChildNodes(NodeType.Shape, true).Count);
 
             doc.Save(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx");
             TestResourceLoadingCallback(new Document(ArtifactsDir + "DocumentBase.ResourceLoadingCallback.docx")); //ExSkip
@@ -273,8 +271,8 @@ namespace ApiExamples
         {
             foreach (Shape shape in doc.GetChildNodes(NodeType.Shape, true))
             {
-                Assert.That(shape.HasImage, Is.True);
-                Assert.That(shape.ImageData.ImageBytes, Is.Not.Empty);
+                Assert.IsTrue(shape.HasImage);
+                Assert.IsNotEmpty(shape.ImageData.ImageBytes);
             }
         }
     }

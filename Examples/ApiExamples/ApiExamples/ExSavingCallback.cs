@@ -77,7 +77,7 @@ namespace ApiExamples
             string[] filePaths = Directory.GetFiles(ArtifactsDir).Where(
                 s => s.StartsWith(ArtifactsDir + "SavingCallback.PageFileNames.Page_")).OrderBy(s => s).ToArray();
 
-            Assert.That(filePaths.Length, Is.EqualTo(3));
+            Assert.AreEqual(3, filePaths.Length);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace ApiExamples
         {
             public void PageSaving(PageSavingArgs args)
             {
-                string outFileName = $"{ArtifactsDir}SavingCallback.PageFileNames.Page_{args.PageIndex}.html";
+                string outFileName = string.Format("{0}SavingCallback.PageFileNames.Page_{1}.html", ArtifactsDir, args.PageIndex);
 
                 // Below are two ways of specifying where Aspose.Words will save each page of the document.
                 // 1 -  Set a filename for the output page file:
@@ -96,7 +96,7 @@ namespace ApiExamples
                 // 2 -  Create a custom stream for the output page file:
                 args.PageStream = new FileStream(outFileName, FileMode.Create);
 
-                Assert.That(args.KeepPageStreamOpen, Is.False);
+                Assert.IsFalse(args.KeepPageStreamOpen);
             }
         }
         //ExEnd
@@ -158,7 +158,7 @@ namespace ApiExamples
             void IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs args)
             {
                 // We can access the entire source document via the "Document" property.
-                Assert.That(args.Document.OriginalFileName.EndsWith("Rendering.docx"), Is.True);
+                Assert.IsTrue(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
 
                 string partType = string.Empty;
 
@@ -178,7 +178,7 @@ namespace ApiExamples
                         break;
                 }
 
-                string partFileName = $"{mOutFileName} part {++mCount}, of type {partType}{Path.GetExtension(args.DocumentPartFileName)}";
+                string partFileName = string.Format("{0} part {1}, of type {2}{3}", mOutFileName, ++mCount, partType, Path.GetExtension(args.DocumentPartFileName));
 
                 // Below are two ways of specifying where Aspose.Words will save each part of the document.
                 // 1 -  Set a filename for the output part file:
@@ -187,8 +187,8 @@ namespace ApiExamples
                 // 2 -  Create a custom stream for the output part file:
                 args.DocumentPartStream = new FileStream(ArtifactsDir + partFileName, FileMode.Create);
 
-                Assert.That(args.DocumentPartStream.CanWrite, Is.True);
-                Assert.That(args.KeepDocumentPartStreamOpen, Is.False);
+                Assert.IsTrue(args.DocumentPartStream.CanWrite);
+                Assert.IsFalse(args.KeepDocumentPartStreamOpen);
             }
 
             private int mCount;
@@ -208,7 +208,7 @@ namespace ApiExamples
 
             void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
             {
-                string imageFileName = $"{mOutFileName} shape {++mCount}, of type {args.CurrentShape.ShapeType}{Path.GetExtension(args.ImageFileName)}";
+                string imageFileName = string.Format("{0} shape {1}, of type {2}{3}", mOutFileName, ++mCount, args.CurrentShape.ShapeType, Path.GetExtension(args.ImageFileName));
 
                 // Below are two ways of specifying where Aspose.Words will save each part of the document.
                 // 1 -  Set a filename for the output image file:
@@ -217,9 +217,9 @@ namespace ApiExamples
                 // 2 -  Create a custom stream for the output image file:
                 args.ImageStream = new FileStream(ArtifactsDir + imageFileName, FileMode.Create);
 
-                Assert.That(args.ImageStream.CanWrite, Is.True);
-                Assert.That(args.IsImageAvailable, Is.True);
-                Assert.That(args.KeepImageStreamOpen, Is.False);
+                Assert.IsTrue(args.ImageStream.CanWrite);
+                Assert.IsTrue(args.IsImageAvailable);
+                Assert.IsFalse(args.KeepImageStreamOpen);
             }
 
             private int mCount;
@@ -279,13 +279,13 @@ namespace ApiExamples
             public void CssSaving(CssSavingArgs args)
             {
                 // We can access the entire source document via the "Document" property.
-                Assert.That(args.Document.OriginalFileName.EndsWith("Rendering.docx"), Is.True);
+                Assert.IsTrue(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
 
                 args.CssStream = new FileStream(mCssTextFileName, FileMode.Create);
                 args.IsExportNeeded = mIsExportNeeded;
                 args.KeepCssStreamOpen = mKeepCssStreamOpen;
 
-                Assert.That(args.CssStream.CanWrite, Is.True);
+                Assert.IsTrue(args.CssStream.CanWrite);
             }
 
             private readonly string mCssTextFileName;

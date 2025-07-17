@@ -46,8 +46,8 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
-            Assert.That(shape.Height, Is.EqualTo(100.0d));
-            Assert.That(shape.Width, Is.EqualTo(100.0d));
+            Assert.AreEqual(100.0d, shape.Height);
+            Assert.AreEqual(100.0d, shape.Width);
         }
 
         [Test, Category("IgnoreOnJenkins")]
@@ -77,7 +77,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Image.FromUrl.docx");
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
-            Assert.That(shapes.Count, Is.EqualTo(2));
+            Assert.AreEqual(2, shapes.Count);
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, (Shape)shapes[0]);
             TestUtil.VerifyImageInShape(272, 92, ImageType.Png, (Shape)shapes[1]);
         }
@@ -143,12 +143,12 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
-            Assert.That(shape.WrapType, Is.EqualTo(WrapType.None));
-            Assert.That(shape.BehindText, Is.True);
-            Assert.That(shape.RelativeHorizontalPosition, Is.EqualTo(RelativeHorizontalPosition.Page));
-            Assert.That(shape.RelativeVerticalPosition, Is.EqualTo(RelativeVerticalPosition.Page));
-            Assert.That(shape.HorizontalAlignment, Is.EqualTo(HorizontalAlignment.Center));
-            Assert.That(shape.VerticalAlignment, Is.EqualTo(VerticalAlignment.Center));
+            Assert.AreEqual(WrapType.None, shape.WrapType);
+            Assert.IsTrue(shape.BehindText);
+            Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Page, shape.RelativeVerticalPosition);
+            Assert.AreEqual(HorizontalAlignment.Center, shape.HorizontalAlignment);
+            Assert.AreEqual(VerticalAlignment.Center, shape.VerticalAlignment);
         }
 
         [Test]
@@ -184,11 +184,11 @@ namespace ApiExamples
             // Set the shape's height, which will automatically scale the width to preserve dimensions.
             shape.Height = 125;
 
-            Assert.That(shape.Width, Is.EqualTo(125.0d));
+            Assert.AreEqual(125.0d, shape.Width);
 
             // The "Bottom" and "Right" properties contain the bottom and right edges of the image.
-            Assert.That(shape.Bottom, Is.EqualTo(shape.Top + shape.Height));
-            Assert.That(shape.Right, Is.EqualTo(shape.Left + shape.Width));
+            Assert.AreEqual(shape.Top + shape.Height, shape.Bottom);
+            Assert.AreEqual(shape.Left + shape.Width, shape.Right);
 
             doc.Save(ArtifactsDir + "Image.CreateFloatingPositionSize.docx");
             //ExEnd
@@ -197,15 +197,15 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
-            Assert.That(shape.WrapType, Is.EqualTo(WrapType.None));
-            Assert.That(shape.RelativeHorizontalPosition, Is.EqualTo(RelativeHorizontalPosition.Page));
-            Assert.That(shape.RelativeVerticalPosition, Is.EqualTo(RelativeVerticalPosition.Page));
-            Assert.That(shape.Left, Is.EqualTo(100.0d));
-            Assert.That(shape.Top, Is.EqualTo(80.0d));
-            Assert.That(shape.Height, Is.EqualTo(125.0d));
-            Assert.That(shape.Width, Is.EqualTo(125.0d));
-            Assert.That(shape.Bottom, Is.EqualTo(shape.Top + shape.Height));
-            Assert.That(shape.Right, Is.EqualTo(shape.Left + shape.Width));
+            Assert.AreEqual(WrapType.None, shape.WrapType);
+            Assert.AreEqual(RelativeHorizontalPosition.Page, shape.RelativeHorizontalPosition);
+            Assert.AreEqual(RelativeVerticalPosition.Page, shape.RelativeVerticalPosition);
+            Assert.AreEqual(100.0d, shape.Left);
+            Assert.AreEqual(80.0d, shape.Top);
+            Assert.AreEqual(125.0d, shape.Height);
+            Assert.AreEqual(125.0d, shape.Width);
+            Assert.AreEqual(shape.Top + shape.Height, shape.Bottom);
+            Assert.AreEqual(shape.Left + shape.Width, shape.Right);
         }
 
         [Test]
@@ -232,10 +232,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Image.InsertImageWithHyperlink.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(shape.HRef, Is.EqualTo("https://forum.aspose.com/"));
+            Assert.AreEqual("https://forum.aspose.com/", shape.HRef);
             TestUtil.VerifyImageInShape(400, 400, ImageType.Jpeg, shape);
-            Assert.That(shape.Target, Is.EqualTo("New Window"));
-            Assert.That(shape.ScreenTip, Is.EqualTo("Aspose.Words Support Forums"));
+            Assert.AreEqual("New Window", shape.Target);
+            Assert.AreEqual("Aspose.Words Support Forums", shape.ScreenTip);
         }
 
         [Test]
@@ -264,7 +264,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Image.CreateLinkedImage.Embedded.docx");
 
             // Every image that we store in shape will increase the size of our document.
-            Assert.That(70000 < new FileInfo(ArtifactsDir + "Image.CreateLinkedImage.Embedded.docx").Length, Is.True);
+            Assert.IsTrue(70000 < new FileInfo(ArtifactsDir + "Image.CreateLinkedImage.Embedded.docx").Length);
 
             doc.FirstSection.Body.FirstParagraph.RemoveAllChildren();
 
@@ -279,7 +279,7 @@ namespace ApiExamples
             // Linking to images will save space and result in a smaller document.
             // However, the document can only display the image correctly while
             // the image file is present at the location that the shape's "SourceFullName" property points to.
-            Assert.That(10000 > new FileInfo(ArtifactsDir + "Image.CreateLinkedImage.Linked.docx").Length, Is.True);
+            Assert.IsTrue(10000 > new FileInfo(ArtifactsDir + "Image.CreateLinkedImage.Linked.docx").Length);
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Image.CreateLinkedImage.Embedded.docx");
@@ -287,16 +287,16 @@ namespace ApiExamples
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(1600, 1600, ImageType.Wmf, shape);
-            Assert.That(shape.WrapType, Is.EqualTo(WrapType.Inline));
-            Assert.That(shape.ImageData.SourceFullName.Replace("%20", " "), Is.EqualTo(string.Empty));
+            Assert.AreEqual(WrapType.Inline, shape.WrapType);
+            Assert.AreEqual(string.Empty, shape.ImageData.SourceFullName.Replace("%20", " "));
 
             doc = new Document(ArtifactsDir + "Image.CreateLinkedImage.Linked.docx");
 
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
             TestUtil.VerifyImageInShape(0, 0, ImageType.Wmf, shape);
-            Assert.That(shape.WrapType, Is.EqualTo(WrapType.Inline));
-            Assert.That(shape.ImageData.SourceFullName.Replace("%20", " "), Is.EqualTo(imageFileName));
+            Assert.AreEqual(WrapType.Inline, shape.WrapType);
+            Assert.AreEqual(imageFileName, shape.ImageData.SourceFullName.Replace("%20", " "));
         }
 
         [Test]
@@ -309,13 +309,13 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Images.docx");
             NodeCollection shapes = doc.GetChildNodes(NodeType.Shape, true);
 
-            Assert.That(shapes.OfType<Shape>().Count(s => s.HasImage), Is.EqualTo(9));
+            Assert.AreEqual(9, shapes.OfType<Shape>().Count(s => s.HasImage));
 
             foreach (Shape shape in shapes.OfType<Shape>())
                 if (shape.HasImage) 
                     shape.Remove();
 
-            Assert.That(shapes.OfType<Shape>().Count(s => s.HasImage), Is.EqualTo(0));
+            Assert.AreEqual(0, shapes.OfType<Shape>().Count(s => s.HasImage));
             //ExEnd
         }
 
@@ -328,7 +328,7 @@ namespace ApiExamples
             //ExSummary:Shows how to traverse the document's node tree using the pre-order traversal algorithm, and delete any encountered shape with an image.
             Document doc = new Document(MyDir + "Images.docx");
 
-            Assert.That(doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().Count(s => s.HasImage), Is.EqualTo(9));
+            Assert.AreEqual(9, doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().Count(s => s.HasImage));
 
             Node curNode = doc;
             while (curNode != null)
@@ -336,7 +336,7 @@ namespace ApiExamples
                 Node nextNode = curNode.NextPreOrder(doc);
 
                 if (curNode.PreviousPreOrder(doc) != null && nextNode != null)
-                    Assert.That(nextNode.PreviousPreOrder(doc), Is.EqualTo(curNode));
+                    Assert.AreEqual(curNode, nextNode.PreviousPreOrder(doc));
 
                 if (curNode.NodeType == NodeType.Shape && ((Shape)curNode).HasImage)
                     curNode.Remove();
@@ -344,7 +344,7 @@ namespace ApiExamples
                 curNode = nextNode;
             }
 
-            Assert.That(doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().Count(s => s.HasImage), Is.EqualTo(0));
+            Assert.AreEqual(0, doc.GetChildNodes(NodeType.Shape, true).OfType<Shape>().Count(s => s.HasImage));
             //ExEnd
         }
 
@@ -368,30 +368,30 @@ namespace ApiExamples
             // A 400x400 image will create an ImageData object with an image size of 300x300pt.
             ImageSize imageSize = shape.ImageData.ImageSize;
 
-            Assert.That(imageSize.WidthPoints, Is.EqualTo(300.0d));
-            Assert.That(imageSize.HeightPoints, Is.EqualTo(300.0d));
+            Assert.AreEqual(300.0d, imageSize.WidthPoints);
+            Assert.AreEqual(300.0d, imageSize.HeightPoints);
 
             // If a shape's dimensions match the image data's dimensions,
             // then the shape is displaying the image in its original size.
-            Assert.That(shape.Width, Is.EqualTo(300.0d));
-            Assert.That(shape.Height, Is.EqualTo(300.0d));
+            Assert.AreEqual(300.0d, shape.Width);
+            Assert.AreEqual(300.0d, shape.Height);
 
             // Reduce the overall size of the shape by 50%. 
             shape.Width *= 0.5;
 
             // Scaling factors apply to both the width and the height at the same time to preserve the shape's proportions. 
-            Assert.That(shape.Width, Is.EqualTo(150.0d));
-            Assert.That(shape.Height, Is.EqualTo(150.0d));
+            Assert.AreEqual(150.0d, shape.Width);
+            Assert.AreEqual(150.0d, shape.Height);
 
             // When we resize the shape, the size of the image data remains the same.
-            Assert.That(imageSize.WidthPoints, Is.EqualTo(300.0d));
-            Assert.That(imageSize.HeightPoints, Is.EqualTo(300.0d));
+            Assert.AreEqual(300.0d, imageSize.WidthPoints);
+            Assert.AreEqual(300.0d, imageSize.HeightPoints);
 
             // We can reference the image data dimensions to apply a scaling based on the size of the image.
             shape.Width = imageSize.WidthPoints * 1.1;
 
-            Assert.That(shape.Width, Is.EqualTo(330.0d));
-            Assert.That(shape.Height, Is.EqualTo(330.0d));
+            Assert.AreEqual(330.0d, shape.Width);
+            Assert.AreEqual(330.0d, shape.Height);
 
             doc.Save(ArtifactsDir + "Image.ScaleImage.docx");
             //ExEnd
@@ -399,13 +399,13 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Image.ScaleImage.docx");
             shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
 
-            Assert.That(shape.Width, Is.EqualTo(330.0d));
-            Assert.That(shape.Height, Is.EqualTo(330.0d));
+            Assert.AreEqual(330.0d, shape.Width);
+            Assert.AreEqual(330.0d, shape.Height);
 
             imageSize = shape.ImageData.ImageSize;
 
-            Assert.That(imageSize.WidthPoints, Is.EqualTo(300.0d));
-            Assert.That(imageSize.HeightPoints, Is.EqualTo(300.0d));
+            Assert.AreEqual(300.0d, imageSize.WidthPoints);
+            Assert.AreEqual(300.0d, imageSize.HeightPoints);
         }
 
         [Test]
@@ -434,7 +434,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Document with WebP image.docx");
 
             Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
-            Assert.That(shape.ImageData.ImageType, Is.EqualTo(ImageType.WebP));
+            Assert.AreEqual(ImageType.WebP, shape.ImageData.ImageType);
             //ExEnd:ReadWebpImage
         }
     }

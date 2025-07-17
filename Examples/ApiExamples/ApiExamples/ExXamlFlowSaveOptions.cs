@@ -37,7 +37,7 @@ namespace ApiExamples
             // to modify how we save the document to the XAML save format.
             XamlFlowSaveOptions options = new XamlFlowSaveOptions();
 
-            Assert.That(options.SaveFormat, Is.EqualTo(SaveFormat.XamlFlow));
+            Assert.AreEqual(SaveFormat.XamlFlow, options.SaveFormat);
 
             // Use the "ImagesFolder" property to assign a folder in the local file system into which
             // Aspose.Words will save all the document's linked images.
@@ -56,7 +56,7 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "XamlFlowSaveOptions.ImageFolder.xaml", options);
 
             foreach (string resource in callback.Resources)
-                Console.WriteLine($"{callback.ImagesFolderAlias}/{resource}");
+                Console.WriteLine(string.Format("{0}/{1}", callback.ImagesFolderAlias, resource));
             TestImageFolder(callback); //ExSkip
         }
 
@@ -77,7 +77,7 @@ namespace ApiExamples
 
                 // If we specified an image folder alias, we would also need
                 // to redirect each stream to put its image in the alias folder.
-                args.ImageStream = new FileStream($"{ImagesFolderAlias}/{args.ImageFileName}", FileMode.Create);
+                args.ImageStream = new FileStream(string.Format("{0}/{1}", ImagesFolderAlias, args.ImageFileName), FileMode.Create);
                 args.KeepImageStreamOpen = false;
             }
 
@@ -88,9 +88,9 @@ namespace ApiExamples
 
         private void TestImageFolder(ImageUriPrinter callback)
         {
-            Assert.That(callback.Resources.Count, Is.EqualTo(9));
+            Assert.AreEqual(9, callback.Resources.Count);
             foreach (string resource in callback.Resources)
-                Assert.That(File.Exists($"{callback.ImagesFolderAlias}/{resource}"), Is.True);
+                Assert.IsTrue(File.Exists(string.Format("{0}/{1}", callback.ImagesFolderAlias, resource)));
         }
 
         [TestCase(SaveFormat.XamlFlow, "xamlflow")]
@@ -106,14 +106,18 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Big document.docx");
 
             // Following formats are supported: XamlFlow, XamlFlowPack.
-            XamlFlowSaveOptions saveOptions = new XamlFlowSaveOptions(saveFormat)
-            {
-                ProgressCallback = new SavingProgressCallback()
-            };
+            XamlFlowSaveOptions saveOptions = new XamlFlowSaveOptions(saveFormat);
+            saveOptions.ProgressCallback = new SavingProgressCallback();
 
             var exception = Assert.Throws<OperationCanceledException>(() =>
-                doc.Save(ArtifactsDir + $"XamlFlowSaveOptions.ProgressCallback.{ext}", saveOptions));
-            Assert.That(exception?.Message.Contains("EstimatedProgress"), Is.True);
+                doc.Save(ArtifactsDir + string.Format("XamlFlowSaveOptions.ProgressCallback.{0}", ext), saveOptions));
+            bool? actual = default(bool?);
+            System.OperationCanceledException condExpression = exception;
+            if (condExpression != null)
+            {
+                actual = condExpression.Message.Contains("EstimatedProgress");
+            }
+            Assert.IsTrue(actual);
         }
 
         /// <summary>
@@ -138,7 +142,7 @@ namespace ApiExamples
                 DateTime canceledAt = DateTime.Now;
                 double ellapsedSeconds = (canceledAt - mSavingStartedAt).TotalSeconds;
                 if (ellapsedSeconds > MaxDuration)
-                    throw new OperationCanceledException($"EstimatedProgress = {args.EstimatedProgress}; CanceledAt = {canceledAt}");
+                    throw new OperationCanceledException(string.Format("EstimatedProgress = {0}; CanceledAt = {1}", args.EstimatedProgress, canceledAt));
             }
 
             /// <summary>

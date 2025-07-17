@@ -40,11 +40,9 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "TextBoxes.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                SaveFormat = saveFormat,
-                ExportPageMargins = true
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.SaveFormat = saveFormat;
+            saveOptions.ExportPageMargins = true;
 
             doc.Save(
                 ArtifactsDir + "HtmlSaveOptions.ExportPageMarginsEpub" +
@@ -60,7 +58,8 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Office math.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions { OfficeMathOutputMode = outputMode };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.OfficeMathOutputMode = outputMode;
 
             doc.Save(
                 ArtifactsDir + "HtmlSaveOptions.ExportOfficeMathEpub" +
@@ -94,35 +93,35 @@ namespace ApiExamples
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles.Length, Is.EqualTo(0));
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
 
                 case SaveFormat.Epub:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles.Length, Is.EqualTo(0));
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
 
                 case SaveFormat.Mhtml:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles.Length, Is.EqualTo(0));
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
 
                 case SaveFormat.Azw3:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles.Length, Is.EqualTo(0));
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
 
                 case SaveFormat.Mobi:
 
                     dirFiles = Directory.GetFiles(ArtifactsDir, "HtmlSaveOptions.ExportTextBoxAsSvgEpub.001.png",
                         SearchOption.AllDirectories);
-                    Assert.That(dirFiles.Length, Is.EqualTo(0));
+                    Assert.AreEqual(0, dirFiles.Length);
                     return;
             }
         }
@@ -172,14 +171,12 @@ namespace ApiExamples
             builder.Writeln("Bulleted list item 2.");
             builder.ParagraphFormat.ClearFormatting();
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
-            {
-                // 'ExportListLabels.Auto' - this option uses <ul> and <ol> tags are used for list label representation if it does not cause formatting loss, 
-                // otherwise HTML <p> tag is used. This is also the default value.
-                // 'ExportListLabels.AsInlineText' - using this option the <p> tag is used for any list label representation.
-                // 'ExportListLabels.ByHtmlTags' - The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible.
-                ExportListLabels = howExportListLabels
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
+            // 'ExportListLabels.Auto' - this option uses <ul> and <ol> tags are used for list label representation if it does not cause formatting loss, 
+            // otherwise HTML <p> tag is used. This is also the default value.
+            // 'ExportListLabels.AsInlineText' - using this option the <p> tag is used for any list label representation.
+            // 'ExportListLabels.ByHtmlTags' - The <ul> and <ol> tags are used for list label representation. Some formatting loss is possible.
+            saveOptions.ExportListLabels = howExportListLabels;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ControlListLabelsExport.html", saveOptions);
         }
@@ -190,7 +187,8 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Linked image.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportOriginalUrlForLinkedImages = export };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.ExportOriginalUrlForLinkedImages = export;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportUrlForLinkedImage.html", saveOptions);
 
@@ -207,7 +205,8 @@ namespace ApiExamples
         public void ExportRoundtripInformation()
         {
             Document doc = new Document(MyDir + "TextBoxes.docx");
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions { ExportRoundtripInformation = true };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.ExportRoundtripInformation = true;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.RoundtripInformation.html", saveOptions);
         }
@@ -216,13 +215,13 @@ namespace ApiExamples
         public void RoundtripInformationDefaulValue()
         {
             HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
-            Assert.That(saveOptions.ExportRoundtripInformation, Is.EqualTo(true));
+            Assert.AreEqual(true, saveOptions.ExportRoundtripInformation);
 
             saveOptions = new HtmlSaveOptions(SaveFormat.Mhtml);
-            Assert.That(saveOptions.ExportRoundtripInformation, Is.EqualTo(false));
+            Assert.AreEqual(false, saveOptions.ExportRoundtripInformation);
 
             saveOptions = new HtmlSaveOptions(SaveFormat.Epub);
-            Assert.That(saveOptions.ExportRoundtripInformation, Is.EqualTo(false));
+            Assert.AreEqual(false, saveOptions.ExportRoundtripInformation);
         }
 
         [Test]
@@ -230,27 +229,25 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                CssStyleSheetType = CssStyleSheetType.External,
-                ExportFontResources = true,
-                ResourceFolder = "Resources",
-                ResourceFolderAlias = "https://www.aspose.com/"
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.ExportFontResources = true;
+            saveOptions.ResourceFolder = "Resources";
+            saveOptions.ResourceFolderAlias = "https://www.aspose.com/";
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExternalResourceSavingConfig.html", saveOptions);
 
             string[] imageFiles = Directory.GetFiles(ArtifactsDir + "Resources/",
                 "HtmlSaveOptions.ExternalResourceSavingConfig*.png", SearchOption.AllDirectories);
-            Assert.That(imageFiles.Length, Is.EqualTo(8));
+            Assert.AreEqual(8, imageFiles.Length);
 
             string[] fontFiles = Directory.GetFiles(ArtifactsDir + "Resources/",
                 "HtmlSaveOptions.ExternalResourceSavingConfig*.ttf", SearchOption.AllDirectories);
-            Assert.That(fontFiles.Length, Is.EqualTo(10));
+            Assert.AreEqual(10, fontFiles.Length);
 
             string[] cssFiles = Directory.GetFiles(ArtifactsDir + "Resources/",
                 "HtmlSaveOptions.ExternalResourceSavingConfig*.css", SearchOption.AllDirectories);
-            Assert.That(cssFiles.Length, Is.EqualTo(1));
+            Assert.AreEqual(1, cssFiles.Length);
 
             DocumentHelper.FindTextInFile(ArtifactsDir + "HtmlSaveOptions.ExternalResourceSavingConfig.html",
                 "<link href=\"https://www.aspose.com/HtmlSaveOptions.ExternalResourceSavingConfig.css\"");
@@ -261,13 +258,11 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "TextBoxes.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                CssStyleSheetType = CssStyleSheetType.External,
-                ResourceFolder = "Resources",
-                ExportFontResources = true,
-                ExportFontsAsBase64 = true
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.ResourceFolder = "Resources";
+            saveOptions.ExportFontResources = true;
+            saveOptions.ExportFontsAsBase64 = true;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ConvertFontsAsBase64.html", saveOptions);
         }
@@ -278,7 +273,8 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Document.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions { HtmlVersion = htmlVersion };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.HtmlVersion = htmlVersion;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.Html5Support.html", saveOptions);
         }
@@ -291,12 +287,10 @@ namespace ApiExamples
 
             Document doc = new Document(MyDir + "Document.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                ExportFontResources = true,
-                FontsFolder = fontsFolder,
-                ExportFontsAsBase64 = exportAsBase64
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.ExportFontResources = true;
+            saveOptions.FontsFolder = fontsFolder;
+            saveOptions.ExportFontsAsBase64 = exportAsBase64;
 
             switch (exportAsBase64)
             {
@@ -304,8 +298,8 @@ namespace ApiExamples
 
                     doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFonts.False.html", saveOptions);
 
-                    Assert.That(Directory.GetFiles(fontsFolder, "HtmlSaveOptions.ExportFonts.False.times.ttf",
-                        SearchOption.AllDirectories), Is.Not.Empty);
+                    Assert.IsNotEmpty(Directory.GetFiles(fontsFolder, "HtmlSaveOptions.ExportFonts.False.times.ttf",
+                        SearchOption.AllDirectories));
 
                     Directory.Delete(fontsFolder, true);
                     break;
@@ -313,7 +307,7 @@ namespace ApiExamples
                 case true:
 
                     doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFonts.True.html", saveOptions);
-                    Assert.That(Directory.Exists(fontsFolder), Is.False);
+                    Assert.IsFalse(Directory.Exists(fontsFolder));
                     break;
             }
         }
@@ -323,20 +317,18 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                CssStyleSheetType = CssStyleSheetType.External,
-                ExportFontResources = true,
-                ResourceFolder = ArtifactsDir + "Resources",
-                ResourceFolderAlias = "http://example.com/resources"
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.ExportFontResources = true;
+            saveOptions.ResourceFolder = ArtifactsDir + "Resources";
+            saveOptions.ResourceFolderAlias = "http://example.com/resources";
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ResourceFolderPriority.html", saveOptions);
 
-            Assert.That(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.001.png", SearchOption.AllDirectories), Is.Not.Empty);
-            Assert.That(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.002.png", SearchOption.AllDirectories), Is.Not.Empty);
-            Assert.That(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.arial.ttf", SearchOption.AllDirectories), Is.Not.Empty);
-            Assert.That(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.css", SearchOption.AllDirectories), Is.Not.Empty);
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.001.png", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.002.png", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.arial.ttf", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderPriority.css", SearchOption.AllDirectories));
         }
 
         [Test]
@@ -344,26 +336,24 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                CssStyleSheetType = CssStyleSheetType.External,
-                ExportFontResources = true,
-                FontsFolder = ArtifactsDir + "Fonts",
-                ImagesFolder = ArtifactsDir + "Images",
-                ResourceFolder = ArtifactsDir + "Resources",
-                ResourceFolderAlias = "http://example.com/resources"
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.ExportFontResources = true;
+            saveOptions.FontsFolder = ArtifactsDir + "Fonts";
+            saveOptions.ImagesFolder = ArtifactsDir + "Images";
+            saveOptions.ResourceFolder = ArtifactsDir + "Resources";
+            saveOptions.ResourceFolderAlias = "http://example.com/resources";
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ResourceFolderLowPriority.html", saveOptions);
 
-            Assert.That(Directory.GetFiles(ArtifactsDir + "Images",
-                "HtmlSaveOptions.ResourceFolderLowPriority.001.png", SearchOption.AllDirectories), Is.Not.Empty);
-            Assert.That(Directory.GetFiles(ArtifactsDir + "Images", "HtmlSaveOptions.ResourceFolderLowPriority.002.png",
-                SearchOption.AllDirectories), Is.Not.Empty);
-            Assert.That(Directory.GetFiles(ArtifactsDir + "Fonts",
-                "HtmlSaveOptions.ResourceFolderLowPriority.arial.ttf", SearchOption.AllDirectories), Is.Not.Empty);
-            Assert.That(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderLowPriority.css",
-                SearchOption.AllDirectories), Is.Not.Empty);
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Images",
+                "HtmlSaveOptions.ResourceFolderLowPriority.001.png", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Images", "HtmlSaveOptions.ResourceFolderLowPriority.002.png",
+                SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Fonts",
+                "HtmlSaveOptions.ResourceFolderLowPriority.arial.ttf", SearchOption.AllDirectories));
+            Assert.IsNotEmpty(Directory.GetFiles(ArtifactsDir + "Resources", "HtmlSaveOptions.ResourceFolderLowPriority.css",
+                SearchOption.AllDirectories));
         }
 
         [Test]
@@ -378,7 +368,8 @@ namespace ApiExamples
                         style='fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;' />
                   </svg> ");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.MetafileFormat = HtmlMetafileFormat.Png;
             builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.SvgMetafileFormat.html", saveOptions);
         }
 
@@ -394,7 +385,8 @@ namespace ApiExamples
                         style='fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;' />
                   </svg> ");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.Png };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.MetafileFormat = HtmlMetafileFormat.Png;
             builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.PngMetafileFormat.html", saveOptions);
         }
 
@@ -413,7 +405,8 @@ namespace ApiExamples
                     ch9//q1uH4TLzw4d6+ErXMMcXuHWxId3KOETnnXXV6MJpcq2MLaI97CER3N0
                     vr4MkhoXe0rZigAAAABJRU5ErkJggg=="" alt=""Red dot"" />");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions { MetafileFormat = HtmlMetafileFormat.EmfOrWmf };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.MetafileFormat = HtmlMetafileFormat.EmfOrWmf;
             builder.Document.Save(ArtifactsDir + "HtmlSaveOptions.EmfOrWmfMetafileFormat.html", saveOptions);
         }
 
@@ -425,23 +418,21 @@ namespace ApiExamples
             //ExSummary:Shows how to save a document to HTML, and add a prefix to all of its CSS class names.
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                CssStyleSheetType = CssStyleSheetType.External,
-                CssClassNamePrefix = "myprefix-"
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.External;
+            saveOptions.CssClassNamePrefix = "myprefix-";
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.html", saveOptions);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.html");
 
-            Assert.That(outDocContents.Contains("<p class=\"myprefix-Header\">"), Is.True);
-            Assert.That(outDocContents.Contains("<p class=\"myprefix-Footer\">"), Is.True);
+            Assert.IsTrue(outDocContents.Contains("<p class=\"myprefix-Header\">"));
+            Assert.IsTrue(outDocContents.Contains("<p class=\"myprefix-Footer\">"));
 
             outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.css");
 
-            Assert.That(outDocContents.Contains(".myprefix-Footer { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt; -aw-style-name:footer }"), Is.True);
-            Assert.That(outDocContents.Contains(".myprefix-Header { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt; -aw-style-name:header }"), Is.True);
+            Assert.IsTrue(outDocContents.Contains(".myprefix-Footer { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt; -aw-style-name:footer }"));
+            Assert.IsTrue(outDocContents.Contains(".myprefix-Header { margin-bottom:0pt; line-height:normal; font-family:Arial; font-size:11pt; -aw-style-name:header }"));
             //ExEnd
         }
 
@@ -458,11 +449,9 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Paragraphs.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions
-            {
-                CssStyleSheetType = CssStyleSheetType.Embedded,
-                CssClassNamePrefix = null
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions();
+            saveOptions.CssStyleSheetType = CssStyleSheetType.Embedded;
+            saveOptions.CssClassNamePrefix = null;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.CssClassNamePrefix.html", saveOptions);
         }
@@ -472,11 +461,9 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Mhtml)
-            {
-                PrettyFormat = true,
-                ExportCidUrlsForMhtmlResources = true
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Mhtml);
+            saveOptions.PrettyFormat = true;
+            saveOptions.ExportCidUrlsForMhtmlResources = true;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ContentIdScheme.mhtml", saveOptions);
         }
@@ -492,37 +479,27 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Missing font.docx");
 
             // This document contains text that names a font that we do not have.
-            Assert.That(doc.FontInfos["28 Days Later"], Is.Not.Null);
+            Assert.IsNotNull(doc.FontInfos["28 Days Later"]);
 
             // If we have no way of getting this font, and we want to be able to display all the text
             // in this document in an output HTML, we can substitute it with another font.
-            FontSettings fontSettings = new FontSettings
-            {
-                SubstitutionSettings =
-                {
-                    DefaultFontSubstitution =
-                    {
-                        DefaultFontName = "Arial",
-                        Enabled = true
-                    }
-                }
-            };
+            FontSettings fontSettings = new FontSettings();
+            fontSettings.SubstitutionSettings.DefaultFontSubstitution.DefaultFontName = "Arial";
+            fontSettings.SubstitutionSettings.DefaultFontSubstitution.Enabled = true;
 
             doc.FontSettings = fontSettings;
 
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html)
-            {
-                // By default, this option is set to 'False' and Aspose.Words writes font names as specified in the source document
-                ResolveFontNames = resolveFontNames
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(SaveFormat.Html);
+            // By default, this option is set to 'False' and Aspose.Words writes font names as specified in the source document
+            saveOptions.ResolveFontNames = resolveFontNames;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ResolveFontNames.html", saveOptions);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ResolveFontNames.html");
 
-            Assert.That(resolveFontNames
+            Assert.IsTrue(resolveFontNames
                 ? Regex.Match(outDocContents, "<span style=\"font-family:Arial\">").Success
-                : Regex.Match(outDocContents, "<span style=\"font-family:\'28 Days Later\'\">").Success, Is.True);
+                : Regex.Match(outDocContents, "<span style=\"font-family:\'28 Days Later\'\">").Success);
             //ExEnd
         }
 
@@ -556,11 +533,9 @@ namespace ApiExamples
             // and save each document in a separate HTML file in the local file system.
             // We will also set the maximum heading level, which splits the document to 2.
             // Saving the document will split it at headings of levels 1 and 2, but not at 3 to 9.
-            HtmlSaveOptions options = new HtmlSaveOptions
-            {
-                DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph,
-                DocumentSplitHeadingLevel = 2
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.DocumentSplitCriteria = DocumentSplitCriteria.HeadingParagraph;
+            options.DocumentSplitHeadingLevel = 2;
 
             // Our document has four headings of levels 1 - 2. One of those headings will not be
             // a split point since it is at the beginning of the document.
@@ -569,21 +544,21 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "HtmlSaveOptions.HeadingLevels.html");
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Heading #1"));
+            Assert.AreEqual("Heading #1", doc.GetText().Trim());
 
             doc = new Document(ArtifactsDir + "HtmlSaveOptions.HeadingLevels-01.html");
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Heading #2\r" +
-                            "Heading #3"));
+            Assert.AreEqual("Heading #2\r" +
+                            "Heading #3", doc.GetText().Trim());
 
             doc = new Document(ArtifactsDir + "HtmlSaveOptions.HeadingLevels-02.html");
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Heading #4"));
+            Assert.AreEqual("Heading #4", doc.GetText().Trim());
 
             doc = new Document(ArtifactsDir + "HtmlSaveOptions.HeadingLevels-03.html");
 
-            Assert.That(doc.GetText().Trim(), Is.EqualTo("Heading #5\r" +
-                            "Heading #6"));
+            Assert.AreEqual("Heading #5\r" +
+                            "Heading #6", doc.GetText().Trim());
             //ExEnd
         }
 
@@ -624,11 +599,9 @@ namespace ApiExamples
             // When we save a document to HTML, Aspose.Words will only preserve negative indents
             // such as the one we have applied to the first table if we set the "AllowNegativeIndent" flag
             // in a SaveOptions object that we will pass to "true".
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
-            {
-                AllowNegativeIndent = allowNegativeIndent,
-                TableWidthOutputMode = HtmlElementSizeOutputMode.RelativeOnly
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
+            options.AllowNegativeIndent = allowNegativeIndent;
+            options.TableWidthOutputMode = HtmlElementSizeOutputMode.RelativeOnly;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.NegativeIndent.html", options);
 
@@ -636,17 +609,17 @@ namespace ApiExamples
 
             if (allowNegativeIndent)
             {
-                Assert.That(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:-41.65pt; border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
-                Assert.That(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
+                Assert.IsTrue(outDocContents.Contains(
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:-41.65pt; border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
+                Assert.IsTrue(outDocContents.Contains(
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
             }
             else
             {
-                Assert.That(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
-                Assert.That(outDocContents.Contains(
-                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
+                Assert.IsTrue(outDocContents.Contains(
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
+                Assert.IsTrue(outDocContents.Contains(
+                    "<table cellspacing=\"0\" cellpadding=\"0\" style=\"margin-left:30.35pt; border:0.75pt solid #000000; -aw-border:0.5pt single; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
             }
             //ExEnd
         }
@@ -665,20 +638,18 @@ namespace ApiExamples
             //ExSummary:Shows how to set folders and folder aliases for externally saved resources that Aspose.Words will create when saving a document to HTML.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions options = new HtmlSaveOptions
-            {
-                CssStyleSheetType = CssStyleSheetType.External,
-                ExportFontResources = true,
-                ImageResolution = 72,
-                FontResourcesSubsettingSizeThreshold = 0,
-                FontsFolder = ArtifactsDir + "Fonts",
-                ImagesFolder = ArtifactsDir + "Images",
-                ResourceFolder = ArtifactsDir + "Resources",
-                FontsFolderAlias = "http://example.com/fonts",
-                ImagesFolderAlias = "http://example.com/images",
-                ResourceFolderAlias = "http://example.com/resources",
-                ExportOriginalUrlForLinkedImages = true
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.CssStyleSheetType = CssStyleSheetType.External;
+            options.ExportFontResources = true;
+            options.ImageResolution = 72;
+            options.FontResourcesSubsettingSizeThreshold = 0;
+            options.FontsFolder = ArtifactsDir + "Fonts";
+            options.ImagesFolder = ArtifactsDir + "Images";
+            options.ResourceFolder = ArtifactsDir + "Resources";
+            options.FontsFolderAlias = "http://example.com/fonts";
+            options.ImagesFolderAlias = "http://example.com/images";
+            options.ResourceFolderAlias = "http://example.com/resources";
+            options.ExportOriginalUrlForLinkedImages = true;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.FolderAlias.html", options);
             //ExEnd
@@ -709,11 +680,9 @@ namespace ApiExamples
 
             // Configure a SaveOptions object to export fonts to separate files.
             // Set a callback that will handle font saving in a custom manner.
-            HtmlSaveOptions options = new HtmlSaveOptions
-            {
-                ExportFontResources = true,
-                FontSavingCallback = new HandleFontSaving()
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ExportFontResources = true;
+            options.FontSavingCallback = new HandleFontSaving();
 
             // The callback will export .ttf files and save them alongside the output document.
             doc.Save(ArtifactsDir + "HtmlSaveOptions.SaveExportedFonts.html", options);
@@ -721,7 +690,7 @@ namespace ApiExamples
             foreach (string fontFilename in Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")))
                 Console.WriteLine(fontFilename);
 
-            Assert.That(Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length, Is.EqualTo(10)); //ExSkip
+            Assert.AreEqual(10, Array.FindAll(Directory.GetFiles(ArtifactsDir), s => s.EndsWith(".ttf")).Length); //ExSkip
         }
 
         /// <summary>
@@ -731,16 +700,16 @@ namespace ApiExamples
         {
             void IFontSavingCallback.FontSaving(FontSavingArgs args)
             {
-                Console.Write($"Font:\t{args.FontFamilyName}");
+                Console.Write(string.Format("Font:\t{0}", args.FontFamilyName));
                 if (args.Bold) Console.Write(", bold");
                 if (args.Italic) Console.Write(", italic");
-                Console.WriteLine($"\nSource:\t{args.OriginalFileName}, {args.OriginalFileSize} bytes\n");
+                Console.WriteLine(string.Format("\nSource:\t{0}, {1} bytes\n", args.OriginalFileName, args.OriginalFileSize));
 
                 // We can also access the source document from here.
-                Assert.That(args.Document.OriginalFileName.EndsWith("Rendering.docx"), Is.True);
+                Assert.IsTrue(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
 
-                Assert.That(args.IsExportNeeded, Is.True);
-                Assert.That(args.IsSubsettingNeeded, Is.True);
+                Assert.IsTrue(args.IsExportNeeded);
+                Assert.IsTrue(args.IsSubsettingNeeded);
 
                 // There are two ways of saving an exported font.
                 // 1 -  Save it to a local file system location:
@@ -749,7 +718,7 @@ namespace ApiExamples
                 // 2 -  Save it to a stream:
                 args.FontStream =
                     new FileStream(ArtifactsDir + args.OriginalFileName.Split(Path.DirectorySeparatorChar).Last(), FileMode.Create);
-                Assert.That(args.KeepFontStreamOpen, Is.False);
+                Assert.IsFalse(args.KeepFontStreamOpen);
             }
         }
         //ExEnd
@@ -765,11 +734,9 @@ namespace ApiExamples
             //ExSummary:Shows how to save a document to a specific version of HTML.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
-            {
-                HtmlVersion = htmlVersion,
-                PrettyFormat = true
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
+            options.HtmlVersion = htmlVersion;
+            options.PrettyFormat = true;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.HtmlVersions.html", options);
 
@@ -779,14 +746,14 @@ namespace ApiExamples
             switch (htmlVersion)
             {
                 case HtmlVersion.Html5:
-                    Assert.That(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"), Is.True);
-                    Assert.That(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"), Is.True);
-                    Assert.That(outDocContents.Contains("<table style=\"padding:0pt; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"), Is.True);
+                    Assert.IsTrue(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"));
+                    Assert.IsTrue(outDocContents.Contains("<a id=\"_Toc76372689\"></a>"));
+                    Assert.IsTrue(outDocContents.Contains("<table style=\"padding:0pt; -aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\">"));
                     break;
                 case HtmlVersion.Xhtml:
-                    Assert.That(outDocContents.Contains("<a name=\"_Toc76372689\"></a>"), Is.True);
-                    Assert.That(outDocContents.Contains("<ul type=\"disc\" style=\"margin:0pt; padding-left:0pt\">"), Is.True);
-                    Assert.That(outDocContents.Contains("<table cellspacing=\"0\" cellpadding=\"0\" style=\"-aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\""), Is.True);
+                    Assert.IsTrue(outDocContents.Contains("<a name=\"_Toc76372689\"></a>"));
+                    Assert.IsTrue(outDocContents.Contains("<ul type=\"disc\" style=\"margin:0pt; padding-left:0pt\">"));
+                    Assert.IsTrue(outDocContents.Contains("<table cellspacing=\"0\" cellpadding=\"0\" style=\"-aw-border-insideh:0.5pt single #000000; -aw-border-insidev:0.5pt single #000000; border-collapse:collapse\""));
                     break;
             }
             //ExEnd
@@ -806,12 +773,10 @@ namespace ApiExamples
 
             builder.Writeln("Hello world!");
 
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
-            {
-                HtmlVersion = HtmlVersion.Xhtml,
-                ExportXhtmlTransitional = showDoctypeDeclaration,
-                PrettyFormat = true
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
+            options.HtmlVersion = HtmlVersion.Xhtml;
+            options.ExportXhtmlTransitional = showDoctypeDeclaration;
+            options.PrettyFormat = true;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportXhtmlTransitional.html", options);
 
@@ -820,12 +785,12 @@ namespace ApiExamples
             string newLine = Environment.NewLine;
 
             if (showDoctypeDeclaration)
-                Assert.That(outDocContents.Contains(
-                    $"<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>{newLine}" +
-                    $"<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">{newLine}" +
-                    "<html xmlns=\"http://www.w3.org/1999/xhtml\">"), Is.True);
+                Assert.IsTrue(outDocContents.Contains(
+                    string.Format("<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"no\"?>{0}", newLine) +
+                    string.Format("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">{0}", newLine) +
+                    "<html xmlns=\"http://www.w3.org/1999/xhtml\">"));
             else
-                Assert.That(outDocContents.Contains("<html>"), Is.True);
+                Assert.IsTrue(outDocContents.Contains("<html>"));
             //ExEnd
         }
 
@@ -933,13 +898,11 @@ namespace ApiExamples
 
             // Setting this flag will replace "Content-Location" tags
             // with "Content-ID" tags for each resource from the input document.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mhtml)
-            {
-                ExportCidUrlsForMhtmlResources = exportCidUrlsForMhtmlResources,
-                CssStyleSheetType = CssStyleSheetType.External,
-                ExportFontResources = true,
-                PrettyFormat = true
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Mhtml);
+            options.ExportCidUrlsForMhtmlResources = exportCidUrlsForMhtmlResources;
+            options.CssStyleSheetType = CssStyleSheetType.External;
+            options.ExportFontResources = true;
+            options.PrettyFormat = true;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ContentIdUrls.mht", options);
 
@@ -947,17 +910,17 @@ namespace ApiExamples
 
             if (exportCidUrlsForMhtmlResources)
             {
-                Assert.That(outDocContents.Contains("Content-ID: <document.html>"), Is.True);
-                Assert.That(outDocContents.Contains("<link href=3D\"cid:styles.css\" type=3D\"text/css\" rel=3D\"stylesheet\" />"), Is.True);
-                Assert.That(outDocContents.Contains("@font-face { font-family:'Arial Black'; font-weight:bold; src:url('cid:arib=\r\nlk.ttf') }"), Is.True);
-                Assert.That(outDocContents.Contains("<img src=3D\"cid:image.003.jpeg\" width=3D\"350\" height=3D\"180\" alt=3D\"\" />"), Is.True);
+                Assert.IsTrue(outDocContents.Contains("Content-ID: <document.html>"));
+                Assert.IsTrue(outDocContents.Contains("<link href=3D\"cid:styles.css\" type=3D\"text/css\" rel=3D\"stylesheet\" />"));
+                Assert.IsTrue(outDocContents.Contains("@font-face { font-family:'Arial Black'; font-weight:bold; src:url('cid:arib=\r\nlk.ttf') }"));
+                Assert.IsTrue(outDocContents.Contains("<img src=3D\"cid:image.003.jpeg\" width=3D\"350\" height=3D\"180\" alt=3D\"\" />"));
             }
             else
             {
-                Assert.That(outDocContents.Contains("Content-Location: document.html"), Is.True);
-                Assert.That(outDocContents.Contains("<link href=3D\"styles.css\" type=3D\"text/css\" rel=3D\"stylesheet\" />"), Is.True);
-                Assert.That(outDocContents.Contains("@font-face { font-family:'Arial Black'; font-weight:bold; src:url('ariblk.t=\r\ntf') }"), Is.True);
-                Assert.That(outDocContents.Contains("<img src=3D\"image.003.jpeg\" width=3D\"350\" height=3D\"180\" alt=3D\"\" />"), Is.True);
+                Assert.IsTrue(outDocContents.Contains("Content-Location: document.html"));
+                Assert.IsTrue(outDocContents.Contains("<link href=3D\"styles.css\" type=3D\"text/css\" rel=3D\"stylesheet\" />"));
+                Assert.IsTrue(outDocContents.Contains("@font-face { font-family:'Arial Black'; font-weight:bold; src:url('ariblk.t=\r\ntf') }"));
+                Assert.IsTrue(outDocContents.Contains("<img src=3D\"image.003.jpeg\" width=3D\"350\" height=3D\"180\" alt=3D\"\" />"));
             }
             //ExEnd
         }
@@ -988,15 +951,15 @@ namespace ApiExamples
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.DropDownFormField.html");
 
             if (exportDropDownFormFieldAsText)
-                Assert.That(outDocContents.Contains(
-                    "<span>Two</span>"), Is.True);
+                Assert.IsTrue(outDocContents.Contains(
+                    "<span>Two</span>"));
             else
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<select name=\"MyComboBox\">" +
                         "<option>One</option>" +
                         "<option selected=\"selected\">Two</option>" +
                         "<option>Three</option>" +
-                    "</select>"), Is.True);
+                    "</select>"));
             //ExEnd
         }
 
@@ -1010,19 +973,17 @@ namespace ApiExamples
             //ExSummary:Shows how to save a .html document with images embedded inside it.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions options = new HtmlSaveOptions
-            {
-                ExportImagesAsBase64 = exportImagesAsBase64,
-                PrettyFormat = true
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ExportImagesAsBase64 = exportImagesAsBase64;
+            options.PrettyFormat = true;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportImagesAsBase64.html", options);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.ExportImagesAsBase64.html");
 
-            Assert.That(exportImagesAsBase64
+            Assert.IsTrue(exportImagesAsBase64
                 ? outDocContents.Contains("<img src=\"data:image/png;base64")
-                : outDocContents.Contains("<img src=\"HtmlSaveOptions.ExportImagesAsBase64.001.png\""), Is.True);
+                : outDocContents.Contains("<img src=\"HtmlSaveOptions.ExportImagesAsBase64.001.png\""));
             //ExEnd
         }
 
@@ -1036,12 +997,10 @@ namespace ApiExamples
             //ExSummary:Shows how to embed fonts inside a saved HTML document.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlSaveOptions options = new HtmlSaveOptions
-            {
-                ExportFontsAsBase64 = true,
-                CssStyleSheetType = CssStyleSheetType.Embedded,
-                PrettyFormat = true
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ExportFontsAsBase64 = true;
+            options.CssStyleSheetType = CssStyleSheetType.Embedded;
+            options.PrettyFormat = true;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportFontsAsBase64.html", options);
             //ExEnd
@@ -1073,11 +1032,9 @@ namespace ApiExamples
             // the output HTML document will contain the locales in "lang" attributes of <span> tags.
             // If we set the "ExportLanguageInformation" flag to "false',
             // the text in the output HTML document will not contain any locale information.
-            HtmlSaveOptions options = new HtmlSaveOptions
-            {
-                ExportLanguageInformation = exportLanguageInformation,
-                PrettyFormat = true
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ExportLanguageInformation = exportLanguageInformation;
+            options.PrettyFormat = true;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportLanguageInformation.html", options);
 
@@ -1085,15 +1042,15 @@ namespace ApiExamples
 
             if (exportLanguageInformation)
             {
-                Assert.That(outDocContents.Contains("<span>Hello world!</span>"), Is.True);
-                Assert.That(outDocContents.Contains("<span lang=\"en-GB\">Hello again!</span>"), Is.True);
-                Assert.That(outDocContents.Contains("<span lang=\"ru-RU\">Привет, мир!</span>"), Is.True);
+                Assert.IsTrue(outDocContents.Contains("<span>Hello world!</span>"));
+                Assert.IsTrue(outDocContents.Contains("<span lang=\"en-GB\">Hello again!</span>"));
+                Assert.IsTrue(outDocContents.Contains("<span lang=\"ru-RU\">Привет, мир!</span>"));
             }
             else
             {
-                Assert.That(outDocContents.Contains("<span>Hello world!</span>"), Is.True);
-                Assert.That(outDocContents.Contains("<span>Hello again!</span>"), Is.True);
-                Assert.That(outDocContents.Contains("<span>Привет, мир!</span>"), Is.True);
+                Assert.IsTrue(outDocContents.Contains("<span>Hello world!</span>"));
+                Assert.IsTrue(outDocContents.Contains("<span>Hello again!</span>"));
+                Assert.IsTrue(outDocContents.Contains("<span>Привет, мир!</span>"));
             }
             //ExEnd
         }
@@ -1140,7 +1097,8 @@ namespace ApiExamples
             // to build lists in cases when using the <ol> and <li> tags may cause loss of formatting.
             // Setting the "ExportListLabels" property to "ExportListLabels.ByHtmlTags"
             // will use <ol> and <li> tags to build all lists.
-            HtmlSaveOptions options = new HtmlSaveOptions { ExportListLabels = exportListLabels };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ExportListLabels = exportListLabels;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.List.html", options);
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.List.html");
@@ -1148,39 +1106,39 @@ namespace ApiExamples
             switch (exportListLabels)
             {
                 case ExportListLabels.AsInlineText:
-                    Assert.That(outDocContents.Contains(
+                    Assert.IsTrue(outDocContents.Contains(
                         "<p style=\"margin-top:0pt; margin-left:72pt; margin-bottom:0pt; text-indent:-18pt; -aw-import:list-item; -aw-list-level-number:1; -aw-list-number-format:'%1.'; -aw-list-number-styles:'lowerLetter'; -aw-list-number-values:'1'; -aw-list-padding-sml:9.67pt\">" +
                             "<span style=\"-aw-import:ignore\">" +
                                 "<span>a.</span>" +
                                 "<span style=\"width:9.67pt; font:7pt 'Times New Roman'; display:inline-block; -aw-import:spaces\">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>" +
                             "</span>" +
                             "<span>Default numbered list item 3.</span>" +
-                        "</p>"), Is.True);
+                        "</p>"));
 
-                    Assert.That(outDocContents.Contains(
+                    Assert.IsTrue(outDocContents.Contains(
                         "<p style=\"margin-top:0pt; margin-left:43.2pt; margin-bottom:0pt; text-indent:-43.2pt; -aw-import:list-item; -aw-list-level-number:3; -aw-list-number-format:'%0.%1.%2.%3'; -aw-list-number-styles:'decimal decimal decimal decimal'; -aw-list-number-values:'2 1 1 1'; -aw-list-padding-sml:10.2pt\">" +
                             "<span style=\"-aw-import:ignore\">" +
                                 "<span>2.1.1.1</span>" +
                                 "<span style=\"width:10.2pt; font:7pt 'Times New Roman'; display:inline-block; -aw-import:spaces\">&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0; </span>" +
                             "</span>" +
                             "<span>Outline legal heading list item 5.</span>" +
-                        "</p>"), Is.True);
+                        "</p>"));
                     break;
                 case ExportListLabels.Auto:
-                    Assert.That(outDocContents.Contains(
+                    Assert.IsTrue(outDocContents.Contains(
                         "<ol type=\"a\" style=\"margin-right:0pt; margin-left:0pt; padding-left:0pt\">" +
                             "<li style=\"margin-left:31.33pt; padding-left:4.67pt\">" +
                                 "<span>Default numbered list item 3.</span>" +
                             "</li>" +
-                        "</ol>"), Is.True);
+                        "</ol>"));
                     break;
                 case ExportListLabels.ByHtmlTags:
-                    Assert.That(outDocContents.Contains(
+                    Assert.IsTrue(outDocContents.Contains(
                         "<ol type=\"a\" style=\"margin-right:0pt; margin-left:0pt; padding-left:0pt\">" +
                             "<li style=\"margin-left:31.33pt; padding-left:4.67pt\">" +
                                 "<span>Default numbered list item 3.</span>" +
                             "</li>" +
-                        "</ol>"), Is.True);
+                        "</ol>"));
                     break;
             }
             //ExEnd
@@ -1212,7 +1170,8 @@ namespace ApiExamples
             // If we set the "ExportPageMargins" flag to "true", the shape will be fully visible in the output HTML.
             // If we set the "ExportPageMargins" flag to "false",
             // our document will display the shape truncated as we would see it in Microsoft Word.
-            HtmlSaveOptions options = new HtmlSaveOptions { ExportPageMargins = exportPageMargins };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ExportPageMargins = exportPageMargins;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageMargins.html", options);
 
@@ -1220,13 +1179,13 @@ namespace ApiExamples
 
             if (exportPageMargins)
             {
-                Assert.That(outDocContents.Contains("<style type=\"text/css\">div.Section_1 { margin:70.85pt }</style>"), Is.True);
-                Assert.That(outDocContents.Contains("<div class=\"Section_1\"><p style=\"margin-top:0pt; margin-left:150pt; margin-bottom:0pt\">"), Is.True);
+                Assert.IsTrue(outDocContents.Contains("<style type=\"text/css\">div.Section_1 { margin:70.85pt }</style>"));
+                Assert.IsTrue(outDocContents.Contains("<div class=\"Section_1\"><p style=\"margin-top:0pt; margin-left:150pt; margin-bottom:0pt\">"));
             }
             else
             {
-                Assert.That(outDocContents.Contains("style type=\"text/css\">"), Is.False);
-                Assert.That(outDocContents.Contains("<div><p style=\"margin-top:0pt; margin-left:220.85pt; margin-bottom:0pt\">"), Is.True);
+                Assert.IsFalse(outDocContents.Contains("style type=\"text/css\">"));
+                Assert.IsTrue(outDocContents.Contains("<div><p style=\"margin-top:0pt; margin-left:220.85pt; margin-bottom:0pt\">"));
             }
             //ExEnd
         }
@@ -1255,7 +1214,8 @@ namespace ApiExamples
             // If we set the "ExportPageSetup" flag to "true", the output HTML document will contain our page setup configuration.
             // If we set the "ExportPageSetup" flag to "false", the save operation will discard our page setup settings
             // for the first section, and both sections will look identical.
-            HtmlSaveOptions options = new HtmlSaveOptions { ExportPageSetup = exportPageSetup };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ExportPageSetup = exportPageSetup;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportPageSetup.html", options);
 
@@ -1263,30 +1223,30 @@ namespace ApiExamples
 
             if (exportPageSetup)
             {
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<style type=\"text/css\">" +
                         "@page Section_1 { size:419.55pt 595.3pt; margin:36pt 70.85pt; -aw-footer-distance:35.4pt; -aw-header-distance:35.4pt }" +
                         "@page Section_2 { size:612pt 792pt; margin:70.85pt; -aw-footer-distance:35.4pt; -aw-header-distance:35.4pt }" +
                         "div.Section_1 { page:Section_1 }div.Section_2 { page:Section_2 }" +
-                    "</style>"), Is.True);
+                    "</style>"));
 
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<div class=\"Section_1\">" +
                         "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
                             "<span>Section 1</span>" +
                         "</p>" +
-                    "</div>"), Is.True);
+                    "</div>"));
             }
             else
             {
-                Assert.That(outDocContents.Contains("style type=\"text/css\">"), Is.False);
+                Assert.IsFalse(outDocContents.Contains("style type=\"text/css\">"));
 
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<div>" +
                         "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
                             "<span>Section 1</span>" +
                         "</p>" +
-                    "</div>"), Is.True);
+                    "</div>"));
             }
             //ExEnd
         }
@@ -1313,7 +1273,8 @@ namespace ApiExamples
             // using the "em" measurement unit, which is a factor that multiplies the current font size. 
             // Set the "ExportRelativeFontSize" flag to "false" to declare font sizes
             // using the "pt" measurement unit, which is the font's absolute size in points.
-            HtmlSaveOptions options = new HtmlSaveOptions { ExportRelativeFontSize = exportRelativeFontSize };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ExportRelativeFontSize = exportRelativeFontSize;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.RelativeFontSize.html", options);
 
@@ -1321,7 +1282,7 @@ namespace ApiExamples
 
             if (exportRelativeFontSize)
             {
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<body style=\"font-family:'Times New Roman'\">" +
                         "<div>" +
                             "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
@@ -1334,11 +1295,11 @@ namespace ApiExamples
                                 "<span>8x default font size</span>" +
                             "</p>" +
                         "</div>" +
-                    "</body>"), Is.True);
+                    "</body>"));
             }
             else
             {
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<body style=\"font-family:'Times New Roman'; font-size:12pt\">" +
                         "<div>" +
                             "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
@@ -1351,7 +1312,7 @@ namespace ApiExamples
                                 "<span>8x default font size</span>" +
                             "</p>" +
                         "</div>" +
-                    "</body>"), Is.True);
+                    "</body>"));
             }
             //ExEnd
         }
@@ -1376,7 +1337,8 @@ namespace ApiExamples
             // the save operation will convert shapes with text into SVG objects.
             // If we set the "ExportTextBoxAsSvg" flag to "false",
             // the save operation will convert shapes with text into images.
-            HtmlSaveOptions options = new HtmlSaveOptions { ExportShapesAsSvg = exportShapesAsSvg };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ExportShapesAsSvg = exportShapesAsSvg;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTextBox.html", options);
 
@@ -1384,17 +1346,17 @@ namespace ApiExamples
 
             if (exportShapesAsSvg)
             {
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<span style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\">" +
-                    "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" width=\"133\" height=\"80\">"), Is.True);
+                    "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" width=\"133\" height=\"80\">"));
             }
             else
             {
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
                         "<img src=\"HtmlSaveOptions.ExportTextBox.001.png\" width=\"136\" height=\"83\" alt=\"\" " +
                         "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />" +
-                    "</p>"), Is.True);
+                    "</p>"));
             }
             //ExEnd
         }
@@ -1419,7 +1381,8 @@ namespace ApiExamples
             // If we set the "ExportRoundTripInformation" flag to "false", the save operation will discard these elements.
             // We will want to preserve such elements if we intend to load the saved HTML using Aspose.Words,
             // as they could be of use once again.
-            HtmlSaveOptions options = new HtmlSaveOptions { ExportRoundtripInformation = exportRoundtripInformation };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ExportRoundtripInformation = exportRoundtripInformation;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.RoundTripInformation.html", options);
 
@@ -1428,51 +1391,51 @@ namespace ApiExamples
 
             if (exportRoundtripInformation)
             {
-                Assert.That(outDocContents.Contains("<div style=\"-aw-headerfooter-type:header-primary; clear:both\">"), Is.True);
-                Assert.That(outDocContents.Contains("<span style=\"-aw-import:ignore\">&#xa0;</span>"), Is.True);
+                Assert.IsTrue(outDocContents.Contains("<div style=\"-aw-headerfooter-type:header-primary; clear:both\">"));
+                Assert.IsTrue(outDocContents.Contains("<span style=\"-aw-import:ignore\">&#xa0;</span>"));
 
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "td colspan=\"2\" style=\"width:210.6pt; border-style:solid; border-width:0.75pt 6pt 0.75pt 0.75pt; " +
                     "padding-right:2.4pt; padding-left:5.03pt; vertical-align:top; " +
-                    "-aw-border-bottom:0.5pt single; -aw-border-left:0.5pt single; -aw-border-top:0.5pt single\">"), Is.True);
+                    "-aw-border-bottom:0.5pt single; -aw-border-left:0.5pt single; -aw-border-top:0.5pt single\">"));
 
-                Assert.That(outDocContents.Contains(
-                    "<li style=\"margin-left:30.2pt; padding-left:5.8pt; -aw-font-family:'Courier New'; -aw-font-weight:normal; -aw-number-format:'o'\">"), Is.True);
+                Assert.IsTrue(outDocContents.Contains(
+                    "<li style=\"margin-left:30.2pt; padding-left:5.8pt; -aw-font-family:'Courier New'; -aw-font-weight:normal; -aw-number-format:'o'\">"));
 
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<img src=\"HtmlSaveOptions.RoundTripInformation.003.jpeg\" width=\"350\" height=\"180\" alt=\"\" " +
-                    "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />"), Is.True);
+                    "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />"));
 
 
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<span>Page number </span>" +
                     "<span style=\"-aw-field-start:true\"></span>" +
                     "<span style=\"-aw-field-code:' PAGE   \\\\* MERGEFORMAT '\"></span>" +
                     "<span style=\"-aw-field-separator:true\"></span>" +
                     "<span>1</span>" +
-                    "<span style=\"-aw-field-end:true\"></span>"), Is.True);
+                    "<span style=\"-aw-field-end:true\"></span>"));
 
-                Assert.That(doc.Range.Fields.Count(f => f.Type == FieldType.FieldPage), Is.EqualTo(1));
+                Assert.AreEqual(1, doc.Range.Fields.Count(f => f.Type == FieldType.FieldPage));
             }
             else
             {
-                Assert.That(outDocContents.Contains("<div style=\"clear:both\">"), Is.True);
-                Assert.That(outDocContents.Contains("<span>&#xa0;</span>"), Is.True);
+                Assert.IsTrue(outDocContents.Contains("<div style=\"clear:both\">"));
+                Assert.IsTrue(outDocContents.Contains("<span>&#xa0;</span>"));
 
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<td colspan=\"2\" style=\"width:210.6pt; border-style:solid; border-width:0.75pt 6pt 0.75pt 0.75pt; " +
-                    "padding-right:2.4pt; padding-left:5.03pt; vertical-align:top\">"), Is.True);
+                    "padding-right:2.4pt; padding-left:5.03pt; vertical-align:top\">"));
                 
-                Assert.That(outDocContents.Contains(
-                    "<li style=\"margin-left:30.2pt; padding-left:5.8pt\">"), Is.True);
+                Assert.IsTrue(outDocContents.Contains(
+                    "<li style=\"margin-left:30.2pt; padding-left:5.8pt\">"));
 
-                Assert.That(outDocContents.Contains(
-                    "<img src=\"HtmlSaveOptions.RoundTripInformation.003.jpeg\" width=\"350\" height=\"180\" alt=\"\" />"), Is.True);
+                Assert.IsTrue(outDocContents.Contains(
+                    "<img src=\"HtmlSaveOptions.RoundTripInformation.003.jpeg\" width=\"350\" height=\"180\" alt=\"\" />"));
 
-                Assert.That(outDocContents.Contains(
-                    "<span>Page number 1</span>"), Is.True);
+                Assert.IsTrue(outDocContents.Contains(
+                    "<span>Page number 1</span>"));
 
-                Assert.That(doc.Range.Fields.Count(f => f.Type == FieldType.FieldPage), Is.EqualTo(0));
+                Assert.AreEqual(0, doc.Range.Fields.Count(f => f.Type == FieldType.FieldPage));
             }
             //ExEnd
         }
@@ -1510,7 +1473,8 @@ namespace ApiExamples
             // each TOC entry will display the heading, separator, and page number, preserving its appearance in Microsoft Word.
             // If we set the "ExportTocPageNumbers" flag to "false",
             // the save operation will omit both the separator and page number and leave the heading for each entry intact.
-            HtmlSaveOptions options = new HtmlSaveOptions { ExportTocPageNumbers = exportTocPageNumbers };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ExportTocPageNumbers = exportTocPageNumbers;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ExportTocPageNumbers.html", options);
 
@@ -1518,19 +1482,19 @@ namespace ApiExamples
 
             if (exportTocPageNumbers)
             {
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<span>Entry 1</span>" +
                     "<span style=\"width:428.14pt; font-family:'Lucida Console'; font-size:10pt; display:inline-block; -aw-font-family:'Times New Roman'; " +
                     "-aw-tabstop-align:right; -aw-tabstop-leader:dots; -aw-tabstop-pos:469.8pt\">.......................................................................</span>" +
                     "<span>2</span>" +
-                    "</p>"), Is.True);
+                    "</p>"));
             }
             else
             {
-                Assert.That(outDocContents.Contains(
+                Assert.IsTrue(outDocContents.Contains(
                     "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
                     "<span>Entry 2</span>" +
-                    "</p>"), Is.True);
+                    "</p>"));
             }
             //ExEnd
         }
@@ -1568,18 +1532,16 @@ namespace ApiExamples
             // and setting it to "int.MaxValue" effectively disables subsetting.
             string fontsFolder = ArtifactsDir + "HtmlSaveOptions.FontSubsetting.Fonts";
 
-            HtmlSaveOptions options = new HtmlSaveOptions
-            {
-                ExportFontResources = true,
-                FontsFolder = fontsFolder,
-                FontResourcesSubsettingSizeThreshold = fontResourcesSubsettingSizeThreshold
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ExportFontResources = true;
+            options.FontsFolder = fontsFolder;
+            options.FontResourcesSubsettingSizeThreshold = fontResourcesSubsettingSizeThreshold;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.FontSubsetting.html", options);
 
             string[] fontFileNames = Directory.GetFiles(fontsFolder).Where(s => s.EndsWith(".ttf")).ToArray();
 
-            Assert.That(fontFileNames.Length, Is.EqualTo(3));
+            Assert.AreEqual(3, fontFileNames.Length);
 
             foreach (string filename in fontFileNames)
             {
@@ -1587,8 +1549,8 @@ namespace ApiExamples
                 // Subsetting will reduce them all to under 30MB.
                 FileInfo fontFileInfo = new FileInfo(filename);
 
-                Assert.That(fontFileInfo.Length > 700000 || fontFileInfo.Length < 30000, Is.True);
-                Assert.That(System.Math.Max(fontResourcesSubsettingSizeThreshold, 30000) > new FileInfo(filename).Length, Is.True);
+                Assert.IsTrue(fontFileInfo.Length > 700000 || fontFileInfo.Length < 30000);
+                Assert.IsTrue(System.Math.Max(fontResourcesSubsettingSizeThreshold, 30000) > new FileInfo(filename).Length);
             }
             //ExEnd
         }
@@ -1614,7 +1576,8 @@ namespace ApiExamples
             // where all SVG images loaded from an HTML document were converted to EMF.
             // Now SVG images are loaded without conversion
             // if the MS Word version specified in load options supports SVG images natively.
-            HtmlLoadOptions loadOptions = new HtmlLoadOptions { ConvertSvgToEmf = true };
+            HtmlLoadOptions loadOptions = new HtmlLoadOptions();
+            loadOptions.ConvertSvgToEmf = true;
 
             Document doc = new Document(new MemoryStream(Encoding.UTF8.GetBytes(html)), loadOptions);
 
@@ -1624,7 +1587,8 @@ namespace ApiExamples
             // Setting the "MetafileFormat" property to "HtmlMetafileFormat.Png" to convert it to a PNG image.
             // Setting the "MetafileFormat" property to "HtmlMetafileFormat.Svg" preserve it as a SVG object.
             // Setting the "MetafileFormat" property to "HtmlMetafileFormat.EmfOrWmf" to convert it to a metafile.
-            HtmlSaveOptions options = new HtmlSaveOptions { MetafileFormat = htmlMetafileFormat };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.MetafileFormat = htmlMetafileFormat;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.MetafileFormat.html", options);
 
@@ -1633,23 +1597,23 @@ namespace ApiExamples
             switch (htmlMetafileFormat)
             {
                 case HtmlMetafileFormat.Png:
-                    Assert.That(outDocContents.Contains(
+                    Assert.IsTrue(outDocContents.Contains(
                         "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
                             "<img src=\"HtmlSaveOptions.MetafileFormat.001.png\" width=\"500\" height=\"40\" alt=\"\" " +
                             "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />" +
-                        "</p>"), Is.True);
+                        "</p>"));
                     break;
                 case HtmlMetafileFormat.Svg:
-                    Assert.That(outDocContents.Contains(
+                    Assert.IsTrue(outDocContents.Contains(
                         "<span style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\">" +
-                        "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" width=\"499\" height=\"40\">"), Is.True);
+                        "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" width=\"499\" height=\"40\">"));
                     break;
                 case HtmlMetafileFormat.EmfOrWmf:
-                    Assert.That(outDocContents.Contains(
+                    Assert.IsTrue(outDocContents.Contains(
                         "<p style=\"margin-top:0pt; margin-bottom:0pt\">" +
                             "<img src=\"HtmlSaveOptions.MetafileFormat.001.emf\" width=\"500\" height=\"40\" alt=\"\" " +
                             "style=\"-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />" +
-                        "</p>"), Is.True);
+                        "</p>"));
                     break;
             }
             //ExEnd
@@ -1674,7 +1638,8 @@ namespace ApiExamples
             // will convert each OfficeMath object into MathML.
             // Setting the "OfficeMathOutputMode" property to "HtmlOfficeMathOutputMode.Text"
             // will represent each OfficeMath formula using plain HTML text.
-            HtmlSaveOptions options = new HtmlSaveOptions { OfficeMathOutputMode = htmlOfficeMathOutputMode };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.OfficeMathOutputMode = htmlOfficeMathOutputMode;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.OfficeMathOutputMode.html", options);
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlSaveOptions.OfficeMathOutputMode.html");
@@ -1682,14 +1647,14 @@ namespace ApiExamples
             switch (htmlOfficeMathOutputMode)
             {
                 case HtmlOfficeMathOutputMode.Image:
-                    Assert.That(Regex.Match(outDocContents,
+                    Assert.IsTrue(Regex.Match(outDocContents,
                         "<p style=\"margin-top:0pt; margin-bottom:10pt\">" +
                             "<img src=\"HtmlSaveOptions.OfficeMathOutputMode.001.png\" width=\"163\" height=\"19\" alt=\"\" style=\"vertical-align:middle; " +
                             "-aw-left-pos:0pt; -aw-rel-hpos:column; -aw-rel-vpos:paragraph; -aw-top-pos:0pt; -aw-wrap-type:inline\" />" +
-                        "</p>").Success, Is.True);
+                        "</p>").Success);
                     break;
                 case HtmlOfficeMathOutputMode.MathML:
-                    Assert.That(Regex.Match(outDocContents,
+                    Assert.IsTrue(Regex.Match(outDocContents,
                         "<p style=\"margin-top:0pt; margin-bottom:10pt; text-align:center\">" +
                             "<math xmlns=\"http://www.w3.org/1998/Math/MathML\">" +
                                 "<mi>i</mi>" +
@@ -1700,13 +1665,13 @@ namespace ApiExamples
                                 "<mo>≥</mo>" +
                                 ".*" +
                             "</math>" +
-                        "</p>").Success, Is.True);
+                        "</p>").Success);
                     break;
                 case HtmlOfficeMathOutputMode.Text:
-                    Assert.That(Regex.Match(outDocContents,
+                    Assert.IsTrue(Regex.Match(outDocContents,
                         @"<p style=\""margin-top:0pt; margin-bottom:10pt; text-align:center\"">" +
                             @"<span style=\""font-family:'Cambria Math'\"">i[+]b-c≥iM[+]bM-cM </span>" +
-                        "</p>").Success, Is.True);
+                        "</p>").Success);
                     break;
             }
             //ExEnd
@@ -1735,7 +1700,8 @@ namespace ApiExamples
             // to the size of the shape that contains it, so that no saved images will be larger than the document requires them to be.
             // Setting the "ScaleImageToShapeSize" flag to "false" will preserve these images' original sizes,
             // which will take up more space in exchange for preserving image quality.
-            HtmlSaveOptions options = new HtmlSaveOptions { ScaleImageToShapeSize = scaleImageToShapeSize };
+            HtmlSaveOptions options = new HtmlSaveOptions();
+            options.ScaleImageToShapeSize = scaleImageToShapeSize;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.html", options);
             //ExEnd
@@ -1744,12 +1710,12 @@ namespace ApiExamples
 
             if (scaleImageToShapeSize)
 #if NETFRAMEWORK || JAVA || CPLUSPLUS
-                Assert.That(testedImageLength < 3000, Is.True);
+                Assert.IsTrue(testedImageLength < 3000);
 #elif NET6_0_OR_GREATER
                 Assert.That(testedImageLength < 6200, Is.True);
 #endif
             else
-                Assert.That(testedImageLength < 16000, Is.True);
+                Assert.IsTrue(testedImageLength < 16000);
             
         }
 
@@ -1771,17 +1737,15 @@ namespace ApiExamples
             Directory.CreateDirectory(imagesDir);
 
             // Set an option to export form fields as plain text instead of HTML input elements.
-            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html)
-            {
-                ExportTextInputFormFieldAsText = true, 
-                ImagesFolder = imagesDir
-            };
+            HtmlSaveOptions options = new HtmlSaveOptions(SaveFormat.Html);
+            options.ExportTextInputFormFieldAsText = true;
+            options.ImagesFolder = imagesDir;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.SaveHtmlWithOptions.html", options);
             //ExEnd
 
-            Assert.That(File.Exists(ArtifactsDir + "HtmlSaveOptions.SaveHtmlWithOptions.html"), Is.True);
-            Assert.That(Directory.GetFiles(imagesDir).Length, Is.EqualTo(9));
+            Assert.IsTrue(File.Exists(ArtifactsDir + "HtmlSaveOptions.SaveHtmlWithOptions.html"));
+            Assert.AreEqual(9, Directory.GetFiles(imagesDir).Length);
 
             Directory.Delete(imagesDir, true);
         }
@@ -1815,17 +1779,17 @@ namespace ApiExamples
             void IImageSavingCallback.ImageSaving(ImageSavingArgs args)
             {
                 args.KeepImageStreamOpen = false;
-                Assert.That(args.IsImageAvailable, Is.True);
+                Assert.IsTrue(args.IsImageAvailable);
 
-                Console.WriteLine($"{args.Document.OriginalFileName.Split('\\').Last()} Image #{++mImageCount}");
+                Console.WriteLine(string.Format("{0} Image #{1}", args.Document.OriginalFileName.Split('\\').Last(), ++mImageCount));
 
                 LayoutCollector layoutCollector = new LayoutCollector(args.Document);
 
-                Console.WriteLine($"\tOn page:\t{layoutCollector.GetStartPageIndex(args.CurrentShape)}");
-                Console.WriteLine($"\tDimensions:\t{args.CurrentShape.Bounds}");
-                Console.WriteLine($"\tAlignment:\t{args.CurrentShape.VerticalAlignment}");
-                Console.WriteLine($"\tWrap type:\t{args.CurrentShape.WrapType}");
-                Console.WriteLine($"Output filename:\t{args.ImageFileName}\n");
+                Console.WriteLine(string.Format("\tOn page:\t{0}", layoutCollector.GetStartPageIndex(args.CurrentShape)));
+                Console.WriteLine(string.Format("\tDimensions:\t{0}", args.CurrentShape.Bounds));
+                Console.WriteLine(string.Format("\tAlignment:\t{0}", args.CurrentShape.VerticalAlignment));
+                Console.WriteLine(string.Format("\tWrap type:\t{0}", args.CurrentShape.WrapType));
+                Console.WriteLine(string.Format("Output filename:\t{0}\n", args.ImageFileName));
             }
 
             private int mImageCount;
@@ -1843,7 +1807,8 @@ namespace ApiExamples
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.Writeln("Hello world!");
 
-            HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html) { PrettyFormat = usePrettyFormat };
+            HtmlSaveOptions htmlOptions = new HtmlSaveOptions(SaveFormat.Html);
+            htmlOptions.PrettyFormat = usePrettyFormat;
 
             doc.Save(ArtifactsDir + "HtmlSaveOptions.PrettyFormat.html", htmlOptions);
 
@@ -1852,31 +1817,31 @@ namespace ApiExamples
 
             string newLine = Environment.NewLine;
             if (usePrettyFormat)
-                Assert.That(html, Is.EqualTo($"<html>{newLine}" +
-                                $"\t<head>{newLine}" +
-                                    $"\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />{newLine}" +
-                                    $"\t\t<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />{newLine}" +
-                                    $"\t\t<meta name=\"generator\" content=\"{BuildVersionInfo.Product} {BuildVersionInfo.Version}\" />{newLine}" +
-                                    $"\t\t<title>{newLine}" +
-                                    $"\t\t</title>{newLine}" +
-                                $"\t</head>{newLine}" +
-                                $"\t<body style=\"font-family:'Times New Roman'; font-size:12pt\">{newLine}" +
-                                    $"\t\t<div>{newLine}" +
-                                        $"\t\t\t<p style=\"margin-top:0pt; margin-bottom:0pt\">{newLine}" +
-                                            $"\t\t\t\t<span>Hello world!</span>{newLine}" +
-                                        $"\t\t\t</p>{newLine}" +
-                                        $"\t\t\t<p style=\"margin-top:0pt; margin-bottom:0pt\">{newLine}" +
-                                            $"\t\t\t\t<span style=\"-aw-import:ignore\">&#xa0;</span>{newLine}" +
-                                        $"\t\t\t</p>{newLine}" +
-                                    $"\t\t</div>{newLine}" +
-                                $"\t</body>{newLine}</html>"));
+                Assert.AreEqual(string.Format("<html>{0}", newLine) +
+                                string.Format("\t<head>{0}", newLine) +
+                                    string.Format("\t\t<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />{0}", newLine) +
+                                    string.Format("\t\t<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />{0}", newLine) +
+                                    string.Format("\t\t<meta name=\"generator\" content=\"{0} {1}\" />{2}", BuildVersionInfo.Product, BuildVersionInfo.Version, newLine) +
+                                    string.Format("\t\t<title>{0}", newLine) +
+                                    string.Format("\t\t</title>{0}", newLine) +
+                                string.Format("\t</head>{0}", newLine) +
+                                string.Format("\t<body style=\"font-family:'Times New Roman'; font-size:12pt\">{0}", newLine) +
+                                    string.Format("\t\t<div>{0}", newLine) +
+                                        string.Format("\t\t\t<p style=\"margin-top:0pt; margin-bottom:0pt\">{0}", newLine) +
+                                            string.Format("\t\t\t\t<span>Hello world!</span>{0}", newLine) +
+                                        string.Format("\t\t\t</p>{0}", newLine) +
+                                        string.Format("\t\t\t<p style=\"margin-top:0pt; margin-bottom:0pt\">{0}", newLine) +
+                                            string.Format("\t\t\t\t<span style=\"-aw-import:ignore\">&#xa0;</span>{0}", newLine) +
+                                        string.Format("\t\t\t</p>{0}", newLine) +
+                                    string.Format("\t\t</div>{0}", newLine) +
+                                string.Format("\t</body>{0}</html>", newLine), html);
             else
-                Assert.That(html, Is.EqualTo("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />" +
+                Assert.AreEqual("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />" +
                             "<meta http-equiv=\"Content-Style-Type\" content=\"text/css\" />" +
-                            $"<meta name=\"generator\" content=\"{BuildVersionInfo.Product} {BuildVersionInfo.Version}\" /><title></title></head>" +
+                            string.Format("<meta name=\"generator\" content=\"{0} {1}\" /><title></title></head>", BuildVersionInfo.Product, BuildVersionInfo.Version) +
                             "<body style=\"font-family:'Times New Roman'; font-size:12pt\">" +
                             "<div><p style=\"margin-top:0pt; margin-bottom:0pt\"><span>Hello world!</span></p>" +
-                            "<p style=\"margin-top:0pt; margin-bottom:0pt\"><span style=\"-aw-import:ignore\">&#xa0;</span></p></div></body></html>"));
+                            "<p style=\"margin-top:0pt; margin-bottom:0pt\"><span style=\"-aw-import:ignore\">&#xa0;</span></p></div></body></html>", html);
             //ExEnd
         }
 
@@ -1895,14 +1860,18 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Big document.docx");
 
             // Following formats are supported: Html, Mhtml, Epub.
-            HtmlSaveOptions saveOptions = new HtmlSaveOptions(saveFormat)
-            {
-                ProgressCallback = new SavingProgressCallback()
-            };
+            HtmlSaveOptions saveOptions = new HtmlSaveOptions(saveFormat);
+            saveOptions.ProgressCallback = new SavingProgressCallback();
 
             var exception = Assert.Throws<OperationCanceledException>(() =>
-                doc.Save(ArtifactsDir + $"HtmlSaveOptions.ProgressCallback.{ext}", saveOptions));
-            Assert.That(exception?.Message.Contains("EstimatedProgress"), Is.True);
+                doc.Save(ArtifactsDir + string.Format("HtmlSaveOptions.ProgressCallback.{0}", ext), saveOptions));
+            bool? actual = default(bool?);
+            System.OperationCanceledException condExpression = exception;
+            if (condExpression != null)
+            {
+                actual = condExpression.Message.Contains("EstimatedProgress");
+            }
+            Assert.IsTrue(actual);
         }
 
         /// <summary>
@@ -1927,7 +1896,7 @@ namespace ApiExamples
                 DateTime canceledAt = DateTime.Now;
                 double ellapsedSeconds = (canceledAt - mSavingStartedAt).TotalSeconds;
                 if (ellapsedSeconds > MaxDuration)
-                    throw new OperationCanceledException($"EstimatedProgress = {args.EstimatedProgress}; CanceledAt = {canceledAt}");
+                    throw new OperationCanceledException(string.Format("EstimatedProgress = {0}; CanceledAt = {1}", args.EstimatedProgress, canceledAt));
             }
 
             /// <summary>
@@ -1952,12 +1921,12 @@ namespace ApiExamples
             saveOptions.SaveFormat = saveFormat;
             saveOptions.Encoding = Encoding.ASCII;
 
-            string outputFileName = $"{ArtifactsDir}HtmlSaveOptions.MobiDefaultEncoding{FileFormatUtil.SaveFormatToExtension(saveFormat)}";
+            string outputFileName = string.Format("{0}HtmlSaveOptions.MobiDefaultEncoding{1}", ArtifactsDir, FileFormatUtil.SaveFormatToExtension(saveFormat));
             doc.Save(outputFileName);
 
             Encoding encoding = TestUtil.GetEncoding(outputFileName);
-            Assert.That(encoding, Is.Not.EqualTo(Encoding.ASCII));
-            Assert.That(encoding, Is.EqualTo(Encoding.UTF8));
+            Assert.AreNotEqual(Encoding.ASCII, encoding);
+            Assert.AreEqual(Encoding.UTF8, encoding);
         }
 
         [Test]

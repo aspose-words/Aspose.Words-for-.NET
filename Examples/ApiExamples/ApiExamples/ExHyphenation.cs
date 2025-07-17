@@ -35,14 +35,14 @@ namespace ApiExamples
             // Register a dictionary file from the local file system to the "de-CH" locale.
             Hyphenation.RegisterDictionary("de-CH", MyDir + "hyph_de_CH.dic");
 
-            Assert.That(Hyphenation.IsDictionaryRegistered("de-CH"), Is.True);
+            Assert.IsTrue(Hyphenation.IsDictionaryRegistered("de-CH"));
 
             // Open a document containing text with a locale matching that of our dictionary,
             // and save it to a fixed-page save format. The text in that document will be hyphenated.
             Document doc = new Document(MyDir + "German text.docx");
 
-            Assert.That(doc.FirstSection.Body.FirstParagraph.Runs.OfType<Run>().All(
-                r => r.Font.LocaleId == new CultureInfo("de-CH").LCID), Is.True);
+            Assert.IsTrue(doc.FirstSection.Body.FirstParagraph.Runs.OfType<Run>().All(
+                r => r.Font.LocaleId == new CultureInfo("de-CH").LCID));
 
             doc.Save(ArtifactsDir + "Hyphenation.Dictionary.Registered.pdf");
 
@@ -50,7 +50,7 @@ namespace ApiExamples
             // and save it to another PDF, which will not have hyphenated text.
             Hyphenation.UnregisterDictionary("de-CH");
 
-            Assert.That(Hyphenation.IsDictionaryRegistered("de-CH"), Is.False);
+            Assert.IsFalse(Hyphenation.IsDictionaryRegistered("de-CH"));
 
             doc = new Document(MyDir + "German text.docx");
             doc.Save(ArtifactsDir + "Hyphenation.Dictionary.Unregistered.pdf");
@@ -67,17 +67,17 @@ namespace ApiExamples
             Aspose.Pdf.Document pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Hyphenation.Dictionary.Registered.pdf");
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
-            Assert.That(textAbsorber.Text.Replace("  ", " ").Contains($"La ob storen an deinen am sachen. Dop{unicodeOptionalHyphen}{Environment.NewLine}" +
-                $"pelte um da am spateren verlogen ge{unicodeOptionalHyphen}{Environment.NewLine}" +
-                $"kommen achtzehn blaulich."), Is.True);
+            Assert.IsTrue(textAbsorber.Text.Replace("  ", " ").Contains(string.Format("La ob storen an deinen am sachen. Dop{0}{1}", unicodeOptionalHyphen, Environment.NewLine) +
+                string.Format("pelte um da am spateren verlogen ge{0}{1}", unicodeOptionalHyphen, Environment.NewLine) +
+                string.Format("kommen achtzehn blaulich.")));
 
             pdfDoc = new Aspose.Pdf.Document(ArtifactsDir + "Hyphenation.Dictionary.Unregistered.pdf");
             textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.That(textAbsorber.Text.Replace("  ", " ").Contains($"La ob storen an deinen am sachen. {Environment.NewLine}" +
-                                                   $"Doppelte um da am spateren verlogen {Environment.NewLine}" +
-                                                   $"gekommen achtzehn blaulich."), Is.True);
+            Assert.IsTrue(textAbsorber.Text.Replace("  ", " ").Contains(string.Format("La ob storen an deinen am sachen. {0}", Environment.NewLine) +
+                                                   string.Format("Doppelte um da am spateren verlogen {0}", Environment.NewLine) +
+                                                   string.Format("gekommen achtzehn blaulich.")));
         }
 
         //ExStart
@@ -100,7 +100,7 @@ namespace ApiExamples
             Stream dictionaryStream = new FileStream(MyDir + "hyph_en_US.dic", FileMode.Open);
             Hyphenation.RegisterDictionary("en-US", dictionaryStream);
 
-            Assert.That(warningInfoCollection.Count, Is.EqualTo(0));
+            Assert.AreEqual(0, warningInfoCollection.Count);
 
             // Open a document with a locale that Microsoft Word may not hyphenate on an English machine, such as German.
             Document doc = new Document(MyDir + "German text.docx");
@@ -113,11 +113,11 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "Hyphenation.RegisterDictionary.pdf");
 
             // This dictionary contains two identical patterns, which will trigger a warning.
-            Assert.That(warningInfoCollection.Count, Is.EqualTo(1));
-            Assert.That(warningInfoCollection[0].WarningType, Is.EqualTo(WarningType.MinorFormattingLoss));
-            Assert.That(warningInfoCollection[0].Source, Is.EqualTo(WarningSource.Layout));
-            Assert.That(warningInfoCollection[0].Description, Is.EqualTo("Hyphenation dictionary contains duplicate patterns. The only first found pattern will be used. " +
-                            "Content can be wrapped differently."));
+            Assert.AreEqual(1, warningInfoCollection.Count);
+            Assert.AreEqual(WarningType.MinorFormattingLoss, warningInfoCollection[0].WarningType);
+            Assert.AreEqual(WarningSource.Layout, warningInfoCollection[0].Source);
+            Assert.AreEqual("Hyphenation dictionary contains duplicate patterns. The only first found pattern will be used. " +
+                            "Content can be wrapped differently.", warningInfoCollection[0].Description);
 
             Hyphenation.WarningCallback = null; //ExSkip
             Hyphenation.UnregisterDictionary("en-US"); //ExSkip

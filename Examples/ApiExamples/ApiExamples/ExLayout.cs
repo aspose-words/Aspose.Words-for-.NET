@@ -37,8 +37,8 @@ namespace ApiExamples
 
             // Call the "GetNumPagesSpanned" method to count how many pages the content of our document spans.
             // Since the document is empty, that number of pages is currently zero.
-            Assert.That(layoutCollector.Document, Is.EqualTo(doc));
-            Assert.That(layoutCollector.GetNumPagesSpanned(doc), Is.EqualTo(0));
+            CollectionAssert.AreEqual(doc, layoutCollector.Document);
+            Assert.AreEqual(0, layoutCollector.GetNumPagesSpanned(doc));
 
             // Populate the document with 5 pages of content.
             DocumentBuilder builder = new DocumentBuilder(doc);
@@ -52,34 +52,34 @@ namespace ApiExamples
 
             // Before the layout collector, we need to call the "UpdatePageLayout" method to give us
             // an accurate figure for any layout-related metric, such as the page count.
-            Assert.That(layoutCollector.GetNumPagesSpanned(doc), Is.EqualTo(0));
+            Assert.AreEqual(0, layoutCollector.GetNumPagesSpanned(doc));
 
             layoutCollector.Clear();
             doc.UpdatePageLayout();
 
-            Assert.That(layoutCollector.GetNumPagesSpanned(doc), Is.EqualTo(5));
+            Assert.AreEqual(5, layoutCollector.GetNumPagesSpanned(doc));
 
             // We can see the numbers of the start and end pages of any node and their overall page spans.
             NodeCollection nodes = doc.GetChildNodes(NodeType.Any, true);
             foreach (Node node in nodes)
             {
-                Console.WriteLine($"->  NodeType.{node.NodeType}: ");
+                Console.WriteLine(string.Format("->  NodeType.{0}: ", node.NodeType));
                 Console.WriteLine(
-                    $"\tStarts on page {layoutCollector.GetStartPageIndex(node)}, ends on page {layoutCollector.GetEndPageIndex(node)}," +
-                    $" spanning {layoutCollector.GetNumPagesSpanned(node)} pages.");
+                    string.Format("\tStarts on page {0}, ends on page {1},", layoutCollector.GetStartPageIndex(node), layoutCollector.GetEndPageIndex(node)) +
+                    string.Format(" spanning {0} pages.", layoutCollector.GetNumPagesSpanned(node)));
             }
 
             // We can iterate over the layout entities using a LayoutEnumerator.
             LayoutEnumerator layoutEnumerator = new LayoutEnumerator(doc);
 
-            Assert.That(layoutEnumerator.Type, Is.EqualTo(LayoutEntityType.Page));
+            Assert.AreEqual(LayoutEntityType.Page, layoutEnumerator.Type);
 
             // The LayoutEnumerator can traverse the collection of layout entities like a tree.
             // We can also apply it to any node's corresponding layout entity.
             layoutEnumerator.Current = layoutCollector.GetEntity(doc.GetChild(NodeType.Paragraph, 1, true));
 
-            Assert.That(layoutEnumerator.Type, Is.EqualTo(LayoutEntityType.Span));
-            Assert.That(layoutEnumerator.Text, Is.EqualTo("¶"));
+            Assert.AreEqual(LayoutEntityType.Span, layoutEnumerator.Type);
+            Assert.AreEqual("¶", layoutEnumerator.Text);
             //ExEnd
         }
 
@@ -114,11 +114,11 @@ namespace ApiExamples
             // Create an enumerator that can traverse these entities like a tree.
             LayoutEnumerator layoutEnumerator = new LayoutEnumerator(doc);
 
-            Assert.That(layoutEnumerator.Document, Is.EqualTo(doc));
+            CollectionAssert.AreEqual(doc, layoutEnumerator.Document);
 
             layoutEnumerator.MoveParent(LayoutEntityType.Page);
 
-            Assert.That(layoutEnumerator.Type, Is.EqualTo(LayoutEntityType.Page));
+            Assert.AreEqual(LayoutEntityType.Page, layoutEnumerator.Type);
             Assert.Throws<InvalidOperationException>(() => Console.WriteLine(layoutEnumerator.Text));
 
             // We can call this method to make sure that the enumerator will be at the first layout entity.
@@ -228,16 +228,16 @@ namespace ApiExamples
             string tabs = new string('\t', indent);
 
             Console.WriteLine(layoutEnumerator.Kind == string.Empty
-                ? $"{tabs}-> Entity type: {layoutEnumerator.Type}"
-                : $"{tabs}-> Entity type & kind: {layoutEnumerator.Type}, {layoutEnumerator.Kind}");
+                ? string.Format("{0}-> Entity type: {1}", tabs, layoutEnumerator.Type)
+                : string.Format("{0}-> Entity type & kind: {1}, {2}", tabs, layoutEnumerator.Type, layoutEnumerator.Kind));
 
             // Only spans can contain text.
             if (layoutEnumerator.Type == LayoutEntityType.Span)
-                Console.WriteLine($"{tabs}   Span contents: \"{layoutEnumerator.Text}\"");
+                Console.WriteLine(string.Format("{0}   Span contents: \"{1}\"", tabs, layoutEnumerator.Text));
 
             RectangleF leRect = layoutEnumerator.Rectangle;
-            Console.WriteLine($"{tabs}   Rectangle dimensions {leRect.Width}x{leRect.Height}, X={leRect.X} Y={leRect.Y}");
-            Console.WriteLine($"{tabs}   Page {layoutEnumerator.PageIndex}");
+            Console.WriteLine(string.Format("{0}   Rectangle dimensions {1}x{2}, X={3} Y={4}", tabs, leRect.Width, leRect.Height, leRect.X, leRect.Y));
+            Console.WriteLine(string.Format("{0}   Page {1}", tabs, layoutEnumerator.PageIndex));
         }
         //ExEnd
 
@@ -287,21 +287,22 @@ namespace ApiExamples
 
             private void NotifyPartFinished(PageLayoutCallbackArgs a)
             {
-                Console.WriteLine($"Part at page {a.PageIndex + 1} reflow.");
+                Console.WriteLine(string.Format("Part at page {0} reflow.", a.PageIndex + 1));
                 RenderPage(a, a.PageIndex);
             }
 
             private void NotifyConversionFinished(PageLayoutCallbackArgs a)
             {
-                Console.WriteLine($"Document \"{a.Document.BuiltInDocumentProperties.Title}\" converted to page format.");
+                Console.WriteLine(string.Format("Document \"{0}\" converted to page format.", a.Document.BuiltInDocumentProperties.Title));
             }
 
             private void RenderPage(PageLayoutCallbackArgs a, int pageIndex)
             {
-                ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png) { PageSet = new PageSet(pageIndex) };
+                ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.Png);
+                saveOptions.PageSet = new PageSet(pageIndex);
 
                 using (FileStream stream =
-                    new FileStream(ArtifactsDir + $@"PageLayoutCallback.page-{pageIndex + 1} {++mNum}.png",
+                    new FileStream(ArtifactsDir + string.Format(@"PageLayoutCallback.page-{0} {1}.png", pageIndex + 1, ++mNum),
                         FileMode.Create))
                     a.Document.Save(stream, saveOptions);
             }

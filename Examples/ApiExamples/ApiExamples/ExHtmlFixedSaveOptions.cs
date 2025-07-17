@@ -32,18 +32,16 @@ namespace ApiExamples
 
             // The default encoding is UTF-8. If we want to represent our document using a different encoding,
             // we can use a SaveOptions object to set a specific encoding.
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
-            {
-                Encoding = Encoding.ASCII
-            };
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.Encoding = Encoding.ASCII;
 
-            Assert.That(htmlFixedSaveOptions.Encoding.EncodingName, Is.EqualTo("US-ASCII"));
+            Assert.AreEqual("US-ASCII", htmlFixedSaveOptions.Encoding.EncodingName);
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.UseEncoding.html", htmlFixedSaveOptions);
             //ExEnd
 
-            Assert.That(Regex.Match(File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.UseEncoding.html"),
-                "content=\"text/html; charset=us-ascii\"").Success, Is.True);
+            Assert.IsTrue(Regex.Match(File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.UseEncoding.html"),
+                "content=\"text/html; charset=us-ascii\"").Success);
         }
 
         [Test]
@@ -51,10 +49,8 @@ namespace ApiExamples
         {
             Document doc = DocumentHelper.CreateDocumentFillWithDummyText();
 
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
-            {
-                Encoding = Encoding.UTF8
-            };
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.Encoding = Encoding.UTF8;
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.GetEncoding.html", htmlFixedSaveOptions);
         }
@@ -73,10 +69,8 @@ namespace ApiExamples
             // and link to the file from the html document using a <link> element.
             // Setting the flag to "false" will embed the CSS stylesheet within the Html document,
             // which will create only one file instead of two.
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
-            {
-                ExportEmbeddedCss = exportEmbeddedCss
-            };
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.ExportEmbeddedCss = exportEmbeddedCss;
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCss.html", htmlFixedSaveOptions);
 
@@ -84,14 +78,14 @@ namespace ApiExamples
 
             if (exportEmbeddedCss)
             {
-                Assert.That(Regex.Match(outDocContents, "<style type=\"text/css\">").Success, Is.True);
-                Assert.That(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCss/styles.css"), Is.False);
+                Assert.IsTrue(Regex.Match(outDocContents, "<style type=\"text/css\">").Success);
+                Assert.IsFalse(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCss/styles.css"));
             }
             else
             {
-                Assert.That(Regex.Match(outDocContents,
-                    "<link rel=\"stylesheet\" type=\"text/css\" href=\"HtmlFixedSaveOptions[.]ExportEmbeddedCss/styles[.]css\" media=\"all\" />").Success, Is.True);
-                Assert.That(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCss/styles.css"), Is.True);
+                Assert.IsTrue(Regex.Match(outDocContents,
+                    "<link rel=\"stylesheet\" type=\"text/css\" href=\"HtmlFixedSaveOptions[.]ExportEmbeddedCss/styles[.]css\" media=\"all\" />").Success);
+                Assert.IsTrue(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedCss/styles.css"));
             }
             //ExEnd
         }
@@ -112,10 +106,8 @@ namespace ApiExamples
             // and reduce the number of external files that this HTML conversion will create.
             // Setting this flag to "false" will create a file for each font.
             // The CSS stylesheet will link to each font file using the "url" property of the "@font-face" rule.
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
-            {
-                ExportEmbeddedFonts = exportEmbeddedFonts
-            };
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.ExportEmbeddedFonts = exportEmbeddedFonts;
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts.html", htmlFixedSaveOptions);
 
@@ -123,15 +115,15 @@ namespace ApiExamples
 
             if (exportEmbeddedFonts)
             {
-                Assert.That(Regex.Match(outDocContents,
-                    "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], url[(].+[)] format[(]'woff'[)]; }").Success, Is.True);
-                Assert.That(Directory.GetFiles(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts").Count(f => f.EndsWith(".woff")), Is.EqualTo(0));
+                Assert.IsTrue(Regex.Match(outDocContents,
+                    "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], url[(].+[)] format[(]'woff'[)]; }").Success);
+                Assert.AreEqual(0, Directory.GetFiles(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts").Count(f => f.EndsWith(".woff")));
             }
             else
             {
-                Assert.That(Regex.Match(outDocContents,
-                    "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], url[(]'font001[.]woff'[)] format[(]'woff'[)]; }").Success, Is.True);
-                Assert.That(Directory.GetFiles(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts").Count(f => f.EndsWith(".woff")), Is.EqualTo(2));
+                Assert.IsTrue(Regex.Match(outDocContents,
+                    "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], url[(]'font001[.]woff'[)] format[(]'woff'[)]; }").Success);
+                Assert.AreEqual(2, Directory.GetFiles(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedFonts").Count(f => f.EndsWith(".woff")));
             }
             //ExEnd
         }
@@ -151,10 +143,8 @@ namespace ApiExamples
             // for all images within the output HTML document, in the "src" attribute of <image> tags.
             // Setting this flag to "false" will create an image file in the local file system for every image,
             // and store all these files in a separate folder.
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
-            {
-                ExportEmbeddedImages = exportImages
-            };
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.ExportEmbeddedImages = exportImages;
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages.html", htmlFixedSaveOptions);
 
@@ -162,16 +152,16 @@ namespace ApiExamples
 
             if (exportImages)
             {
-                Assert.That(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages/image001.jpeg"), Is.False);
-                Assert.That(Regex.Match(outDocContents,
-                    "<img class=\"awimg\" style=\"left:0pt; top:0pt; width:493.1pt; height:300.55pt;\" src=\".+\" />").Success, Is.True);
+                Assert.IsFalse(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages/image001.jpeg"));
+                Assert.IsTrue(Regex.Match(outDocContents,
+                    "<img class=\"awimg\" style=\"left:0pt; top:0pt; width:493.1pt; height:300.55pt;\" src=\".+\" />").Success);
             }
             else
             {
-                Assert.That(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages/image001.jpeg"), Is.True);
-                Assert.That(Regex.Match(outDocContents,
+                Assert.IsTrue(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedImages/image001.jpeg"));
+                Assert.IsTrue(Regex.Match(outDocContents,
                     "<img class=\"awimg\" style=\"left:0pt; top:0pt; width:493.1pt; height:300.55pt;\" " +
-                    "src=\"HtmlFixedSaveOptions[.]ExportEmbeddedImages/image001[.]jpeg\" />").Success, Is.True);
+                    "src=\"HtmlFixedSaveOptions[.]ExportEmbeddedImages/image001[.]jpeg\" />").Success);
             }
             //ExEnd
         }
@@ -191,10 +181,8 @@ namespace ApiExamples
             // within the output HTML, inside <image> tags.
             // Setting this flag to "false" will create a file in the local file system for each SVG object.
             // The HTML will link to each file using the "data" attribute of an <object> tag.
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
-            {
-                ExportEmbeddedSvg = exportSvgs
-            };
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.ExportEmbeddedSvg = exportSvgs;
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs.html", htmlFixedSaveOptions);
 
@@ -202,15 +190,15 @@ namespace ApiExamples
 
             if (exportSvgs)
             {
-                Assert.That(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001.svg"), Is.False);
-                Assert.That(Regex.Match(outDocContents,
-                    "<image id=\"image004\" xlink:href=.+/>").Success, Is.True);
+                Assert.IsFalse(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001.svg"));
+                Assert.IsTrue(Regex.Match(outDocContents,
+                    "<image id=\"image004\" xlink:href=.+/>").Success);
             }
             else
             {
-                Assert.That(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001.svg"), Is.True);
-                Assert.That(Regex.Match(outDocContents,
-                    "<object type=\"image/svg[+]xml\" data=\"HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001[.]svg\"></object>").Success, Is.True);
+                Assert.IsTrue(File.Exists(ArtifactsDir + "HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001.svg"));
+                Assert.IsTrue(Regex.Match(outDocContents,
+                    "<object type=\"image/svg[+]xml\" data=\"HtmlFixedSaveOptions.ExportEmbeddedSvgs/svg001[.]svg\"></object>").Success);
             }
             //ExEnd
         }
@@ -233,10 +221,8 @@ namespace ApiExamples
             // Setting this flag to "false" will display form fields as plain text.
             // This will freeze them at their current value, and prevent the reader of our HTML document
             // from being able to interact with them.
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
-            {
-                ExportFormFields = exportFormFields
-            };
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.ExportFormFields = exportFormFields;
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.ExportFormFields.html", htmlFixedSaveOptions);
 
@@ -244,15 +230,15 @@ namespace ApiExamples
 
             if (exportFormFields)
             {
-                Assert.That(Regex.Match(outDocContents,
+                Assert.IsTrue(Regex.Match(outDocContents,
                     "<a name=\"CheckBox\" style=\"left:0pt; top:0pt;\"></a>" +
-                    "<input style=\"position:absolute; left:0pt; top:0pt;\" type=\"checkbox\" name=\"CheckBox\" />").Success, Is.True);
+                    "<input style=\"position:absolute; left:0pt; top:0pt;\" type=\"checkbox\" name=\"CheckBox\" />").Success);
             }
             else
             {
-                Assert.That(Regex.Match(outDocContents,
+                Assert.IsTrue(Regex.Match(outDocContents,
                     "<a name=\"CheckBox\" style=\"left:0pt; top:0pt;\"></a>" +
-                    "<div class=\"awdiv\" style=\"left:0.8pt; top:0.8pt; width:14.25pt; height:14.25pt; border:solid 0.75pt #000000;\"").Success, Is.True);
+                    "<div class=\"awdiv\" style=\"left:0.8pt; top:0.8pt; width:14.25pt; height:14.25pt; border:solid 0.75pt #000000;\"").Success);
             }
             //ExEnd
         }
@@ -266,26 +252,24 @@ namespace ApiExamples
             //ExSummary:Shows how to place CSS into a separate file and add a prefix to all of its CSS class names.
             Document doc = new Document(MyDir + "Bookmarks.docx");
 
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
-            {
-                CssClassNamesPrefix = "myprefix",
-                SaveFontFaceCssSeparately = true
-            };
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.CssClassNamesPrefix = "myprefix";
+            htmlFixedSaveOptions.SaveFontFaceCssSeparately = true;
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.AddCssClassNamesPrefix.html", htmlFixedSaveOptions);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.AddCssClassNamesPrefix.html");
 
-            Assert.That(Regex.Match(outDocContents,
+            Assert.IsTrue(Regex.Match(outDocContents,
                 "<div class=\"myprefixdiv myprefixpage\" style=\"width:595[.]3pt; height:841[.]9pt;\">" +
                 "<div class=\"myprefixdiv\" style=\"left:85[.]05pt; top:36pt; clip:rect[(]0pt,510[.]25pt,74[.]95pt,-85.05pt[)];\">" +
-                "<span class=\"myprefixspan myprefixtext001\" style=\"font-size:11pt; left:294[.]73pt; top:0[.]36pt; line-height:12[.]29pt;\">").Success, Is.True);
+                "<span class=\"myprefixspan myprefixtext001\" style=\"font-size:11pt; left:294[.]73pt; top:0[.]36pt; line-height:12[.]29pt;\">").Success);
 
             outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.AddCssClassNamesPrefix/styles.css");
 
-            Assert.That(Regex.Match(outDocContents,
+            Assert.IsTrue(Regex.Match(outDocContents,
                 ".myprefixdiv { position:absolute; } " +
-                ".myprefixspan { position:absolute; white-space:pre; color:#000000; font-size:12pt; }").Success, Is.True);
+                ".myprefixspan { position:absolute; white-space:pre; color:#000000; font-size:12pt; }").Success);
             //ExEnd
         }
 
@@ -300,10 +284,8 @@ namespace ApiExamples
             //ExSummary:Shows how to set the horizontal alignment of pages when saving a document to HTML.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions
-            {
-                PageHorizontalAlignment = pageHorizontalAlignment
-            };
+            HtmlFixedSaveOptions htmlFixedSaveOptions = new HtmlFixedSaveOptions();
+            htmlFixedSaveOptions.PageHorizontalAlignment = pageHorizontalAlignment;
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.HorizontalAlignment.html", htmlFixedSaveOptions);
 
@@ -312,16 +294,16 @@ namespace ApiExamples
             switch (pageHorizontalAlignment)
             {
                 case HtmlFixedPageHorizontalAlignment.Center:
-                    Assert.That(Regex.Match(outDocContents,
-                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt auto; overflow:hidden; }").Success, Is.True);
+                    Assert.IsTrue(Regex.Match(outDocContents,
+                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt auto; overflow:hidden; }").Success);
                     break;
                 case HtmlFixedPageHorizontalAlignment.Left:
-                    Assert.That(Regex.Match(outDocContents,
-                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt 10pt; overflow:hidden; }").Success, Is.True);
+                    Assert.IsTrue(Regex.Match(outDocContents,
+                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt auto 10pt 10pt; overflow:hidden; }").Success);
                     break;
                 case HtmlFixedPageHorizontalAlignment.Right:
-                    Assert.That(Regex.Match(outDocContents,
-                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt 10pt 10pt auto; overflow:hidden; }").Success, Is.True);
+                    Assert.IsTrue(Regex.Match(outDocContents,
+                        "[.]awpage { position:relative; border:solid 1pt black; margin:10pt 10pt 10pt auto; overflow:hidden; }").Success);
                     break;
             }
             //ExEnd
@@ -335,17 +317,15 @@ namespace ApiExamples
             //ExSummary:Shows how to adjust page margins when saving a document to HTML.
             Document doc = new Document(MyDir + "Document.docx");
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
-            {
-                PageMargins = 15
-            };
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+            saveOptions.PageMargins = 15;
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.PageMargins.html", saveOptions);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.PageMargins/styles.css");
 
-            Assert.That(Regex.Match(outDocContents,
-                "[.]awpage { position:relative; border:solid 1pt black; margin:15pt auto 15pt auto; overflow:hidden; }").Success, Is.True);
+            Assert.IsTrue(Regex.Match(outDocContents,
+                "[.]awpage { position:relative; border:solid 1pt black; margin:15pt auto 15pt auto; overflow:hidden; }").Success);
             //ExEnd
         }
 
@@ -365,12 +345,13 @@ namespace ApiExamples
             //ExSummary:Shows how to simplify a document when saving it to HTML by removing various redundant objects.
             Document doc = new Document(MyDir + "Rendering.docx");
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions { OptimizeOutput = optimizeOutput };
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+            saveOptions.OptimizeOutput = optimizeOutput;
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html", saveOptions);
 
             // The size of the optimized version of the document is almost a third of the size of the unoptimized document.
-            Assert.That(new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length, Is.EqualTo(optimizeOutput ? 60385 : 191000).Within(200));
+            Assert.AreEqual(optimizeOutput ? 60385 : 191000, new FileInfo(ArtifactsDir + "HtmlFixedSaveOptions.OptimizeGraphicsOutput.html").Length, 200);
             //ExEnd
         }
 
@@ -385,24 +366,22 @@ namespace ApiExamples
             //ExSummary:Shows how use fonts only from the target machine when saving a document to HTML.
             Document doc = new Document(MyDir + "Bullet points with alternative font.docx");
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
-            {
-                ExportEmbeddedCss = true,
-                UseTargetMachineFonts = useTargetMachineFonts,
-                FontFormat = ExportFontFormat.Ttf,
-                ExportEmbeddedFonts = false,
-            };
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+            saveOptions.ExportEmbeddedCss = true;
+            saveOptions.UseTargetMachineFonts = useTargetMachineFonts;
+            saveOptions.FontFormat = ExportFontFormat.Ttf;
+            saveOptions.ExportEmbeddedFonts = false;
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.UsingMachineFonts.html", saveOptions);
 
             string outDocContents = File.ReadAllText(ArtifactsDir + "HtmlFixedSaveOptions.UsingMachineFonts.html");
 
             if (useTargetMachineFonts)
-                Assert.That(Regex.Match(outDocContents, "@font-face").Success, Is.False);
+                Assert.IsFalse(Regex.Match(outDocContents, "@font-face").Success);
             else
-                Assert.That(Regex.Match(outDocContents,
+                Assert.IsTrue(Regex.Match(outDocContents,
                     "@font-face { font-family:'Arial'; font-style:normal; font-weight:normal; src:local[(]'☺'[)], " +
-                    "url[(]'HtmlFixedSaveOptions.UsingMachineFonts/font001.ttf'[)] format[(]'truetype'[)]; }").Success, Is.True);
+                    "url[(]'HtmlFixedSaveOptions.UsingMachineFonts/font001.ttf'[)] format[(]'truetype'[)]; }").Success);
             //ExEnd
         }
 
@@ -421,10 +400,8 @@ namespace ApiExamples
 
             FontSavingCallback callback = new FontSavingCallback();
 
-            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions
-            {
-                ResourceSavingCallback = callback
-            };
+            HtmlFixedSaveOptions saveOptions = new HtmlFixedSaveOptions();
+            saveOptions.ResourceSavingCallback = callback;
 
             doc.Save(ArtifactsDir + "HtmlFixedSaveOptions.UsingMachineFonts.html", saveOptions);
 
@@ -439,9 +416,9 @@ namespace ApiExamples
             /// </summary>
             public void ResourceSaving(ResourceSavingArgs args)
             {
-                mText.AppendLine($"Original document URI:\t{args.Document.OriginalFileName}");
-                mText.AppendLine($"Resource being saved:\t{args.ResourceFileName}");
-                mText.AppendLine($"Full uri after saving:\t{args.ResourceFileUri}\n");
+                mText.AppendLine(string.Format("Original document URI:\t{0}", args.Document.OriginalFileName));
+                mText.AppendLine(string.Format("Resource being saved:\t{0}", args.ResourceFileName));
+                mText.AppendLine(string.Format("Full uri after saving:\t{0}\n", args.ResourceFileUri));
             }
 
             public string GetText()
@@ -455,8 +432,8 @@ namespace ApiExamples
 
         private void TestResourceSavingCallback(FontSavingCallback callback)
         {
-            Assert.That(callback.GetText().Contains("font001.woff"), Is.True);
-            Assert.That(callback.GetText().Contains("styles.css"), Is.True);
+            Assert.IsTrue(callback.GetText().Contains("font001.woff"));
+            Assert.IsTrue(callback.GetText().Contains("styles.css"));
         }
 
         //ExStart
@@ -478,15 +455,13 @@ namespace ApiExamples
 
             ResourceUriPrinter callback = new ResourceUriPrinter();
 
-            HtmlFixedSaveOptions options = new HtmlFixedSaveOptions
-            {
-                SaveFormat = SaveFormat.HtmlFixed,
-                ExportEmbeddedImages = false,
-                ResourcesFolder = ArtifactsDir + "HtmlFixedResourceFolder",
-                ResourcesFolderAlias = ArtifactsDir + "HtmlFixedResourceFolderAlias",
-                ShowPageBorder = false,
-                ResourceSavingCallback = callback
-            };
+            HtmlFixedSaveOptions options = new HtmlFixedSaveOptions();
+            options.SaveFormat = SaveFormat.HtmlFixed;
+            options.ExportEmbeddedImages = false;
+            options.ResourcesFolder = ArtifactsDir + "HtmlFixedResourceFolder";
+            options.ResourcesFolderAlias = ArtifactsDir + "HtmlFixedResourceFolderAlias";
+            options.ShowPageBorder = false;
+            options.ResourceSavingCallback = callback;
 
             // A folder specified by ResourcesFolderAlias will contain the resources instead of ResourcesFolder.
             // We must ensure the folder exists before the streams can put their resources into it.
@@ -498,8 +473,8 @@ namespace ApiExamples
 
             string[] resourceFiles = Directory.GetFiles(ArtifactsDir + "HtmlFixedResourceFolderAlias");
 
-            Assert.That(Directory.Exists(ArtifactsDir + "HtmlFixedResourceFolder"), Is.False);
-            Assert.That(resourceFiles.Count(f => f.EndsWith(".jpeg") || f.EndsWith(".png") || f.EndsWith(".css")), Is.EqualTo(6));
+            Assert.IsFalse(Directory.Exists(ArtifactsDir + "HtmlFixedResourceFolder"));
+            Assert.AreEqual(6, resourceFiles.Count(f => f.EndsWith(".jpeg") || f.EndsWith(".png") || f.EndsWith(".css")));
             TestHtmlFixedResourceFolder(callback); //ExSkip
         }
 
@@ -511,7 +486,7 @@ namespace ApiExamples
             void IResourceSavingCallback.ResourceSaving(ResourceSavingArgs args)
             {
                 // If we set a folder alias in the SaveOptions object, we will be able to print it from here.
-                mText.AppendLine($"Resource #{++mSavedResourceCount} \"{args.ResourceFileName}\"");
+                mText.AppendLine(string.Format("Resource #{0} \"{1}\"", ++mSavedResourceCount, args.ResourceFileName));
 
                 string extension = Path.GetExtension(args.ResourceFileName);
                 switch (extension)
@@ -546,7 +521,7 @@ namespace ApiExamples
 
         private void TestHtmlFixedResourceFolder(ResourceUriPrinter callback)
         {
-            Assert.That(Regex.Matches(callback.GetText(), "Resource #").Count, Is.EqualTo(16));
+            Assert.AreEqual(16, Regex.Matches(callback.GetText(), "Resource #").Count);
         }
 
         [Test]
