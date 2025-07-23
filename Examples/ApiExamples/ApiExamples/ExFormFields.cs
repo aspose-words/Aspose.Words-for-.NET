@@ -36,9 +36,9 @@ namespace ApiExamples
             // Insert a combo box which will allow a user to choose an option from a collection of strings.
             FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "Apple", "Banana", "Cherry" }, 0);
 
-            Assert.AreEqual("MyComboBox", comboBox.Name);
-            Assert.AreEqual(FieldType.FieldFormDropDown, comboBox.Type);
-            Assert.AreEqual("Apple", comboBox.Result);
+            Assert.That(comboBox.Name, Is.EqualTo("MyComboBox"));
+            Assert.That(comboBox.Type, Is.EqualTo(FieldType.FieldFormDropDown));
+            Assert.That(comboBox.Result, Is.EqualTo("Apple"));
 
             // The form field will appear in the form of a "select" html tag.
             doc.Save(ArtifactsDir + "FormFields.Create.html");
@@ -47,9 +47,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "FormFields.Create.html");
             comboBox = doc.Range.FormFields[0];
 
-            Assert.AreEqual("MyComboBox", comboBox.Name);
-            Assert.AreEqual(FieldType.FieldFormDropDown, comboBox.Type);
-            Assert.AreEqual("Apple", comboBox.Result);
+            Assert.That(comboBox.Name, Is.EqualTo("MyComboBox"));
+            Assert.That(comboBox.Type, Is.EqualTo(FieldType.FieldFormDropDown));
+            Assert.That(comboBox.Result, Is.EqualTo("Apple"));
         }
 
         [Test]
@@ -76,11 +76,11 @@ namespace ApiExamples
 
             FormField textInput = doc.Range.FormFields[0];
 
-            Assert.AreEqual("TextInput1", textInput.Name);
-            Assert.AreEqual(TextFormFieldType.Regular, textInput.TextInputType);
-            Assert.AreEqual(string.Empty, textInput.TextInputFormat);
-            Assert.AreEqual("Placeholder text", textInput.Result);
-            Assert.AreEqual(0, textInput.MaxLength);
+            Assert.That(textInput.Name, Is.EqualTo("TextInput1"));
+            Assert.That(textInput.TextInputType, Is.EqualTo(TextFormFieldType.Regular));
+            Assert.That(textInput.TextInputFormat, Is.EqualTo(string.Empty));
+            Assert.That(textInput.Result, Is.EqualTo("Placeholder text"));
+            Assert.That(textInput.MaxLength, Is.EqualTo(0));
         }
 
         [Test]
@@ -97,7 +97,7 @@ namespace ApiExamples
 
             FormField formFieldAfter = doc.Range.FormFields[3];
 
-            Assert.IsNull(formFieldAfter);
+            Assert.That(formFieldAfter, Is.Null);
         }
 
         [Test]
@@ -113,13 +113,13 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
 
             BookmarkCollection bookmarkBeforeDeleteFormField = doc.Range.Bookmarks;
-            Assert.AreEqual("MyBookmark", bookmarkBeforeDeleteFormField[0].Name);
+            Assert.That(bookmarkBeforeDeleteFormField[0].Name, Is.EqualTo("MyBookmark"));
 
             FormField formField = doc.Range.FormFields[0];
             formField.RemoveField();
 
             BookmarkCollection bookmarkAfterDeleteFormField = doc.Range.Bookmarks;
-            Assert.AreEqual("MyBookmark", bookmarkAfterDeleteFormField[0].Name);
+            Assert.That(bookmarkAfterDeleteFormField[0].Name, Is.EqualTo("MyBookmark"));
         }
 
         [Test]
@@ -141,10 +141,10 @@ namespace ApiExamples
             
             Run formFieldRun = doc.FirstSection.Body.FirstParagraph.Runs[1];
 
-            Assert.AreEqual("Aspose.FormField", formFieldRun.Text);
-            Assert.AreEqual(true, formFieldRun.Font.Bold);
-            Assert.AreEqual(24, formFieldRun.Font.Size);
-            Assert.AreEqual(Color.Red.ToArgb(), formFieldRun.Font.Color.ToArgb());
+            Assert.That(formFieldRun.Text, Is.EqualTo("Aspose.FormField"));
+            Assert.That(formFieldRun.Font.Bold, Is.EqualTo(true));
+            Assert.That(formFieldRun.Font.Size, Is.EqualTo(24));
+            Assert.That(formFieldRun.Font.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
             //ExEnd
         }
 
@@ -189,9 +189,9 @@ namespace ApiExamples
             builder.Write("Choose a value from this combo box: ");
             FormField comboBox = builder.InsertComboBox("MyComboBox", new[] { "One", "Two", "Three" }, 0);
             comboBox.CalculateOnExit = true;
-            Assert.AreEqual(3, comboBox.DropDownItems.Count);
-            Assert.AreEqual(0, comboBox.DropDownSelectedIndex);
-            Assert.True(comboBox.Enabled);
+            Assert.That(comboBox.DropDownItems.Count, Is.EqualTo(3));
+            Assert.That(comboBox.DropDownSelectedIndex, Is.EqualTo(0));
+            Assert.That(comboBox.Enabled, Is.True);
 
             builder.InsertBreak(BreakType.ParagraphBreak);
 
@@ -203,9 +203,9 @@ namespace ApiExamples
             checkBox.OwnHelp = true;
             checkBox.StatusText = "Checkbox status text";
             checkBox.OwnStatus = true;
-            Assert.AreEqual(50.0d, checkBox.CheckBoxSize);
-            Assert.False(checkBox.Checked);
-            Assert.False(checkBox.Default);
+            Assert.That(checkBox.CheckBoxSize, Is.EqualTo(50.0d));
+            Assert.That(checkBox.Checked, Is.False);
+            Assert.That(checkBox.Default, Is.False);
 
             builder.InsertBreak(BreakType.ParagraphBreak);
 
@@ -217,20 +217,20 @@ namespace ApiExamples
             textInput.TextInputDefault = "Regular";
             textInput.TextInputFormat = "FIRST CAPITAL";
             textInput.SetTextInputValue("New placeholder text");
-            Assert.AreEqual(TextFormFieldType.Regular, textInput.TextInputType);
-            Assert.AreEqual(50, textInput.MaxLength);
+            Assert.That(textInput.TextInputType, Is.EqualTo(TextFormFieldType.Regular));
+            Assert.That(textInput.MaxLength, Is.EqualTo(50));
 
             // This collection contains all our form fields.
             FormFieldCollection formFields = doc.Range.FormFields;
-            Assert.AreEqual(3, formFields.Count);
+            Assert.That(formFields.Count, Is.EqualTo(3));
 
             // Fields display our form fields. We can see their field codes by opening this document
             // in Microsoft and pressing Alt + F9. These fields have no switches,
             // and members of the FormField object fully govern their form fields' content.
-            Assert.AreEqual(3, doc.Range.Fields.Count);
-            Assert.AreEqual(" FORMDROPDOWN \u0001", doc.Range.Fields[0].GetFieldCode());
-            Assert.AreEqual(" FORMCHECKBOX \u0001", doc.Range.Fields[1].GetFieldCode());
-            Assert.AreEqual(" FORMTEXT \u0001", doc.Range.Fields[2].GetFieldCode());
+            Assert.That(doc.Range.Fields.Count, Is.EqualTo(3));
+            Assert.That(doc.Range.Fields[0].GetFieldCode(), Is.EqualTo(" FORMDROPDOWN \u0001"));
+            Assert.That(doc.Range.Fields[1].GetFieldCode(), Is.EqualTo(" FORMCHECKBOX \u0001"));
+            Assert.That(doc.Range.Fields[2].GetFieldCode(), Is.EqualTo(" FORMTEXT \u0001"));
 
             // Allow each form field to accept a document visitor.
             FormFieldVisitor formFieldVisitor = new FormFieldVisitor();
@@ -311,41 +311,41 @@ namespace ApiExamples
         {
             doc = DocumentHelper.SaveOpen(doc);
             FieldCollection fields = doc.Range.Fields;
-            Assert.AreEqual(3, fields.Count);
+            Assert.That(fields.Count, Is.EqualTo(3));
 
             TestUtil.VerifyField(FieldType.FieldFormDropDown, " FORMDROPDOWN \u0001", string.Empty, doc.Range.Fields[0]);
             TestUtil.VerifyField(FieldType.FieldFormCheckBox, " FORMCHECKBOX \u0001", string.Empty, doc.Range.Fields[1]);
             TestUtil.VerifyField(FieldType.FieldFormTextInput, " FORMTEXT \u0001", "Regular", doc.Range.Fields[2]);
 
             FormFieldCollection formFields = doc.Range.FormFields;
-            Assert.AreEqual(3, formFields.Count);
+            Assert.That(formFields.Count, Is.EqualTo(3));
 
-            Assert.AreEqual(FieldType.FieldFormDropDown, formFields[0].Type);
-            Assert.AreEqual(new[] { "One", "Two", "Three" }, formFields[0].DropDownItems);
-            Assert.True(formFields[0].CalculateOnExit);
-            Assert.AreEqual(0, formFields[0].DropDownSelectedIndex);
-            Assert.True(formFields[0].Enabled);
-            Assert.AreEqual("One", formFields[0].Result);
+            Assert.That(formFields[0].Type, Is.EqualTo(FieldType.FieldFormDropDown));
+            Assert.That(formFields[0].DropDownItems, Is.EqualTo(new[] { "One", "Two", "Three" }));
+            Assert.That(formFields[0].CalculateOnExit, Is.True);
+            Assert.That(formFields[0].DropDownSelectedIndex, Is.EqualTo(0));
+            Assert.That(formFields[0].Enabled, Is.True);
+            Assert.That(formFields[0].Result, Is.EqualTo("One"));
 
-            Assert.AreEqual(FieldType.FieldFormCheckBox, formFields[1].Type);
-            Assert.True(formFields[1].IsCheckBoxExactSize);
-            Assert.AreEqual("Right click to check this box", formFields[1].HelpText);
-            Assert.True(formFields[1].OwnHelp);
-            Assert.AreEqual("Checkbox status text", formFields[1].StatusText);
-            Assert.True(formFields[1].OwnStatus);
-            Assert.AreEqual(50.0d, formFields[1].CheckBoxSize);
-            Assert.False(formFields[1].Checked);
-            Assert.False(formFields[1].Default);
-            Assert.AreEqual("0", formFields[1].Result);
+            Assert.That(formFields[1].Type, Is.EqualTo(FieldType.FieldFormCheckBox));
+            Assert.That(formFields[1].IsCheckBoxExactSize, Is.True);
+            Assert.That(formFields[1].HelpText, Is.EqualTo("Right click to check this box"));
+            Assert.That(formFields[1].OwnHelp, Is.True);
+            Assert.That(formFields[1].StatusText, Is.EqualTo("Checkbox status text"));
+            Assert.That(formFields[1].OwnStatus, Is.True);
+            Assert.That(formFields[1].CheckBoxSize, Is.EqualTo(50.0d));
+            Assert.That(formFields[1].Checked, Is.False);
+            Assert.That(formFields[1].Default, Is.False);
+            Assert.That(formFields[1].Result, Is.EqualTo("0"));
 
-            Assert.AreEqual(FieldType.FieldFormTextInput, formFields[2].Type);
-            Assert.AreEqual("EntryMacro", formFields[2].EntryMacro);
-            Assert.AreEqual("ExitMacro", formFields[2].ExitMacro);
-            Assert.AreEqual("Regular", formFields[2].TextInputDefault);
-            Assert.AreEqual("FIRST CAPITAL", formFields[2].TextInputFormat);
-            Assert.AreEqual(TextFormFieldType.Regular, formFields[2].TextInputType);
-            Assert.AreEqual(50, formFields[2].MaxLength);
-            Assert.AreEqual("Regular", formFields[2].Result);
+            Assert.That(formFields[2].Type, Is.EqualTo(FieldType.FieldFormTextInput));
+            Assert.That(formFields[2].EntryMacro, Is.EqualTo("EntryMacro"));
+            Assert.That(formFields[2].ExitMacro, Is.EqualTo("ExitMacro"));
+            Assert.That(formFields[2].TextInputDefault, Is.EqualTo("Regular"));
+            Assert.That(formFields[2].TextInputFormat, Is.EqualTo("FIRST CAPITAL"));
+            Assert.That(formFields[2].TextInputType, Is.EqualTo(TextFormFieldType.Regular));
+            Assert.That(formFields[2].MaxLength, Is.EqualTo(50));
+            Assert.That(formFields[2].Result, Is.EqualTo("Regular"));
         }
 
         [Test]
@@ -374,10 +374,10 @@ namespace ApiExamples
             FormField comboBoxField = builder.InsertComboBox("DropDown", items, 0);
             DropDownItemCollection dropDownItems = comboBoxField.DropDownItems;
 
-            Assert.AreEqual(3, dropDownItems.Count);
-            Assert.AreEqual("One", dropDownItems[0]);
-            Assert.AreEqual(1, dropDownItems.IndexOf("Two"));
-            Assert.IsTrue(dropDownItems.Contains("Three"));
+            Assert.That(dropDownItems.Count, Is.EqualTo(3));
+            Assert.That(dropDownItems[0], Is.EqualTo("One"));
+            Assert.That(dropDownItems.IndexOf("Two"), Is.EqualTo(1));
+            Assert.That(dropDownItems.Contains("Three"), Is.True);
 
             // There are two ways of adding a new item to an existing collection of drop-down box items.
             // 1 -  Append an item to the end of the collection:
@@ -386,7 +386,7 @@ namespace ApiExamples
             // 2 -  Insert an item before another item at a specified index:
             dropDownItems.Insert(3, "Three and a half");
 
-            Assert.AreEqual(5, dropDownItems.Count);
+            Assert.That(dropDownItems.Count, Is.EqualTo(5));
 
             // Iterate over the collection and print every element.
             using (IEnumerator<string> dropDownCollectionEnumerator = dropDownItems.GetEnumerator())
@@ -400,9 +400,9 @@ namespace ApiExamples
             // 2 -  Remove an item at an index:
             dropDownItems.RemoveAt(3);
 
-            Assert.AreEqual(3, dropDownItems.Count);
-            Assert.IsFalse(dropDownItems.Contains("Three and a half"));
-            Assert.IsFalse(dropDownItems.Contains("Four"));
+            Assert.That(dropDownItems.Count, Is.EqualTo(3));
+            Assert.That(dropDownItems.Contains("Three and a half"), Is.False);
+            Assert.That(dropDownItems.Contains("Four"), Is.False);
 
             doc.Save(ArtifactsDir + "FormFields.DropDownItemCollection.html");
 
@@ -413,15 +413,15 @@ namespace ApiExamples
             doc = DocumentHelper.SaveOpen(doc);
             dropDownItems = doc.Range.FormFields[0].DropDownItems;
 
-            Assert.AreEqual(0, dropDownItems.Count);
+            Assert.That(dropDownItems.Count, Is.EqualTo(0));
 
             doc = new Document(ArtifactsDir + "FormFields.DropDownItemCollection.html");
             dropDownItems = doc.Range.FormFields[0].DropDownItems;
 
-            Assert.AreEqual(3, dropDownItems.Count);
-            Assert.AreEqual("One", dropDownItems[0]);
-            Assert.AreEqual("Two", dropDownItems[1]);
-            Assert.AreEqual("Three", dropDownItems[2]);
+            Assert.That(dropDownItems.Count, Is.EqualTo(3));
+            Assert.That(dropDownItems[0], Is.EqualTo("One"));
+            Assert.That(dropDownItems[1], Is.EqualTo("Two"));
+            Assert.That(dropDownItems[2], Is.EqualTo("Three"));
         }
     }
 }

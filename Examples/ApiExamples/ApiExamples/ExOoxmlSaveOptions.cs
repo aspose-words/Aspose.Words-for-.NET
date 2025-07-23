@@ -46,7 +46,7 @@ namespace ApiExamples
             // Open the encrypted document by passing the correct password in a LoadOptions object.
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.Password.docx", new LoadOptions("MyPassword"));
 
-            Assert.AreEqual("Hello world!", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Hello world!"));
             //ExEnd
         }
 
@@ -71,7 +71,7 @@ namespace ApiExamples
             doc.CompatibilityOptions.OptimizeFor(MsWordVersion.Word2003);
             builder.InsertImage(ImageDir + "Transparent background logo.png");
 
-            Assert.AreEqual(ShapeMarkupLanguage.Vml, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage);
+            Assert.That(((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage, Is.EqualTo(ShapeMarkupLanguage.Vml));
 
             // The "ISO/IEC 29500:2008" OOXML standard does not support VML shapes.
             // If we set the "Compliance" property of the SaveOptions object to "OoxmlCompliance.Iso29500_2008_Strict",
@@ -87,7 +87,7 @@ namespace ApiExamples
             // Our saved document defines the shape using DML to adhere to the "ISO/IEC 29500:2008" OOXML standard.
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.Iso29500Strict.docx");
             
-            Assert.AreEqual(ShapeMarkupLanguage.Dml, ((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage);
+            Assert.That(((Shape)doc.GetChild(NodeType.Shape, 0, true)).MarkupLanguage, Is.EqualTo(ShapeMarkupLanguage.Dml));
             //ExEnd
         }
 
@@ -105,8 +105,8 @@ namespace ApiExamples
 
             doc.Lists.Add(ListTemplate.NumberDefault);
 
-            Aspose.Words.Lists.List list = doc.Lists[0];
-            list.IsRestartAtEachSection = restartListAtEachSection;
+            Aspose.Words.Lists.List docList = doc.Lists[0];
+            docList.IsRestartAtEachSection = restartListAtEachSection;
 
             // The "IsRestartAtEachSection" property will only be applicable when
             // the document's OOXML compliance level is to a standard that is newer than "OoxmlComplianceCore.Ecma376".
@@ -115,7 +115,7 @@ namespace ApiExamples
                 Compliance = OoxmlCompliance.Iso29500_2008_Transitional
             };
 
-            builder.ListFormat.List = list;
+            builder.ListFormat.List = docList;
 
             builder.Writeln("List item 1");
             builder.Writeln("List item 2");
@@ -127,7 +127,7 @@ namespace ApiExamples
             
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.RestartingDocumentList.docx");
 
-            Assert.AreEqual(restartListAtEachSection, doc.Lists[0].IsRestartAtEachSection);
+            Assert.That(doc.Lists[0].IsRestartAtEachSection, Is.EqualTo(restartListAtEachSection));
             //ExEnd
         }
 
@@ -140,8 +140,7 @@ namespace ApiExamples
             //ExSummary:Shows how to determine whether to preserve the document's "Last saved time" property when saving.
             Document doc = new Document(MyDir + "Document.docx");
 
-            Assert.AreEqual(new DateTime(2021, 5, 11, 6, 32, 0), 
-                doc.BuiltInDocumentProperties.LastSavedTime);
+            Assert.That(doc.BuiltInDocumentProperties.LastSavedTime, Is.EqualTo(new DateTime(2021, 5, 11, 6, 32, 0)));
 
             // When we save the document to an OOXML format, we can create an OoxmlSaveOptions object
             // and then pass it to the document's saving method to modify how we save the document.
@@ -158,10 +157,9 @@ namespace ApiExamples
             DateTime lastSavedTimeNew = doc.BuiltInDocumentProperties.LastSavedTime;
 
             if (updateLastSavedTimeProperty)
-                Assert.IsTrue((DateTime.Now - lastSavedTimeNew).Days < 1);
+                Assert.That((DateTime.Now - lastSavedTimeNew).Days < 1, Is.True);
             else
-                Assert.AreEqual(new DateTime(2021, 5, 11, 6, 32, 0), 
-                    lastSavedTimeNew);
+                Assert.That(lastSavedTimeNew, Is.EqualTo(new DateTime(2021, 5, 11, 6, 32, 0)));
             //ExEnd
         }
 
@@ -188,8 +186,7 @@ namespace ApiExamples
             
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.KeepLegacyControlChars.docx");
 
-            Assert.AreEqual(keepLegacyControlChars ? "\u0013date \\@ \"MM/dd/yyyy\"\u0014\u0015\f" : "\u001e\f",
-                doc.FirstSection.Body.GetText());
+            Assert.That(doc.FirstSection.Body.GetText(), Is.EqualTo(keepLegacyControlChars ? "\u0013date \\@ \"MM/dd/yyyy\"\u0014\u0015\f" : "\u001e\f"));
             //ExEnd
         }
 
@@ -232,16 +229,16 @@ namespace ApiExamples
             switch (compressionLevel)
             {
                 case CompressionLevel.Maximum:
-                    Assert.IsTrue(testedFileLength < 1269000);
+                    Assert.That(testedFileLength < 1269000, Is.True);
                     break;
                 case CompressionLevel.Normal:
-                    Assert.IsTrue(testedFileLength < 1271000);
+                    Assert.That(testedFileLength < 1271000, Is.True);
                     break;
                 case CompressionLevel.Fast:
-                    Assert.IsTrue(testedFileLength < 1280000);
+                    Assert.That(testedFileLength < 1280000, Is.True);
                     break;
                 case CompressionLevel.SuperFast:
-                    Assert.IsTrue(testedFileLength < 1276000);
+                    Assert.That(testedFileLength < 1276000, Is.True);
                     break;
             }
         }
@@ -286,10 +283,10 @@ namespace ApiExamples
                 using (FileStream outputFileStream = File.Open(ArtifactsDir + "OoxmlSaveOptions.CheckFileSignatures.docx", FileMode.Open))
                 {
                     long fileSize = outputFileStream.Length;
-                    Assert.IsTrue(prevFileSize < fileSize);
+                    Assert.That(prevFileSize < fileSize, Is.True);
 
                     TestUtil.CopyStream(outputFileStream, stream);
-                    Assert.AreEqual(fileSignatures[i], TestUtil.DumpArray(stream.ToArray(), 0, 10));
+                    Assert.That(TestUtil.DumpArray(stream.ToArray(), 0, 10), Is.EqualTo(fileSignatures[i]));
 
                     prevFileSize = fileSize;
                 }
@@ -334,7 +331,7 @@ namespace ApiExamples
 
             var exception = Assert.Throws<OperationCanceledException>(() =>
                 doc.Save(ArtifactsDir + $"OoxmlSaveOptions.ProgressCallback.{ext}", saveOptions));
-            Assert.True(exception?.Message.Contains("EstimatedProgress"));
+            Assert.That(exception?.Message.Contains("EstimatedProgress"), Is.True);
         }
 
         /// <summary>
@@ -425,8 +422,8 @@ namespace ApiExamples
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
             saveOptions.DigitalSignatureDetails = digitalSignatureDetails;
 
-            Assert.AreEqual(certificateHolder, digitalSignatureDetails.CertificateHolder);
-            Assert.AreEqual("Some comments", digitalSignatureDetails.SignOptions.Comments);
+            Assert.That(digitalSignatureDetails.CertificateHolder, Is.EqualTo(certificateHolder));
+            Assert.That(digitalSignatureDetails.SignOptions.Comments, Is.EqualTo("Some comments"));
 
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.DigitalSignature.docx", saveOptions);
             //ExEnd:DigitalSignature
@@ -447,7 +444,7 @@ namespace ApiExamples
             OoxmlSaveOptions saveOptions = new OoxmlSaveOptions();
             saveOptions.UpdateAmbiguousTextFont = true;
             doc.Save(ArtifactsDir + "OoxmlSaveOptions.UpdateAmbiguousTextFont.docx", saveOptions);
-            
+
             doc = new Document(ArtifactsDir + "OoxmlSaveOptions.UpdateAmbiguousTextFont.docx");
             run = doc.FirstSection.Body.FirstParagraph.Runs[0];
             Console.WriteLine(run.Text); // ฿

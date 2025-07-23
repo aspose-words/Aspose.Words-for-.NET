@@ -521,13 +521,13 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             dstDoc.InsertNode(new BookmarkEnd(dstDoc.Document, "src_place"));
             dstDoc.Write(" after");
 
-            Assert.AreEqual("Before  after", dstDoc.Document.GetText().TrimEnd());
+            Assert.That(dstDoc.Document.GetText().TrimEnd(), Is.EqualTo("Before  after"));
 
             // Insert source document into destination inline.
             dstDoc.MoveToBookmark("src_place");
             dstDoc.InsertDocumentInline(srcDoc.Document, ImportFormatMode.UseDestinationStyles, new ImportFormatOptions());
 
-            Assert.AreEqual("Before [src content] after", dstDoc.Document.GetText().TrimEnd());
+            Assert.That(dstDoc.Document.GetText().TrimEnd(), Is.EqualTo("Before [src content] after"));
             //ExEnd:InsertDocumentInlineWithBuilder
         }
 

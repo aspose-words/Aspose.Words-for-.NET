@@ -11,7 +11,7 @@ using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
 using NUnit.Framework;
-#if NET461_OR_GREATER || JAVA
+#if NETFRAMEWORK || JAVA
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;

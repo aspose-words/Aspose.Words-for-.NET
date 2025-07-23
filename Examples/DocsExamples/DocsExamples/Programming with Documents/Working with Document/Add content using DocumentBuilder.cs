@@ -421,27 +421,27 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             builder.EndBookmark("MyBookmark");
 
             // The node that the DocumentBuilder is currently at is past the boundaries of the bookmark.
-            Assert.AreEqual(doc.Range.Bookmarks[0].BookmarkEnd, builder.CurrentParagraph.FirstChild);
+            Assert.That(builder.CurrentParagraph.FirstChild, Is.EqualTo(doc.Range.Bookmarks[0].BookmarkEnd));
 
             // If we wish to revise the content of our bookmark with the DocumentBuilder, we can move back to it like this.
             builder.MoveToBookmark("MyBookmark");
 
             // Now we're located between the bookmark's BookmarkStart and BookmarkEnd nodes, so any text the builder adds will be within it.
-            Assert.AreEqual(doc.Range.Bookmarks[0].BookmarkStart, builder.CurrentParagraph.FirstChild);
+            Assert.That(builder.CurrentParagraph.FirstChild, Is.EqualTo(doc.Range.Bookmarks[0].BookmarkStart));
 
             // We can move the builder to an individual node,
             // which in this case will be the first node of the first paragraph, like this.
             builder.MoveTo(doc.FirstSection.Body.FirstParagraph.GetChildNodes(NodeType.Any, false)[0]);
             //ExEnd:MoveToBookmark
 
-            Assert.AreEqual(NodeType.BookmarkStart, builder.CurrentNode.NodeType);
-            Assert.IsTrue(builder.IsAtStartOfParagraph);
+            Assert.That(builder.CurrentNode.NodeType, Is.EqualTo(NodeType.BookmarkStart));
+            Assert.That(builder.IsAtStartOfParagraph, Is.True);
 
             // A shorter way of moving the very start/end of a document is with these methods.
             builder.MoveToDocumentEnd();
-            Assert.IsTrue(builder.IsAtEndOfParagraph);
+            Assert.That(builder.IsAtEndOfParagraph, Is.True);
             builder.MoveToDocumentStart();
-            Assert.IsTrue(builder.IsAtStartOfParagraph);
+            Assert.That(builder.IsAtStartOfParagraph, Is.True);
             //ExEnd:MoveToNode
         }
 
@@ -479,18 +479,18 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             // Create document with paragraphs.
             doc = new Document(MyDir + "Paragraphs.docx");
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
-            Assert.AreEqual(22, paragraphs.Count);
+            Assert.That(paragraphs.Count, Is.EqualTo(22));
 
             // When we create a DocumentBuilder for a document, its cursor is at the very beginning of the document by default,
             // and any content added by the DocumentBuilder will just be prepended to the document.
             builder = new DocumentBuilder(doc);
-            Assert.AreEqual(0, paragraphs.IndexOf(builder.CurrentParagraph));
+            Assert.That(paragraphs.IndexOf(builder.CurrentParagraph), Is.EqualTo(0));
 
             // You can move the cursor to any position in a paragraph.
             builder.MoveToParagraph(2, 10);
-            Assert.AreEqual(2, paragraphs.IndexOf(builder.CurrentParagraph));
+            Assert.That(paragraphs.IndexOf(builder.CurrentParagraph), Is.EqualTo(2));
             builder.Writeln("This is a new third paragraph. ");
-            Assert.AreEqual(3, paragraphs.IndexOf(builder.CurrentParagraph));
+            Assert.That(paragraphs.IndexOf(builder.CurrentParagraph), Is.EqualTo(3));
             //ExEnd:MoveToSection
         }
 
@@ -549,8 +549,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             builder.Write("\nCell contents added by DocumentBuilder");
             Table table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
-            Assert.AreEqual(table.Rows[2].Cells[3], builder.CurrentNode.ParentNode.ParentNode);
-            Assert.AreEqual("Cell contents added by DocumentBuilderCell 3 contents\a", table.Rows[2].Cells[3].GetText().Trim());
+            Assert.That(builder.CurrentNode.ParentNode.ParentNode, Is.EqualTo(table.Rows[2].Cells[3]));
+            Assert.That(table.Rows[2].Cells[3].GetText().Trim(), Is.EqualTo("Cell contents added by DocumentBuilderCell 3 contents\a"));
             //ExEnd:MoveToTableCell
         }
 
@@ -580,14 +580,14 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             builder.Write(" Text after the field.");
 
             // The builder's cursor is currently at end of the document.
-            Assert.Null(builder.CurrentNode);
+            Assert.That(builder.CurrentNode, Is.Null);
             // We can move the builder to a field like this, placing the cursor at immediately after the field.
             builder.MoveToField(field, true);
 
             // Note that the cursor is at a place past the FieldEnd node of the field, meaning that we are not actually inside the field.
             // If we wish to move the DocumentBuilder to inside a field,
             // we will need to move it to a field's FieldStart or FieldSeparator node using the DocumentBuilder.MoveTo() method.
-            Assert.AreEqual(field.End, builder.CurrentNode.PreviousSibling);
+            Assert.That(builder.CurrentNode.PreviousSibling, Is.EqualTo(field.End));
             builder.Write(" Text immediately after the field.");
             //ExEnd:MoveToMergeField
         }

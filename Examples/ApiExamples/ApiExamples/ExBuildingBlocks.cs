@@ -54,16 +54,16 @@ namespace ApiExamples
             glossaryDoc.AppendChild(block);
 
             // All new building block GUIDs have the same zero value by default, and we can give them a new unique value.
-            Assert.AreEqual("00000000-0000-0000-0000-000000000000", block.Guid.ToString());
+            Assert.That(block.Guid.ToString(), Is.EqualTo("00000000-0000-0000-0000-000000000000"));
 
             block.Guid = Guid.NewGuid();
 
             // The following properties categorize building blocks
             // in the menu we can access in Microsoft Word via "Insert" -> "Quick Parts" -> "Building Blocks Organizer".
-            Assert.AreEqual("(Empty Category)", block.Category);
-            Assert.AreEqual(BuildingBlockType.None, block.Type);
-            Assert.AreEqual(BuildingBlockGallery.All, block.Gallery);
-            Assert.AreEqual(BuildingBlockBehavior.Content, block.Behavior);
+            Assert.That(block.Category, Is.EqualTo("(Empty Category)"));
+            Assert.That(block.Type, Is.EqualTo(BuildingBlockType.None));
+            Assert.That(block.Gallery, Is.EqualTo(BuildingBlockGallery.All));
+            Assert.That(block.Behavior, Is.EqualTo(BuildingBlockBehavior.Content));
 
             // Before we can add this building block to our document, we will need to give it some contents,
             // which we will do using a document visitor. This visitor will also set a category, gallery, and behavior.
@@ -76,13 +76,13 @@ namespace ApiExamples
                 "My custom building blocks", "Custom Block");
 
             // The block itself is a section that contains the text.
-            Assert.AreEqual($"Text inside {customBlock.Name}\f", customBlock.FirstSection.Body.FirstParagraph.GetText());
-            Assert.AreEqual(customBlock.FirstSection, customBlock.LastSection);
+            Assert.That(customBlock.FirstSection.Body.FirstParagraph.GetText(), Is.EqualTo($"Text inside {customBlock.Name}\f"));
+            Assert.That(customBlock.LastSection, Is.EqualTo(customBlock.FirstSection));
             Assert.DoesNotThrow(() => Guid.Parse(customBlock.Guid.ToString())); //ExSkip
-            Assert.AreEqual("My custom building blocks", customBlock.Category); //ExSkip
-            Assert.AreEqual(BuildingBlockType.None, customBlock.Type); //ExSkip
-            Assert.AreEqual(BuildingBlockGallery.QuickParts, customBlock.Gallery); //ExSkip
-            Assert.AreEqual(BuildingBlockBehavior.Paragraph, customBlock.Behavior); //ExSkip
+            Assert.That(customBlock.Category, Is.EqualTo("My custom building blocks")); //ExSkip
+            Assert.That(customBlock.Type, Is.EqualTo(BuildingBlockType.None)); //ExSkip
+            Assert.That(customBlock.Gallery, Is.EqualTo(BuildingBlockGallery.QuickParts)); //ExSkip
+            Assert.That(customBlock.Behavior, Is.EqualTo(BuildingBlockBehavior.Paragraph)); //ExSkip
 
             // Now, we can insert it into the document as a new section.
             doc.AppendChild(doc.ImportNode(customBlock.FirstSection, true));
@@ -169,22 +169,21 @@ namespace ApiExamples
             BuildingBlock child5 = new BuildingBlock(glossaryDoc) { Name = "Block 5" };
             glossaryDoc.AppendChild(child5);
 
-            Assert.AreEqual(5, glossaryDoc.BuildingBlocks.Count);
+            Assert.That(glossaryDoc.BuildingBlocks.Count, Is.EqualTo(5));
 
             doc.GlossaryDocument = glossaryDoc;
 
             // There are various ways of accessing building blocks.
             // 1 -  Get the first/last building blocks in the collection:
-            Assert.AreEqual("Block 1", glossaryDoc.FirstBuildingBlock.Name);
-            Assert.AreEqual("Block 5", glossaryDoc.LastBuildingBlock.Name);
+            Assert.That(glossaryDoc.FirstBuildingBlock.Name, Is.EqualTo("Block 1"));
+            Assert.That(glossaryDoc.LastBuildingBlock.Name, Is.EqualTo("Block 5"));
 
             // 2 -  Get a building block by index:
-            Assert.AreEqual("Block 2", glossaryDoc.BuildingBlocks[1].Name);
-            Assert.AreEqual("Block 3", glossaryDoc.BuildingBlocks.ToArray()[2].Name);
+            Assert.That(glossaryDoc.BuildingBlocks[1].Name, Is.EqualTo("Block 2"));
+            Assert.That(glossaryDoc.BuildingBlocks.ToArray()[2].Name, Is.EqualTo("Block 3"));
 
             // 3 -  Get the first building block that matches a gallery, name and category:
-            Assert.AreEqual("Block 4", 
-                glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4").Name);
+            Assert.That(glossaryDoc.GetBuildingBlock(BuildingBlockGallery.All, "(Empty Category)", "Block 4").Name, Is.EqualTo("Block 4"));
 
             // We will do that using a custom visitor,
             // which will give every BuildingBlock in the GlossaryDocument a unique GUID
@@ -195,7 +194,7 @@ namespace ApiExamples
             glossaryDoc.AcceptStart(visitor);
             // Visit only end of the Glossary document.
             glossaryDoc.AcceptEnd(visitor);
-            Assert.AreEqual(5, visitor.GetDictionary().Count); //ExSkip
+            Assert.That(visitor.GetDictionary().Count, Is.EqualTo(5)); //ExSkip
 
             Console.WriteLine(visitor.GetText());
 
@@ -240,7 +239,7 @@ namespace ApiExamples
 
             public override VisitorAction VisitBuildingBlockStart(BuildingBlock block)
             {
-                Assert.AreEqual("00000000-0000-0000-0000-000000000000", block.Guid.ToString()); //ExSkip
+                Assert.That(block.Guid.ToString(), Is.EqualTo("00000000-0000-0000-0000-000000000000")); //ExSkip
                 block.Guid = Guid.NewGuid();
                 mBlocksByGuid.Add(block.Guid, block);
                 return VisitorAction.Continue;

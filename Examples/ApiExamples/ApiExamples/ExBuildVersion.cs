@@ -26,8 +26,12 @@ namespace ApiExamples
             Console.WriteLine($"I am currently using {BuildVersionInfo.Product}, version number {BuildVersionInfo.Version}!");
             //ExEnd
 
-            Assert.AreEqual("Aspose.Words for .NET", BuildVersionInfo.Product);
-            Assert.True(Regex.IsMatch(BuildVersionInfo.Version, "[0-9]{2}.[0-9]{1,2}"));
+#if CPLUSPLUS
+            Assert.That(BuildVersionInfo.Product, Is.EqualTo("Aspose.Words for C++"));
+#else
+            Assert.That(BuildVersionInfo.Product, Is.EqualTo("Aspose.Words for .NET"));
+#endif
+            Assert.That(Regex.IsMatch(BuildVersionInfo.Version, "[0-9]{2}.[0-9]{1,2}"), Is.True);
         }
     }
 }

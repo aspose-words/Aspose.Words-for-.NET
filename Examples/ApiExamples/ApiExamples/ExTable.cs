@@ -57,9 +57,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Table.CreateTable.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(1, table.Rows.Count);
-            Assert.AreEqual(1, table.FirstRow.Cells.Count);
-            Assert.AreEqual("Hello world!\a\a", table.GetText().Trim());
+            Assert.That(table.Rows.Count, Is.EqualTo(1));
+            Assert.That(table.FirstRow.Cells.Count, Is.EqualTo(1));
+            Assert.That(table.GetText().Trim(), Is.EqualTo("Hello world!\a\a"));
         }
 
         [Test]
@@ -95,10 +95,10 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "DocumentBuilder.SetRowFormatting.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(30.0d, table.LeftPadding);
-            Assert.AreEqual(60.0d, table.RightPadding);
-            Assert.AreEqual(10.0d, table.TopPadding);
-            Assert.AreEqual(90.0d, table.BottomPadding);
+            Assert.That(table.LeftPadding, Is.EqualTo(30.0d));
+            Assert.That(table.RightPadding, Is.EqualTo(60.0d));
+            Assert.That(table.TopPadding, Is.EqualTo(10.0d));
+            Assert.That(table.BottomPadding, Is.EqualTo(90.0d));
         }
 
         [Test]
@@ -143,17 +143,17 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Table.RowCellFormat.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual("City\aCountry\a\aLondon\aU.K.\a\a", table.GetText().Trim());
+            Assert.That(table.GetText().Trim(), Is.EqualTo("City\aCountry\a\aLondon\aU.K.\a\a"));
 
             rowFormat = table.FirstRow.RowFormat;
 
-            Assert.AreEqual(25.0d, rowFormat.Height);
-            Assert.AreEqual(Color.Red.ToArgb(), rowFormat.Borders[BorderType.Bottom].Color.ToArgb());
+            Assert.That(rowFormat.Height, Is.EqualTo(25.0d));
+            Assert.That(rowFormat.Borders[BorderType.Bottom].Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
 
             cellFormat = table.LastRow.FirstCell.CellFormat;
 
-            Assert.AreEqual(110.8d, cellFormat.Width);
-            Assert.AreEqual(Color.Orange.ToArgb(), cellFormat.Shading.BackgroundPatternColor.ToArgb());
+            Assert.That(cellFormat.Width, Is.EqualTo(110.8d));
+            Assert.That(cellFormat.Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.Orange.ToArgb()));
         }
 
         [Test]
@@ -177,7 +177,7 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Tables.docx");
             TableCollection tables = doc.FirstSection.Body.Tables;
 
-            Assert.AreEqual(2, tables.ToArray().Length);
+            Assert.That(tables.ToArray().Length, Is.EqualTo(2));
 
             for (int i = 0; i < tables.Count; i++)
             {
@@ -186,8 +186,8 @@ namespace ApiExamples
                 RowCollection rows = tables[i].Rows;
 
                 // We can use the "ToArray" method on a row collection to clone it into an array.
-                Assert.AreEqual(rows, rows.ToArray());
-                Assert.AreNotSame(rows, rows.ToArray());
+                Assert.That(rows.ToArray(), Is.EqualTo(rows));
+                Assert.That(rows.ToArray(), Is.Not.SameAs(rows));
 
                 for (int j = 0; j < rows.Count; j++)
                 {
@@ -196,8 +196,8 @@ namespace ApiExamples
                     CellCollection cells = rows[j].Cells;
 
                     // We can use the "ToArray" method on a cell collection to clone it into an array.
-                    Assert.AreEqual(cells, cells.ToArray());
-                    Assert.AreNotSame(cells, cells.ToArray());
+                    Assert.That(cells.ToArray(), Is.EqualTo(cells));
+                    Assert.That(cells.ToArray(), Is.Not.SameAs(cells));
 
                     for (int k = 0; k < cells.Count; k++)
                     {
@@ -226,7 +226,7 @@ namespace ApiExamples
         {
             Document doc = new Document(MyDir + "Nested tables.docx");
             NodeCollection tables = doc.GetChildNodes(NodeType.Table, true);
-            Assert.AreEqual(5, tables.Count); //ExSkip
+            Assert.That(tables.Count, Is.EqualTo(5)); //ExSkip
 
             for (int i = 0; i < tables.Count; i++)
             {
@@ -307,7 +307,7 @@ namespace ApiExamples
             // Tables contain rows, which contain cells, which may contain paragraphs
             // with typical elements such as runs, shapes, and even other tables.
             // Our new table has none of these nodes, and we cannot add contents to it until it does.
-            Assert.AreEqual(0, table.GetChildNodes(NodeType.Any, true).Count);
+            Assert.That(table.GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(0));
 
             // Calling the "EnsureMinimum" method on a table will ensure that
             // the table has at least one row and one cell with an empty paragraph.
@@ -315,7 +315,7 @@ namespace ApiExamples
             table.FirstRow.FirstCell.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
             //ExEnd
 
-            Assert.AreEqual(4, table.GetChildNodes(NodeType.Any, true).Count);
+            Assert.That(table.GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(4));
         }
 
         [Test]
@@ -332,7 +332,7 @@ namespace ApiExamples
 
             // Rows contain cells, containing paragraphs with typical elements such as runs, shapes, and even other tables.
             // Our new row has none of these nodes, and we cannot add contents to it until it does.
-            Assert.AreEqual(0, row.GetChildNodes(NodeType.Any, true).Count);
+            Assert.That(row.GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(0));
 
             // Calling the "EnsureMinimum" method on a table will ensure that
             // the table has at least one cell with an empty paragraph.
@@ -340,7 +340,7 @@ namespace ApiExamples
             row.FirstCell.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
             //ExEnd
 
-            Assert.AreEqual(3, row.GetChildNodes(NodeType.Any, true).Count);
+            Assert.That(row.GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(3));
         }
 
         [Test]
@@ -359,7 +359,7 @@ namespace ApiExamples
 
             // Cells may contain paragraphs with typical elements such as runs, shapes, and even other tables.
             // Our new cell does not have any paragraphs, and we cannot add contents such as run and shape nodes to it until it does.
-            Assert.AreEqual(0, cell.GetChildNodes(NodeType.Any, true).Count);
+            Assert.That(cell.GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(0));
 
             // Calling the "EnsureMinimum" method on a cell will ensure that
             // the cell has at least one empty paragraph, which we can then add contents to.
@@ -367,7 +367,7 @@ namespace ApiExamples
             cell.FirstParagraph.AppendChild(new Run(doc, "Hello world!"));
             //ExEnd
 
-            Assert.AreEqual(2, cell.GetChildNodes(NodeType.Any, true).Count);
+            Assert.That(cell.GetChildNodes(NodeType.Any, true).Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -407,17 +407,17 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Table.SetOutlineBorders.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(TableAlignment.Center, table.Alignment);
+            Assert.That(table.Alignment, Is.EqualTo(TableAlignment.Center));
 
             BorderCollection borders = table.FirstRow.RowFormat.Borders;
 
-            Assert.AreEqual(Color.Green.ToArgb(), borders.Top.Color.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), borders.Left.Color.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), borders.Right.Color.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), borders.Bottom.Color.ToArgb());
-            Assert.AreNotEqual(Color.Green.ToArgb(), borders.Horizontal.Color.ToArgb());
-            Assert.AreNotEqual(Color.Green.ToArgb(), borders.Vertical.Color.ToArgb());
-            Assert.AreEqual(Color.LightGreen.ToArgb(), table.FirstRow.FirstCell.CellFormat.Shading.ForegroundPatternColor.ToArgb());
+            Assert.That(borders.Top.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+            Assert.That(borders.Left.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+            Assert.That(borders.Right.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+            Assert.That(borders.Bottom.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+            Assert.That(borders.Horizontal.Color.ToArgb(), Is.Not.EqualTo(Color.Green.ToArgb()));
+            Assert.That(borders.Vertical.Color.ToArgb(), Is.Not.EqualTo(Color.Green.ToArgb()));
+            Assert.That(table.FirstRow.FirstCell.CellFormat.Shading.ForegroundPatternColor.ToArgb(), Is.EqualTo(Color.LightGreen.ToArgb()));
         }
 
         [Test]
@@ -441,12 +441,12 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Table.SetBorders.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Top.Color.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Left.Color.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Right.Color.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Bottom.Color.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Horizontal.Color.ToArgb());
-            Assert.AreEqual(Color.Green.ToArgb(), table.FirstRow.RowFormat.Borders.Vertical.Color.ToArgb());
+            Assert.That(table.FirstRow.RowFormat.Borders.Top.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+            Assert.That(table.FirstRow.RowFormat.Borders.Left.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+            Assert.That(table.FirstRow.RowFormat.Borders.Right.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+            Assert.That(table.FirstRow.RowFormat.Borders.Bottom.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+            Assert.That(table.FirstRow.RowFormat.Borders.Horizontal.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
+            Assert.That(table.FirstRow.RowFormat.Borders.Vertical.Color.ToArgb(), Is.EqualTo(Color.Green.ToArgb()));
         }
 
         [Test]
@@ -471,9 +471,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Table.RowFormat.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(LineStyle.None, table.FirstRow.RowFormat.Borders.LineStyle);
-            Assert.AreEqual(HeightRule.Auto, table.FirstRow.RowFormat.HeightRule);
-            Assert.True(table.FirstRow.RowFormat.AllowBreakAcrossPages);
+            Assert.That(table.FirstRow.RowFormat.Borders.LineStyle, Is.EqualTo(LineStyle.None));
+            Assert.That(table.FirstRow.RowFormat.HeightRule, Is.EqualTo(HeightRule.Auto));
+            Assert.That(table.FirstRow.RowFormat.AllowBreakAcrossPages, Is.True);
         }
 
         [Test]
@@ -498,9 +498,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Table.CellFormat.docx");
 
             table = doc.FirstSection.Body.Tables[0];
-            Assert.AreEqual(30, table.FirstRow.FirstCell.CellFormat.Width);
-            Assert.AreEqual(TextOrientation.Downward, table.FirstRow.FirstCell.CellFormat.Orientation);
-            Assert.AreEqual(Color.LightGreen.ToArgb(), table.FirstRow.FirstCell.CellFormat.Shading.ForegroundPatternColor.ToArgb());
+            Assert.That(table.FirstRow.FirstCell.CellFormat.Width, Is.EqualTo(30));
+            Assert.That(table.FirstRow.FirstCell.CellFormat.Orientation, Is.EqualTo(TextOrientation.Downward));
+            Assert.That(table.FirstRow.FirstCell.CellFormat.Shading.ForegroundPatternColor.ToArgb(), Is.EqualTo(Color.LightGreen.ToArgb()));
         }
 
         [Test]
@@ -515,10 +515,10 @@ namespace ApiExamples
             Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
             Table table = doc.FirstSection.Body.Tables[0];
-            Assert.AreEqual(25.9d, table.DistanceTop);
-            Assert.AreEqual(25.9d, table.DistanceBottom);
-            Assert.AreEqual(17.3d, table.DistanceLeft);
-            Assert.AreEqual(17.3d, table.DistanceRight);
+            Assert.That(table.DistanceTop, Is.EqualTo(25.9d));
+            Assert.That(table.DistanceBottom, Is.EqualTo(25.9d));
+            Assert.That(table.DistanceLeft, Is.EqualTo(17.3d));
+            Assert.That(table.DistanceRight, Is.EqualTo(17.3d));
 
             // Set distance between table and surrounding text.
             table.DistanceLeft = 24;
@@ -548,13 +548,15 @@ namespace ApiExamples
             Border topBorder = table.FirstRow.RowFormat.Borders[BorderType.Top];
             table.SetBorder(BorderType.Top, LineStyle.Double, 1.5, Color.Red, true);
 
-            Assert.AreEqual(1.5d, topBorder.LineWidth);
-            Assert.AreEqual(Color.Red.ToArgb(), topBorder.Color.ToArgb());
-            Assert.AreEqual(LineStyle.Double, topBorder.LineStyle);
+            Assert.That(topBorder.LineWidth, Is.EqualTo(1.5d));
+            Assert.That(topBorder.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
+            Assert.That(topBorder.LineStyle, Is.EqualTo(LineStyle.Double));
 
             // Clear the borders of all cells in the table, and then save the document.
             table.ClearBorders();
-            Assert.Throws<AssertionException>(() => Assert.AreEqual(Color.Empty.ToArgb(), topBorder.Color.ToArgb())); //ExSkip
+#if !CPLUSPLUS
+            Assert.Throws<AssertionException>(() => Assert.That(topBorder.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()))); //ExSkip
+#endif
             doc.Save(ArtifactsDir + "Table.ClearBorders.docx");
 
             // Verify the values of the table's properties after re-opening the document.
@@ -562,9 +564,9 @@ namespace ApiExamples
             table = doc.FirstSection.Body.Tables[0];
             topBorder = table.FirstRow.RowFormat.Borders[BorderType.Top];
 
-            Assert.AreEqual(0.0d, topBorder.LineWidth);
-            Assert.AreEqual(Color.Empty.ToArgb(), topBorder.Color.ToArgb());
-            Assert.AreEqual(LineStyle.None, topBorder.LineStyle);
+            Assert.That(topBorder.LineWidth, Is.EqualTo(0.0d));
+            Assert.That(topBorder.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
+            Assert.That(topBorder.LineStyle, Is.EqualTo(LineStyle.None));
             //ExEnd
         }
 
@@ -599,8 +601,8 @@ namespace ApiExamples
             // Perform a find-and-replace operation on the last cell of the last row of the table.
             table.LastRow.LastCell.Range.Replace("50", "20", options);
 
-            Assert.AreEqual("Eggs\a50\a\a" +
-                            "Potatoes\a20\a\a", table.GetText().Trim());
+            Assert.That(table.GetText().Trim(), Is.EqualTo("Eggs\a50\a\a" +
+                            "Potatoes\a20\a\a"));
             //ExEnd
         }
 
@@ -636,8 +638,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Table.RemoveParagraphTextAndMark.docx");
 
-            Assert.AreEqual(isSmartParagraphBreakReplacement ? 1 : 2,
-                doc.FirstSection.Body.Tables[0].Rows[0].Cells[0].Paragraphs.Count);
+            Assert.That(doc.FirstSection.Body.Tables[0].Rows[0].Cells[0].Paragraphs.Count, Is.EqualTo(isSmartParagraphBreakReplacement ? 1 : 2));
         }
 
         [Test]
@@ -662,8 +663,8 @@ namespace ApiExamples
             Console.WriteLine("\nContents of the cell: ");
             Console.WriteLine(table.LastRow.LastCell.Range.Text);
 
-            Assert.AreEqual("\aColumn 1\aColumn 2\aColumn 3\aColumn 4\a\a", table.Rows[1].Range.Text);
-            Assert.AreEqual("Cell 12 contents\a", table.LastRow.LastCell.Range.Text);
+            Assert.That(table.Rows[1].Range.Text, Is.EqualTo("\aColumn 1\aColumn 2\aColumn 3\aColumn 4\a\a"));
+            Assert.That(table.LastRow.LastCell.Range.Text, Is.EqualTo("Cell 12 contents\a"));
         }
 
         [Test]
@@ -683,13 +684,13 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Table.CloneTable.doc");
 
-            Assert.AreEqual(3, doc.GetChildNodes(NodeType.Table, true).Count);
-            Assert.AreEqual(table.Range.Text, tableClone.Range.Text);
+            Assert.That(doc.GetChildNodes(NodeType.Table, true).Count, Is.EqualTo(3));
+            Assert.That(tableClone.Range.Text, Is.EqualTo(table.Range.Text));
 
             foreach (Cell cell in tableClone.GetChildNodes(NodeType.Cell, true))
                 cell.RemoveAllChildren();
 
-            Assert.AreEqual(string.Empty, tableClone.ToString(SaveFormat.Text).Trim());
+            Assert.That(tableClone.ToString(SaveFormat.Text).Trim(), Is.EqualTo(string.Empty));
         }
 
         [TestCase(false)]
@@ -715,7 +716,7 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Table.AllowBreakAcrossPages.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(3, table.Rows.Count(r => ((Row)r).RowFormat.AllowBreakAcrossPages == allowBreakAcrossPages));
+            Assert.That(table.Rows.Count(r => ((Row)r).RowFormat.AllowBreakAcrossPages == allowBreakAcrossPages), Is.EqualTo(3));
         }
 
         [TestCase(false)]
@@ -789,7 +790,7 @@ namespace ApiExamples
             foreach (Cell cell in table.GetChildNodes(NodeType.Cell, true))
                 foreach (Paragraph para in cell.Paragraphs)
                 {
-                    Assert.True(para.IsInCell);
+                    Assert.That(para.IsInCell, Is.True);
 
                     if (!(cell.ParentRow.IsLastRow && para.IsEndOfCell))
                         para.ParagraphFormat.KeepWithNext = true;
@@ -803,9 +804,9 @@ namespace ApiExamples
 
             foreach (Paragraph para in table.GetChildNodes(NodeType.Paragraph, true))
                 if (para.IsEndOfCell && ((Cell)para.ParentNode).ParentRow.IsLastRow)
-                    Assert.False(para.ParagraphFormat.KeepWithNext);
+                    Assert.That(para.ParagraphFormat.KeepWithNext, Is.False);
                 else
-                    Assert.True(para.ParagraphFormat.KeepWithNext);
+                    Assert.That(para.ParagraphFormat.KeepWithNext, Is.True);
         }
 
         [Test]
@@ -819,15 +820,15 @@ namespace ApiExamples
             Table table = doc.FirstSection.Body.Tables[0];
             NodeCollection allTables = doc.GetChildNodes(NodeType.Table, true);
 
-            Assert.AreEqual(0, allTables.IndexOf(table));
+            Assert.That(allTables.IndexOf(table), Is.EqualTo(0));
 
             Row row = table.Rows[2];
 
-            Assert.AreEqual(2, table.IndexOf(row));
+            Assert.That(table.IndexOf(row), Is.EqualTo(2));
 
             Cell cell = row.LastCell;
 
-            Assert.AreEqual(4, row.IndexOf(cell));
+            Assert.That(row.IndexOf(cell), Is.EqualTo(4));
             //ExEnd
         }
 
@@ -844,8 +845,8 @@ namespace ApiExamples
             Table table = doc.FirstSection.Body.Tables[0];
             Cell firstCell = table.FirstRow.FirstCell;
 
-            Assert.AreEqual(PreferredWidthType.Percent, firstCell.CellFormat.PreferredWidth.Type);
-            Assert.AreEqual(11.16d, firstCell.CellFormat.PreferredWidth.Value);
+            Assert.That(firstCell.CellFormat.PreferredWidth.Type, Is.EqualTo(PreferredWidthType.Percent));
+            Assert.That(firstCell.CellFormat.PreferredWidth.Value, Is.EqualTo(11.16d));
             //ExEnd
         }
 
@@ -885,18 +886,18 @@ namespace ApiExamples
             // Adjusting the "CellSpacing" property will automatically enable cell spacing.
             table.CellSpacing = 5;
 
-            Assert.True(table.AllowCellSpacing);
+            Assert.That(table.AllowCellSpacing, Is.True);
             //ExEnd
 
             doc = new Document(ArtifactsDir + "Table.AllowCellSpacing.html");
             table = (Table)doc.GetChild(NodeType.Table, 0, true);
 
-            Assert.AreEqual(allowCellSpacing, table.AllowCellSpacing);
+            Assert.That(table.AllowCellSpacing, Is.EqualTo(allowCellSpacing));
 
             if (allowCellSpacing)
-                Assert.AreEqual(3.0d, table.CellSpacing);
+                Assert.That(table.CellSpacing, Is.EqualTo(3.0d));
             else
-                Assert.AreEqual(0.0d, table.CellSpacing);
+                Assert.That(table.CellSpacing, Is.EqualTo(0.0d));
 
             TestUtil.FileContainsString(
                 allowCellSpacing
@@ -972,12 +973,12 @@ namespace ApiExamples
             Table outerTable = doc.FirstSection.Body.Tables[0];
             Table innerTable = (Table)doc.GetChild(NodeType.Table, 1, true);
 
-            Assert.AreEqual(2, doc.GetChildNodes(NodeType.Table, true).Count);
-            Assert.AreEqual(1, outerTable.FirstRow.FirstCell.Tables.Count);
-            Assert.AreEqual(16, outerTable.GetChildNodes(NodeType.Cell, true).Count);
-            Assert.AreEqual(4, innerTable.GetChildNodes(NodeType.Cell, true).Count);
-            Assert.AreEqual("Aspose table title", innerTable.Title);
-            Assert.AreEqual("Aspose table description", innerTable.Description);
+            Assert.That(doc.GetChildNodes(NodeType.Table, true).Count, Is.EqualTo(2));
+            Assert.That(outerTable.FirstRow.FirstCell.Tables.Count, Is.EqualTo(1));
+            Assert.That(outerTable.GetChildNodes(NodeType.Cell, true).Count, Is.EqualTo(16));
+            Assert.That(innerTable.GetChildNodes(NodeType.Cell, true).Count, Is.EqualTo(4));
+            Assert.That(innerTable.Title, Is.EqualTo("Aspose table title"));
+            Assert.That(innerTable.Description, Is.EqualTo("Aspose table description"));
         }
 
         //ExStart
@@ -994,7 +995,7 @@ namespace ApiExamples
             foreach (Row row in table.Rows)
                 foreach (Cell cell in row.Cells)
                     Console.WriteLine(PrintCellMergeType(cell));
-            Assert.AreEqual("The cell at R1, C1 is vertically merged", PrintCellMergeType(table.FirstRow.FirstCell)); //ExSkip
+            Assert.That(PrintCellMergeType(table.FirstRow.FirstCell), Is.EqualTo("The cell at R1, C1 is vertically merged")); //ExSkip
         }
 
         public string PrintCellMergeType(Cell cell)
@@ -1038,11 +1039,11 @@ namespace ApiExamples
                     mergedCellsCount++;
             }
 
-            Assert.AreEqual(4, mergedCellsCount);
-            Assert.True(table.Rows[2].Cells[2].CellFormat.HorizontalMerge == CellMerge.First);
-            Assert.True(table.Rows[2].Cells[2].CellFormat.VerticalMerge == CellMerge.First);
-            Assert.True(table.Rows[3].Cells[3].CellFormat.HorizontalMerge == CellMerge.Previous);
-            Assert.True(table.Rows[3].Cells[3].CellFormat.VerticalMerge == CellMerge.Previous);
+            Assert.That(mergedCellsCount, Is.EqualTo(4));
+            Assert.That(table.Rows[2].Cells[2].CellFormat.HorizontalMerge == CellMerge.First, Is.True);
+            Assert.That(table.Rows[2].Cells[2].CellFormat.VerticalMerge == CellMerge.First, Is.True);
+            Assert.That(table.Rows[3].Cells[3].CellFormat.HorizontalMerge == CellMerge.Previous, Is.True);
+            Assert.That(table.Rows[3].Cells[3].CellFormat.VerticalMerge == CellMerge.Previous, Is.True);
         }
 
         /// <summary>
@@ -1061,10 +1062,10 @@ namespace ApiExamples
             // Create a range of cells to be merged based on these indices.
             // Inverse each index if the end cell is before the start cell.
             Rectangle mergeRange = new Rectangle(
-                Math.Min(startCellPos.X, endCellPos.X),
-                Math.Min(startCellPos.Y, endCellPos.Y),
-                Math.Abs(endCellPos.X - startCellPos.X) + 1,
-                Math.Abs(endCellPos.Y - startCellPos.Y) + 1);
+                System.Math.Min(startCellPos.X, endCellPos.X),
+                System.Math.Min(startCellPos.Y, endCellPos.Y),
+                System.Math.Abs(endCellPos.X - startCellPos.X) + 1,
+                System.Math.Abs(endCellPos.Y - startCellPos.Y) + 1);
 
             foreach (Row row in parentTable.Rows)
             {
@@ -1116,9 +1117,9 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "Table.CombineTables.docx");
 
-            Assert.AreEqual(1, doc.GetChildNodes(NodeType.Table, true).Count);
-            Assert.AreEqual(9, doc.FirstSection.Body.Tables[0].Rows.Count);
-            Assert.AreEqual(42, doc.FirstSection.Body.Tables[0].GetChildNodes(NodeType.Cell, true).Count);
+            Assert.That(doc.GetChildNodes(NodeType.Table, true).Count, Is.EqualTo(1));
+            Assert.That(doc.FirstSection.Body.Tables[0].Rows.Count, Is.EqualTo(9));
+            Assert.That(doc.FirstSection.Body.Tables[0].GetChildNodes(NodeType.Cell, true).Count, Is.EqualTo(42));
         }
 
         [Test]
@@ -1150,10 +1151,10 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.AreEqual(row, table.FirstRow);
-            Assert.AreEqual(2, firstTable.Rows.Count);
-            Assert.AreEqual(3, table.Rows.Count);
-            Assert.AreEqual(3, doc.GetChildNodes(NodeType.Table, true).Count);
+            Assert.That(table.FirstRow, Is.EqualTo(row));
+            Assert.That(firstTable.Rows.Count, Is.EqualTo(2));
+            Assert.That(table.Rows.Count, Is.EqualTo(3));
+            Assert.That(doc.GetChildNodes(NodeType.Table, true).Count, Is.EqualTo(3));
         }
 
         [Test]
@@ -1189,9 +1190,9 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Table.WrapText.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(TextWrapping.Around, table.TextWrapping);
-            Assert.AreEqual(100.0d, table.AbsoluteHorizontalDistance);
-            Assert.AreEqual(20.0d, table.AbsoluteVerticalDistance);
+            Assert.That(table.TextWrapping, Is.EqualTo(TextWrapping.Around));
+            Assert.That(table.AbsoluteHorizontalDistance, Is.EqualTo(100.0d));
+            Assert.That(table.AbsoluteVerticalDistance, Is.EqualTo(20.0d));
         }
 
         [Test]
@@ -1209,9 +1210,9 @@ namespace ApiExamples
 
             if (table.TextWrapping == TextWrapping.Around)
             {
-                Assert.AreEqual(RelativeHorizontalPosition.Margin, table.HorizontalAnchor);
-                Assert.AreEqual(RelativeVerticalPosition.Paragraph, table.VerticalAnchor);
-                Assert.AreEqual(false, table.AllowOverlap);
+                Assert.That(table.HorizontalAnchor, Is.EqualTo(RelativeHorizontalPosition.Margin));
+                Assert.That(table.VerticalAnchor, Is.EqualTo(RelativeVerticalPosition.Paragraph));
+                Assert.That(table.AllowOverlap, Is.EqualTo(false));
 
                 // Only Margin, Page, Column available in RelativeHorizontalPosition for HorizontalAnchor setter.
                 // The ArgumentException will be thrown for any other values.
@@ -1252,7 +1253,7 @@ namespace ApiExamples
             builder.EndTable();
             table.PreferredWidth = PreferredWidth.FromPoints(300);
 
-            // We can also set a horizontal and vertical offset in points from the paragraph's location where we inserted the table. 
+            // We can also set a horizontal and vertical offset in points from the paragraph's location where we inserted the table.
             table.AbsoluteVerticalDistance = 50;
             table.AbsoluteHorizontalDistance = 100;
 
@@ -1262,13 +1263,13 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Table.ChangeFloatingTableProperties.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(VerticalAlignment.Bottom, table.RelativeVerticalAlignment);
-            Assert.AreEqual(HorizontalAlignment.Right, table.RelativeHorizontalAlignment);
+            Assert.That(table.RelativeVerticalAlignment, Is.EqualTo(VerticalAlignment.Bottom));
+            Assert.That(table.RelativeHorizontalAlignment, Is.EqualTo(HorizontalAlignment.Right));
 
             table = (Table)doc.GetChild(NodeType.Table, 1, true);
 
-            Assert.AreEqual(50.0d, table.AbsoluteVerticalDistance);
-            Assert.AreEqual(100.0d, table.AbsoluteHorizontalDistance);
+            Assert.That(table.AbsoluteVerticalDistance, Is.EqualTo(50.0d));
+            Assert.That(table.AbsoluteHorizontalDistance, Is.EqualTo(100.0d));
         }
 
         [Test]
@@ -1320,9 +1321,9 @@ namespace ApiExamples
             table.Style = tableStyle;
 
             // Setting the style properties of a table may affect the properties of the table itself.
-            Assert.True(table.Bidi);
-            Assert.AreEqual(5.0d, table.CellSpacing);
-            Assert.AreEqual("MyTableStyle1", table.StyleName);
+            Assert.That(table.Bidi, Is.True);
+            Assert.That(table.CellSpacing, Is.EqualTo(5.0d));
+            Assert.That(table.StyleName, Is.EqualTo("MyTableStyle1"));
 
             doc.Save(ArtifactsDir + "Table.TableStyleCreation.docx");
             //ExEnd
@@ -1330,29 +1331,29 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Table.TableStyleCreation.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.True(table.Bidi);
-            Assert.AreEqual(5.0d, table.CellSpacing);
-            Assert.AreEqual("MyTableStyle1", table.StyleName);
-            Assert.AreEqual(20.0d, tableStyle.BottomPadding);
-            Assert.AreEqual(5.0d, tableStyle.LeftPadding);
-            Assert.AreEqual(10.0d, tableStyle.RightPadding);
-            Assert.AreEqual(20.0d, tableStyle.TopPadding);
-            Assert.AreEqual(6, table.FirstRow.RowFormat.Borders.Count(b => b.Color.ToArgb() == Color.Blue.ToArgb()));
-            Assert.AreEqual(CellVerticalAlignment.Center, tableStyle.VerticalAlignment);
+            Assert.That(table.Bidi, Is.True);
+            Assert.That(table.CellSpacing, Is.EqualTo(5.0d));
+            Assert.That(table.StyleName, Is.EqualTo("MyTableStyle1"));
+            Assert.That(tableStyle.BottomPadding, Is.EqualTo(20.0d));
+            Assert.That(tableStyle.LeftPadding, Is.EqualTo(5.0d));
+            Assert.That(tableStyle.RightPadding, Is.EqualTo(10.0d));
+            Assert.That(tableStyle.TopPadding, Is.EqualTo(20.0d));
+            Assert.That(table.FirstRow.RowFormat.Borders.Count(b => b.Color.ToArgb() == Color.Blue.ToArgb()), Is.EqualTo(6));
+            Assert.That(tableStyle.VerticalAlignment, Is.EqualTo(CellVerticalAlignment.Center));
 
             tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];
 
-            Assert.True(tableStyle.AllowBreakAcrossPages);
-            Assert.True(tableStyle.Bidi);
-            Assert.AreEqual(5.0d, tableStyle.CellSpacing);
-            Assert.AreEqual(20.0d, tableStyle.BottomPadding);
-            Assert.AreEqual(5.0d, tableStyle.LeftPadding);
-            Assert.AreEqual(10.0d, tableStyle.RightPadding);
-            Assert.AreEqual(20.0d, tableStyle.TopPadding);
-            Assert.AreEqual(Color.AntiqueWhite.ToArgb(), tableStyle.Shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(Color.Blue.ToArgb(), tableStyle.Borders.Color.ToArgb());
-            Assert.AreEqual(LineStyle.DotDash, tableStyle.Borders.LineStyle);
-            Assert.AreEqual(CellVerticalAlignment.Center, tableStyle.VerticalAlignment);
+            Assert.That(tableStyle.AllowBreakAcrossPages, Is.True);
+            Assert.That(tableStyle.Bidi, Is.True);
+            Assert.That(tableStyle.CellSpacing, Is.EqualTo(5.0d));
+            Assert.That(tableStyle.BottomPadding, Is.EqualTo(20.0d));
+            Assert.That(tableStyle.LeftPadding, Is.EqualTo(5.0d));
+            Assert.That(tableStyle.RightPadding, Is.EqualTo(10.0d));
+            Assert.That(tableStyle.TopPadding, Is.EqualTo(20.0d));
+            Assert.That(tableStyle.Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.AntiqueWhite.ToArgb()));
+            Assert.That(tableStyle.Borders.Color.ToArgb(), Is.EqualTo(Color.Blue.ToArgb()));
+            Assert.That(tableStyle.Borders.LineStyle, Is.EqualTo(LineStyle.DotDash));
+            Assert.That(tableStyle.VerticalAlignment, Is.EqualTo(CellVerticalAlignment.Center));
         }
 
         [Test]
@@ -1378,7 +1379,7 @@ namespace ApiExamples
             builder.Write("Aligned to the center of the page");
             builder.EndTable();
             table.PreferredWidth = PreferredWidth.FromPoints(300);
-            
+
             table.Style = tableStyle;
 
             // 2 -  Use the "LeftIndent" to specify an indent from the left margin of the page:
@@ -1402,13 +1403,13 @@ namespace ApiExamples
 
             tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];
 
-            Assert.AreEqual(TableAlignment.Center, tableStyle.Alignment);
-            Assert.AreEqual(tableStyle, doc.FirstSection.Body.Tables[0].Style);
+            Assert.That(tableStyle.Alignment, Is.EqualTo(TableAlignment.Center));
+            Assert.That(doc.FirstSection.Body.Tables[0].Style, Is.EqualTo(tableStyle));
 
             tableStyle = (TableStyle)doc.Styles["MyTableStyle2"];
 
-            Assert.AreEqual(55.0d, tableStyle.LeftIndent);
-            Assert.AreEqual(tableStyle, ((Table)doc.GetChild(NodeType.Table, 1, true)).Style);
+            Assert.That(tableStyle.LeftIndent, Is.EqualTo(55.0d));
+            Assert.That(((Table)doc.GetChild(NodeType.Table, 1, true)).Style, Is.EqualTo(tableStyle));
         }
 
         [Test]
@@ -1472,7 +1473,7 @@ namespace ApiExamples
             // 2 -  By index:
             tableStyle.ConditionalStyles[0].Borders.Color = Color.Black;
             tableStyle.ConditionalStyles[0].Borders.LineStyle = LineStyle.DotDash;
-            Assert.AreEqual(ConditionalStyleType.FirstRow, tableStyle.ConditionalStyles[0].Type);
+            Assert.That(tableStyle.ConditionalStyles[0].Type, Is.EqualTo(ConditionalStyleType.FirstRow));
 
             // 3 -  As a property:
             tableStyle.ConditionalStyles.FirstRow.ParagraphFormat.Alignment = ParagraphAlignment.Center;
@@ -1498,8 +1499,7 @@ namespace ApiExamples
             table.Style = tableStyle;
 
             // Our style applies some conditional styles by default.
-            Assert.AreEqual(TableStyleOptions.FirstRow | TableStyleOptions.FirstColumn | TableStyleOptions.RowBands, 
-                table.StyleOptions);
+            Assert.That(table.StyleOptions, Is.EqualTo(TableStyleOptions.FirstRow | TableStyleOptions.FirstColumn | TableStyleOptions.RowBands));
 
             // We will need to enable all other styles ourselves via the "StyleOptions" property.
             table.StyleOptions = table.StyleOptions | TableStyleOptions.LastRow | TableStyleOptions.LastColumn;
@@ -1510,23 +1510,23 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "Table.ConditionalStyles.docx");
             table = doc.FirstSection.Body.Tables[0];
 
-            Assert.AreEqual(TableStyleOptions.Default | TableStyleOptions.LastRow | TableStyleOptions.LastColumn, table.StyleOptions);
+            Assert.That(table.StyleOptions, Is.EqualTo(TableStyleOptions.Default | TableStyleOptions.LastRow | TableStyleOptions.LastColumn));
             ConditionalStyleCollection conditionalStyles = ((TableStyle)doc.Styles["MyTableStyle1"]).ConditionalStyles;
 
-            Assert.AreEqual(ConditionalStyleType.FirstRow, conditionalStyles[0].Type);
-            Assert.AreEqual(Color.AliceBlue.ToArgb(), conditionalStyles[0].Shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(Color.Black.ToArgb(), conditionalStyles[0].Borders.Color.ToArgb());
-            Assert.AreEqual(LineStyle.DotDash, conditionalStyles[0].Borders.LineStyle);
-            Assert.AreEqual(ParagraphAlignment.Center, conditionalStyles[0].ParagraphFormat.Alignment);
+            Assert.That(conditionalStyles[0].Type, Is.EqualTo(ConditionalStyleType.FirstRow));
+            Assert.That(conditionalStyles[0].Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.AliceBlue.ToArgb()));
+            Assert.That(conditionalStyles[0].Borders.Color.ToArgb(), Is.EqualTo(Color.Black.ToArgb()));
+            Assert.That(conditionalStyles[0].Borders.LineStyle, Is.EqualTo(LineStyle.DotDash));
+            Assert.That(conditionalStyles[0].ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Center));
 
-            Assert.AreEqual(ConditionalStyleType.LastRow, conditionalStyles[2].Type);
-            Assert.AreEqual(10.0d, conditionalStyles[2].BottomPadding);
-            Assert.AreEqual(10.0d, conditionalStyles[2].LeftPadding);
-            Assert.AreEqual(10.0d, conditionalStyles[2].RightPadding);
-            Assert.AreEqual(10.0d, conditionalStyles[2].TopPadding);
+            Assert.That(conditionalStyles[2].Type, Is.EqualTo(ConditionalStyleType.LastRow));
+            Assert.That(conditionalStyles[2].BottomPadding, Is.EqualTo(10.0d));
+            Assert.That(conditionalStyles[2].LeftPadding, Is.EqualTo(10.0d));
+            Assert.That(conditionalStyles[2].RightPadding, Is.EqualTo(10.0d));
+            Assert.That(conditionalStyles[2].TopPadding, Is.EqualTo(10.0d));
 
-            Assert.AreEqual(ConditionalStyleType.LastColumn, conditionalStyles[3].Type);
-            Assert.True(conditionalStyles[3].Font.Bold);
+            Assert.That(conditionalStyles[3].Type, Is.EqualTo(ConditionalStyleType.LastColumn));
+            Assert.That(conditionalStyles[3].Font.Bold, Is.True);
         }
 
         [Test]
@@ -1560,12 +1560,12 @@ namespace ApiExamples
             // 1 -  Clear the conditional styles for a specific part of a table:
             tableStyle.ConditionalStyles[0].ClearFormatting();
 
-            Assert.AreEqual(Color.Empty, tableStyle.ConditionalStyles.FirstRow.Borders.Color);
+            Assert.That(tableStyle.ConditionalStyles.FirstRow.Borders.Color, Is.EqualTo(Color.Empty));
 
             // 2 -  Clear the conditional styles for the entire table:
             tableStyle.ConditionalStyles.ClearFormatting();
 
-            Assert.True(tableStyle.ConditionalStyles.All(s => s.Borders.Color == Color.Empty));
+            Assert.That(tableStyle.ConditionalStyles.All(s => s.Borders.Color == Color.Empty), Is.True);
             //ExEnd
         }
 
@@ -1614,8 +1614,7 @@ namespace ApiExamples
             table.Style = tableStyle;
 
             // The "StyleOptions" property enables row banding by default.
-            Assert.AreEqual(TableStyleOptions.FirstRow | TableStyleOptions.FirstColumn | TableStyleOptions.RowBands,
-                table.StyleOptions);
+            Assert.That(table.StyleOptions, Is.EqualTo(TableStyleOptions.FirstRow | TableStyleOptions.FirstColumn | TableStyleOptions.RowBands));
 
             // Use the "StyleOptions" property also to enable column banding.
             table.StyleOptions = table.StyleOptions | TableStyleOptions.ColumnBands;
@@ -1627,16 +1626,16 @@ namespace ApiExamples
             table = doc.FirstSection.Body.Tables[0];
             tableStyle = (TableStyle)doc.Styles["MyTableStyle1"];
 
-            Assert.AreEqual(tableStyle, table.Style);
-            Assert.AreEqual(table.StyleOptions | TableStyleOptions.ColumnBands, table.StyleOptions);
+            Assert.That(table.Style, Is.EqualTo(tableStyle));
+            Assert.That(table.StyleOptions, Is.EqualTo(table.StyleOptions | TableStyleOptions.ColumnBands));
 
-            Assert.AreEqual(Color.Black.ToArgb(), tableStyle.Borders.Color.ToArgb());
-            Assert.AreEqual(LineStyle.Double, tableStyle.Borders.LineStyle);
-            Assert.AreEqual(3, tableStyle.RowStripe);
-            Assert.AreEqual(Color.LightBlue.ToArgb(), tableStyle.ConditionalStyles[ConditionalStyleType.OddRowBanding].Shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(Color.LightCyan.ToArgb(), tableStyle.ConditionalStyles[ConditionalStyleType.EvenRowBanding].Shading.BackgroundPatternColor.ToArgb());
-            Assert.AreEqual(1, tableStyle.ColumnStripe);
-            Assert.AreEqual(Color.LightSalmon.ToArgb(), tableStyle.ConditionalStyles[ConditionalStyleType.EvenColumnBanding].Shading.BackgroundPatternColor.ToArgb());
+            Assert.That(tableStyle.Borders.Color.ToArgb(), Is.EqualTo(Color.Black.ToArgb()));
+            Assert.That(tableStyle.Borders.LineStyle, Is.EqualTo(LineStyle.Double));
+            Assert.That(tableStyle.RowStripe, Is.EqualTo(3));
+            Assert.That(tableStyle.ConditionalStyles[ConditionalStyleType.OddRowBanding].Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.LightBlue.ToArgb()));
+            Assert.That(tableStyle.ConditionalStyles[ConditionalStyleType.EvenRowBanding].Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.LightCyan.ToArgb()));
+            Assert.That(tableStyle.ColumnStripe, Is.EqualTo(1));
+            Assert.That(tableStyle.ConditionalStyles[ConditionalStyleType.EvenColumnBanding].Shading.BackgroundPatternColor.ToArgb(), Is.EqualTo(Color.LightSalmon.ToArgb()));
         }
 
         [Test]
@@ -1653,8 +1652,8 @@ namespace ApiExamples
             Table table = doc.FirstSection.Body.Tables[0];
             Row row = table.Rows[0];
 
-            Assert.AreEqual(5, row.Cells.Count);
-            Assert.True(row.Cells.All(c => ((Cell)c).CellFormat.HorizontalMerge == CellMerge.None));
+            Assert.That(row.Cells.Count, Is.EqualTo(5));
+            Assert.That(row.Cells.All(c => ((Cell)c).CellFormat.HorizontalMerge == CellMerge.None), Is.True);
 
             // Use the "ConvertToHorizontallyMergedCells" method to convert cells horizontally merged
             // by its width to the cell horizontally merged by flags.
@@ -1662,15 +1661,15 @@ namespace ApiExamples
             table.ConvertToHorizontallyMergedCells();
             row = table.Rows[0];
 
-            Assert.AreEqual(7, row.Cells.Count);
+            Assert.That(row.Cells.Count, Is.EqualTo(7));
 
-            Assert.AreEqual(CellMerge.None, row.Cells[0].CellFormat.HorizontalMerge);
-            Assert.AreEqual(CellMerge.First, row.Cells[1].CellFormat.HorizontalMerge);
-            Assert.AreEqual(CellMerge.Previous, row.Cells[2].CellFormat.HorizontalMerge);
-            Assert.AreEqual(CellMerge.None, row.Cells[3].CellFormat.HorizontalMerge);
-            Assert.AreEqual(CellMerge.First, row.Cells[4].CellFormat.HorizontalMerge);
-            Assert.AreEqual(CellMerge.Previous, row.Cells[5].CellFormat.HorizontalMerge);
-            Assert.AreEqual(CellMerge.None, row.Cells[6].CellFormat.HorizontalMerge);
+            Assert.That(row.Cells[0].CellFormat.HorizontalMerge, Is.EqualTo(CellMerge.None));
+            Assert.That(row.Cells[1].CellFormat.HorizontalMerge, Is.EqualTo(CellMerge.First));
+            Assert.That(row.Cells[2].CellFormat.HorizontalMerge, Is.EqualTo(CellMerge.Previous));
+            Assert.That(row.Cells[3].CellFormat.HorizontalMerge, Is.EqualTo(CellMerge.None));
+            Assert.That(row.Cells[4].CellFormat.HorizontalMerge, Is.EqualTo(CellMerge.First));
+            Assert.That(row.Cells[5].CellFormat.HorizontalMerge, Is.EqualTo(CellMerge.Previous));
+            Assert.That(row.Cells[6].CellFormat.HorizontalMerge, Is.EqualTo(CellMerge.None));
             //ExEnd
         }
 
@@ -1836,7 +1835,7 @@ namespace ApiExamples
 
                     var rowSpan = 1;
                     var colSpan = 1;
-                    
+
                     // Check if the current cell is the start of a vertically merged set of cells.
                     if (cell.CellFormat.VerticalMerge == CellMerge.First)
                         rowSpan = CalculateRowSpan(table, rowIndex, cellIndex);
@@ -1865,7 +1864,7 @@ namespace ApiExamples
             for (int i = rowIndex; i < table.Rows.Count; i++)
             {
                 var currentRow = table.Rows[i + 1];
-                if (currentRow == null) 
+                if (currentRow == null)
                     break;
 
                 var currentCell = currentRow.Cells[cellIndex];
@@ -1930,6 +1929,63 @@ namespace ApiExamples
 
             doc.Save(ArtifactsDir + "Table.ContextTableFormatting.docx");
             //ExEnd:ContextTableFormatting
+        }
+
+        [Test]
+        public void AutofitToWindow()
+        {
+            double[] expectedPercents = new double[] { 51, 49 };
+
+            Document doc = new Document(MyDir + "Table wrapped by text.docx");
+
+            Table table = doc.FirstSection.Body.Tables[0];
+            table.AutoFit(AutoFitBehavior.AutoFitToWindow);
+
+            Assert.That(table.FirstRow.Cells.Count, Is.EqualTo(expectedPercents.Length));
+
+            foreach (Row row in table.Rows)
+            {
+                int i = 0;
+                foreach (Cell cell in row.Cells)
+                {
+                    double expectedPercent = expectedPercents[i];
+
+                    PreferredWidth cellPrefferedWidth = cell.CellFormat.PreferredWidth;
+                    Assert.That(cellPrefferedWidth.Value, Is.EqualTo(expectedPercent));
+
+                    i++;
+                }
+            }
+        }
+
+        [Test]
+        public void HiddenRow()
+        {
+            //ExStart:HiddenRow
+            //GistId:67c1d01ce69d189983b497fd497a7768
+            //ExFor:Row.Hidden
+            //ExSummary:Shows how to hide a table row.
+            Document doc = new Document(MyDir + "Tables.docx");
+
+            Row row = doc.FirstSection.Body.Tables[0].FirstRow;
+            row.Hidden = true;
+
+            doc.Save(ArtifactsDir + "Table.HiddenRow.docx");
+
+            doc = new Document(ArtifactsDir + "Table.HiddenRow.docx");
+
+            row = doc.FirstSection.Body.Tables[0].FirstRow;
+            Assert.That(row.Hidden, Is.True);
+
+            foreach (Cell cell in row.Cells)
+            {
+                foreach (Paragraph para in cell.Paragraphs)
+                {
+                    foreach (Run run in para.Runs)
+                        Assert.That(run.Font.Hidden, Is.True);
+                }
+            }
+            //ExEnd:HiddenRow
         }
     }
 }

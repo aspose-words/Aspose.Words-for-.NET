@@ -50,27 +50,25 @@ namespace ApiExamples
 
             if (keepSourceNumbering)
             {
-                Assert.AreEqual(
-                    "6. Item 1\r\n" +
+                Assert.That(dstDoc.FirstSection.Body.ToString(SaveFormat.Text).Trim(), Is.EqualTo("6. Item 1\r\n" +
                     "7. Item 2 \r\n" +
                     "8. Item 3\r\n" +
                     "9. Item 4\r\n" +
                     "6. Item 1\r\n" +
                     "7. Item 2 \r\n" +
                     "8. Item 3\r\n" +
-                    "9. Item 4", dstDoc.FirstSection.Body.ToString(SaveFormat.Text).Trim());
+                    "9. Item 4"));
             }
             else
             {
-                Assert.AreEqual(
-                    "6. Item 1\r\n" +
+                Assert.That(dstDoc.FirstSection.Body.ToString(SaveFormat.Text).Trim(), Is.EqualTo("6. Item 1\r\n" +
                     "7. Item 2 \r\n" +
                     "8. Item 3\r\n" +
                     "9. Item 4\r\n" +
                     "10. Item 1\r\n" +
                     "11. Item 2 \r\n" +
                     "12. Item 3\r\n" +
-                    "13. Item 4", dstDoc.FirstSection.Body.ToString(SaveFormat.Text).Trim());
+                    "13. Item 4"));
             }
             //ExEnd
         }
@@ -101,8 +99,8 @@ namespace ApiExamples
             Bookmark bookmark = doc.Range.Bookmarks["InsertionPoint"];
             InsertDocument(bookmark.BookmarkStart.ParentNode, docToInsert);
 
-            Assert.AreEqual("We will insert a document here: " +
-                            "\rHello world!", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("We will insert a document here: " +
+                            "\rHello world!"));
         }
 
         /// <summary>
@@ -164,8 +162,8 @@ namespace ApiExamples
             doc.MailMerge.Execute(new string[] { "Document_1" },
                 new object[] { ArtifactsDir + "NodeImporter.InsertAtMergeField.docx" });
 
-            Assert.AreEqual("A document will appear here: \r" +
-                            "Hello world!", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("A document will appear here: \r" +
+                            "Hello world!"));
         }
 
         /// <summary>

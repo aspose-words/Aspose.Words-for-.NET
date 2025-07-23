@@ -77,7 +77,7 @@ namespace ApiExamples
             string[] filePaths = Directory.GetFiles(ArtifactsDir).Where(
                 s => s.StartsWith(ArtifactsDir + "SavingCallback.PageFileNames.Page_")).OrderBy(s => s).ToArray();
 
-            Assert.AreEqual(3, filePaths.Length);
+            Assert.That(filePaths.Length, Is.EqualTo(3));
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace ApiExamples
                 // 2 -  Create a custom stream for the output page file:
                 args.PageStream = new FileStream(outFileName, FileMode.Create);
 
-                Assert.False(args.KeepPageStreamOpen);
+                Assert.That(args.KeepPageStreamOpen, Is.False);
             }
         }
         //ExEnd
@@ -158,7 +158,7 @@ namespace ApiExamples
             void IDocumentPartSavingCallback.DocumentPartSaving(DocumentPartSavingArgs args)
             {
                 // We can access the entire source document via the "Document" property.
-                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
+                Assert.That(args.Document.OriginalFileName.EndsWith("Rendering.docx"), Is.True);
 
                 string partType = string.Empty;
 
@@ -187,8 +187,8 @@ namespace ApiExamples
                 // 2 -  Create a custom stream for the output part file:
                 args.DocumentPartStream = new FileStream(ArtifactsDir + partFileName, FileMode.Create);
 
-                Assert.True(args.DocumentPartStream.CanWrite);
-                Assert.False(args.KeepDocumentPartStreamOpen);
+                Assert.That(args.DocumentPartStream.CanWrite, Is.True);
+                Assert.That(args.KeepDocumentPartStreamOpen, Is.False);
             }
 
             private int mCount;
@@ -217,9 +217,9 @@ namespace ApiExamples
                 // 2 -  Create a custom stream for the output image file:
                 args.ImageStream = new FileStream(ArtifactsDir + imageFileName, FileMode.Create);
 
-                Assert.True(args.ImageStream.CanWrite);
-                Assert.True(args.IsImageAvailable);
-                Assert.False(args.KeepImageStreamOpen);
+                Assert.That(args.ImageStream.CanWrite, Is.True);
+                Assert.That(args.IsImageAvailable, Is.True);
+                Assert.That(args.KeepImageStreamOpen, Is.False);
             }
 
             private int mCount;
@@ -279,13 +279,13 @@ namespace ApiExamples
             public void CssSaving(CssSavingArgs args)
             {
                 // We can access the entire source document via the "Document" property.
-                Assert.True(args.Document.OriginalFileName.EndsWith("Rendering.docx"));
+                Assert.That(args.Document.OriginalFileName.EndsWith("Rendering.docx"), Is.True);
 
                 args.CssStream = new FileStream(mCssTextFileName, FileMode.Create);
                 args.IsExportNeeded = mIsExportNeeded;
                 args.KeepCssStreamOpen = mKeepCssStreamOpen;
 
-                Assert.True(args.CssStream.CanWrite);
+                Assert.That(args.CssStream.CanWrite, Is.True);
             }
 
             private readonly string mCssTextFileName;

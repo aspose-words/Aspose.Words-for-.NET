@@ -30,7 +30,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             builder.Write("Section 2");
 
             // This shows what is in the document originally. The document has two sections.
-            Assert.AreEqual("Section 1\fSection 2This is the original document before applying the clone method", clone.GetText().Trim());
+            Assert.That(clone.GetText().Trim(), Is.EqualTo("Section 1\fSection 2This is the original document before applying the clone method"));
 
             // Duplicate the last section and append the copy to the end of the document.
             int lastSectionIdx = clone.Sections.Count - 1;
@@ -38,8 +38,8 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             clone.Sections.Add(newSection);
 
             // Check what the document contains after we changed it.
-            Assert.AreEqual("Section 1\fSection 2This is the original document before applying the clone method" +
-                "\r\fSection 2This is the original document before applying the clone method", clone.GetText().Trim());
+            Assert.That(clone.GetText().Trim(), Is.EqualTo("Section 1\fSection 2This is the original document before applying the clone method" +
+                "\r\fSection 2This is the original document before applying the clone method"));
             clone.Save(ArtifactsDir + "CloneAndCombineDocuments.CloningDocument.docx");
             //ExEnd:CloneDocument
         }

@@ -35,7 +35,7 @@ namespace ApiExamples
             //ExSummary:Shows how to access a document's style collection.
             Document doc = new Document();
 
-            Assert.AreEqual(4, doc.Styles.Count);
+            Assert.That(doc.Styles.Count, Is.EqualTo(4));
 
             // Enumerate and list all the styles that a document created using Aspose.Words contains by default.
             using (IEnumerator<Style> stylesEnum = doc.Styles.GetEnumerator())
@@ -48,7 +48,7 @@ namespace ApiExamples
                     Console.WriteLine($"\tIs heading:\t\t\t{curStyle.IsHeading}");
                     Console.WriteLine($"\tIs QuickStyle:\t\t{curStyle.IsQuickStyle}");
 
-                    Assert.AreEqual(doc, curStyle.Document);
+                    Assert.That(curStyle.Document, Is.EqualTo(doc));
                 }
             }
             //ExEnd
@@ -80,7 +80,7 @@ namespace ApiExamples
 
             Style firstParagraphStyle = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Style;
 
-            Assert.AreEqual(style, firstParagraphStyle);
+            Assert.That(firstParagraphStyle, Is.EqualTo(style));
 
             // Remove our custom style from the document's styles collection.
             doc.Styles["MyStyle"].Remove();
@@ -88,10 +88,10 @@ namespace ApiExamples
             firstParagraphStyle = doc.FirstSection.Body.FirstParagraph.ParagraphFormat.Style;
 
             // Any text that used a removed style reverts to the default formatting.
-            Assert.False(doc.Styles.Any(s => s.Name == "MyStyle"));
-            Assert.AreEqual("Times New Roman", firstParagraphStyle.Font.Name);
-            Assert.AreEqual(12.0d, firstParagraphStyle.Font.Size);
-            Assert.AreEqual(Color.Empty.ToArgb(), firstParagraphStyle.Font.Color.ToArgb());
+            Assert.That(doc.Styles.Any(s => s.Name == "MyStyle"), Is.False);
+            Assert.That(firstParagraphStyle.Font.Name, Is.EqualTo("Times New Roman"));
+            Assert.That(firstParagraphStyle.Font.Size, Is.EqualTo(12.0d));
+            Assert.That(firstParagraphStyle.Font.Color.ToArgb(), Is.EqualTo(Color.Empty.ToArgb()));
             //ExEnd
         }
 
@@ -117,8 +117,8 @@ namespace ApiExamples
             // Add a style, and then verify that it has the default settings.
             styles.Add(StyleType.Paragraph, "MyStyle");
 
-            Assert.AreEqual("Courier New", styles[4].Font.Name);
-            Assert.AreEqual(15.0, styles["MyStyle"].ParagraphFormat.FirstLineIndent);
+            Assert.That(styles[4].Font.Name, Is.EqualTo("Courier New"));
+            Assert.That(styles["MyStyle"].ParagraphFormat.FirstLineIndent, Is.EqualTo(15.0));
             //ExEnd
         }
 
@@ -173,9 +173,9 @@ namespace ApiExamples
                     para.ParagraphFormat.Style.StyleIdentifier <= StyleIdentifier.Toc9)
                 {
                     TabStop tabStop = para.GetEffectiveTabStops()[0];
-                    Assert.AreEqual(400.8d, tabStop.Position);
-                    Assert.AreEqual(TabAlignment.Right, tabStop.Alignment);
-                    Assert.AreEqual(TabLeader.Dots, tabStop.Leader);
+                    Assert.That(tabStop.Position, Is.EqualTo(400.8d));
+                    Assert.That(tabStop.Alignment, Is.EqualTo(TabAlignment.Right));
+                    Assert.That(tabStop.Leader, Is.EqualTo(TabLeader.Dots));
                 }
         }
 
@@ -199,13 +199,13 @@ namespace ApiExamples
             // Changing settings of one of the styles do not affect the other.
             newStyle.Font.Color = Color.Red;
 
-            Assert.AreEqual("My Heading 1", newStyle.Name);
-            Assert.AreEqual("Heading 1", doc.Styles["Heading 1"].Name);
+            Assert.That(newStyle.Name, Is.EqualTo("My Heading 1"));
+            Assert.That(doc.Styles["Heading 1"].Name, Is.EqualTo("Heading 1"));
 
-            Assert.AreEqual(doc.Styles["Heading 1"].Type, newStyle.Type);
-            Assert.AreEqual(doc.Styles["Heading 1"].Font.Name, newStyle.Font.Name);
-            Assert.AreEqual(doc.Styles["Heading 1"].Font.Size, newStyle.Font.Size);
-            Assert.AreNotEqual(doc.Styles["Heading 1"].Font.Color, newStyle.Font.Color);
+            Assert.That(newStyle.Type, Is.EqualTo(doc.Styles["Heading 1"].Type));
+            Assert.That(newStyle.Font.Name, Is.EqualTo(doc.Styles["Heading 1"].Font.Name));
+            Assert.That(newStyle.Font.Size, Is.EqualTo(doc.Styles["Heading 1"].Font.Size));
+            Assert.That(newStyle.Font.Color, Is.Not.EqualTo(doc.Styles["Heading 1"].Font.Color));
             //ExEnd
         }
 
@@ -226,8 +226,8 @@ namespace ApiExamples
             Style newStyle = dstDoc.Styles.AddCopy(srcStyle);
 
             // The imported style has an appearance identical to its source style.
-            Assert.AreEqual("MyStyle", newStyle.Name);
-            Assert.AreEqual(Color.Red.ToArgb(), newStyle.Font.Color.ToArgb());
+            Assert.That(newStyle.Name, Is.EqualTo("MyStyle"));
+            Assert.That(newStyle.Font.Color.ToArgb(), Is.EqualTo(Color.Red.ToArgb()));
             //ExEnd
         }
 
@@ -244,10 +244,10 @@ namespace ApiExamples
 
             doc = DocumentHelper.SaveOpen(doc);
 
-            Assert.IsTrue(doc.Styles.DefaultFont.Bold);
-            Assert.AreEqual("PMingLiU", doc.Styles.DefaultFont.Name);
-            Assert.AreEqual(20, doc.Styles.DefaultParagraphFormat.SpaceAfter);
-            Assert.AreEqual(ParagraphAlignment.Right, doc.Styles.DefaultParagraphFormat.Alignment);
+            Assert.That(doc.Styles.DefaultFont.Bold, Is.True);
+            Assert.That(doc.Styles.DefaultFont.Name, Is.EqualTo("PMingLiU"));
+            Assert.That(doc.Styles.DefaultParagraphFormat.SpaceAfter, Is.EqualTo(20));
+            Assert.That(doc.Styles.DefaultParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Right));
         }
 
         [Test]
@@ -291,10 +291,10 @@ namespace ApiExamples
 
             style = doc.Styles["MyStyle1"];
 
-            Assert.AreEqual("MyStyle1", style.Name);
-            Assert.AreEqual(24, style.Font.Size);
-            Assert.AreEqual("Verdana", style.Font.Name);
-            Assert.AreEqual(12.0d, style.ParagraphFormat.SpaceAfter);
+            Assert.That(style.Name, Is.EqualTo("MyStyle1"));
+            Assert.That(style.Font.Size, Is.EqualTo(24));
+            Assert.That(style.Font.Name, Is.EqualTo("Verdana"));
+            Assert.That(style.ParagraphFormat.SpaceAfter, Is.EqualTo(12.0d));
         }
 
         [Test]
@@ -311,12 +311,12 @@ namespace ApiExamples
             // This document contains a style named "MyStyle,MyStyle Alias 1,MyStyle Alias 2".
             // If a style's name has multiple values separated by commas, each clause is a separate alias.
             Style style = doc.Styles["MyStyle"];
-            Assert.AreEqual(new [] { "MyStyle Alias 1", "MyStyle Alias 2" }, style.Aliases);
-            Assert.AreEqual("Title", style.BaseStyleName);
-            Assert.AreEqual("MyStyle Char", style.LinkedStyleName);
+            Assert.That(style.Aliases, Is.EqualTo(new [] { "MyStyle Alias 1", "MyStyle Alias 2" }));
+            Assert.That(style.BaseStyleName, Is.EqualTo("Title"));
+            Assert.That(style.LinkedStyleName, Is.EqualTo("MyStyle Char"));
 
             // We can reference a style using its alias, as well as its name.
-            Assert.AreEqual(doc.Styles["MyStyle Alias 1"], doc.Styles["MyStyle Alias 2"]);
+            Assert.That(doc.Styles["MyStyle Alias 2"], Is.EqualTo(doc.Styles["MyStyle Alias 1"]));
 
             DocumentBuilder builder = new DocumentBuilder(doc);
             builder.MoveToDocumentEnd();
@@ -325,8 +325,7 @@ namespace ApiExamples
             builder.ParagraphFormat.Style = doc.Styles["MyStyle Alias 2"];
             builder.Write("Hello again!");
 
-            Assert.AreEqual(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style, 
-                doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style);
+            Assert.That(doc.FirstSection.Body.Paragraphs[1].ParagraphFormat.Style, Is.EqualTo(doc.FirstSection.Body.Paragraphs[0].ParagraphFormat.Style));
             //ExEnd
         }
 
@@ -370,7 +369,7 @@ namespace ApiExamples
             //ExEnd:LockStyle
 
             doc = new Document(ArtifactsDir + "Styles.LockStyle.docx");
-            Assert.IsTrue(doc.Styles[StyleIdentifier.Heading1].Locked);
+            Assert.That(doc.Styles[StyleIdentifier.Heading1].Locked, Is.True);
         }
 
         [Test]
@@ -417,8 +416,8 @@ namespace ApiExamples
 
             styleHeading1.LinkedStyleName = "Heading 1 Char";
 
-            Assert.AreEqual("Heading 1 Char", styleHeading1.LinkedStyleName);
-            Assert.AreEqual("Heading 1", styleHeading1Char.LinkedStyleName);
+            Assert.That(styleHeading1.LinkedStyleName, Is.EqualTo("Heading 1 Char"));
+            Assert.That(styleHeading1Char.LinkedStyleName, Is.EqualTo("Heading 1"));
             //ExEnd:LinkedStyleName
         }
     }

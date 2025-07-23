@@ -646,20 +646,20 @@ namespace DocsExamples.Programming_with_Documents
             // 1 -  Numeric:
             builder.InsertField(" = 2 + 3 \\# $###");
 
-            Assert.AreEqual("$5", doc.Range.Fields[0].Result);
-            Assert.AreEqual(1, formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.Numeric));
+            Assert.That(doc.Range.Fields[0].Result, Is.EqualTo("$5"));
+            Assert.That(formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.Numeric), Is.EqualTo(1));
 
             // 2 -  Date/time:
             builder.InsertField("DATE \\@ \"d MMMM yyyy\"");
 
-            Assert.IsTrue(doc.Range.Fields[1].Result.StartsWith("Date: "));
-            Assert.AreEqual(1, formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.DateTime));
+            Assert.That(doc.Range.Fields[1].Result.StartsWith("Date: "), Is.True);
+            Assert.That(formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.DateTime), Is.EqualTo(1));
 
             // 3 -  General:
             builder.InsertField("QUOTE \"2\" \\* Ordinal");
 
-            Assert.AreEqual("Item # 2:", doc.Range.Fields[2].Result);
-            Assert.AreEqual(1, formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.General));
+            Assert.That(doc.Range.Fields[2].Result, Is.EqualTo("Item # 2:"));
+            Assert.That(formatter.CountFormatInvocations(FieldResultFormatter.FormatInvocationType.General), Is.EqualTo(1));
 
             formatter.PrintFormatInvocations();
             //ExEnd:FieldResultFormatting

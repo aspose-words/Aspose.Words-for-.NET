@@ -36,9 +36,9 @@ namespace ApiExamples
             List<StructuredDocumentTag> tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true)
                 .OfType<StructuredDocumentTag>().ToList();
 
-            Assert.AreEqual(SdtType.RepeatingSection, tags[0].SdtType);
-            Assert.AreEqual(SdtType.RepeatingSectionItem, tags[1].SdtType);
-            Assert.AreEqual(SdtType.RichText, tags[2].SdtType);
+            Assert.That(tags[0].SdtType, Is.EqualTo(SdtType.RepeatingSection));
+            Assert.That(tags[1].SdtType, Is.EqualTo(SdtType.RepeatingSectionItem));
+            Assert.That(tags[2].SdtType, Is.EqualTo(SdtType.RichText));
             //ExEnd
         }
 
@@ -54,9 +54,9 @@ namespace ApiExamples
             List<StructuredDocumentTag> tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true)
                 .OfType<StructuredDocumentTag>().ToList();
 
-            Assert.True(tags[0].WordOpenXML
+            Assert.That(tags[0].WordOpenXML
                 .Contains(
-                    "<pkg:part pkg:name=\"/docProps/app.xml\" pkg:contentType=\"application/vnd.openxmlformats-officedocument.extended-properties+xml\">"));
+                    "<pkg:part pkg:name=\"/docProps/app.xml\" pkg:contentType=\"application/vnd.openxmlformats-officedocument.extended-properties+xml\">"), Is.True);
             //ExEnd
         }
 
@@ -88,7 +88,7 @@ namespace ApiExamples
             builder.InsertNode(sdtPlainText);
             builder.InsertNode(sdtRichText);
 
-            Assert.AreEqual(NodeType.StructuredDocumentTag, sdtPlainText.NodeType);
+            Assert.That(sdtPlainText.NodeType, Is.EqualTo(NodeType.StructuredDocumentTag));
 
             NodeCollection tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true);
 
@@ -98,8 +98,8 @@ namespace ApiExamples
 
                 Console.WriteLine(sdt.WordOpenXMLMinimal);
 
-                Assert.AreEqual(StyleIdentifier.Quote, sdt.Style.StyleIdentifier);
-                Assert.AreEqual("Quote", sdt.StyleName);
+                Assert.That(sdt.Style.StyleIdentifier, Is.EqualTo(StyleIdentifier.Quote));
+                Assert.That(sdt.StyleName, Is.EqualTo("Quote"));
             }
             //ExEnd
         }
@@ -133,8 +133,8 @@ namespace ApiExamples
             StructuredDocumentTag[] tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true)
                 .OfType<StructuredDocumentTag>().ToArray();
 
-            Assert.AreEqual(true, tags[0].Checked);
-            Assert.AreEqual(string.Empty, tags[0].XmlMapping.StoreItemId);
+            Assert.That(tags[0].Checked, Is.EqualTo(true));
+            Assert.That(tags[0].XmlMapping.StoreItemId, Is.EqualTo(string.Empty));
         }
 
         [Test, Category("SkipMono")]
@@ -209,7 +209,7 @@ namespace ApiExamples
             tag.Tag = "MyPlainTextSDT";
 
             // Every structured document tag has a random unique ID.
-            Assert.IsTrue(tag.Id > 0);
+            Assert.That(tag.Id > 0, Is.True);
 
             // Set the font for the text inside the structured document tag.
             tag.ContentsFont.Name = "Arial";
@@ -247,14 +247,14 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.PlainText.docx");
             tag = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
 
-            Assert.AreEqual("My plain text", tag.Title);
-            Assert.AreEqual(Color.Magenta.ToArgb(), tag.Color.ToArgb());
-            Assert.AreEqual("MyPlainTextSDT", tag.Tag);
-            Assert.IsTrue(tag.Id > 0);
-            Assert.AreEqual("Arial", tag.ContentsFont.Name);
-            Assert.AreEqual("Arial Black", tag.EndCharacterFont.Name);
-            Assert.True(tag.Multiline);
-            Assert.AreEqual(SdtAppearance.Tags, tag.Appearance);
+            Assert.That(tag.Title, Is.EqualTo("My plain text"));
+            Assert.That(tag.Color.ToArgb(), Is.EqualTo(Color.Magenta.ToArgb()));
+            Assert.That(tag.Tag, Is.EqualTo("MyPlainTextSDT"));
+            Assert.That(tag.Id > 0, Is.True);
+            Assert.That(tag.ContentsFont.Name, Is.EqualTo("Arial"));
+            Assert.That(tag.EndCharacterFont.Name, Is.EqualTo("Arial Black"));
+            Assert.That(tag.Multiline, Is.True);
+            Assert.That(tag.Appearance, Is.EqualTo(SdtAppearance.Tags));
         }
 
         [TestCase(false)]
@@ -297,8 +297,7 @@ namespace ApiExamples
 
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.IsTemporary.docx");
 
-            Assert.AreEqual(2,
-                doc.GetChildNodes(NodeType.StructuredDocumentTag, true).Count(sdt => ((StructuredDocumentTag)sdt).IsTemporary == isTemporary));
+            Assert.That(doc.GetChildNodes(NodeType.StructuredDocumentTag, true).Count(sdt => ((StructuredDocumentTag)sdt).IsTemporary == isTemporary), Is.EqualTo(2));
         }
 
         [TestCase(false)]
@@ -336,7 +335,7 @@ namespace ApiExamples
 
             // If "PlaceholderName" refers to an existing block in the parent document's glossary document,
             // we will be able to verify the building block via the "Placeholder" property.
-            Assert.AreEqual(substituteBlock, tag.Placeholder);
+            Assert.That(tag.Placeholder, Is.EqualTo(substituteBlock));
 
             // Set the "IsShowingPlaceholderText" property to "true" to treat the
             // structured document tag's current contents as placeholder text.
@@ -356,10 +355,10 @@ namespace ApiExamples
             tag = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
             substituteBlock = (BuildingBlock)doc.GlossaryDocument.GetChild(NodeType.BuildingBlock, 0, true);
 
-            Assert.AreEqual("Custom Placeholder", substituteBlock.Name);
-            Assert.AreEqual(isShowingPlaceholderText, tag.IsShowingPlaceholderText);
-            Assert.AreEqual(substituteBlock, tag.Placeholder);
-            Assert.AreEqual(substituteBlock.Name, tag.PlaceholderName);
+            Assert.That(substituteBlock.Name, Is.EqualTo("Custom Placeholder"));
+            Assert.That(tag.IsShowingPlaceholderText, Is.EqualTo(isShowingPlaceholderText));
+            Assert.That(tag.Placeholder, Is.EqualTo(substituteBlock));
+            Assert.That(tag.PlaceholderName, Is.EqualTo(substituteBlock.Name));
         }
 
         [Test]
@@ -398,13 +397,13 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.Lock.docx");
             tag = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
 
-            Assert.True(tag.LockContents);
-            Assert.False(tag.LockContentControl);
+            Assert.That(tag.LockContents, Is.True);
+            Assert.That(tag.LockContentControl, Is.False);
 
             tag = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 1, true);
 
-            Assert.False(tag.LockContents);
-            Assert.True(tag.LockContentControl);
+            Assert.That(tag.LockContents, Is.False);
+            Assert.That(tag.LockContentControl, Is.True);
         }
 
         [Test]
@@ -436,7 +435,7 @@ namespace ApiExamples
             SdtListItemCollection listItems = tag.ListItems;
             listItems.Add(new SdtListItem("Value 1"));
 
-            Assert.AreEqual(listItems[0].DisplayText, listItems[0].Value);
+            Assert.That(listItems[0].Value, Is.EqualTo(listItems[0].DisplayText));
 
             // Add 3 more list items. Initialize these items using a different constructor to the first item
             // to display strings that are different from their values.
@@ -444,12 +443,12 @@ namespace ApiExamples
             listItems.Add(new SdtListItem("Item 3", "Value 3"));
             listItems.Add(new SdtListItem("Item 4", "Value 4"));
 
-            Assert.AreEqual(4, listItems.Count);
+            Assert.That(listItems.Count, Is.EqualTo(4));
 
             // The drop-down list is displaying the first item. Assign a different list item to the "SelectedValue" to display it.
             listItems.SelectedValue = listItems[3];
 
-            Assert.AreEqual("Value 4", listItems.SelectedValue.Value);
+            Assert.That(listItems.SelectedValue.Value, Is.EqualTo("Value 4"));
 
             // Enumerate over the collection and print each element.
             using (IEnumerator<SdtListItem> enumerator = listItems.GetEnumerator())
@@ -462,7 +461,7 @@ namespace ApiExamples
             // Remove the last list item. 
             listItems.RemoveAt(3);
 
-            Assert.AreEqual(3, listItems.Count);
+            Assert.That(listItems.Count, Is.EqualTo(3));
 
             // Since our drop-down control is set to display the removed item by default, give it an item to display which exists.
             listItems.SelectedValue = listItems[1];
@@ -472,7 +471,7 @@ namespace ApiExamples
             // Use the "Clear" method to empty the entire drop-down item collection at once.
             listItems.Clear();
 
-            Assert.AreEqual(0, listItems.Count);
+            Assert.That(listItems.Count, Is.EqualTo(0));
             //ExEnd
         }
 
@@ -509,15 +508,15 @@ namespace ApiExamples
             string xmlPartContent = "<root><text>Hello world!</text></root>";
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
 
-            Assert.AreEqual(Encoding.ASCII.GetBytes(xmlPartContent), xmlPart.Data);
-            Assert.AreEqual(xmlPartId, xmlPart.Id);
+            Assert.That(xmlPart.Data, Is.EqualTo(Encoding.ASCII.GetBytes(xmlPartContent)));
+            Assert.That(xmlPart.Id, Is.EqualTo(xmlPartId));
 
             // Below are two ways to refer to XML parts.
             // 1 -  By an index in the custom XML part collection:
-            Assert.AreEqual(xmlPart, doc.CustomXmlParts[0]);
+            Assert.That(doc.CustomXmlParts[0], Is.EqualTo(xmlPart));
 
             // 2 -  By GUID:
-            Assert.AreEqual(xmlPart, doc.CustomXmlParts.GetById(xmlPartId));
+            Assert.That(doc.CustomXmlParts.GetById(xmlPartId), Is.EqualTo(xmlPart));
 
             // Add an XML schema association.
             xmlPart.Schemas.Add("http://www.w3.org/2001/XMLSchema");
@@ -527,7 +526,7 @@ namespace ApiExamples
             xmlPartClone.Id = Guid.NewGuid().ToString("B");
             doc.CustomXmlParts.Add(xmlPartClone);
 
-            Assert.AreEqual(2, doc.CustomXmlParts.Count);
+            Assert.That(doc.CustomXmlParts.Count, Is.EqualTo(2));
 
             // Iterate through the collection and print the contents of each part.
             using (IEnumerator<CustomXmlPart> enumerator = doc.CustomXmlParts.GetEnumerator())
@@ -544,7 +543,7 @@ namespace ApiExamples
             // Use the "RemoveAt" method to remove the cloned part by index.
             doc.CustomXmlParts.RemoveAt(1);
 
-            Assert.AreEqual(1, doc.CustomXmlParts.Count);
+            Assert.That(doc.CustomXmlParts.Count, Is.EqualTo(1));
 
             // Clone the XML parts collection, and then use the "Clear" method to remove all its elements at once.
             CustomXmlPartCollection customXmlParts = doc.CustomXmlParts.Clone();
@@ -559,20 +558,20 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "StructuredDocumentTag.CustomXml.docx");
             //ExEnd
 
-            Assert.IsTrue(DocumentHelper.CompareDocs(ArtifactsDir + "StructuredDocumentTag.CustomXml.docx", GoldsDir + "StructuredDocumentTag.CustomXml Gold.docx"));
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "StructuredDocumentTag.CustomXml.docx", GoldsDir + "StructuredDocumentTag.CustomXml Gold.docx"), Is.True);
 
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.CustomXml.docx");
             xmlPart = doc.CustomXmlParts[0];
 
             Assert.DoesNotThrow(() => Guid.Parse(xmlPart.Id));
-            Assert.AreEqual("<root><text>Hello world!</text></root>", Encoding.UTF8.GetString(xmlPart.Data));
-            Assert.AreEqual("http://www.w3.org/2001/XMLSchema", xmlPart.Schemas[0]);
+            Assert.That(Encoding.UTF8.GetString(xmlPart.Data), Is.EqualTo("<root><text>Hello world!</text></root>"));
+            Assert.That(xmlPart.Schemas[0], Is.EqualTo("http://www.w3.org/2001/XMLSchema"));
 
             tag = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
-            Assert.AreEqual("Hello world!", tag.GetText().Trim());
-            Assert.AreEqual("/root[1]/text[1]", tag.XmlMapping.XPath);
-            Assert.AreEqual(string.Empty, tag.XmlMapping.PrefixMappings);
-            Assert.AreEqual(xmlPart.DataChecksum, tag.XmlMapping.CustomXmlPart.DataChecksum);
+            Assert.That(tag.GetText().Trim(), Is.EqualTo("Hello world!"));
+            Assert.That(tag.XmlMapping.XPath, Is.EqualTo("/root[1]/text[1]"));
+            Assert.That(tag.XmlMapping.PrefixMappings, Is.EqualTo(string.Empty));
+            Assert.That(tag.XmlMapping.CustomXmlPart.DataChecksum, Is.EqualTo(xmlPart.DataChecksum));
         }
 
         [Test]
@@ -600,7 +599,7 @@ namespace ApiExamples
             Console.WriteLine(updatedChecksum);
 
             // We changed the XmlPart of the tag, and the checksum was updated at runtime.
-            Assert.AreNotEqual(checksum, updatedChecksum);
+            Assert.That(updatedChecksum, Is.Not.EqualTo(checksum));
             //ExEnd
         }
 
@@ -622,8 +621,7 @@ namespace ApiExamples
             string xmlPartContent = "<root><text>Text element #1</text><text>Text element #2</text></root>";
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
 
-            Assert.AreEqual("<root><text>Text element #1</text><text>Text element #2</text></root>",
-                Encoding.UTF8.GetString(xmlPart.Data));
+            Assert.That(Encoding.UTF8.GetString(xmlPart.Data), Is.EqualTo("<root><text>Text element #1</text><text>Text element #2</text></root>"));
 
             // Create a structured document tag that will display the contents of our CustomXmlPart.
             StructuredDocumentTag tag = new StructuredDocumentTag(doc, SdtType.PlainText, MarkupLevel.Block);
@@ -633,10 +631,10 @@ namespace ApiExamples
             // In this case, it will be contents of the the second "<text>" element of the first "<root>" element: "Text element #2".
             tag.XmlMapping.SetMapping(xmlPart, "/root[1]/text[2]", "xmlns:ns='http://www.w3.org/2001/XMLSchema'");
 
-            Assert.True(tag.XmlMapping.IsMapped);
-            Assert.AreEqual(xmlPart, tag.XmlMapping.CustomXmlPart);
-            Assert.AreEqual("/root[1]/text[2]", tag.XmlMapping.XPath);
-            Assert.AreEqual("xmlns:ns='http://www.w3.org/2001/XMLSchema'", tag.XmlMapping.PrefixMappings);
+            Assert.That(tag.XmlMapping.IsMapped, Is.True);
+            Assert.That(tag.XmlMapping.CustomXmlPart, Is.EqualTo(xmlPart));
+            Assert.That(tag.XmlMapping.XPath, Is.EqualTo("/root[1]/text[2]"));
+            Assert.That(tag.XmlMapping.PrefixMappings, Is.EqualTo("xmlns:ns='http://www.w3.org/2001/XMLSchema'"));
 
             // Add the structured document tag to the document to display the content from our custom part.
             doc.FirstSection.Body.AppendChild(tag);
@@ -647,12 +645,12 @@ namespace ApiExamples
             xmlPart = doc.CustomXmlParts[0];
 
             Assert.DoesNotThrow(() => Guid.Parse(xmlPart.Id));
-            Assert.AreEqual("<root><text>Text element #1</text><text>Text element #2</text></root>", Encoding.UTF8.GetString(xmlPart.Data));
+            Assert.That(Encoding.UTF8.GetString(xmlPart.Data), Is.EqualTo("<root><text>Text element #1</text><text>Text element #2</text></root>"));
 
             tag = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
-            Assert.AreEqual("Text element #2", tag.GetText().Trim());
-            Assert.AreEqual("/root[1]/text[2]", tag.XmlMapping.XPath);
-            Assert.AreEqual("xmlns:ns='http://www.w3.org/2001/XMLSchema'", tag.XmlMapping.PrefixMappings);
+            Assert.That(tag.GetText().Trim(), Is.EqualTo("Text element #2"));
+            Assert.That(tag.XmlMapping.XPath, Is.EqualTo("/root[1]/text[2]"));
+            Assert.That(tag.XmlMapping.PrefixMappings, Is.EqualTo("xmlns:ns='http://www.w3.org/2001/XMLSchema'"));
         }
 
         [Test]
@@ -668,8 +666,7 @@ namespace ApiExamples
             string xmlPartContent = "<root><text>Text element #1</text><text>Text element #2</text></root>";
             CustomXmlPart xmlPart = doc.CustomXmlParts.Add(xmlPartId, xmlPartContent);
 
-            Assert.AreEqual("<root><text>Text element #1</text><text>Text element #2</text></root>",
-                Encoding.UTF8.GetString(xmlPart.Data));
+            Assert.That(Encoding.UTF8.GetString(xmlPart.Data), Is.EqualTo("<root><text>Text element #1</text><text>Text element #2</text></root>"));
 
             // Create a structured document tag that will display the contents of our CustomXmlPart in the document.
             StructuredDocumentTagRangeStart sdtRangeStart = (StructuredDocumentTagRangeStart)doc.GetChild(NodeType.StructuredDocumentTagRangeStart, 0, true);
@@ -686,10 +683,10 @@ namespace ApiExamples
             xmlPart = doc.CustomXmlParts[0];
 
             Assert.DoesNotThrow(() => Guid.Parse(xmlPart.Id));
-            Assert.AreEqual("<root><text>Text element #1</text><text>Text element #2</text></root>", Encoding.UTF8.GetString(xmlPart.Data));
+            Assert.That(Encoding.UTF8.GetString(xmlPart.Data), Is.EqualTo("<root><text>Text element #1</text><text>Text element #2</text></root>"));
 
             sdtRangeStart = (StructuredDocumentTagRangeStart)doc.GetChild(NodeType.StructuredDocumentTagRangeStart, 0, true);
-            Assert.AreEqual("/root[1]/text[2]", sdtRangeStart.XmlMapping.XPath);
+            Assert.That(sdtRangeStart.XmlMapping.XPath, Is.EqualTo("/root[1]/text[2]"));
         }
 
         [Test]
@@ -722,8 +719,8 @@ namespace ApiExamples
             schemas.Add("http://www.w3.org/2001/XMLSchema-instance");
             schemas.Add("http://schemas.microsoft.com/office/2006/metadata/contentType");
 
-            Assert.AreEqual(3, schemas.Count);
-            Assert.AreEqual(2, schemas.IndexOf("http://schemas.microsoft.com/office/2006/metadata/contentType"));
+            Assert.That(schemas.Count, Is.EqualTo(3));
+            Assert.That(schemas.IndexOf("http://schemas.microsoft.com/office/2006/metadata/contentType"), Is.EqualTo(2));
 
             // Enumerate the schemas and print each element.
             using (IEnumerator<string> enumerator = schemas.GetEnumerator())
@@ -742,7 +739,7 @@ namespace ApiExamples
             // 3 -  Use the "Clear" method to empty the collection at once.
             schemas.Clear();
 
-            Assert.AreEqual(0, schemas.Count);
+            Assert.That(schemas.Count, Is.EqualTo(0));
             //ExEnd
         }
 
@@ -757,7 +754,7 @@ namespace ApiExamples
             // Structured document tags have IDs in the form of GUIDs.
             StructuredDocumentTag tag = (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
 
-            Assert.AreEqual("{F3029283-4FF8-4DD2-9F31-395F19ACEE85}", tag.XmlMapping.StoreItemId);
+            Assert.That(tag.XmlMapping.StoreItemId, Is.EqualTo("{F3029283-4FF8-4DD2-9F31-395F19ACEE85}"));
             //ExEnd
         }
 
@@ -791,8 +788,8 @@ namespace ApiExamples
             doc.FirstSection.Body.AppendChild(tag);
 
             // This structured document tag, which is in the form of a text box, already displays placeholder text.
-            Assert.AreEqual("Click here to enter text.", tag.GetText().Trim());
-            Assert.True(tag.IsShowingPlaceholderText);
+            Assert.That(tag.GetText().Trim(), Is.EqualTo("Click here to enter text."));
+            Assert.That(tag.IsShowingPlaceholderText, Is.True);
 
             // Create a building block with text contents.
             GlossaryDocument glossaryDoc = doc.GlossaryDocument;
@@ -807,21 +804,21 @@ namespace ApiExamples
             // the structured document tag to display the contents of the building block in place of the original default text.
             tag.PlaceholderName = "My placeholder";
 
-            Assert.AreEqual("Custom placeholder text.", tag.GetText().Trim());
-            Assert.True(tag.IsShowingPlaceholderText);
+            Assert.That(tag.GetText().Trim(), Is.EqualTo("Custom placeholder text."));
+            Assert.That(tag.IsShowingPlaceholderText, Is.True);
 
             // Edit the text of the structured document tag and hide the placeholder text.
             Run run = (Run)tag.GetChild(NodeType.Run, 0, true);
             run.Text = "New text.";
             tag.IsShowingPlaceholderText = false;
 
-            Assert.AreEqual("New text.", tag.GetText().Trim());
+            Assert.That(tag.GetText().Trim(), Is.EqualTo("New text."));
 
             // Use the "Clear" method to clear this structured document tag's contents and display the placeholder again.
             tag.Clear();
 
-            Assert.True(tag.IsShowingPlaceholderText);
-            Assert.AreEqual("Custom placeholder text.", tag.GetText().Trim());
+            Assert.That(tag.IsShowingPlaceholderText, Is.True);
+            Assert.That(tag.GetText().Trim(), Is.EqualTo("Custom placeholder text."));
             //ExEnd
         }
 
@@ -833,8 +830,8 @@ namespace ApiExamples
             StructuredDocumentTag docPartObjSdt =
                 (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 0, true);
 
-            Assert.AreEqual(SdtType.DocPartObj, docPartObjSdt.SdtType);
-            Assert.AreEqual("Table of Contents", docPartObjSdt.BuildingBlockGallery);
+            Assert.That(docPartObjSdt.SdtType, Is.EqualTo(SdtType.DocPartObj));
+            Assert.That(docPartObjSdt.BuildingBlockGallery, Is.EqualTo("Table of Contents"));
         }
 
         [Test]
@@ -845,7 +842,7 @@ namespace ApiExamples
             StructuredDocumentTag plainTextSdt =
                 (StructuredDocumentTag)doc.GetChild(NodeType.StructuredDocumentTag, 1, true);
 
-            Assert.AreEqual(SdtType.PlainText, plainTextSdt.SdtType);
+            Assert.That(plainTextSdt.SdtType, Is.EqualTo(SdtType.PlainText));
             Assert.Throws<InvalidOperationException>(() => { var _ =plainTextSdt.BuildingBlockGallery; },
                 "BuildingBlockType is only accessible for BuildingBlockGallery SDT type.");
         }
@@ -874,9 +871,9 @@ namespace ApiExamples
             buildingBlockSdt =
                 (StructuredDocumentTag)doc.FirstSection.Body.GetChild(NodeType.StructuredDocumentTag, 0, true);
 
-            Assert.AreEqual(SdtType.BuildingBlockGallery, buildingBlockSdt.SdtType);
-            Assert.AreEqual("Table of Contents", buildingBlockSdt.BuildingBlockGallery);
-            Assert.AreEqual("Built-in", buildingBlockSdt.BuildingBlockCategory);
+            Assert.That(buildingBlockSdt.SdtType, Is.EqualTo(SdtType.BuildingBlockGallery));
+            Assert.That(buildingBlockSdt.BuildingBlockGallery, Is.EqualTo("Table of Contents"));
+            Assert.That(buildingBlockSdt.BuildingBlockCategory, Is.EqualTo("Built-in"));
         }
 
         [Test]
@@ -909,7 +906,7 @@ namespace ApiExamples
             TextAbsorber textAbsorber = new TextAbsorber();
             textAbsorber.Visit(pdfDoc);
 
-            Assert.AreEqual("Value 2", textAbsorber.Text);
+            Assert.That(textAbsorber.Text, Is.EqualTo("Value 2"));
         }
 
         [Test]
@@ -979,22 +976,22 @@ namespace ApiExamples
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.RepeatingSectionItem.docx");
             List<StructuredDocumentTag> tags = doc.GetChildNodes(NodeType.StructuredDocumentTag, true).OfType<StructuredDocumentTag>().ToList();
 
-            Assert.AreEqual("/books[1]/book", tags[0].XmlMapping.XPath);
-            Assert.AreEqual(string.Empty, tags[0].XmlMapping.PrefixMappings);
+            Assert.That(tags[0].XmlMapping.XPath, Is.EqualTo("/books[1]/book"));
+            Assert.That(tags[0].XmlMapping.PrefixMappings, Is.EqualTo(string.Empty));
 
-            Assert.AreEqual(string.Empty, tags[1].XmlMapping.XPath);
-            Assert.AreEqual(string.Empty, tags[1].XmlMapping.PrefixMappings);
+            Assert.That(tags[1].XmlMapping.XPath, Is.EqualTo(string.Empty));
+            Assert.That(tags[1].XmlMapping.PrefixMappings, Is.EqualTo(string.Empty));
 
-            Assert.AreEqual("/books[1]/book[1]/title[1]", tags[2].XmlMapping.XPath);
-            Assert.AreEqual(string.Empty, tags[2].XmlMapping.PrefixMappings);
+            Assert.That(tags[2].XmlMapping.XPath, Is.EqualTo("/books[1]/book[1]/title[1]"));
+            Assert.That(tags[2].XmlMapping.PrefixMappings, Is.EqualTo(string.Empty));
 
-            Assert.AreEqual("/books[1]/book[1]/author[1]", tags[3].XmlMapping.XPath);
-            Assert.AreEqual(string.Empty, tags[3].XmlMapping.PrefixMappings);
+            Assert.That(tags[3].XmlMapping.XPath, Is.EqualTo("/books[1]/book[1]/author[1]"));
+            Assert.That(tags[3].XmlMapping.PrefixMappings, Is.EqualTo(string.Empty));
 
-            Assert.AreEqual("Title\u0007Author\u0007\u0007" +
+            Assert.That(doc.FirstSection.Body.Tables[0].GetText().Trim(), Is.EqualTo("Title\u0007Author\u0007\u0007" +
                             "Everyday Italian\u0007Giada De Laurentiis\u0007\u0007" +
                             "The C Programming Language\u0007Brian W. Kernighan, Dennis M. Ritchie\u0007\u0007" +
-                            "Learning XML\u0007Erik T. Ray\u0007\u0007", doc.FirstSection.Body.Tables[0].GetText().Trim());
+                            "Learning XML\u0007Erik T. Ray\u0007\u0007"));
         }
 
         [Test]
@@ -1057,9 +1054,9 @@ namespace ApiExamples
             StructuredDocumentTagRangeEnd rangeEndTag =
                 doc.GetChildNodes(NodeType.StructuredDocumentTagRangeEnd, true)[0] as StructuredDocumentTagRangeEnd;
 
-            Assert.AreEqual(rangeStartTag.Id, rangeEndTag.Id); //ExSkip
-            Assert.AreEqual(NodeType.StructuredDocumentTagRangeStart, rangeStartTag.NodeType); //ExSkip
-            Assert.AreEqual(NodeType.StructuredDocumentTagRangeEnd, rangeEndTag.NodeType); //ExSkip
+            Assert.That(rangeEndTag.Id, Is.EqualTo(rangeStartTag.Id)); //ExSkip
+            Assert.That(rangeStartTag.NodeType, Is.EqualTo(NodeType.StructuredDocumentTagRangeStart)); //ExSkip
+            Assert.That(rangeEndTag.NodeType, Is.EqualTo(NodeType.StructuredDocumentTagRangeEnd)); //ExSkip
 
             Console.WriteLine("StructuredDocumentTagRangeStart values:");
             Console.WriteLine($"\t|Id: {rangeStartTag.Id}");
@@ -1124,24 +1121,24 @@ namespace ApiExamples
 
             rangeStart = (StructuredDocumentTagRangeStart)doc.GetChild(
                 NodeType.StructuredDocumentTagRangeStart, 0, false);
-            Assert.AreEqual(null, rangeStart);
+            Assert.That(rangeStart, Is.EqualTo(null));
 
             StructuredDocumentTagRangeEnd rangeEnd = (StructuredDocumentTagRangeEnd)doc.GetChild(
                 NodeType.StructuredDocumentTagRangeEnd, 0, false);
 
-            Assert.AreEqual(null, rangeEnd);
-            Assert.AreEqual("StructuredDocumentTag element", doc.GetText().Trim());
+            Assert.That(rangeEnd, Is.EqualTo(null));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("StructuredDocumentTag element"));
 
             rangeStart = InsertStructuredDocumentTagRanges(doc);
 
             Node paragraphNode = rangeStart.LastOrDefault();
-            Assert.AreEqual("StructuredDocumentTag element", paragraphNode?.GetText().Trim());
+            Assert.That(paragraphNode?.GetText().Trim(), Is.EqualTo("StructuredDocumentTag element"));
 
             // Removes ranged structured document tag and content inside.
             rangeStart.RemoveAllChildren();
 
             paragraphNode = rangeStart.LastOrDefault();
-            Assert.AreEqual(null, paragraphNode?.GetText());
+            Assert.That(paragraphNode?.GetText(), Is.EqualTo(null));
         }
 
         public StructuredDocumentTagRangeStart InsertStructuredDocumentTagRanges(Document doc)
@@ -1175,14 +1172,14 @@ namespace ApiExamples
             }
 
             sdt = structuredDocumentTags.GetById(1691867797);
-            Assert.AreEqual(1691867797, sdt.Id);
+            Assert.That(sdt.Id, Is.EqualTo(1691867797));
 
-            Assert.AreEqual(5, structuredDocumentTags.Count);
+            Assert.That(structuredDocumentTags.Count, Is.EqualTo(5));
             // Remove the structured document tag by Id.
             structuredDocumentTags.Remove(1691867797);
             // Remove the structured document tag at position 0.
             structuredDocumentTags.RemoveAt(0);
-            Assert.AreEqual(3, structuredDocumentTags.Count);
+            Assert.That(structuredDocumentTags.Count, Is.EqualTo(3));
             //ExEnd
         }
 
@@ -1267,7 +1264,7 @@ namespace ApiExamples
             //ExEnd
 
             doc = new Document(ArtifactsDir + "StructuredDocumentTag.IgnoreStructuredDocumentTags.docx");
-            Assert.AreEqual("This document contains Structured Document Tags with text inside them\r\rRepeatingSection\rRichText\rreplacement", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("This document contains Structured Document Tags with text inside them\r\rRepeatingSection\rRichText\rreplacement"));
         }
 
         [Test]
@@ -1306,10 +1303,10 @@ namespace ApiExamples
             StructuredDocumentTagRangeStart tag =
                 doc.GetChild(NodeType.StructuredDocumentTagRangeStart, 0, true) as StructuredDocumentTagRangeStart;
 
-            Assert.True(tag.WordOpenXMLMinimal
+            Assert.That(tag.WordOpenXMLMinimal
                 .Contains(
-                    "<pkg:part pkg:name=\"/docProps/app.xml\" pkg:contentType=\"application/vnd.openxmlformats-officedocument.extended-properties+xml\">"));
-            Assert.False(tag.WordOpenXMLMinimal.Contains("xmlns:w16cid=\"http://schemas.microsoft.com/office/word/2016/wordml/cid\""));
+                    "<pkg:part pkg:name=\"/docProps/app.xml\" pkg:contentType=\"application/vnd.openxmlformats-officedocument.extended-properties+xml\">"), Is.True);
+            Assert.That(tag.WordOpenXMLMinimal.Contains("xmlns:w16cid=\"http://schemas.microsoft.com/office/word/2016/wordml/cid\""), Is.False);
             //ExEnd:RangeStartWordOpenXmlMinimal
         }
 
@@ -1326,7 +1323,7 @@ namespace ApiExamples
             
             // This collection provides a unified interface for accessing ranged and non-ranged structured tags. 
             IEnumerable<IStructuredDocumentTag> sdts = doc.Range.StructuredDocumentTags.ToList();
-            Assert.AreEqual(5, sdts.Count());
+            Assert.That(sdts.Count(), Is.EqualTo(5));
 
             // Here we can get child nodes from the common interface of ranged and non-ranged structured tags.
             foreach (IStructuredDocumentTag sdt in sdts)
@@ -1334,7 +1331,7 @@ namespace ApiExamples
                     sdt.RemoveSelfOnly();
             
             sdts = doc.Range.StructuredDocumentTags.ToList();
-            Assert.AreEqual(0, sdts.Count());
+            Assert.That(sdts.Count(), Is.EqualTo(0));
             //ExEnd:RemoveSelfOnly
         }
 

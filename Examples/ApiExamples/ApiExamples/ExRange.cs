@@ -36,8 +36,8 @@ namespace ApiExamples
             // Perform a find-and-replace operation on our document's contents and verify the number of replacements that took place.
             int replacementCount = doc.Range.Replace("_FullName_", "John Doe");
 
-            Assert.AreEqual(1, replacementCount);
-            Assert.AreEqual("Greetings, John Doe!", doc.GetText().Trim());
+            Assert.That(replacementCount, Is.EqualTo(1));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Greetings, John Doe!"));
             //ExEnd
         }
 
@@ -64,8 +64,7 @@ namespace ApiExamples
 
             doc.Range.Replace("Ruby", "Jade", options);
 
-            Assert.AreEqual(matchCase ? "Jade bought a ruby necklace." : "Jade bought a Jade necklace.",
-                doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo(matchCase ? "Jade bought a ruby necklace." : "Jade bought a Jade necklace."));
             //ExEnd
         }
 
@@ -92,9 +91,7 @@ namespace ApiExamples
 
             doc.Range.Replace("Jackson", "Louis", options);
 
-            Assert.AreEqual(
-                findWholeWordsOnly ? "Louis will meet you in Jacksonville." : "Louis will meet you in Louisville.",
-                doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo(findWholeWordsOnly ? "Louis will meet you in Jacksonville." : "Louis will meet you in Louisville."));
             //ExEnd
         }
 
@@ -117,7 +114,7 @@ namespace ApiExamples
             doc.FirstSection.Body.Paragraphs[1].Remove();
             doc.StopTrackRevisions();
 
-            Assert.True(doc.FirstSection.Body.Paragraphs[1].IsDeleteRevision);
+            Assert.That(doc.FirstSection.Body.Paragraphs[1].IsDeleteRevision, Is.True);
 
             // We can use a "FindReplaceOptions" object to modify the find and replace process.
             FindReplaceOptions options = new FindReplaceOptions();
@@ -130,10 +127,9 @@ namespace ApiExamples
 
             doc.Range.Replace("Hello", "Greetings", options);
 
-            Assert.AreEqual(
-                ignoreTextInsideDeleteRevisions
+            Assert.That(doc.GetText().Trim(), Is.EqualTo(ignoreTextInsideDeleteRevisions
                     ? "Greetings world!\rHello again!"
-                    : "Greetings world!\rGreetings again!", doc.GetText().Trim());
+                    : "Greetings world!\rGreetings again!"));
             //ExEnd
         }
 
@@ -154,7 +150,7 @@ namespace ApiExamples
             builder.Writeln("Hello again!");
             doc.StopTrackRevisions();
 
-            Assert.True(doc.FirstSection.Body.Paragraphs[1].IsInsertRevision);
+            Assert.That(doc.FirstSection.Body.Paragraphs[1].IsInsertRevision, Is.True);
 
             // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
             FindReplaceOptions options = new FindReplaceOptions();
@@ -167,10 +163,9 @@ namespace ApiExamples
 
             doc.Range.Replace("Hello", "Greetings", options);
 
-            Assert.AreEqual(
-                ignoreTextInsideInsertRevisions
+            Assert.That(doc.GetText().Trim(), Is.EqualTo(ignoreTextInsideInsertRevisions
                     ? "Greetings world!\rHello again!"
-                    : "Greetings world!\rGreetings again!", doc.GetText().Trim());
+                    : "Greetings world!\rGreetings again!"));
             //ExEnd
         }
 
@@ -198,10 +193,9 @@ namespace ApiExamples
 
             doc.Range.Replace("Hello", "Greetings", options);
 
-            Assert.AreEqual(
-                ignoreTextInsideFields
+            Assert.That(doc.GetText().Trim(), Is.EqualTo(ignoreTextInsideFields
                     ? "Greetings world!\r\u0013QUOTE\u0014Hello again!\u0015"
-                    : "Greetings world!\r\u0013QUOTE\u0014Greetings again!\u0015", doc.GetText().Trim());
+                    : "Greetings world!\r\u0013QUOTE\u0014Greetings again!\u0015"));
             //ExEnd
         }
 
@@ -223,10 +217,9 @@ namespace ApiExamples
             doc.Range.Replace(new Regex("T"), "*", options);
             Console.WriteLine(doc.GetText());
 
-            Assert.AreEqual(
-                ignoreFieldCodes
+            Assert.That(doc.GetText().Trim(), Is.EqualTo(ignoreFieldCodes
                     ? "\u0013INCLUDETEXT\u0014*est I*!\u0015"
-                    : "\u0013INCLUDE*EX*\u0014*est I*!\u0015", doc.GetText().Trim());
+                    : "\u0013INCLUDE*EX*\u0014*est I*!\u0015"));
             //ExEnd
         }
 
@@ -260,20 +253,16 @@ namespace ApiExamples
 
             foreach (Paragraph para in paragraphs)
             {
-                Assert.AreEqual("Replaced Lorem ipsum", para.Runs[0].Text);
+                Assert.That(para.Runs[0].Text, Is.EqualTo("Replaced Lorem ipsum"));
             }
 
             List<Footnote> footnotes = doc.GetChildNodes(NodeType.Footnote, true).Cast<Footnote>().ToList();
-            Assert.AreEqual(
-                isIgnoreFootnotes
+            Assert.That(footnotes[0].ToString(SaveFormat.Text).Trim(), Is.EqualTo(isIgnoreFootnotes
                     ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    : "Replaced Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                footnotes[0].ToString(SaveFormat.Text).Trim());
-            Assert.AreEqual(
-                isIgnoreFootnotes
+                    : "Replaced Lorem ipsum dolor sit amet, consectetur adipiscing elit."));
+            Assert.That(footnotes[1].ToString(SaveFormat.Text).Trim(), Is.EqualTo(isIgnoreFootnotes
                     ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-                    : "Replaced Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                footnotes[1].ToString(SaveFormat.Text).Trim());
+                    : "Replaced Lorem ipsum dolor sit amet, consectetur adipiscing elit."));
         }
 
         [Test]
@@ -292,7 +281,7 @@ namespace ApiExamples
             FindReplaceOptions findReplaceOptions = new FindReplaceOptions() { IgnoreShapes = true };
             builder.Document.Range.Replace("Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit.", findReplaceOptions);
-            Assert.AreEqual("Lorem ipsum dolor sit amet, consectetur adipiscing elit.", builder.Document.GetText().Trim());
+            Assert.That(builder.Document.GetText().Trim(), Is.EqualTo("Lorem ipsum dolor sit amet, consectetur adipiscing elit."));
             //ExEnd
         }
 
@@ -313,14 +302,14 @@ namespace ApiExamples
             doc.BuiltInDocumentProperties.Category = "MyCategory";
 
             // If we update the value of a document property, we will need to update all the DOCPROPERTY fields to display it.
-            Assert.AreEqual(string.Empty, doc.Range.Fields[0].Result);
-            Assert.AreEqual(string.Empty, doc.Range.Fields[1].Result);
+            Assert.That(doc.Range.Fields[0].Result, Is.EqualTo(string.Empty));
+            Assert.That(doc.Range.Fields[1].Result, Is.EqualTo(string.Empty));
 
             // Update all the fields that are in the range of the first section.
             doc.FirstSection.Range.UpdateFields();
 
-            Assert.AreEqual("MyCategory", doc.Range.Fields[0].Result);
-            Assert.AreEqual(string.Empty, doc.Range.Fields[1].Result);
+            Assert.That(doc.Range.Fields[0].Result, Is.EqualTo("MyCategory"));
+            Assert.That(doc.Range.Fields[1].Result, Is.EqualTo(string.Empty));
             //ExEnd
         }
 
@@ -355,7 +344,7 @@ namespace ApiExamples
 
             doc.Range.Replace(new Regex("gr(a|e)y"), "lavender");
 
-            Assert.AreEqual("I decided to get the curtains in lavender, ideal for the lavender-accented room.", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("I decided to get the curtains in lavender, ideal for the lavender-accented room."));
             //ExEnd
         }
 
@@ -385,11 +374,11 @@ namespace ApiExamples
 
             doc.Range.Replace(new Regex("New York City|NYC"), "Washington", options);
             
-            Assert.AreEqual("Our new location in (Old value:\"New York City\") Washington is opening tomorrow. " +
-                            "Hope to see all our (Old value:\"NYC\") Washington-based customers at the opening!", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Our new location in (Old value:\"New York City\") Washington is opening tomorrow. " +
+                            "Hope to see all our (Old value:\"NYC\") Washington-based customers at the opening!"));
 
-            Assert.AreEqual("\"New York City\" converted to \"Washington\" 20 characters into a Run node.\r\n" +
-                            "\"NYC\" converted to \"Washington\" 42 characters into a Run node.", logger.GetLog().Trim());
+            Assert.That(logger.GetLog().Trim(), Is.EqualTo("\"New York City\" converted to \"Washington\" 20 characters into a Run node.\r\n" +
+                            "\"NYC\" converted to \"Washington\" 42 characters into a Run node."));
         }
 
         /// <summary>
@@ -447,11 +436,11 @@ namespace ApiExamples
 
             Console.WriteLine(numberHexer.GetLog());
 
-            Assert.AreEqual(4, replacementCount);
-            Assert.AreEqual("Numbers that the find-and-replace operation will convert to hexadecimal and highlight:\r" +
-                            "0x7B, 0x1C8, 0x315 and 0x43E3.", doc.GetText().Trim());
-            Assert.AreEqual(4, doc.GetChildNodes(NodeType.Run, true).OfType<Run>()
-                    .Count(r => r.Font.HighlightColor.ToArgb() == Color.LightGray.ToArgb()));
+            Assert.That(replacementCount, Is.EqualTo(4));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Numbers that the find-and-replace operation will convert to hexadecimal and highlight:\r" +
+                            "0x7B, 0x1C8, 0x315 and 0x43E3."));
+            Assert.That(doc.GetChildNodes(NodeType.Run, true).OfType<Run>()
+                    .Count(r => r.Font.HighlightColor.ToArgb() == Color.LightGray.ToArgb()), Is.EqualTo(4));
         }
 
         /// <summary>
@@ -506,9 +495,9 @@ namespace ApiExamples
 
             ParagraphCollection paragraphs = doc.FirstSection.Body.Paragraphs;
 
-            Assert.AreEqual(ParagraphAlignment.Left, paragraphs[0].ParagraphFormat.Alignment);
-            Assert.AreEqual(ParagraphAlignment.Left, paragraphs[1].ParagraphFormat.Alignment);
-            Assert.AreEqual(ParagraphAlignment.Left, paragraphs[2].ParagraphFormat.Alignment);
+            Assert.That(paragraphs[0].ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Left));
+            Assert.That(paragraphs[1].ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Left));
+            Assert.That(paragraphs[2].ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Left));
 
             // We can use a "FindReplaceOptions" object to modify the find-and-replace process.
             FindReplaceOptions options = new FindReplaceOptions();
@@ -520,13 +509,13 @@ namespace ApiExamples
             // Replace every full stop that is right before a paragraph break with an exclamation point.
             int count = doc.Range.Replace(".&p", "!&p", options);
 
-            Assert.AreEqual(2, count);
-            Assert.AreEqual(ParagraphAlignment.Right, paragraphs[0].ParagraphFormat.Alignment);
-            Assert.AreEqual(ParagraphAlignment.Left, paragraphs[1].ParagraphFormat.Alignment);
-            Assert.AreEqual(ParagraphAlignment.Right, paragraphs[2].ParagraphFormat.Alignment);
-            Assert.AreEqual("Every paragraph that ends with a full stop like this one will be right aligned!\r" +
+            Assert.That(count, Is.EqualTo(2));
+            Assert.That(paragraphs[0].ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Right));
+            Assert.That(paragraphs[1].ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Left));
+            Assert.That(paragraphs[2].ParagraphFormat.Alignment, Is.EqualTo(ParagraphAlignment.Right));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Every paragraph that ends with a full stop like this one will be right aligned!\r" +
                             "This one will not!\r" +
-                            "This one also will!", doc.GetText().Trim());
+                            "This one also will!"));
             //ExEnd
         }
 
@@ -545,14 +534,14 @@ namespace ApiExamples
             builder.InsertBreak(BreakType.SectionBreakContinuous);
             builder.Write("Section 2.");
 
-            Assert.AreEqual("Section 1. \fSection 2.", doc.GetText().Trim());
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Section 1. \fSection 2."));
 
             // Remove the first section entirely by removing all the nodes
             // within its range, including the section itself.
             doc.Sections[0].Range.Delete();
 
-            Assert.AreEqual(1, doc.Sections.Count);
-            Assert.AreEqual("Section 2.", doc.GetText().Trim());
+            Assert.That(doc.Sections.Count, Is.EqualTo(1));
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Section 2."));
             //ExEnd
         }
 
@@ -568,7 +557,7 @@ namespace ApiExamples
 
             builder.Write("Hello world!");
 
-            Assert.AreEqual("Hello world!", doc.Range.Text.Trim());
+            Assert.That(doc.Range.Text.Trim(), Is.EqualTo("Hello world!"));
             //ExEnd
         }
 
@@ -606,9 +595,13 @@ namespace ApiExamples
 
             doc.Range.Replace(new Regex(@"\[tag \d*\]"), "", options);
 
-            Assert.AreEqual(useLegacyOrder ?
-                new List<string> { "[tag 1]", "[tag 3]", "[tag 2]" } :
-                new List<string> { "[tag 1]", "[tag 2]", "[tag 3]" }, callback.Matches);
+            List<string> expected;
+            if (useLegacyOrder)
+                expected = new List<string> { "[tag 1]", "[tag 3]", "[tag 2]" };
+            else
+                expected = new List<string> { "[tag 1]", "[tag 2]", "[tag 3]" };
+            Assert.That(callback.Matches, Is.EqualTo(expected));
+
         }
 
         /// <summary>
@@ -650,10 +643,9 @@ namespace ApiExamples
             Regex regex = new Regex(@"([A-z]+) sold a ([A-z]+) to ([A-z]+)");
             doc.Range.Replace(regex, @"$3 bought a $2 from $1", options);
 
-            Assert.AreEqual(
-                useSubstitutions
+            Assert.That(doc.GetText().Trim(), Is.EqualTo(useSubstitutions
                     ? "Paul bought a car from John.\rJoe bought a house from Jane."
-                    : "$3 bought a $2 from $1.\r$3 bought a $2 from $1.", doc.GetText().Trim());
+                    : "$3 bought a $2 from $1.\r$3 bought a $2 from $1."));
             //ExEnd
         }
 
@@ -735,9 +727,9 @@ namespace ApiExamples
 
         private static void TestInsertDocumentAtReplace(Document doc)
         {
-            Assert.AreEqual("1) At text that can be identified by regex:\rHello World!\r" +
+            Assert.That(doc.FirstSection.Body.GetText().Trim(), Is.EqualTo("1) At text that can be identified by regex:\rHello World!\r" +
                             "2) At a MERGEFIELD:\r\u0013 MERGEFIELD  Document_1  \\* MERGEFORMAT \u0014«Document_1»\u0015\r" +
-                            "3) At a bookmark:", doc.FirstSection.Body.GetText().Trim());
+                            "3) At a bookmark:"));
         }
 
         //ExStart
@@ -773,18 +765,18 @@ namespace ApiExamples
 
             doc.Range.Replace(new Regex(@"Match \d*"), "Replacement", options);
 
-            Assert.AreEqual("Replacement.\r" +
+            Assert.That(doc.GetText().Trim(), Is.EqualTo("Replacement.\r" +
                             "Replacement.\r" +
                             "Replacement.\r" +
-                            "Replacement.", doc.GetText().Trim());
+                            "Replacement."));
 
             switch (findReplaceDirection)
             {
                 case FindReplaceDirection.Forward:
-                    Assert.AreEqual(new[] { "Match 1", "Match 2", "Match 3", "Match 4" }, callback.Matches);
+                    Assert.That(callback.Matches, Is.EqualTo(new[] { "Match 1", "Match 2", "Match 3", "Match 4" }));
                     break;
                 case FindReplaceDirection.Backward:
-                    Assert.AreEqual(new[] { "Match 4", "Match 3", "Match 2", "Match 1" }, callback.Matches);
+                    Assert.That(callback.Matches, Is.EqualTo(new[] { "Match 4", "Match 3", "Match 2", "Match 1" }));
                     break;
             }
         }
@@ -803,5 +795,46 @@ namespace ApiExamples
             public List<string> Matches { get; } = new List<string>();
         }
         //ExEnd
+
+        //ExStart:MatchEndNode
+        //GistId:67c1d01ce69d189983b497fd497a7768
+        //ExFor:ReplacingArgs.MatchEndNode
+        //ExSummary:Shows how to get match end node.
+        [Test]
+        public void MatchEndNode()
+        {
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
+            builder.Writeln("1");
+            builder.Writeln("2");
+            builder.Writeln("3");
+
+            ReplacingCallback replacingCallback = new ReplacingCallback();
+            FindReplaceOptions opts = new FindReplaceOptions();
+            opts.ReplacingCallback = replacingCallback;
+
+            doc.Range.Replace(new Regex("1[\\s\\S]*3"), "X", opts);
+            Assert.That(replacingCallback.StartNodeText, Is.EqualTo("1"));
+            Assert.That(replacingCallback.EndNodeText, Is.EqualTo("3"));
+        }
+
+        /// <summary>
+        /// The replacing callback.
+        /// </summary>
+        private class ReplacingCallback : IReplacingCallback
+        {
+            ReplaceAction IReplacingCallback.Replacing(ReplacingArgs e)
+            {
+                StartNodeText = e.MatchNode.GetText().Trim();
+                EndNodeText = e.MatchEndNode.GetText().Trim();
+
+                return ReplaceAction.Replace;
+            }
+
+            internal string StartNodeText { get; private set; }
+            internal string EndNodeText { get; private set; }
+        }
+        //ExEnd:MatchEndNode
     }
 }

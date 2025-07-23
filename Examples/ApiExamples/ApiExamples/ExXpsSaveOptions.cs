@@ -33,7 +33,7 @@ namespace ApiExamples
             // Insert headings that can serve as TOC entries of levels 1, 2, and then 3.
             builder.ParagraphFormat.StyleIdentifier = StyleIdentifier.Heading1;
 
-            Assert.True(builder.ParagraphFormat.IsHeading);
+            Assert.That(builder.ParagraphFormat.IsHeading, Is.True);
 
             builder.Writeln("Heading 1");
 
@@ -51,7 +51,7 @@ namespace ApiExamples
             // to modify how that method converts the document to .XPS.
             XpsSaveOptions saveOptions = new XpsSaveOptions();
 
-            Assert.AreEqual(SaveFormat.Xps, saveOptions.SaveFormat);
+            Assert.That(saveOptions.SaveFormat, Is.EqualTo(SaveFormat.Xps));
 
             // The output XPS document will contain an outline, a table of contents that lists headings in the document body.
             // Clicking on an entry in this outline will take us to the location of its respective heading.
@@ -119,9 +119,9 @@ namespace ApiExamples
 
             var testedFileLength = new FileInfo(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps").Length;
             if (optimizeOutput)
-                Assert.IsTrue(testedFileLength < 43000);
+                Assert.That(testedFileLength < 43000, Is.True);
             else
-                Assert.IsTrue(testedFileLength < 64000);
+                Assert.That(testedFileLength < 64000, Is.True);
 
             TestUtil.DocPackageFileContainsString(
                 optimizeOutput
@@ -179,8 +179,8 @@ namespace ApiExamples
             XpsSaveOptions saveOptions = new XpsSaveOptions();
             saveOptions.DigitalSignatureDetails = digitalSignatureDetails;
 
-            Assert.AreEqual(certificateHolder, digitalSignatureDetails.CertificateHolder);
-            Assert.AreEqual("Some comments", digitalSignatureDetails.SignOptions.Comments);
+            Assert.That(digitalSignatureDetails.CertificateHolder, Is.EqualTo(certificateHolder));
+            Assert.That(digitalSignatureDetails.SignOptions.Comments, Is.EqualTo("Some comments"));
 
             doc.Save(ArtifactsDir + "XpsSaveOptions.XpsDigitalSignature.docx", saveOptions);
             //ExEnd:XpsDigitalSignature

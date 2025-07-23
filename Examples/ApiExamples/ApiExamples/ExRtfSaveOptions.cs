@@ -30,7 +30,7 @@ namespace ApiExamples
             // Create an "RtfSaveOptions" object to pass to the document's "Save" method to modify how we save it to an RTF.
             RtfSaveOptions options = new RtfSaveOptions();
 
-            Assert.AreEqual(SaveFormat.Rtf, options.SaveFormat);
+            Assert.That(options.SaveFormat, Is.EqualTo(SaveFormat.Rtf));
 
             // Set the "ExportCompactSize" property to "true" to
             // reduce the saved document's size at the cost of right-to-left text compatibility.
@@ -52,13 +52,16 @@ namespace ApiExamples
             }
             else
             {
-                if (!IsRunningOnMono())
+#if !CPLUSPLUS
+                if (IsRunningOnMono())
                 {
+                    return;
+                }
                     Assert.Throws<AssertionException>(() =>
                         TestUtil.FileContainsString("nonshppict", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
                     Assert.Throws<AssertionException>(() =>
                         TestUtil.FileContainsString("shprslt", ArtifactsDir + "RtfSaveOptions.ExportImages.rtf"));
-                }
+#endif
             }
         }
 
@@ -75,13 +78,13 @@ namespace ApiExamples
             builder.Writeln("Jpeg image:");
             Shape imageShape = builder.InsertImage(ImageDir + "Logo.jpg");
 
-            Assert.AreEqual(ImageType.Jpeg, imageShape.ImageData.ImageType);
+            Assert.That(imageShape.ImageData.ImageType, Is.EqualTo(ImageType.Jpeg));
 
             builder.InsertParagraph();
             builder.Writeln("Png image:");
             imageShape = builder.InsertImage(ImageDir + "Transparent background logo.png");
 
-            Assert.AreEqual(ImageType.Png, imageShape.ImageData.ImageType);
+            Assert.That(imageShape.ImageData.ImageType, Is.EqualTo(ImageType.Png));
 
             // Create an "RtfSaveOptions" object to pass to the document's "Save" method to modify how we save it to an RTF.
             RtfSaveOptions rtfSaveOptions = new RtfSaveOptions();
@@ -100,13 +103,13 @@ namespace ApiExamples
 
             if (saveImagesAsWmf)
             {
-                Assert.AreEqual(ImageType.Wmf, ((Shape)shapes[0]).ImageData.ImageType);
-                Assert.AreEqual(ImageType.Wmf, ((Shape)shapes[1]).ImageData.ImageType);
+                Assert.That(((Shape)shapes[0]).ImageData.ImageType, Is.EqualTo(ImageType.Wmf));
+                Assert.That(((Shape)shapes[1]).ImageData.ImageType, Is.EqualTo(ImageType.Wmf));
             }
             else
             {
-                Assert.AreEqual(ImageType.Jpeg, ((Shape)shapes[0]).ImageData.ImageType);
-                Assert.AreEqual(ImageType.Png, ((Shape)shapes[1]).ImageData.ImageType);
+                Assert.That(((Shape)shapes[0]).ImageData.ImageType, Is.EqualTo(ImageType.Jpeg));
+                Assert.That(((Shape)shapes[1]).ImageData.ImageType, Is.EqualTo(ImageType.Png));
             }
             //ExEnd
         }
