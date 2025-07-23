@@ -110,10 +110,10 @@
     <Content Include="Rendering and Printing\Rendering shapes.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Aspose.BarCode" Version="25.5.0" />
-    <PackageReference Include="Aspose.Email" Version="25.5.1" />
-    <PackageReference Include="Aspose.Words" Version="25.6.0" />
-    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.6.0" />
+    <PackageReference Include="Aspose.BarCode" Version="25.7.0" />
+    <PackageReference Include="Aspose.Email" Version="25.6.0" />
+    <PackageReference Include="Aspose.Words" Version="25.7.0" />
+    <PackageReference Include="Aspose.Words.Shaping.HarfBuzz" Version="25.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageReference Include="NUnit" Version="4.3.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />

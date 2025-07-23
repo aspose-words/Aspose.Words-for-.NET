@@ -375,7 +375,7 @@ namespace ApiExamples
             File.WriteAllBytes(ArtifactsDir + "DocumentProperties.Thumbnail.gif", thumbnail.ToByteArray());
             //ExEnd
 
-            TestUtil.VerifyImage(400, 400, ArtifactsDir + "DocumentProperties.Thumbnail.gif");            
+            TestUtil.VerifyImage(400, 400, ArtifactsDir + "DocumentProperties.Thumbnail.gif");
         }
 
         [Test]

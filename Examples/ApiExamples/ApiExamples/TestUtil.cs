@@ -22,9 +22,13 @@ using NUnit.Framework;
 using Table = Aspose.Words.Tables.Table;
 using System.Collections.Generic;
 using Shape = Aspose.Words.Drawing.Shape;
-using SkiaSharp;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+#if NET461_OR_GREATER || JAVA || CPLUSPLUS
+using System.Drawing;
+#elif NET6_0_OR_GREATER
+using SkiaSharp;
+#endif
 
 namespace ApiExamples
 {
@@ -55,30 +59,35 @@ namespace ApiExamples
             }
             else if (ext == ".emf")
             {
-                var (w, h) = GetEmfDimensions(filename);
-                Assert.That(w, Is.EqualTo(expectedWidth).Within(1));
-                Assert.That(h, Is.EqualTo(expectedHeight).Within(1));
+                Dictionary<string, int> emfDimensions = GetEmfDimensions(filename);
+                Assert.That(emfDimensions["width"], Is.EqualTo(expectedWidth).Within(1));
+                Assert.That(emfDimensions["height"], Is.EqualTo(expectedHeight).Within(1));
             }
             else if (ext == ".wmf")
             {
-                var (w, h) = GetWmfDimensions(filename);
-                Assert.That(w, Is.EqualTo(expectedWidth).Within(1));
-                Assert.That(h, Is.EqualTo(expectedHeight).Within(1));
+                Dictionary<string, int> wmfDimensions = GetWmfDimensions(filename);
+                Assert.That(wmfDimensions["width"], Is.EqualTo(expectedWidth).Within(1));
+                Assert.That(wmfDimensions["height"], Is.EqualTo(expectedHeight).Within(1));
             }
             else
             {
+#if NET461_OR_GREATER || JAVA || CPLUSPLUS
+                using (var image = Image.FromFile(filename))
+                {
+#elif NET6_0_OR_GREATER
                 using (var image = SKBitmap.Decode(filename))
                 {
+#endif
                     Assert.Multiple(() =>
                     {
-                    Assert.That(image.Width, Is.EqualTo(expectedWidth).Within(1));
-                    Assert.That(image.Height, Is.EqualTo(expectedHeight).Within(1));
+                        Assert.That(image.Width, Is.EqualTo(expectedWidth).Within(1));
+                        Assert.That(image.Height, Is.EqualTo(expectedHeight).Within(1));
                     });
                 }
             }
         }
 
-        internal static (int Width, int Height) GetEmfDimensions(string filePath)
+        internal static Dictionary<string, int> GetEmfDimensions(string filePath)
         {
             using (var stream = File.OpenRead(filePath))
             using (var reader = new BinaryReader(stream))
@@ -92,11 +101,15 @@ namespace ApiExamples
                 int right = reader.ReadInt32();
                 int bottom = reader.ReadInt32();
 
-                return (right - left, bottom - top);
+                Dictionary<string, int> emfDimensions = new Dictionary<string, int>();
+                emfDimensions.Add("width", right - left);
+                emfDimensions.Add("height", bottom - top);
+
+                return emfDimensions;
             }
         }
 
-        internal static (int Width, int Height) GetWmfDimensions(string filePath)
+        internal static Dictionary<string, int> GetWmfDimensions(string filePath)
         {
             using (var stream = File.OpenRead(filePath))
             using (var reader = new BinaryReader(stream))
@@ -116,7 +129,11 @@ namespace ApiExamples
                 int width = (int)((right - left) / unitsPerInch * 96);
                 int height = (int)((bottom - top) / unitsPerInch * 96);
 
-                return (width, height);
+                Dictionary<string, int> wmfDimensions = new Dictionary<string, int>();
+                wmfDimensions.Add("width", width);
+                wmfDimensions.Add("height", height);
+
+                return wmfDimensions;
             }
         }
 
@@ -126,6 +143,23 @@ namespace ApiExamples
         /// <param name="filename">Local file system filename of the image file.</param>
         internal static void ImageContainsTransparency(string filename)
         {
+#if NET461_OR_GREATER || JAVA || CPLUSPLUS
+            using (var image = Image.FromFile(filename))
+            {
+                using (var bitmap = new Bitmap(image))
+                {
+                    for (int x = 0; x < bitmap.Width; x++)
+                    {
+                        for (int y = 0; y < bitmap.Height; y++)
+                        {
+                            Color pixel = bitmap.GetPixel(x, y);
+                            if (pixel.A != 255)
+                                return; // Transparency found.
+                        }
+                    }
+                }
+            }
+#elif NET6_0_OR_GREATER
             using (var bitmap = SKBitmap.Decode(filename))
             {
                 for (int x = 0; x < bitmap.Width; x++)
@@ -137,7 +171,7 @@ namespace ApiExamples
                     }
                 }
             }
-
+#endif
             Assert.Fail($"The image from \"{filename}\" does not contain any transparency.");
         }
 
