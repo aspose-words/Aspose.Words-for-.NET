@@ -18,6 +18,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="DocsExamplesBase.cs" />
+    <Content Include="AI-powered Features\Working with AI.cs" />
     <Content Include="File Formats and Conversions\Base conversions.cs" />
     <Content Include="File Formats and Conversions\Complex examples and helpers\Working with document in database.cs" />
     <Content Include="File Formats and Conversions\Load Options\Working with HtmlLoadOptions.cs" />
