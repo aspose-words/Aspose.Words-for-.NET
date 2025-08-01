@@ -811,10 +811,10 @@ namespace ApiExamples
             builder.Writeln("3");
 
             ReplacingCallback replacingCallback = new ReplacingCallback();
-            FindReplaceOptions opts = new FindReplaceOptions();
-            opts.ReplacingCallback = replacingCallback;
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.ReplacingCallback = replacingCallback;
 
-            doc.Range.Replace(new Regex("1[\\s\\S]*3"), "X", opts);
+            doc.Range.Replace(new Regex("1[\\s\\S]*3"), "X", options);
             Assert.That(replacingCallback.StartNodeText, Is.EqualTo("1"));
             Assert.That(replacingCallback.EndNodeText, Is.EqualTo("3"));
         }
@@ -836,5 +836,28 @@ namespace ApiExamples
             internal string EndNodeText { get; private set; }
         }
         //ExEnd:MatchEndNode
+
+        [TestCase(true)]
+        [TestCase(false)]
+        public void IgnoreOfficeMath(bool isIgnoreOfficeMath)
+        {
+            //ExStart:IgnoreOfficeMath
+            //GistId:571cc6e23284a2ec075d15d4c32e3bbf
+            //ExFor:FindReplaceOptions.IgnoreOfficeMath
+            //ExSummary:Shows how to find and replace text within OfficeMath.
+            Document doc = new Document(MyDir + "Office math.docx");
+
+            Assert.That(doc.FirstSection.Body.FirstParagraph.GetText().Trim(), Is.EqualTo("i+b-c≥iM+bM-cM"));
+
+            FindReplaceOptions options = new FindReplaceOptions();
+            options.IgnoreOfficeMath = isIgnoreOfficeMath;
+            doc.Range.Replace("b", "x", options);
+
+            if (isIgnoreOfficeMath)
+                Assert.That(doc.FirstSection.Body.FirstParagraph.GetText().Trim(), Is.EqualTo("i+b-c≥iM+bM-cM"));
+            else
+                Assert.That(doc.FirstSection.Body.FirstParagraph.GetText().Trim(), Is.EqualTo("i+x-c≥iM+xM-cM"));
+            //ExEnd:IgnoreOfficeMath
+        }
     }
 }

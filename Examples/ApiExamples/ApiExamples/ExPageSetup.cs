@@ -5,14 +5,17 @@
 // "as is", without warranty of any kind, either expressed or implied.
 //////////////////////////////////////////////////////////////////////////
 
-using System.Drawing;
 using Aspose.Words;
 using Aspose.Words.Notes;
+using Aspose.Words.Rendering;
 using Aspose.Words.Settings;
 using NUnit.Framework;
-using PaperSize = Aspose.Words.PaperSize;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Drawing.Printing;
 using System.Linq;
+using PaperSize = Aspose.Words.PaperSize;
 
 namespace ApiExamples
 {
@@ -1124,5 +1127,39 @@ namespace ApiExamples
 
             Assert.That(pageSetup.PaperSize, Is.EqualTo(PaperSize.JisB5));
         }
+
+#if NETFRAMEWORK
+        [Test]
+        [Ignore("Run only when the printer driver is installed")]
+        public void PrintPagesRemaining()
+        {
+            //ExStart:PrintPagesRemaining
+            //GistId:571cc6e23284a2ec075d15d4c32e3bbf
+            //ExFor:AsposeWordsPrintDocument
+            //ExFor:AsposeWordsPrintDocument.PagesRemaining
+            //ExSummary: Shows how to monitor printing progress.
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            // Initialize the printer settings.
+            PrinterSettings printerSettings = new PrinterSettings();
+            printerSettings.PrinterName = "Microsoft Print to PDF";
+            printerSettings.PrintRange = PrintRange.AllPages;
+
+            // Create a special Aspose.Words implementation of the .NET PrintDocument class.
+            // Pass the printer settings from the print dialog to the print document.
+            AsposeWordsPrintDocument printDoc = new AsposeWordsPrintDocument(doc);
+            printDoc.PrinterSettings = printerSettings;
+
+            // Initialize the custom printing tracker.
+            PrintTracker printTracker = new PrintTracker(printDoc);
+
+            printDoc.Print();
+
+            // Write the event log.
+            foreach (string eventString in printTracker.EventLog)
+                Console.WriteLine(eventString);
+            //ExEnd:PrintPagesRemaining
+        }
+#endif
     }
 }

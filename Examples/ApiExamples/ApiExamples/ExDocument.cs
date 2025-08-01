@@ -2307,7 +2307,7 @@ namespace ApiExamples
         public void ExtractPages()
         {
             //ExStart
-            //ExFor:Document.ExtractPages
+            //ExFor:Document.ExtractPages(int, int)
             //ExSummary:Shows how to get specified range of pages from the document.
             Document doc = new Document(MyDir + "Layout entities.docx");
 
@@ -2657,6 +2657,42 @@ namespace ApiExamples
             doc.UpdatePageLayout();
             Assert.That(doc.PageCount, Is.EqualTo(1));
             //ExEnd
+        }
+
+        [Test]
+        public void ExtractPagesWithOptions()
+        {
+            //ExStart:ExtractPagesWithOptions
+            //GistId:571cc6e23284a2ec075d15d4c32e3bbf
+            //ExFor:Document.ExtractPages(int, int)
+            //ExFor:PageExtractOptions
+            //ExFor:PageExtractOptions.UpdatePageStartingNumber
+            //ExFor:PageExtractOptions.UnlinkPagesNumberFields
+            //ExSummary:Show how to reset the initial page numbering and save the NUMPAGE field.
+            Document doc = new Document(MyDir + "Page fields.docx");
+
+            // Default behavior:
+            // The extracted page numbering is the same as in the original document, as if we had selected "Print 2 pages" in MS Word.
+            // The start page will be set to 2 and the field indicating the number of pages will be removed
+            // and replaced with a constant value equal to the number of pages.
+            Document extractedDoc1 = doc.ExtractPages(1, 1);
+            extractedDoc1.Save(ArtifactsDir + "Document.ExtractPagesWithOptions.Default.docx");
+
+            Assert.That(extractedDoc1.Range.Fields.Count, Is.EqualTo(1)); //ExSkip
+
+            // Altered behavior:
+            // The extracted page numbering is reset and a new one begins,
+            // as if we had copied the contents of the second page and pasted it into a new document.
+            // The start page will be set to 1 and the field indicating the number of pages will be left unchanged
+            // and will show the current number of pages.
+            PageExtractOptions extractOptions = new PageExtractOptions();
+            extractOptions.UpdatePageStartingNumber = false;
+            extractOptions.UnlinkPagesNumberFields = false;
+            Document extractedDoc2 = doc.ExtractPages(1, 1, extractOptions);
+            extractedDoc2.Save(ArtifactsDir + "Document.ExtractPagesWithOptions.Options.docx");
+            //ExEnd:ExtractPagesWithOptions
+
+            Assert.That(extractedDoc2.Range.Fields.Count, Is.EqualTo(2));
         }
     }
 }
