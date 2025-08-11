@@ -10,7 +10,6 @@ using Aspose.Words.Fields;
 using Aspose.Words.Replacing;
 using Aspose.Words.Tables;
 using NUnit.Framework;
-using static DocsExamples.Programming_with_Documents.Working_with_Document.AddContentUsingDocumentBuilder;
 
 namespace DocsExamples.Programming_with_Documents.Contents_Management
 {
