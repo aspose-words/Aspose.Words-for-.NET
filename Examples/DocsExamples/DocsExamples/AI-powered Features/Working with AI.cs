@@ -2,10 +2,6 @@
 using Aspose.Words;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DocsExamples.AI_powered_Features
 {
@@ -21,7 +17,7 @@ namespace DocsExamples.AI_powered_Features
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use OpenAI or Google generative language models.
-            IAiModelText model = ((OpenAiModel)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey)).WithOrganization("Organization").WithProject("Project");
+            AiModel model = ((OpenAiModel)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey)).WithOrganization("Organization").WithProject("Project");
 
             SummarizeOptions options = new SummarizeOptions();
 
@@ -44,7 +40,7 @@ namespace DocsExamples.AI_powered_Features
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use Google generative language models.
-            IAiModelText model = (GoogleAiModel)AiModel.Create(AiModelType.Gemini15Flash).WithApiKey(apiKey);
+            AiModel model = (GoogleAiModel)AiModel.Create(AiModelType.Gemini15Flash).WithApiKey(apiKey);
 
             Document translatedDoc = model.Translate(doc, Language.Arabic);
             translatedDoc.Save(ArtifactsDir + "AI.AiTranslate.docx");
@@ -60,7 +56,7 @@ namespace DocsExamples.AI_powered_Features
 
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use OpenAI generative language models.
-            IAiModelText model = (IAiModelText)AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
+            AiModel model = AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
 
             CheckGrammarOptions grammarOptions = new CheckGrammarOptions();
             grammarOptions.ImproveStylistics = true;

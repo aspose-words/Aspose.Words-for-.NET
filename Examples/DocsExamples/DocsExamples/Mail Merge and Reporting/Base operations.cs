@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
-using System.Linq;
-using System.Xml.Linq;
 using Aspose.Words;
 using Aspose.Words.MailMerging;
 using NUnit.Framework;
@@ -146,7 +144,7 @@ namespace DocsExamples.Mail_Merge_and_Reporting
             //GistId:341b834e9b6a84ac6885e907e0ea4229
             string connString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + DatabaseDir + "Northwind.accdb";
 
-            Document doc = new Document(MyDir + "Mail merge destination - Northwind suppliers.docx");
+            Document doc = new Document(MyDir + "Mail merge destination - Suppliers.docx");
 
             OleDbConnection conn = new OleDbConnection(connString);
             conn.Open();

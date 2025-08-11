@@ -1,4 +1,3 @@
-using Aspose.Words.Drawing.Charts;
 using Aspose.Words;
 using NUnit.Framework;
 using Aspose.Words.Tables;

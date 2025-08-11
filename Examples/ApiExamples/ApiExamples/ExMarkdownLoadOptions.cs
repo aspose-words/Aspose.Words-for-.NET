@@ -60,5 +60,23 @@ namespace ApiExamples
             }
             //ExEnd:ImportUnderlineFormatting
         }
+
+        [Test]
+        public void SoftLineBreakCharacter()
+        {
+            //ExStart:SoftLineBreakCharacter
+            //GistId:571cc6e23284a2ec075d15d4c32e3bbf
+            //ExFor:MarkdownLoadOptions.SoftLineBreakCharacter
+            //ExSummary:Shows how to set soft line break character.
+            using (MemoryStream stream = new MemoryStream(Encoding.UTF8.GetBytes("line1\nline2")))
+            {
+                MarkdownLoadOptions loadOptions = new MarkdownLoadOptions();
+                loadOptions.SoftLineBreakCharacter = ControlChar.LineBreakChar;
+                Document doc = new Document(stream, loadOptions);
+
+                Assert.That(doc.GetText().Trim(), Is.EqualTo("line1\u000bline2"));
+            }
+            //ExEnd:SoftLineBreakCharacter
+        }
     }
 }

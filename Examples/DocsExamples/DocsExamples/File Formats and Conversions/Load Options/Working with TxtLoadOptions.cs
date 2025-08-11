@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using Aspose.Words;
 using Aspose.Words.Loading;
