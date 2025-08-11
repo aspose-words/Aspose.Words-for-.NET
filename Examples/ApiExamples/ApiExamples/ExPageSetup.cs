@@ -1128,7 +1128,7 @@ namespace ApiExamples
             Assert.That(pageSetup.PaperSize, Is.EqualTo(PaperSize.JisB5));
         }
 
-#if NETFRAMEWORK
+#if NETFRAMEWORK || JAVA
         [Test]
         [Ignore("Run only when the printer driver is installed")]
         public void PrintPagesRemaining()

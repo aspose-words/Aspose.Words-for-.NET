@@ -1,4 +1,4 @@
-﻿#if NETFRAMEWORK
+﻿#if NETFRAMEWORK || JAVA
 using Aspose.Words.Rendering;
 using System;
 using System.Collections.Generic;
