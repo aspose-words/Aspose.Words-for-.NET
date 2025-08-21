@@ -113,7 +113,7 @@ namespace DocsExamples.File_Formats_and_Conversions.Load_Options
         }
         //ExEnd:IWarningCallback
 
-#if NET48
+#if NET48 || JAVA
         [Test]
         public void ResourceLoadingCallback()
         {

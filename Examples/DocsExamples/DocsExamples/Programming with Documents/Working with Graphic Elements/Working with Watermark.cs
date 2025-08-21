@@ -29,7 +29,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
             //ExEnd:AddTextWatermark
         }
 
-#if NET48
+#if NET48 || JAVA
         [Test]
         public void AddImageWatermark()
         {
