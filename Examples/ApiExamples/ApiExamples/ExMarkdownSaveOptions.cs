@@ -373,6 +373,26 @@ namespace ApiExamples
             DocumentHelper.FindTextInFile(outputPath, "<table><tr><th rowspan=\"2\" valign=\"top\">Heading 1</th>");
             DocumentHelper.FindTextInFile(outputPath, "|Heading 1|Heading 2|");
         }
+
+        [Test]
+        public void ExportOfficeMathAsLatex()
+        {
+            //ExStart:ExportOfficeMathAsLatex
+            //GistId:045648ef22da6b384ebcf0344717bfb5
+            //ExFor:MarkdownSaveOptions.OfficeMathExportMode
+            //ExFor:MarkdownOfficeMathExportMode
+            //ExSummary:Shows how to export OfficeMath object as Latex.
+            Document doc = new Document(MyDir + "Office math.docx");
+
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.OfficeMathExportMode = MarkdownOfficeMathExportMode.Latex;
+
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.ExportOfficeMathAsLatex.md", saveOptions);
+            //ExEnd:ExportOfficeMathAsLatex
+
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "MarkdownSaveOptions.ExportOfficeMathAsLatex.md",
+                GoldsDir + "MarkdownSaveOptions.ExportOfficeMathAsLatex.Gold.md"), Is.True);
+        }
     }
 }
 
