@@ -327,13 +327,13 @@ namespace ApiExamples
             //ExStart:SubstitutionWarnings
             //GistId:045648ef22da6b384ebcf0344717bfb5
             //ExFor:FontSubstitutionWarningInfo
-            //ExFor:FontSubstitutionWarningInfo.Source
-            //ExFor:FontSubstitutionWarningInfo.WarningType
             //ExFor:FontSubstitutionWarningInfo.Reason
-            //ExFor:FontSubstitutionWarningInfo.Description
             //ExFor:FontSubstitutionWarningInfo.RequestedBold
             //ExFor:FontSubstitutionWarningInfo.RequestedItalic
             //ExFor:FontSubstitutionWarningInfo.RequestedFamilyName
+            //ExFor:WarningInfo.Source
+            //ExFor:WarningInfo.WarningType
+            //ExFor:WarningInfo.Description
             //ExFor:WarningSource
             //ExFor:FontSubstitutionReason
             //ExSummary:Shows how to get additional information about font substitution.
