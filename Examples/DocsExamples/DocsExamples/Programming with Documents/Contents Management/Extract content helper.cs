@@ -270,12 +270,12 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         public static Document GenerateDocument(Document srcDoc, List<Node> nodes)
         {
             Document dstDoc = new Document();
-            // Remove default section in the destination document.
-            dstDoc.FirstSection.Remove();
+            Section importedSection = nodes.Any(node => node.NodeType == NodeType.Section) ? null : dstDoc.FirstSection;
+            if (importedSection == null)
+                dstDoc.FirstSection.Remove();
 
             // Import each node from the list into the new document. Keep the original formatting of the node.
             NodeImporter importer = new NodeImporter(srcDoc, dstDoc, ImportFormatMode.KeepSourceFormatting);
-            Section importedSection = null;
             foreach (Node node in nodes)
             {
                 if (node.NodeType == NodeType.Section)

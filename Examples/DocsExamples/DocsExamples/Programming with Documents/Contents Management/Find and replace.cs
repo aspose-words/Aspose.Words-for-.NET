@@ -28,7 +28,6 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             Console.WriteLine("Document text after replace: " + doc.Range.Text);
 
-            // Save the modified document
             doc.Save(ArtifactsDir + "FindAndReplace.SimpleFindReplace.docx");
         }
 

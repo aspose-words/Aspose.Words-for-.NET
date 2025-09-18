@@ -102,7 +102,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         /// </summary>
         /// <param name="insertionDestination">Node in the destination document after which the content
         /// Should be inserted. This node should be a block level node (paragraph or table).</param>
-        /// <param name="docToInsert">The document to insert.</param>        
+        /// <param name="docToInsert">The document to insert.</param>
         private static void InsertDocument(Node insertionDestination, Document docToInsert)
         {
             if (insertionDestination.NodeType == NodeType.Paragraph || insertionDestination.NodeType == NodeType.Table)

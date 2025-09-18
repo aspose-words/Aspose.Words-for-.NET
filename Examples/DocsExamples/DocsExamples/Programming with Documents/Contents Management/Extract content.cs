@@ -20,15 +20,12 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
 
             Paragraph startPara = (Paragraph) doc.LastSection.GetChild(NodeType.Paragraph, 2, true);
             Table endTable = (Table) doc.LastSection.GetChild(NodeType.Table, 0, true);
+            
             // Extract the content between these nodes in the document. Include these markers in the extraction.
             List<Node> extractedNodes = ExtractContentHelper.ExtractContent(startPara, endTable, true, false);
+            Document dstDoc = ExtractContentHelper.GenerateDocument(doc, extractedNodes);
 
-            // Let's reverse the array to make inserting the content back into the document easier.
-            extractedNodes.Reverse();
-            foreach (Node extractedNode in extractedNodes)
-                endTable.ParentNode.InsertAfter(extractedNode, endTable);
-
-            doc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenBlockLevelNodes.docx");
+            dstDoc.Save(ArtifactsDir + "ExtractContent.ExtractContentBetweenBlockLevelNodes.docx");
             //ExEnd:ExtractContentBetweenBlockLevelNodes
         }
 

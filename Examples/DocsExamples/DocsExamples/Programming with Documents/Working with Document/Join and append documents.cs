@@ -190,15 +190,15 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
                         previousNode.ParentNode.InsertBefore(previousNode, newField.Start);
 
                         // Remove the original NUMPAGES field from the document.
-                        RemoveField(fieldStart);
+                        RemoveNumPageField(fieldStart);
                     }
                 }
             }
         }
         //ExEnd:ConvertNumPageFieldsToPageRef
-        
-        //ExStart:GetRemoveField
-        private void RemoveField(FieldStart fieldStart)
+
+        //ExStart:RemoveNumPageField
+        private void RemoveNumPageField(FieldStart fieldStart)
         {
             bool isRemoving = true;
             
@@ -230,7 +230,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
 
             return builder.ToString();
         }
-        //ExEnd:GetRemoveField
+        //ExEnd:RemoveNumPageField
 
         [Test]
         public void DifferentPageSetup()
@@ -343,7 +343,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void ListKeepSourceFormatting()
         {
             //ExStart:ListKeepSourceFormatting
-            Document srcDoc = new Document(MyDir + "Document source.docx");
+            Document srcDoc = new Document(MyDir + "Document source with list.docx");
             Document dstDoc = new Document(MyDir + "Document destination with list.docx");
 
             // Append the content of the document so it flows continuously.
@@ -359,7 +359,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
         public void ListUseDestinationStyles()
         {
             //ExStart:ListUseDestinationStyles
-            Document srcDoc = new Document(MyDir + "Document source.docx");
+            Document srcDoc = new Document(MyDir + "Document source with list.docx");
             Document dstDoc = new Document(MyDir + "Document destination with list.docx");
 
             // Set the source document to continue straight after the end of the destination document.

@@ -22,7 +22,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
             StructuredDocumentTag sdtCheckBox = new StructuredDocumentTag(doc, SdtType.Checkbox, MarkupLevel.Inline);
             builder.InsertNode(sdtCheckBox);
             
-            doc.Save(ArtifactsDir + "WorkingWithSdt.SdtCheckBox.docx", SaveFormat.Docx);
+            doc.Save(ArtifactsDir + "WorkingWithSdt.SdtCheckBox.docx");
             //ExEnd:SdtCheckBox
         }
 
@@ -58,7 +58,7 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
                     case SdtType.PlainText:
                     {
                         sdt.RemoveAllChildren();
-                        Paragraph para = sdt.AppendChild(new Paragraph(doc)) as Paragraph;
+                        Paragraph para = sdt.AppendChild(new Paragraph(doc));
                         Run run = new Run(doc, "new text goes here");
                         para.AppendChild(run);
                         break;
@@ -238,14 +238,14 @@ namespace DocsExamples.Programming_with_Documents.Contents_Management
         [Test]
         public void MultiSection()
         {
-            //ExStart:MultiSectionSDT
+            //ExStart:MultiSection
             Document doc = new Document(MyDir + "Multi-section structured document tags.docx");
 
             NodeCollection tags = doc.GetChildNodes(NodeType.StructuredDocumentTagRangeStart, true);
 
             foreach (StructuredDocumentTagRangeStart tag in tags)
                 Console.WriteLine(tag.Title);
-            //ExEnd:MultiSectionSDT
+            //ExEnd:MultiSection
         }
 
         [Test]

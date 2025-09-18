@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
 {
-    internal class WorkingWithDigitalSinatures : DocsExamplesBase
+    internal class WorkingWithDigitalSignatures : DocsExamplesBase
     {
         [Test]
         public void SignDocument()
@@ -81,9 +81,9 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
         }
 
         [Test]
-        public void SetSignatureProviderId()
+        public void SignatureProviderId()
         {
-            //ExStart:SetSignatureProviderID
+            //ExStart:SignatureProviderId
             Document doc = new Document(MyDir + "Signature line.docx");
 
             SignatureLine signatureLine =
@@ -98,7 +98,7 @@ namespace DocsExamples.Programming_with_Documents.Protect_or_Encrypt_Document
 
             DigitalSignatureUtil.Sign(MyDir + "Digitally signed.docx",
                 ArtifactsDir + "SignDocuments.SetSignatureProviderId.docx", certHolder, signOptions);
-            //ExEnd:SetSignatureProviderID
+            //ExEnd:SignatureProviderId
         }
 
         [Test]
