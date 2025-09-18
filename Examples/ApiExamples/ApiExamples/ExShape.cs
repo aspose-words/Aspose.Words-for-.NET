@@ -3487,5 +3487,25 @@ namespace ApiExamples
             Assert.That(button1.Caption, Is.EqualTo("Button caption"));
             //ExEnd:CommandButtonCaption
         }
+
+        [Test]
+        public void ShadowFormatTransparency()
+        {
+            //ExStart:ShadowFormatTransparency
+            //GistId:045648ef22da6b384ebcf0344717bfb5
+            //ExFor:ShadowFormat.Color
+            //ExFor:ShadowFormat.Transparency
+            //ExSummary:Shows how to set a color with transparency.
+            Document doc = new Document(MyDir + "Shadow color.docx");
+            Shape shape = (Shape)doc.GetChild(NodeType.Shape, 0, true);
+
+            ShadowFormat shadowFormat = shape.ShadowFormat;
+            shadowFormat.Type = ShadowType.Shadow21;
+            shadowFormat.Color = Color.Red;
+            shadowFormat.Transparency = 0.8;
+
+            doc.Save(ArtifactsDir + "Shape.ShadowFormatTransparency.docx");
+            //ExEnd:ShadowFormatTransparency
+        }
     }
 }

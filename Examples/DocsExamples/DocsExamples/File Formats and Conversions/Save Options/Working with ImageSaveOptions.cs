@@ -1,6 +1,7 @@
 ﻿using Aspose.Words;
 using Aspose.Words.Saving;
 using NUnit.Framework;
+using System.Drawing;
 
 namespace DocsExamples.File_Formats_and_Conversions.Save_Options
 {
@@ -113,5 +114,41 @@ namespace DocsExamples.File_Formats_and_Conversions.Save_Options
             }
         }
         //ExEnd:PageSavingCallback
+
+        [Test]
+        public void HorizontalLayout()
+        {
+            //ExStart:HorizontalLayout
+            //GistId:8eeaafcfcc55d78505f0f378ad8c6907
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
+            options.PageLayout = MultiPageLayout.Horizontal(10);
+
+            doc.Save(ArtifactsDir + "WorkingWithImageSaveOptions.HorizontalLayout.jpg", options);
+            //ExEnd:HorizontalLayout
+        }
+
+        [Test]
+        public void GridLayout()
+        {
+            //ExStart:GridLayout
+            //GistId:8eeaafcfcc55d78505f0f378ad8c6907
+            Document doc = new Document(MyDir + "Rendering.docx");
+
+            ImageSaveOptions options = new ImageSaveOptions(SaveFormat.Jpeg);
+            // Set up a grid layout with:
+            // - 3 columns per row.
+            // - 10pts spacing between pages (horizontal and vertical).
+            options.PageLayout = MultiPageLayout.Grid(3, 10, 10);
+
+            // Customize the background and border.
+            options.PageLayout.BackColor = Color.LightGray;
+            options.PageLayout.BorderColor = Color.Blue;
+            options.PageLayout.BorderWidth = 2;
+
+            doc.Save(ArtifactsDir + "ImageSaveOptions.GridLayout.jpg", options);
+            //ExEnd:GridLayout
+        }
     }
 }

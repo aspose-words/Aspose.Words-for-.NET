@@ -6,7 +6,7 @@ using NUnit.Framework;
 
 namespace DocsExamples.Programming_with_Documents.Working_with_Document
 {
-    internal class DocumentPropertiesAndVariables : DocsExamplesBase
+    internal class WorkingWithDocumentProperties : DocsExamplesBase
     {
         [Test]
         public void GetVariables()

@@ -24,7 +24,7 @@ namespace ApiExamples
             //ExFor:OdtSaveOptions
             //ExFor:OdtSaveOptions.#ctor
             //ExFor:OdtSaveOptions.IsStrictSchema11
-            //ExFor:RevisionOptions.MeasurementUnit
+            //ExFor:OdtSaveOptions.MeasureUnit
             //ExFor:MeasurementUnits
             //ExSummary:Shows how to make a saved document conform to an older ODT schema.
             Document doc = new Document(MyDir + "Rendering.docx");
@@ -36,11 +36,10 @@ namespace ApiExamples
             };
 
             doc.Save(ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt", saveOptions);
-            //ExEnd
 
             doc = new Document(ArtifactsDir + "OdtSaveOptions.Odt11Schema.odt");
-
             Assert.That(doc.LayoutOptions.RevisionOptions.MeasurementUnit, Is.EqualTo(Aspose.Words.MeasurementUnits.Centimeters));
+            //ExEnd
 
             if (exportToOdt11Specs)
             {

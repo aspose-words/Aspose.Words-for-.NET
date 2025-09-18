@@ -50,9 +50,9 @@ namespace DocsExamples.Programming_with_Documents
         }
 
         [Test]
-        public void CheckDMLTextEffect()
+        public void CheckDmlTextEffect()
         {
-            //ExStart:CheckDMLTextEffect
+            //ExStart:CheckDmlTextEffect
             Document doc = new Document(MyDir + "DrawingML text effects.docx");
             
             RunCollection runs = doc.FirstSection.Body.FirstParagraph.Runs;
@@ -64,7 +64,7 @@ namespace DocsExamples.Programming_with_Documents
             Console.WriteLine(runFont.HasDmlEffect(TextDmlEffect.Reflection));
             Console.WriteLine(runFont.HasDmlEffect(TextDmlEffect.Outline));
             Console.WriteLine(runFont.HasDmlEffect(TextDmlEffect.Fill));
-            //ExEnd:CheckDMLTextEffect
+            //ExEnd:CheckDmlTextEffect
         }
 
         [Test]

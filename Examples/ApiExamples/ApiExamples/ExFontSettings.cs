@@ -324,6 +324,19 @@ namespace ApiExamples
         [Category("SkipMono")]
         public void SubstitutionWarnings()
         {
+            //ExStart:SubstitutionWarnings
+            //GistId:045648ef22da6b384ebcf0344717bfb5
+            //ExFor:FontSubstitutionWarningInfo
+            //ExFor:FontSubstitutionWarningInfo.Reason
+            //ExFor:FontSubstitutionWarningInfo.RequestedBold
+            //ExFor:FontSubstitutionWarningInfo.RequestedItalic
+            //ExFor:FontSubstitutionWarningInfo.RequestedFamilyName
+            //ExFor:WarningInfo.Source
+            //ExFor:WarningInfo.WarningType
+            //ExFor:WarningInfo.Description
+            //ExFor:WarningSource
+            //ExFor:FontSubstitutionReason
+            //ExSummary:Shows how to get additional information about font substitution.
             Document doc = new Document(MyDir + "Rendering.docx");
 
             WarningInfoCollection callback = new WarningInfoCollection();
@@ -337,8 +350,15 @@ namespace ApiExamples
             doc.FontSettings = fontSettings;
             doc.Save(ArtifactsDir + "FontSettings.SubstitutionWarnings.pdf");
 
-            Assert.That(callback[0].Description, Is.EqualTo("Font \'Arial\' has not been found. Using \'Arvo\' font instead. Reason: table substitution."));
-            Assert.That(callback[1].Description, Is.EqualTo("Font \'Times New Roman\' has not been found. Using \'M+ 2m\' font instead. Reason: font info substitution."));
+            FontSubstitutionWarningInfo warningInfo = (FontSubstitutionWarningInfo)callback[0];
+            Assert.That(warningInfo.Source, Is.EqualTo(WarningSource.Layout));
+            Assert.That(warningInfo.WarningType, Is.EqualTo(WarningType.FontSubstitution));
+            Assert.That(warningInfo.Reason, Is.EqualTo(FontSubstitutionReason.TableSubstitutionRule));
+            Assert.That(warningInfo.Description, Is.EqualTo("Font \'Arial\' has not been found. Using \'Arvo\' font instead. Reason: table substitution."));
+            Assert.That(warningInfo.RequestedBold, Is.True);
+            Assert.That(warningInfo.RequestedItalic, Is.False);
+            Assert.That(warningInfo.RequestedFamilyName, Is.EqualTo("Arial"));
+            //ExEnd:SubstitutionWarnings
         }
 
         [Test]

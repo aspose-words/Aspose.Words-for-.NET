@@ -1,4 +1,4 @@
-﻿#if NET48
+﻿#if NET48 || JAVA
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -36,7 +36,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
                     Paragraph paragraph = (Paragraph) enumerator.Current;
                     if (layoutCollector.GetStartPageIndex(paragraph) == page)
                     {
-                        AddImageToPage(paragraph, page, ImagesDir);
+                        AddImageToPage(paragraph, page);
                         break;
                     }
                 }
@@ -53,7 +53,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Graphic_Elements
         /// </summary>
         /// <param name="para">The paragraph to an an image to.</param>
         /// <param name="page">The page number the paragraph appears on.</param>
-        public void AddImageToPage(Paragraph para, int page, string imagesDir)
+        public void AddImageToPage(Paragraph para, int page)
         {
             Document doc = (Document) para.Document;
 

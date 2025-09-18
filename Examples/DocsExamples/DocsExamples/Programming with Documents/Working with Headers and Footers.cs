@@ -63,13 +63,13 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
             
-            // Specify that we want different headers and footers for even and odd pages.            
+            // Specify that we want different headers and footers for even and odd pages.
             builder.PageSetup.OddAndEvenPagesHeaderFooter = true;
 
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderEven);
             builder.Write("Header for even pages.");
             builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
-            builder.Write("Header for odd pages.");            
+            builder.Write("Header for odd pages.");
             builder.MoveToHeaderFooter(HeaderFooterType.FooterEven);
             builder.Write("Footer for even pages.");
             builder.MoveToHeaderFooter(HeaderFooterType.FooterPrimary);
@@ -92,9 +92,9 @@ namespace DocsExamples.Programming_with_Documents
             Document doc = new Document();
             DocumentBuilder builder = new DocumentBuilder(doc);
 
-            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);            
+            builder.MoveToHeaderFooter(HeaderFooterType.HeaderPrimary);
             builder.InsertImage(ImagesDir + "Logo.jpg", RelativeHorizontalPosition.RightMargin, 10,
-                RelativeVerticalPosition.Page, 10, 50, 50, WrapType.Through);            
+                RelativeVerticalPosition.Page, 10, 50, 50, WrapType.Through);
 
             doc.Save(ArtifactsDir + "WorkingWithHeadersAndFooters.InsertImage.docx");
             //ExEnd:InsertImage

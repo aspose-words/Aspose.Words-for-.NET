@@ -796,31 +796,6 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             //ExEnd:MergeCellRange
         }
 
-        [Test]
-        public void PrintHorizontalAndVerticalMerged()
-        {
-            //ExStart:PrintHorizontalAndVerticalMerged
-            //GistId:93de23a2f74a7f2e4971ed203874c983
-            Document doc = new Document(MyDir + "Table with merged cells.docx");
-
-            SpanVisitor visitor = new SpanVisitor(doc);
-            doc.Accept(visitor);
-            //ExEnd:PrintHorizontalAndVerticalMerged
-        }
-
-        [Test]
-        public void ConvertToHorizontallyMergedCells()
-        {
-            //ExStart:ConvertToHorizontallyMergedCells
-            //GistId:93de23a2f74a7f2e4971ed203874c983
-            Document doc = new Document(MyDir + "Table with merged cells.docx");
-
-            Table table = doc.FirstSection.Body.Tables[0];
-            // Now merged cells have appropriate merge flags.
-            table.ConvertToHorizontallyMergedCells();
-            //ExEnd:ConvertToHorizontallyMergedCells
-        }
-
         //ExStart:MergeCells
         //GistId:93de23a2f74a7f2e4971ed203874c983
         internal void MergeCells(Cell startCell, Cell endCell)
@@ -855,6 +830,31 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
             }
         }
         //ExEnd:MergeCells
+
+        [Test]
+        public void PrintHorizontalAndVerticalMerged()
+        {
+            //ExStart:PrintHorizontalAndVerticalMerged
+            //GistId:93de23a2f74a7f2e4971ed203874c983
+            Document doc = new Document(MyDir + "Table with merged cells.docx");
+
+            SpanVisitor visitor = new SpanVisitor(doc);
+            doc.Accept(visitor);
+            //ExEnd:PrintHorizontalAndVerticalMerged
+        }
+
+        [Test]
+        public void ConvertToHorizontallyMergedCells()
+        {
+            //ExStart:ConvertToHorizontallyMergedCells
+            //GistId:93de23a2f74a7f2e4971ed203874c983
+            Document doc = new Document(MyDir + "Table with merged cells.docx");
+
+            Table table = doc.FirstSection.Body.Tables[0];
+            // Now merged cells have appropriate merge flags.
+            table.ConvertToHorizontallyMergedCells();
+            //ExEnd:ConvertToHorizontallyMergedCells
+        }
 
         //ExStart:HorizontalAndVerticalMergeHelperClasses
         //GistId:93de23a2f74a7f2e4971ed203874c983
@@ -1154,7 +1154,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Tables
         [Test]
         public void RelativeHorizontalOrVerticalPosition()
         {
-            //ExStart:RelativeHorizontalOrVerticalPosition            
+            //ExStart:RelativeHorizontalOrVerticalPosition
             Document doc = new Document(MyDir + "Table wrapped by text.docx");
 
             Table table = doc.FirstSection.Body.Tables[0];

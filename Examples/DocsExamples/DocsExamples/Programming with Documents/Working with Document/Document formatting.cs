@@ -172,7 +172,7 @@ namespace DocsExamples.Programming_with_Documents.Working_with_Document
             
             par.Runs[0].Font.SnapToGrid = true;
 
-            doc.Save(ArtifactsDir + "Paragraph.SnapToGrid.docx");
+            doc.Save(ArtifactsDir + "DocumentFormatting.SnapToGrid.docx");
             //ExEnd:SetSnapToGrid
         }
 
