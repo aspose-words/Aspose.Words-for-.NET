@@ -2677,5 +2677,21 @@ namespace ApiExamples
             doc.Save(ArtifactsDir + "PdfSaveOptions.RenderChoiceFormFieldBorder.pdf", saveOptions);
             //ExEnd:RenderChoiceFormFieldBorder
         }
+
+        [Test]
+        public void ExportFloatingShapesAsInlineTag()
+        {
+            //ExStart:ExportFloatingShapesAsInlineTag
+            //GistId:67ab3fcab43d41e5dc207060f8f5faba
+            //ExFor:PdfSaveOptions.ExportFloatingShapesAsInlineTag
+            //ExSummary:Shows how to export floating shapes as inline tags.
+            Document doc = new Document(MyDir + "Floating object.docx");
+
+            PdfSaveOptions saveOptions = new PdfSaveOptions();
+            saveOptions.ExportFloatingShapesAsInlineTag = true;
+
+            doc.Save(ArtifactsDir + "PdfSaveOptions.ExportFloatingShapesAsInlineTag.pdf", saveOptions);
+            //ExEnd:ExportFloatingShapesAsInlineTag
+        }
     }
 }

@@ -754,19 +754,19 @@ namespace ApiExamples
             if (allowAutoFit)
             {
                 TestUtil.FileContainsString(
-                    "<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-right:0.5pt single\">",
+                    "<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-right:0.5pt single #000000\">",
                     ArtifactsDir + "Table.AllowAutoFitOnTable.html");
                 TestUtil.FileContainsString(
-                    "<td style=\"border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-left:0.5pt single\">",
+                    "<td style=\"border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-left:0.5pt single #000000\">",
                     ArtifactsDir + "Table.AllowAutoFitOnTable.html");
             }
             else
             {
                 TestUtil.FileContainsString(
-                    "<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-right:0.5pt single\">",
+                    "<td style=\"width:89.2pt; border-right-style:solid; border-right-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-right:0.5pt single #000000\">",
                     ArtifactsDir + "Table.AllowAutoFitOnTable.html");
                 TestUtil.FileContainsString(
-                    "<td style=\"width:7.2pt; border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-left:0.5pt single\">",
+                    "<td style=\"width:7.2pt; border-left-style:solid; border-left-width:0.75pt; padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-left:0.5pt single #000000\">",
                     ArtifactsDir + "Table.AllowAutoFitOnTable.html");
             }
         }
@@ -901,9 +901,9 @@ namespace ApiExamples
 
             TestUtil.FileContainsString(
                 allowCellSpacing
-                    ? "<td style=\"border-style:solid; border-width:0.75pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top; -aw-border:0.5pt single\">"
+                    ? "<td style=\"border-style:solid; border-width:0.75pt; padding-right:5.4pt; padding-left:5.4pt; vertical-align:top; -aw-border:0.5pt single #000000\">"
                     : "<td style=\"border-right-style:solid; border-right-width:0.75pt; border-bottom-style:solid; border-bottom-width:0.75pt; " +
-                      "padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-bottom:0.5pt single; -aw-border-right:0.5pt single\">",
+                      "padding-right:5.03pt; padding-left:5.03pt; vertical-align:top; -aw-border-bottom:0.5pt single #000000; -aw-border-right:0.5pt single #000000\">",
                 ArtifactsDir + "Table.AllowCellSpacing.html");
         }
 
