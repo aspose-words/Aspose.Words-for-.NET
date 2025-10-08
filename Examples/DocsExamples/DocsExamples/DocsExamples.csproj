@@ -69,7 +69,7 @@
     <Content Include="Programming with Documents\Contents Management\Working with table of content.cs" />
     <Content Include="Programming with Documents\Enable OpenType features.cs" />
     <Content Include="Programming with Documents\Protect or Encrypt Document\Document protection.cs" />
-    <Content Include="Programming with Documents\Protect or Encrypt Document\Working with DigitalSinatures.cs" />
+    <Content Include="Programming with Documents\Protect or Encrypt Document\Working with DigitalSignatures.cs" />
     <Content Include="Programming with Documents\Split Documents\Page splitter.cs" />
     <Content Include="Programming with Documents\Split Documents\Split document.cs" />
     <Content Include="Programming with Documents\Split Documents\Split into html pages.cs" />
