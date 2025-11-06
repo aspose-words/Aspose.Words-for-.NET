@@ -430,7 +430,7 @@ namespace ApiExamples
         public void ExportOfficeMathAsMarkItDown()
         {
             //ExStart:ExportOfficeMathAsMarkItDown
-            //ReleaseVersion:25.11
+            //GistId:bd7947d9ad5eb092f532604cb15f593b
             //ExFor:MarkdownSaveOptions.OfficeMathExportMode
             //ExFor:MarkdownOfficeMathExportMode
             //ExSummary:Shows how to export OfficeMath object as MarkItDown.

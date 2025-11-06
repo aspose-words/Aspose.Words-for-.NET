@@ -133,7 +133,7 @@ namespace ApiExamples
         public void ChangeDefaultUrl()
         {
             //ExStart:ChangeDefaultUrl
-            //ReleaseVersion:25.11
+            //GistId:bd7947d9ad5eb092f532604cb15f593b
             //ExFor:AiModel.Url
             //ExSummary:Shows how to change model default url.
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
@@ -149,8 +149,8 @@ namespace ApiExamples
         public void ChangeDefaultTimeout()
         {
             //ExStart:ChangeDefaultTimeout
-            //ReleaseVersion:25.11
-            //ExFor:AiModel.Url
+            //GistId:bd7947d9ad5eb092f532604cb15f593b
+            //ExFor:AiModel.Timeout
             //ExSummary:Shows how to change model default timeout.
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             AiModel model = AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);

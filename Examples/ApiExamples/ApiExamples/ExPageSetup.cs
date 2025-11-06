@@ -1164,7 +1164,7 @@ namespace ApiExamples
         [Test]
         [Ignore("Run only when the printer driver is installed")]
         //ExStart:PageIndexFilter
-        //ReleaseVersion:25.11
+        //GistId:bd7947d9ad5eb092f532604cb15f593b
         //ExFor:AsposeWordsPrintDocument.PageIndexFilter
         //ExSummary: Shows how to filtering pages using a page number list.
         public void PageIndexFilter()
@@ -1230,7 +1230,7 @@ namespace ApiExamples
         [Test]
         [Ignore("Run only when the printer driver is installed")]
         //ExStart:ColorMode
-        //ReleaseVersion:25.11
+        //GistId:bd7947d9ad5eb092f532604cb15f593b
         //ExFor:PageInfo.Colored
         //ExFor:AsposeWordsPrintDocument.PageIndexFilter
         //ExFor:AsposeWordsPrintDocument.TotalPagesPrinted
