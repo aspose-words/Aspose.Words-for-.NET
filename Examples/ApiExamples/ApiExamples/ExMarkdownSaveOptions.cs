@@ -425,6 +425,26 @@ namespace ApiExamples
             }
         }
         //ExEnd:MarkdownResourceSavingCallback
+
+        [Test]
+        public void ExportOfficeMathAsMarkItDown()
+        {
+            //ExStart:ExportOfficeMathAsMarkItDown
+            //ReleaseVersion:25.11
+            //ExFor:MarkdownSaveOptions.OfficeMathExportMode
+            //ExFor:MarkdownOfficeMathExportMode
+            //ExSummary:Shows how to export OfficeMath object as MarkItDown.
+            Document doc = new Document(MyDir + "Office math.docx");
+
+            MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
+            saveOptions.OfficeMathExportMode = MarkdownOfficeMathExportMode.MarkItDown;
+
+            doc.Save(ArtifactsDir + "MarkdownSaveOptions.ExportOfficeMathAsMarkItDown.md", saveOptions);
+            //ExEnd:ExportOfficeMathAsMarkItDown
+
+            Assert.That(DocumentHelper.CompareDocs(ArtifactsDir + "MarkdownSaveOptions.ExportOfficeMathAsMarkItDown.md",
+                GoldsDir + "MarkdownSaveOptions.ExportOfficeMathAsMarkItDown.Gold.md"), Is.True);
+        }
     }
 }
 
