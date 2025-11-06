@@ -79,6 +79,7 @@ namespace ApiExamples
             //ExStart:AiGrammar
             //GistId:f86d49dc0e6781b93e576539a01e6ca2
             //ExFor:AiModel.CheckGrammar(Document, CheckGrammarOptions)
+            //ExFor:AiModel.Url
             //ExFor:CheckGrammarOptions
             //ExSummary:Shows how to check the grammar of a document.
             Document doc = new Document(MyDir + "Big document.docx");
@@ -107,6 +108,7 @@ namespace ApiExamples
             string apiKey = Environment.GetEnvironmentVariable("API_KEY");
             // Use OpenAI generative language models.
             AiModel model = new CustomAiModel().WithApiKey(apiKey);
+            model.Url = "https://my.a.com/";
 
             Document translatedDoc = model.Translate(doc, Language.Russian);
             translatedDoc.Save(ArtifactsDir + "AI.SelfHostedModel.docx");
@@ -118,14 +120,6 @@ namespace ApiExamples
         internal class CustomAiModel : OpenAiModel
         {
             /// <summary>
-            /// Gets custom URL of the model.
-            /// </summary>
-            protected override string Url
-            {
-                get { return "https://localhost/"; }
-            }
-
-            /// <summary>
             /// Gets model name.
             /// </summary>
             protected override string Name
@@ -134,5 +128,37 @@ namespace ApiExamples
             }
         }
         //ExEnd:SelfHostedModel
+
+        [Test]
+        public void ChangeDefaultUrl()
+        {
+            //ExStart:ChangeDefaultUrl
+            //GistId:bd7947d9ad5eb092f532604cb15f593b
+            //ExFor:AiModel.Url
+            //ExSummary:Shows how to change model default url.
+            string apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            AiModel model = AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
+            // Default value "https://api.openai.com/".
+            model.Url = "https://my.a.com/";
+            //ExEnd:ChangeDefaultUrl
+
+            Assert.That(model.Url, Is.EqualTo("https://my.a.com/"));
+        }
+
+        [Test]
+        public void ChangeDefaultTimeout()
+        {
+            //ExStart:ChangeDefaultTimeout
+            //GistId:bd7947d9ad5eb092f532604cb15f593b
+            //ExFor:AiModel.Timeout
+            //ExSummary:Shows how to change model default timeout.
+            string apiKey = Environment.GetEnvironmentVariable("API_KEY");
+            AiModel model = AiModel.Create(AiModelType.Gpt4OMini).WithApiKey(apiKey);
+            // Default value 100000ms.
+            model.Timeout = 250000;
+            //ExEnd:ChangeDefaultTimeout
+
+            Assert.That(model.Timeout, Is.EqualTo(250000));
+        }
     }
 }
