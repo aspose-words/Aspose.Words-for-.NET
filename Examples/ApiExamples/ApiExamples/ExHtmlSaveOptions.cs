@@ -1743,9 +1743,9 @@ namespace ApiExamples
             var testedImageLength = new FileInfo(ArtifactsDir + "HtmlSaveOptions.ScaleImageToShapeSize.001.png").Length;
 
             if (scaleImageToShapeSize)
-#if NETFRAMEWORK || JAVA || CPLUSPLUS
+#if NET461_OR_GREATER || JAVA || CPLUSPLUS
                 Assert.That(testedImageLength < 3000, Is.True);
-#elif NET6_0_OR_GREATER
+#elif NET5_0_OR_GREATER
                 Assert.That(testedImageLength < 6200, Is.True);
 #endif
             else

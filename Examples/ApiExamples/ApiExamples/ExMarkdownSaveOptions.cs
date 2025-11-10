@@ -405,10 +405,10 @@ namespace ApiExamples
             string outputPath = ArtifactsDir + "MarkdownSaveOptions.ResourceSavingCallback.md";
 
             Document doc = new Document(MyDir + "Rendering.docx");
-            
+
             MarkdownSaveOptions saveOptions = new MarkdownSaveOptions();
             saveOptions.ResourceSavingCallback = new ChangeUriPath();
-            
+
             doc.Save(outputPath, saveOptions);
 
             DocumentHelper.FindTextInFile(outputPath, "/uri/for/");

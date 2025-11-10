@@ -13,8 +13,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
+using Aspose.Pdf.Text;
 using Aspose.Words;
 using Aspose.Words.DigitalSignatures;
 using Aspose.Words.Drawing;
@@ -27,17 +29,15 @@ using Aspose.Words.Notes;
 using Aspose.Words.Rendering;
 using Aspose.Words.Replacing;
 using Aspose.Words.Saving;
+using Aspose.Words.Settings;
+using Aspose.Words.Shaping.HarfBuzz;
 using Aspose.Words.Tables;
 using Aspose.Words.Vba;
 using Aspose.Words.WebExtensions;
 using NUnit.Framework;
-using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
 using LoadOptions = Aspose.Words.Loading.LoadOptions;
-using Aspose.Words.Settings;
-using Aspose.Pdf.Text;
-using Aspose.Words.Shaping.HarfBuzz;
-using System.Net.Http;
-#if NET6_0_OR_GREATER
+using MemoryFontSource = Aspose.Words.Fonts.MemoryFontSource;
+#if NET5_0_OR_GREATER || __MOBILE__
 using SkiaSharp;
 #endif
 
@@ -182,7 +182,7 @@ namespace ApiExamples
                     Assert.That(image.Height, Is.EqualTo(1056));
                 }
             }
-#elif NET6_0_OR_GREATER
+#elif NET5_0_OR_GREATER
             using (MemoryStream stream = new MemoryStream())
             {
                 doc.Save(stream, SaveFormat.Bmp);
@@ -2223,7 +2223,7 @@ namespace ApiExamples
 
             doc.Watermark.SetImage(ImageDir + "Logo.jpg", imageWatermarkOptions);
 
-#elif NET6_0_OR_GREATER
+#elif NET5_0_OR_GREATER
             using (SKBitmap image = SKBitmap.Decode(ImageDir + "Logo.jpg"))
                 doc.Watermark.SetImage(image, imageWatermarkOptions);
 #endif

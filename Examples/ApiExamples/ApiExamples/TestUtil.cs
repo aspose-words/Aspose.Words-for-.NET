@@ -45,8 +45,10 @@ namespace ApiExamples
         /// <param name="filename">Local file system filename of the image file.</param>
         internal static void VerifyImage(int expectedWidth, int expectedHeight, string filename)
         {
+            PlatformID pid = Environment.OSVersion.Platform;
+            bool isWindows = (pid == PlatformID.Win32NT) || (pid == PlatformID.Win32S) ||
+                             (pid == PlatformID.Win32Windows) || (pid == PlatformID.WinCE);
             string ext = Path.GetExtension(filename).ToLower();
-            bool isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
             if (isWindows && (ext == ".emf" || ext == ".wmf"))
             {

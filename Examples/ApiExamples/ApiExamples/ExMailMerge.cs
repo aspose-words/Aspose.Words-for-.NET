@@ -25,7 +25,7 @@ namespace ApiExamples
     [TestFixture]
     public class ExMailMerge : ApiExampleBase
     {
-#if NETFRAMEWORK || JAVA
+#if NET461_OR_GREATER || JAVA
         [Test]
         public void ExecuteArray()
         {
