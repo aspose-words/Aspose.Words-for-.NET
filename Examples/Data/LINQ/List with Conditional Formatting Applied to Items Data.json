@@ -1,0 +1,26 @@
+[
+  {
+    "country": "USA",
+    "sales": 45000
+  },
+  {
+    "country": "Canada",
+    "sales": 20000
+  },
+  {
+    "country": "Germany",
+    "sales": 27000
+  },
+  {
+    "country": "France",
+    "sales": 18000
+  },
+  {
+    "country": "China",
+    "sales": 35000
+  },
+  {
+    "country": "Japan",
+    "sales": 30000
+  }
+]

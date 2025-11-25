@@ -255,6 +255,181 @@ namespace ApiExamples.LinqTemp
         }
 
         [Test]
+        public void BuildingBulletedList()
+        {
+            //ExStart:BuildingBulletedList
+            //GistId:73732ca5c6fd16a65f47a6a81a033e24
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Bulleted List Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Bulleted List Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Bulleted List Report.docx");
+            //ExEnd:BuildingBulletedList
+
+            // Test the report.
+            CompareDocs("Bulleted List Report.docx", "Bulleted List Report Gold.docx");
+        }
+
+        [Test]
+        public void BuildingNumberedList()
+        {
+            //ExStart:BuildingNumberedList
+            //GistId:dba46de6f9697ecd608b15bc14a152a7
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Numbered List Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Numbered List Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Numbered List Report.docx");
+            //ExEnd:BuildingNumberedList
+
+            // Test the report.
+            CompareDocs("Numbered List Report.docx", "Numbered List Report Gold.docx");
+        }
+
+        [Test]
+        public void RestartingListNumbering()
+        {
+            //ExStart:RestartingListNumbering
+            //GistId:9be196629b6f638dba69f9696510ae80
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "List Numbering Restarting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "List Numbering Restarting Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "List Numbering Restarting Report.docx");
+            //ExEnd:RestartingListNumbering
+
+            // Test the report.
+            CompareDocs("List Numbering Restarting Report.docx", "List Numbering Restarting Report Gold.docx");
+        }
+
+        [Test]
+        public void ShowingListItemBasedOnCondition()
+        {
+            //ExStart:ShowingListItemBasedOnCondition
+            //GistId:99efbc092413cbe15e89a3b714f99e0b
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "List with Items Shown Based on Condition Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "List with Items Shown Based on Condition Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "List with Items Shown Based on Condition Report.docx");
+            //ExEnd:ShowingListItemBasedOnCondition
+
+            // Test the report.
+            CompareDocs("List with Items Shown Based on Condition Report.docx", 
+                "List with Items Shown Based on Condition Report Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingConditionalFormattingToListItems()
+        {
+            //ExStart:ApplyingConditionalFormattingToListItems
+            //GistId:82d396f2a1d98b4fcd64abc7d69bb8eb
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "List with Conditional Formatting Applied to Items Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "List with Conditional Formatting Applied to Items Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "List with Conditional Formatting Applied to Items Report.docx");
+            //ExEnd:ApplyingConditionalFormattingToListItems
+
+            // Test the report.
+            CompareDocs("List with Conditional Formatting Applied to Items Report.docx",
+                "List with Conditional Formatting Applied to Items Report Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingBackgroundColorsToListItems()
+        {
+            //ExStart:ApplyingBackgroundColorsToListItems
+            //GistId:225de61d30ad289845f72292a86fc788
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "List with Background Colors Applied to Items Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "List with Background Colors Applied to Items Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "List with Background Colors Applied to Items Report.docx");
+            //ExEnd:ApplyingBackgroundColorsToListItems
+
+            // Test the report.
+            CompareDocs("List with Background Colors Applied to Items Report.docx",
+                "List with Background Colors Applied to Items Report Gold.docx");
+        }
+
+        [Test]
+        public void ApplyingTextColorsToListItems()
+        {
+            //ExStart:ApplyingTextColorsToListItems
+            //GistId:302428d7a03918011b1aa5f720f82e7e
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "List with Text Colors Applied to Items Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(
+                MyLinqDir + "List with Text Colors Applied to Items Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.Options |= ReportBuildOptions.RemoveEmptyParagraphs; // Needed to remove extra empty paragraphs.
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "List with Text Colors Applied to Items Report.docx");
+            //ExEnd:ApplyingTextColorsToListItems
+
+            // Test the report.
+            CompareDocs("List with Text Colors Applied to Items Report.docx",
+                "List with Text Colors Applied to Items Report Gold.docx");
+        }
+
+        [Test]
         public void BuildingTable()
         {
             //ExStart:BuildingTable

@@ -1,0 +1,22 @@
+[
+  {
+    "quarter": "Q1",
+    "revenue": [
+      { "department": "Operations", "value": 33000 },
+      { "department": "Customer Service", "value": 38000 },
+      { "department": "Sales", "value": 31000 },
+      { "department": "Finance", "value": 39000 },
+      { "department": "Marketing", "value": 29000 }
+    ]
+  },
+  {
+    "quarter": "Q2",
+    "revenue": [
+      { "department": "Operations", "value": 35000 },
+      { "department": "Customer Service", "value": 43000 },
+      { "department": "Sales", "value": 32000 },
+      { "department": "Finance", "value": 45000 },
+      { "department": "Marketing", "value": 32000 }
+    ]
+  }
+]
