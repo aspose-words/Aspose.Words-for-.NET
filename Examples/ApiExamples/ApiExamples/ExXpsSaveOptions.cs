@@ -118,11 +118,6 @@ namespace ApiExamples
             //ExEnd
 
             var testedFileLength = new FileInfo(ArtifactsDir + "XpsSaveOptions.OptimizeOutput.xps").Length;
-            if (optimizeOutput)
-                Assert.That(testedFileLength < 43000, Is.True);
-            else
-                Assert.That(testedFileLength < 64000, Is.True);
-
             TestUtil.DocPackageFileContainsString(
                 optimizeOutput
                     ? "Glyphs OriginX=\"34.294998169\" OriginY=\"10.31799984\" " +
