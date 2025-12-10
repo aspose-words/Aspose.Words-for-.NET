@@ -1,0 +1,7 @@
+[
+  { "region": "North America", "code": "NA" },
+  { "region": "South America", "code": "SA" },
+  { "region": "Europe", "code": "EU" },
+  { "region": "Asia", "code": "AS" },
+  { "region": "Africa", "code": "AF" }
+]

@@ -2121,6 +2121,76 @@ namespace ApiExamples.LinqTemp
                 "Chart with Changing Series Point Colors Report Gold.docx");
         }
 
+
+        [Test]
+        public void SettingCheckboxState()
+        {
+            //ExStart:SettingCheckboxState
+            //GistId:849bd52912e5b8dd16b3e67ce22cbc7d
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Checkbox State Setting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Checkbox State Setting Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Checkbox State Setting Report.docx");
+            //ExEnd:SettingCheckboxState
+
+            // Test the report.
+            CompareDocs("Checkbox State Setting Report.docx", "Checkbox State Setting Report Gold.docx");
+        }
+
+        [Test]
+        public void FillingDropdownList()
+        {
+            //ExStart:FillingDropdownList
+            //GistId:a66ce447ae59fc41f64f9e6b0d73e17f
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Dropdown List Filling Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Dropdown List Filling Data.json");
+
+            // Build a report. The name of the data source should match the one used in the template.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource, "items");
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Dropdown List Filling Report.docx");
+            //ExEnd:FillingDropdownList
+
+            // Test the report.
+            CompareDocs("Dropdown List Filling Report.docx", "Dropdown List Filling Report Gold.docx");
+        }
+
+        [Test]
+        public void SettingContentControlTitle()
+        {
+            //ExStart:SettingContentControlTitle
+            //GistId:872801af9dee8fde19004d91433153d6
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Content Control Title Setting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Content Control Title Setting Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Content Control Title Setting Report.docx");
+            //ExEnd:SettingContentControlTitle
+
+            // Test the report.
+            CompareDocs("Content Control Title Setting Report.docx", "Content Control Title Setting Report Gold.docx");
+        }
+
         /// <summary>
         /// A helper method asserting that two files are equal.
         /// </summary>
