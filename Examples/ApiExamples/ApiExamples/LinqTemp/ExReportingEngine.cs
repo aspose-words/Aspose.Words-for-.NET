@@ -2121,6 +2121,74 @@ namespace ApiExamples.LinqTemp
                 "Chart with Changing Series Point Colors Report Gold.docx");
         }
 
+        [Test]
+        public void InsertingBookmark()
+        {
+            //ExStart:InsertingBookmark
+            //GistId:c661a51da3e161fff0bbc1b38214a779
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Bookmark Inserting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Bookmark Inserting Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Bookmark Inserting Report.docx");
+            //ExEnd:InsertingBookmark
+
+            // Test the report.
+            CompareDocs("Bookmark Inserting Report.docx", "Bookmark Inserting Report Gold.docx");
+        }
+
+        [Test]
+        public void InsertingLinkToBookmark()
+        {
+            //ExStart:InsertingLinkToBookmark
+            //GistId:d05f6fe6fcea9e54c1e522ef1c4ba85e
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Link to Bookmark Inserting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Link to Bookmark Inserting Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Link to Bookmark Inserting Report.docx");
+            //ExEnd:InsertingLinkToBookmark
+
+            // Test the report.
+            CompareDocs("Link to Bookmark Inserting Report.docx", "Link to Bookmark Inserting Report Gold.docx");
+        }
+
+        [Test]
+        public void InsertingHyperlink()
+        {
+            //ExStart:InsertingHyperlink
+            //GistId:2b0cf376ddad0e9f8e0f1dd2e5213e6f
+            // Open the template document.
+            Document doc = new Document(MyLinqDir + "Hyperlink Inserting Template.docx");
+
+            // Open the data source file.
+            JsonDataSource dataSource = new JsonDataSource(MyLinqDir + "Hyperlink Inserting Data.json");
+
+            // Build a report.
+            ReportingEngine engine = new ReportingEngine();
+            engine.BuildReport(doc, dataSource);
+
+            // Save the report.
+            doc.Save(ArtifactsDir + "Hyperlink Inserting Report.docx");
+            //ExEnd:InsertingHyperlink
+
+            // Test the report.
+            CompareDocs("Hyperlink Inserting Report.docx", "Hyperlink Inserting Report Gold.docx");
+        }
 
         [Test]
         public void SettingCheckboxState()
